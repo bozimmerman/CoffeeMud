@@ -1810,10 +1810,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						else
 						if(E instanceof Wand)
 						{
-							if(CMClass.getAbility(newName)!=null)
-								ok=true;
-							else
+							final Ability A=CMClass.getAbility(newName);
+							if((A==null)
+							||(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+								&&(mob.fetchAbility(A.ID())==null)))
+							{
 								mob.tell(L("'@x1' is not recognized.  Try '?'.",newName));
+							}
+							else
+								ok=true;
 						}
 						else
 						if(E instanceof SpellHolder)
@@ -1828,13 +1833,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								final int x1=spellName.indexOf('(');
 								if((x1>0)&&(spellName.endsWith(")")))
 									spellName=spellName.substring(0,x1);
-								if(CMClass.getAbility(spellName)!=null)
-									ok=true;
-								else
+								final Ability A=CMClass.getAbility(spellName);
+								if((A==null)
+								||(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+									&&(mob.fetchAbility(A.ID())==null)))
 								{
 									mob.tell(L("'@x1' is not recognized.  Try '?'.",spellName));
 									break;
 								}
+								else
+									ok=true;
 								newName=newName.substring(x+1).trim();
 								x=newName.indexOf(';');
 							}
@@ -4165,6 +4173,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					else
 					{
 						chosenOne=CMClass.getAbility(behave);
+						if((chosenOne!=null)
+						&&((chosenOne.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(mob.fetchAbility(chosenOne.ID())==null))
+							chosenOne=null;
 						if(chosenOne!=null)
 						{
 							String parms="?";
@@ -4704,7 +4716,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					else
 					{
 						chosenOne=CMClass.getAbility(behave);
-						if((chosenOne!=null)&&((chosenOne.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)&&(!CMSecurity.isASysOp(mob)))
+						if((chosenOne!=null)
+						&&((chosenOne.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(!CMSecurity.isASysOp(mob)))
 							chosenOne=null;
 						if(chosenOne!=null)
 						{
@@ -5044,6 +5058,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					else
 					{
 						chosenOne=CMClass.getAbility(behave);
+						if((chosenOne!=null)
+						&&((chosenOne.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(mob.fetchAbility(chosenOne.ID())==null))
+							chosenOne=null;
 						if(chosenOne!=null)
 						{
 							boolean alreadyHasIt=false;
@@ -5115,6 +5133,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					else
 					{
 						chosenOne=CMClass.getAbility(behave);
+						if((chosenOne!=null)
+						&&((chosenOne.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(mob.fetchAbility(chosenOne.ID())==null))
+							chosenOne=null;
 						if(chosenOne!=null)
 						{
 							boolean alreadyHasIt=false;
@@ -5186,6 +5208,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					else
 					{
 						chosenOne=CMClass.getAbility(behave);
+						if((chosenOne!=null)
+						&&((chosenOne.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(mob.fetchAbility(chosenOne.ID())==null))
+							chosenOne=null;
 						if(chosenOne!=null)
 						{
 							boolean alreadyHasIt=false;
@@ -7151,8 +7177,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(partNum<0)
 				{
 					final Ability A=CMClass.getAbility(newName);
-					if(A==null)
+					if((A==null)
+					||(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(mob.fetchAbility(A.ID())==null)))
+					{
 						mob.tell(L("That is neither an existing ability name, nor a valid one to add.  Use ? for a list."));
+					}
 					else
 					if(A.isAutoInvoked())
 						mob.tell(L("'@x1' cannot be named, as it is autoinvoked.",A.name()));
@@ -7313,8 +7343,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(partNum<0)
 				{
 					final Ability A=CMClass.getAbility(newName);
-					if(A==null)
+					if((A==null)
+					||(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(mob.fetchAbility(A.ID())==null)))
+					{
 						mob.tell(L("That is neither an existing effect name, nor a valid one to add.  Use ? for a list."));
+					}
 					else
 					{
 						final StringBuffer str=new StringBuffer(A.ID()+"~");
@@ -7447,8 +7481,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(partNum<0)
 				{
 					final Ability A=CMClass.getAbility(newName);
-					if(A==null)
+					if((A==null)
+					||(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(mob.fetchAbility(A.ID())==null)))
+					{
 						mob.tell(L("That is neither an existing immunity ability id, nor a valid one to add.  Use ? for a list."));
+					}
 					else
 					{
 						data.addElement(A.ID());
@@ -7676,8 +7714,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(ableIndex<0)
 				{
 					final Ability A=CMClass.getAbility(newName);
-					if(A==null)
+					if((A==null)
+					||(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(mob.fetchAbility(A.ID())==null)))
+					{
 						mob.tell(L("That is neither an existing ability name, nor a valid one to add.  Use ? for a list."));
+					}
 					else
 					{
 						// add new one here
@@ -7788,8 +7830,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				if(partNum<0)
 				{
 					final Ability A=CMClass.getAbility(newName);
-					if(A==null)
+					if((A==null)
+					||(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ARCHON)
+						&&(mob.fetchAbility(A.ID())==null)))
+					{
 						mob.tell(L("That is neither an existing ability name, nor a valid one to add.  Use ? for a list."));
+					}
 					else
 					{
 						final StringBuffer str=new StringBuffer(A.ID()+";");
