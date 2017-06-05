@@ -594,9 +594,15 @@ public class Reset extends StdCommand
 					if(sess!=null)
 						sess.print(".");
 					final Room R=CMLib.map().getRoom(r.nextElement());
-					if(R!=null)
+					if((R!=null)&&(R.roomID()!=null)&&(R.roomID().length()>0))
 					{
 						final Room room=CMLib.coffeeMaker().makeNewRoomContent(R,false);
+						if(room==null)
+						{
+							if(sess != null)
+								sess.println(L("Unable to load room @x1, skipping.",CMLib.map().getExtendedRoomID(R)));
+						}
+						else
 						if(CMLib.percolator().relevelRoom(room, oldMinLevel, oldMaxLevel, levelLow, levelHigh))
 						{
 							CMLib.database().DBUpdateItems(room);
