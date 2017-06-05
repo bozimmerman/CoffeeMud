@@ -1481,8 +1481,14 @@ public class MUD extends Thread implements MudHost
 				return false;
 			}
 			CMLib.lang().setLocale(CMLib.props().getStr("LANGUAGE"),CMLib.props().getStr("COUNTRY"));
-			if((threadCode==MudHost.MAIN_HOST)||(CMLib.time()!=CMLib.library(MudHost.MAIN_HOST, CMLib.Library.TIME)))
+			if((threadCode==MudHost.MAIN_HOST)
+			||(CMLib.time()!=CMLib.library(MudHost.MAIN_HOST, CMLib.Library.TIME)))
 				CMLib.time().globalClock().initializeINIClock(page);
+			else
+			{
+				CMProps.setIntVar(CMProps.Int.TICKSPERMUDDAY,""+((CMProps.getMillisPerMudHour()*CMLib.time().globalClock().getHoursInDay()/CMProps.getTickMillis())));
+				CMProps.setIntVar(CMProps.Int.TICKSPERMUDMONTH,""+((CMProps.getMillisPerMudHour()*CMLib.time().globalClock().getHoursInDay()*CMLib.time().globalClock().getDaysInMonth()/CMProps.getTickMillis())));
+			}
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("FACTIONS")))
 				CMLib.factions().reloadFactions(CMProps.getVar(CMProps.Str.PREFACTIONS));
 
