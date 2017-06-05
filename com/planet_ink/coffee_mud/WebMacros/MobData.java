@@ -177,8 +177,12 @@ public class MobData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				final String cnam=a.nextElement().ID();
-				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+				final Ability A=a.nextElement();
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
+				{
+					final String cnam=A.ID();
+					str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+				}
 			}
 			str.append("</SELECT>");
 			str.append("</TD>");
@@ -363,8 +367,12 @@ public class MobData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Blessing");
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				final String cnam=a.nextElement().ID();
-				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+				final Ability A=a.nextElement();
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
+				{
+					final String cnam=A.ID();
+					str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+				}
 			}
 			str.append("</SELECT>");
 			str.append("<INPUT TYPE=CHECKBOX NAME=BLONLY"+(theclasses.size()+1)+"><FONT COLOR=WHITE SIZE=-2>Clerics only</FONT>");
@@ -425,8 +433,12 @@ public class MobData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Curse");
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				final String cnam=a.nextElement().ID();
-				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+				final Ability A=a.nextElement();
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
+				{
+					final String cnam=A.ID();
+					str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+				}
 			}
 			str.append("</SELECT>");
 			str.append("<INPUT TYPE=CHECKBOX NAME=CUONLY"+(theclasses.size()+1)+"><FONT COLOR=WHITE SIZE=-2>Clerics only</FONT>");
@@ -685,8 +697,12 @@ public class MobData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Granted Power");
 			for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
-				final String cnam=a.nextElement().ID();
-				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+				final Ability A=a.nextElement();
+				if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
+				{
+					final String cnam=A.ID();
+					str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+				}
 			}
 			str.append("</SELECT>");
 			str.append("</TD></TR>");
@@ -927,7 +943,11 @@ public class MobData extends StdWebMacro
 				bufA=new StringBuffer("");
 				final List<String> sortMeA=new ArrayList<String>();
 				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
-					sortMeA.add(CMClass.classID(a.nextElement()));
+				{
+					final Ability A=a.nextElement();
+					if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
+						sortMeA.add(CMClass.classID(A));
+				}
 				for(final Enumeration<MOB> m=CMClass.mobTypes();m.hasMoreElements();)
 					sortMeA.add(CMClass.classID(m.nextElement()));
 				CMClass.addAllItemClassNames(sortMeA,true,true,false,theme);

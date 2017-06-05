@@ -677,11 +677,15 @@ public class ItemData extends StdWebMacro
 							old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
 						for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 						{
-							final String cnam=a.nextElement().ID();
-							str.append("<OPTION VALUE=\""+cnam+"\"");
-							if(old.equals(cnam))
-								str.append(" SELECTED");
-							str.append(">"+cnam);
+							final Ability A=a.nextElement();
+							if((A!=null)&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_ARCHON))
+							{
+								final String cnam=A.ID();
+								str.append("<OPTION VALUE=\""+cnam+"\"");
+								if(old.equals(cnam))
+									str.append(" SELECTED");
+								str.append(">"+cnam);
+							}
 						}
 						break;
 					}
