@@ -580,7 +580,11 @@ public class Play extends StdAbility
 					for (final Object element : h)
 					{
 						final MOB follower=(MOB)element;
+						if(follower==null)
+							continue;
 						final Room R2=follower.location();
+						if(R2==null)
+							continue;
 
 						// malicious songs must not affect the invoker!
 						int msgType=CMMsg.MASK_MAGIC|CMMsg.MASK_SOUND|CMMsg.TYP_CAST_SPELL;
@@ -600,7 +604,7 @@ public class Play extends StdAbility
 							final CMMsg msg3=msg2;
 							if((mindAttack())&&(follower!=mob))
 								msg2=CMClass.getMsg(mob,follower,this,mndMsgType|CMMsg.MASK_HANDS,null,mndMsgType,null,mndMsgType,null);
-							if((R.okMessage(mob,msg2))&&(R.okMessage(mob,msg3)))
+							if((R.okMessage(mob,msg2))&&(R2.okMessage(mob,msg3)))
 							{
 								R2.send(follower,msg2);
 								if(msg2.value()<=0)
