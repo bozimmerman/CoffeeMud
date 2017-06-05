@@ -89,7 +89,11 @@ public class MeatCuring extends CommonSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping)&&(found!=null))
+			if((affected!=null)
+			&&(affected instanceof MOB)
+			&&(!aborted)
+			&&(!helping)
+			&&(found!=null))
 			{
 				final MOB mob=(MOB)affected;
 				Ability oldA=found.fetchEffect("Prayer_Purify");
@@ -104,6 +108,9 @@ public class MeatCuring extends CommonSkill
 					else
 						A.startTickDown(mob, found, 20);
 				}
+				else
+				if(mob!=null)
+					commonEmote(mob,L("<S-NAME> mess(es) up curing @x1.",found.name()));
 			}
 		}
 		super.unInvoke();
