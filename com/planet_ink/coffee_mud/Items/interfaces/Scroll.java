@@ -37,7 +37,7 @@ import java.util.*;
  * them, and copy known spells onto.
  * @author Bo Zimmerman
  */
-public interface Scroll extends MiscMagic, Item, SpellHolder
+public interface Scroll extends Item, SpellHolder
 {
 	/**
 	 * Causes the given mob to cast the given spell/effect

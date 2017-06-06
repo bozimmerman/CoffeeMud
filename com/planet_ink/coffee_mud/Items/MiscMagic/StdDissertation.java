@@ -229,6 +229,7 @@ public class StdDissertation extends StdItem implements Scroll
 						if((mob.isMonster())||(sess==null))
 							learnIt.run();
 						else
+						{
 							sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
 							{
 								final Runnable learn = learnIt;
@@ -253,6 +254,7 @@ public class StdDissertation extends StdItem implements Scroll
 									}
 								}
 							});
+						}
 					}
 					else
 					if(spellName.length()>0)

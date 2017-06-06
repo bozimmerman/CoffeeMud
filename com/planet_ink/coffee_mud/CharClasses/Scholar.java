@@ -147,7 +147,7 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Mark",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Organizing",false);
 		
-		//CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Dissertating",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Dissertating",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_SmokeSignals",false);
 		
@@ -233,6 +233,11 @@ public class Scholar extends StdCharClass
 				&&(msg.targetMinor()==CMMsg.TYP_WROTE)
 				&&(msg.tool().ID().equals("Skill_Map")||msg.tool().ID().equals("Thief_TreasureMap")||msg.tool().ID().equals("Skill_SeaMapping")))
 					CMLib.leveler().postExperience(msg.source(), null, null, 10, false);
+				else
+				if((msg.tool() instanceof Ability)
+				&&(msg.targetMinor()==CMMsg.TYP_WROTE)
+				&&(msg.tool().ID().equals("Skill_Dissertation")))
+					CMLib.leveler().postExperience(msg.source(), null, null, 25, false);
 				else
 				{
 					final String msgStr =msg.targetMessage().trim();
