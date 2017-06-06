@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.MiscMagic;
+package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -86,10 +86,34 @@ public class StdDissertation extends StdItem implements Scroll
 		return true;
 	}
 
+	public static String makeSecretIdentity(String thang, String id, String more, List<Ability> V)
+	{
+		final StringBuffer add=new StringBuffer("");
+		for(int v=0;v<V.size();v++)
+		{
+			if(v==0)
+				add.append("A "+thang+" of ");
+			final Ability A=V.get(v);
+			if(V.size()==1)
+				add.append(A.name());
+			else
+			if(v==(V.size()-1))
+				add.append("and "+A.name());
+			else
+				add.append(A.name()+", ");
+		}
+		if(add.length()>0)
+		{
+			add.append(more+"\n");
+		}
+		add.append(id);
+		return add.toString();
+	}
+
 	@Override
 	public String secretIdentity()
 	{
-		return StdScroll.makeSecretIdentity("dissertation",super.secretIdentity(),"",getSpells());
+		return makeSecretIdentity("dissertation",super.secretIdentity(),"",getSpells());
 	}
 
 	@Override

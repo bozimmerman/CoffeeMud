@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.MiscMagic;
+package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
