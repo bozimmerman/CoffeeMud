@@ -80,14 +80,6 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	}
 
 	@Override
-	public void recoverPhyStats()
-	{
-		super.recoverPhyStats();
-		if(getSpellList().length()>1)
-			phyStats().setDisposition(phyStats().disposition()|PhyStats.IS_BONUS);
-	}
-	
-	@Override
 	public boolean useTheScroll(Ability A, MOB mob)
 	{
 		int manaRequired=5;
