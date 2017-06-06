@@ -268,6 +268,15 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 			&&(msg.targetMinor()==CMMsg.TYP_TEACH)
 			&&(msg.tool() instanceof Ability))
 				forget((MOB)msg.target(),msg.tool().ID());
+			else
+			if((msg.tool() instanceof Ability)
+			&&(msg.source()==affected)
+			&&(msg.targetMinor()==CMMsg.TYP_WROTE)
+			&&(msg.targetMessage().length()>0)
+			&&(msg.tool().ID().equals("Skill_Dissertation")))
+			{
+				forget(msg.source(),msg.targetMessage());
+			}
 		}
 			
 		return super.okMessage(myHost,msg);
