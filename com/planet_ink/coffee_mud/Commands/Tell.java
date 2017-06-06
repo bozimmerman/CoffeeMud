@@ -96,7 +96,11 @@ public class Tell extends StdCommand
 
 		MOB targetM=null;
 		String targetName=commands.get(0).toUpperCase();
-		targetM=CMLib.sessions().findPlayerOnline(targetName,true);
+		targetM=CMLib.players().findPlayerOnline(targetName,true);
+		if(targetM==null)
+			targetM=CMLib.players().findPlayerOnline(targetName,false);
+		if(targetM==null)
+			targetM=CMLib.sessions().findPlayerOnline(targetName,true);
 		if(targetM==null)
 			targetM=CMLib.sessions().findPlayerOnline(targetName,false);
 		if((targetM==null)&&(CMProps.isUsingAccountSystem()))

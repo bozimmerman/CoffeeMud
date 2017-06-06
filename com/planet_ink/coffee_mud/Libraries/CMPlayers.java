@@ -849,6 +849,40 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
+	public MOB findPlayerOnline(final String srchStr, final boolean exactOnly)
+	{
+		final MOB[] srch=new MOB[3];
+		for(Enumeration<MOB> p=players();p.hasMoreElements();)
+		{
+			final MOB M=p.nextElement();
+			if((M!=null)
+			&&(M.session()!=null)
+			&&(CMLib.sessions().isSession(M.session())))
+			{
+				if(M.Name().equalsIgnoreCase(srchStr))
+					return M;
+				else
+				if(M.name().equalsIgnoreCase(srchStr))
+					srch[0]=M;
+				// keep looking for players
+				if(!exactOnly)
+				{
+					if(CMLib.english().containsString(M.Name(),srchStr))
+						srch[1]=M;
+					if(CMLib.english().containsString(M.name(),srchStr))
+						srch[2]=M;
+				}
+			}
+		}
+		for(int i=0;i<srch.length;i++)
+		{
+			if(srch[i]!=null)
+				return srch[i];
+		}
+		return null;
+	}
+
+	@Override
 	@SuppressWarnings("unchecked")
 	public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache)
 	{
