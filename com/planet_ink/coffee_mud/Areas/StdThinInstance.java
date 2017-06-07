@@ -104,8 +104,8 @@ public class StdThinInstance extends StdThinArea
 
 		if(!isRoom(roomID))
 			return null;
-		Room R=super.getRoom(roomID);
-		if(((R==null)||(R.amDestroyed()))&&(roomID!=null))
+		final Room existingR=super.getRoom(roomID);
+		if(((existingR==null)||(existingR.amDestroyed()))&&(roomID!=null))
 		{
 			final Area parentA=getParentArea();
 			if(parentA==null)
@@ -113,63 +113,66 @@ public class StdThinInstance extends StdThinArea
 
 			if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
 				roomID=Name()+roomID.substring(Name().length()); // for case sensitive situations
-			R=parentA.getRoom(parentA.Name()+getStrippedRoomID(roomID));
-			if(R==null)
+			final Room parentR=parentA.getRoom(parentA.Name()+getStrippedRoomID(roomID));
+			if(parentR==null)
 				return null;
 
-			final Room origRoom=R;
-			R=CMLib.database().DBReadRoomObject(R.roomID(), false);
-			if(R==null)
+			final Room newR=CMLib.database().DBReadRoomObject(parentR.roomID(), false);
+			if(newR==null)
 				return null;
 			final TreeMap<String,Room> V=new TreeMap<String,Room>();
-			V.put(roomID,R);
-			CMLib.database().DBReadRoomExits(R.roomID(), R, false);
-			CMLib.database().DBReadContent(R.roomID(), R, true);
-			R.clearSky();
-			if(R instanceof GridLocale)
-				((GridLocale)R).clearGrid(null);
+			V.put(roomID,newR);
+			CMLib.database().DBReadRoomExits(newR.roomID(), newR, false);
+			CMLib.database().DBReadContent(newR.roomID(), newR, true);
+			newR.clearSky();
+			if(newR instanceof GridLocale)
+				((GridLocale)newR).clearGrid(null);
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-				R.rawDoors()[d]=null;
-			R.setRoomID(roomID);
-			R.setArea(this);
-			addProperRoom(R);
+				newR.rawDoors()[d]=null;
+			newR.setRoomID(roomID);
+			newR.setArea(this);
+			addProperRoom(newR);
 
 			synchronized(("SYNC"+roomID).intern())
 			{
+				final Room[] newDoors = newR.rawDoors();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					final Room dirR=origRoom.rawDoors()[d];
+					final Room dirR=parentR.rawDoors()[d];
 					if(dirR!=null)
 					{
 						final String myRID=dirR.roomID();
-						if((myRID!=null)&&(myRID.length()>0)&&(dirR.getArea()==parentA))
+						if((myRID!=null)
+						&&(myRID.length()>0)
+						&&(dirR.getArea()==parentA))
 						{
 							final String localDirRID=convertToMyArea(myRID);
 							final Room localDirR=getProperRoom(localDirRID);
 							if(localDirR!=null)
-								R.rawDoors()[d]=localDirR;
+								newDoors[d]=localDirR;
 							else
 							if(localDirRID==null)
-								Log.errOut("StdThinInstance","Error in linked room ID "+origRoom.roomID()+", dir="+d);
+								Log.errOut("StdThinInstance","Error in linked room ID "+parentR.roomID()+", dir="+d);
 							else
 							{
-								R.rawDoors()[d]=CMClass.getLocale("ThinRoom");
-								R.rawDoors()[d].setRoomID(localDirRID);
-								R.rawDoors()[d].setArea(this);
+								newDoors[d]=CMClass.getLocale("ThinRoom");
+								newDoors[d].setRoomID(localDirRID);
+								newDoors[d].setArea(this);
 							}
 						}
 						else
-							R.rawDoors()[d]=dirR;
+							newDoors[d]=dirR;
 					}
 				}
 			}
-			for(final Enumeration<MOB> e=R.inhabitants();e.hasMoreElements();)
-				e.nextElement().bringToLife(R,true);
-			R.startItemRejuv();
-			fillInAreaRoom(R);
-			R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+			for(final Enumeration<MOB> e=newR.inhabitants();e.hasMoreElements();)
+				e.nextElement().bringToLife(newR,true);
+			newR.startItemRejuv();
+			fillInAreaRoom(newR);
+			newR.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+			return newR;
 		}
-		return R;
+		return existingR;
 	}
 	
 	protected static boolean isInThisArea(final Area childA, final MOB mob)
