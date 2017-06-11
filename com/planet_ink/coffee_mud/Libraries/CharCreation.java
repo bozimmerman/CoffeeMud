@@ -2151,6 +2151,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			for(final Session S : CMLib.sessions().allIterable())
 			{
 				if((S.mob()!=null)
+				&&(S.mob()!=realMOB)
 				&&(S.mob().playerStats()!=null)
 				&&(S.mob().playerStats().getAccount()==acct)
 				&&(CMLib.flags().isInTheGame(S.mob(), true)))
