@@ -5421,7 +5421,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				else
 					arg3=CMParms.parse(arg3s).size();
 				arg1=CMLib.dice().roll(1,arg1,-1);
-System.out.println(arg1+"/"+arg3+"/"+arg2);
 				returnable=simpleEval(scripted,""+arg1,""+arg3,arg2,"RAND0NUM");
 				break;
 			}
