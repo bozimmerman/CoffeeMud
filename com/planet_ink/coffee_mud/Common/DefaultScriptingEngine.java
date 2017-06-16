@@ -2303,7 +2303,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				else
-				if(Character.isLetter(evalC[c]))
+				if(Character.isLetter(evalC[c])
+				||(Character.isDigit(evalC[c])&&(c>0)&&Character.isLetter(evalC[c-1])&&(c<evalC.length-1)&&Character.isLetter(evalC[c+1])))
 				{ /* move along */
 				}
 				else
@@ -5398,7 +5399,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					arg3=CMath.s_parseIntExpression(arg3s.trim());
 				else
 					arg3=CMParms.parse(arg3s.trim()).size();
-				arg3=CMLib.dice().roll(1,arg3,0);
+				arg1=CMLib.dice().roll(1,arg1,0);
 				returnable=simpleEval(scripted,""+arg1,""+arg3,arg2,"RANDNUM");
 				break;
 			}
@@ -5419,7 +5420,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					arg3=CMath.s_parseIntExpression(arg3s);
 				else
 					arg3=CMParms.parse(arg3s).size();
-				arg3=CMLib.dice().roll(1,arg3,-1);
+				arg1=CMLib.dice().roll(1,arg1,-1);
+System.out.println(arg1+"/"+arg3+"/"+arg2);
 				returnable=simpleEval(scripted,""+arg1,""+arg3,arg2,"RAND0NUM");
 				break;
 			}
