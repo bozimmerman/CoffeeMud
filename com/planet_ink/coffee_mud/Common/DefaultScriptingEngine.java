@@ -4353,7 +4353,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					try
 					{
-						if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equalsIgnoreCase(arg3)))
+						final String lnAstr=(lastKnownLocation!=null)?lastKnownLocation.getArea().Name():null;
+						if((lnAstr!=null)&&(lnAstr.equalsIgnoreCase(arg3)))
 							R=lastKnownLocation;
 						if(R==null)
 						{
@@ -4362,7 +4363,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								final Area A=a.nextElement();
 								if((A!=null)&&(A.Name().equalsIgnoreCase(arg3)))
 								{
-									if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equals(A.Name())))
+									if((lnAstr!=null)
+									&&(lnAstr.equals(A.Name())))
 										R=lastKnownLocation;
 									else
 									if(!A.isProperlyEmpty())
@@ -4377,7 +4379,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								final Area A=a.nextElement();
 								if((A!=null)&&(CMLib.english().containsString(A.Name(),arg3)))
 								{
-									if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equals(A.Name())))
+									if((lnAstr!=null)
+									&&(lnAstr.equals(A.Name())))
 										R=lastKnownLocation;
 									else
 									if(!A.isProperlyEmpty())
@@ -4392,6 +4395,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				if(R==null)
 					R=getRoom(arg3,lastKnownLocation);
+				if((R!=null)
+				&&(CMath.bset(R.getArea().flags(),Area.FLAG_INSTANCE_PARENT))
+				&&(lastKnownLocation!=null)
+				&&(lastKnownLocation.getArea()!=R.getArea())
+				&&(CMath.bset(lastKnownLocation.getArea().flags(),Area.FLAG_INSTANCE_CHILD))
+				&&(CMLib.map().getModelArea(lastKnownLocation.getArea())==R.getArea()))
+					R=lastKnownLocation;
+					
 				if(E==null)
 					returnable=false;
 				else

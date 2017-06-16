@@ -190,8 +190,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			if(CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))
 			{
-				int x=A.Name().indexOf('_');
-				if(x>0)
+				final int x=A.Name().indexOf('_');
+				if((x>0)
+				&&(CMath.isInteger(A.Name().substring(0,x))))
 				{
 					Area A2=getArea(A.Name().substring(x+1));
 					if(A2!=null)
