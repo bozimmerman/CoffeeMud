@@ -4714,7 +4714,7 @@ public class StdMOB implements MOB
 		{
 			if (index < affects.size())
 				return affects.elementAt(index);
-			if (index < abilitys.size() + charStats().getMyRace().numRacialEffects(this))
+			if (index < affects.size() + charStats().getMyRace().numRacialEffects(this))
 				return racialEffects().get(index - affects.size());
 			return clanEffects().get(index - affects.size() - racialEffects().size());
 		}

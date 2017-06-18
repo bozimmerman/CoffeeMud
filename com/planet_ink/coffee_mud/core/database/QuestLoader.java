@@ -127,50 +127,112 @@ public class QuestLoader
 	{
 		if(quests==null)
 			quests=new Vector<Quest>();
-		String quType="DefaultQuest";
-		if(quests.size()>0)
-			quType=CMClass.classID(quests.get(0));
 		DBConnection D=null;
-		DB.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'");
-		CMLib.s_sleep((1000+(quests.size()*100)));
-		if(DB.queryRows("SELECT * FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'")>0)
-			Log.errOut("Failed to delete quest typed '"+quType+"'.");
-		DB.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='Quests'");
-		CMLib.s_sleep((1000+(quests.size()*100)));
-		if(DB.queryRows("SELECT * FROM CMQUESTS WHERE CMQUTYPE='Quests'")>0)
-			Log.errOut("Failed to delete quest typed 'Quests'.");
-		D=DB.DBFetchEmpty();
-		for(int m=0;m<quests.size();m++)
+		final List<Quest> addThese=new LinkedList<Quest>();
+		final Set<String> types=new HashSet<String>();
+		for(Quest Q : quests)
 		{
-			final Quest Q=quests.get(m);
-			if(Q.isCopy())
-				continue;
-			try
+			if(!Q.isCopy())
 			{
-				D.rePrepare(
-				"INSERT INTO CMQUESTS ("
-				+"CMQUESID, "
-				+"CMQUTYPE, "
-				+"CMQFLAGS, "
-				+"CMQSCRPT, "
-				+"CMQWINNS "
-				+") values ("
-				+"'"+Q.name()+"',"
-				+"'"+CMClass.classID(Q)+"',"
-				+Q.getFlags()+","
-				+"?,"
-				+"?"
-				+")");
-				D.setPreparedClobs(new String[]{Q.script()+" ",Q.getWinnerStr()+" "});
-				D.update("",0);
-			}
-			catch(final java.sql.SQLException sqle)
-			{
-				Log.errOut("Quest",sqle);
+				addThese.add(Q);
+				types.add(CMClass.classID(Q));
 			}
 		}
-		if(D!=null)
+		final List<Quest> updateThese=new ArrayList<Quest>();
+		final List<String[]> deleteThese=new LinkedList<String[]>();
+		try
+		{
+			D=DB.DBFetch();
+			try
+			{
+				final ResultSet R=D.query("SELECT CMQUESID,CMQUTYPE FROM CMQUESTS");
+				while(R.next())
+				{
+					final String questName=DBConnections.getRes(R,"CMQUESID");
+					final String questType=DBConnections.getRes(R,"CMQUTYPE");
+					boolean found=false;
+					for(Iterator<Quest> i=addThese.iterator();i.hasNext();)
+					{
+						Quest Q=i.next();
+						if((Q.name().equals(questName))
+						&&(questType.equals(CMClass.classID(Q))))
+						{
+							i.remove();
+							updateThese.add(Q);
+							found=true;
+						}
+					}
+					if((!found)&&(types.contains(questType)))
+						deleteThese.add(new String[]{questName, questType});
+				}
+				R.close();
+			}
+			catch(final SQLException sqle)
+			{
+				Log.errOut("Quest",sqle);
+				return;
+			}
+			for(final String[] delQ : deleteThese)
+			{
+				try
+				{
+					D.update("DELETE FROM CMQUESTS WHERE CMQUESID='"+delQ[0]+"' AND CMQUTYPE='"+delQ[1]+"'",0);
+				}
+				catch(final SQLException sqle)
+				{
+					Log.errOut("Quest",sqle);
+					return;
+				}
+			}
+			for(final Quest Q : updateThese)
+			{
+				try
+				{
+					D.rePrepare(
+					"UPDATE CMQUESTS SET "
+					+"CMQFLAGS="+Q.getFlags()+", "
+					+"CMQSCRPT=?, "
+					+"CMQWINNS=? "
+					+"WHERE CMQUESID='"+Q.name()+"' AND CMQUTYPE='"+CMClass.classID(Q)+"'");
+					D.setPreparedClobs(new String[]{Q.script()+" ",Q.getWinnerStr()+" "});
+					D.update("",0);
+				}
+				catch(final java.sql.SQLException sqle)
+				{
+					Log.errOut("Quest",sqle);
+				}
+			}
+			for(final Quest Q : addThese)
+			{
+				try
+				{
+					D.rePrepare(
+					"INSERT INTO CMQUESTS ("
+					+"CMQUESID, "
+					+"CMQUTYPE, "
+					+"CMQFLAGS, "
+					+"CMQSCRPT, "
+					+"CMQWINNS "
+					+") values ("
+					+"'"+Q.name()+"',"
+					+"'"+CMClass.classID(Q)+"',"
+					+Q.getFlags()+","
+					+"?,"
+					+"?"
+					+")");
+					D.setPreparedClobs(new String[]{Q.script()+" ",Q.getWinnerStr()+" "});
+					D.update("",0);
+				}
+				catch(final java.sql.SQLException sqle)
+				{
+					Log.errOut("Quest",sqle);
+				}
+			}
+		}
+		finally
+		{
 			DB.DBDone(D);
+		}
 	}
 
 }

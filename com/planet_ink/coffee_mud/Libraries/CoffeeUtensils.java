@@ -266,11 +266,24 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	public Language getLanguageSpoken(Physical P)
 	{
 		Ability A=null;
-		for(int i=0;i<P.numEffects();i++)
+		if(P instanceof MOB)
 		{
-			A=P.fetchEffect(i);
-			if((A instanceof Language) && (((Language)A).beingSpoken(A.ID())))
-				return (Language)A;
+			for(int i=0;i<((MOB)P).numAllEffects();i++)
+			{
+				A=P.fetchEffect(i);
+				if((A instanceof Language) 
+				&& (((Language)A).beingSpoken(A.ID())))
+					return (Language)A;
+			}
+		}
+		else
+		{
+			for(int i=0;i<P.numEffects();i++)
+			{
+				A=P.fetchEffect(i);
+				if((A instanceof Language) && (((Language)A).beingSpoken(A.ID())))
+					return (Language)A;
+			}
 		}
 		return null;
 	}
