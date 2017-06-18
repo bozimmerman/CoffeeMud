@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /*
-   Copyright 2010-2017 Bo Zimmerman
+   Copyright 2004-2017 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1896,9 +1896,10 @@ public class ListCmd extends StdCommand
 						if((wearLoc!=0)&&((R.forbiddenWornBits()&wearLoc)==0))
 							wearLocs += " " + Wearable.CODES.NAME(wearLoc);
 					}
+					final String helpEOL=CMStrings.getEOL(help.toString(),"\n\r");
 					lines.append("{{RaceTemplate"
 							+ "|Name="+R.name()
-							+ "|Description="+help
+							+ "|Description="+CMStrings.replaceAll(help.toString(),helpEOL,helpEOL+helpEOL)
 							+ "|Statadj="+statAdj
 							+ "|RacialAbilities="+rableStr
 							+ "|CulturalAbilities="+cultStr
@@ -2007,9 +2008,10 @@ public class ListCmd extends StdCommand
 					&&(CMLib.ableMapper().getSecretSkill(C.ID(),false,A.ID())))
 						langStr.append("[["+A.ID()+"|"+A.name()+"]] ");
 				}
+				final String helpEOL=CMStrings.getEOL(help.toString(),"\n\r");
 				lines.append("{{ClassTemplate"
 						+ "|Name="+C.name()
-						+ "|Description="+help.toString()
+						+ "|Description="+CMStrings.replaceAll(help.toString(),helpEOL,helpEOL+helpEOL)
 						+ "|PrimeStat="+C.getPrimeStatDesc()
 						+ "|Qualifications="+C.getStatQualDesc()
 						+ "|Practices="+C.getPracticeDesc()
@@ -3185,10 +3187,11 @@ public class ListCmd extends StdCommand
 						desc=desc.substring(11);
 					else
 						desc="";
+					final String helpEOL=CMStrings.getEOL(desc.toString(),"\n\r");
 					buf.append("{{ExpertiseTemplate"
 							+ "|Name="+name
 							+ "|Requires="+CMLib.masking().maskDesc(def.allRequirements(),true)
-							+ "|Description="+desc
+							+ "|Description="+CMStrings.replaceAll(desc,helpEOL,helpEOL+helpEOL)
 							+ "|Cost="+def.costDescription()
 							+ "}}\n\r");
 				}
@@ -4023,6 +4026,8 @@ public class ListCmd extends StdCommand
 					helpStr=helpStr.substring(end+1).trim();
 				}
 
+				final String helpEOL=CMStrings.getEOL(helpStr,"\n\r");
+				helpStr = CMStrings.replaceAll(helpStr,helpEOL,helpEOL+helpEOL);
 				commandList.append("{{CommandTemplate"
 								+ "|Name="+s
 								+ "|Usage="+CMStrings.replaceAllofAny(usage,"[]{}<>|".toCharArray(),"\"\"()()!".toCharArray())
@@ -4281,7 +4286,12 @@ public class ListCmd extends StdCommand
 						helpStr=helpStr.substring(end+1).trim();
 					}
 				}
-				str.append("{{SkillTemplate"
+				final String helpEOL=CMStrings.getEOL(helpStr,"\n\r");
+				helpStr = CMStrings.replaceAll(helpStr,helpEOL,helpEOL+helpEOL);
+				String templateName = "SkillTemplate";
+				if((A.classificationCode()&Ability.ALL_ACODES)==(Ability.ACODE_PROPERTY))
+					templateName="PropertyTemplate";
+				str.append("{{"+templateName
 						+ "|Name="+A.name()
 						+ "|Domain=[["+domainID+"(Domain)|"+domainName+"]]"
 						+ "|Available="+availStr.toString()
@@ -4371,6 +4381,8 @@ public class ListCmd extends StdCommand
 					if(helpStr.trim().startsWith("Description: "))
 						helpStr=helpStr.substring(13).trim();
 				}
+				final String helpEOL=CMStrings.getEOL(helpStr,"\n\r");
+				helpStr = CMStrings.replaceAll(helpStr,helpEOL,helpEOL+helpEOL);
 				str.append("{{BehaviorTemplate"
 						+ "|Name="+B.name()
 						+ "|Targets="+CMStrings.replaceAllofAny(targets,"[]{}<>|".toCharArray(),"\"\"()()!".toCharArray())
@@ -4624,9 +4636,11 @@ public class ListCmd extends StdCommand
 					currency="Gold coins (default)";
 				else
 					currency=CMStrings.capitalizeAndLower(currency);
+				final String helpEOL=CMStrings.getEOL(A.description(),"\n\r");
+				final String desc = CMStrings.replaceAll(A.description(),helpEOL,helpEOL+helpEOL);
 				str.append("{{AreaTemplate"
 						+ "|Name="+A.name()
-						+ "|Description="+A.description()
+						+ "|Description="+desc
 						+ "|Author="+A.getAuthorID()
 						+ "|Rooms="+A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()]
 						+ "|Population="+A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]

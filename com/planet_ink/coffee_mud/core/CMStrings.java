@@ -1855,6 +1855,52 @@ public class CMStrings
 	}
 
 	/**
+	 * Returns the apparent end of line string used by the given
+	 * string.  Returns the default if it can't be determined.
+	 * 
+	 * @param str the string to check
+	 * @param defaultEOL eol string to use if undetermined
+	 * @return the end of line string
+	 */
+	public static String getEOL(final String str, final String defaultEOL)
+	{
+		if((str!=null)&&(str.length()>0))
+		{
+			int state=0;
+			for(final char c : str.toCharArray())
+			{
+				switch(state)
+				{
+				case 0:
+					if(c=='\n')
+						state=1;
+					else
+					if(c=='\r')
+						state=2;
+					break;
+				case 1:
+					if(c=='\n')
+						return "\n";
+					else
+					if(c=='\r')
+						return "\n\r";
+					else
+						return "\n";
+				case 2:
+					if(c=='\r')
+						return "\r";
+					else
+					if(c=='\n')
+						return "\r\n";
+					else
+						return "\r";
+				}
+			}
+		}
+		return defaultEOL;
+	}
+	
+	/**
 	 * Strips the leading and trailing &lt;HTML&gt;, &lt;HEAD&gt;, and &lt;BODY&gt; tags from
 	 * the given StringBuilder.
 	 * @param finalData the StringBuilder to remove leading tags from.
