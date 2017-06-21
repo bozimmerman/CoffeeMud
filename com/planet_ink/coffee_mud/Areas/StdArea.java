@@ -1583,6 +1583,28 @@ public class StdArea implements Area
 		return Integer.MIN_VALUE;
 	}
 
+	protected void buildAreaIMobStats(final int[] statData, final long[] totalAlignments, final Faction theFaction, final List<Integer> alignRanges, final List<Integer> levelRanges, final MOB mob)
+	{
+		if((mob!=null)&&(mob.isMonster())&&(!CMLib.flags().isUnattackable(mob)))
+		{
+			final int lvl=mob.basePhyStats().level();
+			levelRanges.add(Integer.valueOf(lvl));
+			if((theFaction!=null)&&(mob.fetchFaction(theFaction.factionID())!=Integer.MAX_VALUE))
+			{
+				alignRanges.add(Integer.valueOf(mob.fetchFaction(theFaction.factionID())));
+				totalAlignments[0]+=mob.fetchFaction(theFaction.factionID());
+			}
+			statData[Area.Stats.POPULATION.ordinal()]++;
+			statData[Area.Stats.TOTAL_LEVELS.ordinal()]+=lvl;
+			if(!CMLib.flags().isAnimalIntelligence(mob))
+				statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()]+=lvl;
+			if(lvl<statData[Area.Stats.MIN_LEVEL.ordinal()])
+				statData[Area.Stats.MIN_LEVEL.ordinal()]=lvl;
+			if(lvl>statData[Area.Stats.MAX_LEVEL.ordinal()])
+				statData[Area.Stats.MAX_LEVEL.ordinal()]=lvl;
+		}
+	}
+	
 	protected int[] buildAreaIStats()
 	{
 		final List<Integer> levelRanges=new Vector<Integer>();
@@ -1604,8 +1626,7 @@ public class StdArea implements Area
 		statData[Area.Stats.TOTAL_LEVELS.ordinal()]=0;
 		statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()]=0;
 		statData[Area.Stats.VISITABLE_ROOMS.ordinal()]=getProperRoomnumbers().roomCountAllAreas();
-		long totalAlignments=0;
-		MOB mob=null;
+		final long[] totalAlignments=new long[]{0};
 		for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();
@@ -1614,25 +1635,21 @@ public class StdArea implements Area
 			if((R.domainType()&Room.INDOORS)>0)
 				statData[Area.Stats.INDOOR_ROOMS.ordinal()]++;
 			for(int i=0;i<R.numInhabitants();i++)
+				buildAreaIMobStats(statData,totalAlignments,theFaction,alignRanges,levelRanges,R.fetchInhabitant(i));
+			for(int i=0;i<R.numItems();i++)
 			{
-				mob=R.fetchInhabitant(i);
-				if((mob!=null)&&(mob.isMonster())&&(!CMLib.flags().isUnattackable(mob)))
+				final Item I=R.getItem(i);
+				if(I instanceof BoardableShip)
 				{
-					final int lvl=mob.basePhyStats().level();
-					levelRanges.add(Integer.valueOf(lvl));
-					if((theFaction!=null)&&(mob.fetchFaction(theFaction.factionID())!=Integer.MAX_VALUE))
+					final Area A=((BoardableShip)I).getShipArea();
+					if(A==null)
+						continue;
+					for(final Enumeration<Room> r2=A.getProperMap();r2.hasMoreElements();)
 					{
-						alignRanges.add(Integer.valueOf(mob.fetchFaction(theFaction.factionID())));
-						totalAlignments+=mob.fetchFaction(theFaction.factionID());
+						final Room R2=r2.nextElement();
+						for(int i2=0;i2<R2.numInhabitants();i2++)
+							buildAreaIMobStats(statData,totalAlignments,theFaction,alignRanges,levelRanges,R2.fetchInhabitant(i2));
 					}
-					statData[Area.Stats.POPULATION.ordinal()]++;
-					statData[Area.Stats.TOTAL_LEVELS.ordinal()]+=lvl;
-					if(!CMLib.flags().isAnimalIntelligence(mob))
-						statData[Area.Stats.TOTAL_INTELLIGENT_LEVELS.ordinal()]+=lvl;
-					if(lvl<statData[Area.Stats.MIN_LEVEL.ordinal()])
-						statData[Area.Stats.MIN_LEVEL.ordinal()]=lvl;
-					if(lvl>statData[Area.Stats.MAX_LEVEL.ordinal()])
-						statData[Area.Stats.MAX_LEVEL.ordinal()]=lvl;
 				}
 			}
 		}
@@ -1649,7 +1666,7 @@ public class StdArea implements Area
 			if(alignRanges.size()>0)
 				statData[Area.Stats.MED_ALIGNMENT.ordinal()]=alignRanges.get((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0)))).intValue();
 			statData[Area.Stats.AVG_LEVEL.ordinal()]=(int)Math.round(CMath.div(statData[Area.Stats.TOTAL_LEVELS.ordinal()],statData[Area.Stats.POPULATION.ordinal()]));
-			statData[Area.Stats.AVG_ALIGNMENT.ordinal()]=(int)Math.round(((double)totalAlignments)/((double)statData[Area.Stats.POPULATION.ordinal()]));
+			statData[Area.Stats.AVG_ALIGNMENT.ordinal()]=(int)Math.round(((double)totalAlignments[0])/((double)statData[Area.Stats.POPULATION.ordinal()]));
 		}
 		return statData;
 	}
