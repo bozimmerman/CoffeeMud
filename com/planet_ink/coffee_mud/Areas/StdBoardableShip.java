@@ -636,18 +636,23 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 
 		if(!msg.source().isMonster())
 		{
-			final Area areaLoc=((BoardableShip)this).getShipArea();
-			if(areaLoc instanceof StdArea)
+			final Item areaItem=getShipItem();
+			if(areaItem != null)
 			{
-				final StdArea otherArea=(StdArea)areaLoc;
-				otherArea.lastPlayerTime=System.currentTimeMillis();
-				if((otherArea.flag==State.PASSIVE)
-				&&((msg.sourceMinor()==CMMsg.TYP_ENTER)
-				  ||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
-				  ||(msg.sourceMinor()==CMMsg.TYP_FLEE)
-				  ||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
-				  ||(msg.sourceMinor()==CMMsg.MSG_NOISYMOVEMENT)))
-					otherArea.flag=State.ACTIVE;
+				final ItemPossessor possessor = areaItem.owner();
+				final Area areaLoc = (possessor instanceof Room) ? ((Room)possessor).getArea() : null;
+				if(areaLoc instanceof StdArea)
+				{
+					final StdArea otherArea=(StdArea)areaLoc;
+					otherArea.lastPlayerTime=System.currentTimeMillis();
+					if((otherArea.flag==State.PASSIVE)
+					&&((msg.sourceMinor()==CMMsg.TYP_ENTER)
+					  ||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+					  ||(msg.sourceMinor()==CMMsg.TYP_FLEE)
+					  ||(msg.sourceMinor()==CMMsg.TYP_ADVANCE)
+					  ||(msg.sourceMinor()==CMMsg.MSG_NOISYMOVEMENT)))
+						otherArea.flag=State.ACTIVE;
+				}
 			}
 		}
 
