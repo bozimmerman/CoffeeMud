@@ -2242,12 +2242,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		&&(target!=null)
 		&&(amount>0))
 		{
-			Map<String,int[]> spam=observerM.playerStats().getCombatSpams();
+			final Map<String,int[]> spam=observerM.playerStats().getCombatSpams();
 			synchronized(spam)
 			{
-				if(!spam.containsKey(target.Name()))
-					spam.put(target.Name(),new int[]{0});
-				spam.get(target.Name())[0]+=amount;
+				final String targetName = CMLib.flags().canBeSeenBy(target, observerM)?target.Name():L("Someone");
+				if(!spam.containsKey(targetName))
+					spam.put(targetName,new int[]{0});
+				spam.get(targetName)[0]+=amount;
 			}
 			return true;
 		}
