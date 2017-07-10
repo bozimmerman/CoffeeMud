@@ -1827,64 +1827,121 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPOLLS
+	 * Creates a new poll in the DBPOLLS table.  Most of the arguments are
+	 * self explanatory.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ABSTAIN
+	 * @see DatabaseEngine#DBUpdatePoll(String, String, String, String, String, String, int, String, String, long)
+	 * @see DatabaseEngine#DBUpdatePollResults(String, String)
+	 * @see DatabaseEngine#DBDeletePoll(String)
+	 * @see DatabaseEngine#DBReadPollList()
+	 * @see DatabaseEngine#DBReadPoll(String)
 	 * 
-	 * @param name
-	 * @param player
-	 * @param subject
-	 * @param description
-	 * @param optionXML
-	 * @param flag
-	 * @param qualZapper
-	 * @param results
-	 * @param expiration
+	 * @param name the unique name of the poll
+	 * @param player the user/character id of the creator 
+	 * @param subject the title/subject of the poll
+	 * @param description the long descriptions
+	 * @param optionXML choices format &lt;OPTIONS&gt;&lt;OPTION&gt;option text...
+	 * @param flag flag bitmap, see {@link com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ABSTAIN}
+	 * @param qualZapper the zapper mask for who can answer the poll
+	 * @param results &lt;RESULTS&gt;&lt;RESULT&gt;&lt;USER&gt;&lt;IP&gt;&lt;ANS&gt;
+	 * @param expiration the rl date/timestamp of when the poll auto-closes
 	 */
 	public void DBCreatePoll(String name, String player, String subject, String description, String optionXML, 
 							 int flag, String qualZapper, String results, long expiration);
 
 	/**
 	 * Table category: DBPOLLS
+	 * Updates and/or renames a poll in the DBPOLLS table.  Most of the arguments are
+	 * self explanatory.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ABSTAIN
+	 * @see DatabaseEngine#DBCreatePoll(String, String, String, String, String, int, String, String, long)
+	 * @see DatabaseEngine#DBUpdatePollResults(String, String)
+	 * @see DatabaseEngine#DBDeletePoll(String)
+	 * @see DatabaseEngine#DBReadPollList()
+	 * @see DatabaseEngine#DBReadPoll(String)
 	 * 
-	 * @param OldName
-	 * @param name
-	 * @param player
-	 * @param subject
-	 * @param description
-	 * @param optionXML
-	 * @param flag
-	 * @param qualZapper
-	 * @param results
-	 * @param expiration
+	 * @param OldName required, the unique old name of the poll, or current name
+	 * @param name the unique new name of the poll, or the current one
+	 * @param player the user/character id of the creator 
+	 * @param subject the title/subject of the poll
+	 * @param description the long descriptions
+	 * @param optionXML choices format &lt;OPTIONS&gt;&lt;OPTION&gt;option text...
+	 * @param flag flag bitmap, see {@link com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ABSTAIN}
+	 * @param qualZapper the zapper mask for who can answer the poll
+	 * @param results xml doc: &lt;RESULTS&gt;&lt;RESULT&gt;&lt;USER&gt;&lt;IP&gt;&lt;ANS&gt;
+	 * @param expiration the rl date/timestamp of when the poll auto-closes
 	 */
 	public void DBUpdatePoll(String OldName, String name, String player, String subject, String description, 
 							 String optionXML, int flag, String qualZapper, String results, long expiration);
 
 	/**
 	 * Table category: DBPOLLS
+	 * Updates the results xml array for an existing poll.  Called when a new result is added, removed,
+	 * or modified.
 	 * 
-	 * @param name
-	 * @param results
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ABSTAIN
+	 * @see DatabaseEngine#DBCreatePoll(String, String, String, String, String, int, String, String, long)
+	 * @see DatabaseEngine#DBUpdatePoll(String, String, String, String, String, String, int, String, String, long)
+	 * @see DatabaseEngine#DBDeletePoll(String)
+	 * @see DatabaseEngine#DBReadPollList()
+	 * @see DatabaseEngine#DBReadPoll(String)
+	 * 
+	 * @param name the unique name of the poll
+	 * @param results xml doc: &lt;RESULTS&gt;&lt;RESULT&gt;&lt;USER&gt;&lt;IP&gt;&lt;ANS&gt;
 	 */
 	public void DBUpdatePollResults(String name, String results);
 
 	/**
 	 * Table category: DBPOLLS
+	 * Deletes a poll, and all its options and results, forever.
 	 * 
-	 * @param name
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ABSTAIN
+	 * @see DatabaseEngine#DBCreatePoll(String, String, String, String, String, int, String, String, long)
+	 * @see DatabaseEngine#DBUpdatePoll(String, String, String, String, String, String, int, String, String, long)
+	 * @see DatabaseEngine#DBUpdatePollResults(String, String)
+	 * @see DatabaseEngine#DBReadPollList()
+	 * @see DatabaseEngine#DBReadPoll(String)
+	 * 
+	 * @param name the unique name of the poll to kill
 	 */
 	public void DBDeletePoll(String name);
 
 	/**
 	 * Table category: DBPOLLS
+	 * Reads the raw data for all the polls from DBPOLLs table.
 	 * 
-	 * @return
+	 * @see PollData
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ABSTAIN
+	 * @see DatabaseEngine#DBCreatePoll(String, String, String, String, String, int, String, String, long)
+	 * @see DatabaseEngine#DBUpdatePoll(String, String, String, String, String, String, int, String, String, long)
+	 * @see DatabaseEngine#DBUpdatePollResults(String, String)
+	 * @see DatabaseEngine#DBDeletePoll(String)
+	 * @see DatabaseEngine#DBReadPoll(String)
+	 * 
+	 * @return the list of PollData objects
 	 */
 	public List<PollData> DBReadPollList();
 
 	/**
 	 * Table category: DBPOLLS
+	 * Reads the raw data for a specific poll of a given name.
 	 * 
-	 * @param name
-	 * @return
+	 * @see PollData
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ABSTAIN
+	 * @see DatabaseEngine#DBCreatePoll(String, String, String, String, String, int, String, String, long)
+	 * @see DatabaseEngine#DBUpdatePoll(String, String, String, String, String, String, int, String, String, long)
+	 * @see DatabaseEngine#DBUpdatePollResults(String, String)
+	 * @see DatabaseEngine#DBDeletePoll(String)
+	 * @see DatabaseEngine#DBReadPoll(String)
+	 * 
+	 * @param name the unique name of the poll to read
+	 * @return the raw poll data for that poll, as a PollData object
 	 */
 	public PollData DBReadPoll(String name);
 
