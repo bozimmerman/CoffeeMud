@@ -1947,6 +1947,15 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBVFS
+	 * Reads the root of the VFS (DBFS) database filesystem.
+	 * It returns the CMFile.CMVFSDir virtual object describing
+	 * the database filesystem root and its contents.
+	 * 
+	 * @see CMFile.CMVFSDir
+	 * @see DatabaseEngine#DBReadVFSFile(String)
+	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
+	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
+	 * @see DatabaseEngine#DBDeleteVFSFile(String)
 	 * 
 	 * @return
 	 */
@@ -1955,6 +1964,12 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBVFS
 	 * 
+	 * @see CMFile.CMVFSDir
+	 * @see DatabaseEngine#DBReadVFSDirectory()
+	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
+	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
+	 * @see DatabaseEngine#DBDeleteVFSFile(String)
+	 * 
 	 * @param filename
 	 * @return
 	 */
@@ -1962,6 +1977,12 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBVFS
+	 * 
+	 * @see CMFile.CMVFSDir
+	 * @see DatabaseEngine#DBReadVFSDirectory()
+	 * @see DatabaseEngine#DBReadVFSFile(String)
+	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
+	 * @see DatabaseEngine#DBDeleteVFSFile(String)
 	 * 
 	 * @param filename
 	 * @param bits
@@ -1974,6 +1995,12 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBVFS
 	 * 
+	 * @see CMFile.CMVFSDir
+	 * @see DatabaseEngine#DBReadVFSDirectory()
+	 * @see DatabaseEngine#DBReadVFSFile(String)
+	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
+	 * @see DatabaseEngine#DBDeleteVFSFile(String)
+	 * 
 	 * @param filename
 	 * @param bits
 	 * @param creator
@@ -1984,6 +2011,12 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBVFS
+	 * 
+	 * @see CMFile.CMVFSDir
+	 * @see DatabaseEngine#DBReadVFSDirectory()
+	 * @see DatabaseEngine#DBReadVFSFile(String)
+	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
+	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
 	 * 
 	 * @param filename
 	 */
