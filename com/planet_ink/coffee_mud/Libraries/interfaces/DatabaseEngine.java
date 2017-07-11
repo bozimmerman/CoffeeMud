@@ -1957,68 +1957,77 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBDeleteVFSFile(String)
 	 * 
-	 * @return
+	 * @return the dbfs root filesystem
 	 */
 	public CMFile.CMVFSDir DBReadVFSDirectory();
 
 	/**
 	 * Table category: DBVFS
+	 * Reads the complete DBFS file record for the given filepath.  The
+	 * path does not begin with a /.
 	 * 
-	 * @see CMFile.CMVFSDir
+	 * @see CMFile.CMVFSFile
 	 * @see DatabaseEngine#DBReadVFSDirectory()
 	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBDeleteVFSFile(String)
 	 * 
-	 * @param filename
-	 * @return
+	 * @param filename the path of the file to read
+	 * @return the complete file record, including data
 	 */
 	public CMFile.CMVFSFile DBReadVFSFile(String filename);
 
 	/**
 	 * Table category: DBVFS
+	 * Creates a new file in the DBFS filesystem stored in the CBVFS table.
+	 * The filename does not begin with a /.  The data may be a String,
+	 * StringBuffer, or byte array.  The bits are found in CMFile.
+	 * @see CMFile#VFS_MASK_MASKSAVABLE
 	 * 
-	 * @see CMFile.CMVFSDir
 	 * @see DatabaseEngine#DBReadVFSDirectory()
 	 * @see DatabaseEngine#DBReadVFSFile(String)
 	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBDeleteVFSFile(String)
 	 * 
-	 * @param filename
-	 * @param bits
-	 * @param creator
-	 * @param updateTime
-	 * @param data
+	 * @param filename the full name/path 
+	 * @param bits toggle bits about the file
+	 * @param creator the character id of the file creator/owner 
+	 * @param updateTime the timestamp of the files creation/update time
+	 * @param data the file content, String, StringBuffer, or byte array
 	 */
 	public void DBCreateVFSFile(String filename, int bits, String creator, long updateTime, Object data);
 
 	/**
 	 * Table category: DBVFS
+	 * Creates or updates a file in the DBFS filesystem stored in the CBVFS table.
+	 * The filename does not begin with a /.  The data may be a String,
+	 * StringBuffer, or byte array.  The bits are found in CMFile.
+	 * @see CMFile#VFS_MASK_MASKSAVABLE
 	 * 
-	 * @see CMFile.CMVFSDir
 	 * @see DatabaseEngine#DBReadVFSDirectory()
 	 * @see DatabaseEngine#DBReadVFSFile(String)
 	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBDeleteVFSFile(String)
 	 * 
-	 * @param filename
-	 * @param bits
-	 * @param creator
-	 * @param updateTime
-	 * @param data
+	 * @param filename the full name/path 
+	 * @param bits toggle bits about the file
+	 * @param creator the character id of the file creator/owner 
+	 * @param updateTime the timestamp of the files creation/update time
+	 * @param data the file content, String, StringBuffer, or byte array
 	 */
 	public void DBUpSertVFSFile(String filename, int bits, String creator, long updateTime, Object data);
 
 	/**
 	 * Table category: DBVFS
+	 * Deletes a file from the DBFS in the DBVFS table.  The
+	 * path does not begin with a /.
 	 * 
-	 * @see CMFile.CMVFSDir
 	 * @see DatabaseEngine#DBReadVFSDirectory()
 	 * @see DatabaseEngine#DBReadVFSFile(String)
 	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
 	 * 
-	 * @param filename
+	 * @param filename the full path filename of the file to kill
 	 */
 	public void DBDeleteVFSFile(String filename);
 
