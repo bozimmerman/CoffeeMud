@@ -398,7 +398,7 @@ public class Play extends StdAbility
 				 return new XVector<Room>(backupMob.location());
 			return new Vector<Room>();
 		}
-		final int depth=super.getXMAXRANGELevel(invoker());
+		final int depth=super.getXMAXRANGELevel(invoker()) / 2; // decreased because fireball
 		if(depth==0)
 			return new XVector<Room>(invoker().location());
 		final Vector<Room> rooms=new Vector<Room>();
