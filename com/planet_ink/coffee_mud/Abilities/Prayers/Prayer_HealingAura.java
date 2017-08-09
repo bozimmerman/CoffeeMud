@@ -128,15 +128,17 @@ public class Prayer_HealingAura extends Prayer
 			return true;
 
 		final Set<MOB> followers=myChar.getGroupMembers(new HashSet<MOB>());
-		if(myChar.location()!=null)
+		final Room R=myChar.location();
+		if(R!=null)
 		{
-			for(int i=0;i<myChar.location().numInhabitants();i++)
+			final CMFlagLibrary lib=CMLib.flags();
+			for(int i=0;i<R.numInhabitants();i++)
 			{
-				final MOB M=myChar.location().fetchInhabitant(i);
+				final MOB M=R.fetchInhabitant(i);
 				if((M!=null)
 				&&((M.getVictim()==null)||(!followers.contains(M.getVictim()))))
 				{
-					if((!CMLib.flags().isUndead(M))||(myChar.mayIFight(M)))
+					if((!lib.isUndead(M))||(myChar.mayIFight(M)))
 						followers.add(M);
 				}
 			}
