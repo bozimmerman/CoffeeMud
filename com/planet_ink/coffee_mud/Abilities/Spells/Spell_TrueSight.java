@@ -180,7 +180,7 @@ public class Spell_TrueSight extends Spell
 			target=(MOB)givenTarget;
 		if(target.fetchEffect(this.ID())!=null)
 		{
-			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE>  true sight."));
+			mob.tell(target,null,null,L("<S-NAME> already <S-HAS-HAVE> true sight."));
 			return false;
 		}
 
