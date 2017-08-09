@@ -107,6 +107,7 @@ public class Prayer_DivineResistance extends Prayer
 
 		if((msg.target()==affected)
 		&&(affected instanceof MOB)
+		&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS))
 		&&((msg.tool()==null)||(!permProts.contains(msg.tool())))
 		&&(prots>0)
 		&&(msg.source().location()!=null))
@@ -116,9 +117,11 @@ public class Prayer_DivineResistance extends Prayer
 			final int tm=msg.targetMinor();
 			final int[] CMMSGMAP=CharStats.CODES.CMMSGMAP();
 			for(final int i : CharStats.CODES.SAVING_THROWS())
+			{
 				if((CMMSGMAP[i]>=0)
 				&&((sm==CMMSGMAP[i])||(tm==CMMSGMAP[i])))
 					proceed=true;
+			}
 			if((msg.tool() instanceof Trap)||(proceed))
 			{
 				if(msg.tool()!=null)
