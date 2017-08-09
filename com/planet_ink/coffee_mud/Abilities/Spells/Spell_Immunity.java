@@ -74,9 +74,60 @@ public class Spell_Immunity extends Spell
 		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
 	}
 
+	protected int immunityCode=-1;
 	protected int immunityType=-1;
 	protected String immunityName="";
 
+	@Override
+	public String text()
+	{
+		if((immunityCode>=0)
+		&&(affected!=null)
+		&&((!this.unInvoked)||(!this.canBeUninvoked))
+		&&(this.isSavable()))
+			return Integer.toString(immunityCode);
+		return "";
+	}
+	
+	@Override
+	public void setMiscText(final String misc)
+	{
+		if((misc!=null)
+		&&(misc.length()>0)
+		&&(CMath.isInteger(misc)))
+		{
+			setImmunityVars(CMath.s_int(misc));
+		}
+	}
+
+	public void setImmunityVars(final int code)
+	{
+		immunityCode=code;
+		switch(immunityCode)
+		{
+		case 1:
+			immunityType=CMMsg.TYP_ACID;
+			immunityName="acid";
+			break;
+		case 2:
+			immunityType=CMMsg.TYP_FIRE;
+			immunityName="fire";
+			break;
+		case 3:
+			immunityType=CMMsg.TYP_GAS;
+			immunityName="gas";
+			break;
+		case 4:
+			immunityType=CMMsg.TYP_COLD;
+			immunityName="cold";
+			break;
+		case 5:
+			immunityType=CMMsg.TYP_ELECTRIC;
+			immunityName="electricity";
+			break;
+		}
+	}
+	
 	@Override
 	public void unInvoke()
 	{
@@ -126,31 +177,11 @@ public class Spell_Immunity extends Spell
 			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> attain(s) an immunity barrier."):L("^S<S-NAME> invoke(s) an immunity barrier around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
-				switch(CMLib.dice().roll(1,5,0))
-				{
-				case 1:
-					immunityType=CMMsg.TYP_ACID;
-					immunityName="acid";
-					break;
-				case 2:
-					immunityType=CMMsg.TYP_FIRE;
-					immunityName="fire";
-					break;
-				case 3:
-					immunityType=CMMsg.TYP_GAS;
-					immunityName="gas";
-					break;
-				case 4:
-					immunityType=CMMsg.TYP_COLD;
-					immunityName="cold";
-					break;
-				case 5:
-					immunityType=CMMsg.TYP_ELECTRIC;
-					immunityName="electricity";
-					break;
-				}
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,0);
+				immunityCode=-1;
+				final Spell_Immunity A=(Spell_Immunity)beneficialAffect(mob,target,asLevel,0);
+				if(A!=null)
+					setImmunityVars(CMLib.dice().roll(1,5,0));
 			}
 		}
 		else
