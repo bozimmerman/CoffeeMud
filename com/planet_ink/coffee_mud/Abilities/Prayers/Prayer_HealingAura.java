@@ -135,7 +135,10 @@ public class Prayer_HealingAura extends Prayer
 				final MOB M=myChar.location().fetchInhabitant(i);
 				if((M!=null)
 				&&((M.getVictim()==null)||(!followers.contains(M.getVictim()))))
-					followers.add(M);
+				{
+					if((!CMLib.flags().isUndead(M))||(myChar.mayIFight(M)))
+						followers.add(M);
+				}
 			}
 		}
 		if((fiveDown)<=0)
@@ -143,24 +146,30 @@ public class Prayer_HealingAura extends Prayer
 			fiveDown=5;
 			final Ability A=CMClass.getAbility("Prayer_CureLight");
 			if(A!=null)
+			{
 				for (final Object element : followers)
 					A.invoke(myChar,((MOB)element),true,0);
+			}
 		}
 		if((tenDown)<=0)
 		{
 			tenDown=10;
 			final Ability A=CMClass.getAbility("Prayer_RemovePoison");
 			if(A!=null)
+			{
 				for (final Object element : followers)
 					A.invoke(myChar,((MOB)element),true,0);
+			}
 		}
 		if((twentyDown)<=0)
 		{
 			twentyDown=20;
 			final Ability A=CMClass.getAbility("Prayer_CureDisease");
 			if(A!=null)
+			{
 				for (final Object element : followers)
 					A.invoke(myChar,((MOB)element),true,0);
+			}
 		}
 		return true;
 	}
