@@ -432,20 +432,23 @@ public class StdThinInstance extends StdThinArea
 		super.destroy();
 		if(this.doesManageChildAreas())
 		{
-			List<Area> cs = new ArrayList<Area>();
+			List<AreaInstanceChild> cs = new ArrayList<AreaInstanceChild>(instanceChildren.size());
 			synchronized(instanceChildren)
 			{
 				for(int i=instanceChildren.size()-1;i>=0;i--)
-					cs.add(instanceChildren.get(i).A);
+					cs.add(instanceChildren.get(i));
 				instanceChildren.clear();
 			}
-			for(Area A : cs)
+			for(AreaInstanceChild I : cs)
 			{
-				final MOB mob=CMClass.sampleMOB();
-				for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+				final Area A=I.A;
+				try
 				{
-					final Room R=e.nextElement();
-					R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
+					flushInstance(I);
+				}
+				catch(Exception e)
+				{
+					Log.errOut(e);
 				}
 				CMLib.map().delArea(A);
 				A.destroy();
