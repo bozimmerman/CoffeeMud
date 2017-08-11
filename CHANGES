@@ -7,6 +7,7 @@
    5. New skills: Studying, Tagging, Organizing, Dissertating
    6. Areas can now be unloaded.  And then loaded back again.  See UNLOAD and LOAD.
    7. New FORMULA_s in the coffeemud.ini for total and individual combat experience.
+   8. Movement = weight/3 now required to push/pull, and the moves are consumed.
 
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.
