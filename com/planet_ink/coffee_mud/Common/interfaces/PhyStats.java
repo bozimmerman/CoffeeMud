@@ -146,6 +146,21 @@ public interface PhyStats extends CMCommon, Modifiable
 	public void setWeight(int newWeight);
 
 	/**
+	 * Returns the number of move points required to pull
+	 * It is derived from the weight.
+	 * @return the weight of this Physical
+	 */
+	public int movesReqToPull(); // items, mobs
+
+	/**
+	 * Returns the number of move points required to push
+	 * It is derived from the weight.
+	 * @return the weight of this Physical
+	 */
+	public int movesReqToPush(); // items, mobs
+
+
+	/**
 	 * Returns the height of this Physical, in inches
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PhyStats#setHeight(int)
 	 * @return the height of this Physical, in inches (0=indeterminate)

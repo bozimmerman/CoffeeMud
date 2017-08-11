@@ -105,7 +105,9 @@ public class Push extends Go
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			if((dir.length()>0)&&(msg.tool() instanceof Room)&&(msg.tool()!=mob.location()))
+			if((dir.length()>0)
+			&&(msg.tool() instanceof Room)
+			&&(msg.tool()!=mob.location()))
 			{
 				final Room R=(Room)msg.tool();
 				if(R.okMessage(mob,msg))
@@ -126,6 +128,7 @@ public class Push extends Go
 						else
 						if(pushThis instanceof MOB)
 							CMLib.tracking().walk((MOB)pushThis,dirCode,((MOB)pushThis).isInCombat(),false,true,true);
+						mob.curState().adjMovement(-pushThis.phyStats().movesReqToPush(), mob.maxState());
 					}
 				}
 			}

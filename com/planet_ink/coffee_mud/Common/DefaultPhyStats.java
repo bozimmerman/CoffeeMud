@@ -294,6 +294,18 @@ public class DefaultPhyStats implements PhyStats
 	}
 
 	@Override
+	public int movesReqToPull()
+	{
+		return 1 + (weight() / 3);
+	}
+
+	@Override
+	public int movesReqToPush()
+	{
+		return 1 + (weight() / 3);
+	}
+
+	@Override
 	public CMObject newInstance()
 	{
 		try

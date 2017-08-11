@@ -108,6 +108,7 @@ public class Pull extends Go
 					else
 					if(pullThis instanceof MOB)
 						CMLib.tracking().walk((MOB)pullThis,dirCode,((MOB)pullThis).isInCombat(),false,true,true);
+					mob.curState().adjMovement(-pullThis.phyStats().movesReqToPull(), mob.maxState());
 				}
 			}
 		}

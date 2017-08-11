@@ -2463,13 +2463,24 @@ public class StdMOB implements MOB
 				{
 				case CMMsg.TYP_PULL:
 				case CMMsg.TYP_PUSH:
+				{
 					if((msg.target() instanceof Physical)
 					&&((maxCarry()*10)<((Physical)msg.target()).phyStats().weight()))
 					{
 						tell(L("That's way too heavy."));
 						return false;
 					}
-					//$FALL-THROUGH$
+					final int movesReq = (msg.targetMinor()==CMMsg.TYP_PUSH)?
+						((Physical)msg.target()).phyStats().movesReqToPush():
+						((Physical)msg.target()).phyStats().movesReqToPull();
+					if((curState.getMovement()<movesReq)
+					&&(curState.getMovement()<maxState.getMovement()))
+					{
+						tell(L("You don't have enough movement."));
+						return false;
+					}
+				}
+				//$FALL-THROUGH$
 				case CMMsg.TYP_GET:
 				case CMMsg.TYP_REMOVE:
 				case CMMsg.TYP_OPEN:
@@ -2914,6 +2925,12 @@ public class StdMOB implements MOB
 					srcM.tell(srcM, this, null, L("<T-NAME> is too big for you to pull."));
 					return false;
 				}
+				if((srcM.curState().getMovement()<phyStats.movesReqToPull())
+				&&(srcM.curState().getMovement()<srcM.maxState().getMovement()))
+				{
+					srcM.tell(L("You don't have enough movement."));
+					return false;
+				}
 				break;
 			case CMMsg.TYP_PUSH:
 				if ((!CMLib.flags().isBoundOrHeld(this)) && (!CMLib.flags().isSleeping(this)))
@@ -2921,9 +2938,15 @@ public class StdMOB implements MOB
 					srcM.tell(srcM, this, null, L("You can't do that to <T-NAMESELF>."));
 					return false;
 				}
-				if (phyStats().weight() > srcM.maxCarry())
+				if (phyStats().weight() > (srcM.maxCarry()/2))
 				{
 					srcM.tell(srcM, this, null, L("<T-NAME> is too heavy for you to push."));
+					return false;
+				}
+				if((srcM.curState().getMovement()<phyStats.movesReqToPush())
+				&&(srcM.curState().getMovement()<srcM.maxState().getMovement()))
+				{
+					srcM.tell(L("You don't have enough movement."));
 					return false;
 				}
 				break;
