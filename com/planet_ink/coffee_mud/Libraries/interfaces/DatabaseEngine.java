@@ -2033,28 +2033,44 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBBACKLOG
-	 * 
-	 * @param channelName
-	 * @param entry
+	 * Adds a CHANNEL message to the backlog table
+	 * @see DatabaseEngine#getBackLogEntries(String, int, int)
+	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
+	 * @param channelName the unique name of the channel
+	 * @param entry message
 	 */
 	public void addBackLogEntry(String channelName, final String entry);
 
 	/**
 	 * Table category: DBBACKLOG
+	 * Returns a list of channel messages for the given channel and criteria.
+	 * The list returned includes the message, and the timestamp of the 
+	 * message.  The list is date-sorted, so list returns can ge "paged"
+	 * by setting the number to skip and the number to return.
 	 * 
-	 * @param channelName
-	 * @param newestToSkip
-	 * @param numToReturn
-	 * @return
+	 * @see DatabaseEngine#addBackLogEntry(String, String)
+	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
+	 * 
+	 * @param channelName the unique name of the channel to return messages from
+	 * @param newestToSkip the number of "newest" messages to skip 
+	 * @param numToReturn the number of total messages to return
+	 * @return a list of applicable messages, coded as string,timestamp
 	 */
 	public List<Pair<String,Long>> getBackLogEntries(String channelName, final int newestToSkip, final int numToReturn);
 
 	/**
 	 * Table category: DBBACKLOG
+	 * This is a periodic maintenance method which will go through the 
+	 * list of unique channel names, and trim them according to the maximum
+	 * number of messages to retain (absolute), and the oldest message
+	 * to return (absolute timestamp -- no 0 nonsense).  Both criteria
+	 * will be used in the trimming.
+	 * @see DatabaseEngine#getBackLogEntries(String, int, int)
+	 * @see DatabaseEngine#addBackLogEntry(String, String)
 	 * 
-	 * @param channels
-	 * @param maxMessages
-	 * @param oldestTime
+	 * @param channels the list of channels to go through.
+	 * @param maxMessages the maximum number of messages to retain
+	 * @param oldestTime the oldest message to retain
 	 */
 	public void trimBackLogEntries(final String[] channels, final int maxMessages, final long oldestTime);
 
