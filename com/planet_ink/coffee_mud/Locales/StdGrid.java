@@ -260,7 +260,8 @@ public class StdGrid extends StdRoom implements GridLocale
 
 		getBuiltGrid();
 		Room[][] grid=null;
-		if(gridexits.size()>0)
+		final List<CrossExit> gridexits=this.gridexits;
+		if((gridexits!=null)&&(gridexits.size()>0))
 		{
 			grid=getBuiltGrid();
 			final String roomID=CMLib.map().getExtendedRoomID(loc);
