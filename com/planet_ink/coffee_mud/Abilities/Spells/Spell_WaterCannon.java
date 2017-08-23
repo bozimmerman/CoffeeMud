@@ -101,7 +101,7 @@ public void affectPhyStats(Physical affected, PhyStats affectableStats)
 		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L("<S-NAME> incant(s) at <T-NAMESELF> and geyser of water blasts towards <T-HIM-HER>."));
-			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_WATER|(auto?CMMsg.MASK_ALWAYS:0),null);
+			final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_WATER|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if((mob.location().okMessage(mob,msg))&&(mob.location().okMessage(mob,msg2)))
 			{
 				mob.location().send(mob,msg);

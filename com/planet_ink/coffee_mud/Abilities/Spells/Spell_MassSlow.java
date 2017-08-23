@@ -110,7 +110,7 @@ public class Spell_MassSlow extends Spell
 							{
 								final Spell_Slow spell=new Spell_Slow();
 								spell.setProficiency(proficiency());
-								success=spell.maliciousAffect(mob,target,asLevel,2,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0))!=null;
+								success=spell.maliciousAffect(mob,target,asLevel,2,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_MIND|(auto?CMMsg.MASK_ALWAYS:0))!=null;
 								if(success)
 									target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> move(s) more slowly!!"));
 							}

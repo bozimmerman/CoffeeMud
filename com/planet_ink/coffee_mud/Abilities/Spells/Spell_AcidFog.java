@@ -162,7 +162,7 @@ public class Spell_AcidFog extends Spell
 					final MOB target=(MOB)element;
 
 					final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
-					final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ACID|(auto?CMMsg.MASK_ALWAYS:0),null);
+					final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_SOMANTIC|CMMsg.TYP_ACID|(auto?CMMsg.MASK_ALWAYS:0),null);
 					if((mob.location().okMessage(mob,msg))
 					&&(mob.location().okMessage(mob,msg2))
 					&&(target.fetchEffect(this.ID())==null))
