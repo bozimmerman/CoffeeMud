@@ -179,14 +179,13 @@ public class Spell_Flagportation extends Spell
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			final Set<MOB> h=properTargets(mob,givenTarget,false);
+			final List<MOB> h=properTargetList(mob,givenTarget,false);
 			if(h==null)
 				return false;
 
 			final Room thisRoom=mob.location();
-			for (final Object element : h)
+			for (final MOB follower : h)
 			{
-				final MOB follower=(MOB)element;
 				final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears in a puff of smoke.@x1",CMLib.protocol().msp("appear.wav",10)));
 				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> disappear(s) in a puff of smoke."));
 				if(thisRoom.okMessage(follower,leaveMsg)&&(newRoom!=null)&&newRoom.okMessage(follower,enterMsg))
@@ -202,6 +201,9 @@ public class Spell_Flagportation extends Spell
 					follower.tell(L("\n\r\n\r"));
 					CMLib.commands().postLook(follower,true);
 				}
+				else
+				if(follower==mob)
+					break;
 			}
 		}
 		// return whether it worked

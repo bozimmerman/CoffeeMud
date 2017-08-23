@@ -1524,6 +1524,19 @@ public class StdAbility implements Ability
 		return h;
 	}
 
+	protected List<MOB> properTargetList(MOB mob, Environmental givenTarget, boolean auto)
+	{
+		final Set<MOB> h=properTargets(mob,givenTarget,auto);
+		final List<MOB> list=new ArrayList<MOB>(h.size());
+		if(h.contains(mob))
+		{
+			h.remove(mob);
+			list.add(mob);
+		}
+		list.addAll(h);
+		return list;
+	}
+
 	protected int adjustMaliciousTickdownTime(final MOB mob, final Physical target, final int baseTicks, final int asLevel)
 	{
 		int tickDown = baseTicks;

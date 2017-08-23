@@ -175,14 +175,13 @@ public class Spell_Cogniportive extends Spell
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Strange fizzled sparks fly from @x1.",me.name()));
 			else
 			{
-				final Set<MOB> h=properTargets(mob,null,false);
+				final List<MOB> h=properTargetList(mob,null,false);
 				if(h==null)
 					return;
 
 				final Room thisRoom=mob.location();
-				for (final Object element : h)
+				for (final MOB follower : h)
 				{
-					final MOB follower=(MOB)element;
 					final CMMsg enterMsg=CMClass.getMsg(follower,home,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,L("<S-NAME> appears in a puff of smoke."));
 					final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> disappear(s) in a puff of smoke."));
 					if(thisRoom.isInhabitant(follower)
@@ -201,6 +200,9 @@ public class Spell_Cogniportive extends Spell
 						follower.tell(L("\n\r\n\r"));
 						CMLib.commands().postLook(follower,true);
 					}
+					else
+					if(follower==mob)
+						break;
 				}
 			}
 		}

@@ -1392,7 +1392,7 @@ public class PlanarAbility extends StdAbility
 		if((mob.location().okMessage(mob,msg))&&(target.okMessage(mob,msg)))
 		{
 			mob.location().send(mob,msg);
-			final Set<MOB> h=properTargets(mob,givenTarget,false);
+			final List<MOB> h=properTargetList(mob,givenTarget,false);
 			if(h==null)
 				return false;
 
@@ -1400,9 +1400,8 @@ public class PlanarAbility extends StdAbility
 			A.setMiscText(planeName);
 			
 			final Room thisRoom=mob.location();
-			for (final Object element : h)
+			for (final MOB follower : h)
 			{
-				final MOB follower=(MOB)element;
 				final CMMsg enterMsg=CMClass.getMsg(follower,target,this,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,("<S-NAME> fade(s) into view.")+CMLib.protocol().msp("appear.wav",10));
 				final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,this,CMMsg.MSG_LEAVE|CMMsg.MASK_MAGIC,L("<S-NAME> fade(s) away."));
 				if(thisRoom.okMessage(follower,leaveMsg)&&target.okMessage(follower,enterMsg))
@@ -1418,6 +1417,9 @@ public class PlanarAbility extends StdAbility
 					((Room)enterMsg.target()).send(follower,enterMsg);
 					CMLib.commands().postLook(follower,true);
 				}
+				else
+				if(follower==mob)
+					break;
 			}
 		}
 		// return whether it worked
