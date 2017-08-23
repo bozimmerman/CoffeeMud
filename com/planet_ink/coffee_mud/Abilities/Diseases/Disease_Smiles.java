@@ -70,6 +70,12 @@ public class Disease_Smiles extends Disease
 	}
 
 	@Override
+	public boolean isMalicious()
+	{
+		return false;
+	}
+
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_MALICIOUS;

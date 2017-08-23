@@ -124,6 +124,12 @@ public class Disease_Giggles extends Disease
 	}
 
 	@Override
+	public boolean isMalicious()
+	{
+		return false;
+	}
+
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
