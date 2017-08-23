@@ -626,7 +626,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			CMLib.tracking().wanderAway(officer,true,true);
 	}
 
-	public MOB getAWitnessHere(Room R, MOB accused)
+	public MOB getAWitnessHere(final Area myArea, final Room R, final MOB accused)
 	{
 		if(R!=null)
 		for(int i=0;i<R.numInhabitants();i++)
@@ -636,19 +636,20 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			&&M.isMonster()
 			&&(M!=accused)
 			&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>3)
-			&&(CMLib.dice().rollPercentage()<=(CMLib.flags().isEvil(accused)?25:(CMLib.flags().isGood(accused)?95:50))))
+			&&(CMLib.dice().rollPercentage()>=(CMLib.flags().isEvil(accused)?25:(CMLib.flags().isGood(accused)?95:50))
+				||(isAnyOfficer(myArea, M))))
 				return M;
 		}
 		return null;
 	}
 
-	public MOB getWitness(Area A, MOB accused)
+	public MOB getWitness(final Area A, final MOB accused)
 	{
 		final Room R=accused.location();
 
 		if((A!=null)&&(!A.inMyMetroArea(R.getArea())))
 			return null;
-		MOB M=getAWitnessHere(R,accused);
+		MOB M=getAWitnessHere(A,R,accused);
 		if(M!=null)
 			return M;
 
@@ -657,7 +658,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				final Room R2=R.getRoomInDir(d);
-				M=getAWitnessHere(R2,accused);
+				M=getAWitnessHere(A,R2,accused);
 				if(M!=null)
 					return M;
 			}
@@ -934,7 +935,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public int highestCrimeAction(Law laws, LegalWarrant W, MOB criminal)
 	{
-		int highest=0;
+		int highest=W.punishment();
 		if(CMath.bset(W.punishment(),Law.PUNISHMENTMASK_SEPARATE))
 			return W.punishment();
 		final List<LegalWarrant> V=getRelevantWarrants(laws.warrants(),W,criminal);
@@ -1698,6 +1699,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		// is the victim a protected race?
 		if((victim!=null)&&(!(victim instanceof Deity)))
 		{
+			System.out.println(laws.getMessage(Law.MSG_PROTECTEDMASK));
 			if(!CMLib.masking().maskCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),victim,false))
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
@@ -1750,7 +1752,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				if(s.equalsIgnoreCase(Law.PUNISHMENT_DESCS[i]))
 				{
 					actionCodeSet=true;
-					W.setPunishment(W.punishment());
+					W.setPunishment(i);
 					if(parm!=null)
 						W.addPunishmentParm(i,parm);
 				}
