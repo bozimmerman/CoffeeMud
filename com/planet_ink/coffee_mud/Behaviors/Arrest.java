@@ -1699,7 +1699,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		// is the victim a protected race?
 		if((victim!=null)&&(!(victim instanceof Deity)))
 		{
-			System.out.println(laws.getMessage(Law.MSG_PROTECTEDMASK));
 			if(!CMLib.masking().maskCheck(laws.getMessage(Law.MSG_PROTECTEDMASK),victim,false))
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.ARREST))
