@@ -127,7 +127,6 @@ public class Prop_ReqNoMOB extends Property implements TriggeredAffect
 				if(msg.source().isMonster()
 				&&(msg.source().riding() instanceof BoardableShip))
 				{
-					H.clear();
 					final Area subA=((BoardableShip)msg.source().riding()).getShipArea();
 					for(Enumeration<Room> r=subA.getProperMap();r.hasMoreElements();)
 					{
