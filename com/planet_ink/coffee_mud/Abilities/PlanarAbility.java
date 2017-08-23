@@ -1174,6 +1174,9 @@ public class PlanarAbility extends StdAbility
 			return false;
 		}
 		String planeName=CMParms.combine(commands,0).trim().toUpperCase();
+		int planeNameCt=0;
+		while((getPlane(planeName)==null)&&(commands.size()>planeNameCt))
+			planeName=CMParms.combine(commands,++planeNameCt).trim().toUpperCase();
 		oldRoom=new WeakReference<Room>(mob.location());
 		Area cloneArea = mob.location().getArea();
 		final Area mobArea = cloneArea;
