@@ -179,7 +179,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return mob;
 	}
 
-	public boolean isFilledOutMOB(MOB mob)
+	public boolean isFilledOutMOB(final MOB mob)
 	{
 		if(!mob.isMonster())
 			return false;
@@ -228,13 +228,13 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 	
 	@Override
-	public double[] getLevelMoneyRange(MOB mob)
+	public double[] getLevelMoneyRange(final MOB mob)
 	{
 		return new double[]{2,mob.basePhyStats().level()+10};
 	}
 
 	@Override
-	public StringBuffer baseLevelAdjuster(MOB mob, int adjuster)
+	public String doBaseLevelAdjustment(final MOB mob, final int adjuster)
 	{
 		synchronized(mob.basePhyStats())
 		{
@@ -265,7 +265,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(gained<50)
 			gained=50;
 
-		final StringBuffer theNews=new StringBuffer("");
+		final StringBuilder theNews=new StringBuilder("");
 
 		mob.recoverCharStats();
 		mob.recoverPhyStats();
@@ -308,7 +308,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				mob.basePhyStats().setDamage(mob.basePhyStats().damage()+1);
 		}
 		mob.recoverMaxState();
-		return theNews;
+		return theNews.toString();
 	}
 
 	@Override
@@ -334,7 +334,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		final CharClass curClass=mob.baseCharStats().getCurrentClass();
 		final int oldClassLevel=mob.baseCharStats().getClassLevel(curClass);
-		baseLevelAdjuster(mob,-1);
+		doBaseLevelAdjustment(mob,-1);
 		int prac2Stat=mob.charStats().getStat(CharStats.STAT_WISDOM);
 		final int maxPrac2Stat=(CMProps.getIntVar(CMProps.Int.BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.CODES.toMAXBASE(CharStats.STAT_WISDOM)));
@@ -514,9 +514,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			{
 			}
 		}
-		final StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMLib.protocol().msp("levelgain.wav",60));
+		
+		final String levelAdjustmentMsg = doBaseLevelAdjustment(mob,1); 
+		
+		final StringBuilder theNews=new StringBuilder("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMLib.protocol().msp("levelgain.wav",60));
 		CharClass curClass=mob.baseCharStats().getCurrentClass();
-		theNews.append(baseLevelAdjuster(mob,1));
+		theNews.append(levelAdjustmentMsg);
 		if(mob.playerStats()!=null)
 		{
 			mob.playerStats().setLeveledDateTime(mob.basePhyStats().level(),mob.getAgeMinutes(),room);

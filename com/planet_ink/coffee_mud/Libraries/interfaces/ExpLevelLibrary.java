@@ -57,7 +57,7 @@ public interface ExpLevelLibrary extends CMLibrary
 
 	public boolean postExperience(MOB mob, MOB victim, String homage, int amount, boolean quiet);
 
-	public StringBuffer baseLevelAdjuster(MOB mob, int adjuster);
+	public String doBaseLevelAdjustment(MOB mob, int adjuster);
 
 	public void level(MOB mob);
 
