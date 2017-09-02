@@ -147,19 +147,43 @@ public class Chant_AnimalCompanion extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				final List<Ability> affects = new LinkedList<Ability>();
+				for(Enumeration<Ability> a=target.effects();a.hasMoreElements();)
+				{
+					final Ability A=a.nextElement();
+					affects.add(A);
+					target.delEffect(A);
+				}
 				final MOB targetCopy = (MOB)target.copyOf();
+				for(final Ability A : affects)
+					target.addEffect(A);
 				for(Enumeration<Ability> a=target.effects();a.hasMoreElements();)
 				{
 					Ability A=a.nextElement();
 					if((A!=null)&&((A.flags()&Ability.FLAG_CHARMING)!=0)&&(A.canBeUninvoked()))
 					{
+						affects.remove(A);
 						A.unInvoke();
 						mob.makePeace(true);
 						target.makePeace(true);
-						if(target.amFollowing()!=mob)
+						if((target.amFollowing()!=mob)
+						&&(!target.amDead())
+						&&(!target.amDestroyed()))
 							target.setFollowing(mob);
 					}
 				}
+				try
+				{
+					for (Ability A : affects)
+					{
+						A = (Ability) A.copyOf();
+						targetCopy.addEffect(A);
+					}
+				}
+				catch(Throwable t)
+				{
+				}
+				
 				if(target.amDestroyed() || target.amDead())
 				{
 					target=targetCopy;
