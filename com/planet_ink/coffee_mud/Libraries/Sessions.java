@@ -192,8 +192,10 @@ public class Sessions extends StdLibrary implements SessionsList
 						if((S.getPreviousCMD()==null)||(S.getPreviousCMD().size()==0)
 						||((S.getStatus())==Session.SessionStatus.LOGIN)
 						||((S.getStatus())==Session.SessionStatus.ACCOUNT_MENU)
+						||((S.getStatus())==Session.SessionStatus.HANDSHAKE_MCCP)
+						||((S.getStatus())==Session.SessionStatus.HANDSHAKE_OPEN)
 						||((S.getStatus())==Session.SessionStatus.CHARCREATE))
-							Log.sysOut(serviceClient.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true)+" out-game.");
+							Log.sysOut(serviceClient.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+", idle: "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true)+", status: "+S.getStatus());
 						else
 						{
 							Log.errOut(serviceClient.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true));
