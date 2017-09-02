@@ -48,6 +48,8 @@ public interface MUDCmdProcessor
 	public static final int METAFLAG_FORCED=32;
 	/** constant mask for the metaflags parameter for execute and preexecute, means being a meta-command*/
 	public static final int METAFLAG_ASMESSAGE=64;
+	/** constant mask for the metaflags parameter for execute and preexecute, means always after prev command*/
+	public static final int METAFLAG_INORDER=128;
 	
 	/**
 	 * Parses the given command string tokens to determine what kind of command is

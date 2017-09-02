@@ -1175,6 +1175,9 @@ public class PlanarAbility extends StdAbility
 		}
 		String planeName=CMParms.combine(commands,0).trim().toUpperCase();
 		int planeNameCt=0;
+		if(planeName.toLowerCase().endsWith("prime material"))
+			planeName="Prime Material";
+		else
 		while((getPlane(planeName)==null)&&(commands.size()>planeNameCt))
 			planeName=CMParms.combine(commands,++planeNameCt).trim().toUpperCase();
 		oldRoom=new WeakReference<Room>(mob.location());

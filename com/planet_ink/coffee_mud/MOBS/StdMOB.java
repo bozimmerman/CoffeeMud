@@ -2200,7 +2200,7 @@ public class StdMOB implements MOB
 		actionCost = calculateActionCost(O, commands, actionCost);
 		if (actionCost < 0.0)
 			return;
-		if (actionCost == 0.0)
+		if((actionCost == 0.0)&&(!CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_INORDER)))
 			doCommand(commands, metaFlags);
 		else
 		synchronized (commandQue)

@@ -139,7 +139,7 @@ public class Copy extends StdCommand
 					}
 					if(E==null)
 					{
-						mob.tell(L("Room ID '@x1' does not exist.  You can also try exit <dir> and room <dir>.",name));
+						mob.tell(L("Room ID '@x1' does not exist.  You can also try exit <dir> <dir> and room <dir> <dir>.",name));
 						mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 						return false;
 					}

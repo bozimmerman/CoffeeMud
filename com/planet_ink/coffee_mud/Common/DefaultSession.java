@@ -3058,6 +3058,8 @@ public class DefaultSession implements Session
 					}
 					else
 						ALL_CMDS.add(CMDS);
+					final double curActions = mob.actions();
+					mob.setActions(0.0);
 					for(Iterator<List<String>> i=ALL_CMDS.iterator();i.hasNext();)
 					{
 						CMDS=i.next();
@@ -3069,9 +3071,10 @@ public class DefaultSession implements Session
 							rawPrintln(CMParms.combineQuoted(CMDS,0));
 						final List<List<String>> MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
 						for(int m=0;m<MORE_CMDS.size();m++)
-							mob.enqueCommand(MORE_CMDS.get(m),metaFlags(),0);
+							mob.enqueCommand(MORE_CMDS.get(m),metaFlags()|MUDCmdProcessor.METAFLAG_INORDER,0);
 						lastStop=System.currentTimeMillis();
 					}
+					mob.setActions(curActions);
 				}
 				needPrompt=true;
 			}
