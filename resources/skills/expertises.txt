@@ -524,7 +524,7 @@ HELP_=<EXPERTISE>The ability to cast restoration-domain prayers at a higher powe
 BLESSING@x1=Blessing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +BLESSING,-MAXCLASSLEVEL +>={25+(5*@x1)},+WIS {15+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast blessing-domain prayers at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
 
-CURSING@x1=Cursing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +BLESSING,-MAXCLASSLEVEL +>={25+(5*@x1)},+STR {12+@x1},0,1,0,0,0
+CURSING@x1=Cursing @x2,10,LEVEL|LOWCOST,-SKILLFLAG +CURSING,-MAXCLASSLEVEL +>={25+(5*@x1)},+STR {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast cursing-domain prayers at a higher power level, producing longer and more malicious/beneficial magic, while also reducing mana cost.
 
 EVANGELIST@x1=Evangelising @x2,10,LEVEL|LOWCOST,-SKILLFLAG +EVANGELISM,-MAXCLASSLEVEL +>={17+(5*@x1)},+DEX {12+@x1},0,1,0,0,0
