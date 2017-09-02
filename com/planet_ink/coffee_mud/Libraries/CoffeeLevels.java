@@ -732,8 +732,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(mob.phyStats().level()>=CMProps.getIntVar(CMProps.Int.MINCLANLEVEL))
 		{
 			for(final Pair<Clan,Integer> p : mob.clans())
+			{
 				if(amount>2)
 					amount=p.first.applyExpMods(amount);
+			}
 		}
 
 		if((mob.getLiegeID().length()>0)&&(amount>2))
@@ -780,11 +782,13 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				expFromKilledmob=(MOB)msg.target();
 
 			if(msg.value()>=0)
+			{
 				gainExperience(mob,
 							   expFromKilledmob,
 							   msg.targetMessage(),
 							   msg.value(),
 							   CMath.s_bool(msg.othersMessage()));
+			}
 			else
 				loseExperience(mob,-msg.value());
 		}
