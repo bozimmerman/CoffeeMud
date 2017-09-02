@@ -175,7 +175,7 @@ public class StdJournal extends StdItem
 										prompt+="^<MENU^>E^</MENU^>)mail "; cmds+="E";
 									if(msg.value()>0)
 									{
-										prompt+="S)top ";
+										prompt+="^<MENU^>S^</MENU^>)top ";
 										cmds+="S";
 									}
 									else
@@ -327,6 +327,8 @@ public class StdJournal extends StdItem
 												CMLib.database().DBWriteJournalReply(Name(),read.key(),mob.Name(),"","",replyMsg);
 												if(R!=null)
 													R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Reply added."), CMMsg.MSG_WROTE, replyMsg, -1, null));
+												read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
+												megaRepeat=true;
 											}
 											else
 											{
