@@ -86,7 +86,9 @@ public interface ProtocolLibrary extends CMLibrary
 		request_quest,
 		rawcolor,
 		request,
-		maplevel
+		maplevel,
+		client,
+		client_version
 	}
 	
 	/**

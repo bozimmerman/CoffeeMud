@@ -84,10 +84,11 @@ public interface TickableGroup extends CMRunnable
 
 	/**
 	 * Removes the given ticking object from this group
+	 * @return whether anything was deleted.
 	 * @see TickClient
 	 * @param C the client to remove
 	 */
-	public void delTicker(TickClient C);
+	public boolean delTicker(TickClient C);
 
 	/**
 	 * Returns an iterator of all the ticking objects

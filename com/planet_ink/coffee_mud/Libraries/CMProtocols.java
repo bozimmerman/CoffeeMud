@@ -1778,6 +1778,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				cmd=GMCPCommand.valueOf(pkg.toLowerCase().replace('.','_'));
 				switch(cmd)
 				{
+				case client:
+				case client_version:
 				case maplevel:
 					// what's this do?
 					break;

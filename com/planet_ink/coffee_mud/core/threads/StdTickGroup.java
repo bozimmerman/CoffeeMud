@@ -281,9 +281,9 @@ public class StdTickGroup implements TickableGroup, Cloneable
 	public int getCounter(){return tickObjectCounter;}
 
 	@Override
-	public void delTicker(TickClient C)
+	public boolean delTicker(TickClient C)
 	{
-		tickers.remove(C);
+		return tickers.remove(C);
 	}
 
 	@Override

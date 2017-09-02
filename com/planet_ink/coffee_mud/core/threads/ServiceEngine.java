@@ -876,12 +876,13 @@ public class ServiceEngine implements ThreadEngine
 	}
 
 	@Override
-	public void deleteAllTicks(Tickable ticker)
+	public boolean deleteAllTicks(Tickable ticker)
 	{
 		if(ticker==null)
-			return;
+			return false;
 		deleteTick(ticker, -1);
 		final WorldMap map=CMLib.map();
+		boolean deleted = false;
 		if(ticker instanceof Room)
 		{
 			TickableGroup almostTock=null;
@@ -897,11 +898,11 @@ public class ServiceEngine implements ThreadEngine
 						C=i.next();
 						E2=C.getClientObject();
 						if(map.isHere(E2,(Room)ticker))
-							almostTock.delTicker(C);
+							deleted = almostTock.delTicker(C) || deleted;
 						else
 						if((E2 instanceof Ability)
 						&&(map.isHere(((Ability)E2).affecting(),(Room)ticker)))
-							almostTock.delTicker(C);
+							deleted = almostTock.delTicker(C) || deleted;
 						else
 							continue;
 
@@ -936,11 +937,11 @@ public class ServiceEngine implements ThreadEngine
 						C=i.next();
 						E2=C.getClientObject();
 						if(map.isHere(E2,(Area)ticker))
-							almostTock.delTicker(C);
+							deleted = almostTock.delTicker(C) || deleted;
 						else
 						if((E2 instanceof Ability)
 						&&(map.isHere(((Ability)E2).affecting(),(Area)ticker)))
-							almostTock.delTicker(C);
+							deleted = almostTock.delTicker(C) || deleted;
 						else
 							continue;
 
@@ -959,6 +960,7 @@ public class ServiceEngine implements ThreadEngine
 				}
 			}
 		}
+		return deleted;
 	}
 
 	@Override

@@ -436,6 +436,8 @@ public class GrinderMobs
 				oldM.delItem(I);
 			}
 			MOB copyMOB=(MOB)M.copyOf();
+			if(R!=null)
+				R.delInhabitant(copyMOB);
 
 			for(MOBDataField o : MOBDataField.values())
 			{
@@ -967,6 +969,11 @@ public class GrinderMobs
 					oldM.destroy();
 					R.delInhabitant(oldM);
 					M.bringToLife(R,true);
+				}
+				else
+				if(!M.Name().equals(copyMOB.Name()))
+				{
+			
 				}
 				R.recoverRoomStats();
 				CMLib.database().DBUpdateMOBs(R);
