@@ -2,12 +2,14 @@ package com.planet_ink.coffee_mud.core.collections;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
@@ -53,7 +55,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 
 	protected volatile LinkedEntry<T, K>			head	= null;
 	protected volatile LinkedEntry<T, K>			tail	= null;
-	protected final TreeMap<T, LinkedEntry<T, K>>	map		= new TreeMap<T, LinkedEntry<T, K>>();
+	protected final SortedMap<T, LinkedEntry<T, K>>	map		= Collections.synchronizedSortedMap(new TreeMap<T, LinkedEntry<T, K>>());
 
 	/**
 	 * Constructed a "limit" tree-based map. All the parameters here are
