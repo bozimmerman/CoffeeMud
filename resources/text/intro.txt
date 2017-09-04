@@ -1,24 +1,23 @@
-                        (
-                          )     (
-                   ___...(-------)-....___
-               .-""       )    (          ""-.
-         .-'``'|-._             )         _.-|
-        /  .--.|   `""---...........---""`   |
-       /  /    |                             |
-       |  |    | @MudInfo?NAME@
-        \  \   |                             |
-         `\ `\ | Powered By CoffeeMud v5.9   |
-           `\ `| (C) 2000-2017 Bo Zimmerman  |
-           _/ /\ www.coffeemud.org           /
-          (__/  \  This file is:            /
-       _..---""` \ resources/text/intro.txt/`""---.._
-    .-'           \                       /          '-.
-   :               `-.__             __.-'              :
-   :                  ) ""---...---"" (                 :
-    '._               `"--...___...--"`              _.'
-  jgs \""--..__                              __..--""/
-       '._     """----.....______.....----"""     _.'
-          `""--..,,_____            _____,,..--""`
-                        `"""----"""`
+   ____                _                   __  __ _   _ ____
+  / ___|__ _ _ __  ___| |_ ___  _ __   ___|  \/  | | | |  _ \
+ | |   / _` | '_ \/ __| __/ _ \| '_ \ / _ \ |\/| | | | | | | |
+ | |__| (_| | |_) \__ \ || (_) | | | |  __/ |  | | |_| | |_| |
+  \____\__,_| .__/|___/\__\___/|_| |_|\___|_|  |_|\___/|____/
+            |_|
+
+Development Team:
+ - Behrooz Babazadeh
+ - William Chang
+ - Bryan Goodyear
+ - Javier Mojica-Figueroa
+ - Mike Pitts
+ - Jean Tolentino
+
+
+Powered	by CoffeeMud v5.9
+(C) 2000-2017 Bo Zimmerman
+www.coffeemud.org
+
+
 
 Welcome to @MudInfo?NAME@
