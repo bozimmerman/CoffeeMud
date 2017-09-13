@@ -171,8 +171,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		final int[] CMMSGMAP=CharStats.CODES.CMMSGMAP();
 		for(final int c : CharStats.CODES.SAVING_THROWS())
 		{
-			if(CMMSGMAP[c]!=-1)
-				addIfPlussed(parameters[0],"save"+CMStrings.limit(CharStats.CODES.NAME(c).toLowerCase(),3),c,charStatsV);
+			addIfPlussed(parameters[0],"save"+CMStrings.limit(CharStats.CODES.NAME(c).toLowerCase(),3),c,charStatsV);
 		}
 		for(int c = CharStats.STAT_FAITH; c<CharStats.CODES.TOTAL();c++)
 			addIfPlussed(parameters[0],CharStats.CODES.NAME(c).toLowerCase(),c,charStatsV);
