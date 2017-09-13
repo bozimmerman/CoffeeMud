@@ -148,7 +148,10 @@ public class Spell_Scribe extends Spell
 			return false;
 		}
 
-		final List<Ability> spells=scroll.getSpells();
+		final List<Ability> spells=new XVector<Ability>(scroll.getSpells());
+		if(scroll.usesRemaining()==0)
+			spells.clear();
+		else
 		for(final Ability spell: spells)
 		{
 			if(spell.ID().equals(scrollThis.ID()))
@@ -195,6 +198,8 @@ public class Spell_Scribe extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
+				if(scroll.usesRemaining()==0)
+					scroll.setSpellList("");
 				if(scroll.getSpellList().trim().length()==0)
 					scroll.setSpellList(scrollThis.ID());
 				else

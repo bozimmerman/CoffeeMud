@@ -219,12 +219,20 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 		if(buildingI == null)
 			buildingI=(Scroll)CMClass.getItem("GenScroll");
 		StringBuilder newList=new StringBuilder();
-		for(Ability A : buildingI.getSpells())
+		if(buildingI.usesRemaining()==0)
 		{
-			newList.append(A.ID()).append(";");
-			final String testName=L(" OF @x1",A.Name().toUpperCase());
-			if(buildingI.Name().toUpperCase().endsWith(testName))
-				buildingI.setName(buildingI.Name().substring(0,buildingI.Name().length()-testName.length()));
+			for(Ability A : buildingI.getSpells())
+				this.eraseFromScrollItem(buildingI, A, -1);
+		}
+		else
+		{
+			for(Ability A : buildingI.getSpells())
+			{
+				newList.append(A.ID()).append(";");
+				final String testName=L(" OF @x1",A.Name().toUpperCase());
+				if(buildingI.Name().toUpperCase().endsWith(testName))
+					buildingI.setName(buildingI.Name().substring(0,buildingI.Name().length()-testName.length()));
+			}
 		}
 		newList.append(theSpell.ID());
 		buildingI.setSpellList(newList.toString());
@@ -461,12 +469,15 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			
 			if(buildingI!=null)
 			{
-				for(final Ability spell: ((Scroll)buildingI).getSpells())
+				if(((Scroll)buildingI).usesRemaining()>0)
 				{
-					if(spell.ID().equals(theSpell.ID()))
+					for(final Ability spell: ((Scroll)buildingI).getSpells())
 					{
-						mob.tell(L("That spell is already scribed onto @x1.",buildingI.name()));
-						return false;
+						if(spell.ID().equals(theSpell.ID()))
+						{
+							mob.tell(L("That spell is already scribed onto @x1.",buildingI.name()));
+							return false;
+						}
 					}
 				}
 			}
