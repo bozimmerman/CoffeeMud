@@ -549,7 +549,8 @@ public interface RawMaterial extends Item
 	public static enum ResourceFlag
 	{
 		BERRY,
-		FISH
+		FISH,
+		WOODY
 	}
 
 	/**
@@ -576,10 +577,10 @@ public interface RawMaterial extends Item
 		PEPPERS(RESOURCE_PEPPERS, 1, 5, 1, 640, "spicy", "", null),
 		GREENS(RESOURCE_GREENS, 1, 5, 1, 540, "very mild", "", null),
 		FRUIT(RESOURCE_FRUIT, 2, 10, 1, 720, "sweet and fruity", "", null),
-		APPLES(RESOURCE_APPLES, 2, 10, 1, 640, "sweet apply", "", null),
+		APPLES(RESOURCE_APPLES, 2, 10, 1, 640, "sweet apply", "", ResourceFlag.WOODY),
 		BERRIES(RESOURCE_BERRIES, 2, 15, 1, 720, "sweet berry", "", ResourceFlag.BERRY),
-		ORANGES(RESOURCE_ORANGES, 2, 10, 1, 640, "citrusy", "", null),
-		LEMONS(RESOURCE_LEMONS, 2, 10, 1, 480, "strong citrusy", "Prop_UseSpellCast2(Spell_ShrinkMouth)", null),
+		ORANGES(RESOURCE_ORANGES, 2, 10, 1, 640, "citrusy", "", ResourceFlag.WOODY),
+		LEMONS(RESOURCE_LEMONS, 2, 10, 1, 480, "strong citrusy", "Prop_UseSpellCast2(Spell_ShrinkMouth)", ResourceFlag.WOODY),
 		GRAPES(RESOURCE_GRAPES, 3, 5, 1, 680, "mild sweet", "", null),
 		OLIVES(RESOURCE_OLIVES, 2, 5, 1, 640, "pickly olive", "", null),
 		POTATOES(RESOURCE_POTATOES, 1, 5, 1, 770, "", "", null),
@@ -649,7 +650,7 @@ public interface RawMaterial extends Item
 		CRYSOBERYL(RESOURCE_CRYSOBERYL, 50, 2, 5, 2800, "", "", null),
 		IRONWOOD(RESOURCE_IRONWOOD, 25, 5, 4, 990, "", "", null),
 		SILK(RESOURCE_SILK, 200, 5, 1, 1100, "", "", null),
-		COCOA(RESOURCE_COCOA, 4, 5, 0, 590, "", "", null),
+		COCOA(RESOURCE_COCOA, 4, 5, 0, 590, "", "", ResourceFlag.WOODY),
 		BLOOD(RESOURCE_BLOOD, 1, 100, 0, 1025, "strong salty", "", null),
 		BONE(RESOURCE_BONE, 1, 100, 5, 1600, "", "", null),
 		COAL(RESOURCE_COAL, 1, 50, 1, 1800, "chalky", "", null),
@@ -668,7 +669,7 @@ public interface RawMaterial extends Item
 		EBONY(RESOURCE_EBONY, 5, 5, 5, 2910, "", "", null),
 		IVORY(RESOURCE_IVORY, 5, 5, 3, 1840, "", "", null),
 		WAX(RESOURCE_WAX, 1, 0, 0, 900, "", "", null),
-		NUTS(RESOURCE_NUTS, 0, 20, 0, 640, "mild nutty", "", null),
+		NUTS(RESOURCE_NUTS, 0, 20, 0, 640, "mild nutty", "", ResourceFlag.WOODY),
 		BREAD(RESOURCE_BREAD, 3, 0, 0, 660, "", "", null),
 		CRACKER(RESOURCE_CRACKER, 2, 0, 0, 200, "", "", null),
 		YEW(RESOURCE_YEW, 15, 2, 5, 850, "", "", null),
@@ -681,16 +682,16 @@ public interface RawMaterial extends Item
 		BOYSENBERRIES(RESOURCE_BOYSENBERRIES, 10, 1, 1, 750, "sweet berry", "", ResourceFlag.BERRY),
 		BLACKBERRIES(RESOURCE_BLACKBERRIES, 10, 1, 1, 750, "sweet berry", "", ResourceFlag.BERRY),
 		SMURFBERRIES(RESOURCE_SMURFBERRIES, 10, 1, 1, 750, "sweet berry", "", ResourceFlag.BERRY),
-		PEACHES(RESOURCE_PEACHES, 10, 1, 1, 700, "peachy", "", null),
-		PLUMS(RESOURCE_PLUMS, 10, 1, 1, 710, "sweey plumy", "", null),
+		PEACHES(RESOURCE_PEACHES, 10, 1, 1, 700, "peachy", "", ResourceFlag.WOODY),
+		PLUMS(RESOURCE_PLUMS, 10, 1, 1, 710, "sweey plumy", "", ResourceFlag.WOODY),
 		ONIONS(RESOURCE_ONIONS, 10, 1, 1, 760, "stinging oniony", "", null),
-		CHERRIES(RESOURCE_CHERRIES, 10, 1, 1, 810, "cherry", "", null),
+		CHERRIES(RESOURCE_CHERRIES, 10, 1, 1, 810, "cherry", "", ResourceFlag.WOODY),
 		GARLIC(RESOURCE_GARLIC, 10, 1, 1, 815, "", "", null),
-		PINEAPPLES(RESOURCE_PINEAPPLES, 10, 1, 1, 500, "fruity", "", null),
-		COCONUTS(RESOURCE_COCONUTS, 10, 1, 2, 250, "", "", null),
-		BANANAS(RESOURCE_BANANAS, 10, 1, 1, 790, "pungent banana", "", null),
-		LIMES(RESOURCE_LIMES, 10, 1, 1, 690, "citrusy", "", null),
-		SAP(RESOURCE_SAP, 10, 1, 1, 1600, "strong maply", "", null),
+		PINEAPPLES(RESOURCE_PINEAPPLES, 10, 1, 1, 500, "fruity", "", ResourceFlag.WOODY),
+		COCONUTS(RESOURCE_COCONUTS, 10, 1, 2, 250, "", "", ResourceFlag.WOODY),
+		BANANAS(RESOURCE_BANANAS, 10, 1, 1, 790, "pungent banana", "", ResourceFlag.WOODY),
+		LIMES(RESOURCE_LIMES, 10, 1, 1, 690, "citrusy", "", ResourceFlag.WOODY),
+		SAP(RESOURCE_SAP, 10, 1, 1, 1600, "strong maply", "", ResourceFlag.WOODY),
 		ONYX(RESOURCE_ONYX, 70, 1, 8, 3300, "", "", null),
 		TURQUOISE(RESOURCE_TURQUOISE, 70, 1, 8, 3300, "", "", null),
 		PERIDOT(RESOURCE_PERIDOT, 65, 1, 6, 3300, "", "", null),
@@ -837,7 +838,7 @@ public interface RawMaterial extends Item
 				for (final DefResource d : defaults)
 				{
 					final int material = d.code & MATERIAL_MASK;
-					add(material, d.desc, d.smell, d.value, d.frequency, d.hardness, d.bouancy, d.flag == ResourceFlag.FISH, d.flag == ResourceFlag.BERRY, d.effect);
+					add(material, d.desc, d.smell, d.value, d.frequency, d.hardness, d.bouancy, d.flag == ResourceFlag.FISH, d.flag == ResourceFlag.BERRY, d.flag == ResourceFlag.WOODY, d.effect);
 				}
 				for (int i = 0; i < addExtra.length + repExtra.length; i++)
 				{
@@ -875,6 +876,7 @@ public interface RawMaterial extends Item
 					final int bouancy = CMath.s_int(V.get(5));
 					final boolean fish = V.get(6).equalsIgnoreCase("fish");
 					final boolean berry = V.get(6).equalsIgnoreCase("berry");
+					final boolean woody = V.get(6).equalsIgnoreCase("woody");
 					final String abilityID = V.get(7);
 					final Material material = Material.findIgnoreCase(matStr);
 					if (material == null)
@@ -883,9 +885,9 @@ public interface RawMaterial extends Item
 						continue;
 					}
 					if (type.equalsIgnoreCase("ADD"))
-						add(material.mask(), stat, smell, value, frequ, hardness, bouancy, fish, berry, abilityID);
+						add(material.mask(), stat, smell, value, frequ, hardness, bouancy, fish, berry, woody, abilityID);
 					else if (type.equalsIgnoreCase("REPLACE") && (oldResourceCode >= 0))
-						replace(oldResourceCode, material.mask(), stat, smell, value, frequ, hardness, bouancy, fish, berry, abilityID);
+						replace(oldResourceCode, material.mask(), stat, smell, value, frequ, hardness, bouancy, fish, berry, woody, abilityID);
 				}
 				final String[] sortedNames = descs.clone();
 				Arrays.sort(sortedNames);
@@ -946,6 +948,7 @@ public interface RawMaterial extends Item
 		private int[]						allCodes				= new int[0];
 		private int[]						allCodesSortedByName	= new int[0];
 		private int[]						berries					= new int[0];
+		private int[]						woodies					= new int[0];
 		private int[]						fishes					= new int[0];
 		private int[][]						data					= new int[0][0];
 		private String[]					smells					= new String[0];
@@ -972,6 +975,26 @@ public interface RawMaterial extends Item
 		public int[] berries()
 		{
 			return berries;
+		}
+
+		/**
+		 * Returns an array of the numeric codes for the wood-choppy resources
+		 * 
+		 * @return an array of the numeric codes for the wood-choppy resources
+		 */
+		public static int[] WOODIES()
+		{
+			return c().woodies;
+		}
+
+		/**
+		 * Returns an array of the numeric codes for the wood-choppy resources
+		 * 
+		 * @return an array of the numeric codes for the wood-choppy resources
+		 */
+		public int[] woodies()
+		{
+			return woodies;
 		}
 
 		/**
@@ -1502,9 +1525,10 @@ public interface RawMaterial extends Item
 		 * @param bouancy the bouancy of the resource 0-10000
 		 * @param fish true if its a fishy-type
 		 * @param berry true if its a berry type
+		 * @param woody true if its a wood-choppy type
 		 * @param abilityID effects list
 		 */
-		public synchronized void add(int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry, String abilityID)
+		public synchronized void add(int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry, boolean woody, String abilityID)
 		{
 			final int newResourceCode = allCodes.length | material;
 			allCodes = Arrays.copyOf(allCodes, allCodes.length + 1);
@@ -1513,6 +1537,11 @@ public interface RawMaterial extends Item
 			{
 				berries = Arrays.copyOf(berries, berries.length + 1);
 				berries[berries.length - 1] = newResourceCode;
+			}
+			if (woody || (material == RawMaterial.MATERIAL_WOODEN))
+			{
+				woodies = Arrays.copyOf(woodies, woodies.length + 1);
+				woodies[woodies.length - 1] = newResourceCode;
 			}
 			if (fish)
 			{
@@ -1548,9 +1577,10 @@ public interface RawMaterial extends Item
 		 * @param bouancy the bouancy of the resource 0-10000
 		 * @param fish true if its a fishy-type
 		 * @param berry true if its a berry type
+		 * @param woody true if its a wood-choppy type
 		 * @param abilityID effects list
 		 */
-		public synchronized void replace(int resourceCode, int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry, String abilityID)
+		public synchronized void replace(int resourceCode, int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry, boolean woody, String abilityID)
 		{
 			final int resourceIndex = resourceCode & RESOURCE_MASK;
 			if ((berry) && (!CMParms.contains(berries, resourceCode)))
@@ -1568,6 +1598,22 @@ public interface RawMaterial extends Item
 						newberries[n++] = berrie;
 				}
 				berries = newberries;
+			}
+			if ((woody || (material==RawMaterial.MATERIAL_WOODEN)) && (!CMParms.contains(woodies, resourceCode)))
+			{
+				woodies = Arrays.copyOf(woodies, woodies.length + 1);
+				woodies[woodies.length - 1] = resourceCode;
+			}
+			else if ((!(woody || (material==RawMaterial.MATERIAL_WOODEN))) && (CMParms.contains(woodies, resourceCode)))
+			{
+				final int[] newwoodies = new int[woodies.length - 1];
+				int n = 0;
+				for (final int woodie : woodies)
+				{
+					if (woodie != resourceCode)
+						newwoodies[n++] = woodie;
+				}
+				woodies = newwoodies;
 			}
 			if ((fish) && (!CMParms.contains(fishes, resourceCode)))
 			{

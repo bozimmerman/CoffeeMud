@@ -181,7 +181,8 @@ public class Chopping extends GatheringSkill
 		verb=L("chopping");
 		playSound=null;
 		found=null;
-		if(!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_WOODEN,mob.location()))
+		if((!confirmPossibleMaterialLocation(RawMaterial.MATERIAL_WOODEN,mob.location()))
+		&&(!CMParms.contains(RawMaterial.CODES.WOODIES(), mob.location().myResource())))
 		{
 			commonTell(mob,L("You can't find anything to chop here."));
 			return false;
@@ -189,13 +190,24 @@ public class Chopping extends GatheringSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		final int resourceType=mob.location().myResource();
-		if((proficiencyCheck(mob,0,auto))
-		   &&((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN))
+		if(proficiencyCheck(mob,0,auto))
 		{
-			found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
-			foundShortName="nothing";
-			if(found!=null)
-				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
+			if((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
+			{
+				found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
+				foundShortName="nothing";
+				if(found!=null)
+					foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
+			}
+			else
+			{
+				found=(Item)CMLib.materials().makeResource(RawMaterial.RESOURCE_WOOD,Integer.toString(mob.location().domainType()),false,null);
+				foundShortName="nothing";
+				if(found!=null)
+				{
+					foundShortName=L("@x1 tree wood",RawMaterial.CODES.NAME(found.material()).toLowerCase());
+				}
+			}
 		}
 		final int duration=getDuration(mob,1);
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) looking for a good tree to chop."));
