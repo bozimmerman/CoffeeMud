@@ -2109,33 +2109,36 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final boolean wizi=(parms.length>1)&&(parms[parms.length-1]).equalsIgnoreCase("!");
 		PlayerLibrary.ThinnerPlayer playMe = null;
 		String name=CMStrings.capitalizeAndLower(cmd);
-		final String playerName=acct.findPlayer(name);
-		if(playerName!=null)
+		synchronized(("LOGIN_"+acct.name()).intern())
 		{
-			name=playerName;
-			playMe = CMLib.database().DBUserSearch(name);
-		}
-		if(playMe == null)
-		{
-			session.println(L("'@x1' is an unknown character or command.  Use ? for help.",name));
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		final MOB realMOB=CMLib.players().getLoadPlayer(playMe.name);
-		if(realMOB==null)
-		{
-			session.println(L("Error loading character '@x1'.  Please contact the management.",name));
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
-		}
-		session.setMob(realMOB);
-		playMe.loadedMOB=realMOB;
-		if(this.completePlayerLogin(session, wizi)!=LoginResult.NORMAL_LOGIN)
-		{
-			session.setMob(null);
-			playMe.loadedMOB=null;
-			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
-			return null;
+			final String playerName=acct.findPlayer(name);
+			if(playerName!=null)
+			{
+				name=playerName;
+				playMe = CMLib.database().DBUserSearch(name);
+			}
+			if(playMe == null)
+			{
+				session.println(L("'@x1' is an unknown character or command.  Use ? for help.",name));
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
+			}
+			final MOB realMOB=CMLib.players().getLoadPlayer(playMe.name);
+			if(realMOB==null)
+			{
+				session.println(L("Error loading character '@x1'.  Please contact the management.",name));
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
+			}
+			session.setMob(realMOB);
+			playMe.loadedMOB=realMOB;
+			if(this.completePlayerLogin(session, wizi)!=LoginResult.NORMAL_LOGIN)
+			{
+				session.setMob(null);
+				playMe.loadedMOB=null;
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
+			}
 		}
 		return LoginResult.NORMAL_LOGIN;
 	}
@@ -2148,14 +2151,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(acct != null)
 		{
 			int numAccountOnline=0;
+			session.setStatus(SessionStatus.LOGIN2);
 			for(final Session S : CMLib.sessions().allIterable())
 			{
-				if((S.mob()!=null)
-				&&(S.mob()!=realMOB)
-				&&(S.mob().playerStats()!=null)
-				&&(S.mob().playerStats().getAccount()==acct)
-				&&(CMLib.flags().isInTheGame(S.mob(), true)))
-					numAccountOnline++;
+				if(S.mob()!=null)
+				{
+					if((S.mob()!=realMOB)
+					&&(S.mob().playerStats()!=null)
+					&&(S.mob().playerStats().getAccount()==acct)
+					&&(CMLib.flags().isInTheGame(S.mob(), true)))
+						numAccountOnline++;
+				}
 			}
 			int maxConnectionsPerAccount = CMProps.getIntVar(CMProps.Int.MAXCONNSPERACCOUNT);
 			if(maxConnectionsPerAccount > 0)
