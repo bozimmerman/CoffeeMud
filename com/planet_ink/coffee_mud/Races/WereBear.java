@@ -130,7 +130,9 @@ public class WereBear extends Bear
 				for(int i=0;i<5;i++)
 				{
 					resources.addElement(makeResource
-					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
+					(L("a strip of @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
+					resources.addElement(makeResource
+					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				}
 				resources.addElement(makeResource
 				(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));

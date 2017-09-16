@@ -205,7 +205,9 @@ public class Buffalo extends Cow
 				for(int i=0;i<10;i++)
 				{
 					resources.addElement(makeResource
-					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
+					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
+					resources.addElement(makeResource
+					(L("a strip of @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
 				}
 				for(int i=0;i<5;i++)
 				{

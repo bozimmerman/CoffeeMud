@@ -165,7 +165,9 @@ public class Ape extends Monkey
 				for(int i=0;i<3;i++)
 				{
 					resources.addElement(makeResource
-					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
+					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
+					resources.addElement(makeResource
+					(L("a strip of @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
 				}
 				resources.addElement(makeResource
 				(L("an @x1 nose",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));

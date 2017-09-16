@@ -178,7 +178,7 @@ public class Tabaxi extends GreatCat
 				for(int i=0;i<5;i++)
 				{
 					resources.addElement(makeResource
-					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_LEATHER));
+					(L("a strip of @x1 leather",name().toLowerCase()),RawMaterial.RESOURCE_LEATHER));
 				}
 				for(int i=0;i<2;i++)
 				{

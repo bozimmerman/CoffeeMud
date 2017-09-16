@@ -105,10 +105,12 @@ public class Sasquatch extends Gorilla
 				for(int i=0;i<4;i++)
 				{
 					resources.addElement(makeResource
-					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
+					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
+					resources.addElement(makeResource
+					(L("a strip of @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
 				}
 				resources.addElement(makeResource
-				(L("a @x1 spleen",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
+				(L("a @x1 spleen",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
 				(L("a pound of @x1 flesh",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource

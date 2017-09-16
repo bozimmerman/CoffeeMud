@@ -77,7 +77,7 @@ public class DireRat extends GiantRat
 				for(int i=0;i<5;i++)
 				{
 					resources.addElement(makeResource
-					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
+					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				}
 				for(int i=0;i<2;i++)
 				{

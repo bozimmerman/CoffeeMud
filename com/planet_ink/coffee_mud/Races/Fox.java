@@ -257,6 +257,8 @@ public class Fox extends StdRace
 				resources.addElement(makeResource
 				(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
+				(L("a @x1 tail",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
+				resources.addElement(makeResource
 				(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
