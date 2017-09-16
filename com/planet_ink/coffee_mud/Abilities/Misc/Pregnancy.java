@@ -323,13 +323,23 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							if ((mob.isMonster()) && (otherParentM != null) && (!otherParentM.isMonster()))
 							{
 								for (final Pair<Clan, Integer> p : CMLib.clans().findRivalrousClans(otherParentM))
-									babe.setClan(p.first.clanID(), p.first.getAutoPosition());
+								{
+									final Pair<Clan,Integer> clanRole=otherParentM.getClanRole(p.first.clanID());
+									if((clanRole!=null)
+									&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+										babe.setClan(p.first.clanID(), p.first.getAutoPosition());
+								}
 							}
 							else
 							if(!mob.isMonster())
 							{
 								for (final Pair<Clan, Integer> p : CMLib.clans().findRivalrousClans(mob))
-									babe.setClan(p.first.clanID(), p.first.getAutoPosition());
+								{
+									final Pair<Clan,Integer> clanRole=mob.getClanRole(p.first.clanID());
+									if((clanRole!=null)
+									&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+										babe.setClan(p.first.clanID(), p.first.getAutoPosition());
+								}
 							}
 							babe.setLiegeID(mob.getLiegeID());
 							babe.setDescription(desc);

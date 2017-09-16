@@ -469,7 +469,12 @@ public class Age extends StdAbility
 								if(!newMan.clans().iterator().hasNext())
 								{
 									for(final Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(M))
-										newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
+									{
+										final Pair<Clan,Integer> clanRole=M.getClanRole(p.first.clanID());
+										if((clanRole!=null)
+										&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+											newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
+									}
 								}
 								if((M.getWorshipCharID().length()>0)&&(newMan.getWorshipCharID().length()==0))
 									newMan.setWorshipCharID(M.getWorshipCharID());
@@ -500,7 +505,12 @@ public class Age extends StdAbility
 					if((!newMan.clans().iterator().hasNext())&&(liege!=null))
 					{
 						for(final Pair<Clan,Integer> p : CMLib.clans().findRivalrousClans(liege))
-							newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
+						{
+							final Pair<Clan,Integer> clanRole=liege.getClanRole(p.first.clanID());
+							if((clanRole!=null)
+							&&(clanRole.first.getAuthority(clanRole.second.intValue(), Clan.Function.HOME_PRIVS)!=Clan.Authority.CAN_NOT_DO))
+								newMan.setClan(p.first.clanID(),p.first.getAutoPosition());
+						}
 					}
 					if(CMLib.clans().findRivalrousClan(newMan)!=null)
 					{
