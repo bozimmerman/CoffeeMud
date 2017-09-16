@@ -877,6 +877,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		if(mob==null)
 			return;
 		final Race R=mob.charStats().getMyRace();
+		final long mobUnwearableBitmap=mob.charStats().getWearableRestrictionsBitmap();
 		final DVector reWearSet=new DVector(2);
 		Item item=null;
 		for(int i=0;i<mob.numItems();i++)
@@ -924,7 +925,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			final CMMsg msg=CMClass.getMsg(mob,item,null,CMMsg.NO_EFFECT,null,msgCode,null,CMMsg.NO_EFFECT,null);
 			if((R.okMessage(mob,msg))
 			&&(item.okMessage(item,msg))
-			&&((mob.charStats().getWearableRestrictionsBitmap()&oldCode)==0)
+			&&((mobUnwearableBitmap&oldCode)==0)
 			&&(item.canWear(mob,oldCode)))
 				item.wearAt(oldCode);
 		}
