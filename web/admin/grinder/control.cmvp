@@ -99,9 +99,14 @@
 				if(alert) alert('Do not include '+prepend+' in your tag.  It will be done automatically.');
 				return;
 			}
+			if(key.indexOf("=")>=0)
+			{
+				if(alert) alert('Do not include = in your key.  You'll be able to modify the value separately.');
+				return;
+			}
 			if(key.length==0)
 			{
-				if(alert) alert('You must enter a value.');
+				if(alert) alert('You must enter a key.');
 				return;
 			}
 			document.INIFORM.action='/grinder/control.cmvp';
