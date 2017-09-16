@@ -101,7 +101,7 @@
 			}
 			if(key.indexOf("=")>=0)
 			{
-				if(alert) alert('Do not include = in your key.  You'll be able to modify the value separately.');
+				if(alert) alert('Do not include = in your key.  You\'ll be able to modify the value separately.');
 				return;
 			}
 			if(key.length==0)
