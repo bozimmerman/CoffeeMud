@@ -472,8 +472,11 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					if(level<=xlevel(mob))
 					{
 						final int x=name.indexOf(' ');
-						final Stage stage=Stage.valueOf(name.substring(0,x));
-						multiplier=stage.multiplier;
+						final Stage stage=(Stage)CMath.s_valueOf(Stage.class, name.substring(0,x));
+						if(stage == null)
+							multiplier=1;
+						else
+							multiplier=stage.multiplier;
 						foundRecipe=V;
 						break;
 					}
