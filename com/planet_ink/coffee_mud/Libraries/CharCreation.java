@@ -3396,8 +3396,23 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return LoginResult.NO_LOGIN;
 		}
 		CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
-		mob.setSession(session);
 		session.setMob(mob);
+		mob.setSession(session);
+		try
+		{
+			if((loginObj.acct!=null)&&(completePlayerLogin(session, false)!=LoginResult.NORMAL_LOGIN))
+			{
+				session.setMob(null);
+				loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+				return null;
+			}
+		}
+		catch (IOException e)
+		{
+			Log.errOut(e);
+			loginObj.state=LoginState.ACCTMENU_SHOWMENU;
+			return null;
+		}
 		return LoginResult.NORMAL_LOGIN;
 	}
 
