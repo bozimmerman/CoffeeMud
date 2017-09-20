@@ -157,14 +157,17 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		}
 		if(P==lastMOB)
 		{
-			for(final Iterator<String> e=lastMOBeffects.iterator();e.hasNext();)
+			if(removedAbles.size()>0)
 			{
-				final String AID=e.next();
-				final Ability A2=lastMOB.fetchEffect(AID);
-				if((A2!=null)&&(removedAbles.contains(A2.ID())))
+				for(final Iterator<String> e=lastMOBeffects.iterator();e.hasNext();)
 				{
-					A2.unInvoke();
-					lastMOB.delEffect(A2);
+					final String AID=e.next();
+					final Ability A2=lastMOB.fetchEffect(AID);
+					if((A2!=null)&&(removedAbles.contains(A2.ID())))
+					{
+						A2.unInvoke();
+						lastMOB.delEffect(A2);
+					}
 				}
 			}
 			lastMOBeffects.clear();
