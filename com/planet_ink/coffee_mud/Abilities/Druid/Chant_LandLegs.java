@@ -120,6 +120,7 @@ public class Chant_LandLegs extends Chant
 			lastSet=breatheables;
 		}
 		affectableStats.setBreathables(newSet);
+		affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()&(~(Wearable.WORN_FEET|Wearable.WORN_LEGS)));
 	}
 
 	@Override
