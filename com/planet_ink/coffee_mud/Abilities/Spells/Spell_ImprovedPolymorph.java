@@ -141,9 +141,9 @@ public class Spell_ImprovedPolymorph extends Spell
 	{
 		if(mob!=null)
 		{
-			if(target instanceof MOB)
+			if((target instanceof MOB)&&(target.fetchEffect(ID())==null))
 			{
-				if((mob.getVictim()==target)&&(target.fetchEffect(ID())==null))
+				if((mob.getVictim()==target)||(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 					return Ability.QUALITY_MALICIOUS;
 			}
 		}
