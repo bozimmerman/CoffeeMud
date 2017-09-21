@@ -143,7 +143,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			if(weight>maxFound)
 			{
 				maxFound=weight;
-				bundle=found.elementAt(i);
+				bundle=I;
 			}
 			if((I instanceof Decayable)
 			&&(((Decayable)I).decayTime()>0)
@@ -198,13 +198,17 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			((RawMaterial)found.elementAt(i)).quickDestroy();
 		if((owner instanceof Room)&&(((Room)owner).numItems()>0)&&(((Room)owner).getItem(((Room)owner).numItems()-1)!=bundle))
 		{
+			final Container C=bundle.container();
 			((Room)owner).delItem(bundle);
 			((Room)owner).moveItemTo(bundle,ItemPossessor.Expire.Player_Drop);
+			bundle.setContainer(C);
 		}
 		if((owner instanceof MOB)&&(((MOB)owner).numItems()>0)&&(((MOB)owner).getItem(((MOB)owner).numItems()-1)!=bundle))
 		{
+			final Container C=bundle.container();
 			((MOB)owner).delItem(bundle);
 			((MOB)owner).moveItemTo(bundle);
+			bundle.setContainer(C);
 		}
 		final Room R=CMLib.map().roomLocation(bundle);
 		if(R!=null)

@@ -3867,6 +3867,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if((roomID!=null)&&(roomID.equalsIgnoreCase("MORGUE")))
 			return getDefaultBodyRoom(mob);
 		Room room=null;
+		if((roomID!=null)&&(roomID.equalsIgnoreCase("HERE")))
+			room=mob.location();
 		if((roomID!=null)&&(roomID.equalsIgnoreCase("START")))
 			room=mob.getStartRoom();
 		if((room==null)&&(roomID!=null)&&(roomID.length()>0))
@@ -3946,7 +3948,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		Room room=null;
 		if((roomID!=null)&&(roomID.equalsIgnoreCase("START")))
+			room=mob.getStartRoom();
+		if((roomID!=null)&&(roomID.equalsIgnoreCase("HERE")))
 			room=mob.location();
+		if((roomID!=null)&&(roomID.equalsIgnoreCase("DEATH")))
+			room=getDefaultDeathRoom(mob);
 		if((room==null)&&(roomID!=null)&&(roomID.length()>0))
 			room=CMLib.map().getRoom(roomID);
 		if(room==null)
