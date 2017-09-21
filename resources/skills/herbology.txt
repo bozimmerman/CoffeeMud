@@ -21,3 +21,10 @@ marjoram
 yerba mate
 cinnamon
 garlic
+ginger
+rye
+vanilla
+parsley
+lavender
+cilantro
+
