@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.database.DBConnector.DBPreparedBatchEntry;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -374,6 +375,135 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 		}
 		return (CMLib.xml().convertXMLtoTag("INVEN",itemstr.toString()));
+	}
+
+	protected String getPlayerExtraInventory(MOB M)
+	{
+		final StringBuilder itemstr=new StringBuilder("");
+		final ItemCollection coll=M.playerStats().getExtItems();
+		final List<Item> finalCollection=new LinkedList<Item>();
+		final List<Item> extraItems=new LinkedList<Item>();
+		for(int i=coll.numItems()-1;i>=0;i--)
+		{
+			final Item thisItem=coll.getItem(i);
+			if((thisItem!=null)&&(!thisItem.amDestroyed()))
+			{
+				final Item cont=thisItem.ultimateContainer(null);
+				if(cont.owner() instanceof Room)
+					finalCollection.add(thisItem);
+			}
+		}
+		for(final Item thisItem : finalCollection)
+		{
+			if(thisItem instanceof Container)
+			{
+				final List<Item> contents=((Container)thisItem).getDeepContents();
+				for(final Item I : contents)
+					if(!finalCollection.contains(I))
+						extraItems.add(I);
+			}
+		}
+		finalCollection.addAll(extraItems);
+		HashSet<String> done=new HashSet<String>();
+		for(final Item thisItem : finalCollection)
+		{
+			if(!done.contains(""+thisItem))
+			{
+				CMLib.catalog().updateCatalogIntegrity(thisItem);
+				final Item cont=thisItem.ultimateContainer(null);
+				final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceObject)&&(CMLib.map().isObjectInSpace((SpaceObject)thisItem)))?
+						("SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
+				itemstr.append("<ITEM>");
+				itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(thisItem)));
+				itemstr.append(CMLib.xml().convertXMLtoTag("IDATA",getPropertiesStr(thisItem,true)));
+				itemstr.append("<IROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />");
+				itemstr.append("</ITEM>");
+				done.add(""+thisItem);
+			}
+		}
+		return (CMLib.xml().convertXMLtoTag("EXTRAINV",itemstr.toString()));
+	}
+
+	protected void setPlayerExtraInventory(MOB M, List<XMLTag> buf)
+	{
+		final ItemCollection coll=M.playerStats().getExtItems();
+		final List<XMLLibrary.XMLTag> V=CMLib.xml().getContentsFromPieces(buf,"EXTRAINV");
+		if(V==null)
+		{
+			Log.errOut("CoffeeMaker","Error parsing 'EXTRAINV' of "+identifier(M,null)+".  Load aborted");
+			return;
+		}
+		final Hashtable<String,Container> IIDmap=new Hashtable<String,Container>();
+		final Hashtable<Item,String> LOCmap=new Hashtable<Item,String>();
+		for(int i=0;i<V.size();i++)
+		{
+			final XMLTag iblk=V.get(i);
+			if((!iblk.tag().equalsIgnoreCase("ITEM"))||(iblk.contents()==null))
+			{
+				Log.errOut("CoffeeMaker","Error parsing 'ITEM' of "+identifier(M,null)+".  Load aborted");
+				return;
+			}
+			final Item newOne=CMClass.getItem(iblk.getValFromPieces("ICLASS"));
+			if(newOne instanceof ArchonOnly)
+				continue;
+			if(newOne==null)
+			{
+				Log.errOut("CoffeeMaker","Unknown item "+iblk.getValFromPieces("ICLASS")+" on "+identifier(M,null)+", skipping.");
+				continue;
+			}
+			final List<XMLLibrary.XMLTag> idat=iblk.getContentsFromPieces("IDATA");
+			if(idat==null)
+			{
+				Log.errOut("CoffeeMaker","Error parsing 'ITEM DATA' of "+identifier(M,null)+".  Load aborted");
+				return;
+			}
+			final String ILOC=CMLib.xml().getValFromPieces(idat,"ILOC");
+			coll.addItem(newOne);
+			
+			final XMLLibrary.XMLTag irm=iblk.getPieceFromPieces("IROOM");
+			if(irm==null)
+			{
+				Log.errOut("CoffeeMaker","Error parsing 'ITEM IROOM' of "+identifier(M,null)+".  Load aborted");
+				return;
+			}
+			final String roomID=irm.parms().get("ID");
+			final long expirationDate=CMath.s_long(irm.parms().get("EXPIRE"));
+			if(roomID.startsWith("SPACE.") && (newOne instanceof SpaceObject))
+			{
+				CMLib.map().addObjectToSpace((SpaceObject)newOne,CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true)));
+				//addToMOB=false; //????!!! wtf?!
+			}
+			else
+			{
+				final Room itemR=CMLib.map().getRoom(roomID);
+				if(itemR!=null)
+				{
+					if(newOne instanceof BoardableShip)
+						((BoardableShip)newOne).dockHere(itemR);
+					else
+						itemR.addItem(newOne);
+					newOne.setExpirationDate(expirationDate);
+					//addToMOB=false;
+				}
+			}
+			if(ILOC.length()>0)
+				LOCmap.put(newOne,ILOC);
+			setPropertiesStr(newOne,idat,true);
+			if((newOne instanceof Container)
+			&&(((Container)newOne).capacity()>0))
+				IIDmap.put(CMLib.xml().getValFromPieces(idat,"IID"),(Container)newOne);
+		}
+		for(Enumeration<Item> i=coll.items();i.hasMoreElements();)
+		{
+			final Item item=i.nextElement();
+			if(item!=null)
+			{
+				final String ILOC=LOCmap.get(item);
+				if(ILOC!=null)
+					item.setContainer(IIDmap.get(ILOC));
+			}
+		}
+		
 	}
 
 	protected String getGenPropertiesStr(Environmental E)
@@ -3502,6 +3632,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		possibleAddElectronicsManufacturers(mob, custom);
 
 		str.append(getGenMobInventory(mob));
+		
+		str.append(getPlayerExtraInventory(mob));
 
 		str.append(getFactionXML(mob));
 
@@ -3620,6 +3752,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			setGenScripts(mob,mblk.contents(),true);
 
 			setGenMobInventory(mob,mblk.contents());
+
+			setPlayerExtraInventory(mob,mblk.contents());
 
 			setFactionFromXML(mob,mblk.contents());
 
