@@ -12,6 +12,7 @@
   10. "STINK" is now a way to access Hygeine in prompt, stat, and scripting.
   11. New shopkeeper type: instrument seller
   12. Mineable dirt and drillable water added to several room types as resources.
+  13. New spell : Portal Other
 
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.
