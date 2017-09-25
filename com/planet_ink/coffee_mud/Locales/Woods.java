@@ -99,6 +99,7 @@ public class Woods extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_FUR),
 		Integer.valueOf(RawMaterial.RESOURCE_NUTS),
 		Integer.valueOf(RawMaterial.RESOURCE_HERBS),
+		Integer.valueOf(RawMaterial.RESOURCE_DIRT),
 		Integer.valueOf(RawMaterial.RESOURCE_HONEY),
 		Integer.valueOf(RawMaterial.RESOURCE_VINE),
 		Integer.valueOf(RawMaterial.RESOURCE_HIDE),

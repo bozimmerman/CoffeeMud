@@ -186,6 +186,7 @@ public class Swamp extends StdRoom implements Drink
 		Integer.valueOf(RawMaterial.RESOURCE_REED),
 		Integer.valueOf(RawMaterial.RESOURCE_SUGAR),
 		Integer.valueOf(RawMaterial.RESOURCE_LAMPOIL),
+		Integer.valueOf(RawMaterial.RESOURCE_DIRT),
 		Integer.valueOf(RawMaterial.RESOURCE_TAR),
 		Integer.valueOf(RawMaterial.RESOURCE_CLAY),
 	};

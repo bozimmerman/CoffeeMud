@@ -92,6 +92,7 @@ public class Jungle extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_ORANGES),
 		Integer.valueOf(RawMaterial.RESOURCE_COFFEEBEANS),
 		Integer.valueOf(RawMaterial.RESOURCE_HERBS),
+		Integer.valueOf(RawMaterial.RESOURCE_DIRT),
 		Integer.valueOf(RawMaterial.RESOURCE_VINE),
 		Integer.valueOf(RawMaterial.RESOURCE_LEMONS),
 		Integer.valueOf(RawMaterial.RESOURCE_FUR),

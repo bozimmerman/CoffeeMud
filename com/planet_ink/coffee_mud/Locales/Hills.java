@@ -73,6 +73,7 @@ public class Hills extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_EGGS),
 		Integer.valueOf(RawMaterial.RESOURCE_HERBS),
 		Integer.valueOf(RawMaterial.RESOURCE_FRESHWATER),
+		Integer.valueOf(RawMaterial.RESOURCE_DIRT),
 		Integer.valueOf(RawMaterial.RESOURCE_POTATOES)
 	};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
