@@ -157,17 +157,50 @@ public class Dragon extends StdMOB
 		// ===== set the mod based on the color
 		switch (DragonColor())
 		{
-			case WHITE:		PointMod = 1;	CMLib.factions().setAlignment(this,Faction.Align.EVIL);	break;
-			case BLACK:		PointMod = 2;	CMLib.factions().setAlignment(this,Faction.Align.EVIL);	break;
-			case BLUE:		PointMod = 3;	CMLib.factions().setAlignment(this,Faction.Align.EVIL);	break;
-			case GREEN:		PointMod = 4;	CMLib.factions().setAlignment(this,Faction.Align.EVIL);	break;
-			case RED:		PointMod = 5;	CMLib.factions().setAlignment(this,Faction.Align.EVIL);	break;
-			case BRASS:		PointMod = 1;	CMLib.factions().setAlignment(this,Faction.Align.GOOD);	break;
-			case COPPER:	PointMod = 2;	CMLib.factions().setAlignment(this,Faction.Align.GOOD);	break;
-			case BRONZE:	PointMod = 3;	CMLib.factions().setAlignment(this,Faction.Align.GOOD);	break;
-			case SILVER:	PointMod = 4;	CMLib.factions().setAlignment(this,Faction.Align.GOOD);	break;
-			case GOLD:		PointMod = 5;	CMLib.factions().setAlignment(this,Faction.Align.GOOD);	break;
-			default:		PointMod = 3;	CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);	break;
+		case WHITE:
+			PointMod = 1;
+			CMLib.factions().setAlignment(this, Faction.Align.EVIL);
+			break;
+		case BLACK:
+			PointMod = 2;
+			CMLib.factions().setAlignment(this, Faction.Align.EVIL);
+			break;
+		case BLUE:
+			PointMod = 3;
+			CMLib.factions().setAlignment(this, Faction.Align.EVIL);
+			break;
+		case GREEN:
+			PointMod = 4;
+			CMLib.factions().setAlignment(this, Faction.Align.EVIL);
+			break;
+		case RED:
+			PointMod = 5;
+			CMLib.factions().setAlignment(this, Faction.Align.EVIL);
+			break;
+		case BRASS:
+			PointMod = 1;
+			CMLib.factions().setAlignment(this, Faction.Align.GOOD);
+			break;
+		case COPPER:
+			PointMod = 2;
+			CMLib.factions().setAlignment(this, Faction.Align.GOOD);
+			break;
+		case BRONZE:
+			PointMod = 3;
+			CMLib.factions().setAlignment(this, Faction.Align.GOOD);
+			break;
+		case SILVER:
+			PointMod = 4;
+			CMLib.factions().setAlignment(this, Faction.Align.GOOD);
+			break;
+		case GOLD:
+			PointMod = 5;
+			CMLib.factions().setAlignment(this, Faction.Align.GOOD);
+			break;
+		default:
+			PointMod = 3;
+			CMLib.factions().setAlignment(this, Faction.Align.NEUTRAL);
+			break;
 		}
 
 		CMLib.leveler().fillOutMOB(this,basePhyStats().level());
@@ -199,15 +232,24 @@ public class Dragon extends StdMOB
 		final int iRoll = CMLib.dice().rollPercentage()+1;
 
 		// ===== Determine the age based upon this
-		if (iRoll==1) return HATCHLING;
-		if (iRoll<=10) return VERYYOUNG;
-		if (iRoll<=25) return YOUNG;
-		if (iRoll<=45) return SUBADULT;
-		if (iRoll<=67) return YOUNGADULT;
-		if (iRoll<=82) return ADULT;
-		if (iRoll<=92) return OLD;
-		if (iRoll<=97) return VERYOLD;
-		if (iRoll<=100) return ANCIENT;
+		if (iRoll == 1)
+			return HATCHLING;
+		if (iRoll <= 10)
+			return VERYYOUNG;
+		if (iRoll <= 25)
+			return YOUNG;
+		if (iRoll <= 45)
+			return SUBADULT;
+		if (iRoll <= 67)
+			return YOUNGADULT;
+		if (iRoll <= 82)
+			return ADULT;
+		if (iRoll <= 92)
+			return OLD;
+		if (iRoll <= 97)
+			return VERYOLD;
+		if (iRoll <= 100)
+			return ANCIENT;
 		return SUBADULT;
 	}
 
@@ -218,16 +260,36 @@ public class Dragon extends StdMOB
 		// ===== return a string that represents the age of the Dragon
 		switch (draconianAge)
 		{
-			case HATCHLING:		returnVal = new StringBuffer("a hatchling");break;
-			case VERYYOUNG:		returnVal = new StringBuffer("a very young");break;
-			case YOUNG:			returnVal = new StringBuffer("a young");break;
-			case SUBADULT:		returnVal = new StringBuffer("a sub-adult");break;
-			case YOUNGADULT:	returnVal = new StringBuffer("a young adult");break;
-			case ADULT:			returnVal = new StringBuffer("an adult");break;
-			case OLD:			returnVal = new StringBuffer("an old");break;
-			case VERYOLD:		returnVal = new StringBuffer("a very old");break;
-			case ANCIENT:		returnVal = new StringBuffer("an ancient");break;
-			default:			returnVal = new StringBuffer("a");break;
+		case HATCHLING:
+			returnVal = new StringBuffer("a hatchling");
+			break;
+		case VERYYOUNG:
+			returnVal = new StringBuffer("a very young");
+			break;
+		case YOUNG:
+			returnVal = new StringBuffer("a young");
+			break;
+		case SUBADULT:
+			returnVal = new StringBuffer("a sub-adult");
+			break;
+		case YOUNGADULT:
+			returnVal = new StringBuffer("a young adult");
+			break;
+		case ADULT:
+			returnVal = new StringBuffer("an adult");
+			break;
+		case OLD:
+			returnVal = new StringBuffer("an old");
+			break;
+		case VERYOLD:
+			returnVal = new StringBuffer("a very old");
+			break;
+		case ANCIENT:
+			returnVal = new StringBuffer("an ancient");
+			break;
+		default:
+			returnVal = new StringBuffer("a");
+			break;
 		}
 
 		return returnVal;
@@ -240,17 +302,39 @@ public class Dragon extends StdMOB
 		// ===== return the color of the dragon
 		switch (colorVal)
 		{
-			case WHITE:	returnVal = new StringBuffer("White");break;
-			case BLACK:	returnVal = new StringBuffer("Black");break;
-			case BLUE:	returnVal = new StringBuffer("Blue");break;
-			case GREEN:	returnVal = new StringBuffer("Green");break;
-			case RED:	returnVal = new StringBuffer("Red");break;
-			case BRASS:	returnVal = new StringBuffer("Brass");break;
-			case COPPER:returnVal = new StringBuffer("Copper");break;
-			case BRONZE:returnVal = new StringBuffer("Bronze");break;
-			case SILVER:returnVal = new StringBuffer("Silver");break;
-			case GOLD:	returnVal = new StringBuffer("Gold");break;
-			default:	returnVal = new StringBuffer("Unknown");break;
+		case WHITE:
+			returnVal = new StringBuffer("White");
+			break;
+		case BLACK:
+			returnVal = new StringBuffer("Black");
+			break;
+		case BLUE:
+			returnVal = new StringBuffer("Blue");
+			break;
+		case GREEN:
+			returnVal = new StringBuffer("Green");
+			break;
+		case RED:
+			returnVal = new StringBuffer("Red");
+			break;
+		case BRASS:
+			returnVal = new StringBuffer("Brass");
+			break;
+		case COPPER:
+			returnVal = new StringBuffer("Copper");
+			break;
+		case BRONZE:
+			returnVal = new StringBuffer("Bronze");
+			break;
+		case SILVER:
+			returnVal = new StringBuffer("Silver");
+			break;
+		case GOLD:
+			returnVal = new StringBuffer("Gold");
+			break;
+		default:
+			returnVal = new StringBuffer("Unknown");
+			break;
 		}
 
 		return returnVal;
