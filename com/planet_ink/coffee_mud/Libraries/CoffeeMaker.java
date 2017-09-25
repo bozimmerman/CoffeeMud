@@ -415,6 +415,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						("SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
 				itemstr.append("<ITEM>");
 				itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(thisItem)));
+				itemstr.append((((thisItem instanceof Container)&&(((Container)thisItem).capacity()>0))
+						?CMLib.xml().convertXMLtoTag("IID",""+thisItem):""));
 				itemstr.append(CMLib.xml().convertXMLtoTag("IDATA",getPropertiesStr(thisItem,true)));
 				itemstr.append("<IROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />");
 				itemstr.append("</ITEM>");
@@ -469,10 +471,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final String roomID=irm.parms().get("ID");
 			final long expirationDate=CMath.s_long(irm.parms().get("EXPIRE"));
 			if(roomID.startsWith("SPACE.") && (newOne instanceof SpaceObject))
-			{
 				CMLib.map().addObjectToSpace((SpaceObject)newOne,CMParms.toLongArray(CMParms.parseCommas(roomID.substring(6), true)));
-				//addToMOB=false; //????!!! wtf?!
-			}
 			else
 			{
 				final Room itemR=CMLib.map().getRoom(roomID);
@@ -483,15 +482,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					else
 						itemR.addItem(newOne);
 					newOne.setExpirationDate(expirationDate);
-					//addToMOB=false;
 				}
 			}
 			if(ILOC.length()>0)
 				LOCmap.put(newOne,ILOC);
 			setPropertiesStr(newOne,idat,true);
-			if((newOne instanceof Container)
-			&&(((Container)newOne).capacity()>0))
-				IIDmap.put(CMLib.xml().getValFromPieces(idat,"IID"),(Container)newOne);
+			if(newOne instanceof Container)
+				IIDmap.put(CMLib.xml().getValFromPieces(iblk.contents(),"IID"),(Container)newOne);
 		}
 		for(Enumeration<Item> i=coll.items();i.hasMoreElements();)
 		{
@@ -3731,7 +3728,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				mob.setClan(p.value(), CMath.s_int(p.parms().get("ROLE")));
 			mob.playerStats().setLastIP(mblk.getValFromPieces("LSIP"));
 			mob.playerStats().setEmail(mblk.getValFromPieces("EMAL"));
-			final String buf=mblk.getValFromPieces("CMPFIL");
+			final String buf=mblk.getValFromPieces("PFIL");
 			mob.playerStats().setXML(buf);
 			List<String> V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
 			for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
@@ -3740,7 +3737,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				mob.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tatt));
 			V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
 			mob.delAllExpertises();
-			for(int v=0;v<V9.size();v++) mob.addExpertise(V9.get(v));
+			for(int v=0;v<V9.size();v++) 
+				mob.addExpertise(V9.get(v));
 			mob.baseCharStats().setNonBaseStatsFromString(mblk.getValFromPieces("SAVE"));
 			mob.setDescription(mblk.getValFromPieces("DESC"));
 			mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
