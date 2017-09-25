@@ -73,11 +73,9 @@ public class Woods extends StdRoom
 	public static final Integer[] resourceList={
 		Integer.valueOf(RawMaterial.RESOURCE_WOOD),
 		Integer.valueOf(RawMaterial.RESOURCE_PINE),
-		Integer.valueOf(RawMaterial.RESOURCE_BALSA),
 		Integer.valueOf(RawMaterial.RESOURCE_OAK),
 		Integer.valueOf(RawMaterial.RESOURCE_MAPLE),
 		Integer.valueOf(RawMaterial.RESOURCE_REDWOOD),
-		Integer.valueOf(RawMaterial.RESOURCE_IRONWOOD),
 		Integer.valueOf(RawMaterial.RESOURCE_SAP),
 		Integer.valueOf(RawMaterial.RESOURCE_YEW),
 		Integer.valueOf(RawMaterial.RESOURCE_HICKORY),
