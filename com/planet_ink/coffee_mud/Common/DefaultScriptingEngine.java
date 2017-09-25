@@ -1991,6 +1991,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				found=true;
 				switch(gstatH.get(arg2.toUpperCase()).intValue())
 				{
+				case GSTATADD_STINK:
+					if(M.playerStats()!=null)
+						val=CMath.toPct(M.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
+					break;
 				case GSTATADD_DEITY:
 					val = M.getWorshipCharID();
 					break;
@@ -2111,6 +2115,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					found=true;
 					switch(gstatH.get(arg2).intValue())
 					{
+						case GSTATADD_STINK:
+							if(M.playerStats()!=null)
+								val = CMath.toPct(M.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
+							break;
 						case GSTATADD_DEITY:
 							val = M.getWorshipCharID();
 							break;
@@ -8236,6 +8244,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							found=true;
 							switch(gstatH.get(arg2.toUpperCase()).intValue())
 							{
+							case GSTATADD_STINK:
+								if(M.playerStats()!=null)
+									M.playerStats().setHygiene(Math.round(CMath.s_pct(arg3)*PlayerStats.HYGIENE_DELIMIT));
+								break;
 							case GSTATADD_DEITY:
 								M.setWorshipCharID(arg3);
 								break;
@@ -8506,6 +8518,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									found=true;
 									switch(gstatH.get(arg2.toUpperCase()).intValue())
 									{
+									case GSTATADD_STINK:
+										if(M.playerStats()!=null)
+											M.playerStats().setHygiene(Math.round(CMath.s_pct(arg3)*PlayerStats.HYGIENE_DELIMIT));
+										break;
 									case GSTATADD_DEITY:
 										M.setWorshipCharID(arg3);
 										break;

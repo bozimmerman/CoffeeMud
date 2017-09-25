@@ -97,7 +97,8 @@ public interface GenericBuilder extends CMLibrary
 		QUESTPOINTS,
 		FOLLOWERS,
 		TRAINS,
-		PRACTICES
+		PRACTICES,
+		STINK
 	}
 
 	public String getGenMOBTextUnpacked(MOB mob, String newText);

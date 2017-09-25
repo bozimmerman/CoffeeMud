@@ -2908,6 +2908,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					return ""+((MOB)P).getTrains();
 				case PRACTICES:
 					return ""+((MOB)P).getPractices();
+				case STINK:
+					if(((MOB)P).playerStats()!=null)
+						return CMath.toPct(((MOB)P).playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
+					break;
 				}
 			}
 		}
@@ -3020,6 +3024,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					return;
 				case PRACTICES:
 					((MOB)P).setPractices(CMath.parseIntExpression(value));
+					return;
+				case STINK:
+					((MOB)P).playerStats().setHygiene(Math.round(CMath.s_pct(value)*PlayerStats.HYGIENE_DELIMIT));
 					return;
 				}
 			}

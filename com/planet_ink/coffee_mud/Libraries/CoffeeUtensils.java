@@ -1352,6 +1352,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 										break;
 									}
 								}
+								if((!isFound)&&(promptSub.startsWith("STINK"))&&(mob.playerStats()!=null))
+									buf.append(CMath.toPct(mob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT));
 							}
 						}
 						if(!isFound)

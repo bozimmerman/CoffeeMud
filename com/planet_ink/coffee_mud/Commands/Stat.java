@@ -493,6 +493,16 @@ public class Stat  extends Skills
 		}
 	}
 
+	protected void addCharThing(int headerWidth, int numberWidth, int[] col, StringBuilder str, String title, String val)
+	{
+		str.append("^y"+CMStrings.padRight(title+"^w", headerWidth));
+		str.append(" ");
+		str.append(CMStrings.padRight(""+val, numberWidth));
+		col[0]++;
+		if(col[0]==4)
+			str.append("\n\r");
+	}
+	
 	protected void addCharStatsState(CharState cstats, int headerWidth, int numberWidth, int[] col, StringBuilder str)
 	{
 		for(int i=0;i<cstats.getStatCodes().length;i++)
@@ -635,7 +645,7 @@ public class Stat  extends Skills
 				msg.append(stat).append(", ");
 			for(String stat : mob.phyStats().getStatCodes())
 				msg.append(stat).append(", ");
-			msg.append("XP, XPTNL, XPFNL, QUESTPOINTS, TRAINS, PRACTICES, HEALTH, RESISTS, ATTRIBUTES");
+			msg.append("STINK, XP, XPTNL, XPFNL, QUESTPOINTS, TRAINS, PRACTICES, HEALTH, RESISTS, ATTRIBUTES");
 			for(Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
 			{
 				final Faction F=f.nextElement();
@@ -858,6 +868,8 @@ public class Stat  extends Skills
 					addCharStatsChars(target.charStats(), headerWidth, numberWidth, col, str);
 					addCharStatsPhys(target.phyStats(), headerWidth, numberWidth, col, str);
 					addCharStatsState(target.curState(), headerWidth, numberWidth, col, str);
+					if(target.playerStats()!=null)
+						addCharThing(headerWidth,numberWidth,col,str,"STINK",CMath.toPct(target.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT));
 					str.append("\n\r\n\r");
 					str.append(L("^XBase Character Statistics:^.^N\n\r"));
 					col[0]=0;
@@ -1365,6 +1377,11 @@ public class Stat  extends Skills
 							break;
 						}
 					}
+				}
+				if((!found)&&(thisStat.equals("STINK"))&&(M.playerStats()!=null))
+				{
+					str.append(CMath.toPct(M.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT)).append(" ");
+					found=true;
 				}
 				if((!found)&&(thisStat.startsWith("MAX")))
 				{
