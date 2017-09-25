@@ -463,7 +463,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			coll.addItem(newOne);
 			
 			final XMLLibrary.XMLTag irm=iblk.getPieceFromPieces("IROOM");
-			if(irm==null)
+			if(irm ==null)
 			{
 				Log.errOut("CoffeeMaker","Error parsing 'ITEM IROOM' of "+identifier(M,null)+".  Load aborted");
 				return;
