@@ -69,12 +69,6 @@ public class Spell_PortalOther extends Spell
 	}
 
 	@Override
-	protected int overrideMana()
-	{
-		return Ability.COST_ALL-90;
-	}
-
-	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_INDIFFERENT;
@@ -96,7 +90,7 @@ public class Spell_PortalOther extends Spell
 		}
 		super.unInvoke();
 	}
-
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -185,12 +179,6 @@ public class Spell_PortalOther extends Spell
 				e2.setDoorsNLocks(false,true,false,false,false,false);
 				e2.setExitParams("portal","close","open","closed.");
 				e2.setName(L("a swirling portal"));
-				final Ability A1=CMClass.getAbility("Prop_RoomView");
-				if(A1!=null)
-				{
-					A1.setMiscText(CMLib.map().getExtendedRoomID(newRoom));
-					e2.addNonUninvokableEffect(A1);
-				}
 				final Ability A2=CMClass.getAbility("Prop_RoomView");
 				if(A2!=null)
 				{
@@ -199,7 +187,9 @@ public class Spell_PortalOther extends Spell
 				}
 				newRoom.rawDoors()[Directions.GATE]=mob.location();
 				newRoom.setRawExit(Directions.GATE,e2);
-				beneficialAffect(mob,e2,asLevel,15);
+				Spell_PortalOther A = (Spell_PortalOther)beneficialAffect(mob,e2,asLevel,15);
+				if(A!=null)
+					A.newRoom=newRoom;
 			}
 		}
 		else

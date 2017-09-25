@@ -415,8 +415,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						("SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
 				itemstr.append("<ITEM>");
 				itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(thisItem)));
-				itemstr.append((((thisItem instanceof Container)&&(((Container)thisItem).capacity()>0))
-						?CMLib.xml().convertXMLtoTag("IID",""+thisItem):""));
+				itemstr.append((thisItem instanceof Container)
+						?CMLib.xml().convertXMLtoTag("IID",""+thisItem):"");
 				itemstr.append(CMLib.xml().convertXMLtoTag("IDATA",getPropertiesStr(thisItem,true)));
 				itemstr.append("<IROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />");
 				itemstr.append("</ITEM>");
