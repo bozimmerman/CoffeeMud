@@ -67,7 +67,8 @@ public class Desert extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_LAMPOIL),
 		Integer.valueOf(RawMaterial.RESOURCE_PEPPERS),
 		Integer.valueOf(RawMaterial.RESOURCE_SCALES),
-		Integer.valueOf(RawMaterial.RESOURCE_DATES)
+		Integer.valueOf(RawMaterial.RESOURCE_DATES),
+		Integer.valueOf(RawMaterial.RESOURCE_FRESHWATER)
 	};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
 

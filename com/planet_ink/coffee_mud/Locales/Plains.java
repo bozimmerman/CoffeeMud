@@ -78,6 +78,7 @@ public class Plains extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_HONEY),
 		Integer.valueOf(RawMaterial.RESOURCE_FEATHERS),
 		Integer.valueOf(RawMaterial.RESOURCE_LEATHER),
+		Integer.valueOf(RawMaterial.RESOURCE_FRESHWATER),
 		Integer.valueOf(RawMaterial.RESOURCE_WOOL)};
 	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
 

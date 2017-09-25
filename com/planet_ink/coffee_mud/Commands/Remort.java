@@ -414,6 +414,14 @@ public class Remort extends StdCommand
 					mob.baseState().setHitPoints(newHp[0]);
 					mob.baseState().setMana(newMana[0]);
 					mob.baseState().setMovement(newMove[0]);
+					if(pStats!=null)
+					{
+						final Race R=mob.baseCharStats().getMyRace();
+						final Room startR=mob.getStartRoom();
+						final TimeClock C=CMLib.time().localClock(startR);
+						final int age=pStats.initializeBirthday(C,0,R);
+						mob.baseCharStats().setStat(CharStats.STAT_AGE,age);
+					}
 					for(int code : CharStats.CODES.SAVING_THROWS())
 						mob.baseCharStats().setStat(code, 0);
 					for(int code : CharStats.CODES.MAXCODES())

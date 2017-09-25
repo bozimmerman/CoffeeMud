@@ -625,7 +625,7 @@ public interface RawMaterial extends Item
 		FEATHERS(RESOURCE_FEATHERS, 10, 20, 1, 20, "", "", null),
 		COTTON(RESOURCE_COTTON, 5, 20, 1, 590, "", "", null),
 		HEMP(RESOURCE_HEMP, 4, 10, 1, 720, "grassy", "", null),
-		WATER(RESOURCE_FRESHWATER, 0, 100, 0, 1000, "", "", null),
+		WATER(RESOURCE_FRESHWATER, 0, 100, 27, 1000, "", "", null),
 		SALT_WATER(RESOURCE_SALTWATER, 0, 100, 0, 1030, "", "", null),
 		LIQUID(RESOURCE_DRINKABLE, 0, 1, 0, 1000, "", "", null),
 		GLASS(RESOURCE_GLASS, 10, 0, 3, 2800, "", "", null),
