@@ -100,6 +100,8 @@ public interface ShopKeeper extends Environmental, Economics
 	public final static int DEAL_CLANPOSTMAN=29;
 	/** shopkeeper type constant, means they handle auctions, and implement the Auctioneer interface*/
 	public final static int DEAL_AUCTIONEER=30;
+	/** shopkeeper type constant, means they handle auctions, and implement the Auctioneer interface*/
+	public final static int DEAL_INSTRUMENTS=31;
 
 	/** shopkeeper integer sets denoting the DEAL_* constants which conflict with each other */
 	public final static int[][] DEAL_CONFLICTS={
@@ -119,7 +121,7 @@ public interface ShopKeeper extends Environmental, Economics
 		"VEGETABLES","HIDES","LUMBER","METALS","ROCKS",
 		"CLAN BANKER", "INN KEEPER", "SHIP SELLER",
 		"CLAN SHIP SELLER", "SLAVES", "POSTMAN", "CLAN POSTMAN",
-		"AUCTIONEER"
+		"AUCTIONEER","INSTRUMENTS"
 	};
 
 	/**

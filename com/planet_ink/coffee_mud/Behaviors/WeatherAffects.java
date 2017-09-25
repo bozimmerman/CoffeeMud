@@ -588,7 +588,9 @@ public class WeatherAffects extends PuddleMaker
 					}
 				}
 				if((heatExhaustionChance>0)
+				&&(CMLib.dice().rollPercentage()<10)
 				&&(CMLib.dice().rollPercentage()<(heatExhaustionChance-M.charStats().getSave(CharStats.STAT_SAVE_FIRE)))
+				&&(M.phyStats().level()>6)
 				&&(C.weatherType(M.location())!=Climate.WEATHER_CLEAR)
 				&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 				{

@@ -1731,6 +1731,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				case ShopKeeper.DEAL_AUCTIONEER:
 					V.addElement(L("My services as an Auctioneer"));
 					break;
+				case ShopKeeper.DEAL_INSTRUMENTS:
+					V.addElement(L("Musical instruments"));
+					break;
 				default:
 					V.addElement(L("... I have no idea WHAT I sell"));
 					break;
@@ -1825,6 +1828,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		case ShopKeeper.DEAL_STONEYARDER:
 			return ((E instanceof RawMaterial)
 				&&((((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK));
+		case ShopKeeper.DEAL_INSTRUMENTS:
+			return (E instanceof MusicalInstrument);
 		}
 		return false;
 	}

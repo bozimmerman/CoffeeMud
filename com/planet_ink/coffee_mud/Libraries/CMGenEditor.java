@@ -4260,7 +4260,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 			final StringBuffer buf=new StringBuffer("");
 			final StringBuffer codes=new StringBuffer("");
-			final String codeStr="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+			final String codeStr="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ!=+-@#$%&*~;:,<.>_";
 			if(M instanceof Banker)
 			{
 				int r=ShopKeeper.DEAL_BANKER;
