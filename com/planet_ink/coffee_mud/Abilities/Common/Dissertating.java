@@ -118,9 +118,15 @@ public class Dissertating extends CraftingSkill
 						int theSpellLevel=spellLevel(mob,theSpell);
 						if(fromTheScroll != null)
 							eraseFromScrollItem(fromTheScroll,theSpell,theSpellLevel);
+						final Item oldBuildingI=buildingI;
 						buildingI=buildScrollItem(buildingI, theSpell, theSpellLevel);
 						if(buildingI.secretIdentity().length()==0)
 							setBrand(mob, buildingI);
+						if((buildingI != null) && (oldBuildingI != buildingI) && (oldBuildingI.owner()!=null))
+						{
+							oldBuildingI.owner().addItem(buildingI);
+							oldBuildingI.destroy();
+						}
 						final Room R=mob.location();
 						if(R!=null)
 							R.send(mob, CMClass.getMsg(mob,buildingI,this,CMMsg.MSG_WROTE, null, CMMsg.MSG_WROTE, theSpell.ID(),-1,null));

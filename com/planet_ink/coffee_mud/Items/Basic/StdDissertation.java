@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -123,8 +124,8 @@ public class StdDissertation extends StdItem implements Scroll
 		{
 			if(isReadableScrollBy(mob.Name()))
 			{
-				List<Ability> Spells=getSpells();
-				if(Spells.size()==0)
+				List<Ability> spellsList=getSpells();
+				if(spellsList.size()==0)
 					mob.tell(L("The dissertation appears to contain no useful information."));
 				else
 				{
@@ -133,9 +134,9 @@ public class StdDissertation extends StdItem implements Scroll
 					if(spellName.length()>0)
 					{
 						spellName=spellName.trim();
-						thisOne=(Ability)CMLib.english().fetchEnvironmental(Spells,spellName,true);
+						thisOne=(Ability)CMLib.english().fetchEnvironmental(spellsList,spellName,true);
 						if(thisOne==null)
-							thisOne=(Ability)CMLib.english().fetchEnvironmental(Spells,spellName,false);
+							thisOne=(Ability)CMLib.english().fetchEnvironmental(spellsList,spellName,false);
 						while((thisOne==null)&&(spellName.length()>0))
 						{
 
@@ -146,13 +147,16 @@ public class StdDissertation extends StdItem implements Scroll
 							{
 								params.insertElementAt(spellName.substring(t).trim(),0);
 								spellName=spellName.substring(0,t);
-								thisOne=(Ability)CMLib.english().fetchEnvironmental(Spells,spellName,true);
+								thisOne=(Ability)CMLib.english().fetchEnvironmental(spellsList,spellName,true);
 								if(thisOne==null)
-									thisOne=(Ability)CMLib.english().fetchEnvironmental(Spells,spellName,false);
+									thisOne=(Ability)CMLib.english().fetchEnvironmental(spellsList,spellName,false);
 							}
 						}
 					}
-
+					
+					if((thisOne == null)&&(spellsList.size()==1))
+						thisOne=spellsList.get(0);
+					
 					final Room R=mob.location();
 					if((thisOne != null)
 					&&(!CMLib.ableMapper().qualifiesByLevel(mob, thisOne))
@@ -232,11 +236,15 @@ public class StdDissertation extends StdItem implements Scroll
 								if(level<lowest)
 									level=lowest;
 								final MOB teacher = CMClass.getFactoryMOB(mobName, lowest, R);
+								teacher.setAttribute(Attrib.NOTEACH, false);
 								try
 								{
-									learnThisAbility.setProficiency(0); //really? Why use these, ever?
+									learnThisAbility.setProficiency(100);
 									teacher.addAbility(learnA);
 									CMLib.expertises().postTeach(teacher,mob,learnA);
+									Ability A=mob.fetchAbility(learnA.ID());
+									if(A!=null)
+										A.setProficiency(0); //really? Why use these, ever?
 								}
 								finally
 								{
@@ -287,10 +295,10 @@ public class StdDissertation extends StdItem implements Scroll
 					if(!mob.isMonster())
 					{
 						final StringBuffer theNews=new StringBuffer("The dissertation contains instructions for the following:\n\r");
-						Spells=getSpells();
-						for(int u=0;u<Spells.size();u++)
+						spellsList=getSpells();
+						for(int u=0;u<spellsList.size();u++)
 						{
-							final Ability A=Spells.get(u);
+							final Ability A=spellsList.get(u);
 							theNews.append("Level "+CMStrings.padRight(""+CMLib.ableMapper().lowestQualifyingLevel(A.ID()),2)+": "+A.name()+"\n\r");
 						}
 						mob.tell(theNews.toString());
@@ -364,7 +372,7 @@ public class StdDissertation extends StdItem implements Scroll
 	@Override
 	public boolean isReadableScrollBy(String name)
 	{
-		return (readableScrollBy != null) && (readableScrollBy.equalsIgnoreCase(name));
+		return (readableScrollBy == null) || (readableScrollBy.equalsIgnoreCase(name));
 	}
 
 	@Override
