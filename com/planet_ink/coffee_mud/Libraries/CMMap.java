@@ -63,6 +63,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public List<PostOffice> 	postOfficeList  		= new SVector<PostOffice>();
 	public List<Auctioneer> 	auctionHouseList		= new SVector<Auctioneer>();
 	public List<Banker> 		bankList				= new SVector<Banker>();
+	public List<Librarian> 		libraryList				= new SVector<Librarian>();
 	public RTree<SpaceObject>	space					= new RTree<SpaceObject>();
 	protected Map<String,Object>SCRIPT_HOST_SEMAPHORES	= new Hashtable<String,Object>();
 
@@ -1848,6 +1849,66 @@ public class CMMap extends StdLibrary implements WorldMap
 				||(getStartArea(B)==AreaOrNull)
 				||(AreaOrNull.isChild(getStartArea(B)))))
 					H.add(B.bankChain());
+		}
+		return H.iterator();
+	}
+
+	public int numLibraries()
+	{
+		return libraryList.size();
+	}
+
+	protected void addLibrary(Librarian newOne)
+	{
+		if (!libraryList.contains(newOne))
+			libraryList.add(newOne);
+	}
+
+	protected void delLibrary(Librarian oneToDel)
+	{
+		libraryList.remove(oneToDel);
+	}
+
+	@Override
+	public Librarian getLibrary(String chain, String areaNameOrBranch)
+	{
+		for (final Librarian B : libraryList)
+		{
+			if((B.libraryChain().equalsIgnoreCase(chain))
+			&&(B.libraryChain().equalsIgnoreCase(areaNameOrBranch)))
+				return B;
+		}
+
+		final Area A=findArea(areaNameOrBranch);
+		if(A==null)
+			return null;
+
+		for (final Librarian B : libraryList)
+		{
+			if((B.libraryChain().equalsIgnoreCase(chain))
+			&&(getStartArea(B)==A))
+				return B;
+		}
+		return null;
+	}
+
+	@Override
+	public Enumeration<Librarian> libraries()
+	{
+		return new IteratorEnumeration<Librarian>(libraryList.iterator());
+	}
+
+	@Override
+	public Iterator<String> libraryChains(Area AreaOrNull)
+	{
+		final HashSet<String> H=new HashSet<String>();
+		for (final Librarian B : libraryList)
+		{
+			if((!H.contains(B.libraryChain()))
+			&&((AreaOrNull==null)
+				||(getStartArea(B)==AreaOrNull)
+				||(AreaOrNull.isChild(getStartArea(B)))))
+					H.add(B.libraryChain());
 		}
 		return H.iterator();
 	}

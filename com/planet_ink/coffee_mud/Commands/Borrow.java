@@ -49,33 +49,43 @@ public class Borrow extends StdCommand
 		throws java.io.IOException
 	{
 		Vector<String> origCmds=new XVector<String>(commands);
-		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Borrow how much from whom?");
+		final Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Borrow how much/what from whom?");
 		if(shopkeeper==null)
 			return false;
 		final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-		if(!(SHOP instanceof Banker))
+		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof Librarian)))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("You can not borrow from @x1.",shopkeeper.name()));
 			return false;
 		}
 		if(commands.size()==0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Borrow how much?"));
+			if(SHOP instanceof Banker)
+				CMLib.commands().doCommandFail(mob,origCmds,L("Borrow how much?"));
+			else
+				CMLib.commands().doCommandFail(mob,origCmds,L("Borrow what?"));
 			return false;
 		}
 		String str=CMParms.combine(commands,0);
-		if(str.equalsIgnoreCase("all"))
-			str=""+Integer.MAX_VALUE;
-		final long numCoins=CMLib.english().numPossibleGold(null,str);
-		final String currency=CMLib.english().numPossibleGoldCurrency(shopkeeper,str);
-		final double denomination=CMLib.english().numPossibleGoldDenomination(shopkeeper,currency,str);
 		Item thisThang=null;
-		if((numCoins==0)||(denomination==0.0))
+		if(SHOP instanceof Banker)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Borrow how much?"));
-			return false;
+			if(str.equalsIgnoreCase("all"))
+				str=""+Integer.MAX_VALUE;
+			final long numCoins=CMLib.english().numPossibleGold(null,str);
+			final String currency=CMLib.english().numPossibleGoldCurrency(shopkeeper,str);
+			final double denomination=CMLib.english().numPossibleGoldDenomination(shopkeeper,currency,str);
+			if((numCoins==0)||(denomination==0.0))
+			{
+				CMLib.commands().doCommandFail(mob,origCmds,L("Borrow how much?"));
+				return false;
+			}
+			thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
 		}
-		thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
+		else
+		{
+			
+		}
 
 		if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{

@@ -53,7 +53,7 @@ public class Deposit extends StdCommand
 		final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if(shopkeeper==null)
 			return false;
-		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
+		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice))&&(!(SHOP instanceof Librarian)))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("You can not deposit anything with @x1.",shopkeeper.name()));
 			return false;
@@ -64,7 +64,9 @@ public class Deposit extends StdCommand
 			return false;
 		}
 		final String thisName=CMParms.combine(commands,0);
-		Item thisThang=CMLib.english().bestPossibleGold(mob,null,thisName);
+		Item thisThang=null;
+		if(!(SHOP instanceof Librarian))
+			thisThang = CMLib.english().bestPossibleGold(mob,null,thisName);
 		if(thisThang==null)
 		{
 			thisThang=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thisName);
@@ -78,9 +80,15 @@ public class Deposit extends StdCommand
 		if(((Coins)thisThang).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thisName))
 			return false;
 		CMMsg newMsg=null;
+		if(SHOP instanceof Librarian)
+		{
+			//TODO: is this a RETURN or a DONATION?!
+		}
+		else
 		if(SHOP instanceof Banker)
 			newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,L("<S-NAME> deposit(s) <O-NAME> into <S-HIS-HER> account with <T-NAMESELF>."));
 		else
+		if(SHOP instanceof PostOffice)
 			newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,L("<S-NAME> mail(s) <O-NAME>."));
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);

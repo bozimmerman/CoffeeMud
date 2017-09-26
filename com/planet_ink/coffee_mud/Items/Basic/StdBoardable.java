@@ -663,6 +663,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				||(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER)))
 			&&(msg.target() instanceof MOB)
 			&&(!(msg.target() instanceof Banker))
+			&&(!(msg.target() instanceof Librarian))
 			&&(!(msg.target() instanceof Auctioneer))
 			&&(!(msg.target() instanceof PostOffice)))
 			{

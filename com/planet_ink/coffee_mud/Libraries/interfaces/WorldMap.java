@@ -133,6 +133,10 @@ public interface WorldMap extends CMLibrary
 	public Banker getBank(String chain, String areaNameOrBranch);
 	public Enumeration<Banker> banks();
 	public Iterator<String> bankChains(Area AreaOrNull);
+	public int numLibraries();
+	public Librarian getLibrary(String chain, String areaNameOrBranch);
+	public Enumeration<Librarian> libraries();
+	public Iterator<String> libraryChains(Area AreaOrNull);
 	public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch);
 	public Enumeration<Auctioneer> auctionHouses();
 	public BoardableShip getShip(String calledThis);
