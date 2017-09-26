@@ -231,16 +231,16 @@ public class Dissertating extends CraftingSkill
 			switch(CMLib.dice().roll(1, 4, 0))
 			{
 			case 1:
-				x1=L("short");
+				x2=L("practical");
 				break;
 			case 2:
-				x1=L("lengthy");
+				x2=L("theoretical");
 				break;
 			case 3:
-				x1=L("wordy");
+				x2=L("advanced");
 				break;
 			case 4:
-				x1=L("verbose");
+				x2=L("standard");
 				break;
 			}
 			buildingI.setDescription(L("a @x1 thesis on the @x2 application of @x3",x1,x2,theSpell.Name()));
