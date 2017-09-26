@@ -152,7 +152,6 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_SmokeSignals",false);
 		
 /*
-5	Dissertating  (G), Skill_WandUse(Q), Smoke Signals (Q)		
 6	Copywriting (G), Morse Code (Q)		
 7	Edit (G), Identify Poison (Q), Druid_KnowPlants		
 8	Skill_SeaMapping (G), RevealText (Q)		
