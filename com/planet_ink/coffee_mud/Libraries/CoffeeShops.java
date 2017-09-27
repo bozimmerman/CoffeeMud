@@ -1888,17 +1888,29 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		||(thisThang instanceof DeadBody)
 		||(CMLib.flags().isChild(thisThang)))
 			return false;
+		boolean yesISell=false;
 		if(shop.isSold(ShopKeeper.DEAL_ANYTHING))
-			return !(thisThang instanceof LandTitle);
+		{
+			yesISell = !(thisThang instanceof LandTitle);
+		}
 		else
 		{
 			for(int d=1;d<ShopKeeper.DEAL_DESCS.length;d++)
 			{
 				if(shop.isSold(d) && shopKeeperItemTypeCheck(thisThang,d,shop))
-					return true;
+				{
+					yesISell=true;
+					break;
+				}
 			}
 		}
-		return false;
+		if(yesISell)
+		{
+			if((shop.getWhatIsSoldZappermask().length()>0)
+			&&(!CMLib.masking().maskCheck(shop.getWhatIsSoldZappermask(),thisThang,true)))
+				yesISell = false;
+		}
+		return yesISell;
 	}
 
 	@Override
