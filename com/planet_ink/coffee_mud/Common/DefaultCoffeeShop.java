@@ -53,6 +53,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	WeakReference<ShopKeeper>		shopKeeper			= null;
 	public SVector<Environmental>	enumerableInventory	= new SVector<Environmental>(); // for Only Inventory situations
 	public List<ShelfProduct>		storeInventory		= new SVector<ShelfProduct>();
+	protected volatile Integer		contentHash			= null;
 
 	private static Converter<ShelfProduct,Environmental> converter=new Converter<ShelfProduct,Environmental>()
 	{
@@ -131,6 +132,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	{
 		storeInventory=new SVector<ShelfProduct>();
 		enumerableInventory=new SVector<Environmental>();
+		this.contentHash = null;
 		final Hashtable<Environmental,Environmental> copyFix=new Hashtable<Environmental,Environmental>();
 		for(final ShelfProduct SP: storeInventory)
 		{
@@ -140,6 +142,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 				copyFix.put(SP.product,I3);
 				stopTicking(I3);
 				storeInventory.add(new ShelfProduct(I3,SP.number,SP.price));
+				this.contentHash = null;
 			}
 		}
 		for(int i=0;i<E.enumerableInventory.size();i++)
@@ -152,6 +155,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 					I3=(Environmental)I2.copyOf();
 				stopTicking(I3);
 				enumerableInventory.addElement(I3);
+				this.contentHash = null;
 			}
 		}
 	}
@@ -176,6 +180,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			SP.product.destroy();
 		enumerableInventory.clear();
 		storeInventory.clear();
+		this.contentHash=null;
 	}
 
 	protected boolean shopCompare(Environmental thang1, Environmental thang2)
@@ -297,6 +302,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			if(!E.amDestroyed())
 			{
 				enumerableInventory.addElement(E);
+				this.contentHash = null;
 			}
 		}
 		final Environmental originalUncopiedThang=thisThang;
@@ -310,6 +316,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 				{
 					((InnKey)copy).hangOnRack(shopKeeper());
 					storeInventory.add(new ShelfProduct(copy,1,-1));
+					this.contentHash = null;
 				}
 			}
 		}
@@ -327,10 +334,12 @@ public class DefaultCoffeeShop implements CoffeeShop
 						SP.number+=number;
 						if(price>0)
 							SP.price=price;
+						this.contentHash = null;
 						return copy;
 					}
 				}
 				storeInventory.add(new ShelfProduct(thisThang,number,price));
+				this.contentHash = null;
 			}
 		}
 		if(originalUncopiedThang instanceof Item)
@@ -392,6 +401,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 				SP.product.destroy();
 			}
 		}
+		this.contentHash = null;
 	}
 
 	@Override
@@ -517,6 +527,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 			storeInventory.clear();
 		if(enumerableInventory!=null)
 			enumerableInventory.clear();
+		this.contentHash=null;
 	}
 
 	@Override
@@ -590,6 +601,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		destroyStoreInventory();
 		storeInventory=new SVector<ShelfProduct>();
 		enumerableInventory=new SVector<Environmental>();
+		this.contentHash = null;
 
 		if(text.length()==0)
 			return;
@@ -692,5 +704,41 @@ public class DefaultCoffeeShop implements CoffeeShop
 			addStoreInventory(P,itemnum,val);
 			P.destroy();
 		}
+	}
+	
+	@Override
+	public long contentHash()
+	{
+		final Integer cHash = this.contentHash;
+		if(cHash == null)
+		{
+			int hash = 0;
+			final List<Environmental> einv = this.enumerableInventory;
+			for(int v=einv.size()-1;v>=0;v--)
+			{
+				try
+				{
+					hash ^= einv.get(v).hashCode();
+				}
+				catch(Exception e)
+				{
+				}
+			}
+			final List<ShelfProduct> sps = this.storeInventory;
+			for(int v=sps.size()-1;v>=0;v--)
+			{
+				try
+				{
+					hash ^= sps.get(v).hashCode();
+				}
+				catch(Exception e)
+				{
+				}
+			}
+			this.contentHash = new Integer(hash);
+			return hash;
+		}
+		else
+			return cHash.intValue();
 	}
 }

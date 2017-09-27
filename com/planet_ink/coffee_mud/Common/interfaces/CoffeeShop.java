@@ -290,5 +290,17 @@ public interface CoffeeShop extends CMCommon
 		{
 			this.product=E;this.number=number;this.price=price;
 		}
+		@Override
+		public int hashCode()
+		{
+			return product.hashCode() ^ number ^ price;
+		}
 	}
+	
+	/**
+	 * Returns a hash of all the items currently in the
+	 * shop, for help in determining when things change.
+	 * @return the hash of the contents.
+	 */
+	public long contentHash();
 }

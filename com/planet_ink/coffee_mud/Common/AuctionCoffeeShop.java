@@ -268,4 +268,10 @@ public class AuctionCoffeeShop implements CoffeeShop
 	public void buildShopFromXML(String text)
 	{
 	}
+	
+	@Override
+	public long contentHash()
+	{
+		return this.hashCode();
+	}
 }

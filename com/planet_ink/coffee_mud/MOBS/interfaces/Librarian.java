@@ -90,6 +90,13 @@ public interface Librarian extends ShopKeeper
 	 * made.
 	 */
 	public final static int		DEFAULT_MAX_OVERDUE_DAYS	= 15;
+	
+	/**
+	 * The default maximum number of items that one person can have
+	 * checked out at any given time.
+	 */
+	public final static int		DEFAULT_MAX_BORROWED		= 5;
+
 
 	/**
 	 * Gets the minimum base currency charge due the moment
@@ -230,8 +237,28 @@ public interface Librarian extends ShopKeeper
 	public void setMaxOverdueDays(int days);
 
 	/**
+	 * Gets the maximum number of items that one person can have
+	 * checked out at any given time.
+	 * 
+	 * @see Librarian#setMaxBorrowed(int)
+	 * 
+	 * @return number of items
+	 */
+	public int getMaxBorrowed();
+
+	/**
+	 * Sets the maximum number of items that one person can have
+	 * checked out at any given time.
+	 * 
+	 * @see Librarian#getMaxBorrowed()
+	 * 
+	 * @param items number of items
+	 */
+	public void setMaxBorrowed(int items);
+
+	/**
 	 * Gets the name of the library chain to which this librarian belongs.
-	 * @see Librarian#setBankChain(String)
+	 * @see Librarian#setLibraryChain(String)
 	 * @return the library chain name
 	 */
 	public String libraryChain();
@@ -241,16 +268,7 @@ public interface Librarian extends ShopKeeper
 	 * @see Librarian#libraryChain()
 	 * @param name the library chain name
 	 */
-	public void setBankChain(String name);
-	/**
-	 * Returns the mask used to determine if a contributor is ignored by the Librarian
-	 * for contribution.
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
-	 * @see Librarian#contributorMask()
-	 * @see Librarian#setContributorMask(String)
-	 * @return the mask used
-	 */
-	public String finalContributorMask();
+	public void setLibraryChain(String name);
 	/**
 	 * Returns the mask used to determine if a contributor is ignored by the Librarian
 	 * for contribution.
@@ -266,7 +284,7 @@ public interface Librarian extends ShopKeeper
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @see Librarian#finalContributorMask()
 	 * @see Librarian#contributorMask()
-	 * @param factors the mask to use
+	 * @param mask the mask to use
 	 */
-	public void setContributorMask(String factors);
+	public void setContributorMask(String mask);
 }
