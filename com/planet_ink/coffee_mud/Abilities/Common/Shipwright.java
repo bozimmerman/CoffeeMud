@@ -382,7 +382,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				{
 					final int level1=CMath.s_int(o1.get(RCP_LEVEL));
 					final int level2=CMath.s_int(o2.get(RCP_LEVEL));
-					return Integer.compare(level1, level2);
+					return (level1>level2)?1:(level1<level2)?-1:0;
 				}
 			});
 			for(int r=0;r<recipes.size();r++)
