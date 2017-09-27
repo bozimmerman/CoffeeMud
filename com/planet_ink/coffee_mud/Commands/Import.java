@@ -2950,6 +2950,7 @@ public class Import extends StdCommand
 					if((mobName.toUpperCase().indexOf("PET ")>=0)||(mobName.toUpperCase().indexOf("PETS ")>=0))
 						whatIsell=ShopKeeper.DEAL_PETS;
 					((ShopKeeper)M).setWhatIsSoldMask(0);
+					((ShopKeeper)M).setWhatIsSoldZappermask("");
 					((ShopKeeper)M).addSoldType(whatIsell);
 					break;
 				}

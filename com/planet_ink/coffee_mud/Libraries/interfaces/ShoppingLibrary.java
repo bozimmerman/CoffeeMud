@@ -56,7 +56,7 @@ public interface ShoppingLibrary extends CMLibrary
 	public void purchaseAbility(Ability A,  MOB seller, ShopKeeper shop, MOB mobFor);
 	public List<Environmental> addRealEstateTitles(List<Environmental> V, MOB buyer, CoffeeShop shop, Room myRoom);
 	public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores);
-	public String storeKeeperString(CoffeeShop shop);
+	public String storeKeeperString(CoffeeShop shop, ShopKeeper keeper);
 	public boolean doISellThis(Environmental thisThang, ShopKeeper shop);
 	public String[] bid(MOB mob, double bid, String bidCurrency, AuctionData auctionData, Item I, List<String> auctionAnnounces);
 	public void returnMoney(MOB to, String currency, double amt);

@@ -100,8 +100,12 @@ public interface ShopKeeper extends Environmental, Economics
 	public final static int DEAL_CLANPOSTMAN=29;
 	/** shopkeeper type constant, means they handle auctions, and implement the Auctioneer interface*/
 	public final static int DEAL_AUCTIONEER=30;
-	/** shopkeeper type constant, means they handle auctions, and implement the Auctioneer interface*/
+	/** shopkeeper type constant, means they buy and sell musical instruments*/
 	public final static int DEAL_INSTRUMENTS=31;
+	/** shopkeeper type constant, means they buy and sell any books*/
+	public final static int DEAL_BOOKS=32;
+	/** shopkeeper type constant, means they buy and sell any readables*/
+	public final static int DEAL_READABLES=33;
 
 	/** shopkeeper integer sets denoting the DEAL_* constants which conflict with each other */
 	public final static int[][] DEAL_CONFLICTS={
@@ -121,7 +125,7 @@ public interface ShopKeeper extends Environmental, Economics
 		"VEGETABLES","HIDES","LUMBER","METALS","ROCKS",
 		"CLAN BANKER", "INN KEEPER", "SHIP SELLER",
 		"CLAN SHIP SELLER", "SLAVES", "POSTMAN", "CLAN POSTMAN",
-		"AUCTIONEER","INSTRUMENTS"
+		"AUCTIONEER","INSTRUMENTS","BOOKS","READABLES"
 	};
 
 	/**
@@ -192,4 +196,24 @@ public interface ShopKeeper extends Environmental, Economics
 	 * @return whether the shopkeeper deals in the type of item passed in
 	 */
 	public boolean doISellThis(Environmental thisThang);
+	
+	/**
+	 * Sets the zapper mask which applies to items to determine whether they are bought and solid
+	 * by this shopkeeper.
+	 * @see ShopKeeper#isSold(int)
+	 * @see ShopKeeper#getWhatIsSoldZappermask()
+	 * @see MaskingLibrary
+	 * @param newSellMask the item zappermask
+	 */
+	public void setWhatIsSoldZappermask(String newSellMask);
+
+	/**
+	 * Returns the zapper mask which applies to items to determine whether they are bought and solid
+	 * by this shopkeeper.
+	 * @see ShopKeeper#isSold(int)
+	 * @see ShopKeeper#setWhatIsSoldZappermask(String)
+	 * @see MaskingLibrary
+	 * @return the item zappermask
+	 */
+	public String getWhatIsSoldZappermask();
 }

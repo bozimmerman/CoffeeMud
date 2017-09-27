@@ -55,7 +55,7 @@ public class GrinderMobs
 		LOANINT,SVCRIT,AUCCHAIN,LIVELIST,TIMELIST,
 		TIMELISTPCT,LIVECUT,TIMECUT,MAXDAYS,
 		MINDAYS,ISAUCTION,DEITYID,VARMONEY,
-		CATACAT;
+		CATACAT,SELLIMASK;
 		
 		public boolean isGenField;
 		private MOBDataField(boolean isGeneric)
@@ -522,6 +522,10 @@ public class GrinderMobs
 						((Rideable)M).setRiderCapacity(CMath.s_int(old));
 					break;
 				case ISSHOPKEEPER: // is shopkeeper
+					break;
+				case SELLIMASK: // sell item mask
+					if(M instanceof ShopKeeper)
+						((ShopKeeper)M).setWhatIsSoldZappermask(old.trim());
 					break;
 				case SHOPKEEPERTYPE: // shopkeeper type
 					if(M instanceof ShopKeeper)

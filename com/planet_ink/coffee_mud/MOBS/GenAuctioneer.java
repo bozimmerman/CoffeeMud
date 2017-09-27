@@ -116,7 +116,8 @@ public class GenAuctioneer extends StdAuctioneer
 										   "AUCHOUSE","LIVEPRICE","TIMEPRICE",
 										   "TIMEPCT","LIVECUT","TIMECUT",
 										   "MAXADAYS","MINADAYS",
-										   "IGNOREMASK","PRICEMASKS"};
+										   "IGNOREMASK","PRICEMASKS",
+										   "ITEMMASK"};
 
 	@Override
 	public String getStat(String code)
@@ -125,16 +126,28 @@ public class GenAuctioneer extends StdAuctioneer
 			return CMLib.coffeeMaker().getGenMobStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+getWhatIsSoldMask();
-		case 1: return prejudiceFactors();
-		case 2: return auctionHouse();
-		case 3: return ""+timedListingPrice();
-		case 4: return ""+timedListingPct();
-		case 5: return ""+timedFinalCutPct();
-		case 6: return ""+maxTimedAuctionDays();
-		case 7: return ""+minTimedAuctionDays();
-		case 8: return ignoreMask();
-		case 9: return CMParms.toListString(itemPricingAdjustments());
+		case 0:
+			return "" + getWhatIsSoldMask();
+		case 1:
+			return prejudiceFactors();
+		case 2:
+			return auctionHouse();
+		case 3:
+			return "" + timedListingPrice();
+		case 4:
+			return "" + timedListingPct();
+		case 5:
+			return "" + timedFinalCutPct();
+		case 6:
+			return "" + maxTimedAuctionDays();
+		case 7:
+			return "" + minTimedAuctionDays();
+		case 8:
+			return ignoreMask();
+		case 9:
+			return CMParms.toListString(itemPricingAdjustments());
+		case 10:
+			return this.getWhatIsSoldZappermask();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -156,15 +169,36 @@ public class GenAuctioneer extends StdAuctioneer
 				setWhatIsSoldMask(CMParms.indexOfIgnoreCase(ShopKeeper.DEAL_DESCS,val));
 			break;
 		}
-		case 1: setPrejudiceFactors(val); break;
-		case 2: setAuctionHouse(val); break;
-		case 3: setTimedListingPrice(CMath.s_parseMathExpression(val)); break;
-		case 4: setTimedListingPct(CMath.s_parseMathExpression(val)); break;
-		case 5: setTimedFinalCutPct(CMath.s_parseMathExpression(val)); break;
-		case 6: setMaxTimedAuctionDays(CMath.s_parseIntExpression(val)); break;
-		case 7: setMinTimedAuctionDays(CMath.s_parseIntExpression(val)); break;
-		case 8: setIgnoreMask(val); break;
-		case 9: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
+		case 1:
+			setPrejudiceFactors(val);
+			break;
+		case 2:
+			setAuctionHouse(val);
+			break;
+		case 3:
+			setTimedListingPrice(CMath.s_parseMathExpression(val));
+			break;
+		case 4:
+			setTimedListingPct(CMath.s_parseMathExpression(val));
+			break;
+		case 5:
+			setTimedFinalCutPct(CMath.s_parseMathExpression(val));
+			break;
+		case 6:
+			setMaxTimedAuctionDays(CMath.s_parseIntExpression(val));
+			break;
+		case 7:
+			setMinTimedAuctionDays(CMath.s_parseIntExpression(val));
+			break;
+		case 8:
+			setIgnoreMask(val);
+			break;
+		case 9:
+			setItemPricingAdjustments((val.trim().length() == 0) ? new String[0] : CMParms.toStringArray(CMParms.parseCommas(val, true)));
+			break;
+		case 10:
+			this.setWhatIsSoldZappermask(val.trim());
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

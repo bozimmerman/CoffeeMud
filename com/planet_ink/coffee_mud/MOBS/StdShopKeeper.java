@@ -51,6 +51,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	protected int			budgetTickDown		= 2;
 	protected double[]		devalueRate			= null;
 	protected String[]		pricingAdjustments	= new String[0];
+	protected String		itemZapperMask		= "";
 
 	protected Pair<Long,TimeClock.TimePeriod>	budget = null;
 	
@@ -158,7 +159,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	@Override
 	public String storeKeeperString()
 	{
-		return CMLib.coffeeShops().storeKeeperString(getShop());
+		return CMLib.coffeeShops().storeKeeperString(getShop(), this);
 	}
 
 	@Override
@@ -579,4 +580,15 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		invResetTickDown = 0;
 	}
 
+	@Override
+	public void setWhatIsSoldZappermask(String newSellMask)
+	{
+		itemZapperMask = newSellMask;
+	}
+
+	@Override
+	public String getWhatIsSoldZappermask()
+	{
+		return itemZapperMask;
+	}
 }

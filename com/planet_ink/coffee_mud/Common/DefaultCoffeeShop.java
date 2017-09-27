@@ -563,6 +563,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 	{
 		final StringBuffer itemstr=new StringBuffer("");
 		itemstr.append(CMLib.xml().convertXMLtoTag("ISELL",shopKeeper().getWhatIsSoldMask()));
+		itemstr.append(CMLib.xml().convertXMLtoTag("IIMSK",CMLib.xml().parseOutAngleBrackets(shopKeeper().getWhatIsSoldZappermask())));
 		itemstr.append(CMLib.xml().convertXMLtoTag("IPREJ",shopKeeper().prejudiceFactors()));
 		itemstr.append(CMLib.xml().convertXMLtoTag("IBUDJ",shopKeeper().budget()));
 		itemstr.append(CMLib.xml().convertXMLtoTag("IDVAL",shopKeeper().devalueRate()));
@@ -605,11 +606,16 @@ public class DefaultCoffeeShop implements CoffeeShop
 				shop.setWhatIsSoldMask(CMath.s_long(parm));
 			else
 			if(parm!=null)
-			for(int s=0;s<ShopKeeper.DEAL_DESCS.length;s++)
 			{
-				if(parm.equalsIgnoreCase(ShopKeeper.DEAL_DESCS[s]))
-					shop.setWhatIsSoldMask(s);
+				for(int s=0;s<ShopKeeper.DEAL_DESCS.length;s++)
+				{
+					if(parm.equalsIgnoreCase(ShopKeeper.DEAL_DESCS[s]))
+						shop.setWhatIsSoldMask(s);
+				}
 			}
+			parm=CMParms.getParmStr(text,"IIMSK","");
+			if(parm!=null)
+				shop.setWhatIsSoldZappermask(CMLib.xml().restoreAngleBrackets(parm.trim()));
 			parm=CMParms.getParmStr(text,"IPREJ","");
 			if(parm!=null)
 				shop.setPrejudiceFactors(parm);
@@ -637,6 +643,9 @@ public class DefaultCoffeeShop implements CoffeeShop
 		String parm=CMLib.xml().getValFromPieces(xmlV,"ISELL");
 		if((parm!=null)&&(CMath.isNumber(parm)))
 			shop.setWhatIsSoldMask(CMath.s_long(parm));
+		parm=CMParms.getParmStr(text,"IIMSK","");
+		if(parm!=null)
+			shop.setWhatIsSoldZappermask(CMLib.xml().restoreAngleBrackets(parm.trim()));
 		parm=CMLib.xml().getValFromPieces(xmlV,"IPREJ");
 		if(parm!=null)
 			shop.setPrejudiceFactors(parm);

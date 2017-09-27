@@ -1749,6 +1749,10 @@ public class MobData extends StdWebMacro
 				case POWERS:
 					// moved to below
 					break;
+				case SELLIMASK:
+					if(M instanceof ShopKeeper)
+						str.append(((ShopKeeper)M).getWhatIsSoldZappermask());
+					break;
 				}
 				if(firstTime)
 					httpReq.addFakeUrlParameter(parmName,old.equals("checked")?"on":old);

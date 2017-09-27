@@ -107,6 +107,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	private String			ignore				= "";
 	private MOB				staticMOB			= null;
 	private String[]		pricingAdjustments	= new String[0];
+	private String			itemZapperMask		= "";
 	
 	private Pair<Long,TimePeriod> budget		= new Pair<Long,TimePeriod>(Long.valueOf(100000), TimePeriod.DAY);
 
@@ -238,7 +239,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	@Override
 	public String storeKeeperString()
 	{
-		return CMLib.coffeeShops().storeKeeperString(getShop());
+		return CMLib.coffeeShops().storeKeeperString(getShop(), this);
 	}
 
 	@Override
@@ -773,5 +774,18 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		if(mob instanceof ShopKeeper)
 			return false;
 		return super.autoInvocation(mob, force);
+	}
+	
+
+	@Override
+	public void setWhatIsSoldZappermask(String newSellMask)
+	{
+		itemZapperMask = newSellMask;
+	}
+
+	@Override
+	public String getWhatIsSoldZappermask()
+	{
+		return itemZapperMask;
 	}
 }

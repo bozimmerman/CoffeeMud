@@ -192,7 +192,7 @@ public class Prop_Retainable extends Property
 	{
 		final StringBuffer skills = new StringBuffer("");
 		if(me instanceof ShopKeeper)
-			skills.append(", selling "+CMLib.coffeeShops().storeKeeperString(((ShopKeeper)me).getShop()).toLowerCase());
+			skills.append(", selling "+CMLib.coffeeShops().storeKeeperString(((ShopKeeper)me).getShop(), ((ShopKeeper)me)).toLowerCase());
 		for(final Enumeration<Ability> a=me.allAbilities();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();

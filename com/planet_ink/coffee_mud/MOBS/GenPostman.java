@@ -115,7 +115,7 @@ public class GenPostman extends StdPostman
 									 "PREJUDICE",
 									 "POSTCHAIN","POSTMIN","POSTLBS",
 									 "POSTHOLD","POSTNEW","POSTHELD",
-									 "IGNOREMASK","PRICEMASKS"};
+									 "IGNOREMASK","PRICEMASKS","ITEMMASK"};
 
 	@Override
 	public String getStat(String code)
@@ -124,16 +124,28 @@ public class GenPostman extends StdPostman
 			return CMLib.coffeeMaker().getGenMobStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+getWhatIsSoldMask();
-		case 1: return prejudiceFactors();
-		case 2: return postalChain();
-		case 3: return ""+minimumPostage();
-		case 4: return ""+postagePerPound();
-		case 5: return ""+holdFeePerPound();
-		case 6: return ""+feeForNewBox();
-		case 7: return ""+maxMudMonthsHeld();
-		case 8: return ignoreMask();
-		case 9: return CMParms.toListString(itemPricingAdjustments());
+		case 0:
+			return "" + getWhatIsSoldMask();
+		case 1:
+			return prejudiceFactors();
+		case 2:
+			return postalChain();
+		case 3:
+			return "" + minimumPostage();
+		case 4:
+			return "" + postagePerPound();
+		case 5:
+			return "" + holdFeePerPound();
+		case 6:
+			return "" + feeForNewBox();
+		case 7:
+			return "" + maxMudMonthsHeld();
+		case 8:
+			return ignoreMask();
+		case 9:
+			return CMParms.toListString(itemPricingAdjustments());
+		case 10:
+			return this.getWhatIsSoldZappermask();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -147,16 +159,39 @@ public class GenPostman extends StdPostman
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setWhatIsSoldMask(CMath.s_long(val)); break;
-		case 1: setPrejudiceFactors(val); break;
-		case 2: setPostalChain(val); break;
-		case 3: setMinimumPostage(CMath.s_parseMathExpression(val)); break;
-		case 4: setPostagePerPound(CMath.s_parseMathExpression(val)); break;
-		case 5: setHoldFeePerPound(CMath.s_parseMathExpression(val)); break;
-		case 6: setFeeForNewBox(CMath.s_parseMathExpression(val)); break;
-		case 7: setMaxMudMonthsHeld(CMath.s_parseIntExpression(val)); break;
-		case 8: setIgnoreMask(val); break;
-		case 9: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
+		case 0:
+			setWhatIsSoldMask(CMath.s_long(val));
+			break;
+		case 1:
+			setPrejudiceFactors(val);
+			break;
+		case 2:
+			setPostalChain(val);
+			break;
+		case 3:
+			setMinimumPostage(CMath.s_parseMathExpression(val));
+			break;
+		case 4:
+			setPostagePerPound(CMath.s_parseMathExpression(val));
+			break;
+		case 5:
+			setHoldFeePerPound(CMath.s_parseMathExpression(val));
+			break;
+		case 6:
+			setFeeForNewBox(CMath.s_parseMathExpression(val));
+			break;
+		case 7:
+			setMaxMudMonthsHeld(CMath.s_parseIntExpression(val));
+			break;
+		case 8:
+			setIgnoreMask(val);
+			break;
+		case 9:
+			setItemPricingAdjustments((val.trim().length() == 0) ? new String[0] : CMParms.toStringArray(CMParms.parseCommas(val, true)));
+			break;
+		case 10:
+			this.setWhatIsSoldZappermask(val.trim());
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

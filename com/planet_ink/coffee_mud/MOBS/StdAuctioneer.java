@@ -755,7 +755,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	@Override
 	public String storeKeeperString()
 	{
-		return CMLib.coffeeShops().storeKeeperString(getShop());
+		return CMLib.coffeeShops().storeKeeperString(getShop(), this);
 	}
 
 	@Override
@@ -866,6 +866,18 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	{
 	}
 
+
+	@Override
+	public void setWhatIsSoldZappermask(String newSellMask)
+	{
+	}
+
+	@Override
+	public String getWhatIsSoldZappermask()
+	{
+		return "";
+	}
+	
 	@Override
 	public int finalInvResetRate()
 	{
@@ -912,4 +924,5 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	public void mergeAuctioneerPolicy(Auctioneer auction)
 	{
 	}
+	
 }

@@ -1627,7 +1627,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	}
 
 	@Override
-	public String storeKeeperString(CoffeeShop shop)
+	public String storeKeeperString(CoffeeShop shop, ShopKeeper keeper)
 	{
 		if(shop==null)
 			return "";
@@ -1734,29 +1734,42 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				case ShopKeeper.DEAL_INSTRUMENTS:
 					V.addElement(L("Musical instruments"));
 					break;
+				case ShopKeeper.DEAL_BOOKS:
+					V.addElement(L("Books"));
+					break;
+				case ShopKeeper.DEAL_READABLES:
+					V.addElement(L("Readables"));
+					break;
 				default:
 					V.addElement(L("... I have no idea WHAT I sell"));
 					break;
 				}
 			}
 		}
+		if((keeper!=null)&&(keeper.getWhatIsSoldZappermask().length()>0))
+			V.addElement(CMLib.masking().maskDesc(keeper.getWhatIsSoldZappermask()));
 		return CMParms.toListString(V);
 	}
 
 	protected boolean shopKeeperItemTypeCheck(Environmental E, int dealCode, ShopKeeper shopKeeper)
 	{
+		boolean chk;
 		switch(dealCode)
 		{
 		case ShopKeeper.DEAL_ANYTHING:
-			return !(E instanceof LandTitle);
+			chk = !(E instanceof LandTitle);
+			break;
 		case ShopKeeper.DEAL_ARMOR:
-			return (E instanceof Armor);
+			chk = (E instanceof Armor);
+			break;
 		case ShopKeeper.DEAL_MAGIC:
-			return (E instanceof MiscMagic);
+			chk = (E instanceof MiscMagic);
+			break;
 		case ShopKeeper.DEAL_WEAPONS:
-			return (E instanceof Weapon)||(E instanceof Ammunition);
+			chk = (E instanceof Weapon)||(E instanceof Ammunition);
+			break;
 		case ShopKeeper.DEAL_GENERAL:
-			return ((E instanceof Item)
+			chk = ((E instanceof Item)
 					&&(!(E instanceof Armor))
 					&&(!(E instanceof MiscMagic))
 					&&(!(E instanceof ClanItem))
@@ -1767,20 +1780,26 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					&&(!(E instanceof BoardableShip))
 					&&(!(E instanceof RawMaterial))
 					&&(!(E instanceof Ability)));
+			break;
 		case ShopKeeper.DEAL_LEATHER:
-			return ((E instanceof Item)
+			chk = ((E instanceof Item)
 					&&((((Item)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
 					&&(!(E instanceof RawMaterial)));
+			break;
 		case ShopKeeper.DEAL_PETS:
-			return ((E instanceof MOB)&&(CMLib.flags().isAnimalIntelligence((MOB)E)));
+			chk = ((E instanceof MOB)&&(CMLib.flags().isAnimalIntelligence((MOB)E)));
+			break;
 		case ShopKeeper.DEAL_SLAVES:
-			return ((E instanceof MOB)&&(!CMLib.flags().isAnimalIntelligence((MOB)E)));
+			chk = ((E instanceof MOB)&&(!CMLib.flags().isAnimalIntelligence((MOB)E)));
+			break;
 		case ShopKeeper.DEAL_INVENTORYONLY:
-			return (shopKeeper.getShop().inEnumerableInventory(E));
+			chk = (shopKeeper.getShop().inEnumerableInventory(E));
+			break;
 		case ShopKeeper.DEAL_INNKEEPER:
-			return E instanceof InnKey;
+			chk = E instanceof InnKey;
+			break;
 		case ShopKeeper.DEAL_JEWELLER:
-			return ((E instanceof Item)
+			chk = ((E instanceof Item)
 					&&(!(E instanceof Weapon))
 					&&(!(E instanceof MiscMagic))
 					&&(!(E instanceof ClanItem))
@@ -1790,48 +1809,72 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					||((Item)E).fitsOn(Wearable.WORN_NECK)
 					||((Item)E).fitsOn(Wearable.WORN_RIGHT_FINGER)
 					||((Item)E).fitsOn(Wearable.WORN_LEFT_FINGER)));
+			break;
 		case ShopKeeper.DEAL_ALCHEMIST:
-			return (E instanceof Potion);
+			chk = (E instanceof Potion);
+			break;
 		case ShopKeeper.DEAL_LANDSELLER:
 		case ShopKeeper.DEAL_CLANDSELLER:
-			return ((E instanceof LandTitle)&&(CMLib.map().getShip(((LandTitle)E).landPropertyID())==null));
+			chk = ((E instanceof LandTitle)&&(CMLib.map().getShip(((LandTitle)E).landPropertyID())==null));
+			break;
 		case ShopKeeper.DEAL_SHIPSELLER:
 		case ShopKeeper.DEAL_CSHIPSELLER:
-			return ((E instanceof BoardableShip)
+			chk = ((E instanceof BoardableShip)
 					||((E instanceof LandTitle)&&(CMLib.map().getShip(((LandTitle)E).landPropertyID())!=null)));
+			break;
 		case ShopKeeper.DEAL_ANYTECHNOLOGY:
-			return (E instanceof Electronics);
+			chk = (E instanceof Electronics);
+			break;
 		case ShopKeeper.DEAL_BUTCHER:
-			return ((E instanceof RawMaterial)
+			chk = ((E instanceof RawMaterial)
 				&&(((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH);
+			break;
 		case ShopKeeper.DEAL_FOODSELLER:
-			return (((E instanceof Food)||(E instanceof Drink))
+			chk = (((E instanceof Food)||(E instanceof Drink))
 					&&(!(E instanceof RawMaterial)));
+			break;
 		case ShopKeeper.DEAL_GROWER:
-			return ((E instanceof RawMaterial)
+			chk = ((E instanceof RawMaterial)
 				&&(((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION);
+			break;
 		case ShopKeeper.DEAL_HIDESELLER:
-			return ((E instanceof RawMaterial)
+			chk = ((E instanceof RawMaterial)
 				&&((((RawMaterial)E).material()==RawMaterial.RESOURCE_HIDE)
 				||(((RawMaterial)E).material()==RawMaterial.RESOURCE_FEATHERS)
 				||(((RawMaterial)E).material()==RawMaterial.RESOURCE_LEATHER)
 				||(((RawMaterial)E).material()==RawMaterial.RESOURCE_SCALES)
 				||(((RawMaterial)E).material()==RawMaterial.RESOURCE_WOOL)
 				||(((RawMaterial)E).material()==RawMaterial.RESOURCE_FUR)));
+			break;
 		case ShopKeeper.DEAL_LUMBERER:
-			return ((E instanceof RawMaterial)
+			chk = ((E instanceof RawMaterial)
 				&&((((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN));
+			break;
 		case ShopKeeper.DEAL_METALSMITH:
-			return ((E instanceof RawMaterial)
+			chk = ((E instanceof RawMaterial)
 				&&(((((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 				||(((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL));
+			break;
 		case ShopKeeper.DEAL_STONEYARDER:
-			return ((E instanceof RawMaterial)
+			chk = ((E instanceof RawMaterial)
 				&&((((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK));
+			break;
 		case ShopKeeper.DEAL_INSTRUMENTS:
-			return (E instanceof MusicalInstrument);
+			chk = (E instanceof MusicalInstrument);
+			break;
+		case ShopKeeper.DEAL_BOOKS:
+			chk = ((E instanceof Item)&&(E.ID().endsWith("Book"))&&(CMLib.flags().isReadable((Item)E)));
+			break;
+		case ShopKeeper.DEAL_READABLES:
+			chk = ((E instanceof Item)&&(CMLib.flags().isReadable((Item)E)));
+			break;
+		default:
+			chk=false;
+			break;
 		}
-		return false;
+		if((shopKeeper!=null)&&(shopKeeper.getWhatIsSoldZappermask().length()>0))
+			chk = chk && CMLib.masking().maskCheck(shopKeeper.getWhatIsSoldZappermask(), E, true);
+		return chk;
 	}
 
 	@Override

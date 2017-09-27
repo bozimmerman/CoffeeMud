@@ -808,6 +808,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(E instanceof ShopKeeper)
 			{
 				text.append(CMLib.xml().convertXMLtoTag("SELLCD",((ShopKeeper)E).getWhatIsSoldMask()));
+				text.append(CMLib.xml().convertXMLtoTag("SELLIMSK",CMLib.xml().parseOutAngleBrackets(((ShopKeeper)E).getWhatIsSoldZappermask())));
 				final StringBuilder itemstr=new StringBuilder("");
 				for(final Iterator<Environmental> i=((ShopKeeper)E).getShop().getStoreInventory();i.hasNext();)
 				{
@@ -2690,6 +2691,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	{
 		boolean variableEq=false;
 		shopKeep.setWhatIsSoldMask(CMLib.xml().getLongFromPieces(buf,"SELLCD"));
+		shopKeep.setWhatIsSoldZappermask(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(buf, "SELLIMSK")));
 		shopKeep.getShop().emptyAllShelves();
 		final List<XMLLibrary.XMLTag> V=CMLib.xml().getContentsFromPieces(buf,"STORE");
 		if(V==null)

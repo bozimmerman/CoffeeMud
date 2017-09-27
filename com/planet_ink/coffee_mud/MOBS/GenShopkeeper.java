@@ -101,7 +101,9 @@ public class GenShopkeeper extends StdShopKeeper
 		CMLib.coffeeMaker().resetGenMOB(this, newText);
 	}
 
-	private final static String[]	MYCODES	= { "WHATISELL", "PREJUDICE", "BUDGET", "DEVALRATE", "INVRESETRATE", "IGNOREMASK", "PRICEMASKS" };
+	private final static String[]	MYCODES	= { "WHATISELL", "PREJUDICE", "BUDGET", "DEVALRATE", 
+												"INVRESETRATE", "IGNOREMASK", "PRICEMASKS",
+												"ITEMMASK"};
 
 	@Override
 	public String getStat(String code)
@@ -124,6 +126,8 @@ public class GenShopkeeper extends StdShopKeeper
 			return ignoreMask();
 		case 6:
 			return CMParms.toListString(itemPricingAdjustments());
+		case 7:
+			return this.getWhatIsSoldZappermask();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -135,6 +139,7 @@ public class GenShopkeeper extends StdShopKeeper
 		if (CMLib.coffeeMaker().getGenMobCodeNum(code) >= 0)
 			CMLib.coffeeMaker().setGenMobStat(this, code, val);
 		else
+		{
 			switch (getCodeNum(code))
 			{
 			case 0:
@@ -163,10 +168,14 @@ public class GenShopkeeper extends StdShopKeeper
 			case 6:
 				setItemPricingAdjustments((val.trim().length() == 0) ? new String[0] : CMParms.toStringArray(CMParms.parseCommas(val, true)));
 				break;
+			case 7:
+				this.setWhatIsSoldZappermask(val.trim());
+				break;
 			default:
 				CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 				break;
 			}
+		}
 	}
 
 	@Override

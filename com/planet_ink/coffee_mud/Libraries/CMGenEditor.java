@@ -10089,6 +10089,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(!(me instanceof Auctioneer))
 			{
 				genShopkeeper1(mob,me,++showNumber,showFlag);
+				me.setWhatIsSoldZappermask(prompt(mob,me.getWhatIsSoldZappermask(),++showNumber,showFlag,"Item Buy Mask (?): ", true, CMLib.masking().maskHelp("\n\r", "disallow")));
 				genShopkeeper2(mob,me,++showNumber,showFlag);
 				genEconomics1(mob,me,++showNumber,showFlag);
 				genEconomics5(mob,me,++showNumber,showFlag);

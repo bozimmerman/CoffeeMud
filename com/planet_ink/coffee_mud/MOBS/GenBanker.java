@@ -113,7 +113,9 @@ public class GenBanker extends StdBanker
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
 
-	private final static String[] MYCODES={"WHATISELL","PREJUDICE","BANKCHAIN","COININT","ITEMINT","IGNOREMASK","LOANINT","PRICEMASKS"};
+	private final static String[] MYCODES={"WHATISELL","PREJUDICE","BANKCHAIN","COININT",
+											"ITEMINT","IGNOREMASK","LOANINT","PRICEMASKS",
+											"ITEMMASK"};
 	@Override
 	public String getStat(String code)
 	{
@@ -121,14 +123,24 @@ public class GenBanker extends StdBanker
 			return CMLib.coffeeMaker().getGenMobStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+getWhatIsSoldMask();
-		case 1: return prejudiceFactors();
-		case 2: return bankChain();
-		case 3: return ""+getCoinInterest();
-		case 4: return ""+getItemInterest();
-		case 5: return ignoreMask();
-		case 6: return ""+getLoanInterest();
-		case 7: return CMParms.toListString(itemPricingAdjustments());
+		case 0:
+			return "" + getWhatIsSoldMask();
+		case 1:
+			return prejudiceFactors();
+		case 2:
+			return bankChain();
+		case 3:
+			return "" + getCoinInterest();
+		case 4:
+			return "" + getItemInterest();
+		case 5:
+			return ignoreMask();
+		case 6:
+			return "" + getLoanInterest();
+		case 7:
+			return CMParms.toListString(itemPricingAdjustments());
+		case 8:
+			return this.getWhatIsSoldZappermask();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -142,21 +154,38 @@ public class GenBanker extends StdBanker
 		else
 		switch(getCodeNum(code))
 		{
-		case 0:{
-			if((val.length()==0)||(CMath.isLong(val)))
+		case 0:
+		{
+			if ((val.length() == 0) || (CMath.isLong(val)))
 				setWhatIsSoldMask(CMath.s_long(val));
-			else
-			if(CMParms.containsIgnoreCase(ShopKeeper.DEAL_DESCS,val))
-				setWhatIsSoldMask(CMParms.indexOfIgnoreCase(ShopKeeper.DEAL_DESCS,val));
+			else if (CMParms.containsIgnoreCase(ShopKeeper.DEAL_DESCS, val))
+				setWhatIsSoldMask(CMParms.indexOfIgnoreCase(ShopKeeper.DEAL_DESCS, val));
 			break;
 		}
-		case 1: setPrejudiceFactors(val); break;
-		case 2: setBankChain(val); break;
-		case 3: setCoinInterest(CMath.s_double(val)); break;
-		case 4: setItemInterest(CMath.s_double(val)); break;
-		case 5: setIgnoreMask(val); break;
-		case 6: setLoanInterest(CMath.s_double(val)); break;
-		case 7: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
+		case 1:
+			setPrejudiceFactors(val);
+			break;
+		case 2:
+			setBankChain(val);
+			break;
+		case 3:
+			setCoinInterest(CMath.s_double(val));
+			break;
+		case 4:
+			setItemInterest(CMath.s_double(val));
+			break;
+		case 5:
+			setIgnoreMask(val);
+			break;
+		case 6:
+			setLoanInterest(CMath.s_double(val));
+			break;
+		case 7:
+			setItemPricingAdjustments((val.trim().length() == 0) ? new String[0] : CMParms.toStringArray(CMParms.parseCommas(val, true)));
+			break;
+		case 8:
+			this.setWhatIsSoldZappermask(val.trim());
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

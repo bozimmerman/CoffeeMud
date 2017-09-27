@@ -13,6 +13,7 @@
   11. New shopkeeper type: instrument seller
   12. Mineable dirt and drillable water added to several room types as resources.
   13. New spell : Portal Other
+  14. ShopKeepers now have an Item Buy mask to narrow further what they will buy.
 
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.
