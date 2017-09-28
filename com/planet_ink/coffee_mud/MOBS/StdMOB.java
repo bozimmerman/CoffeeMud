@@ -3068,6 +3068,9 @@ public class StdMOB implements MOB
 		else
 		{
 			final CMChannel chan = CMLib.channels().getChannel(channelCode);
+			if(chan == null)
+				Log.errOut("Unknown channel number: "+channelCode);
+			else
 			if((chan.colorOverrideANSICodes()!=null)&&(chan.colorOverrideANSICodes().length()>0))
 				return CMStrings.replaceAll(message, ColorLibrary.SpecialColor.CHANNEL.getEscapeCode(), chan.colorOverrideANSICodes());
 		}

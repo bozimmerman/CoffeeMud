@@ -77,6 +77,15 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		recoverCharStats();
 	}
 
+	public static class CheckedOutRecord
+	{
+		public String playerName = "";
+		public String itemName = "";
+		public long	  mudDueDate = 0;
+		public double charges = 0.0;
+		public long mudReclaimDate = 0;
+	}
+	
 	@Override
 	public String libraryChain()
 	{

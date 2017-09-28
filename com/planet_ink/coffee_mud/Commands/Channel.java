@@ -167,6 +167,12 @@ public class Channel extends StdCommand
 						modMsg.setTargetMessage(modMsg.targetMessage()+timeAgo);
 					if((modMsg.othersMessage()!=null)&&(modMsg.othersMessage().length()>0))
 						modMsg.setOthersMessage(modMsg.othersMessage()+timeAgo);
+					if(CMath.bset(modMsg.sourceCode(),CMMsg.MASK_CHANNEL))
+						modMsg.setSourceCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt));
+					if(CMath.bset(modMsg.targetCode(),CMMsg.MASK_CHANNEL))
+						modMsg.setTargetCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt));
+					if(CMath.bset(modMsg.othersCode(),CMMsg.MASK_CHANNEL))
+						modMsg.setOthersCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt));
 					showedAny=CMLib.channels().sendChannelCMMsgTo(mob.session(),areareq,channelInt,modMsg,modMsg.source())||showedAny;
 				}
 			}
