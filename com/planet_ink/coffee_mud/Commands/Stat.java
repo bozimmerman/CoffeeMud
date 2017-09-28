@@ -58,6 +58,7 @@ public class Stat  extends Skills
 	public static final int ABLETYPE_FACTIONS=-12;
 	public static final int ABLETYPE_CHARSTATS=-13;
 	public static final int ABLETYPE_LEVELTIMES=-14;
+	public static final int ABLETYPE_AFFECTS=-15;
 
 	public static final String[][] ABLETYPE_DESCS={
 		{"EQUIPMENT","EQ","EQUIP"},
@@ -72,7 +73,8 @@ public class Stat  extends Skills
 		{"WORLDEXPLORED"},
 		{"FACTIONS","FACTION"},
 		{"CHARSTATISTICS","CSTAT","CHARSTATS"},
-		{"LEVELTIMES","LVLS"}
+		{"LEVELTIMES","LVLS"},
+		{"AFFECTS","EFFECTS","EFF"},
 	};
 
 	public MOB getTarget(MOB mob, String targetName, boolean quiet)
@@ -812,6 +814,15 @@ public class Stat  extends Skills
 					str.append(L("Tattoos:"));
 					for(final Enumeration<Tattoo> e=target.tattoos();e.hasMoreElements();)
 						str.append(" "+e.nextElement().getTattooName()+",");
+					str.deleteCharAt(str.length()-1);
+					str.append("\n\r");
+				}
+				else
+				if(ableTypes==ABLETYPE_AFFECTS)
+				{
+					str.append(L("Effects:"));
+					for(final Enumeration<Ability> e=target.effects();e.hasMoreElements();)
+						str.append(" "+e.nextElement().Name()+",");
 					str.deleteCharAt(str.length()-1);
 					str.append("\n\r");
 				}
