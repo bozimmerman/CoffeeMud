@@ -90,6 +90,8 @@ public class Prop_Familiar extends Property
 	protected Familiar	familiarType		= Familiar.DOG;
 	protected int[]		lastBreathablesSet	= null;
 	protected int[]		newBreathablesSet	= null;
+	
+	protected Map<String, Language>			myLanguages	= new Hashtable<String, Language>();
 
 	@Override
 	public String accountForYourself()
@@ -236,6 +238,53 @@ public class Prop_Familiar extends Property
 		}
 	}
 
+	protected Language getMyAnimalSpeak(final MOB M, final String ID)
+	{
+		if((M!=null)
+		&&(ID!=null)
+		&&(ID.length()>0))
+		{
+			synchronized(myLanguages)
+			{
+				Language lA=myLanguages.get(ID);
+				if(lA!=null)
+					return lA;
+				lA=(Language)CMClass.getAbility(ID);
+				lA.setProficiency(100);
+				lA.setAffectedOne(M);
+				lA.setBeingSpoken(lA.ID(), true);
+				myLanguages.put(ID, lA);
+				return lA;
+			}
+		}
+		return null;
+	}
+
+	protected Language getAnimalSpeak(final MOB M)
+	{
+		if((M!=null)
+		&&(M==familiarWith))
+		{
+			final Race r=M.charStats().getMyRace();
+			for(Ability A : r.racialAbilities(M))
+			{
+				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+				&&(A instanceof Language))
+				{
+					Ability effectA=M.fetchEffect(A.ID());
+					if(effectA==null)
+					{
+						A.autoInvocation(M, false);
+						A=M.fetchEffect(A.ID());
+					}
+					if((effectA!=null)&&(((Language)effectA).beingSpoken(effectA.ID())))
+						return (Language)effectA;
+				}
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -260,6 +309,28 @@ public class Prop_Familiar extends Property
 				return false;
 			}
 		}
+		if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		   ||(msg.sourceMinor()==CMMsg.TYP_ORDER)
+		   ||(msg.sourceMinor()==CMMsg.TYP_TELL))
+		&&(msg.sourceMessage()!=null)
+		&&(msg.target()==familiarWith)
+		&&(familiarWith!=null)
+		&&(familiarTo!=null)
+		&&(familiarWith.location()==familiarTo.location()))
+		{
+			if(msg.amISource(familiarTo)
+			&&(msg.target() instanceof MOB)
+			&&((msg.tool()==null) 
+				|| (!(msg.tool() instanceof Language)) 
+				||(familiarWith.charStats().getMyRace().racialAbilities(familiarWith).find(msg.tool().ID())==null)))
+			{
+				Language lA=this.getAnimalSpeak(familiarWith);
+				if(lA!=null)
+					lA=getMyAnimalSpeak(familiarTo,lA.ID());
+				if(lA!=null)
+					lA.okMessage(familiarTo, msg);
+			}
+		}
 		return super.okMessage(myHost,msg);
 	}
 
@@ -269,6 +340,50 @@ public class Prop_Familiar extends Property
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&((msg.source()==familiarWith)||(msg.source()==familiarTo)))
 			removeMeFromFamiliarTo();
+		if(((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+		   ||(msg.sourceMinor()==CMMsg.TYP_TELL)
+		   ||(msg.sourceMinor()==CMMsg.TYP_ORDER))
+		&&(msg.sourceMessage()!=null)
+		&&(familiarWith!=null)
+		&&(familiarTo!=null)
+		&&(familiarWith.location()==familiarTo.location()))
+		{
+			if((msg.amISource(familiarWith))
+			&&(msg.tool() instanceof Ability)
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+			&&(familiarTo.fetchEffect(msg.tool().ID())==null)
+			&&(msg.source().charStats().getMyRace().racialAbilities(msg.source()).find(msg.tool().ID())!=null))
+			{
+				final String str=CMStrings.getSayFromMessage(msg.sourceMessage());
+				if(str!=null)
+				{
+					if(CMath.bset(msg.sourceMajor(),CMMsg.MASK_CHANNEL))
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,msg.othersCode(),L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.othersMessage(),str),msg.tool().name())));
+					else
+					if(msg.amITarget(affected)&&(msg.targetMessage()!=null))
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.targetCode(),CMMsg.NO_EFFECT,L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(msg.targetMessage(),str),msg.tool().name())));
+					else
+					if((msg.othersMessage()!=null)&&(msg.othersMessage().indexOf('\'')>0))
+					{
+						String otherMes=msg.othersMessage();
+						if(msg.target()!=null)
+							otherMes=CMLib.coffeeFilter().fullOutFilter(familiarTo.session(),familiarTo,msg.source(),msg.target(),msg.tool(),otherMes,false);
+						msg.addTrailerMsg(CMClass.getMsg(msg.source(),affected,null,CMMsg.NO_EFFECT,msg.othersCode(),CMMsg.NO_EFFECT,L("@x1 (translated from @x2)",CMStrings.substituteSayInMessage(otherMes,str),msg.tool().name())));
+					}
+				}
+			}
+			else
+			if(msg.amISource(familiarTo)
+			&&(msg.target() == familiarWith)
+			&&((msg.tool()==null) || (!(msg.tool() instanceof Language)) ||(((MOB)msg.target()).charStats().getMyRace().racialAbilities((MOB)msg.target()).find(msg.tool().ID())==null)))
+			{
+				Language lA=this.getAnimalSpeak(familiarWith);
+				if(lA!=null)
+					lA=getMyAnimalSpeak(familiarTo,lA.ID());
+				if(lA!=null)
+					lA.executeMsg(familiarTo, msg);
+			}
+		}
 		super.executeMsg(host,msg);
 	}
 

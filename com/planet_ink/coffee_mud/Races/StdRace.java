@@ -727,6 +727,9 @@ public class StdRace implements Race
 							giveMobAbility(mob,A,mapping.defaultProficiency(),mapping.defaultParm(),isBorrowedRace);
 						}
 					}
+					else
+					if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+						Log.errOut("Race "+ID()+" has unknown cultural ability "+mapping.abilityID());
 				}
 			}
 		}
@@ -1046,6 +1049,7 @@ public class StdRace implements Race
 						room.addItem(I,ItemPossessor.Expire.Monster_EQ);
 				}
 				else
+				if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 					Log.errOut("Race "+ID()+" had NULL resource!");
 			}
 		}
@@ -1174,6 +1178,9 @@ public class StdRace implements Race
 						A.setSavable(false); // must go AFTER the ablve
 						finalV.add(A);
 					}
+					else
+					if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+						Log.errOut("Race "+ID()+" has unknown affect "+racialEffectNames()[v]);
 				}
 			}
 		}
@@ -1868,6 +1875,9 @@ public class StdRace implements Race
 				A.setMiscText(CMLib.ableMapper().getDefaultParm(ID(),false,A.ID()));
 				finalV.add(A);
 			}
+			else
+			if((A==null)&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
+				Log.errOut("Race "+ID()+" has unknown racial ability "+able.abilityID());
 		}
 		finalV.trimToSize();
 		finalV.setReadOnly(true);

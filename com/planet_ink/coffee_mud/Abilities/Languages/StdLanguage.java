@@ -445,7 +445,9 @@ public class StdLanguage extends StdAbility implements Language
 					return false;
 			}
 			else
-			if((msg.target()==affected)&&(msg.source()!=affected))
+			if((msg.target()==affected)
+			&&(msg.source()!=affected)
+			&&(msg.sourceMinor()!=CMMsg.NO_EFFECT))
 			{
 				switch(msg.targetMinor())
 				{

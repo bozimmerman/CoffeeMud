@@ -251,7 +251,9 @@ public class Spell_FindFamiliar extends Spell
 		newMOB.resetToMaxState();
 		final Ability A=CMClass.getAbility("Prop_Familiar");
 		A.setMiscText(""+choice);
-		newMOB.addNonUninvokableEffect(A);
+		newMOB.addPriorityEffect(A);
+		A.makeNonUninvokable();
+		A.makeLongLasting();
 		newMOB.text();
 		newMOB.bringToLife(caster.location(),true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
