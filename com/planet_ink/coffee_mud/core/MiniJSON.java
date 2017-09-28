@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.TreeMap;
+import java.lang.reflect.*;
 
 /*
    Copyright 2013-2017 Bo Zimmerman
@@ -746,6 +747,218 @@ public class MiniJSON
 		catch (final Exception e)
 		{
 			throw new MJSONException("Internal error",e);
+		}
+	}
+
+	/**
+	 * Converts a pojo field to a JSON value.
+	 * @param type the class type
+	 * @param val the value
+	 * @return the json value
+	 */
+	public String fromPOJOFieldtoJSON(Class<?> type, Object val)
+	{
+		final StringBuilder str=new StringBuilder("");
+		if(val==null)
+			str.append("null");
+		else
+		if(type.isArray())
+		{
+			str.append("[");
+			final int length = Array.getLength(val);
+			for (int i=0; i<length; i++) 
+			{
+				Object e = Array.get(val, i);
+				if(i>0)
+					str.append(",");
+				str.append(fromPOJOFieldtoJSON(type.getComponentType(),e));
+			}
+			str.append("]");
+		}
+		else
+		if(type == String.class)
+			str.append("\"").append(toJSONString(val.toString())).append("\"");
+		else
+		if(type.isPrimitive())
+			str.append(val.toString());
+		else
+		if((type == Float.class)||(type==Integer.class)||(type==Double.class)||(type==Boolean.class)||(type==Long.class))
+			str.append(val.toString());
+		else
+			str.append(fromPOJOtoJSON(val));
+		return str.toString();
+	}
+	
+	/**
+	 * Converts a pojo object to a JSON document.
+	 * @param o the object to convert
+	 * @return the json document
+	 */
+	public String fromPOJOtoJSON(Object o)
+	{
+		StringBuilder str=new StringBuilder("");
+		str.append("{");
+		final Field[] fields = o.getClass().getDeclaredFields();
+		boolean firstField=true;
+		for(final Field field : fields)
+		{
+			try
+			{
+				field.setAccessible(true);
+				if(field.isAccessible())
+				{
+					if(!firstField)
+						str.append(",");
+					else
+						firstField=false;
+					str.append("\"").append(field.getName()).append("\":");
+					str.append(fromPOJOFieldtoJSON(field.getType(),field.get(o)));
+				}
+			}
+			catch (IllegalArgumentException e)
+			{
+			}
+			catch (IllegalAccessException e)
+			{
+			}
+		}
+		str.append("}");
+		return str.toString();
+	}
+	
+	/**
+	 * Converts a JSON document to a pojo object.
+	 * @param json the json document
+	 * @param o the object to convert
+	 */
+	public void fromJSONtoPOJO(String json, Object o) throws MJSONException
+	{
+		fromJSONtoPOJO(parseObject(json),o);
+	}
+	/**
+	 * Converts a json object to a pojo object.
+	 * @param jsonObj the json object
+	 * @param o the object to convert
+	 */
+	public void fromJSONtoPOJO(MiniJSON.JSONObject jsonObj, Object o) throws MJSONException
+	{
+		final Field[] fields = o.getClass().getDeclaredFields();
+		for(final Field field : fields)
+		{
+			try
+			{
+				field.setAccessible(true);
+				if(field.isAccessible() && jsonObj.containsKey(field.getName()))
+				{
+					
+					Object jo = jsonObj.get(field.getName());
+					if((jo == null) || (jo == MiniJSON.NULL))
+						field.set(o, null);
+					else
+					if(field.getType().isArray() && (jo instanceof Object[]))
+					{
+						final Object[] objs = (Object[])jo;
+						final Object[] tgt;
+						if(field.getType().getComponentType() == String.class)
+							tgt = new String[objs.length];
+						else
+						if(field.getType().getComponentType() == Integer.class)
+							tgt = new Integer[objs.length];
+						else
+						if(field.getType().getComponentType() == Long.class)
+							tgt = new Long[objs.length];
+						else
+						if(field.getType().getComponentType() == Double.class)
+							tgt = new Double[objs.length];
+						else
+						if(field.getType().getComponentType() == Float.class)
+							tgt = new Float[objs.length];
+						else
+						if(field.getType().getComponentType() == Boolean.class)
+							tgt = new Boolean[objs.length];
+						else
+							tgt = new Object[objs.length];
+						for(int i=0;i<objs.length;i++)
+						{
+							if(objs.getClass() == field.getType().getComponentType())
+								tgt[i]=objs[i];
+							else
+							if(field.getType().getComponentType() == Double.class)
+								tgt[i]=Float.valueOf(((Double)objs[i]).floatValue());
+							else
+							if(field.getType().getComponentType() == Long.class)
+								tgt[i]=Integer.valueOf(((Long)objs[i]).intValue());
+							else
+							if(objs[i] instanceof JSONObject)
+							{
+								Object newObj = field.getType().getComponentType().newInstance();
+								fromJSONtoPOJO((JSONObject)objs[i], newObj);
+								tgt[i]=newObj;
+							}
+						}
+						field.set(o, tgt);
+					}
+					else
+					if((field.getType() == String.class)&&(jo instanceof String))
+						field.set(o, jo);
+					else
+					if(field.getType().isPrimitive())
+					{
+						if((field.getType() == int.class)&&(jo instanceof Long))
+							field.setInt(o, ((Long)jo).intValue());
+						else
+						if((field.getType() == long.class)&&(jo instanceof Long))
+							field.setLong(o, ((Long)jo).longValue());
+						else
+						if((field.getType() == double.class)&&(jo instanceof Double))
+							field.setDouble(o, ((Double)jo).doubleValue());
+						else
+						if((field.getType() == float.class)&&(jo instanceof Double))
+							field.setFloat(o, ((Double)jo).floatValue());
+						else
+						if((field.getType() == boolean.class)&&(jo instanceof Boolean))
+							field.setBoolean(o, ((Boolean)jo).booleanValue());
+						else
+							field.set(o, jo);
+					}
+					else
+					if(jo instanceof JSONObject)
+					{
+						Object newObj = field.getType().newInstance();
+						fromJSONtoPOJO((JSONObject)jo, newObj);
+						field.set(o, newObj);
+					}
+					else
+					if((field.getType() == Integer.class)&&(jo instanceof Long))
+						field.set(o, Integer.valueOf(((Long)jo).intValue()));
+					else
+					if((field.getType() == Long.class)&&(jo instanceof Long))
+						field.set(o, Long.valueOf(((Long)jo).longValue()));
+					else
+					if((field.getType() == Double.class)&&(jo instanceof Double))
+						field.set(o, Double.valueOf(((Double)jo).doubleValue()));
+					else
+					if((field.getType() == Float.class)&&(jo instanceof Double))
+						field.set(o, Float.valueOf(((Double)jo).floatValue()));
+					else
+					if((field.getType() == Boolean.class)&&(jo instanceof Boolean))
+						field.set(o, Boolean.valueOf(((Boolean)jo).booleanValue()));
+					else
+						field.set(o, jo);
+				}
+			}
+			catch (IllegalArgumentException e)
+			{
+				throw new MJSONException(e.getMessage(),e);
+			}
+			catch (IllegalAccessException e)
+			{
+				throw new MJSONException(e.getMessage(),e);
+			}
+			catch (InstantiationException e)
+			{
+				throw new MJSONException(e.getMessage(),e);
+			}
 		}
 	}
 }
