@@ -141,6 +141,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 			if((!isDrunk())&&(spells.size()>0))
 			{
 				final MOB caster=CMLib.map().getFactoryMOB(owner.location());
+				caster.setName(Name());
 				final MOB finalCaster=(owner!=drinkerTarget)?owner:caster;
 				boolean destroyCaster = true;
 				for(int i=0;i<spells.size();i++)
