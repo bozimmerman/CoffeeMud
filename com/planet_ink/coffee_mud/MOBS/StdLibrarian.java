@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.MOBS;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -79,13 +80,81 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 
 	public static class CheckedOutRecord
 	{
-		public String playerName = "";
-		public String itemName = "";
-		public long	  mudDueDate = 0;
-		public double charges = 0.0;
-		public long mudReclaimDate = 0;
+		public String	playerName		= "";
+		public String	itemName		= "";
+		public long		mudDueDate		= 0;
+		public double	charges			= 0.0;
+		public long		mudReclaimDate	= 0;
+	}
+
+	protected String getLibraryChainKey()
+	{
+		return "LIBRARY_RECORDS_"+this.libraryChain().toUpperCase().replace(' ','_');
 	}
 	
+	protected List<CheckedOutRecord> getCheckedOutRecords()
+	{
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		List<CheckedOutRecord> records = (List)Resources.getResource(this.getLibraryChainKey());
+		if(records == null)
+		{
+			records=new Vector<CheckedOutRecord>();
+			Resources.submitResource(this.getLibraryChainKey(), records);
+			final MiniJSON json = new MiniJSON();
+			synchronized(records)
+			{
+				final List<PlayerData> pData = CMLib.database().DBReadPlayerDataEntry(this.getLibraryChainKey());
+				for(final PlayerData data : pData)
+				{
+					try
+					{
+						MiniJSON.JSONObject obj = json.parseObject(data.xml());
+						Object[] librecs = obj.getCheckedArray("librecs");
+						for(Object librec : librecs)
+						{
+							if(librec instanceof MiniJSON.JSONObject)
+							{
+								CheckedOutRecord r = new CheckedOutRecord();
+								json.fromJSONtoPOJO((MiniJSON.JSONObject)librec,r);
+								records.add(r);
+							}
+						}
+					}
+					catch (MJSONException e)
+					{
+						Log.errOut(getLibraryChainKey(),e);
+					}
+				}
+			}
+		}
+		return records;
+	}
+
+	protected void updateCheckedOutRecords()
+	{
+		List<CheckedOutRecord> records = this.getCheckedOutRecords();
+		final StringBuilder json = new StringBuilder("");
+		json.append("{\"librecs\":[");
+		MiniJSON jsoner = new MiniJSON();
+		for(int r=0;r<records.size();r++)
+		{
+			try
+			{
+				final CheckedOutRecord record = records.get(r);
+				final String subJson = jsoner.fromPOJOtoJSON(record);
+				if(r>0)
+					json.append(",");
+				json.append(subJson);
+			}
+			catch(Exception e)
+			{
+				Log.errOut(getLibraryChainKey(),e);
+			}
+		}
+		json.append("]}");
+		CMLib.database().DBReCreatePlayerData(getLibraryChainKey(), "LIBRARY_RECORDS", getLibraryChainKey(), json.toString());
+	}
+
 	@Override
 	public String libraryChain()
 	{
@@ -104,13 +173,11 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		return overdueCharge;
 	}
 
-
 	@Override
 	public void setOverdueCharge(double charge)
 	{
 		overdueCharge=charge;
 	}
-
 
 	@Override
 	public double getDailyOverdueCharge()
@@ -118,13 +185,11 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		return dailyOverdueCharge;
 	}
 
-
 	@Override
 	public void setDailyOverdueCharge(double charge)
 	{
 		dailyOverdueCharge=charge;
 	}
-
 
 	@Override
 	public double getOverdueChargePct()
@@ -132,13 +197,11 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		return overdueChargePct;
 	}
 
-
 	@Override
 	public void setOverdueChargePct(double pct)
 	{
 		overdueChargePct=pct;
 	}
-
 
 	@Override
 	public double getDailyOverdueChargePct()
@@ -146,13 +209,11 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		return dailyOverdueChargePct;
 	}
 
-
 	@Override
 	public void setDailyOverdueChargePct(double pct)
 	{
 		dailyOverdueChargePct=pct;
 	}
-
 
 	@Override
 	public int getMinOverdueDays()
@@ -160,20 +221,17 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		return minOverdueDays;
 	}
 
-
 	@Override
 	public void setMinOverdueDays(int days)
 	{
 		minOverdueDays=days;
 	}
 
-
 	@Override
 	public int getMaxOverdueDays()
 	{
 		return maxOverdueDays;
 	}
-
 
 	@Override
 	public void setMaxOverdueDays(int days)
@@ -186,7 +244,6 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	{
 		return contributorMask;
 	}
-
 
 	@Override
 	public void setContributorMask(String mask)
@@ -212,7 +269,6 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	{
 		super.destroy();
 	}
-
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
