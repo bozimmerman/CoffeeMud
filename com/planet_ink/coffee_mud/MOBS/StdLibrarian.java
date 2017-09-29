@@ -44,6 +44,10 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		return "StdLibrarian";
 	}
 
+	protected final 	long		shopApplyInt	= TimeManager.MILI_MINUTE * 5;
+	protected volatile	CoffeeShop	curShop			= null;
+	protected volatile	long		nextShopApply	= Long.MAX_VALUE;
+	
 	protected double	overdueCharge			= DEFAULT_MIN_OVERDUE_CHARGE;
 	protected double	overdueChargePct		= DEFAULT_PCT_OVERDUE_CHARGE;
 	protected double	dailyOverdueCharge		= DEFAULT_MIN_OVERDUE_DAILY;
@@ -87,23 +91,28 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		public long		mudReclaimDate	= 0;
 	}
 
-	protected String getLibraryChainKey()
+	protected String getLibraryRecordKey()
 	{
 		return "LIBRARY_RECORDS_"+this.libraryChain().toUpperCase().replace(' ','_');
+	}
+	
+	protected String getLibraryShopKey()
+	{
+		return "LIBRARY_SHOP_"+this.libraryChain().toUpperCase().replace(' ','_');
 	}
 	
 	protected List<CheckedOutRecord> getCheckedOutRecords()
 	{
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		List<CheckedOutRecord> records = (List)Resources.getResource(this.getLibraryChainKey());
+		List<CheckedOutRecord> records = (List)Resources.getResource(this.getLibraryRecordKey());
 		if(records == null)
 		{
 			records=new Vector<CheckedOutRecord>();
-			Resources.submitResource(this.getLibraryChainKey(), records);
+			Resources.submitResource(this.getLibraryRecordKey(), records);
 			final XMLLibrary xml = CMLib.xml();
 			synchronized(records)
 			{
-				final List<PlayerData> pData = CMLib.database().DBReadPlayerDataEntry(this.getLibraryChainKey());
+				final List<PlayerData> pData = CMLib.database().DBReadPlayerDataEntry(this.getLibraryRecordKey());
 				for(final PlayerData data : pData)
 				{
 					try
@@ -120,7 +129,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 					}
 					catch (IllegalArgumentException e)
 					{
-						Log.errOut(getLibraryChainKey(),e);
+						Log.errOut(getLibraryRecordKey(),e);
 					}
 				}
 			}
@@ -145,10 +154,10 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			}
 			catch(Exception e)
 			{
-				Log.errOut(getLibraryChainKey(),e);
+				Log.errOut(getLibraryRecordKey(),e);
 			}
 		}
-		CMLib.database().DBReCreatePlayerData(getLibraryChainKey(), "LIBRARY_RECORDS", getLibraryChainKey(), json.toString());
+		CMLib.database().DBReCreatePlayerData(getLibraryRecordKey(), "LIBRARY_RECORDS", getLibraryRecordKey(), json.toString());
 	}
 
 	@Override
@@ -253,11 +262,48 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		super.cloneFix(E);
 	}
 
+	protected CoffeeShop getCommonShop()
+	{
+		CoffeeShop commonShop = (CoffeeShop)Resources.getResource(getLibraryShopKey());
+		if(commonShop == null)
+		{
+			synchronized(getLibraryShopKey().intern())
+			{
+				commonShop = (CoffeeShop)Resources.getResource(getLibraryShopKey());
+				if(commonShop == null)
+					commonShop = shop;
+			}
+		}
+		return commonShop;
+	}
+	
 	@Override
 	public CoffeeShop getShop()
 	{
-		//TODO: !!!!
-		return shop;
+		if(nextShopApply != Long.MAX_VALUE)
+		{
+			if(System.currentTimeMillis() > nextShopApply)
+			{
+				nextShopApply = System.currentTimeMillis();
+				shop=(CoffeeShop)getCommonShop().copyOf();
+				final List<CheckedOutRecord> records=this.getCheckedOutRecords();
+				for(int i=0;i<records.size();i++)
+				{
+					try
+					{
+						CheckedOutRecord rec = records.get(i);
+						shop.lowerStock("$"+rec.itemName+"$");
+					}
+					catch(java.lang.IndexOutOfBoundsException e)
+					{
+					}
+				}
+				
+			}
+			return shop;
+		}
+		else
+			return getCommonShop();
 	}
 
 	@Override
@@ -292,6 +338,11 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		final MOB mob=msg.source();
+		if(msg.source().isPlayer() 
+		&& (nextShopApply == Long.MAX_VALUE)
+		&& ((msg.source().location()==location())||(msg.sourceMinor()==CMMsg.TYP_ENTER))
+		&& (!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS)))
+			nextShopApply = System.currentTimeMillis();
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())

@@ -218,6 +218,15 @@ public interface CoffeeShop extends CMCommon
 
 	/**
 	 * Searches this shops stock of items for sale for one matching the given name.
+	 * If one is found, then one unit is removed from one of the available stock and
+	 * true is returned.
+	 * @param name the name of the item to lower the stock of
+	 * @return true if it was lowered
+	 */
+	public boolean lowerStock(String name);
+
+	/**
+	 * Searches this shops stock of items for sale for one matching the given name.
 	 * If one is found, it copies the item, removes one from the available stock, and
 	 * prepares it for sale by adding it to a list along with any necessary accessories,
 	 * such as necessary keys, or if a container, any contents of the container.
@@ -265,6 +274,13 @@ public interface CoffeeShop extends CMCommon
 	 * @return the shopKeeper that is hosting this shop
 	 */
 	public ShopKeeper shopKeeper();
+
+	/**
+	 * Returns a thin copy with independent lists, but the
+	 * same items as the original host.
+	 * @return the thin copy
+	 */
+	public CoffeeShop weakCopyOf();
 
 	/**
 	 * Returns whether the whatIsSold code applies to the shopkeeper hosting this shop.

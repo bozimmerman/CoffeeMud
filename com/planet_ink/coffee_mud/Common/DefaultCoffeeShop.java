@@ -86,6 +86,23 @@ public class DefaultCoffeeShop implements CoffeeShop
 	}
 
 	@Override
+	public CoffeeShop weakCopyOf()
+	{
+		try
+		{
+			final Object O=this.clone();
+			((DefaultCoffeeShop)O).enumerableInventory = new SVector<Environmental>(enumerableInventory);
+			((DefaultCoffeeShop)O).storeInventory = new SVector<ShelfProduct>(storeInventory);
+			((DefaultCoffeeShop)O).contentHash			= null;
+			return (DefaultCoffeeShop)O;
+		}
+		catch(final CloneNotSupportedException e)
+		{
+			return new DefaultCoffeeShop();
+		}
+	}
+
+	@Override
 	public CoffeeShop build(ShopKeeper SK)
 	{
 		shopKeeper=new WeakReference<ShopKeeper>(SK);
@@ -496,6 +513,27 @@ public class DefaultCoffeeShop implements CoffeeShop
 			((Physical)item).phyStats().setRejuv(PhyStats.NO_REJUV);
 		}
 		return item;
+	}
+
+	@Override
+	public boolean lowerStock(String name)
+	{
+		Environmental item=getStock(name,null);
+		for(final ShelfProduct SP : storeInventory)
+		{
+			if(SP.product==item)
+			{
+				if(SP.number>1)
+					SP.number--;
+				else
+				{
+					storeInventory.remove(SP);
+					item.destroy();
+				}
+				return true;
+			}
+		}
+		return false;
 	}
 
 	@Override
