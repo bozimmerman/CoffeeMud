@@ -153,6 +153,19 @@ public class AuctionCoffeeShop implements CoffeeShop
 		return emptyV2.iterator();
 	}
 
+
+	@Override
+	public boolean lowerStock(String name)
+	{
+		return false;
+	}
+
+	@Override
+	public CoffeeShop weakCopyOf()
+	{
+		return this;
+	}
+	
 	@Override
 	public Iterator<Environmental> getStoreInventory(String srchStr)
 	{
