@@ -946,6 +946,12 @@ public class MiniJSON
 					if((field.getType() == Integer.class)&&(jo instanceof Long))
 						field.set(o, Integer.valueOf(((Long)jo).intValue()));
 					else
+					if((field.getType() == Short.class)&&(jo instanceof Long))
+						field.set(o, Short.valueOf(((Long)jo).shortValue()));
+					else
+					if((field.getType() == Byte.class)&&(jo instanceof Long))
+						field.set(o, Byte.valueOf(((Long)jo).byteValue()));
+					else
 					if((field.getType() == Long.class)&&(jo instanceof Long))
 						field.set(o, Long.valueOf(((Long)jo).longValue()));
 					else
