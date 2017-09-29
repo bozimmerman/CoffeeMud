@@ -597,8 +597,7 @@ public class DefaultTimeClock implements TimeClock
 		}
 	}
 
-	@Override
-	public void tickTock(int howManyHours)
+	protected void tickTock(int howManyHours, boolean moveTheSky)
 	{
 		final TimeOfDay todCode=getTODCode();
 		if(howManyHours!=0)
@@ -636,10 +635,86 @@ public class DefaultTimeClock implements TimeClock
 				}
 			}
 		}
-		if(getTODCode()!=todCode)
+		if((moveTheSky)&&(getTODCode()!=todCode))
 			handleTimeChange();
 	}
+	
+	@Override
+	public void tickTock(int howManyHours)
+	{
+		tickTock(howManyHours,true);
+	}
 
+	@Override
+	public void bumpHours(int num)
+	{
+		tickTock(num,false);
+	}
+
+	@Override
+	public void bumpDays(int num)
+	{
+		tickTock(this.getHoursInDay() * num,false);
+	}
+
+	@Override
+	public void bumpWeeks(int num)
+	{
+		tickTock(this.getHoursInDay() * this.getDaysInWeek() * num,false);
+	}
+
+	@Override
+	public void bumpMonths(int num)
+	{
+		tickTock(this.getHoursInDay() * this.getDaysInMonth() * num,false);
+	}
+
+	@Override
+	public void bumpYears(int num)
+	{
+		tickTock(this.getHoursInDay() * this.getDaysInMonth() * this.getMonthsInYear() * num,false);
+	}
+
+	@Override
+	public long toHoursSinceEpoc()
+	{
+		final long hoursInDay = this.getHoursInDay();
+		final long hoursInMonth = this.getDaysInMonth() * hoursInDay;
+		final long hoursInYear = this.getMonthsInYear() * hoursInMonth;
+		long total = this.getHourOfDay() + 
+				((day-1) * hoursInDay) +
+				((month-1) * hoursInMonth) + 
+				(year * hoursInYear);
+		return total;
+	}
+
+	@Override
+	public void setFromHoursSinceEpoc(long num)
+	{
+		final long hoursInDay = this.getHoursInDay();
+		final long hoursInMonth = this.getDaysInMonth() * hoursInDay;
+		final long hoursInYear = this.getMonthsInYear() * hoursInMonth;
+		year=0;
+		while(num > hoursInYear)
+		{
+			year++;
+			num -= hoursInYear;
+		}
+		month = 1;
+		while(num > hoursInMonth)
+		{
+			month++;
+			num -= hoursInMonth;
+		}
+		day = 1;
+		while(num > hoursInDay)
+		{
+			day++;
+			num -= hoursInDay;
+		}
+		time = (int)num;
+	}
+	
 	@Override
 	public void save()
 	{

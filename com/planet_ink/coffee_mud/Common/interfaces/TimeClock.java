@@ -408,6 +408,83 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @return the number of mud hours elapsed since the given clock
 	 */
 	public long deriveMudHoursAfter(TimeClock C);
+
+	/**
+	 * Increase this clocks time by the given number of hours.
+	 * Does NOT move the sky.  Use tickTock for that.
+	 * @see TimeClock#tickTock(int)
+	 * @see TimeClock#bumpDays(int)
+	 * @see TimeClock#bumpWeeks(int)
+	 * @see TimeClock#bumpMonths(int)
+	 * @see TimeClock#bumpYears(int)
+	 * @param num the number to bump
+	 */
+	public void bumpHours(int num);
+
+	/**
+	 * Increase this clocks time by the given number of days.
+	 * Does NOT move the sky.  Use tickTock for that.
+	 * @see TimeClock#tickTock(int)
+	 * @see TimeClock#bumpHours(int)
+	 * @see TimeClock#bumpWeeks(int)
+	 * @see TimeClock#bumpMonths(int)
+	 * @see TimeClock#bumpYears(int)
+	 * @param num the number to bump
+	 */
+	public void bumpDays(int num);
+	
+	/**
+	 * Increase this clocks time by the given number of weeks.
+	 * Does NOT move the sky.  Use tickTock for that.
+	 * @see TimeClock#tickTock(int)
+	 * @see TimeClock#bumpHours(int)
+	 * @see TimeClock#bumpDays(int)
+	 * @see TimeClock#bumpMonths(int)
+	 * @see TimeClock#bumpYears(int)
+	 * @param num the number to bump
+	 */
+	public void bumpWeeks(int num);
+	
+	/**
+	 * Increase this clocks time by the given number of months.
+	 * Does NOT move the sky.  Use tickTock for that.
+	 * @see TimeClock#tickTock(int)
+	 * @see TimeClock#bumpHours(int)
+	 * @see TimeClock#bumpDays(int)
+	 * @see TimeClock#bumpWeeks(int)
+	 * @see TimeClock#bumpYears(int)
+	 * @param num the number to bump
+	 */
+	public void bumpMonths(int num);
+
+	/**
+	 * Increase this clocks time by the given number of years.
+	 * Does NOT move the sky.  Use tickTock for that.
+	 * @see TimeClock#tickTock(int)
+	 * @see TimeClock#bumpHours(int)
+	 * @see TimeClock#bumpDays(int)
+	 * @see TimeClock#bumpWeeks(int)
+	 * @see TimeClock#bumpMonths(int)
+	 * @param num the number to bump
+	 */
+	public void bumpYears(int num);
+
+	/**
+	 * Returns the total hours since epoc
+	 * @see TimeClock#setFromHoursSinceEpoc(long)
+	 * @return total hours since epoc
+	 */
+	public long toHoursSinceEpoc();
+	
+	/**
+	 * Sets this clock to the given number
+	 * of hours since epoc. Does NOT move the
+	 * sky, you need to call tickTock for that.
+	 * @see TimeClock#tickTock(int)
+	 * @see TimeClock#toHoursSinceEpoc()
+	 * @param the new time, in hours since epoc.
+	 */
+	public void setFromHoursSinceEpoc(long num);
 	
 	/**
 	 * Using the given number of milliseconds, this method will return a string

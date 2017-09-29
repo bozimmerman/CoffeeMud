@@ -523,13 +523,51 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			case CMMsg.TYP_WITHDRAW:
 				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
-					Item I=null;
-					CMLib.commands().postSay(this,mob,L("There ya go!"),true,false);
-					if(location()!=null)
-						location().addItem(I,ItemPossessor.Expire.Player_Drop);
-					final CMMsg msg2=CMClass.getMsg(mob,I,this,CMMsg.MSG_GET,null);
-					if(location().okMessage(mob,msg2))
-						location().send(mob,msg2);
+					final Item old=(Item)msg.tool();
+					if((getRecord(msg.source().Name(), old.Name())==null)
+					&&(msg.source().isPlayer()))
+					{
+						final Room room=this.getStartRoom();
+						Area area=null;
+						TimeClock clock=null;
+						if(room != null)
+							area=room.getArea();
+						if(area != null)
+							clock = area.getTimeObj();
+						if(clock != null)
+						{
+							CheckedOutRecord rec = new CheckedOutRecord();
+							final TimeClock minClock = (TimeClock)clock.copyOf();
+							minClock.bumpDays(this.getMinOverdueDays());
+							final TimeClock maxClock = (TimeClock)clock.copyOf();
+							maxClock.bumpDays(this.getMinOverdueDays());
+							rec.itemName = old.Name();
+							rec.charges = 0.0;
+							rec.playerName = msg.source().Name();
+							rec.mudDueDate = minClock.toHoursSinceEpoc();
+							rec.mudReclaimDate = maxClock.toHoursSinceEpoc();
+							final CoffeeShop shop = this.getShop();
+							if(shop != this.getCommonShop()) // never borrow from the main library
+							{
+								List<Environmental> items = shop.removeSellableProduct("$"+old.Name()+"$", mob);
+								CMLib.commands().postSay(this,mob,L("There ya go! This is due back here by @x1!",minClock.getShortestTimeDescription()),true,false);
+								for(Environmental E : items)
+								{
+									if(E instanceof Item)
+									{
+										Item I=(Item)E;
+										if(location()!=null)
+											location().addItem(I,ItemPossessor.Expire.Player_Drop);
+										final CMMsg msg2=CMClass.getMsg(mob,I,this,CMMsg.MSG_GET,null);
+										if(location().okMessage(mob,msg2))
+											location().send(mob,msg2);
+									}
+								}
+								this.getCheckedOutRecords().add(rec);
+								this.updateCheckedOutRecords();
+							}
+						}
+					}
 				}
 				return;
 			case CMMsg.TYP_VALUE:
@@ -639,6 +677,12 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 					if(getRecord(msg.source().Name(), msg.tool().Name())!=null)
 					{
 						CMLib.commands().postSay(this,mob,L("I'm sorry, but you already borrowed a copy of that.",""+getMaxBorrowed()),true,false);
+						return false;
+					}
+					CoffeeShop shop = this.getShop();
+					if(shop == this.getCommonShop()) // never borrow from the main library
+					{
+						CMLib.commands().postSay(this,mob,L("Please come back a little later."),true,false);
 						return false;
 					}
 				}
