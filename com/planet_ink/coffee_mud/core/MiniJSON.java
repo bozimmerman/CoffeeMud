@@ -858,42 +858,49 @@ public class MiniJSON
 					if(field.getType().isArray() && (jo instanceof Object[]))
 					{
 						final Object[] objs = (Object[])jo;
-						final Object[] tgt;
-						if(field.getType().getComponentType() == String.class)
-							tgt = new String[objs.length];
-						else
-						if(field.getType().getComponentType() == Integer.class)
-							tgt = new Integer[objs.length];
-						else
-						if(field.getType().getComponentType() == Long.class)
-							tgt = new Long[objs.length];
-						else
-						if(field.getType().getComponentType() == Double.class)
-							tgt = new Double[objs.length];
-						else
-						if(field.getType().getComponentType() == Float.class)
-							tgt = new Float[objs.length];
-						else
-						if(field.getType().getComponentType() == Boolean.class)
-							tgt = new Boolean[objs.length];
-						else
-							tgt = new Object[objs.length];
+						final Object tgt;
+						final Class<?> cType = field.getType().getComponentType();
+						tgt = Array.newInstance(cType, objs.length);
 						for(int i=0;i<objs.length;i++)
 						{
-							if(objs.getClass() == field.getType().getComponentType())
-								tgt[i]=objs[i];
+							if(objs[i].getClass() == cType)
+								Array.set(tgt, i, objs[i]);
 							else
-							if(field.getType().getComponentType() == Double.class)
-								tgt[i]=Float.valueOf(((Double)objs[i]).floatValue());
+							if((cType == Float.class)&&(objs[i] instanceof Double))
+								Array.set(tgt, i, Float.valueOf(((Double)objs[i]).floatValue()));
 							else
-							if(field.getType().getComponentType() == Long.class)
-								tgt[i]=Integer.valueOf(((Long)objs[i]).intValue());
+							if((cType == Integer.class)&&(objs[i] instanceof Long))
+								Array.set(tgt, i, Integer.valueOf(((Long)objs[i]).intValue()));
+							else
+							if(cType.isPrimitive())
+							{
+								if(cType == boolean.class)
+									Array.setBoolean(tgt, i, Boolean.valueOf(objs[i].toString()).booleanValue());
+								else
+								if(cType == int.class)
+									Array.setInt(tgt, i, Long.valueOf(objs[i].toString()).intValue());
+								else
+								if(cType == short.class)
+									Array.setShort(tgt, i, Long.valueOf(objs[i].toString()).shortValue());
+								else
+								if(cType == byte.class)
+									Array.setByte(tgt, i, Long.valueOf(objs[i].toString()).byteValue());
+								else
+								if(cType == long.class)
+									Array.setLong(tgt, i, Long.valueOf(objs[i].toString()).longValue());
+								else
+								if(cType == float.class)
+									Array.setFloat(tgt, i, Double.valueOf(objs[i].toString()).floatValue());
+								else
+								if(cType == double.class)
+									Array.setDouble(tgt, i, Double.valueOf(objs[i].toString()).doubleValue());
+							}
 							else
 							if(objs[i] instanceof JSONObject)
 							{
-								Object newObj = field.getType().getComponentType().newInstance();
+								Object newObj = cType.newInstance();
 								fromJSONtoPOJO((JSONObject)objs[i], newObj);
-								tgt[i]=newObj;
+								Array.set(tgt, i, newObj);
 							}
 						}
 						field.set(o, tgt);
@@ -904,20 +911,27 @@ public class MiniJSON
 					else
 					if(field.getType().isPrimitive())
 					{
-						if((field.getType() == int.class)&&(jo instanceof Long))
-							field.setInt(o, ((Long)jo).intValue());
+						final Class<?> cType=field.getType();
+						if(cType == boolean.class)
+							field.setBoolean(o, Boolean.valueOf(jo.toString()).booleanValue());
 						else
-						if((field.getType() == long.class)&&(jo instanceof Long))
-							field.setLong(o, ((Long)jo).longValue());
+						if(cType == int.class)
+							field.setInt(o, Long.valueOf(jo.toString()).intValue());
 						else
-						if((field.getType() == double.class)&&(jo instanceof Double))
-							field.setDouble(o, ((Double)jo).doubleValue());
+						if(cType == short.class)
+							field.setShort(o, Long.valueOf(jo.toString()).shortValue());
 						else
-						if((field.getType() == float.class)&&(jo instanceof Double))
-							field.setFloat(o, ((Double)jo).floatValue());
+						if(cType == byte.class)
+							field.setByte(o, Long.valueOf(jo.toString()).byteValue());
 						else
-						if((field.getType() == boolean.class)&&(jo instanceof Boolean))
-							field.setBoolean(o, ((Boolean)jo).booleanValue());
+						if(cType == long.class)
+							field.setLong(o, Long.valueOf(jo.toString()).longValue());
+						else
+						if(cType == float.class)
+							field.setFloat(o, Double.valueOf(jo.toString()).floatValue());
+						else
+						if(cType == double.class)
+							field.setDouble(o, Double.valueOf(jo.toString()).doubleValue());
 						else
 							field.set(o, jo);
 					}
