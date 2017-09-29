@@ -1,6 +1,8 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.MiniJSON.JSONObject;
+import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -14,6 +16,8 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -95,15 +99,15 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	 */
 	private static class XMLpiece implements Cloneable, XMLTag
 	{
-		protected String tag="";
-		protected String value="";
-		protected List<XMLTag> contents=new XVector<XMLTag>();
-		protected Map<String,String> parms=new XHashtable<String,String>();
-		protected XMLpiece parent=null;
-		protected int outerStart=-1;
-		protected int innerStart=-1;
-		protected int innerEnd=-1;
-		protected int outerEnd=-1;
+		protected String				tag			= "";
+		protected String				value		= "";
+		protected List<XMLTag>			contents	= new XVector<XMLTag>();
+		protected Map<String, String>	parms		= new XHashtable<String, String>();
+		protected XMLpiece				parent		= null;
+		protected int					outerStart	= -1;
+		protected int					innerStart	= -1;
+		protected int					innerEnd	= -1;
+		protected int					outerEnd	= -1;
 
 		public XMLpiece()
 		{
@@ -1357,5 +1361,247 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		for(int v=0;v<xml.size();v++)
 			V.addElement(this.restoreAngleBrackets(xml.get(v).value()));
 		return V;
+	}
+	
+	/**
+	 * Converts a pojo field to a xml value.
+	 * @param type the class type
+	 * @param val the value
+	 * @return the xml value
+	 */
+	protected String fromPOJOFieldtoXML(Class<?> type, Object val)
+	{
+		final StringBuilder str=new StringBuilder("");
+		if(type.isArray())
+		{
+			final int length = Array.getLength(val);
+			for (int i=0; i<length; i++) 
+			{
+				Object e = Array.get(val, i);
+				str.append("<VALUE>");
+				str.append(fromPOJOFieldtoXML(type.getComponentType(),e));
+				str.append("</VALUE>");
+			}
+		}
+		else
+		if(type == String.class)
+			str.append(parseOutAngleBrackets(val.toString()));
+		else
+		if(type.isPrimitive())
+			str.append(val.toString());
+		else
+		if((type == Float.class)||(type==Integer.class)||(type==Double.class)||(type==Boolean.class)
+		 ||(type==Long.class)||(type==Short.class)||(type==Byte.class))
+			str.append(val.toString());
+		else
+			str.append(fromPOJOtoXML(val));
+		return str.toString();
+	}
+
+	/**
+	 * Converts a pojo object to a XML document.
+	 * @param o the object to convert
+	 * @return the XML document
+	 */
+	@Override
+	public String fromPOJOtoXML(Object o)
+	{
+		StringBuilder str=new StringBuilder("");
+		final Field[] fields = o.getClass().getDeclaredFields();
+		for(final Field field : fields)
+		{
+			try
+			{
+				field.setAccessible(true);
+				if(field.isAccessible())
+				{
+					str.append("<").append(field.getName());
+					final Object obj = field.get(o);
+					if(obj == null)
+						str.append(" ISNULL=TRUE />");
+					else
+					{
+						str.append(">");
+						str.append(fromPOJOFieldtoXML(field.getType(),field.get(o)));
+					}
+					str.append("</").append(field.getName()).append(">");
+				}
+			}
+			catch (IllegalArgumentException e)
+			{
+			}
+			catch (IllegalAccessException e)
+			{
+			}
+		}
+		return str.toString();
+	}
+
+	/**
+	 * Converts a JSON document to a XML object.
+	 * @param XML the XML document
+	 * @param o the object to convert
+	 */
+	@Override
+	public void fromXMLtoPOJO(String XML, Object o)
+	{
+		fromXMLtoPOJO(this.parseAllXML(XML),o);
+	}
+
+	/**
+	 * Converts a xml object to a pojo object.
+	 * @param xmlObj the json object
+	 * @param o the object to convert
+	 */
+	@Override
+	public void fromXMLtoPOJO(List<XMLTag> xmlObj, Object o)
+	{
+		final Field[] fields = o.getClass().getDeclaredFields();
+		for(final Field field : fields)
+		{
+			try
+			{
+				field.setAccessible(true);
+				XMLTag valTag = getPieceFromPieces(xmlObj, field.getName());
+				if(field.isAccessible() && (valTag!=null))
+				{
+					if(valTag.parms().containsKey("ISNULL")
+					&&(valTag.parms().get("ISNULL").equalsIgnoreCase("TRUE")))
+						field.set(o, null);
+					else
+					if(field.getType().isArray())
+					{
+						List<XMLTag> objs = valTag.contents();
+						final Object tgt;
+						final Class<?> cType = field.getType().getComponentType();
+						tgt = Array.newInstance(cType, objs.size());
+						for(int i=0;i<objs.size();i++)
+						{
+							final XMLTag vTag=objs.get(i);
+							if(!vTag.tag().equalsIgnoreCase("VALUE"))
+								continue;
+							if(cType == Float.class)
+								Array.set(tgt, i, Float.valueOf(Double.valueOf(vTag.value()).floatValue()));
+							else
+							if(cType == Double.class)
+								Array.set(tgt, i, Double.valueOf(vTag.value()));
+							else
+							if(cType == Long.class)
+								Array.set(tgt, i, Long.valueOf(vTag.value()));
+							else
+							if(cType == Integer.class)
+								Array.set(tgt, i, Integer.valueOf(Long.valueOf(vTag.value()).intValue()));
+							else
+							if(cType == Short.class)
+								Array.set(tgt, i, Short.valueOf(Long.valueOf(vTag.value()).shortValue()));
+							else
+							if(cType == Byte.class)
+								Array.set(tgt, i, Byte.valueOf(Long.valueOf(vTag.value()).byteValue()));
+							else
+							if(cType == Boolean.class)
+								Array.set(tgt, i, Boolean.valueOf(vTag.value()));
+							else
+							if(cType.isPrimitive())
+							{
+								if(cType == boolean.class)
+									Array.setBoolean(tgt, i, Boolean.valueOf(vTag.value()).booleanValue());
+								else
+								if(cType == int.class)
+									Array.setInt(tgt, i, Long.valueOf(vTag.value()).intValue());
+								else
+								if(cType == short.class)
+									Array.setShort(tgt, i, Long.valueOf(vTag.value()).shortValue());
+								else
+								if(cType == byte.class)
+									Array.setByte(tgt, i, Long.valueOf(vTag.value()).byteValue());
+								else
+								if(cType == long.class)
+									Array.setLong(tgt, i, Long.valueOf(vTag.value()).longValue());
+								else
+								if(cType == float.class)
+									Array.setFloat(tgt, i, Double.valueOf(vTag.value()).floatValue());
+								else
+								if(cType == double.class)
+									Array.setDouble(tgt, i, Double.valueOf(vTag.value()).doubleValue());
+							}
+							else
+							{
+								Object newObj = cType.newInstance();
+								fromXMLtoPOJO(vTag.contents(), newObj);
+								Array.set(tgt, i, newObj);
+							}
+						}
+						field.set(o, tgt);
+					}
+					else
+					if(field.getType() == String.class)
+						field.set(o, valTag.value());
+					else
+					if(field.getType().isPrimitive())
+					{
+						final Class<?> cType=field.getType();
+						if(cType == boolean.class)
+							field.setBoolean(o, Boolean.valueOf(valTag.value()).booleanValue());
+						else
+						if(cType == int.class)
+							field.setInt(o, Long.valueOf(valTag.value()).intValue());
+						else
+						if(cType == short.class)
+							field.setShort(o, Long.valueOf(valTag.value()).shortValue());
+						else
+						if(cType == byte.class)
+							field.setByte(o, Long.valueOf(valTag.value()).byteValue());
+						else
+						if(cType == long.class)
+							field.setLong(o, Long.valueOf(valTag.value()).longValue());
+						else
+						if(cType == float.class)
+							field.setFloat(o, Double.valueOf(valTag.value()).floatValue());
+						else
+						if(cType == double.class)
+							field.setDouble(o, Double.valueOf(valTag.value()).doubleValue());
+					}
+					else
+					if(field.getType() == Float.class)
+						field.set(o, Float.valueOf(Double.valueOf(valTag.value()).floatValue()));
+					else
+					if(field.getType() == Double.class)
+						field.set(o, Double.valueOf(valTag.value()));
+					else
+					if(field.getType() == Long.class)
+						field.set(o, Long.valueOf(valTag.value()));
+					else
+					if(field.getType() == Integer.class)
+						field.set(o, Integer.valueOf(Long.valueOf(valTag.value()).intValue()));
+					else
+					if(field.getType() == Short.class)
+						field.set(o, Short.valueOf(Long.valueOf(valTag.value()).shortValue()));
+					else
+					if(field.getType() == Byte.class)
+						field.set(o, Byte.valueOf(Long.valueOf(valTag.value()).byteValue()));
+					else
+					if(field.getType() == Boolean.class)
+						field.set(o, Boolean.valueOf(valTag.value()));
+					else
+					{
+						Object newObj = field.getType().newInstance();
+						fromXMLtoPOJO(valTag.contents(), newObj);
+						field.set(o, newObj);
+					}
+				}
+			}
+			catch (IllegalArgumentException e)
+			{
+				throw new IllegalArgumentException(e.getMessage(),e);
+			}
+			catch (IllegalAccessException e)
+			{
+				throw new IllegalArgumentException(e.getMessage(),e);
+			}
+			catch (InstantiationException e)
+			{
+				throw new IllegalArgumentException(e.getMessage(),e);
+			}
+		}
 	}
 }

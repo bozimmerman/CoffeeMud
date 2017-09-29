@@ -12,8 +12,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -100,7 +100,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		{
 			records=new Vector<CheckedOutRecord>();
 			Resources.submitResource(this.getLibraryChainKey(), records);
-			final MiniJSON json = new MiniJSON();
+			final XMLLibrary xml = CMLib.xml();
 			synchronized(records)
 			{
 				final List<PlayerData> pData = CMLib.database().DBReadPlayerDataEntry(this.getLibraryChainKey());
@@ -108,19 +108,17 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				{
 					try
 					{
-						MiniJSON.JSONObject obj = json.parseObject(data.xml());
-						Object[] librecs = obj.getCheckedArray("librecs");
-						for(Object librec : librecs)
+						for(XMLLibrary.XMLTag tag : xml.parseAllXML(data.xml()))
 						{
-							if(librec instanceof MiniJSON.JSONObject)
+							if(tag.tag().equalsIgnoreCase("OBJECT"))
 							{
 								CheckedOutRecord r = new CheckedOutRecord();
-								json.fromJSONtoPOJO((MiniJSON.JSONObject)librec,r);
+								xml.fromXMLtoPOJO(tag.contents(),r);
 								records.add(r);
 							}
 						}
 					}
-					catch (MJSONException e)
+					catch (IllegalArgumentException e)
 					{
 						Log.errOut(getLibraryChainKey(),e);
 					}
@@ -134,24 +132,22 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	{
 		List<CheckedOutRecord> records = this.getCheckedOutRecords();
 		final StringBuilder json = new StringBuilder("");
-		json.append("{\"librecs\":[");
-		MiniJSON jsoner = new MiniJSON();
+		final XMLLibrary xml = CMLib.xml();
 		for(int r=0;r<records.size();r++)
 		{
 			try
 			{
 				final CheckedOutRecord record = records.get(r);
-				final String subJson = jsoner.fromPOJOtoJSON(record);
-				if(r>0)
-					json.append(",");
-				json.append(subJson);
+				final String subXML = xml.fromPOJOtoXML(record);
+				json.append("<OBJECT>");
+				json.append(subXML);
+				json.append("</OBJECT>");
 			}
 			catch(Exception e)
 			{
 				Log.errOut(getLibraryChainKey(),e);
 			}
 		}
-		json.append("]}");
 		CMLib.database().DBReCreatePlayerData(getLibraryChainKey(), "LIBRARY_RECORDS", getLibraryChainKey(), json.toString());
 	}
 

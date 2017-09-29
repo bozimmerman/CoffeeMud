@@ -347,6 +347,27 @@ public interface XMLLibrary extends CMLibrary
 	 */
 	public double getDoubleFromPieces(List<XMLTag> V, String tag, double defVal);
 	
+	/**
+	 * Converts a pojo object to a XML document.
+	 * @param o the object to convert
+	 * @return the XML document
+	 */
+	public String fromPOJOtoXML(Object o);
+	
+	/**
+	 * Converts a xml document to a XML object.
+	 * @param XML the XML document
+	 * @param o the object to convert
+	 */
+	public void fromXMLtoPOJO(String XML, Object o);
+
+	/**
+	 * Converts a xml object to a pojo object.
+	 * @param xmlObj the xml object
+	 * @param o the object to convert
+	 */
+	public void fromXMLtoPOJO(List<XMLTag> xmlObj, Object o);
+	
 	public interface XMLTag
 	{
 		/* (non-Javadoc)
@@ -569,6 +590,5 @@ public interface XMLLibrary extends CMLibrary
 		 * @return double Information from XML block
 		 */
 		public double getDoubleFromPieces(String tag);
-
 	}
 }

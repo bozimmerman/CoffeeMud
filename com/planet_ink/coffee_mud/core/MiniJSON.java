@@ -782,7 +782,8 @@ public class MiniJSON
 		if(type.isPrimitive())
 			str.append(val.toString());
 		else
-		if((type == Float.class)||(type==Integer.class)||(type==Double.class)||(type==Boolean.class)||(type==Long.class))
+		if((type == Float.class)||(type==Integer.class)||(type==Double.class)||(type==Boolean.class)
+		 ||(type==Long.class)||(type==Short.class)||(type==Byte.class))
 			str.append(val.toString());
 		else
 			str.append(fromPOJOtoJSON(val));
@@ -871,6 +872,12 @@ public class MiniJSON
 							else
 							if((cType == Integer.class)&&(objs[i] instanceof Long))
 								Array.set(tgt, i, Integer.valueOf(((Long)objs[i]).intValue()));
+							else
+							if((cType == Byte.class)&&(objs[i] instanceof Long))
+								Array.set(tgt, i, Byte.valueOf(((Long)objs[i]).byteValue()));
+							else
+							if((cType == Short.class)&&(objs[i] instanceof Long))
+								Array.set(tgt, i, Short.valueOf(((Long)objs[i]).shortValue()));
 							else
 							if(cType.isPrimitive())
 							{
