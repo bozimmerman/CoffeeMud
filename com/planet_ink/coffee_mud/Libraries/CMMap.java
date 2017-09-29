@@ -1853,6 +1853,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return H.iterator();
 	}
 
+	@Override
 	public int numLibraries()
 	{
 		return libraryList.size();
@@ -3151,6 +3152,9 @@ public class CMMap extends StdLibrary implements WorldMap
 
 		if(o instanceof Banker)
 			addBank((Banker)o);
+
+		if(o instanceof Librarian)
+			addLibrary((Librarian)o);
 
 		if(o instanceof Auctioneer)
 			addAuctionHouse((Auctioneer)o);
