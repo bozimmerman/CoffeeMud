@@ -54,14 +54,14 @@ public interface Librarian extends ShopKeeper
 	 * The daily minimum base currency charge due the moment
 	 * a withdrawn item becomes overdue.
 	 */
-	public final static double	DEFAULT_MIN_OVERDUE_CHARGE	= 10.0;
+	public final static double	DEFAULT_MIN_OVERDUE_CHARGE	= 1.0;
 
 	/**
 	 * The default percent from 0 to 1, of the value of a 
 	 * withdrawn item, in base currency charge, due the moment
 	 * a withdrawn item becomes overdue.
 	 */
-	public final static double	DEFAULT_PCT_OVERDUE_CHARGE	= 0.0;
+	public final static double	DEFAULT_PCT_OVERDUE_CHARGE	= 10.0;
 
 	/**
 	 * The default daily base currency charge due every day
@@ -74,7 +74,7 @@ public interface Librarian extends ShopKeeper
 	 * withdrawn item, in base currency charge, due every
 	 * day that a withdrawn item remains overdue.
 	 */
-	public final static double	DEFAULT_PCT_OVERDUE_DAILY	= 0.0;
+	public final static double	DEFAULT_PCT_OVERDUE_DAILY	= 10.0;
 
 	/**
 	 * The default number of mud-days that an item can be checked

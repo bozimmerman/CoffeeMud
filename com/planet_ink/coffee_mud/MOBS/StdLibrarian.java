@@ -406,77 +406,41 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			{
 				if (System.currentTimeMillis() > lastChangeMs[1])
 				{
-					lastChangeMs[1] = System.currentTimeMillis() + TimeManager.MILI_HOUR;
+					final TimeClock clock = getMyClock();
+					lastChangeMs[1] = System.currentTimeMillis() + (CMProps.getMillisPerMudHour() * (clock==null?1:clock.getHoursInDay()));
 					doMaintenance = true;
 				}
 			}
 			if (doMaintenance)
 			{
 				final List<CheckedOutRecord> recs = this.getCheckedOutRecords();
-				final TimeClock clock = getMyClock();
-				final long nowTime = (clock != null) ? clock.toHoursSinceEpoc() : 0;
 				final Map<String, Boolean> namesChecked = new TreeMap<String, Boolean>();
 				boolean recordsChanged = false;
-				if ((clock != null) && (nowTime != 0))
+				for (int i = 0; i < recs.size(); i++)
 				{
-					for (int i = 0; i < recs.size(); i++)
+					final CheckedOutRecord rec;
+					try
 					{
-						final CheckedOutRecord rec;
-						try
+						rec = recs.get(i);
+						if (rec.playerName.length() == 0)
 						{
-							rec = recs.get(i);
-							if (rec.itemName.length() > 0)
-							{
-								if (rec.mudDueDate < nowTime)
-								{
-									final double oldCharges = rec.charges;
-									final double value = shop.stockPrice(shop.getStock("$" + rec.itemName + "$", null));
-									rec.charges = this.getOverdueCharge();
-									if (value > 0)
-										rec.charges += CMath.mul(value, this.getOverdueChargePct());
-									long hrsDiff = clock.toHoursSinceEpoc() - rec.mudDueDate;
-									if (hrsDiff > 0)
-									{
-										double daysPast = CMath.floor(CMath.div(hrsDiff, (double) clock.getHoursInDay()));
-										if (daysPast > 0)
-										{
-											rec.charges += (daysPast * this.getDailyOverdueCharge());
-											if (value > 0)
-												rec.charges += (daysPast * value * this.getDailyOverdueChargePct());
-										}
-									}
-									if (oldCharges != rec.charges)
-										recordsChanged = true;
-								}
-								if (rec.mudReclaimDate < nowTime)
-								{
-									rec.itemName = ""; // the item is now
-														// reclaimed!
-									recordsChanged = true;
-								}
-							}
-							if (rec.charges > 0.0)
-							{
-								if (rec.playerName.length() == 0)
-								{
-									recs.remove(rec);
-									recordsChanged = true;
-									continue;
-								}
-								if (!namesChecked.containsKey(rec.playerName))
-									namesChecked.put(rec.playerName, Boolean.valueOf(CMLib.players().playerExists(rec.playerName)));
-								if (!namesChecked.get(rec.playerName).booleanValue())
-								{
-									recs.remove(rec);
-									recordsChanged = true;
-									continue;
-								}
-								// TODO: do something with long unpaid charges?
-							}
+							recs.remove(rec);
+							recordsChanged = true;
+							continue;
 						}
-						catch (IndexOutOfBoundsException e)
+						if (!namesChecked.containsKey(rec.playerName))
+							namesChecked.put(rec.playerName, Boolean.valueOf(CMLib.players().playerExists(rec.playerName)));
+						if (!namesChecked.get(rec.playerName).booleanValue())
 						{
+							recs.remove(rec);
+							recordsChanged = true;
+							continue;
 						}
+						final boolean recordChanged = processCheckedOutRecord(rec);
+						recordsChanged = recordsChanged || recordChanged;
+					}
+					catch (IndexOutOfBoundsException e)
+					{
 					}
 				}
 				if (recordsChanged)
@@ -486,6 +450,57 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		return true;
 	}
 
+	protected boolean processCheckedOutRecord(final CheckedOutRecord rec)
+	{
+		final TimeClock clock = getMyClock();
+		final long nowTime = (clock != null) ? clock.toHoursSinceEpoc() : 0;
+		if ((clock == null) || (nowTime == 0))
+			return false;
+		boolean recordsChanged=false;
+		if (rec.itemName.length() > 0)
+		{
+			Environmental stockItem = null;
+			if (rec.mudDueDate < nowTime)
+			{
+				stockItem = shop.getStock("$" + rec.itemName + "$", null);
+				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this, shop);
+				final double value = (P!=null)? P.absoluteGoldPrice : 0;
+				double newCharges = this.getOverdueCharge();
+				if (value > 0)
+					newCharges += CMath.mul(value, this.getOverdueChargePct());
+				final long hrsDiff = clock.toHoursSinceEpoc() - rec.mudDueDate;
+				if (hrsDiff > 0)
+				{
+					double daysPast = CMath.floor(CMath.div(hrsDiff, (double) clock.getHoursInDay()));
+					if (daysPast > 0)
+					{
+						newCharges += (daysPast * this.getDailyOverdueCharge());
+						if (value > 0)
+							newCharges += (daysPast * value * this.getDailyOverdueChargePct());
+					}
+				}
+				if (newCharges != rec.charges)
+				{
+					rec.charges = newCharges;
+					recordsChanged = true;
+				}
+			}
+			if (rec.mudReclaimDate < nowTime)
+			{
+				if(stockItem == null)
+					stockItem = shop.getStock("$" + rec.itemName+"$", null);
+				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this, shop);
+				final double value = (P!=null)? P.absoluteGoldPrice : 0;
+				if(rec.charges < value)
+					rec.charges = value;
+				rec.itemName = ""; // the item is now
+									// reclaimed!
+				recordsChanged = true;
+			}
+		}
+		return recordsChanged;
+	}
+	
 	public void autoGive(MOB src, MOB tgt, Item I)
 	{
 		CMMsg msg2 = CMClass.getMsg(src, I, null, CMMsg.MSG_DROP | CMMsg.MASK_INTERMSG, null, CMMsg.MSG_DROP | CMMsg.MASK_INTERMSG, null, CMMsg.MSG_DROP | CMMsg.MASK_INTERMSG, null);
@@ -514,116 +529,115 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 					if ((!msg.source().isMonster()) && (S != null) && (msg.tool() instanceof Item))
 					{
 						autoGive(msg.source(), this, (Item) msg.tool());
-						if (isMine(msg.tool()))
+						if (msg.tool() instanceof Coins)
 						{
-							if (msg.tool() instanceof Coins)
+							double totalGiven = ((Coins) msg.tool()).getTotalValue();
+							double totalDue = getTotalOverdueCharges(msg.source().Name());
+							if (totalDue > 0.0)
 							{
-								double totalGiven = ((Coins) msg.tool()).getTotalValue();
-								double totalDue = getTotalOverdueCharges(msg.source().Name());
-								if (totalDue > 0.0)
+								double totalPaidDown = totalDue;
+								boolean recordUpdated = false;
+								for (CheckedOutRecord rec : this.getAllMyRecords(msg.source().Name()))
 								{
-									double totalPaidDown = totalDue;
-									boolean recordUpdated = false;
-									for (CheckedOutRecord rec : this.getAllMyRecords(msg.source().Name()))
+									if (rec.charges > 0)
 									{
-										if (rec.charges > 0)
+										if (totalPaidDown >= rec.charges)
 										{
-											if (totalPaidDown >= rec.charges)
-											{
-												totalPaidDown -= rec.charges;
-												rec.charges = 0.0;
-												recordUpdated = true;
-												if (rec.itemName.length() == 0)
-													this.getCheckedOutRecords().remove(rec);
-											}
-											else if (totalPaidDown > 0.0)
-											{
-												rec.charges -= totalPaidDown;
-												totalPaidDown = 0.0;
-												recordUpdated = true;
-											}
+											totalPaidDown -= rec.charges;
+											rec.charges = 0.0;
+											recordUpdated = true;
+											if (rec.itemName.length() == 0)
+												this.getCheckedOutRecords().remove(rec);
+										}
+										else if (totalPaidDown > 0.0)
+										{
+											rec.charges -= totalPaidDown;
+											totalPaidDown = 0.0;
+											recordUpdated = true;
 										}
 									}
-									if (recordUpdated)
-										this.updateCheckedOutRecords();
-									msg.tool().destroy();
-									String totalAmount = CMLib.beanCounter().nameCurrencyShort(this, totalDue);
-									CMLib.commands().postSay(this, mob, L("Your total overdue charges were @x1.", totalAmount), true, false);
-									if (totalGiven > totalDue)
-										CMLib.beanCounter().giveSomeoneMoney(this, msg.source(), totalGiven - totalDue);
-									else if (totalPaidDown > 0)
-									{
-										String totalStillDue = CMLib.beanCounter().nameCurrencyShort(this, totalPaidDown);
-										CMLib.commands().postSay(this, mob, L("Your still owe @x1.", totalStillDue), true, false);
-									}
 								}
-								else
-									CMLib.commands().postSay(this, mob, L("You didn't have any overdue charges, so thanks for the donation!"), true, false);
+								if (recordUpdated)
+									this.updateCheckedOutRecords();
+								msg.tool().destroy();
+								String totalAmount = CMLib.beanCounter().nameCurrencyShort(this, totalDue);
+								CMLib.commands().postSay(this, mob, L("Your total overdue charges were @x1.", totalAmount), true, false);
+								if (totalGiven > totalDue)
+									CMLib.beanCounter().giveSomeoneMoney(this, msg.source(), totalGiven - totalDue);
+								else if (totalPaidDown > 0)
+								{
+									String totalStillDue = CMLib.beanCounter().nameCurrencyShort(this, totalPaidDown);
+									CMLib.commands().postSay(this, mob, L("Your still owe @x1.", totalStillDue), true, false);
+								}
 							}
 							else
+								CMLib.commands().postSay(this, mob, L("You didn't have any overdue charges, so thanks for the donation!"), true, false);
+						}
+						else
+						if (isMine(msg.tool()))
+						{
+							CheckedOutRecord rec = this.getRecord(msg.source().Name(), msg.tool().Name());
+							if ((rec == null) && (msg.source().amFollowing() != null))
+								rec = this.getRecord(msg.source().amFollowing().Name(), msg.tool().Name());
+							if ((rec == null) && (msg.source().isMonster()) && (msg.source().getStartRoom() != null))
 							{
-								CheckedOutRecord rec = this.getRecord(msg.source().Name(), msg.tool().Name());
-								if ((rec == null) && (msg.source().amFollowing() != null))
-									rec = this.getRecord(msg.source().amFollowing().Name(), msg.tool().Name());
-								if ((rec == null) && (msg.source().isMonster()) && (msg.source().getStartRoom() != null))
+								final String name = CMLib.law().getPropertyOwnerName(msg.source().getStartRoom());
+								if (name.length() > 0)
+									rec = this.getRecord(name, msg.tool().Name());
+							}
+							if (rec == null)
+							{
+								List<CheckedOutRecord> recs = this.getItemRecords(msg.tool().Name());
+								for (int i = 0; i < recs.size(); i++)
 								{
-									final String name = CMLib.law().getPropertyOwnerName(msg.source().getStartRoom());
-									if (name.length() > 0)
-										rec = this.getRecord(name, msg.tool().Name());
-								}
-								if (rec == null)
-								{
-									List<CheckedOutRecord> recs = this.getItemRecords(msg.tool().Name());
-									for (int i = 0; i < recs.size(); i++)
+									if (recs.get(i).playerName.length() > 0)
 									{
-										if (recs.get(i).playerName.length() > 0)
-										{
-											rec = recs.get(i);
-											break;
-										}
+										rec = recs.get(i);
+										break;
 									}
-									if (rec != null)
-										CMLib.commands().postSay(this, mob, L("I assume you are returning this for @x1.", rec.playerName), true, false);
 								}
-								if (rec == null)
+								if (rec != null)
+									CMLib.commands().postSay(this, mob, L("I assume you are returning this for @x1.", rec.playerName), true, false);
+							}
+							if (rec == null)
+							{
+								CMLib.commands().postSay(this, mob, L("What is this?!"), true, false);
+								return;
+							}
+							msg.tool().destroy(); // it's almost done being
+													// returned!
+							if (rec.charges > 0.0)
+							{
+								String amount = CMLib.beanCounter().nameCurrencyShort(this, rec.charges);
+								if (CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(), this) < rec.charges)
 								{
-									CMLib.commands().postSay(this, mob, L("What is this?!"), true, false);
-									return;
-								}
-								msg.tool().destroy(); // it's almost done being
-														// returned!
-								if (rec.charges > 0.0)
-								{
-									String amount = CMLib.beanCounter().nameCurrencyShort(this, rec.charges);
-									if (CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(), this) < rec.charges)
-									{
-										if (!msg.source().Name().equalsIgnoreCase(rec.playerName))
-											CMLib.commands().postSay(this, mob, L("Charges due for this are @x2.  @x1 must directly pay this fee to me.", rec.playerName, amount), true, false);
-										else
-											CMLib.commands().postSay(this, mob, L("Charges due for this are @x2.  You must come back and pay this fee to me.", rec.playerName, amount), true, false);
-										rec.itemName = "";
-										this.updateCheckedOutRecords();
-									}
+									if (!msg.source().Name().equalsIgnoreCase(rec.playerName))
+										CMLib.commands().postSay(this, mob, L("Charges due for this are @x2.  @x1 must directly pay this fee to me.", rec.playerName, amount), true, false);
 									else
-									{
-										CMLib.commands().postSay(this, mob, L("Charges due for this were @x2.  Thank you!", rec.playerName), true, false);
-										CMLib.beanCounter().subtractMoneyGiveChange(this, msg.source(), rec.charges);
-										rec.charges = 0.0;
-										rec.itemName = "";
-										rec.playerName = "";
-										this.getCheckedOutRecords().remove(rec);
-										this.updateCheckedOutRecords();
-									}
+										CMLib.commands().postSay(this, mob, L("Charges due for this are @x2.  You must come back and pay this fee to me.", rec.playerName, amount), true, false);
+									rec.itemName = "";
+									this.updateCheckedOutRecords();
 								}
 								else
 								{
-									CMLib.commands().postSay(this, mob, L("Thank you!", rec.playerName), true, false);
+									CMLib.beanCounter().subtractMoney(mob, CMLib.beanCounter().getCurrency(this), rec.charges);
+									CMLib.commands().postSay(this, mob, L("Charges due for this were @x1.  Thank you!", amount), true, false);
+									//CMLib.beanCounter().subtractMoneyGiveChange(this, msg.source(), rec.charges);
 									rec.charges = 0.0;
 									rec.itemName = "";
 									rec.playerName = "";
 									this.getCheckedOutRecords().remove(rec);
 									this.updateCheckedOutRecords();
 								}
+							}
+							else
+							{
+								CMLib.commands().postSay(this, mob, L("Thank you!", rec.playerName), true, false);
+								rec.charges = 0.0;
+								rec.itemName = "";
+								rec.playerName = "";
+								this.getCheckedOutRecords().remove(rec);
+								this.updateCheckedOutRecords();
 							}
 						}
 					}
@@ -643,7 +657,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 							final TimeClock minClock = (TimeClock) clock.copyOf();
 							minClock.bumpDays(this.getMinOverdueDays());
 							final TimeClock maxClock = (TimeClock) clock.copyOf();
-							maxClock.bumpDays(this.getMinOverdueDays());
+							maxClock.bumpDays(this.getMaxOverdueDays());
 							rec.itemName = old.Name();
 							rec.charges = 0.0;
 							rec.playerName = msg.source().Name();
@@ -700,8 +714,11 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 					if (clock != null)
 					{
 						long nowHrs = clock.toHoursSinceEpoc();
+						boolean recordsChanged = false;
 						for (CheckedOutRecord rec : recs)
 						{
+							boolean recordChanged = processCheckedOutRecord(rec);
+							recordsChanged = recordsChanged || recordChanged;
 							totalDue += rec.charges;
 							if (rec.itemName.length() > 0)
 							{
@@ -717,6 +734,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 								str.append("\n\r");
 							}
 						}
+						
 					}
 					if (totalDue > 0.0)
 						str.append(L("You owe the library @x1.\n\r", CMLib.beanCounter().abbreviatedPrice(this, totalDue)));
@@ -775,8 +793,8 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 						return false;
 					}
 				}
-			}
 				return true;
+			}
 			case CMMsg.TYP_WITHDRAW:
 			case CMMsg.TYP_BORROW:
 			{

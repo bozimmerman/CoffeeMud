@@ -114,7 +114,7 @@ public class Thief_PubContacts extends ThiefSkill
 							if((E instanceof Item)&&(CMLib.flags().isAlcoholic((Item)E)))
 							{
 								double moneyPrice=0;
-								ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(M,mob,E,SK,true);
+								ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(M,mob,E,SK,SK.getShop(), true);
 								if(price.experiencePrice>0)
 									moneyPrice=(100 * price.experiencePrice);
 								else

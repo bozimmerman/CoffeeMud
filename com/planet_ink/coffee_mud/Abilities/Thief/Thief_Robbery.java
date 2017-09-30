@@ -198,7 +198,7 @@ public class Thief_Robbery extends ThiefSkill
 		Physical stolen=(stock instanceof Physical)?(Physical)stock:null;
 		if(stolen!=null)
 		{
-			final ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(target,mob,stolen,shop,false);
+			final ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(target,mob,stolen,shop,shop.getShop(), false);
 			if((stolen instanceof Ability)
 			||(stolen instanceof MOB)
 			||(stolen instanceof Room)

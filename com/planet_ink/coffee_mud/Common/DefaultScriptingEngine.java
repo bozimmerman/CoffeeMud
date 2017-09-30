@@ -5549,7 +5549,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(shopHere instanceof MOB)
 		{
-			ShopKeeper.ShopPrice price = CMLib.coffeeShops().sellingPrice((MOB)shopHere, null, E, shopHere, true);
+			ShopKeeper.ShopPrice price = CMLib.coffeeShops().sellingPrice((MOB)shopHere, null, E, shopHere, shopHere.getShop(), true);
 			if(price.experiencePrice>0)
 				tmp[SPECIAL_9SHOPHASPRICE] = price.experiencePrice+"xp";
 			else

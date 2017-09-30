@@ -475,13 +475,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	public ShopKeeper.ShopPrice sellingPrice(MOB seller,
 											 MOB buyer,
 											 Environmental product,
-											 ShopKeeper shop,
+											 ShopKeeper shopKeeper,
+											 CoffeeShop shop, 
 											 boolean includeSalesTax)
 	{
 		final ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
 		if(product==null)
 			return val;
-		final int stockPrice=shop.getShop().stockPrice(product);
+		final int stockPrice=shop.stockPrice(product);
 		if(stockPrice<=-100)
 		{
 			if(stockPrice<=-1000)
@@ -493,7 +494,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if(stockPrice>=0)
 			val.absoluteGoldPrice=stockPrice;
 		else
-			val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.getShop());
+			val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop);
 
 		if(buyer==null)
 		{
@@ -502,9 +503,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			return val;
 		}
 
-		double prejudiceFactor=prejudiceFactor(buyer,shop.finalPrejudiceFactors(),false);
-		final Room loc=CMLib.map().roomLocation(shop);
-		prejudiceFactor*=itemPriceFactor(product,loc,shop.finalItemPricingAdjustments(),false);
+		double prejudiceFactor=prejudiceFactor(buyer,shopKeeper.finalPrejudiceFactors(),false);
+		final Room loc=CMLib.map().roomLocation(shopKeeper);
+		prejudiceFactor*=itemPriceFactor(product,loc,shopKeeper.finalItemPricingAdjustments(),false);
 		val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 
 		// the price is 200% at 0 charisma, and 100% at 35
@@ -708,7 +709,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	public ShopKeeper.ShopPrice pawningPrice(MOB seller,
 											 MOB buyer,
 											 Environmental product,
-											 ShopKeeper shop)
+											 ShopKeeper shopKeeper, 
+											 CoffeeShop shop)
 	{
 		double number=1.0;
 		final ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
@@ -735,7 +737,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 			if(product==null)
 				return val;
-			final int stockPrice=shop.getShop().stockPrice(product);
+			final int stockPrice=shop.stockPrice(product);
 			if(stockPrice<=-100)
 			{
 				return val;
@@ -744,7 +746,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if(stockPrice>=0.0)
 				val.absoluteGoldPrice=stockPrice;
 			else
-				val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.getShop());
+				val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop);
 	
 			if(buyer==null)
 			{
@@ -752,17 +754,17 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				return val;
 			}
 	
-			double prejudiceFactor=prejudiceFactor(buyer,shop.finalPrejudiceFactors(),true);
-			final Room loc=CMLib.map().roomLocation(shop);
-			prejudiceFactor*=itemPriceFactor(product,loc,shop.finalItemPricingAdjustments(),true);
+			double prejudiceFactor=prejudiceFactor(buyer,shopKeeper.finalPrejudiceFactors(),true);
+			final Room loc=CMLib.map().roomLocation(shopKeeper);
+			prejudiceFactor*=itemPriceFactor(product,loc,shopKeeper.finalItemPricingAdjustments(),true);
 			val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 	
 			// gets the shopkeeper a deal on junk.  Pays 5% at 3 charisma, and 50% at 35
 			double buyPrice=CMath.div(CMath.mul(val.absoluteGoldPrice,buyer.charStats().getStat(CharStats.STAT_CHARISMA)),70.0);
 			if(!(product instanceof Ability))
-				buyPrice=CMath.mul(buyPrice,1.0-devalue(shop,product,number));
+				buyPrice=CMath.mul(buyPrice,1.0-devalue(shopKeeper,product,number));
 	
-			final double sellPrice=sellingPrice(seller,buyer,product,shop,false).absoluteGoldPrice;
+			final double sellPrice=sellingPrice(seller,buyer,product,shopKeeper,shop, false).absoluteGoldPrice;
 	
 			if(buyPrice>sellPrice)
 				val.absoluteGoldPrice=sellPrice;
@@ -844,7 +846,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				CMLib.commands().postSay(seller,buyer,L("I don't buy stolen goods."),true,false);
 				return false;
 			}
-			final double yourValue=pawningPrice(seller,buyer,product,shop).absoluteGoldPrice;
+			final double yourValue=pawningPrice(seller,buyer,product,shop, shop.getShop()).absoluteGoldPrice;
 			if(yourValue<2)
 			{
 				CMLib.commands().postSay(seller,buyer,L("I'm not interested."),true,false);
@@ -922,7 +924,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		{
 			if(buyNotView)
 			{
-				final ShopKeeper.ShopPrice price=sellingPrice(seller,buyer,product,shop,true);
+				final ShopKeeper.ShopPrice price=sellingPrice(seller,buyer,product,shop,shop.getShop(), true);
 				if((price.experiencePrice>0)&&(price.experiencePrice>buyer.getExperience()))
 				{
 					CMLib.commands().postSay(seller,buyer,L("You aren't experienced enough to buy @x1.",product.name()),false,false);
@@ -1062,7 +1064,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			for(int i=0;i<inventory.size();i++)
 			{
 				E=inventory.elementAt(i);
-				price=sellingPrice(seller,buyer,E,shop,true);
+				price=sellingPrice(seller,buyer,E,shop,shop.getShop(), true);
 				if((price.experiencePrice>0)&&(((""+price.experiencePrice).length()+2)>(4+csize)))
 					csize=(""+price.experiencePrice).length()-2;
 				else
@@ -1091,7 +1093,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			for(int i=0;i<inventory.size();i++)
 			{
 				E=inventory.elementAt(i);
-				price=sellingPrice(seller,buyer,E,shop,true);
+				price=sellingPrice(seller,buyer,E,shop,shop.getShop(), true);
 				col=null;
 				if(csize >= 0)
 				{
@@ -1192,7 +1194,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		}
 		if((coreSoldItem!=null)&&(shop.doISellThis(coreSoldItem)))
 		{
-			final double val=pawningPrice(shopkeeper,pawner,rawSoldItem,shop).absoluteGoldPrice;
+			final double val=pawningPrice(shopkeeper,pawner,rawSoldItem,shop, shop.getShop()).absoluteGoldPrice;
 			final String currency=CMLib.beanCounter().getCurrency(shopkeeper);
 			if(!(shopkeeper instanceof ShopKeeper))
 				CMLib.beanCounter().subtractMoney(shopkeeper,currency,val);
@@ -1266,7 +1268,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		if((seller==null)||(seller.location()==null)||(buyer==null)||(shop==null)||(product==null))
 			return;
 		final Room room=seller.location();
-		final ShopKeeper.ShopPrice price=sellingPrice(seller,buyer,product,shop,true);
+		final ShopKeeper.ShopPrice price=sellingPrice(seller,buyer,product,shop,shop.getShop(), true);
 		if(price.absoluteGoldPrice>0.0)
 		{
 			CMLib.beanCounter().subtractMoney(buyer,CMLib.beanCounter().getCurrency(seller),price.absoluteGoldPrice);
@@ -1282,7 +1284,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 					final Container treasuryContainer=treas.container;
 					if(treasuryR!=null)
 					{
-						final double taxAmount=totalFunds-sellingPrice(seller,buyer,product,shop,false).absoluteGoldPrice;
+						final double taxAmount=totalFunds-sellingPrice(seller,buyer,product,shop,shop.getShop(), false).absoluteGoldPrice;
 						totalFunds-=taxAmount;
 						final Coins COIN=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(seller),taxAmount,treasuryR,treasuryContainer);
 						if(COIN!=null)

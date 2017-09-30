@@ -321,7 +321,7 @@ public class ListCmd extends StdCommand
 				seller=CMClass.getFactoryMOB("the shop", 1, R);
 				destroySeller=true;
 			}
-			ShopPrice p = CMLib.coffeeShops().sellingPrice(seller, buyer, E, SK, false);
+			ShopPrice p = CMLib.coffeeShops().sellingPrice(seller, buyer, E, SK, SK.getShop(), false);
 			if(p!=null)
 			{
 				if(p.experiencePrice>0)

@@ -37,8 +37,8 @@ public interface ShoppingLibrary extends CMLibrary
 	public String getViewDescription(MOB viewerM, Environmental E);
 	public double prejudiceValueFromPart(MOB customer, boolean sellTo, String part);
 	public double prejudiceFactor(MOB customer, String factors, boolean sellTo);
-	public ShopKeeper.ShopPrice sellingPrice(MOB seller, MOB buyer, Environmental product, ShopKeeper shop, boolean includeSalesTax);
-	public ShopKeeper.ShopPrice pawningPrice(MOB seller, MOB buyer, Environmental product, ShopKeeper shop);
+	public ShopKeeper.ShopPrice sellingPrice(MOB seller, MOB buyer, Environmental product, ShopKeeper shopKeeper, CoffeeShop shop, boolean includeSalesTax);
+	public ShopKeeper.ShopPrice pawningPrice(MOB seller, MOB buyer, Environmental product, ShopKeeper shopKeeper, CoffeeShop shop);
 	public double getSalesTax(Room homeRoom, MOB seller);
 	public boolean standardSellEvaluation(MOB seller, MOB buyer, Environmental product, ShopKeeper shop, double maxToPay, double maxEverPaid, boolean sellNotValue);
 	public boolean standardBuyEvaluation(MOB seller, MOB buyer, Environmental product, ShopKeeper shop, boolean buyNotView);

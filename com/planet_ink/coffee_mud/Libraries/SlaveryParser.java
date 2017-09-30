@@ -822,7 +822,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 							final Environmental E=sk.getShop().getStock(item,me);
 							if((E!=null)&&(E instanceof Item))
 							{
-								double price=CMLib.coffeeShops().sellingPrice(M,me,E,sk,true).absoluteGoldPrice;
+								double price=CMLib.coffeeShops().sellingPrice(M,me,E,sk,sk.getShop(), true).absoluteGoldPrice;
 								if(price<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(me,M))
 								{
 									me.enqueCommand(CMParms.parse("BUY \""+E.name()+"\""),MUDCmdProcessor.METAFLAG_FORCED|MUDCmdProcessor.METAFLAG_ORDER,0);
