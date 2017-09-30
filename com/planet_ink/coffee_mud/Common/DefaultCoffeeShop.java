@@ -444,8 +444,10 @@ public class DefaultCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public int stockPrice(Environmental likeThis)
+	public int stockPrice(final Environmental likeThis)
 	{
+		if(likeThis==null)
+			return -1;
 		for(final ShelfProduct SP : storeInventory)
 		{
 			if(shopCompare(SP.product,likeThis))
@@ -455,8 +457,10 @@ public class DefaultCoffeeShop implements CoffeeShop
 	}
 
 	@Override
-	public int numberInStock(Environmental likeThis)
+	public int numberInStock(final Environmental likeThis)
 	{
+		if(likeThis==null)
+			return -1;
 		int num=0;
 		for(final ShelfProduct SP : storeInventory)
 		{

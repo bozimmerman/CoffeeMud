@@ -44,9 +44,9 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		return "StdLibrarian";
 	}
 
-	protected final 	long		shopApplyInt	= TimeManager.MILI_MINUTE * 5;
-	protected volatile	CoffeeShop	curShop			= null;
-	protected volatile	long		nextShopApply	= Long.MAX_VALUE;
+	protected volatile 	boolean		shopApply	 = false;
+	protected volatile	long		lastShopTime = 0;
+	protected volatile	CoffeeShop	curShop		 = null;
 	
 	protected double	overdueCharge			= DEFAULT_MIN_OVERDUE_CHARGE;
 	protected double	overdueChargePct		= DEFAULT_PCT_OVERDUE_CHARGE;
@@ -193,6 +193,11 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	
 	protected void updateCheckedOutRecords()
 	{
+		final long[] lastChanges=getRecordChangeIndexes();
+		synchronized(lastChanges)
+		{
+			lastChanges[0] = System.currentTimeMillis();
+		}
 		List<CheckedOutRecord> records = this.getCheckedOutRecords();
 		final StringBuilder json = new StringBuilder("");
 		final XMLLibrary xml = CMLib.xml();
@@ -316,26 +321,44 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		super.cloneFix(E);
 	}
 
-	protected CoffeeShop getCommonShop()
+	protected TimeClock getMyClock()
 	{
-		CoffeeShop commonShop = (CoffeeShop)Resources.getResource(getLibraryShopKey());
-		if(commonShop == null)
-		{
-			commonShop = shop;
-			Resources.submitResource(getLibraryShopKey(), commonShop);
-		}
-		return commonShop;
+		final Room room=this.getStartRoom();
+		if(room == null)
+			return null;
+		final Area area=room.getArea();
+		if(area == null)
+			return null;
+		return area.getTimeObj();
 	}
-
+	
+	protected long[] getRecordChangeIndexes()
+	{
+		final long[] lastChange = (long[])Resources.getResource(this.getLibraryShopKey());
+		if(lastChange != null)
+			return lastChange;
+		final long[] lastChange2=new long[2];
+		Resources.submitResource(this.getLibraryShopKey(), lastChange2);
+		return lastChange2;
+	}
+	
 	@Override
 	public CoffeeShop getShop()
 	{
-		if(nextShopApply != Long.MAX_VALUE)
+		if(shopApply)
 		{
-			if(System.currentTimeMillis() > nextShopApply)
+			final long[] lastChanges=getRecordChangeIndexes();
+			final long lastChangeMs;
+			synchronized(lastChanges)
 			{
-				nextShopApply = System.currentTimeMillis();
-				shop=(CoffeeShop)getCommonShop().copyOf();
+				lastChangeMs = lastChanges[0];
+			}
+			
+			if((this.lastShopTime < lastChangeMs)
+			||(curShop==null))
+			{
+				this.lastShopTime = lastChangeMs;
+				curShop=(CoffeeShop)shop.copyOf();
 				final List<CheckedOutRecord> records=this.getCheckedOutRecords();
 				for(int i=0;i<records.size();i++)
 				{
@@ -343,7 +366,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 					{
 						CheckedOutRecord rec = records.get(i);
 						if(rec.itemName.length()>0)
-							shop.lowerStock("$"+rec.itemName+"$");
+							curShop.lowerStock("$"+rec.itemName+"$");
 					}
 					catch(java.lang.IndexOutOfBoundsException e)
 					{
@@ -351,10 +374,10 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				}
 				
 			}
-			return shop;
+			return curShop;
 		}
 		else
-			return getCommonShop();
+			return shop;
 	}
 
 	@Override
@@ -373,6 +396,89 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 
 		if((tickID==Tickable.TICKID_MOB)&&(getStartRoom()!=null))
 		{
+			final long[] lastChangeMs = this.getRecordChangeIndexes();
+			boolean doMaintenance = false;
+			synchronized(lastChangeMs)
+			{
+				if(System.currentTimeMillis() > lastChangeMs[1])
+				{
+					lastChangeMs[1] = System.currentTimeMillis() + TimeManager.MILI_HOUR;
+					doMaintenance = true;
+				}
+			}
+			if(doMaintenance)
+			{
+				final List<CheckedOutRecord> recs = this.getCheckedOutRecords();
+				final TimeClock clock=getMyClock();
+				final long nowTime = (clock != null) ? clock.toHoursSinceEpoc() : 0;
+				final Set<String> namesChecked = new TreeSet<String>();
+				boolean recordsChanged = false;
+				if((clock!=null)&&(nowTime != 0))
+				{
+					for(int i=0;i<recs.size();i++)
+					{
+						final CheckedOutRecord rec;
+						try
+						{
+							rec = recs.get(i);
+							if(rec.itemName.length()>0)
+							{
+								if(rec.mudDueDate < nowTime)
+								{
+									final double oldCharges = rec.charges;
+									final double value = shop.stockPrice(shop.getStock("$"+rec.itemName+"$", null));
+									rec.charges = this.getOverdueCharge();
+									if(value > 0) 
+										rec.charges += CMath.mul(value, this.getOverdueChargePct());
+									long hrsDiff = clock.toHoursSinceEpoc() - rec.mudDueDate;
+									if(hrsDiff > 0)
+									{
+										double daysPast = CMath.floor(CMath.div(hrsDiff, (double)clock.getHoursInDay()));
+										if(daysPast > 0)
+										{
+											rec.charges += (daysPast * this.getDailyOverdueCharge());
+											if(value > 0)
+												rec.charges += (daysPast * value * this.getDailyOverdueChargePct());
+										}
+									}
+									if(oldCharges != rec.charges)
+										recordsChanged = true;
+								}
+								if(rec.mudReclaimDate < nowTime)
+								{
+									rec.itemName = ""; // the item is now reclaimed!
+									recordsChanged = true;
+								}
+							}
+							if(rec.charges > 0.0)
+							{
+								if(rec.playerName.length()==0)
+								{
+									recs.remove(rec);
+									recordsChanged=true;
+									continue;
+								}
+								if(!namesChecked.contains(rec.playerName))
+								{
+									namesChecked.add(rec.playerName);
+									if(!CMLib.players().playerExists(rec.playerName))
+									{
+										recs.remove(rec);
+										recordsChanged=true;
+										continue;
+									}
+								}
+								//TODO: do something with long unpaid charges?
+							}
+						}
+						catch(IndexOutOfBoundsException e)
+						{
+						}
+					}
+				}
+				if(recordsChanged)
+					this.updateCheckedOutRecords();
+			}
 		}
 		return true;
 	}
@@ -390,10 +496,10 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	{
 		final MOB mob=msg.source();
 		if(msg.source().isPlayer() 
-		&& (nextShopApply == Long.MAX_VALUE)
+		&& (!shopApply)
 		&& ((msg.source().location()==location())||(msg.sourceMinor()==CMMsg.TYP_ENTER))
 		&& (!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS)))
-			nextShopApply = System.currentTimeMillis();
+			shopApply=true;
 		if(msg.amITarget(this))
 		{
 			switch(msg.targetMinor())
@@ -481,6 +587,11 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 									if(rec != null)
 										CMLib.commands().postSay(this,mob,L("I assume you are returning this for @x1.",rec.playerName),true,false);
 								}
+								if(rec == null)
+								{
+									CMLib.commands().postSay(this,mob,L("What is this?!"),true,false);
+									return;
+								}
 								msg.tool().destroy(); // it's almost done being returned!
 								if(rec.charges > 0.0)
 								{
@@ -527,13 +638,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 					if((getRecord(msg.source().Name(), old.Name())==null)
 					&&(msg.source().isPlayer()))
 					{
-						final Room room=this.getStartRoom();
-						Area area=null;
-						TimeClock clock=null;
-						if(room != null)
-							area=room.getArea();
-						if(area != null)
-							clock = area.getTimeObj();
+						final TimeClock clock=getMyClock();
 						if(clock != null)
 						{
 							CheckedOutRecord rec = new CheckedOutRecord();
@@ -547,7 +652,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 							rec.mudDueDate = minClock.toHoursSinceEpoc();
 							rec.mudReclaimDate = maxClock.toHoursSinceEpoc();
 							final CoffeeShop shop = this.getShop();
-							if(shop != this.getCommonShop()) // never borrow from the main library
+							if(shop != this.shop) // never borrow from the main library
 							{
 								List<Environmental> items = shop.removeSellableProduct("$"+old.Name()+"$", mob);
 								CMLib.commands().postSay(this,mob,L("There ya go! This is due back here by @x1!",minClock.getShortestTimeDescription()),true,false);
@@ -589,6 +694,35 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				super.executeMsg(myHost,msg);
 				if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 				{
+					StringBuilder str=new StringBuilder("");
+					final List<CheckedOutRecord> recs=this.getAllMyRecords(msg.source().Name());
+					double totalDue = 0.0;
+					final TimeClock clock=getMyClock();
+					if(clock != null)
+					{
+						long nowHrs = clock.toHoursSinceEpoc();
+						for(CheckedOutRecord rec : recs)
+						{
+							totalDue += rec.charges;
+							if(rec.itemName.length()>0)
+							{
+								str.append(L("You have @x1 checked out.",rec.itemName));
+								if(nowHrs > rec.mudDueDate)
+									str.append(L(" It is past due."));
+								else
+								{
+									TimeClock reClk = (TimeClock)CMClass.getCommon("DefaultTimeClock");
+									reClk.setFromHoursSinceEpoc(rec.mudDueDate);
+									str.append(L(" It is due on @x1.",reClk.getShortestTimeDescription()));
+								}
+								str.append("\n\r");
+							}
+						}
+					}
+					if(totalDue > 0.0)
+						str.append(L("You owe the library @x1.\n\r",CMLib.beanCounter().abbreviatedPrice(this, totalDue)));
+					if(str.length()>0)
+						CMLib.commands().postSay(this,mob,str.toString(),true,false);
 					return;
 				}
 				break;
@@ -635,7 +769,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 						moneyPass = this.getTotalOverdueCharges(msg.source().Name()) > 0.0;
 					if(!moneyPass)
 					{
-						if((!getCommonShop().doIHaveThisInStock(msg.tool().Name(), null))
+						if((!this.shop.doIHaveThisInStock(msg.tool().Name(), null))
 						&&(this.getItemRecords(msg.tool().Name()).size()==0))
 						{
 							mob.tell(this,msg.tool(),null,L("<S-HE-SHE> has no interest in <T-NAME>."));
@@ -657,7 +791,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 					}
 					if((msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
 						return false;
-					if(!getCommonShop().doIHaveThisInStock(msg.tool().Name(), null))
+					if(!this.shop.doIHaveThisInStock(msg.tool().Name(), null))
 					{
 						CMLib.commands().postSay(this,mob,L("We don't stock anything like that."),true,false);
 						return false;
@@ -679,8 +813,8 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 						CMLib.commands().postSay(this,mob,L("I'm sorry, but you already borrowed a copy of that.",""+getMaxBorrowed()),true,false);
 						return false;
 					}
-					CoffeeShop shop = this.getShop();
-					if(shop == this.getCommonShop()) // never borrow from the main library
+					final CoffeeShop shop = this.getShop();
+					if(shop == this.shop) // never borrow from the main library
 					{
 						CMLib.commands().postSay(this,mob,L("Please come back a little later."),true,false);
 						return false;
