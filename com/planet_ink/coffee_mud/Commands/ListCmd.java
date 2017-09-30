@@ -5209,6 +5209,9 @@ public class ListCmd extends StdCommand
 			else
 			if(SHOP instanceof PostOffice)
 				str=L("<S-NAME> check(s) <S-HIS-HER> postal box with <T-NAMESELF>");
+			else
+			if(SHOP instanceof Librarian)
+				str=L("<S-NAME> review(s) <T-YOUPOSS> catalog");
 			if(forWhat!=null)
 				str+=L(" for '@x1'",forWhat);
 			str+=".";

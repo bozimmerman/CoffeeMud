@@ -547,6 +547,7 @@ public class StdTitle extends StdItem implements LandTitle
 		&&(msg.target() instanceof MOB)
 		&&(!(msg.target() instanceof Banker))
 		&&(!(msg.target() instanceof Auctioneer))
+		&&(!(msg.target() instanceof Librarian))
 		&&(!(msg.target() instanceof PostOffice)))
 		{
 			final PrivateProperty P = this.fetchAPropertyRecord();

@@ -55,7 +55,10 @@ public class GrinderMobs
 		LOANINT,SVCRIT,AUCCHAIN,LIVELIST,TIMELIST,
 		TIMELISTPCT,LIVECUT,TIMECUT,MAXDAYS,
 		MINDAYS,ISAUCTION,DEITYID,VARMONEY,
-		CATACAT,SELLIMASK;
+		CATACAT,SELLIMASK,LIBRCHAIN,LIBROVERCHG,
+		LIBRDAYCHG,LIBROVERPCT,LIBDAYPCT,LIBMINDAYS,
+		LIBMAXDAYS,LIBMAXBORROW,ISLIBRARIAN,LIBCMASK
+		;
 		
 		public boolean isGenField;
 		private MOBDataField(boolean isGeneric)
@@ -681,6 +684,44 @@ public class GrinderMobs
 				case POSTHELD: // maximum months held
 					if(M instanceof PostOffice)
 						((PostOffice)M).setMaxMudMonthsHeld(CMath.s_int(old));
+					break;
+				case ISLIBRARIAN: // is librarian
+					break;
+				case LIBRCHAIN: // library chain
+					if(M instanceof Librarian)
+						((Librarian)M).setLibraryChain(old);
+					break;
+				case LIBROVERCHG: // library overdue charge
+					if(M instanceof Librarian)
+						((Librarian)M).setOverdueCharge(CMath.s_double(old));
+					break;
+				case LIBRDAYCHG: // library daily overdue charge
+					if(M instanceof Librarian)
+						((Librarian)M).setDailyOverdueCharge(CMath.s_double(old));
+					break;
+				case LIBROVERPCT: // library overdue pct charge
+					if(M instanceof Librarian)
+						((Librarian)M).setOverdueChargePct(CMath.s_pct(old));
+					break;
+				case LIBDAYPCT: // library daily overdue pct charge
+					if(M instanceof Librarian)
+						((Librarian)M).setDailyOverdueChargePct(CMath.s_pct(old));
+					break;
+				case LIBMINDAYS: // library overdue days
+					if(M instanceof Librarian)
+						((Librarian)M).setMinOverdueDays(CMath.s_int(old));
+					break;
+				case LIBMAXDAYS: // library reclaim days
+					if(M instanceof Librarian)
+						((Librarian)M).setMaxOverdueDays(CMath.s_int(old));
+					break;
+				case LIBMAXBORROW: // library max borrowed
+					if(M instanceof Librarian)
+						((Librarian)M).setMaxBorrowed(CMath.s_int(old));
+					break;
+				case LIBCMASK: // library contributor mask
+					if(M instanceof Librarian)
+						((Librarian)M).setContributorMask(old);
 					break;
 				case IGNOREMASK: // shopkeeper ignore mask
 					if(M instanceof ShopKeeper)

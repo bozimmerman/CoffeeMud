@@ -10113,6 +10113,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				((PostOffice)me).setMaxMudMonthsHeld(prompt(mob,((PostOffice)me).maxMudMonthsHeld(),++showNumber,showFlag,"Maximum number of months held"));
 			}
 			else
+			if(me instanceof Librarian)
+			{
+				((Librarian)me).setLibraryChain(prompt(mob,((Librarian)me).libraryChain(),++showNumber,showFlag,"Library name"));
+				((Librarian)me).setMaxBorrowed(prompt(mob,((Librarian)me).getMaxBorrowed(),++showNumber,showFlag,"Max borrowed"));
+				((Librarian)me).setMinOverdueDays(prompt(mob,((Librarian)me).getMinOverdueDays(),++showNumber,showFlag,"Overdue mud-days"));
+				((Librarian)me).setMaxOverdueDays(prompt(mob,((Librarian)me).getMaxOverdueDays(),++showNumber,showFlag,"Reclaim mud-days"));
+				((Librarian)me).setOverdueCharge(prompt(mob,((Librarian)me).getOverdueCharge(),++showNumber,showFlag,"Overdue charge"));
+				((Librarian)me).setOverdueChargePct(CMath.s_pct(prompt(mob,CMath.toPct(((Librarian)me).getOverdueCharge()),++showNumber,showFlag,"Overdue charge pct")));
+				((Librarian)me).setDailyOverdueCharge(prompt(mob,((Librarian)me).getDailyOverdueCharge(),++showNumber,showFlag,"Daily overdue charge"));
+				((Librarian)me).setDailyOverdueChargePct(CMath.s_pct(prompt(mob,CMath.toPct(((Librarian)me).getDailyOverdueCharge()),++showNumber,showFlag,"Daily overdue charge pct")));
+			}
+			else
 			if(me instanceof Auctioneer)
 			{
 				((Auctioneer)me).setAuctionHouse(prompt(mob,((Auctioneer)me).auctionHouse(),++showNumber,showFlag,"Auction house"));

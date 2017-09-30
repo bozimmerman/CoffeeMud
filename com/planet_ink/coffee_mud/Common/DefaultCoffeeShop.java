@@ -151,7 +151,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 		enumerableInventory=new SVector<Environmental>();
 		this.contentHash = null;
 		final Hashtable<Environmental,Environmental> copyFix=new Hashtable<Environmental,Environmental>();
-		for(final ShelfProduct SP: storeInventory)
+		for(final ShelfProduct SP: E.storeInventory)
 		{
 			if(SP.product!=null)
 			{

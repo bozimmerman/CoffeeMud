@@ -1076,7 +1076,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				}
 			}
 
-			final String c="^x["+CMStrings.padRight(L("Cost"),4+csize)+"] "+CMStrings.padRight(L("Product"),Math.max(totalWidth-csize,5));
+			final String c;
+			if(shop instanceof Librarian)
+			{
+				csize=-7;
+				c="^x"+CMStrings.padRight(L("Item"),Math.max(totalWidth-csize,5));
+			}
+			else
+				c="^x["+CMStrings.padRight(L("Cost"),4+csize)+"] "+CMStrings.padRight(L("Product"),Math.max(totalWidth-csize,5));
 			str.append(c+((totalCols>1)?c:"")+"^.^N^<!ENTITY shopkeeper \""+CMStrings.removeColors(seller.name())+"\"^>^.^N\n\r");
 			int colNum=0;
 			int rowNum=0;
@@ -1086,13 +1093,19 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				E=inventory.elementAt(i);
 				price=sellingPrice(seller,buyer,E,shop,true);
 				col=null;
-				if(price.questPointPrice>0)
-					col=CMStrings.padRight(L("[@x1qp",""+price.questPointPrice),(5+csize))+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",Math.max(totalWidth-csize,5));
+				if(csize >= 0)
+				{
+					if(price.questPointPrice>0)
+						col=CMStrings.padRight(L("[@x1qp",""+price.questPointPrice),(5+csize))+"] ";
+					else
+					if(price.experiencePrice>0)
+						col=CMStrings.padRight(L("[@x1xp",""+price.experiencePrice),(5+csize))+"] ";
+					else
+						col=CMStrings.padRight("["+CMLib.beanCounter().abbreviatedPrice(seller,price.absoluteGoldPrice),5+csize)+"] ";
+				}
 				else
-				if(price.experiencePrice>0)
-					col=CMStrings.padRight(L("[@x1xp",""+price.experiencePrice),(5+csize))+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",Math.max(totalWidth-csize,5));
-				else
-					col=CMStrings.padRight("["+CMLib.beanCounter().abbreviatedPrice(seller,price.absoluteGoldPrice),5+csize)+"] ^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",Math.max(totalWidth-csize,5));
+					col="";
+				col += "^<SHOP^>"+CMStrings.padRight(E.name(),"^</SHOP^>",Math.max(totalWidth-csize,5));
 				if((++colNum)>totalCols)
 				{
 					str.append("\n\r");
@@ -1106,6 +1119,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		}
 		if(str.length()==0)
 		{
+			if(shop instanceof Librarian)
+				return seller.name()+" has nothing left to loan.";
+			else
 			if((!shop.isSold(ShopKeeper.DEAL_BANKER))
 			&&(!shop.isSold(ShopKeeper.DEAL_CLANBANKER))
 			&&(!shop.isSold(ShopKeeper.DEAL_CLANPOSTMAN))

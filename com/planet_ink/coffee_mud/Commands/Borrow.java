@@ -67,7 +67,7 @@ public class Borrow extends StdCommand
 			return false;
 		}
 		String str=CMParms.combine(commands,0);
-		Item thisThang=null;
+		Environmental thisThang=null;
 		if(SHOP instanceof Banker)
 		{
 			if(str.equalsIgnoreCase("all"))
@@ -83,8 +83,10 @@ public class Borrow extends StdCommand
 			thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
 		}
 		else
+		if(SHOP instanceof Librarian)
 		{
-			
+			final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
+			thisThang=SK.getShop().getStock(str,mob);
 		}
 
 		if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))

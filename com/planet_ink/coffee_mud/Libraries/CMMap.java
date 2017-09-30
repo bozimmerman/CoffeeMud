@@ -3121,6 +3121,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(o instanceof PostOffice)
 			delPostOffice((PostOffice)o);
 
+		if(o instanceof Librarian)
+			delLibrary((Librarian)o);
+
 		if(o instanceof Banker)
 			delBank((Banker)o);
 

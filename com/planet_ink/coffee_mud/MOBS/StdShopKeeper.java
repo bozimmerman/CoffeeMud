@@ -178,6 +178,33 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		return A;
 	}
 
+	protected void doInventoryReset()
+	{
+		invResetTickDown = finalInvResetRate(); // we should now be at a
+		// positive number.
+		if (invResetTickDown <= 0)
+			invResetTickDown = Ability.TICKS_FOREVER;
+		else
+		{
+			this.getShop().emptyAllShelves();
+			if (miscText != null)
+			{
+				String shoptext;
+				if (CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS) && (miscText instanceof byte[]))
+					shoptext = CMLib.coffeeMaker().getGenMOBTextUnpacked(this, CMLib.encoder().decompressString((byte[]) miscText));
+				else
+					shoptext = CMLib.coffeeMaker().getGenMOBTextUnpacked(this, CMStrings.bytesToStr(miscText));
+				final List<XMLLibrary.XMLTag> xml = CMLib.xml().parseAllXML(shoptext);
+				if (xml != null)
+				{
+					CMLib.coffeeMaker().populateShops(this, xml);
+					recoverPhyStats();
+					recoverCharStats();
+				}
+			}
+		}
+	}
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -187,29 +214,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		{
 			if ((--invResetTickDown) <= 0)
 			{
-				invResetTickDown = finalInvResetRate(); // we should now be at a
-														// positive number.
-				if (invResetTickDown <= 0)
-					invResetTickDown = Ability.TICKS_FOREVER;
-				else
-				{
-					this.getShop().emptyAllShelves();
-					if (miscText != null)
-					{
-						String shoptext;
-						if (CMProps.getBoolVar(CMProps.Bool.MOBCOMPRESS) && (miscText instanceof byte[]))
-							shoptext = CMLib.coffeeMaker().getGenMOBTextUnpacked(this, CMLib.encoder().decompressString((byte[]) miscText));
-						else
-							shoptext = CMLib.coffeeMaker().getGenMOBTextUnpacked(this, CMStrings.bytesToStr(miscText));
-						final List<XMLLibrary.XMLTag> xml = CMLib.xml().parseAllXML(shoptext);
-						if (xml != null)
-						{
-							CMLib.coffeeMaker().populateShops(this, xml);
-							recoverPhyStats();
-							recoverCharStats();
-						}
-					}
-				}
+				doInventoryReset();
 			}
 			if ((--budgetTickDown) <= 0)
 			{

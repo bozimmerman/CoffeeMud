@@ -1643,6 +1643,55 @@ public class MobData extends StdWebMacro
 						old=""+((PostOffice)M).maxMudMonthsHeld();
 					str.append(old);
 					break;
+				case ISLIBRARIAN: // is librarian
+					if(M instanceof Librarian)
+						return "true";
+					return "false";
+				case LIBRCHAIN: // library chain
+					if((firstTime)&&(M instanceof Librarian))
+						old=""+((Librarian)M).libraryChain();
+					str.append(old);
+					break;
+				case LIBROVERCHG: // library overdue charge
+					if((firstTime)&&(M instanceof Librarian))
+						old=""+((Librarian)M).getOverdueCharge();
+					str.append(old);
+					break;
+				case LIBRDAYCHG: // library daily overdue charge
+					if((firstTime)&&(M instanceof Librarian))
+						old=""+((Librarian)M).getDailyOverdueCharge();
+					str.append(old);
+					break;
+				case LIBROVERPCT: // library overdue pct charge
+					if((firstTime)&&(M instanceof Librarian))
+						old=CMath.toPct(((Librarian)M).getOverdueChargePct());
+					str.append(old);
+					break;
+				case LIBDAYPCT: // library daily overdue pct charge
+					if((firstTime)&&(M instanceof Librarian))
+						old=CMath.toPct(((Librarian)M).getDailyOverdueChargePct());
+					str.append(old);
+					break;
+				case LIBMINDAYS: // library overdue days
+					if((firstTime)&&(M instanceof Librarian))
+						old=""+((Librarian)M).getMinOverdueDays();
+					str.append(old);
+					break;
+				case LIBMAXDAYS: // library reclaim days
+					if((firstTime)&&(M instanceof Librarian))
+						old=""+((Librarian)M).getMaxOverdueDays();
+					str.append(old);
+					break;
+				case LIBMAXBORROW: // library max borrowed
+					if((firstTime)&&(M instanceof Librarian))
+						old=""+((Librarian)M).getMaxBorrowed();
+					str.append(old);
+					break;
+				case LIBCMASK: // library contributor mask
+					if((firstTime)&&(M instanceof Librarian))
+						old=""+((Librarian)M).contributorMask();
+					str.append(old);
+					break;
 				case IGNOREMASK: // ignore mask
 					if((firstTime)&&(M instanceof ShopKeeper))
 						old=((ShopKeeper)M).ignoreMask();

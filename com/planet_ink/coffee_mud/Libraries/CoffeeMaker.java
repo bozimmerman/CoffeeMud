@@ -742,6 +742,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				text.append(CMLib.xml().convertXMLtoTag("POSTNEW",""+((PostOffice)E).feeForNewBox()));
 				text.append(CMLib.xml().convertXMLtoTag("POSTHELD",""+((PostOffice)E).maxMudMonthsHeld()));
 			}
+			if(E instanceof Librarian)
+			{
+				text.append(CMLib.xml().convertXMLtoTag("LIBRCHAIN",""+((Librarian)E).libraryChain()));
+				text.append(CMLib.xml().convertXMLtoTag("LIBROVERCHG",""+((Librarian)E).getOverdueCharge()));
+				text.append(CMLib.xml().convertXMLtoTag("LIBRDAYCHG",""+((Librarian)E).getDailyOverdueCharge()));
+				text.append(CMLib.xml().convertXMLtoTag("LIBROVERPCT",""+((Librarian)E).getOverdueChargePct()));
+				text.append(CMLib.xml().convertXMLtoTag("LIBDAYPCT",""+((Librarian)E).getDailyOverdueChargePct()));
+				text.append(CMLib.xml().convertXMLtoTag("LIBMINDAYS",""+((Librarian)E).getMinOverdueDays()));
+				text.append(CMLib.xml().convertXMLtoTag("LIBMAXDAYS",""+((Librarian)E).getMaxOverdueDays()));
+				text.append(CMLib.xml().convertXMLtoTag("LIBMAXBORROW",""+((Librarian)E).getMaxBorrowed()));
+				text.append(CMLib.xml().convertXMLtoTag("POSTCMASK",""+((Librarian)E).contributorMask()));
+			}
 			if(E instanceof Auctioneer)
 			{
 				text.append(CMLib.xml().convertXMLtoTag("AUCHOUSE",""+((Auctioneer)E).auctionHouse()));
@@ -3404,6 +3416,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((PostOffice)E).setMaxMudMonthsHeld(CMLib.xml().getIntFromPieces(buf,"POSTHELD"));
 			}
 
+			if(E instanceof Librarian)
+			{
+				((Librarian)E).setLibraryChain(CMLib.xml().getValFromPieces(buf,"LIBRCHAIN"));
+				((Librarian)E).setOverdueCharge(CMLib.xml().getDoubleFromPieces(buf,"LIBROVERCHG"));
+				((Librarian)E).setDailyOverdueCharge(CMLib.xml().getDoubleFromPieces(buf,"LIBRDAYCHG"));
+				((Librarian)E).setOverdueChargePct(CMLib.xml().getDoubleFromPieces(buf,"LIBROVERPCT"));
+				((Librarian)E).setDailyOverdueChargePct(CMLib.xml().getDoubleFromPieces(buf,"LIBDAYPCT"));
+				((Librarian)E).setMinOverdueDays(CMLib.xml().getIntFromPieces(buf,"LIBMINDAYS"));
+				((Librarian)E).setMaxOverdueDays(CMLib.xml().getIntFromPieces(buf,"LIBMAXDAYS"));
+				((Librarian)E).setMaxBorrowed(CMLib.xml().getIntFromPieces(buf,"LIBMAXBORROW"));
+				((Librarian)E).setContributorMask(CMLib.xml().getValFromPieces(buf,"LIBRCMASK"));
+			}
+			
 			if(E instanceof Auctioneer)
 			{
 				((Auctioneer)E).setAuctionHouse(CMLib.xml().getValFromPieces(buf,"AUCHOUSE"));

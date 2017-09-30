@@ -1175,7 +1175,8 @@ too numerous to list here.</p>
 there that you require, there is always
 the GenMob, that nasty formless being that can be shaped by the Archon
 to appear and behave exactly as it should. GenShopkeepers, GenPostman,
-and GenBankers are available to provide valuable services for your
+GenLibrarians, and GenBankers are available to provide valuable
+services for your
 community. GenDeitys give your Clerics employment. GenRideable mobs
 provide transport. For more devious spirits, however, the GenUndead is
 also available, to strike fear in the hearts of the purest cleric.
@@ -2719,9 +2720,7 @@ REPLY, and WRITE.</td>
   </tbody>
 </table>
 <br>
-<br>
-<p><br>
-<strong><a name="geni4"><font style="background-color: lime;">The
+<p><strong><a name="geni4"><font style="background-color: lime;">The
 "GenWeapon", "GenBow", "GenLasso", "GenNet", "GenSling", "GenSpear",
 "GenBoffWeapon"</font></a></strong></p>
 <p>These are the assorted weapons
@@ -4542,7 +4541,9 @@ without me enumerating them.</td>
 <p>ShopKeepers are folks that buy
 and sell equipement that is given to
 them by Archons. ShopKeepers can sell anything from items to creatures,
-skills as a teacher, or spells for a price.</p>
+skills as a teacher, or spells for a price. ShopKeepers
+are&nbsp;interacted with using the LIST, BUY, SELL, VALUE, and INFO
+commands.</p>
 <p>ShopKeepers designated as Land
 Sellers will sell any rooms in the
 same area as the shopkeeper which has the Prop_RoomForSale,
@@ -4701,7 +4702,8 @@ of ShopKeeper that sells items for
 players over a limited amount of time. Auctioneers can charge a flat
 fee for their service, a fee based on the number of days the auctioneer
 will sell the item and the base value of the item, and a fee based on
-the final selling price.</p>
+the final selling price. Auctioneers are&nbsp;interacted with using the
+BID, SELL, INFO, and LIST commands for their unique services.</p>
 <p>Whenever a GenAuctioneer is
 created, much like the GenShopKeeper
 above, you are presented with a list of properties to fill in. Pressing
@@ -4766,7 +4768,6 @@ once the item is listed.</td>
   </tbody>
 </table>
 <br>
-<br>
 <p><strong><a name="genm3"><font style="background-color: lime;">The
 "GenBanker"</font></a></strong></p>
 <p>A Banker is a special type of
@@ -4774,9 +4775,12 @@ ShopKeeper that holds money and items
 in a special private account for players. Bankers can pay or charge
 interest on money left in the account, and charge interest on items
 left with them. Bakers can also loan money based on those same items as
-collateral, and automatically handle interest and payment plans. A
+collateral, and automatically handle interest and payment plans.
+&nbsp;Bankers are&nbsp;interacted with using the BORROW, WITHDRAW, and
+DEPOSIT commands for their unique services, and LIST, BUY, SELL, VALUE,
+and INFO for some of their mundaine ones. &nbsp;A
 Banker may also be designated as a Clan Banker, meaning that it will
-only deal with Clan Treasurers.</p>
+only deal with Clan Treasurers. &nbsp;</p>
 <p>Whenever a GenBanker is
 created, much like the GenShopKeeper above,
 you are presented with a list of properties to fill in. Pressing enter
@@ -4824,6 +4828,82 @@ players.</td>
   </tbody>
 </table>
 <br>
+<p><strong><a name="genm7"><font style="background-color: lime;">The
+"GenLibrarian"</font></a></strong></p>
+<p>A Librarian is a special type of
+ShopKeeper that loans out items instead of selling them. &nbsp;The
+player who borrows from a librarian is obligated to return the items,
+lest they incur charges. &nbsp;Each librarian can have unique items,
+but when librarians are part of a single Library Chain, then every
+member of the chain will share checkout records and assume to be
+sharing their common items. &nbsp;Librarians are&nbsp;interacted with
+using the BORROW, GIVE, LIST, SELL, and INFO commands for their unique
+services.</p>
+<p>Whenever a GenLibrarian is
+created, much like the GenShopKeeper above,
+you are presented with a list of properties to fill in. Pressing enter
+will leave the property unchanged. The properties include all of the
+fields listed above under GenMob and GenShopKeeper, plus a few more:</p>
+<table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1"
+ cellspacing="1" width="100%">
+  <tbody>
+    <tr>
+      <td width="25%"><strong>Property</strong></td>
+      <td width="75%"><strong>Description</strong></td>
+    </tr>
+    <tr>
+      <td><em>Overdue Charge</em></td>
+      <td>This is the amount that a player is charged for having an
+item longer that the Overdue mud-days.</td>
+    </tr>
+    <tr>
+      <td><em>Overdue Charge Pct</em></td>
+      <td>This is the percent of the value of an item that a player is
+charged for having an item longer than the Overdue mud-days.</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">Daily Overdue Charge</span></td>
+      <td>This is the amount that a player is charged every mud-day
+after the
+first day, for having an item longer that the Overdue mud-days.</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">Daily Overdue Charge Pct</span></td>
+      <td>This is the percent of the value of an item that a player is
+charged every mud-day after the
+first day, for having an item longer than the Overdue mud-days.</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">Overdue Mud-Days</span></td>
+      <td>The number of mud-days, after the time checked out, that the
+item will not be considered overdue. After this time, charges will
+begin to accrue.</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">Reclaim Mud-Days</span></td>
+      <td>The number of mud-days, after the time checked out, that an
+item will automatically return to the Library. &nbsp;Any charges
+incurred will remain in effect.</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">Max Borrowed</span></td>
+      <td>The maximum number of unique items that any player can borrow
+at one time.</td>
+    </tr>
+    <tr>
+      <td><em>Library Name</em></td>
+      <td>This is a unique
+identifier for the library chain. All
+GenLibrarians with the same Library Name will share check-out records.</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">Contrbutor Mask</span></td>
+      <td>A Zapper Mask to apply to anyone who attempt to contribute
+new items to the library.</td>
+    </tr>
+  </tbody>
+</table>
+<br>
 <br>
 <a name="genm6"><strong><font style="background-color: lime;">The
 "GenPostman"</font></strong></a>
@@ -4834,7 +4914,9 @@ private box for players or clans. Postman can charge to deliver items
 from one box to another, and can charge for the amount of time an item
 remains in a box. Every player receives a free box with any postman in
 the same area as their Recall/Beacon point. Other boxes with other
-postmen must be purchased. Clans must always purchases their boxes.</p>
+postmen must be purchased. Clans must always purchases their boxes.
+Postmen are&nbsp;interacted with using the GIVE, WITHDRAW, LIST, and
+SAY commands for their unique services.</p>
 <p>Whenever a GenPostman is
 created, much like the GenShopKeeper above,
 you are presented with a list of properties to fill in. Pressing enter
@@ -4894,8 +4976,6 @@ expires, the postman will put the item up for sale to recoup losses.</td>
     </tr>
   </tbody>
 </table>
-<br>
-<br>
 <br>
 <p><strong><a name="genm4"><font style="background-color: lime;">The
 "GenRideable"</font></a></strong></p>
@@ -10401,7 +10481,7 @@ Tools</font></a></td>
       <td width="20%"><a href="#genm6"><font color="black">GenPostman</font></a></td>
       <td width="20%"><a href="#genma"><font color="black">GenAuctioneer<br>
       </font></a> </td>
-      <td width="20%"><a href="#genm"><font color="black"><br>
+      <td width="20%"><a href="#genm7"><font color="black">GenLibrarian<br>
       </font></a> </td>
       <td width="20%"><a href="#genm"><font color="black"><br>
       </font></a> </td>

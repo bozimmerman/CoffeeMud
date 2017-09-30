@@ -53,7 +53,7 @@ public class Deposit extends StdCommand
 		final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if(shopkeeper==null)
 			return false;
-		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice))&&(!(SHOP instanceof Librarian)))
+		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
 			CMLib.commands().doCommandFail(mob,origCmds,L("You can not deposit anything with @x1.",shopkeeper.name()));
 			return false;
@@ -81,9 +81,7 @@ public class Deposit extends StdCommand
 			return false;
 		CMMsg newMsg=null;
 		if(SHOP instanceof Librarian)
-		{
-			//TODO: is this a RETURN or a DONATION?!
-		}
+			newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,L("<S-NAME> deposit(s) <O-NAME> with <T-NAMESELF>."));
 		else
 		if(SHOP instanceof Banker)
 			newMsg=CMClass.getMsg(mob,shopkeeper,thisThang,CMMsg.MSG_DEPOSIT,L("<S-NAME> deposit(s) <O-NAME> into <S-HIS-HER> account with <T-NAMESELF>."));
