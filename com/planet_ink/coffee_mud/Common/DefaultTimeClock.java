@@ -453,7 +453,7 @@ public class DefaultTimeClock implements TimeClock
 		try
 		{
 			final TimeClock C=(TimeClock)this.clone();
-			final long diff=(System.currentTimeMillis()-millis)/CMProps.getMillisPerMudHour();
+			long diff=(millis - System.currentTimeMillis())/CMProps.getMillisPerMudHour();
 			C.tickTock((int)diff);
 			return C;
 		}

@@ -87,9 +87,9 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	{
 		public String	playerName		= "";
 		public String	itemName		= "";
-		public long		mudDueDate		= 0;
+		public long		mudDueDateMs	= 0;
 		public double	charges			= 0.0;
-		public long		mudReclaimDate	= 0;
+		public long		mudReclaimDateMs= 0;
 	}
 
 	protected String getLibraryRecordKey()
@@ -462,7 +462,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		if (rec.itemName.length() > 0)
 		{
 			Environmental stockItem = null;
-			if (rec.mudDueDate < nowTime)
+			if (System.currentTimeMillis() > rec.mudDueDateMs)
 			{
 				stockItem = shop.getStock("$" + rec.itemName + "$", null);
 				final ShopKeeper.ShopPrice P = CMLib.coffeeShops().pawningPrice(this, null, stockItem, this, shop);
@@ -470,7 +470,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				double newCharges = this.getOverdueCharge();
 				if (value > 0)
 					newCharges += CMath.mul(value, this.getOverdueChargePct());
-				final long hrsDiff = clock.toHoursSinceEpoc() - rec.mudDueDate;
+				final long hrsDiff = Math.round(Math.floor((System.currentTimeMillis() - rec.mudDueDateMs)/CMProps.getMillisPerMudHour()));
 				if (hrsDiff > 0)
 				{
 					double daysPast = CMath.floor(CMath.div(hrsDiff, (double) clock.getHoursInDay()));
@@ -487,7 +487,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 					recordsChanged = true;
 				}
 			}
-			if (rec.mudReclaimDate < nowTime)
+			if (System.currentTimeMillis() > rec.mudReclaimDateMs)
 			{
 				if(stockItem == null)
 					stockItem = shop.getStock("$" + rec.itemName+"$", null);
@@ -655,16 +655,15 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 						final TimeClock clock = getMyClock();
 						if (clock != null)
 						{
-							CheckedOutRecord rec = new CheckedOutRecord();
+							final long millisPerMudDay = clock.getHoursInDay() * CMProps.getMillisPerMudHour();
+							final CheckedOutRecord rec = new CheckedOutRecord();
 							final TimeClock minClock = (TimeClock) clock.copyOf();
 							minClock.bumpDays(this.getMinOverdueDays());
-							final TimeClock maxClock = (TimeClock) clock.copyOf();
-							maxClock.bumpDays(this.getMaxOverdueDays());
 							rec.itemName = old.Name();
 							rec.charges = 0.0;
 							rec.playerName = msg.source().Name();
-							rec.mudDueDate = minClock.toHoursSinceEpoc();
-							rec.mudReclaimDate = maxClock.toHoursSinceEpoc();
+							rec.mudDueDateMs = System.currentTimeMillis() + (millisPerMudDay * this.getMinOverdueDays());
+							rec.mudReclaimDateMs = System.currentTimeMillis() + (millisPerMudDay * this.getMaxOverdueDays());
 							final CoffeeShop shop = this.getShop();
 							if (shop != this.shop) // never borrow from the main
 													// library
@@ -715,7 +714,6 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 					final TimeClock clock = getMyClock();
 					if (clock != null)
 					{
-						long nowHrs = clock.toHoursSinceEpoc();
 						boolean recordsChanged = false;
 						for (CheckedOutRecord rec : recs)
 						{
@@ -725,12 +723,12 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 							if (rec.itemName.length() > 0)
 							{
 								str.append(L("You have @x1 checked out.", rec.itemName));
-								if (nowHrs > rec.mudDueDate)
+								if (System.currentTimeMillis() > rec.mudDueDateMs)
 									str.append(L(" It is past due."));
 								else
 								{
-									TimeClock reClk = (TimeClock) CMClass.getCommon("DefaultTimeClock");
-									reClk.setFromHoursSinceEpoc(rec.mudDueDate);
+									TimeClock reClk = (TimeClock)clock.copyOf();
+									reClk=reClk.deriveClock(rec.mudDueDateMs);
 									str.append(L(" It is due by @x1.", reClk.getShortTimeDescription()));
 								}
 								str.append("\n\r");

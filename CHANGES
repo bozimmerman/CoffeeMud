@@ -15,6 +15,7 @@
   13. New spell : Portal Other
   14. ShopKeepers now have an Item Buy mask to narrow further what they will buy.
   15. New MOB type: StdLibrarian, also GenLibrarian.  For borrowing items.
+  16. New Disease: Planar Instability 
 
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.

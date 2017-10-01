@@ -92,23 +92,24 @@ public class Chant_MoveSky extends Chant
 			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
-		if(success)
+		final Room room=mob.location();
+		if(success && (room!=null))
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> chant(s), and the sky starts moving.^?"));
-			if(mob.location().okMessage(mob,msg))
+			if(room.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
-				if(mob.location().getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT)
+				room.send(mob,msg);
+				if(room.getArea().getTimeObj().getTODCode()==TimeClock.TimeOfDay.NIGHT)
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The moon begin(s) to descend!"));
-					final int x=mob.location().getArea().getTimeObj().getHoursInDay()-mob.location().getArea().getTimeObj().getHourOfDay();
-					mob.location().getArea().getTimeObj().tickTock(x);
+					room.showHappens(CMMsg.MSG_OK_VISUAL,L("The moon begin(s) to descend!"));
+					final int x=room.getArea().getTimeObj().getHoursInDay()-room.getArea().getTimeObj().getHourOfDay();
+					room.getArea().getTimeObj().tickTock(x);
 				}
 				else
 				{
-					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The sun hurries towards the horizon!"));
-					final int x=mob.location().getArea().getTimeObj().getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()]-mob.location().getArea().getTimeObj().getHourOfDay();
-					mob.location().getArea().getTimeObj().tickTock(x);
+					room.showHappens(CMMsg.MSG_OK_VISUAL,L("The sun hurries towards the horizon!"));
+					final int x=room.getArea().getTimeObj().getDawnToDusk()[TimeClock.TimeOfDay.NIGHT.ordinal()]-room.getArea().getTimeObj().getHourOfDay();
+					room.getArea().getTimeObj().tickTock(x);
 				}
 			}
 		}

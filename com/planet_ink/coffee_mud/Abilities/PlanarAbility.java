@@ -77,20 +77,21 @@ public class PlanarAbility extends StdAbility
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	protected WeakReference<Room>			oldRoom			= null;
-	protected Area							planeArea		= null;
-	protected Map<String, String>			planeVars		= null;
-	protected WeakArrayList<Room>			roomsDone		= new WeakArrayList<Room>();
-	protected int							planarLevel		= 1;
-	protected String						planarPrefix	= null;
-	protected List<Pair<String, String>>	behavList		= null;
-	protected List<Pair<String, String>>	reffectList		= null;
-	protected int							bonusDmgStat	= -1;
-	protected Set<String>					reqWeapons		= null;
-	protected int							recoverRate		= 0;
-	protected int							fatigueRate		= 0;
-	protected volatile int					recoverTick		= 0;
-	protected Set<PlanarSpecFlag>			specFlags		= null;
+	protected volatile long				lastCasting		= 0;
+	protected WeakReference<Room>		oldRoom			= null;
+	protected Area						planeArea		= null;
+	protected Map<String, String>		planeVars		= null;
+	protected WeakArrayList<Room>		roomsDone		= new WeakArrayList<Room>();
+	protected int						planarLevel		= 1;
+	protected String					planarPrefix	= null;
+	protected List<Pair<String, String>>behavList		= null;
+	protected List<Pair<String, String>>reffectList		= null;
+	protected int						bonusDmgStat	= -1;
+	protected Set<String>				reqWeapons		= null;
+	protected int						recoverRate		= 0;
+	protected int						fatigueRate		= 0;
+	protected volatile int				recoverTick		= 0;
+	protected Set<PlanarSpecFlag>		specFlags		= null;
 
 	protected Pair<Pair<Integer,Integer>,List<Pair<String,String>>> enableList=null;
 	
@@ -1209,6 +1210,15 @@ public class PlanarAbility extends StdAbility
 				this.beneficialVisualFizzle(mob, null, failMessage(mob, auto));
 			}
 			return true;
+		}
+		else
+		if(this.lastCasting > (System.currentTimeMillis() - (10 * TimeManager.MILI_MINUTE)))
+		{
+			Ability A=CMClass.getAbility("Disease_PlanarInstability");
+			if((A!=null)
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE))
+			&&(!CMSecurity.isAbilityDisabled(A.ID())))
+				A.invoke(mob, mob, true, 0);
 		}
 		Map<String,String> planeFound = getPlane(planeName);
 		if(planeFound == null)
