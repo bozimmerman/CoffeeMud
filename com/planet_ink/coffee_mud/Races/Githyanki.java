@@ -34,6 +34,12 @@ import java.util.*;
 */
 public class Githyanki extends Humanoid
 {
+	public Githyanki()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_PlanarInstability");
+	}
+	
 	@Override
 	public String ID()
 	{
