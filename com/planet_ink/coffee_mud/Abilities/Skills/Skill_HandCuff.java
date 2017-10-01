@@ -163,8 +163,9 @@ public class Skill_HandCuff extends StdSkill
 				return true;
 			else
 			if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+			&&(amountRemaining>0)
 			&&((msg.sourceMajor(CMMsg.MASK_HANDS))
-			||(msg.sourceMajor(CMMsg.MASK_MOVE))))
+				||(msg.sourceMajor(CMMsg.MASK_MOVE))))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> struggle(s) against <S-HIS-HER> cuffs."));
 				amountRemaining-=mob.charStats().getStat(CharStats.STAT_STRENGTH);
