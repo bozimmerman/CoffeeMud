@@ -5,5 +5,6 @@ RETIRE [CHARACTER NAME] : delete one of your characters
 NEW [CHARACTER NAME]    : create a new character
 IMPORT [CHARACTER NAME] : import your unlisted characters
 PASSWORD                : change your account password
+ANSI [ON/OFF]           : toggle ansi color
 EMAIL                   : change your account email address
 QUIT                    : log out of the system

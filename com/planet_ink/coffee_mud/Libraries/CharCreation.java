@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.SessionStatus;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -1809,6 +1810,47 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				loginObj.state=LoginState.ACCTMENU_CONFIRMCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
+			return null;
+		}
+		if(cmd.startsWith("ANSI")||cmd.startsWith("COLOR"))
+		{
+			if(cmd.equals("ANSI")||cmd.equals("COLOR"))
+			{
+				acct.setFlag(AccountFlag.ANSI, !acct.isSet(AccountFlag.ANSI));
+				if(acct.isSet(AccountFlag.ANSI))
+					session.println(L("ANSI color is now ON."));
+				else
+					session.println(L("ANSI color is now OFF."));
+				session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
+				session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
+			}
+			else
+			if((parms.length>1)&&(parms[1].equalsIgnoreCase("ON")))
+			{
+				if(acct.isSet(AccountFlag.ANSI))
+					session.println(L("ANSI color is already on."));
+				else
+				{
+					acct.setFlag(AccountFlag.ANSI, true);
+					session.println(L("ANSI color is now ON."));
+					session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
+					session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
+				}
+			}
+			else
+			if((parms.length>1)&&(parms[1].equalsIgnoreCase("OFF")))
+			{
+				if(!acct.isSet(AccountFlag.ANSI))
+					session.println(L("ANSI color is already off."));
+				else
+				{
+					acct.setFlag(AccountFlag.ANSI, false);
+					session.println(L("ANSI color is now OFF."));
+					session.setServerTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
+					session.setClientTelnetMode(Session.TELNET_ANSI,acct.isSet(AccountFlag.ANSI));
+				}
+			}
+			loginObj.state=LoginState.ACCTMENU_PROMPT;
 			return null;
 		}
 		if("PASSWORD".startsWith(cmd))
