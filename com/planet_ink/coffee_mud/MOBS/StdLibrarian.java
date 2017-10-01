@@ -425,6 +425,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 						if (rec.playerName.length() == 0)
 						{
 							recs.remove(rec);
+							i--;
 							recordsChanged = true;
 							continue;
 						}
@@ -433,6 +434,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 						if (!namesChecked.get(rec.playerName).booleanValue())
 						{
 							recs.remove(rec);
+							i--;
 							recordsChanged = true;
 							continue;
 						}
