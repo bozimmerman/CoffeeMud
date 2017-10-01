@@ -189,12 +189,13 @@ public class Sessions extends StdLibrary implements SessionsList
 					if(time>(check*10))
 					{
 						final String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
-						if((S.getPreviousCMD()==null)||(S.getPreviousCMD().size()==0)
-						||((S.getStatus())==Session.SessionStatus.LOGIN)
-						||((S.getStatus())==Session.SessionStatus.ACCOUNT_MENU)
-						||((S.getStatus())==Session.SessionStatus.HANDSHAKE_MCCP)
-						||((S.getStatus())==Session.SessionStatus.HANDSHAKE_OPEN)
-						||((S.getStatus())==Session.SessionStatus.CHARCREATE))
+						if((S.getPreviousCMD()==null)
+						||(S.getPreviousCMD().size()==0)
+						||(S.getStatus()==Session.SessionStatus.LOGIN)
+						||(S.getStatus()==Session.SessionStatus.ACCOUNT_MENU)
+						||(S.getStatus()==Session.SessionStatus.HANDSHAKE_MCCP)
+						||(S.getStatus()==Session.SessionStatus.HANDSHAKE_OPEN)
+						||(S.getStatus()==Session.SessionStatus.CHARCREATE))
 							Log.sysOut(serviceClient.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+", idle: "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true)+", status: "+S.getStatus());
 						else
 						{
@@ -237,7 +238,9 @@ public class Sessions extends StdLibrary implements SessionsList
 				if(time>(300000))
 				{
 					final String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
-					if((S.getStatus())==Session.SessionStatus.LOGIN)
+					if((S.getStatus()==Session.SessionStatus.LOGIN)
+					||(S.getStatus()==Session.SessionStatus.HANDSHAKE_MCCP)
+					||(S.getStatus()==Session.SessionStatus.HANDSHAKE_OPEN))
 						Log.sysOut(serviceClient.getName(),"Kicking out login session after "+CMLib.time().date2EllapsedTime(time, TimeUnit.MILLISECONDS, true)+".");
 					else
 					{
