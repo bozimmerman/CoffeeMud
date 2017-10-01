@@ -99,7 +99,7 @@ public class Bullywug extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	culturalAbilityNames			= { "Goblinese", "Skill_Hunting" };
+	private final String[]	culturalAbilityNames			= { "Goblinese", "Hunting" };
 	private final int[]		culturalAbilityProficiencies	= { 100, 50 };
 
 	@Override
