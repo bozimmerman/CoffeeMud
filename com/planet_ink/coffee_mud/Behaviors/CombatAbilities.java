@@ -883,14 +883,22 @@ public class CombatAbilities extends StdBehavior
 		x=x-super.getStatCodes().length;
 		switch(x)
 		{
-		case 0: return (record==null)?"":record.toString();
-		case 1: return Boolean.toString(proficient);
-		case 2: return lastSpell!=null?lastSpell:"";
-		case 3: return Integer.toString(preCastSet);
-		case 4: return Integer.toString(physicalDamageTaken);
-		case 5: return (skillsAlways==null)?"":CMParms.toSemicolonListString(skillsAlways);
-		case 6: return (skillsAlways==null)?"":CMParms.toSemicolonListString(skillsNever);
-		case 7: return Integer.toString(combatMode);
+		case 0:
+			return (record == null) ? "" : record.toString();
+		case 1:
+			return Boolean.toString(proficient);
+		case 2:
+			return lastSpell != null ? lastSpell : "";
+		case 3:
+			return Integer.toString(preCastSet);
+		case 4:
+			return Integer.toString(physicalDamageTaken);
+		case 5:
+			return (skillsAlways == null) ? "" : CMParms.toSemicolonListString(skillsAlways);
+		case 6:
+			return (skillsAlways == null) ? "" : CMParms.toSemicolonListString(skillsNever);
+		case 7:
+			return Integer.toString(combatMode);
 		}
 		return "";
 	}

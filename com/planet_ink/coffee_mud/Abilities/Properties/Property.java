@@ -497,8 +497,10 @@ public class Property implements Ability
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return ID();
-		case 1: return text();
+		case 0:
+			return ID();
+		case 1:
+			return text();
 		}
 		return "";
 	}
@@ -508,8 +510,11 @@ public class Property implements Ability
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return;
-		case 1: setMiscText(val); break;
+		case 0:
+			return;
+		case 1:
+			setMiscText(val);
+			break;
 		}
 	}
 

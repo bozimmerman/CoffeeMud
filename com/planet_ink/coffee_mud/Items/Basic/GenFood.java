@@ -103,8 +103,10 @@ public class GenFood extends StdFood
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+nourishment();
-		case 1: return ""+bite();
+		case 0:
+			return "" + nourishment();
+		case 1:
+			return "" + bite();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -118,8 +120,12 @@ public class GenFood extends StdFood
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setNourishment(CMath.s_parseIntExpression(val)); break;
-		case 1: setBite(CMath.s_parseIntExpression(val)); break;
+		case 0:
+			setNourishment(CMath.s_parseIntExpression(val));
+			break;
+		case 1:
+			setBite(CMath.s_parseIntExpression(val));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

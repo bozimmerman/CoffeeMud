@@ -897,7 +897,8 @@ public class ThinRoom implements Room
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return ID();
+		case 0:
+			return ID();
 		}
 		return "";
 	}
@@ -907,7 +908,8 @@ public class ThinRoom implements Room
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: return;
+		case 0:
+			return;
 		}
 	}
 

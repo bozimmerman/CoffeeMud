@@ -118,21 +118,21 @@ public class GenElecItem extends StdElecItem
 		else
 		switch(getCodeNum(code))
 		{
-			case 0:
-				setTechLevel(CMath.s_parseIntExpression(val));
-				break;
-			case 1:
-				setPowerCapacity(CMath.s_parseLongExpression(val));
-				break;
-			case 2:
-				activate(CMath.s_bool(val));
-				break;
-			case 3:
-				setPowerRemaining(CMath.s_parseLongExpression(val));
-				break;
-			case 4:
-				setManufacturerName(val);
-				break;
+		case 0:
+			setTechLevel(CMath.s_parseIntExpression(val));
+			break;
+		case 1:
+			setPowerCapacity(CMath.s_parseLongExpression(val));
+			break;
+		case 2:
+			activate(CMath.s_bool(val));
+			break;
+		case 3:
+			setPowerRemaining(CMath.s_parseLongExpression(val));
+			break;
+		case 4:
+			setManufacturerName(val);
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

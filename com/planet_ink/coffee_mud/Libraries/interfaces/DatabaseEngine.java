@@ -2076,6 +2076,11 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERDATA
+	 * A record of Data information from the database.
+	 * This is usually a XML document record of some sort.
+	 * Since it is keyed by player, it is typically very safe to obliterate
+	 * all records belonging to a player name wheenver the player
+	 * needs to go.
 	 * 
 	 * @author Bo Zimmerman
 	 *

@@ -232,9 +232,12 @@ public class GenCoins extends GenItem implements Coins
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+getNumberOfCoins();
-		case 1: return ""+getCurrency();
-		case 2: return ""+getDenomination();
+		case 0:
+			return "" + getNumberOfCoins();
+		case 1:
+			return "" + getCurrency();
+		case 2:
+			return "" + getDenomination();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -248,9 +251,15 @@ public class GenCoins extends GenItem implements Coins
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setNumberOfCoins(CMath.s_parseIntExpression(val)); break;
-		case 1: setCurrency(val); break;
-		case 2: setDenomination(CMath.s_double(val)); break;
+		case 0:
+			setNumberOfCoins(CMath.s_parseIntExpression(val));
+			break;
+		case 1:
+			setCurrency(val);
+			break;
+		case 2:
+			setDenomination(CMath.s_double(val));
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

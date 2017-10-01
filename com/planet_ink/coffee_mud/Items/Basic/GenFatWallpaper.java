@@ -133,7 +133,9 @@ public class GenFatWallpaper extends GenWallpaper
 		else
 		switch(getMyCodeNum(code))
 		{
-		case 0: setDisplayText(val); break;
+		case 0:
+			setDisplayText(val);
+			break;
 		}
 	}
 

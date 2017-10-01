@@ -85,11 +85,16 @@ public class GenDeity extends StdDeity
 			return CMLib.coffeeMaker().getGenMobStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return getClericRequirements();
-		case 1: return getClericRitual();
-		case 2: return getWorshipRequirements();
-		case 3: return getWorshipRitual();
-		case 4: return getServiceRitual();
+		case 0:
+			return getClericRequirements();
+		case 1:
+			return getClericRitual();
+		case 2:
+			return getWorshipRequirements();
+		case 3:
+			return getWorshipRitual();
+		case 4:
+			return getServiceRitual();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -103,11 +108,21 @@ public class GenDeity extends StdDeity
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setClericRequirements(val); break;
-		case 1: setClericRitual(val); break;
-		case 2: setWorshipRequirements(val); break;
-		case 3: setWorshipRitual(val); break;
-		case 4: setServiceRitual(val); break;
+		case 0:
+			setClericRequirements(val);
+			break;
+		case 1:
+			setClericRitual(val);
+			break;
+		case 2:
+			setWorshipRequirements(val);
+			break;
+		case 3:
+			setWorshipRitual(val);
+			break;
+		case 4:
+			setServiceRitual(val);
+			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;

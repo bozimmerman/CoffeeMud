@@ -167,7 +167,7 @@ public class GenRideable extends StdRideable
 				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
 				break;
 			default:
-			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+				CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
 			break;
 		}
 	}
