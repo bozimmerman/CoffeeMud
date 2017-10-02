@@ -79,4 +79,3 @@ Spell_LowerResists	RICE
 Spell_CombatPrecognition	STEEL
 Spell_Frailty	CLAY
 Spell_Anchor	LEAD
-Spell_Disintegrate	COCOA
