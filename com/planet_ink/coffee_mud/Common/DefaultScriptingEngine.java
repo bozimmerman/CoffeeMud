@@ -11538,42 +11538,39 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									t[i]=t[i].replace('`', '\'');
 							}
 						}
-						if(t!=null)
+						String str=null;
+						if(msg.othersMessage() != null)
+							str=CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase());
+						else
+						if(msg.targetMessage() != null)
+							str=CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase());
+						if(str != null)
 						{
-							String str=null;
-							if(msg.othersMessage() != null)
-								str=CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase());
-							else
-							if(msg.targetMessage() != null)
-								str=CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase());
-							if(str != null)
+							str=(" "+str.replace('`', '\'')+" ").toUpperCase();
+							str=CMStrings.removeColors(str);
+							str=CMStrings.replaceAll(str,"\n\r"," ");
+							if((t[1].length()==0)||(t[1].equals("ALL")))
 							{
-								str=(" "+str.replace('`', '\'')+" ").toUpperCase();
-								str=CMStrings.removeColors(str);
-								str=CMStrings.replaceAll(str,"\n\r"," ");
-								if((t[1].length()==0)||(t[1].equals("ALL")))
+								enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
+								return;
+							}
+							else
+							if((t[1].equals("P"))&&(t.length>2))
+							{
+								if(match(str.trim(),t[2]))
 								{
 									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
 									return;
 								}
-								else
-								if((t[1].equals("P"))&&(t.length>2))
+							}
+							else
+							for(int i=1;i<t.length;i++)
+							{
+								final int x=str.indexOf(" "+t[i]+" ");
+								if(x>=0)
 								{
-									if(match(str.trim(),t[2]))
-									{
-										enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
-										return;
-									}
-								}
-								else
-								for(int i=1;i<t.length;i++)
-								{
-									final int x=str.indexOf(" "+t[i]+" ");
-									if(x>=0)
-									{
-										enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim());
-										return;
-									}
+									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim());
+									return;
 								}
 							}
 						}
