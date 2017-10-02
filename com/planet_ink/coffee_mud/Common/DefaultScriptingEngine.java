@@ -11530,7 +11530,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					&&((!(affecting instanceof MOB)) || isFreeToBeTriggered(monster)))
 					{
 						if(t==null)
+						{
 							t=parseBits(script,0,"CT");
+							for(int i=0;i<t.length;i++)
+							{
+								if(t[i]!=null)
+									t[i]=t[i].replace('`', '\'');
+							}
+						}
 						if(t!=null)
 						{
 							String str=null;
@@ -11541,7 +11548,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								str=CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase());
 							if(str != null)
 							{
-								str=(" "+str.replaceAll("`","'")+" ").toUpperCase();
+								str=(" "+str.replace('`', '\'')+" ").toUpperCase();
 								str=CMStrings.removeColors(str);
 								str=CMStrings.replaceAll(str,"\n\r"," ");
 								if((t[1].length()==0)||(t[1].equals("ALL")))
