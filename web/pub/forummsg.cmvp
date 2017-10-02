@@ -18,6 +18,7 @@
 			document.FORUM.FUNCTION.value='REPLY';
 			document.FORUM.JOURNALPARENT.value='';
 			document.FORUM.action="forumnew.cmvp";
+			document.FORUM.QUOTEDMESSAGE.value='';
 			document.FORUM.submit();
 		}
         function Register()
@@ -276,6 +277,13 @@
 					</FONT>
 				</a>
 				</TD>
+				<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DoReply('@JournalInfo?KEY@')">
+				<a href="javascript:DoReply('@JournalInfo?KEY@')" style="text-decoration:none">
+					<FONT COLOR=LIGHTBLUE SIZE=-1>
+					&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docclip.gif>&nbsp;&nbsp;<B>Reply</B>
+					</FONT>
+				</a>
+				</TD>
 				<TD WIDTH=20px>&nbsp;</TD>
 				@endif@
 			</TR>
@@ -335,6 +343,13 @@
 			<a href="javascript:QuoteReply('@JournalInfo?KEY@')" style="text-decoration:none">
 				<FONT COLOR=@RequestParameter?BGCOLOR@ SIZE=-1>
 				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docclip.gif>&nbsp;&nbsp;<B>Quote</B>
+				</FONT>
+			</a>
+			</TD>
+			<TD WIDTH=60px BGCOLOR=BLACK VALIGN=CENTER HEIGHT=15 ONCLICK="javascript:DoReply('@JournalInfo?KEY@')">
+			<a href="javascript:DoReply('@JournalInfo?KEY@')" style="text-decoration:none">
+				<FONT COLOR=LIGHTBLUE SIZE=-1>
+				&nbsp;<IMG BORDER=0 WIDTH=14 HEIGHT=14 src=images/docclip.gif>&nbsp;&nbsp;<B>Reply</B>
 				</FONT>
 			</a>
 			</TD>
