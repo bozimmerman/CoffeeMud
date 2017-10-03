@@ -90,6 +90,12 @@ public class Organizing extends CommonSkill
 	}
 
 	@Override
+	public String getBrand(final Item buildingI)
+	{
+		return super.getBrand(buildingI);
+	}
+	
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -129,6 +135,7 @@ public class Organizing extends CommonSkill
 								((ItemPossessor)building).delItem(I);
 						}
 						final OrganizeBy orgaT=this.orgaType;
+						final Organizing me = this;
 						final Comparator<Item> compare=new Comparator<Item>()
 						{
 							@Override
@@ -138,8 +145,8 @@ public class Organizing extends CommonSkill
 								switch(orgaT)
 								{
 								case CRAFTER:
-									final String brand1=getBrand(o1);
-									final String brand2=getBrand(o2);
+									final String brand1=me.getBrand(o1);
+									final String brand2=me.getBrand(o2);
 									result = brand1.compareTo(brand2);
 									break;
 								case LEVEL:
