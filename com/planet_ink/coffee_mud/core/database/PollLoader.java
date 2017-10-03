@@ -76,7 +76,7 @@ public class PollLoader
 					}
 
 					@Override
-					public String byName()
+					public String authorName()
 					{
 						return byName;
 					}
@@ -94,19 +94,19 @@ public class PollLoader
 					}
 
 					@Override
-					public String options()
+					public String optionsXml()
 					{
 						return options;
 					}
 
 					@Override
-					public String qual()
+					public String qualifyingMask()
 					{
 						return qual;
 					}
 
 					@Override
-					public String results()
+					public String resultsXml()
 					{
 						return results;
 					}
@@ -164,7 +164,7 @@ public class PollLoader
 					}
 
 					@Override
-					public String byName()
+					public String authorName()
 					{
 						return "";
 					}
@@ -182,19 +182,19 @@ public class PollLoader
 					}
 
 					@Override
-					public String options()
+					public String optionsXml()
 					{
 						return "";
 					}
 
 					@Override
-					public String qual()
+					public String qualifyingMask()
 					{
 						return qual;
 					}
 
 					@Override
-					public String results()
+					public String resultsXml()
 					{
 						return "";
 					}

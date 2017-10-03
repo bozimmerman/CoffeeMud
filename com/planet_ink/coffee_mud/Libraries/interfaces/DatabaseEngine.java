@@ -2079,7 +2079,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * A record of Data information from the database.
 	 * This is usually a XML document record of some sort.
 	 * Since it is keyed by player, it is typically very safe to obliterate
-	 * all records belonging to a player name wheenver the player
+	 * all records belonging to a player name whenever the player
 	 * needs to go.
 	 * 
 	 * @author Bo Zimmerman
@@ -2088,123 +2088,165 @@ public interface DatabaseEngine extends CMLibrary
 	public static interface PlayerData
 	{
 		/**
-		 * 
-		 * @return
+		 * Gets the official Name of the player that 
+		 * owns this record.
+		 * @see DatabaseEngine.PlayerData#who(String)
+		 * @return name of the player
 		 */
 		public String who();
 
 		/**
-		 * 
-		 * @param who
-		 * @return
+		 * Sets the official Name of the player that 
+		 * owns this record.
+		 * @see DatabaseEngine.PlayerData#who()
+		 * @param who name of the player
+		 * @return this
 		 */
 		public PlayerData who(String who);
 
 		/**
-		 * 
-		 * @return
+		 * Gets the section/category to which this
+		 * data belongs.
+		 * @see DatabaseEngine.PlayerData#section(String)
+		 * @return the data category
 		 */
 		public String section();
 
 		/**
-		 * 
-		 * @param section
-		 * @return
+		 * Sets the section/category to which this
+		 * data belongs.
+		 * @see DatabaseEngine.PlayerData#section()
+		 * @param section the data category
+		 * @return this
 		 */
 		public PlayerData section(String section);
 
 		/**
-		 * 
-		 * @return
+		 * Sets the unique key that identifies this record
+		 * of data.  It must be unique in the whole DB,
+		 * and can be anything from a GUID to a player/
+		 * section combination.
+		 * @see DatabaseEngine.PlayerData#key(String)
+		 * @return the unique record key
 		 */
 		public String key();
 
 		/**
-		 * 
-		 * @param key
-		 * @return
+		 * Sets the unique key that identifies this record
+		 * of data.  It must be unique in the whole DB,
+		 * and can be anything from a GUID to a player/
+		 * section combination.
+		 * @see DatabaseEngine.PlayerData#key()
+		 * @param key the unique record key
+		 * @return this
 		 */
 		public PlayerData key(String key);
 
 		/**
-		 * 
-		 * @return
+		 * Gets the actual data document that is the payload
+		 * of this record.  It is typically an XML 
+		 * document.
+		 * @see DatabaseEngine.PlayerData#xml(String)
+		 * @return the xml document payload
 		 */
 		public String xml();
 
 		/**
-		 * 
-		 * @param xml
-		 * @return
+		 * Sets the actual data document that is the payload
+		 * of this record.  It is typically an XML 
+		 * document.
+		 * @see DatabaseEngine.PlayerData#xml()
+		 * @param xml the xml document payload
+		 * @return this
 		 */
 		public PlayerData xml(String xml);
 	}
 
 	/**
 	 * Table category: DBPOLLS
+	 * Raw record entry for the DBPOLLS table, where each
+	 * record represents an entire poll and all of its
+	 * results.
 	 * 
 	 * @author Bo Zimmerman
-	 *
 	 */
 	public static interface PollData
 	{
 		/**
+		 * The unique Name of the poll
 		 * 
-		 * @return
+		 * @return unique Name of the poll
 		 */
 		public String name();
 
 		/**
+		 * Special flag bitmap for this poll.
 		 * 
-		 * @return
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ABSTAIN
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ACTIVE
+		 * 
+		 * @return flag bitmap
 		 */
 		public long flag();
 
 		/**
+		 * The player Name of the author of the poll.
 		 * 
-		 * @return
+		 * @return Name of the author of the poll.
 		 */
-		public String byName();
+		public String authorName();
 
 		/**
+		 * The short title of the poll.
 		 * 
-		 * @return
+		 * @return short title of the poll.
 		 */
 		public String subject();
 
 		/**
+		 * The long description of the poll.
 		 * 
-		 * @return
+		 * @return long description of the poll.
 		 */
 		public String description();
 
 		/**
+		 * The options/multiple-choices for this
+		 * poll.  In XML document format.
 		 * 
-		 * @return
+		 * @return the options to choose from xml
 		 */
-		public String options();
+		public String optionsXml();
 
 		/**
+		 * The Zapper Mask to decide who may participate
+		 * in this poll.
 		 * 
-		 * @return
+		 * @return the qualifying zapper mask
 		 */
-		public String qual();
+		public String qualifyingMask();
 
 		/**
+		 * The player name keyed results/choices for
+		 * this poll.  In XML document format.
 		 * 
-		 * @return
+		 * @return the results chosen in xml
 		 */
-		public String results();
+		public String resultsXml();
 
 		/**
+		 * The real-timestamp after which this poll
+		 * is expired.
 		 * 
-		 * @return
+		 * @return the expiration timestamp of the poll
 		 */
 		public long expiration();
 	}
 
 	/**
 	 * Table category: DBRACE
+	 * A record of the creation timstamp for 
+	 * a generic race
 	 * 
 	 * @author Bo Zimmerman
 	 *
@@ -2212,14 +2254,16 @@ public interface DatabaseEngine extends CMLibrary
 	public static interface AckStats
 	{
 		/**
+		 * The Race ID
 		 * 
-		 * @return
+		 * @return the race id
 		 */
 		public String ID();
 
 		/**
+		 * The creation timestamp
 		 * 
-		 * @return
+		 * @return creation timestamp
 		 */
 		public long creationDate();
 	}
@@ -2227,26 +2271,35 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBRACE, DBCHARCLASS, DBABILITY
 	 * 
+	 * A data record for a generic race or class or
+	 * generic ability.
+	 * 
 	 * @author Bo Zimmerman
 	 *
 	 */
 	public static interface AckRecord
 	{
 		/**
+		 * The race, ability, or char class ID
 		 * 
-		 * @return
+		 * @return race or class ID
 		 */
 		public String ID();
 
 		/**
+		 * The XML document describing the race
+		 * or class or ability this record represents.
 		 * 
 		 * @return
 		 */
 		public String data();
 
 		/**
+		 * The base class that is used to build the object
+		 * denoted by this record.  Typically GenRace, 
+		 * GenCharClass, or GenAbility.
 		 * 
-		 * @return
+		 * @return the base class
 		 */
 		public String typeClass();
 	}
