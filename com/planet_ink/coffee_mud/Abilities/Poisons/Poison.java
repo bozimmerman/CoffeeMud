@@ -131,7 +131,10 @@ public class Poison extends StdAbility implements HealthCondition
 			poisoner=mob;
 		if((poisoner==null)&&(target instanceof MOB))
 			poisoner=(MOB)target;
-		if((target!=null)&&(target instanceof MOB)&&(target.fetchEffect(ID())==null))
+		if((target!=null)
+		&&(target instanceof MOB)
+		&&(target.fetchEffect(ID())==null)
+		&&((poisoner==target)||(!poisoner.isPlayer())||(poisoner.mayIFight((MOB)target))))
 		{
 			final MOB targetMOB=(MOB)target;
 			if(POISON_START_TARGETONLY().length()>0)
@@ -264,7 +267,12 @@ public class Poison extends StdAbility implements HealthCondition
 						if((msg.target() instanceof Drink)
 						&&(affected instanceof Drink))
 						{
-							((Drink)msg.target()).addEffect((Ability)this.copyOf());
+							if((msg.target() instanceof Item)
+							&&((!CMLib.flags().isGettable((Item)msg.target()))
+								||(((Drink)msg.target()).liquidRemaining()>9999)))
+								invoke(msg.source(), (Physical)msg.target(), true, 0);
+							else
+								((Drink)msg.target()).addEffect((Ability)this.copyOf());
 							if((((Drink)affected).liquidRemaining()-((Drink)msg.target()).amountTakenToFillMe((Drink)affected))<=0)
 								affected.delEffect(this);
 						}
