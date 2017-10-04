@@ -4255,7 +4255,7 @@ public class ListCmd extends StdCommand
 				}
 				final String cost=CMLib.help().getAbilityCostDesc(A, null);
 				final String quality=CMLib.help().getAbilityQualityDesc(A);
-				final String targets=CMLib.help().getAbilityTargetDesc(A);
+				String targets=CMLib.help().getAbilityTargetDesc(A);
 				final String range=CMLib.help().getAbilityRangeDesc(A);
 				final boolean archon = ofType == Ability.ACODE_PROPERTY;
 				StringBuilder help=CMLib.help().getHelpText(A.ID(),null,archon,true);
@@ -4264,10 +4264,29 @@ public class ListCmd extends StdCommand
 				String helpStr="";
 				if(help==null)
 					help=CMLib.help().getHelpText(A.name(),null,archon,true);
-				if((help!=null)&&(help.toString().startsWith("<ABILITY>")))
+				if(A.ID().startsWith("Prop_"))
+					targets="";
+				if((help!=null)&&(help.toString().startsWith("<ABILITY>")||help.toString().startsWith("Property")))
 				{
 					helpStr=help.toString().substring(9);
-					while(helpStr.startsWith("Usage")||helpStr.startsWith("  "))
+					while(helpStr.trim().startsWith(": "))
+					{
+						int end=helpStr.indexOf("\n");
+						int start=helpStr.indexOf(":");
+						if((end<0)||(start<0)||(start>end))
+							break;
+						helpStr=helpStr.substring(end+1).trim();
+					}
+					while(helpStr.startsWith("Targets")||helpStr.startsWith("  "))
+					{
+						int end=helpStr.indexOf("\n");
+						int start=helpStr.indexOf(":");
+						if((end<0)||(start<0)||(start>end))
+							break;
+						targets += ((usage.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
+						helpStr=helpStr.substring(end+1).trim();
+					}
+					while(helpStr.startsWith("Usage")||helpStr.startsWith("Parameters")||helpStr.startsWith("  "))
 					{
 						int end=helpStr.indexOf("\n");
 						int start=helpStr.indexOf(":");
@@ -4285,13 +4304,24 @@ public class ListCmd extends StdCommand
 						example += ((example.length()>0) ? "\n\r" : "" ) + helpStr.substring(start+1,end).trim();
 						helpStr=helpStr.substring(end+1).trim();
 					}
+					if(helpStr.startsWith("Description")||helpStr.startsWith("  "))
+					{
+						int end=helpStr.indexOf("\n");
+						int start=helpStr.indexOf(":");
+						if((end<0)||(start<0)||(start>end))
+							break;
+						helpStr=helpStr.substring(end+1).trim();
+					}
 				}
+				while(!example.endsWith("\n\r\n\r"))
+					example += "\n\r";
 				final String helpEOL=CMStrings.getEOL(helpStr,"\n\r");
 				helpStr = CMStrings.replaceAll(helpStr,helpEOL,helpEOL+helpEOL);
 				String templateName = "SkillTemplate";
 				if((A.classificationCode()&Ability.ALL_ACODES)==(Ability.ACODE_PROPERTY))
 					templateName="PropertyTemplate";
 				str.append("{{"+templateName
+						+ "|ID="+A.ID()
 						+ "|Name="+A.name()
 						+ "|Domain=[["+domainID+"(Domain)|"+domainName+"]]"
 						+ "|Available="+availStr.toString()
