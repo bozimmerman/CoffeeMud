@@ -163,6 +163,7 @@ public class Archon_Metacraft extends ArchonSkill
 			}
 		}
 		int material=-1;
+		List<Ability> craftingSkills=Archon_Metacraft.craftingSkills;
 		if(mat!=null)
 			material=RawMaterial.CODES.FIND_StartsWith(mat);
 		if((mat!=null)&&(material<0))
@@ -170,6 +171,20 @@ public class Archon_Metacraft extends ArchonSkill
 			mob.tell(L("'@x1' is not a recognized material.",mat));
 			return false;
 		}
+		else
+		if(material>0)
+		{
+			craftingSkills = new ArrayList<Ability>();
+			for(Ability A : Archon_Metacraft.craftingSkills)
+			{
+				ItemCraftor craft = (ItemCraftor)A;
+				if(craft.myResources().contains(Integer.valueOf(material)))
+					craftingSkills.add(A);
+			}
+			if(craftingSkills.size()==0)
+				craftingSkills=Archon_Metacraft.craftingSkills;
+		}
+		
 		ItemCraftor skill=null;
 		String recipe=CMParms.combine(commands,0);
 		List<Pair<Ability,String>> skillsToUse=new Vector<Pair<Ability,String>>();
