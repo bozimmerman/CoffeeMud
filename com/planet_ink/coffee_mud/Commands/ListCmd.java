@@ -4264,8 +4264,6 @@ public class ListCmd extends StdCommand
 				String helpStr="";
 				if(help==null)
 					help=CMLib.help().getHelpText(A.name(),null,archon,true);
-				if(A.ID().startsWith("Prop_"))
-					targets="";
 				if((help!=null)&&(help.toString().startsWith("<ABILITY>")||help.toString().startsWith("Property")))
 				{
 					helpStr=help.toString().substring(9);
@@ -4277,6 +4275,8 @@ public class ListCmd extends StdCommand
 							break;
 						helpStr=helpStr.substring(end+1).trim();
 					}
+					if(helpStr.startsWith("Targets"))
+						targets="";
 					while(helpStr.startsWith("Targets")||helpStr.startsWith("  "))
 					{
 						int end=helpStr.indexOf("\n");
