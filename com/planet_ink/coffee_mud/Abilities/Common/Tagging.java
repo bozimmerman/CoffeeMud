@@ -243,6 +243,7 @@ public class Tagging extends CommonSkill
 			target=mob.location().findItem(null, what);
 			if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
 			{
+				/*
 				final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
 				boolean ok=false;
 				for(final MOB M : followers)
@@ -255,6 +256,7 @@ public class Tagging extends CommonSkill
 					commonTell(mob,L("You aren't allowed to work on '@x1'.",what));
 					return false;
 				}
+				*/
 			}
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
@@ -281,11 +283,13 @@ public class Tagging extends CommonSkill
 		{
 			writing="REMOVE";
 			verb=L("untagging @x1",target.name());
+			//TOOD: remove prop_unsellable
 		}
 		else
 		{
 			writing="TAG1";
 			verb=L("tagging @x1",target.name());
+			//TOOD: add prop_unsellable
 		}
 		displayText=L("You are @x1",verb);
 		found=target;
