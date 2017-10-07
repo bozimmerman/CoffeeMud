@@ -13,6 +13,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /*
    Copyright 2012-2017 Bo Zimmerman
@@ -37,7 +38,7 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	protected final long maxAgeLimitMillis;
 	protected final int	 threshHoldToExpand;
 	
-	protected volatile boolean trimming	= false;
+	protected final AtomicBoolean trimming	= new AtomicBoolean(false);
 
 	private class LinkedEntry<V, W> extends Pair<V, W>
 	{
@@ -118,16 +119,16 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		if (p != null)
 		{
 			markFoundAgain(p);
-			if(!trimming)
+			if(!trimming.get())
 			{
-				trimming=true;
+				trimming.set(true);
 				try
 				{
 					trimDeadwood(1);
 				}
 				finally
 				{
-					trimming=false;
+					trimming.set(false);
 				}
 			}
 			return p.second;
@@ -293,16 +294,16 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 				p.second = arg1;
 			markFoundAgain(p);
 		}
-		if(!trimming)
+		if(!trimming.get())
 		{
-			trimming=true;
+			trimming.set(true);
 			try
 			{
 				trimDeadwood(1);
 			}
 			finally
 			{
-				trimming=false;
+				trimming.set(false);
 			}
 		}
 		return arg1;
