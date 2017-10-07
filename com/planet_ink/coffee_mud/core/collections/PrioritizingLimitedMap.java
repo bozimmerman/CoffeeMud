@@ -36,6 +36,8 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 	protected final long touchAgeLimitMillis;
 	protected final long maxAgeLimitMillis;
 	protected final int	 threshHoldToExpand;
+	
+	protected volatile boolean trimming	= false;
 
 	private class LinkedEntry<V, W> extends Pair<V, W>
 	{
@@ -116,7 +118,18 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 		if (p != null)
 		{
 			markFoundAgain(p);
-			trimDeadwood(1);
+			if(!trimming)
+			{
+				trimming=true;
+				try
+				{
+					trimDeadwood(1);
+				}
+				finally
+				{
+					trimming=false;
+				}
+			}
 			return p.second;
 		}
 		return null;
@@ -280,7 +293,18 @@ public class PrioritizingLimitedMap<T extends Comparable<T>, K> implements Map<T
 				p.second = arg1;
 			markFoundAgain(p);
 		}
-		trimDeadwood(1);
+		if(!trimming)
+		{
+			trimming=true;
+			try
+			{
+				trimDeadwood(1);
+			}
+			finally
+			{
+				trimming=false;
+			}
+		}
 		return arg1;
 	}
 
