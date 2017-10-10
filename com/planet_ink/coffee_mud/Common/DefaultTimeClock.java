@@ -508,7 +508,7 @@ public class DefaultTimeClock implements TimeClock
 			buf.append(hours+" hours");
 		}
 		if(buf.length()==0)
-			return "any second now";
+			return "under an hour";
 		return buf.toString();
 	}
 
