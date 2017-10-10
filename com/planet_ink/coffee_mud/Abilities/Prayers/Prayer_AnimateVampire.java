@@ -212,7 +212,7 @@ public class Prayer_AnimateVampire extends Prayer
 				newMOB.setName(L("@x1 vampire",race));
 				newMOB.setDescription(description);
 				newMOB.setDisplayText(L("@x1 vampire is here",race));
-				newMOB.basePhyStats().setLevel(getUndeadLevel(mob,19,body.phyStats().level()));
+				newMOB.basePhyStats().setLevel(getUndeadLevel(mob,19,body.basePhyStats().level()));
 				newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,body.charStats().getStat(CharStats.STAT_GENDER));
 				newMOB.baseCharStats().setMyRace(CMClass.getRace("Undead"));
 				newMOB.baseCharStats().setBodyPartsFromStringAfterRace(body.charStats().getBodyPartsAsString());
