@@ -44,120 +44,114 @@ public class PlayerData extends StdWebMacro
 		return "PlayerData";
 	}
 
-	public final static String[] BASICS={
-		"NAME",
-		"DESCRIPTION",
-		"LASTDATETIME",
-		"EMAIL",
-		"RACENAME",
-		"CHARCLASS",
-		"LEVEL",
-		"LEVELSTR",
-		"CLASSLEVEL",
-		"CLASSES",
-		"MAXCARRY",
-		"ATTACKNAME",
-		"ARMORNAME",
-		"DAMAGENAME",
-		"HOURS",
-		"PRACTICES",
-		"EXPERIENCE",
-		"EXPERIENCELEVEL",
-		"TRAINS",
-		"MONEY",
-		"DEITYNAME",
-		"LIEGE",
-		"CLANNAMES",
-		"CLANROLE", // deprecated
-		"ALIGNMENTNAME",
-		"ALIGNMENTSTRING",
-		"WIMP",
-		"STARTROOM",
-		"LOCATION",
-		"STARTROOMID",
-		"LOCATIONID",
-		"INVENTORY",
-		"WEIGHT",
-		"ENCUMBRANCE",
-		"GENDERNAME",
-		"LASTDATETIMEMILLIS",
-		"HITPOINTS",
-		"MANA",
-		"MOVEMENT",
-		"RIDING",
-		"HEIGHT",
-		"LASTIP",
-		"QUESTPOINTS",
-		"BASEHITPOINTS",
-		"BASEMANA",
-		"BASEMOVEMENT",
-		"IMAGE",
-		"MAXITEMS",
-		"IMGURL",
-		"HASIMG",
-		"NOTES",
-		"LEVELS",
-		"ATTACK",
-		"DAMAGE",
-		"ARMOR",
-		"SPEEDNAME",
-		"SPEED",
-		"EXPERTISE",
-		"TATTOOS",
-		"SECURITY",
-		"TITLES",
-		"FACTIONNAMES",
-		"ACCTEXPUSED",
-		"ACCTEXP",
-		"FOLLOWERNAMES",
-		"ACCOUNT"
-	};
-
-	public static int getBasicCode(String val)
+	public static enum BASICS 
 	{
-		for(int i=0;i<BASICS.length;i++)
-		{
-			if(val.equalsIgnoreCase(BASICS[i]))
-				return i;
-		}
-		return -1;
+		NAME,
+		DESCRIPTION,
+		LASTDATETIME,
+		EMAIL,
+		RACENAME,
+		CHARCLASS,
+		LEVEL,
+		LEVELSTR,
+		CLASSLEVEL,
+		CLASSES,
+		MAXCARRY,
+		ATTACKNAME,
+		ARMORNAME,
+		DAMAGENAME,
+		HOURS,
+		PRACTICES,
+		EXPERIENCE,
+		EXPERIENCELEVEL,
+		TRAINS,
+		MONEY,
+		DEITYNAME,
+		LIEGE,
+		CLANNAMES,
+		CLANROLE, // deprecated
+		ALIGNMENTNAME,
+		ALIGNMENTSTRING,
+		WIMP,
+		STARTROOM,
+		LOCATION,
+		STARTROOMID,
+		LOCATIONID,
+		INVENTORY,
+		WEIGHT,
+		ENCUMBRANCE,
+		GENDERNAME,
+		LASTDATETIMEMILLIS,
+		HITPOINTS,
+		MANA,
+		MOVEMENT,
+		RIDING,
+		HEIGHT,
+		LASTIP,
+		QUESTPOINTS,
+		MAXHITPOINTS,
+		MAXMANA,
+		MAXMOVEMENT,
+		IMAGE,
+		MAXITEMS,
+		IMGURL,
+		HASIMG,
+		NOTES,
+		LEVELS,
+		ATTACK,
+		DAMAGE,
+		ARMOR,
+		SPEEDNAME,
+		SPEED,
+		EXPERTISE,
+		TATTOOS,
+		SECURITY,
+		TITLES,
+		FACTIONNAMES,
+		ACCTEXPUSED,
+		ACCTEXP,
+		FOLLOWERNAMES,
+		ACCOUNT,
+		BASEHITPOINTS,
+		BASEMANA,
+		BASEMOVEMENT
 	}
 
-	public static String getBasic(MOB M, int i)
+	public static String getBasic(MOB M, BASICS basic)
 	{
 		final StringBuffer str=new StringBuffer("");
-		switch(i)
+		switch(basic)
 		{
-		case 0:
+		case NAME:
 			str.append(M.Name() + ", ");
 			break;
-		case 1:
+		case DESCRIPTION:
 			str.append(M.description() + ", ");
 			break;
-		case 2:
+		case LASTDATETIME:
 			if (M.playerStats() != null)
 				str.append(CMLib.time().date2String(M.playerStats().getLastDateTime()) + ", ");
 			break;
-		case 3:
+		case EMAIL:
 			if (M.playerStats() != null)
 				str.append(M.playerStats().getEmail() + ", ");
 			break;
-		case 4:
+		case RACENAME:
 			str.append(M.baseCharStats().getMyRace().name() + ", ");
 			break;
-		case 5:
+		case CHARCLASS:
 			str.append(M.baseCharStats().getCurrentClass().name(M.baseCharStats().getCurrentClassLevel()) + ", ");
 			break;
-		case 6:
+		case LEVEL:
 			str.append(M.basePhyStats().level() + ", ");
 			break;
-		case 7:
+		case LEVELSTR:
 			str.append(M.baseCharStats().displayClassLevel(M, true) + ", ");
 			break;
-		case 8:
+		case CLASSLEVEL:
 			str.append(M.baseCharStats().getClassLevel(M.baseCharStats().getCurrentClass()) + ", ");
 			break;
-		case 9:
+		case CLASSES:
 		{
 			for(int c=M.charStats().numClasses()-1;c>=0;c--)
 			{
@@ -167,50 +161,50 @@ public class PlayerData extends StdWebMacro
 			str.append(", ");
 			break;
 		}
-		case 10:
+		case MAXCARRY:
 			if (M.maxCarry() > (Integer.MAX_VALUE / 3))
 				str.append("NA, ");
 			else
 				str.append(M.maxCarry() + ", ");
 			break;
-		case 11:
+		case ATTACKNAME:
 			str.append(CMStrings.capitalizeAndLower(CMStrings.removeColors(CMLib.combat().fightingProwessStr(M))) + ", ");
 			break;
-		case 12:
+		case ARMORNAME:
 			str.append(CMStrings.capitalizeAndLower(CMStrings.removeColors(CMLib.combat().armorStr(M))) + ", ");
 			break;
-		case 13:
+		case DAMAGENAME:
 			str.append(CMLib.combat().adjustedDamage(M, null, null, 0, false, true) + ", ");
 			break;
-		case 14:
+		case HOURS:
 			str.append(Math.round(CMath.div(M.getAgeMinutes(), 60.0)) + ", ");
 			break;
-		case 15:
+		case PRACTICES:
 			str.append(M.getPractices() + ", ");
 			break;
-		case 16:
+		case EXPERIENCE:
 			str.append(M.getExperience() + ", ");
 			break;
-		case 17: 
+		case EXPERIENCELEVEL:
 			if(M.getExpNeededLevel()==Integer.MAX_VALUE)
 				str.append("N/A, ");
 			else
 				str.append(M.getExpNextLevel()+", ");
 			break;
-		case 18:
+		case TRAINS:
 			str.append(M.getTrains() + ", ");
 			break;
-		case 19:
+		case MONEY:
 			str.append(CMLib.beanCounter().getMoney(M) + ", ");
 			break;
-		case 20:
+		case DEITYNAME:
 			str.append(M.getWorshipCharID() + ", ");
 			break;
-		case 21:
+		case LIEGE:
 			str.append(M.getLiegeID() + ", ");
 			break;
-		case 22:
-		case 23: 
+		case CLANNAMES:
+		case CLANROLE: // deprecated
 		{
 			final StringBuilder buf = new StringBuilder("");
 			for (final Pair<Clan, Integer> p : M.clans())
@@ -219,10 +213,10 @@ public class PlayerData extends StdWebMacro
 				str.append(buf.substring(0, buf.length() - 2));
 			break;
 		}
-		case 24:
+		case ALIGNMENTNAME:
 			str.append(M.fetchFaction(CMLib.factions().AlignID()) + ", ");
 			break;
-		case 25:
+		case ALIGNMENTSTRING:
 		{
 			final Faction.FRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),M.fetchFaction(CMLib.factions().AlignID()));
 			if(FR!=null)
@@ -231,26 +225,26 @@ public class PlayerData extends StdWebMacro
 				str.append(M.fetchFaction(CMLib.factions().AlignID()));
 			break;
 		}
-		case 26:
+		case WIMP:
 			str.append(M.getWimpHitPoint() + ", ");
 			break;
-		case 27: 
+		case STARTROOM:
 			if(M.getStartRoom()!=null)
 				str.append(M.getStartRoom().displayText()+", ");
 			break;
-		case 28: 
+		case LOCATION:
 			if(M.location()!=null)
 				str.append(M.location().displayText()+", ");
 			break;
-		case 29: 
+		case STARTROOMID:
 			if(M.getStartRoom()!=null)
 				str.append(M.getStartRoom().roomID()+", ");
 			break;
-		case 30: 
+		case LOCATIONID:
 			if(M.location()!=null)
 				str.append(M.location().roomID()+", ");
 			break;
-		case 31:
+		case INVENTORY:
 		{
 			for(int inv=0;inv<M.numItems();inv++)
 			{
@@ -260,36 +254,36 @@ public class PlayerData extends StdWebMacro
 			}
 			break;
 		}
-		case 32:
+		case WEIGHT:
 			str.append(M.basePhyStats().weight() + ", ");
 			break;
-		case 33:
+		case ENCUMBRANCE:
 			str.append(M.phyStats().weight() + ", ");
 			break;
-		case 34:
+		case GENDERNAME:
 			str.append(CMStrings.capitalizeAndLower(M.baseCharStats().genderName()) + ", ");
 			break;
-		case 35: 
+		case LASTDATETIMEMILLIS:
 			if(M.playerStats()!=null)
 				str.append(M.playerStats().getLastDateTime()+", ");
 			break;
-		case 36:
+		case HITPOINTS:
 			str.append(M.curState().getHitPoints() + ", ");
 			break;
-		case 37:
+		case MANA:
 			str.append(M.curState().getMana() + ", ");
 			break;
-		case 38:
+		case MOVEMENT:
 			str.append(M.curState().getMovement() + ", ");
 			break;
-		case 39: 
+		case RIDING:
 			if(M.riding()!=null)
 				str.append(M.riding().name()+", ");
 			break;
-		case 40:
+		case HEIGHT:
 			str.append(M.basePhyStats().height() + ", ");
 			break;
-		case 41:
+		case LASTIP:
 		{
 			if(!M.isMonster())
 				str.append(M.session().getAddress()+", ");
@@ -298,32 +292,32 @@ public class PlayerData extends StdWebMacro
 				str.append(M.playerStats().getLastIP()+", ");
 			break;
 		}
-		case 42:
+		case QUESTPOINTS:
 			str.append(M.getQuestPoint() + ", ");
 			break;
-		case 43:
+		case MAXHITPOINTS:
 			str.append(M.maxState().getHitPoints() + ", ");
 			break;
-		case 44:
+		case MAXMANA:
 			str.append(M.maxState().getMana() + ", ");
 			break;
-		case 45:
+		case MAXMOVEMENT:
 			str.append(M.maxState().getMovement() + ", ");
 			break;
-		case 46:
+		case IMAGE:
 			str.append(M.rawImage() + ", ");
 			break;
-		case 47:
+		case MAXITEMS:
 			str.append(M.maxItems() + ", ");
 			break;
-		case 48:
+		case IMGURL:
 		{
 			final String[] paths=CMLib.protocol().mxpImagePath(M.image());
 			if(paths[0].length()>0)
 				str.append(paths[0]+paths[1]+", ");
 			break;
 		}
-		case 49: 
+		case HASIMG:
 		{
 			if(CMLib.protocol().mxpImagePath(M.image())[0].length()>0)
 				str.append("true, ");
@@ -331,10 +325,11 @@ public class PlayerData extends StdWebMacro
 				str.append("false, ");
 			break;
 		}
-		case 50: if(M.playerStats()!=null)
-					str.append(M.playerStats().getNotes()+", ");
-				break;
-		case 51:
+		case NOTES:
+			if(M.playerStats()!=null)
+				str.append(M.playerStats().getNotes()+", ");
+			break;
+		case LEVELS:
 			if(M.playerStats()!=null)
 			{
 				long lastDateTime=-1;
@@ -358,22 +353,22 @@ public class PlayerData extends StdWebMacro
 				str.append(", ");
 			}
 			break;
-		case 52:
+		case ATTACK:
 			str.append(M.basePhyStats().attackAdjustment() + ", ");
 			break;
-		case 53:
+		case DAMAGE:
 			str.append(M.basePhyStats().damage() + ", ");
 			break;
-		case 54:
+		case ARMOR:
 			str.append(M.basePhyStats().armor() + ", ");
 			break;
-		case 55:
+		case SPEEDNAME:
 			str.append(M.phyStats().speed() + ", ");
 			break;
-		case 56:
+		case SPEED:
 			str.append(M.basePhyStats().speed() + ", ");
 			break;
-		case 57:
+		case EXPERTISE:
 		{
 			for(final Enumeration<String> x=M.expertises();x.hasMoreElements();)
 			{
@@ -386,13 +381,13 @@ public class PlayerData extends StdWebMacro
 			}
 			break;
 		}
-		case 58:
+		case TATTOOS:
 		{
 			for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
 			 str.append(e.nextElement().toString()+", ");
 			break;
 		}
-		case 59:
+		case SECURITY:
 		{
 			if(M.playerStats()!=null)
 			{
@@ -406,7 +401,7 @@ public class PlayerData extends StdWebMacro
 			}
 			break;
 		}
-		case 60:
+		case TITLES:
 		{
 			if(M.playerStats()!=null)
 			{
@@ -419,7 +414,7 @@ public class PlayerData extends StdWebMacro
 			}
 			break;
 		}
-		case 61:
+		case FACTIONNAMES:
 		{
 			for(final Enumeration<String> e=M.factions();e.hasMoreElements();)
 			{
@@ -431,10 +426,10 @@ public class PlayerData extends StdWebMacro
 			}
 			break;
 		}
-		case 62:
+		case ACCTEXPUSED:
 			str.append(CMProps.getBoolVar(CMProps.Bool.ACCOUNTEXPIRATION) ? "true" : "false");
 			break;
-		case 63:
+		case ACCTEXP:
 		{
 			if(M.playerStats()!=null)
 			{
@@ -445,7 +440,7 @@ public class PlayerData extends StdWebMacro
 			}
 			break;
 		}
-		case 64: 
+		case FOLLOWERNAMES:
 		{
 			for(int f=0;f<M.numFollowers();f++)
 				str.append(M.fetchFollower(f).name()).append(", ");
@@ -454,9 +449,18 @@ public class PlayerData extends StdWebMacro
 			//    str.append(((MOB)V.elementAt(v)).name()).append(", ");
 			break;
 		}
-		case 65:
+		case ACCOUNT:
 			if((M.playerStats()!=null)&&(M.playerStats().getAccount()!=null))
 				str.append(M.playerStats().getAccount().getAccountName());
+			break;
+		case BASEHITPOINTS:
+			str.append(M.baseState().getHitPoints()).append(", ");
+			break;
+		case BASEMANA:
+			str.append(M.baseState().getMana()).append(", ");
+			break;
+		case BASEMOVEMENT:
+			str.append(M.baseState().getMovement()).append(", ");
 			break;
 		}
 		return str.toString();
@@ -532,14 +536,14 @@ public class PlayerData extends StdWebMacro
 					}
 				}
 			}
-			for(int i=0;i<BASICS.length;i++)
+			for(int i=0;i<BASICS.values().length;i++)
 			{
-				if(parms.containsKey(BASICS[i]))
+				if(parms.containsKey(BASICS.values()[i].name()))
 				{
-					if(httpReq.isUrlParameter(BASICS[i]))
-						str.append(httpReq.getUrlParameter(BASICS[i])+", ");
+					if(httpReq.isUrlParameter(BASICS.values()[i].name()))
+						str.append(httpReq.getUrlParameter(BASICS.values()[i].name())+", ");
 					else
-						str.append(getBasic(M,i));
+						str.append(getBasic(M,BASICS.values()[i]));
 				}
 			}
 			if(parms.containsKey("RACE"))

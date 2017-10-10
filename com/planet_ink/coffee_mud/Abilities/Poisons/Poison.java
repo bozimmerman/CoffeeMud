@@ -134,6 +134,7 @@ public class Poison extends StdAbility implements HealthCondition
 		if((target!=null)
 		&&(target instanceof MOB)
 		&&(target.fetchEffect(ID())==null)
+		&&(poisoner!=null)
 		&&((poisoner==target)||(!poisoner.isPlayer())||(poisoner.mayIFight((MOB)target))))
 		{
 			final MOB targetMOB=(MOB)target;

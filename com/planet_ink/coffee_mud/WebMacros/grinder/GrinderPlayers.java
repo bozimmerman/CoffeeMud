@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.WebMacros.AreaData;
 import com.planet_ink.coffee_mud.WebMacros.ExitData;
 import com.planet_ink.coffee_mud.WebMacros.MUDGrinder;
 import com.planet_ink.coffee_mud.WebMacros.MobData;
+import com.planet_ink.coffee_mud.WebMacros.PlayerData.BASICS;
 import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
@@ -41,84 +42,6 @@ import java.util.*;
 
 public class GrinderPlayers extends GrinderMobs
 {
-	public final static String[] BASICS={
-		"NAME",
-		"DESCRIPTION",
-		"LASTDATETIME",
-		"EMAIL",
-		"RACENAME",
-		"CHARCLASS",
-		"LEVEL",
-		"LEVELSTR",
-		"CLASSLEVEL",
-		"CLASSES",
-		"MAXCARRY",
-		"ATTACKNAME",
-		"ARMORNAME",
-		"DAMAGENAME",
-		"HOURS",
-		"PRACTICES",
-		"EXPERIENCE",
-		"EXPERIENCELEVEL",
-		"TRAINS",
-		"MONEY",
-		"DEITYNAME",
-		"LIEGE",
-		"CLANNAMES",
-		"CLANROLE", // deprecated
-		"ALIGNMENTNAME",
-		"ALIGNMENTSTRING",
-		"WIMP",
-		"STARTROOM",
-		"LOCATION",
-		"STARTROOMID",
-		"LOCATIONID",
-		"INVENTORY",
-		"WEIGHT",
-		"ENCUMBRANCE",
-		"GENDERNAME",
-		"LASTDATETIMEMILLIS",
-		"HITPOINTS",
-		"MANA",
-		"MOVEMENT",
-		"RIDING",
-		"HEIGHT",
-		"LASTIP",
-		"QUESTPOINTS",
-		"BASEHITPOINTS",
-		"BASEMANA",
-		"BASEMOVEMENT",
-		"IMAGE",
-		"MAXITEMS",
-		"IMGURL",
-		"HASIMG",
-		"NOTES",
-		"LEVELS",
-		"ATTACK",
-		"DAMAGE",
-		"ARMOR",
-		"SPEEDNAME",
-		"SPEED",
-		"EXPERTISE",
-		"TATTOOS",
-		"SECURITY",
-		"TITLES",
-		"FACTIONNAMES",
-		"ACCTEXPUSED",
-		"ACCTEXP",
-		"ACCOUNT"
-	};
-
-	public static int getBasicCode(String val)
-	{
-		for(int i=0;i<BASICS.length;i++)
-		{
-			if(val.equalsIgnoreCase(BASICS[i]))
-				return i;
-		}
-		return -1;
-	}
-
 	public static String titleList(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
 		if(E.playerStats()==null)
@@ -138,86 +61,96 @@ public class GrinderPlayers extends GrinderMobs
 		return "";
 	}
 
-	public static String setBasics(HTTPRequest httpReq,MOB M)
+	public static String setBasics(HTTPRequest httpReq, MOB M)
 	{
-		for(int i=0;i<BASICS.length;i++)
-		if(httpReq.isUrlParameter(BASICS[i]))
+		for(int i=0;i<BASICS.values().length;i++)
 		{
-			String old=httpReq.getUrlParameter(BASICS[i]);
+			String err = setBasic(httpReq, M, BASICS.values()[i]);
+			if((err != null) && (err.trim().length()>0))
+				return err;
+		}
+		return "";
+	}
+	
+	public static String setBasic(HTTPRequest httpReq, MOB M, BASICS basic)
+	{
+		if(httpReq.isUrlParameter(basic.name()))
+		{
+			String old=httpReq.getUrlParameter(basic.name());
 			if(old==null)
 				old="";
-			switch(i)
+			switch(basic)
 			{
-			case 0:
+			case NAME:
 				break; // dont set name!
-			case 1:
+			case DESCRIPTION:
 				M.setDescription(old);
 				break;
-			case 2:
+			case LASTDATETIME:
 				if (M.playerStats() != null)
 					M.playerStats().setLastDateTime(CMLib.time().string2Millis(old));
 				break;
-			case 3:
+			case EMAIL:
 				if (M.playerStats() != null)
 					M.playerStats().setEmail(old);
 				break;
-			case 4:
+			case RACENAME:
 				M.baseCharStats().setMyRace(CMClass.getRace(old));
 				break;
-			case 5:
+			case CHARCLASS:
 				break; // dont set class/levels list through this.
-			case 6:
+			case LEVEL:
 				M.basePhyStats().setLevel(CMath.s_int(old));
 				break;
-			case 7:
+			case LEVELSTR:
 				break; // dont set levelstr
-			case 8:
+			case CLASSLEVEL:
 				break; // dont set classlevelstr
-			case 9:
+			case CLASSES:
 				break; // dont set classlist through this
-			case 10:
+			case MAXCARRY:
 				break; // cant set maxcarry
-			case 11:
+			case ATTACKNAME:
 				M.basePhyStats().setAttackAdjustment(CMath.s_int(old));
 				break;
-			case 12:
+			case ARMORNAME:
 				M.basePhyStats().setArmor(CMath.s_int(old));
 				break;
-			case 13:
+			case DAMAGENAME:
 				M.basePhyStats().setDamage(CMath.s_int(old));
 				break;
-			case 14:
+			case HOURS:
 				M.setAgeMinutes(CMath.s_long(old) * 60L);
 				break;
-			case 15:
+			case PRACTICES:
 				M.setPractices(CMath.s_int(old));
 				break;
-			case 16:
+			case EXPERIENCE:
 				M.setExperience(CMath.s_int(old));
 				break;
-			case 17:
+			case EXPERIENCELEVEL:
 				break; // dont set exp/level
-			case 18:
+			case TRAINS:
 				M.setTrains(CMath.s_int(old));
 				break;
-			case 19:
+			case MONEY:
 				CMLib.beanCounter().setMoney(M, CMath.s_int(old));
 				break;
-			case 20:
+			case DEITYNAME:
 				if (CMLib.map().getDeity(old) != null)
 					M.setWorshipCharID(old);
 				break;
-			case 21:
+			case LIEGE:
 				if (CMLib.players().getPlayer(old) != null)
 					M.setLiegeID(old);
 				break;
-			case 22:
+			case CLANNAMES:
 				break; // if(CMLib.clans().getClan(old)!=null)
 						// M.setClan(old); break;
-			case 23:
+			case CLANROLE: // deprecated
 				break; // M.setClanRole(CMath.s_int(old)); break;
-			case 24: // fall through
-			case 25:
+			case ALIGNMENTNAME:
+			case ALIGNMENTSTRING:
 			{
 				if(CMath.isInteger(old))
 				{
@@ -233,113 +166,116 @@ public class GrinderPlayers extends GrinderMobs
 				}
 				break;
 			}
-			case 26:
+			case WIMP:
 				M.setWimpHitPoint(CMath.s_int(old));
 				break;
-			case 27:
+			case STARTROOM:
 			{
 				final Room R = MUDGrinder.getRoomObject(httpReq, old);
 				if (R != null)
 					M.setStartRoom(R);
 				break;
 			}
-			case 28:
+			case LOCATION:
 			{
 				final Room R = MUDGrinder.getRoomObject(httpReq, old);
 				if (R != null)
 					M.setLocation(R);
 				break;
 			}
-			case 29:
+			case STARTROOMID:
 			{
 				final Room R = MUDGrinder.getRoomObject(httpReq, old);
 				if (R != null)
 					M.setStartRoom(R);
 				break;
 			}
-			case 30:
+			case LOCATIONID:
 			{
 				final Room R = MUDGrinder.getRoomObject(httpReq, old);
 				if (R != null)
 					M.setLocation(R);
 				break;
 			}
-			case 31:
+			case INVENTORY:
 				break; // dont set inv list here
-			case 32:
+			case WEIGHT:
 				M.basePhyStats().setWeight(CMath.s_int(old));
 				break;
-			case 33:
+			case ENCUMBRANCE:
 				M.phyStats().setWeight(CMath.s_int(old));
 				break;
-			case 34:
+			case GENDERNAME:
 				if (old.length() == 1)
 					M.baseCharStats().setStat(CharStats.STAT_GENDER, old.toUpperCase().charAt(0));
 				break;
-			case 35:
+			case LASTDATETIMEMILLIS:
 				if (M.playerStats() != null)
 					M.playerStats().setLastDateTime(CMath.s_long(old));
 				break;
-			case 36:
+			case HITPOINTS:
 				M.curState().setHitPoints(CMath.s_int(old));
 				break;
-			case 37:
+			case MANA:
 				M.curState().setMana(CMath.s_int(old));
 				break;
-			case 38:
+			case MOVEMENT:
 				M.curState().setMovement(CMath.s_int(old));
 				break;
-			case 39:
+			case RIDING:
 				break; // dont set riding here
-			case 40:
+			case HEIGHT:
 				M.basePhyStats().setHeight(CMath.s_int(old));
 				break;
-			case 41:
+			case LASTIP:
 				if (M.playerStats() != null)
 					M.playerStats().setLastIP(old);
 				break;
-			case 42:
+			case QUESTPOINTS:
 				M.setQuestPoint(CMath.s_int(old));
 				break;
-			case 43:
+			case MAXHITPOINTS:
+			case BASEHITPOINTS:
 				M.baseState().setHitPoints(CMath.s_int(old));
 				break;
-			case 44:
+			case MAXMANA:
+			case BASEMANA:
 				M.baseState().setMana(CMath.s_int(old));
 				break;
-			case 45:
+			case MAXMOVEMENT:
+			case BASEMOVEMENT:
 				M.baseState().setMovement(CMath.s_int(old));
 				break;
-			case 46:
+			case IMAGE:
 				break; // dont set rawimage here
-			case 47:
+			case MAXITEMS:
 				break; // dont set maxitems here?!
-			case 48:
+			case IMGURL:
 				break; // dont set image here
-			case 49:
+			case HASIMG:
 				break; // dont set imagepath here
-			case 50:
+			case NOTES:
 				if (M.playerStats() != null)
 					M.playerStats().setNotes(old);
 				break;
-			case 51:
+			case LEVELS:
 				break; // dont set level chart
-			case 52:
+			case ATTACK:
 				M.basePhyStats().setAttackAdjustment(CMath.s_int(old));
 				break;
-			case 53:
+			case DAMAGE:
 				M.basePhyStats().setDamage(CMath.s_int(old));
 				break;
-			case 54:
+			case ARMOR:
 				M.basePhyStats().setArmor(CMath.s_int(old));
 				break;
-			case 55:
+			case SPEEDNAME:
 				M.phyStats().setSpeed(CMath.s_double(old));
 				break;
-			case 56:
+			case SPEED:
 				M.basePhyStats().setSpeed(CMath.s_double(old));
 				break;
-			case 57:
+			case EXPERTISE:
 			{
 				final List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
 				M.delAllExpertises();
@@ -350,7 +286,7 @@ public class GrinderPlayers extends GrinderMobs
 				}
 				break;
 			}
-			case 58:
+			case TATTOOS:
 			{
 				final List<String> V=CMParms.parseCommas(old.toUpperCase(),true);
 				for(final Enumeration<Tattoo> e=M.tattoos();e.hasMoreElements();)
@@ -359,7 +295,7 @@ public class GrinderPlayers extends GrinderMobs
 					M.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tatt));
 				break;
 			}
-			case 59:
+			case SECURITY:
 			{
 				if(M.playerStats()!=null)
 				{
@@ -368,13 +304,13 @@ public class GrinderPlayers extends GrinderMobs
 				}
 				break;
 			}
-			case 60:
+			case TITLES:
 				break; // CAN'T do titles here!!
-			case 61:
+			case FACTIONNAMES:
 				break; // dont do faction lists here
-			case 62:
+			case ACCTEXPUSED:
 				break; // dont do accountexpiration flag here.
-			case 63:
+			case ACCTEXP:
 			{
 				if(M.playerStats()!=null)
 				{
@@ -405,7 +341,7 @@ public class GrinderPlayers extends GrinderMobs
 				}
 				break;
 			}
-			case 64:
+			case FOLLOWERNAMES:
 			{
 				if(M.playerStats()!=null)
 				{
@@ -428,6 +364,8 @@ public class GrinderPlayers extends GrinderMobs
 				}
 				break;
 			}
+			case ACCOUNT:
+				break;
 			}
 		}
 		if(M.playerStats()!=null)
