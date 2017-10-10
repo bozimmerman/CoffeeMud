@@ -521,8 +521,10 @@ public class Skill_CombatLog extends StdSkill
 				final Skill_CombatLog log = (Skill_CombatLog)super.beneficialAffect(mob,target,asLevel,Integer.MAX_VALUE/2);
 				if(log != null)
 				{
-					log.stats.clear();
-					log.factionChanges.clear();
+					log.stats = this.stats;
+					log.factionChanges = this.factionChanges;
+					this.stats.clear();
+					this.factionChanges.clear();
 					log.makeLongLasting();
 					this.loggingM = target;
 				}
