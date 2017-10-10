@@ -80,7 +80,8 @@ public class Chant_PlantSelf extends Chant
 	{
 		return 0;
 	}
-	long lastTime=0;
+	
+	protected long[]	lastTime	= new long[] { 0 };
 
 	@Override
 	public void unInvoke()
@@ -136,11 +137,11 @@ public class Chant_PlantSelf extends Chant
 				unInvoke();
 				return false;
 			}
-			if((System.currentTimeMillis()-lastTime)<60000)
+			if((System.currentTimeMillis()-lastTime[0])<60000)
 				return true;
 			if(!proficiencyCheck(null,0,false))
 				return true;
-			lastTime=System.currentTimeMillis();
+			lastTime[0]=System.currentTimeMillis();
 			final Room room=mob.location();
 			final int myAlignment=mob.fetchFaction(CMLib.factions().AlignID());
 			final int total=CMLib.factions().getTotal(CMLib.factions().AlignID());
@@ -214,7 +215,9 @@ public class Chant_PlantSelf extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
+				Chant_PlantSelf A = (Chant_PlantSelf)beneficialAffect(mob,mob,asLevel,Ability.TICKS_FOREVER);
+				if(A!=null)
+					A.lastTime = this.lastTime;
 				helpProficiency(mob, 0);
 			}
 		}
