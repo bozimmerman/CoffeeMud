@@ -402,7 +402,7 @@ public class StdClanCommonItem extends StdClanItem
 							CMLib.commands().postSay(M, null, L("Is anyone there?  I can't see!"));
 							break;
 						case 6:
-							CMLib.commands().postSay(M, null, L("Someone turn on the lights to I can work!"));
+							CMLib.commands().postSay(M, null, L("Someone turn on the lights so I can work!"));
 							break;
 						case 7:
 							CMLib.commands().postSay(M, null, L("I could use some light, if you expect me to work."));
