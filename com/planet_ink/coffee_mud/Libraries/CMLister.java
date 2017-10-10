@@ -494,11 +494,11 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	@Override
 	public StringBuilder reallyWikiList(MOB viewerM, Enumeration<? extends Object> these, int ofType)
 	{
-		return reallyWikiList(viewerM,these,buildOfTypeFilter(ofType));
+		return reallyWikiList(viewerM,these,buildOfTypeFilter(ofType), ofType != Ability.ACODE_PROPERTY);
 	}
 	
 	@Override
-	public StringBuilder reallyWikiList(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters)
+	public StringBuilder reallyWikiList(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, boolean includeName)
 	{
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
@@ -520,7 +520,10 @@ public class CMLister extends StdLibrary implements ListingLibrary
 					if(!passes)
 						continue;
 				}
-				lines.append("*[["+thisThang.ID()+"|"+thisThang.name()+"]]\n\r");
+				if(!includeName)
+					lines.append("*[["+thisThang.ID()+"]]\n\r");
+				else
+					lines.append("*[["+thisThang.ID()+"|"+thisThang.name()+"]]\n\r");
 			}
 		}
 		return lines;

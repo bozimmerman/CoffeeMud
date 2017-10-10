@@ -51,7 +51,7 @@ public interface ListingLibrary extends CMLibrary
 	public StringBuilder reallyList(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer);
 	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these);
 	public StringBuilder reallyList2Cols(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, ListStringer stringer);
-	public StringBuilder reallyWikiList(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters);
+	public StringBuilder reallyWikiList(MOB viewerM, Enumeration<? extends Object> these, Filterer<Object>[] filters, boolean includeName);
 	public StringBuilder reallyWikiList(MOB viewerM, Enumeration<? extends Object> these, int ofType);
 	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList);
 	public StringBuilder fourColumns(MOB viewerM, List<String> reverseList, String tag);
