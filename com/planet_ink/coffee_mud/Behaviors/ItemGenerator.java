@@ -414,7 +414,6 @@ public class ItemGenerator extends ActiveTicker
 						((MOB)ticking).addItem(CMLib.itemBuilder().enchant(I,enchantPct));
 						I.wearIfPossible((MOB)ticking);
 						maintained.addElement(I);
-						I.setContainer((Container)ticking);
 					}
 					else
 					{

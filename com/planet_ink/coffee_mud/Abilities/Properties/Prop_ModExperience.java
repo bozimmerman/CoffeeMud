@@ -103,28 +103,65 @@ public class Prop_ModExperience extends Property
 			s=s.substring(0,x)+s.substring(x+4);
 		}
 		operationFormula="Amount "+s;
-		if(s.startsWith("="))
-			operation = CMath.compileMathExpression(translateNumber(s.substring(1)).trim());
-		else
-		if(s.startsWith("+"))
-			operation = CMath.compileMathExpression("@x1 + "+translateNumber(s.substring(1)).trim());
-		else
-		if(s.startsWith("-"))
-			operation = CMath.compileMathExpression("@x1 - "+translateNumber(s.substring(1)).trim());
-		else
-		if(s.startsWith("*"))
-			operation = CMath.compileMathExpression("@x1 * "+translateNumber(s.substring(1)).trim());
-		else
-		if(s.startsWith("/"))
-			operation = CMath.compileMathExpression("@x1 / "+translateNumber(s.substring(1)).trim());
-		else
-		if(s.startsWith("(")&&(s.endsWith(")")))
+		List<String> ops = new ArrayList<String>();
+		int paren=0;
+		StringBuilder curr=new StringBuilder("");
+		for(int i=0;i<s.length();i++)
 		{
-			operationFormula="Amount ="+s;
-			operation = CMath.compileMathExpression(s);
+			if(paren > 0)
+			{
+				if(s.charAt('i')=='(')
+				{
+					if(paren == 0)
+					{
+						if(curr.length()>0)
+							ops.add(curr.toString().trim());
+						curr.setLength(0);
+					}
+					paren++;
+				}
+				else
+				if(s.charAt('i')==')')
+					paren--;
+				curr.append(s.charAt(i));
+			}
+			else
+			switch(s.charAt(i))
+			{
+			case '=': case '+': case '-': case '*': case '/': 
+				if(curr.length()>0)
+					ops.add(curr.toString().trim());
+				curr.setLength(0);
+				curr.append(s.charAt(i));
+				break;
+			default:
+				curr.append(s.charAt(i));
+				break;
+			}
 		}
-		else
-			operation = CMath.compileMathExpression(translateNumber(s.trim()));
+		if(curr.length()>0)
+			ops.add(curr.toString().trim());
+		StringBuilder finalOps = new StringBuilder("");
+		for(String op : ops)
+		{
+			if(op.startsWith("="))
+				finalOps = new StringBuilder(translateNumber(op.substring(1)).trim());
+			else
+			if(op.startsWith("(")&&(op.endsWith(")")))
+				finalOps = new StringBuilder(op);
+			else
+			if(op.startsWith("+")||op.startsWith("-")||op.startsWith("*")||op.startsWith("/"))
+			{
+				if(finalOps.length()==0)
+					finalOps.append("@x1");
+				finalOps.append(" ").append(op.charAt(0)).append(" ");
+				finalOps.append(translateNumber(op.substring(1)).trim());
+			}
+			else
+				finalOps=new StringBuilder(translateNumber(s.trim()));
+		}
+		if(finalOps.length()>0)
+			operation = CMath.compileMathExpression(finalOps.toString());
 		operationFormula=CMStrings.replaceAll(operationFormula, "@x1", "Amount");
 	}
 
