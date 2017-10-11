@@ -54,7 +54,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 	}
 
 	protected Item				myItem			= null;
-	protected List<String>		lastMOBeffects	= new Vector<String>();
+	protected List<String>		lastMOBeffects	= new SVector<String>();
 	protected boolean			processing2		= false;
 	protected volatile boolean	clearedYet		= false;
 
