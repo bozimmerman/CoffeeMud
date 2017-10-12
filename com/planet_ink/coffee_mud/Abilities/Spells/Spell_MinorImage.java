@@ -205,7 +205,7 @@ public class Spell_MinorImage extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB M=determineMonster(mob,mob.phyStats().level());
+				MOB M=determineMonster(target,target.location(),target.phyStats().level());
 				Spell_MinorImage A = (Spell_MinorImage)beneficialAffect(mob,M,asLevel,0);
 				if(A!=null)
 				{
@@ -222,13 +222,13 @@ public class Spell_MinorImage extends Spell
 		return success;
 	}
 	
-	public MOB determineMonster(MOB caster, int level)
+	public MOB determineMonster(MOB target, Room R, int level)
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenMob");
 		newMOB.basePhyStats().setAbility(CMProps.getMobHPBase());
-		newMOB.basePhyStats().setLevel(caster.basePhyStats().level());
-		newMOB.basePhyStats().setWeight(caster.basePhyStats().weight());
+		newMOB.basePhyStats().setLevel(target.basePhyStats().level());
+		newMOB.basePhyStats().setWeight(target.basePhyStats().weight());
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Spirit"));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
@@ -236,10 +236,10 @@ public class Spell_MinorImage extends Spell
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.recoverPhyStats();
 		newMOB.recoverCharStats();
-		newMOB.basePhyStats().setSpeed(caster.basePhyStats().speed());
-		newMOB.setName(L("an image of @x1",caster.Name()));
-		newMOB.setDisplayText(L("@x1 is here.",caster.Name()));
-		newMOB.setDescription(caster.description());
+		newMOB.basePhyStats().setSpeed(target.basePhyStats().speed());
+		newMOB.setName(L("an image of @x1",target.Name()));
+		newMOB.setDisplayText(L("@x1 is here.",target.Name()));
+		newMOB.setDescription(target.description());
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
@@ -247,14 +247,13 @@ public class Spell_MinorImage extends Spell
 		CMLib.factions().setAlignment(newMOB,Faction.Align.NEUTRAL);
 		newMOB.resetToMaxState();
 		newMOB.text();
-		newMOB.bringToLife(caster.location(),true);
+		newMOB.bringToLife(target.location(),true);
 		newMOB.recoverCharStats();
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.setMoneyVariation(0);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> appears!"));
-		caster.location().recoverRoomStats();
+		R.recoverRoomStats();
 		newMOB.setStartRoom(null);
 		return(newMOB);
 	}
