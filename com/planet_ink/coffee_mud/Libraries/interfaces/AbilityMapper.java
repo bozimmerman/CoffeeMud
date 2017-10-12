@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -145,6 +146,26 @@ public interface AbilityMapper extends CMLibrary
 	 * @return the finished AbilityMapping
 	 */
 	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, boolean autoGain);
+
+	/**
+	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.
+	 * Also allows specifying numerous other attributes.
+	 * 
+	 * @see AbilityMapping
+	 * @see AbilityMapper#makeAbilityMapping(String, int, String, int, int, String, boolean, boolean, boolean, List, String, Integer[])
+	 * @see AbilityMapper#delCharAbilityMapping(String, String)
+	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean)
+	 * @see AbilityMapper#addCharAbilityMapping(String, int, String, int, String, boolean, boolean)
+	 * 
+	 * @param ID the race ID(), charclass ID(), "All" is also acceptable.
+	 * @param qualLevel the charclass or race player level at which one qualifies to receive the ability
+	 * @param abilityID the Ability ID()
+	 * @param defaultProficiency the initial proficiency at which this mapping bestows the ability
+	 * @param autoGain true if the player/race automatically gets the ability, false if they must pay COSTs
+	 * @param skillPreReqs String list of required Ability IDs with optional min. proff in parenthesis
+	 * @return the finished AbilityMapping
+	 */
+	public AbilityMapping addCharAbilityMapping(String ID, int qualLevel, String abilityID, int defaultProficiency, boolean autoGain, List<String> skillPreReqs);
 
 	/**
 	 * Adds a mapping between a charclass, race, or whatever, and an Ability, by String Ability ID.

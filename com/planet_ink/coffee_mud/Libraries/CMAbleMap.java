@@ -129,6 +129,17 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,false,new Vector<String>(),""); 
 	}
 	
+	@Override
+	public AbilityMapping addCharAbilityMapping(String ID,
+												int qualLevel,
+												String abilityID,
+												int defaultProficiency,
+												boolean autoGain,
+												List<String> skillPreReqs)
+	{ 
+		return addCharAbilityMapping(ID,qualLevel,abilityID,defaultProficiency,100,"",autoGain,false,skillPreReqs,""); 
+	}
+	
 	public AbilityMapping addCharAbilityMapping(String ID,
 												int qualLevel,
 												String abilityID,

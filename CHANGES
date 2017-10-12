@@ -12,7 +12,7 @@
   10. "STINK" is now a way to access Hygeine in prompt, stat, and scripting.
   11. New shopkeeper type: instrument seller
   12. Mineable dirt and drillable water added to several room types as resources.
-  13. New spell : Portal Other
+  13. New spells: Portal Other, Minor Image, Lesser Image, Greater Image, Superior Image
   14. ShopKeepers now have an Item Buy mask to narrow further what they will buy.
   15. New MOB type: StdLibrarian, also GenLibrarian.  For borrowing items.
   16. New Disease: Planar Instability 
