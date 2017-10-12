@@ -237,8 +237,11 @@ public class Tattooing extends CommonSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			final int percentOff=target.maxState().getHitPoints()/8;
-			CMLib.combat().postDamage(mob, target, this, percentOff, CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE, Weapon.TYPE_PIERCING, null);
-			CMLib.combat().postDamage(mob, target, this, percentOff, CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE, Weapon.TYPE_PIERCING, null);
+			if(target.curState().getHitPoints() > (percentOff*2))
+			{
+				CMLib.combat().postDamage(mob, target, this, percentOff, CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE, Weapon.TYPE_PIERCING, null);
+				CMLib.combat().postDamage(mob, target, this, percentOff, CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE, Weapon.TYPE_PIERCING, null);
+			}
 			mob.location().send(mob,msg);
 			if("REMOVE".startsWith(message.toUpperCase()))
 				target.delTattoo(tatToRemove);

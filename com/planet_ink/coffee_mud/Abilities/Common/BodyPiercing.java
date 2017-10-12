@@ -281,8 +281,11 @@ public class BodyPiercing extends CommonSkill
 		{
 			mob.location().send(mob,msg);
 			final int percentOff=target.maxState().getHitPoints()/8;
-			CMLib.combat().postDamage(mob, target, this, percentOff, CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE, Weapon.TYPE_PIERCING, null);
-			CMLib.combat().postDamage(mob, target, this, percentOff, CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE, Weapon.TYPE_PIERCING, null);
+			if(target.curState().getHitPoints() > (percentOff*2))
+			{
+				CMLib.combat().postDamage(mob, target, this, percentOff, CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE, Weapon.TYPE_PIERCING, null);
+				CMLib.combat().postDamage(mob, target, this, percentOff, CMMsg.MASK_ALWAYS|CMMsg.TYP_JUSTICE, Weapon.TYPE_PIERCING, null);
+			}
 			if("REMOVE".equals(command))
 				target.delTattoo(target.findTattoo(writing));
 			else
