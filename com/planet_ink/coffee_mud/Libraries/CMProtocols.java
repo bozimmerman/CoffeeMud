@@ -2168,7 +2168,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						doc.append("\"thirst\":").append(mob.curState().getThirst()).append(",");
 						doc.append("\"fatigue\":").append(mob.curState().getFatigue()).append(",");
 						if(mob.playerStats()!=null)
-							doc.append("\"stink\":").append(CMath.toPct(mob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT)).append(",");
+							doc.append("\"stink\":").append(CMath.round(100.0 * mob.playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT)).append(",");
 						final int align=mob.fetchFaction(CMLib.factions().AlignID());
 						if(align!=Integer.MAX_VALUE)
 							doc.append("\"align\":").append(align).append(",");
