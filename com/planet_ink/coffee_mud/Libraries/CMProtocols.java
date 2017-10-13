@@ -2090,7 +2090,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					if(mob != null)
 					{
 						final StringBuilder doc=new StringBuilder("char.statusvars {");
-						doc.append("\"level\":\"").append(mob.phyStats().level()).append("\",");
+						doc.append("\"level\":").append(mob.phyStats().level()).append(",");
 						doc.append("\"race\":\"").append(MiniJSON.toJSONString(mob.charStats().raceName())).append("\"");
 						final List<String> clans=new LinkedList<String>();
 						for(final Pair<Clan,Integer> p : mob.clans())
