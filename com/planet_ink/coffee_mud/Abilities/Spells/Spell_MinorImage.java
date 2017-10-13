@@ -167,8 +167,6 @@ public class Spell_MinorImage extends Spell
 				case CMMsg.TYP_EXAMINE:
 					if(canSeeAppearance())
 					{
-						msg.setTarget(parentM);
-						parentM.executeMsg(parentM, msg);
 						return false;
 					}
 					break;
@@ -222,6 +220,246 @@ public class Spell_MinorImage extends Spell
 		return success;
 	}
 	
+	public List<Tattoo> getSeenTattoos(MOB mob)
+	{
+		long wornCode=0;
+		final List<Tattoo> seenTatts = new ArrayList<Tattoo>();
+		final Wearable.CODES codes = Wearable.CODES.instance();
+		for(int l=0;l<codes.all_ordered().length;l++)
+		{
+			wornCode=codes.all_ordered()[l];
+			final List<Item> wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+1),(short)0);
+			int numLocations=mob.getWearPositions(wornCode);
+			if(numLocations==0)
+				numLocations=1;
+			int emptySlots=numLocations;
+			if(wornHere.size()>0)
+			{
+				final List<List<Item>> sets=new Vector<List<Item>>(numLocations);
+				for(int i=0;i<numLocations;i++)
+					sets.add(new Vector<Item>());
+				Item I=null;
+				Item I2=null;
+				short layer=Short.MAX_VALUE;
+				short layerAtt=0;
+				short layer2=Short.MAX_VALUE;
+				short layerAtt2=0;
+				List<Item> set=null;
+				for(int i=0;i<wornHere.size();i++)
+				{
+					I=wornHere.get(i);
+					if(I.container()!=null)
+						continue;
+					if(I instanceof Armor)
+					{
+						layer=((Armor)I).getClothingLayer();
+						layerAtt=((Armor)I).getLayerAttributes();
+					}
+					else
+					{
+						layer=0;
+						layerAtt=0;
+					}
+					for(int s=0;s<sets.size();s++)
+					{
+						set=sets.get(s);
+						if(set.size()==0)
+						{
+							set.add(I);
+							break;
+						}
+						for(int s2=0;s2<set.size();s2++)
+						{
+							I2=set.get(s2);
+							if(I2 instanceof Armor)
+							{
+								layer2=((Armor)I2).getClothingLayer();
+								layerAtt2=((Armor)I2).getLayerAttributes();
+							}
+							else
+							{
+								layer2=0;
+								layerAtt2=0;
+							}
+							if(layer2==layer)
+							{
+								if(((layerAtt&Armor.LAYERMASK_MULTIWEAR)>0)
+								&&((layerAtt2&Armor.LAYERMASK_MULTIWEAR)>0))
+									set.add(s2,I);
+								break;
+							}
+							if(layer2>layer)
+							{
+								set.add(s2,I);
+								break;
+							}
+						}
+						if(set.contains(I))
+							break;
+						if(layer2<layer)
+						{
+							set.add(I);
+							break;
+						}
+					}
+					wornHere.clear();
+					for(int s=0;s<sets.size();s++)
+					{
+						set=sets.get(s);
+						int s2=set.size()-1;
+						for(;s2>=0;s2--)
+						{
+							I2=set.get(s2);
+							wornHere.add(I2);
+							if((!(I2 instanceof Armor))
+							||(!CMath.bset(((Armor)I2).getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH)))
+							{
+								emptySlots--;
+								break;
+							}
+						}
+					}
+				}
+			}
+			if(emptySlots>0)
+			{
+				double numTattoosTotal=0;
+				String wornName=codes.name(wornCode).toUpperCase();
+				for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
+				{
+					final Tattoo T = e.nextElement();
+					if(T.getTattooName().startsWith(wornName+":"))
+						numTattoosTotal+=1.0;
+				}
+				int numTattoosToShow=(int)Math.round(Math.ceil(CMath.mul(numTattoosTotal,CMath.div(emptySlots,numLocations))));
+				for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
+				{
+					final Tattoo T = e.nextElement();
+					if((T.getTattooName().startsWith(wornName+":"))
+					&&((--numTattoosToShow)>=0))
+					{
+						
+						seenTatts.add(T);
+					}
+				}
+			}
+		}
+		return seenTatts;
+	}
+	
+	public PairList<Item, Long> getSeenEquipment(MOB mob)
+	{
+		long wornCode=0;
+		Item thisItem=null;
+		final PairList<Item, Long> seenEQ = new PairVector<Item, Long>();
+		final Wearable.CODES codes = Wearable.CODES.instance();
+		for(int l=0;l<codes.all_ordered().length;l++)
+		{
+			wornCode=codes.all_ordered()[l];
+			final List<Item> wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+1),(short)0);
+			int numLocations=mob.getWearPositions(wornCode);
+			if(numLocations==0)
+				numLocations=1;
+			if(wornHere.size()>0)
+			{
+				final List<List<Item>> sets=new Vector<List<Item>>(numLocations);
+				for(int i=0;i<numLocations;i++)
+					sets.add(new Vector<Item>());
+				Item I=null;
+				Item I2=null;
+				short layer=Short.MAX_VALUE;
+				short layerAtt=0;
+				short layer2=Short.MAX_VALUE;
+				short layerAtt2=0;
+				List<Item> set=null;
+				for(int i=0;i<wornHere.size();i++)
+				{
+					I=wornHere.get(i);
+					if(I.container()!=null)
+						continue;
+					if(I instanceof Armor)
+					{
+						layer=((Armor)I).getClothingLayer();
+						layerAtt=((Armor)I).getLayerAttributes();
+					}
+					else
+					{
+						layer=0;
+						layerAtt=0;
+					}
+					for(int s=0;s<sets.size();s++)
+					{
+						set=sets.get(s);
+						if(set.size()==0)
+						{
+							set.add(I);
+							break;
+						}
+						for(int s2=0;s2<set.size();s2++)
+						{
+							I2=set.get(s2);
+							if(I2 instanceof Armor)
+							{
+								layer2=((Armor)I2).getClothingLayer();
+								layerAtt2=((Armor)I2).getLayerAttributes();
+							}
+							else
+							{
+								layer2=0;
+								layerAtt2=0;
+							}
+							if(layer2==layer)
+							{
+								if(((layerAtt&Armor.LAYERMASK_MULTIWEAR)>0)
+								&&((layerAtt2&Armor.LAYERMASK_MULTIWEAR)>0))
+									set.add(s2,I);
+								break;
+							}
+							if(layer2>layer)
+							{
+								set.add(s2,I);
+								break;
+							}
+						}
+						if(set.contains(I))
+							break;
+						if(layer2<layer)
+						{
+							set.add(I);
+							break;
+						}
+					}
+					wornHere.clear();
+					for(int s=0;s<sets.size();s++)
+					{
+						set=sets.get(s);
+						int s2=set.size()-1;
+						for(;s2>=0;s2--)
+						{
+							I2=set.get(s2);
+							wornHere.add(I2);
+							if((!(I2 instanceof Armor))
+							||(!CMath.bset(((Armor)I2).getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH)))
+							{
+								break;
+							}
+						}
+					}
+				}
+				for(int i=0;i<wornHere.size();i++)
+				{
+					thisItem=wornHere.get(i);
+					if((thisItem.container()==null)&&(thisItem.amWearingAt(wornCode)))
+					{
+						if(CMLib.flags().isSeeable(thisItem))
+							seenEQ.add(thisItem, Long.valueOf(thisItem.rawWornCode()));
+					}
+				}
+			}
+		}
+		return seenEQ;
+	}
+
 	public MOB determineMonster(MOB target, Room R, int level)
 	{
 
@@ -253,8 +491,40 @@ public class Spell_MinorImage extends Spell
 		newMOB.recoverMaxState();
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
 		newMOB.setMoneyVariation(0);
+		if(canSeeAppearance())
+		{
+			PairList<Item, Long> eq = this.getSeenEquipment(target);
+			for(Pair<Item, Long> e : eq)
+			{
+				Item eqI = CMClass.getArmor("GenItem");
+				eqI.setName(e.first.Name());
+				eqI.setRawProperLocationBitmap(e.first.rawProperLocationBitmap());
+				eqI.setRawLogicalAnd(e.first.rawLogicalAnd());
+				eqI.basePhyStats().setDisposition(e.first.phyStats().disposition());
+				eqI.basePhyStats().setSensesMask(e.first.phyStats().sensesMask());
+				eqI.setDescription("You can see through it!");
+				eqI.setMaterial(RawMaterial.RESOURCE_NOTHING);
+				eqI.basePhyStats().setWeight(0);
+				eqI.recoverPhyStats();
+				CMLib.flags().setRemovable(eqI, false);
+				CMLib.flags().setGettable(eqI, false);
+				eqI.recoverPhyStats();
+				newMOB.addItem(eqI);
+				eqI.wearAt(e.second.longValue());
+			}
+			List<Tattoo> tatts = this.getSeenTattoos(target);
+			for(Tattoo T : tatts)
+			{
+				T=(Tattoo)T.copyOf();
+				newMOB.addTattoo(T);
+			}
+			newMOB.recoverCharStats();
+			newMOB.recoverPhyStats();
+			newMOB.recoverMaxState();
+		}
 		R.recoverRoomStats();
 		newMOB.setStartRoom(null);
+		CMLib.threads().deleteAllTicks(newMOB);
 		return(newMOB);
 	}
 
