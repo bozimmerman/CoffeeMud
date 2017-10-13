@@ -161,14 +161,18 @@ public class Spell_MinorImage extends Spell
 				case CMMsg.TYP_DAMAGE:
 				case CMMsg.TYP_WEAPONATTACK:
 				case CMMsg.TYP_CAST_SPELL:
+				case CMMsg.TYP_JUSTICE:
+				case CMMsg.TYP_FIRE:
+				case CMMsg.TYP_COLD:
+				case CMMsg.TYP_WATER:
+				case CMMsg.TYP_GAS:
+				case CMMsg.TYP_MIND:
+				case CMMsg.TYP_GENERAL:
+				case CMMsg.TYP_ACID:
+				case CMMsg.TYP_ELECTRIC:
+				case CMMsg.TYP_POISON:
+				case CMMsg.TYP_UNDEAD:
 					unInvoke();
-					break;
-				case CMMsg.TYP_LOOK:
-				case CMMsg.TYP_EXAMINE:
-					if(canSeeAppearance())
-					{
-						return false;
-					}
 					break;
 				}
 			}
@@ -496,7 +500,7 @@ public class Spell_MinorImage extends Spell
 			PairList<Item, Long> eq = this.getSeenEquipment(target);
 			for(Pair<Item, Long> e : eq)
 			{
-				Item eqI = CMClass.getArmor("GenItem");
+				Item eqI = CMClass.getItem("GenItem");
 				eqI.setName(e.first.Name());
 				eqI.setRawProperLocationBitmap(e.first.rawProperLocationBitmap());
 				eqI.setRawLogicalAnd(e.first.rawLogicalAnd());
