@@ -141,6 +141,25 @@ public class Prop_ItemSlot extends Property
 	}
 	
 	@Override
+	public String accountForYourself()
+	{
+		StringBuilder str=new StringBuilder("");
+		for(int slotNum=0;slotNum<slots.length;slotNum++)
+		{
+			Item I=slots[slotNum];
+			Ability A=slotProps[slotNum];
+			if((I!=null)&&(A instanceof Prop_ItemSlotFiller))
+			{
+				Prop_ItemSlotFiller P=(Prop_ItemSlotFiller)A;
+				for(Ability A2 : P.affects)
+					str.append(A2.accountForYourself());
+				str.append(".  ");
+			}
+		}
+		return str.toString();
+	}
+	
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -298,16 +317,6 @@ public class Prop_ItemSlot extends Property
 					else
 						str.append(slots[i].name());
 					str.append("\n\r");
-					if((msg.targetMinor()==CMMsg.TYP_EXAMINE)&&(slots[i]!=null))
-					{
-						str.append(L("   Affects: "));
-						final Ability A=slots[i].fetchEffect("Prop_ItemSlotFiller");
-						if(A!=null)
-						{
-							str.append(A.accountForYourself());
-						}
-						str.append("\n\r");
-					}
 				}
 				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,str.toString(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
