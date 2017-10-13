@@ -1403,7 +1403,8 @@ public class StdRoom implements Room
 		final Room oldRoom=mob.location();
 		if(oldRoom!=null)
 			oldRoom.delInhabitant(mob);
-		addInhabitant(mob);
+		if(!isInhabitant(mob))
+			addInhabitant(mob);
 		mob.setLocation(this);
 
 		if((andFollowers)&&(oldRoom!=null))
