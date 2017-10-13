@@ -87,7 +87,7 @@ public class MOBEater extends ActiveTicker
 		if((forMe!=null)&&(forMe instanceof MOB))
 		{
 			if(stomachR==null)
-				stomachR = CMClass.getLocale("StdRoom");
+				stomachR = CMClass.getLocale("StoneRoom");
 			lastKnownEaterM=(MOB)forMe;
 			lastKnownLocationR=((MOB)forMe).location();
 			if(lastKnownLocationR!=null)
@@ -128,7 +128,33 @@ public class MOBEater extends ActiveTicker
 							{
 								String rest = CMParms.combine(parsedFail,1).toUpperCase().trim();
 								if("HERE".equals(rest)||"STOMACH".startsWith(rest)||"WALLS".startsWith(rest))
-									CMLib.combat().postAttack(msg.source(), (MOB)forMe, msg.source().fetchWieldedItem());
+								{
+									Item I=msg.source().fetchWieldedItem();
+									if((!(I instanceof Weapon))
+									||(I.minRange()>0))
+									{
+										msg.source().tell(L("You aren't wielding an appropriate weapon."));
+										return false;
+									}
+									if(msg.source().getPeaceTime()<CMProps.getTickMillis())
+									{
+										msg.source().tell(L("You are too busy trying to survive right now!"));
+										return false;
+									}
+									final Weapon weapon=(Weapon)I;
+									final int dmg = CMLib.combat().adjustedDamage(msg.source(), (Weapon)I, (MOB)forMe, 0, true, false)/10;
+									MOB M=CMClass.getFactoryMOB(L("Someone inside @x1",forMe.name()), msg.source().phyStats().level(), ((MOB)forMe).location());
+									try
+									{
+										if(stomachR.show(msg.source(), forMe, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> @x1 <T-YOUPOSS> stomach with @x2!",CMLib.combat().standardHitWord(weapon.weaponDamageType(),dmg),I.name(msg.source()))))
+											CMLib.combat().postDamage(M, (MOB)forMe, I, dmg, CMMsg.MSG_WEAPONATTACK, weapon.weaponDamageType(), L("<S-NAME> <DAMAGE> <T-HIM-HER>!"));
+									}
+									finally
+									{
+										M.destroy();
+									}
+									return false;
+								}
 							}
 						}
 					}
@@ -288,7 +314,7 @@ public class MOBEater extends ActiveTicker
 													 L("<S-NAME> digest(s) <T-NAMESELF>!!"));
 				// no OKaffectS, since the dragon is not in his own stomach.
 				stomachR.send(mob,DigestMsg);
-				int damage=(int)Math.round(tastyMorselM.curState().getHitPoints() * CMath.div(pctAcidHp, 100));
+				int damage=(int)Math.round(tastyMorselM.maxState().getHitPoints() * CMath.div(pctAcidHp, 100));
 				if(damage<2) 
 					damage=2;
 				if(DigestMsg.value()!=0) 

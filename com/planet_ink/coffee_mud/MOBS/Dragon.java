@@ -352,7 +352,7 @@ public class Dragon extends StdMOB
 			&&(location()!=null)
 			&&(DragonAge()>=ADULT))
 			{
-				Stomach = CMClass.getLocale("StdRoom");
+				Stomach = CMClass.getLocale("StoneRoom");
 				if(Stomach!=null)
 				{
 					Stomach.setName(L("Dragon Stomach"));
@@ -363,7 +363,7 @@ public class Dragon extends StdMOB
 			}
 			if((--digestDown)<=0)
 			{
-				digestDown=2;
+				digestDown=4;
 				digestTastyMorsels();
 			}
 			if (isInCombat())
@@ -608,7 +608,7 @@ public class Dragon extends StdMOB
 										   CMMsg.MSG_OK_ACTION,
 										   L("<S-NAME> digest(s) <T-NAMESELF>!!"));
 				Stomach.send(this,DigestMsg);
-				int damage=((int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2)));
+				int damage=((int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),5)));
 				if(damage<(TastyMorsel.phyStats().level()+6))
 					damage=TastyMorsel.curState().getHitPoints()+1;
 				if(DigestMsg.value()!=0)
