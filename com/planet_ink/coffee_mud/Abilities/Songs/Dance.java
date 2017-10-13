@@ -164,9 +164,16 @@ public class Dance extends StdAbility
 
 		if((invoker==null)
 		||(invoker.fetchEffect(ID())==null)
-		||(commonRoomSet==null)
-		||(!commonRoomSet.contains(mob.location())))
+		||(commonRoomSet==null))
 			return undanceMe(mob,null);
+		if(!commonRoomSet.contains(mob.location()))
+		{
+			final List<Room> V=getInvokerScopeRoomSet(null);
+			commonRoomSet.clear();
+			commonRoomSet.addAll(V);
+			if(!commonRoomSet.contains(mob.location()))
+				return undanceMe(mob,null);
+		}
 
 		if(skipStandardDanceTick())
 			return true;

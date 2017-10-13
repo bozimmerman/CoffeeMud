@@ -227,9 +227,16 @@ public class Play extends StdAbility
 
 		if((invoker==null)
 		||(invoker.fetchEffect(ID())==null)
-		||(commonRoomSet==null)
-		||(!commonRoomSet.contains(mob.location())))
+		||(commonRoomSet==null))
 			return unplayMe(mob,null);
+		if(!commonRoomSet.contains(mob.location()))
+		{
+			final List<Room> V=getInvokerScopeRoomSet(null);
+			commonRoomSet.clear();
+			commonRoomSet.addAll(V);
+			if(!commonRoomSet.contains(mob.location()))
+				return unplayMe(mob,null);
+		}
 
 		if(skipStandardSongTick())
 			return true;

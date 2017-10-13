@@ -122,9 +122,9 @@ public class Song extends StdAbility
 		return L("Song of ") + name();
 	}
 
-	protected long		timeOut			= 0;
-	protected List<Room>commonRoomSet	= null;
-	protected Room		originRoom		= null;
+	protected volatile long			timeOut			= 0;
+	protected volatile List<Room>	commonRoomSet	= null;
+	protected volatile Room			originRoom		= null;
 
 	@Override
 	public int adjustedLevel(MOB mob, int asLevel)
@@ -273,9 +273,16 @@ public class Song extends StdAbility
 
 		if((invoker==null)
 		||(invoker.fetchEffect(ID())==null)
-		||(commonRoomSet==null)
-		||(!commonRoomSet.contains(mob.location())))
+		||(commonRoomSet==null))
 			return unsingMe(mob,null);
+		if(!commonRoomSet.contains(mob.location()))
+		{
+			final List<Room> V=getInvokerScopeRoomSet(null);
+			commonRoomSet.clear();
+			commonRoomSet.addAll(V);
+			if(!commonRoomSet.contains(mob.location()))
+				return unsingMe(mob,null);
+		}
 		
 		if(invoker==affected)
 		{
