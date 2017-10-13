@@ -65,7 +65,7 @@ public class Spell_PortalOther extends Spell
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_TRANSPORTING;
+		return Ability.FLAG_SUMMONING;
 	}
 
 	@Override
