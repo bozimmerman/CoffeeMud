@@ -206,7 +206,7 @@ public class Spell_MinorImage extends Spell
 			{
 				mob.location().send(mob,msg);
 				MOB M=determineMonster(target,target.location(),target.phyStats().level());
-				Spell_MinorImage A = (Spell_MinorImage)beneficialAffect(mob,M,asLevel,0);
+				Spell_MinorImage A = (Spell_MinorImage)beneficialAffect(mob,M,asLevel,getDuration(mob,asLevel));
 				if(A!=null)
 				{
 					A.setMiscText(target.Name());
