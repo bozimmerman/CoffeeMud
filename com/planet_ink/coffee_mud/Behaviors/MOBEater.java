@@ -82,7 +82,7 @@ public class MOBEater extends ActiveTicker
 	}
 
 	@Override
-	public void startBehavior(PhysicalAgent forMe)
+	public void startBehavior(final PhysicalAgent forMe)
 	{
 		if((forMe!=null)&&(forMe instanceof MOB))
 		{
@@ -113,8 +113,25 @@ public class MOBEater extends ActiveTicker
 				}
 
 				@Override
-				public boolean okMessage(Environmental myHost, CMMsg msg) 
+				public boolean okMessage(Environmental myHost, CMMsg msg)
 				{
+					if((msg.sourceMinor()==CMMsg.TYP_COMMANDFAIL)
+					&&(msg.targetMessage()!=null)
+					&&(msg.targetMessage().length()>0))
+					{
+						final char c=Character.toUpperCase(msg.targetMessage().charAt(0));
+						if((c=='K')||(c=='A'))
+						{
+							List<String> parsedFail = CMParms.parse(msg.targetMessage());
+							String cmd=parsedFail.get(0).toUpperCase();
+							if("ATTACK".startsWith(cmd)||"KILL".startsWith(cmd))
+							{
+								String rest = CMParms.combine(parsedFail,1).toUpperCase().trim();
+								if("HERE".equals(rest)||"STOMACH".startsWith(rest)||"WALLS".startsWith(rest))
+									CMLib.combat().postAttack(msg.source(), (MOB)forMe, msg.source().fetchWieldedItem());
+							}
+						}
+					}
 					return true;
 				}
 			}));
