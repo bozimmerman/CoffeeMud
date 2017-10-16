@@ -378,6 +378,21 @@ public class Sailor extends StdCharClass
 		if(outfitChoices==null)
 		{
 			outfitChoices=new Vector<Item>();
+			final Weapon w=CMClass.getWeapon("GenWeapon");
+			if(w != null)
+			{
+				w.setName("a belaying pin");
+				w.setDisplayText("a belaying pin lies here.");
+				w.setMaterial(RawMaterial.RESOURCE_WOOD);
+				w.setWeaponClassification(Weapon.CLASS_BLUNT);
+				w.setWeaponDamageType(Weapon.TYPE_BASHING);
+				w.setBaseValue(0);
+				w.basePhyStats().setDamage(4);
+				w.basePhyStats().setWeight(1);
+				w.basePhyStats().setAttackAdjustment(0);
+				w.recoverPhyStats();
+				outfitChoices.add(w);
+			}
 		}
 		return outfitChoices;
 	}
