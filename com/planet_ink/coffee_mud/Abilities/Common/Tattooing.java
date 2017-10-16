@@ -193,6 +193,11 @@ public class Tattooing extends CommonSkill
 			commonTell(mob,L("That location is currently covered by something."));
 			return false;
 		}
+		if(target.curState().getHitPoints() < target.maxState().getHitPoints())
+		{
+			commonTell(mob,L("You need to wait until @x1 is at full health.",target.name(mob)));
+			return false;
+		}
 
 		int numTattsDone=0;
 		Tattoo tatToRemove=null;

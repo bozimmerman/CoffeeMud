@@ -216,6 +216,11 @@ public class BodyPiercing extends CommonSkill
 			commonTell(mob,L("That location is not available for piercing. Make sure no clothing is being worn there."));
 			return false;
 		}
+		if(target.curState().getHitPoints() < target.maxState().getHitPoints())
+		{
+			commonTell(mob,L("You need to wait until @x1 is at full health.",target.name(mob)));
+			return false;
+		}
 
 		int numTattsDone=0;
 		for(final Enumeration<Tattoo> e=target.tattoos();e.hasMoreElements();)
