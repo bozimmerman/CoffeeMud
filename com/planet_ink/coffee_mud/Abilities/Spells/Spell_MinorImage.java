@@ -213,7 +213,6 @@ public class Spell_MinorImage extends Spell
 				{
 					A.setMiscText(target.Name());
 					A.parentM=target;
-					M.setFollowing(mob);
 					mob.location().show(target,M,CMMsg.MSG_OK_VISUAL,L("An image of <S-NAME> appears!"));
 				}
 			}
