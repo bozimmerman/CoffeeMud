@@ -163,7 +163,7 @@ public class Skill_CombatLog extends StdSkill
 			rep.append("\n\r");
 			
 			rep.append(CMStrings.padRight(L("^HEnemies defeated: ^w@x1",""+stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]),colWidth1));
-			if(level>=5)
+			if((level>=5)&&(stats.get(CombatStat.NUM_COMBATS)[0]>0))
 			{
 				double npc = Math.round(stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 				rep.append(L("^HEnemies per Combat: ^w@x1",""+npc));
@@ -203,7 +203,7 @@ public class Skill_CombatLog extends StdSkill
 			}
 			
 			rep.append(CMStrings.padRight(L("^HDamage done : ^w@x1",""+stats.get(CombatStat.NUM_DAMAGE_DONE)[0]),colWidth1));
-			if(level >= 2)
+			if((level >= 2)&&(stats.get(CombatStat.NUM_COMBATS)[0]>0))
 			{
 				double adc = Math.round(stats.get(CombatStat.NUM_DAMAGE_DONE)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 				rep.append(CMStrings.padRight(L("^HDamage per combat : ^w@x1",""+adc),colWidth2));
@@ -216,7 +216,7 @@ public class Skill_CombatLog extends StdSkill
 			rep.append("\n\r");
 			
 			rep.append(CMStrings.padRight(L("^HHealing done: ^w@x1",""+stats.get(CombatStat.NUM_HEALING_DONE)[0]),colWidth1));
-			if(level >= 2)
+			if((level >= 2)&&(stats.get(CombatStat.NUM_COMBATS)[0]>0))
 			{
 				double adc = Math.round(stats.get(CombatStat.NUM_HEALING_DONE)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 				rep.append(CMStrings.padRight(L("^HHealing per combat: ^w@x1",""+adc),colWidth2));
@@ -229,7 +229,7 @@ public class Skill_CombatLog extends StdSkill
 			rep.append("\n\r");
 			
 			rep.append(CMStrings.padRight(L("^HDamage taken: ^w@x1",""+stats.get(CombatStat.NUM_DAMAGE_TAKEN)[0]),colWidth1));
-			if(level >= 2)
+			if((level >= 2)&&(stats.get(CombatStat.NUM_COMBATS)[0]>0))
 			{
 				double adc = Math.round(stats.get(CombatStat.NUM_DAMAGE_TAKEN)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 				rep.append(CMStrings.padRight(L("^HDmg taken/combat  : ^w@x1",""+adc),colWidth2));
@@ -244,7 +244,7 @@ public class Skill_CombatLog extends StdSkill
 			if(level >= 1)
 			{
 				rep.append(CMStrings.padRight(L("^HMana used   : ^w@x1",""+stats.get(CombatStat.NUM_MANA_USED)[0]),colWidth1));
-				if(level >= 3)
+				if((level >= 3)&&(stats.get(CombatStat.NUM_COMBATS)[0]>0))
 				{
 					double muc = Math.round(stats.get(CombatStat.NUM_MANA_USED_COMBAT)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 					rep.append(CMStrings.padRight(L("^HMana used/combat  : ^w@x1",""+muc),colWidth2));
@@ -260,7 +260,7 @@ public class Skill_CombatLog extends StdSkill
 			if(level >= 1)
 			{
 				rep.append(CMStrings.padRight(L("^HMoves used  : ^w@x1",""+stats.get(CombatStat.NUM_MOVEMENT_USED)[0]),colWidth1));
-				if(level >= 3)
+				if((level >= 3)&&(stats.get(CombatStat.NUM_COMBATS)[0]>0))
 				{
 					double muc = Math.round(stats.get(CombatStat.NUM_MOVEMENT_USED_COMBAT)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 					rep.append(CMStrings.padRight(L("^HMoves used/combat : ^w@x1",""+muc),colWidth2));
