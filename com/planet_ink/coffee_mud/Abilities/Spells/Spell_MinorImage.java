@@ -135,6 +135,8 @@ public class Spell_MinorImage extends Spell
 		affectableStats.setRaceName(parentM.charStats().raceName());
 		affectableStats.setDisplayClassName(parentM.charStats().displayClassName());
 		affectableStats.setGenderName(parentM.charStats().genderName());
+		affectableStats.setStat(CharStats.STAT_WISDOM, 1);
+		affectableStats.setStat(CharStats.STAT_INTELLIGENCE, 1);
 	}
 
 	@Override
@@ -155,6 +157,10 @@ public class Spell_MinorImage extends Spell
 			{
 				if(CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS))
 					unInvoke();
+				else
+				if((msg.tool() instanceof Ability)
+				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_DIVINATION))
+					return true;
 				else
 				switch(msg.targetMinor())
 				{
