@@ -97,9 +97,11 @@ public class Spell_TrueSight extends Spell
 			return true;
 		if((msg.amISource((MOB)affected))
 		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-		&&(msg.target()!=null)
-		&&(!msg.target().name().equals(msg.target().Name())))
-			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,L("^H@x1 is truly @x2.^N",msg.target().name(),msg.target().Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+		&&(msg.target()!=null))
+		{
+			if(!msg.target().name().equals(msg.target().Name()))
+				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,this,CMMsg.MSG_OK_VISUAL,L("^H@x1 is truly @x2.^N",msg.target().name(),msg.target().Name()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+		}
 		return true;
 	}
 
