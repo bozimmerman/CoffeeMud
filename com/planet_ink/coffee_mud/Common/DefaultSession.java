@@ -342,6 +342,7 @@ public class DefaultSession implements Session
 
 			setServerTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_ANSI,true);
+			changeTelnetModeBackwards(TELNET_ECHO,false);
 			setClientTelnetMode(TELNET_TERMTYPE,true);
 			changeTelnetMode(rawout,TELNET_TERMTYPE,true);
 			negotiateTelnetMode(rawout,TELNET_TERMTYPE);
@@ -693,7 +694,8 @@ public class DefaultSession implements Session
 	public void changeTelnetModeBackwards(int telnetCode, boolean onOff) throws IOException
 	{
 		final byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
-		out.flush();
+		if(out!=null)
+			out.flush();
 		rawBytesOut(rawout, command);
 		rawout.flush();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
