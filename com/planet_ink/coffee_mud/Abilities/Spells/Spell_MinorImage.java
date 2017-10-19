@@ -229,6 +229,19 @@ public class Spell_MinorImage extends Spell
 		return success;
 	}
 	
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		
+		final Physical affected=this.affected;
+		if(affected instanceof MOB)
+			((MOB)affected).makePeace(false);
+		
+		return true;
+	}
+	
 	public List<Tattoo> getSeenTattoos(MOB mob)
 	{
 		long wornCode=0;
@@ -533,7 +546,7 @@ public class Spell_MinorImage extends Spell
 		}
 		R.recoverRoomStats();
 		newMOB.setStartRoom(null);
-		CMLib.threads().deleteAllTicks(newMOB);
+		//CMLib.threads().deleteAllTicks(newMOB); // really bad idea! you need the tick to end the effect!
 		return(newMOB);
 	}
 
