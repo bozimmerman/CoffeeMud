@@ -342,7 +342,6 @@ public class DefaultSession implements Session
 
 			setServerTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_ANSI,true);
-			changeTelnetModeBackwards(TELNET_ECHO,false);
 			setClientTelnetMode(TELNET_TERMTYPE,true);
 			changeTelnetMode(rawout,TELNET_TERMTYPE,true);
 			negotiateTelnetMode(rawout,TELNET_TERMTYPE);
@@ -373,7 +372,8 @@ public class DefaultSession implements Session
 			{
 				private final long firstIACIn=lastIACIn;
 
-				@Override public boolean tick(int counter)
+				@Override 
+				public boolean tick(int counter)
 				{
 					try
 					{
