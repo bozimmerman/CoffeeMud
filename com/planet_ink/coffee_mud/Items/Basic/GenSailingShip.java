@@ -490,7 +490,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						Item I=mobR.findItem(null, weaponStr);
 						if((I==null)||(!CMLib.flags().canBeSeenBy(I,msg.source())))
 						{
-							msg.source().tell(L("You don't see any seige weapon called '@x1' here.",leadStr));
+							msg.source().tell(L("You don't see any siege weapon called '@x1' here.",leadStr));
 							return false;
 						}
 						if(!CMLib.combat().isAShipSiegeWeapon(I))
