@@ -154,7 +154,6 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Titling",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_MorseCode",true);
 /*
-6	Copywriting (G), Morse Code (Q)		
 7	Edit (G), Identify Poison (Q), Druid_KnowPlants		
 8	Skill_SeaMapping (G), RevealText (Q)		
 9	Bookcopying (G), Semaphore (Q), Wilderness Lore (Q)		
