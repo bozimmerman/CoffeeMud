@@ -1527,14 +1527,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public String varify(MOB source,
-						 Environmental target,
-						 PhysicalAgent scripted,
-						 MOB monster,
-						 Item primaryItem,
-						 Item secondaryItem,
-						 String msg,
-						 Object[] tmp,
+	public String varify(final MOB source,
+						 final Environmental target,
+						 final PhysicalAgent scripted,
+						 final MOB monster,
+						 final Item primaryItem,
+						 final Item secondaryItem,
+						 final String msg,
+						 final Object[] tmp,
 						 String varifyable)
 	{
 		int t=varifyable.indexOf('$');
@@ -2790,16 +2790,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public boolean eval(PhysicalAgent scripted,
-						MOB source,
-						Environmental target,
-						MOB monster,
-						Item primaryItem,
-						Item secondaryItem,
-						String msg,
+	public boolean eval(final PhysicalAgent scripted,
+						final MOB source,
+						final Environmental target,
+						final MOB monster,
+						final Item primaryItem,
+						final Item secondaryItem,
+						final String msg,
 						Object[] tmp,
-						String[][] eval,
-						int startEval)
+						final String[][] eval,
+						final int startEval)
 	{
 		String[] tt=eval[0];
 		if(tmp == null)
@@ -5561,15 +5561,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 	
 	@Override
-	public String functify(PhysicalAgent scripted,
-							MOB source,
-							Environmental target,
-							MOB monster,
-							Item primaryItem,
-							Item secondaryItem,
-							String msg,
-							Object[] tmp,
-							String evaluable)
+	public String functify(final PhysicalAgent scripted,
+						   final MOB source,
+						   final Environmental target,
+						   final MOB monster,
+						   final Item primaryItem,
+						   final Item secondaryItem,
+						   final String msg,
+						   final Object[] tmp,
+						   final String evaluable)
 	{
 		if(evaluable.length()==0)
 			return "";
