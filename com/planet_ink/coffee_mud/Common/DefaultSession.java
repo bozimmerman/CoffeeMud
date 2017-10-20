@@ -1561,7 +1561,6 @@ public class DefaultSession implements Session
 				if(suboptionData[0] == 0)
 				{
 					terminalType = new String(suboptionData, 1, dataSize - 1);
-					System.out.println("'"+terminalType+"'");
 					if(terminalType.equalsIgnoreCase("ZMUD")
 					||terminalType.equalsIgnoreCase("CMUD")
 					||terminalType.equalsIgnoreCase("XTERM"))
