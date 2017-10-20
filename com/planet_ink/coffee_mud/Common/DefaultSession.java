@@ -391,7 +391,7 @@ public class DefaultSession implements Session
 						{
 						case HANDSHAKE_OPEN:
 						{
-							if((!terminalType.equalsIgnoreCase("ANSI"))&&(getClientTelnetMode(TELNET_ECHO)))
+							if((!terminalType.equals("ANSI"))&&(getClientTelnetMode(TELNET_ECHO)))
 								changeTelnetModeBackwards(rawout,TELNET_ECHO,false);
 							rawout.flush();
 							setStatus(SessionStatus.HANDSHAKE_MCCP);
@@ -1561,6 +1561,7 @@ public class DefaultSession implements Session
 				if(suboptionData[0] == 0)
 				{
 					terminalType = new String(suboptionData, 1, dataSize - 1);
+					System.out.println("'"+terminalType+"'");
 					if(terminalType.equalsIgnoreCase("ZMUD")
 					||terminalType.equalsIgnoreCase("CMUD")
 					||terminalType.equalsIgnoreCase("XTERM"))
@@ -1570,7 +1571,7 @@ public class DefaultSession implements Session
 						changeTelnetMode(rawout,TELNET_ECHO,false);
 					}
 					else
-					if(terminalType.equalsIgnoreCase("ANSI"))
+					if(terminalType.equals("ANSI"))
 						changeTelnetMode(rawout,TELNET_ECHO,true);
 					else
 					if(terminalType.startsWith("GIVE-WINTIN.NET-A-CHANCE"))
@@ -1805,26 +1806,37 @@ public class DefaultSession implements Session
 			int last = 0;
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
 				Log.debugOut("Reading sub-option "+subOptionCode);
-			while(((last = readByte()) != -1)
+			final long expire=System.currentTimeMillis() + 100;
+			while((System.currentTimeMillis()<expire)
 			&&(!killFlag))
 			{
-				if(subOptionStream.size()>1024*1024*5)
-				{
-					killFlag=true;
-					return;
-				}
-				else
-				if (last == TELNET_IAC)
+				try
 				{
 					last = readByte();
-					if (last == TELNET_IAC)
-						subOptionStream.write(TELNET_IAC);
-					else
-					if (last == TELNET_SE)
-						break;
+					if(last != -1)
+					{
+						if(subOptionStream.size()>1024*1024*5)
+						{
+							killFlag=true;
+							return;
+						}
+						else
+						if (last == TELNET_IAC)
+						{
+							last = readByte();
+							if (last == TELNET_IAC)
+								subOptionStream.write(TELNET_IAC);
+							else
+							if (last == TELNET_SE)
+								break;
+						}
+						else
+							subOptionStream.write((char)last);
+					}
 				}
-				else
-					subOptionStream.write((char)last);
+				catch(IOException e)
+				{
+				}
 			}
 			final char[] subOptionData=subOptionStream.toCharArray();
 			subOptionStream=null;
