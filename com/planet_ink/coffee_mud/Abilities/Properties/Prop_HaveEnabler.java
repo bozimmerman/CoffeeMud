@@ -149,7 +149,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		for(int v=0;v<V.size();v++)
 		{
 			final Ability A=V.get(v);
-			if(!A.isSavable())
+			if((!A.isSavable())&&(((MOB)P).isMine(A)))
 			{
 				removedAbles.add(A.ID());
 				((MOB)P).delAbility(A);
