@@ -188,7 +188,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		@Override
 		public String acceptInput(Session session) throws SocketException, IOException
 		{
+			final boolean wasNull = (lastInput == null) || (session == null);
 			lastInput=(session == null) ? null : session.readlineContinue();
+			if(wasNull && (lastInput != null))
+				lastInput = CMLib.lang().rawInputParser(lastInput);
 			return lastInput;
 		}
 	}

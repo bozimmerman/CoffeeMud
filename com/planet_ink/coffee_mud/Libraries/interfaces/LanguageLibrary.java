@@ -48,6 +48,7 @@ public interface LanguageLibrary extends CMLibrary
 	public String commandWordTranslation(final String str);
 	public String preItemParser(String item);
 	public String failedItemParser(String item);
+	public String rawInputParser(String words);
 
 	public String[][] ISO_LANG_CODES = {
 		{"AA","Afar"},

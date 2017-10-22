@@ -810,6 +810,12 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 	}
 
 	@Override
+	public String rawInputParser(String words)
+	{
+		return basicParser(words,"RAW-INPUT-PROCESSOR",true,true);
+	}
+
+	@Override
 	public String filterTranslation(String item)
 	{
 		return basicParser(item,"FILTER-TRANSLATION",false,false);
