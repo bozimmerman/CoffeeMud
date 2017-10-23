@@ -102,10 +102,10 @@ public class Titling extends CommonSkill
 		{
 			final int y=old.lastIndexOf('`',x+1);
 			if(y>x)
-				old=old.substring(0,x).trim();
+				old=old.substring(0,x)+old.substring(y+1);
 		}
 		if((newTitle != null)&&(newTitle.length()>0))
-			return old + " entitled `"+newTitle+"`";
+			return old + " entitled `"+newTitle.replace('\'', '-').replace('`', '-')+"`";
 		return old;
 	}
 	
@@ -169,6 +169,7 @@ public class Titling extends CommonSkill
 			target=mob.location().findItem(null, commands.get(0));
 			if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
 			{
+				/*
 				final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
 				boolean ok=false;
 				for(final MOB M : followers)
@@ -181,9 +182,14 @@ public class Titling extends CommonSkill
 					commonTell(mob,L("You aren't allowed to work on '@x1'.",(commands.get(0))));
 					return false;
 				}
+				*/
 			}
+			else
+				target=null;
 		}
-		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
+		else
+			target=null;
+		if(target==null)
 		{
 			commonTell(mob,L("You don't seem to have a '@x1'.",(commands.get(0))));
 			return false;
@@ -228,6 +234,12 @@ public class Titling extends CommonSkill
 		if(!target.isGeneric())
 		{
 			commonTell(mob,L("You aren't able to give that a title."));
+			return false;
+		}
+		
+		if(BookNaming.isAlreadyNamed(target.Name()))
+		{
+			commonTell(mob,L("That already has a name."));
 			return false;
 		}
 
