@@ -191,7 +191,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final boolean wasNull = (lastInput == null) || (session == null);
 			lastInput=(session == null) ? null : session.readlineContinue();
 			if(wasNull && (lastInput != null))
-				lastInput = CMLib.lang().rawInputParser(lastInput);
+			{
+				final String chg=CMLib.lang().rawInputParser(lastInput);
+				if(chg != null)
+					lastInput = chg;
+			}
 			return lastInput;
 		}
 	}
@@ -1102,6 +1106,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			loginObj.state=LoginState.LOGIN_START;
 			return null;
+		}
+		// this loop is for malformed ansi responses, it strips the trailing letters
+		for(int i=loginObj.login.length()-2;i>=0;i--)
+		{
+			if(!Character.isLetterOrDigit(loginObj.login.charAt(i)))
+			{
+				loginObj.login=loginObj.login.substring(i+1);
+				break;
+			}
 		}
 		loginObj.login=loginObj.login.trim();
 		if(loginObj.login.length()==0)
