@@ -112,8 +112,10 @@ public class BookEditing extends CommonSkill
 		if(commands.size()<1)
 			return error(mob);
 		found = null;
-		String itemName = commands.get(0);
-		String pageNum = commands.get(1);
+		String pageNum="";
+		if((commands.size()>1)&&(CMath.isInteger(commands.get(commands.size()-1))))
+			pageNum=commands.remove(commands.size()-1);
+		String itemName = CMParms.combine(commands);
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
@@ -144,18 +146,13 @@ public class BookEditing extends CommonSkill
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTell(mob,L("You must know how to write to name a book."));
+			commonTell(mob,L("You must know how to write."));
 			return false;
 		}
 		
 		if((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
 		{
-			commonTell(mob,L("You can't give a name to something like that."));
-			return false;
-		}
-		if(target.ID().toLowerCase().indexOf("book")<0)
-		{
-			commonTell(mob,L("That's not a book."));
+			commonTell(mob,L("You can't edit something like that."));
 			return false;
 		}
 		
@@ -165,12 +162,10 @@ public class BookEditing extends CommonSkill
 			return false;
 		}
 		
-		if((!CMath.isInteger(pageNum))
-		||(CMath.s_int(pageNum)<1)
-		//||(CMath.s_int(pageNum)>PREFIXES.length)
-		)
+		if(CMath.isInteger(pageNum))
 		{
-			commonTell(mob,L("'@x1' is not a valid name form number.  Try BNAME LIST.",pageNum));
+			//TODO: check for page numbers
+			commonTell(mob,L("'@x1' is not a valid name page number.  Try BNAME LIST.",pageNum));
 			return false;
 		}
 		
@@ -182,13 +177,13 @@ public class BookEditing extends CommonSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		verb=L("naming @x1",target.name());
+		verb=L("editing @x1",target.name());
 		displayText=L("You are @x1",verb);
 		found=target;
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			found = null;
 		final int duration=getDuration(30,mob,1,1);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),L("<S-NAME> start(s) naming <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),L("<S-NAME> start(s) editing <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

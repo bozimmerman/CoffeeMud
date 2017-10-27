@@ -179,7 +179,7 @@ public class BookNaming extends CommonSkill
 			commonTell(mob,BookNaming.prefixList);
 			return true;
 		}
-		if(commands.size()<3)
+		if(commands.size()<2)
 			return error(mob);
 		String itemName = commands.get(0);
 		String nameType = commands.get(1);
@@ -220,11 +220,6 @@ public class BookNaming extends CommonSkill
 		if((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
 		{
 			commonTell(mob,L("You can't give a name to something like that."));
-			return false;
-		}
-		if(target.ID().toLowerCase().indexOf("book")<0)
-		{
-			commonTell(mob,L("That's not a book."));
 			return false;
 		}
 		
