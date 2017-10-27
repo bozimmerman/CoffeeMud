@@ -90,7 +90,7 @@ public class Quests extends StdLibrary implements QuestManager
 		for(int i=0;i<numQuests();i++)
 		{
 			final Quest Q=fetchQuest(i);
-			if(Q.name().equalsIgnoreCase(qname))
+			if((Q!=null)&&(Q.name().equalsIgnoreCase(qname)))
 				return Q;
 		}
 		return null;
