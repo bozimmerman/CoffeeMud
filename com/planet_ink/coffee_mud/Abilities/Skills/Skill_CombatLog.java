@@ -178,7 +178,7 @@ public class Skill_CombatLog extends StdSkill
 				{
 					double age = Math.round(stats.get(CombatStat.NUM_GOLD_LOOTED)[0]/stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]);
 					rep.append(CMStrings.padRight(L("^HGold per enemy    : ^w@x1",""+age),colWidth2));
-					if(level>=10)
+					if((level>=10)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>0))
 					{
 						double agh = Math.round(stats.get(CombatStat.NUM_GOLD_LOOTED)[0]/((stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]*1000)/CMProps.getMillisPerMudHour()));
 						rep.append(L("^HGold per game-hour: ^w@x1",""+agh));
@@ -193,7 +193,7 @@ public class Skill_CombatLog extends StdSkill
 				{
 					double age = Math.round(stats.get(CombatStat.NUM_XP_GAINED)[0]/stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]);
 					rep.append(CMStrings.padRight(L("^HExp. per enemy    : ^w@x1",""+age),colWidth2));
-					if(level>=10)
+					if((level>=10)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>0))
 					{
 						double agh = Math.round(stats.get(CombatStat.NUM_XP_GAINED)[0]/((stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]*1000)/CMProps.getMillisPerMudHour()));
 						rep.append(L("^HExp. per game-hour: ^w@x1",""+agh));
@@ -207,7 +207,7 @@ public class Skill_CombatLog extends StdSkill
 			{
 				double adc = Math.round(stats.get(CombatStat.NUM_DAMAGE_DONE)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 				rep.append(CMStrings.padRight(L("^HDamage per combat : ^w@x1",""+adc),colWidth2));
-				if(level>=6)
+				if((level>=6)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>0))
 				{
 					double ads = Math.round(stats.get(CombatStat.NUM_DAMAGE_DONE)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
 					rep.append(L("^HDamage per second : ^w@x1",""+ads));
@@ -220,7 +220,7 @@ public class Skill_CombatLog extends StdSkill
 			{
 				double adc = Math.round(stats.get(CombatStat.NUM_HEALING_DONE)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 				rep.append(CMStrings.padRight(L("^HHealing per combat: ^w@x1",""+adc),colWidth2));
-				if(level>=6)
+				if((level>=6)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>0))
 				{
 					double ads = Math.round(stats.get(CombatStat.NUM_HEALING_DONE)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
 					rep.append(L("^HHealing per second: ^w@x1",""+ads));
@@ -233,7 +233,7 @@ public class Skill_CombatLog extends StdSkill
 			{
 				double adc = Math.round(stats.get(CombatStat.NUM_DAMAGE_TAKEN)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 				rep.append(CMStrings.padRight(L("^HDmg taken/combat  : ^w@x1",""+adc),colWidth2));
-				if(level>=6)
+				if((level>=6)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>0))
 				{
 					double ads = Math.round(stats.get(CombatStat.NUM_DAMAGE_TAKEN)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
 					rep.append(L("^HDmg taken/second  : ^w@x1",""+ads));
@@ -248,7 +248,7 @@ public class Skill_CombatLog extends StdSkill
 				{
 					double muc = Math.round(stats.get(CombatStat.NUM_MANA_USED_COMBAT)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 					rep.append(CMStrings.padRight(L("^HMana used/combat  : ^w@x1",""+muc),colWidth2));
-					if(level>=7)
+					if((level>=7)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>0))
 					{
 						double mus = Math.round(stats.get(CombatStat.NUM_MANA_USED_COMBAT)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
 						rep.append(L("^HMana used/second  : ^w@x1",""+mus));
@@ -264,7 +264,7 @@ public class Skill_CombatLog extends StdSkill
 				{
 					double muc = Math.round(stats.get(CombatStat.NUM_MOVEMENT_USED_COMBAT)[0]/stats.get(CombatStat.NUM_COMBATS)[0]);
 					rep.append(CMStrings.padRight(L("^HMoves used/combat : ^w@x1",""+muc),colWidth2));
-					if(level>=7)
+					if((level>=7)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>0))
 					{
 						double mus = Math.round(stats.get(CombatStat.NUM_MOVEMENT_USED_COMBAT)[0]/stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]);
 						rep.append(L("^HMoves used/second : ^w@x1",""+mus));
