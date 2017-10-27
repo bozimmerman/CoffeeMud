@@ -1036,7 +1036,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					));
 		}
 		if(item.description(mob).length()==0)
-			buf.append(L("You don't see anything special about @x1",item.name()));
+			buf.append(L("You don't see anything special about @x1.",item.name()));
 		else
 			buf.append(item.description(mob));
 		if((msg.targetMinor()==CMMsg.TYP_EXAMINE)&&(!item.ID().endsWith("Wallpaper")))
