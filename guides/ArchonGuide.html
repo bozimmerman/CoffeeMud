@@ -1206,7 +1206,7 @@ not present, there is also the
 "GenCoins", "GenCorpse", "GenKey", "GenLantern", "GenLightSource",
 "GenCigar", "GenPipe", "GenMap", "GenResource", "GenLiquidResource",
 "GenFoodResource", "GenRideable", "GenWallpaper", "GenJournal",
-"GenBook", "GenContainer", "GenFood", "GenDrink", "GenWater", and
+"GenBook", "GenPlayerBook", "GenContainer", "GenFood", "GenDrink", "GenWater", and
 "GenReadable". For the fighting spirit there is the "GenWeapon",
 "GenStaff", and "GenArmor". Among the formless magical items are
 "GenPill", "GenPowder", "GenPotion", "GenScroll", "GenWand", and
@@ -2637,7 +2637,7 @@ GenPipe may be refilled with herbs to continue.</td>
 <br>
 <br>
 <p><strong><a name="geni3"><font style="background-color: lime;">The
-"GenJournal" and "GenBook"</font></a></strong><br>
+"GenJournal", "GenBook", and "GenPlayerBook"</font></a></strong><br>
 <br>
 GenJournals and GenBooks are similar ways of persistant message
 storage. GenJournals represent message boards for players to commonly
@@ -2647,7 +2647,8 @@ how many instances of the same journal/book there are. GenBooks display
 a table of contents listing the "chapters" available for reading.
 Players who have access to GenJournals or GenBooks, and who have the
 Write skill may write new messages/chapters (or post replies to old
-ones on GenJournals).</p>
+ones on GenJournals).  GenPlayerBooks are similar to GenBooks except 
+the "chapters" are tied to the author, and persist as long as they do.</p>
 <p>GenJournals may be used by
 individual players to carry around and
 magically chat with each other on (assuming all their journals have the
@@ -2672,8 +2673,8 @@ characters &lt;cmvp&gt;. If those six characters start the
 message,
 then the message may contain web macros. See the WebServer Guide for
 more information on this feature.</p>
-<p>Whenever a GenJournal or
-GenBook is created, much like the GenItem
+<p>Whenever a GenJournal, GenBook, or
+GenPlayerBook is created, much like the GenItem
 above, you are presented with a list of properties to fill in. Pressing
 enter will leave the property unchanged. The properties include all of
 the fields listed above under GenItem, plus one that works a little bit

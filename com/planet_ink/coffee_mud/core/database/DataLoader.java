@@ -142,6 +142,59 @@ public class DataLoader
 		return rows;
 	}
 
+	public int DBCountBySection(String section)
+	{
+		DBConnection D=null;
+		int rows=0;
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=null;
+			section = DB.injectionClean(section);
+			R=D.query("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'");
+			rows = D.getRecordCount(R);
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		// log comment
+		return rows;
+	}
+
+	public List<String> DBReadAuthorsBySection(String section)
+	{
+		DBConnection D=null;
+		List<String> authors = new ArrayList<String>();
+		try
+		{
+			D=DB.DBFetch();
+			ResultSet R=null;
+			section = DB.injectionClean(section);
+			R=D.query("SELECT CMPLID FROM CMPDAT WHERE CMSECT='"+section+"'");
+			while(R.next())
+			{
+				final String plid=DBConnections.getRes(R,"CMPLID");
+				if(!authors.contains(plid))
+					authors.add(plid);
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("DataLoader",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		// log comment
+		return authors;
+	}
+
 	public List<PlayerData> DBReadByKeyMask(String section, String keyMask)
 	{
 		DBConnection D=null;

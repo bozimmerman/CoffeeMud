@@ -1462,6 +1462,30 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERDATA
+	 * Counts the number of rows of data/entries per section.
+	 * @see DatabaseEngine#DBReadPlayerData(String, String)
+	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
+	 * @see DatabaseEngine#DBReadPlayerData(String, List)
+	 * 
+	 * @param section the cross-player section of data
+	 * @return the number of entries for the given section
+	 */
+	public int DBCountPlayerData(String section);
+
+	/**
+	 * Table category: DBPLAYERDATA
+	 * Returns the list of unique authors for a given section
+	 * @see DatabaseEngine#DBReadPlayerData(String, String)
+	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
+	 * @see DatabaseEngine#DBReadPlayerData(String, List)
+	 * 
+	 * @param section the cross-player section of data
+	 * @return the unique authors for a given section
+	 */
+	public List<String> DBReadPlayerDataAuthorsBySection(String section);
+
+	/**
+	 * Table category: DBPLAYERDATA
 	 * Deletes all of the data for the given player of the
 	 * given section/type.
 	 * @see DatabaseEngine#DBReadPlayerData(String, String)

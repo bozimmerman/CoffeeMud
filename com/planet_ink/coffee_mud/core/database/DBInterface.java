@@ -862,6 +862,18 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public int DBCountPlayerData(String section)
+	{
+		return DataLoader.DBCountBySection(section);
+	}
+
+	@Override
+	public List<String> DBReadPlayerDataAuthorsBySection(String section)
+	{
+		return DataLoader.DBReadAuthorsBySection(section);
+	}
+
+	@Override
 	public List<PlayerData> DBReadPlayerData(String playerID, String section, String key)
 	{
 		return DataLoader.DBRead(playerID, section, key);

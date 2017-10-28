@@ -122,7 +122,7 @@ public class StdBook extends StdItem
 						if(s.equalsIgnoreCase("ALL")||s.equalsIgnoreCase("OLD"))
 							all=true;
 					}
-					final Triad<String,String,StringBuffer> read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
+					final Triad<String,String,StringBuffer> read=DBRead(mob,which-1,lastTime, newOnly, all);
 					boolean megaRepeat=true;
 					while(megaRepeat)
 					{
@@ -171,7 +171,7 @@ public class StdBook extends StdItem
 						if(msg.targetMessage().length()>1)
 						{
 							message=msg.targetMessage();
-							int numMessages=CMLib.database().DBCountJournal(Name(), null, to);
+							int numMessages=getChapterCount(to);
 							subject=L("Chapter @x1",""+(numMessages+1));
 						}
 						else
@@ -200,7 +200,7 @@ public class StdBook extends StdItem
 							return;
 						}
 	
-						CMLib.database().DBWriteJournal(Name(),mob.Name(),to,subject,message);
+						addNewChapter(mob.Name(),to,subject,message);
 						if((R!=null)&&(msg.targetMessage().length()<=1))
 							R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter added."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
 						else
@@ -221,14 +221,39 @@ public class StdBook extends StdItem
 		super.executeMsg(myHost,msg);
 	}
 
-	public Triad<String,String,StringBuffer> DBRead(MOB readerMOB, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
+	protected String getTOCHeader()
+	{
+		return L("\n\rTable of Contents\n\r");
+	}
+	
+	protected String getJournalName()
+	{
+		return Name();
+	}
+	
+	protected int getChapterCount(final String to)
+	{
+		return CMLib.database().DBCountJournal(getJournalName(), null, to);
+	}
+	
+	protected List<JournalEntry> readChaptersByCreateDate()
+	{
+		return CMLib.database().DBReadJournalMsgsByCreateDate(getJournalName(), true);
+	}
+	
+	protected void  addNewChapter(final String from, final String to, final String subject, final String message)
+	{
+		CMLib.database().DBWriteJournal(getJournalName(),from,to,subject,message);
+	}
+
+	public Triad<String,String,StringBuffer> DBRead(MOB readerMOB, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
 		final StringBuffer buf=new StringBuffer("");
 		final Triad<String,String,StringBuffer> reply=new Triad<String,String,StringBuffer>("","",new StringBuffer(""));
-		final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgsByCreateDate(Journal, true);
+		final List<JournalEntry> journal=this.readChaptersByCreateDate();
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
-			buf.append(L("\n\rTable of Contents\n\r"));
+			buf.append(getTOCHeader());
 			buf.append("-------------------------------------------------------------------------\n\r");
 			if(journal==null)
 			{
@@ -246,7 +271,7 @@ public class StdBook extends StdItem
 				reply.first = journal.get(0).from();
 				reply.second = journal.get(0).subj();
 			}
-			final Vector<Object> selections=new Vector<Object>();
+			final ArrayList<Object> selections=new ArrayList<Object>();
 			for(int j=0;j<journal.size();j++)
 			{
 				final JournalEntry entry=journal.get(j);
@@ -267,7 +292,7 @@ public class StdBook extends StdItem
 					//else
 					//    selection.append(" ");
 					selection.append(subject+"\n\r");
-					selections.addElement(selection);
+					selections.add(selection);
 				}
 			}
 			int numToAdd=CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
@@ -277,13 +302,13 @@ public class StdBook extends StdItem
 			{
 				if (numToAdd == 0)
 				{
-					selections.setElementAt("", v);
+					selections.set(v,"");
 					continue;
 				}
-				final StringBuffer str = (StringBuffer) selections.elementAt(v);
+				final StringBuffer str = (StringBuffer) selections.get(v);
 				if ((newOnly) && (str.charAt(0) != '*'))
 				{
-					selections.setElementAt("", v);
+					selections.set(v,"");
 					continue;
 				}
 				numToAdd--;
@@ -291,12 +316,12 @@ public class StdBook extends StdItem
 			boolean notify=false;
 			for(int v=0;v<selections.size();v++)
 			{
-				if(!(selections.elementAt(v) instanceof StringBuffer))
+				if(!(selections.get(v) instanceof StringBuffer))
 				{
 					notify=true;
 					continue;
 				}
-				buf.append((StringBuffer)selections.elementAt(v));
+				buf.append((StringBuffer)selections.get(v));
 			}
 			if(notify)
 				buf.append(L("\n\rUse READ ALL [BOOK] to see missing chapters."));
@@ -337,11 +362,11 @@ public class StdBook extends StdItem
 		return reply;
 	}
 
-	private String getParm(String parmName)
+	protected String getParm(String parmName)
 	{
 		if(readableText().length()==0)
 			return "";
-		final Map<String,String> h=CMParms.parseEQParms(readableText().toUpperCase(), new String[]{"READ","WRITE","REPLY","ADMIN"});
+		final Map<String,String> h=CMParms.parseEQParms(readableText().toUpperCase(), new String[]{"KEY","READ","WRITE","REPLY","ADMIN"});
 		String req=h.get(parmName.toUpperCase().trim());
 		if(req==null)
 			req="";
