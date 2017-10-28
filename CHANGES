@@ -18,7 +18,7 @@
   16. New Disease: Planar Instability 
   17. Account menu now supports ANSI command.
   18. Players can now use KILL/ATTACK, with a weapon, to a fight a MOBEater stomach, but will lose.
-  19. New input parser: RAW-INPUT-PARSER, to capture char creation and prompt filtering
+  19. New input parser: RAW-INPUT-PROCESSOR, to capture char creation and prompt filtering
   20. New items: StdPlayerBook, and GenPlayerBook - a version of StdBook with data tied to players.
 
 # Build 5.9.5 Release 04/10/2017

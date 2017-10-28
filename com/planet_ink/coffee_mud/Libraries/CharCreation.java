@@ -191,11 +191,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final boolean wasNull = (lastInput == null) || (session == null);
 			lastInput=(session == null) ? null : session.readlineContinue();
 			if(wasNull && (lastInput != null))
-			{
-				final String chg=CMLib.lang().rawInputParser(lastInput);
-				if(chg != null)
-					lastInput = chg;
-			}
+				lastInput=CMLib.lang().rawInputParser(lastInput);
 			return lastInput;
 		}
 	}
