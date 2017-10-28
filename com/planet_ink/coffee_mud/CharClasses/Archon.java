@@ -122,24 +122,47 @@ public class Archon extends StdCharClass
 		return false;
 	}
 
-	public static final String[] ARCHON_IMMUNITIES={"Spell_Scry","Thief_Listen","Spell_Claireaudience","Spell_Clairevoyance"};
+	public static final String[] ARCHON_IMMUNITIES=
+		{
+		"Spell_Scry",
+		"Thief_Listen",
+		"Spell_Claireaudience",
+		"Spell_Clairevoyance",
+		"Spell_Enthrall",
+		"Spell_Charm",
+		"Skill_Befriend",
+		"Chant_CharmAnimal",
+		"Chant_StoneFriend",
+		"Thief_Steal",
+		"Thief_PlantItem"
+		};
 
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.target()==myHost)
-		&&(msg.tool() instanceof Ability)
-		&&((CMParms.indexOf(ARCHON_IMMUNITIES,msg.tool().ID())>=0)
-			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE)
-			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)))
+		if(msg.target()==myHost)
 		{
-			//((MOB)msg.target()).tell(L("You are immune to @x1.",msg.tool().name()));
-			if(msg.source()!=msg.target())
+			if((msg.tool() instanceof Ability)
+			&&((CMParms.indexOf(ARCHON_IMMUNITIES,msg.tool().ID())>=0)
+				||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE)
+				||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)))
 			{
-				msg.source().tell(msg.source(),msg.target(),msg.tool(),L("<T-NAME> is immune to <O-NAME>."));
+				//((MOB)msg.target()).tell(L("You are immune to @x1.",msg.tool().name()));
+				if(msg.source()!=msg.target())
+				{
+					msg.source().tell(msg.source(),msg.target(),msg.tool(),L("<T-NAME> is immune to <O-NAME>."));
+				}
+				return false;
 			}
-			return false;
+			else
+			if((msg.targetMinor()==CMMsg.TYP_ORDER)
+			&&(!CMSecurity.isASysOp(msg.source())))
+			{
+				msg.source().tell(msg.source(),msg.target(),msg.tool(),L("You can't order <T-NAME> to do anything."));
+				return false;
+			}
 		}
+		
 		return super.okMessage(myHost, msg);
 	}
 
