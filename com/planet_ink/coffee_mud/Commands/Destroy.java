@@ -1423,7 +1423,9 @@ public class Destroy extends StdCommand
 				mob.tell(L("Please enter a valid ban number to delete.  Use List Banned for more information."));
 			else
 			{
-				CMSecurity.unban(which);
+				String name = CMSecurity.unban(which);
+				if(name.length()>0)
+					Log.sysOut("CreateEdit",mob.Name()+" Unbanned "+name+".");
 				mob.tell(L("Ok."));
 			}
 		}

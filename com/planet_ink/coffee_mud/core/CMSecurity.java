@@ -1897,21 +1897,29 @@ public class CMSecurity
 	 * Removes the given player name, account name, or ip address that can be found at the given index
 	 * from the official ::/resources/banned.ini file. It also removes it from the cached ban list.
 	 * @param unBanMe the player name, account name, or ip address index in the banned.ini file to remove
+	 * @return The name that was banned
 	 */
-	public static final void unban(final int unBanMe)
+	public static final String unban(final int unBanMe)
 	{
 		final StringBuffer newBanned=new StringBuffer("");
 		final List<String> banned=Resources.getFileLineVector(Resources.getFileResource("banned.ini",false));
+		String nameWas="";
 		if((banned!=null)&&(banned.size()>0))
 		{
 			for(int b=0;b<banned.size();b++)
 			{
 				final String B=banned.get(b);
-				if(((b+1)!=unBanMe)&&(B.trim().length()>0))
-					newBanned.append(B+"\n");
+				if(B.trim().length()>0)
+				{
+					if((b+1)==unBanMe)
+						nameWas=B;
+					else
+						newBanned.append(B+"\n");
+				}
 			}
 			Resources.updateFileResource("::banned.ini",newBanned);
 		}
+		return nameWas;
 	}
 
 	/**

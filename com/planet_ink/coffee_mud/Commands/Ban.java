@@ -58,7 +58,10 @@ public class Ban extends StdCommand
 		banMe=banMe.toUpperCase().trim();
 		final int b=CMSecurity.ban(banMe);
 		if(b<0)
+		{
+			Log.sysOut("Ban",mob.Name()+" Banned "+banMe+".");
 			mob.tell(L("Logins and IPs matching @x1 are now banned.",banMe));
+		}
 		else
 		{
 			mob.tell(L("That is already banned.  Do LIST BANNED and check out #@x1.",""+(b+1)));
