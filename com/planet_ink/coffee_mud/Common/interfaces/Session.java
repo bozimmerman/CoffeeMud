@@ -1064,6 +1064,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 		protected volatile String	input		= "";
 		protected volatile boolean	confirmed	= false;
 		protected volatile boolean	waiting		= true;
+		protected volatile boolean	noTrim		= false;
 
 		/**
 		 * Full constructor.  Receives the Type of processing, a default input for
@@ -1177,7 +1178,7 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 					this.input=input.substring(0,input.length()-1);
 				else
 					this.input=input;
-				if(this.input.trim().length()==0)
+				if((this.input.trim().length()==0)&&(!noTrim))
 					this.input=defaultInput;
 				waiting=false;
 				break;

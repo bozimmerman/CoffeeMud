@@ -828,7 +828,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			back.callBack(M,sess,MsgMkrResolution.CANCELFILE);
 			return;
 		}
-		final String addModeMessage=L("^ZYou are now in Add Text mode.\n\r^ZEnter . on a blank line to exit.^.^N");
+		final String addModeMessage=L("^ZYou are now in Add Text mode.\n\r^ZEnter an empty line to exit.^.^N");
 		sess.println(L("^HCoffeeMud Message Maker^N"));
 		if(autoAdd)
 			sess.println(addModeMessage);
@@ -846,10 +846,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			@Override
 			public void showPrompt()
 			{
+				this.noTrim=false;
 				switch(state)
 				{
 				case INPUT:
 					sess.promptPrint(L("^X"+CMStrings.padRight(""+vbuf.size(),3)+")^.^N "));
+					this.noTrim=true;
 					break;
 				case MENU:
 					sess.promptPrint(L("^HMenu ^N(?/A/D/L/I/E/R/S/Q@x1)^H: ^N",(canExtEdit?"/W":"")));
