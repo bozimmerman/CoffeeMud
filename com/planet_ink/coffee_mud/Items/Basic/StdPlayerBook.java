@@ -82,6 +82,42 @@ public class StdPlayerBook extends StdBook
 		return L("\n\r@x1\n\rBy Various Authors\n\r\n\rTable of Contents\n\r",Name());
 	}
 	
+	protected JournalEntry createEntryFromData(PlayerData data, boolean addAuthors, int chapter)
+	{
+		final JournalEntry entry=(JournalEntry)CMClass.getCommon("DefaultJournalEntry");
+		entry.key		(data.key());
+		entry.from		(data.who());
+		entry.to		("ALL");
+		String subj;
+		if(addAuthors)
+			subj =		(L("Chapter @x1 by @x2",""+chapter,data.who()));
+		else
+			subj =		(L("Chapter @x1 ",""+chapter));
+		String msg = data.xml();
+		if(msg.startsWith("::"))
+		{
+			int x=msg.indexOf("::",2);
+			if(x>1)
+			{
+				String finalSubj=msg.substring(2,x);
+				if(finalSubj.trim().length()>0)
+				{
+					subj = subj + ": "+finalSubj;
+					msg=msg.substring(x+2);
+				}
+			}
+		}
+		entry.subj		(subj);
+		entry.parent	("");
+		entry.attributes();
+		entry.data		("");
+		entry.update	(0);
+		entry.views		(0);
+		entry.replies	(0);
+		entry.msg		(msg);
+		return entry;
+	}
+	
 	@Override
 	protected List<JournalEntry> readChaptersByCreateDate()
 	{
@@ -122,43 +158,18 @@ public class StdPlayerBook extends StdBook
 		int chapter=1;
 		for(final PlayerData data : jentries)
 		{
-			final JournalEntry entry=(JournalEntry)CMClass.getCommon("DefaultJournalEntry");
-			entry.key		(data.key());
-			entry.from		(data.who());
-			entry.to		("ALL");
-			String subj;
-			if(addAuthors)
-				subj =		(L("Chapter @x1 by @x2",""+chapter,data.who()));
-			else
-				subj =		(L("Chapter @x1 ",""+chapter));
-			String msg = data.xml();
-			if(msg.startsWith("::"))
-			{
-				int x=msg.indexOf("::",2);
-				if(x>1)
-				{
-					String finalSubj=msg.substring(2,x);
-					if(finalSubj.trim().length()>0)
-					{
-						subj = subj + ": "+finalSubj;
-						msg=msg.substring(x+2);
-					}
-				}
-			}
-			entry.subj		(subj);
-			entry.parent	("");
-			entry.attributes();
-			entry.data		("");
-			entry.update	(0);
-			entry.views		(0);
-			entry.replies	(0);
-			entry.msg		(msg);
-			entries.add(entry);
+			entries.add(createEntryFromData(data,addAuthors,chapter));
 			chapter++;
 		}
 		return entries;
 	}
 	
+	@Override
+	protected void editOldChapter(final String from, final String to, final String key, final String subject, final String message)
+	{
+		CMLib.database().DBUpdatePlayerData(key, "::"+subject+"::"+message);
+	}
+
 	@Override
 	protected void  addNewChapter(final String from, final String to, final String subject, final String message)
 	{
