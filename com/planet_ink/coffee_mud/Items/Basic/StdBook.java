@@ -59,26 +59,47 @@ public class StdBook extends StdItem
 
 	protected MOB lastReadTo=null;
 	protected long lastDateRead=-1;
-
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
-		switch(msg.targetMinor())
 		{
-		case CMMsg.TYP_WRITE:
-		{
-			final String adminReq=getAdminReq().trim();
-			final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source(),true);
-			if((!CMLib.masking().maskCheck(getWriteReq(),msg.source(),true))
-			&&(!admin)
-			&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
+			switch(msg.targetMinor())
 			{
-				msg.source().tell(L("You are not allowed to write on @x1",name()));
-				return false;
+			case CMMsg.TYP_WRITE:
+			{
+				final String adminReq=getAdminReq().trim();
+				final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source(),true);
+				if((!CMLib.masking().maskCheck(getWriteReq(),msg.source(),true))
+				&&(!admin)
+				&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
+				{
+					msg.source().tell(L("You are not allowed to write on @x1",name()));
+					return false;
+				}
+				if(CMath.isInteger(msg.targetMessage()))
+				{
+					int msgNum=CMath.s_int(msg.targetMessage());
+					if((msgNum <0)||(msgNum>=this.getChapterCount("ALL")))
+					{
+						msg.source().tell(L("How did you do that?"));
+						return false;
+					}
+					if((!admin)
+					&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
+					{
+						JournalEntry entry = this.readChaptersByCreateDate().get(msgNum);
+						if(!entry.from().equalsIgnoreCase(msg.source().Name()))
+						{
+							msg.source().tell(L("You need permission to edit that chapter."));
+							return false;
+						}
+					}
+				}
+				return true;
 			}
-			return true;
-		}
+			}
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -163,6 +184,7 @@ public class StdBook extends StdItem
 				final MOB M=mob;
 				final String[] subject=new String[1];
 				final String[] message=new String[1];
+				final String editKey[] = new String[1];
 				if(!mob.isMonster())
 				{
 					final Runnable addComplete=new Runnable() 
@@ -182,15 +204,27 @@ public class StdBook extends StdItem
 								mob.tell(L("Illegal code, aborted."));
 								return;
 							}
-		
-							addNewChapter(mob.Name(),to,subject[0],message[0]);
-							if((R!=null)&&(msg.targetMessage().length()<=1))
-								R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter added."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+							if((editKey==null)||(editKey[0]==null))
+							{
+								addNewChapter(mob.Name(),to,subject[0],message[0]);
+								if((R!=null)&&(msg.targetMessage().length()<=1))
+									R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter added."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+								else
+									mob.tell(L("Chapter added."));
+							}
 							else
-								mob.tell(L("Chapter added."));
+							{
+								editOldChapter(mob.Name(),to,editKey[0],subject[0],message[0]);
+								if((R!=null)&&(msg.targetMessage().length()<=1))
+									R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter modified."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+								else
+									mob.tell(L("Chapter modified."));
+							}
 						}
 					};
-					if(msg.targetMessage().length()>1)
+					if((msg.targetMessage().length()>1)
+					&&(!msg.targetMajor(CMMsg.MASK_CNTRLMSG))
+					&&(!CMath.isInteger(msg.targetMessage())))
 					{
 						message[0]=msg.targetMessage();
 						int numMessages=getChapterCount("ALL");
@@ -206,7 +240,10 @@ public class StdBook extends StdItem
 							@Override
 							public void showPrompt()
 							{
-								mob.session().promptPrint(L("Enter the name of the chapter: "));
+								if((subject[0]!=null)&&(subject[0].length()>0))
+									mob.session().promptPrint(L("Enter the name of the chapter ("+subject[0]+"): "));
+								else
+									mob.session().promptPrint(L("Enter the name of the chapter: "));
 							}
 
 							@Override
@@ -218,6 +255,9 @@ public class StdBook extends StdItem
 							public void callBack()
 							{
 								String subj=this.input.trim();
+								if((subj.trim().length()==0)
+								&&((subject[0]==null)||(subject[0].length()==0)))
+									subj=subject[0];
 								if(subj.trim().length()==0)
 								{
 									mob.tell(L("Aborted."));
@@ -227,6 +267,8 @@ public class StdBook extends StdItem
 								final String messageTitle="The contents of this chapter";
 								mob.session().println(L("\n\rEnter the contents of this chapter:"));
 								final List<String> vbuf=new Vector<String>();
+								if(message[0]!=null)
+									vbuf.addAll(CMParms.parseAny(message[0],"\\n",false));
 								CMLib.journals().makeMessageASync(mob, messageTitle, vbuf, true, new JournalsLibrary.MsgMkrCallback(){
 									@Override
 									public void callBack(MOB mob, Session sess, MsgMkrResolution res)
@@ -242,6 +284,24 @@ public class StdBook extends StdItem
 								});
 							}
 						};
+						if((CMath.isInteger(msg.targetMessage()))
+						&&(msg.targetMajor(CMMsg.MASK_CNTRLMSG)))
+						{
+							try
+							{
+								JournalEntry entry = this.readChaptersByCreateDate().get(CMath.s_int(msg.targetMessage()));
+								if(entry != null)
+								{
+									subject[0]=entry.subj();
+									message[0]=entry.msg();
+									editKey[0] = entry.key();
+									msg.setTargetMessage("");
+								}
+							}
+							catch(Exception e)
+							{
+							}
+						}
 						mob.session().prompt(contentCallBack);
 					}
 				}
@@ -274,9 +334,19 @@ public class StdBook extends StdItem
 		return CMLib.database().DBReadJournalMsgsByCreateDate(getJournalName(), true);
 	}
 	
-	protected void  addNewChapter(final String from, final String to, final String subject, final String message)
+	protected void addNewChapter(final String from, final String to, final String subject, final String message)
 	{
 		CMLib.database().DBWriteJournal(getJournalName(),from,to,subject,message);
+	}
+
+	protected void editOldChapter(final String from, final String to, final String key, final String subject, final String message)
+	{
+		JournalEntry entry = CMLib.database().DBReadJournalEntry(getJournalName(), key);
+		entry.from(from);
+		entry.to(to);
+		entry.subj(subject);
+		entry.msg(message);
+		CMLib.database().DBUpdateJournal(getJournalName(), entry);
 	}
 
 	public Triad<String,String,StringBuffer> DBRead(MOB readerMOB, int which, long lastTimeDate, boolean newOnly, boolean all)
