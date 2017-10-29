@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -787,14 +788,10 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			return defaultMsg;
 		return line;
 	}
-	
-	@Override
-	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, boolean autoAdd) throws IOException
+
+	protected String getMsgMkrHelp(final Session sess)
 	{
-		final Session sess=mob.session();
-		if((sess == null )||(sess.isStopped()))
-			return MsgMkrResolution.CANCELFILE;
-		final boolean canExtEdit=((mob.session()!=null)&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)));
+		final boolean canExtEdit=((sess!=null)&&(sess.getClientTelnetMode(Session.TELNET_GMCP)));
 		final String help=
 			L("^HCoffeeMud Message Maker Options:^N\n\r"+
 			"^XA)^.^Wdd new lines (go into ADD mode)\n\r"+
@@ -806,7 +803,450 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			"^XS)^.^Wave the file\n\r"+
 			(canExtEdit?"^XW)^.^Write over using GMCP\n\r":"")+
 			"^XQ)^.^Wuit without saving");
+		return help;
+	}
+	
+	private enum MsgMkrState
+	{ 
+		INPUT, 
+		MENU, 
+		SAVECONFIRM, 
+		QUITCONFIRM, 
+		SRPROMPT, 
+		EDITPROMPT, 
+		DELPROMPT, 
+		GMCPWAIT, 
+		INSPROMPT
+	}
+	
+	@Override
+	public void makeMessageASync(final MOB M, final String messageTitle, final List<String> vbuf, final boolean autoAdd, final MsgMkrCallback back)
+	{
+		final Session sess=M.session();
+		if((sess == null )||(sess.isStopped()))
+		{
+			back.callBack(M,sess,MsgMkrResolution.CANCELFILE);
+			return;
+		}
+		final String addModeMessage=L("^ZYou are now in Add Text mode.\n\r^ZEnter . on a blank line to exit.^.^N");
+		sess.println(L("^HCoffeeMud Message Maker^N"));
+		if(autoAdd)
+			sess.println(addModeMessage);
+		sess.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
+		{
+			final MOB mob=M;
+			final Session sess=mob.session();
+			MsgMkrState state=!autoAdd?MsgMkrState.MENU:MsgMkrState.INPUT;
+			final boolean canExtEdit=((mob.session()!=null)&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)));
+			final LinkedList<String> paramsOut=new LinkedList<String>();
+			String paramAll=null;
+			String param1=null;
+			String param2=null;
+			
+			@Override
+			public void showPrompt()
+			{
+				switch(state)
+				{
+				case INPUT:
+					sess.promptPrint(L("^X"+CMStrings.padRight(""+vbuf.size(),3)+")^.^N "));
+					break;
+				case MENU:
+					sess.promptPrint(L("^HMenu ^N(?/A/D/L/I/E/R/S/Q@x1)^H: ^N",(canExtEdit?"/W":"")));
+					break;
+				case SAVECONFIRM:
+					sess.promptPrint(L("Save and exit, are you sure (N/y)? "));
+					break;
+				case QUITCONFIRM:
+					sess.promptPrint(L("Quit without saving (N/y)? "));
+					break;
+				case SRPROMPT:
+					if(param1==null)
+						sess.promptPrint(L("Text to search for (case sensitive): "));
+					else
+					if(param2==null)
+						sess.promptPrint(L("Text to replace it with: "));
+					break;
+				case EDITPROMPT:
+					if(param1==null)
+						sess.promptPrint(L("Line to edit (0-@x1): ",""+(vbuf.size()-1)));
+					else
+					if(param2==null)
+					{
+						int ln=CMath.s_int(param1.trim());
+						StringBuilder str=new StringBuilder("");
+						str.append(L("Current: \n\r@x1) @x2",CMStrings.padRight(""+ln,3),vbuf.get(ln)));
+						str.append(L("\n\rRewrite: \n\r"));
+						sess.promptPrint(str.toString());
+					}
+					break;
+				case DELPROMPT:
+					sess.promptPrint(L("Line to delete (0-@x1): ",""+(vbuf.size()-1)));
+					break;
+				case GMCPWAIT:
+					sess.promptPrint(L("Re-Enter the whole doc using your GMCP editor.\n\rIf the editor has not popped up, just hit enter and QUIT Without Saving immediately.\n\rProceed: "));
+					break;
+				case INSPROMPT:
+					if(param1==null)
+						sess.promptPrint(L("Line to insert before (0-@x1): ",""+(vbuf.size()-1)));
+					else
+					if(param2==null)
+						sess.promptPrint(L("Enter text to insert here.\n\r: "));
+					break;
+				}
+			}
+	
+			@Override
+			public void timedOut()
+			{
+				back.callBack(mob,sess,MsgMkrResolution.CANCELFILE);
+				waiting=false;
+			}
+	
+			@Override 
+			public void callBack()
+			{
+				if((mob.session()==null)||(sess.isStopped()))
+				{
+					back.callBack(mob,sess,MsgMkrResolution.CANCELFILE);
+					return;
+				}
+				if(this.input==null)
+				{
+					mob.session().prompt(this);
+					return;
+				}
+				switch(state)
+				{
+				case INPUT:
+				{
+					if((this.input.length()==0)||(this.input.equals(".")))
+						state=MsgMkrState.MENU;
+					else
+						vbuf.add(this.input);
+					break;
+				}
+				case SAVECONFIRM:
+				{
+					if((this.input.length()==0)||(!this.input.toUpperCase().startsWith("Y")))
+						state=MsgMkrState.MENU;
+					else
+					{
+						back.callBack(mob,sess,MsgMkrResolution.SAVEFILE);
+						return;
+					}
+					break;
+				}
+				case QUITCONFIRM:
+				{
+					if((this.input.length()==0)||(!this.input.toUpperCase().startsWith("Y")))
+						state=MsgMkrState.MENU;
+					else
+					{
+						back.callBack(mob,sess,MsgMkrResolution.CANCELFILE);
+						return;
+					}
+					break;
+				}
+				case SRPROMPT:
+				{
+					if(param1==null)
+					{
+						if((this.input==null)||(this.input.trim().length()==0))
+						{
+							sess.println(L("(aborted)"));
+							state=MsgMkrState.MENU;
+						}
+						else
+							param1=this.input;
+					}
+					else
+					if(param2==null)
+					{
+						param2=this.input;
+					}
+					if((param1!=null) && (param2!=null))
+					{
+						for(int i=0;i<vbuf.size();i++)
+							vbuf.set(i,CMStrings.replaceAll(vbuf.get(i),param1,param2));
+						state=MsgMkrState.MENU;
+					}
+					else
+						state=MsgMkrState.SRPROMPT;
+					break;
+				}
+				case EDITPROMPT:
+				{
+					if(param1==null)
+					{
+						if((this.input==null)||(this.input.trim().length()==0))
+						{
+							sess.println(L("(aborted)"));
+							state=MsgMkrState.MENU;
+						}
+						else
+						{
+							this.input=this.input.trim();
+							final int ln=CMath.isInteger(this.input)?CMath.s_int(this.input):-1;
+							if((ln<0)||(ln>=vbuf.size()))
+							{
+								sess.println(L("'@x1' is not a valid line number.",this.input));
+								state=MsgMkrState.MENU;
+							}
+							else
+								param1=this.input;
+						}
+					}
+					else
+					if(param2==null)
+					{
+						param2=this.input;
+					}
+					if((param1!=null) && (param2!=null))
+					{
+						final int ln=CMath.isInteger(param1)?CMath.s_int(param1):-1;
+						if((ln<0)||(ln>=vbuf.size()))
+							sess.println(L("'@x1' is not a valid line number.",param1));
+						else
+							vbuf.set(ln,param2);
+						state=MsgMkrState.MENU;
+					}
+					else
+						state=MsgMkrState.EDITPROMPT;
+					break;
+				}
+				case DELPROMPT:
+				{
+					if(paramAll==null)
+					{
+						String line=paramAll;
+						if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
+						{
+							final int ln=CMath.s_int(line);
+							vbuf.remove(ln);
+							sess.println(L("Line @x1 deleted.",""+ln));
+						}
+						else
+							sess.println(L("'@x1' is not a valid line number.",""+line));
+						state=MsgMkrState.MENU;
+					}
+					else
+						state=MsgMkrState.DELPROMPT;
+					break;
+				}
+				case GMCPWAIT:
+				{
+					vbuf.clear();
+					String newText=this.input;
+					if((newText.length()>0)&&(newText.charAt(newText.length()-1)=='\\'))
+						newText = newText.substring(0,newText.length()-1);
+					final String[] newDoc=newText.split("\\\\n");
+					for(final String s : newDoc)
+						vbuf.add(s);
+					if(newDoc.length>1)
+					{
+						sess.println(L("\n\r^HNew text successfully imported.^N"));
+					}
+					state=MsgMkrState.MENU;
+					break;
+				}
+				case INSPROMPT:
+				{
+					if(param1==null)
+					{
+						if((this.input==null)||(this.input.trim().length()==0))
+						{
+							sess.println(L("(aborted)"));
+							state=MsgMkrState.MENU;
+						}
+						else
+						{
+							this.input=this.input.trim();
+							final int ln=CMath.isInteger(this.input)?CMath.s_int(this.input):-1;
+							if((ln<0)||(ln>=vbuf.size()))
+							{
+								sess.println(L("'@x1' is not a valid line number.",this.input));
+								state=MsgMkrState.MENU;
+							}
+							else
+								param1=this.input;
+						}
+					}
+					else
+					if(param2==null)
+					{
+						param2=this.input;
+					}
+					if((param1!=null) && (param2!=null))
+					{
+						final int ln=CMath.isInteger(param1)?CMath.s_int(param1):-1;
+						if((ln<0)||(ln>=vbuf.size()))
+							sess.println(L("'@x1' is not a valid line number.",param1));
+						else
+							vbuf.add(ln,param2);
+						state=MsgMkrState.MENU;
+					}
+					else
+						state=MsgMkrState.EDITPROMPT;
+					break;
+				}
+				case MENU:
+				{
+					final String options=L("ADLIERSQ?@x1",(canExtEdit?"W":"")).trim();
+					this.input=this.input.trim();
+					if(this.input.length()==0)
+						this.input="?";
+					final char cmdChar=this.input.toUpperCase().charAt(0);
+					if(options.indexOf(cmdChar)>=0)
+					{
+						paramsOut.clear();
+						if(this.input.length()>1)
+							paramsOut.addAll(CMParms.cleanParameterList(this.input.substring(1)));
+						paramAll=(paramsOut.size()>0)?CMParms.combine(paramsOut,0):null;
+						param1=(paramsOut.size()>0)?paramsOut.getFirst():null;
+						param2=(paramsOut.size()>1)?CMParms.combine(paramsOut,1):null;
+						switch(cmdChar)
+						{
+						case 'S':
+							if((paramAll!=null)&&(paramAll.equalsIgnoreCase("Y")))
+							{
+								back.callBack(mob,sess,MsgMkrResolution.SAVEFILE);
+								return;
+							}
+							else
+								state=MsgMkrState.SAVECONFIRM;
+							break;
+						case 'Q':
+							if((paramAll!=null)&&(paramAll.equalsIgnoreCase("Y")))
+							{
+								back.callBack(mob,sess,MsgMkrResolution.CANCELFILE);
+								return;
+							}
+							else
+								state=MsgMkrState.QUITCONFIRM;
+							break;
+						case 'R':
+						{
+							if(vbuf.size()==0)
+								sess.println(L("The file is empty!"));
+							else
+							{
+								if((param1!=null) && (param2!=null))
+								{
+									if(param1.length()==0)
+										sess.println(L("(aborted)"));
+									else
+									for(int i=0;i<vbuf.size();i++)
+										vbuf.set(i,CMStrings.replaceAll(vbuf.get(i),param1,param2));
+								}
+								else
+									state=MsgMkrState.SRPROMPT;
+							}
+							break;
+						}
+						case 'E':
+						{
+							if(vbuf.size()==0)
+								sess.println(L("The file is empty!"));
+							else
+							{
+								if((param1!=null) && (param2!=null))
+								{
+									final int ln=CMath.isInteger(param1)?CMath.s_int(param1):-1;
+									if((ln<0)||(ln>=vbuf.size()))
+										sess.println(L("'@x1' is not a valid line number.",param1));
+									else
+										vbuf.set(ln,param2);
+								}
+								else
+									state=MsgMkrState.SRPROMPT;
+							}
+							break;
+						}
+						case 'D':
+						{
+							if(vbuf.size()==0)
+								sess.println(L("The file is empty!"));
+							else
+							{
+								if(paramAll!=null)
+								{
+									String line=paramAll;
+									if((CMath.isInteger(line))&&(CMath.s_int(line)>=0)&&(CMath.s_int(line)<(vbuf.size())))
+									{
+										final int ln=CMath.s_int(line);
+										vbuf.remove(ln);
+										sess.println(L("Line @x1 deleted.",""+ln));
+									}
+									else
+										sess.println(L("'@x1' is not a valid line number.",""+line));
+								}
+								else
+									state=MsgMkrState.DELPROMPT;
+							}
+							break;
+						}
+						case '?':
+							sess.println(getMsgMkrHelp(sess));
+							break;
+						case 'A':
+							sess.println(addModeMessage);
+							state=MsgMkrState.INPUT;
+							break;
+						case 'W':
+						{
+							StringBuilder oldDoc=new StringBuilder();
+							for(final String s : vbuf)
+								oldDoc.append(s).append("\n");
+							sess.sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\",\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
+							state=MsgMkrState.GMCPWAIT;
+							break;
+						}
+						case 'L':
+						{
+							final StringBuffer list=new StringBuffer(messageTitle+"\n\r");
+							for(int v=0;v<vbuf.size();v++)
+								list.append(CMLib.coffeeFilter().colorOnlyFilter("^X"+CMStrings.padRight(""+v,3)+")^.^N ",sess)+vbuf.get(v)+"\n\r");
+							sess.rawPrint(list.toString());
+							break;
+						}
+						case 'I':
+						{
+							if(vbuf.size()==0)
+								sess.println(L("The file is empty!"));
+							else
+							{
+								if((param1!=null) && (param2!=null))
+								{
+									final int ln=CMath.isInteger(param1)?CMath.s_int(param1):-1;
+									if((ln<0)||(ln>=vbuf.size()))
+										sess.println(L("'@x1' is not a valid line number.",param1));
+									else
+										vbuf.add(ln,param2);
+								}
+								else
+									state=MsgMkrState.INSPROMPT;
+							}
+							break;
+						}
+						}
+					}
+				}
+				}
+				this.waiting=true;
+				mob.session().prompt(this);
+				return;
+			}
+		});
+	}
 
+	@Override
+	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, boolean autoAdd) throws IOException
+	{
+		final Session sess=mob.session();
+		if((sess == null )||(sess.isStopped()))
+			return MsgMkrResolution.CANCELFILE;
+		
 		final String addModeMessage=L("^ZYou are now in Add Text mode.\n\r^ZEnter . on a blank line to exit.^.^N");
 		mob.tell(L("^HCoffeeMud Message Maker^N"));
 		boolean menuMode=!autoAdd;
@@ -825,6 +1265,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			}
 			else
 			{
+				final boolean canExtEdit=((sess!=null)&&(sess.getClientTelnetMode(Session.TELNET_GMCP)));
 				final LinkedList<String> paramsOut=new LinkedList<String>();
 				final String option=sess.choose(L("^HMenu ^N(?/A/D/L/I/E/R/S/Q@x1)^H: ^N",(canExtEdit?"/W":"")),L("ADLIERSQ?@x1",(canExtEdit?"W":"")),"?",-1,paramsOut);
 				final String paramAll=(paramsOut.size()>0)?CMParms.combine(paramsOut,0):null;
@@ -912,19 +1353,22 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					}
 					break;
 				}
-				case '?': mob.tell(help); break;
-				case 'A': mob.tell(addModeMessage);
-						  menuMode=false;
-						  break;
+				case '?':
+					mob.tell(getMsgMkrHelp(sess));
+					break;
+				case 'A':
+					mob.tell(addModeMessage);
+					menuMode = false;
+					break;
 				case 'W':
 				{
-					if(mob.session()!=null)
+					if(sess!=null)
 					{
 						StringBuilder oldDoc=new StringBuilder();
 						for(final String s : vbuf)
 							oldDoc.append(s).append("\n");
 						vbuf.clear();
-						mob.session().sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\",\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
+						sess.sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\",\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
 						oldDoc=null;
 						String newText=unsafePrompt(sess,L("Re-Enter the whole doc using your GMCP editor.\n\rIf the editor has not popped up, just hit enter and QUIT Without Saving immediately.\n\rProceed: "),"");
 						if((newText.length()>0)&&(newText.charAt(newText.length()-1)=='\\'))
@@ -971,7 +1415,6 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				}
 				}
 			}
-
 		}
 		return MsgMkrResolution.CANCELFILE;
 	}

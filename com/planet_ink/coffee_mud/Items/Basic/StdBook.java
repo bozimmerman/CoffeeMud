@@ -8,10 +8,12 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -158,59 +160,90 @@ public class StdBook extends StdItem
 			}
 			case CMMsg.TYP_WRITE:
 			{
-				try
+				final MOB M=mob;
+				final String[] subject=new String[1];
+				final String[] message=new String[1];
+				if(!mob.isMonster())
 				{
-					final Room R=mob.location();
-					final String adminReq=getAdminReq().trim();
-					final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
-					if(!mob.isMonster())
+					final Runnable addComplete=new Runnable() 
 					{
 						final String to="ALL";
-						String subject;
-						final String message;
-						if(msg.targetMessage().length()>1)
+						final MOB mob=M;
+						@Override
+						public void run()
 						{
-							message=msg.targetMessage();
-							int numMessages=getChapterCount(to);
-							subject=L("Chapter @x1",""+(numMessages+1));
-						}
-						else
-						{
-							subject=mob.session().prompt(L("Enter the name of the chapter (Chapter 1: Start of book),etc : "));
-							if(subject.trim().length()==0)
+							final Room R=mob.location();
+							final String adminReq=getAdminReq().trim();
+							final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,mob,true);
+							if(message[0].startsWith("<cmvp>")
+							&&(!admin)
+							&&(!(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.JOURNALS))))
 							{
-								mob.tell(L("Aborted."));
+								mob.tell(L("Illegal code, aborted."));
 								return;
 							}
-							final String messageTitle="The contents of this chapter";
-							mob.session().println(L("\n\rEnter the contents of this chapter:"));
-							final List<String> vbuf=new Vector<String>();
-							if(CMLib.journals().makeMessage(mob, messageTitle, vbuf, true)==JournalsLibrary.MsgMkrResolution.CANCELFILE)
-							{
-								mob.tell(L("Aborted."));
-								return;
-							}
-							message=CMParms.combineWith(vbuf, "\\n");
+		
+							addNewChapter(mob.Name(),to,subject[0],message[0]);
+							if((R!=null)&&(msg.targetMessage().length()<=1))
+								R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter added."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+							else
+								mob.tell(L("Chapter added."));
 						}
-						if(message.startsWith("<cmvp>")
-						&&(!admin)
-						&&(!(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.JOURNALS))))
-						{
-							mob.tell(L("Illegal code, aborted."));
-							return;
-						}
-	
-						addNewChapter(mob.Name(),to,subject,message);
-						if((R!=null)&&(msg.targetMessage().length()<=1))
-							R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter added."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
-						else
-							mob.tell(L("Chapter added."));
+					};
+					if(msg.targetMessage().length()>1)
+					{
+						message[0]=msg.targetMessage();
+						int numMessages=getChapterCount("ALL");
+						subject[0]=L("Chapter @x1",""+(numMessages+1));
+						addComplete.run();
 					}
-					return;
-				}
-				catch(final IOException e)
-				{
-					Log.errOut("JournalItem",e.getMessage());
+					else
+					{
+						final InputCallback contentCallBack = new InputCallback(InputCallback.Type.PROMPT,"",0)
+						{
+							final MOB mob=M;
+							final Runnable completer=addComplete; 
+							@Override
+							public void showPrompt()
+							{
+								mob.session().promptPrint(L("Enter the name of the chapter: "));
+							}
+
+							@Override
+							public void timedOut()
+							{
+							}
+
+							@Override
+							public void callBack()
+							{
+								String subj=this.input.trim();
+								if(subj.trim().length()==0)
+								{
+									mob.tell(L("Aborted."));
+									return;
+								}
+								subject[0]=subj;
+								final String messageTitle="The contents of this chapter";
+								mob.session().println(L("\n\rEnter the contents of this chapter:"));
+								final List<String> vbuf=new Vector<String>();
+								CMLib.journals().makeMessageASync(mob, messageTitle, vbuf, true, new JournalsLibrary.MsgMkrCallback(){
+									@Override
+									public void callBack(MOB mob, Session sess, MsgMkrResolution res)
+									{
+										if(res ==JournalsLibrary.MsgMkrResolution.CANCELFILE)
+										{
+											mob.tell(L("Aborted."));
+											return;
+										}
+										message[0]=CMParms.combineWith(vbuf, "\\n");
+										completer.run();
+									}
+								});
+							}
+						};
+						mob.session().prompt(contentCallBack);
+					}
 				}
 				return;
 			}

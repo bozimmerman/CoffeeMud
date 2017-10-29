@@ -11,6 +11,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCallback;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -236,7 +238,7 @@ public class Shell extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String pwd=(pwds.contains(mob))?(String)pwds.get(pwds.indexOf(mob),2):"";
@@ -723,24 +725,27 @@ public class Shell extends StdCommand
 			buf=null;
 			mob.tell(L("@x1 has been loaded.\n\r\n\r",desc(file)));
 			final String messageTitle="File: "+file.getVFSPathAndName();
-			final JournalsLibrary.MsgMkrResolution resolution=CMLib.journals().makeMessage(mob, messageTitle, vbuf, false);
-			if(resolution==JournalsLibrary.MsgMkrResolution.SAVEFILE)
+			CMLib.journals().makeMessageASync(mob, messageTitle, vbuf, false, new MsgMkrCallback()
 			{
-				final StringBuffer text=new StringBuffer("");
-				for(int i=0;i<vbuf.size();i++)
-					text.append((vbuf.get(i))+CR);
-				if(file.saveText(text))
+				@Override
+				public void callBack(final MOB mob, final Session sess, final MsgMkrResolution resolution)
 				{
-					for(final Iterator<String> i=Resources.findResourceKeys(file.getName());i.hasNext();)
-						Resources.removeResource(i.next());
-					mob.tell(L("File saved."));
+					if(resolution==JournalsLibrary.MsgMkrResolution.SAVEFILE)
+					{
+						final StringBuffer text=new StringBuffer("");
+						for(int i=0;i<vbuf.size();i++)
+							text.append((vbuf.get(i))+CR);
+						if(file.saveText(text))
+						{
+							for(final Iterator<String> i=Resources.findResourceKeys(file.getName());i.hasNext();)
+								Resources.removeResource(i.next());
+							mob.tell(L("File saved."));
+						}
+						else
+							mob.tell(L("^XError: could not save the file!^N^."));
+					}
 				}
-				else
-					mob.tell(L("^XError: could not save the file!^N^."));
-				return true;
-			}
-			if(resolution==JournalsLibrary.MsgMkrResolution.CANCELFILE)
-				return true;
+			});
 			return false;
 		}
 		case MOVE: // move

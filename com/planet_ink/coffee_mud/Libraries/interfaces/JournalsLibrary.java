@@ -61,9 +61,15 @@ public interface JournalsLibrary extends CMLibrary
 	public enum MsgMkrResolution { SAVEFILE, CANCELFILE }
 
 	public MsgMkrResolution makeMessage(final MOB mob, final String messageTitle, final List<String> vbuf, boolean autoAdd) throws IOException;
+	public void makeMessageASync(final MOB mob, final String messageTitle, final List<String> vbuf, final boolean autoAdd, final MsgMkrCallback back);
 
 	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
 
+	public interface MsgMkrCallback
+	{
+		public void callBack(final MOB mob, final Session sess, final MsgMkrResolution res);
+	}
+	
 	public interface JournalMetaData
 	{
 		public String name();

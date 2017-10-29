@@ -126,38 +126,37 @@ public class StdPlayerBook extends StdBook
 			entry.key		(data.key());
 			entry.from		(data.who());
 			entry.to		("ALL");
-			
+			String subj;
 			if(addAuthors)
-				entry.subj		(L("Chapter @x1 by @x2",""+chapter,data.who()));
+				subj =		(L("Chapter @x1 by @x2",""+chapter,data.who()));
 			else
-				entry.subj		(L("Chapter @x1 ",""+chapter));
+				subj =		(L("Chapter @x1 ",""+chapter));
+			String msg = data.xml();
+			if(msg.startsWith("::"))
+			{
+				int x=msg.indexOf("::",2);
+				if(x>1)
+				{
+					String finalSubj=msg.substring(2,x);
+					if(finalSubj.trim().length()>0)
+					{
+						subj = subj + ": "+finalSubj;
+						msg=msg.substring(x+2);
+					}
+				}
+			}
+			entry.subj		(subj);
 			entry.parent	("");
 			entry.attributes();
 			entry.data		("");
 			entry.update	(0);
 			entry.views		(0);
 			entry.replies	(0);
-			entry.msg		(data.xml());
+			entry.msg		(msg);
 			entries.add(entry);
 			chapter++;
 		}
 		return entries;
-	}
-	
-	@Override
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if(!super.okMessage(myHost, msg))
-			return false;
-		if(msg.amITarget(this) && (msg.targetMinor() == CMMsg.TYP_WRITE))
-		{
-			if(msg.targetMessage().length()==0)
-			{
-				msg.source().tell(L("Write what on @x1?",name()));
-				return false;
-			}
-		}
-		return true;
 	}
 	
 	@Override
@@ -171,6 +170,6 @@ public class StdPlayerBook extends StdBook
 		}
 		String cat="BOOK_"+subkey;
 		String key=from.toUpperCase()+"_"+cat+"_"+this.getChapterCount(to);
-		CMLib.database().DBCreatePlayerData(from, cat, key, message);
+		CMLib.database().DBCreatePlayerData(from, cat, key, "::"+subject.replaceAll("::", ";;")+"::"+message);
 	}
 }
