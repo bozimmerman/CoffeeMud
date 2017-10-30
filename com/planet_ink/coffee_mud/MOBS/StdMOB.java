@@ -2526,6 +2526,7 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_ENHANCE:
 				case CMMsg.TYP_UNLOCK:
 				case CMMsg.TYP_WRITE:
+				case CMMsg.TYP_REWRITE:
 					if (charStats().getBodyPart(Race.BODY_HAND) == 0)
 					{
 						tell(L("You need hands to do that."));

@@ -11,6 +11,8 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrCallback;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.MsgMkrResolution;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -75,6 +77,57 @@ public class StdJournal extends StdItem
 				{
 					msg.source().tell(L("You are not allowed to write on @x1",name()));
 					return false;
+				}
+				return true;
+			}
+			case CMMsg.TYP_REWRITE:
+			{
+				final MOB mob=msg.source();
+				final String adminReq=getAdminReq().trim();
+				final boolean admin=((adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source(),true))
+								||CMSecurity.isJournalAccessAllowed(msg.source(),Name());
+				if((!CMLib.masking().maskCheck(getWriteReq(),msg.source(),true))
+				&&(!admin)
+				&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
+				{
+					msg.source().tell(L("You are not allowed to write on @x1",name()));
+					return false;
+				}
+				if(msg.targetMinor()==CMMsg.TYP_REWRITE)
+				{
+					String entryStr;
+					if((msg.targetMessage()!=null)&&(msg.targetMessage().startsWith("DELETE ")))
+						entryStr=msg.targetMessage().substring(7).trim();
+					else
+						entryStr=msg.targetMessage();
+					if(!CMath.isInteger(entryStr))
+					{
+						mob.tell(L("The journal does not have an entry #@x1.",entryStr));
+						return false;
+					}
+					int which=CMath.s_int(entryStr);
+					final List<JournalEntry> journal2;
+					if(!getSortBy().toUpperCase().startsWith("CREAT"))
+						journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true);
+					else
+						journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
+					if((which<1)||(which>journal2.size()))
+					{
+						mob.tell(L("The journal does not have an entry #@x1.",""+which));
+						return false;
+					}
+					else
+					{
+						final JournalEntry read=journal2.get(which-1);
+						if((!read.from().equalsIgnoreCase(mob.Name()))
+						&&(!read.to().equalsIgnoreCase(mob.Name()))
+						&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS)))
+						&&(!admin))
+						{
+							mob.tell(L("You are not allowed to alter or remove entry #@x1.",""+which));
+							return false;
+						}
+					}
 				}
 				return true;
 			}
@@ -351,6 +404,47 @@ public class StdJournal extends StdItem
 							mob.tell(L("That message is private."));
 					}
 					return;
+				}
+				return;
+			}
+			case CMMsg.TYP_REWRITE:
+			{
+				if((msg.targetMessage()!=null)&&(msg.targetMessage().startsWith("DELETE ")))
+				{
+					String entryStr=msg.targetMessage().substring(7).trim();
+					int which=CMath.s_int(entryStr);
+					final List<JournalEntry> journal2;
+					if(!getSortBy().toUpperCase().startsWith("CREAT"))
+						journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true);
+					else
+						journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
+					final JournalEntry entry2=journal2.get(which-1);
+					CMLib.database().DBDeleteJournal(Name(),entry2.key());
+				}
+				else
+				if(CMath.isInteger(msg.targetMessage()))
+				{
+					int which=CMath.s_int(msg.targetMessage());
+					final List<JournalEntry> journal2;
+					if(!getSortBy().toUpperCase().startsWith("CREAT"))
+						journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true);
+					else
+						journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
+					final JournalEntry entry2=journal2.get(which-1);
+					final List<String> vbuf=new ArrayList<String>();
+					vbuf.addAll(CMParms.parseAny(entry2.msg(),"\n",false));
+					CMLib.journals().makeMessageASync(mob, entry2.subj(), vbuf, false, new MsgMkrCallback(){
+						@Override
+						public void callBack(MOB mob, Session sess, MsgMkrResolution res)
+						{
+							if(res == MsgMkrResolution.SAVEFILE)
+							{
+								entry2.msg(CMParms.combineWith(vbuf,"\n"));
+								CMLib.database().DBUpdateJournal(Name(), entry2);
+							}
+						}
+						
+					});
 				}
 				return;
 			}

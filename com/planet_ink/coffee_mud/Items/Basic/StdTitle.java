@@ -362,7 +362,7 @@ public class StdTitle extends StdItem implements LandTitle
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.targetMinor()==CMMsg.TYP_WRITE)
+		if(((msg.targetMinor()==CMMsg.TYP_WRITE)||(msg.targetMinor()==CMMsg.TYP_REWRITE))
 		&&(msg.amITarget(this)))
 		{
 			final MOB mob=msg.source();

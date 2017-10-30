@@ -153,8 +153,12 @@ public class Scholar extends StdCharClass
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Titling",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_MorseCode",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"BookEditing",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_KnowPlants",true);
+		
 /*
-7	Edit (G), Identify Poison (Q), Druid_KnowPlants		
 8	Skill_SeaMapping (G), RevealText (Q)		
 9	Bookcopying (G), Semaphore (Q), Wilderness Lore (Q)		
 10	Speculating (G), Subtitling (Q), Siegecraft (Q)		
@@ -224,6 +228,7 @@ public class Scholar extends StdCharClass
 		if(msg.source()==myHost)
 		{
 			if(((msg.targetMinor()==CMMsg.TYP_WRITE)
+				||(msg.targetMinor()==CMMsg.TYP_REWRITE)
 				||(msg.targetMinor()==CMMsg.TYP_WROTE))
 			&&(msg.target() instanceof Item)
 			&&(msg.targetMessage()!=null)

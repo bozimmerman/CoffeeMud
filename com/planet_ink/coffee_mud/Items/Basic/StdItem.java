@@ -1440,6 +1440,22 @@ public class StdItem implements Item
 			if(this instanceof SpaceObject)
 				return true;
 			break;
+		case CMMsg.TYP_REWRITE:
+			if((isReadable())
+			&&(!(this instanceof Scroll))
+			&&(!(this instanceof Electronics)))
+			{
+				if(msg.targetMessage().trim().isEmpty())
+				{
+					if(this instanceof Electronics)
+						mob.tell(L("Enter what into @x1?",name()));
+					else
+						mob.tell(L("Write what on @x1?",name()));
+					return false;
+				}
+				return true;
+			}
+			return false;
 		case CMMsg.TYP_WRITE:
 			if(((isReadable())&&(!(this instanceof Scroll)))
 			||(this instanceof ElecPanel)
@@ -1565,6 +1581,16 @@ public class StdItem implements Item
 		case CMMsg.TYP_WRITE:
 			if(isReadable() && (!(this instanceof Electronics)))
 				setReadableText((readableText()+" "+msg.targetMessage()).trim());
+			break;
+		case CMMsg.TYP_REWRITE:
+			if(isReadable() && (!(this instanceof Electronics)))
+			{
+				if((""+msg.targetMessage()).startsWith("DELETE "))
+					setReadableText("");
+				else
+				if(!CMath.isInteger(""+msg.targetMessage()))
+					setReadableText(""+msg.targetMessage().trim());
+			}
 			break;
 		case CMMsg.TYP_EXTINGUISH:
 			if(CMLib.flags().isOnFire(this))

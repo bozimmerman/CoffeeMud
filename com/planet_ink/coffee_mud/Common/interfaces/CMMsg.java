@@ -1175,8 +1175,10 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_WEATHER=123;
 	/** MINOR_MASK minor action code type, denoting a completed item generation activty */
 	public static final int TYP_ITEMSGENERATED=124;
-	/** MINOR_MASK minor action code type, denoting a completed item generation activty */
+	/** MINOR_MASK minor action code type, denoting a write activity */
 	public static final int TYP_WROTE=125;
+	/** MINOR_MASK minor action code type, denoting a rewrite activty */
+	public static final int TYP_REWRITE=126;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1205,7 +1207,7 @@ public interface CMMsg extends CMCommon
 		"PREINVOKE","POSSESS","DISPOSSESS","POWERCURRENT","CONTEMPLATE","POUR","LOOKEXITS",
 		"LASER","SONIC","REPAIR","ENHANCE","INSTALL","COLLISION","AROMA","DUELLOSS",
 		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED",
-		"WROTE"
+		"WROTE", "REWRITE"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1519,6 +1521,8 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_WEATHER=MASK_HANDS|MASK_SOUND|MASK_MOVE|MASK_ALWAYS|TYP_WEATHER;
 	/** combined MAJOR and MINOR codes for useful event message type for a fail to target in a command */
 	public static final int MSG_WROTE=MASK_ALWAYS|TYP_WROTE;
+	/** combined MAJOR and MINOR codes for useful event message type for a re-write event */
+	public static final int MSG_REWRITE=MASK_HANDS|TYP_REWRITE;
 	
 	/**
 	 * An enum to use for an external message check from inside 

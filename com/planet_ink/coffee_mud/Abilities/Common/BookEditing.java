@@ -65,6 +65,7 @@ public class BookEditing extends CommonSkill
 	}
 
 	protected Item		found	= null;
+	protected String	pageNum	= "";
 	
 	@Override
 	protected boolean canBeDoneSittingDown()
@@ -91,7 +92,9 @@ public class BookEditing extends CommonSkill
 					commonTell(mob,L("You mess up your book editing."));
 				else
 				{
-					//TODO: Edit the book?!
+					final CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.TYP_REWRITE,L("<S-NAME> start(s) editing <T-NAME>."),pageNum,L("<S-NAME> start(s) editing <T-NAME>."));
+					if(mob.location().okMessage(mob,msg))
+						mob.location().send(mob,msg);
 				}
 			}
 		}
@@ -112,7 +115,7 @@ public class BookEditing extends CommonSkill
 		if(commands.size()<1)
 			return error(mob);
 		found = null;
-		String pageNum="";
+		pageNum="";
 		if((commands.size()>1)&&(CMath.isInteger(commands.get(commands.size()-1))))
 			pageNum=commands.remove(commands.size()-1);
 		String itemName = CMParms.combine(commands);
@@ -162,13 +165,6 @@ public class BookEditing extends CommonSkill
 			return false;
 		}
 		
-		if(CMath.isInteger(pageNum))
-		{
-			//TODO: check for page numbers
-			commonTell(mob,L("'@x1' is not a valid name page number.  Try BNAME LIST.",pageNum));
-			return false;
-		}
-		
 		if(!target.isGeneric())
 		{
 			commonTell(mob,L("You aren't able to give that a name."));
@@ -183,7 +179,7 @@ public class BookEditing extends CommonSkill
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			found = null;
 		final int duration=getDuration(30,mob,1,1);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),L("<S-NAME> start(s) editing <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),L("<S-NAME> prepare(s) to edit <T-NAME>."),pageNum,L("<S-NAME> prepare(s) to edit <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

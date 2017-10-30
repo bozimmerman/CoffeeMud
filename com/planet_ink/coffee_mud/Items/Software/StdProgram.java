@@ -253,6 +253,7 @@ public class StdProgram extends StdItem implements Software
 				onDeactivate(msg.source(),msg.targetMessage());
 				break;
 			case CMMsg.TYP_WRITE:
+			case CMMsg.TYP_REWRITE:
 				onTyping(msg.source(),msg.targetMessage());
 				break;
 			case CMMsg.TYP_POWERCURRENT:

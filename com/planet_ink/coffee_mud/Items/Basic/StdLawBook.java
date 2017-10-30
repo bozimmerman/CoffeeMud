@@ -61,6 +61,7 @@ public class StdLawBook extends StdItem
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_WRITE:
+		case CMMsg.TYP_REWRITE:
 			msg.source().tell(L("You are not allowed to write on @x1. Try reading it.",name()));
 			return false;
 		}
@@ -176,6 +177,7 @@ public class StdLawBook extends StdItem
 				}
 			}
 			return;
+		case CMMsg.TYP_REWRITE:
 		case CMMsg.TYP_WRITE:
 			try
 			{
