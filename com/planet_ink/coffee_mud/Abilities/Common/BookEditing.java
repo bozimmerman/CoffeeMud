@@ -103,7 +103,7 @@ public class BookEditing extends CommonSkill
 
 	public boolean error(final MOB mob)
 	{
-		commonTell(mob,L("You must specify what book to edit, and the page/chapter number to edit."));
+		commonTell(mob,L("You must specify what book to edit, and the optional page/chapter number to edit."));
 		return false;
 	}
 	
