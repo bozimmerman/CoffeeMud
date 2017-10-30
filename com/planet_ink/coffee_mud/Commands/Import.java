@@ -3154,7 +3154,7 @@ public class Import extends StdCommand
 						sexCode=3;
 
 					if(CMath.isNumber(CMParms.getCleanBit(codeStr4,0).trim()))
-						positionCode=CMath.s_int(CMParms.getCleanBit(codeStr4,2).trim());
+						positionCode=CMath.s_int(CMParms.getCleanBit(codeStr4,0).trim());
 					else
 					if(CMParms.getCleanBit(codeStr4,0).trim().startsWith("STAND"))
 						positionCode=8;
