@@ -82,6 +82,13 @@ public class StdPlayerBook extends StdBook
 		return L("\n\r@x1\n\rBy Various Authors\n\r\n\rTable of Contents\n\r",Name());
 	}
 	
+	@Override
+	protected void delOldChapter(final String from, final String to, final String key)
+	{
+		final String cat="BOOK_"+key;
+		CMLib.database().DBDeletePlayerData(from, cat, key);
+	}
+
 	protected JournalEntry createEntryFromData(PlayerData data, boolean addAuthors, int chapter)
 	{
 		final JournalEntry entry=(JournalEntry)CMClass.getCommon("DefaultJournalEntry");
@@ -171,7 +178,7 @@ public class StdPlayerBook extends StdBook
 	}
 
 	@Override
-	protected void  addNewChapter(final String from, final String to, final String subject, final String message)
+	protected void addNewChapter(final String from, final String to, final String subject, final String message)
 	{
 		String subkey=super.getParm("KEY");
 		if((subkey == null)||(subkey.length()==0))

@@ -78,22 +78,47 @@ public class StdBook extends StdItem
 					msg.source().tell(L("You are not allowed to write on @x1",name()));
 					return false;
 				}
-				if(CMath.isInteger(msg.targetMessage()))
+				if(msg.targetMajor(CMMsg.MASK_CNTRLMSG))
 				{
-					int msgNum=CMath.s_int(msg.targetMessage());
-					if((msgNum <0)||(msgNum>=this.getChapterCount("ALL")))
+					if(CMath.isInteger(msg.targetMessage()))
 					{
-						msg.source().tell(L("How did you do that?"));
-						return false;
-					}
-					if((!admin)
-					&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
-					{
-						JournalEntry entry = this.readChaptersByCreateDate().get(msgNum);
-						if(!entry.from().equalsIgnoreCase(msg.source().Name()))
+						int msgNum=CMath.s_int(msg.targetMessage());
+						if((msgNum <0)||(msgNum>=this.getChapterCount("ALL")))
 						{
-							msg.source().tell(L("You need permission to edit that chapter."));
+							msg.source().tell(L("There is no Chapter @x1",""+(msgNum+1)));
 							return false;
+						}
+						if((!admin)
+						&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
+						{
+							JournalEntry entry = this.readChaptersByCreateDate().get(msgNum);
+							if(!entry.from().equalsIgnoreCase(msg.source().Name()))
+							{
+								msg.source().tell(L("You need permission to edit that chapter."));
+								return false;
+							}
+						}
+					}
+					else
+					if(msg.targetMessage().toUpperCase().startsWith("DELETE "))
+					{
+						String entryStr=msg.targetMessage().substring(7).trim();
+						int entryNum=CMath.s_int(entryStr);
+						int numEntries = this.getChapterCount("ALL");
+						if((entryNum < 0)||(numEntries>=numEntries)||(!CMath.isInteger(entryStr)))
+						{
+							msg.source().tell(L("There is no Chapter @x1",""+(entryNum+1)));
+							return false;
+						}
+						if((!admin)
+						&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
+						{
+							JournalEntry entry = this.readChaptersByCreateDate().get(entryNum);
+							if(!entry.from().equalsIgnoreCase(msg.source().Name()))
+							{
+								msg.source().tell(L("You need permission to remove that chapter."));
+								return false;
+							}
 						}
 					}
 				}
@@ -222,6 +247,15 @@ public class StdBook extends StdItem
 							}
 						}
 					};
+					if((msg.targetMajor(CMMsg.MASK_CNTRLMSG))
+					&&(msg.targetMessage().toUpperCase().startsWith("DELETE ")))
+					{
+						int entryNum=CMath.s_int(msg.targetMessage().substring(7).trim());
+						JournalEntry entry = this.readChaptersByCreateDate().get(entryNum);
+						delOldChapter(mob.Name(),"ALL",entry.key());
+						mob.tell(L("Chapter removed."));
+					}
+					else
 					if((msg.targetMessage().length()>1)
 					&&(!msg.targetMajor(CMMsg.MASK_CNTRLMSG))
 					&&(!CMath.isInteger(msg.targetMessage())))
@@ -347,6 +381,11 @@ public class StdBook extends StdItem
 		entry.subj(subject);
 		entry.msg(message);
 		CMLib.database().DBUpdateJournal(getJournalName(), entry);
+	}
+
+	protected void delOldChapter(final String from, final String to, final String key)
+	{
+		CMLib.database().DBDeleteJournal(getJournalName(), key);
 	}
 
 	public Triad<String,String,StringBuffer> DBRead(MOB readerMOB, int which, long lastTimeDate, boolean newOnly, boolean all)
