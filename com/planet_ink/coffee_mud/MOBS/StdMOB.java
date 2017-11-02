@@ -2470,9 +2470,10 @@ public class StdMOB implements MOB
 						tell(L("That's way too heavy."));
 						return false;
 					}
-					final int movesReq = (msg.targetMinor()==CMMsg.TYP_PUSH)?
+					final int movesReq = ((msg.targetMinor()==CMMsg.TYP_PUSH)?
 						((Physical)msg.target()).phyStats().movesReqToPush():
-						((Physical)msg.target()).phyStats().movesReqToPull();
+						((Physical)msg.target()).phyStats().movesReqToPull())
+							- this.maxCarry();
 					if((curState.getMovement()<movesReq)
 					&&(curState.getMovement()<maxState.getMovement()))
 					{

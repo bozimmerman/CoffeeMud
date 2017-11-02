@@ -128,7 +128,9 @@ public class Push extends Go
 						else
 						if(pushThis instanceof MOB)
 							CMLib.tracking().walk((MOB)pushThis,dirCode,((MOB)pushThis).isInCombat(),false,true,true);
-						mob.curState().adjMovement(-pushThis.phyStats().movesReqToPush(), mob.maxState());
+						final int movesRequired = pushThis.phyStats().movesReqToPush() - mob.maxCarry();
+						if(movesRequired > 0)
+							mob.curState().adjMovement(-movesRequired, mob.maxState());
 					}
 				}
 			}
