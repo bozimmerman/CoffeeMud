@@ -3448,6 +3448,9 @@ public class StdMOB implements MOB
 				|| ((CMath.bset(othersMajor, CMMsg.MASK_MOUTH)) && (!CMath.bset(othersMajor, CMMsg.MASK_SOUND))))
 			&& (!asleep) && ((canseesrc) || (canhearsrc)))
 				tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
+			else
+			if((msg.sourceMinor()==CMMsg.TYP_TELL)&&(msg.targetCode()==CMMsg.NO_EFFECT)) // group tell
+				tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
 			
 			if (((othersMinor == CMMsg.TYP_ADVANCE)||(othersMinor == CMMsg.TYP_ENTER))
 			&&(!isMonster())

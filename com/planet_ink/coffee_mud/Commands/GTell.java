@@ -116,9 +116,8 @@ public class GTell extends StdCommand
 
 		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		final CMMsg msg=tellMsg;
-		for (final Object element : group)
+		for (final MOB target : group)
 		{
-			final MOB target=(MOB)element;
 			if((mob.location().okMessage(mob,msg))
 			&&(target.okMessage(target,msg)))
 			{
