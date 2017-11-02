@@ -32,18 +32,18 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prop_OpenCommand extends Property
+public class Prop_CloseCommand extends Property
 {
 	@Override
 	public String ID()
 	{
-		return "Prop_OpenCommand";
+		return "Prop_CloseCommand";
 	}
 
 	@Override
 	public String name()
 	{
-		return "Opening Command";
+		return "Closing Command";
 	}
 
 	private final List<String[]> commandPhrases = new SLinkedList<String[]>();
@@ -139,20 +139,26 @@ public class Prop_OpenCommand extends Property
 							}
 							if(dirCode>=0)
 							{
-								CMMsg msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_UNLOCK,null);
+								CMMsg msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_CLOSE,L("<T-NAME> "+CMLib.english().makePlural(E.closeWord())+"."));
 								CMLib.utensils().roomAffectFully(msg2,R,dirCode);
-								msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_OPEN,L("<T-NAME> "+CMLib.english().makePlural(E.openWord())+"."));
-								CMLib.utensils().roomAffectFully(msg2,R,dirCode);
+								if(E.hasALock())
+								{
+									msg2=CMClass.getMsg(mob,E,null,CMMsg.MSG_LOCK,null);
+									CMLib.utensils().roomAffectFully(msg2,R,dirCode);
+								}
 							}
 						}
 					}
 					else
 					if(affected instanceof Container)
 					{
-						CMMsg msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_UNLOCK,null);
+						CMMsg msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_OPEN,L("<T-NAME> closes."));
 						affected.executeMsg(mob,msg2);
-						msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_OPEN,L("<T-NAME> opens."));
-						affected.executeMsg(mob,msg2);
+						if(((Container)affected).hasALock())
+						{
+							msg2=CMClass.getMsg(mob,affected,null,CMMsg.MSG_LOCK,null);
+							affected.executeMsg(mob,msg2);
+						}
 					}
 					return false;
 				}
