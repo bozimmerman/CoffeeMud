@@ -92,10 +92,23 @@ public class Masonry extends BuildingSkill
 	@Override
 	protected int[][] getBasicMaterials(final MOB mob, int woodRequired, String miscType)
 	{
+		final int[] req1;
 		if(miscType.length()==0)
-			miscType="rock";
+		{
+			req1=new int[]
+			{
+				RawMaterial.RESOURCE_STONE,
+				RawMaterial.RESOURCE_LIMESTONE,
+				RawMaterial.RESOURCE_FLINT,
+				RawMaterial.RESOURCE_GRANITE,
+				RawMaterial.RESOURCE_OBSIDIAN,
+				RawMaterial.RESOURCE_MARBLE
+			};
+		}
+		else
+			req1=null;
 		final int[][] idata=fetchFoundResourceData(mob,
-													woodRequired,miscType,null,
+													woodRequired,miscType,req1,
 													0,null,null,
 													false,
 													0,null);
