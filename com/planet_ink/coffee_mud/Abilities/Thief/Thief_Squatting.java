@@ -100,6 +100,25 @@ public class Thief_Squatting extends ThiefSkill
 	}
 
 	@Override
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if(affected instanceof MOB)
+		{
+			if((msg.source()==affected)
+			&&((msg.sourceMinor()==CMMsg.TYP_QUIT)
+				||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+				||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(msg.target()==msg.source().location()))
+				||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
+			&&(msg.source().location()!=null))
+			{
+				failed=true;
+				unInvoke();
+			}
+		}
+		return super.okMessage(host,msg);
+	}
+
+	@Override
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		if(affected instanceof MOB)
