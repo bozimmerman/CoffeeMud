@@ -105,13 +105,13 @@ public class GTell extends StdCommand
 				else
 					text=" "+text.trim();
 				tellMsg.setSourceMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^>[GTELL] <S-NAME>"+text+"^</GTELL^>^?^.");
-				tellMsg.setOthersMessage(tellMsg.sourceMessage());
+				tellMsg.setOthersMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^>"+mob.name()+" tells the group '"+text+"'^</GTELL^>^?^.");
 			}
 		}
 		else
 		{
 			tellMsg.setSourceMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^><S-NAME> tell(s) the group '"+text+"'^</GTELL^>^?^.");
-			tellMsg.setOthersMessage(tellMsg.sourceMessage());
+			tellMsg.setOthersMessage("^t^<GTELL \""+CMStrings.removeColors(mob.name())+"\"^>"+mob.name()+" tells the group '"+text+"'^</GTELL^>^?^.");
 		}
 
 		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
