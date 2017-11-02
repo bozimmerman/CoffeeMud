@@ -2473,7 +2473,7 @@ public class StdMOB implements MOB
 					final int movesReq = ((msg.targetMinor()==CMMsg.TYP_PUSH)?
 						((Physical)msg.target()).phyStats().movesReqToPush():
 						((Physical)msg.target()).phyStats().movesReqToPull())
-							- this.maxCarry();
+							- (maxCarry() / 3);
 					if((curState.getMovement()<movesReq)
 					&&(curState.getMovement()<maxState.getMovement()))
 					{

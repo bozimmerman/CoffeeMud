@@ -108,7 +108,7 @@ public class Pull extends Go
 					else
 					if(pullThis instanceof MOB)
 						CMLib.tracking().walk((MOB)pullThis,dirCode,((MOB)pullThis).isInCombat(),false,true,true);
-					final int movesRequired = pullThis.phyStats().movesReqToPull() - mob.maxCarry();
+					final int movesRequired = pullThis.phyStats().movesReqToPull() - (mob.maxCarry() / 3);
 					if(movesRequired > 0)
 						mob.curState().adjMovement(-movesRequired, mob.maxState());
 				}
