@@ -110,7 +110,7 @@ public class AutoInvoke extends StdCommand
 		}
 
 		final Race R=mob.charStats().getMyRace();
-		for(Ability a : R.racialEffects(mob))
+		for(final Ability a : R.racialEffects(mob))
 		{
 			if(a!=null)
 			{
