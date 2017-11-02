@@ -76,7 +76,7 @@ public class Play_Cymbals extends Play_Instrument
 	}
 
 	@Override
-	protected void inpersistantAffect(MOB mob)
+	protected void inpersistentAffect(MOB mob)
 	{
 		if (getSpell() != null)
 		{

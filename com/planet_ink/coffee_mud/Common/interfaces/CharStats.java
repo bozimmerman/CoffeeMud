@@ -207,7 +207,7 @@ public interface CharStats extends CMCommon, Modifiable
 	public int getCode(String abilityName);
 
 	/**
-	 * Uses the saving throw stats stored here the the mob, modified by basic attributes,
+	 * Uses the saving throw stats stored here the mob, modified by basic attributes,
 	 * to return a final Saving Throw value for this mob.
 	 * @see CharStats
 	 * @param which which STAT_SAVE_ constant from CharStats interface to use

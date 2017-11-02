@@ -44,4 +44,17 @@ public class Prop_Unsellable extends Property
 		return "Unsellable stuff";
 	}
 
+	@Override
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((msg.target()==affected)
+		&&(msg.targetMinor()==CMMsg.TYP_SELL))
+		{
+			msg.source().tell(L("You can't sell that."));
+			return false;
+		}
+		return true;
+	}
 }

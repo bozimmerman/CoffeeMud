@@ -61,7 +61,7 @@ public class Play_Harmony extends Play
 	}
 
 	@Override
-	protected boolean persistantSong()
+	protected boolean persistentSong()
 	{
 		return false;
 	}
@@ -73,7 +73,7 @@ public class Play_Harmony extends Play
 	}
 
 	@Override
-	protected void inpersistantAffect(MOB mob)
+	protected void inpersistentAffect(MOB mob)
 	{
 		final MOB victim=mob.getVictim();
 		if(victim!=null)

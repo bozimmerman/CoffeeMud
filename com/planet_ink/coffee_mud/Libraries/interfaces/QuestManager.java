@@ -61,7 +61,7 @@ public interface QuestManager extends CMLibrary
 
 	public DVector getQuestTemplate(MOB mob, String fileToGet);
 	public Quest questMaker(MOB mob);
-	public List<Quest> getPlayerPersistantQuests(MOB player);
+	public List<Quest> getPlayerPersistentQuests(MOB player);
 	
 	public GenericEditor.CMEval getQuestCommandEval(QMCommand command);
 

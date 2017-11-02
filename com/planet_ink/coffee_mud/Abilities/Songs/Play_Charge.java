@@ -62,14 +62,14 @@ public class Play_Charge extends Play
 	}
 
 	@Override
-	protected boolean persistantSong()
+	protected boolean persistentSong()
 	{
 		return false;
 	}
 	List<String> chcommands=null;
 
 	@Override
-	protected void inpersistantAffect(MOB mob)
+	protected void inpersistentAffect(MOB mob)
 	{
 		final Ability A=CMClass.getAbility("Fighter_Charge");
 		if(A!=null)

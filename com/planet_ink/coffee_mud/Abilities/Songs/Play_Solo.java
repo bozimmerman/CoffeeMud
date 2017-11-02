@@ -56,7 +56,7 @@ public class Play_Solo extends Play
 	}
 
 	@Override
-	protected boolean persistantSong()
+	protected boolean persistentSong()
 	{
 		return false;
 	}

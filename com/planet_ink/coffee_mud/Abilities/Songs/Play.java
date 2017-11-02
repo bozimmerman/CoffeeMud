@@ -124,7 +124,7 @@ public class Play extends StdAbility
 		return false;
 	}
 
-	protected boolean persistantSong()
+	protected boolean persistentSong()
 	{
 		return true;
 	}
@@ -170,7 +170,7 @@ public class Play extends StdAbility
 			return 1;
 	}
 
-	protected void inpersistantAffect(MOB mob)
+	protected void inpersistentAffect(MOB mob)
 	{
 	}
 
@@ -619,7 +619,7 @@ public class Play extends StdAbility
 									R2.send(follower,msg3);
 									if((msg3.value()<=0)&&(follower.fetchEffect(newOne.ID())==null))
 									{
-										if(persistantSong())
+										if(persistentSong())
 										{
 											newOne.setSavable(false);
 											if(follower!=mob)
@@ -628,7 +628,7 @@ public class Play extends StdAbility
 												follower.addEffect(newOne);
 										}
 										else
-											inpersistantAffect(follower);
+											inpersistentAffect(follower);
 									}
 								}
 							}

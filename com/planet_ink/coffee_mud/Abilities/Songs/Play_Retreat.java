@@ -62,7 +62,7 @@ public class Play_Retreat extends Play
 	}
 
 	@Override
-	protected boolean persistantSong()
+	protected boolean persistentSong()
 	{
 		return false;
 	}
@@ -81,7 +81,7 @@ public class Play_Retreat extends Play
 	int directionCode=-1;
 
 	@Override
-	protected void inpersistantAffect(MOB mob)
+	protected void inpersistentAffect(MOB mob)
 	{
 		if(directionCode<0)
 		{

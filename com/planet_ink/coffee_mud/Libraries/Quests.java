@@ -1733,7 +1733,7 @@ public class Quests extends StdLibrary implements QuestManager
 	}
 
 	@Override
-	public List<Quest> getPlayerPersistantQuests(MOB player)
+	public List<Quest> getPlayerPersistentQuests(MOB player)
 	{
 		final Vector<Quest> qVec=new Vector<Quest>();
 		for(int q=0;q<CMLib.quests().numQuests();q++)

@@ -62,7 +62,7 @@ public class Play_Dirge extends Play
 	}
 
 	@Override
-	protected boolean persistantSong()
+	protected boolean persistentSong()
 	{
 		return false;
 	}

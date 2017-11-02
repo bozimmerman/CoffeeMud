@@ -549,7 +549,7 @@ public interface CombatLibrary extends CMLibrary
 	/**
 	 * Given the weapon type and classification and name,
 	 * this method returns either the fullly filled out weapon
-	 * hit/damage string from the the lists.ini file that matches.
+	 * hit/damage string from the lists.ini file that matches.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.Weapon#TYPE_DESCS
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.Weapon#CLASS_DESCS
 	 * @param weaponDamageType the weapon type

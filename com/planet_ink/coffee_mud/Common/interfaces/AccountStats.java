@@ -360,7 +360,7 @@ public interface AccountStats extends CMCommon
 	
 	/**
 	 * Returns an XML representation of all the data in this object, for
-	 * persistant storage.
+	 * persistent storage.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats#setXML(String)
 	 *

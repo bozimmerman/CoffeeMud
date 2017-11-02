@@ -237,7 +237,7 @@ public class MOTD extends StdCommand
 					}
 				}
 
-				final List<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
+				final List<Quest> qQVec=CMLib.quests().getPlayerPersistentQuests(mob);
 				if(mob.session()!=null)
 				{
 					if(buf.length()>0)

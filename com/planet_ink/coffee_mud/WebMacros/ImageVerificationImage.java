@@ -196,7 +196,7 @@ public class ImageVerificationImage extends StdWebMacro
 		final Graphics2D g = bimage.createGraphics();
 		// create a random color
 		final Color color = new Color(rand.nextInt(255), rand.nextInt(255), rand.nextInt(255));
-		// the the background to the random color to fill the
+		// the background to the random color to fill the
 		// background and make it darker
 		g.setColor(color.darker());
 		g.fillRect(0, 0, width, height);

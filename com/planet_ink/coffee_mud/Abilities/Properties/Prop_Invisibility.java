@@ -43,7 +43,7 @@ public class Prop_Invisibility extends Property
 	@Override
 	public String name()
 	{
-		return "Persistant Invisibility";
+		return "Persistent Invisibility";
 	}
 
 	@Override

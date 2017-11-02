@@ -63,7 +63,7 @@ public class Play_Instrument extends Play
 	}
 
 	@Override
-	protected void inpersistantAffect(MOB mob)
+	protected void inpersistentAffect(MOB mob)
 	{
 		Ability A = getSpell();
 		if ((A != null) 
@@ -111,7 +111,7 @@ public class Play_Instrument extends Play
 	}
 
 	@Override
-	protected boolean persistantSong()
+	protected boolean persistentSong()
 	{
 		return false;
 	}

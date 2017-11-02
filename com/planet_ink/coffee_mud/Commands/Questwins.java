@@ -90,7 +90,7 @@ public class Questwins extends StdCommand
 
 	public String getQuestsDoingList(MOB mob, String pronoun)
 	{
-		final List<Quest> qQVec=CMLib.quests().getPlayerPersistantQuests(mob);
+		final List<Quest> qQVec=CMLib.quests().getPlayerPersistentQuests(mob);
 		final Vector<String> qVec = new Vector<String>();
 		for(final Quest Q : qQVec)
 		{

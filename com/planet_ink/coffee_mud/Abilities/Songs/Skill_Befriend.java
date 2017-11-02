@@ -143,6 +143,15 @@ public class Skill_Befriend extends BardSkill
 					}
 				}
 				break;
+			case CMMsg.TYP_NOFOLLOW:
+				if(affected instanceof MOB)
+				{
+					MOB M=(MOB)affected;
+					final MOB srcM=msg.source();
+					if(srcM==M.amFollowing())
+						unInvoke();
+				}
+				break;
 			default:
 				break;
 			}

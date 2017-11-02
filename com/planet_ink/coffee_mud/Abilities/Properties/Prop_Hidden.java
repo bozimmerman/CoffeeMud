@@ -44,7 +44,7 @@ public class Prop_Hidden extends Property
 	@Override
 	public String name()
 	{
-		return "Persistant Hiddenness";
+		return "Persistent Hiddenness";
 	}
 
 	@Override

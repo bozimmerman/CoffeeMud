@@ -79,8 +79,8 @@ public interface Deity extends MOB
 		OTHERSAY(),
 		ALLSAY(),
 		;
-		private int msgCode;
-		private String shortName;
+		private final int msgCode;
+		private final String shortName;
 		
 		private RitualTrigger(int msgCode, String shortName)
 		{
@@ -250,7 +250,7 @@ public interface Deity extends MOB
 	public Ability fetchBlessing(int index);
 	
 	/**
-	 * Returns the blessing the the given Ability ID.  Blessings are spells
+	 * Returns the blessing the given Ability ID.  Blessings are spells
 	 * cast on worshippers or clerics by the deity for performing
 	 * an appropriate ritual.
 	 * @see Deity#getClericRitual()
@@ -502,7 +502,7 @@ public interface Deity extends MOB
 	public Ability fetchCurse(int index);
 	
 	/**
-	 * Returns the curse the the given Ability ID.  Curses are spells
+	 * Returns the curse the given Ability ID.  Curses are spells
 	 * cast on worshippers or clerics by the deity for performing
 	 * an appropriate "Sin".
 	 * @see Deity#getClericSin()

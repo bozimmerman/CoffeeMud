@@ -392,7 +392,7 @@ HELP_=<EXPERTISE>The ability to use sea travel that last even longer.
 
 LITECRAFT@x1=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +Weaving,,+DEX {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft items using less material without sacrificing quality.
-HELP_LITECRAFT1=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Light" are little lighter, and worth a little more in value.
+HELP_LITECRAFT1=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Light" are a little lighter, and worth a little more in value.
 HELP_LITECRAFT2=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Supple" are lighter, and worth more in value.
 HELP_LITECRAFT3=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Agile" are much lighter, and worth much more in value.
 DATA_=Light,Supple,Agile
