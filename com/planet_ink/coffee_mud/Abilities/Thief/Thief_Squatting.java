@@ -104,8 +104,7 @@ public class Thief_Squatting extends ThiefSkill
 	{
 		if(affected instanceof MOB)
 		{
-			if((msg.source()==affected)
-			&&((msg.sourceMinor()==CMMsg.TYP_QUIT)
+			if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
 				||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 				||((msg.targetMinor()==CMMsg.TYP_EXPIRE)&&(msg.target()==msg.source().location()))
 				||(msg.sourceMinor()==CMMsg.TYP_ROOMRESET))
