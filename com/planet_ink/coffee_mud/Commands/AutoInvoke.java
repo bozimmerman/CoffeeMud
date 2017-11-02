@@ -109,6 +109,20 @@ public class AutoInvoke extends StdCommand
 			}
 		}
 
+		final Race R=mob.charStats().getMyRace();
+		for(Ability a : R.racialEffects(mob))
+		{
+			if(a!=null)
+			{
+				final Ability A=mob.fetchAbility(a.ID());
+				if(A!=null)
+				{
+					if(abilities.remove(A))
+						abilityids.remove(A.ID());
+				}
+			}
+		}
+		
 		final Set<String> effects=new TreeSet<String>();
 		for(int a=0;a<mob.numEffects();a++)
 		{
@@ -254,6 +268,7 @@ public class AutoInvoke extends StdCommand
 					mob.recoverMaxState();
 					CMLib.threads().executeRunnable(new Runnable()
 					{
+						@Override
 						public void run()
 						{
 							session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
