@@ -101,7 +101,7 @@ public class Landscaping extends BuildingSkill
 	protected int[][] getBasicMaterials(final MOB mob, int woodRequired, String miscType)
 	{
 		if(miscType.length()==0)
-			miscType="stone";
+			miscType="rock";
 		final int[][] idata=fetchFoundResourceData(mob,
 													woodRequired,miscType,null,
 													0,null,null,
