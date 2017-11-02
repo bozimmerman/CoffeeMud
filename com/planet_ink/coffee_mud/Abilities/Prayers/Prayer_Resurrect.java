@@ -243,7 +243,9 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 					mob.location().recoverRoomStats();
 				}
 				else
-				if(this.canResurrectNormalMobs() && (body instanceof DeadBody) && (((DeadBody)body).getSavedMOB()!=null))
+				if(this.canResurrectNormalMobs() 
+				&& (body instanceof DeadBody) 
+				&& (((DeadBody)body).getSavedMOB()!=null))
 				{
 					final MOB rejuvedMOB=((DeadBody)body).getSavedMOB();
 					rejuvedMOB.recoverCharStats();

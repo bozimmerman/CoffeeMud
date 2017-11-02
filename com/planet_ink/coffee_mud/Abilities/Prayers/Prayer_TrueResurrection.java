@@ -79,7 +79,7 @@ public class Prayer_TrueResurrection extends Prayer_Resurrect
 		for(int m=0;m<candidates.size();m++)
 		{
 			final Item item = candidates.get(m);
-			if((item instanceof DeadBody)&&(((DeadBody)item).isPlayerCorpse()))
+			if(item instanceof DeadBody)
 			{
 				Room newRoom=CMLib.map().roomLocation(item);
 				if(newRoom != null)
@@ -89,6 +89,25 @@ public class Prayer_TrueResurrection extends Prayer_Resurrect
 		return null;
 	}
 	
+	@Override
+	public boolean supportsMending(Physical item)
+	{
+		if (item instanceof DeadBody)
+		{
+			final DeadBody body=(DeadBody)item;
+			if((body.getMobName()==null)||(body.getMobName().length()==0))
+				return false;
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	protected boolean canResurrectNormalMobs() 
+	{ 
+		return true; 
+	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{

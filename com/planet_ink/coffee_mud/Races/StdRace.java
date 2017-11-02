@@ -930,7 +930,13 @@ public class StdRace implements Race
 		{
 			if((mob.amFollowing()!=null)
 			&&((!mob.amFollowing().isMonster())||(!mob.amUltimatelyFollowing().isMonster())))
-				bodyI.setSavedMOB((MOB)mob.copyOf());
+			{
+				final MOB M=(MOB)mob.copyOf();
+				M.setStartRoom(null);
+				bodyI.setSavedMOB(M);
+			}
+			else
+				bodyI.setSavedMOB(mob);
 		}
 		
 		bodyI.setCharStats((CharStats)mob.baseCharStats().copyOf());
