@@ -95,6 +95,12 @@ public interface CoffeeShop extends CMCommon
 	public void destroyStoreInventory();
 
 	/**
+	 * Remove the specific give shelf product from the official stores.
+	 * @param P the shelf product to remove permanently
+	 */
+	public void deleteShelfProduct(final ShelfProduct P);
+
+	/**
 	 * Returns a iterator of all the Environmental objects this shop has for sale.
 	 * Will only return one of each item, even if multiple are available.
 	 * @return a iterator of objects for sale.

@@ -61,13 +61,15 @@ public class ClanDetails extends StdCommand
 		{
 			Clan foundClan=CMLib.clans().getClan(clanName);
 			if(foundClan == null)
-			for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 			{
-				final Clan C=(Clan)e.nextElement();
-				if(CMLib.english().containsString(C.getName(), clanName))
+				for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 				{
-					foundClan=C;
-					break;
+					final Clan C=(Clan)e.nextElement();
+					if(CMLib.english().containsString(C.getName(), clanName))
+					{
+						foundClan=C;
+						break;
+					}
 				}
 			}
 			if(foundClan==null)

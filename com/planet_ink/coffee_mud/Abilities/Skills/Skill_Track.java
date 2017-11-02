@@ -404,8 +404,11 @@ public class Skill_Track extends StdSkill
 				for (final Room room : checkSet)
 				{
 					final Room R=CMLib.map().getRoom(room);
-					if(R.fetchInhabitant(mobName)!=null)
-						rooms.addElement(R);
+					if(R!=null)
+					{
+						if(R.fetchInhabitant(mobName)!=null)
+							rooms.addElement(R);
+					}
 				}
 			}
 			catch (final NoSuchElementException nse)

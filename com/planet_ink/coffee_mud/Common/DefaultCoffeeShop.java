@@ -199,6 +199,12 @@ public class DefaultCoffeeShop implements CoffeeShop
 		storeInventory.clear();
 		this.contentHash=null;
 	}
+	
+	@Override
+	public void deleteShelfProduct(final ShelfProduct P)
+	{
+		storeInventory.remove(P);
+	}
 
 	protected boolean shopCompare(Environmental thang1, Environmental thang2)
 	{

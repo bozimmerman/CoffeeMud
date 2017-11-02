@@ -804,7 +804,10 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		public int playerpvps=0;
 		public MemberRecord(String name, int role, int mobpvps, int playerpvps)
 		{
-			this.name=name; this.role=role; this.mobpvps=mobpvps; this.playerpvps=playerpvps;
+			this.name = name;
+			this.role = role;
+			this.mobpvps = mobpvps;
+			this.playerpvps = playerpvps;
 		}
 
 		@Override

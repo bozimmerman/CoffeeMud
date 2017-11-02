@@ -853,6 +853,7 @@ public class GModify extends StdCommand
 							final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 							if(SK!=null)
 							{
+								List<CoffeeShop.ShelfProduct> removeThese=new ArrayList<CoffeeShop.ShelfProduct>();
 								for(final Iterator<CoffeeShop.ShelfProduct> i=SK.getShop().getStoreShelves();i.hasNext();)
 								{
 									final CoffeeShop.ShelfProduct P=i.next();
@@ -864,13 +865,15 @@ public class GModify extends StdCommand
 										{
 											savemobs=true;
 											if(E3.amDestroyed())
-												i.remove();
+												removeThese.add(P);
 											else
 											if(E2!=E3)
 												P.product=E3;
 										}
 									}
 								}
+								for(final CoffeeShop.ShelfProduct  P : removeThese)
+									SK.getShop().deleteShelfProduct(P);
 							}
 						}
 					}

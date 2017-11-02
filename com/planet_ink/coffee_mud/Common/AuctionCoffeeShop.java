@@ -287,4 +287,9 @@ public class AuctionCoffeeShop implements CoffeeShop
 	{
 		return this.hashCode();
 	}
+
+	@Override
+	public void deleteShelfProduct(ShelfProduct P)
+	{
+	}
 }
