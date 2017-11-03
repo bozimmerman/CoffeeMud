@@ -471,18 +471,24 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 			if((limbs[i]>0)
 			&&(validBrokens[i]))
 			{
-				if(limbs[i]-brokenParts[i]==1)
+				if(brokenParts[i]>0)
 				{
-					if(!affected.contains(Race.BODYPARTSTR[i].toLowerCase()))
+					if(limbs[i]-brokenParts[i]==1)
+					{
+						if(!affected.contains(Race.BODYPARTSTR[i].toLowerCase()))
+							remains.add(Race.BODYPARTSTR[i].toLowerCase());
+					}
+					else
+					if(limbs[i]-brokenParts[i]==2)
+					{
+						if(!affected.contains("left "+Race.BODYPARTSTR[i].toLowerCase()))
+							remains.add("left "+Race.BODYPARTSTR[i].toLowerCase());
+						if(!affected.contains("right "+Race.BODYPARTSTR[i].toLowerCase()))
+							remains.add("right "+Race.BODYPARTSTR[i].toLowerCase());
+					}
+					else
+					for(int ii=0;ii<limbs[i];ii++)
 						remains.add(Race.BODYPARTSTR[i].toLowerCase());
-				}
-				else
-				if(limbs[i]-brokenParts[i]==2)
-				{
-					if(!affected.contains("left "+Race.BODYPARTSTR[i].toLowerCase()))
-						remains.add("left "+Race.BODYPARTSTR[i].toLowerCase());
-					if(!affected.contains("right "+Race.BODYPARTSTR[i].toLowerCase()))
-						remains.add("right "+Race.BODYPARTSTR[i].toLowerCase());
 				}
 				else
 				for(int ii=0;ii<limbs[i];ii++)
