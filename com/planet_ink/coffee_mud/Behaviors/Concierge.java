@@ -597,9 +597,21 @@ public class Concierge extends StdBehavior
 		{
 			MOB fromM=getTalker(observer,room);
 			String name=CMLib.map().getExtendedRoomID(destination);
+			if(name.length()==0)
+				name=destination.displayText();
 			final List<Room> set=new ArrayList<Room>();
 			CMLib.tracking().getRadiantRooms(fromM.location(),set,trackingFlags,null,maxRange,null);
-			String trailStr=CMLib.tracking().getTrailToDescription(fromM.location(),set,name,false,false,maxRange,null,1);
+			String trailStr;
+			if(CMLib.tracking().canValidTrail(fromM.location(), set, name, maxRange, null, 1))
+				trailStr=CMLib.tracking().getTrailToDescription(fromM.location(),set,name,false,false,maxRange,null,1);
+			else
+			{
+				//set.clear();
+				TrackingFlags noAirFlags = trackingFlags.copyOf();
+				noAirFlags.add(TrackingFlag.NOAIR);
+				CMLib.tracking().getRadiantRooms(fromM.location(),set,noAirFlags,null,maxRange,null);
+				trailStr=CMLib.tracking().getTrailToDescription(fromM.location(),set,name,false,false,maxRange,null,1);
+			}
 			thingsToSay.addElement(whoM,L("The way to @x1 from here is: @x2",getDestinationName(destination),trailStr));
 		}
 	}
@@ -684,7 +696,13 @@ public class Concierge extends StdBehavior
 						}
 						if(didAnything)
 							say=CMParms.combine(parsedSay);
-						final Room roomR=findDestination(observer,msg.source(),room,say,myRoomRadiusFlags);
+						Room roomR=findDestination(observer,msg.source(),room,say,myRoomRadiusFlags);
+						if((roomR==null)||(roomR.roomID().length()==0))
+						{
+							final Room roomR2=findDestination(observer,msg.source(),room,say,trackingFlags);
+							if(roomR2!=null)
+								roomR=roomR2;
+						}
 						if(roomR==null)
 						{
 							synchronized(thingsToSay)
