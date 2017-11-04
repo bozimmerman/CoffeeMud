@@ -1696,6 +1696,7 @@ public class StdArea implements Area
 	protected StringBuffer buildAreaStats(int[] statData)
 	{
 		final StringBuffer s=new StringBuffer("^N");
+		s.append("Area           : ^H"+Name()+"^N\n\r");
 		s.append(description()+"\n\r");
 		if(author.length()>0)
 			s.append("Author         : ^H"+author+"^N\n\r");
