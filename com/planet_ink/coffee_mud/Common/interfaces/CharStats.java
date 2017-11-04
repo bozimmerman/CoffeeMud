@@ -456,7 +456,7 @@ public interface CharStats extends CMCommon, Modifiable
 
 	/**
 	 * Returns resource codes of what this race can breathe as
-	 * an atmosphere.  The list is guarenteed sorted.  If the list
+	 * an atmosphere.  The list is guaranteed sorted.  If the list
 	 * is empty, the race can breathe anything at all.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
 	 * @see #setBreathables(int[])

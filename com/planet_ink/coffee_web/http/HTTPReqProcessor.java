@@ -46,7 +46,7 @@ import com.planet_ink.coffee_mud.core.collections.Pair;
 /**
  * Processes a completed http request and generates the output.
  * Designed at the moment for a synchronous process.  
- * To go async, the first problem to solve is guarenteeing that
+ * To go async, the first problem to solve is guaranteeing that
  * reads continue, but writes happen sequentially.  Perhaps
  * this is done with a queue of some sort?  A runnable set
  * to kick off on another thread when the first request is ready...?

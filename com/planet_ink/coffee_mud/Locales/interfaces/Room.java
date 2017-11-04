@@ -333,7 +333,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	public List<Room> getSky();
 	
 	/**
-	 * Returns the Area to which this room belongs.  Guarenteed to be non-null.
+	 * Returns the Area to which this room belongs.  Guaranteed to be non-null.
 	 * @see Room#setArea(Area)
 	 * @see Area
 	 * @return the Area to which this room belongs

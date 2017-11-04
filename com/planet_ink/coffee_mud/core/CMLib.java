@@ -76,7 +76,7 @@ public class CMLib
 
 	/**
 	 * Returns a CMLib object for the current thread group.  If one is not assigned,
-	 * it will be instantiated, thus guarenteeing that a CMLib object always returns
+	 * it will be instantiated, thus guaranteeing that a CMLib object always returns
 	 * from this method.
 	 * @return a CMLib object
 	 */

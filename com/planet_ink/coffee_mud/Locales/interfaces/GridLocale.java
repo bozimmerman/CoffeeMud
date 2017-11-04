@@ -90,7 +90,7 @@ public interface GridLocale extends Room, GridZones
 	public void clearGrid(Room bringBackHere);
 
 	/**
-	 * Returns a read-only list of grid-child rooms.  You are guarenteed
+	 * Returns a read-only list of grid-child rooms.  You are guaranteed
 	 * at least one room, even from grids that create them as-needed.
 	 * @return a read-only list of grid-child rooms.
 	 */

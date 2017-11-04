@@ -224,7 +224,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 
 	/**
 	 * Returns resource codes of what this race can breathe as
-	 * an atmosphere.  The list is guarenteed sorted.  If the list
+	 * an atmosphere.  The list is guaranteed sorted.  If the list
 	 * is empty, the race can breathe anything at all.
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
 	 * @return a list of resource codes that this race can breathe

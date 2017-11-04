@@ -160,7 +160,7 @@ public class Log extends java.util.logging.Logger
 
 	/**
 	 * Returns a Log object for the current thread group.  If one is not assigned,
-	 * it will be instantiated, thus guarenteeing that a Log object always returns
+	 * it will be instantiated, thus guaranteeing that a Log object always returns
 	 * from this method.
 	 * @return a Log object
 	 */

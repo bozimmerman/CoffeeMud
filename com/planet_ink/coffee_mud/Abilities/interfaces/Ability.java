@@ -579,8 +579,8 @@ public interface Ability extends Environmental
 	public boolean proficiencyCheck(MOB mob, int adjustment, boolean auto);
 
 	/**
-	 * This method should, occassionally, add to the proficiency the given mob
-	 * has in this skill.  There are no guarentees about how often this method
+	 * This method should, occasionally, add to the proficiency the given mob
+	 * has in this skill.  There are no guarantees about how often this method
 	 * is called, but presumably it is called when the mob is doing something
 	 * that exercises this skill in some way.  How often proficiency is effected
 	 * by this method is up to the method, but is typically time-based, and based

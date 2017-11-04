@@ -21,6 +21,7 @@
   19. New input parser: RAW-INPUT-PROCESSOR, to capture char creation and prompt filtering
   20. New items: StdPlayerBook, and GenPlayerBook - a version of StdBook with data tied to players.
   21. New Properties: Prop_Unsellable, Prop_CloseCommand
+  22. New Language: Encrypto -- random simplistic encryption (word and letter rot)
 
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.
