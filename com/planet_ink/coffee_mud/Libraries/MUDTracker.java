@@ -1780,8 +1780,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return -1;
 	}
 
-	@Override
-	public String getTrailToDescription(Room R1, List<Room> set, String where, boolean areaNames, boolean confirm, int radius, Set<Room> ignoreRooms, int maxMins)
+	protected Room getWhere(String where, List<Room> set)
 	{
 		Room R2=CMLib.map().getRoom(where);
 		if(R2==null)
@@ -1820,10 +1819,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				}
 			}
 		}
-		if(R2==null)
-			return "Unable to determine '"+where+"'.";
+		return R2;
+	}
+
+	protected int getIndexEnsureSet(final Room R1, final Room R2, final List<Room> set, int radius, Set<Room> ignoreRooms)
+	{
 		final TrackingLibrary.TrackingFlags flags = new DefaultTrackingFlags()
-											.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+		.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 		if(set.size()==0)
 			getRadiantRooms(R1,set,flags,R2,radius,ignoreRooms);
 		int foundAt=-1;
@@ -1836,8 +1838,18 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				break;
 			}
 		}
+		return foundAt;
+	}
+	
+	@Override
+	public boolean canValidTrail(Room R1, List<Room> set, String where, int radius, Set<Room> ignoreRooms, int maxMins)
+	{
+		Room R2=getWhere(where,set);
+		if(R2==null)
+			return false;
+		int foundAt=getIndexEnsureSet(R1,R2,set,radius,ignoreRooms);
 		if(foundAt<0)
-			return "You can't get to '"+R2.roomID()+"' from here.";
+			return false;
 		Room checkR=R2;
 		final List<Room> trailV=new ArrayList<Room>();
 		trailV.add(R2);
@@ -1848,7 +1860,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			final long waitTime = System.currentTimeMillis() - startTime;
 			if(waitTime > (1000 * 60 * (maxMins)))
-				return "You can't get there from here.";
+				return false;
 			didSomething=false;
 			for(int r=foundAt-1;r>=0;r--)
 			{
@@ -1865,7 +1877,48 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				}
 			}
 			if(!didSomething)
-				return "You can't get there from here.";
+				return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public String getTrailToDescription(Room R1, List<Room> set, String where, boolean areaNames, boolean confirm, int radius, Set<Room> ignoreRooms, int maxMins)
+	{
+		Room R2=getWhere(where,set);
+		if(R2==null)
+			return L("Unable to determine '@x1'.",where);
+		int foundAt=getIndexEnsureSet(R1,R2,set,radius,ignoreRooms);
+		if(foundAt<0)
+			return L("You can't get to '@x1' from here.",R2.roomID());
+		Room checkR=R2;
+		final List<Room> trailV=new ArrayList<Room>();
+		trailV.add(R2);
+		final HashSet<Area> areasDone=new HashSet<Area>();
+		boolean didSomething=false;
+		final long startTime = System.currentTimeMillis();
+		while(checkR!=R1)
+		{
+			final long waitTime = System.currentTimeMillis() - startTime;
+			if(waitTime > (1000 * 60 * (maxMins)))
+				return L("You can't get there from here.");
+			didSomething=false;
+			for(int r=foundAt-1;r>=0;r--)
+			{
+				final Room R=set.get(r);
+				if(getRoomDirection(R,checkR,trailV)>=0)
+				{
+					trailV.add(R);
+					if(!areasDone.contains(R.getArea()))
+						areasDone.add(R.getArea());
+					foundAt=r;
+					checkR=R;
+					didSomething=true;
+					break;
+				}
+			}
+			if(!didSomething)
+				return L("You can't get there from here.");
 		}
 		final List<String> theDirTrail=new ArrayList<String>();
 		final List<Room> empty=new ReadOnlyVector<Room>();
@@ -1933,7 +1986,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			}
 		}
 		if(theTrail.toString().trim().length()==0)
-			return "You can't get there from here.";
+			return L("You can't get there from here.");
 		return theTrail.toString();
 	}
 
