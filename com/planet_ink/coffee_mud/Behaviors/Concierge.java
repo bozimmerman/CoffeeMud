@@ -694,14 +694,27 @@ public class Concierge extends StdBehavior
 								parsedSay.remove(parsedSay.size()-1);
 							didAnything = didAnything || didLoop;
 						}
+						Room roomR;
 						if(didAnything)
-							say=CMParms.combine(parsedSay);
-						Room roomR=findDestination(observer,msg.source(),room,say,myRoomRadiusFlags);
-						if((roomR==null)||(roomR.roomID().length()==0))
 						{
-							final Room roomR2=findDestination(observer,msg.source(),room,say,trackingFlags);
-							if(roomR2!=null)
-								roomR=roomR2;
+							say=CMParms.combine(parsedSay);
+							roomR=findDestination(observer,msg.source(),room,say,myRoomRadiusFlags);
+							if((roomR==null)||(roomR.roomID().length()==0))
+							{
+								final Room roomR2=findDestination(observer,msg.source(),room,say,trackingFlags);
+								if(roomR2!=null)
+									roomR=roomR2;
+							}
+						}
+						else
+						{
+							roomR=findDestination(observer,msg.source(),room,say,trackingFlags);
+							if((roomR==null)||(roomR.roomID().length()==0))
+							{
+								final Room roomR2=findDestination(observer,msg.source(),room,say,myRoomRadiusFlags);
+								if(roomR2!=null)
+									roomR=roomR2;
+							}
 						}
 						if(roomR==null)
 						{
