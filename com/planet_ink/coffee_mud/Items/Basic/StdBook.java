@@ -68,6 +68,39 @@ public class StdBook extends StdItem
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_WRITE:
+			case CMMsg.TYP_REWRITE:
+				// the order that these things are checked in should
+				// be holy, and etched in stone.
+				int num=numBehaviors();
+				MsgListener N=null;
+				for(int b=0;b<num;b++)
+				{
+					N=fetchBehavior(b);
+					if((N!=null)&&(!N.okMessage(this,msg)))
+						return false;
+				}
+				num=numScripts();
+				for(int s=0;s<num;s++)
+				{
+					N=fetchScript(s);
+					if((N!=null)&&(!N.okMessage(this,msg)))
+						return false;
+				}
+				num=numEffects();
+				for(int i=0;i<num;i++)
+				{
+					N=fetchEffect(i);
+					if((N!=null)&&(!N.okMessage(this,msg)))
+						return false;
+				}
+				break;
+			default:
+				break;
+			}
+
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_WRITE:
 			{
 				final String adminReq=getAdminReq().trim();
 				final boolean admin=(adminReq.length()>0)&&CMLib.masking().maskCheck(adminReq,msg.source(),true);
@@ -148,6 +181,50 @@ public class StdBook extends StdItem
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_READ:
+			case CMMsg.TYP_WRITE:
+			case CMMsg.TYP_REWRITE:
+				// the order that these things are checked in should
+				// be holy, and etched in stone.
+				if(numBehaviors()>0)
+				{
+					eachBehavior(new EachApplicable<Behavior>()
+					{ 
+						@Override
+						public final void apply(final Behavior B)
+						{
+							B.executeMsg(me,msg);
+						} 
+					});
+				}
+				if(numScripts()>0)
+				{
+					eachScript(new EachApplicable<ScriptingEngine>()
+					{ 
+						@Override
+						public final void apply(final ScriptingEngine S)
+						{
+							S.executeMsg(me,msg);
+						} 
+					});
+				}
+				if(numEffects()>0)
+				{
+					eachEffect(new EachApplicable<Ability>()
+					{ 
+						@Override
+						public final void apply(final Ability A)
+						{
+							A.executeMsg(me, msg);
+						}
+					});
+				}
+				break;
+			default:
+				break;
+			}
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_READ:
 			{
 				final Room R=mob.location();
 				if(!CMLib.flags().canBeSeenBy(this,mob))
@@ -181,35 +258,37 @@ public class StdBook extends StdItem
 							all=true;
 					}
 					final Triad<String,String,StringBuffer> read=DBRead(mob,which-1,lastTime, newOnly, all);
-					boolean megaRepeat=true;
-					while(megaRepeat)
+					final StringBuffer entry=read.third;
+					if(entry.charAt(0)=='#')
 					{
-						megaRepeat=false;
-						final StringBuffer entry=read.third;
-						if(entry.charAt(0)=='#')
-						{
-							which=-1;
-							entry.setCharAt(0,' ');
-						}
-						if((entry.charAt(0)=='*')
-						   ||(admin)
-						   ||(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.JOURNALS)))
-							entry.setCharAt(0,' ');
-						else
-						if((newOnly)&&(msg.value()>0))
-							return;
-						mob.tell(entry.toString()+"\n\r");
-						if((entry.toString().trim().length()>0)
-						&&(which>0)
-						&&(CMLib.masking().maskCheck(getWriteReq(),mob,true)
-							||(admin)
-							||(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
-						{
-						}
-						else
-						if(which<0)
-							mob.tell(description());
+						which=-1;
+						entry.setCharAt(0,' ');
 					}
+					if((entry.charAt(0)=='*')
+					   ||(admin)
+					   ||(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.JOURNALS)))
+						entry.setCharAt(0,' ');
+					else
+					if((newOnly)&&(msg.value()>0))
+						return;
+					CMMsg readMsg=CMClass.getMsg(msg.source(), msg.target(), msg.tool(), 
+							 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, L("It says '@x1'.\n\r",entry.toString()),
+							 CMMsg.NO_EFFECT, null, 
+							 CMMsg.NO_EFFECT, null);
+					//mob.tell(entry.toString()+"\n\r");
+					if((entry.toString().trim().length()>0)
+					&&(which>0)
+					&&(CMLib.masking().maskCheck(getWriteReq(),mob,true)
+						||(admin)
+						||(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
+					{
+					}
+					else
+					if(which<0)
+					{
+						readMsg.setSourceMessage(readMsg.sourceMessage()+description());
+					}
+					msg.addTrailerMsg(readMsg);
 					return;
 				}
 				return;

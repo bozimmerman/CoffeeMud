@@ -58,7 +58,10 @@ public class GenRecipe extends GenReadable implements Recipe
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(msg.amITarget( this ) && (msg.targetMinor()==CMMsg.TYP_READ) && (super.readableText().length()==0) && (recipeLines.length>0))
+		if(msg.amITarget( this ) 
+		&& (msg.targetMinor()==CMMsg.TYP_READ) 
+		&& (super.readableText().length()==0) 
+		&& (recipeLines.length>0))
 		{
 			final StringBuilder str = new StringBuilder("");
 			final Ability A=CMClass.getAbility( getCommonSkillID() );

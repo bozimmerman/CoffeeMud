@@ -494,6 +494,33 @@ public class StdLanguage extends StdAbility implements Language
 				}
 			}
 		}
+		if((affected instanceof Item)
+		&&(!canBeUninvoked())
+		&&(msg.target()==affected)
+		&&(msg.sourceMinor()==CMMsg.TYP_WASREAD)
+		&&((msg.targetMessage()==null)||(!msg.targetMessage().equals(CANCEL_WORD)))
+		&&(!(affected instanceof LandTitle))
+		&&(CMLib.flags().canBeSeenBy(this,msg.source()))
+		&&(msg.sourceMessage()!=null)
+		&&(msg.sourceMessage().length()>0)
+		&&(((Item)affected).isReadable())
+		&&(CMStrings.getSayFromMessage(msg.sourceMessage())!=null)
+		)
+		{
+			String str=CMStrings.getSayFromMessage(msg.sourceMessage());
+			int numToMess=numChars(str);
+			if(numToMess>0)
+			{
+				final Language L=(Language)msg.source().fetchEffect(ID());
+				if(L!=null)
+					numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-L.getProficiency(ID()),100)));
+				final String original=messChars(ID(),str,numToMess);
+				str=scrambleAll(ID(),str,numToMess);
+				msg.setSourceMessage(L("It says '@x1'.  ",str.trim()));
+				if((L!=null)&&(!original.equals(str)))
+					msg.setSourceMessage(msg.sourceMessage()+(L("\n\rIt says '@x1' (translated from @x2).",original,L.writtenName())));
+			}
+		}
 		return super.okMessage(myHost,msg);
 	}
 
@@ -641,7 +668,7 @@ public class StdLanguage extends StdAbility implements Language
 		&&(msg.sourceMinor()==CMMsg.TYP_WRITE)
 		&&(((Item)msg.target()).isReadable())
 		&&(msg.targetMessage()!=null)
-		&&(msg.targetMessage().length()>0))
+		&&((msg.targetMessage().length()>0)||(msg.target().ID().endsWith("Book"))))
 		{
 			final Item I = (Item)msg.target();
 			Ability L=null;
@@ -655,54 +682,6 @@ public class StdLanguage extends StdAbility implements Language
 				}
 			}
 			I.addNonUninvokableEffect((Ability)this.copyOf());
-		}
-		else
-		if((affected instanceof Item)
-		&&(!canBeUninvoked())
-		&&(msg.target()==affected)
-		&&(msg.targetMinor()==CMMsg.TYP_READ)
-		&&((msg.targetMessage()==null)||(!msg.targetMessage().equals(CANCEL_WORD)))
-		&&(!(affected instanceof LandTitle))
-		&&(CMLib.flags().canBeSeenBy(this,msg.source()))
-		&&(((Item)affected).isReadable())
-		&&(((Item)affected).readableText()!=null)
-		&&(((Item)affected).readableText().length()>0))
-		{
-			// first make sure the Item does not handle it,
-			// since THIS item is in another language.
-			msg.modify(msg.source(),
-					   msg.target(),
-					   msg.tool(),
-					   msg.sourceCode(),
-					   msg.sourceMessage(),
-					   msg.targetCode(),
-					   CANCEL_WORD,
-					   msg.othersCode(),
-					   msg.othersMessage());
-			final Language L=(Language)msg.source().fetchEffect(ID());
-			String str=((Item)affected).readableText();
-			if(str.startsWith("FILE=")
-			||str.startsWith("FILE="))
-			{
-				final StringBuffer buf=Resources.getFileResource(str.substring(5),true);
-				if((buf!=null)&&(buf.length()>0))
-					str=buf.toString();
-				else
-					str="";
-			}
-			int numToMess=numChars(str);
-			if(numToMess==0)
-				msg.source().tell(L("There is nothing written on @x1.",affected.name()));
-			else
-			{
-				if(L!=null)
-					numToMess=(int)Math.round(CMath.mul(numChars(str),CMath.div(100-L.getProficiency(ID()),100)));
-				final String original=messChars(ID(),str,numToMess);
-				str=scrambleAll(ID(),str,numToMess);
-				msg.source().tell(L("It says '@x1'",str));
-				if((L!=null)&&(!original.equals(str)))
-					msg.source().tell(L("It says '@x1' (translated from @x2).",original,L.writtenName()));
-			}
 		}
 	}
 }
