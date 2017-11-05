@@ -158,8 +158,9 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_KnowPlants",true);
 		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_SeaMapping",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_DecipherScript",false);
 /*
-8	Skill_SeaMapping (G), RevealText (Q)		
 9	Bookcopying (G), Semaphore (Q), Wilderness Lore (Q)		
 10	Speculating (G), Subtitling (Q), Siegecraft (Q)		
 11	Thief_Lore (G), Skillcraft (Q), InvisibleInk (Q)		

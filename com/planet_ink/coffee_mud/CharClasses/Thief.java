@@ -161,6 +161,7 @@ public class Thief extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_RemoveTraps",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_DecipherScript",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Thief_Observation",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Parry",false);

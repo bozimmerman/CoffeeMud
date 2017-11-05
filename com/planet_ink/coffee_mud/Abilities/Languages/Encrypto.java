@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2017-2017 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,14 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-/*
-	Modified by Xalan of Sancara
-	www.Sancara.co.uk
-	Sancara.servegame.com Port 5555
-	Respect to all who work on Coffee, keep the tradition going!
-*/
-
 public class Encrypto extends StdLanguage
 {
 	@Override
@@ -51,11 +43,30 @@ public class Encrypto extends StdLanguage
 	private final static String localizedName = CMLib.lang().L("Encrypto");
 	protected int letterRot = CMLib.dice().roll(1, 13, 0);
 	protected int wordRot = CMLib.dice().roll(1, 3, -1);
+	protected int level = 0;
 
 	@Override
 	public String name()
 	{
 		return localizedName;
+	}
+
+	@Override
+	public int abilityCode()
+	{
+		return level;
+	}
+
+	@Override
+	public void setAbilityCode(int newCode)
+	{
+		if(newCode != level)
+		{
+			level=newCode;
+			final String txt=super.text();
+			if(txt.toUpperCase().indexOf("LVL=")<0)
+				setMiscText("LVL="+level+" "+txt);
+		}
 	}
 
 	@Override
@@ -96,6 +107,7 @@ public class Encrypto extends StdLanguage
 		{
 			letterRot = CMParms.getParmInt(newMiscText, "LROT", letterRot);
 			wordRot = CMParms.getParmInt(newMiscText, "WROT", wordRot);
+			level = CMParms.getParmInt(newMiscText, "LVL", level);
 		}
 		if(newMiscText.toUpperCase().indexOf("LROT=")<0)
 			newMiscText="LROT="+letterRot+" "+newMiscText;
@@ -103,5 +115,4 @@ public class Encrypto extends StdLanguage
 			newMiscText="WROT="+wordRot+" "+newMiscText;
 		super.setMiscText(newMiscText);
 	}
-	
 }
