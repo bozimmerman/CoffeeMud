@@ -165,27 +165,23 @@ public class Titling extends CommonSkill
 		}
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
-		{
 			target=mob.location().findItem(null, commands.get(0));
-			if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
+		if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
+		{
+			/*
+			final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
+			boolean ok=false;
+			for(final MOB M : followers)
 			{
-				/*
-				final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
-				boolean ok=false;
-				for(final MOB M : followers)
-				{
-					if(target.secretIdentity().indexOf(getBrand(M))>=0)
-						ok=true;
-				}
-				if(!ok)
-				{
-					commonTell(mob,L("You aren't allowed to work on '@x1'.",(commands.get(0))));
-					return false;
-				}
-				*/
+				if(target.secretIdentity().indexOf(getBrand(M))>=0)
+					ok=true;
 			}
-			else
-				target=null;
+			if(!ok)
+			{
+				commonTell(mob,L("You aren't allowed to work on '@x1'.",(commands.get(0))));
+				return false;
+			}
+			*/
 		}
 		else
 			target=null;

@@ -121,22 +121,20 @@ public class BookEditing extends CommonSkill
 		String itemName = CMParms.combine(commands);
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
-		{
 			target=mob.location().findItem(null, itemName);
-			if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
+		if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
+		{
+			final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
+			boolean ok=false;
+			for(final MOB M : followers)
 			{
-				final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
-				boolean ok=false;
-				for(final MOB M : followers)
-				{
-					if(target.secretIdentity().indexOf(getBrand(M))>=0)
-						ok=true;
-				}
-				if(!ok)
-				{
-					commonTell(mob,L("You aren't allowed to work on '@x1'.",itemName));
-					return false;
-				}
+				if(target.secretIdentity().indexOf(getBrand(M))>=0)
+					ok=true;
+			}
+			if(!ok)
+			{
+				commonTell(mob,L("You aren't allowed to work on '@x1'.",itemName));
+				return false;
 			}
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))

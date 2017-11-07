@@ -96,12 +96,28 @@ public class BookCopying extends CommonSkill
 					commonTell(mob,L("You mess up your book copying."));
 				else
 				{
-					final CMMsg msg=CMClass.getMsg(mob,foundI,this,CMMsg.TYP_REWRITE,
-							L("<S-NAME> start(s) copying <T-NAME> into @x1."),
-							pageNum,
-							L("<S-NAME> start(s) copying <T-NAME> into @x1."));
-					if(mob.location().okMessage(mob,msg))
-						mob.location().send(mob,msg);
+					MOB factM=CMClass.getFactoryMOB(mob.Name(), mob.phyStats().level(), mob.location());
+					try
+					{
+						final CMMsg rmsg=CMClass.getMsg(mob,foundI,this,CMMsg.TYP_READ,null,pageNum,null);
+						foundI.executeMsg(foundI, rmsg);
+						String tmsg="";
+						for(CMMsg m2 : rmsg.trailerMsgs())
+						{
+							if((m2.source()==factM)&&(m2.sourceMinor()==CMMsg.TYP_WASREAD))
+								tmsg+=CMStrings.getSayFromMessage(m2.sourceMessage());
+						}
+						final CMMsg msg=CMClass.getMsg(mob,foundI,this,CMMsg.TYP_WRITE,
+								L("<S-NAME> start(s) copying <T-NAME> into @x1."),
+								tmsg,
+								L("<S-NAME> start(s) copying <T-NAME> into @x1."));
+						if(mob.location().okMessage(mob,msg))
+							mob.location().send(mob,msg);
+					}
+					finally
+					{
+						factM.destroy();
+					}
 				}
 			}
 		}
@@ -113,7 +129,54 @@ public class BookCopying extends CommonSkill
 		commonTell(mob,L("You must specify what book to edit, and the optional page/chapter number to edit."));
 		return false;
 	}
-	
+
+	protected Item getBrandedItem(final MOB mob, final String itemName, boolean from)
+	{
+		Item I=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemName);
+		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
+			I=mob.location().findItem(null, itemName);
+		if((I!=null)&&(CMLib.flags().canBeSeenBy(I,mob)))
+		{
+			final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
+			boolean ok=false;
+			for(final MOB M : followers)
+			{
+				if(I.secretIdentity().indexOf(getBrand(M))>=0)
+					ok=true;
+			}
+			if(!ok)
+			{
+				if(from)
+					commonTell(mob,L("You aren't allowed to copy from '@x1'.",I.name(mob)));
+				else
+					commonTell(mob,L("You aren't allowed to copy to '@x1'.",I.name(mob)));
+				return null;
+			}
+		}
+		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
+		{
+			commonTell(mob,L("You don't seem to have a '@x1'.",itemName));
+			return null;
+		}
+		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
+		{
+			commonTell(mob,L("You can't copy something like @x1.",I.name(mob)));
+			return null;
+		}
+		if((!CMLib.flags().isReadable(I))||(I instanceof Scroll))
+		{
+			commonTell(mob,L("@x1 isn't even readable!",CMStrings.capitalizeAndLower(I.name(mob))));
+			return null;
+		}
+		
+		if(!I.isGeneric())
+		{
+			commonTell(mob,L("You aren't able to copy @x1.",I.name(mob)));
+			return null;
+		}
+		return I;
+	}
+
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -124,35 +187,16 @@ public class BookCopying extends CommonSkill
 		foundI = null;
 		targetI = null;
 		pageNum="";
-		if((commands.size()>1)&&(CMath.isInteger(commands.get(commands.size()-1))))
+		if((commands.size()>2)&&(CMath.isInteger(commands.get(commands.size()-1))))
 			pageNum=commands.remove(commands.size()-1);
-		String itemName = CMParms.combine(commands);
-		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,itemName);
-		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
-		{
-			target=mob.location().findItem(null, itemName);
-			if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
-			{
-				final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
-				boolean ok=false;
-				for(final MOB M : followers)
-				{
-					if(target.secretIdentity().indexOf(getBrand(M))>=0)
-						ok=true;
-				}
-				if(!ok)
-				{
-					commonTell(mob,L("You aren't allowed to copy '@x1'.",itemName));
-					return false;
-				}
-			}
-		}
-		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
-		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",itemName));
+		String copyFromName = commands.get(0);
+		String copyToName = CMParms.combine(commands,1);
+		Item copyFromI=this.getBrandedItem(mob, copyFromName, true);
+		if(copyFromI == null)
 			return false;
-		}
-		
+		Item copyToI=this.getBrandedItem(mob, copyToName, false);
+		if(copyToI == null)
+			return false;
 		
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
@@ -161,33 +205,15 @@ public class BookCopying extends CommonSkill
 			return false;
 		}
 		
-		if((target.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
-		{
-			commonTell(mob,L("You can't copy something like that."));
-			return false;
-		}
-		
-		if(!CMLib.flags().isReadable(target))
-		{
-			commonTell(mob,L("That's not even readable!"));
-			return false;
-		}
-		
-		if(!target.isGeneric())
-		{
-			commonTell(mob,L("You aren't able to copy that."));
-			return false;
-		}
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		foundI=target;
+		foundI=copyFromI;
 		verb=L("copying @x1 into @x2",foundI.name(),targetI.name());
 		displayText=L("You are @x1",verb);
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			foundI = null;
 		final int duration=getDuration(30,mob,1,1);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),
+		final CMMsg msg=CMClass.getMsg(mob,copyFromI,this,getActivityMessageType(),
 				L("<S-NAME> start(s) copying <T-NAME> into @x1.",targetI.name()),
 				pageNum,
 				L("<S-NAME> start(s) copying <T-NAME> into @x1.",targetI.name()));
