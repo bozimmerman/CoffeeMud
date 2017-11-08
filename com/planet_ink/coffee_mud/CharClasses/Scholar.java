@@ -160,9 +160,15 @@ public class Scholar extends StdCharClass
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_SeaMapping",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_DecipherScript",false);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"BookCopying",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Semaphore",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_WildernessLore",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"BookNaming",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Speculate",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Siegecraft",false);
 /*
-9	Bookcopying (G), Semaphore (Q), Wilderness Lore (Q)		
-10	Speculating (G), Subtitling (Q), Siegecraft (Q)		
 11	Thief_Lore (G), Skillcraft (Q), InvisibleInk (Q)		
 12	Studying (G), Honorary Degree: Commonerness (Q)		
 13	Cataloging (G), Songcraft (Q), Skill_Map (Q)		

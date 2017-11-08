@@ -140,8 +140,8 @@ public class BookNaming extends CommonSkill
 					commonTell(mob,L("You mess up your book naming."));
 				else
 				{
-					//TODO: Delete the old name from the Journal?!
 					found.setName(writing);
+					commonTell(mob,L("Your work has a new name."));
 				}
 			}
 		}
