@@ -497,17 +497,17 @@ public class StdLanguage extends StdAbility implements Language
 		if((affected instanceof Item)
 		&&(!canBeUninvoked())
 		&&(msg.target()==affected)
-		&&(msg.sourceMinor()==CMMsg.TYP_WASREAD)
-		&&((msg.targetMessage()==null)||(!msg.targetMessage().equals(CANCEL_WORD)))
+		&&(msg.targetMinor()==CMMsg.TYP_WASREAD)
+		&&(msg.othersCode()==CMMsg.NO_EFFECT)
+		&&((msg.othersMessage()==null)||(!msg.othersMessage().equals(CANCEL_WORD)))
 		&&(!(affected instanceof LandTitle))
 		&&(CMLib.flags().canBeSeenBy(this,msg.source()))
-		&&(msg.sourceMessage()!=null)
-		&&(msg.sourceMessage().length()>0)
+		&&(msg.targetMessage()!=null)
+		&&(msg.targetMessage().length()>0)
 		&&(((Item)affected).isReadable())
-		&&(CMStrings.getSayFromMessage(msg.sourceMessage())!=null)
 		)
 		{
-			String str=CMStrings.getSayFromMessage(msg.sourceMessage());
+			String str=msg.targetMessage();
 			int numToMess=numChars(str);
 			if(numToMess>0)
 			{
@@ -518,7 +518,10 @@ public class StdLanguage extends StdAbility implements Language
 				str=scrambleAll(ID(),str,numToMess);
 				msg.setSourceMessage(L("It says '@x1'.  ",str.trim()));
 				if((L!=null)&&(!original.equals(str)))
+				{
 					msg.setSourceMessage(msg.sourceMessage()+(L("\n\rIt says '@x1' (translated from @x2).",original,L.writtenName())));
+					msg.setTargetMessage(original);
+				}
 			}
 		}
 		return super.okMessage(myHost,msg);

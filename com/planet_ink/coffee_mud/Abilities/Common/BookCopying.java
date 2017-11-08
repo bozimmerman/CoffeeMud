@@ -104,8 +104,11 @@ public class BookCopying extends CommonSkill
 						String tmsg="";
 						for(CMMsg m2 : rmsg.trailerMsgs())
 						{
-							if((m2.source()==factM)&&(m2.sourceMinor()==CMMsg.TYP_WASREAD))
-								tmsg+=CMStrings.getSayFromMessage(m2.sourceMessage());
+							if((m2.source()==factM)
+							&&(m2.target()==foundI)
+							&&(m2.targetMessage().length()>0)
+							&&(m2.sourceMinor()==CMMsg.TYP_WASREAD))
+								tmsg+=m2.targetMessage();
 						}
 						final CMMsg msg=CMClass.getMsg(mob,foundI,this,CMMsg.TYP_WRITE,
 								L("<S-NAME> start(s) copying <T-NAME> into @x1."),

@@ -1817,7 +1817,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					{
 						final StringBuffer buf=Resources.getFileResource(text.substring(5),true);
 						if((buf!=null)&&(buf.length()>0))
-							text=L("It says '@x1'.",buf.toString());
+							text=buf.toString();
 						else
 						if(msg.target() instanceof Electronics)
 						{
@@ -1836,13 +1836,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 							mob.tell(L("There is nothing written on @x1.",msg.target().name()));
 						}
 					}
-					else
-						text=L("It says '@x1'.",text);
 					if((text!=null)&&(text.length()>0))
 					{
 						CMMsg readMsg=CMClass.getMsg(msg.source(), msg.target(), msg.tool(), 
-								 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, text,
-								 CMMsg.NO_EFFECT, null, 
+								 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, L("It says '@x1'.",text),
+								 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, text, 
 								 CMMsg.NO_EFFECT, null);
 						msg.addTrailerMsg(readMsg);
 					}

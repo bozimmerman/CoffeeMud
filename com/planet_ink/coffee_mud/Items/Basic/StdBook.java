@@ -273,7 +273,7 @@ public class StdBook extends StdItem
 						return;
 					CMMsg readMsg=CMClass.getMsg(msg.source(), msg.target(), msg.tool(), 
 							 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, L("It says '@x1'.\n\r",entry.toString()),
-							 CMMsg.NO_EFFECT, null, 
+							 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, entry.toString(), 
 							 CMMsg.NO_EFFECT, null);
 					//mob.tell(entry.toString()+"\n\r");
 					if((entry.toString().trim().length()>0)
