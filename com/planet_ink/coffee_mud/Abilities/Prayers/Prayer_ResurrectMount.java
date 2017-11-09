@@ -108,7 +108,7 @@ public class Prayer_ResurrectMount extends Prayer_Resurrect
 				if(x>=0)
 				{
 					M=(MOB)ridden.getSecond(x);
-					bodyI.setSavedMOB(M);
+					bodyI.setSavedMOB(M, false);
 					ridden.remove(x); // because it`s a copy anyway...
 				}
 				return (M!=null);

@@ -51,6 +51,7 @@ public class Corpse extends GenContainer implements DeadBody
 	protected long 			timeOfDeath	= System.currentTimeMillis();
 	protected boolean 		mobPKFlag	= false;
 	protected MOB 			savedMOB	= null;
+	protected boolean		saveSavedMOB= false;
 	protected int 			deadMobHash = 0;
 	protected boolean 		lootDestroy = false;
 
@@ -115,7 +116,7 @@ public class Corpse extends GenContainer implements DeadBody
 	public void destroy()
 	{
 		super.destroy();
-		if(savedMOB!=null)
+		if((savedMOB!=null)&&(!saveSavedMOB))
 			savedMOB.destroy();
 		savedMOB=null;
 	}
@@ -253,9 +254,10 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setSavedMOB(MOB mob)
+	public void setSavedMOB(MOB mob, boolean preserve)
 	{
 		savedMOB=mob;
+		saveSavedMOB=preserve;
 	}
 
 	@Override

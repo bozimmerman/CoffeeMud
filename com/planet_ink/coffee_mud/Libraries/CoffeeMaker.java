@@ -3353,7 +3353,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						final List<MOB> V=new Vector<MOB>();
 						final String err=addMOBsFromXML("<MOBS>"+mobsXML+"</MOBS>",V,null);
 						if((err.length()==0)&&(V.size()>0))
-							((DeadBody)E).setSavedMOB(V.get(0));
+							((DeadBody)E).setSavedMOB(V.get(0), false);
 
 					}
 					final List<XMLLibrary.XMLTag> dblk=CMLib.xml().getContentsFromPieces(buf,"KLTOOL");

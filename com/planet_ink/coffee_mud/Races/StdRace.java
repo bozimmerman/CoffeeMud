@@ -933,10 +933,10 @@ public class StdRace implements Race
 			{
 				final MOB M=(MOB)mob.copyOf();
 				M.setStartRoom(null);
-				bodyI.setSavedMOB(M);
+				bodyI.setSavedMOB(M, false);
 			}
 			else
-				bodyI.setSavedMOB(mob);
+				bodyI.setSavedMOB(mob, true);
 		}
 		
 		bodyI.setCharStats((CharStats)mob.baseCharStats().copyOf());
