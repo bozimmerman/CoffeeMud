@@ -34,15 +34,15 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class BookCopying extends CommonSkill
+public class Transcribing extends CommonSkill
 {
 	@Override
 	public String ID()
 	{
-		return "BookCopying";
+		return "Transcribing";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Book Copying");
+	private final static String	localizedName	= CMLib.lang().L("Transcribing");
 
 	@Override
 	public String name()
@@ -50,7 +50,7 @@ public class BookCopying extends CommonSkill
 		return localizedName;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "BOOKCOPYING", "BOOKCOPY", "BCOPY" });
+	private static final String[]	triggerStrings	= I(new String[] { "TRANSCRIBING", "TRANSCRIBE", "BCOPY" });
 
 	@Override
 	public String[] triggerStrings()
@@ -74,10 +74,10 @@ public class BookCopying extends CommonSkill
 		return true;
 	}
 
-	public BookCopying()
+	public Transcribing()
 	{
 		super();
-		displayText=L("You are copying a book...");
+		displayText=L("You are transcribing a book...");
 		verb=L("copying");
 	}
 
@@ -93,7 +93,7 @@ public class BookCopying extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if((foundI==null)||(targetI==null))
-					commonTell(mob,L("You mess up your book copying."));
+					commonTell(mob,L("You mess up your transcribing."));
 				else
 				{
 					MOB factM=CMClass.getFactoryMOB(mob.Name(), mob.phyStats().level(), mob.location());
@@ -111,9 +111,9 @@ public class BookCopying extends CommonSkill
 								tmsg+=m2.targetMessage();
 						}
 						final CMMsg msg=CMClass.getMsg(mob,foundI,this,CMMsg.TYP_WRITE,
-								L("<S-NAME> start(s) copying <T-NAME> into @x1."),
+								L("<S-NAME> transcribe(s) <T-NAME> into @x1."),
 								tmsg,
-								L("<S-NAME> start(s) copying <T-NAME> into @x1."));
+								L("<S-NAME> transcribe(s) <T-NAME> into @x1."));
 						if(mob.location().okMessage(mob,msg))
 							mob.location().send(mob,msg);
 					}
@@ -129,7 +129,7 @@ public class BookCopying extends CommonSkill
 
 	public boolean error(final MOB mob)
 	{
-		commonTell(mob,L("You must specify what book to edit, and the optional page/chapter number to edit."));
+		commonTell(mob,L("You must specify what book to transcribe, what to transcribe to, and the optional page/chapter number to edit."));
 		return false;
 	}
 
@@ -163,7 +163,7 @@ public class BookCopying extends CommonSkill
 		}
 		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
 		{
-			commonTell(mob,L("You can't copy something like @x1.",I.name(mob)));
+			commonTell(mob,L("You can't transcribe something like @x1.",I.name(mob)));
 			return null;
 		}
 		if((!CMLib.flags().isReadable(I))||(I instanceof Scroll))
@@ -174,7 +174,7 @@ public class BookCopying extends CommonSkill
 		
 		if(!I.isGeneric())
 		{
-			commonTell(mob,L("You aren't able to copy @x1.",I.name(mob)));
+			commonTell(mob,L("You aren't able to transcribe @x1.",I.name(mob)));
 			return null;
 		}
 		return I;
@@ -211,21 +211,21 @@ public class BookCopying extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		foundI=copyFromI;
-		verb=L("copying @x1 into @x2",foundI.name(),targetI.name());
+		verb=L("transcribing @x1 into @x2",foundI.name(),targetI.name());
 		displayText=L("You are @x1",verb);
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			foundI = null;
 		final int duration=getDuration(30,mob,1,1);
 		final CMMsg msg=CMClass.getMsg(mob,copyFromI,this,getActivityMessageType(),
-				L("<S-NAME> start(s) copying <T-NAME> into @x1.",targetI.name()),
+				L("<S-NAME> start(s) transcribing <T-NAME> into @x1.",targetI.name()),
 				pageNum,
-				L("<S-NAME> start(s) copying <T-NAME> into @x1.",targetI.name()));
+				L("<S-NAME> start(s) transcribing <T-NAME> into @x1.",targetI.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			if(duration==1)
 			{
-				BookCopying B=(BookCopying)beneficialAffect(mob,mob,asLevel,duration);
+				Transcribing B=(Transcribing)beneficialAffect(mob,mob,asLevel,duration);
 				if(B!=null)
 				{
 					B.tickDown=0;
