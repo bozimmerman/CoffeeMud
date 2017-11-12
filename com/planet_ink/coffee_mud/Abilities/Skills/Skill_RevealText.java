@@ -161,7 +161,7 @@ public class Skill_RevealText extends StdSkill
 			}
 			else
 			{
-				mob.tell(L("You've completed releaving the text on @x1.",revealI.name(mob)));
+				mob.tell(L("You've completed revealing the text on @x1.",revealI.name(mob)));
 				boolean killInvisibleInk=false;
 				Ability encryptA=mob.fetchEffect("InvisibleInk");
 				if(encryptA==null)
