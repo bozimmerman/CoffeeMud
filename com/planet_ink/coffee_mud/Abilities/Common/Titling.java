@@ -100,8 +100,8 @@ public class Titling extends CommonSkill
 		final int x=old.indexOf(" entitled `");
 		if(x > 0)
 		{
-			final int y=old.lastIndexOf('`',x+1);
-			if(y>x)
+			final int y=old.lastIndexOf('`');
+			if(y>x+11)
 				old=old.substring(0,x)+old.substring(y+1);
 		}
 		if((newTitle != null)&&(newTitle.length()>0))
@@ -114,8 +114,8 @@ public class Titling extends CommonSkill
 		final int x=old.indexOf(CATALOG_PREFIX);
 		if(x > 0)
 		{
-			final int y=old.indexOf("`.",x+1);
-			if(y>x)
+			final int y=old.indexOf("`.",x+CATALOG_PREFIX.length());
+			if(y>x+CATALOG_PREFIX.length())
 				old=old.substring(0,x).trim() + old.substring(y+2);
 		}
 		if((newCatalog != null)&&(newCatalog.length()>0))
