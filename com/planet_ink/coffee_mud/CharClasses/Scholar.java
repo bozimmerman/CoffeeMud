@@ -173,8 +173,9 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Lore",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Skillcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_SecretWriting",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_HonoraryDegreeCommoner", false);
 /*
-12	Studying (G), Honorary Degree: Commonerness (Q)		
 13	Cataloging (G), Songcraft (Q), Skill_Map (Q)		
 14	Honorary Degree: Fighterness (Q), Thief_Observere (Q), Thief_AnalyzeMark (Q)		
 15	Spell_DetectMagic (Q)  Spellcraft (Q), Plant Lore (Q)		
