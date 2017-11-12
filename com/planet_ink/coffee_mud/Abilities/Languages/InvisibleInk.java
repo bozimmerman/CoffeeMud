@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Songs;
+package com.planet_ink.coffee_mud.Abilities.Languages;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Skillcraft extends Skill_Songcraft
+public class InvisibleInk extends StdLanguage
 {
 	@Override
 	public String ID()
 	{
-		return "Skill_Skillcraft";
+		return "InvisibleInk";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Skillcraft");
+	private final static String localizedName = CMLib.lang().L("Invisible Ink");
 
 	@Override
 	public String name()
@@ -48,9 +48,10 @@ public class Skill_Skillcraft extends Skill_Songcraft
 		return localizedName;
 	}
 
+
 	@Override
-	public int craftType()
+	public String translate(String language, String word)
 	{
-		return Ability.ACODE_SKILL;
+		return "";
 	}
 }

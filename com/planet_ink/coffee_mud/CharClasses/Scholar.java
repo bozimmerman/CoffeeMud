@@ -160,6 +160,7 @@ public class Scholar extends StdCharClass
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_SeaMapping",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_DecipherScript",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_RevealText",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Transcribing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Semaphore",false);
@@ -168,8 +169,11 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"BookNaming",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Speculate",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Siegecraft",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Lore",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Skillcraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_SecretWriting",false);
 /*
-11	Thief_Lore (G), Skillcraft (Q), InvisibleInk (Q)		
 12	Studying (G), Honorary Degree: Commonerness (Q)		
 13	Cataloging (G), Songcraft (Q), Skill_Map (Q)		
 14	Honorary Degree: Fighterness (Q), Thief_Observere (Q), Thief_AnalyzeMark (Q)		

@@ -33,15 +33,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Skill_DecipherScript extends StdSkill
+public class Skill_RevealText extends StdSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Skill_DecipherScript";
+		return "Skill_RevealText";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Decipher Script");
+	private final static String	localizedName	= CMLib.lang().L("Reveal Text");
 
 	@Override
 	public String name()
@@ -67,7 +67,7 @@ public class Skill_DecipherScript extends StdSkill
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "DECIPHER" });
+	private static final String[]	triggerStrings	= I(new String[] { "REVEALTEXT" });
 
 	@Override
 	public String[] triggerStrings()
@@ -87,7 +87,7 @@ public class Skill_DecipherScript extends StdSkill
 		return 0;
 	}
 	
-	protected Item decryptI=null;
+	protected Item revealI=null;
 	protected ItemPossessor possessorI=null;
 	protected boolean success=false;
 	protected String page="";
@@ -99,10 +99,10 @@ public class Skill_DecipherScript extends StdSkill
 		if(P instanceof MOB)
 		{
 			final MOB mob=(MOB)P;
-			if((decryptI==null)
-			||(decryptI.amDestroyed())
-			||(decryptI.owner()!=possessorI)
-			||(!CMLib.flags().canBeSeenBy(decryptI, mob)))
+			if((revealI==null)
+			||(revealI.amDestroyed())
+			||(revealI.owner()!=possessorI)
+			||(!CMLib.flags().canBeSeenBy(revealI, mob)))
 			{
 				success = false;
 				return false;
@@ -133,13 +133,13 @@ public class Skill_DecipherScript extends StdSkill
 			{
 				final MOB mob=(MOB)P;
 				if(tickDown==4)
-					mob.location().show(mob,decryptI,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("<S-NAME> <S-IS-ARE> almost done decrypting <T-NAME>."));
+					mob.location().show(mob,revealI,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("<S-NAME> <S-IS-ARE> almost done revealing <T-NAME>."));
 				else
 				if((tickUp%4)==0)
 				{
 					final int total=tickUp+tickDown;
 					final int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
-					mob.location().show(mob,decryptI,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("<S-NAME> continue(s) decrypting <T-NAME> (@x1% completed).",""+pct),null,L("<S-NAME> continue(s) decrypting <T-NAME>."));
+					mob.location().show(mob,revealI,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("<S-NAME> continue(s) revealing <T-NAME> (@x1% completed).",""+pct),null,L("<S-NAME> continue(s) decrypting <T-NAME>."));
 				}
 			}
 		}
@@ -157,19 +157,19 @@ public class Skill_DecipherScript extends StdSkill
 			final MOB mob=(MOB)P;
 			if(!success)
 			{
-				mob.tell(L("You've failed to figure out the encryption on @x1.",decryptI.name(mob)));
+				mob.tell(L("You've failed to reveal the text on @x1.",revealI.name(mob)));
 			}
 			else
 			{
-				mob.tell(L("You've completed the decryption of @x1.",decryptI.name(mob)));
-				boolean killEncrypto=false;
-				Ability encryptA=mob.fetchEffect("Encrypto");
+				mob.tell(L("You've completed releaving the text on @x1.",revealI.name(mob)));
+				boolean killInvisibleInk=false;
+				Ability encryptA=mob.fetchEffect("InvisibleInk");
 				if(encryptA==null)
 				{
-					encryptA=decryptI.fetchEffect("Encrypto");
+					encryptA=revealI.fetchEffect("InvisibleInk");
 					if(encryptA!=null)
 					{
-						killEncrypto=true;
+						killInvisibleInk=true;
 						encryptA=(Ability)encryptA.copyOf();
 						encryptA.setProficiency(proficiency());
 						mob.addNonUninvokableEffect(encryptA);
@@ -177,15 +177,15 @@ public class Skill_DecipherScript extends StdSkill
 				}
 				try
 				{
-					final CMMsg newMsg=CMClass.getMsg(mob,decryptI,null,CMMsg.MSG_READ,null,CMMsg.MSG_READ,page,CMMsg.MSG_READ,null);
+					final CMMsg newMsg=CMClass.getMsg(mob,revealI,null,CMMsg.MSG_READ,null,CMMsg.MSG_READ,page,CMMsg.MSG_READ,null);
 					if(mob.location().okMessage(mob,newMsg))
 						mob.location().send(mob,newMsg);
 				}
 				finally
 				{
-					if(killEncrypto)
+					if(killInvisibleInk)
 					{
-						encryptA=mob.fetchEffect("Encrypto");
+						encryptA=mob.fetchEffect("InvisibleInk");
 						if(encryptA!=null)
 							mob.delEffect(encryptA);
 					}
@@ -205,7 +205,7 @@ public class Skill_DecipherScript extends StdSkill
 		}
 		if(commands.size()<1)
 		{
-			mob.tell(L("What would you like to decipher?"));
+			mob.tell(L("What would you like to reveal text in?"));
 			return false;
 		}
 		String page="";
@@ -236,49 +236,25 @@ public class Skill_DecipherScript extends StdSkill
 			return false;
 		}
 
-		Ability encryptA=item.fetchEffect("Encrypto");
-		if(encryptA==null)
-		{
-			Language L=null;
-			for(Enumeration<Ability> a= item.effects();a.hasMoreElements();)
-			{
-				Ability A=a.nextElement();
-				if(A instanceof Language)
-					L=(Language)A;
-			}
-			if(L==null)
-				mob.tell(L("That doesn't appear to be encrypted."));
-			else
-				mob.tell(L("That doesn't appear to be encrypted, just written in another language."));
-			
-			return false;
-		}
+		boolean revealable=false;
+		Ability encryptA=item.fetchEffect("InvisibleInk");
+		if(encryptA!=null)
+			revealable=true;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int level = encryptA.abilityCode();
-		int adjustment = 0;
-		if(level > 0)
-		{
-			adjustment = adjustedLevel(mob,asLevel) - level;
-			if(adjustment < 0)
-				adjustment *= 10;
-			else
-				adjustment = 0;
-		}
-		
-		final boolean success=proficiencyCheck(mob,adjustment,auto);
+		final boolean success=revealable && proficiencyCheck(mob,0,auto);
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("<S-NAME> begin(s) decrypting <T-NAMESELF>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_DELICATE_SMALL_HANDS_ACT,L("<S-NAME> begin(s) revealing <T-NAMESELF>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			Skill_DecipherScript A=(Skill_DecipherScript)this.beneficialAffect(mob, mob, asLevel, 20);
+			Skill_RevealText A=(Skill_RevealText)this.beneficialAffect(mob, mob, asLevel, 20);
 			if(A != null)
 			{
 				A.success = success;
-				A.decryptI=target;
+				A.revealI=target;
 				A.possessorI=target.owner();
 				A.page=page;
 				A.tickUp=0;
