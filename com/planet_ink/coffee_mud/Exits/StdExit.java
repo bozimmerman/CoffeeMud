@@ -452,6 +452,7 @@ public class StdExit implements Exit
 		case CMMsg.TYP_LOOK:
 		case CMMsg.TYP_EXAMINE:
 		case CMMsg.TYP_READ:
+		case CMMsg.TYP_WASREAD:
 		case CMMsg.TYP_OK_VISUAL:
 		case CMMsg.TYP_KNOCK:
 		case CMMsg.TYP_OK_ACTION:

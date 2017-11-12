@@ -608,6 +608,7 @@ public class GenWallpaper implements Item
 			case CMMsg.TYP_LOOK:
 			case CMMsg.TYP_EXAMINE:
 			case CMMsg.TYP_READ:
+			case CMMsg.TYP_WASREAD:
 			case CMMsg.TYP_SPEAK:
 			case CMMsg.TYP_OK_ACTION:
 			case CMMsg.TYP_OK_VISUAL:
