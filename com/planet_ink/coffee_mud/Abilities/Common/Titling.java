@@ -68,19 +68,35 @@ public class Titling extends CommonSkill
 	protected String	writing	= "";
 	protected String	catalog = "";
 	
-	protected static String[] CATALOGS = new String[] {
-		"Armor",
-		"Jewelry",
-		"Weapon",
-		"Furniture",
-		"Books",
-		"Potions",
-		"Food",
-		"Alcohol",
-		"Race",
-		"Survey",
-		"None"
-	};
+	public static enum CATALOGS {
+		Armor,
+		Jewelry,
+		Weapons,
+		Furniture,
+		Books,
+		Potions,
+		Pills,
+		Wands,
+		Foods,
+		Drinks,
+		Alcohol,
+		Races,
+		Survey,
+		Misc,
+		None
+		;
+		private static String[] names=null;
+		public static String[] getNames()
+		{
+			if(names == null)
+			{
+				names=new String[CATALOGS.values().length];
+				for(int i=0;i<CATALOGS.values().length;i++)
+					names[i]=CATALOGS.values()[i].name();
+			}
+			return names;
+		}
+	}
 
 	@Override
 	protected boolean canBeDoneSittingDown()
@@ -97,7 +113,8 @@ public class Titling extends CommonSkill
 
 	public String doTitle(String old, String newTitle)
 	{
-		final int x=old.indexOf(" entitled `");
+		final String titlePrefix=L(" entitled `");
+		final int x=old.indexOf(titlePrefix);
 		if(x > 0)
 		{
 			final int y=old.lastIndexOf('`');
@@ -105,24 +122,77 @@ public class Titling extends CommonSkill
 				old=old.substring(0,x)+old.substring(y+1);
 		}
 		if((newTitle != null)&&(newTitle.length()>0))
-			return old + " entitled `"+newTitle.replace('\'', '-').replace('`', '-')+"`";
+			return old + titlePrefix+newTitle.replace('\'', '-').replace('`', '-')+"`";
 		return old;
 	}
 	
 	public String doCatalog(String old, String newCatalog)
 	{
-		final int x=old.indexOf(CATALOG_PREFIX);
+		final String catalogPrefix=L(CATALOG_PREFIX);
+		final int x=old.indexOf(catalogPrefix);
 		if(x > 0)
 		{
-			final int y=old.indexOf("`.",x+CATALOG_PREFIX.length());
-			if(y>x+CATALOG_PREFIX.length())
+			final int y=old.indexOf("`.",x+catalogPrefix.length());
+			if(y>x+catalogPrefix.length())
 				old=old.substring(0,x).trim() + old.substring(y+2);
 		}
 		if((newCatalog != null)&&(newCatalog.length()>0))
-			return old + CATALOG_PREFIX+newCatalog+"`.";
+			return old + catalogPrefix+newCatalog+"`.";
 		return old;
 	}
+
+	public static String getCatalogType(Item I)
+	{
+		final String desc=I.description();
+		final int x=desc.indexOf(CATALOG_PREFIX);
+		if(x > 0)
+		{
+			final int y=desc.indexOf("`.",x+CATALOG_PREFIX.length());
+			if(y>x+CATALOG_PREFIX.length())
+				return desc.substring(x+CATALOG_PREFIX.length(),y);
+		}
+		return "";
+	}
 	
+	public static String getCatalogEntryType(Environmental E)
+	{
+		if(E instanceof Armor)
+			return CATALOGS.Armor.name(); // armor
+		if(E instanceof Armor)
+			return CATALOGS.Jewelry.name(); //jewelry
+		if(E instanceof Weapon)
+			return CATALOGS.Weapons.name();
+		if((E instanceof Rideable)&&(E instanceof Item))
+			return CATALOGS.Furniture.name();
+		if((E instanceof Item)
+		&&(CMLib.flags().isReadable((Item)E))
+		&&((((Item)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PAPER))
+			return CATALOGS.Books.name();
+		if((E instanceof Drink)
+		&&(E instanceof Item)
+		&& CMLib.flags().isAlcoholic((Item)E))
+			return CATALOGS.Alcohol.name();
+		if((E instanceof Item)
+		&& (E instanceof Potion))
+			return CATALOGS.Potions.name();
+		if((E instanceof Item)
+		&&(E instanceof Pill))
+			return CATALOGS.Pills.name();
+		if(E instanceof Wand)
+			return CATALOGS.Wands.name();
+		if(E instanceof Food)
+			return CATALOGS.Foods.name();
+		if(E instanceof Drink)
+			return CATALOGS.Drinks.name();
+		if(E instanceof MOB)
+			return CATALOGS.Races.name();
+		if(E instanceof Room)
+			return CATALOGS.Survey.name();
+		if(E instanceof Item)
+			return CATALOGS.Misc.name();
+		return "";
+	}
+
 	@Override
 	public void unInvoke()
 	{
@@ -160,7 +230,7 @@ public class Titling extends CommonSkill
 		{
 			commonTell(mob,L("You must specify what you want to entitle, and what you want the title to be.  Use a title of `remove` to remove "
 					+ "a previous title.  You can also designate a category for the word by making the last word of the title one of "
-					+ "these: "+CMParms.toListString(CATALOGS))+".");
+					+ "these: "+CMParms.toListString(CATALOGS.getNames()))+".");
 			return false;
 		}
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
@@ -196,7 +266,7 @@ public class Titling extends CommonSkill
 		if(commands.size()>1)
 		{
 			String potentialCatalog = CMStrings.capitalizeAndLower(commands.get(commands.size()-1));
-			if(CMParms.contains(CATALOGS, potentialCatalog))
+			if(CMParms.contains(CATALOGS.getNames(), potentialCatalog))
 			{
 				newCatalog=potentialCatalog;
 				commands.remove(commands.size()-1);

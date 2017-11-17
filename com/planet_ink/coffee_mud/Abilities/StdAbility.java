@@ -853,6 +853,14 @@ public class StdAbility implements Ability
 		return getAnyTarget(mob,commands,givenTarget,filter,false,false);
 	}
 
+	protected Physical getAnyTarget(MOB mob, Room location, boolean anyContainer, List<String> commands, Physical givenTarget, Filterer<Environmental> filter)
+	{
+		final Physical P=getAnyTarget(mob,commands,givenTarget,filter,false,false);
+		if(P!=null)
+			return P;
+		return getTarget(mob, location, givenTarget, anyContainer, commands, filter);
+	}
+
 	protected Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory)
 	{
 		return getAnyTarget(mob,commands,givenTarget,filter,checkOthersInventory,false);
@@ -953,6 +961,41 @@ public class StdAbility implements Ability
 		return getTarget(mob,location,givenTarget,null,commands,filter);
 	}
 
+	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, boolean anyContainer, List<String> commands, Filterer<Environmental> filter)
+	{
+		Item I=this.getTarget(mob, location, givenTarget, null, commands, filter);
+		if((I!=null)||(!anyContainer))
+			return I;
+		List<Item> containers=new ArrayList<Item>();
+		if(location!=null)
+		{
+			for(Enumeration<Item> i=location.items();i.hasMoreElements();)
+			{
+				Item C=i.nextElement();
+				if((C instanceof Container)
+				&&(((Container)C).isOpen()))
+					containers.add(C);
+			}
+		}
+		else
+		{
+			for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
+			{
+				Item C=i.nextElement();
+				if((C instanceof Container)
+				&&(((Container)C).isOpen()))
+					containers.add(C);
+			}
+		}
+		for(Item C : containers)
+		{
+			I=this.getTarget(mob, location, givenTarget, C, commands, filter);
+			if(I!=null)
+				return I;
+		}
+		return null;
+	}
+	
 	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, List<String> commands, Filterer<Environmental> filter)
 	{
 		String targetName=CMParms.combine(commands,0);
