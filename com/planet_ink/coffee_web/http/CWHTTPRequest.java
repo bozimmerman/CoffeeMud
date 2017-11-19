@@ -94,7 +94,7 @@ public class CWHTTPRequest implements HTTPRequest
 	private final Set<DisableFlag>	disableFlags;
 	private List<String>		 	headerRefs  	= new LinkedList<String>();
 	private final List<String>		expects	 		= new LinkedList<String>();
-	private Map<String,Object>   	objects		 	= new HashMap<String,Object>();
+	private Map<String,Object>   	reqObjects	 	= new HashMap<String,Object>();
 
 	/**
 	 * constructs a request object to handle requests from the given address
@@ -1153,8 +1153,8 @@ public class CWHTTPRequest implements HTTPRequest
 	@Override
 	public Map<String,Object> getRequestObjects()
 	{
-		if(objects==null)
-			objects=new HashMap<String,Object>();
-		return objects;
+		if(reqObjects==null)
+			reqObjects=new HashMap<String,Object>();
+		return reqObjects;
 	}
 }
