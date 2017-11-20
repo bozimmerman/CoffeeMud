@@ -17,8 +17,7 @@ function connectChecker()
 	if((theSiplet!=null)&&(!errorState))
 	{
 		var ellapsed=new Date().getTime() - lastReceived;
-		if(ellapsed > 10000)
-			displayData();
+		displayData();
 	}
 	else
 		lastReceived = new Date().getTime()
