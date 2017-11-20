@@ -37,8 +37,6 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.util.*;
 
-import sun.security.krb5.Config;
-
 import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
 import com.planet_ink.siplet.applet.*;
 
