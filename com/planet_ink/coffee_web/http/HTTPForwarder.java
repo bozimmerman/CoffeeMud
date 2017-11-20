@@ -48,8 +48,8 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 	private final boolean		isDebugging;			  	  // true if the log debug channel is on -- an optomization
 	private final ByteBuffer	responseBuffer;
 	private final String		name;					  	  // the name of this handler -- to denote a request ID
-	private final CWConfig config;
-	private final WebServer server;
+	private final CWConfig		config;
+	private final WebServer		server;
 	
 	private final LinkedList<DataBuffers>writeables	= new LinkedList<DataBuffers>();
 	
@@ -269,12 +269,31 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 		return false;
 	}
 
-	@Override
-
 	/**
 	 * Returns true if this request is currently reading/processing the request
 	 * @return true if in progress
 	 */
-	public boolean isRunning() { return isRunning;}
+	@Override
+	public boolean isRunning()
+	{
+		return isRunning;
+	}
+	
+	@Override
+	public boolean scheduleProcessing()
+	{
+		if(!closeMe)
+		{
+			server.registerChannelInterest(webServerChannel, SelectionKey.OP_WRITE | SelectionKey.OP_READ);
+		}
+		return !closeMe;
+	}
 
+	@Override
+	public boolean preserveConnection()
+	{
+		this.idleTime=System.currentTimeMillis();
+		return !closeMe;
+	}
 }
+

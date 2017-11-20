@@ -69,19 +69,20 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 	protected final SocketChannel  		chan;					  // the channel from which the request is read
 	protected final String				name;					  // the name of this handler -- to denote a request ID
 	protected final boolean				isDebugging;			  // true if the log debug channel is on -- an optomization
-	private final long			 		startTime;				  // the initial start time of the request, for overall age calculation
 	protected final CWConfig			config;					  // mini web configuration variables
 	protected final WebServer			server;					  // mini web server managing this request
 
-	private volatile AtomicLong	 		idleTime 	 	 = new AtomicLong(System.currentTimeMillis());  // the last time this handler went idle
+	private final AtomicLong	 		startTime 	 	 = new AtomicLong(0);				  // the initial start time of the request, for overall age calculation
+	private final AtomicLong	 		idleTime 	 	 = new AtomicLong(System.currentTimeMillis());  // the last time this handler went idle
 	
 	private volatile CWHTTPRequest 		currentReq;			  	  // the parser and pojo of the current request
 	private volatile ParseState  		currentState	 = ParseState.REQ_INLINE;	// the current parse state of this request
 	private volatile int				nextChunkSize	 = 0;
+	private volatile boolean			willProcessNext	 = false;  // whether the read buffer will be processed even without new data
 	
 	private volatile HTTPForwarder		forwarder		 = null;  // in the off chance everything is just being forwarded, it goes here
 	private volatile ThrottleSpec		outputThrottle	 = null;
-	private volatile ProtocolHandler	protocolHandler= this;
+	private volatile ProtocolHandler	protocolHandler	 = this;
 	private volatile int				lastHttpStatus	 = 0;
 	
 	private final LinkedList<DataBuffers>writeables		 = new LinkedList<DataBuffers>();
@@ -130,7 +131,7 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 		final boolean overwriteDups=config.getDupPolicy()==CWConfig.DupPolicy.OVERWRITE;
 		this.currentReq=new CWHTTPRequest(clientAddress,isHttps, localPort, overwriteDups, requestLineSize, debugLogger, config.getDisableFlags(), requestBuffer);
 		this.name=getReaderType()+"#"+idCounter.addAndGet(1);
-		this.startTime=System.currentTimeMillis();
+		this.startTime.set(System.currentTimeMillis());
 	}
 
 	/**
@@ -232,8 +233,8 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 			if (isDebugging) config.getLogger().finest("Disconnected: "+this.getName());
 			return true;
 		}
-		final long totalDiffTime = (currentTime - startTime); 
-		if((startTime!=0) && (totalDiffTime > (config.getRequestMaxAliveSecs() * 1000)))
+		final long totalDiffTime = (currentTime - startTime.get()); 
+		if((startTime.get()!=0) && (totalDiffTime > (config.getRequestMaxAliveSecs() * 1000)))
 		{
 			if (isDebugging) config.getLogger().finest("Over Timed Out: "+this.getName()+" "+totalDiffTime +">"+ (config.getRequestMaxAliveSecs() * 1000));
 			return true;
@@ -327,13 +328,13 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 	 * 
 	 * The method should exit with the buffer in the same writeable state it
 	 * was handed.
-	 * 
 	 * @param request the request currently being parsed
 	 * @param buffer the bytebuffer to process data from
+	 * 
 	 * @throws HTTPException
 	 */
 	@Override
-	public DataBuffers processBuffer(HTTPRequest request, ByteBuffer buffer) throws HTTPException
+	public DataBuffers processBuffer(HTTPIOHandler handler, HTTPRequest request, ByteBuffer buffer) throws HTTPException
 	{
 		ParseState state = currentState; // since currentState is volatile, lets cache local before tinkering with it
 		try
@@ -887,14 +888,15 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 			final StringBuilder accessLog = ( accessLogging )? new StringBuilder() : null;
 			try // begin of the http exception handling block
 			{
-				while (!closeMe && (( bytesRead = readBytesFromClient(currentReq.getBuffer())) > 0) )
+				while (!closeMe && ((( bytesRead = readBytesFromClient(currentReq.getBuffer())) > 0) || (willProcessNext)) )
 				{
+					willProcessNext = false;
 					if(!announcedAlready)
 					{
 						config.getLogger().finer("Processing handler '"+name+"'");
 						announcedAlready=true;
 					}
-					final DataBuffers bufs = protocolHandler.processBuffer(currentReq, currentReq.getBuffer()); // process any data received
+					final DataBuffers bufs = protocolHandler.processBuffer(this, currentReq, currentReq.getBuffer()); // process any data received
 					if((bufs != null) && (bufs.getLength() > 0))
 						writeBytesToChannel(bufs);
 					if(currentReq.isFinished()) // if the request was completed, generate output!
@@ -911,6 +913,7 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 						if((closeHeader != null) && (closeHeader.trim().equalsIgnoreCase("close")))
 							closeRequested = true;
 						else
+						if(this.protocolHandler == this)
 						{
 							currentReq=new CWHTTPRequest(currentReq);
 							currentState=ParseState.REQ_INLINE;
@@ -922,11 +925,6 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 			{
 				final DataBuffers bufs=me.generateOutput(currentReq);
 				writeBytesToChannel(bufs);
-				if(me.getStatus() == HTTPStatus.S101_SWITCHING_PROTOCOLS)
-				{
-					if(me.getNewProtocolHandler() != null)
-						this.protocolHandler = me.getNewProtocolHandler();
-				}
 				if(accessLog != null)
 				{
 					accessLog.append(Log.makeLogEntry(Log.Type.access, Thread.currentThread().getName(), 
@@ -942,6 +940,7 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 					if((closeHeader != null) && (closeHeader.trim().equalsIgnoreCase("close")))
 						closeRequested = true;
 					else
+					if(this.protocolHandler == this)
 					{
 						currentReq=new CWHTTPRequest(currentReq);
 						currentState=ParseState.REQ_INLINE;
@@ -949,6 +948,11 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 				}
 				else
 					closeChannels();
+				if(me.getStatus() == HTTPStatus.S101_SWITCHING_PROTOCOLS)
+				{
+					if(me.getNewProtocolHandler() != null)
+						this.protocolHandler = me.getNewProtocolHandler();
+				}
 			}
 			finally
 			{
@@ -993,5 +997,24 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 			idleTime.set(System.currentTimeMillis());
 			isRunning.set(false);
 		}
+	}
+
+	@Override
+	public boolean scheduleProcessing()
+	{
+		if(!closeMe)
+		{
+			willProcessNext=true;
+			server.registerChannelInterest(chan, SelectionKey.OP_WRITE | SelectionKey.OP_READ);
+		}
+		return !closeMe;
+	}
+	
+	@Override
+	public boolean preserveConnection()
+	{
+		idleTime.set(System.currentTimeMillis());
+		startTime.set(System.currentTimeMillis());
+		return !closeMe;
 	}
 }

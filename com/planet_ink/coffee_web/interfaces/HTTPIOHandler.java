@@ -73,6 +73,20 @@ public interface HTTPIOHandler extends Runnable
 	public boolean isRunning();
 	
 	/**
+	 * Notifies the I/O handler that it has data to process from somewhere
+	 * other than its internal read buffers.
+	 * @return true if the scheduling was successful
+	 */
+	public boolean scheduleProcessing();
+	
+	/**
+	 * Notifies the I/O handler that it should not idle out, because it will
+	 * be receiving data or generating data in the future.
+	 * @return true if the preservatino was successful
+	 */
+	public boolean preserveConnection();
+	
+	/**
 	 * Reads bytes from the given buffer into the internal channel channel.
 	 * @param buffer source buffer for the data write
 	 * @return number of bytes written

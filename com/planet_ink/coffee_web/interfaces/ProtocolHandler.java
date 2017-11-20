@@ -25,11 +25,11 @@ public interface ProtocolHandler
 	 * 
 	 * The method should exit with the buffer in the same writeable state it
 	 * was handed.
-	 * 
+	 * @param handler the I/O handler that generated the processing
 	 * @param request the request currently being parsed
 	 * @param buffer the bytebuffer to process data from
+	 * 
 	 * @throws HTTPException any parse or protocol errors
 	 */
-	public DataBuffers processBuffer(HTTPRequest request, ByteBuffer buffer) throws HTTPException;
-
+	public DataBuffers processBuffer(HTTPIOHandler handler, HTTPRequest request, ByteBuffer buffer) throws HTTPException;
 }

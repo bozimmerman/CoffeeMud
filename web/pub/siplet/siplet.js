@@ -1,13 +1,13 @@
 var Siplet = function()
 {
 	this.socket = null;
-	//window.console.info("Siplet occurred!");
 	this.randomNumber = Math.random();
 	this.mudport=23;
 	this.callback = null;
 	this.token = null;
 	this.host = '';
 	this.vulnerableState = false;
+	this.the_real_mccoy=true;
 };
 
 Siplet.prototype.connectToURL = function(host, port, mudport, callback)
@@ -42,8 +42,8 @@ Siplet.prototype.receivedData = function(event)
 {
 	if(this.callback)
 		this.callback(this.socket.readyState == 1, event.data);
-	this.callback = null;
-//	window.console.info(this.randomNumber+": "+this.socket.readyState+": receivedData");
+	//this.callback = null;
+	//window.console.info(this.randomNumber+": "+this.socket.readyState+": receivedData:"+event.data.length);
 };
 
 Siplet.prototype.closeOccurred = function(event)
@@ -116,7 +116,7 @@ Siplet.prototype.getURLData = function(callback)
 	if(this.socket && this.socket.readyState  === 1)
 	{
 		this.callback = callback;
-//		window.console.info(this.randomNumber+": "+this.token+": "+this.socket.readyState+": getURLData");
+		//window.console.info(this.randomNumber+": "+this.token+": "+this.socket.readyState+": getURLData");
 		this.socket.send('POLL&TOKEN='+this.token);
 	}
 };
@@ -130,4 +130,3 @@ Siplet.prototype.sendData = function(s, callback)
 		this.socket.send('SENDDATA&TOKEN='+this.token+'&DATA='+s);
 	}
 };
-

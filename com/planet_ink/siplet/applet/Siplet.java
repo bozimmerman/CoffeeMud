@@ -28,7 +28,7 @@ public class Siplet
 	public final static boolean debugDataOut=false;
 
 	public final static long serialVersionUID=7;
-	public static final float VERSION_MAJOR=(float)2.2;
+	public static final float VERSION_MAJOR=(float)2.3;
 	public static final long  VERSION_MINOR=0;
 	
 	protected StringBuffer		buf			= new StringBuffer("");
@@ -135,6 +135,19 @@ public class Siplet
 		}
 		return true;
 	}
+	
+	public boolean hasWaitingData()
+	{
+		try
+		{
+			return this.in[0].ready() || this.rawin.available() > 0;
+		}
+		catch (Exception e)
+		{
+			return false;
+		}
+	}
+	
 	public boolean connectToURL(String url, int port, Socket sock)
 	{
 		connected=false;
@@ -271,7 +284,10 @@ public class Siplet
 		}
 	}
 
-	public boolean isConnectedToURL(){return connected;}
+	public boolean isConnectedToURL()
+	{
+		return connected;
+	}
 
 	public void readURLData()
 	{
