@@ -1164,7 +1164,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 										vbuf.set(ln,param2);
 								}
 								else
-									state=MsgMkrState.SRPROMPT;
+									state=MsgMkrState.EDITPROMPT;
 							}
 							break;
 						}
