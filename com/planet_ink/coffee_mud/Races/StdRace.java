@@ -987,7 +987,8 @@ public class StdRace implements Race
 		}
 		for(Item thisItem : itemsToGo)
 		{
-			if((thisItem!=null)&&(thisItem.isSavable()))
+			if(thisItem.isSavable() 
+			|| (thisItem.fetchEffect("QuestBound")!=null)) // a quest-item drop must be preserved, even unsavable ones!
 			{
 				if(mob.isMonster())
 				{
@@ -1019,8 +1020,9 @@ public class StdRace implements Race
 				items.addElement(thisItem);
 			}
 			else
-			if(thisItem!=null)
+			{
 				mob.delItem(thisItem);
+			}
 		}
 		itemsToGo.clear();
 
