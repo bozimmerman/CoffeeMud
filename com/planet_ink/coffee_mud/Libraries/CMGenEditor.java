@@ -2719,7 +2719,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				else
 					modifyGenItem(mob,(Item)E,showFlag);
 			}
-			if(E instanceof Physical)
+			if((E instanceof Physical)&&(showFlag != -950))
 				catalogCheckUpdate(mob, (Physical)E);
 		}
 		finally

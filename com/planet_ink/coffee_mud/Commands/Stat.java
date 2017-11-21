@@ -1112,10 +1112,15 @@ public class Stat  extends Skills
 					if((target.playerStats()!=null)&&(CMProps.isUsingAccountSystem()))
 						str.append(L("\n\r^xMember of Account:^.^N ^w@x1^?",(target.playerStats().getAccount()!=null)?target.playerStats().getAccount().getAccountName():L("None"))).append("\n\r");
 					str.append(CMLib.commands().getScore(target));
-					if(target.playerStats()!=null)
-						CMLib.genEd().modifyPlayer(mob, target, -950);
-					else
-						CMLib.genEd().genMiscSet(mob, target, -950);
+					for(Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
+					{
+						final Quest Q=q.nextElement();
+						if((Q!=null)
+						&&(Q.running())
+						&&(Q.isObjectInUse(target)))
+							str.append(L("\n\r^xIn use by quest:^.^N ^w@x1^?",Q.name())).append("\n\r");
+					}
+					CMLib.genEd().genMiscSet(mob, target, -950);
 				}
 			}
 		}
@@ -1158,6 +1163,14 @@ public class Stat  extends Skills
 					Environmental itarget=getItemTarget(mob, restWords);
 					if(itarget!=null)
 					{
+						for(Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
+						{
+							final Quest Q=q.nextElement();
+							if((Q!=null)
+							&&(Q.running())
+							&&(Q.isObjectInUse(itarget)))
+								mob.tell(L("\n\r^xIn use by quest:^.^N ^w@x1^?",Q.name()));
+						}
 						CMLib.genEd().genMiscSet(mob, itarget, -950);
 						return true;
 					}
@@ -1235,6 +1248,14 @@ public class Stat  extends Skills
 							itarget=mob.location().fetchExit(MOBname);
 						if(itarget!=null)
 						{
+							for(Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
+							{
+								final Quest Q=q.nextElement();
+								if((Q!=null)
+								&&(Q.running())
+								&&(Q.isObjectInUse(itarget)))
+									mob.tell(L("\n\r^xIn use by quest:^.^N ^w@x1^?",Q.name()));
+							}
 							CMLib.genEd().genMiscSet(mob, itarget, -950);
 							return true;
 						}
