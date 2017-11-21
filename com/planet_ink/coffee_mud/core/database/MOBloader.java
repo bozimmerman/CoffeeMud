@@ -1094,7 +1094,7 @@ public class MOBloader
 						final MemberRecord M=BuildClanMemberRecord(R);
 						if(role.second.intValue()!=M.role)
 						{
-							clanStatements.add("UPDATE CMCHCL SET CMCLRO="+role+" where CMCLAN='"+clanID+"' and CMUSERID='"+mob.Name()+"'");
+							clanStatements.add("UPDATE CMCHCL SET CMCLRO="+role.second.intValue()+" where CMCLAN='"+clanID+"' and CMUSERID='"+mob.Name()+"'");
 							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CLANMEMBERS))
 								Log.debugOut("User '"+mob.Name()+"' had role in clan '"+clanID+"' changed from "+M.role+" to role "+role.second.intValue());
 						}
