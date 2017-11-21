@@ -958,6 +958,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						{
 							sess.println(L("(aborted)"));
 							state=MsgMkrState.MENU;
+							break;
 						}
 						else
 							param1=this.input;
@@ -985,6 +986,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						{
 							sess.println(L("(aborted)"));
 							state=MsgMkrState.MENU;
+							break;
 						}
 						else
 						{
@@ -1060,6 +1062,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						{
 							sess.println(L("(aborted)"));
 							state=MsgMkrState.MENU;
+							break;
 						}
 						else
 						{
