@@ -48,6 +48,7 @@ public class Gnoll extends StdMOB
 		setDisplayText("A nasty Gnoll stands here.");
 		CMLib.factions().setAlignment(this,Faction.Align.EVIL);
 		setMoney(20);
+		baseCharStats.setMyRace(CMClass.getRace("Gnoll"));
 		basePhyStats.setWeight(300);
 		setWimpHitPoint(0);
 
