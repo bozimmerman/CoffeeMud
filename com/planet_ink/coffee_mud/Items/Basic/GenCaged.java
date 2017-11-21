@@ -70,6 +70,13 @@ public class GenCaged extends GenItem implements CagedAnimal
 	}
 
 	@Override
+	public void recoverPhyStats()
+	{
+		super.recoverPhyStats();
+		phyStats().setSensesMask(phyStats.sensesMask() | PhyStats.SENSE_ITEMNOWISH |PhyStats.SENSE_ITEMNORUIN);
+	}
+	
+	@Override
 	public boolean cageMe(MOB M)
 	{
 		if(M==null)
