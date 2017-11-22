@@ -80,6 +80,7 @@ public interface CommonCommands extends CMLibrary
 	public void handleBeingHeld(CMMsg msg);
 	public void handleHygienicMessage(final CMMsg msg, final int minHygiene, final long adjHygiene);
 	public boolean isHygienicMessage(final CMMsg msg, final int minHygiene, final long adjHygiene);
+	public String getExamineItemString(MOB mob, Item item);
 	public void handleObserveComesToLife(MOB observer, MOB lifer, CMMsg msg);
 	public boolean handleUnknownCommand(MOB mob, List<String> command);
 	public boolean doCommandFail(final MOB mob, final List<String> commands, final String msgStr);

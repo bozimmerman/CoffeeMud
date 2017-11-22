@@ -843,7 +843,24 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			handleBeingExitLookedAt(msg);
 	}
 
-	public String examineItemString(MOB mob, Item item)
+	public String makeContainerTypes(Container E)
+	{
+		if(E.containTypes()>0)
+		{
+			ArrayList<String> list=new ArrayList<String>();
+			for(int i=0;i<Container.CONTAIN_DESCS.length-1;i++)
+			{
+				if(CMath.isSet((int)E.containTypes(),i))
+					list.add(CMStrings.capitalizeAndLower(Container.CONTAIN_DESCS[i+1]));
+			}
+			return CMLib.english().toEnglishStringList(list);
+
+		}
+		return "";
+	}
+
+	@Override
+	public String getExamineItemString(MOB mob, Item item)
 	{
 		final StringBuilder response=new StringBuilder("");
 		String level=null;
@@ -923,6 +940,32 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				if(((Recipe)item).getTotalRecipePages()>1)
 					response.append( L("There are @x1 blank pages remaining out of @x2 total.  ",""+remainingRecipePages,""+totalRecipePages));
 			}
+			if((item instanceof Container)
+			&&(((Container)item).capacity()>=item.phyStats().weight())
+			&&((mob==null)||(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>7)))
+			{
+				final Container C=(Container)item;
+				String suffix="";
+				if(C.hasADoor() && C.hasALock())
+					suffix = L(" with a lid and lock");
+				else
+				if(C.hasADoor())
+					suffix = L(" with a lid");
+				if(C.containTypes()==Container.CONTAIN_ANYTHING)
+					response.append(L("It is a container@x1.  ",suffix));
+				else
+					response.append(L("It is a container@x1 that can hold @x2.  ",suffix,this.makeContainerTypes(C)));
+				if((mob==null)||(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
+				{
+					
+					double error = 5.0*(18.0 - ((mob==null)?18:mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)));
+					int finalCap = C.capacity() - C.basePhyStats().weight();
+					if(error > 0)
+						finalCap += CMLib.dice().plusOrMinus((int)Math.round(error * finalCap));
+					response.append(L("You believe it will hold about @x1 pounds.  ",""+finalCap));
+				}
+			}
+					
 			if(item instanceof Ammunition)
 				response.append(L("It is @x1 ammunition of type '@x2'.  ",""+((Ammunition)item).ammunitionRemaining(),((Ammunition)item).ammunitionType()));
 			else
@@ -1009,38 +1052,38 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					spells.append(A.ID()).append(" ");
 			}
 			buf.append(L("\n\r"
-					+ "Type  : @x1\n\r"
-					+ "Rejuv : @x2\n\r"
-					+ "Uses  : @x3\n\r"
-					+ "Height: @x4\n\r"
-					+ "Weight: @x5\n\r"
-					+ "Abilty: @x6\n\r"
-					+ "Level : @x7\n\r"
-					+ "Expire: @x8\n\r"
-					+ "Capaci: @x9\n\r"
-					+ "Affect: @x10\n\r"
-					+ "Misc  : @x11\n\r"
-					+ "@x12",
-					item.ID(),
-					""+item.basePhyStats().rejuv(),
-					""+item.usesRemaining(),
-					""+item.basePhyStats().height(),
-					""+item.basePhyStats().weight(),
-					""+item.basePhyStats().ability(),
-					""+item.basePhyStats().level(),
-					dispossessionTimeLeftString(item),
-					((item instanceof Container)?(L("\n\rCapac.: ")+((Container)item).capacity()):""),
-					spells.toString(),
-					""+item.text().length(),
-					item.text()
-					));
+			+ "Type  : @x1\n\r"
+			+ "Rejuv : @x2\n\r"
+			+ "Uses  : @x3\n\r"
+			+ "Height: @x4\n\r"
+			+ "Weight: @x5\n\r"
+			+ "Abilty: @x6\n\r"
+			+ "Level : @x7\n\r"
+			+ "Expire: @x8\n\r"
+			+ "Capaci: @x9\n\r"
+			+ "Affect: @x10\n\r"
+			+ "Misc  : @x11\n\r"
+			+ "@x12",
+			item.ID(),
+			""+item.basePhyStats().rejuv(),
+			""+item.usesRemaining(),
+			""+item.basePhyStats().height(),
+			""+item.basePhyStats().weight(),
+			""+item.basePhyStats().ability(),
+			""+item.basePhyStats().level(),
+			dispossessionTimeLeftString(item),
+			((item instanceof Container)?(L("\n\rCapac.: ")+((Container)item).capacity()):""),
+			spells.toString(),
+			""+item.text().length(),
+			item.text()
+			));
 		}
 		if(item.description(mob).length()==0)
 			buf.append(L("You don't see anything special about @x1.",item.name()));
 		else
 			buf.append(item.description(mob));
 		if((msg.targetMinor()==CMMsg.TYP_EXAMINE)&&(!item.ID().endsWith("Wallpaper")))
-			buf.append(examineItemString(mob,item));
+			buf.append(getExamineItemString(mob,item));
 		if(item instanceof Container)
 		{
 			buf.append("\n\r");
@@ -1096,7 +1139,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 			else
 			if((contitem.hasADoor())&&((contitem.capacity()>0)||(contitem.hasContent())))
-				buf.append(item.name()+" is closed.");
+				buf.append(L("@x1 is closed.",item.name()));
 		}
 		if(!msg.source().isMonster())
 			buf.append(CMLib.protocol().mxpImage(item," ALIGN=RIGHT H=70 W=70"));

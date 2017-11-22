@@ -62,9 +62,10 @@ public class Cataloging extends CommonSkill
 		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_CALLIGRAPHY;
 	}
 
-	protected Physical	found	= null;
-	protected Item		catalogI= null;
-	protected boolean	addLore	= false;
+	protected Physical	found		= null;
+	protected Item		catalogI	= null;
+	protected boolean	addLore		= false;
+	protected boolean	addAppraise	= false;
 	
 	@Override
 	protected boolean canBeDoneSittingDown()
@@ -94,11 +95,95 @@ public class Cataloging extends CommonSkill
 					commonTell(mob,L("You mess up your cataloging."));
 				else
 				{
-					StringBuilder writing=new StringBuilder("");
+					final Item item=catalogI;
+					String tag=Tagging.getCurrentTag(item);
+					StringBuilder buf=new StringBuilder();
+					if(tag.length()>0)
+						buf.append(L("Tag #@x1\n\r",tag));
+					if(item.description().length()==0)
+						buf.append(L("You don't see anything special about @x1.  ",item.name()));
+					else
+						buf.append(item.description(mob)+"  ");
+					buf.append(CMLib.commands().getExamineItemString(mob,item)+"\n\r");
+					if(item instanceof Container)
+					{
+						buf.append("\n\r");
+						final Container contitem=(Container)item;
+						if((contitem.isOpen())
+						&&((contitem.capacity()>0)
+							||(contitem.hasContent())
+							||((contitem instanceof Drink)&&(((Drink)contitem).liquidRemaining()>0))))
+						{
+							buf.append(item.name()+" contains:\n\r");
+							final Vector<Item> newItems=new Vector<Item>();
+							if((item instanceof Drink)&&(((Drink)item).liquidRemaining()>0))
+							{
+								final RawMaterial l=(RawMaterial)CMClass.getItem("GenLiquidResource");
+								final int myResource=((Drink)item).liquidType();
+								l.setMaterial(myResource);
+								((Drink)l).setLiquidType(myResource);
+								l.setBaseValue(RawMaterial.CODES.VALUE(myResource));
+								l.basePhyStats().setWeight(1);
+								final String name=RawMaterial.CODES.NAME(myResource).toLowerCase();
+								l.setName(L("some @x1",name));
+								l.setDisplayText(L("some @x1 sits here.",name));
+								l.setDescription("");
+								CMLib.materials().addEffectsToResource(l);
+								l.recoverPhyStats();
+								newItems.addElement(l);
+							}
+
+							if(item.owner() instanceof MOB)
+							{
+								final MOB M=(MOB)item.owner();
+								for(int i=0;i<M.numItems();i++)
+								{
+									final Item item2=M.getItem(i);
+									if((item2!=null)&&(item2.container()==item))
+										newItems.addElement(item2);
+								}
+								buf.append(CMLib.lister().lister(mob,newItems,true,"CMItem","",true,false));
+							}
+							else
+							if(item.owner() instanceof Room)
+							{
+								final Room room=(Room)item.owner();
+								if(room!=null)
+								for(int i=0;i<room.numItems();i++)
+								{
+									final Item item2=room.getItem(i);
+									if((item2!=null)&&(item2.container()==item))
+										newItems.addElement(item2);
+								}
+								buf.append(CMLib.lister().lister(mob,newItems,true,"CRItem","",true,false));
+							}
+						}
+						else
+						if((contitem.hasADoor())&&((contitem.capacity()>0)||(contitem.hasContent())))
+							buf.append(L("@x1 is closed.  ",item.name()));
+					}
+					final Ability appraiseA=mob.fetchAbility("Thief_Appraise");
+					if(appraiseA != null)
+					{
+						List<String> cmds=new XVector<String>("WORTH");
+						if(appraiseA.invoke(mob, cmds, catalogI, true, -1))
+							buf.append(cmds.get(0)+"\n\r");
+					}
+					final Ability loreA=mob.fetchAbility("Thief_Lore");
+					if(loreA != null)
+					{
+						List<String> cmds=new XVector<String>("MSG");
+						if(loreA.invoke(mob, cmds, catalogI, true, -1))
+							buf.append(cmds.get(0)+"\n\r");
+					}
+					
+					if(tag.length()>0)
+						tag=": "+tag;
+					
 					//item name as the title, and provides the item description, value, level, material, weight, (spell identify) properties and current location of the item.
 					final CMMsg msg=CMClass.getMsg(mob,catalogI,this,
 							CMMsg.MSG_WRITE,L("<S-NAME> write(s) on <T-NAMESELF>."),
-							CMMsg.MSG_WRITE,writing.toString(),
+							CMMsg.MSG_WRITE,"::"+item.Name()+tag+"::".toString(),
 							CMMsg.MSG_WRITE,L("<S-NAME> write(s) on <T-NAMESELF>."));
 					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
@@ -243,7 +328,7 @@ public class Cataloging extends CommonSkill
 			commonTell(mob,L("You don't seem to have a '@x1'.",itemName));
 			return false;
 		}
-		if(physP instanceof Room)
+		if(!(physP instanceof Item))
 		{
 			commonTell(mob,L("You can't catalog @x1",physP.name()));
 			return false;
@@ -261,8 +346,6 @@ public class Cataloging extends CommonSkill
 			return false;
 		}
 
-		final Ability loreA=mob.fetchAbility("Thief_Lore");
-
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		verb=L("cataloging @x1 into @x2",physP.name(),catalogI.name());
@@ -272,7 +355,6 @@ public class Cataloging extends CommonSkill
 		if((!proficiencyCheck(mob,0,auto))
 		||(!writeA.proficiencyCheck(mob,super.getXLEVELLevel(mob)*10,auto)))
 			this.catalogI=null;
-		this.addLore = loreA.proficiencyCheck(mob, super.getXLEVELLevel(mob)*10, auto);
 		final int duration=getDuration(15,mob,1,1);
 		final CMMsg msg=CMClass.getMsg(mob,physP,this,getActivityMessageType(),L("<S-NAME> start(s) cataloging <T-NAME> into @x1.",catalogI.name()));
 		if(mob.location().okMessage(mob,msg))
