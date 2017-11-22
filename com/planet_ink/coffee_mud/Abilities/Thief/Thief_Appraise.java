@@ -145,7 +145,7 @@ public class Thief_Appraise extends ThiefSkill
 			realValue=CMath.mul(realValue,deviance);
 		}
 		final StringBuffer str=new StringBuffer("");
-		str.append(L("@x1 is worth about @x1.",CMLib.beanCounter().nameCurrencyShort(mob,realValue)));
+		str.append(L("@x1 is worth about @x2.",target.name(),CMLib.beanCounter().nameCurrencyShort(mob,realValue)));
 		return str.toString();
 	}
 	

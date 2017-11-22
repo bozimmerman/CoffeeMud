@@ -853,20 +853,40 @@ public class StdAbility implements Ability
 		return getAnyTarget(mob,commands,givenTarget,filter,false,false);
 	}
 
-	protected Physical getAnyTarget(MOB mob, Room location, boolean anyContainer, List<String> commands, Physical givenTarget, Filterer<Environmental> filter)
+	protected Physical getAnyTarget(MOB mob, Room location, boolean anyContainer, List<String> commands, 
+									Physical givenTarget, Filterer<Environmental> filter)
 	{
-		final Physical P=getAnyTarget(mob,commands,givenTarget,filter,false,false);
+		final Physical P=getAnyTarget(mob,commands,givenTarget,filter,false,false, true);
 		if(P!=null)
 			return P;
 		return getTarget(mob, location, givenTarget, anyContainer, commands, filter);
 	}
 
+	protected Physical getAnyTarget(MOB mob, Room location, boolean anyContainer, List<String> commands, 
+			Physical givenTarget, Filterer<Environmental> filter, boolean quiet)
+	{
+		final Physical P=getAnyTarget(mob,commands,givenTarget,filter,false,false, true);
+		if(P!=null)
+			return P;
+		return getTarget(mob, location, givenTarget, anyContainer, commands, filter, quiet);
+	}
+	
 	protected Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory)
 	{
 		return getAnyTarget(mob,commands,givenTarget,filter,checkOthersInventory,false);
 	}
 
-	protected Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory, boolean alreadyAffOk)
+	protected Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, 
+			Filterer<Environmental> filter, 
+			boolean checkOthersInventory, boolean alreadyAffOk)
+	{
+		return getAnyTarget(mob,commands,givenTarget,filter,checkOthersInventory,alreadyAffOk,false);
+	}
+	
+	protected Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, 
+			Filterer<Environmental> filter, 
+			boolean checkOthersInventory, boolean alreadyAffOk,
+			boolean quiet)
 	{
 		final Room R=mob.location();
 		String targetName=CMParms.combine(commands,0);
@@ -916,11 +936,14 @@ public class StdAbility implements Ability
 		   &&((!CMLib.flags().canBeHeardMovingBy(target,mob))
 				||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
 		{
-			if(targetName.trim().length()==0)
-				mob.tell(L("You don't see that here."));
-			else
-			if(!CMLib.flags().isSleeping(mob))
-				mob.tell(L("You don't see '@x1' here.",targetName));
+			if(!quiet)
+			{
+				if(targetName.trim().length()==0)
+					mob.tell(L("You don't see that here."));
+				else
+				if(!CMLib.flags().isSleeping(mob))
+					mob.tell(L("You don't see '@x1' here.",targetName));
+			}
 			return null;
 		}
 
@@ -928,10 +951,13 @@ public class StdAbility implements Ability
 		{
 			if(givenTarget==null)
 			{
-				if(target==mob)
-					mob.tell(L("You are already affected by @x1.",name()));
-				else
-					mob.tell(mob,target,null,L("<T-NAME> is already affected by @x1.",name()));
+				if(!quiet)
+				{
+					if(target==mob)
+						mob.tell(L("You are already affected by @x1.",name()));
+					else
+						mob.tell(mob,target,null,L("<T-NAME> is already affected by @x1.",name()));
+				}
 			}
 			return null;
 		}
@@ -961,10 +987,20 @@ public class StdAbility implements Ability
 		return getTarget(mob,location,givenTarget,null,commands,filter);
 	}
 
-	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, boolean anyContainer, List<String> commands, Filterer<Environmental> filter)
+	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, 
+			boolean anyContainer, List<String> commands, Filterer<Environmental> filter)
 	{
-		Item I=this.getTarget(mob, location, givenTarget, null, commands, filter);
-		if((I!=null)||(!anyContainer))
+		return getTarget(mob, location, givenTarget, anyContainer, commands, filter, false);
+	}
+	
+	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, 
+			boolean anyContainer, List<String> commands, Filterer<Environmental> filter, 
+			boolean quiet)
+	{
+		Item I=this.getTarget(mob, location, givenTarget, null, commands, filter, anyContainer);
+		if(I!=null)
+			return I;
+		if(!anyContainer)
 			return I;
 		List<Item> containers=new ArrayList<Item>();
 		if(location!=null)
@@ -987,16 +1023,29 @@ public class StdAbility implements Ability
 					containers.add(C);
 			}
 		}
-		for(Item C : containers)
+		if(containers.size()==0)
+			return this.getTarget(mob, location, givenTarget, null, commands, filter, quiet);
+		else
 		{
-			I=this.getTarget(mob, location, givenTarget, C, commands, filter);
-			if(I!=null)
-				return I;
+			for(int c=0;c<containers.size();c++)
+			{
+				Item C=containers.get(c);
+				I=this.getTarget(mob, location, givenTarget, C, commands, filter, quiet || (c<containers.size()-1));
+				if(I!=null)
+					return I;
+			}
 		}
 		return null;
 	}
 	
-	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, List<String> commands, Filterer<Environmental> filter)
+	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, 
+			List<String> commands, Filterer<Environmental> filter)
+	{
+		return getTarget(mob, location, givenTarget, container, commands, filter, false);
+	}
+	
+	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, 
+			List<String> commands, Filterer<Environmental> filter, boolean quiet)
 	{
 		String targetName=CMParms.combine(commands,0);
 
@@ -1020,21 +1069,24 @@ public class StdAbility implements Ability
 		||(!(target instanceof Item))
 		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
-			if(targetName.length()==0)
-				mob.tell(L("You need to be more specific."));
-			else
-			if((target==null)||(target instanceof Item))
+			if(!quiet)
 			{
-				if(targetName.trim().length()==0)
-					mob.tell(L("You don't see that here."));
+				if(targetName.length()==0)
+					mob.tell(L("You need to be more specific."));
 				else
-				if(!CMLib.flags().isSleeping(mob)) // no idea why this is here :(
-					mob.tell(L("You don't see anything called '@x1' here.",targetName));
-				else // this was added for clan donate (and other things I'm sure) while sleeping.
-					mob.tell(L("You don't see '@x1' in your dreams.",targetName));
+				if((target==null)||(target instanceof Item))
+				{
+					if(targetName.trim().length()==0)
+						mob.tell(L("You don't see that here."));
+					else
+					if(!CMLib.flags().isSleeping(mob)) // no idea why this is here :(
+						mob.tell(L("You don't see anything called '@x1' here.",targetName));
+					else // this was added for clan donate (and other things I'm sure) while sleeping.
+						mob.tell(L("You don't see '@x1' in your dreams.",targetName));
+				}
+				else
+					mob.tell(mob,target,null,L("You can't do that to <T-NAMESELF>."));
 			}
-			else
-				mob.tell(mob,target,null,L("You can't do that to <T-NAMESELF>."));
 			return null;
 		}
 		return (Item)target;

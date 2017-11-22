@@ -353,6 +353,15 @@ public class StdBook extends StdItem
 						message[0]=msg.targetMessage();
 						int numMessages=getChapterCount("ALL");
 						subject[0]=L("Chapter @x1",""+(numMessages+1));
+						if(message[0].startsWith("::"))
+						{
+							int x=message[0].indexOf("::",2);
+							if(x>1)
+							{
+								subject[0]=message[0].substring(2,x);
+								message[0]=message[0].substring(x+2);
+							}
+						}
 						addComplete.run();
 					}
 					else

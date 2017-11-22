@@ -94,12 +94,25 @@ public class Cataloging extends CommonSkill
 				if(catalogI==null)
 					commonTell(mob,L("You mess up your cataloging."));
 				else
+				if(found instanceof Item)
 				{
-					final Item item=catalogI;
+					final Item item=(Item)found;
 					String tag=Tagging.getCurrentTag(item);
 					StringBuilder buf=new StringBuilder();
-					if(tag.length()>0)
-						buf.append(L("Tag #@x1\n\r",tag));
+					buf.append(L("\n\rItem: @x1\n\r",item.displayText(mob)));
+					final Room R=CMLib.map().roomLocation(item);
+					if(R!=null)
+					{
+						buf.append(L("Location: @x1\n\r",R.displayText(mob)));
+						LandTitle T=CMLib.law().getLandTitle(R);
+						if(T!=null)
+							buf.append(L("Property Title ID: @x1\n\r",T.getTitleID()));
+					}
+					if(item.container()!=null)
+					{
+						buf.append(L("Container: @x1\n\r",item.ultimateContainer(null).name()));
+					}
+					buf.append(L("\n\r"));
 					if(item.description().length()==0)
 						buf.append(L("You don't see anything special about @x1.  ",item.name()));
 					else
@@ -166,14 +179,14 @@ public class Cataloging extends CommonSkill
 					if(appraiseA != null)
 					{
 						List<String> cmds=new XVector<String>("WORTH");
-						if(appraiseA.invoke(mob, cmds, catalogI, true, -1))
+						if(appraiseA.invoke(mob, cmds, item, true, -1))
 							buf.append(cmds.get(0)+"\n\r");
 					}
 					final Ability loreA=mob.fetchAbility("Thief_Lore");
 					if(loreA != null)
 					{
 						List<String> cmds=new XVector<String>("MSG");
-						if(loreA.invoke(mob, cmds, catalogI, true, -1))
+						if(loreA.invoke(mob, cmds, item, true, -1))
 							buf.append(cmds.get(0)+"\n\r");
 					}
 					
@@ -183,7 +196,7 @@ public class Cataloging extends CommonSkill
 					//item name as the title, and provides the item description, value, level, material, weight, (spell identify) properties and current location of the item.
 					final CMMsg msg=CMClass.getMsg(mob,catalogI,this,
 							CMMsg.MSG_WRITE,L("<S-NAME> write(s) on <T-NAMESELF>."),
-							CMMsg.MSG_WRITE,"::"+item.Name()+tag+"::".toString(),
+							CMMsg.MSG_WRITE,"::"+item.Name()+tag+"::"+buf.toString(),
 							CMMsg.MSG_WRITE,L("<S-NAME> write(s) on <T-NAMESELF>."));
 					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
@@ -288,14 +301,14 @@ public class Cataloging extends CommonSkill
 				catalogI=this.findCatalogBook(mob, physP);
 				if(catalogI==null)
 				{
-					commonTell(mob,L("You don't seem to have a proper catalog for '@x1'.",physP.name(mob)));
+					commonTell(mob,L("You need to specify a proper catalog for '@x1'.",physP.name(mob)));
 					return false;
 				}
 			}
 		}
 		else
 		{
-			physP=this.getAnyTarget(mob, mob.location(), true, commands, givenTarget, Wearable.FILTER_UNWORNONLY);
+			physP=this.getAnyTarget(mob, mob.location(), true, commands, givenTarget, Wearable.FILTER_UNWORNONLY, true);
 			if((physP==null)||(!CMLib.flags().canBeSeenBy(physP,mob)))
 				physP=null;
 			if(physP!=null)
@@ -303,7 +316,7 @@ public class Cataloging extends CommonSkill
 				catalogI=this.findCatalogBook(mob, physP);
 				if(catalogI==null)
 				{
-					commonTell(mob,L("You don't seem to have a proper catalog for '@x1'.",physP.name(mob)));
+					commonTell(mob,L("You need to specify a proper catalog for '@x1'.",physP.name(mob)));
 					return false;
 				}
 			}
@@ -318,8 +331,14 @@ public class Cataloging extends CommonSkill
 					List<String> cmds2=new ArrayList<String>(commands);
 					cmds2.remove(0);
 					catalogI=this.getTarget(mob, null, givenTarget, cmds2, Wearable.FILTER_UNWORNONLY);
-					if((catalogI!=null)&&(!isPossibleCatalog(mob, catalogI, physP, false)))
-						return false;
+					if(catalogI!=null)
+					{
+						if(!isPossibleCatalog(mob, catalogI, null, false))
+							return false;
+						String cat=Titling.getCatalogType(catalogI);
+						if((cat.length()>0)&&(!isPossibleCatalog(mob, catalogI, physP, false)))
+							return false;
+					}
 				}
 			}
 		}
