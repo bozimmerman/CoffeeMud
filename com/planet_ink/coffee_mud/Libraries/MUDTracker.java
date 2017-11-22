@@ -1375,6 +1375,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if(exit==null)
 			thisRoom.showHappens(CMMsg.MSG_OK_VISUAL,L("The area to the @x1 shimmers and becomes transparent.",directionName));
 		else
+		if(!mob.okMessage(mob,leaveMsg)&&(!gotoAllowed)) // added for honorary degrees .. what will this break?
+			return false;
+		else
 		if((!exit.okMessage(mob,enterMsg))&&(!gotoAllowed))
 			return false;
 		else

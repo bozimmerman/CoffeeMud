@@ -94,6 +94,14 @@ public class Cataloging extends CommonSkill
 					commonTell(mob,L("You mess up your cataloging."));
 				else
 				{
+					StringBuilder writing=new StringBuilder("");
+					//item name as the title, and provides the item description, value, level, material, weight, (spell identify) properties and current location of the item.
+					final CMMsg msg=CMClass.getMsg(mob,catalogI,this,
+							CMMsg.MSG_WRITE,L("<S-NAME> write(s) on <T-NAMESELF>."),
+							CMMsg.MSG_WRITE,writing.toString(),
+							CMMsg.MSG_WRITE,L("<S-NAME> write(s) on <T-NAMESELF>."));
+					if(mob.location().okMessage(mob,msg))
+						mob.location().send(mob,msg);
 					
 				}
 			}
@@ -233,6 +241,11 @@ public class Cataloging extends CommonSkill
 		if(physP==null)
 		{
 			commonTell(mob,L("You don't seem to have a '@x1'.",itemName));
+			return false;
+		}
+		if(physP instanceof Room)
+		{
+			commonTell(mob,L("You can't catalog @x1",physP.name()));
 			return false;
 		}
 		if(catalogI==null)
