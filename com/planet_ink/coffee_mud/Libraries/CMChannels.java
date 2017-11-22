@@ -817,7 +817,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	 */
 	private void tweet(String msg)
 	{
-		msg = CMStrings.scrunchWord(CMStrings.removeColors(msg), 140);
+		msg = CMStrings.scrunchWord(CMStrings.removeColors(msg), 280);
 		try
 		{
 			Class<?> cbClass = Class.forName("twitter4j.conf.ConfigurationBuilder");
