@@ -1292,45 +1292,13 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	@Override
 	public boolean walk(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always)
 	{
-		final CMMsg msg = CMClass.getMsg(mob, null, null, CMMsg.MSG_TRAVEL, null, ""+directionCode, null);
-		final Room nowR=mob.location();
-		if((nowR!=null)&&(nowR.okMessage(mob, msg)))
-		{
-			try
-			{
-				return move(mob,directionCode,flee,nolook,noriders,always,false);
-			}
-			finally
-			{
-				final Room newR=mob.location();
-				if(newR!=null)
-					newR.send(mob, msg);
-			}
-		}
-		else
-			return false;
+		return move(mob,directionCode,flee,nolook,noriders,always,false);
 	}
 
 	@Override
 	public boolean run(MOB mob, int directionCode, boolean flee, boolean nolook, boolean noriders, boolean always)
 	{
-		final CMMsg msg = CMClass.getMsg(mob, null, null, CMMsg.MSG_TRAVEL, null, ""+directionCode, null);
-		final Room nowR=mob.location();
-		if((nowR!=null)&&(nowR.okMessage(mob, msg)))
-		{
-			try
-			{
-				return move(mob,directionCode,flee,nolook,noriders,always,true);
-			}
-			finally
-			{
-				final Room newR=mob.location();
-				if(newR!=null)
-					newR.send(mob, msg);
-			}
-		}
-		else
-			return false;
+		return move(mob,directionCode,flee,nolook,noriders,always,true);
 	}
 	
 	protected boolean move(final MOB mob, final int directionCode, final boolean flee, final boolean nolook, final boolean noriders, final boolean always, final boolean running)

@@ -278,6 +278,8 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 			case CMMsg.TYP_GET:
 			case CMMsg.TYP_HOLD:
 			case CMMsg.TYP_TRAVEL:
+			case CMMsg.TYP_ENTER:
+			case CMMsg.TYP_LEAVE:
 				this.activateDegree(msg);
 				break;
 			default:
