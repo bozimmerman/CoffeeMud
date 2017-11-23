@@ -21,7 +21,7 @@ roasted carrots	FOOD		13	carrots	1	butter	1
 % baked steak	FOOD		14	beef	1	herbs	1										
 % baked steak	FOOD		15	pork	1	herbs	1										
 baked lamb chops	FOOD		16	mutton	1	herbs	1										
-% baked fillet	FOOD		17	fish	1	herbs	1	butter	herbs	1							
+% baked fillet	FOOD		17	fish	1	herbs	1	butter	1								
 peanut butter cookies	FOOD		18	peanut butter	2	dough	1										
 cheese pizza	FOOD		19	dough	2	tomatoes	1	cheese	1								
 focaccia	FOOD		20	bread	1	olives	1	cheese	1								
@@ -38,3 +38,10 @@ cinnamon rolls	FOOD		28	dough	2	cinnamon	1	sugar	1
 % pizza	FOOD		29	dough	2	tomatoes	1	cheese	1	meat	-1	beef	-1				
 swiss steak	FOOD		29	beef	1	tomatoes	1	carrots	1	water	1						
 shortcake	FOOD		30	dough	1	sugar	1	eggs	1								
+malt	FOOD		1	barley	1												
+black malt	FOOD		24	barley	1	coal	1	wood	1								
+top fermented yeast	FOOD		24	flour	1	sugar	2	water	1								
+medium light roasted malt	FOOD		25	barley	1	herbs	1										
+malted wheat	FOOD		38	malt	1	wheat	1										
+medium dark roasted malt	FOOD		48	barley	1	wood	1										
+dark roasted malt	FOOD		65	barley	1	coal	1										

@@ -18,3 +18,4 @@ Portcullis	1	25	100	METAL	DIR	DOOR	GenDoor	portcullis|raise|lower|A portcullis b
 Stairs	1	210	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1	
 Hole Floor	1	180	2550		INDOOR	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor	
 Raised Ceiling	1	240	2500		INDOOR	STAIRS	IndoorInTheAir	@x1 to the @x2 floor	Spell_Fly()	scaffolding and supports to raise the ceiling	
+Cellar	31	300	3000		DOWNONLY	STAIRS	CaveRoom	@x1stairs to the @x2 cellar		cellar @x1	
