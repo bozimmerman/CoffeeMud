@@ -48,6 +48,11 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 		return localizedName;
 	}
 
+	protected String getBaseClassID()
+	{
+		return "Commoner";
+	}
+	
 	@Override
 	public String displayText()
 	{
@@ -90,11 +95,6 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 		return false;
 	}
 
-	protected String getBaseClassID()
-	{
-		return "Commoner";
-	}
-	
 	protected final static int DEG_CID = 0;
 	protected final static int DEG_CNAME = 1;
 	protected final static int DEG_TITLE = 2;

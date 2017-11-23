@@ -24,6 +24,8 @@
   22. New Languages: InvisibleInk, Encrypto -- random simplistic encryption (word and letter rot)
   23. New skills: Decipher Script, BookEdit, BookNaming, Transcribing, Secret Writing
   24. Siplet Web-Sockets are now optimized and great! Some js fixes, and new info in Web Server Guide.
+  25. New skills: Honorary Degree skills: Fighter, Mage, Bard, Cleric, Commoner, Druid, and Thief.
+  26. New skills: Cataloging, Attribute Training, 
 
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.

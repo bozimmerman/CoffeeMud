@@ -180,12 +180,22 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Songcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Map",false);
 		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_HonoraryDegreeFighter",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Observation",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_AnalyzeMark",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Spellcraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"PlantLore",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_HonoraryDegreeBard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"AttributeTraining",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Taxidermy",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Shush",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Prayercraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Appraise",false);
+		
 /*
-13	Cataloging (G), Songcraft (Q), Skill_Map (Q)		
-14	Honorary Degree: Fighterness (Q), Thief_Observere (Q), Thief_AnalyzeMark (Q)		
-15	Spell_DetectMagic (Q)  Spellcraft (Q), Plant Lore (Q)		
-16	 Instructing (G), Honorary Degree: Bardness (Q), Taxidermy (Q)		
-17	 Shush (Q)  Prayercraft (Q), Appraise (Q)			
 18	Recipecopying (G) Honorary Degree: Thiefness (Q), 		
 19	ScrollScribing (Q)  Chantcraft (Q)		
 20	Publish (Q) Honorary Degree: Mageness (Q)		
