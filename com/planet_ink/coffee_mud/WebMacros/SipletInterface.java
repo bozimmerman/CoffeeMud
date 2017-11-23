@@ -581,7 +581,10 @@ public class SipletInterface extends StdWebMacro
 				final String cmd = new String(payload.toByteArray());
 				parseUrlEncodedKeypairs(request,cmd);
 				final String resp = processRequest(request, this);
-				Log.debugOut("SipletInterface","Got: "+cmd+", response: "+resp.substring(0,10)+": "+resp.length());
+				if(resp.length()>10)
+					Log.debugOut("SipletInterface","Got: "+cmd+", response: "+resp.substring(0,10)+": "+resp.length());
+				else
+					Log.debugOut("SipletInterface","Got: "+cmd+", response: "+resp+": "+resp.length());
 				if(resp.length()>0)
 				{
 					final byte[] encodedResp = this.encodeTextResponse(resp);
