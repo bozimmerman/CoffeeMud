@@ -76,10 +76,11 @@ public class SipletInterface extends StdWebMacro
 
 	protected class SipletSession
 	{
-		public long 		lastTouched = System.currentTimeMillis();
-		public Siplet 		siplet		= null;
-		public String   	response	= "";
-		public String		sipToken	= "";
+		public long 		 lastTouched = System.currentTimeMillis();
+		public Siplet 		 siplet		= null;
+		public String   	 response	= "";
+		public String		 sipToken	= "";
+		public HTTPIOHandler parentIOHandler= null;
 
 		public SipletSession(Siplet sip, String token)
 		{
@@ -194,10 +195,21 @@ public class SipletInterface extends StdWebMacro
 					for (final String key : siplets.keySet())
 					{
 						final SipletSession p = siplets.get(key);
-						if ((p != null) && ((System.currentTimeMillis() - p.lastTouched) > (30 * 1000)))
+						if (p == null)
+							continue;
+						final long idle = System.currentTimeMillis() - p.lastTouched;
+						if ((idle > (30 * 1000)))
 						{
 							p.siplet.disconnectFromURL();
 							removables.add(key);
+						}
+						else
+						if(p.parentIOHandler != null)
+						{
+							if(p.siplet.hasWaitingData())
+								p.parentIOHandler.scheduleProcessing();
+							else
+								p.parentIOHandler.preserveConnection();
 						}
 					}
 					if (removables.size() > 0)
@@ -239,7 +251,7 @@ public class SipletInterface extends StdWebMacro
 			{
 				return o == this ? 0 : 1;
 			}
-		}, Tickable.TICKID_MISCELLANEOUS, 10);
+		}, Tickable.TICKID_MISCELLANEOUS, 250, 1);
 	}
 
 	public String processRequest(final HTTPRequest httpReq, final SipletProtocolHander handler)
@@ -293,10 +305,7 @@ public class SipletInterface extends StdWebMacro
 						final SipletSession session=new SipletSession(sip, hex);
 						siplets.put(hex, session);
 						if(handler != null)
-						{
 							handler.session=session;
-							CMLib.threads().scheduleRunnable(handler, 1500);
-						}
 					}
 				}
 			}
@@ -445,7 +454,7 @@ public class SipletInterface extends StdWebMacro
 		S0,P1,PX,M1,M2,M3,M4,PAYLOAD
 	}
 
-	private class SipletProtocolHander implements ProtocolHandler, Runnable
+	private class SipletProtocolHander implements ProtocolHandler
 	{
 		private volatile WSState	state		= WSState.S0;
 		private volatile int		subState	= 0;
@@ -455,7 +464,6 @@ public class SipletInterface extends StdWebMacro
 		private volatile boolean	finished	= false;
 		private volatile int		maskPos		= 0;
 		private SipletSession		session		= null;
-		private HTTPIOHandler		parentHandle= null;
 
 		private final ByteArrayOutputStream payload = new ByteArrayOutputStream();
 		private final ByteArrayOutputStream msg		= new ByteArrayOutputStream();
@@ -581,10 +589,10 @@ public class SipletInterface extends StdWebMacro
 				final String cmd = new String(payload.toByteArray());
 				parseUrlEncodedKeypairs(request,cmd);
 				final String resp = processRequest(request, this);
-				if(resp.length()>10)
-					Log.debugOut("SipletInterface","Got: "+cmd+", response: "+resp.substring(0,10)+": "+resp.length());
-				else
-					Log.debugOut("SipletInterface","Got: "+cmd+", response: "+resp+": "+resp.length());
+				//if(resp.length()>10)
+				//	Log.debugOut("SipletInterface","Got: "+cmd+", response: "+resp.substring(0,10)+": "+resp.length());
+				//else
+				//	Log.debugOut("SipletInterface","Got: "+cmd+", response: "+resp+": "+resp.length());
 				if(resp.length()>0)
 				{
 					final byte[] encodedResp = this.encodeTextResponse(resp);
@@ -617,8 +625,10 @@ public class SipletInterface extends StdWebMacro
 		public DataBuffers processBuffer(HTTPIOHandler handler, HTTPRequest request, ByteBuffer buffer) throws HTTPException
 		{
 			DataBuffers outBuffers = null;
-			if(handler != null)
-				parentHandle = handler;
+			if((handler != null)
+			&&(session!=null)
+			&&(session.parentIOHandler!=handler))
+				session.parentIOHandler = handler;
 			
 			if((buffer.position()==0)
 			&&(payload.size()==0)
@@ -726,29 +736,6 @@ public class SipletInterface extends StdWebMacro
 			}
 			buffer.clear();
 			return outBuffers;
-		}
-
-		@Override
-		public void run()
-		{
-			if((session != null)
-			&&(session.siplet.isConnectedToURL()))
-			{
-				if(session.siplet.hasWaitingData())
-				{
-					if(parentHandle != null)
-					{
-						if(parentHandle.scheduleProcessing())
-							CMLib.threads().scheduleRunnable(this, 250);
-					}
-				}
-				else
-				{
-					if(parentHandle != null)
-						parentHandle.preserveConnection();
-					CMLib.threads().scheduleRunnable(this, 250);
-				}
-			}
 		}
 	}
 	
