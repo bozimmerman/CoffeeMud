@@ -20,12 +20,12 @@
   18. Players can now use KILL/ATTACK, with a weapon, to a fight a MOBEater stomach, but will lose.
   19. New input parser: RAW-INPUT-PROCESSOR, to capture char creation and prompt filtering
   20. New items: StdPlayerBook, and GenPlayerBook - a version of StdBook with data tied to players.
-  21. New Properties: Prop_Unsellable, Prop_CloseCommand
+  21. New Properties: Prop_Unsellable, Prop_CloseCommand, Copyright
   22. New Languages: InvisibleInk, Encrypto -- random simplistic encryption (word and letter rot)
   23. New skills: Decipher Script, BookEdit, BookNaming, Transcribing, Secret Writing
   24. Siplet Web-Sockets are now optimized and great! Some js fixes, and new info in Web Server Guide.
   25. New skills: Honorary Degree skills: Fighter, Mage, Bard, Cleric, Commoner, Druid, and Thief.
-  26. New skills: Cataloging, Attribute Training, 
+  26. New skills: Cataloging, Attribute Training, Recollecting
 
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.
