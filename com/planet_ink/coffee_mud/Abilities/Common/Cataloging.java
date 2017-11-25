@@ -221,7 +221,11 @@ public class Cataloging extends CommonSkill
 				commonTell(mob,L("@x1 is not even readable!",CMStrings.capitalizeFirstLetter(I.name(mob))));
 			return false;
 		}
-		
+		if(I instanceof Recipe)
+		{
+			commonTell(mob,L("@x1 isn't a catalog!",CMStrings.capitalizeAndLower(I.name(mob))));
+			return false;
+		}
 		String brand = getBrand(I);
 		if((brand==null)||(brand.length()==0))
 		{

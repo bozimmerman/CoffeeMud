@@ -321,6 +321,7 @@ public class Dissertating extends CraftingSkill
 				return false;
 			}
 			if(((buildingI instanceof MiscMagic))
+			||(buildingI instanceof Recipe)
 			||(!buildingI.isGeneric()))
 			{
 				commonTell(mob,L("There's can't write a dissertation on @x1!",buildingI.name(mob)));

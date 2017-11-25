@@ -38,7 +38,7 @@ import java.io.IOException;
    limitations under the License.
 */
 
-public class StdBook extends StdItem
+public class StdBook extends StdItem implements Book
 {
 	@Override
 	public String ID()
@@ -57,6 +57,7 @@ public class StdBook extends StdItem
 		recoverPhyStats();
 	}
 
+	protected int maxPages = 0; // 0=unlimited
 	protected MOB lastReadTo=null;
 	protected long lastDateRead=-1;
 	
@@ -521,9 +522,9 @@ public class StdBook extends StdItem
 				final String subject=entry.subj();
 				final StringBuffer selection=new StringBuffer("");
 				if(to.equals("ALL")
-				||to.equalsIgnoreCase(readerMOB.Name())
-				||from.equalsIgnoreCase(readerMOB.Name())
-				||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),readerMOB,true)))
+				||((readerMOB!=null)&&to.equalsIgnoreCase(readerMOB.Name()))
+				||((readerMOB!=null)&&from.equalsIgnoreCase(readerMOB.Name()))
+				||((readerMOB!=null)&&to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),readerMOB,true)))
 				{
 					//if(CMath.s_long(compdate)>lastTimeDate)
 					//    selection.append("*");
@@ -579,9 +580,14 @@ public class StdBook extends StdItem
 			reply.second = entry.subj();
 
 			//String compdate=(String)entry.elementAt(6);
-			final boolean mineAble=to.equalsIgnoreCase(readerMOB.Name())
+			final boolean mineAble;
+			if(readerMOB!=null)
+				mineAble=to.equalsIgnoreCase(readerMOB.Name())
 							||(to.toUpperCase().trim().startsWith("MASK=")&&(CMLib.masking().maskCheck(to.trim().substring(5),readerMOB,true)))
 							||from.equalsIgnoreCase(readerMOB.Name());
+			else
+				mineAble=true;
+			
 			if(mineAble)
 				buf.append("*");
 			else
@@ -601,6 +607,71 @@ public class StdBook extends StdItem
 		}
 		reply.third = buf;
 		return reply;
+	}
+
+	@Override
+	public int getUsedPages()
+	{
+		return this.getChapterCount("ALL");
+	}
+	
+	@Override
+	public int getMaxPages()
+	{
+		return this.maxPages;
+	}
+	
+	@Override
+	public void setMaxPages(int max)
+	{
+		this.maxPages=max;
+	}
+	
+	@Override
+	public String getRawContent(int page)
+	{
+		final List<JournalEntry> journal=this.readChaptersByCreateDate();
+		if((page < 1)||(page>journal.size()))
+			return "";
+		else
+		{
+			JournalEntry J=journal.get(page-1);
+			if((J.subj()!=null)&&(J.subj().length()>0))
+				return "::"+J.subj()+"::"+J.msg();
+			else
+				return "::"+J.subj()+"::"+J.msg();
+		}
+	}
+	
+	@Override
+	public String getContent(int page)
+	{
+		Triad<String,String,StringBuffer> t=this.DBRead(null, page-1, 0, false, false);
+		if((t.second!=null)&&(t.second.length()>0))
+			return "::"+t.second+"::"+t.third.toString();
+		else
+			return t.third.toString();
+	}
+	
+	@Override
+	public void addRawContent(String authorName, String content)
+	{
+		if(content.startsWith("::")&&(content.length()>2)&&(content.charAt(2)!=':'))
+		{
+			int x=content.indexOf("::",2);
+			if(x>2)
+				addNewChapter(authorName,"ALL",content.substring(2,x),content.substring(x+2));
+			else
+				addNewChapter(authorName,"ALL","",content);
+		}
+		else
+			addNewChapter(authorName,"ALL","",content);
+	}
+	
+	@Override
+	public boolean isJournal()
+	{
+		return false;
 	}
 
 	protected String getParm(String parmName)

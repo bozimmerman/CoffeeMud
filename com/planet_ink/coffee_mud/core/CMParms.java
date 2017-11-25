@@ -1140,6 +1140,88 @@ public class CMParms
 	}
 
 	/**
+	 * This method is a sloppy, forgiving method removing KEY=VALUE value pair from a string.
+	 * @param text the string to search
+	 * @param key the key to search for, case insensitive
+	 * @return the string without the pair, if found
+	 */
+	public final static String delParmStr(String text, final String key)
+	{
+		int x=text.toUpperCase().indexOf(key.toUpperCase());
+		while(x>=0)
+		{
+			final int startx=x;
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='='))
+				{
+					if((text.charAt(x)=='+')||(text.charAt(x)=='-'))
+					{
+						while((x<text.length())&&(!Character.isWhitespace(text.charAt(x))))
+							x++;
+						if(x==text.length())
+							return text.substring(0,startx).trim();
+						else
+							return text.substring(0,startx)+text.substring(x);
+					}
+					x++;
+				}
+				if(x<text.length())
+				{
+					if(hasPunctuation(text.substring(startx, x)))
+					{
+						x=text.toUpperCase().indexOf(key.toUpperCase(),startx+1);
+						continue;
+					}
+					boolean endWithQuote=false;
+					while((x<text.length())&&(!Character.isLetterOrDigit(text.charAt(x))))
+					{
+						if(text.charAt(x)=='\"')
+						{
+							endWithQuote=true;
+							x++;
+							break;
+						}
+						x++;
+					}
+					if(x<text.length())
+					{
+						if(endWithQuote)
+						{
+							while(x<text.length())
+							{
+								if((text.charAt(x)=='\"')&&(text.charAt(x-1)!='\\'))
+								{
+									return text.substring(0,startx)+text.substring(x+1);
+								}
+								x++;
+							}
+						}
+						else
+						{
+							while(x<text.length())
+							{
+								switch(text.charAt(x))
+								{
+								case ' ': case '\n': case '\r': case '\t':
+								case ':': case ';':
+									return text.substring(0,startx)+text.substring(x+1);
+								}
+								x++;
+							}
+						}
+						return text.substring(0,startx);
+					}
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		return text;
+	}
+
+	/**
 	 * This method is a sloppy, forgiving method doing KEY&gt;=[VALUE] value searches in a string.
 	 * Searches and finds the numeric value of the given key when the parameter is formatted in the given text
 	 * in the format [KEY]=[VALUE] where = may be ==,=,!=,&gt;,&gt;=,&lt;,or &lt;=.  The key is case insensitive, 
@@ -1869,6 +1951,59 @@ public class CMParms
 				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
 		}
 		return defaultValue;
+	}
+
+	/**
+	 * This method is a sloppy, forgiving method removing KEY=VALUE value pair from a string.
+	 * @param text the string to search
+	 * @param key the key to search for, case insensitive
+	 * @return the string without the key and value, if found.
+	 */
+	public final static String delParmLong(String text, final String key)
+	{
+		int x=text.toUpperCase().indexOf(key.toUpperCase());
+		while(x>=0)
+		{
+			final int startx=x;
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='=')&&(!Character.isDigit(text.charAt(x))))
+				{
+					if((text.charAt(x)=='+')||(text.charAt(x)=='-'))
+					{
+						while((x<text.length())&&(!Character.isWhitespace(text.charAt(x))))
+							x++;
+						if(x==text.length())
+							return text.substring(0,startx).trim();
+						else
+							return text.substring(0,startx)+text.substring(x);
+					}
+					x++;
+				}
+				if((x<text.length())&&(text.charAt(x)=='='))
+				{
+					if(hasPunctuation(text.substring(startx, x)))
+					{
+						x=text.toUpperCase().indexOf(key.toUpperCase(),startx+1);
+						continue;
+					}
+					while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
+						x++;
+					if(x<text.length())
+					{
+						while((x<text.length())&&(Character.isDigit(text.charAt(x))))
+							x++;
+						if(x==text.length())
+							return text.substring(0,startx);
+						return text.substring(0,startx)+text.substring(x);
+					}
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		return text;
 	}
 
 	/**

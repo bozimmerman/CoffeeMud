@@ -62,6 +62,8 @@ public class AttributeTraining extends CommonSkill
 		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_EDUCATIONLORE;
 	}
 
+	protected final static int costMultiplier=2;
+	
 	protected Physical trained=null;
 	protected int attribute=-1;
 	protected boolean messedUp=false;
@@ -113,7 +115,7 @@ public class AttributeTraining extends CommonSkill
 				verb=L("doing eye-hand coordination exercises with @x2",attribName,trained.name());
 				break;
 			case CharStats.STAT_STRENGTH:
-				verb=L("doing weight repetions with @x2",attribName,trained.name());
+				verb=L("doing weight repetitions with @x2",attribName,trained.name());
 				break;
 			case CharStats.STAT_INTELLIGENCE:
 				verb=L("studying ancient knowledge with @x2",attribName,trained.name());
@@ -146,7 +148,30 @@ public class AttributeTraining extends CommonSkill
 						final String s=CMStrings.capitalizeAndLower(CharStats.CODES.DESC(attribute));
 						mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to complete @x2 training with @x1.",follower.name(),s));
 						final String attribName=CMStrings.capitalizeAndLower(CharStats.CODES.DESC(attribute));
-						CMLib.commands().forceStandardCommand(follower, "Train", new XVector<String>(attribName));
+						if(follower.isMonster())
+						{
+							Ability adjA=follower.fetchEffect("Prop_StatAdjuster");
+							if(adjA == null)
+							{
+								adjA=CMClass.getAbility("Prop_StatAdjuster");
+								follower.addNonUninvokableEffect(adjA);
+							}
+							final int oldVal=CMParms.getParmInt(adjA.text(), CMStrings.limit(CharStats.CODES.NAME(attribute),3), 0);
+							int trainsRequired=CMLib.login().getTrainingCost(follower, attribute, false)*costMultiplier;
+							commonTell(mob,L("The training cost @x1 @x2 training points.",follower.name(),""+trainsRequired));
+							if(trainsRequired > follower.getTrains())
+								follower.setTrains(0);
+							else
+								follower.setTrains(follower.getTrains()-trainsRequired);
+							String oldStr=adjA.text();
+							oldStr = CMParms.delParmLong(oldStr, CMStrings.limit(CharStats.CODES.NAME(attribute),3));
+							oldStr = CMStrings.replaceAll(oldStr, "  ", " ");
+							adjA.setMiscText(oldStr.trim()+" "+CMStrings.limit(CharStats.CODES.NAME(attribute),3)+"="+(oldVal+1));
+						}
+						else
+						{
+							CMLib.commands().forceStandardCommand(follower, "Train", new XVector<String>(attribName));
+						}
 						follower.recoverCharStats();
 						follower.recoverPhyStats();
 						follower.recoverMaxState();
@@ -229,7 +254,7 @@ public class AttributeTraining extends CommonSkill
 				return false;
 			}
 			int curStat=M.baseCharStats().getRacialStat(M, attribute);
-			int trainsRequired=CMLib.login().getTrainingCost(M, attribute, false);
+			int trainsRequired=CMLib.login().getTrainingCost(M, attribute, false)*costMultiplier;
 			if(trainsRequired<0)
 				return false;
 			final int teachStat=mob.charStats().getStat(attribute);

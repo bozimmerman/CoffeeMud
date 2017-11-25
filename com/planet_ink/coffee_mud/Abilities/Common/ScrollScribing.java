@@ -361,7 +361,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			}
 			if((!(buildingI instanceof Scroll))
 			||(!buildingI.isGeneric())
-			||(!(buildingI instanceof MiscMagic)))
+			||(!(buildingI instanceof MiscMagic))
+			||(buildingI instanceof Recipe))
 			{
 				commonTell(mob,L("There's can't enscribe magic on @x1!",buildingI.name(mob)));
 				return false;

@@ -37,7 +37,7 @@ import java.io.IOException;
    limitations under the License.
 */
 
-public class StdJournal extends StdItem
+public class StdJournal extends StdItem implements Book
 {
 	@Override
 	public String ID()
@@ -761,6 +761,72 @@ public class StdJournal extends StdItem
 		return getParm("SORTBY");
 	}
 
+	@Override
+	public int getUsedPages()
+	{
+		return CMLib.database().DBCountJournal(Name(), null, null);
+	}
+	
+	@Override
+	public int getMaxPages()
+	{
+		return 0;
+	}
+	
+	@Override
+	public void setMaxPages(int max)
+	{
+	}
+	
+	@Override
+	public String getRawContent(int page)
+	{
+		final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
+		if((page < 1)||(page>journal.size()))
+			return "";
+		else
+		{
+			JournalEntry J=journal.get(page-1);
+			if((J.subj()!=null)&&(J.subj().length()>0))
+				return "::"+J.subj()+"::"+J.msg();
+			else
+				return "::"+J.subj()+"::"+J.msg();
+		}
+	}
+	
+	@Override
+	public String getContent(int page)
+	{
+		JournalEntry J=this.DBRead(null, Name(), page-1, 0, false, false);
+		if(J==null)
+			return "";
+		if((J.subj()!=null)&&(J.subj().length()>0))
+			return "::"+J.subj()+"::"+J.msg();
+		else
+			return "::"+J.subj()+"::"+J.msg();
+	}
+	
+	@Override
+	public void addRawContent(String authorName, String content)
+	{
+		if(content.startsWith("::")&&(content.length()>2)&&(content.charAt(2)!=':'))
+		{
+			int x=content.indexOf("::",2);
+			if(x>2)
+				CMLib.database().DBWriteJournal(Name(),authorName,"ALL",content.substring(2,x),content.substring(x+2));
+			else
+				CMLib.database().DBWriteJournal(Name(),authorName,"ALL",CMStrings.limit(content, 10),content);
+		}
+		else
+			CMLib.database().DBWriteJournal(Name(),authorName,"ALL",CMStrings.limit(content, 10),content);
+	}
+	
+	@Override
+	public boolean isJournal()
+	{
+		return true;
+	}
+	
 	@Override
 	public void recoverPhyStats()
 	{

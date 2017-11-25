@@ -166,7 +166,8 @@ public class Transcribing extends CommonSkill
 			commonTell(mob,L("You can't transcribe something like @x1.",I.name(mob)));
 			return null;
 		}
-		if((!CMLib.flags().isReadable(I))||(I instanceof Scroll))
+		if((!CMLib.flags().isReadable(I))
+		||(I instanceof Scroll))
 		{
 			commonTell(mob,L("@x1 isn't even readable!",CMStrings.capitalizeAndLower(I.name(mob))));
 			return null;
@@ -200,7 +201,17 @@ public class Transcribing extends CommonSkill
 		Item copyToI=this.getBrandedItem(mob, copyToName, false);
 		if(copyToI == null)
 			return false;
-		
+		if((copyToI instanceof Recipe)
+		&&(((Recipe)copyToI).getTotalRecipePages() <= ((Recipe)copyToI).getRecipeCodeLines().length))
+		{
+			commonTell(mob,L("@x1 is full.",copyToI.name(mob)));
+			return false;
+		}
+		if((copyToI instanceof Recipe) != (copyFromI instanceof Recipe))
+		{
+			commonTell(mob,L("@x1 can not be copied to @x2.",copyFromI.name(mob),copyToI.name(mob)));
+			return false;
+		}
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
