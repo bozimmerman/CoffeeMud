@@ -297,6 +297,9 @@ public class CommonSkill extends StdAbility
 	{
 		if(buildingI != null)
 		{
+			Ability A=buildingI.fetchEffect("Copyright");
+			if((A!=null)&&(A.text().length()>0))
+				return A.text();
 			final int x=buildingI.secretIdentity().indexOf(CRAFTING_BRAND_STR_PREFIX);
 			if(x>=0)
 			{
