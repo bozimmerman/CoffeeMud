@@ -62,7 +62,8 @@ public class AttributeTraining extends CommonSkill
 		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_EDUCATIONLORE;
 	}
 
-	protected final static int costMultiplier=2;
+	protected final static int costMultiplier=1;
+	protected final static int costAdder=1;
 	
 	protected Physical trained=null;
 	protected int attribute=-1;
@@ -158,6 +159,8 @@ public class AttributeTraining extends CommonSkill
 							}
 							final int oldVal=CMParms.getParmInt(adjA.text(), CMStrings.limit(CharStats.CODES.NAME(attribute),3), 0);
 							int trainsRequired=CMLib.login().getTrainingCost(follower, attribute, false)*costMultiplier;
+							if(trainsRequired>=0)
+								trainsRequired+=costAdder;
 							commonTell(mob,L("The training cost @x1 @x2 training points.",follower.name(),""+trainsRequired));
 							if(trainsRequired > follower.getTrains())
 								follower.setTrains(0);
@@ -255,6 +258,8 @@ public class AttributeTraining extends CommonSkill
 			}
 			int curStat=M.baseCharStats().getRacialStat(M, attribute);
 			int trainsRequired=CMLib.login().getTrainingCost(M, attribute, false)*costMultiplier;
+			if(trainsRequired>=0)
+				trainsRequired+=costAdder;
 			if(trainsRequired<0)
 				return false;
 			final int teachStat=mob.charStats().getStat(attribute);
