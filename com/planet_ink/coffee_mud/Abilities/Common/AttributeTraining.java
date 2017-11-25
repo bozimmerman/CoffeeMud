@@ -62,8 +62,8 @@ public class AttributeTraining extends CommonSkill
 		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_EDUCATIONLORE;
 	}
 
-	protected final static int costMultiplier=1;
-	protected final static int costAdder=1;
+	protected final static int costMultiplier=2;
+	protected final static int costAdder=0;
 	
 	protected Physical trained=null;
 	protected int attribute=-1;
