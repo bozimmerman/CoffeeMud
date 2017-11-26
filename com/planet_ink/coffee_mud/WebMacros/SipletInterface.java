@@ -69,7 +69,6 @@ public class SipletInterface extends StdWebMacro
 		return true;
 	}
 
-	public static final List<String>				removables			= new LinkedList<String>();
 	public static final Object						sipletConnectSync	= new Object();
 	public static volatile boolean					initialized			= false;
 	public static final Map<String, SipletSession>	siplets				= new SHashtable<String, SipletSession>();
@@ -197,25 +196,11 @@ public class SipletInterface extends StdWebMacro
 						final SipletSession p = siplets.get(key);
 						if (p == null)
 							continue;
-						final long idle = System.currentTimeMillis() - p.lastTouched;
-						if ((idle > (30 * 1000)))
-						{
-							p.siplet.disconnectFromURL();
-							removables.add(key);
-						}
-						else
 						if(p.parentIOHandler != null)
 						{
-							p.parentIOHandler.preserveConnection();
 							if(p.siplet.hasWaitingData())
 								p.parentIOHandler.scheduleProcessing();
 						}
-					}
-					if (removables.size() > 0)
-					{
-						for (final String remme : removables)
-							siplets.remove(remme);
-						removables.clear();
 					}
 				}
 				tickStatus = Tickable.STATUS_NOT;
@@ -739,6 +724,30 @@ public class SipletInterface extends StdWebMacro
 			}
 			buffer.clear();
 			return outBuffers;
+		}
+
+		@Override
+		public boolean isTimedOut()
+		{
+			final SipletSession session = this.session;
+			if(session != null)
+			{
+				final long idle = System.currentTimeMillis() - session.lastTouched;
+				if ((idle > (30 * 1000)))
+				{
+					session.siplet.disconnectFromURL();
+					synchronized (siplets)
+					{
+						for(Iterator<SipletSession> s=siplets.values().iterator();s.hasNext();)
+						{
+							if(s.next()==session)
+								s.remove();
+						}
+					}
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 	

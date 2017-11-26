@@ -288,12 +288,5 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 		}
 		return !closeMe;
 	}
-
-	@Override
-	public boolean preserveConnection()
-	{
-		this.idleTime=System.currentTimeMillis();
-		return !closeMe;
-	}
 }
 

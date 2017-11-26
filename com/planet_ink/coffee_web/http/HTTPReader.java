@@ -207,16 +207,9 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 		return isRunning.get() && ((forwarder==null) || forwarder.isRunning());
 	}
 
-	/**
-	 * Returns true if this handler is either closed, or needs to be
-	 * due to timing out in one way or another.
-	 * @return true if this handler is done
-	 */
 	@Override
-	public boolean isCloseable()
+	public boolean isTimedOut()
 	{
-		if(closeMe)
-			return true;
 		final long currentTime=System.currentTimeMillis();
 		final long idleTime = this.idleTime.get();
 		if(idleTime > 0)
@@ -228,17 +221,38 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 				return true;
 			}
 		}
-		if((!chan.isOpen()) || (!chan.isConnected()) || (!chan.isRegistered()))
-		{
-			if (isDebugging) config.getLogger().finest("Disconnected: "+this.getName());
-			return true;
-		}
 		final long totalDiffTime = (currentTime - startTime.get()); 
 		if((startTime.get()!=0) && (totalDiffTime > (config.getRequestMaxAliveSecs() * 1000)))
 		{
 			if (isDebugging) config.getLogger().finest("Over Timed Out: "+this.getName()+" "+totalDiffTime +">"+ (config.getRequestMaxAliveSecs() * 1000));
 			return true;
 		}
+		return false;
+	}
+	
+	/**
+	 * Returns true if this handler is either closed, or needs to be
+	 * due to timing out in one way or another.
+	 * @return true if this handler is done
+	 */
+	@Override
+	public boolean isCloseable()
+	{
+		if(closeMe)
+			return true;
+		if((!chan.isOpen()) || (!chan.isConnected()) || (!chan.isRegistered()))
+		{
+			if (isDebugging) config.getLogger().finest("Disconnected: "+this.getName());
+			return true;
+		}
+		if(this.protocolHandler != this)
+		{
+			if(this.protocolHandler.isTimedOut())
+				return true;
+		}
+		else
+		if(isTimedOut())
+			return true;
 		if((forwarder!=null) && (forwarder.isCloseable()))
 			return true;
 		return false;
@@ -1007,14 +1021,6 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 			willProcessNext=true;
 			server.registerChannelInterest(chan, SelectionKey.OP_WRITE | SelectionKey.OP_READ);
 		}
-		return !closeMe;
-	}
-	
-	@Override
-	public boolean preserveConnection()
-	{
-		idleTime.set(System.currentTimeMillis()+30000);
-		startTime.set(System.currentTimeMillis()+30000);
 		return !closeMe;
 	}
 }

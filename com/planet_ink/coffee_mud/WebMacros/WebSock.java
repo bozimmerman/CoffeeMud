@@ -121,7 +121,6 @@ public class WebSock extends StdWebMacro
 						else
 						if(W.ioHandler != null)
 						{
-							W.ioHandler.preserveConnection();
 							try
 							{
 								if(W.in.available()>0)
@@ -427,6 +426,29 @@ public class WebSock extends StdWebMacro
 			}
 			buffer.clear();
 			return outBuffers;
+		}
+
+		@Override
+		public boolean isTimedOut()
+		{
+			final long idle = System.currentTimeMillis() - lastPing;
+			if ((idle > (30 * 1000)))
+			{
+				try
+				{
+					lsock.close();
+					rsock.close();
+				}
+				catch (IOException e)
+				{
+					Log.errOut(e);
+				}
+				synchronized(handlers)
+				{
+					handlers.remove(this);
+				}
+			}
+			return false;
 		}
 	}
 	
