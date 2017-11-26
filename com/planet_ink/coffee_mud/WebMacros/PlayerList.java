@@ -51,8 +51,6 @@ public class PlayerList extends StdWebMacro
 			if((m!=null)&&(CMLib.flags().isCloaked(m)))
 				continue;
 
-			s.append("<li class=\"cmPlayerListEntry");
-
 			if((m!=null)&&(m.soulMate()!=null))
 				m=m.soulMate();
 
@@ -61,6 +59,8 @@ public class PlayerList extends StdWebMacro
 			&& (m.name().length() > 0)
 			&& (!S.getStatus().toString().startsWith("LOGOUT")))
 			{
+				s.append("<li class=\"cmPlayerListEntry");
+
 				// jef: nb - only shows full sysops, not subops
 				if ( CMSecurity.isASysOp(m) )
 					s.append("Archon");
@@ -109,11 +109,6 @@ public class PlayerList extends StdWebMacro
 				}
 				else
 					s.append("[new player]");
-			}
-			else
-			{
-				s.append("\">");
-				s.append("[logging in]");
 			}
 			s.append("\r\n");
 		}

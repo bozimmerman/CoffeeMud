@@ -4719,7 +4719,7 @@ public class ListCmd extends StdCommand
 		lines.append(CMStrings.padRight(L("IP"),17)+"| ");
 		lines.append(CMStrings.padRight(L("Idle"),17)+"^.^N\n\r");
 		final Vector<String[]> broken=new Vector<String[]>();
-		final boolean skipUnnamed = (sort.length()>0)&&("NAME".startsWith(sort))||("PLAYER".startsWith(sort));
+		final boolean skipUnnamed = (sort.length()>0)&&("NAME".startsWith(sort)||"PLAYER".startsWith(sort));
 		for(final Session S : CMLib.sessions().allIterable())
 		{
 			final String[] set=new String[6];
