@@ -74,7 +74,7 @@ public class SipletInterface extends StdWebMacro
 	public static volatile boolean					initialized			= false;
 	public static final Map<String, SipletSession>	siplets				= new SHashtable<String, SipletSession>();
 
-	protected class SipletSession
+	private class SipletSession
 	{
 		public long 		 lastTouched = System.currentTimeMillis();
 		public Siplet 		 siplet		= null;
@@ -89,7 +89,7 @@ public class SipletInterface extends StdWebMacro
 		}
 	}
 
-	protected class PipeSocket extends Socket
+	public static class PipeSocket extends Socket
 	{
 		private boolean					isClosed	= false;
 		private final PipedInputStream	inStream	= new PipedInputStream();
@@ -206,10 +206,9 @@ public class SipletInterface extends StdWebMacro
 						else
 						if(p.parentIOHandler != null)
 						{
+							p.parentIOHandler.preserveConnection();
 							if(p.siplet.hasWaitingData())
 								p.parentIOHandler.scheduleProcessing();
-							else
-								p.parentIOHandler.preserveConnection();
 						}
 					}
 					if (removables.size() > 0)
@@ -429,7 +428,11 @@ public class SipletInterface extends StdWebMacro
 				exception.getErrorHeaders().put(HTTPHeader.Common.SEC_WEBSOCKET_ACCEPT, token);
 				if(httpReq.getHeader("origin")!=null)
 					exception.getErrorHeaders().put(HTTPHeader.Common.ORIGIN, httpReq.getHeader("origin"));
-				final StringBuilder locationStr = new StringBuilder("ws://"+httpReq.getHost());
+				final StringBuilder locationStr;
+				if(httpReq.getFullHost().startsWith("https:"))
+					locationStr = new StringBuilder("wss://"+httpReq.getHost());
+				else
+					locationStr = new StringBuilder("ws://"+httpReq.getHost());
 				if(httpReq.getClientPort() != 80)
 					locationStr.append(":").append(httpReq.getClientPort());
 				locationStr.append(httpReq.getUrlPath());
@@ -449,7 +452,7 @@ public class SipletInterface extends StdWebMacro
 		return processRequest(httpReq, (SipletProtocolHander)httpReq.getRequestObjects().get("___SIPLETHANDLER"));
 	}
 
-	private enum WSState
+	public static enum WSState
 	{
 		S0,P1,PX,M1,M2,M3,M4,PAYLOAD
 	}
