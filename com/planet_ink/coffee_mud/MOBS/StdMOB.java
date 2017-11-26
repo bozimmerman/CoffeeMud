@@ -2935,7 +2935,8 @@ public class StdMOB implements MOB
 				}
 				break;
 			case CMMsg.TYP_PUSH:
-				if ((!CMLib.flags().isBoundOrHeld(this)) && (!CMLib.flags().isSleeping(this)))
+				if ((!CMLib.flags().isBoundOrHeld(this)) 
+				&& (!CMLib.flags().isSleeping(this)))
 				{
 					srcM.tell(srcM, this, null, L("You can't do that to <T-NAMESELF>."));
 					return false;
