@@ -91,7 +91,9 @@ public class Antidote extends StdAbility
 			final Ability A=fromMe.fetchEffect(a);
 			if((A!=null)
 			&&((A.classificationCode()&ALL_ACODES)==Ability.ACODE_POISON)
-			&&((text().length()==0)||(A.name().toUpperCase().indexOf(text().toUpperCase())>=0)||(A.ID().toUpperCase().indexOf(text().toUpperCase())>=0)))
+			&&((text().length()==0)
+				||(A.name().toUpperCase().indexOf(text().toUpperCase())>=0)
+				||(A.ID().toUpperCase().indexOf(text().toUpperCase())>=0)))
 				offenders.addElement(A);
 		}
 		return offenders;

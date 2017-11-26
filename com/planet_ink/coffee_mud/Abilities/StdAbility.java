@@ -2152,6 +2152,8 @@ public class StdAbility implements Ability
 			final int defProficiency=CMLib.ableMapper().getDefaultProficiency(student.charStats().getCurrentClass().ID(),true,ID());
 			if((defProficiency>0)&&(defProficiency>newAbility.proficiency()))
 				newAbility.setProficiency(defProficiency);
+			final String defParms=CMLib.ableMapper().getDefaultParm(student.charStats().getCurrentClass().ID(), true, ID());
+			newAbility.setMiscText(defParms);
 			student.addAbility(newAbility);
 			newAbility.autoInvocation(student, false);
 		}
