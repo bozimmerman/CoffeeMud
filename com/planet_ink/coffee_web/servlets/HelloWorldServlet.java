@@ -88,11 +88,11 @@ public class HelloWorldServlet implements SimpleServlet
 			this.doDynamicPost(request, response);
 		else
 		{
-		for(final String cookieName : request.getCookieNames())
-			response.setCookie(cookieName, request.getCookie(cookieName));
-		for(final String field : request.getUrlParameters())
-			response.setHeader("X-"+field, request.getUrlParameter(field));
-		response.setStatusCode(HTTPStatus.S204_NO_CONTENT.getStatusCode());
+			for(final String cookieName : request.getCookieNames())
+				response.setCookie(cookieName, request.getCookie(cookieName));
+			for(final String field : request.getUrlParameters())
+				response.setHeader("X-"+field, request.getUrlParameter(field));
+			response.setStatusCode(HTTPStatus.S204_NO_CONTENT.getStatusCode());
 		}
 	}
 

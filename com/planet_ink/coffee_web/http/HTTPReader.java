@@ -506,7 +506,7 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 								if (state == ParseState.CHUNKED_TRAILER_EOLN)
 									state=ParseState.CHUNKED_TRAILER_INLINE;
 								else
-								state=ParseState.HDR_INLINE;
+									state=ParseState.HDR_INLINE;
 								
 								if(host!=null)
 								{

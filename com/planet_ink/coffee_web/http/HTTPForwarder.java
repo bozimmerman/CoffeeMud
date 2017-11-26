@@ -278,7 +278,12 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 	{
 		return isRunning;
 	}
-	
+
+	/**
+	 * Notifies the I/O handler that it has data to process from somewhere
+	 * other than its internal read buffers.
+	 * @return true if the scheduling was successful
+	 */
 	@Override
 	public boolean scheduleProcessing()
 	{

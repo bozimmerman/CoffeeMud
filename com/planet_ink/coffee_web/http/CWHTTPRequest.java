@@ -330,7 +330,7 @@ public class CWHTTPRequest implements HTTPRequest
 		
 		this.bodyLength=contentLength;
 	}
-	
+
 	/**
 	 * An important method! When the end of headers is received,
 	 * and the headers indicated chunked encoding is forthcoming,
@@ -797,8 +797,8 @@ public class CWHTTPRequest implements HTTPRequest
 				buffer=ByteBuffer.wrap(new byte[0]); // free some memory early, why don't ya
 			}
 			else // if this is some sort of multi-part thing, then the entire body is forfeit and MultiPartDatas are generated
-				if(headers.containsKey(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()) 
-				&&(headers.get(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()).startsWith("multipart/")))
+			if(headers.containsKey(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()) 
+			&&(headers.get(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()).startsWith("multipart/")))
 			{
 				if (isDebugging) debugLogger.finest("Got multipart request");
 					final String boundaryDefStr=headers.get(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName());
