@@ -1013,8 +1013,8 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 	@Override
 	public boolean preserveConnection()
 	{
-		idleTime.set(System.currentTimeMillis());
-		startTime.set(System.currentTimeMillis());
+		idleTime.set(System.currentTimeMillis()+30000);
+		startTime.set(System.currentTimeMillis()+30000);
 		return !closeMe;
 	}
 }
