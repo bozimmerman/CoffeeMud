@@ -59,7 +59,7 @@ public class Recollecting extends CommonSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_NATURELORE;
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_EDUCATIONLORE;
 	}
 
 	public Recollecting()
