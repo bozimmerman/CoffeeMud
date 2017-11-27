@@ -140,7 +140,8 @@ function front(wname,wnum)
 	    			obj.style.zIndex=0;
 	    	}
 	    top.term.currentWindow = wnum;
-	    top.entry.boxFocus();
+	    if(top && top.entry && top.entry.boxFocus)
+		    top.entry.boxFocus();
 	    top.bar.greenIfLight(wnum);
 	    return false;
 	}
