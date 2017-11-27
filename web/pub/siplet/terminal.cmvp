@@ -15,6 +15,7 @@ for(var i=0;i<10;i++)
 
 function closeWindow()
 {
+	window.console.info("Siplet terminal closeWindow");
 	allwindows[currentWindow].closeWindow();
 }
 
@@ -24,6 +25,7 @@ function addToWindow(s)
 }
 function reconnect(s)
 {
+	window.console.info("Siplet terminal reconnect");
 	allwindows[currentWindow].reconnect();
 }
 function sendData(me)

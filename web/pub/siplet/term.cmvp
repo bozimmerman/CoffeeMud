@@ -13,12 +13,16 @@ setTimeout(connectChecker,10001);
 function closeWindow()
 {
 	if(theSiplet)
+	{
+		window.console.info("Siplet term closeWindow");
 		theSiplet.disconnectFromURL();
+	}
 	top.document.location.href='/index.cmvp';
 }
 
 function reconnect()
 {
+	window.console.info("Siplet term reconnect");
 	if(theSiplet)
 	{
 		if(!theSiplet.isConnecting())
@@ -30,6 +34,7 @@ function reconnect()
 
 function goOffline()
 {
+	window.console.info("Siplet term go offline.");
 	theSiplet.disconnectFromURL();
 	theSiplet=new Siplet();
 	goRed();
@@ -39,6 +44,13 @@ var receivedData = function(connected, txt)
 {
 	if(!connected || (!txt) || (txt.substr(0,5)!='true;'))
 	{
+		if(!connected)
+			window.console.info("Siplet not connected.");
+		else
+		if(!txt)
+			window.console.info("Siplet received no packet.");
+		else
+			window.console.info("Siplet received bad packet."+txt.substr(0,5));
 		goOffline();
 	}
 	else

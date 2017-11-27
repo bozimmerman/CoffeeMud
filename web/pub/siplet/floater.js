@@ -113,6 +113,7 @@ function closewindow(wname,wnum)
 	var obj2 = document.getElementById(wname);
 	obj2.style.display="none";
 	var obj3 = top.term.allapplets[wnum];
+	window.console.info("Siplet floater closewindow");
 	obj3.disconnectFromURL();
 	alldivs[wnum]=null;
 	obj2.innerHTML = '';
