@@ -132,6 +132,7 @@ Siplet.prototype.sendData = function(s, callback)
 	{
 		this.callback = callback;
 		s=encodeURIComponent(''+s);
+		window.console.info("se:"+this.sipNum+":"+(new Date).getTime()+": "+this.token+": "+this.socket.readyState+": sendData");
 		this.socket.send('SENDDATA&TOKEN='+this.token+'&DATA='+s);
 	}
 };
