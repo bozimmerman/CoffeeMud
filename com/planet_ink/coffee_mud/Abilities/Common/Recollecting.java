@@ -71,7 +71,8 @@ public class Recollecting extends CommonSkill
 
 	protected boolean success=false;
 	protected String searchFor="";
-	
+
+	protected final static int charLimit = 100000;
 	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -141,14 +142,24 @@ public class Recollecting extends CommonSkill
 					try
 					{
 						final List<String> founds=new ArrayList<String>();
-						for(Item foundI : this.getApplicableItems(mob))
+						final List<Item> items=this.getApplicableItems(mob);
+						long remain=charLimit;
+						CMLib.dice().scramble(items);
+						for(Item foundI : items)
 						{
+							if(remain < 0)
+								break;
 							if(foundI instanceof Book)
 							{
 								final int total=((Book)foundI).getUsedPages();
+								final int[] pages = new int[total];
 								for(int i=0;i<total;i++)
+									pages[i]=i;
+								CMLib.dice().scramble(pages);
+								for(int i : pages)
 								{
 									String pageContent=((Book)foundI).getRawContent(i+1);
+									remain -=pageContent.length();
 									if(CMLib.english().containsString(pageContent, this.searchFor))
 									{
 										if(foundI.container()!=null)
@@ -171,6 +182,7 @@ public class Recollecting extends CommonSkill
 									&&(m2.sourceMinor()==CMMsg.TYP_WASREAD))
 										tmsg+=m2.targetMessage();
 								}
+								remain -=tmsg.length();
 								if(CMLib.english().containsString(tmsg, this.searchFor))
 								{
 									if(foundI.container()!=null)
