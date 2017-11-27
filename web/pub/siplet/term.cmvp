@@ -50,7 +50,7 @@ var receivedData = function(connected, txt)
 		if(!txt)
 			window.console.info("Siplet received no packet.");
 		else
-			window.console.info("Siplet received bad packet."+txt.substr(0,5));
+			window.console.info("Siplet received bad packet: "+txt.substr(0,5));
 		goOffline();
 	}
 	else
