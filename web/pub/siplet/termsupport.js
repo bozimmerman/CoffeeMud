@@ -58,7 +58,10 @@ function handlePacket(txt,tk)
 {
 	var x=txt.indexOf(tk);
 	if(x<0)
+	{
+		window.console.info("Siplet: Packet missing tk: "+txt);
 		goOffline();
+	}
 	else
 	{
 		var data=txt.substr(0,x);

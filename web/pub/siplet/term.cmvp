@@ -64,7 +64,10 @@ var receivedData = function(connected, txt)
 function displayData()
 {
 	if(!theSiplet.isConnectedToURL())
+	{
+		window.console.info("Siplet: No longer connected for display.");
 		goOffline();
+	}
 	else
 		theSiplet.getURLData(receivedData);
 }
@@ -72,18 +75,7 @@ function displayData()
 function sendData(me)
 {
 	var s=''+me;
-	theSiplet.sendData(s,function(success,txt) {
-		if(!success || (!txt) || (txt.substr(0,5)!='true;'))
-		{
-			goOffline();
-		}
-		else
-		{
-			txt=txt.substr(5);
-			var tk=theSiplet.token+";";
-			handlePacket(txt,tk);
-		}
-	});
+	theSiplet.sendData(s,receivedData);
 }
 
 
