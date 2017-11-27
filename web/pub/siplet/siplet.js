@@ -5,6 +5,7 @@ var Siplet = function()
 	this.socket = null;
 	this.sipNum = (++SipletCtr);
 	this.mudport=23;
+	this.basecallback = null;
 	this.callback = null;
 	this.token = null;
 	this.host = '';
@@ -44,7 +45,8 @@ Siplet.prototype.receivedData = function(event)
 {
 	if(this.callback)
 		this.callback(this.socket.readyState == 1, event.data);
-	//this.callback = null;
+	if(this.basecallback)
+		this.callback = basecallback;
 	window.console.info("dr:"+this.sipNum+":"+(new Date).getTime()+": "+this.socket.readyState+": receivedData:"+event.data.length);
 };
 
@@ -118,6 +120,7 @@ Siplet.prototype.getURLData = function(callback)
 	if(this.socket && this.socket.readyState  === 1)
 	{
 		this.callback = callback;
+		this.basecallback = callback;
 		window.console.info("gu:"+this.sipNum+":"+(new Date).getTime()+": "+this.token+": "+this.socket.readyState+": getURLData");
 		this.socket.send('POLL&TOKEN='+this.token);
 	}
