@@ -46,7 +46,7 @@ Siplet.prototype.receivedData = function(event)
 	if(this.callback)
 		this.callback(this.socket.readyState == 1, event.data);
 	if(this.basecallback)
-		this.callback = basecallback;
+		this.callback = this.basecallback;
 	window.console.info("dr:"+this.sipNum+":"+(new Date).getTime()+": "+this.socket.readyState+": receivedData:"+event.data.length);
 };
 
