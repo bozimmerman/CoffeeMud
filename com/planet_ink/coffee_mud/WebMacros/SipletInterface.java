@@ -338,12 +338,24 @@ public class SipletInterface extends StdWebMacro
 								final String jscript = p.siplet.getJScriptCommands();
 								success=p.siplet.isConnectedToURL();
 								p.response=Boolean.toString(success)+';'+data+token+';'+jscript+token+';';
+								if(!success)
+									Log.debugOut("SipletInterface Send Failed due to already being disconnected after a response?!");
 								return p.response;
 							}
+							else
+								Log.debugOut("SipletInterface Send Failed due to already being disconnected after a pause?!");
 						}
+						else
+							Log.debugOut("SipletInterface Send Failed due to already being disconnected.");
 					}
+					else
+						Log.debugOut("SipletInterface Send Failed due to lack of data for "+token+".");
 				}
+				else
+					Log.debugOut("SipletInterface Send Failed due to lack of session for "+token+".");
 			}
+			else
+				Log.debugOut("SipletInterface Send Failed due to lack of token.");
 			return Boolean.toString(success)+';';
 		}
 		else
