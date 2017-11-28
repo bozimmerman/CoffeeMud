@@ -34,7 +34,7 @@ function reconnect()
 
 function goOffline()
 {
-	window.console.info("Siplet term go offline.");
+	//window.console.info("Siplet term go offline.");
 	theSiplet.disconnectFromURL();
 	theSiplet=new Siplet();
 	goRed();
@@ -65,7 +65,7 @@ function displayData()
 {
 	if(!theSiplet.isConnectedToURL())
 	{
-		window.console.info("Siplet: No longer connected for display.");
+		//window.console.info("Siplet: No longer connected for display.");
 		goOffline();
 	}
 	else
