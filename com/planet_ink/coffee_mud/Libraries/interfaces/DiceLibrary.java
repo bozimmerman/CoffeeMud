@@ -52,4 +52,6 @@ public interface DiceLibrary extends CMLibrary
 	public int plusOrMinus(final int range);
 	public int inRange(final int min, final int max);
 	public long inRange(final long min, final long max);
+	public void scramble(List<?> objs);
+	public void scramble(int[] objs);
 }
