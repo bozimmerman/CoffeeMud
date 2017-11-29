@@ -1330,6 +1330,37 @@ public class Destroy extends StdCommand
 			else
 			{
 				mob.tell(L("'@x1' is no longer debugging",named));
+				if(flag == CMSecurity.DbgFlag.HTTPACCESS)
+				{
+					for(MudHost host : CMLib.hosts())
+					{
+						try
+						{
+							host.executeCommand("WEBSERVER ADMIN ACCESS OFF");
+							host.executeCommand("WEBSERVER PUB ACCESS OFF");
+						}
+						catch (Exception e)
+						{
+							mob.tell(e.getMessage());
+						}
+					}
+				}
+				else
+				if(flag == CMSecurity.DbgFlag.HTTPREQ)
+				{
+					for(MudHost host : CMLib.hosts())
+					{
+						try
+						{
+							host.executeCommand("WEBSERVER ADMIN DEBUG OFF");
+							host.executeCommand("WEBSERVER PUB DEBUG OFF");
+						}
+						catch (Exception e)
+						{
+							mob.tell(e.getMessage());
+						}
+					}
+				}
 				CMSecurity.removeDebugVar(flag);
 			}
 			return false;

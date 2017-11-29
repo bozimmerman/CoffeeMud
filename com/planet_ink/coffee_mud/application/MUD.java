@@ -2080,13 +2080,13 @@ public class MUD extends Thread implements MudHost
 	@Override
 	public String executeCommand(String cmd) throws Exception
 	{
-		final Vector<String> V=CMParms.parse(cmd);
+		final List<String> V=CMParms.parse(cmd);
 		if(V.size()==0)
 			throw new CMException("Unknown command!");
-		final String word=V.firstElement();
+		final String word=V.get(0);
 		if(word.equalsIgnoreCase("START")&&(V.size()>1))
 		{
-			final String what=V.elementAt(1);
+			final String what=V.get(1);
 			if(what.equalsIgnoreCase("I3"))
 			{
 				startIntermud3();
@@ -2103,7 +2103,7 @@ public class MUD extends Thread implements MudHost
 			{
 				if(V.size()<3)
 					return "Need Server Name";
-				if(startWebServer(CMProps.instance(),V.elementAt(2)))
+				if(startWebServer(CMProps.instance(),V.get(2)))
 					return "Done";
 				else
 					return "Failure";
@@ -2112,12 +2112,12 @@ public class MUD extends Thread implements MudHost
 		else
 		if(word.equalsIgnoreCase("STOP")&&(V.size()>1))
 		{
-			final String what=V.elementAt(1);
+			final String what=V.get(1);
 			if(what.equalsIgnoreCase("WEB"))
 			{
 				if(V.size()<3)
 					return "Need Server Name";
-				if(stopWebServer(V.elementAt(2)))
+				if(stopWebServer(V.get(2)))
 					return "Done";
 				else
 					return "Failure";
@@ -2126,14 +2126,19 @@ public class MUD extends Thread implements MudHost
 		else
 		if(word.equalsIgnoreCase("WEBSERVER")&&(V.size()>2))
 		{
-			boolean admin = V.elementAt(1).equalsIgnoreCase("ADMIN");
-			String var = V.elementAt(2);
+			String var = V.get(2);
 			WebServer server=null;
 			for(WebServer serv : webServers)
 			{
+				if(serv.getName().equalsIgnoreCase(V.get(1)))
+				{
+					server=serv;
+					break;
+				}
+				else
 				if(CMath.s_bool(serv.getConfig().getMiscProp("ADMIN")))
 				{
-					if(admin)
+					if(V.get(1).equalsIgnoreCase("ADMIN"))
 					{
 						server=serv;
 						break;
@@ -2141,7 +2146,7 @@ public class MUD extends Thread implements MudHost
 				}
 				else
 				{
-					if(!admin)
+					if(V.get(1).equalsIgnoreCase("PUB"))
 					{
 						server=serv;
 						break;
@@ -2157,6 +2162,12 @@ public class MUD extends Thread implements MudHost
 					return "";
 				return Integer.toString(ports[0]);
 			}
+			else
+			if((V.size()>3)&&(var.equalsIgnoreCase("DEBUG")))
+				server.getConfig().setDebugFlag(V.get(2));
+			else
+			if((V.size()>3)&&(var.equalsIgnoreCase("ACCESS")))
+				server.getConfig().setDebugFlag(V.get(2));
 			else
 				throw new CMException("Unknown variable: "+var);
 		}
