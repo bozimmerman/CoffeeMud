@@ -2154,7 +2154,7 @@ public class MUD extends Thread implements MudHost
 				}
 			}
 			if(server==null)
-				return "";
+				throw new CMException("Unknown server: "+var);
 			if(var.equalsIgnoreCase("PORT"))
 			{
 				int[] ports = server.getConfig().getHttpListenPorts();
@@ -2164,12 +2164,13 @@ public class MUD extends Thread implements MudHost
 			}
 			else
 			if((V.size()>3)&&(var.equalsIgnoreCase("DEBUG")))
-				server.getConfig().setDebugFlag(V.get(2));
+				server.getConfig().setDebugFlag(V.get(3));
 			else
 			if((V.size()>3)&&(var.equalsIgnoreCase("ACCESS")))
-				server.getConfig().setDebugFlag(V.get(2));
+				server.getConfig().setDebugFlag(V.get(3));
 			else
 				throw new CMException("Unknown variable: "+var);
+			return "";
 		}
 		throw new CMException("Unknown command: "+word);
 	}
