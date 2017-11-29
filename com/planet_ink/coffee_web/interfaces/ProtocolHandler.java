@@ -41,4 +41,9 @@ public interface ProtocolHandler
 	 */
 	public boolean isTimedOut();
 	
+	/**
+	 * Close and dispose of this handler, typically because the web server
+	 * has lost its connection to the client.
+	 */
+	public void closeAndWait();
 }

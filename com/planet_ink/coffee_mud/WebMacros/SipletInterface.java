@@ -747,26 +747,35 @@ public class SipletInterface extends StdWebMacro
 				final long idle = System.currentTimeMillis() - session.lastTouched;
 				if ((idle > (30 * 1000)))
 				{
-					session.siplet.disconnectFromURL();
-					String removeKey = null;
-					synchronized (siplets)
-					{
-						for(final String keys : siplets.keySet())
-						{
-							final SipletSession s = siplets.get(keys);
-							if(s==session)
-							{
-								removeKey = keys;
-								break;
-							}
-						}
-						if(removeKey != null)
-							siplets.remove(removeKey);
-					}
+					this.closeAndWait();
 					return true;
 				}
 			}
 			return false;
+		}
+
+		@Override
+		public void closeAndWait()
+		{
+			if(session != null)
+			{
+				session.siplet.disconnectFromURL();
+				String removeKey = null;
+				synchronized (siplets)
+				{
+					for(final String keys : siplets.keySet())
+					{
+						final SipletSession s = siplets.get(keys);
+						if(s==session)
+						{
+							removeKey = keys;
+							break;
+						}
+					}
+					if(removeKey != null)
+						siplets.remove(removeKey);
+				}
+			}
 		}
 	}
 	

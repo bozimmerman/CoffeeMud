@@ -176,6 +176,8 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 			catch(final Exception e){}
 			if(forwarder!=null)
 				forwarder.closeChannels();
+			if(this.protocolHandler != this)
+				this.protocolHandler.closeAndWait();
 		}
 	}
 	

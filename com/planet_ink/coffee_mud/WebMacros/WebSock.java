@@ -434,21 +434,27 @@ public class WebSock extends StdWebMacro
 			final long idle = System.currentTimeMillis() - lastPing;
 			if ((idle > (30 * 1000)))
 			{
-				try
-				{
-					lsock.close();
-					rsock.close();
-				}
-				catch (IOException e)
-				{
-					Log.errOut(e);
-				}
-				synchronized(handlers)
-				{
-					handlers.remove(this);
-				}
+				this.closeAndWait();
 			}
 			return false;
+		}
+
+		@Override
+		public void closeAndWait()
+		{
+			try
+			{
+				lsock.close();
+				rsock.close();
+			}
+			catch (IOException e)
+			{
+				Log.errOut(e);
+			}
+			synchronized(handlers)
+			{
+				handlers.remove(this);
+			}
 		}
 	}
 	
