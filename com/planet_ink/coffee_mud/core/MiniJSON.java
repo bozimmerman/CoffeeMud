@@ -486,7 +486,7 @@ public class MiniJSON
 		final StringBuilder value=new StringBuilder("");
 		if(doc[index[0]]!='\"')
 		{
-			throw new MJSONException("Expectged quote at: "+doc[index[0]]);
+			throw new MJSONException("Expected quote at: "+doc[index[0]]);
 		}
 		index[0]++;
 		while(index[0] < doc.length)

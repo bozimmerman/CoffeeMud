@@ -206,7 +206,11 @@ public class BookNaming extends CommonSkill
 			commonTell(mob,L("You don't seem to have a '@x1'.",itemName));
 			return false;
 		}
-		
+		if(target.fetchEffect("Copyright")!=null)
+		{
+			commonTell(mob,L("This book is copyrighted, and can't be renamed."));
+			return false;
+		}
 		
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)

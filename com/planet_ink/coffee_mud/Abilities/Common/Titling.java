@@ -308,6 +308,12 @@ public class Titling extends CommonSkill
 			commonTell(mob,L("That already has a name."));
 			return false;
 		}
+		if(target.fetchEffect("Copyright")!=null)
+		{
+			commonTell(mob,L("This book is copyrighted, and can't be renamed."));
+			return false;
+		}
+		
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

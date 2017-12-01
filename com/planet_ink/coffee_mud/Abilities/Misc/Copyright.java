@@ -105,7 +105,8 @@ public class Copyright extends StdAbility
 	{
 		if((msg.target()==affected)
 		&&(msg.tool() instanceof Ability)
-		&&(!msg.source().Name().equals(text())))
+		//&&(!msg.source().Name().equals(text()))
+		)
 		{
 			if(msg.tool().ID().equalsIgnoreCase("Transcribing") //BZ: I hate this crap.
 			||msg.tool().ID().equalsIgnoreCase("Spell_Duplicate"))
@@ -114,6 +115,23 @@ public class Copyright extends StdAbility
 					msg.source().tell(L("This work is copyrighted by @x1 and cannot be duplicated.",text()));
 				else
 					msg.source().tell(L("This cannot be duplicated."));
+				return false;
+			}
+			if(msg.tool().ID().equalsIgnoreCase("BookEditing")) //BZ: I hate this crap.
+			{
+				if(text().length()>0)
+					msg.source().tell(L("This work is copyrighted by @x1 and cannot be edited.",text()));
+				else
+					msg.source().tell(L("This cannot be edited."));
+				return false;
+			}
+			if(msg.tool().ID().equalsIgnoreCase("BookNaming")
+			||msg.tool().ID().equalsIgnoreCase("Titling")) //BZ: I hate this crap.
+			{
+				if(text().length()>0)
+					msg.source().tell(L("This work is copyrighted by @x1 and cannot be re-named.",text()));
+				else
+					msg.source().tell(L("This cannot be re-named."));
 				return false;
 			}
 		}

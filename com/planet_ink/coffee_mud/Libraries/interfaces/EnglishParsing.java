@@ -90,10 +90,10 @@ public interface EnglishParsing extends CMLibrary
 	public double numPossibleGoldDenomination(Environmental mine, String currency, String itemID);
 	public Triad<String, Double, Long> parseMoneyStringSDL(MOB mob, String amount, String correctCurrency);
 	public long getMillisMultiplierByName(String timeName);
-	public String matchAnyCurrencySet(String itemID);
-	public double matchAnyDenomination(String currency, String itemID);
-	public Item possibleRoomGold(MOB seer, Room room, Container container, String itemID);
-	public Item bestPossibleGold(MOB mob, Container container, String itemID);
+	public String matchAnyCurrencySet(String moneyStr);
+	public double matchAnyDenomination(String currency, String moneyStr);
+	public Item possibleRoomGold(MOB seer, Room room, Container container, String moneyStr);
+	public Item bestPossibleGold(MOB mob, Container container, String moneyStr);
 	public List<Container> possibleContainers(MOB mob, List<String> commands, Filterer<Environmental> filter, boolean withContentOnly);
 	public Item possibleContainer(MOB mob, List<String> commands, boolean withStuff, Filterer<Environmental> filter);
 	public String returnTime(long millis, long ticks);
