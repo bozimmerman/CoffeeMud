@@ -116,7 +116,7 @@ public class Publishing extends CommonSkill
 				else
 				{
 					final ArrayList<Room> rooms=new ArrayList<Room>();
-					final ArrayList<ShopKeeper> shops=new ArrayList<ShopKeeper>();
+					final PairList<ShopKeeper,Room> shops=new PairVector<ShopKeeper,Room>();
 					final TrackingLibrary.TrackingFlags flags;
 					flags = CMLib.tracking().newFlags()
 							.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
@@ -130,14 +130,19 @@ public class Publishing extends CommonSkill
 						final ShopKeeper rSK=CMLib.coffeeShops().getShopKeeper(R);
 						if((rSK != null)
 						&&(rSK.isSold(ShopKeeper.DEAL_BOOKS)))
-							shops.add(rSK);
+							shops.add(rSK,R);
 						for(int i=0;i<R.numInhabitants();i++)
 						{
 							final MOB M=R.fetchInhabitant(i);
 							final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 							if((SK != null)
 							&&(SK.isSold(ShopKeeper.DEAL_BOOKS)))
-								shops.add(SK);
+							{
+								if(M.getStartRoom()!=null)
+									shops.add(SK,mob.getStartRoom());
+								else
+									shops.add(SK,R);
+							}
 						}
 					}
 					rooms.clear();
@@ -164,8 +169,9 @@ public class Publishing extends CommonSkill
 							Publishing pubA=(Publishing)this.copyOf();
 							shopItem.addNonUninvokableEffect(pubA);
 						}
-						for(final ShopKeeper SK : shops)
+						for(final Pair<ShopKeeper,Room> SKs : shops)
 						{
+							final ShopKeeper SK=SKs.first;
 							final Iterator<Environmental> ie=SK.getShop().getStoreInventory("$"+shopItem.Name()+"$");
 							boolean proceed = true;
 							if(ie.hasNext())
@@ -190,9 +196,41 @@ public class Publishing extends CommonSkill
 							}
 							if(proceed)
 							{
-								Log.infoOut("The book "+shopItem.Name()+" was published by "+mob.Name()+" to "+CMLib.map().roomLocation(SK));
+								Log.infoOut("The book "+shopItem.Name()+" was published by "+mob.Name()+" to "+CMLib.map().roomLocation(SKs.second));
 								pubbed++;
-								SK.getShop().addStoreInventory((Item)shopItem.copyOf(), Integer.MAX_VALUE/2, (int)CMath.round(price));
+								SK.getShop().addStoreInventory((Item)shopItem.copyOf(), adjustedLevel(mob,0), (int)CMath.round(price));
+								final MiniJSON.JSONObject obj=getData();
+								if(!obj.containsKey(shopItem.Name()))
+									obj.put(shopItem.Name(), new MiniJSON.JSONObject());
+								try
+								{
+									MiniJSON.JSONObject bookObj=obj.getCheckedJSONObject(shopItem.Name());
+									Object[] locs =new Object[0];
+									if(bookObj.containsKey("locs"))
+										locs=bookObj.getCheckedArray("locs");
+									boolean found=false;
+									for(Object o : locs)
+									{
+										MiniJSON.JSONObject locObj = (MiniJSON.JSONObject)o;
+										if(locObj.getCheckedString("name").equals(SK.Name())
+										&&(CMLib.map().getExtendedRoomID(SKs.second)).equals(locObj.getCheckedString("room")))
+											found=true;
+									}
+									if(!found)
+									{
+										locs=Arrays.copyOf(locs, locs.length+1);
+										MiniJSON.JSONObject locObj=new MiniJSON.JSONObject();
+										locObj.put("name", SK.Name());
+										locObj.put("room", CMLib.map().roomLocation(SKs.second));
+										locs[locs.length-1]=locObj;
+										bookObj.put("locs", locs);
+										setData(obj);
+									}
+								}
+								catch (MJSONException e)
+								{
+									Log.errOut(e);
+								}
 							}
 						}
 						StringBuilder str=new StringBuilder(L("Publishing completed. "));
@@ -234,6 +272,76 @@ public class Publishing extends CommonSkill
 		if(affected instanceof Item)
 		{
 			final Item I=(Item)affected;
+			if((msg.tool()==I)
+			&&(msg.targetMinor()==CMMsg.TYP_SELL)
+			&&(msg.target() != null))
+			{
+				final Ability copyA = I.fetchEffect("Copyright");
+				if((copyA != null)&&(copyA.text().length()>0))
+				{
+					final MOB M=CMLib.players().getLoadPlayer(copyA.text());
+					if(M!=null)
+					{
+						final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.target());
+						if(SK!=null)
+						{
+							final Publishing pubA=(Publishing)M.fetchAbility("Publishing");
+							if(pubA!=null)
+							{
+								final MiniJSON.JSONObject obj=pubA.getData();
+								try
+								{
+									MiniJSON.JSONObject bookObj = obj.getCheckedJSONObject(I.Name());
+									Object[] locs=bookObj.getCheckedArray("locs");
+									boolean found=false;
+									for(Object o : locs)
+									{
+										MiniJSON.JSONObject locObj=(MiniJSON.JSONObject)o;
+										final String name=locObj.getCheckedString("name");
+										final String room=locObj.getCheckedString("room");
+										if(name.equalsIgnoreCase(SK.Name()))
+										{
+											final Room startR=CMLib.map().getStartRoom(SK);
+											if((startR==null)||(room.equalsIgnoreCase(CMLib.map().getExtendedRoomID(startR))))
+											{
+												found=true;
+												break;
+											}
+										}
+									}
+									if(found)
+									{
+										if(bookObj.containsKey("copies_sold"))
+										{
+											final Long oldVal = bookObj.getCheckedLong("copies_sold");
+											if(oldVal.longValue()>0)
+												bookObj.put("copies_sold", Long.valueOf(oldVal.longValue() - 1));
+										}
+										if(bookObj.containsKey("who") && msg.source().isPlayer())
+										{
+											Object[] whoms = bookObj.getCheckedArray("who");
+											if(CMParms.containsAsString(whoms, msg.source().Name()))
+											{
+												List<Object> whomses = new XVector<Object>(Arrays.asList(whoms));
+												int x=CMParms.indexOfAsString(whoms, msg.source().Name());
+												if(x >=0)
+													whomses.remove(x);
+												bookObj.put("who", whomses.toArray(new Object[0]));
+											}
+										}
+										pubA.setData(obj);
+									}
+								}
+								catch (MJSONException e)
+								{
+									Log.errOut(e);
+								}
+							}
+						}
+					}
+				}
+			}
+			else
 			if((msg.tool()==I)
 			&&(msg.targetMinor()==CMMsg.TYP_BUY))
 			{
@@ -284,12 +392,17 @@ public class Publishing extends CommonSkill
 								&&(!msg.source().playerStats().getLastIP().equalsIgnoreCase(M.playerStats().getLastIP()))
 								&&((M.playerStats().getAccount()==null)||(M.playerStats().getAccount()!=msg.source().playerStats().getAccount())))
 								{
-									if(!bookObj.containsKey("popularity"))
-										bookObj.put("popularity", Integer.valueOf(1));
+									if(!bookObj.containsKey("who"))
+										bookObj.put("who", new Object[0]);
 									else
 									{
-										Long oldVal = bookObj.getCheckedLong("popularity");
-										bookObj.put("popularity", Long.valueOf(oldVal.longValue() + 1));
+										Object[] oldVals = bookObj.getCheckedArray("who");
+										if(!CMParms.containsAsString(oldVals, msg.source().Name()))
+										{
+											oldVals=Arrays.copyOf(oldVals,oldVals.length+1);
+											oldVals[oldVals.length-1]=msg.source().Name();
+											bookObj.put("who", oldVals);
+										}
 									}
 								}
 								pubA.setData(obj);
@@ -312,9 +425,46 @@ public class Publishing extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		if(commands.size()<2)
+		if((commands.size()<2)
+		||((commands.size()==1)&&(commands.get(0).equalsIgnoreCase("LIST"))))
 		{
-			commonTell(mob,L("Publish what, at what asking price?"));
+			commonTell(mob,L("Publish what, at what asking price? If you already published, try LIST."));
+			return false;
+		}
+		if(commands.size()==1)
+		{
+			MiniJSON.JSONObject data=getData();
+			if(data.keySet().size()==0)
+				commonTell(mob,L("You haven't been published yet."));
+			else
+			{
+				try
+				{
+					int index=1;
+					StringBuilder str=new StringBuilder("");
+					for(String bookName : data.keySet())
+					{
+						MiniJSON.JSONObject bookObj = data.getCheckedJSONObject(bookName);
+						str.append(index+") ^H"+bookName+"^?:\n\r");
+						String purchased="0";
+						String royalties="0";
+						String popularity="0";
+						if(bookObj.containsKey("copies_sold"))
+							purchased=bookObj.getCheckedLong("copies_sold").toString();
+						if(bookObj.containsKey("paid"))
+							royalties=CMLib.beanCounter().abbreviatedPrice(mob, bookObj.getCheckedLong("paid").doubleValue());
+						if(bookObj.containsKey("who"))
+							popularity=bookObj.getCheckedArray("who").length+"";
+						str.append(L("Purchased @x1 times for royalties of @x2, and a popularity of @x3.\n\r\n\r",
+								purchased, royalties, popularity));
+					}
+					commonTell(mob,str.toString());
+				}
+				catch(MiniJSON.MJSONException e)
+				{
+					Log.errOut(e);
+				}
+			}
 			return false;
 		}
 		

@@ -3362,6 +3362,27 @@ public class CMParms
 	}
 
 	/**
+	 * Returns the index of the given Object appears in the given list,
+	 * after calling toString on both the obj given and the list Object.
+	 * @param theList the list of Objects to call toString ob
+	 * @param obj the Object to search for, after calling toString
+	 * @return the index of the object in the list, or -1 if not found
+	 */
+	public final static int indexOfAsString(final Object[] theList, final Object obj)
+	{
+		if(theList==null) 
+			return -1;
+		if(obj==null) 
+			return -1;
+		for(int i=0;i<theList.length;i++)
+		{
+			if(theList[i].toString().equals(obj.toString()))
+				return i;
+		}
+		return -1;
+	}
+
+	/**
 	 * Iterates through the given Iterator, returning which the number of
 	 * times it must be iterated through before the given object is found
 	 * @param i the Iterator of objects
@@ -3520,6 +3541,18 @@ public class CMParms
 	public final static boolean contains(final Object[] theList, final Object obj)
 	{
 		return indexOf(theList,obj)>=0;
+	}
+
+	/**
+	 * Returns whether the given Object appears in the given list, after 
+	 * calling toString on both the list object and the given object
+	 * @param theList the list
+	 * @param obj the Object to search for, which is a toString
+	 * @return true if the Object is in the list, false otherwise
+	 */
+	public final static boolean containsAsString(final Object[] theList, final Object obj)
+	{
+		return indexOfAsString(theList,obj) >=0;
 	}
 
 	/**
