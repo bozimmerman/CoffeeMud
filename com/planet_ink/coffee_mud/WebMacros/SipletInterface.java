@@ -325,6 +325,8 @@ public class SipletInterface extends StdWebMacro
 					String data=httpReq.getUrlParameter("DATA");
 					if(data!=null)
 					{
+						if(!p.siplet.isConnectedToURL())
+							Log.debugOut("SipletInterface Send Will Fail due to already being disconnected.");
 						p.lastTouched=System.currentTimeMillis();
 						p.siplet.sendData(data);
 						if(p.siplet.isConnectedToURL())
@@ -339,14 +341,23 @@ public class SipletInterface extends StdWebMacro
 								success=p.siplet.isConnectedToURL();
 								p.response=Boolean.toString(success)+';'+data+token+';'+jscript+token+';';
 								if(!success)
+								{
 									Log.debugOut("SipletInterface Send Failed due to already being disconnected after a response?!");
+									Log.debugOut("SipletInterface Disconnect reason: "+p.siplet.getCloseReason());
+								}
 								return p.response;
 							}
 							else
+							{
 								Log.debugOut("SipletInterface Send Failed due to already being disconnected after a pause?!");
+								Log.debugOut("SipletInterface Disconnect reason: "+p.siplet.getCloseReason());
+							}
 						}
 						else
+						{
 							Log.debugOut("SipletInterface Send Failed due to already being disconnected.");
+							Log.debugOut("SipletInterface Disconnect reason: "+p.siplet.getCloseReason());
+						}
 					}
 					else
 						Log.debugOut("SipletInterface Send Failed due to lack of data for "+token+".");
