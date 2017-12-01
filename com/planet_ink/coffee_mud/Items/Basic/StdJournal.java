@@ -774,6 +774,17 @@ public class StdJournal extends StdItem implements Book
 	}
 	
 	@Override
+	public int getMaxCharsPerPage()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setMaxCharsPerPage(int max)
+	{
+	}
+
+	@Override
 	public void setMaxPages(int max)
 	{
 	}

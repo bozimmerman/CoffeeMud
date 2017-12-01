@@ -1270,7 +1270,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			}
 			else
 			{
-				final boolean canExtEdit=((sess!=null)&&(sess.getClientTelnetMode(Session.TELNET_GMCP)));
+				final boolean canExtEdit=((sess.getClientTelnetMode(Session.TELNET_GMCP)));
 				final LinkedList<String> paramsOut=new LinkedList<String>();
 				final String option=sess.choose(L("^HMenu ^N(?/A/D/L/I/E/R/S/Q@x1)^H: ^N",(canExtEdit?"/W":"")),L("ADLIERSQ?@x1",(canExtEdit?"W":"")),"?",-1,paramsOut);
 				final String paramAll=(paramsOut.size()>0)?CMParms.combine(paramsOut,0):null;
@@ -1367,24 +1367,21 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					break;
 				case 'W':
 				{
-					if(sess!=null)
+					StringBuilder oldDoc=new StringBuilder();
+					for(final String s : vbuf)
+						oldDoc.append(s).append("\n");
+					vbuf.clear();
+					sess.sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\",\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
+					oldDoc=null;
+					String newText=unsafePrompt(sess,L("Re-Enter the whole doc using your GMCP editor.\n\rIf the editor has not popped up, just hit enter and QUIT Without Saving immediately.\n\rProceed: "),"");
+					if((newText.length()>0)&&(newText.charAt(newText.length()-1)=='\\'))
+						newText = newText.substring(0,newText.length()-1);
+					final String[] newDoc=newText.split("\\\\n");
+					for(final String s : newDoc)
+						vbuf.add(s);
+					if(newDoc.length>1)
 					{
-						StringBuilder oldDoc=new StringBuilder();
-						for(final String s : vbuf)
-							oldDoc.append(s).append("\n");
-						vbuf.clear();
-						sess.sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\",\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
-						oldDoc=null;
-						String newText=unsafePrompt(sess,L("Re-Enter the whole doc using your GMCP editor.\n\rIf the editor has not popped up, just hit enter and QUIT Without Saving immediately.\n\rProceed: "),"");
-						if((newText.length()>0)&&(newText.charAt(newText.length()-1)=='\\'))
-							newText = newText.substring(0,newText.length()-1);
-						final String[] newDoc=newText.split("\\\\n");
-						for(final String s : newDoc)
-							vbuf.add(s);
-						if(newDoc.length>1)
-						{
-							mob.tell(L("\n\r^HNew text successfully imported.^N"));
-						}
+						mob.tell(L("\n\r^HNew text successfully imported.^N"));
 					}
 					break;
 				}

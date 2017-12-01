@@ -8696,6 +8696,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genLevel(mob,me,++showNumber,showFlag);
 			genSecretIdentity(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);
+			if(me instanceof Book)
+			{
+				((Book)me).setMaxPages(prompt(mob, ((Book)me).getMaxPages(), ++showNumber, showFlag, "Max Pages"));
+				((Book)me).setMaxCharsPerPage(prompt(mob, ((Book)me).getMaxCharsPerPage(), ++showNumber, showFlag, "Chars/Page"));
+			}
 			if(me instanceof ClanItem)
 				genClanItem(mob,(ClanItem)me,++showNumber,showFlag);
 			if(me instanceof Electronics)

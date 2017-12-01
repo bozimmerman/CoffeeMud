@@ -2077,6 +2077,107 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
 				}
 			},
+			new AbilityParmEditorImpl("PAGES_CHARS","Max Pgs/Chrs.",ParmType.SPECIAL)
+			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					return (o instanceof Book) ? 1 : -1;
+				}
+	
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "1/0";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(I instanceof Book)
+						return ""+((Book)I).getMaxPages()+"/"+((Book)I).getMaxCharsPerPage();
+					return "1/0";
+				}
+				
+				@Override
+				public boolean confirmValue(String oldVal)
+				{
+					return oldVal.trim().length() > 0;
+				}
+	
+				@Override
+				public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					int maxPages=1;
+					int maxCharsPage=0;
+					if(oldVal.length()>0)
+					{
+						int x=oldVal.indexOf('/');
+						if(x>0)
+						{
+							maxPages=CMath.s_int(oldVal.substring(0,x));
+							maxCharsPage=CMath.s_int(oldVal.substring(x+1));
+						}
+					}
+					if(httpReq.isUrlParameter(fieldName+"_MAXPAGES"))
+						maxPages = CMath.s_int(httpReq.getUrlParameter(fieldName+"_MAXPAGES"));
+					if(httpReq.isUrlParameter(fieldName+"_MAXCHARSPAGE"))
+						maxCharsPage = CMath.s_int(httpReq.getUrlParameter(fieldName+"_MAXCHARSPAGE"));
+					return ""+maxPages+"/"+maxCharsPage;
+				}
+
+				@Override
+				public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					final String value = webValue(httpReq, parms, oldVal, fieldName);
+					final StringBuffer str = new StringBuffer("");
+					str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0><TR>");
+					String[] vals = this.fakeUserInput(value);
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("Max Pages")+"</FONT></TD>");
+					str.append("<TD WIDTH=25%><INPUT TYPE=TEXT SIZE=5 NAME="+fieldName+"_MAXPAGES VALUE=\""+vals[0]+"\">");
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("Max Chars Page")+"</FONT></TD>");
+					str.append("<TD WIDTH=25%><INPUT TYPE=TEXT SIZE=5 NAME="+fieldName+"_MAXCHARSPAGE VALUE=\""+vals[1]+"\">");
+					str.append("</TD>");
+					str.append("</TR></TABLE>");
+					return str.toString();
+				}
+				
+				@Override
+				public String[] fakeUserInput(String oldVal)
+				{
+					final ArrayList<String> V = new ArrayList<String>();
+					int maxPages=1;
+					int maxCharsPage=0;
+					if(oldVal.length()>0)
+					{
+						int x=oldVal.indexOf('/');
+						if(x>0)
+						{
+							maxPages=CMath.s_int(oldVal.substring(0,x));
+							maxCharsPage=CMath.s_int(oldVal.substring(x+1));
+						}
+					}
+					V.add(""+maxPages);
+					V.add(""+maxCharsPage);
+					return CMParms.toStringArray(V);
+				}
+
+				@Override
+				public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+				{
+					String[] input=this.fakeUserInput(oldVal);
+					int maxPages=CMath.s_int(input[0]);
+					int maxCharsPage=CMath.s_int(input[1]);
+					maxPages = CMLib.genEd().prompt(mob, maxPages, ++showNumber[0], showFlag, L("Max Pages"), null);
+					maxCharsPage = CMLib.genEd().prompt(mob, maxCharsPage, ++showNumber[0], showFlag, L("Max Chars/Page"), null);
+					return maxPages+"/"+maxCharsPage;
+				}
+			},
 			new AbilityParmEditorImpl("CONTAINER_CAPACITY","Cap.",ParmType.NUMBER)
 			{
 				@Override

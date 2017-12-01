@@ -248,16 +248,13 @@ public class Cataloging extends CommonSkill
 	public Item findCatalogBook(final MOB mob, final Physical itemI)
 	{
 		Item catalogI=null;
-		if(catalogI==null)
+		for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
 		{
-			for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
-			{
-				final Item I=i.nextElement();
-				if((I.container()==null)
-				&&(!I.amWearingAt(Item.IN_INVENTORY))
-				&&(isPossibleCatalog(mob, I, itemI, true)))
-					catalogI=I;
-			}
+			final Item I=i.nextElement();
+			if((I.container()==null)
+			&&(!I.amWearingAt(Item.IN_INVENTORY))
+			&&(isPossibleCatalog(mob, I, itemI, true)))
+				catalogI=I;
 		}
 		if(catalogI==null)
 		{

@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GenPaper extends StdItem implements Book
+public class GenPaper extends StdPaper
 {
 	@Override
 	public String ID()
@@ -45,11 +45,6 @@ public class GenPaper extends StdItem implements Book
 	public GenPaper()
 	{
 		super();
-		setDisplayText("a piece of paper sits here.");
-		setDescription("You should try reading it. ");
-		basePhyStats().setSensesMask(PhyStats.SENSE_ITEMREADABLE);
-		recoverPhyStats();
-		setMaterial(RawMaterial.RESOURCE_PAPER);
 	}
 
 	@Override
@@ -90,12 +85,22 @@ public class GenPaper extends StdItem implements Book
 		recoverPhyStats();
 	}
 
+	private final static String[] MYCODES={"MAXPAGES","MAXCHARSPAGE"};
+
 	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
-		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		switch(getCodeNum(code))
+		{
+		case 0:
+			return "" + this.getMaxPages();
+		case 1:
+			return "" + this.getMaxCharsPerPage();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
 	}
 
 	@Override
@@ -103,16 +108,47 @@ public class GenPaper extends StdItem implements Book
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
-		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0:
+			this.setMaxPages(CMath.parseIntExpression(val));
+			break;
+		case 1:
+			this.setMaxCharsPerPage(CMath.parseIntExpression(val));
+			break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
+		}
 	}
 
-	private static String[] codes=null;
+	@Override
+	protected int getCodeNum(String code)
+	{
+		for(int i=0;i<MYCODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
+		}
+		return -1;
+	}
+
+	private static String[]	codes	= null;
 
 	@Override
 	public String[] getStatCodes()
 	{
-		if(codes==null)
-			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
+		if(codes!=null)
+			return codes;
+		final String[] MYCODES=CMProps.getStatCodesList(GenPaper.MYCODES,this);
+		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
 		return codes;
 	}
 
@@ -127,59 +163,5 @@ public class GenPaper extends StdItem implements Book
 				return false;
 		}
 		return true;
-	}
-	
-	@Override
-	public int getUsedPages()
-	{
-		return readableText().length()>0 ? 1 : 0;
-	}
-	
-	@Override
-	public int getMaxPages()
-	{
-		return 1;
-	}
-	
-	@Override
-	public void setMaxPages(int max)
-	{
-	}
-	
-	@Override
-	public String getRawContent(int page)
-	{
-		if(page == 1)
-			return readableText();
-		return "";
-	}
-	
-	@Override
-	public String getContent(int page)
-	{
-		if(page == 1)
-			return readableText();
-		return "";
-	}
-	
-	@Override
-	public void addRawContent(String authorName, String content)
-	{
-		if(content.startsWith("::")&&(content.length()>2)&&(content.charAt(2)!=':'))
-		{
-			int x=content.indexOf("::",2);
-			if(x>2)
-				this.setReadableText(this.readableText()+L("\n\rSubject: ")+content.substring(2,x)+"\n\r"+content.substring(x+2));
-			else
-				this.setReadableText(this.readableText()+content);
-		}
-		else
-			this.setReadableText(this.readableText()+content);
-	}
-	
-	@Override
-	public boolean isJournal()
-	{
-		return false;
 	}
 }

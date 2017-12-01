@@ -28,6 +28,8 @@
   26. New skills: Cataloging, Attribute Training, Recollecting, Publishing
   27. Rangers and Barbarians can now make Antidotes using Apothecary instead of poisons.
   28. Players can now eat from containers.
+  29. New Item Type: StdPaper, a single-page, simple form of the Book, GenPaper also
+  30. PaperMaking now supports special parameters for GenBook and GenPaper
   
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.

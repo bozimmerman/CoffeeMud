@@ -1355,6 +1355,19 @@ public class ItemData extends StdWebMacro
 								old).append(", ");
 						}
 						break;
+					case ISBOOK:
+						str.append(""+(I instanceof Book));
+						break;
+					case MAXPAGES:
+						if(firstTime)
+							old=""+((Book)I).getMaxPages();
+						str.append(old).append(", ");
+						break;
+					case MAXCHARSPAGE:
+						if(firstTime)
+							old=""+((Book)I).getMaxCharsPerPage();
+						str.append(old).append(", ");
+						break;
 					}
 					if(firstTime)
 						httpReq.addFakeUrlParameter(parmName,old.equals("checked")?"on":old);

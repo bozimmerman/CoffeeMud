@@ -71,7 +71,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	public String parametersFormat()
 	{
 		return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t" 
-			+ "ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tLID_LOCK||STATUE||\tCONTAINER_CAPACITY||\tCODED_SPELL_LIST";
+			+ "ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tLID_LOCK||STATUE||\tCONTAINER_CAPACITY||PAGES_CHARS\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -353,7 +353,22 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			buildingI.setMaterial(RawMaterial.RESOURCE_PAPER);
 		if(buildingI instanceof Recipe)
 			((Recipe)buildingI).setTotalRecipePages(CMath.s_int(woodRequiredStr));
-		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
+		final int capacity;
+		if(buildingI instanceof Book)
+		{
+			capacity=0;
+			final String pgs=foundRecipe.get(RCP_CAPACITY);
+			int x=pgs.indexOf('/');
+			if(x<0)
+				((Book)buildingI).setMaxPages(CMath.s_int(pgs));
+			else
+			{
+				((Book)buildingI).setMaxPages(CMath.s_int(pgs.substring(0, x)));
+				((Book)buildingI).setMaxCharsPerPage(CMath.s_int(pgs.substring(x+1)));
+			}
+		}
+		else
+			capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 		buildingI.recoverPhyStats();
 		buildingI.text();

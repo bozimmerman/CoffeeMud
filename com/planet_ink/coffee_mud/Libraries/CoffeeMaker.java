@@ -620,6 +620,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof Wand)
 			text.append(CMLib.xml().convertXMLtoTag("MAXUSE",((Wand)E).maxUses()));
 
+		if(E instanceof Book)
+		{
+			text.append(CMLib.xml().convertXMLtoTag("MAXPG",((Book)E).getMaxPages()));
+			text.append(CMLib.xml().convertXMLtoTag("MAXCHPG",((Book)E).getMaxCharsPerPage()));
+		}
+		
 		if(E instanceof Rideable)
 		{
 			text.append(CMLib.xml().convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
@@ -3188,6 +3194,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 		}
 
+		if(E instanceof Book)
+		{
+			((Book)E).setMaxPages(CMLib.xml().getIntFromPieces(buf, "MAXPG"));
+			((Book)E).setMaxCharsPerPage(CMLib.xml().getIntFromPieces(buf, "MAXCHPG"));
+		}
+		
 		if(E instanceof Rideable)
 		{
 			((Rideable)E).setRideBasis(CMLib.xml().getIntFromPieces(buf,"RIDET"));

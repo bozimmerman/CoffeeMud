@@ -72,7 +72,7 @@ public class GrinderItems
 		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML,RECIPESKILLHELP,
 		MINTHRUST,ISCONSTTHRUST,AVAILPORTS,CONTENTSACCESS,BLENDEDVIEW,
 		ISSHIPWARCOMP,SWARNUMPORTS,SWARPORTS,SWARMTYPES,
-		RECHARGERATE,OPENTICKS,ISCLOAK
+		RECHARGERATE,OPENTICKS,ISCLOAK,ISBOOK,MAXPAGES,MAXCHARSPAGE
 		;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
@@ -842,6 +842,14 @@ public class GrinderItems
 				case AREAXML:
 					if((I instanceof BoardableShip)&&(old.trim().length()>0))
 						((BoardableShip)I).setShipArea(CMLib.xml().restoreAngleBrackets(old));
+					break;
+				case ISBOOK:
+					break;
+				case MAXPAGES:
+					((Book)I).setMaxPages(CMath.s_int(old));
+					break;
+				case MAXCHARSPAGE:
+					((Book)I).setMaxCharsPerPage(CMath.s_int(old));
 					break;
 				default:
 					break;

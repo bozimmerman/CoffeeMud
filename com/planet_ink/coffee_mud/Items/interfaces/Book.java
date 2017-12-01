@@ -66,6 +66,22 @@ public interface Book extends Item
 	public void setMaxPages(int max);
 	
 	/**
+	 * Returns the maximum number of chars that can be written on
+	 * each page in this book.  0 means infinite.
+	 * @see Book#setMaxCharsPerPage(int)
+	 * @return the maximum number of chars that can be written on
+	 */
+	public int getMaxCharsPerPage();
+	
+	/**
+	 * Sets the maximum number of chars that can be written on
+	 * each page in this book.  0 means infinite.
+	 * @see Book#getMaxCharsPerPage()
+	 * @param max the maximum number of pages that can be written on
+	 */
+	public void setMaxCharsPerPage(int max);
+	
+	/**
 	 * Returns the raw content of a page
 	 * @see Book#getContent(int)
 	 * @see Book#getUsedPages()

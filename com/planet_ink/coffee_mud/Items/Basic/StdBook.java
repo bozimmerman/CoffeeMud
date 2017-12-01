@@ -57,10 +57,11 @@ public class StdBook extends StdItem implements Book
 		recoverPhyStats();
 	}
 
-	protected int maxPages = 0; // 0=unlimited
-	protected MOB lastReadTo=null;
-	protected long lastDateRead=-1;
-	
+	protected int	maxPages		= 0;	// 0=unlimited
+	protected int	maxCharsPage	= 0;	// 0=unlimited
+	protected MOB	lastReadTo		= null;
+	protected long	lastDateRead	= -1;
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -111,6 +112,15 @@ public class StdBook extends StdItem implements Book
 				{
 					msg.source().tell(L("You are not allowed to write on @x1",name()));
 					return false;
+				}
+				if(this.getMaxPages() != 0)
+				{
+					int numPages = this.getChapterCount("ALL");
+					if(numPages >= this.getMaxPages())
+					{
+						msg.source().tell(L("All the available pages in @x1 are used.",name()));
+						return false;
+					}
 				}
 				return true;
 			}
@@ -301,6 +311,7 @@ public class StdBook extends StdItem implements Book
 				final String[] subject=new String[1];
 				final String[] message=new String[1];
 				final String editKey[] = new String[1];
+				final int maxCharsPerPage = this.getMaxCharsPerPage() > 0 ? this.getMaxCharsPerPage() : Integer.MAX_VALUE;
 				if(!mob.isMonster())
 				{
 					final Runnable addComplete=new Runnable() 
@@ -322,19 +333,29 @@ public class StdBook extends StdItem implements Book
 							}
 							if(editKey[0]==null)
 							{
-								addNewChapter(mob.Name(),to,subject[0],message[0]);
-								if((R!=null)&&(msg.targetMessage().length()<=1))
-									R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter added."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+								if(message[0].length()>maxCharsPerPage)
+									mob.tell(L("That won't fit on the pages for this chapter.  The limit is @x1.",""+maxCharsPerPage));
 								else
-									mob.tell(L("Chapter added."));
+								{
+									addNewChapter(mob.Name(),to,subject[0],message[0]);
+									if((R!=null)&&(msg.targetMessage().length()<=1))
+										R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter added."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+									else
+										mob.tell(L("Chapter added."));
+								}
 							}
 							else
 							{
-								editOldChapter(mob.Name(),to,editKey[0],subject[0],message[0]);
-								if((R!=null)&&(msg.targetMessage().length()<=1))
-									R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter modified."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+								if(message[0].length()>maxCharsPerPage)
+									mob.tell(L("That won't fit on the pages for this chapter.  The limit is @x1.",""+maxCharsPerPage));
 								else
-									mob.tell(L("Chapter modified."));
+								{
+									editOldChapter(mob.Name(),to,editKey[0],subject[0],message[0]);
+									if((R!=null)&&(msg.targetMessage().length()<=1))
+										R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter modified."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+									else
+										mob.tell(L("Chapter modified."));
+								}
 							}
 						}
 					};
@@ -627,6 +648,19 @@ public class StdBook extends StdItem implements Book
 		this.maxPages=max;
 	}
 	
+
+	@Override
+	public int getMaxCharsPerPage()
+	{
+		return this.maxCharsPage;
+	}
+
+	@Override
+	public void setMaxCharsPerPage(int max)
+	{
+		this.maxCharsPage=max;
+	}
+
 	@Override
 	public String getRawContent(int page)
 	{
