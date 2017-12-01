@@ -205,8 +205,7 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_HonoraryDegreeMage",false);
 		
 /*
-20	Publish (Q) Honorary Degree: Mageness (Q)		
-21	Revise (Q), Encrypting (Q)		
+21	Planar Lore (Q), Encrypting (Q)		
 22	Surveying (G), Honorary Degree: Druidness (Q)		
 23	Lecturing (G)		
 24	Honorary Degree: Clericness (Q), Thief_Comprehension		
