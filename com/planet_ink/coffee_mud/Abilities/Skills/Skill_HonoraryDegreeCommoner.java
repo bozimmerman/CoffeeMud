@@ -108,7 +108,9 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 			for(Enumeration<CharClass> c = CMClass.charClasses();c.hasMoreElements();)
 			{
 				final CharClass C=c.nextElement();
-				if(C.baseClass().equals(getBaseClassID()))
+				if(C.baseClass().equals(getBaseClassID())
+				&&(C.availabilityCode()!=0)
+				&&((C.availabilityCode()&Area.THEME_SKILLONLYMASK)==0))
 					classes.add(C);
 			}
 			final List<String[]> nearFinal = new ArrayList<String[]>();
@@ -120,12 +122,12 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 		return degrees;
 	}
 
-	protected final List<String[]> myClasses = new ArrayList<String[]>();
-	protected final Set<String> myTitles = new HashSet<String>();
-	protected volatile int numSkills = -1;
-	protected volatile CharClass activatedC = null;
-	protected volatile CharClass elligibleC = null;
-	protected String lastTitle = "";
+	protected final List<String[]>	myClasses	= new ArrayList<String[]>();
+	protected final Set<String>		myTitles	= new HashSet<String>();
+	protected volatile int			numSkills	= -1;
+	protected volatile CharClass	activatedC	= null;
+	protected volatile CharClass	elligibleC	= null;
+	protected String				lastTitle	= "";
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
