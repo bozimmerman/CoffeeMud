@@ -846,10 +846,12 @@ public class GrinderItems
 				case ISBOOK:
 					break;
 				case MAXPAGES:
-					((Book)I).setMaxPages(CMath.s_int(old));
+					if(I instanceof Book)
+						((Book)I).setMaxPages(CMath.s_int(old));
 					break;
 				case MAXCHARSPAGE:
-					((Book)I).setMaxCharsPerPage(CMath.s_int(old));
+					if(I instanceof Book)
+						((Book)I).setMaxCharsPerPage(CMath.s_int(old));
 					break;
 				default:
 					break;

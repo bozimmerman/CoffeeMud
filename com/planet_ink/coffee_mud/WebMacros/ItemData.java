@@ -1359,13 +1359,19 @@ public class ItemData extends StdWebMacro
 						str.append(""+(I instanceof Book));
 						break;
 					case MAXPAGES:
-						if(firstTime)
-							old=""+((Book)I).getMaxPages();
+						if(I instanceof Book)
+						{
+							if(firstTime)
+								old=""+((Book)I).getMaxPages();
+						}
 						str.append(old).append(", ");
 						break;
 					case MAXCHARSPAGE:
-						if(firstTime)
-							old=""+((Book)I).getMaxCharsPerPage();
+						if(I instanceof Book)
+						{
+							if(firstTime)
+								old=""+((Book)I).getMaxCharsPerPage();
+						}
 						str.append(old).append(", ");
 						break;
 					}
