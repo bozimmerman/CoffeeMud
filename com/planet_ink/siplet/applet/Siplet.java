@@ -1,5 +1,6 @@
 package com.planet_ink.siplet.applet;
 import com.planet_ink.coffee_mud.core.CMLib;
+import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.siplet.support.*;
 import com.jcraft.jzlib.*;
 
@@ -251,6 +252,11 @@ public class Siplet
 			catch(final IOException e)
 			{
 				closeReasons.append("SC3\n\r");
+				ByteArrayOutputStream bout=new ByteArrayOutputStream();
+				PrintStream stream=new PrintStream(bout);
+				e.printStackTrace(stream);
+				stream.flush();
+				closeReasons.append(new String(bout.toByteArray())+"\n\r");
 				closeReasons.append(e.getMessage()+"\n\r");
 				disconnectFromURL();
 			}
