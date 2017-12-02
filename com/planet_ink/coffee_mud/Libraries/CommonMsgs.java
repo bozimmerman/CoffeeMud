@@ -960,9 +960,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					
 					double error = 5.0*(18.0 - ((mob==null)?18:mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)));
 					int finalCap = C.capacity() - C.basePhyStats().weight();
-					if(error > 0)
+					if((error > 0) && (finalCap > 0))
+					{
 						finalCap += CMLib.dice().plusOrMinus((int)Math.round(error * finalCap));
-					response.append(L("You believe it will hold about @x1 pounds.  ",""+finalCap));
+						response.append(L("You believe it will hold about @x1 pounds.  ",""+finalCap));
+					}
 				}
 			}
 					
