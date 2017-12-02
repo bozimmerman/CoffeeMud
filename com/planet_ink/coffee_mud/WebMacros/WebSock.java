@@ -7,6 +7,7 @@ import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_web.util.CWDataBuffers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CoffeeIOPipe.CoffeeIOPipes;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -195,8 +196,9 @@ public class WebSock extends StdWebMacro
 				{
 					try
 					{
-						lsock=new PipeSocket(httpReq.getClientAddress(),null);
-						rsock=new PipeSocket(httpReq.getClientAddress(),lsock);
+						final CoffeeIOPipes pipes = new CoffeeIOPipes(16384);
+						lsock=new PipeSocket(httpReq.getClientAddress(),pipes.getLeftPipe(),pipes.getRightPipe());
+						rsock=new PipeSocket(httpReq.getClientAddress(),pipes.getRightPipe(),pipes.getLeftPipe());
 						h.acceptConnection(rsock);
 						out=lsock.getOutputStream();
 						in=lsock.getInputStream();

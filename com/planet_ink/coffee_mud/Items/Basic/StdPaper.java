@@ -69,7 +69,7 @@ public class StdPaper extends StdItem implements Book
 	@Override
 	public void setReadableText(String text)
 	{
-		super.setMiscText(text);;
+		super.setMiscText(text);
 	}
 
 	@Override
@@ -138,6 +138,7 @@ public class StdPaper extends StdItem implements Book
 		this.maxCharsPage = max;
 	}
 	
+	@Override
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))

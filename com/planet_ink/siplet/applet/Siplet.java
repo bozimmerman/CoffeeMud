@@ -41,7 +41,6 @@ public class Siplet
 	protected DataOutputStream	out;
 	protected boolean			connected	= false;
 	protected TelnetFilter		Telnet		= new TelnetFilter(this);
-	protected StringBuffer		closeReasons= new StringBuffer("");
 
 	protected StringBuffer		buffer;
 	protected int				sillyCounter= 0;
@@ -115,12 +114,10 @@ public class Siplet
 		connected=false;
 		if(sock!=null)
 		{
-			closeReasons.append("S01\n\r");
 			disconnectFromURL();
 		}
 		try
 		{
-			closeReasons.setLength(0);
 			lastURL=url;
 			lastPort=port;
 			if (debugDataOut)
@@ -159,12 +156,10 @@ public class Siplet
 		connected=false;
 		if(this.sock!=null)
 		{
-			closeReasons.append("S02\n\r");
 			disconnectFromURL();
 		}
 		try
 		{
-			closeReasons.setLength(0);
 			lastURL=url;
 			lastPort=port;
 			if (debugDataOut)
@@ -228,13 +223,11 @@ public class Siplet
 			{
 				if(sock.isClosed())
 				{
-					closeReasons.append("SC1\n\r");
 					disconnectFromURL();
 				}
 				else
 				if(!sock.isConnected())
 				{
-					closeReasons.append("SC2\n\r");
 					disconnectFromURL();
 				}
 				else
@@ -242,22 +235,36 @@ public class Siplet
 					final byte[] bytes=Telnet.peruseInput(data);
 					if(bytes!=null)
 					{
-						out.write(bytes);
-						if((bytes.length==0)||((bytes[bytes.length-1]!=13)&&(bytes[bytes.length-1]!=10)))
-							out.writeBytes("\n");
-						out.flush();
+						boolean success = false;
+						int attempts=10000;
+						while(connected && !success && (--attempts>0))
+						{
+							try
+							{
+								out.write(bytes);
+								if((bytes.length==0)||((bytes[bytes.length-1]!=13)&&(bytes[bytes.length-1]!=10)))
+									out.writeBytes("\n");
+								out.flush();
+								success=true;
+							}
+							catch(IOException e)
+							{
+								try
+								{
+									Thread.sleep(1);
+								}
+								catch(Exception e2)
+								{
+								}
+							}
+						}
+						if(!success)
+							throw new IOException("Failed to read.");
 					}
 				}
 			}
 			catch(final IOException e)
 			{
-				closeReasons.append("SC3\n\r");
-				ByteArrayOutputStream bout=new ByteArrayOutputStream();
-				PrintStream stream=new PrintStream(bout);
-				e.printStackTrace(stream);
-				stream.flush();
-				closeReasons.append(new String(bout.toByteArray())+"\n\r");
-				closeReasons.append(e.getMessage()+"\n\r");
 				disconnectFromURL();
 			}
 		}
@@ -312,13 +319,6 @@ public class Siplet
 		return connected;
 	}
 
-	public String getCloseReason()
-	{
-		final String s= this.closeReasons.toString();
-		this.closeReasons.setLength(0);
-		return s;
-	}
-	
 	public void readURLData()
 	{
 		try
@@ -343,8 +343,6 @@ public class Siplet
 						}
 						catch(final java.io.InterruptedIOException e)
 						{
-							closeReasons.append("R01\n\r");
-							closeReasons.append(e.getMessage()+"\n\r");
 							disconnectFromURL();
 							return;
 						}
@@ -352,16 +350,12 @@ public class Siplet
 						{
 							if(e instanceof com.jcraft.jzlib.ZStreamException)
 							{
-								closeReasons.append("R02\n\r");
-								closeReasons.append(e.getMessage()+"\n\r");
 								disconnectFromURL();
 								CMLib.s_sleep(100);
 								connectToURL();
 							}
 							else
 							{
-								closeReasons.append("R03\n\r");
-								closeReasons.append(e.getMessage()+"\n\r");
 								disconnectFromURL();
 								return;
 							}
@@ -375,13 +369,11 @@ public class Siplet
 			}
 			if(sock.isClosed())
 			{
-				closeReasons.append("R05\n\r");
 				disconnectFromURL();
 			}
 			else
 			if(!sock.isConnected())
 			{
-				closeReasons.append("R06\n\r");
 				disconnectFromURL();
 			}
 			else
@@ -391,8 +383,6 @@ public class Siplet
 		}
 		catch(final Exception e)
 		{
-			closeReasons.append("R07\n\r");
-			closeReasons.append(e.getMessage()+"\n\r");
 			disconnectFromURL();
 			return;
 		}

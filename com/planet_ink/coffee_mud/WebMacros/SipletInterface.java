@@ -7,6 +7,7 @@ import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_web.util.CWDataBuffers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CoffeeIOPipe.CoffeeIOPipes;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -90,35 +91,27 @@ public class SipletInterface extends StdWebMacro
 
 	public static class PipeSocket extends Socket
 	{
-		private boolean					isClosed	= false;
-		private final PipedInputStream	inStream	= new PipedInputStream();
-		private final PipedOutputStream	outStream	= new PipedOutputStream();
-		private InetAddress				addr		= null;
-		private PipeSocket				friendPipe	= null;
+		private boolean			isClosed	= false;
+		private InetAddress		addr		= null;
+		private CoffeeIOPipe	pipe		= null;
+		private CoffeeIOPipe	friendPipe	= null;
 
-		public PipeSocket(InetAddress addr, PipeSocket pipeLocal) throws IOException
+		public PipeSocket(InetAddress addr, CoffeeIOPipe myPipe, CoffeeIOPipe friendPipe) throws IOException
 		{
 			this.addr=addr;
-			if(pipeLocal!=null)
-			{
-				pipeLocal.inStream.connect(outStream);
-				pipeLocal.outStream.connect(inStream);
-				friendPipe=pipeLocal;
-				pipeLocal=friendPipe;
-			}
+			this.pipe = myPipe;
+			this.friendPipe = friendPipe;
 		}
 
 		@Override
 		public void shutdownInput() throws IOException
 		{
-			inStream.close();
 			isClosed = true;
 		}
 
 		@Override
 		public void shutdownOutput() throws IOException
 		{
-			outStream.close();
 			isClosed = true;
 		}
 
@@ -137,26 +130,26 @@ public class SipletInterface extends StdWebMacro
 		@Override
 		public synchronized void close() throws IOException
 		{
-			inStream.close();
-			outStream.close();
 			if (friendPipe != null)
 			{
 				friendPipe.shutdownInput();
 				friendPipe.shutdownOutput();
 			}
+			this.pipe.shutdownInput();
+			this.pipe.shutdownOutput();
 			isClosed = true;
 		}
 
 		@Override
 		public InputStream getInputStream() throws IOException
 		{
-			return inStream;
+			return pipe.getInputStream();
 		}
 
 		@Override
 		public OutputStream getOutputStream() throws IOException
 		{
-			return outStream;
+			return pipe.getOutputStream();
 		}
 
 		@Override
@@ -258,9 +251,10 @@ public class SipletInterface extends StdWebMacro
 						{
 							try
 							{
-								final PipeSocket lsock=new PipeSocket(httpReq.getClientAddress(),null);
-								final PipeSocket rsock=new PipeSocket(httpReq.getClientAddress(),lsock);
-								success=sip.connectToURL(url, port,lsock);
+								final CoffeeIOPipes pipes = new CoffeeIOPipes(16384);
+								final PipeSocket lsock=new PipeSocket(httpReq.getClientAddress(),pipes.getLeftPipe(),pipes.getRightPipe());
+								final PipeSocket rsock=new PipeSocket(httpReq.getClientAddress(),pipes.getRightPipe(),pipes.getLeftPipe());
+								success=sip.connectToURL(url, port, lsock);
 								sip.setFeatures(true, Siplet.MSPStatus.External, false);
 								h.acceptConnection(rsock);
 							}
@@ -340,33 +334,12 @@ public class SipletInterface extends StdWebMacro
 								final String jscript = p.siplet.getJScriptCommands();
 								success=p.siplet.isConnectedToURL();
 								p.response=Boolean.toString(success)+';'+data+token+';'+jscript+token+';';
-								if(!success)
-								{
-									Log.debugOut("SipletInterface Send Failed due to already being disconnected after a response?!");
-									Log.debugOut("SipletInterface Disconnect reason: "+p.siplet.getCloseReason());
-								}
 								return p.response;
 							}
-							else
-							{
-								Log.debugOut("SipletInterface Send Failed due to already being disconnected after a pause?!");
-								Log.debugOut("SipletInterface Disconnect reason: "+p.siplet.getCloseReason());
-							}
-						}
-						else
-						{
-							Log.debugOut("SipletInterface Send Failed due to already being disconnected.");
-							Log.debugOut("SipletInterface Disconnect reason: "+p.siplet.getCloseReason());
 						}
 					}
-					else
-						Log.debugOut("SipletInterface Send Failed due to lack of data for "+token+".");
 				}
-				else
-					Log.debugOut("SipletInterface Send Failed due to lack of session for "+token+".");
 			}
-			else
-				Log.debugOut("SipletInterface Send Failed due to lack of token.");
 			return Boolean.toString(success)+';';
 		}
 		else
