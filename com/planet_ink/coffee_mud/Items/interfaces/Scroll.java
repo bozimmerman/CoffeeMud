@@ -48,7 +48,7 @@ public interface Scroll extends Item, SpellHolder
 	 * @return true if the spell was cast, false otherwise
 	 */
 	public boolean useTheScroll(Ability A, MOB mob);
-	
+
 	/**
 	 * Checks whether the given mob was the last one to 
 	 * decipher the runes on this scroll through the Read
@@ -59,7 +59,7 @@ public interface Scroll extends Item, SpellHolder
 	 * @return true if the player has already read, false otherwise
 	 */
 	public boolean isReadableScrollBy(String name);
-	
+
 	/**
 	 * Sets the given mob as the last one to 
 	 * decipher the runes on this scroll through the Read
@@ -69,7 +69,7 @@ public interface Scroll extends Item, SpellHolder
 	 * @param name the name of the player to set
 	 */
 	public void setReadableScrollBy(String name);
-	
+
 	/**
 	 * Reads the given spell off this scroll for the
 	 * given mob, if they are able.  Any errors will

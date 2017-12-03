@@ -783,6 +783,7 @@ public class StdRoom implements Room
 			default:
 				if(((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOUTH)))
 				&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_MAGIC))
+				&&(!(msg.tool() instanceof Ability))
 				&&(msg.targetMinor()!=CMMsg.TYP_THROW)
 				&&(isInhabitant(msg.source())))
 				{

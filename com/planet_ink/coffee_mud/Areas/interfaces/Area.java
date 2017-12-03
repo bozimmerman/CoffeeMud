@@ -718,7 +718,9 @@ public interface Area extends Economics, PhysicalAgent, Places
 		TOTAL_LEVELS,
 		TOTAL_INTELLIGENT_LEVELS,
 		VISITABLE_ROOMS,
-		INDOOR_ROOMS
+		INDOOR_ROOMS,
+		MIN_ALIGNMENT,
+		MAX_ALIGNMENT
 	}
 
 	/**

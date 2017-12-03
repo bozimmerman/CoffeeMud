@@ -537,12 +537,14 @@ public class Publishing extends CommonSkill
 			return false;
 		}
 		
+		/*
 		String brand = getBrand(target);
 		if((brand==null)||(brand.length()==0))
 		{
 			commonTell(mob,L("You aren't permitted to publish that."));
 			return false;
 		}
+		*/
 		if(!target.isGeneric())
 		{
 			commonTell(mob,L("You aren't able to publish that."));

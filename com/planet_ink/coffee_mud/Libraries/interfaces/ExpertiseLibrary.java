@@ -151,6 +151,7 @@ public interface ExpertiseLibrary extends CMLibrary
 	public int numExpertises();
 	public SkillCost createNewSkillCost(CostType costType, Double value);
 	public void recompileExpertises();
+	public int getExpertiseLevel(final MOB mob, final String abilityID, final ExpertiseLibrary.Flag code);
 	public String getExpertiseHelp(String ID, boolean exact);
 	public String getApplicableExpertise(String ID, Flag code);
 	public int getApplicableExpertiseLevel(String ID, Flag code, MOB mob);

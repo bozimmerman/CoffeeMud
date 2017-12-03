@@ -103,29 +103,103 @@ public class Surveying extends CommonSkill
 						Area A=(Area)found;
 						subject=A.Name();
 						final StringBuilder msgBuilder=new StringBuilder("");
-						/*
-						For area 
-						mapping, include known (both rooms discovered) linkages and 
-						area name.  
-						With expertises add to area: percentage discovered, median mob 
-						level, mob level range, mob median alignment, mob alignment range, 
-						climate, discovered room types (i.e. 5 wood rooms, 3 forest rooms). 
-											 */
+						msgBuilder.append(L("^HArea Name  : ^N")).append(A.name()).append("\n\r");
+						msgBuilder.append(L("^HLinks to   : ^N"));
+						List<String> lAreasV=new ArrayList<String>();
+						Map<String,int[]> rTypesV=new TreeMap<String,int[]>();
+						for(Enumeration<Room> r= A.getFilledProperMap();r.hasMoreElements();)
+						{
+							final Room R=r.nextElement();
+							if((R==null)
+							||(mob.playerStats()==null)
+							||(!mob.playerStats().hasVisited(R)))
+								continue;
+							if(!rTypesV.containsKey(R.name()))
+								rTypesV.put(R.name(), new int[]{1});
+							else
+								rTypesV.get(R.name())[0]++;
+							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+							{
+								final Room R2=R.getRoomInDir(d);
+								final Exit E2=R.getExitInDir(d);
+								if((R2!=null)
+								&&(E2!=null)
+								&&(R2.getArea() != A))
+								{
+									if(!lAreasV.contains(R2.getArea().Name()))
+										lAreasV.add(R2.getArea().Name());
+								}
+							}
+						}
+						msgBuilder.append(CMLib.english().toEnglishStringList(lAreasV));
+						msgBuilder.append("\n\r");
+						if(expertise > 0)
+							msgBuilder.append(L("^HPct Visited: ^N")).append(mob.playerStats().percentVisited(mob,A)).append("\n\r");
+						if(expertise > 1)
+							msgBuilder.append(L("^HMedian Lvl : ^N")).append(A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]).append("\n\r");
+						if(expertise > 2)
+						{
+							msgBuilder.append(L("^HLevel Range: ^N")).append(A.getAreaIStats()[Area.Stats.MIN_LEVEL.ordinal()])
+									  .append("-").append(A.getAreaIStats()[Area.Stats.MAX_LEVEL.ordinal()]).append("\n\r");
+						}
+						if(expertise > 3)
+						{
+							Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+							if(F!=null)
+								msgBuilder.append(L("^HMed Align. : ^N")).append(F.fetchRangeName(A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()])).append("\n\r");
+						}
+						if(expertise > 4)
+						{
+							Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
+							if(F!=null)
+							{
+								msgBuilder.append(L("^HAlign Range: ^N"))
+									.append(F.fetchRangeName(A.getAreaIStats()[Area.Stats.MIN_ALIGNMENT.ordinal()]))
+									.append("-")
+									.append(F.fetchRangeName(A.getAreaIStats()[Area.Stats.MAX_ALIGNMENT.ordinal()])).append("\n\r");
+							}
+						}
+						if(expertise > 5)
+						{
+							msgBuilder.append(L("^HClimate    : ^N"));
+							List<String> climateV=new ArrayList<String>();
+							for(int i=1;i<Places.NUM_CLIMATES;i++)
+							{
+								final String climstr=Places.CLIMATE_DESCS[i];
+								final int mask=(int)CMath.pow(2,i-1);
+								if(mask != Area.CLIMASK_INHERIT)
+								{
+									if(CMath.bset(A.getClimateTypeCode(),mask))
+										climateV.add(climstr.toLowerCase());
+								}
+							}
+							if(climateV.size()==0)
+								msgBuilder.append(L("Normal")).append("\n\r");
+							else
+								msgBuilder.append(CMLib.english().toEnglishStringList(climateV)).append("\n\r");
+						}
+						if(expertise > 6)
+						{
+							for(String roomType : rTypesV.keySet())
+							{
+								msgBuilder.append("^H"+L(CMStrings.padRight(roomType, 11))).append("^N: ").append(rTypesV.get(roomType)[0]).append("\n\r");
+							}
+						}
 						
 						message = msgBuilder.toString();
-						
 					}
 					else
 					if(found instanceof Room)
 					{
 						final Room room=(Room)found;
 						final Area area=room.getArea();
-						subject=room.displayText()+"("+room.roomID()+")";
 						String roomNumber = room.roomID();
 						if(roomNumber.startsWith(area.Name()+"#"))
 							roomNumber=roomNumber.substring(area.Name().length());
+						subject=room.displayText()+" ("+roomNumber+")";
 						final StringBuilder msgBuilder=new StringBuilder("");
 						msgBuilder.append(L("^HRoom name  : ^N@x1",room.displayText())).append("\n\r");
+						msgBuilder.append(L("^HRoom area  : ^N@x1",area.Name())).append("\n\r");
 						msgBuilder.append(L("^HRoom number: ^N@x1",roomNumber)).append("\n\r");
 						if(expertise > 1)
 							msgBuilder.append(L("^HRoom Descr.: ^N\n\r@x1",room.description(mob))).append("\n\r");
@@ -144,14 +218,13 @@ public class Surveying extends CommonSkill
 								msgBuilder.append(CMStrings.padRight(L("^HExit "+Directions.instance().getDirectionName(d)),10))
 										.append(": ^N").append(nextR.displayText());
 								if(expertise > 0)
-									msgBuilder.append("(").append(nextRoomNumber).append(")");
+									msgBuilder.append(" (").append(nextRoomNumber).append(")");
 								msgBuilder.append(")");
 								if(expertise > 6)
 								{
 									Trap theTrap=CMLib.utensils().fetchMyTrap(room);
 									if(theTrap!=null)
 										msgBuilder.append(L("^xTrapped!^N^."));
-									msgBuilder.append("\n\r");
 								}
 								msgBuilder.append("\n\r");
 							}
@@ -171,7 +244,7 @@ public class Surveying extends CommonSkill
 							}
 							final StringBuilder itemStr=CMLib.lister().lister(mob,viewItems,false,null,null,true,false);
 							if(itemStr.length()>0)
-								msgBuilder.append("\n\r").append(itemStr).append("\n\r");
+								msgBuilder.append("\n\r").append(itemStr);
 							else
 								msgBuilder.append(L("None")).append("\n\r");
 							
@@ -180,8 +253,11 @@ public class Surveying extends CommonSkill
 						{
 							msgBuilder.append(L("^HRoom Rescs.: ^N"));
 							List<String> possResources = new ArrayList<String>();
-							for(Integer I : room.resourceChoices())
-								possResources.add(RawMaterial.CODES.NAME(I.intValue()).toLowerCase());
+							if(room.resourceChoices()!=null)
+							{
+								for(Integer I : room.resourceChoices())
+									possResources.add(RawMaterial.CODES.NAME(I.intValue()).toLowerCase());
+							}
 							if(possResources.size()==0)
 								msgBuilder.append(L("None"));
 							else
@@ -207,10 +283,10 @@ public class Surveying extends CommonSkill
 								msgBuilder.append(L("None"));
 							else
 							{
+								msgBuilder.append("\n\r");
 								for(String roomMob : roomMobs)
-									msgBuilder.append(roomMob).append("\n\r");
+									msgBuilder.append("      ^M"+roomMob).append("^N\n\r");
 							}
-							msgBuilder.append("\n\r");
 						}
 						if(expertise > 5)
 						{
@@ -235,12 +311,14 @@ public class Surveying extends CommonSkill
 					{
 						boolean done=false;
 						if((catalogI instanceof Book)
-						&&(((Book)catalogI).getMaxPages() > 1))
+						&&(((((Book)catalogI).getMaxPages()==0)||((Book)catalogI).getMaxPages() > 1)))
 						{
-							for(int pg=1;pg<=((Book)catalogI).getMaxPages();pg++)
+							for(int pg=1;pg<=((Book)catalogI).getUsedPages();pg++)
 							{
 								String content=((Book)catalogI).getRawContent(pg);
-								if(content.startsWith("::"+subject+"::"))
+								if(content.startsWith("::"+subject+"::")
+								||(content.startsWith("::"+L("Chapter @x1: ",""+pg)+subject+"::"))
+								||(content.startsWith("::"+L("Chapter @x1 : ",""+pg)+subject+"::")))
 								{
 									final CMMsg msg=CMClass.getMsg(mob,catalogI,this,
 											CMMsg.MSG_REWRITE,L("<S-NAME> update(s) <T-NAMESELF>."),
@@ -288,6 +366,7 @@ public class Surveying extends CommonSkill
 			commonTell(mob,L("@x1 isn't a catalog!",CMStrings.capitalizeAndLower(I.name(mob))));
 			return false;
 		}
+		/*
 		String brand = getBrand(I);
 		if((brand==null)||(brand.length()==0))
 		{
@@ -295,6 +374,7 @@ public class Surveying extends CommonSkill
 				commonTell(mob,L("You aren't permitted to add surveying entries to @x1.",I.name(mob)));
 			return false;
 		}
+		*/
 		
 		if(fullyE != null)
 		{
@@ -390,11 +470,6 @@ public class Surveying extends CommonSkill
 		if(physP==null)
 		{
 			commonTell(mob,L("You don't seem to have a '@x1'.",itemName));
-			return false;
-		}
-		if(!(physP instanceof Item))
-		{
-			commonTell(mob,L("You can't catalog @x1",physP.name()));
 			return false;
 		}
 		if(catalogI==null)

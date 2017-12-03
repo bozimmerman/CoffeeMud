@@ -737,9 +737,17 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		final CharClass C=CMClass.findCharClass(helpStr.toUpperCase());
 		if((C!=null)&&(C.isGeneric()))
 			thisTag="<CHARCLASS>"+C.getStat("HELP");
+
 		final Race R=CMClass.findRace(helpStr.toUpperCase());
-		if((R!=null)&&(R.isGeneric()))
-			thisTag="<RACE>"+R.getStat("HELP");
+		if((R!=null)
+		&&((CMProps.isTheme(R.availabilityCode()) && (R.getStat("HELP").length()>0))
+			|| (rHelpFile == this.getArcHelpFile())))
+		{
+			if(R.getStat("HELP").length()==0)
+				thisTag="<RACE>"+L("No further information available");
+			else
+				thisTag="<RACE>"+R.getStat("HELP");
+		}	
 
 		if(helpStr.equals("!"))
 			helpStr="EXCLAMATION_POINT";

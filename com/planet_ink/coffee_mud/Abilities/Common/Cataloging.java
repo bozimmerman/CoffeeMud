@@ -226,6 +226,7 @@ public class Cataloging extends CommonSkill
 			commonTell(mob,L("@x1 isn't a catalog!",CMStrings.capitalizeAndLower(I.name(mob))));
 			return false;
 		}
+		/*
 		String brand = getBrand(I);
 		if((brand==null)||(brand.length()==0))
 		{
@@ -233,6 +234,7 @@ public class Cataloging extends CommonSkill
 				commonTell(mob,L("You aren't permitted to add catalog entries to @x1.",I.name(mob)));
 			return false;
 		}
+		*/
 		
 		if(fullyE != null)
 		{

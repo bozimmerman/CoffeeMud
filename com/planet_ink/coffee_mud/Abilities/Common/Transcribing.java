@@ -140,6 +140,7 @@ public class Transcribing extends CommonSkill
 			I=mob.location().findItem(null, itemName);
 		if((I!=null)&&(CMLib.flags().canBeSeenBy(I,mob)))
 		{
+			/*
 			final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
 			boolean ok=false;
 			for(final MOB M : followers)
@@ -155,6 +156,7 @@ public class Transcribing extends CommonSkill
 					commonTell(mob,L("You aren't allowed to copy to '@x1'.",I.name(mob)));
 				return null;
 			}
+			*/
 		}
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
 		{

@@ -124,6 +124,7 @@ public class BookEditing extends CommonSkill
 			target=mob.location().findItem(null, itemName);
 		if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
 		{
+			/*
 			final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
 			boolean ok=false;
 			for(final MOB M : followers)
@@ -136,6 +137,7 @@ public class BookEditing extends CommonSkill
 				commonTell(mob,L("You aren't allowed to work on '@x1'.",itemName));
 				return false;
 			}
+			*/
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{

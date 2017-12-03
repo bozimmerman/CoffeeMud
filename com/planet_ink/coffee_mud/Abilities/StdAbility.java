@@ -358,22 +358,11 @@ public class StdAbility implements Ability
 		return castingQuality(mob,target,abstractQuality());
 	}
 
-	protected synchronized static int expertise(final MOB mob, final Ability A, final ExpertiseLibrary.Flag code)
+	protected synchronized int expertise(final MOB mob, final Ability A, final ExpertiseLibrary.Flag code)
 	{
 		if((mob!=null)&&(A.isNowAnAutoEffect()||(A.canBeUninvoked())||A.isAutoInvoked()))
 		{
-			final int[][] usageCache=mob.getAbilityUsageCache(A.ID());
-			if(usageCache[Ability.CACHEINDEX_EXPERTISE]!=null)
-				return usageCache[Ability.CACHEINDEX_EXPERTISE][code.ordinal()];
-			final int[] xFlagCache=new int[ExpertiseLibrary.Flag.values().length];
-			final CharClass charClass = mob.baseCharStats().getCurrentClass();
-			for(ExpertiseLibrary.Flag flag : ExpertiseLibrary.Flag.values())
-			{
-				xFlagCache[flag.ordinal()]=CMLib.expertises().getApplicableExpertiseLevel(A.ID(),flag,mob)
-											+charClass.addedExpertise(mob, flag, A.ID());
-			}
-			usageCache[Ability.CACHEINDEX_EXPERTISE]=xFlagCache;
-			return xFlagCache[code.ordinal()];
+			return CMLib.expertises().getExpertiseLevel(mob, A.ID(), ExpertiseLibrary.Flag.LEVEL);
 		}
 		return 0;
 	}

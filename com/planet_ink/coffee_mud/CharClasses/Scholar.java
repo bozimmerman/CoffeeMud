@@ -175,9 +175,9 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_SecretWriting",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_HonoraryDegreeCommoner", false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_RacialLore", false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_RacialLore", true);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Cataloging",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Cataloging",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Songcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Map",false);
 		
@@ -196,7 +196,7 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Prayercraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Appraise",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Recollecting",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Recollecting",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_HonoraryDegreeThief",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"ScrollScribing",false);
@@ -207,11 +207,15 @@ public class Scholar extends StdCharClass
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_PlanarLore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_EncryptedWriting",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Surveying",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_HonoraryDegreeDruid",false);
+		
+		
 /*
-22	Surveying (G), Honorary Degree: Druidness (Q)		
-23	Lecturing (G)		
+23	Lecturing (G)
 24	Honorary Degree: Clericness (Q), Thief_Comprehension		
-25	Enrolling (G)		
+25	Enrolling (G)
 26			
 27			
 28			
