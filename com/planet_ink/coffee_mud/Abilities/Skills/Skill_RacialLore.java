@@ -164,22 +164,33 @@ public class Skill_RacialLore extends StdSkill
 			s=targetR.getDispositionChgDesc();
 			for(String str : CMParms.parseCommas(s,true))
 				tidbits.add(L("they are always @x1",str));
+
+			Set<String> aDone = new HashSet<String>();
+			for(Ability A1 : targetR.racialAbilities(null))
+			{
+				if(A1 instanceof Language)
+					tidbits.add(L("they speak @x1",A1.name()));
+				else
+					tidbits.add(L("they are born with the ability '@x1'",A1.name()));
+				aDone.add(A1.ID());
+			}
+			for(Quad<String,Integer,Integer,Boolean> q : targetR.culturalAbilities())
+			{
+				final Ability A1=CMClass.getAbilityPrototype(q.first);
+				if(A1 instanceof Language)
+					tidbits.add(L("they grow up speaking @x1",A1.name()));
+				else
+					tidbits.add(L("they are often skilled at '@x1'",A1.name()));
+				aDone.add(A1.ID());
+			}
+			for(Ability A1 : targetR.racialEffects(null))
+			{
+				if(!aDone.contains(A1.ID()))
+				{
+					tidbits.add(L("they are always affected by @x1",A1.name()));
+				}
+			}
 			s=targetR.getAbilitiesDesc();
-			for(String str : CMParms.parseCommas(s,true))
-			{
-				int x=str.indexOf('(');
-				if(x>0)
-					str=str.substring(0,x);
-				tidbits.add(L("they are skilled at @x1",str));
-			}
-			s=targetR.getLanguagesDesc();
-			for(String str : CMParms.parseCommas(s,true))
-			{
-				int x=str.indexOf('(');
-				if(x>0)
-					str=str.substring(0,x);
-				tidbits.add(L("they can speak @x1",str));
-			}
 			tidbits.add(L("their life expectancy is @x1 years",targetR.getAgingChart()[Race.AGE_ANCIENT]+""));
 			for(String ableID : targetR.abilityImmunities())
 			{
