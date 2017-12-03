@@ -415,9 +415,13 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 					{
 						double d = CMath.s_double(parts);
 						if((d > 1.0) || (d < -1.0))
+						{
 							newPct = Integer.valueOf((int)Math.round(d));
+						}
 						else
+						{
 							newPct = Integer.valueOf((int)Math.round(d * 100.0));
+						}
 					}
 					else
 					if(parts.equals("ALWAYS"))
@@ -433,7 +437,9 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 						for(String previousKey : previousSet)
 						{
 							if(newPct.intValue() < 0)
-								str.append(L("@x1% vulnerable to @x2\n\r",newPct.toString(),previousKey.toLowerCase()));
+							{
+								str.append(L("@x1% vulnerable to @x2\n\r",newPct.toString().substring(1),previousKey.toLowerCase()));
+							}
 							else
 								str.append(L("@x1% resistant to @x2\n\r",newPct.toString(),previousKey.toLowerCase()));
 						}

@@ -325,16 +325,31 @@ public class Skill_PlanarLore extends StdSkill
 					int height = CMParms.getParmInt(adjSize, "HEIGHT", 0);
 					int weight = CMParms.getParmInt(adjSize, "WEIGHT", 0);
 					if(height != 0)
-						tidbits.add(L("Everything there is @x1 times taller than normal.",""+height));
+					{
+						if(height < 0)
+							tidbits.add(L("Everything there is @x1 times shorter than normal.",""+height));
+						else
+							tidbits.add(L("Everything there is @x1 times taller than normal.",""+height));
+					}
 					if(weight != 0)
-						tidbits.add(L("Everything there is @x1 times heavier than normal.",""+weight));
+					{
+						if(weight < 0)
+							tidbits.add(L("Everything there is @x1 times lighter than normal.",""+weight));
+						else
+							tidbits.add(L("Everything there is @x1 times heavier than normal.",""+weight));
+					}
 				}
 			}
 			if(expertise > 3)
 			{
 				String lvlSize = planeVars.get(PlanarVar.LEVELADJ.toString());
 				if(lvlSize != null)
-					tidbits.add(L("Everything there is @x1 levels more powerful than you are.",""+lvlSize));
+				{
+					if(CMath.s_int(lvlSize)<0)
+						tidbits.add(L("Everything there is @x1 level(s) less powerful than you are.",""+lvlSize.substring(1)));
+					else
+						tidbits.add(L("Everything there is @x1 level(s) more powerful than you are.",""+lvlSize));
+				}
 			}
 			if(expertise > 4)
 			{
@@ -432,11 +447,6 @@ public class Skill_PlanarLore extends StdSkill
 				mob.tell(L("You know almost nothing about that plane of existence.  I guess it's not your area of Expertise. "));
 			else
 			{
-				if(CMSecurity.isASysOp(mob))
-				{
-					for(String str : tidbits)
-						mob.tell(L("You recall that @x1",Character.toLowerCase(str.charAt(0))+str.substring(1)));
-				}
 				final String str=tidbits.get(CMLib.dice().roll(1, tidbits.size(), -1));
 				mob.tell(L("You recall that @x1",Character.toLowerCase(str.charAt(0))+str.substring(1)));
 			}
