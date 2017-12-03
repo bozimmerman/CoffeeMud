@@ -30,7 +30,9 @@
   28. Players can now eat from containers.
   29. New Item Type: StdPaper, a single-page, simple form of the Book, GenPaper also
   30. PaperMaking now supports special parameters for GenBook and GenPaper
-  31. New skills:  
+  31. New skills:  Planar Lore
+  32. New expertises: Educating, and Legal Lore
+  33. New commoner class: Scholar, with achievements to match
   
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.

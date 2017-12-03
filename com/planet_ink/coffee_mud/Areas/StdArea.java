@@ -1755,7 +1755,8 @@ public class StdArea implements Area
 			for(final Enumeration<String> f= allBlurbFlags();f.hasMoreElements();)
 			{
 				flag=getBlurbFlag(f.nextElement());
-				if(flag!=null)
+				if((flag!=null)
+				&&((!flag.startsWith("{"))||(!flag.endsWith("}"))))
 				{
 					if (!blurbed)
 					{

@@ -384,4 +384,65 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		}
 		return true;
 	}
+	
+	@Override
+	public String getStat(String statVar)
+	{
+		if(statVar != null)
+		{
+			statVar=statVar.toUpperCase();
+			if(statVar.startsWith("TIDBITS"))
+			{
+				String parmText = text().toUpperCase();
+				if(statVar.startsWith("TIDBITS="))
+					parmText = statVar.substring(8).toUpperCase().trim();
+				StringBuilder str=new StringBuilder("");
+				final List<String> parmParts = CMParms.parseSpaces(parmText, true);
+				final List<String> previousSet = new LinkedList<String>();
+				for(String parts : parmParts)
+				{
+					Integer newPct = null;
+					if(parts.endsWith("%"))
+					{
+						parts=parts.substring(0,parts.length()-1).trim();
+					}
+					if(CMath.isInteger(parts))
+					{
+						newPct = Integer.valueOf(CMath.s_int(parts));
+					}
+					else
+					if(CMath.isNumber(parts))
+					{
+						double d = CMath.s_double(parts);
+						if((d > 1.0) || (d < -1.0))
+							newPct = Integer.valueOf((int)Math.round(d));
+						else
+							newPct = Integer.valueOf((int)Math.round(d * 100.0));
+					}
+					else
+					if(parts.equals("ALWAYS"))
+					{
+						//this.alwaysWeapProt=true;
+					}
+					else
+					{
+						previousSet.add(parts);
+					}
+					if(newPct != null)
+					{
+						for(String previousKey : previousSet)
+						{
+							if(newPct.intValue() < 0)
+								str.append(L("@x1% vulnerable to @x2\n\r",newPct.toString(),previousKey.toLowerCase()));
+							else
+								str.append(L("@x1% resistant to @x2\n\r",newPct.toString(),previousKey.toLowerCase()));
+						}
+						previousSet.clear();
+					}
+				}
+				return str.toString();
+			}
+		}
+		return "";
+	}
 }

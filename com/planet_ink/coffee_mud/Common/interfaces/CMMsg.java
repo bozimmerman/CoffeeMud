@@ -1183,6 +1183,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_WASREAD=127;
 	/** MINOR_MASK minor action code type, denoting an intention to move */
 	public static final int TYP_TRAVEL=128;
+	/** MINOR_MASK minor action code type, denoting thinking */
+	public static final int TYP_THINK=129;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1211,7 +1213,7 @@ public interface CMMsg extends CMCommon
 		"PREINVOKE","POSSESS","DISPOSSESS","POWERCURRENT","CONTEMPLATE","POUR","LOOKEXITS",
 		"LASER","SONIC","REPAIR","ENHANCE","INSTALL","COLLISION","AROMA","DUELLOSS",
 		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED",
-		"WROTE", "REWRITE", "WASREAD", "PREMOVE"
+		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1531,6 +1533,8 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_WASREAD=MASK_EYES|TYP_WASREAD;
 	/** combined MAJOR and MINOR codes for useful event message type for a enter event */
 	public static final int MSG_TRAVEL=MASK_MOVE|MASK_SOUND|TYP_TRAVEL;
+	/** combined MAJOR and MINOR codes for useful event message type for a thinking event */
+	public static final int MSG_THINK=TYP_THINK;
 	
 	/**
 	 * An enum to use for an external message check from inside 
