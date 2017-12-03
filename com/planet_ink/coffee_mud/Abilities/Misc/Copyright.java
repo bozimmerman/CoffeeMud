@@ -103,36 +103,53 @@ public class Copyright extends StdAbility
 	@Override
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
-		if((msg.target()==affected)
-		&&(msg.tool() instanceof Ability)
-		//&&(!msg.source().Name().equals(text()))
-		)
+		if(msg.target()==affected)
 		{
-			if(msg.tool().ID().equalsIgnoreCase("Transcribing") //BZ: I hate this crap.
-			||msg.tool().ID().equalsIgnoreCase("Spell_Duplicate"))
+			if(msg.targetMinor()==CMMsg.TYP_WRITE)
 			{
 				if(text().length()>0)
-					msg.source().tell(L("This work is copyrighted by @x1 and cannot be duplicated.",text()));
+					msg.source().tell(L("This work is copyrighted by @x1 and cannot be modified.",text()));
 				else
-					msg.source().tell(L("This cannot be duplicated."));
+					msg.source().tell(L("This cannot be modified."));
 				return false;
 			}
-			if(msg.tool().ID().equalsIgnoreCase("BookEditing")) //BZ: I hate this crap.
+			if(msg.targetMinor()==CMMsg.TYP_REWRITE)
 			{
 				if(text().length()>0)
-					msg.source().tell(L("This work is copyrighted by @x1 and cannot be edited.",text()));
+					msg.source().tell(L("This work is copyrighted by @x1 and cannot be modified.",text()));
 				else
-					msg.source().tell(L("This cannot be edited."));
+					msg.source().tell(L("This cannot be modified."));
 				return false;
 			}
-			if(msg.tool().ID().equalsIgnoreCase("BookNaming")
-			||msg.tool().ID().equalsIgnoreCase("Titling")) //BZ: I hate this crap.
+			if(msg.tool() instanceof Ability)
+			//&&(!msg.source().Name().equals(text()))
 			{
-				if(text().length()>0)
-					msg.source().tell(L("This work is copyrighted by @x1 and cannot be re-named.",text()));
-				else
-					msg.source().tell(L("This cannot be re-named."));
-				return false;
+				if(msg.tool().ID().equalsIgnoreCase("Transcribing") //BZ: I hate this crap.
+				||msg.tool().ID().equalsIgnoreCase("Spell_Duplicate"))
+				{
+					if(text().length()>0)
+						msg.source().tell(L("This work is copyrighted by @x1 and cannot be duplicated.",text()));
+					else
+						msg.source().tell(L("This cannot be duplicated."));
+					return false;
+				}
+				if(msg.tool().ID().equalsIgnoreCase("BookEditing")) //BZ: I hate this crap.
+				{
+					if(text().length()>0)
+						msg.source().tell(L("This work is copyrighted by @x1 and cannot be edited.",text()));
+					else
+						msg.source().tell(L("This cannot be edited."));
+					return false;
+				}
+				if(msg.tool().ID().equalsIgnoreCase("BookNaming")
+				||msg.tool().ID().equalsIgnoreCase("Titling")) //BZ: I hate this crap.
+				{
+					if(text().length()>0)
+						msg.source().tell(L("This work is copyrighted by @x1 and cannot be re-named.",text()));
+					else
+						msg.source().tell(L("This cannot be re-named."));
+					return false;
+				}
 			}
 		}
 		return true;

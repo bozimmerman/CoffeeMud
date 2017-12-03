@@ -155,6 +155,30 @@ public class StdBook extends StdItem implements Book
 					}
 				}
 				else
+				if(msg.targetMessage().toUpperCase().startsWith("EDIT "))
+				{
+					int x=msg.targetMessage().indexOf(' ',5);
+					if(x>5)
+					{
+						int msgNum=CMath.s_int(msg.targetMessage().substring(5,x).trim());
+						if((msgNum <1)||(msgNum>this.getChapterCount("ALL")))
+						{
+							msg.source().tell(L("There is no Chapter @x1",""+(msgNum)));
+							return false;
+						}
+						if((!admin)
+						&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
+						{
+							JournalEntry entry = this.readChaptersByCreateDate().get(msgNum-1);
+							if(!entry.from().equalsIgnoreCase(msg.source().Name()))
+							{
+								msg.source().tell(L("You need permission to edit that chapter."));
+								return false;
+							}
+						}
+					}
+				}
+				else
 				if(msg.targetMessage().toUpperCase().startsWith("DELETE "))
 				{
 					String entryStr=msg.targetMessage().substring(7).trim();
@@ -366,6 +390,30 @@ public class StdBook extends StdItem implements Book
 						JournalEntry entry = this.readChaptersByCreateDate().get(entryNum-1);
 						delOldChapter(mob.Name(),"ALL",entry.key());
 						mob.tell(L("Chapter removed."));
+					}
+					else
+					if((msg.targetMinor()==CMMsg.TYP_REWRITE)
+					&&(msg.targetMessage().toUpperCase().startsWith("EDIT ")))
+					{
+						int x=msg.targetMessage().indexOf(' ',5);
+						if(x>5)
+						{
+							int msgNum=CMath.s_int(msg.targetMessage().substring(5,x).trim());
+							subject[0]=L("Chapter @x1",""+(msgNum));
+							message[0]=msg.targetMessage().substring(x+1).trim();
+							JournalEntry entry = this.readChaptersByCreateDate().get(msgNum-1);
+							editKey[0] = entry.key();
+							if(message[0].startsWith("::"))
+							{
+								x=message[0].indexOf("::",2);
+								if(x>1)
+								{
+									subject[0]=message[0].substring(2,x);
+									message[0]=message[0].substring(x+2);
+								}
+							}
+							addComplete.run();
+						}
 					}
 					else
 					if((msg.targetMessage().length()>1)

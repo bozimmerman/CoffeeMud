@@ -99,6 +99,15 @@ public class StdJournal extends StdItem implements Book
 					if((msg.targetMessage()!=null)&&(msg.targetMessage().startsWith("DELETE ")))
 						entryStr=msg.targetMessage().substring(7).trim();
 					else
+					if((msg.targetMessage()!=null)&&(msg.targetMessage().startsWith("EDIT ")))
+					{
+						int x=msg.targetMessage().indexOf(' ',5);
+						if(x>5)
+							entryStr=msg.targetMessage().substring(5,x).trim();
+						else
+							entryStr=msg.targetMessage().substring(5).trim();
+					}
+					else
 						entryStr=msg.targetMessage();
 					if(!CMath.isInteger(entryStr))
 					{
@@ -420,6 +429,29 @@ public class StdJournal extends StdItem implements Book
 						journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
 					final JournalEntry entry2=journal2.get(which-1);
 					CMLib.database().DBDeleteJournal(Name(),entry2.key());
+				}
+				else
+				if((msg.targetMessage()!=null)&&(msg.targetMessage().startsWith("EDIT ")))
+				{
+					String entryStr;
+					String messageStr="";
+					int x=msg.targetMessage().indexOf(' ',5);
+					if(x>5)
+					{
+						entryStr=msg.targetMessage().substring(5,x).trim();
+						messageStr=msg.targetMessage().substring(x+1).trim();
+					}
+					else
+						entryStr=msg.targetMessage().substring(5).trim();
+					int which=CMath.s_int(msg.targetMessage());
+					final List<JournalEntry> journal2;
+					if(!getSortBy().toUpperCase().startsWith("CREAT"))
+						journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true);
+					else
+						journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
+					final JournalEntry entry2=journal2.get(which-1);
+					entry2.msg(messageStr);
+					CMLib.database().DBUpdateJournal(Name(), entry2);
 				}
 				else
 				if(CMath.isInteger(msg.targetMessage()))

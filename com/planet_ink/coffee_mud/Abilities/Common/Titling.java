@@ -156,6 +156,10 @@ public class Titling extends CommonSkill
 	
 	public static String getCatalogEntryType(Environmental E)
 	{
+		if(E instanceof Room)
+			return CATALOGS.Survey.name();
+		if(E instanceof Area)
+			return CATALOGS.Survey.name();
 		if(E instanceof Armor)
 			return CATALOGS.Armor.name(); // armor
 		if(E instanceof Armor)
@@ -186,8 +190,6 @@ public class Titling extends CommonSkill
 			return CATALOGS.Drinks.name();
 		if(E instanceof MOB)
 			return CATALOGS.Races.name();
-		if(E instanceof Room)
-			return CATALOGS.Survey.name();
 		if(E instanceof Item)
 			return CATALOGS.Misc.name();
 		return "";
