@@ -155,7 +155,7 @@ public class Cataloging extends CommonSkill
 									if((item2!=null)&&(item2.container()==item))
 										newItems.addElement(item2);
 								}
-								buf.append(CMLib.lister().lister(mob,newItems,true,"CMItem","",true,false));
+								buf.append(CMLib.lister().lister(mob,newItems,true,null,null,true,false));
 							}
 							else
 							if(item.owner() instanceof Room)
@@ -168,7 +168,7 @@ public class Cataloging extends CommonSkill
 									if((item2!=null)&&(item2.container()==item))
 										newItems.addElement(item2);
 								}
-								buf.append(CMLib.lister().lister(mob,newItems,true,"CRItem","",true,false));
+								buf.append(CMLib.lister().lister(mob,newItems,true,null,null,true,false));
 							}
 						}
 						else
@@ -188,6 +188,23 @@ public class Cataloging extends CommonSkill
 						List<String> cmds=new XVector<String>("MSG");
 						if(loreA.invoke(mob, cmds, item, true, -1))
 							buf.append(cmds.get(0)+"\n\r");
+					}
+					String raceName = Taxidermy.getStatueRace(item);
+					if(raceName.length()>0)
+					{
+						final Race raceR=CMClass.findRace(raceName);
+						if(raceR!=null)
+						{
+							List<String> bodyParts=new ArrayList<String>();
+							for(int i=0;i<Race.BODYPARTSTR.length;i++)
+							{
+								if(raceR.bodyMask()[i] > 0)
+									bodyParts.add(Race.BODYPARTSTR[i].toLowerCase());
+							}
+							final String parts=CMLib.english().toEnglishStringList(bodyParts);
+							buf.append(L("This was a @x1, of the genus @x2.  They weight at least @x3 pounds, stand at least @x4 inches tall, and have the following body parts: @x5.\n\r",
+									raceR.name(),raceR.racialCategory(),""+raceR.lightestWeight(),""+raceR.shortestFemale(),parts));
+						}
 					}
 					
 					if(tag.length()>0)

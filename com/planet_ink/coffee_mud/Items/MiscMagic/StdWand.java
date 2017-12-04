@@ -202,7 +202,8 @@ public class StdWand extends StdItem implements Wand
 							V.addAll(CMParms.parse(message));
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("@x1 glows brightly.",me.name()));
 							me.setUsesRemaining(me.usesRemaining()-1);
-							int level=me.phyStats().level();
+							int level=me.phyStats().level() 
+									+ CMLib.expertises().getExpertiseLevel(mob, "Skill_WandUse", ExpertiseLibrary.Flag.LEVEL);
 							final int lowest=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 							if(level<lowest)
 								level=lowest;

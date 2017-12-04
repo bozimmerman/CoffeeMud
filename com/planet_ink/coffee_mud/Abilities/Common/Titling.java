@@ -160,6 +160,11 @@ public class Titling extends CommonSkill
 			return CATALOGS.Survey.name();
 		if(E instanceof Area)
 			return CATALOGS.Survey.name();
+		if(E instanceof Item)
+		{
+			if(Taxidermy.getStatueRace((Item)E).length()>0)
+				return CATALOGS.Races.name();
+		}
 		if(E instanceof Armor)
 			return CATALOGS.Armor.name(); // armor
 		if(E instanceof Armor)
