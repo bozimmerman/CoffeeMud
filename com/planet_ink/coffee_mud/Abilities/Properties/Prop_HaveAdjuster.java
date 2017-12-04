@@ -156,6 +156,12 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 				charStatsV.addElement(C);
 			}
 		}
+		val=CMParms.getParmStr(parameters[0],"cls","").toUpperCase();
+		if(val.length()>0)
+		{
+			charStatsV.addElement(new Character('S'));
+			charStatsV.addElement(Integer.valueOf(CMath.s_int(val)));
+		}
 		val=CMParms.getParmStr(parameters[0],"rac","").toUpperCase();
 		if((val.length()>0)&&(CMClass.getRace(val)!=null))
 		{
@@ -333,7 +339,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 		super.affectPhyStats(host,affectableStats);
 	}
 
-	public void adjCharStats(Object[] changes, CharStats charStats)
+	public void adjCharStats(final MOB mob, Object[] changes, CharStats charStats)
 	{
 		if(changes==null)
 			return;
@@ -351,6 +357,9 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					break;
 				case 'C':
 					charStats.setCurrentClass((CharClass) changes[i + 1]);
+					break;
+				case 'S':
+					charStats.setCurrentClassLevel(mob.phyStats().level()-((Integer)changes[i + 1]).intValue());
 					break;
 				case 'R':
 					charStats.setMyRace((Race) changes[i + 1]);
@@ -424,7 +433,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 	{
 		ensureStarted();
 		if(canApply(affectedMOB))
-			adjCharStats(charStatsChanges,affectedStats);
+			adjCharStats(affectedMOB, charStatsChanges,affectedStats);
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 
@@ -632,6 +641,8 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 						case 'G':
 							break;
 						case 'C':
+							break;
+						case 'S':
 							break;
 						case 'R':
 							break;

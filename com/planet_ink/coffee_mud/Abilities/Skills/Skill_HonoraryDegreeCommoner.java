@@ -209,7 +209,11 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 							for(final String[] degree : this.myClasses)
 							{
 								if(degree[DEG_TITLE].equals(this.lastTitle))
+								{
 									this.elligibleC = CMClass.getCharClass(degree[DEG_CID]);
+									this.helpProficiency(mob,0);
+									break;
+								}
 							}
 						}
 					}
@@ -242,6 +246,9 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 		{
 			if(this.elligibleC != null)
 			{
+				if(!super.proficiencyCheck(msg.source(), 0, false))
+					return;
+				
 				this.activatedC = this.elligibleC;
 				msg.source().recoverCharStats();
 			}

@@ -211,19 +211,14 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Surveying",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_HonoraryDegreeDruid",false);
 		
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Lecturing",true);
+
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Comprehension",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_HonoraryDegreeCleric",false);
 		
-/*
-23	Lecturing (G)
-24	Honorary Degree: Clericness (Q), Thief_Comprehension		
-25	Enrolling (G)
-26			
-27			
-28			
-29			
-30	 Guildmaster (G)		
- */
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Enrolling",true);
 		
-//		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Costuming",false,CMParms.parseSemicolons("Tailoring",true));
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_Guildmaster",true);
 	}
 
 	@Override
