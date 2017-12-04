@@ -86,12 +86,7 @@ public class Enrolling extends CommonSkill
 				messedUp=true;
 				unInvoke();
 			}
-			if((enrollingM instanceof MOB)&&(!mob.location().isInhabitant((MOB)enrollingM)))
-			{
-				messedUp=true;
-				unInvoke();
-			}
-			if((enrollingM instanceof Item)&&(!mob.location().isContent((Item)enrollingM)))
+			if(!mob.location().isInhabitant(enrollingM))
 			{
 				messedUp=true;
 				unInvoke();
@@ -150,12 +145,7 @@ public class Enrolling extends CommonSkill
 				final MOB mob=(MOB)affected;
 				if((enrollingM!=null)&&(!aborted))
 				{
-					MOB M=null;
-					if(enrollingM instanceof MOB)
-						M=(MOB)enrollingM;
-					else
-					if((enrollingM!=null)&&(enrollingM instanceof CagedAnimal))
-						M=((CagedAnimal)enrollingM).unCageMe();
+					MOB M=enrollingM;
 					if((messedUp)||(M==null))
 					{
 						commonTell(mob,L("You've failed to enroll @x1!",enrollingM.name()));
