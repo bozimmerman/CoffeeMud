@@ -191,7 +191,13 @@ public class Lecturing extends CommonSkill
 						final Ability A=studentM.fetchAbility(lectureID);
 						if(A!=null)
 						{
-							if((A.proficiency() > prof)||(A.proficiency()==100))
+							if(!A.appropriateToMyFactions(mob))
+								continue;
+
+							final int maxProficiency = CMLib.ableMapper().getMaxProficiency(studentM,true,A.ID());
+							if((A.proficiency() > prof)
+							||(A.proficiency()==100)
+							||(A.proficiency() >= maxProficiency))
 								studentM.tell(L("Since you knew more about @x1 than @x2 did, you didn't learn anything.",lectureName,mob.Name()));
 							else
 							{
