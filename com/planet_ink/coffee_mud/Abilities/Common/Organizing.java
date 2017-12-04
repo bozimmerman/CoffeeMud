@@ -156,7 +156,7 @@ public class Organizing extends CommonSkill
 									result=CMLib.english().cleanArticles(o1.Name()).compareTo(CMLib.english().cleanArticles(o2.Name()));
 									break;
 								case TAG:
-									result=Tagging.getCurrentTag(o1).compareTo(Tagging.getCurrentTag(o2));
+									result=Labeling.getCurrentTag(o1).compareTo(Labeling.getCurrentTag(o2));
 									break;
 								case TYPE:
 									result = CMClass.getObjectType(o1).name().compareTo(CMClass.getObjectType(o2).name());

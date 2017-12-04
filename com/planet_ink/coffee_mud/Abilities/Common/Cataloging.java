@@ -97,7 +97,7 @@ public class Cataloging extends CommonSkill
 				if(found instanceof Item)
 				{
 					final Item item=(Item)found;
-					String tag=Tagging.getCurrentTag(item);
+					String tag=Labeling.getCurrentTag(item);
 					StringBuilder buf=new StringBuilder();
 					buf.append(L("\n\rItem: @x1\n\r",item.displayText(mob)));
 					final Room R=CMLib.map().roomLocation(item);
