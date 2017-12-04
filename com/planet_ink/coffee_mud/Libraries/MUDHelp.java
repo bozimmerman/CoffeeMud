@@ -127,9 +127,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				{
 					final String ptop = (String)e.nextElement();
 					final String thisTag=rHelpFile.getProperty(ptop);
-					if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
-						|| (rHelpFile.getProperty(thisTag)== null) )
-							reverseList.addElement(ptop);
+					if ((thisTag==null)
+					||(thisTag.length()==0)
+					||(thisTag.length()>=50)
+					|| (rHelpFile.getProperty(thisTag)== null) )
+						reverseList.addElement(ptop);
 				}
 				rHelpFile=getHelpFile();
 			}
@@ -140,9 +142,14 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			{
 				final String ptop = (String)e.nextElement();
 				final String thisTag=rHelpFile.getProperty(ptop);
-				if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
+				if(ptop.length()>0)
+				{
+					if ((thisTag==null)
+					||(thisTag.length()==0)
+					||(thisTag.length()>=50)
 					|| (rHelpFile.getProperty(thisTag)== null) )
 						reverseList.addElement(ptop);
+				}
 			}
 		}
 		Collections.sort(reverseList);

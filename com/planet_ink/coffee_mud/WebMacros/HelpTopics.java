@@ -122,7 +122,6 @@ public class HelpTopics extends StdWebMacro
 				fletter=httpReq.getUrlParameter("FIRSTLETTER");
 			if(fletter==null)
 				fletter="";
-
 			String lastID="";
 			for(int h=0;h<topics.size();h++)
 			{
@@ -130,10 +129,13 @@ public class HelpTopics extends StdWebMacro
 				if(noables&&CMLib.help().isPlayerSkill(topic))
 					continue;
 				if(topic.startsWith(fletter)||(fletter.length()==0))
-				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!topic.equals(lastID))))
 				{
-					httpReq.addFakeUrlParameter("HELPTOPIC",topic);
-					return "";
+					if((last==null)
+					||((last.length()>0)&&(last.equals(lastID))&&(!topic.equals(lastID))&&(topic.length()>0)))
+					{
+						httpReq.addFakeUrlParameter("HELPTOPIC",topic);
+						return "";
+					}
 				}
 				lastID=topic;
 			}
