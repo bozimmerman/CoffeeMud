@@ -149,7 +149,7 @@ public class Spell_Fabricate extends Spell
 			List<List<String>> L = A.matchingRecipeNames(intoWhat, false);
 			if((L!=null)&&(L.size()>0))
 			{
-				ItemKeyPair what=A.craftItem(L.get(0).get(0),-1,true);
+				ItemKeyPair what=A.craftItem(L.get(0).get(0),-1,true, false);
 				if((what!=null)&&(what.item!=null))
 				{
 					intoI=what.item;
@@ -164,7 +164,7 @@ public class Spell_Fabricate extends Spell
 				List<List<String>> L = A.matchingRecipeNames(intoWhat, true);
 				if((L!=null)&&(L.size()>0))
 				{
-					ItemKeyPair what=A.craftItem(L.get(0).get(0),-1,true);
+					ItemKeyPair what=A.craftItem(L.get(0).get(0),-1,true, false);
 					if((what!=null)&&(what.item!=null))
 					{
 						intoI=what.item;

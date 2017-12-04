@@ -194,7 +194,7 @@ public class Dissertating extends CraftingSkill
 	@Override
 	public ItemKeyPair craftItem(String recipe)
 	{
-		return craftItem(recipe, 0, false);
+		return craftItem(recipe, 0, false, false);
 	}
 
 	protected void setName(Scroll buildingI)

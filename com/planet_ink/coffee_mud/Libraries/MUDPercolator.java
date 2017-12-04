@@ -1822,9 +1822,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						ItemCraftor.ItemKeyPair pair;
 						if(material>=0)
-							pair=skill.craftItem(recipe,material,true);
+							pair=skill.craftItem(recipe,material,true, false);
 						else
-							pair=skill.craftItem(recipe,-1,true);
+							pair=skill.craftItem(recipe,-1,true, false);
 						if(pair!=null)
 						{
 							contents.add(pair.item);
@@ -1847,9 +1847,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						{
 							ItemCraftor.ItemKeyPair pair;
 							if(material>=0)
-								pair=skill.craftItem(recipe,material,true);
+								pair=skill.craftItem(recipe,material,true, false);
 							else
-								pair=skill.craftItem(recipe,0,true);
+								pair=skill.craftItem(recipe,0,true, false);
 							if(pair!=null)
 							{
 								contents.add(pair.item);

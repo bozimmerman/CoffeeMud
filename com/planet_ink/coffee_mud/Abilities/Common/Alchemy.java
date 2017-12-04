@@ -226,7 +226,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	public ItemKeyPair craftItem(String recipe)
 	{
-		return craftItem(recipe,0,false);
+		return craftItem(recipe,0,false, false);
 	}
 
 	protected Item buildItem(Ability theSpell, int level)

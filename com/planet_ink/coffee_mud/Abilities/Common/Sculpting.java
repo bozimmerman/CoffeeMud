@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -508,7 +509,8 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			buildingI.recoverPhyStats();
 			if((!CMLib.flags().isGettable(buildingI))
-			&&(!CMLib.law().doesOwnThisProperty(mob,mob.location())))
+			&&(!CMLib.law().doesOwnThisProperty(mob,mob.location()))
+			&&((autoGenerate==0)||(!mob.isAttributeSet(Attrib.SYSOPMSGS))))
 			{
 				commonTell(mob,L("You are not allowed to build that here."));
 				return false;

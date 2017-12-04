@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -664,7 +665,7 @@ public class CraftingSkill extends GatheringSkill
 
 	public ItemKeyPair craftAnyItem(int material)
 	{
-		return craftItem(null,material,false);
+		return craftItem(null,material,false, false);
 	}
 
 	/**
@@ -689,12 +690,14 @@ public class CraftingSkill extends GatheringSkill
 		return false;
 	}
 	
-	public ItemKeyPair craftItem(String recipeName, int material, boolean forceLevels)
+	public ItemKeyPair craftItem(String recipeName, int material, boolean forceLevels, boolean noSafety)
 	{
 		MOB mob=null;
 		try
 		{
 			mob=CMLib.map().getFactoryMOBInAnyRoom();
+			if(noSafety)
+				mob.setAttribute(Attrib.SYSOPMSGS, true);
 			mob.basePhyStats().setLevel(Integer.MAX_VALUE/2);
 			mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 			mob.recoverPhyStats();
@@ -703,7 +706,10 @@ public class CraftingSkill extends GatheringSkill
 		finally
 		{
 			if(mob!=null)
+			{
+				mob.setAttribute(Attrib.SYSOPMSGS, false);
 				mob.destroy();
+			}
 		}
 	}
 	
@@ -721,7 +727,7 @@ public class CraftingSkill extends GatheringSkill
 		}
 		while(((building==null)||(building.name().endsWith(" bundle")))&&(((++tries)<100)))
 		{
-			List<Item> V=new Vector<Item>(1);
+			List<Item> V=new ArrayList<Item>(1);
 			autoGenInvoke(mob,recipes,null,true,-1,material,forceLevels,V);
 			if(V.size()>0)
 			{
@@ -762,7 +768,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			s=recipes.get(r).get(RCP_FINALNAME);
 			s=replacePercent(s,"").trim();
-			pair=craftItem(s,material,forceLevels);
+			pair=craftItem(s,material,forceLevels, false);
 			if(pair==null)
 				continue;
 			built=pair.item;
@@ -813,7 +819,7 @@ public class CraftingSkill extends GatheringSkill
 		if(rscs.size()==0)
 			rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		final int material=rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue();
-		return craftItem(recipeName,material,false);
+		return craftItem(recipeName,material,false, false);
 	}
 
 	public List<ItemKeyPair> craftAllItemSets(boolean forceLevels)

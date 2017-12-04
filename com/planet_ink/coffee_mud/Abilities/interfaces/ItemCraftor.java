@@ -94,9 +94,10 @@ public interface ItemCraftor extends CraftorAbility
 	 * @param recipeName the name of the item to make
 	 * @param material the rawmaterial code to make the item out of, or -1
 	 * @param forceLevels forces crafted item to have a level if it otherwise doesn't
+	 * @param noSafety whether normal safeguards against creating broken items are overridden
 	 * @return a vector of Item(s)
 	 */
-	public ItemKeyPair craftItem(String recipeName, int material, boolean forceLevels);
+	public ItemKeyPair craftItem(String recipeName, int material, boolean forceLevels, boolean noSafety);
 
 	/**
 	 * For auto-crafting, this object represents an item,

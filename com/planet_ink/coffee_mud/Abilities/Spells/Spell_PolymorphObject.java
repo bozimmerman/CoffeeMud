@@ -189,7 +189,7 @@ public class Spell_PolymorphObject extends Spell
 			List<List<String>> L = A.matchingRecipeNames(intoWhat, false);
 			if((L!=null)&&(L.size()>0))
 			{
-				ItemKeyPair what=A.craftItem(L.get(0).get(0),targetI.material(),true);
+				ItemKeyPair what=A.craftItem(L.get(0).get(0),targetI.material(),true, false);
 				if((what!=null)&&(what.item!=null))
 				{
 					intoI=what.item;
@@ -204,7 +204,7 @@ public class Spell_PolymorphObject extends Spell
 				List<List<String>> L = A.matchingRecipeNames(intoWhat, true);
 				if((L!=null)&&(L.size()>0))
 				{
-					ItemKeyPair what=A.craftItem(L.get(0).get(0),targetI.material(),true);
+					ItemKeyPair what=A.craftItem(L.get(0).get(0),targetI.material(),true, false);
 					if((what!=null)&&(what.item!=null))
 					{
 						intoI=what.item;
