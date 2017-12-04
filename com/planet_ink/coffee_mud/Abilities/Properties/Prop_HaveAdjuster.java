@@ -359,6 +359,11 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					charStats.setCurrentClass((CharClass) changes[i + 1]);
 					break;
 				case 'S':
+					if(mob.baseCharStats().getCurrentClass()!=charStats.getCurrentClass())
+					{
+						mob.baseCharStats().setCurrentClass(charStats.getCurrentClass());
+						mob.baseCharStats().setCurrentClassLevel(mob.phyStats().level()-((Integer)changes[i + 1]).intValue());
+					}
 					charStats.setCurrentClassLevel(mob.phyStats().level()-((Integer)changes[i + 1]).intValue());
 					break;
 				case 'R':
