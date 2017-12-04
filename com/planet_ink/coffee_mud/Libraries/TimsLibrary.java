@@ -63,11 +63,14 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			dmgModifier=0.8;
 			break;
 		case Weapon.CLASS_DAGGER:
-			dmgModifier=0.8;
+			dmgModifier=0.5;
 			break;
 		case Weapon.CLASS_BLUNT:
 		case Weapon.CLASS_STAFF:
 			dmgModifier=0.9;
+			break;
+		case Weapon.CLASS_THROWN:
+			dmgModifier=1.5;
 		}
 		return dmgModifier;
 	}
