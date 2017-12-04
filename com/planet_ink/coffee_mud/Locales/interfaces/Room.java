@@ -808,6 +808,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * suffixes, such as .1, .2 to specify which of identical mobs
 	 * to return.
 	 * @see Room#fetchInhabitants(String)
+	 * @see Room#fetchInhabitantExact(String)
 	 * @see Room#fetchInhabitant(int)
 	 * @see Room#fetchRandomInhabitant()
 	 * @see Room#inhabitants()
@@ -822,6 +823,28 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the first mob to match the search string
 	 */
 	public MOB fetchInhabitant(String inhabitantID);
+	
+	/**
+	 * Searches the inhabitants of this room for a mob with the given
+	 * ID(), name, or display name.  This method also respects index
+	 * suffixes, such as .1, .2 to specify which of identical mobs
+	 * to return.
+	 * @see Room#fetchInhabitants(String)
+	 * @see Room#fetchInhabitant(String)
+	 * @see Room#fetchInhabitant(int)
+	 * @see Room#fetchRandomInhabitant()
+	 * @see Room#inhabitants()
+	 * @see Room#addInhabitant(MOB)
+	 * @see Room#delInhabitant(MOB)
+	 * @see Room#isInhabitant(MOB)
+	 * @see Room#numInhabitants()
+	 * @see Room#bringMobHere(MOB, boolean)
+	 * @see Room#numPCInhabitants()
+	 * @see Room#eachInhabitant(EachApplicable)
+	 * @param inhabitantID the name, id, or keyword to search for
+	 * @return the first mob to match the search string
+	 */
+	public MOB fetchInhabitantExact(String inhabitantID);
 	
 	/**
 	 * Searches the inhabitants of this room for mobs with the given

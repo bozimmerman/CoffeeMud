@@ -1987,6 +1987,14 @@ public class StdRoom implements Room
 		return mob;
 	}
 
+	@Override
+	public MOB fetchInhabitantExact(String inhabitantID)
+	{
+		if(inhabitants.isEmpty())
+			return null;
+		return (MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID,true);
+	}
+
 	private static final ReadOnlyVector<MOB> emptyMOBV=new ReadOnlyVector<MOB>(1);
 
 	@SuppressWarnings("unchecked")

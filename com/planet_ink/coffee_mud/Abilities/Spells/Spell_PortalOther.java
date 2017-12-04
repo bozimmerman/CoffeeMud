@@ -139,7 +139,7 @@ public class Spell_PortalOther extends Spell
 			if(target != null)
 				candidates.add(target);
 			else
-				candidates=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, targetName, 10);
+				candidates=CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob, targetName, false, 10);
 		}
 		catch(final NoSuchElementException nse)
 		{
