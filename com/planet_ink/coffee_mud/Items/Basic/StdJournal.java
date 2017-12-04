@@ -443,7 +443,7 @@ public class StdJournal extends StdItem implements Book
 					}
 					else
 						entryStr=msg.targetMessage().substring(5).trim();
-					int which=CMath.s_int(msg.targetMessage());
+					int which=CMath.s_int(entryStr);
 					final List<JournalEntry> journal2;
 					if(!getSortBy().toUpperCase().startsWith("CREAT"))
 						journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true);

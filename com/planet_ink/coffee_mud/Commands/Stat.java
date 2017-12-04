@@ -527,9 +527,9 @@ public class Stat  extends Skills
 		{
 			try
 			{
-				final List<MOB> inhabs=CMLib.map().findInhabitants(mob.location().getArea().getProperMap(), mob,MOBname,100);
+				final List<MOB> inhabs=CMLib.map().findInhabitantsFavorExact(mob.location().getArea().getProperMap(), mob,MOBname,false,100);
 				if(inhabs.size()==0)
-					inhabs.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100));
+					inhabs.addAll(CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob,MOBname,false,100));
 				for(final MOB mob2 : inhabs)
 				{
 					final Room R=mob2.location();

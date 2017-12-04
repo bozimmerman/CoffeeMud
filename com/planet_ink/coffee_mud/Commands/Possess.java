@@ -120,7 +120,7 @@ public class Possess extends StdCommand
 				{
 					try
 					{
-						final List<MOB> inhabs=CMLib.map().findInhabitants(targetRooms, mob,MOBname,100);
+						final List<MOB> inhabs=CMLib.map().findInhabitantsFavorExact(targetRooms, mob,MOBname,false,100);
 						for(final MOB mob2 : inhabs)
 						{
 							if((mob2.isMonster())&&(CMSecurity.isAllowed(mob,mob2.location(),CMSecurity.SecFlag.POSSESS)))

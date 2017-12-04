@@ -1207,6 +1207,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public List<MOB> findInhabitantsFavorExact(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
 	{
 		final Vector<MOB> found=new Vector<MOB>();
+		final Vector<MOB> exact=new Vector<MOB>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
 		if(delay>1000)
 			delay=1000;
@@ -1222,27 +1223,11 @@ public class CMMap extends StdLibrary implements WorldMap
 				final MOB M=room.fetchInhabitantExact(srchStr);
 				if(M!=null)
 				{
-					found.add(M);
-					if((returnFirst)&&(found.size()>0))
-						return found;
+					exact.add(M);
+					if((returnFirst)&&(exact.size()>0))
+						return exact;
 				}
-			}
-			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
-			{
-				CMLib.s_sleep(1000 - delay); 
-				startTime=System.currentTimeMillis();
-			}
-		}
-		if(found.size()>0)
-			return found;
-		for(;rooms.hasMoreElements();)
-		{
-			room=rooms.nextElement();
-			if((room != null) && (allRoomsAllowed || CMLib.flags().canAccess(mob,room)))
-			{
 				found.addAll(room.fetchInhabitants(srchStr));
-				if((returnFirst)&&(found.size()>0))
-					return found;
 			}
 			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
 			{
@@ -1250,6 +1235,8 @@ public class CMMap extends StdLibrary implements WorldMap
 				startTime=System.currentTimeMillis();
 			}
 		}
+		if(exact.size()>0)
+			return exact;
 		return found;
 	}
 

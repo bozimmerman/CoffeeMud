@@ -149,9 +149,9 @@ public class Spell_Claireaudience extends Spell
 		{
 			try
 			{
-				List<MOB> targets=CMLib.map().findInhabitants(mob.location().getArea().getProperMap(), mob, mobName, 10);
+				List<MOB> targets=CMLib.map().findInhabitantsFavorExact(mob.location().getArea().getProperMap(), mob, mobName, false, 10);
 				if(targets.size()==0)
-					targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 10);
+					targets=CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob, mobName, false, 10);
 				if(targets.size()>0)
 					target=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}

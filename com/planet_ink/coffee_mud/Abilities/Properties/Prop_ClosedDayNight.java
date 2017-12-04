@@ -238,7 +238,7 @@ public class Prop_ClosedDayNight extends Property
 					R=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
 				else
 				{
-					final List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, Home, 10);
+					final List<MOB> inhabs=CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob, Home, false, 10);
 					if(inhabs.size()>0)
 						R=CMLib.map().roomLocation(inhabs.get(CMLib.dice().roll(1,inhabs.size(),-1)));
 				}

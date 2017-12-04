@@ -260,7 +260,7 @@ public class Thief_ContractHit extends ThiefSkill
 		List<MOB> V=new Vector<MOB>();
 		try
 		{
-			V=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,CMParms.combine(commands,0), 10);
+			V=CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob,CMParms.combine(commands,0), false, 10);
 		}
 		catch(final NoSuchElementException nse)
 		{

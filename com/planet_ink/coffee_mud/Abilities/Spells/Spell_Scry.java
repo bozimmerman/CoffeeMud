@@ -174,7 +174,7 @@ public class Spell_Scry extends Spell
 		{
 			try
 			{
-				final List<MOB> targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 50);
+				final List<MOB> targets=CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob, mobName, false, 50);
 				if(targets.size()>0)
 					target=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}

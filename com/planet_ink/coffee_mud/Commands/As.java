@@ -71,7 +71,7 @@ public class As extends StdCommand
 		{
 			try
 			{
-				final List<MOB> targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, cmd, 50);
+				final List<MOB> targets=CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob, cmd, false, 50);
 				if(targets.size()>0)
 					M=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}

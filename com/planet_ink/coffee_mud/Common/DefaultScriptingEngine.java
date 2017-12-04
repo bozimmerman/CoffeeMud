@@ -1266,7 +1266,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							areaThing=all.elementAt(CMLib.dice().roll(1,all.size(),-1));
 						else
 						{
-							all.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(),null,thisName,100));
+							all.addAll(CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(),null,thisName,false,100));
 							if(all.size()==0)
 								all.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), null, thisName,100));
 							for(int a=all.size()-1;a>=0;a--)

@@ -136,7 +136,7 @@ public class Spell_Gate extends Spell
 		MOB target=null;
 		try
 		{
-			candidates=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, areaName, 10);
+			candidates=CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob, areaName, false, 10);
 		}
 		catch(final NoSuchElementException nse)
 		{

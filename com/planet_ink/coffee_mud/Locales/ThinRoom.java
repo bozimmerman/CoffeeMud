@@ -464,6 +464,12 @@ public class ThinRoom implements Room
 	}
 
 	@Override
+	public MOB fetchInhabitantExact(String inhabitantID)
+	{
+		return null;
+	}
+
+	@Override
 	public MOB fetchRandomInhabitant()
 	{
 		return null;
@@ -1047,12 +1053,14 @@ public class ThinRoom implements Room
 		return true;
 	}
 
-	@Override public int getCombatTurnMobIndex()
+	@Override 
+	public int getCombatTurnMobIndex()
 	{
 		return 0;
 	}
 
-	@Override public void setCombatTurnMobIndex(final int index)
+	@Override 
+	public void setCombatTurnMobIndex(final int index)
 	{
 	}
 }
