@@ -119,7 +119,7 @@ public class Scholar extends StdCharClass
 	@Override
 	public int availabilityCode()
 	{
-		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+		return Area.THEME_FANTASY;
 	}
 
 	public Scholar()
