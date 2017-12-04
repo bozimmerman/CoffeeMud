@@ -1237,6 +1237,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		if(exact.size()>0)
 			return exact;
+		if((returnFirst)&&(found.size()>0))
+		{
+			exact.add(found.get(0));
+			return exact;
+		}
 		return found;
 	}
 
