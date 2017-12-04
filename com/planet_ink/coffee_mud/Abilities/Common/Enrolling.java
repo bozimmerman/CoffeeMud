@@ -62,9 +62,10 @@ public class Enrolling extends CommonSkill
 		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_EDUCATIONLORE;
 	}
 
-	protected Physical enrollingM=null;
-	protected CharClass enrolledInC=null;
-	protected boolean messedUp=false;
+	protected MOB		enrollingM	= null;
+	protected CharClass	enrolledInC	= null;
+	protected boolean	messedUp	= false;
+
 	public Enrolling()
 	{
 		super();
@@ -95,6 +96,46 @@ public class Enrolling extends CommonSkill
 				messedUp=true;
 				unInvoke();
 			}
+			final Room R=mob.location();
+			if((CMLib.dice().rollPercentage()<20)
+			&&(R!=null))
+			{
+				final MOB randM=enrollingM;
+				final String lectureName = enrolledInC.name();
+				switch(CMLib.dice().roll(1, 10, -1))
+				{
+				case 0:
+					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> say(s) really interesting things about @x1.",lectureName));
+					break;
+				case 1:
+					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> tell(s) @x2 to practice @x1 now.",lectureName,randM.name()));
+					break;
+				case 2:
+					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> instructs(s) @x2 on @x1.",lectureName,randM.name()));
+					break;
+				case 3:
+					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> shows(s) @x2 some improved methods of @x1.",lectureName,randM.name()));
+					break;
+				case 4:
+					R.show(randM, null, CMMsg.MSG_NOISE, L("<S-NAME> ask(s) a stupid question about @x1.",lectureName));
+					break;
+				case 5:
+					R.show(randM, null, CMMsg.MSG_NOISE, L("<S-NAME> flub(s) an attempt at a @x1 technique.",lectureName));
+					break;
+				case 6:
+					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> point(s) out some of the finer points of @x1.",lectureName));
+					break;
+				case 7:
+					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> ask(s) @x2 a question about @x1.",lectureName,randM.name()));
+					break;
+				case 8:
+					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> correct(s) @x2s @x1 technique.",lectureName,randM.Name()));
+					break;
+				case 9:
+					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> draw(s) a diagram to illustrate something about @x1.",lectureName,randM.Name()));
+					break;
+				}
+			}
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -116,7 +157,11 @@ public class Enrolling extends CommonSkill
 					if((enrollingM!=null)&&(enrollingM instanceof CagedAnimal))
 						M=((CagedAnimal)enrollingM).unCageMe();
 					if((messedUp)||(M==null))
+					{
 						commonTell(mob,L("You've failed to enroll @x1!",enrollingM.name()));
+						CMLib.beanCounter().giveSomeoneMoney(mob, this.enrollCost(mob, M, 0));
+						mob.tell(L("You recover @x1 in fees from the guild.",CMLib.beanCounter().abbreviatedPrice(mob, this.enrollCost(mob, M, 0))));
+					}
 					else
 					{
 						if(M.charStats().getCurrentClass() != CMClass.getCharClass("StdCharClass"))
@@ -148,6 +193,17 @@ public class Enrolling extends CommonSkill
 		super.unInvoke();
 	}
 
+	protected int enrollCost(final MOB teacherM, final MOB M, final int asLevel)
+	{
+		int cost=(M.phyStats().level() * M.phyStats().level() * 100)
+			-  (10 * M.phyStats().level() * adjustedLevel(teacherM,asLevel))
+			-  (100* M.phyStats().level() * super.getX1Level(teacherM));
+		if(cost < 500)
+			cost=500;
+		return 500;
+	}
+
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -179,8 +235,6 @@ public class Enrolling extends CommonSkill
 			commonTell(mob,L("You need to either be a @x1, or an honorary @x1 to enroll anyone in that.",enrolledInC.name()));
 			return false;
 		}
-			
-		
 		
 		final String str=CMParms.combine(commands,0);
 		MOB M=mob.location().fetchInhabitant(str);
@@ -214,16 +268,40 @@ public class Enrolling extends CommonSkill
 		else
 			return false;
 
+		if(!enrolledInC.qualifiesForThisClass(enrollingM, true))
+		{
+			commonTell(mob,L("@x1 does not qualify to become a @x2.",enrollingM.Name(),enrolledInC.name()));
+			return false;
+		}
+		
+		int cost=enrollCost(mob,enrollingM,asLevel);
+		if(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob) < cost)
+		{
+			commonTell(mob,L("You don't have the @x1 to pay the guild fees.",CMLib.beanCounter().abbreviatedPrice(mob, cost)));
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		messedUp=!proficiencyCheck(mob,0,auto);
-		final int duration=getDuration(35,mob,enrollingM.phyStats().level(),10);
+		long baseDuration=60 * 60;
+		final Room R=mob.location();
+		final Area areA=(R!=null)?R.getArea():null;
+		if(areA!=null)
+			baseDuration = CMProps.getTicksPerMudHour() * areA.getTimeObj().getHoursInDay();
+			
+		final int duration=getDuration((int)baseDuration,mob,enrollingM.phyStats().level(),10);
 		verb=L("enrolling @x1 into a @x2 career",M.name(),enrolledInC.name());
+		
 		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),L("<S-NAME> start(s) enrolling @x1 into a @x2 career.",M.name(),enrolledInC.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,asLevel,duration);
+			if(beneficialAffect(mob,mob,asLevel,duration)!=null)
+			{
+				CMLib.beanCounter().subtractMoney(mob, cost);
+				mob.tell(L("The guild fees came to @x1.",CMLib.beanCounter().abbreviatedPrice(mob, cost)));
+			}
 		}
 		return true;
 	}
