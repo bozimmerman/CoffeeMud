@@ -201,7 +201,12 @@ public class Chant_Nectar extends Chant
 				newItem.setDescription(L("The closer you look, the more illusive the flower becomes.  There must be druid magic at work here!"));
 				final Ability A=CMClass.getAbility("Poison_Liquor");
 				if(A!=null)
+				{
+					final MOB M=CMClass.getFactoryMOB();
+					M.setName(newItem.Name());
+					A.setInvoker(M);
 					newItem.addNonUninvokableEffect(A);
+				}
 
 				mob.location().addItem(newItem);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 starts flowing here.",newItem.name()));

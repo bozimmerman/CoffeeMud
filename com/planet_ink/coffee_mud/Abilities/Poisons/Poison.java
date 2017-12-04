@@ -101,19 +101,64 @@ public class Poison extends StdAbility implements HealthCondition
 		return USAGE_MOVEMENT|USAGE_MANA;
 	}
 
-	protected int POISON_TICKS(){return 0;} // 0 means no adjustment!
-	protected int POISON_DELAY(){return 3;}
-	protected String POISON_DONE(){return "The poison runs its course.";}
-	protected String POISON_START(){return "^G<S-NAME> turn(s) green.^?";}
-	protected String POISON_START_TARGETONLY(){return "";}
-	protected boolean POISON_AFFECTTARGET(){return true;}
-	protected String POISON_AFFECT(){return "<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.";}
-	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> attempt(s) to poison <T-NAMESELF>!^</FIGHT^>^?";}
-	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
-	protected int POISON_DAMAGE(){return (invoker!=null)?CMLib.dice().roll(1,invoker().phyStats().level(),1):0;}
-	protected boolean processing=false;
+	protected int POISON_TICKS()
+	{
+		return 0;
+	} // 0 means no adjustment!
 
-	protected int poisonTick=3;
+	protected int POISON_DELAY()
+	{
+		return 3;
+	}
+
+	protected String POISON_DONE()
+	{
+		return "The poison runs its course.";
+	}
+
+	protected String POISON_START()
+	{
+		return "^G<S-NAME> turn(s) green.^?";
+	}
+
+	protected String POISON_START_TARGETONLY()
+	{
+		return "";
+	}
+
+	protected boolean POISON_AFFECTTARGET()
+	{
+		return true;
+	}
+
+	protected String POISON_AFFECT()
+	{
+		return "<S-NAME> cringe(s) as the poison courses through <S-HIS-HER> blood.";
+	}
+
+	protected String POISON_CAST()
+	{
+		return "^F^<FIGHT^><S-NAME> attempt(s) to poison <T-NAMESELF>!^</FIGHT^>^?";
+	}
+
+	protected String POISON_FAIL()
+	{
+		return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";
+	}
+
+	protected int POISON_DAMAGE()
+	{
+		return (invoker != null) ? CMLib.dice().roll(1, invoker().phyStats().level(), 1) : 0;
+	}
+
+	protected boolean POISON_MAKE_PEACE()
+	{
+		return false;
+	}
+	
+	protected boolean	processing	= false;
+
+	protected int		poisonTick	= 3;
 
 	@Override
 	public String getHealthConditionDesc()
@@ -149,9 +194,21 @@ public class Poison extends StdAbility implements HealthCondition
 				targetMOB.location().send(targetMOB,msg);
 				if((POISON_AFFECTTARGET()&&(msg.value()<=0)))
 				{
+					final MOB pvic=poisoner.getVictim();
+					final MOB tvic = (target instanceof MOB) ? ((MOB)target).getVictim() : null;
 					maliciousAffect(poisoner,target,
 									(affected instanceof Item)?affected.phyStats().level():0,
 									POISON_TICKS(),-1);
+					if(POISON_MAKE_PEACE())
+					{
+						if((pvic == null)
+						&&(poisoner.getVictim() == target))
+							poisoner.makePeace(true);
+						if((target instanceof MOB)
+						&&(tvic == null)
+						&&(((MOB)target).getVictim()==poisoner))
+							((MOB)target).makePeace(true);
+					}
 					return true;
 				}
 				return false;
