@@ -62,18 +62,20 @@ public class Studying extends CommonSkill
 	
 	protected static enum perLevelLimits 
 	{
-		COMMON(1,6,1, ACODE_COMMON_SKILL, ACODE_LANGUAGE),
-		SKILL(1,6,2,ACODE_SKILL, ACODE_THIEF_SKILL),
-		SONG(1,6,3,ACODE_SONG, -1),
-		SPELL(1,6,4,ACODE_SPELL, -1),
-		CHANT(1,6,5,ACODE_CHANT, -1),
-		PRAYER(1,6,6,ACODE_PRAYER, -1)
+		COMMON(1, 6, 1, ACODE_COMMON_SKILL, ACODE_LANGUAGE),
+		SKILL(1, 6, 2, ACODE_SKILL, ACODE_THIEF_SKILL),
+		SONG(1, 6, 3, ACODE_SONG, -1),
+		SPELL(1, 6, 4, ACODE_SPELL, -1),
+		CHANT(1, 6, 5, ACODE_CHANT, -1),
+		PRAYER(1, 6, 6, ACODE_PRAYER, -1)
 		;
-		private int type1 = -1;
-		private int type2 = -1;
-		private int num = 1;
-		private int perLevels = 1;
-		private int aboveLevel = 1;
+
+		private int	type1		= -1;
+		private int	type2		= -1;
+		private int	num			= 1;
+		private int	perLevels	= 1;
+		private int	aboveLevel	= 1;
+
 		private perLevelLimits(int num, int perLevels, int aboveLevel, int type1, int type2)
 		{
 			this.num=num;
@@ -86,8 +88,8 @@ public class Studying extends CommonSkill
 		public boolean doesRuleApplyTo(final Ability A)
 		{
 			return (A!=null) 
-					&& (((A.classificationCode()&Ability.ALL_ACODES)==type1)
-						||((A.classificationCode()&Ability.ALL_ACODES)==type2));
+				&& (((A.classificationCode()&Ability.ALL_ACODES)==type1)
+					||((A.classificationCode()&Ability.ALL_ACODES)==type2));
 		}
 
 		public int numAllowed(final int classLevel)
@@ -115,6 +117,12 @@ public class Studying extends CommonSkill
 		return !isAnAutoEffect;
 	}
 
+	/*
+	We could also make this 6 different abilities, Common Skill Studying, Skills 
+	Studying, Songs Studying, Chants Studying, Spells Studying, and Prayers Studying if you would prefer
+	granting each ability at the lowest level above (1,2,3,4,5,6).
+	 */
+	
 	protected Ability			teachingA			= null;
 	protected volatile boolean	distributed			= false;
 	protected boolean			successfullyTaught	= false;

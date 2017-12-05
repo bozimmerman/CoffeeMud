@@ -123,7 +123,7 @@ public class Thief_Graffiti extends ThiefSkill
 				switch(CMLib.dice().roll(1,6,0))
 				{
 				case 1:
-					I.setDescription(L("Someone has scribbed some graffiti here.  Try reading it."));
+					I.setDescription(L("Someone has scribed some graffiti here.  Try reading it."));
 					break;
 				case 2:
 					I.setDescription(L("A cryptic message has been written on the walls.  Try reading it."));
