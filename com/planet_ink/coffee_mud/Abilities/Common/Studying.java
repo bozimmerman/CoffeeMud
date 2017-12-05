@@ -398,15 +398,18 @@ public class Studying extends CommonSkill
 	
 	public void confirmSkills(final MOB mob)
 	{
-		boolean broken=false;
-		for(final Ability A : skillList)
+		final Studying studyA=(Studying)mob.fetchEffect(ID());
+		if((studyA!=null)
+		&&(studyA.distributed))
 		{
-			if(mob.fetchAbility(A.ID())==null)
-				broken=true;
-		}
-		if(broken)
-		{
-			this.distributeSkills(mob);
+			boolean broken=false;
+			for(final Ability A : skillList)
+			{
+				if(mob.fetchAbility(A.ID())==null)
+					broken=true;
+			}
+			if(broken)
+				studyA.distributeSkills(mob);
 		}
 	}
 	
@@ -415,9 +418,7 @@ public class Studying extends CommonSkill
 	{
 		if(commands.size()==0)
 		{
-			if((skillList.size()>0)
-			&&(distributed))
-				confirmSkills(mob);
+			confirmSkills(mob);
 			mob.tell(L("You've been taught: "));
 			final List<List<String>> taughts = CMParms.parseDoubleDelimited(text(), ';', ',');
 			StringBuilder str=new StringBuilder("");
