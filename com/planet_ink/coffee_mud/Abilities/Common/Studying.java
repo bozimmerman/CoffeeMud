@@ -115,24 +115,11 @@ public class Studying extends CommonSkill
 		return !isAnAutoEffect;
 	}
 
-/*
- * 	TODO:
+	protected Ability			teachingA			= null;
+	protected volatile boolean	distributed			= false;
+	protected boolean			successfullyTaught	= false;
+	protected List<Ability>		skillList			= new LinkedList<Ability>();
 
-When the command is initiated, it looks like a reverse TEACH.  It will provide the teaching character 
-with a y/n dialogue option if they want to train the scholar, and it will tell them about how long to 
-train the scholar.  .  
-
-We could also make this 6 different abilities, Common Skill Studying, Skills 
-Studying, Songs Studying, Chants Studying, Spells Studying, and Prayers Studying if you would prefer
-granting each ability at the lowest level above (1,2,3,4,5,6).
-
- */
-	
-	protected Ability teachingA = null;
-	protected volatile boolean distributed = false;
-	protected boolean successfullyTaught = false;
-	protected List<Ability> skillList = new LinkedList<Ability>();
-	
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
@@ -303,36 +290,7 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 				}
 				if(doWorkOn)
 				{
-					if(skillList.size() > 0)
-					{
-						for(Ability a : skillList)
-						{
-							final Ability A=mob.fetchAbility(a.ID());
-							if((A!=null)&&(!A.isSavable()))
-							{
-								mob.delAbility(A);
-								final Ability fA=mob.fetchEffect(A.ID());
-								fA.unInvoke();
-								mob.delEffect(fA);
-							}
-						}
-						skillList.clear();
-					}
-					for(final String as : CMParms.parseSemicolons(text(), false))
-					{
-						final List<String> idProf = CMParms.parseCommas(as, true);
-						if(idProf.size()>1)
-						{
-							final Ability A=CMClass.getAbility(idProf.get(0));
-							if(A!=null)
-							{
-								A.setSavable(false);
-								A.setProficiency(CMath.s_int(idProf.get(1)));
-								mob.addAbility(A);
-								skillList.add(A);
-							}
-						}
-					}
+					distributeSkills(mob);
 				}
 			}
 		}
@@ -404,11 +362,62 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 		super.unInvoke();
 	}
 
+	public void distributeSkills(final MOB mob)
+	{
+		if(skillList.size() > 0)
+		{
+			for(Ability a : skillList)
+			{
+				final Ability A=mob.fetchAbility(a.ID());
+				if((A!=null)&&(!A.isSavable()))
+				{
+					mob.delAbility(A);
+					final Ability fA=mob.fetchEffect(A.ID());
+					fA.unInvoke();
+					mob.delEffect(fA);
+				}
+			}
+			skillList.clear();
+		}
+		for(final String as : CMParms.parseSemicolons(text(), false))
+		{
+			final List<String> idProf = CMParms.parseCommas(as, true);
+			if(idProf.size()>1)
+			{
+				final Ability A=CMClass.getAbility(idProf.get(0));
+				if(A!=null)
+				{
+					A.setSavable(false);
+					A.setProficiency(CMath.s_int(idProf.get(1)));
+					mob.addAbility(A);
+					skillList.add(A);
+				}
+			}
+		}
+	}
+	
+	public void confirmSkills(final MOB mob)
+	{
+		boolean broken=false;
+		for(final Ability A : skillList)
+		{
+			if(mob.fetchAbility(A.ID())==null)
+				broken=true;
+		}
+		if(broken)
+		{
+			this.distributeSkills(mob);
+		}
+	}
+	
 	@Override
 	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()==0)
 		{
+			if((skillList.size()>0)
+			&&(distributed))
+				confirmSkills(mob);
 			mob.tell(L("You've been taught: "));
 			final List<List<String>> taughts = CMParms.parseDoubleDelimited(text(), ';', ',');
 			StringBuilder str=new StringBuilder("");
