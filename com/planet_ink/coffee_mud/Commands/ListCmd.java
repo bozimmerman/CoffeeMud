@@ -4202,13 +4202,17 @@ public class ListCmd extends StdCommand
 				s.println("==="+title+"s===");
 			else
 				s.println("==="+title+"===");
-			s.wraplessPrintln(CMLib.lister().reallyWikiList(mob, CMClass.abilities(), ofType|domain).toString());
+			final XVector<Ability> sortedAs = new XVector<Ability>(CMClass.abilities());
+			CMClass.sortEnvironmentalsByName(sortedAs);
+			s.wraplessPrintln(CMLib.lister().reallyWikiList(mob, sortedAs.elements(), ofType|domain).toString());
 		}
 		else
 		if(wiki == WikiFlag.WIKIHELP)
 		{
 			StringBuilder str=new StringBuilder("");
-			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			final XVector<Ability> sortedAs = new XVector<Ability>(CMClass.abilities());
+			CMClass.sortEnvironmentalsByName(sortedAs);
+			for(final Enumeration<Ability> e=sortedAs.elements();e.hasMoreElements();)
 			{
 				final Ability A=e.nextElement();
 				if((ofType>=0)&&(ofType!=Ability.ALL_ACODES))
