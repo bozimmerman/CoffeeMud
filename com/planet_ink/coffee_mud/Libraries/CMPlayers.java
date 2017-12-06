@@ -524,7 +524,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		CMLib.coffeeTables().bump(deadMOB,CoffeeTableRow.STAT_PURGES);
 		
-		CMLib.database().DBDeletePlayer(deadMOB.Name());
+		CMLib.database().DBDeletePlayerOnly(deadMOB.Name());
 		deadMOB.delAllItems(false);
 		for(int i=0;i<deadMOB.numItems();i++)
 		{

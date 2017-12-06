@@ -50,16 +50,18 @@ public class MOBloader
 
 	protected Room emptyRoom=null;
 
-	public MOB DBReadUserOnly(final String name, final String[] locationID)
+	public MOB DBReadUserOnly(String name, final String[] locationID)
 	{
 		if((name==null)||(name.length()==0)) 
 			return null;
 		DBConnection D=null;
 		MOB mob=null;
+		name = DB.injectionClean(name);
 		int oldDisposition=0;
 		try
 		{
 			D=DB.DBFetch();
+			
 			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+name+"'");
 			if(R.next())
 			{
@@ -608,6 +610,7 @@ public class MOBloader
 	{
 		DBConnection D=null;
 		PlayerLibrary.ThinPlayer thisUser=null;
+		name=DB.injectionClean(name);
 		try
 		{
 			D=DB.DBFetch();
@@ -652,14 +655,15 @@ public class MOBloader
 		return allUsers;
 	}
 
-	public List<PlayerLibrary.ThinPlayer> vassals(String liegeID)
+	public List<PlayerLibrary.ThinPlayer> vassals(String liegeName)
 	{
 		DBConnection D=null;
 		List<PlayerLibrary.ThinPlayer> list=new ArrayList<PlayerLibrary.ThinPlayer>();
+		liegeName=DB.injectionClean(liegeName);
 		try
 		{
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMLEIG='"+liegeID+"'");
+			final ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMLEIG='"+liegeName+"'");
 			if(R!=null)
 			{
 				while(R.next())
@@ -684,6 +688,7 @@ public class MOBloader
 		try
 		{
 			D=DB.DBFetch();
+			deityID=DB.injectionClean(deityID);
 			final ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMWORS='"+deityID+"'");
 			if(R!=null) while(R.next())
 			{
@@ -701,7 +706,7 @@ public class MOBloader
 		return DV;
 	}
 
-	public List<MOB> DBScanFollowers(String mobName)
+	public List<MOB> DBScanFollowers(String name)
 	{
 		DBConnection D=null;
 		final Vector<MOB> V=new Vector<MOB>();
@@ -709,7 +714,8 @@ public class MOBloader
 		try
 		{
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMCHFO WHERE CMUSERID='"+mobName+"'");
+			name=DB.injectionClean(name);
+			final ResultSet R=D.query("SELECT * FROM CMCHFO WHERE CMUSERID='"+name+"'");
 			while(R.next())
 			{
 				final String MOBID=DBConnections.getRes(R,"CMFOID");
@@ -774,7 +780,9 @@ public class MOBloader
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null)
 			return;
-		DB.update("UPDATE CMCHAR SET CMEMAL='"+pstats.getEmail()+"' WHERE CMUSERID='"+mob.Name()+"'");
+		String name=DB.injectionClean(mob.Name());
+		String email=DB.injectionClean(pstats.getEmail());
+		DB.update("UPDATE CMCHAR SET CMEMAL='"+email+"' WHERE CMUSERID='"+name+"'");
 	}
 
 	private int BuildClanMemberRole(ResultSet R)
@@ -806,6 +814,8 @@ public class MOBloader
 		try
 		{
 			D=DB.DBFetch();
+			name=DB.injectionClean(name);
+			clan=DB.injectionClean(clan);
 			final ResultSet R=D.query("SELECT * FROM CMCHCL where CMCLAN='"+clan+"' and CMUSERID='"+name+"'");
 			if(R!=null) while(R.next())
 			{
@@ -830,6 +840,7 @@ public class MOBloader
 		try
 		{
 			D=DB.DBFetch();
+			clan=DB.injectionClean(clan);
 			final ResultSet R=D.query("SELECT * FROM CMCHCL where CMCLAN='"+clan+"'");
 			if(R!=null) while(R.next())
 			{
@@ -857,6 +868,8 @@ public class MOBloader
 		DBConnection D=null;
 		try
 		{
+			name=DB.injectionClean(name);
+			clan=DB.injectionClean(clan);
 			D=DB.DBFetch();
 			if(role<0)
 			{
@@ -902,6 +915,8 @@ public class MOBloader
 		||(name==null))
 			return;
 
+		name=DB.injectionClean(name);
+		clan=DB.injectionClean(clan);
 		DBConnection D=null;
 		try
 		{
@@ -952,8 +967,9 @@ public class MOBloader
 
 	public void DBUpdatePassword(String name, String password)
 	{
-		name=CMStrings.capitalizeAndLower(name);
-		DB.update("UPDATE CMCHAR SET CMPASS='"+password+"' WHERE CMUSERID='"+name.replace('\'', 'n')+"'");
+		name=CMStrings.capitalizeAndLower(DB.injectionClean(name));
+		password=DB.injectionClean(password);
+		DB.update("UPDATE CMCHAR SET CMPASS='"+password+"' WHERE CMUSERID='"+name+"'");
 	}
 
 	private String getPlayerStatsXML(MOB mob)
@@ -991,7 +1007,8 @@ public class MOBloader
 		if((pstats==null)||(!pstats.isSavable()))
 			return;
 		final String pfxml=getPlayerStatsXML(mob);
-		DB.updateWithClobs("UPDATE CMCHAR SET CMPFIL=? WHERE CMUSERID='"+mob.Name()+"'", pfxml.toString());
+		String name=DB.injectionClean(mob.Name());
+		DB.updateWithClobs("UPDATE CMCHAR SET CMPFIL=? WHERE CMUSERID='"+name+"'", pfxml.toString());
 	}
 
 	public void DBUpdateJustMOB(MOB mob)
@@ -1201,7 +1218,8 @@ public class MOBloader
 		if(mob.Name().length()==0)
 			return;
 		final List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
-		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'"));
+		String name=DB.injectionClean(mob.Name());
+		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHIT WHERE CMUSERID='"+name+"'"));
 		statements.addAll(getDBItemUpdateStrings(mob));
 		DB.updateWithClobs(statements);
 	}
@@ -1340,7 +1358,8 @@ public class MOBloader
 		if((mob==null)||(mob.Name().length()==0))
 			return;
 		final List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
-		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'"));
+		String name=DB.injectionClean(mob.Name());
+		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHFO WHERE CMUSERID='"+name+"'"));
 		
 		// prevent rejuving map mobs from getting text() called and wiping 
 		// out their original specs
@@ -1381,7 +1400,7 @@ public class MOBloader
 			{
 				CMLib.catalog().updateCatalogIntegrity(thisMOB);
 				final String sql="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
-								+") values ('"+mob.Name()+"',"+f+",'"+CMClass.classID(thisMOB)+"',?,"
+								+") values ('"+name+"',"+f+",'"+CMClass.classID(thisMOB)+"',?,"
 								+thisMOB.basePhyStats().level()+","+thisMOB.basePhyStats().ability()+")";
 								statements.add(new DBPreparedBatchEntry(sql,thisMOB.text()+" "));
 			}
@@ -1393,11 +1412,11 @@ public class MOBloader
 	{
 		if((oldName==null)
 		||(oldName.trim().length()==0)
-		||(oldName.indexOf('\'')>=0)
 		||(newName==null)
-		||(newName.trim().length()==0)
-		||(newName.indexOf('\'')>=0))
+		||(newName.trim().length()==0))
 			return;
+		oldName=DB.injectionClean(oldName);
+		newName=DB.injectionClean(newName);
 		DB.update("UPDATE CMCHAB SET CMUSERID='"+newName+"' WHERE CMUSERID='"+oldName+"'");
 		DB.update("UPDATE CMCHAR SET CMUSERID='"+newName+"' WHERE CMUSERID='"+oldName+"'");
 		DB.update("UPDATE CMCHAR SET CMWORS='"+newName+"' WHERE CMWORS='"+oldName+"'");
@@ -1411,8 +1430,9 @@ public class MOBloader
 		DB.update("UPDATE CMPDAT SET CMPLID='"+newName+"' WHERE CMPLID='"+oldName+"'");
 	}
 
-	public void DBDelete(String mobName)
+	public void DBDeleteCharOnly(String mobName)
 	{
+		mobName=DB.injectionClean(mobName);
 		DB.update("DELETE FROM CMCHAR WHERE CMUSERID='"+mobName+"'");
 		DB.update("DELETE FROM CMCHCL WHERE CMUSERID='"+mobName+"'");
 	}
@@ -1508,7 +1528,8 @@ public class MOBloader
 	{
 		if(account == null)
 			return;
-		DB.update("DELETE FROM CMACCT WHERE CMANAM='"+account.getAccountName()+"'");
+		String login=DB.injectionClean(account.getAccountName());
+		DB.update("DELETE FROM CMACCT WHERE CMANAM='"+login+"'");
 	}
 
 	public void DBCreateAccount(PlayerAccount account)
@@ -1517,8 +1538,9 @@ public class MOBloader
 			return;
 		account.setAccountName(CMStrings.capitalizeAndLower(account.getAccountName()));
 		final String characters = CMParms.toSemicolonListString(account.getPlayers());
+		String login=DB.injectionClean(account.getAccountName());
 		DB.updateWithClobs("INSERT INTO CMACCT (CMANAM, CMPASS, CMCHRS, CMAXML) "
-				+"VALUES ('"+account.getAccountName()+"','"+account.getPasswordStr()+"',?,?)",new String[][]{{characters,account.getXML()}});
+				+"VALUES ('"+login+"','"+account.getPasswordStr()+"',?,?)",new String[][]{{characters,account.getXML()}});
 	}
 
 	public PlayerAccount MakeAccount(String username, ResultSet R) throws SQLException
@@ -1538,7 +1560,7 @@ public class MOBloader
 		return account;
 	}
 
-	public PlayerAccount DBReadAccount(String Login)
+	public PlayerAccount DBReadAccount(String login)
 	{
 		DBConnection D=null;
 		PlayerAccount account = null;
@@ -1549,11 +1571,12 @@ public class MOBloader
 			// certainly by amateurs is the answer. That, and fakedb
 			// doesn't understand 'LIKE'
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMACCT WHERE CMANAM='"+CMStrings.replaceAll(CMStrings.capitalizeAndLower(Login),"\'", "n")+"'");
+			login=CMStrings.capitalizeAndLower(DB.injectionClean(login));
+			final ResultSet R=D.query("SELECT * FROM CMACCT WHERE CMANAM='"+login+"'");
 			if(R!=null) while(R.next())
 			{
 				final String username=DB.getRes(R,"CMANAM");
-				if(Login.equalsIgnoreCase(username))
+				if(login.equalsIgnoreCase(username))
 					account = MakeAccount(username,R);
 			}
 		}
@@ -1648,7 +1671,7 @@ public class MOBloader
 		return expiredPlayers;
 	}
 
-	public PlayerLibrary.ThinnerPlayer DBUserSearch(String Login)
+	public PlayerLibrary.ThinnerPlayer DBUserSearch(String login)
 	{
 		DBConnection D=null;
 		String buf=null;
@@ -1660,7 +1683,8 @@ public class MOBloader
 			// certainly by amateurs is the answer. That, and fakedb
 			// doesn't understand 'LIKE'
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+CMStrings.capitalizeAndLower(Login).replace('\'', 'n')+"'");
+			login=CMStrings.capitalizeAndLower(DB.injectionClean(login));
+			final ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+login+"'");
 			if(R!=null) while(R.next())
 			{
 				final String username=DB.getRes(R,"CMUSERID");
@@ -1717,7 +1741,8 @@ public class MOBloader
 		try
 		{
 			D=DB.DBFetch();
-			final ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+name.replace('\'', 'n')+"'");
+			name=DB.injectionClean(name);
+			final ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+name+"'");
 			if(R!=null) while(R.next())
 			{
 				// String username=DB.getRes(R,"CMUSERID");

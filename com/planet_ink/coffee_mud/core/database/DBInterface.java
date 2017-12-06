@@ -808,9 +808,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBDeletePlayer(String mobName)
+	public void DBDeletePlayerOnly(String mobName)
 	{
-		MOBloader.DBDelete(mobName);
+		MOBloader.DBDeleteCharOnly(mobName);
 	}
 
 	@Override

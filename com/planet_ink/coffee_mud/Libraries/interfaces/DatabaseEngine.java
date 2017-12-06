@@ -802,7 +802,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * record and clan affiliation.
 	 * @param mobName the mob to delete
 	 */
-	public void DBDeletePlayer(String mobName);
+	public void DBDeletePlayerOnly(String mobName);
 
 	/**
 	 * Table category: DBPLAYERS
