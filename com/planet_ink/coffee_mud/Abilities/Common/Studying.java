@@ -457,13 +457,19 @@ public class Studying extends CommonSkill
 		if(commands.get(0).equalsIgnoreCase("FORGET") && (commands.size()>1))
 		{
 			commands.remove(0);
-			final Ability A=CMClass.findAbility(CMParms.combine(commands));
-			if(A!=null)
+			final String name=CMParms.combine(commands);
+			if(name.trim().length()==0)
+				mob.tell(L("Forget what?",name));
+			else
 			{
-				if(forget(mob,A.ID()))
-					mob.tell(L("You have forgotten @x1.",A.name()));
-				else
-					mob.tell(L("You haven't studied @x1.",A.name()));
+				final Ability A=CMClass.findAbility(name);
+				if(A!=null)
+				{
+					if(forget(mob,A.ID()))
+						mob.tell(L("You have forgotten @x1.",A.name()));
+					else
+						mob.tell(L("You haven't studied @x1.",A.name()));
+				}
 			}
 			return true;
 		}
