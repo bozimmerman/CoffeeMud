@@ -2059,7 +2059,7 @@ public class CMClass extends ClassLoader
 	 * Given a list of environmentals, this will sort them by {@link Environmental#ID()}
 	 * @param V the list of environmentals
 	 */
-	public static final void sortEnvironmentalsByName(final List<Environmental> V)
+	public static final void sortEnvironmentalsByName(final List<? extends Environmental> V)
 	{
 		Collections.sort(V,new Comparator<Environmental>()
 		{
