@@ -50,9 +50,32 @@ public class Emote extends StdCommand
 	{
 		if(commands.size()<2)
 		{
-			mob.tell(L(" EMOTE what?"));
+			if((commands.size()>0)&&(commands.get(0).equalsIgnoreCase(",")))
+				CMLib.commands().doCommandFail(mob, commands, L(" EMOTE which social? Try SOCIALS."));
+			else
+				CMLib.commands().doCommandFail(mob, commands, L(" EMOTE what?"));
 			return false;
 		}
+		
+		if(commands.get(0).equalsIgnoreCase(","))
+		{
+			commands.remove(0);
+			Social social=CMLib.socials().fetchSocial(commands,true,true);
+			if(social==null)
+			{
+				social=CMLib.socials().fetchSocial(commands,false,true);
+				if(social!=null)
+					commands.set(0,social.baseName());
+			}
+			if(social==null)
+				commands.add(0,",");
+			else
+			{
+				((Social) social).invoke(mob, new XVector<String>(commands), null, false);
+				return true;
+			}
+		}
+		
 		String combinedCommands=CMParms.combine(commands,1);
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.EMOTEFILTER);
 		if(combinedCommands.trim().startsWith("'")||combinedCommands.trim().startsWith("`"))

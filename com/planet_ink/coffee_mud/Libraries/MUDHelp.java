@@ -758,6 +758,12 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
 		if(helpStr.equals("!"))
 			helpStr="EXCLAMATION_POINT";
+		if(helpStr.equals(","))
+			helpStr="COMMA";
+		if(helpStr.equals(":"))
+			helpStr="COLON";
+		if(helpStr.equals(";"))
+			helpStr="SEMICOLON";
 		boolean found=false;
 		if(thisTag==null)
 			thisTag=rHelpFile.getProperty(helpStr);
