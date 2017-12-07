@@ -194,7 +194,7 @@ public class DefaultCharStats implements CharStats
 				((DefaultCharStats)intoStats).bodyAlterations=bodyAlterations.clone();
 			for(int i=0;i<stats.length;i++)
 				((DefaultCharStats)intoStats).stats[i]=stats[i];
-			((DefaultCharStats)intoStats).unwearableBitmap=unwearableBitmap;
+			((DefaultCharStats)intoStats).unwearableBitmap=unwearableBitmap|myRace.forbiddenWornBits();
 		}
 		else
 		{
@@ -208,7 +208,7 @@ public class DefaultCharStats implements CharStats
 			intoStats.setDisplayClassName(displayClassName);
 			intoStats.setDisplayClassLevel(displayClassLevel);
 			intoStats.setBodyPartsFromStringAfterRace(getBodyPartsAsString());
-			intoStats.setWearableRestrictionsBitmap(unwearableBitmap);
+			intoStats.setWearableRestrictionsBitmap(unwearableBitmap|getMyRace().forbiddenWornBits());
 			intoStats.setBreathables(breathables);
 			intoStats.setItemProficiencies(proficiencies);
 		}
@@ -315,7 +315,7 @@ public class DefaultCharStats implements CharStats
 	@Override
 	public long getWearableRestrictionsBitmap()
 	{
-		return unwearableBitmap | this.getMyRace().forbiddenWornBits();
+		return unwearableBitmap;
 	}
 
 	@Override
@@ -651,7 +651,10 @@ public class DefaultCharStats implements CharStats
 	public void setMyRace(Race newVal)
 	{
 		if(newVal != null)
+		{
 			myRace=newVal;
+			unwearableBitmap=unwearableBitmap|myRace.forbiddenWornBits();
+		}
 	}
 
 	@Override
