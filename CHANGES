@@ -33,6 +33,9 @@
   31. New skills:  Planar Lore, Racial Lore, Surveying, Guildmaster, Lecturing
   32. New expertises: Educating, and Legal Lore
   33. New commoner class: Scholar, with achievements to match
+  34. New item type: StdDice and GenDice .. give them a THROW (or ROLL)
+  35. , (comma) is now a way to specify a social precisely.  e.g. ,smile 
+  36. New Property: Prop_WearOverride, for making gear for races that can't wear gear.
   
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.
