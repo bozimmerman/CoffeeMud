@@ -24,6 +24,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Experti
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.StatAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.TitleAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.*;
@@ -1352,19 +1353,50 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuilder journalList(Session viewerS, String partialjournal)
+	public StringBuilder journalList(final MOB mob, Session viewerS, String partialjournal, String rest)
 	{
 		final StringBuilder buf=new StringBuilder("");
 		String journal=null;
+		List<String> flagsV=new ArrayList<String>();
 		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
 			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 			if((CMJ.NAME()+"S").startsWith(partialjournal.toUpperCase().trim()))
+			{
 				journal=CMJ.NAME().trim();
+				flagsV=CMParms.parseCommas(CMJ.getFlag(CommandJournalFlags.ASSIGN), true);
+			}
 		}
 		if(journal==null)
 			return buf;
-		final List<JournalEntry> V=CMLib.database().DBReadJournalMsgsByUpdateDate("SYSTEM_"+journal+"S", true);
+		final String fullJournalName="SYSTEM_"+journal+"S";
+		final List<String> toV=new ArrayList<String>();
+		if(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.LISTADMIN)
+		||(CMSecurity.isAllowed(mob, mob.location(),CMSecurity.SecFlag.JOURNALS))
+		||(CMSecurity.isJournalAccessAllowed(mob,journal)))
+		{
+			if(rest.trim().length()==0)
+			{
+				toV.add("ALL");
+				toV.add(mob.Name());
+			}
+			else
+			{
+				List<String> chosen=CMParms.parseCommas(rest.toUpperCase().trim(), true);
+				for(String chosen1 : chosen)
+				{
+					if(flagsV.contains(chosen1))
+						toV.add(chosen1);
+					else
+					if(CMLib.players().playerExists(CMStrings.capitalizeAndLower(chosen1)))
+						toV.add(CMStrings.capitalizeAndLower(chosen1));
+				}
+			}
+		}
+		else
+			toV.add(mob.Name());
+		
+		final List<JournalEntry> V=CMLib.database().DBReadJournalMsgsByUpdateDate(fullJournalName, true, 100000, toV.toArray(new String[0]));
 		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(10.0,viewerS);
 		if(V!=null)
@@ -4959,7 +4991,7 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.areaTypes()).toString());
 			break;
 		case COMMANDJOURNAL:
-			s.println(journalList(mob.session(), listWord).toString());
+			s.println(journalList(mob,mob.session(), listWord, rest).toString());
 			break;
 		case REALESTATE:
 			s.wraplessPrintln(roomPropertyDetails(mob.session(), mob.location().getArea(), rest).toString());

@@ -287,6 +287,16 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			}
 			final String name=item.toUpperCase().trim();
 			CMSecurity.registerJournal(name);
+			String flagVal = flags.get(CommandJournalFlags.ASSIGN);
+			if(flagVal == null)
+				flags.put(CommandJournalFlags.ASSIGN, "ALL");
+			else
+			{
+				List<String> flagValL=CMParms.parseCommas(flagVal.toUpperCase().trim(), true);
+				if(!flagValL.contains("ALL"))
+					flagValL.add("ALL");
+				flags.put(CommandJournalFlags.ASSIGN, CMParms.toListString(flagValL));
+			}
 			final String journalAdminMask = mask;
 			commandJournals.put(name,new CommandJournal()
 			{

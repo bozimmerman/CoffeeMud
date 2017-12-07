@@ -108,7 +108,10 @@ public interface JournalsLibrary extends CMLibrary
 		EXPIRE,
 		ADMINECHO,
 		CONFIRM,
-		SCRIPT;
+		SCRIPT,
+		REPLYSELF,
+		REPLYALL,
+		ASSIGN;
 	}
 
 	public static interface SMTPJournal
