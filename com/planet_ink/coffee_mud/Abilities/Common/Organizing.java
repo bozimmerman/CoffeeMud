@@ -74,6 +74,7 @@ public class Organizing extends CommonSkill
 		WEIGHT
 	}
 	
+	protected boolean		descending	= false;
 	protected Physical		building	= null;
 	protected OrganizeBy	orgaType	= null;
 	protected boolean		messedUp	= false;
@@ -172,6 +173,8 @@ public class Organizing extends CommonSkill
 								}
 								if((result == 0)&&(orgaT != OrganizeBy.NAME))
 									result=CMLib.english().cleanArticles(o1.Name()).compareTo(CMLib.english().cleanArticles(o2.Name()));
+								if(me.descending)
+									result = (result == 0) ? 0 : (result < 0) ? 1 : -1;
 								return result;
 							}
 						};
@@ -215,6 +218,21 @@ public class Organizing extends CommonSkill
 		building=null;
 		orgaType=null;
 		messedUp=false;
+		this.descending=false;
+		
+		if(commands.size()>2)
+		{
+			if("ASCENDING".startsWith(commands.get(commands.size()-1).toUpperCase()))
+			{
+				commands.remove(commands.size()-1);
+			}
+			else
+			if("DESCENDING".startsWith(commands.get(commands.size()-1).toUpperCase()))
+			{
+				commands.remove(commands.size()-1);
+				this.descending=true;
+			}
+		}
 		
 		if(commands.size()<2)
 		{
@@ -231,6 +249,8 @@ public class Organizing extends CommonSkill
 					+CMLib.english().toEnglishStringList(OrganizeBy.class,false),orgaTypeName));
 			return false;
 		}
+		
+		
 		
 		final String str=CMParms.combine(commands);
 		building=null;
