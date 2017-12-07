@@ -594,16 +594,16 @@ public interface Wearable extends Environmental
 			return -1;
 		}
 		/**
-		 * Returns the index of the names locations, or -1
+		 * Returns the code of the names , or -1
 		 * @param rsc the resource name
-		 * @return the index of the names locations, or -1
+		 * @return the code of the names , or -1
 		 */
 		public static long FIND_ignoreCase(String rsc) { return c().find_ignoreCase(rsc);}
 
 		/**
-		 * Returns the index of the names locations, or -1
+		 * Returns the code of the names , or -1
 		 * @param rsc the resource name
-		 * @return the index of the names locations, or -1
+		 * @return the code of the names , or -1
 		 */
 		public long find_ignoreCase(String rsc)
 		{
