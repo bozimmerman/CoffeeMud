@@ -271,45 +271,26 @@ public class MOTD extends StdCommand
 						if((items!=null)&&(items.size()>0))
 						{
 							final Session session=mob.session();
-							session.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
+							if(session.confirm(L("You have messages waiting response in @x1. Read now (y/N)? ", CMJ.NAME()),"N",5000))
 							{
-								@Override
-								public void showPrompt()
+								int count=0;
+								final Item journalItem=CMClass.getItem("StdJournal");
+								journalItem.setName("SYSTEM_"+CMJ.NAME()+"S");
+								journalItem.setReadableText("FILTER="+mob.Name());
+								while(count<=items.size())
 								{
-									CMLib.s_sleep(1000);
-									session.promptPrint(L("You have messages waiting response in @x1. Read now (Y/n)? ", CMJ.NAME()));
+									final CMMsg msg2=CMClass.getMsg(mob,journalItem,null,CMMsg.MSG_READ,null,CMMsg.MSG_READ,""+count,CMMsg.MSG_READ,null);
+									msg2.setValue(1);
+									journalItem.executeMsg(mob,msg2);
+									if(msg2.value()==0)
+										break;
+									else
+									if(msg2.value()<0)
+										items.remove(count);
+									else
+										count++;
 								}
-
-								@Override
-								public void timedOut()
-								{
-								}
-
-								@Override
-								public void callBack()
-								{
-									if(this.input.equals("Y"))
-									{
-										int count=0;
-										final Item journalItem=CMClass.getItem("StdJournal");
-										journalItem.setName("SYSTEM_"+CMJ.NAME()+"S");
-										journalItem.setReadableText("FILTER="+mob.Name());
-										while(count<=items.size())
-										{
-											final CMMsg msg2=CMClass.getMsg(mob,journalItem,null,CMMsg.MSG_READ,null,CMMsg.MSG_READ,""+count,CMMsg.MSG_READ,null);
-											msg2.setValue(1);
-											journalItem.executeMsg(mob,msg2);
-											if(msg2.value()==0)
-												break;
-											else
-											if(msg2.value()<0)
-												items.remove(count);
-											else
-												count++;
-										}
-									}
-								}
-							});
+							}
 						}
 					}
 				}
