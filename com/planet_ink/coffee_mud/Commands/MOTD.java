@@ -263,7 +263,7 @@ public class MOTD extends StdCommand
 						final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 						if(CMJ.getFlag(CommandJournalFlags.REPLYSELF)==null)
 							continue;
-						long lastDate=0;
+						long lastDate=-1;
 						if(((CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME()))
 							||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)))
 								lastDate=mob.playerStats().getLastDateTime();
@@ -273,7 +273,7 @@ public class MOTD extends StdCommand
 							final Session session=mob.session();
 							if(session.confirm(L("You have messages waiting response in @x1. Read now (y/N)? ", CMJ.NAME()),"N",5000))
 							{
-								int count=0;
+								int count=1;
 								final Item journalItem=CMClass.getItem("StdJournal");
 								journalItem.setName("SYSTEM_"+CMJ.NAME()+"S");
 								journalItem.setReadableText("FILTER="+mob.Name());
@@ -284,6 +284,9 @@ public class MOTD extends StdCommand
 									journalItem.executeMsg(mob,msg2);
 									if(msg2.value()==0)
 										break;
+									else
+									if(msg2.value()<0)
+										items.remove(count-1);
 									else
 									if(msg2.value()>0)
 										count++;

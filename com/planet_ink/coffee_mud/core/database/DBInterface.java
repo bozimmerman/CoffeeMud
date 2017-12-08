@@ -640,9 +640,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBWriteJournalReply(String journalID, String key, String from, String to, String subject, String message)
+	public JournalEntry DBWriteJournalReply(String journalID, String key, String from, String to, String subject, String message)
 	{
-		JournalLoader.DBWriteJournalReply(journalID, key, from, to, subject, message);
+		return JournalLoader.DBWriteJournalReply(journalID, key, from, to, subject, message);
 	}
 
 	@Override

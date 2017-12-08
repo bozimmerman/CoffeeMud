@@ -265,8 +265,13 @@
 									@JournalNext@
 									<OPTION VALUE="@JournalName@">@JournalName?NOCOLOR@
 								@back@
-								</SELECT>
 								@AddRequestParameter?JOURNAL=@@RequestParameter?THISJOURNAL@@ @
+								@JournalInfo?ASSIGN&RESET@
+								@loop@
+									@JournalInfo?ASSIGN&NEXT@
+									<OPTION VALUE="@RequestParameter?JOURNALASSIGN@">@RequestParameter?JOURNALASSIGN@
+								@back@
+								</SELECT>
 								@endif@
 							</TD>
 							<TD WIDTH=17% ALIGN=CENTER VALIGN=TOP>

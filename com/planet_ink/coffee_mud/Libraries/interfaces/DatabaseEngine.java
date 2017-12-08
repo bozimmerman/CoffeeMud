@@ -1162,8 +1162,9 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param to who the recipient of the reply is
 	 * @param subject the subject of the reply
 	 * @param message the reply text
+	 * @return the updated journal entry
 	 */
-	public void DBWriteJournalReply(String journalID, String messageKey, String from, String to, String subject, String message);
+	public JournalEntry DBWriteJournalReply(String journalID, String messageKey, String from, String to, String subject, String message);
 
 	/**
 	 * Table category: DBJOURNALS

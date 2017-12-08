@@ -146,7 +146,7 @@ public class StdJournal extends StdItem implements Book
 		return super.okMessage(myHost,msg);
 	}
 
-	protected void completeTransfer(final MOB mob, final CMMsg msg, String journal, JournalEntry entry2)
+	protected boolean completeTransfer(final MOB mob, final CMMsg msg, String journal, JournalEntry entry2)
 	{
 		String realName=null;
 		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
@@ -173,6 +173,7 @@ public class StdJournal extends StdItem implements Book
 											  entry2.msg());
 			msg.setValue(-1);
 			mob.tell(L("Message transferred."));
+			return true;
 		}
 		else
 		{
@@ -180,7 +181,7 @@ public class StdJournal extends StdItem implements Book
 			if(journal.equalsIgnoreCase("ALL"))
 			{
 				if(entry2.to().equalsIgnoreCase("ALL"))
-					mob.tell(L("Message already assigned to ALL. Aborted."));
+					mob.tell(L("Message already assigned to ALL."));
 				else
 					realName="ALL";
 			}
@@ -188,7 +189,10 @@ public class StdJournal extends StdItem implements Book
 			if(journal.equalsIgnoreCase("FROM"))
 			{
 				if(entry2.to().equalsIgnoreCase(entry2.from()))
-					mob.tell(L("Message already assigned to ALL. Aborted."));
+					mob.tell(L("Message already assigned to @x1.",entry2.from()));
+				else
+				if(entry2.from().equalsIgnoreCase(mob.Name()))
+					mob.tell(L("Message already accessible to @x1.",mob.Name()));
 				else
 					realName=entry2.from();
 			}
@@ -204,15 +208,17 @@ public class StdJournal extends StdItem implements Book
 					realName=journal.toUpperCase().trim();
 			}
 			if(realName == null)
-				mob.tell(L("The journal or user '@x1' does not presently exist.  Aborted.",journal));
+				mob.tell(L("The journal or user '@x1' does not presently exist.",journal));
 			else
 			{
 				entry2.to(realName);
 				CMLib.database().DBUpdateJournal(Name(), entry2);
 				msg.setValue(-1);
 				mob.tell(L("Message transferred."));
+				return true;
 			}
 		}
+		return false;
 	}
 	
 	public JournalsLibrary.CommandJournal getMyCommandJournal()
@@ -418,7 +424,8 @@ public class StdJournal extends StdItem implements Book
 											else
 												journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
 											final JournalEntry entry2=journal2.get(which-1);
-											completeTransfer(mob,msg,journal,entry2);
+											if(completeTransfer(mob,msg,journal,entry2))
+												msg.setValue(-1);
 										}
 										else
 											mob.tell(L("Aborted."));
@@ -444,10 +451,9 @@ public class StdJournal extends StdItem implements Book
 											final String replyMsg=mob.session().prompt(L("Enter your response\n\r: "));
 											if(replyMsg.trim().length()>0)
 											{
-												CMLib.database().DBWriteJournalReply(Name(),read.key(),mob.Name(),"","",replyMsg);
+												read = CMLib.database().DBWriteJournalReply(Name(),read.key(),mob.Name(),"","",replyMsg);
 												if(R!=null)
 													R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Reply added."), CMMsg.MSG_WROTE, replyMsg, -1, null));
-												read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
 												megaRepeat=true;
 												JournalsLibrary.CommandJournal cmJournalAlias=this.getMyCommandJournal();
 												if(cmJournalAlias != null)
@@ -459,16 +465,19 @@ public class StdJournal extends StdItem implements Book
 														{
 															final String journal=cmJournalAlias.getFlag(CommandJournalFlags.REPLYSELF);
 															completeTransfer(mob,msg,journal,read);
+															megaRepeat=false;
 														}
 													}
 													else
-													if(read.to().equalsIgnoreCase("ALL") && (!read.from().equalsIgnoreCase("ALL")))
+													if(read.to().equalsIgnoreCase("ALL") 
+													&& (!read.from().equalsIgnoreCase("ALL")))
 													{
 														if((cmJournalAlias.getFlag(CommandJournalFlags.REPLYALL)!=null)
 														&&(cmJournalAlias.getFlag(CommandJournalFlags.REPLYALL).length()>0))
 														{
 															final String journal=cmJournalAlias.getFlag(CommandJournalFlags.REPLYALL);
 															completeTransfer(mob,msg,journal,read);
+															megaRepeat=false;
 														}
 													}
 												}
@@ -721,16 +730,13 @@ public class StdJournal extends StdItem implements Book
 			}
 		}
 
-		final JournalEntry fakeEntry = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
+		JournalEntry fakeEntry = (JournalEntry)CMClass.getCommon("DefaultJournalEntry");
 		if((which<0)||(which>=journalEntries.size()))
 		{
 			if(journalEntries.size()>0)
 			{
 				final JournalEntry entry=journalEntries.get(0);
-				fakeEntry.key(entry.key());
-				fakeEntry.from(entry.from());
-				fakeEntry.to(entry.to());
-				fakeEntry.subj(entry.subj());
+				fakeEntry = entry.copyOf();
 			}
 			int numToAdd=CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
 			if((numToAdd==0)||(all))
@@ -756,11 +762,7 @@ public class StdJournal extends StdItem implements Book
 						break;
 					numToAdd--;
 					finalEntries.add(Integer.valueOf(j));
-					fakeEntry.key(entry.key());
-					fakeEntry.from(entry.from());
-					fakeEntry.to(to);
-					fakeEntry.subj(entry.subj());
-					fakeEntry.cardinal(entry.cardinal());
+					fakeEntry = entry.copyOf();
 				}
 			}
 			final ArrayList<CharSequence> selections=new ArrayList<CharSequence>();
@@ -811,11 +813,7 @@ public class StdJournal extends StdItem implements Book
 			final String subject=entry.subj();
 			String message=entry.msg();
 
-			fakeEntry.key(entry.key());
-			fakeEntry.from(entry.from());
-			fakeEntry.to(to);
-			fakeEntry.subj(entry.subj());
-			fakeEntry.cardinal(entry.cardinal());
+			fakeEntry = entry.copyOf();
 
 			boolean allMine=(to.equalsIgnoreCase(reader.Name())
 							||from.equalsIgnoreCase(reader.Name()));
