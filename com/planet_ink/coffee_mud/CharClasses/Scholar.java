@@ -211,8 +211,8 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Surveying",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_HonoraryDegreeDruid",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Lecturing",true);
-
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Lecturing",true);
+		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Comprehension",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_HonoraryDegreeCleric",false);
 		
