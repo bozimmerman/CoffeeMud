@@ -263,7 +263,7 @@ public class MOTD extends StdCommand
 						final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 						if(CMJ.getFlag(CommandJournalFlags.REPLYSELF)==null)
 							continue;
-						final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan("SYSTEM_"+CMJ.NAME()+"S", mob.Name(), -1);
+						final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan(CMJ.JOURNAL_NAME(), mob.Name(), -1);
 						if((items!=null)&&(items.size()>0))
 						{
 							final Session session=mob.session();
@@ -271,7 +271,7 @@ public class MOTD extends StdCommand
 							{
 								int count=1;
 								final Item journalItem=CMClass.getItem("StdJournal");
-								journalItem.setName("SYSTEM_"+CMJ.NAME()+"S");
+								journalItem.setName(CMJ.JOURNAL_NAME());
 								journalItem.setReadableText("FILTER="+mob.Name());
 								while(count<=items.size())
 								{

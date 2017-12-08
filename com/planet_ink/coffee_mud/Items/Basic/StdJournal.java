@@ -155,7 +155,7 @@ public class StdJournal extends StdItem implements Book
 			if(journal.equalsIgnoreCase(CMJ.NAME())
 			||journal.equalsIgnoreCase(CMJ.NAME()+"S"))
 			{
-				realName="SYSTEM_"+CMJ.NAME()+"S";
+				realName=CMJ.JOURNAL_NAME();
 				break;
 			}
 		}
@@ -228,9 +228,7 @@ public class StdJournal extends StdItem implements Book
 		{
 			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 			if(Name().equalsIgnoreCase(CMJ.NAME())
-			||Name().equalsIgnoreCase(CMJ.NAME()+"S")
-			||Name().equalsIgnoreCase("SYSTEM_"+CMJ.NAME())
-			||Name().equalsIgnoreCase("SYSTEM_"+CMJ.NAME()+"S"))
+			||Name().equalsIgnoreCase(CMJ.JOURNAL_NAME()))
 				cmJournalAlias=CMJ;
 		}
 		return cmJournalAlias;
