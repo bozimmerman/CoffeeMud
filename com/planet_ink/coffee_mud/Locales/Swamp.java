@@ -65,6 +65,7 @@ public class Swamp extends StdRoom implements Drink
 		&&(msg.source().curState().getHitPoints()<msg.source().maxState().getHitPoints())
 		&&(CMLib.dice().rollPercentage()==1)
 		&&(CMLib.dice().rollPercentage()==1)
+		&&(isInhabitant(msg.source()))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			Ability A=null;

@@ -66,11 +66,12 @@ public class CaveRoom extends StdRoom
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
-		   &&(!msg.source().isMonster())
-		   &&(msg.source().curState().getHitPoints()<msg.source().maxState().getHitPoints())
-		   &&(CMLib.dice().rollPercentage()==1)
-		   &&(CMLib.dice().rollPercentage()==1)
-		   &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+		&&(!msg.source().isMonster())
+		&&(msg.source().curState().getHitPoints()<msg.source().maxState().getHitPoints())
+		&&(CMLib.dice().rollPercentage()==1)
+		&&(CMLib.dice().rollPercentage()==1)
+		&&(isInhabitant(msg.source()))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			final Ability A=CMClass.getAbility("Disease_Syphilis");
 			if((A!=null)&&(msg.source().fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
