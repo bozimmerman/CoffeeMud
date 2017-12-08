@@ -111,6 +111,7 @@ public interface JournalsLibrary extends CMLibrary
 		SCRIPT,
 		REPLYSELF,
 		REPLYALL,
+		MOTD,
 		ASSIGN;
 	}
 

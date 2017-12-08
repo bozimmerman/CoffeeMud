@@ -261,7 +261,7 @@ public class MOTD extends StdCommand
 					for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 					{
 						final JournalsLibrary.CommandJournal CMJ=e.nextElement();
-						if(CMJ.getFlag(CommandJournalFlags.REPLYSELF)==null)
+						if(CMJ.getFlag(CommandJournalFlags.MOTD)==null)
 							continue;
 						final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan(CMJ.JOURNAL_NAME(), mob.Name(), -1);
 						if((items!=null)&&(items.size()>0))
