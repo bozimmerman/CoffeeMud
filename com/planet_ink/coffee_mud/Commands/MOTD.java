@@ -263,11 +263,7 @@ public class MOTD extends StdCommand
 						final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 						if(CMJ.getFlag(CommandJournalFlags.REPLYSELF)==null)
 							continue;
-						long lastDate=-1;
-						if(((CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME()))
-							||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.JOURNALS)))
-								lastDate=mob.playerStats().getLastDateTime();
-						final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan("SYSTEM_"+CMJ.NAME()+"S", mob.Name(), lastDate);
+						final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan("SYSTEM_"+CMJ.NAME()+"S", mob.Name(), -1);
 						if((items!=null)&&(items.size()>0))
 						{
 							final Session session=mob.session();
