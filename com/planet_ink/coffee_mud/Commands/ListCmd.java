@@ -1364,7 +1364,7 @@ public class ListCmd extends StdCommand
 			if((CMJ.NAME()+"S").startsWith(partialjournal.toUpperCase().trim()))
 			{
 				journal=CMJ.NAME().trim();
-				flagsV=CMParms.parseCommas(CMJ.getFlag(CommandJournalFlags.ASSIGN), true);
+				flagsV=CMParms.parseAny(CMJ.getFlag(CommandJournalFlags.ASSIGN), ':', true);
 			}
 		}
 		if(journal==null)
@@ -1399,16 +1399,24 @@ public class ListCmd extends StdCommand
 		final List<JournalEntry> V=CMLib.database().DBReadJournalMsgsByUpdateDate(fullJournalName, true, 100000, toV.toArray(new String[0]));
 		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(10.0,viewerS);
+		final int COL_LEN3=CMLib.lister().fixColWidth(10.0,viewerS);
 		if(V!=null)
 		{
-			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1+2)+CMStrings.padRight(L("From"),COL_LEN2)+" Entry^.^N\n\r");
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1+2)
+					+CMStrings.padRight(L("From"),COL_LEN2)
+					+CMStrings.padRight(L("To"),COL_LEN3)
+					+" Entry^.^N\n\r");
 			buf.append("---------------------------------------------\n\r");
 			for(int j=0;j<V.size();j++)
 			{
 				final JournalEntry entry=V.get(j);
 				final String from=entry.from();
 				final String message=entry.msg();
-				buf.append("^x"+CMStrings.padRight((j+1)+"",COL_LEN1)+") "+CMStrings.padRight(from,COL_LEN2)+"^?^. "+message+"\n\r");
+				final String to=entry.to();
+				buf.append("^x"+CMStrings.padRight((j+1)+"",COL_LEN1)+") "
+				+CMStrings.padRight(from,COL_LEN2)
+				+CMStrings.padRight(to,COL_LEN2)
+				+"^?^. "+message+"\n\r");
 			}
 		}
 		return buf;

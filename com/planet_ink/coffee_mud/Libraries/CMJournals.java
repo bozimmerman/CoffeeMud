@@ -292,10 +292,13 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				flags.put(CommandJournalFlags.ASSIGN, "ALL");
 			else
 			{
-				List<String> flagValL=CMParms.parseCommas(flagVal.toUpperCase().trim(), true);
+				List<String> flagValL=CMParms.parseAny(flagVal.toUpperCase().trim(), ':', true);
 				if(!flagValL.contains("ALL"))
 					flagValL.add("ALL");
-				flags.put(CommandJournalFlags.ASSIGN, CMParms.toListString(flagValL));
+				StringBuilder newFlags=new StringBuilder("");
+				for(String flag : flagValL)
+					newFlags.append(flag).append(':');
+				flags.put(CommandJournalFlags.ASSIGN, newFlags.toString());
 			}
 			final String journalAdminMask = mask;
 			commandJournals.put(name,new CommandJournal()

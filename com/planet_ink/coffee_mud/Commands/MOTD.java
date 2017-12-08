@@ -285,9 +285,7 @@ public class MOTD extends StdCommand
 									if(msg2.value()==0)
 										break;
 									else
-									if(msg2.value()<0)
-										items.remove(count);
-									else
+									if(msg2.value()>0)
 										count++;
 								}
 							}

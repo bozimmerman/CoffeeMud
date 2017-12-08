@@ -199,7 +199,7 @@ public class StdJournal extends StdItem implements Book
 			if(cmJournalAlias!=null)
 			{
 				String otherToStr=cmJournalAlias.getFlag(CommandJournalFlags.ASSIGN);
-				List<String> otherTos = CMParms.parseCommas(otherToStr, true);
+				List<String> otherTos = CMParms.parseAny(otherToStr, ':', true);
 				if(otherTos.contains(journal.toUpperCase().trim()))
 					realName=journal.toUpperCase().trim();
 			}
@@ -467,7 +467,7 @@ public class StdJournal extends StdItem implements Book
 														if((cmJournalAlias.getFlag(CommandJournalFlags.REPLYALL)!=null)
 														&&(cmJournalAlias.getFlag(CommandJournalFlags.REPLYALL).length()>0))
 														{
-															final String journal=cmJournalAlias.getFlag(CommandJournalFlags.REPLYSELF);
+															final String journal=cmJournalAlias.getFlag(CommandJournalFlags.REPLYALL);
 															completeTransfer(mob,msg,journal,read);
 														}
 													}
