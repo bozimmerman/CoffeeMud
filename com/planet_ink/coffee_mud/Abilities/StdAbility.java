@@ -360,9 +360,12 @@ public class StdAbility implements Ability
 
 	protected synchronized int expertise(final MOB mob, final Ability A, final ExpertiseLibrary.Flag code)
 	{
-		if((mob!=null)&&(A.isNowAnAutoEffect()||(A.canBeUninvoked())||A.isAutoInvoked()))
+		if((mob!=null)
+		&&(A.isNowAnAutoEffect()
+			||(A.canBeUninvoked())
+			||A.isAutoInvoked()))
 		{
-			return CMLib.expertises().getExpertiseLevel(mob, A.ID(), ExpertiseLibrary.Flag.LEVEL);
+			return CMLib.expertises().getExpertiseLevel(mob, A.ID(), code);
 		}
 		return 0;
 	}
