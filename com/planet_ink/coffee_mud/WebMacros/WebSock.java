@@ -196,7 +196,7 @@ public class WebSock extends StdWebMacro
 				{
 					try
 					{
-						final CoffeeIOPipes pipes = new CoffeeIOPipes(16384);
+						final CoffeeIOPipes pipes = new CoffeeIOPipes(65536);
 						lsock=new PipeSocket(httpReq.getClientAddress(),pipes.getLeftPipe(),pipes.getRightPipe());
 						rsock=new PipeSocket(httpReq.getClientAddress(),pipes.getRightPipe(),pipes.getLeftPipe());
 						h.acceptConnection(rsock);

@@ -251,7 +251,7 @@ public class SipletInterface extends StdWebMacro
 						{
 							try
 							{
-								final CoffeeIOPipes pipes = new CoffeeIOPipes(16384);
+								final CoffeeIOPipes pipes = new CoffeeIOPipes(65536);
 								final PipeSocket lsock=new PipeSocket(httpReq.getClientAddress(),pipes.getLeftPipe(),pipes.getRightPipe());
 								final PipeSocket rsock=new PipeSocket(httpReq.getClientAddress(),pipes.getRightPipe(),pipes.getLeftPipe());
 								success=sip.connectToURL(url, port, lsock);
