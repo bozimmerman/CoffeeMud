@@ -207,6 +207,7 @@ public class Ranger extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_WindGust",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_HoldAnimal",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_AnimalCompanion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Trip",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_Bury",false);
