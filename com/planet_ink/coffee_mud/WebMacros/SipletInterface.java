@@ -191,6 +191,12 @@ public class SipletInterface extends StdWebMacro
 							continue;
 						if(p.parentIOHandler != null)
 						{
+							if(!p.siplet.isConnectedToURL())
+							{
+								p.parentIOHandler.closeAndWait();
+								siplets.remove(key);
+							}
+							else
 							if(p.siplet.hasWaitingData())
 								p.parentIOHandler.scheduleProcessing();
 						}

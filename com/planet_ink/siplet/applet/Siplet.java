@@ -145,8 +145,9 @@ public class Siplet
 		{
 			return this.in[0].ready() || this.rawin.available() > 0;
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
+			this.disconnectFromURL();
 			return false;
 		}
 	}
@@ -316,7 +317,18 @@ public class Siplet
 
 	public boolean isConnectedToURL()
 	{
-		return connected;
+		try
+		{
+			if(connected
+			&&(!sock.isClosed())
+			&&(sock.isConnected()))
+				return true;
+		}
+		catch(Exception e)
+		{
+			connected=false;
+		}
+		return false;
 	}
 
 	public void readURLData()
