@@ -439,6 +439,12 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		}
 		else
 		{
+			String label="";
+			if((commands.size()>2) && ("LABEL".equalsIgnoreCase(str)))
+			{
+				commands.remove(0);
+				label=commands.remove(1);
+			}
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
@@ -517,7 +523,16 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
-			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
+			String recipeFinalName=foundRecipe.get(RCP_FINALNAME);
+			if((label.length()>0) && (buildingI instanceof Container))
+			{
+				int x=recipeFinalName.indexOf('%');
+				if((x>=0)
+				&&(x<recipeFinalName.length()-1)
+				&&(recipeFinalName.charAt(x+1)==' '))
+					recipeFinalName=recipeFinalName.substring(0,x+1)+label+recipeFinalName.substring(x+1);
+			}
+			String itemName=replacePercent(recipeFinalName,RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else

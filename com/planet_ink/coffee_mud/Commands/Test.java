@@ -2638,6 +2638,16 @@ public class Test extends StdCommand
 				}
 			}
 			if((what.equalsIgnoreCase("all"))
+			||(what.equalsIgnoreCase("spacemotion")))
+			{
+				double[] curDirection = new double[2];
+				double curSpeed = 0;
+				long newAccelleration = 0;
+				double[] accelDirection = new double[2];
+				curSpeed = CMLib.map().moveSpaceObject(curDirection,curSpeed,accelDirection, newAccelleration);
+				//TODO: come up with some tests for this.
+			}
+			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("notrandom")))
 			{
 				mob.tell(""+CMath.NotRandomHigh.nextInt());
@@ -2645,7 +2655,7 @@ public class Test extends StdCommand
 				mob.tell(""+CMath.NotRandomHigh.nextLong());
 				mob.tell(""+CMath.NotRandomHigh.nextDouble());
 			}
-			
+
 			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("clans")))
 			{

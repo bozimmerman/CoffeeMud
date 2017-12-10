@@ -245,11 +245,19 @@ public class LockSmith extends CraftingSkill
 			commands.remove(0);
 		}
 		boolean ldelock=false;
+		String label = "";
 		if((commands.size()>0)&&("DELOCK".startsWith((commands.get(0)).toUpperCase())))
 		{
 			ldelock=true;
 			commands.remove(0);
 		}
+		else
+		if((commands.size()>2)&&("LABEL".equalsIgnoreCase((commands.get(0)).toUpperCase())))
+		{
+			commands.remove(0);
+			label = " " + commands.remove(1);
+		}
+		
 		final String recipeName=CMParms.combine(commands,0);
 		final int dir=CMLib.directions().getGoodDirectionCode(recipeName);
 		if(dir<0)
@@ -349,9 +357,9 @@ public class LockSmith extends CraftingSkill
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
-			itemName=(RawMaterial.CODES.NAME(data[0][FOUND_CODE])+" key").toLowerCase();
-			itemName=CMLib.english().startWithAorAn(itemName);
 			makeResource=data[0][FOUND_CODE];
+			itemName=(RawMaterial.CODES.NAME(makeResource)+label+" key").toLowerCase();
+			itemName=CMLib.english().startWithAorAn(itemName);
 		}
 		buildingI=getBuilding(workingOn);
 		if(buildingI==null)

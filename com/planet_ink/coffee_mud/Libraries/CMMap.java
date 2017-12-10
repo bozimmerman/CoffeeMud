@@ -532,15 +532,21 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 	
 	@Override
-	public void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration)
+	public void moveSpaceObject(final SpaceObject O, final double[] accelDirection, final long newAccelleration)
 	{
-		final double directionYaw = O.direction()[0];
-		final double directionPitch = (O.direction()[1] > Math.PI) ? Math.abs(Math.PI-O.direction()[1]) : O.direction()[1];
+		O.setSpeed(moveSpaceObject(O.direction(),O.speed(),accelDirection,newAccelleration));
+	}
 
-		final double facingYaw = newDirection[0];
-		final double facingPitch = (newDirection[1] > Math.PI) ? Math.abs(Math.PI-newDirection[1]) : newDirection[1];
+	@Override
+	public double moveSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final long newAccelleration)
+	{
+		final double directionYaw = curDirection[0];
+		final double directionPitch = (curDirection[1] > Math.PI) ? Math.abs(Math.PI-curDirection[1]) : curDirection[1];
 
-		final double currentSpeed = O.speed();
+		final double facingYaw = accelDirection[0];
+		final double facingPitch = (accelDirection[1] > Math.PI) ? Math.abs(Math.PI-accelDirection[1]) : accelDirection[1];
+
+		final double currentSpeed = curSpeed;
 		final double acceleration = newAccelleration;
 
 		double yawDelta = (directionYaw >  facingYaw) ? (directionYaw - facingYaw) : (facingYaw - directionYaw);
@@ -576,14 +582,14 @@ public class CMMap extends StdLibrary implements WorldMap
 			newDirectionPitch = facingPitch;
 		}
 
-		if((O.direction()[0]>Math.PI)&&(O.direction()[1]<=Math.PI))
+		if((curDirection[0]>Math.PI)&&(curDirection[1]<=Math.PI))
 			newDirectionPitch=Math.PI+newDirectionPitch;
 
-		O.direction()[0]=newDirectionYaw;
-		O.direction()[1]=newDirectionPitch;
-		O.setSpeed(newSpeed);
+		curDirection[0]=newDirectionYaw;
+		curDirection[1]=newDirectionPitch;
+		return newSpeed;
 	}
-
+	
 	@Override
 	public TechComponent.ShipDir getDirectionFromDir(double[] facing, double roll, double[] direction)
 	{
