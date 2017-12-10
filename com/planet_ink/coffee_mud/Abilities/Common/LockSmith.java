@@ -256,6 +256,11 @@ public class LockSmith extends CraftingSkill
 		{
 			commands.remove(0);
 			label = commands.remove(0);
+			if((label.length()>7) || (label.indexOf(' ')>=0))
+			{
+				commonTell(mob,L("That can't be etched on a key."));
+				return false;
+			}
 		}
 		
 		final String recipeName=CMParms.combine(commands,0);

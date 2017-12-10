@@ -444,6 +444,11 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			{
 				commands.remove(0);
 				label=commands.remove(0);
+				if((label.length()>7) || (label.indexOf(' ')>=0))
+				{
+					commonTell(mob,L("That's too much label."));
+					return false;
+				}
 			}
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
