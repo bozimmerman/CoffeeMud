@@ -303,6 +303,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	}
 
 	@Override
+	public boolean postWear(MOB mob, Item item, boolean quiet)
+	{
+		return ((Boolean)forceInternalCommand(mob,"Wear",item,Boolean.valueOf(quiet))).booleanValue();
+	}
+
+	@Override
 	public void postLook(MOB mob, boolean quiet)
 	{
 		if(quiet)
