@@ -176,12 +176,48 @@ public class Prop_OutfitContainer extends Property
 				}
 				if(thingsToWear.size()>0)
 				{
-					List<Item> thingsToRemove = new ArrayList<Item>(outfitContents.size());
+					final MOB mob=msg.source();
+					final List<Item> thingsToRemove = new ArrayList<Item>(outfitContents.size());
+					List<Item> thingsToReDo = new ArrayList<Item>(1);
 					for(Item I : thingsToWear)
 					{
-						//TODO: find things I'm wearing where this would go
-						// but aren't from the contents.
+						if(I.canWear(msg.source(), 0))
+							continue;
+						long cantWearAt=I.whereCantWear(mob);
+						final Item alreadyWearingI=(cantWearAt==0)?null:mob.fetchFirstWornItem(cantWearAt);
+						if((alreadyWearingI != null)
+						&&(!thingsToRemove.contains(alreadyWearingI))
+						&&(!thingsToWear.contains(alreadyWearingI)))
+						{
+							thingsToRemove.add(alreadyWearingI);
+							continue;
+						}
+						
+						boolean done=false;
+						for(Enumeration<Item> i=msg.source().items();i.hasMoreElements();)
+						{
+							final Item chkI=i.nextElement();
+							if(chkI==null)
+								continue;
+							if((thingsToRemove.contains(chkI))
+							||(thingsToWear.contains(chkI))
+							||(chkI.amWearingAt(Item.IN_INVENTORY))
+							||((chkI.rawProperLocationBitmap() & I.rawProperLocationBitmap())==0))
+								continue;
+							long oldWornCode = chkI.rawWornCode();
+							chkI.setRawWornCode(Item.IN_INVENTORY);
+							if(I.canWear(msg.source(), 0))
+							{
+								chkI.setRawWornCode(oldWornCode);
+								thingsToRemove.add(I);
+								done=true;
+								break;
+							}
+						}
+						if(!done)
+							thingsToReDo.add(I);
 					}
+					
 					for(Item I : thingsToRemove)
 						CMLib.commands().postRemove(msg.source(), I, true);
 					for(Item I : thingsToWear)
