@@ -38,6 +38,7 @@
   36. New Property: Prop_WearOverride, for making gear for races that can't wear gear.
   37. New CommandJournal flags: ASSIGN, REPLYSELF, REPLYALL for assigning to people and categories.
   38. Locksmith can now label keys.  Weavers can now label containers (bags, sacks, baskets..)
+  39. New Property: Prop_OutfitContainer, for making gear sets you can swap in/out.
 
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.

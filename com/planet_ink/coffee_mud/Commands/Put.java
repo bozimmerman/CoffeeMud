@@ -39,6 +39,12 @@ public class Put extends StdCommand
 	{
 	}
 
+	@SuppressWarnings("rawtypes")
+	private final static Class[][] internalParameters=new Class[][]
+	{
+		{Item.class,Container.class,Boolean.class},
+	};
+
 	private final String[]	access	= I(new String[] { "PUT", "PU", "P" });
 
 	@Override
@@ -79,6 +85,26 @@ public class Put extends StdCommand
 					R.send(mob,msg);
 			}
 		}
+	}
+
+	public boolean put(MOB mob, Environmental container, Item putThis, boolean quiet)
+	{
+		final Room R=mob.location();
+		final String putWord=(container instanceof Rideable)?((Rideable)container).putString(mob):"in";
+		final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,quiet?null:L("<S-NAME> put(s) <O-NAME> @x1 <T-NAME>.",putWord));
+		boolean success;
+		if(R.okMessage(mob,putMsg))
+		{
+			R.send(mob,putMsg);
+			success = true;
+		}
+		else
+			success = false;
+		if(putThis instanceof Coins)
+			((Coins)putThis).putCoinsBack();
+		if(putThis instanceof RawMaterial)
+			((RawMaterial)putThis).rebundle();
+		return success;
 	}
 
 	@Override
@@ -229,18 +255,36 @@ public class Put extends StdCommand
 		for(int i=0;i<V.size();i++)
 		{
 			putThis=V.get(i);
-			final String putWord=(container instanceof Rideable)?((Rideable)container).putString(mob):"in";
-			final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,L("<S-NAME> put(s) <O-NAME> @x1 <T-NAME>.",putWord));
-			if(R.okMessage(mob,putMsg))
-				R.send(mob,putMsg);
-			if(putThis instanceof Coins)
-				((Coins)putThis).putCoinsBack();
-			if(putThis instanceof RawMaterial)
-				((RawMaterial)putThis).rebundle();
+			put(mob,container,putThis,false);
 		}
 		R.recoverRoomStats();
 		R.recoverRoomStats();
 		return false;
+	}
+	
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		
+		if(args[0] instanceof Item)
+		{
+			final Item item=(Item)args[0];
+			Item container=null;
+			boolean quiet=false;
+			for(int i=1;i<args.length;i++)
+			{
+				if(args[i] instanceof Container)
+					container=(Item)args[1];
+				else
+				if(args[i] instanceof Boolean)
+					quiet=((Boolean)args[i]).booleanValue();
+			}
+			final boolean success=put(mob,container,item,quiet);
+			return Boolean.valueOf(success);
+		}
+		return Boolean.FALSE;
 	}
 	
 	@Override

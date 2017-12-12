@@ -441,7 +441,7 @@ public class JournalFunction extends StdWebMacro
 						{
 							if(realName==null)
 								realName=CMLib.database().DBGetRealJournalName(journal);
-							if((realName==null)&&(journal!=null))
+							if(realName==null)
 								realName=CMLib.database().DBGetRealJournalName(journal.toUpperCase());
 							if(realName==null)
 								messages.append("The journal '"+journal+"' does not presently exist.  Aborted.<BR>");

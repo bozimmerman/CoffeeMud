@@ -50,6 +50,7 @@ public interface CommonCommands extends CMLibrary
 	public boolean postGive(MOB mob, MOB targetM, Item giveThis, boolean quiet);
 	public boolean postOpen(MOB mob, Environmental openThis, boolean quiet);
 	public boolean postGet(MOB mob, Item container, Item getThis, boolean quiet);
+	public boolean postPut(MOB mob, Item container, Item getThis, boolean quiet);
 	public boolean postRemove(MOB mob, Item item, boolean quiet);
 	public boolean postWear(MOB mob, Item item, boolean quiet);
 	public void postLook(MOB mob, boolean quiet);

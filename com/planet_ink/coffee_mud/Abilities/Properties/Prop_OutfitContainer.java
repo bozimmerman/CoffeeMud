@@ -73,11 +73,11 @@ public class Prop_OutfitContainer extends Property
 	{
 		final Item affected = (this.affected instanceof Item)? (Item)this.affected : null;
 		if((!fixedYet)
-		&&(affected instanceof Item)
-		&&(((Item)affected).owner() instanceof MOB))
+		&&(affected != null)
+		&&(affected.owner() instanceof MOB))
 		{
 			this.outfitContents.clear();
-			final MOB mob=(MOB)((Item)affected).owner();
+			final MOB mob=(MOB)affected.owner();
 			if(mob.numItems() > 0)
 			{
 				fixedYet = true;
@@ -123,7 +123,7 @@ public class Prop_OutfitContainer extends Property
 		fixContentsFromText();
 		StringBuilder str=new StringBuilder(";");
 		for(Item I : this.outfitContents)
-			str.append("<I>"+CMLib.xml().parseOutAngleBrackets(I.Name())+"<I>");
+			str.append("<I>"+CMLib.xml().parseOutAngleBrackets(I.Name())+"</I>");
 		return str.toString();
 	}
 	
@@ -166,8 +166,10 @@ public class Prop_OutfitContainer extends Property
 				}
 			}
 			if((msg.targetMinor() == CMMsg.TYP_WEAR)
-			&&(msg.target() == affected))
+			||(msg.targetMinor() == CMMsg.TYP_HOLD)
+			||(msg.targetMinor() == CMMsg.TYP_WIELD))
 			{
+				fixContentsFromText();
 				final List<Item> thingsToWear = new ArrayList<Item>(outfitContents.size());
 				for(Item I : outfitContents)
 				{
@@ -231,8 +233,9 @@ public class Prop_OutfitContainer extends Property
 							CMLib.commands().postGet(msg.source(), affected, I, true);
 							I.setContainer(null);
 						}
-						CMLib.commands().postWear(msg.source(),I, true);
+						CMLib.commands().postWear(msg.source(),I, false);
 					}
+					return false;
 				}
 			}
 		}
@@ -243,13 +246,27 @@ public class Prop_OutfitContainer extends Property
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		final Container affected = (this.affected instanceof Container)? (Container)this.affected : null;
+		super.executeMsg(myHost, msg);
 		if((msg.targetMinor() == CMMsg.TYP_REMOVE)
 		&&(msg.target() instanceof Item)
 		&&(outfitContents.contains(msg.target())))
 		{
-			((Item)msg.target()).setContainer(affected);
+			final Item item=(Item)msg.target();
+			final MOB mob=msg.source();
+			if(item.container() == null)
+			{
+				msg.addTrailerRunnable(new Runnable(){
+					final Item I=item;
+					final MOB M = mob;
+					@Override
+					public void run()
+					{
+						CMLib.commands().postPut(M, affected, I, true);
+						
+					}
+				});
+			}
 		}
-		super.executeMsg(myHost, msg);
 	}
 
 }

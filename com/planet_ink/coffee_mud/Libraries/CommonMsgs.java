@@ -297,6 +297,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	}
 
 	@Override
+	public boolean postPut(MOB mob, Item container, Item getThis, boolean quiet)
+	{
+		if(container==null)
+			return ((Boolean)forceInternalCommand(mob,"Put",getThis,Boolean.valueOf(quiet))).booleanValue();
+		return ((Boolean)forceInternalCommand(mob,"Put",getThis,container,Boolean.valueOf(quiet))).booleanValue();
+	}
+
+	@Override
 	public boolean postRemove(MOB mob, Item item, boolean quiet)
 	{
 		return ((Boolean)forceInternalCommand(mob,"Remove",item,Boolean.valueOf(quiet))).booleanValue();

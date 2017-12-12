@@ -1258,19 +1258,45 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		{
 			switch(state)
 			{
-			case START:				startState(buf.charAt(bufDex)); break;
-			case BEFORETAG:			beforeTag(buf.charAt(bufDex)); break;
-			case INTAG:				inTag(buf.charAt(bufDex)); break;
-			case BEGINTAGSELFEND:	beginTagSelfEnd(buf.charAt(bufDex)); break;
-			case BEFORECLOSETAG:	beforeCloseTag(buf.charAt(bufDex)); break;
-			case INCLOSETAG:		inCloseTag(buf.charAt(bufDex)); break;
-			case AFTERCLOSETAG:		afterCloseTag(buf.charAt(bufDex)); break;
-			case BEFOREATTRIB:		beforeAttrib(buf.charAt(bufDex)); break;
-			case INATTRIB:			inAttrib(buf.charAt(bufDex)); break;
-			case INPOSTATTRIB:		inPostAttrib(buf.charAt(bufDex)); break;
-			case BEFOREATTRIBVALUE:	beforeAttribValue(buf.charAt(bufDex)); break;
-			case INATTRIBVALUE:		inAttribValue(buf.charAt(bufDex)); break;
-			case INQUOTEDATTRIBVALUE: inQuotedAttribValue(buf.charAt(bufDex)); break;
+			case START:
+				startState(buf.charAt(bufDex));
+				break;
+			case BEFORETAG:
+				beforeTag(buf.charAt(bufDex));
+				break;
+			case INTAG:
+				inTag(buf.charAt(bufDex));
+				break;
+			case BEGINTAGSELFEND:
+				beginTagSelfEnd(buf.charAt(bufDex));
+				break;
+			case BEFORECLOSETAG:
+				beforeCloseTag(buf.charAt(bufDex));
+				break;
+			case INCLOSETAG:
+				inCloseTag(buf.charAt(bufDex));
+				break;
+			case AFTERCLOSETAG:
+				afterCloseTag(buf.charAt(bufDex));
+				break;
+			case BEFOREATTRIB:
+				beforeAttrib(buf.charAt(bufDex));
+				break;
+			case INATTRIB:
+				inAttrib(buf.charAt(bufDex));
+				break;
+			case INPOSTATTRIB:
+				inPostAttrib(buf.charAt(bufDex));
+				break;
+			case BEFOREATTRIBVALUE:
+				beforeAttribValue(buf.charAt(bufDex));
+				break;
+			case INATTRIBVALUE:
+				inAttribValue(buf.charAt(bufDex));
+				break;
+			case INQUOTEDATTRIBVALUE:
+				inQuotedAttribValue(buf.charAt(bufDex));
+				break;
 			}
 		}
 		while((piece!=null)&&(piece.parent()!=null))

@@ -71,7 +71,7 @@ public class Emote extends StdCommand
 				commands.add(0,",");
 			else
 			{
-				((Social) social).invoke(mob, new XVector<String>(commands), null, false);
+				social.invoke(mob, new XVector<String>(commands), null, false);
 				return true;
 			}
 		}
