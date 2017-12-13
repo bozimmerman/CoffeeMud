@@ -65,7 +65,7 @@ public class MeatCuring extends CommonSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_CALLIGRAPHY;
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_EPICUREAN;
 	}
 
 	protected Item		found	= null;

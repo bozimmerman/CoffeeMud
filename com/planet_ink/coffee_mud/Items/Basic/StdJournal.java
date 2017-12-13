@@ -290,8 +290,8 @@ public class StdJournal extends StdItem implements Book
 							entry.setCharAt(0,' ');
 						}
 						if((entry.charAt(0)=='*')
-						   ||(admin)
-						   ||(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.JOURNALS)))
+						||(admin)
+						||(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.JOURNALS)))
 						{
 							mineAble=true;
 							entry.setCharAt(0,' ');

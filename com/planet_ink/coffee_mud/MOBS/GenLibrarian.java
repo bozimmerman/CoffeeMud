@@ -136,9 +136,9 @@ public class GenLibrarian extends StdLibrarian
 		case 4:
 			return "" + this.getDailyOverdueCharge();
 		case 5:
-			return "" + CMath.toPct(this.getOverdueChargePct());
+			return "" + CMath.toPct(100.0*this.getOverdueChargePct());
 		case 6:
-			return "" + CMath.toPct(this.getDailyOverdueChargePct());
+			return "" + CMath.toPct(100.0*this.getDailyOverdueChargePct());
 		case 7:
 			return "" + this.getMinOverdueDays();
 		case 8:
