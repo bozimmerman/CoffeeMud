@@ -83,6 +83,7 @@ public class Chant_SpeedAging extends Chant
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
+		Set<MOB> casterGrp = mob.getGroupMembers(new HashSet<MOB>());
 		int type=verbalCastCode(mob,target,auto);
 		if((target instanceof MOB)
 		&&(CMath.bset(type,CMMsg.MASK_MALICIOUS))
@@ -92,7 +93,7 @@ public class Chant_SpeedAging extends Chant
 			if(mobt.charStats().ageCategory()<=Race.AGE_CHILD)
 				type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
 			else
-			if((mobt.getLiegeID().equals(mob.Name()))||(mobt.amFollowing()==mob))
+			if((mobt.getLiegeID().equals(mob.Name()))||(casterGrp.contains(mobt)))
 				type=CMath.unsetb(type,CMMsg.MASK_MALICIOUS);
 			else
 			if((mobt.charStats().ageCategory()<=Race.AGE_MATURE)
