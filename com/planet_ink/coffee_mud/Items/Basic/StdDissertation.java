@@ -163,7 +163,7 @@ public class StdDissertation extends StdItem implements Scroll
 					&&(R!=null))
 					{
 						String ableID=null;
-						switch(thisOne.abilityCode()&Ability.ALL_ACODES)
+						switch(thisOne.classificationCode()&Ability.ALL_ACODES)
 						{
 							case Ability.ACODE_SKILL:
 								ableID="Skill_Skillcraft";

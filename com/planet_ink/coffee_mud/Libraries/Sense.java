@@ -1535,8 +1535,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				{
 					if(((invoker==null)||(A.invoker()==invoker))
 					&&(((flag<0)||(A.flags()&flag)>0))
-					&&(((abilityCode<0)||((A.abilityCode()&Ability.ALL_ACODES)==abilityCode)))
-					&&(((domain<0)||((A.abilityCode()&Ability.ALL_DOMAINS)==domain))))
+					&&(((abilityCode<0)||((A.classificationCode()&Ability.ALL_ACODES)==abilityCode)))
+					&&(((domain<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==domain))))
 						V.addElement(A);
 				}
 			});

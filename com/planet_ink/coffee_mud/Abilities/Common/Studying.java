@@ -381,8 +381,11 @@ public class Studying extends CommonSkill
 				{
 					mob.delAbility(A);
 					final Ability fA=mob.fetchEffect(A.ID());
-					fA.unInvoke();
-					mob.delEffect(fA);
+					if(fA!=null)
+					{
+						fA.unInvoke();
+						mob.delEffect(fA);
+					}
 				}
 			}
 			skillList.clear();
@@ -445,12 +448,11 @@ public class Studying extends CommonSkill
 							eA.unInvoke();
 							mob.delEffect(eA);
 						}
-						if(str.length()>0)
-							str.append(", ");
-						str.append(CMStrings.padRight(L(Ability.ACODE_DESCS[A.abilityCode()&Ability.ALL_ACODES]), 12)+": "+A.Name()+"\n\r");
+						str.append(CMStrings.padRight(L(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]), 12)+": "+A.Name()+"\n\r");
 					}
 				}
 			}
+			str.append("\n\r");
 			mob.tell(str.toString());
 			return true;
 		}
@@ -546,7 +548,7 @@ public class Studying extends CommonSkill
 		}
 		if(numHas >= numAllowed)
 		{
-			mob.tell(L("You may not study any more @x1 at this time.",CMLib.english().makePlural(Ability.ACODE_DESCS[A.abilityCode()&Ability.ALL_ACODES])));
+			mob.tell(L("You may not study any more @x1 at this time.",CMLib.english().makePlural(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES])));
 			return false;
 		}
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
