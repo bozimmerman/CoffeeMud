@@ -479,6 +479,10 @@ public class StdJournal extends StdItem implements Book
 														}
 													}
 												}
+												if(megaRepeat)
+												{
+													read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
+												}
 											}
 											else
 											{
@@ -690,7 +694,6 @@ public class StdJournal extends StdItem implements Book
 
 	public JournalEntry DBRead(MOB reader, String journal, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
-		final StringBuffer buf=new StringBuffer("");
 		final List<JournalEntry> journalEntries;
 		final boolean useCreateDate=getSortBy().toUpperCase().startsWith("CREAT");
 		if(useCreateDate)
@@ -706,6 +709,7 @@ public class StdJournal extends StdItem implements Book
 					journalEntries.remove(i);
 			}
 		}
+		final StringBuffer buf=new StringBuffer("");
 		final boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
 		if((which<0)||(journalEntries==null)||(which>=journalEntries.size()))
 		{
