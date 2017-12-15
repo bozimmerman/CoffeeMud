@@ -117,10 +117,13 @@ public class StdJournal extends StdItem implements Book
 					}
 					int which=CMath.s_int(entryStr);
 					final List<JournalEntry> journal2;
+					String[] tos=new String[0];
+					if(getReadFilter().length()>0)
+						tos=CMParms.parseCommas(this.getReadFilter(), true).toArray(new String[0]);
 					if(!getSortBy().toUpperCase().startsWith("CREAT"))
-						journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true);
+						journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true, 100000,tos);
 					else
-						journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
+						journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true, 100000, tos);
 					if((which<1)||(which>journal2.size()))
 					{
 						mob.tell(L("The journal does not have an entry #@x1.",""+which));
@@ -416,13 +419,7 @@ public class StdJournal extends StdItem implements Book
 										journal=journal.trim();
 										if(journal.length()>0)
 										{
-											final List<JournalEntry> journal2;
-											if(!getSortBy().toUpperCase().startsWith("CREAT"))
-												journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true);
-											else
-												journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
-											final JournalEntry entry2=journal2.get(which-1);
-											if(completeTransfer(mob,msg,journal,entry2))
+											if(completeTransfer(mob,msg,journal,read))
 												msg.setValue(-1);
 										}
 										else
@@ -510,15 +507,18 @@ public class StdJournal extends StdItem implements Book
 			}
 			case CMMsg.TYP_REWRITE:
 			{
+				String[] tos=new String[0];
+				if(getReadFilter().length()>0)
+					tos=CMParms.parseCommas(this.getReadFilter(), true).toArray(new String[0]);
 				if((msg.targetMessage()!=null)&&(msg.targetMessage().startsWith("DELETE ")))
 				{
 					String entryStr=msg.targetMessage().substring(7).trim();
 					int which=CMath.s_int(entryStr);
 					final List<JournalEntry> journal2;
 					if(!getSortBy().toUpperCase().startsWith("CREAT"))
-						journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true);
+						journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true, 100000, tos);
 					else
-						journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
+						journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true, 100000, tos);
 					final JournalEntry entry2=journal2.get(which-1);
 					CMLib.database().DBDeleteJournal(Name(),entry2.key());
 				}
@@ -538,9 +538,9 @@ public class StdJournal extends StdItem implements Book
 					int which=CMath.s_int(entryStr);
 					final List<JournalEntry> journal2;
 					if(!getSortBy().toUpperCase().startsWith("CREAT"))
-						journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true);
+						journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true, 100000, tos);
 					else
-						journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
+						journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true, 100000, tos);
 					final JournalEntry entry2=journal2.get(which-1);
 					entry2.msg(messageStr);
 					CMLib.database().DBUpdateJournal(Name(), entry2);
@@ -551,9 +551,9 @@ public class StdJournal extends StdItem implements Book
 					int which=CMath.s_int(msg.targetMessage());
 					final List<JournalEntry> journal2;
 					if(!getSortBy().toUpperCase().startsWith("CREAT"))
-						journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true);
+						journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(Name(), true, 100000, tos);
 					else
-						journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
+						journal2=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true, 100000, tos);
 					final JournalEntry entry2=journal2.get(which-1);
 					final List<String> vbuf=new ArrayList<String>();
 					vbuf.addAll(CMParms.parseAny(entry2.msg(),"\n",false));
@@ -696,19 +696,13 @@ public class StdJournal extends StdItem implements Book
 	{
 		final List<JournalEntry> journalEntries;
 		final boolean useCreateDate=getSortBy().toUpperCase().startsWith("CREAT");
+		String[] tos=new String[0];
+		if(getReadFilter().length()>0)
+			tos=CMParms.parseCommas(this.getReadFilter(), true).toArray(new String[0]);
 		if(useCreateDate)
-			journalEntries=CMLib.database().DBReadJournalMsgsByCreateDate(journal, true);
+			journalEntries=CMLib.database().DBReadJournalMsgsByCreateDate(journal, true, 100000, tos);
 		else
-			journalEntries=CMLib.database().DBReadJournalMsgsByUpdateDate(journal, true);
-		if(this.getReadFilter().length()>0)
-		{
-			String[] tos=CMParms.parseCommas(this.getReadFilter(), true).toArray(new String[0]);
-			for(int i=journalEntries.size()-1;i>=0;i--)
-			{
-				if(!CMParms.contains(tos, journalEntries.get(i).to().toUpperCase().trim()))
-					journalEntries.remove(i);
-			}
-		}
+			journalEntries=CMLib.database().DBReadJournalMsgsByUpdateDate(journal, true, 100000, tos);
 		final StringBuffer buf=new StringBuffer("");
 		final boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
 		if((which<0)||(journalEntries==null)||(which>=journalEntries.size()))
@@ -923,7 +917,10 @@ public class StdJournal extends StdItem implements Book
 	@Override
 	public String getRawContent(int page)
 	{
-		final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true);
+		String[] tos=new String[0];
+		if(getReadFilter().length()>0)
+			tos=CMParms.parseCommas(this.getReadFilter(), true).toArray(new String[0]);
+		final List<JournalEntry> journal=CMLib.database().DBReadJournalMsgsByCreateDate(Name(), true, 100000, tos);
 		if((page < 1)||(page>journal.size()))
 			return "";
 		else

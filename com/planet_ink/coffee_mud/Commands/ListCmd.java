@@ -1377,19 +1377,17 @@ public class ListCmd extends StdCommand
 		{
 			if(rest.trim().length()==0)
 			{
-				toV.add("ALL");
-				toV.add(mob.Name());
 			}
 			else
 			{
 				List<String> chosen=CMParms.parseCommas(rest.toUpperCase().trim(), true);
 				for(String chosen1 : chosen)
 				{
-					if(flagsV.contains(chosen1))
-						toV.add(chosen1);
-					else
 					if(CMLib.players().playerExists(CMStrings.capitalizeAndLower(chosen1)))
 						toV.add(CMStrings.capitalizeAndLower(chosen1));
+					else
+					if(flagsV.contains(chosen1))
+						toV.add(chosen1);
 				}
 			}
 		}
