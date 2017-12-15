@@ -845,15 +845,18 @@ public class StdJournal extends StdItem implements Book
 		return fakeEntry;
 	}
 
+	private static final String[] JOURNAL_PARMS_LIST=new String[]{"READ","WRITE","REPLY","ADMIN","PRIVATE","MAILBOX","SORTBY","FILTER"};
+	
+	
 	private String getParm(String parmName)
 	{
 		if(readableText().length()==0)
 			return "";
 		final Map<String,String> h;
-		h=CMParms.parseEQParms(readableText().toUpperCase(), new String[]{"READ","WRITE","REPLY","ADMIN","PRIVATE","MAILBOX","SORTBY","FILTER"});
+		h=CMParms.parseEQParms(readableText().toUpperCase(), JOURNAL_PARMS_LIST);
 		if((parmName.equals("FILTER"))&&(h.containsKey("FILTER")))
 		{
-			Map<String,String> h2=CMParms.parseEQParms(readableText(), new String[]{"READ","WRITE","REPLY","ADMIN","PRIVATE","MAILBOX","SORTBY","FILTER"});
+			Map<String,String> h2=CMParms.parseEQParms(readableText(), JOURNAL_PARMS_LIST);
 			for(String key : h2.keySet())
 			{
 				if(key.equalsIgnoreCase("FILTER"))
