@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 
 import java.util.*;
 import java.io.IOException;
@@ -1151,10 +1152,51 @@ public class Destroy extends StdCommand
 			if((CMJ.NAME().equals(commandType))
 			&&(CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME())))
 			{
-				int which=-1;
-				if(commands.size()>2)
-					which=CMath.s_int(commands.get(2));
-				final List<JournalEntry> entries = CMLib.database().DBReadJournalMsgsByUpdateDate(CMJ.JOURNAL_NAME(), true);
+				int which = -1;
+				String to = null;
+				final String second=(commands.size()>2)?commands.get(2):"";
+				final String third=(commands.size()>3)?CMParms.combine(commands,3):"";
+				List<String> flagsV=CMParms.parseAny(CMJ.getFlag(CommandJournalFlags.ASSIGN), ':', true);
+				if(second.length()>0)
+				{
+					String possTo=null;
+					if(CMath.isNumber(second))
+					{
+						which=CMath.s_int(second);
+						if(third.length()>0)
+							possTo=third;
+					}
+					else
+					{
+						possTo=second;
+						if(third.length()>0)
+						{
+							if(CMath.isNumber(third))
+								which=CMath.s_int(third);
+							else
+							{
+								mob.tell(L("@x1 is not a number",third));
+								return true;
+							}
+						}
+					}
+					if(possTo != null)
+					{
+						if(CMLib.players().playerExists(CMStrings.capitalizeAndLower(possTo)))
+							to=CMStrings.capitalizeAndLower(possTo);
+						else
+						if(flagsV.contains(possTo))
+							to=possTo;
+						else
+						{
+							mob.tell(L("@x1 is not a valid name. ",possTo));
+		 					return true;
+						}
+					}
+				}
+
+				final String[] tos = (to != null)? new String[]{to} : new String[0];
+				final List<JournalEntry> entries = CMLib.database().DBReadJournalMsgsByUpdateDate(CMJ.JOURNAL_NAME(), true, 100000, tos);
 
 				if((which<=0)||(which>entries.size()))
 					mob.tell(L("Please enter a valid @x1 number to delete.  Use LIST @x2S for more information.",CMJ.NAME().toLowerCase(),CMJ.NAME()));

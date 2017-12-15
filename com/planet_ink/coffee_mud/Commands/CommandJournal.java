@@ -217,7 +217,7 @@ public class CommandJournal extends StdCommand
 						  String security)
 	{
 		final String first=commands.get(1);
-		final String second=(commands.size()>2)?CMParms.combine(commands,2):"";
+		final String second=(commands.size()>2)?commands.get(2):"";
 		final String third=(commands.size()>3)?CMParms.combine(commands,3):"";
 		List<String> flagsV=getAssignFlags(journalID);
 		String to = null;

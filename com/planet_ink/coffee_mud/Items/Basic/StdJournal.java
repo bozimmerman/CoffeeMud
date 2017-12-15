@@ -849,7 +849,19 @@ public class StdJournal extends StdItem implements Book
 	{
 		if(readableText().length()==0)
 			return "";
-		final Map<String,String> h=CMParms.parseEQParms(readableText().toUpperCase(), new String[]{"READ","WRITE","REPLY","ADMIN","PRIVATE","MAILBOX","SORTBY","FILTER"});
+		final Map<String,String> h;
+		h=CMParms.parseEQParms(readableText().toUpperCase(), new String[]{"READ","WRITE","REPLY","ADMIN","PRIVATE","MAILBOX","SORTBY","FILTER"});
+		if((parmName.equals("FILTER"))&&(h.containsKey("FILTER")))
+		{
+			Map<String,String> h2=CMParms.parseEQParms(readableText(), new String[]{"READ","WRITE","REPLY","ADMIN","PRIVATE","MAILBOX","SORTBY","FILTER"});
+			for(String key : h2.keySet())
+			{
+				if(key.equalsIgnoreCase("FILTER"))
+				{
+					h.put("FILTER", h2.get(key));
+				}
+			}
+		}
 		String req=h.get(parmName.toUpperCase().trim());
 		if(req==null)
 			req="";
