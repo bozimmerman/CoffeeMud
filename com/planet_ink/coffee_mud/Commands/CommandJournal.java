@@ -119,6 +119,9 @@ public class CommandJournal extends StdCommand
 				if(flagsV.contains(possTo))
 					to=possTo;
 				else
+				if(possTo.equalsIgnoreCase("ALL"))
+					to="ALL";
+				else
 				{
 					mob.tell(L("@x1 is not a valid name. ",possTo));
  					return true;
@@ -258,6 +261,9 @@ public class CommandJournal extends StdCommand
 				else
 				if(flagsV.contains(possTo))
 					to=possTo;
+				else
+				if(possTo.equalsIgnoreCase("ALL"))
+					to="ALL";
 				else
 				{
 					mob.tell(L("@x1 is not a valid name. ",possTo));
