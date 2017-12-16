@@ -27,6 +27,7 @@ import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
 import com.planet_ink.coffee_web.http.HTTPMethod;
 import com.planet_ink.coffee_web.http.MultiPartData;
 import com.planet_ink.coffee_web.interfaces.HTTPRequest;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -2640,11 +2641,30 @@ public class Test extends StdCommand
 			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("spacemotion")))
 			{
-				double[] curDirection = new double[2];
-				double curSpeed = 0;
-				long newAccelleration = 0;
-				double[] accelDirection = new double[2];
-				curSpeed = CMLib.map().moveSpaceObject(curDirection,curSpeed,accelDirection, newAccelleration);
+				for(double dir0 = 0; dir0 <=Math.PI; dir0 += (Math.PI/12.0))
+				{
+					for(double dir1 = 0; dir1 <=(Math.PI/2); dir1 += (Math.PI/12.0))
+					{
+						for(double adir0 = 0; adir0 <=Math.PI; adir0 += (Math.PI/12.0))
+						{
+							for(double adir1 = 0; adir1 <=Math.PI; adir1 += (Math.PI/12.0))
+							{
+								double[] curDir = new double[] {dir0, dir1};
+								double[] accelDir = new double[] {adir0, adir1};
+								double[] opCurDir = new double[0];
+								double curSpeed = 1000;
+								long newAccelleration = 200;
+								int steps = 0;
+								while(!Arrays.equals(curDir, accelDir))
+								{
+									curSpeed = CMLib.map().moveSpaceObject(curDir,curSpeed,accelDir, newAccelleration);
+									steps++;
+								}
+								System.out.println(steps);
+							}
+						}
+					}
+				}
 				//TODO: come up with some tests for this.
 			}
 			if((what.equalsIgnoreCase("all"))

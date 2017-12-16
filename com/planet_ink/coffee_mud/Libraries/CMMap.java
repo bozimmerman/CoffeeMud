@@ -561,14 +561,14 @@ public class CMMap extends StdLibrary implements WorldMap
 
 		double newDirectionYaw;
 		if(yawDelta < 0.1)
-			newDirectionYaw = directionYaw;
+			newDirectionYaw = facingYaw;
 		else
 			newDirectionYaw = directionYaw + ((directionYaw > facingYaw) ? -(accelerationMultiplier * Math.sin(yawDelta)) : (accelerationMultiplier * Math.sin(yawDelta)));
 		if (newDirectionYaw < 0.0)
 			newDirectionYaw = PI_TIMES_2 + newDirectionYaw;
 		double newDirectionPitch;
 		if(pitchDelta < 0.1)
-			newDirectionPitch = directionPitch;
+			newDirectionPitch = facingPitch;
 		else
 			newDirectionPitch = directionPitch + ((directionPitch > facingPitch) ? -(accelerationMultiplier * Math.sin(pitchDelta)) : (accelerationMultiplier * Math.sin(pitchDelta)));
 		if (newDirectionPitch < 0.0)
