@@ -2660,6 +2660,9 @@ public class Test extends StdCommand
 									curSpeed = CMLib.map().moveSpaceObject(curDir,curSpeed,accelDir, newAccelleration);
 									steps++;
 								}
+								//TODO: Test Ideas
+								//TODO: if accelDir > 90 degree from facing dir, then speed goes down until < 90 degrees.
+								//TODO: if accelDir < 90 degree from facing dir, speed increases every time.
 								System.out.println(steps);
 							}
 						}
