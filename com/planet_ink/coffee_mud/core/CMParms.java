@@ -1015,11 +1015,38 @@ public class CMParms
 			for(int c=0;c<255;c++)
 				switch(c)
 				{
-				case '`': case '~': case '!': case '@': case '#': case '$': case '%':
-				case '^': case '&': case '*': case '(': case ')': case '_': case '-':
-				case '+': case '=': case '[': case ']': case '{': case '}': case '\\':
-				case '|': case ';': case ':': case '\'': case '\"': case ',': case '<':
-				case '.': case '>': case '/': case '?':
+				case '`':
+				case '~':
+				case '!':
+				case '@':
+				case '#':
+				case '$':
+				case '%':
+				case '^':
+				case '&':
+				case '*':
+				case '(':
+				case ')':
+				case '_':
+				case '-':
+				case '+':
+				case '=':
+				case '[':
+				case ']':
+				case '{':
+				case '}':
+				case '\\':
+				case '|':
+				case ';':
+				case ':':
+				case '\'':
+				case '\"':
+				case ',':
+				case '<':
+				case '.':
+				case '>':
+				case '/':
+				case '?':
 					PUNCTUATION_TEMP_TABLE[c]=true;
 					break;
 				default:
@@ -1121,8 +1148,12 @@ public class CMParms
 							{
 								switch(text.charAt(x))
 								{
-								case ' ': case '\n': case '\r': case '\t':
-								case ':': case ';':
+								case ' ':
+								case '\n':
+								case '\r':
+								case '\t':
+								case ':':
+								case ';':
 									return text.substring(valStart,x);
 								}
 								x++;
@@ -1203,8 +1234,12 @@ public class CMParms
 							{
 								switch(text.charAt(x))
 								{
-								case ' ': case '\n': case '\r': case '\t':
-								case ':': case ';':
+								case ' ':
+								case '\n':
+								case '\r':
+								case '\t':
+								case ':':
+								case ';':
 									return text.substring(0,startx)+text.substring(x+1);
 								}
 								x++;
@@ -1285,9 +1320,12 @@ public class CMParms
 							}
 							switch(comp)
 							{
-								case '>': return value > found;
-								case '<': return value < found;
-								case '!': return true;
+							case '>':
+								return value > found;
+							case '<':
+								return value < found;
+							case '!':
+								return true;
 							}
 							return false;
 						}

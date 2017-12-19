@@ -63,7 +63,7 @@ public class Description extends StdCommand
 			mob.tell(L("Your description exceeds @x1 characters in length.  Please re-enter a shorter one.",""+CHAR_LIMIT));
 		else
 		{
-			mob.setDescription(s);
+			mob.setDescription(CMStrings.convertHtmlToText(new StringBuilder(s)));
 			mob.tell(L("Your description has been changed."));
 		}
 		return false;

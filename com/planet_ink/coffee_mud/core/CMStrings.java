@@ -1599,8 +1599,9 @@ public class CMStrings
 	 * mud command line.  It does things like remove scripts, convert &nbsp;-like tags
 	 * to their ascii values, and converts &lt;P&gt;, &lt;BR&gt;, and &lt;DIV&gt; tags to CRLF.
 	 * @param finalData the stringbuilder containing the html to convert.
+	 * @return the converted string (finalData is also modified)
 	 */
-	public static void convertHtmlToText(final StringBuilder finalData)
+	public static String convertHtmlToText(final StringBuilder finalData)
 	{
 		final class TagStacker
 		{
@@ -1852,6 +1853,7 @@ public class CMStrings
 				break;
 			}
 		}
+		return finalData.toString();
 	}
 
 	/**
@@ -1934,34 +1936,80 @@ public class CMStrings
 			case 0:
 				switch(c)
 				{
-				case '/': state=1; closeFlag=true; break;
-				case 'H': state=2; break;
-				case 'B': state=3; break;
-				default: start=-1; break;
+				case '/':
+					state = 1;
+					closeFlag = true;
+					break;
+				case 'H':
+					state = 2;
+					break;
+				case 'B':
+					state = 3;
+					break;
+				default:
+					start = -1;
+					break;
 				} break;
 			case 1:
 				switch(c)
 				{
-				case 'H': state=2; break;
-				case 'B': state=3; break;
-				default: start=-1; break;
+				case 'H':
+					state = 2;
+					break;
+				case 'B':
+					state = 3;
+					break;
+				default:
+					start = -1;
+					break;
 				} break;
 			case 2:
 				switch(c)
 				{
-				case 'E': if(lastC!='H') state=-1; else state=5; break;
-				case 'T': if(lastC!='H') state=-1; break;
-				case 'M': if(lastC!='T') state=-1; break;
-				case 'L': if(lastC!='M') state=-1; else state=4; break;
-				default: start=-1; break;
+				case 'E':
+					if (lastC != 'H')
+						state = -1;
+					else
+						state = 5;
+					break;
+				case 'T':
+					if (lastC != 'H')
+						state = -1;
+					break;
+				case 'M':
+					if (lastC != 'T')
+						state = -1;
+					break;
+				case 'L':
+					if (lastC != 'M')
+						state = -1;
+					else
+						state = 4;
+					break;
+				default:
+					start = -1;
+					break;
 				} break;
 			case 3:
 				switch(c)
 				{
-				case 'O': if(lastC!='B') state=-1; break;
-				case 'D': if(lastC!='O') state=-1; break;
-				case 'Y': if(lastC!='D') state=-1; else state=4; break;
-				default: start=-1; break;
+				case 'O':
+					if (lastC != 'B')
+						state = -1;
+					break;
+				case 'D':
+					if (lastC != 'O')
+						state = -1;
+					break;
+				case 'Y':
+					if (lastC != 'D')
+						state = -1;
+					else
+						state = 4;
+					break;
+				default:
+					start = -1;
+					break;
 				} break;
 			case 4:
 				if(c=='>')
@@ -1974,9 +2022,19 @@ public class CMStrings
 			case 5:
 				switch(c)
 				{
-				case 'A': if(lastC!='E') state=-1; break;
-				case 'D': if(lastC!='A') state=-1; else state=6; break;
-				default: start=-1; break;
+				case 'A':
+					if (lastC != 'E')
+						state = -1;
+					break;
+				case 'D':
+					if (lastC != 'A')
+						state = -1;
+					else
+						state = 6;
+					break;
+				default:
+					start = -1;
+					break;
 				} break;
 			case 6:
 				if(c=='>')
