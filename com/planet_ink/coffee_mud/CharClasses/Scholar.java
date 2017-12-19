@@ -256,11 +256,20 @@ public class Scholar extends StdCharClass
 		return 0;
 	}
 
+	private static final int[] FAV_DOMAINS= new int[] { 
+			Ability.DOMAIN_EDUCATIONLORE, Ability.DOMAIN_ARCANELORE, 
+			Ability.DOMAIN_NATURELORE, Ability.DOMAIN_COMBATLORE,
+			Ability.DOMAIN_CALLIGRAPHY };
+	
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.source()==myHost)
 		{
+			if((msg.targetMinor()==CMMsg.TYP_TEACH)
+			&&(msg.target() instanceof MOB))
+				CMLib.leveler().postExperience(msg.source(), null, null, 100, false);
+			else
 			if(((msg.targetMinor()==CMMsg.TYP_WRITE)
 				||(msg.targetMinor()==CMMsg.TYP_REWRITE)
 				||(msg.targetMinor()==CMMsg.TYP_WROTE))
@@ -283,7 +292,7 @@ public class Scholar extends StdCharClass
 					int numChars = msgStr.length()-CMStrings.countChars(msgStr, ' ');
 					if(numChars > 10)
 					{
-						final Map<String,Object> persMap = Resources.getPersonalMap(myHost, true);
+						final Map<String,Object> persMap = Resources.getPersonalMap(msg.source(), true);
 						if(persMap != null)
 						{
 							int xp = numChars/10;
@@ -296,9 +305,10 @@ public class Scholar extends StdCharClass
 							if(System.currentTimeMillis() > xpTrap[1])
 							{
 								xpTrap[0]=0;
-								xpTrap[1]=System.currentTimeMillis() + TimeManager.MILI_HOUR;
+								xpTrap[1]=System.currentTimeMillis() + (TimeManager.MILI_MINUTE * 10);
 							}
-							if(xpTrap[0]<100)
+							final long maxLevel = msg.source().getExpNeededLevel() / 24;
+							if(xpTrap[0] < maxLevel)
 							{
 								if(100-xpTrap[0]<xp)
 									xp=(int)(100-xpTrap[0]);
@@ -312,17 +322,47 @@ public class Scholar extends StdCharClass
 		}
 		else
 		if((msg.tool() instanceof Ability)
-		&&(myHost instanceof MOB)
-		&&(((MOB)myHost).getVictim()!=msg.source())
-		&&(msg.source().getVictim()!=myHost)
-		&&(CMLib.dice().rollPercentage()<25)
-		&&(msg.source().fetchAbility(msg.tool().ID())!=null)
-		&&(((MOB)myHost).fetchAbility(msg.tool().ID())!=null)
-		&&(((MOB)myHost).getGroupMembers(new TreeSet<MOB>()).contains(msg.source())))
+		&&(myHost instanceof MOB))
 		{
-			final Ability A=(Ability)msg.tool();
-			if((A!=null)&&(A.isSavable()))
-				A.helpProficiency(msg.source(), 0);
+			Ability A;
+			if((myHost == msg.source())
+			&&((A=msg.source().fetchAbility(msg.tool().ID()))!=null)
+			&&(A.isSavable())
+			&&(msg.source().isPlayer())
+			&&(CMParms.contains(FAV_DOMAINS, ((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)))
+			{
+				final Map<String,Object> persMap = msg.source().playerStats().getClassVariableMap(this);
+				if(persMap != null)
+				{
+					final String key = "LAST_DATE_FOR_"+A.ID().toUpperCase().trim();
+					long[] lastTime = (long[])persMap.get(key);
+					if(lastTime == null)
+					{
+						lastTime = new long[1];
+						persMap.put(key, lastTime);
+					}
+					final Area homeA=CMLib.map().areaLocation(msg.source().getStartRoom());
+					final TimeClock homeL = (homeA == null) ? null : homeA.getTimeObj();
+					if((homeL!=null)
+					&&((homeL.toHoursSinceEpoc() - lastTime[0])>homeL.getHoursInDay()))
+					{
+						lastTime[0] = homeL.toHoursSinceEpoc(); 
+						CMLib.leveler().postExperience(msg.source(), null, null, 25, false);
+					}
+				}
+			}
+			
+			if((((MOB)myHost).getVictim()!=msg.source())
+			&&(msg.source().getVictim()!=myHost)
+			&&(CMLib.dice().rollPercentage()<25)
+			&&((A=msg.source().fetchAbility(msg.tool().ID()))!=null)
+			&&(((MOB)myHost).fetchAbility(msg.tool().ID())!=null)
+			&&(((MOB)myHost).getGroupMembers(new TreeSet<MOB>()).contains(msg.source())))
+			{
+				final Ability A1=(Ability)msg.tool();
+				if((A1!=null)&&(A1.isSavable()))
+					A1.helpProficiency(msg.source(), 0);
+			}
 		}
 		super.executeMsg(myHost, msg);
 	}
@@ -390,6 +430,6 @@ public class Scholar extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Earn experience from teaching skills, making maps, writing books and journals. Gives bonus profficiency gains for group members.");
+		return L("Earn experience from teaching skills, making maps, writing books, using certain skills daily. Gives bonus profficiency gains for group members.");
 	}
 }

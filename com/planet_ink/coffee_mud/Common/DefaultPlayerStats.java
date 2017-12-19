@@ -113,6 +113,7 @@ public class DefaultPlayerStats implements PlayerStats
 
 	protected Map<String, AbilityMapping>		ableMap		= new SHashtable<String, AbilityMapping>();
 	protected Map<String, ExpertiseDefinition>	experMap	= new SHashtable<String, ExpertiseDefinition>();
+	protected Map<CharClass,Map<String,Object>>	classMap	= new STreeMap<CharClass,Map<String,Object>>();
 	
 	protected QuadVector<Integer, Long, String, Long>		levelInfo	= new QuadVector<Integer, Long, String, Long>();
 	
@@ -485,6 +486,17 @@ public class DefaultPlayerStats implements PlayerStats
 		if(account != null)
 			return account.getIgnored();
 		return ignored;
+	}
+
+	@Override
+	public Map<String,Object> getClassVariableMap(final CharClass charClass)
+	{
+		final Map<String,Object> map=this.classMap.get(charClass);
+		if(map != null)
+			return map;
+		final Map<String,Object> newMap = new TreeMap<String,Object>();
+		this.classMap.put(charClass, newMap);
+		return newMap;
 	}
 
 	@Override

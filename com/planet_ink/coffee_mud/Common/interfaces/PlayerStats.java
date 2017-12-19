@@ -577,6 +577,18 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @param R the room to remove
 	 */
 	public void unVisit(Room R);
+
+	/**
+	 * Returns a personal miscellaneous object map, to be used
+	 * for non-core-system attributes, such as transient
+	 * class variables.
+	 *  
+	 * @param charClass the Character Class for the variables
+	 * 
+	 * @return a personal miscellaneous object map
+	 */
+	public Map<String,Object> getClassVariableMap(CharClass charClass);
+	
 	/**
 	 * Returns the string array set of defined alias commands
 	 * for this player.
