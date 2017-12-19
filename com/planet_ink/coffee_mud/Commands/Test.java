@@ -2640,29 +2640,54 @@ public class Test extends StdCommand
 			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("spacemotion")))
 			{
-				for(double dir0 = 0; dir0 <=Math.PI; dir0 += (Math.PI/12.0))
+				List<double[]> results = new ArrayList<double[]>();
+				for(double dir0 = 0; dir0 <=Math.PI*2; dir0 += (Math.PI/12.0))
 				{
-					for(double dir1 = 0; dir1 <=(Math.PI/2); dir1 += (Math.PI/12.0))
+					for(double dir1 = 0; dir1 <=Math.PI; dir1 += (Math.PI/12.0))
 					{
-						for(double adir0 = 0; adir0 <=Math.PI; adir0 += (Math.PI/12.0))
+						for(double adir0 = 0; adir0 <=Math.PI*2; adir0 += (Math.PI/12.0))
 						{
 							for(double adir1 = 0; adir1 <=Math.PI; adir1 += (Math.PI/12.0))
 							{
 								double[] curDir = new double[] {dir0, dir1};
 								double[] accelDir = new double[] {adir0, adir1};
-								double[] opCurDir = new double[0];
 								double curSpeed = 1000;
 								long newAccelleration = 200;
 								int steps = 0;
+								double totDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
+								if(Math.round(Math.toDegrees(totDirDiff))>180)
+								{
+									System.out.print("Interesting: ");
+									System.out.print("Swing from "+Math.round(Math.toDegrees(curDir[0])));
+									System.out.print("mk"+Math.round(Math.toDegrees(curDir[1])));
+									System.out.print("   to   "+Math.round(Math.toDegrees(accelDir[0])));
+									System.out.print("mk"+Math.round(Math.toDegrees(accelDir[1])));
+									System.out.println(" is "+Math.round(Math.toDegrees(totDirDiff)));
+								}
+								double halfPI = Math.PI/2.0;
 								while(!Arrays.equals(curDir, accelDir))
 								{
+									double oldCurSpeed = curSpeed;
+									double curDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
 									curSpeed = CMLib.map().moveSpaceObject(curDir,curSpeed,accelDir, newAccelleration);
+									if(curDirDiff > halfPI)
+									{
+										if(curSpeed > oldCurSpeed)
+											System.out.print("no");
+									}
+									else
+									{
+										if(curSpeed < oldCurSpeed)
+											System.out.print("NO");
+									}
 									steps++;
 								}
 								//TODO: Test Ideas
 								//TODO: if accelDir > 90 degree from facing dir, then speed goes down until < 90 degrees.
 								//TODO: if accelDir < 90 degree from facing dir, speed increases every time.
-								System.out.println(steps);
+								//TODO: test whether smaller angle diffs result in fewer steps. 
+								System.out.println(Math.round(Math.toDegrees(totDirDiff))+", ="+steps+"                      fspeed="+curSpeed);
+								results.add(new double[]{Math.round(Math.toDegrees(totDirDiff)),steps});
 							}
 						}
 					}

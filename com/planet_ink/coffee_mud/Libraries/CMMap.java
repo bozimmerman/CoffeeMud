@@ -538,6 +538,25 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
+	public double getAngleDelta(final double[] fromAngle, final double[] toAngle)
+	{
+		final double directionYaw = fromAngle[0];
+		final double directionPitch = (fromAngle[1] > Math.PI) ? Math.abs(Math.PI-fromAngle[1]) : fromAngle[1];
+
+		final double facingYaw = toAngle[0];
+		final double facingPitch = (toAngle[1] > Math.PI) ? Math.abs(Math.PI-toAngle[1]) : toAngle[1];
+		
+		double yawDelta = (directionYaw >  facingYaw) ? (directionYaw - facingYaw) : (facingYaw - directionYaw);
+		if(yawDelta > Math.PI)
+			yawDelta=PI_TIMES_2-yawDelta;
+		double pitchDelta = (directionPitch >  facingPitch) ? (directionPitch - facingPitch) : (facingPitch - directionPitch);
+		if(pitchDelta > PI_BY_2)
+			pitchDelta=Math.PI-pitchDelta;
+		
+		return yawDelta + pitchDelta;
+	}
+	
+	@Override
 	public double moveSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final long newAccelleration)
 	{
 		final double directionYaw = curDirection[0];
@@ -582,8 +601,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			newDirectionPitch = facingPitch;
 		}
 
-		if((curDirection[0]>Math.PI)&&(curDirection[1]<=Math.PI))
-			newDirectionPitch=Math.PI+newDirectionPitch;
+		//if((curDirection[0]>Math.PI)&&(curDirection[1]<=Math.PI))
+		//	newDirectionPitch=Math.PI+newDirectionPitch;
 
 		curDirection[0]=newDirectionYaw;
 		curDirection[1]=newDirectionPitch;
