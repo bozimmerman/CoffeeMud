@@ -575,7 +575,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(pitchDelta > PI_BY_2)
 			pitchDelta=Math.PI-pitchDelta;
 		
-		final double anglesDelta = yawDelta + pitchDelta;
+		final double anglesDelta = pitchDelta + yawDelta;
 		final double accelerationMultiplier = acceleration / currentSpeed;
 
 		double newDirectionYaw;
