@@ -2,12 +2,15 @@ package com.planet_ink.coffee_mud.WebMacros;
 
 import com.planet_ink.coffee_web.http.HTTPException;
 import com.planet_ink.coffee_web.http.HTTPHeader;
+import com.planet_ink.coffee_web.http.HTTPMethod;
 import com.planet_ink.coffee_web.http.HTTPStatus;
+import com.planet_ink.coffee_web.http.MultiPartData;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_web.util.CWDataBuffers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CoffeeIOPipe.CoffeeIOPipes;
+import com.planet_ink.coffee_mud.core.CoffeeIOPipe.CoffeePipeSocket;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -89,76 +92,6 @@ public class SipletInterface extends StdWebMacro
 		}
 	}
 
-	public static class PipeSocket extends Socket
-	{
-		private boolean			isClosed	= false;
-		private InetAddress		addr		= null;
-		private CoffeeIOPipe	pipe		= null;
-		private CoffeeIOPipe	friendPipe	= null;
-
-		public PipeSocket(InetAddress addr, CoffeeIOPipe myPipe, CoffeeIOPipe friendPipe) throws IOException
-		{
-			this.addr=addr;
-			this.pipe = myPipe;
-			this.friendPipe = friendPipe;
-		}
-
-		@Override
-		public void shutdownInput() throws IOException
-		{
-			isClosed = true;
-		}
-
-		@Override
-		public void shutdownOutput() throws IOException
-		{
-			isClosed = true;
-		}
-
-		@Override
-		public boolean isConnected()
-		{
-			return !isClosed;
-		}
-
-		@Override
-		public boolean isClosed()
-		{
-			return isClosed;
-		}
-
-		@Override
-		public synchronized void close() throws IOException
-		{
-			if (friendPipe != null)
-			{
-				friendPipe.shutdownInput();
-				friendPipe.shutdownOutput();
-			}
-			this.pipe.shutdownInput();
-			this.pipe.shutdownOutput();
-			isClosed = true;
-		}
-
-		@Override
-		public InputStream getInputStream() throws IOException
-		{
-			return pipe.getInputStream();
-		}
-
-		@Override
-		public OutputStream getOutputStream() throws IOException
-		{
-			return pipe.getOutputStream();
-		}
-
-		@Override
-		public InetAddress getInetAddress()
-		{
-			return addr;
-		}
-	}
-	
 	protected void initialize()
 	{
 		initialized = true;
@@ -245,7 +178,7 @@ public class SipletInterface extends StdWebMacro
 			final int port=CMath.s_int(httpReq.getUrlParameter("PORT"));
 			String hex="";
 			final Siplet sip = new Siplet();
-			boolean success=false;
+			SipletSession session=null;
 			if(url!=null)
 			{
 				sip.init();
@@ -258,42 +191,57 @@ public class SipletInterface extends StdWebMacro
 							try
 							{
 								final CoffeeIOPipes pipes = new CoffeeIOPipes(65536);
-								final PipeSocket lsock=new PipeSocket(httpReq.getClientAddress(),pipes.getLeftPipe(),pipes.getRightPipe());
-								final PipeSocket rsock=new PipeSocket(httpReq.getClientAddress(),pipes.getRightPipe(),pipes.getLeftPipe());
-								success=sip.connectToURL(url, port, lsock);
-								sip.setFeatures(true, Siplet.MSPStatus.External, false);
-								h.acceptConnection(rsock);
+								final CoffeePipeSocket lsock=new CoffeePipeSocket(httpReq.getClientAddress(),pipes.getLeftPipe(),pipes.getRightPipe());
+								final CoffeePipeSocket rsock=new CoffeePipeSocket(httpReq.getClientAddress(),pipes.getRightPipe(),pipes.getLeftPipe());
+								if(sip.connectToURL(url, port, lsock))
+								{
+									sip.setFeatures(true, Siplet.MSPStatus.External, false);
+									h.acceptConnection(rsock);
+									int tokenNum=0;
+									int tries=1000;
+									while((tokenNum==0)&&((--tries)>0))
+									{
+										tokenNum = new Random().nextInt();
+										if(tokenNum<0)
+											tokenNum = tokenNum * -1;
+										hex=Integer.toHexString(tokenNum);
+										if(httpReq.isUrlParameter(hex))
+											tokenNum=0;
+									}
+									session=new SipletSession(sip, hex);
+									final SipletSession s=session;
+									final Runnable writeBack = new Runnable()
+									{
+										final SipletSession sess = s;
+										@Override
+										public void run()
+										{
+											final HTTPIOHandler ioHandler = sess.parentIOHandler;
+											if(ioHandler != null)
+												ioHandler.scheduleProcessing();
+										}
+									};
+									rsock.getOutputStream().setWriteCallback(writeBack);
+								}
 							}
 							catch(final IOException e)
 							{
-								success=false;
+								session=null;
 							}
 						}
 					}
 				}
-				if(success)
+				if(session != null)
 				{
 					synchronized(siplets)
 					{
-						int tokenNum=0;
-						int tries=1000;
-						while((tokenNum==0)&&((--tries)>0))
-						{
-							tokenNum = new Random().nextInt();
-							if(tokenNum<0)
-								tokenNum = tokenNum * -1;
-							hex=Integer.toHexString(tokenNum);
-							if(httpReq.isUrlParameter(hex))
-								tokenNum=0;
-						}
-						final SipletSession session=new SipletSession(sip, hex);
 						siplets.put(hex, session);
 						if(handler != null)
 							handler.session=session;
 					}
 				}
 			}
-			return Boolean.toString(success)+';'+hex+';'+sip.info()+hex+';';
+			return Boolean.toString(session != null)+';'+hex+';'+sip.info()+hex+';';
 		}
 		else
 		if(httpReq.isUrlParameter("DISCONNECT"))
@@ -494,6 +442,10 @@ public class SipletInterface extends StdWebMacro
 				len = len - (byte2 * 65536);
 				int byte3=(int)(len / 256);
 				len = len - (byte3 * 256);
+				bout.write(0 & 0xff);
+				bout.write(0 & 0xff);
+				bout.write(0 & 0xff);
+				bout.write(0 & 0xff);
 				bout.write(byte1 & 0xff);
 				bout.write(byte2 & 0xff);
 				bout.write(byte3 & 0xff);

@@ -8,6 +8,7 @@ import com.planet_ink.coffee_web.util.CWDataBuffers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CoffeeIOPipe.CoffeeIOPipes;
+import com.planet_ink.coffee_mud.core.CoffeeIOPipe.CoffeePipeSocket;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -21,7 +22,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import com.planet_ink.coffee_mud.WebMacros.SipletInterface.PipeSocket;
 import com.planet_ink.coffee_mud.WebMacros.SipletInterface.WSState;
 
 import java.io.ByteArrayOutputStream;
@@ -181,8 +181,8 @@ public class WebSock extends StdWebMacro
 		private volatile long		lastPing	= System.currentTimeMillis();
 		private HTTPIOHandler		ioHandler	= null;
 
-		private final PipeSocket lsock;
-		private final PipeSocket rsock;
+		private final CoffeePipeSocket lsock;
+		private final CoffeePipeSocket rsock;
 		private final OutputStream out;
 		private final InputStream in;
 		private final ByteArrayOutputStream payload = new ByteArrayOutputStream();
@@ -197,8 +197,8 @@ public class WebSock extends StdWebMacro
 					try
 					{
 						final CoffeeIOPipes pipes = new CoffeeIOPipes(65536);
-						lsock=new PipeSocket(httpReq.getClientAddress(),pipes.getLeftPipe(),pipes.getRightPipe());
-						rsock=new PipeSocket(httpReq.getClientAddress(),pipes.getRightPipe(),pipes.getLeftPipe());
+						lsock=new CoffeePipeSocket(httpReq.getClientAddress(),pipes.getLeftPipe(),pipes.getRightPipe());
+						rsock=new CoffeePipeSocket(httpReq.getClientAddress(),pipes.getRightPipe(),pipes.getLeftPipe());
 						h.acceptConnection(rsock);
 						out=lsock.getOutputStream();
 						in=lsock.getInputStream();

@@ -3,6 +3,8 @@ package com.planet_ink.coffee_mud.core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /*
@@ -21,24 +23,29 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 /**
-    Similar to Javas pipe, except it's buffered and thread agnostic. 
+	Similar to Javas pipe, except it's buffered and thread agnostic. 
 */
 public class CoffeeIOPipe
 {
 	private final int[]			buffer;
 	private final AtomicInteger	writeDex	= new AtomicInteger(0);
 	private final AtomicInteger	readDex		= new AtomicInteger(0);
-	private InputStream			inStream;
-	private final OutputStream	outStream;
+	private CMInputStream			inStream;
+	private final CMOutputStream	outStream;
 
-	public CoffeeIOPipe(int bufferSize)
+	public CoffeeIOPipe(int bufferSize, Runnable writeCallback)
 	{
 		this.buffer = new int[bufferSize];
 		inStream	= new CMInputStream();
-		outStream	= new CMOutputStream();
+		outStream	= new CMOutputStream(writeCallback);
 	}
 
-	private class CMInputStream extends InputStream
+	public CoffeeIOPipe(int bufferSize)
+	{
+		this(bufferSize,null);
+	}
+
+	public class CMInputStream extends InputStream
 	{
 		private boolean closed = false;
 		
@@ -63,25 +70,36 @@ public class CoffeeIOPipe
 		{
 			if(closed)
 				throw new IOException("Input stream closed.");
-	    	final int read=readDex.get();
-	    	final int write=writeDex.get();
-	    	if(read == write)
-	    		return 0;
-	    	if(read > write)
-	    		return buffer.length - read + write;
-	    	return write-read;
-	    }
-	    
-	    @Override
-	    public void close()
-	    {
-	    	closed=true;
-	    }
+			final int read=readDex.get();
+			final int write=writeDex.get();
+			if(read == write)
+				return 0;
+			if(read > write)
+				return buffer.length - read + write;
+			return write-read;
+		}
+		
+		@Override
+		public void close()
+		{
+			closed=true;
+		}
 	}
 
-	private class CMOutputStream extends OutputStream
+	public class CMOutputStream extends OutputStream
 	{
 		private boolean closed = false;
+		private Runnable writeCallback;
+		
+		private CMOutputStream(Runnable writeCallback)
+		{
+			this.writeCallback=writeCallback;
+		}
+		
+		public void setWriteCallback(Runnable runner)
+		{
+			this.writeCallback = runner;
+		}
 		
 		@Override
 		public void write(int b) throws IOException
@@ -99,45 +117,40 @@ public class CoffeeIOPipe
 						readDex.set(0);
 				}
 			}
+			if(writeCallback != null)
+				writeCallback.run();
 		}
 		
-	    @Override
-	    public void close()
-	    {
-	    	closed=true;
-	    }
+		@Override
+		public void close()
+		{
+			closed=true;
+		}
 	}
 	
-	public InputStream getInputStream()
+	public CMInputStream getInputStream()
 	{
 		return inStream;
 	}
 	
-	public OutputStream getOutputStream()
+	public CMOutputStream getOutputStream()
 	{
 		return outStream;
 	}
 
+	public void setWriteCallback(Runnable runner)
+	{
+		outStream.setWriteCallback(runner);
+	}
+	
 	public void shutdownInput()
 	{
-		try
-		{
 			inStream.close();
-		}
-		catch (IOException e)
-		{
-		}
 	}
 	
 	public void shutdownOutput()
 	{
-		try
-		{
-			outStream.close();
-		}
-		catch (IOException e)
-		{
-		}
+		outStream.close();
 	}
 	
 	public void close()
@@ -146,18 +159,93 @@ public class CoffeeIOPipe
 		shutdownOutput();
 	}
 	
+	public static class CoffeePipeSocket extends Socket
+	{
+		private boolean			isClosed	= false;
+		private InetAddress		addr		= null;
+		private CoffeeIOPipe	pipe		= null;
+		private CoffeeIOPipe	friendPipe	= null;
+
+		public CoffeePipeSocket(InetAddress addr, CoffeeIOPipe myPipe, CoffeeIOPipe friendPipe) throws IOException
+		{
+			this.addr=addr;
+			this.pipe = myPipe;
+			this.friendPipe = friendPipe;
+		}
+
+		@Override
+		public void shutdownInput() throws IOException
+		{
+			isClosed = true;
+		}
+
+		@Override
+		public void shutdownOutput() throws IOException
+		{
+			isClosed = true;
+		}
+
+		@Override
+		public boolean isConnected()
+		{
+			return !isClosed;
+		}
+
+		@Override
+		public boolean isClosed()
+		{
+			return isClosed;
+		}
+
+		@Override
+		public synchronized void close() throws IOException
+		{
+			if (friendPipe != null)
+			{
+				friendPipe.shutdownInput();
+				friendPipe.shutdownOutput();
+			}
+			this.pipe.shutdownInput();
+			this.pipe.shutdownOutput();
+			isClosed = true;
+		}
+
+		@Override
+		public CMInputStream getInputStream() throws IOException
+		{
+			return pipe.getInputStream();
+		}
+
+		@Override
+		public CMOutputStream getOutputStream() throws IOException
+		{
+			return pipe.getOutputStream();
+		}
+
+		@Override
+		public InetAddress getInetAddress()
+		{
+			return addr;
+		}
+	}
+	
 	public static class CoffeeIOPipes
 	{
 		private final CoffeeIOPipe	leftPipe;
 		private final CoffeeIOPipe	rightPipe;
 
-		public CoffeeIOPipes(int bufferSize)
+		public CoffeeIOPipes(int bufferSize, Runnable writeCallback)
 		{
-			this.leftPipe=new CoffeeIOPipe(bufferSize/2);
-			this.rightPipe=new CoffeeIOPipe(bufferSize/2);
-			InputStream lin = this.leftPipe.inStream;
+			this.leftPipe=new CoffeeIOPipe(bufferSize/2, writeCallback);
+			this.rightPipe=new CoffeeIOPipe(bufferSize/2, writeCallback);
+			CMInputStream lin = this.leftPipe.inStream;
 			this.leftPipe.inStream = this.rightPipe.inStream;
 			this.rightPipe.inStream = lin;
+		}
+		
+		public CoffeeIOPipes(int bufferSize)
+		{
+			this(bufferSize, null);
 		}
 		
 		public CoffeeIOPipe getLeftPipe()

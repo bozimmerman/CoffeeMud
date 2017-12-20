@@ -143,7 +143,7 @@ public class Siplet
 	{
 		try
 		{
-			return this.in[0].ready() || this.rawin.available() > 0;
+			return this.in[0] != null && (this.in[0].ready() || this.rawin.available() > 0);
 		}
 		catch (IOException e)
 		{
