@@ -1060,6 +1060,11 @@ public class DefaultSession implements Session
 			out.write(bytes);
 			out.flush();
 		}
+		catch(ArrayIndexOutOfBoundsException x)
+		{
+			Log.errOut("ZLibFail",x.getMessage());
+			this.setKillFlag(true);
+		}
 		finally
 		{
 			lastWriteTime=System.currentTimeMillis();

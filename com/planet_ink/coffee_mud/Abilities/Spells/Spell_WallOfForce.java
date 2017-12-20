@@ -124,7 +124,7 @@ public class Spell_WallOfForce extends Spell
 				&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_RANGED)))
 			{
 				mob.tell(L("Malice neither escapes nor enters the wall of force."));
-				if(mob.isMonster())
+				if(mob.isMonster() && (msg.tool() instanceof Item))
 					CMLib.commands().postRemove(mob,(Item)msg.tool(),true);
 				return false;
 			}
