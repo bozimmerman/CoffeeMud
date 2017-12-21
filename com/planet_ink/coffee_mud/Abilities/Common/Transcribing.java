@@ -224,6 +224,7 @@ public class Transcribing extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		foundI=copyFromI;
+		targetI=copyToI;
 		verb=L("transcribing @x1 into @x2",foundI.name(),targetI.name());
 		displayText=L("You are @x1",verb);
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
