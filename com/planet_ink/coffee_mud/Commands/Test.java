@@ -2669,22 +2669,39 @@ public class Test extends StdCommand
 								{
 									double oldCurSpeed = curSpeed;
 									double curDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
+									double[] oldCurDir=new double[]{curDir[0],curDir[1]};
 									curSpeed = CMLib.map().moveSpaceObject(curDir,curSpeed,accelDir, newAccelleration);
-									if(curDirDiff > halfPI)
+									double newDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
+									if((curDirDiff > halfPI)
+									&&(newDirDiff > halfPI))
 									{
 										if(curSpeed > oldCurSpeed)
-											System.out.print("no");
+										{
+											System.out.println("Step "+steps+" of "+
+													Math.round(Math.toDegrees(oldCurDir[0]))+"@"+Math.round(Math.toDegrees(oldCurDir[1]))
+													+" -> "
+													+Math.round(Math.toDegrees(accelDir[0]))+"@"+Math.round(Math.toDegrees(accelDir[1]))
+													+" (angle Diff "+curDirDiff+") went from speed "+oldCurSpeed+" to "+curSpeed);
+											//CMLib.map().moveSpaceObject(oldCurDir,oldCurSpeed,accelDir, newAccelleration);
+											//curDirDiff = CMLib.map().getAngleDelta(oldCurDir, accelDir);
+										}
 									}
 									else
+									if((curDirDiff < halfPI)
+									&&(newDirDiff < halfPI))
 									{
 										if(curSpeed < oldCurSpeed)
-											System.out.print("NO");
+										{
+											System.out.println("Step "+steps+" of "+
+													Math.round(Math.toDegrees(oldCurDir[0]))+"@"+Math.round(Math.toDegrees(oldCurDir[1]))
+													+" -> "
+													+Math.round(Math.toDegrees(accelDir[0]))+"@"+Math.round(Math.toDegrees(accelDir[1]))
+													+" (angle Diff "+curDirDiff+") went from speed "+oldCurSpeed+" to "+curSpeed);
+										}
 									}
 									steps++;
 								}
 								//TODO: Test Ideas
-								//TODO: if accelDir > 90 degree from facing dir, then speed goes down until < 90 degrees.
-								//TODO: if accelDir < 90 degree from facing dir, speed increases every time.
 								//TODO: test whether smaller angle diffs result in fewer steps. 
 								System.out.println(Math.round(Math.toDegrees(totDirDiff))+", ="+steps+"                      fspeed="+curSpeed);
 								results.add(new double[]{Math.round(Math.toDegrees(totDirDiff)),steps});
