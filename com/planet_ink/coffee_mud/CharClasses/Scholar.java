@@ -320,7 +320,6 @@ public class Scholar extends StdCharClass
 				}
 			}
 		}
-		else
 		if((msg.tool() instanceof Ability)
 		&&(myHost instanceof MOB))
 		{
