@@ -209,9 +209,17 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					String material=V.get(RCP_WOODTYPE);
-					final String wood=getComponentDescription(mob,V,RCP_WOOD);
-					if(wood.length()>5)
+					String wood=getComponentDescription(mob,V,RCP_WOOD);
+					if(!CMath.isInteger(wood))
+					{
 						material="";
+						wood=wood.toLowerCase();
+					}
+					else
+					if(CMath.s_int(wood)>1)
+						material="pounds of "+material;
+					else
+						material="pound of "+material;
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+" "+material.toLowerCase()+"\n\r");
