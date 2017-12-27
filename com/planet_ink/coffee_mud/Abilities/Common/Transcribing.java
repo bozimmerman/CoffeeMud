@@ -99,18 +99,23 @@ public class Transcribing extends CommonSkill
 					MOB factM=CMClass.getFactoryMOB(mob.Name(), mob.phyStats().level(), mob.location());
 					try
 					{
-						final CMMsg rmsg=CMClass.getMsg(mob,foundI,this,CMMsg.TYP_READ,null,pageNum,null);
-						foundI.executeMsg(foundI, rmsg);
 						String tmsg="";
-						for(CMMsg m2 : rmsg.trailerMsgs())
+						if((foundI instanceof Book)&&(CMath.s_int(pageNum) > 0))
+							tmsg = ((Book)foundI).getContent(CMath.s_int(pageNum));
+						else
 						{
-							if((m2.source()==factM)
-							&&(m2.target()==foundI)
-							&&(m2.targetMessage().length()>0)
-							&&(m2.sourceMinor()==CMMsg.TYP_WASREAD))
-								tmsg+=m2.targetMessage();
+							final CMMsg rmsg=CMClass.getMsg(mob,foundI,this,CMMsg.TYP_READ,null,pageNum,null);
+							foundI.executeMsg(foundI, rmsg);
+							for(CMMsg m2 : rmsg.trailerMsgs())
+							{
+								if((m2.source()==mob)
+								&&(m2.target()==foundI)
+								&&(m2.targetMessage().length()>0)
+								&&(m2.sourceMinor()==CMMsg.TYP_WASREAD))
+									tmsg+=m2.targetMessage();
+							}
 						}
-						final CMMsg msg=CMClass.getMsg(mob,foundI,this,CMMsg.TYP_WRITE,
+						final CMMsg msg=CMClass.getMsg(mob,targetI,this,CMMsg.TYP_WRITE,
 								L("<S-NAME> transcribe(s) <T-NAME> into @x1."),
 								tmsg,
 								L("<S-NAME> transcribe(s) <T-NAME> into @x1."));
@@ -165,7 +170,10 @@ public class Transcribing extends CommonSkill
 		}
 		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
 		{
-			commonTell(mob,L("You can't transcribe something like @x1.",I.name(mob)));
+			if(from)
+				commonTell(mob,L("You can't transcribe something like @x1.",I.name(mob)));
+			else
+				commonTell(mob,L("You can't transcribe onto something like @x1.",I.name(mob)));
 			return null;
 		}
 		if((!CMLib.flags().isReadable(I))
