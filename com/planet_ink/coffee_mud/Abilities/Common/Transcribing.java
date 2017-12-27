@@ -100,20 +100,15 @@ public class Transcribing extends CommonSkill
 					try
 					{
 						String tmsg="";
-						if((foundI instanceof Book)&&(CMath.s_int(pageNum) > 0))
-							tmsg = ((Book)foundI).getContent(CMath.s_int(pageNum));
-						else
+						final CMMsg rmsg=CMClass.getMsg(mob,foundI,this,CMMsg.TYP_READ,null,pageNum,null);
+						foundI.executeMsg(foundI, rmsg);
+						for(CMMsg m2 : rmsg.trailerMsgs())
 						{
-							final CMMsg rmsg=CMClass.getMsg(mob,foundI,this,CMMsg.TYP_READ,null,pageNum,null);
-							foundI.executeMsg(foundI, rmsg);
-							for(CMMsg m2 : rmsg.trailerMsgs())
-							{
-								if((m2.source()==mob)
-								&&(m2.target()==foundI)
-								&&(m2.targetMessage().length()>0)
-								&&(m2.sourceMinor()==CMMsg.TYP_WASREAD))
-									tmsg+=m2.targetMessage();
-							}
+							if((m2.source()==mob)
+							&&(m2.target()==foundI)
+							&&(m2.targetMessage().length()>0)
+							&&(m2.sourceMinor()==CMMsg.TYP_WASREAD))
+								tmsg+=m2.targetMessage();
 						}
 						final CMMsg msg=CMClass.getMsg(mob,targetI,this,CMMsg.TYP_WRITE,
 								L("<S-NAME> transcribe(s) <T-NAME> into @x1."),
