@@ -145,7 +145,7 @@ public class Siplet
 		{
 			return this.in[0] != null && (this.in[0].ready() || this.rawin.available() > 0);
 		}
-		catch (IOException e)
+		catch (Exception e)
 		{
 			this.disconnectFromURL();
 			return false;

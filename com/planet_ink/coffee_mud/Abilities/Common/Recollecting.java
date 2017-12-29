@@ -174,13 +174,16 @@ public class Recollecting extends CommonSkill
 								final CMMsg rmsg=CMClass.getMsg(fakeMOB,foundI,this,CMMsg.TYP_READ,null,"",null);
 								foundI.executeMsg(foundI, rmsg);
 								String tmsg="";
-								for(CMMsg m2 : rmsg.trailerMsgs())
+								if(rmsg.trailerMsgs()!=null)
 								{
-									if((m2.source()==fakeMOB)
-									&&(m2.target()==foundI)
-									&&(m2.targetMessage().length()>0)
-									&&(m2.sourceMinor()==CMMsg.TYP_WASREAD))
-										tmsg+=m2.targetMessage();
+									for(CMMsg m2 : rmsg.trailerMsgs())
+									{
+										if((m2.source()==fakeMOB)
+										&&(m2.target()==foundI)
+										&&(m2.targetMessage().length()>0)
+										&&(m2.sourceMinor()==CMMsg.TYP_WASREAD))
+											tmsg+=m2.targetMessage();
+									}
 								}
 								remain -=tmsg.length();
 								if(CMLib.english().containsString(tmsg, this.searchFor))

@@ -48,6 +48,9 @@ public class Emote extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
+		final Room R=mob.location();
+		if(R==null)
+			return false;
 		if(commands.size()<2)
 		{
 			if((commands.size()>0)&&(commands.get(0).equalsIgnoreCase(",")))
@@ -102,7 +105,7 @@ public class Emote extends StdCommand
 			}
 			if(rest.length()>0)
 			{
-				final Environmental E=mob.location().fetchFromRoomFavorMOBs(null, rest);
+				final Environmental E=R.fetchFromRoomFavorMOBs(null, rest);
 				if((E!=null)&&(CMLib.flags().canBeSeenBy(E, mob)))
 				{
 					target=E;
@@ -113,8 +116,8 @@ public class Emote extends StdCommand
 		}
 		final String emote="^E<S-NAME>"+combinedCommands+" ^?";
 		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_EMOTE,emote);
-		if(mob.location().okMessage(mob,msg))
-			mob.location().send(mob,msg);
+		if(R.okMessage(mob,msg))
+			R.send(mob,msg);
 		return false;
 	}
 

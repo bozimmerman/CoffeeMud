@@ -949,7 +949,7 @@ public class MOBloader
 	public void DBUpdate(MOB mob)
 	{
 		final PlayerStats pStats = mob.playerStats();
-		if(!pStats.isSavable())
+		if((pStats==null)||(!pStats.isSavable()))
 			return;
 		DBUpdateJustMOB(mob);
 		if(mob.Name().length()==0)

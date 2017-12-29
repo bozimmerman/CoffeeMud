@@ -2201,6 +2201,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public LoginResult completePlayerLogin(final Session session, boolean wizi) throws IOException
 	{
 		final MOB realMOB = session.mob();
+		if(realMOB==null || (realMOB.playerStats()==null))
+			return null;
 		final PlayerAccount acct = realMOB.playerStats().getAccount();
 		if(acct != null)
 		{
