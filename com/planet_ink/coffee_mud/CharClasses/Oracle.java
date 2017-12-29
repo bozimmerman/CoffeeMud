@@ -305,7 +305,9 @@ public class Oracle extends Cleric
 								&&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)))
 								&&(mob.fetchAbility(A.ID())==null))
 								{
-									newOne=A;
+									final DVector prereqs=CMLib.ableMapper().getUnmetPreRequisites(mob,A);
+									if((prereqs==null)||(prereqs.size()==0))
+										newOne=A;
 								}
 							}
 						}

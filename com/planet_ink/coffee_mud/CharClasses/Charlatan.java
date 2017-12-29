@@ -366,7 +366,11 @@ public class Charlatan extends StdCharClass
 				&&(!CMLib.ableMapper().qualifiesOnlyByClan(mob, A))
 				&&(!CMLib.ableMapper().qualifiesOnlyByRace(mob, A))
 				&&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0))))
-					choices.add(A);
+				{
+					final DVector prereqs=CMLib.ableMapper().getUnmetPreRequisites(mob,A);
+					if((prereqs==null)||(prereqs.size()==0))
+						choices.add(A);
+				}
 			}
 			
 			// now count those you already have

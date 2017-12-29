@@ -174,21 +174,21 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Skillcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_SecretWriting",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_HonoraryDegreeCommoner", false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_HonoraryDegreeCommoner", false, CMParms.parseSemicolons("Studying",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_RacialLore", true);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Cataloging",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Songcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Map",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_HonoraryDegreeFighter",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_HonoraryDegreeFighter",false, CMParms.parseSemicolons("Studying",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Observation",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_AnalyzeMark",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"PlantLore",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_HonoraryDegreeBard",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_HonoraryDegreeBard",false, CMParms.parseSemicolons("Studying",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"AttributeTraining",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Taxidermy",false);
 		
@@ -197,24 +197,24 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Appraise",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Recollecting",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_HonoraryDegreeThief",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_HonoraryDegreeThief",false, CMParms.parseSemicolons("Studying",true));
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"ScrollScribing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_Chantcraft",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Publishing",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_HonoraryDegreeMage",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_HonoraryDegreeMage",false, CMParms.parseSemicolons("Studying",true));
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_PlanarLore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_EncryptedWriting",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Surveying",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_HonoraryDegreeDruid",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_HonoraryDegreeDruid",false, CMParms.parseSemicolons("Studying",true));
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Lecturing",true);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Comprehension",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_HonoraryDegreeCleric",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_HonoraryDegreeCleric",false, CMParms.parseSemicolons("Studying",true));
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Enrolling",true);
 		
