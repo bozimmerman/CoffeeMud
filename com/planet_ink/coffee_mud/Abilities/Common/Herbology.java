@@ -85,7 +85,10 @@ public class Herbology extends CommonSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping))
+			if((affected!=null)
+			&&(affected instanceof MOB)
+			&&(!aborted)
+			&&(!helping))
 			{
 				final MOB mob=(MOB)affected;
 				if(messedUp)

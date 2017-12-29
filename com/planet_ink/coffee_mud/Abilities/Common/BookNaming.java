@@ -103,7 +103,7 @@ public class BookNaming extends CommonSkill
 		verb=L("naming");
 	}
 
-	public static boolean isAlreadyNamed(String Name)
+	public static boolean isAlreadyNamed(final String name)
 	{
 		if(PATTERNS.length==0)
 		{
@@ -117,7 +117,7 @@ public class BookNaming extends CommonSkill
 			}
 			PATTERNS=Ps.toArray(PATTERNS);
 		}
-		CharSequence S = Name.subSequence(0, Name.length());
+		CharSequence S = name.subSequence(0, name.length());
 		for(Pattern P : PATTERNS)
 		{
 			if(P.matcher(S).matches())
@@ -127,13 +127,16 @@ public class BookNaming extends CommonSkill
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping))
+			if((affected!=null)
+			&&(affected instanceof MOB)
+			&&(!aborted)
+			&&(!helping))
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
@@ -170,9 +173,10 @@ public class BookNaming extends CommonSkill
 				for(String P : PREFIXES)
 				{
 					P=CMStrings.replaceAll(P, "@x1", "NAME");
-					P=CMStrings.replaceAll(P, "@x2", mob.Name());
+					P=CMStrings.replaceAll(P, "@x2", "AUTHOR");
 					
 					prefixes.append(CMStrings.padRight(""+index,2)).append(") "+P+"\n\r");
+					index++;
 				}
 				BookNaming.prefixList=prefixes.toString();
 			}
