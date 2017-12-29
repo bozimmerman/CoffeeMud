@@ -40,7 +40,7 @@ public class Skill_HonoraryDegreeMage extends Skill_HonoraryDegreeCommoner
 		return "Skill_HonoraryDegreeMage";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Thief Honorary Degree");
+	private final static String localizedName = CMLib.lang().L("Mage Honorary Degree");
 
 	@Override
 	public String name()
@@ -48,6 +48,7 @@ public class Skill_HonoraryDegreeMage extends Skill_HonoraryDegreeCommoner
 		return localizedName;
 	}
 
+	@Override
 	protected String getBaseClassID()
 	{
 		return "Mage";
