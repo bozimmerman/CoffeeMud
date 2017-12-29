@@ -75,6 +75,7 @@ public class MOBloader
 				oldDisposition=mob.basePhyStats().disposition();
 				mob.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
 				mob.phyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
+				mob.setDisplayText(""); // for centaur
 				
 				final CharStats stats=mob.baseCharStats();
 				final CharState state=mob.baseState();
