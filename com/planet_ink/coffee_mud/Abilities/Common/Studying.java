@@ -36,7 +36,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Studying extends CommonSkill
+public class Studying extends CommonSkill implements AbilityContainer
 {
 	@Override
 	public String ID()
@@ -199,7 +199,7 @@ public class Studying extends CommonSkill
 				forget(mob,A.ID());
 		}
 	}
-
+	
 	protected boolean forget(final MOB mob, final String abilityID)
 	{
 		if(mob == null)
@@ -649,5 +649,98 @@ public class Studying extends CommonSkill
 		}
 			
 		return true;
+	}
+
+	@Override
+	public void addAbility(Ability to)
+	{
+		throw new java.lang.UnsupportedOperationException();
+	}
+
+	@Override
+	public void delAbility(Ability to)
+	{
+		if(to==null)
+			return;
+		final List<String> strList = CMParms.parseSemicolons(text(), true);
+		boolean removed=false;
+		for(int i=0;i<strList.size();i++)
+		{
+			if(strList.get(i).startsWith(to.ID()+","))
+			{
+				strList.remove(i);
+				removed = true;
+				break;
+			}
+		}
+		if(removed)
+		{
+			final String text=CMParms.combineWith(strList,';');
+			for(final Ability A : skillList)
+			{
+				if(A.ID().equalsIgnoreCase(A.ID()))
+				{
+					skillList.remove(A);
+				}
+			}
+			setMiscText(text);
+		}
+	}
+
+	@Override
+	public int numAbilities()
+	{
+		return skillList.size();
+	}
+
+	@Override
+	public Ability fetchAbility(int index)
+	{
+		return skillList.get(index);
+	}
+
+	@Override
+	public Ability fetchAbility(String ID)
+	{
+		for(Ability A : skillList)
+		{
+			if(A.ID().equalsIgnoreCase(ID))
+				return A;
+		}
+		return null;
+	}
+
+	@Override
+	public Ability fetchRandomAbility()
+	{
+		if(numAbilities()==0)
+			return null;
+		return fetchAbility(CMLib.dice().roll(1, numAbilities(), -1));
+	}
+
+	@Override
+	public Enumeration<Ability> abilities()
+	{
+		return new IteratorEnumeration<Ability>(skillList.iterator());
+	}
+
+	@Override
+	public void delAllAbilities()
+	{
+		XVector<Ability> all=new XVector<Ability>(skillList);
+		for(final Ability A : all)
+			delAbility(A);
+	}
+
+	@Override
+	public int numAllAbilities()
+	{
+		return numAbilities();
+	}
+
+	@Override
+	public Enumeration<Ability> allAbilities()
+	{
+		return abilities();
 	}
 }

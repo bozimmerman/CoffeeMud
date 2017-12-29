@@ -145,7 +145,9 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 					this.myTitles.clear();
 					final String[][] allDegrees = this.getAllDegrees();
 					final int[] counts=new int[allDegrees.length];
-					for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+					final Ability studyingA=mob.fetchAbility("Studying");
+					final AbilityContainer collection=(studyingA==null)?mob:(AbilityContainer)studyingA;
+					for(Enumeration<Ability> a=collection.abilities();a.hasMoreElements();)
 					{
 						final Ability A=a.nextElement();
 						for(int ci=0;ci<allDegrees.length;ci++)
