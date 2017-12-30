@@ -129,9 +129,6 @@ public class Skill_Skillcraft extends StdSkill
 		if(!(affected instanceof MOB))
 			return;
 		final MOB mob=(MOB)affected;
-		if(mob.Name().equals("Zac") && (!ID().equals("Skill_Thiefcraft"))
-				&& (msg.tool() instanceof Ability) && (msg.tool().ID().equals("Fighter_Battlecry")))
-			System.out.println("hi");
 		if((!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(!msg.amISource(mob))
 		&&(msg.tool() instanceof Ability)

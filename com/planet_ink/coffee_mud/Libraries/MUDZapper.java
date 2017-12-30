@@ -2618,6 +2618,48 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			{
 				switch(zapCodes.get(str))
 				{
+				case _MAXCLASSLEVEL: // max class level...
+					//TODO:?!
+					break;
+				case _BASECLASS: // huh?
+					//TODO:?!
+					break;
+				case JAVACLASS: // +JAVACLASS
+					for(int v2=v+1;v2<V.size();v2++)
+					{
+						str2=V.get(v2);
+						if(zapCodes.containsKey(str2))
+							break;
+						if(str2.startsWith("-"))
+						{
+							str2=str2.substring(1);
+							final int x=str2.indexOf('(');
+							if(x>0)
+								str2=str2.substring(0,x);
+							final Ability A=CMClass.getAbilityPrototype(str2);
+							if(A!=null)
+								preReqs.remove(A.ID());
+						}
+					}
+					break;
+				case _JAVACLASS: // -JAVACLASS
+					for(int v2=v+1;v2<V.size();v2++)
+					{
+						str2=V.get(v2);
+						if(zapCodes.containsKey(str2))
+							break;
+						if(str2.startsWith("+"))
+						{
+							str2=str2.substring(1);
+							final int x=str2.indexOf('(');
+							if(x>0)
+								str2=str2.substring(0,x);
+							final Ability A=CMClass.getAbilityPrototype(str2);
+							if((A!=null)&&(!preReqs.contains(A.ID())))
+								preReqs.addElement(A.ID());
+						}
+					}
+					break;
 				case _EXPERTISE: // -expertises
 					{
 						for(int v2=v+1;v2<V.size();v2++)
@@ -2647,7 +2689,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								final int x=str2.indexOf('(');
 								if(x>0)
 									str2=str2.substring(0,x);
-								final Ability A=CMClass.getAbility(str2);
+								final Ability A=CMClass.getAbilityPrototype(str2);
 								if((A!=null)&&(!preReqs.contains(A.ID())))
 									preReqs.addElement(A.ID());
 							}
