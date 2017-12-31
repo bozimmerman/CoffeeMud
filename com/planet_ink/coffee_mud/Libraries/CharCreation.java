@@ -1630,9 +1630,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final String onc = ((mob == null)||(mob.session()==null)||(mob.session().isStopped())) ?"":" ^y*^?";
 			buf.append(CMStrings.padRight(player.name()+onc,longest));
 			buf.append("^.^N");
-			buf.append(" " + CMStrings.padRight(player.race(),10));
-			buf.append(" " + CMStrings.padRight(""+player.level(),5));
-			buf.append(" " + CMStrings.padRight(player.charClass(),15));
+			if(mob != null)
+				buf.append(" " + CMStrings.padRight(mob.baseCharStats().raceName(),10));
+			else
+				buf.append(" " + CMStrings.padRight(player.race(),10));
+			if(mob != null)
+				buf.append(" " + CMStrings.padRight(""+mob.basePhyStats().level(),5));
+			else
+				buf.append(" " + CMStrings.padRight(""+player.level(),5));
+			if(mob!=null)
+				buf.append(" " + CMStrings.padRight(mob.baseCharStats().displayClassName(),15));
+			else
+				buf.append(" " + CMStrings.padRight(player.charClass(),15));
 			buf.append("^.^N\n\r");
 		}
 		session.println(buf.toString());
