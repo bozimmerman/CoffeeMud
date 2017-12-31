@@ -255,7 +255,8 @@ public class Skill_Map extends StdSkill
 
 				map=item;
 				final Room firstRoom=getCurrentRoom(mob);
-				if(firstRoom!=null)
+				if((firstRoom!=null)
+				&&(!CMath.bset(firstRoom.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE)))
 				{
 					final String firstRoomID=CMLib.map().getExtendedRoomID(firstRoom);
 					if((!roomsMappedAlready.contains(firstRoom))&&(firstRoomID.length()>0))
