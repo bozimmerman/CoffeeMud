@@ -88,7 +88,7 @@ public class Skill_Map extends StdSkill
 		return Ability.ACODE_SKILL | Ability.DOMAIN_CALLIGRAPHY;
 	}
 
-	List<Room>	roomsMappedAlready	= new Vector<Room>();
+	Set<Room>	roomsMappedAlready	= new TreeSet<Room>();
 	protected Item	map				= null;
 
 	@Override
