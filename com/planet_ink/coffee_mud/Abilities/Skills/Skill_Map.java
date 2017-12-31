@@ -255,26 +255,17 @@ public class Skill_Map extends StdSkill
 
 				map=item;
 				final Room firstRoom=getCurrentRoom(mob);
-				if(!roomsMappedAlready.contains(firstRoom))
+				if(firstRoom!=null)
 				{
-					roomsMappedAlready.add(firstRoom);
-					map.setReadableText(map.readableText()+";"+CMLib.map().getExtendedRoomID(firstRoom));
-					if(map instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
-						((com.planet_ink.coffee_mud.Items.interfaces.RoomMap)map).doMapArea();
-				}
-				String rooms=item.readableText();
-				int x=rooms.indexOf(';');
-				while(x>=0)
-				{
-					final String roomID=rooms.substring(0,x);
-					final Room room=CMLib.map().getRoom(roomID);
-					if(room!=null)
+					final String firstRoomID=CMLib.map().getExtendedRoomID(firstRoom);
+					if((!roomsMappedAlready.contains(firstRoom))&&(firstRoomID.length()>0))
 					{
-						if(!roomsMappedAlready.contains(room))
-							roomsMappedAlready.add(room);
+						roomsMappedAlready.add(firstRoom);
+						oldRoomIDs.add(firstRoomID);
+						map.setReadableText(map.readableText()+";"+firstRoomID);
+						if(map instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
+							((com.planet_ink.coffee_mud.Items.interfaces.RoomMap)map).doMapArea();
 					}
-					rooms=rooms.substring(x+1);
-					x=rooms.indexOf(';');
 				}
 				beneficialAffect(mob,mob,asLevel,0);
 			}
