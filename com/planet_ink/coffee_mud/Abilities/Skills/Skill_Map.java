@@ -240,19 +240,22 @@ public class Skill_Map extends StdSkill
 					mob.addItem(B);
 					item=B;
 				}
-				
+
 				if((map!=null)&&(map != item))
 				{
 					roomsMappedAlready.clear();
 					final List<String> oldRoomIDs=CMParms.parseSemicolons(item.readableText(), true);
 					for(final String roomID : oldRoomIDs)
 					{
-						final Room R=CMLib.map().getRoom(roomID);
-						if(R!=null)
-							roomsMappedAlready.add(R);
+						if(roomID.length()>0)
+						{
+							final Room R=CMLib.map().getRoom(roomID);
+							if(R!=null)
+								roomsMappedAlready.add(R);
+						}
 					}
 				}
-				
+
 				map=item;
 				final Room firstRoom=getCurrentRoom(mob);
 				if(!roomsMappedAlready.contains(firstRoom))
