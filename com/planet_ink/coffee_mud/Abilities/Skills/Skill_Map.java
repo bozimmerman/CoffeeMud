@@ -241,18 +241,15 @@ public class Skill_Map extends StdSkill
 					item=B;
 				}
 
-				if((map!=null)&&(map != item))
+				roomsMappedAlready.clear();
+				final List<String> oldRoomIDs=CMParms.parseSemicolons(item.readableText(), true);
+				for(final String roomID : oldRoomIDs)
 				{
-					roomsMappedAlready.clear();
-					final List<String> oldRoomIDs=CMParms.parseSemicolons(item.readableText(), true);
-					for(final String roomID : oldRoomIDs)
+					if(roomID.length()>0)
 					{
-						if(roomID.length()>0)
-						{
-							final Room R=CMLib.map().getRoom(roomID);
-							if(R!=null)
-								roomsMappedAlready.add(R);
-						}
+						final Room R=CMLib.map().getRoom(roomID);
+						if(R!=null)
+							roomsMappedAlready.add(R);
 					}
 				}
 
