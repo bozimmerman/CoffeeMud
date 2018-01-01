@@ -27,12 +27,18 @@ limitations under the License.
 */
 public class CoffeeIOPipe
 {
-	private final int[]			buffer;
-	private final AtomicInteger	writeDex	= new AtomicInteger(0);
-	private final AtomicInteger	readDex		= new AtomicInteger(0);
+	private final int[]				buffer;
+	private final AtomicInteger		writeDex	= new AtomicInteger(0);
+	private final AtomicInteger		readDex		= new AtomicInteger(0);
 	private CMInputStream			inStream;
 	private final CMOutputStream	outStream;
 
+	/**
+	 * Construct a single two-way pipe.
+	 * 
+	 * @param bufferSize size of the buffer
+	 * @param writeCallback optional runnable called when a write occurs.
+	 */
 	public CoffeeIOPipe(int bufferSize, Runnable writeCallback)
 	{
 		this.buffer = new int[bufferSize];
@@ -40,11 +46,21 @@ public class CoffeeIOPipe
 		outStream	= new CMOutputStream(writeCallback);
 	}
 
+	/**
+	 * Construct a single two-way pipe.
+	 * 
+	 * @param bufferSize size of the buffer
+	 */
 	public CoffeeIOPipe(int bufferSize)
 	{
 		this(bufferSize,null);
 	}
 
+	/**
+	 * The input stream for a single pipe.
+	 * 
+	 * @author Bo Zimmerman
+	 */
 	public class CMInputStream extends InputStream
 	{
 		private boolean closed = false;
@@ -86,16 +102,40 @@ public class CoffeeIOPipe
 		}
 	}
 
+	/**
+	 * The output stream for a single pipe.
+	 * 
+	 * @author Bo Zimmerman
+	 */
 	public class CMOutputStream extends OutputStream
 	{
-		private boolean closed = false;
-		private Runnable writeCallback;
-		
+		private boolean		closed	= false;
+		private Runnable	writeCallback;
+
+		/**
+		 * Creates an output stream for a single pipe.
+		 * 
+		 * @param writeCallback optional callback when a write occurs
+		 */
 		private CMOutputStream(Runnable writeCallback)
 		{
 			this.writeCallback=writeCallback;
 		}
 		
+		/**
+		 * Creates an output stream for a single pipe.
+		 */
+		private CMOutputStream()
+		{
+			this.writeCallback=null;
+		}
+		
+		/**
+		 * Sets a callback that occurs when a write
+		 * occurs. null is ok. 
+		 * 
+		 * @param runner the optional callback 
+		 */
 		public void setWriteCallback(Runnable runner)
 		{
 			this.writeCallback = runner;
@@ -127,38 +167,66 @@ public class CoffeeIOPipe
 			closed=true;
 		}
 	}
-	
+
+	/**
+	 * Returns the input stream 
+	 * @return the input stream 
+	 */
 	public CMInputStream getInputStream()
 	{
 		return inStream;
 	}
 	
+	/**
+	 * Returns the pipe output stream
+	 * @return the pipe output stream
+	 */
 	public CMOutputStream getOutputStream()
 	{
 		return outStream;
 	}
 
+	/**
+	 * Sets a callback that occurs when a write
+	 * occurs. null is ok. 
+	 * 
+	 * @param runner the optional callback 
+	 */
 	public void setWriteCallback(Runnable runner)
 	{
 		outStream.setWriteCallback(runner);
 	}
-	
+
+	/**
+	 * Shutdowns the input stream
+	 */
 	public void shutdownInput()
 	{
-			inStream.close();
+		inStream.close();
 	}
-	
+
+	/**
+	 * Shutdowns the output stream
+	 */
 	public void shutdownOutput()
 	{
 		outStream.close();
 	}
-	
+
+	/**
+	 * Closes the input stream.
+	 */
 	public void close()
 	{
 		shutdownInput();
 		shutdownOutput();
 	}
-	
+
+	/**
+	 * A fake socket that consists of a pair of CoffeePipes.
+	 * 
+	 * @author Bo Zimmerman
+	 */
 	public static class CoffeePipeSocket extends Socket
 	{
 		private boolean			isClosed	= false;
@@ -166,6 +234,14 @@ public class CoffeeIOPipe
 		private CoffeeIOPipe	pipe		= null;
 		private CoffeeIOPipe	friendPipe	= null;
 
+		/**
+		 * Constructs a fake pipey socket.
+		 * 
+		 * @param addr the fake address to use when asked.
+		 * @param myPipe the pipe to one side of the socket
+		 * @param friendPipe the pipe to the other side of the socket
+		 * @throws IOException
+		 */
 		public CoffeePipeSocket(InetAddress addr, CoffeeIOPipe myPipe, CoffeeIOPipe friendPipe) throws IOException
 		{
 			this.addr=addr;
@@ -228,12 +304,24 @@ public class CoffeeIOPipe
 			return addr;
 		}
 	}
-	
+
+	/**
+	 * A pair of coffee pipes, for using to build
+	 * a pair of coffee pipe sockets.
+	 * 
+	 * @author Bo Zimmerman
+	 */
 	public static class CoffeeIOPipes
 	{
 		private final CoffeeIOPipe	leftPipe;
 		private final CoffeeIOPipe	rightPipe;
 
+		/**
+		 * Creates a pair of coffee pipes
+		 * 
+		 * @param bufferSize The size of the buffers, split two ways between each pipe
+		 * @param writeCallback the optional callback for when writes occur
+		 */
 		public CoffeeIOPipes(int bufferSize, Runnable writeCallback)
 		{
 			this.leftPipe=new CoffeeIOPipe(bufferSize/2, writeCallback);
@@ -242,22 +330,38 @@ public class CoffeeIOPipe
 			this.leftPipe.inStream = this.rightPipe.inStream;
 			this.rightPipe.inStream = lin;
 		}
-		
+
+		/**
+		 * Creates a pair of coffee pipes
+		 * 
+		 * @param bufferSize The size of the buffers, split two ways between each pipe
+		 */
 		public CoffeeIOPipes(int bufferSize)
 		{
 			this(bufferSize, null);
 		}
-		
+
+		/**
+		 * Returns the first pipe
+		 * @return the left pipe
+		 */
 		public CoffeeIOPipe getLeftPipe()
 		{
 			return leftPipe;
 		}
-		
+
+		/**
+		 * Returns the second pipe
+		 * @return the right pipe
+		 */
 		public CoffeeIOPipe getRightPipe()
 		{
 			return rightPipe;
 		}
-		
+
+		/**
+		 * Closes all pipes.
+		 */
 		public void close()
 		{
 			leftPipe.shutdownInput();
@@ -267,5 +371,4 @@ public class CoffeeIOPipe
 		}
 		
 	}
-	
 }
