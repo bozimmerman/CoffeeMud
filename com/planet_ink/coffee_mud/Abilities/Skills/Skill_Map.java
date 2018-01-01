@@ -88,7 +88,16 @@ public class Skill_Map extends StdSkill
 		return Ability.ACODE_SKILL | Ability.DOMAIN_CALLIGRAPHY;
 	}
 
-	Set<Room>	roomsMappedAlready	= new TreeSet<Room>();
+	protected final Set<Room>	roomsMappedAlready	= new TreeSet<Room>(new Comparator<Room>(){
+		@Override
+		public int compare(Room o1, Room o2)
+		{
+			final String s1=CMLib.map().getExtendedRoomID(o1);
+			final String s2=CMLib.map().getExtendedRoomID(o2);
+			return s1.compareTo(s2);
+		}
+		
+	});
 	protected Item	map				= null;
 
 	@Override
