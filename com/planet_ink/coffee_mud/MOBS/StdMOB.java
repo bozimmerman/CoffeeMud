@@ -1610,12 +1610,12 @@ public class StdMOB implements MOB
 			deathRoom = CMLib.login().getDefaultBodyRoom(this);
 		if (location() != null)
 			location().delInhabitant(this);
-		DeadBody Body = null;
+		DeadBody bodyI = null;
 		if (createBody)
 		{
-			Body = charStats().getMyRace().getCorpseContainer(this, deathRoom);
-			if ((Body != null) && (playerStats() != null))
-				playerStats().getExtItems().addItem(Body);
+			bodyI = charStats().getMyRace().getCorpseContainer(this, deathRoom);
+			if ((bodyI != null) && (playerStats() != null))
+				playerStats().getExtItems().addItem(bodyI);
 		}
 		amDead = true;
 		makePeace(false);
@@ -1649,7 +1649,7 @@ public class StdMOB implements MOB
 			bringToLife(CMLib.login().getDefaultDeathRoom(this), true);
 		if (deathRoom != null)
 			deathRoom.recoverRoomStats();
-		return Body;
+		return bodyI;
 	}
 
 	@Override
