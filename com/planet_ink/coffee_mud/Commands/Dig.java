@@ -94,12 +94,12 @@ public class Dig extends StdCommand
 		{
 			if(isOccupiedWithOtherWork(mob))
 			{
-				CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("You are too busy to dig right now."));
+				CMLib.commands().postCommandFail(mob,new StringXVector(commands),L("You are too busy to dig right now."));
 				return false;
 			}
 			if(mob.isInCombat())
 			{
-				CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("You are too busy fighting right now."));
+				CMLib.commands().postCommandFail(mob,new StringXVector(commands),L("You are too busy fighting right now."));
 				return false;
 			}
 
@@ -119,7 +119,7 @@ public class Dig extends StdCommand
 		{
 			if(mob.isInCombat())
 			{
-				CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("You stop digging."));
+				CMLib.commands().postCommandFail(mob,new StringXVector(commands),L("You stop digging."));
 				return false;
 			}
 			final String msgStr=L("<S-NAME> continue(s) digging a hole with <O-NAME>.");

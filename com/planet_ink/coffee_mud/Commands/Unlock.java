@@ -52,7 +52,7 @@ public class Unlock extends StdCommand
 		final String whatTounlock=CMParms.combine(commands,1);
 		if(whatTounlock.length()==0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Unlock what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Unlock what?"));
 			return false;
 		}
 		Environmental unlockThis=null;
@@ -64,7 +64,7 @@ public class Unlock extends StdCommand
 
 		if((unlockThis==null)||(!CMLib.flags().canBeSeenBy(unlockThis,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatTounlock));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatTounlock));
 			return false;
 		}
 		final String unlockMsg="<S-NAME> unlock(s) <T-NAMESELF>."+CMLib.protocol().msp("doorunlock.wav",10);

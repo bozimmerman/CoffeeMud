@@ -55,12 +55,12 @@ public class Deposit extends StdCommand
 			return false;
 		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You can not deposit anything with @x1.",shopkeeper.name()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You can not deposit anything with @x1.",shopkeeper.name()));
 			return false;
 		}
 		if(commands.size()==0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Deposit what or how much?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Deposit what or how much?"));
 			return false;
 		}
 		final String thisName=CMParms.combine(commands,0);
@@ -72,7 +72,7 @@ public class Deposit extends StdCommand
 			thisThang=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thisName);
 			if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 				return false;
 			}
 		}

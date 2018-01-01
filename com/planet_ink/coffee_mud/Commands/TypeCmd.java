@@ -54,9 +54,9 @@ public class TypeCmd extends Go
 		if((commands.size()<=1)||(R==null))
 		{
 			if(consoleMode)
-				CMLib.commands().doCommandFail(mob,origCmds,L("Type what into this console?  Have you read the screen?"));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Type what into this console?  Have you read the screen?"));
 			else
-				CMLib.commands().doCommandFail(mob,origCmds,L("Type what into what?"));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Type what into what?"));
 			return false;
 		}
 		Environmental typeIntoThis=(consoleMode)?mob.riding():null;
@@ -90,7 +90,7 @@ public class TypeCmd extends Go
 				}
 				else
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",typeWhere.toLowerCase()));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",typeWhere.toLowerCase()));
 				}
 			}
 		}
@@ -106,7 +106,7 @@ public class TypeCmd extends Go
 		}
 		else
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",enterWhat.toLowerCase()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",enterWhat.toLowerCase()));
 		}
 		return false;
 	}

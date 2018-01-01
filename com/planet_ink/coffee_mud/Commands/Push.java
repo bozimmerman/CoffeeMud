@@ -71,7 +71,7 @@ public class Push extends Go
 					}
 					else
 					{
-						CMLib.commands().doCommandFail(mob,origCmds,L("You can't push anything that way."));
+						CMLib.commands().postCommandFail(mob,origCmds,L("You can't push anything that way."));
 						return false;
 					}
 				}
@@ -96,7 +96,7 @@ public class Push extends Go
 
 		if((pushThis==null)||(!CMLib.flags().canBeSeenBy(pushThis,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",itemName));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",itemName));
 			return false;
 		}
 		final int malmask=(pushThis instanceof MOB)?CMMsg.MASK_MALICIOUS:0;

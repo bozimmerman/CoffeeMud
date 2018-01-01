@@ -75,13 +75,13 @@ public class Wield extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Wield what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Wield what?"));
 			return false;
 		}
 		commands.remove(0);
 		List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 			wield(items,mob);
 		return false;

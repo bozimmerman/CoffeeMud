@@ -54,13 +54,13 @@ public class View extends StdCommand
 			return false;
 		if(commands.size()==0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("View what merchandise?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("View what merchandise?"));
 			return false;
 		}
 
 		if(CMLib.coffeeShops().getShopKeeper(shopkeeper)==null)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is not a shopkeeper!",shopkeeper.name()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is not a shopkeeper!",shopkeeper.name()));
 			return false;
 		}
 

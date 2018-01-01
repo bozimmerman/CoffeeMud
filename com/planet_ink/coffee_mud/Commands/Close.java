@@ -109,7 +109,7 @@ public class Close extends StdCommand
 		final String whatToClose=CMParms.combine(commands,1);
 		if(whatToClose.length()==0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Close what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Close what?"));
 			return false;
 		}
 		Environmental closeThis=null;
@@ -121,7 +121,7 @@ public class Close extends StdCommand
 
 		if((closeThis==null)||(!CMLib.flags().canBeSeenBy(closeThis,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatToClose));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatToClose));
 			return false;
 		}
 		return closeMe(mob,closeThis,whatToClose,dirCode);

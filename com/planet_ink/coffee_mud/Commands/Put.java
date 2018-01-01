@@ -59,7 +59,7 @@ public class Put extends StdCommand
 		final Room R=mob.location();
 		if((commands.size()<3)||(R==null))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Put out what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Put out what?"));
 			return;
 		}
 		commands.remove(1);
@@ -73,7 +73,7 @@ public class Put extends StdCommand
 				items.add(I);
 		}
 		if(items.size()==0)
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<items.size();i++)
 		{
@@ -114,7 +114,7 @@ public class Put extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Put what where?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Put what where?"));
 			return false;
 		}
 
@@ -161,7 +161,7 @@ public class Put extends StdCommand
 		commands.remove(0);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Where should I put the @x1",commands.get(0)));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Where should I put the @x1",commands.get(0)));
 			return false;
 		}
 
@@ -195,7 +195,7 @@ public class Put extends StdCommand
 		}
 		if((container==null)||(!CMLib.flags().canBeSeenBy(container,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see a @x1 here.",containerName));
+			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see a @x1 here.",containerName));
 			return false;
 		}
 
@@ -250,7 +250,7 @@ public class Put extends StdCommand
 			V.remove(container);
 
 		if(V.size()==0)
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
 		{

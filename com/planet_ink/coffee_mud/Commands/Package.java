@@ -51,7 +51,7 @@ public class Package extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Package what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Package what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -95,7 +95,7 @@ public class Package extends StdCommand
 
 		if(V.size()==0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatName));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatName));
 			return false;
 		}
 
@@ -106,7 +106,7 @@ public class Package extends StdCommand
 			||(CMLib.flags().isEnspelled(I))
 			||(CMLib.flags().isOnFire(I)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("Items such as @x1 may not be packaged.",I.name(mob)));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Items such as @x1 may not be packaged.",I.name(mob)));
 				return false;
 			}
 		}
@@ -115,7 +115,7 @@ public class Package extends StdCommand
 			return false;
 		if(!thePackage.isPackagable(V))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("All items in a package must be absolutely identical.  Some here are not."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("All items in a package must be absolutely identical.  Some here are not."));
 			return false;
 		}
 		Item getThis=null;

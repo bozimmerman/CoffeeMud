@@ -51,7 +51,7 @@ public class Eat extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Eat what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Eat what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -73,7 +73,7 @@ public class Eat extends StdCommand
 			if((maybeEatFromThis==null)
 			||(!CMLib.flags().canBeSeenBy(maybeEatFromThis,mob)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("I don't see @x1 here.",thingToEatFrom));
+				CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",thingToEatFrom));
 				return false;
 			}
 			if(maybeEatFromThis instanceof Container)
@@ -83,7 +83,7 @@ public class Eat extends StdCommand
 				eatFromThis=(Item)maybeEatFromThis;
 				if(!((Container)eatFromThis).isOpen())
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("@x1 isn't open.",eatFromThis.name()));
+					CMLib.commands().postCommandFail(mob,origCmds,L("@x1 isn't open.",eatFromThis.name()));
 					return false;
 				}
 			}
@@ -94,13 +94,13 @@ public class Eat extends StdCommand
 		if((thisThang==null)
 		||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",CMParms.combine(commands,0)));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",CMParms.combine(commands,0)));
 			return false;
 		}
 		final boolean hasHands=mob.charStats().getBodyPart(Race.BODY_HAND)>0;
 		if((thisThang instanceof Food)&&(!mob.isMine(thisThang))&&(hasHands))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",CMParms.combine(commands,0)));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",CMParms.combine(commands,0)));
 			return false;
 		}
 		final String eatSound=CMLib.protocol().msp("gulp.wav",10);

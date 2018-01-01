@@ -110,7 +110,7 @@ public class Examine extends StdCommand
 						thisThang=exit;
 					else
 					{
-						CMLib.commands().doCommandFail(mob,origCmds,L("You don't see anything that way."));
+						CMLib.commands().postCommandFail(mob,origCmds,L("You don't see anything that way."));
 						return false;
 					}
 				}
@@ -134,7 +134,7 @@ public class Examine extends StdCommand
 					msg.addTrailerMsg(CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null));
 			}
 			else
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see that here!"));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see that here!"));
 		}
 		else
 		{

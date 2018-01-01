@@ -1291,7 +1291,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				commands.remove(commands.size()-1);
 			else
 			{
-				CMLib.commands().doCommandFail(mob,new XVector(commands),L("You don't see anyone called '@x1' here buying or selling.",commands.get(commands.size()-1)));
+				CMLib.commands().postCommandFail(mob,new XVector(commands),L("You don't see anyone called '@x1' here buying or selling.",commands.get(commands.size()-1)));
 				return null;
 			}
 			return shopkeeper;
@@ -2009,7 +2009,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							max=3000;
 						if(maxToGive>max)
 						{
-							CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You can only handle @x1 at a time.",""+max));
+							CMLib.commands().postCommandFail(mob,new XVector<String>(commands),L("You can only handle @x1 at a time.",""+max));
 							return -1;
 						}
 						final Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive,null);
@@ -2017,7 +2017,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						{
 							if(throwError)
 							{
-								CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You can't get anything from @x1.",fromWhat.name()));
+								CMLib.commands().postCommandFail(mob,new XVector<String>(commands),L("You can't get anything from @x1.",fromWhat.name()));
 								return -1;
 							}
 						}
@@ -2041,7 +2041,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					else
 					if(throwError)
 					{
-						CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You don't see '@x1' here.",packCheckName));
+						CMLib.commands().postCommandFail(mob,new XVector<String>(commands),L("You don't see '@x1' here.",packCheckName));
 						return -1;
 					}
 				}

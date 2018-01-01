@@ -52,7 +52,7 @@ public class Lock extends StdCommand
 		final String whatTolock=CMParms.combine(commands,1);
 		if(whatTolock.length()==0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Lock what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Lock what?"));
 			return false;
 		}
 		Environmental lockThis=null;
@@ -64,7 +64,7 @@ public class Lock extends StdCommand
 
 		if((lockThis==null)||(!CMLib.flags().canBeSeenBy(lockThis,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatTolock));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatTolock));
 			return false;
 		}
 		if(lockThis instanceof CloseableLockable)

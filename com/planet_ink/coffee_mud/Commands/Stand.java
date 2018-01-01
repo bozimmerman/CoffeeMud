@@ -53,11 +53,11 @@ public class Stand extends StdCommand
 		if(CMLib.flags().isStanding(mob))
 		{
 			if(!ifnecessary)
-				CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("You are already standing!"));
+				CMLib.commands().postCommandFail(mob,new StringXVector(commands),L("You are already standing!"));
 		}
 		else
 		if((mob.session()!=null)&&(mob.session().isStopped()))
-			CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("You may not stand up."));
+			CMLib.commands().postCommandFail(mob,new StringXVector(commands),L("You may not stand up."));
 		else
 		if(room!=null)
 		{

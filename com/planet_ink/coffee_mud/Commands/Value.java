@@ -54,7 +54,7 @@ public class Value extends StdCommand
 			return false;
 		if(commands.size()==0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Value what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Value what?"));
 			return false;
 		}
 
@@ -95,7 +95,7 @@ public class Value extends StdCommand
 		}
 
 		if(V.size()==0)
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",whatName));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",whatName));
 		else
 		for(int v=0;v<V.size();v++)
 		{

@@ -53,12 +53,12 @@ public class Learn extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(mob.location().numInhabitants()==1)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You will need to find someone to teach you first."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You will need to find someone to teach you first."));
 			return false;
 		}
 		if(commands.size()==1)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Learn what?  Enter QUALIFY or TRAIN to see what you can learn."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Learn what?  Enter QUALIFY or TRAIN to see what you can learn."));
 			return false;
 		}
 		commands.remove(0);

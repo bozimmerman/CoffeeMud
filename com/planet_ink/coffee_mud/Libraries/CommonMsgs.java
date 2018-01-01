@@ -101,13 +101,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	}
 	
 	@Override
-	public boolean doCommandFail(final MOB mob, final List<String> commands, final String msgStr)
+	public boolean postCommandFail(final MOB mob, final List<String> commands, final String msgStr)
 	{
-		return doCommandFail(mob, null, null, commands, msgStr);
+		return postCommandFail(mob, null, null, commands, msgStr);
 	}
 	
 	@Override
-	public boolean doCommandFail(final MOB mob, Environmental target, Environmental tools, final List<String> command, final String msgStr)
+	public boolean postCommandFail(final MOB mob, Environmental target, Environmental tools, final List<String> command, final String msgStr)
 	{
 		if(mob==null)
 			return false;

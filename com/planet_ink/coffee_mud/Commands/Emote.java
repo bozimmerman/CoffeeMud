@@ -54,9 +54,9 @@ public class Emote extends StdCommand
 		if(commands.size()<2)
 		{
 			if((commands.size()>0)&&(commands.get(0).equalsIgnoreCase(",")))
-				CMLib.commands().doCommandFail(mob, commands, L(" EMOTE which social? Try SOCIALS."));
+				CMLib.commands().postCommandFail(mob, commands, L(" EMOTE which social? Try SOCIALS."));
 			else
-				CMLib.commands().doCommandFail(mob, commands, L(" EMOTE what?"));
+				CMLib.commands().postCommandFail(mob, commands, L(" EMOTE what?"));
 			return false;
 		}
 		
