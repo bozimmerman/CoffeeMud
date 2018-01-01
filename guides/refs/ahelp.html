@@ -154,6 +154,8 @@
 			
 			<li> <a href="#LIST_BEHAVIORS">LIST_BEHAVIORS</a>
 			
+			<li> <a href="#LIST_BUGS">LIST_BUGS</a>
+			
 			<li> <a href="#LIST_CHANTS">LIST_CHANTS</a>
 			
 			<li> <a href="#LIST_CLANITEMS">LIST_CLANITEMS</a>
@@ -203,6 +205,8 @@
 			<li> <a href="#LIST_HELPFILEREQUESTS">LIST_HELPFILEREQUESTS</a>
 			
 			<li> <a href="#LIST_HOLIDAYS">LIST_HOLIDAYS</a>
+			
+			<li> <a href="#LIST_IDEAS">LIST_IDEAS</a>
 			
 			<li> <a href="#LIST_ITEMS">LIST_ITEMS</a>
 			
@@ -299,6 +303,8 @@
 			<li> <a href="#LIST_TIMEZONES">LIST_TIMEZONES</a>
 			
 			<li> <a href="#LIST_TITLES">LIST_TITLES</a>
+			
+			<li> <a href="#LIST_TYPOS">LIST_TYPOS</a>
 			
 			<li> <a href="#LIST_UNLINKEDEXITS">LIST_UNLINKEDEXITS</a>
 			
@@ -501,7 +507,7 @@
 			
 			<p>
 			<a name="BUG"><B>BUG</B></a>
-			<pre>A COMMAND JOURNAL.  See Archon Help (AHELP) on COMMAND JOURNALS</pre>
+			<pre>Command : BUG<BR>Usage   : BUG [MESSAGE]/REVIEW (FILTER) (STARTING MSG)<BR>Usage   : BUG TRANSFER (FILTER) [MESSAGE NUMBER] [TARGET]<BR>Example : bug nothing is spelled right in this room!<BR>Example : bug review<BR>Example : bug review 7<BR>Example : bug review bob 7<BR>Short(s): <BR>This command can be used to submit bugs to the system.  When the REVIEW<BR>parameter is given, the bugs will be iterated through one at a time to give the<BR>archon a chance to delete, comment on, or email each one.  An optional starting<BR>number can be given to REVIEW. An optional filter can be given to list only<BR>messages assigned to a particular user.</pre>
 			</P>
 			
 			<p>
@@ -666,7 +672,7 @@
 			
 			<p>
 			<a name="IDEA"><B>IDEA</B></a>
-			<pre>Command : IDEA<BR>Usage   : IDEA [MESSAGE]/REVIEW (STARTING MSG)<BR>Example : idea nothing is spelled right in this room!<BR>Example : idea review<BR>Example : idea review 7<BR>Short(s): <BR>This command can be used to submit ideas to the system.  When the REVIEW<BR>parameter is given, the ideas will be iterated through one at a time to give<BR>the archon a chance to delete, comment on, or email each one.  An optional<BR>starting number can be given to REVIEW.</pre>
+			<pre>Command : IDEA<BR>Usage   : IDEA [MESSAGE]/REVIEW (FILTER) (STARTING MSG)<BR>Usage   : IDEA TRANSFER (FILTER) [MESSAGE NUMBER] [TARGET]<BR>Example : idea nothing is spelled right in this room!<BR>Example : idea review<BR>Example : idea review 7<BR>Example : idea review bob 7<BR>Short(s): <BR>This command can be used to submit ideas to the system.  When the REVIEW<BR>parameter is given, the ideas will be iterated through one at a time to give<BR>the archon a chance to delete, comment on, or email each one.  An optional<BR>starting number can be given to REVIEW. An optional filter can be given to list<BR>only messages assigned to a particular user.</pre>
 			</P>
 			
 			<p>
@@ -762,6 +768,11 @@
 			<p>
 			<a name="LIST_BEHAVIORS"><B>LIST_BEHAVIORS</B></a>
 			<pre>Command  : LIST<BR>Usage    : LIST BEHAVIORS<BR>Example  : list behaviors<BR>Shows the list of behavior java classes (behavior ids) available to archons.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_BUGS"><B>LIST_BUGS</B></a>
+			<pre>Command  : LIST<BR>Usage    : LIST BUGS (TO)<BR>Example  : list bugs<BR>Example  : list bugs bob<BR>Lists all the entries in the SYSTEM_BUGS journal.  An optional name can be<BR>appended to show entries assign to that name.</pre>
 			</P>
 			
 			<p>
@@ -887,6 +898,11 @@
 			<p>
 			<a name="LIST_HOLIDAYS"><B>LIST_HOLIDAYS</B></a>
 			<pre>Command  : LIST<BR>Usage    : LIST HOLIDAYS<BR>Example  : list holidays<BR>Lists all the official Holidays defined in your game, along with the areas that<BR>they are specified to apply in (or *special* if they are multi-area).</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_IDEAS"><B>LIST_IDEAS</B></a>
+			<pre>Command  : LIST<BR>Usage    : LIST IDEAS (TO)<BR>Example  : list ideas<BR>Example  : list ideas bob<BR>Lists all the entries in the SYSTEM_IDEAS journal.  An optional name can be<BR>appended to show entries assign to that name.</pre>
 			</P>
 			
 			<p>
@@ -1130,6 +1146,11 @@
 			</P>
 			
 			<p>
+			<a name="LIST_TYPOS"><B>LIST_TYPOS</B></a>
+			<pre>Command  : LIST<BR>Usage    : LIST TYPOS (TO)<BR>Example  : list typos<BR>Example  : list typos bob<BR>Lists all the entries in the SYSTEM_TYPOS journal.  An optional name can be<BR>appended to show entries assign to that name.</pre>
+			</P>
+			
+			<p>
 			<a name="LIST_UNLINKEDEXITS"><B>LIST_UNLINKEDEXITS</B></a>
 			<pre>Command  : LIST<BR>Usage    : LIST UNLINKEDEXITS (LOG)<BR>Example  : list unlinkedexits<BR>Example  : list unlinkedexits log<BR>Lists all the rooms which have directions for which an exit has been defined,<BR>but does not link to any room. Adding the log parameter will dump all that<BR>stuff to your mud.log</pre>
 			</P>
@@ -1316,7 +1337,7 @@
 			
 			<p>
 			<a name="TASK"><B>TASK</B></a>
-			<pre>Command : TASK<BR>Usage   : TASK [MESSAGE]/REVIEW (STARTING MSG)<BR>Example : task nothing is spelled right in this room!<BR>Example : task review<BR>Example : task review 7<BR>Short(s): <BR>This command can be used to submit builder tasks to the system.  When the<BR>REVIEW parameter is given, the tasks will be iterated through one at a time to<BR>give the builder a chance to delete, comment on, or email each one.  An<BR>optional starting number can be given to REVIEW. The player must be either an<BR>Archon, or a player with the TASKS security string to use this feature.</pre>
+			<pre>Command : TASK<BR>Usage   : TASK [MESSAGE]/REVIEW (FILTER) (STARTING MSG)<BR>Usage   : TASK TRANSFER (FILTER) [MESSAGE NUMBER] [TARGET]<BR>Example : task nothing is spelled right in this room!<BR>Example : task review<BR>Example : task review 7<BR>Example : task review bob 7<BR>Short(s): <BR>This command can be used to submit builder tasks to the system.  When the<BR>REVIEW parameter is given, the tasks will be iterated through one at a time to<BR>give the builder a chance to delete, comment on, or email each one.  An<BR>optional starting number can be given to REVIEW. An optional filter can be<BR>given to list only messages assigned to a particular user. The player must be<BR>either an Archon, or a player with the TASKS security string to use this<BR>feature. </pre>
 			</P>
 			
 			<p>
