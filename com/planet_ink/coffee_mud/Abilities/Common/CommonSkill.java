@@ -202,7 +202,8 @@ public class CommonSkill extends StdAbility
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
+		if((affected instanceof MOB)
+		&&(tickID==Tickable.TICKID_MOB))
 		{
 			final MOB mob=(MOB)affected;
 			if((mob.isInCombat())
@@ -811,6 +812,7 @@ public class CommonSkill extends StdAbility
 				final Ability A=a.nextElement();
 				if((A!=null)
 				&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)||(A.ID().equalsIgnoreCase("AstroEngineering")))
+				&&(!A.isNowAnAutoEffect())
 				&&(!getUninvokeException().contains(A.ID())))
 				{
 					if(A instanceof CommonSkill)

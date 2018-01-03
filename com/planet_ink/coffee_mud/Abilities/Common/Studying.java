@@ -126,7 +126,6 @@ public class Studying extends CommonSkill implements AbilityContainer
 	protected Physical			teacherP			= null;
 	protected Ability			teachingA			= null;
 	protected volatile boolean	distributed			= false;
-	protected volatile int		teachTickDown		= 0;
 	protected boolean			successfullyTaught	= false;
 	protected List<Ability>		skillList			= new LinkedList<Ability>();
 
@@ -140,7 +139,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 	@Override
 	public String displayText()
 	{	
-		if((teacherP == null)||(teachingA==null)||(teachTickDown<0))
+		if((teacherP == null)||(teachingA==null))
 			return L("(Scholarly)"); // prevents it from being uninvokeable through autoaffects
 		else
 		{
@@ -301,7 +300,9 @@ public class Studying extends CommonSkill implements AbilityContainer
 					distributeSkills(mob);
 				}
 			}
-			if(teachTickDown>0)
+			if((this.teacherP != null)
+			&&(this.teachingA!=null)
+			&&(this.affected instanceof MOB))
 			{
 				final Physical teacher=this.teacherP;
 				if((teacher == null)
@@ -314,66 +315,90 @@ public class Studying extends CommonSkill implements AbilityContainer
 				||(!CMLib.flags().isAliveAwakeMobileUnbound(mob, true)))
 				{
 					aborted=true;
-					teachTickDown = 1;
+					unInvoke();
+					return true;
 				}
-				if(--teachTickDown == 0)
+				if((--tickDown)<=0)
 				{
-					teachTickDown = -1;
-					final Ability teachingA=this.teachingA;
-					this.teacherP=null;
-					this.teachingA=null;
-					final MOB teacherM;
-					if(this.teacherP instanceof MOB)
-						teacherM=(MOB)this.teacherP;
-					else
-					{
-						teacherM=CMClass.getFactoryMOB(affected.name(), 30, mob.location());
-						teacherM.setAttribute(Attrib.NOTEACH, false);
-						teacherM.addAbility(this.teachingA);
-					}
-					try
-					{
-						if((mob!=null)
-						&&(teachingA != null)
-						&&(mob.location()!=null)
-						&&(CMLib.map().roomLocation(teacherP)==mob.location()))
-						{
-							if(this.successfullyTaught)
-							{
-								final Ability A=mob.fetchAbility(ID());
-								final Ability fA=mob.fetchEffect(ID());
-								final Ability mTeachingA=teacherM.fetchAbility(teachingA.ID());
-								if((A==null)||(fA==null)||(mTeachingA==null)||(!A.isSavable())||(!fA.isNowAnAutoEffect()))
-									aborted=true;
-								else
-								{
-									final StringBuilder str=new StringBuilder(A.text());
-									if(str.length()>0)
-										str.append(';');
-									final int prof = mTeachingA.proficiency() + (5 * super.expertise(mob, mTeachingA, ExpertiseLibrary.Flag.LEVEL));
-									str.append(mTeachingA.ID()).append(',').append(prof);
-									fA.setMiscText(str.toString()); // and this should do it.
-									A.setMiscText(str.toString()); // and this should be savable
-								}
-							}
-							else
-								mob.location().show(teacherM,mob,getActivityMessageType(),L("<S-NAME> fail(s) to teach <T-NAME> @x1.",teachingA.name()));
-							// let super announce it
-						}
-					}
-					finally
-					{
-						if((affected instanceof Item)&&(!mob.isPlayer()))
-							mob.destroy();
-					}
+					tickDown=-1;
+					unInvoke();
+					return true;
 				}
+				else
+					tickUp++;
+				super.tick(ticking, tickID);
 			}
 		}
-		if(!super.tick(ticking, tickID))
-			return false;
 		return true;
 	}
 
+	@Override
+	public void unInvoke()
+	{
+		if((this.teacherP != null)
+		&&(this.teachingA!=null)
+		&&(this.activityRoom!=null)
+		&&(this.affected instanceof MOB))
+		{
+			final MOB mob=(MOB)this.affected;
+			final Ability teachingA=this.teachingA;
+			this.teachingA=null;
+			this.activityRoom=null;
+			this.tickDown=Integer.MAX_VALUE/2;
+			final MOB teacherM;
+			if(this.teacherP instanceof MOB)
+				teacherM=(MOB)this.teacherP;
+			else
+			{
+				teacherM=CMClass.getFactoryMOB(teacherP.name(), 30, mob.location());
+				teacherM.setAttribute(Attrib.NOTEACH, false);
+				teacherM.addAbility(teachingA);
+			}
+			try
+			{
+				if((teachingA != null)
+				&&(mob.location()!=null)
+				&&(!aborted)
+				&&(CMLib.map().roomLocation(teacherP)==mob.location()))
+				{
+					if(this.successfullyTaught)
+					{
+						final Ability A=mob.fetchAbility(ID());
+						final Ability fA=mob.fetchEffect(ID());
+						final Ability mTeachingA=teacherM.fetchAbility(teachingA.ID());
+						if((A==null)||(fA==null)||(mTeachingA==null)||(!A.isSavable())||(!fA.isNowAnAutoEffect()))
+							aborted=true;
+						else
+						{
+							final StringBuilder str=new StringBuilder(A.text());
+							if(str.length()>0)
+								str.append(';');
+							final int prof = mTeachingA.proficiency() + (5 * super.expertise(mob, mTeachingA, ExpertiseLibrary.Flag.LEVEL));
+							str.append(mTeachingA.ID()).append(',').append(prof);
+							fA.setMiscText(str.toString()); // and this should do it.
+							A.setMiscText(str.toString()); // and this should be savable
+						}
+					}
+					else
+						mob.location().show(teacherM,mob,getActivityMessageType(),L("<S-NAME> fail(s) to teach <T-NAME> @x1.",teachingA.name()));
+					// let super announce it
+				}
+			}
+			finally
+			{
+				if((teacherP instanceof Item)&&(!teacherM.isPlayer()))
+					teacherM.destroy();
+				this.teacherP=null;
+			}
+			if(aborted)
+				mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> stop(s) @x1.",verb));
+			else
+				mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> <S-IS-ARE> done @x1.",verb));
+			helping=false;
+			helpingAbility=null;
+		}
+	}
+	
 	public void distributeSkills(final MOB mob)
 	{
 		if(skillList.size() > 0)
@@ -594,6 +619,16 @@ public class Studying extends CommonSkill implements AbilityContainer
 			mob.tell(L("You may not study any more @x1 at this time.",CMLib.english().makePlural(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES])));
 			return false;
 		}
+		
+		final Studying thisOne=(Studying)mob.fetchEffect(ID());
+		if((thisOne.teacherP!=null)
+		&&(thisOne.teachingA!=null)
+		&&(thisOne.activityRoom!=null))
+		{
+			mob.tell(L("You are already @x1.",thisOne.verb));
+			return false;
+		}
+		thisOne.aborted=false;
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;
 
@@ -613,22 +648,30 @@ public class Studying extends CommonSkill implements AbilityContainer
 		successfullyTaught = super.proficiencyCheck(mob, 0, auto);
 		{
 			final Session sess = (target instanceof MOB)?((MOB)target).session() : null;
-			final Studying thisOne=this;
-			thisOne.verb=L("teaching @x1 about @x2",mob.name(),A.name());
+			if(target instanceof MOB)
+				thisOne.verb=L("learning @x2 from @x1",target.name(),A.name());
+			else
+				thisOne.verb=L("studying @x2 from @x1",target.name(),A.name());
 			thisOne.displayText=L("You are @x1",verb);
 			final Physical P=target;
+			final Room mobroom=mob.location();
+			final boolean success=this.successfullyTaught;
+			thisOne.activityRoom=mobroom;
+			thisOne.teachingA=null;
+			thisOne.teacherP=null;
 			final Runnable R=new Runnable()
 			{
 				final MOB		M	= mob;
-				final MOB		tM	= (P instanceof MOB)? (MOB)P : CMClass.getFactoryMOB(P.name(), P.phyStats().level(), mob.location());
 				final Ability	tA	= A;
+				final Physical	tP	= P;
 				final Studying	oA	= thisOne;
-				
+				final boolean	ss	= success;
+				//final Room		mR	= mobroom;
 				@Override
 				public void run()
 				{
-					String str=L("<T-NAME> start(s) teaching <S-NAME> about @x1.",tA.Name());
-					final CMMsg msg=CMClass.getMsg(M,tM,oA,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),str);
+					String str=L("<S-NAME> start(s) learning @x1 from <T-NAME>.",tA.Name());
+					final CMMsg msg=CMClass.getMsg(M,tP,oA,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),str);
 					final Room R=M.location();
 					if(R!=null)
 					{
@@ -636,11 +679,14 @@ public class Studying extends CommonSkill implements AbilityContainer
 						{
 							R.send(M, msg);
 							oA.teachingA=tA;
+							oA.teacherP=tP;
+							oA.successfullyTaught=ss;
+							//oA.activityRoom=mR;
 							int ticks=duration;
 							if(ticks < 1)
 								ticks = 1;
-							oA.beneficialAffect(M,P,asLevel,ticks);
-							oA.teachingA=null;
+							ticks = getBeneficialTickdownTime(mob,mob,ticks,asLevel);
+							oA.tickDown=ticks;
 						}
 					}
 				}
