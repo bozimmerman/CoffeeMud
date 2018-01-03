@@ -1260,6 +1260,9 @@ public class DefaultPlayerStats implements PlayerStats
 		long lowest=levelInfo.elementAtSecond(0).longValue();
 		for(int l=1;l<levelInfo.size();l++)
 		{
+			if(level==levelInfo.elementAtFirst(l).intValue())
+				return levelInfo.elementAtSecond(l).longValue();
+			else
 			if(level<levelInfo.elementAtFirst(l).intValue())
 				return lowest;
 			lowest=levelInfo.elementAtSecond(l).longValue();
@@ -1274,6 +1277,9 @@ public class DefaultPlayerStats implements PlayerStats
 			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"",Long.valueOf(0));
 		for(int l=1;l<levelInfo.size();l++)
 		{
+			if(level==levelInfo.elementAtFirst(l).intValue())
+				return levelInfo.elementAtThird(l);
+			else
 			if(level<levelInfo.elementAtFirst(l).intValue())
 				return levelInfo.elementAtThird(l-1);
 		}
