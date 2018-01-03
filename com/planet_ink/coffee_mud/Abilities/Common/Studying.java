@@ -123,8 +123,10 @@ public class Studying extends CommonSkill implements AbilityContainer
 	granting each ability at the lowest level above (1,2,3,4,5,6).
 	 */
 	
+	protected Physical			teacherP			= null;
 	protected Ability			teachingA			= null;
 	protected volatile boolean	distributed			= false;
+	protected volatile int		teachTickDown		= 0;
 	protected boolean			successfullyTaught	= false;
 	protected List<Ability>		skillList			= new LinkedList<Ability>();
 
@@ -137,17 +139,17 @@ public class Studying extends CommonSkill implements AbilityContainer
 	
 	@Override
 	public String displayText()
-	{
-		if(this.isNowAnAutoEffect())
+	{	
+		if((teacherP == null)||(teachingA==null)||(teachTickDown<0))
 			return L("(Scholarly)"); // prevents it from being uninvokeable through autoaffects
-		final MOB invoker=this.invoker;
-		final Ability teachingA = this.teachingA;
-		final Physical affected = this.affected;
-		if((invoker != null)
-		&&(teachingA != null)
-		&&(affected instanceof MOB))
-			return L("You are teaching @x1 @x2.",invoker.name((MOB)affected),teachingA.name());
-		return L("You are teaching someone something somehow!");
+		else
+		{
+			final Ability teachingA = this.teachingA;
+			if((teachingA != null)
+			&&(affected instanceof MOB))
+				return L("You are being taught @x2 by @x1.",teacherP.name((MOB)affected),teachingA.name());
+			return L("You are being taught something by someone!");
+		}
 	}
 
 	@Override
@@ -249,29 +251,26 @@ public class Studying extends CommonSkill implements AbilityContainer
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!canBeUninvoked())
+		if((msg.source()==affected)
+		&&(msg.tool() instanceof Ability)
+		&&(skillList.contains(msg.tool())))
 		{
-			if((msg.source()==affected)
-			&&(msg.tool() instanceof Ability)
-			&&(skillList.contains(msg.tool())))
-			{
-				msg.source().tell(L("You don't know how to do that in practice."));
-				return false;
-			}
-			else
-			if((msg.target()==affected)
-			&&(msg.targetMinor()==CMMsg.TYP_TEACH)
-			&&(msg.tool() instanceof Ability))
-				forget((MOB)msg.target(),msg.tool().ID());
-			else
-			if((msg.tool() instanceof Ability)
-			&&(msg.source()==affected)
-			&&(msg.targetMinor()==CMMsg.TYP_WROTE)
-			&&(msg.targetMessage().length()>0)
-			&&(msg.tool().ID().equals("Skill_Dissertation")))
-			{
-				forget(msg.source(),msg.targetMessage());
-			}
+			msg.source().tell(L("You don't know how to do that in practice."));
+			return false;
+		}
+		else
+		if((msg.target()==affected)
+		&&(msg.targetMinor()==CMMsg.TYP_TEACH)
+		&&(msg.tool() instanceof Ability))
+			forget((MOB)msg.target(),msg.tool().ID());
+		else
+		if((msg.tool() instanceof Ability)
+		&&(msg.source()==affected)
+		&&(msg.targetMinor()==CMMsg.TYP_WROTE)
+		&&(msg.targetMessage().length()>0)
+		&&(msg.tool().ID().equals("Skill_Dissertation")))
+		{
+			forget(msg.source(),msg.targetMessage());
 		}
 			
 		return super.okMessage(myHost,msg);
@@ -280,7 +279,8 @@ public class Studying extends CommonSkill implements AbilityContainer
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!canBeUninvoked())
+		if((affected instanceof MOB)
+		&&(tickID==Tickable.TICKID_MOB))
 		{
 			final MOB mob=(MOB)affected;
 			if((!distributed)
@@ -301,73 +301,77 @@ public class Studying extends CommonSkill implements AbilityContainer
 					distributeSkills(mob);
 				}
 			}
-		}
-		else
-		{
-			if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
+			if(teachTickDown>0)
 			{
-				final MOB mob=(MOB)affected;
-				final MOB invoker=this.invoker();
-				if((invoker == null)
-				||(invoker == mob)
-				||(invoker.location()!=mob.location())
-				||(invoker.isInCombat())
-				||(invoker.location()!=activityRoom)
-				||(!CMLib.flags().isAliveAwakeMobileUnbound(invoker,true)))
+				final Physical teacher=this.teacherP;
+				if((teacher == null)
+				||(teacher == affected)
+				||(mob.location()!=CMLib.map().roomLocation(teacher))
+				||((teacher instanceof MOB)&&(((MOB)teacher).isInCombat()))
+				||(mob.isInCombat())
+				||(mob.location()!=activityRoom)
+				||((teacher instanceof MOB)&&(!CMLib.flags().isAliveAwakeMobileUnbound((MOB)teacher,true)))
+				||(!CMLib.flags().isAliveAwakeMobileUnbound(mob, true)))
 				{
 					aborted=true;
-					unInvoke();
-					return false;
+					teachTickDown = 1;
 				}
-			}
-			if(!super.tick(ticking, tickID))
-				return false;
-		}
-		return true;
-	}
-
-	@Override
-	public void unInvoke()
-	{
-		if( canBeUninvoked() 
-		&& (!super.unInvoked) 
-		&& (affected instanceof MOB)
-		&& (!aborted))
-		{
-			final MOB mob=(MOB)affected;
-			final MOB invoker=this.invoker;
-			final Ability teachingA=this.teachingA;
-			if((mob!=null)
-			&&(invoker !=null)
-			&&(teachingA != null)
-			&&(mob.location()!=null)
-			&&(invoker.location()==mob.location()))
-			{
-				if(this.successfullyTaught)
+				if(--teachTickDown == 0)
 				{
-					final Ability A=invoker.fetchAbility(ID());
-					final Ability fA=invoker.fetchEffect(ID());
-					final Ability mTeachingA=mob.fetchAbility(teachingA.ID());
-					if((A==null)||(fA==null)||(mTeachingA==null)||(!A.isSavable())||(!fA.isNowAnAutoEffect()))
-						aborted=true;
+					teachTickDown = -1;
+					final Ability teachingA=this.teachingA;
+					this.teacherP=null;
+					this.teachingA=null;
+					final MOB teacherM;
+					if(this.teacherP instanceof MOB)
+						teacherM=(MOB)this.teacherP;
 					else
 					{
-						final StringBuilder str=new StringBuilder(A.text());
-						if(str.length()>0)
-							str.append(';');
-						final int prof = mTeachingA.proficiency() + (5 * super.expertise(mob, mTeachingA, ExpertiseLibrary.Flag.LEVEL));
-						str.append(mTeachingA.ID()).append(',').append(prof);
-						fA.setMiscText(str.toString()); // and this should do it.
-						A.setMiscText(str.toString()); // and this should be savable
+						teacherM=CMClass.getFactoryMOB(affected.name(), 30, mob.location());
+						teacherM.setAttribute(Attrib.NOTEACH, false);
+						teacherM.addAbility(this.teachingA);
+					}
+					try
+					{
+						if((mob!=null)
+						&&(teachingA != null)
+						&&(mob.location()!=null)
+						&&(CMLib.map().roomLocation(teacherP)==mob.location()))
+						{
+							if(this.successfullyTaught)
+							{
+								final Ability A=mob.fetchAbility(ID());
+								final Ability fA=mob.fetchEffect(ID());
+								final Ability mTeachingA=teacherM.fetchAbility(teachingA.ID());
+								if((A==null)||(fA==null)||(mTeachingA==null)||(!A.isSavable())||(!fA.isNowAnAutoEffect()))
+									aborted=true;
+								else
+								{
+									final StringBuilder str=new StringBuilder(A.text());
+									if(str.length()>0)
+										str.append(';');
+									final int prof = mTeachingA.proficiency() + (5 * super.expertise(mob, mTeachingA, ExpertiseLibrary.Flag.LEVEL));
+									str.append(mTeachingA.ID()).append(',').append(prof);
+									fA.setMiscText(str.toString()); // and this should do it.
+									A.setMiscText(str.toString()); // and this should be savable
+								}
+							}
+							else
+								mob.location().show(teacherM,mob,getActivityMessageType(),L("<S-NAME> fail(s) to teach <T-NAME> @x1.",teachingA.name()));
+							// let super announce it
+						}
+					}
+					finally
+					{
+						if((affected instanceof Item)&&(!mob.isPlayer()))
+							mob.destroy();
 					}
 				}
-				else
-					mob.location().show(mob,invoker,getActivityMessageType(),L("<S-NAME> fail(s) to teach <T-NAME> @x1.",teachingA.name()));
-				// let super announce it
 			}
 		}
-		this.teachingA=null;
-		super.unInvoke();
+		if(!super.tick(ticking, tickID))
+			return false;
+		return true;
 	}
 
 	public void distributeSkills(final MOB mob)
@@ -481,25 +485,65 @@ public class Studying extends CommonSkill implements AbilityContainer
 			return false;
 		}
 		List<String> name = new XVector<String>(commands.remove(0));
-		final MOB target=super.getTarget(mob, name, givenTarget);
-		if(target==null)
-			return false;
-		if(target == mob)
-		{
-			mob.tell(L("You can't teach yourself."));
-			return false;
-		}
-		if((target.isAttributeSet(MOB.Attrib.NOTEACH))
-		&&((!target.isMonster())||(!target.willFollowOrdersOf(mob))))
-		{
-			mob.tell(L("@x1 is not accepting students right now.",target.name(mob)));
-			return false;
-		}
 		final String skillName = CMParms.combine(commands);
-		final Ability A=CMClass.findAbility(skillName, target);
-		if(A==null)
+		Physical target = super.getAnyTarget(mob, new XVector<String>(name), givenTarget, Wearable.FILTER_UNWORNONLY);
+		final Ability A;
+		final int teacherClassLevel;
+		final int teacherQualifyingLevel;
+		if(target instanceof Item)
 		{
-			mob.tell(L("@x1 doesn't know '@x2'.",target.name(mob),skillName));
+			if(!(target instanceof SpellHolder))
+			{
+				commonTell(mob,L("You aren't going to learn much from @x1.",target.Name()));
+				return false;
+			}
+			if(target.ID().indexOf("issertation")<0)
+			{
+				commonTell(mob,L("You don't know how to learn from @x1.",target.Name()));
+				return false;
+			}
+			SpellHolder aC=(SpellHolder)target;
+			Ability possA=(Ability)CMLib.english().fetchEnvironmental(aC.getSpells(),skillName,true);
+			if(possA==null)
+				possA=(Ability)CMLib.english().fetchEnvironmental(aC.getSpells(),skillName,false);
+			if(possA==null)
+			{
+				commonTell(mob,L("@x1 doesn't seem to be about '@x2'.",target.Name(),skillName));
+				return false;
+			}
+			A=possA;
+			int lowestQualifyingLevel = CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+			teacherClassLevel = (target.phyStats().level() > lowestQualifyingLevel) ? target.phyStats().level() : lowestQualifyingLevel;
+			teacherQualifyingLevel = lowestQualifyingLevel;
+		}
+		else
+		if(target instanceof MOB)
+		{
+			final MOB targetM=(MOB)target;
+			if(target == mob)
+			{
+				mob.tell(L("You can't teach yourself."));
+				return false;
+			}
+			if((targetM.isAttributeSet(MOB.Attrib.NOTEACH))
+			&&((!targetM.isMonster())||(!targetM.willFollowOrdersOf(mob))))
+			{
+				mob.tell(L("@x1 is not accepting students right now.",target.name(mob)));
+				return false;
+			}
+			A=CMClass.findAbility(skillName, targetM);
+			if(A==null)
+			{
+				mob.tell(L("@x1 doesn't know '@x2'.",targetM.name(mob),skillName));
+				return false;
+			}
+			teacherClassLevel = CMLib.ableMapper().qualifyingClassLevel(targetM, A);
+			teacherQualifyingLevel = CMLib.ableMapper().qualifyingLevel(targetM, A);
+		}
+		else
+		{
+			if(target != null)
+				commonTell(mob,L("You can't learn anything from '@x1'.",target.Name()));
 			return false;
 		}
 		final int lowestQualifyingLevel = CMLib.ableMapper().lowestQualifyingLevel(A.ID());
@@ -511,7 +555,6 @@ public class Studying extends CommonSkill implements AbilityContainer
 			mob.tell(L("You aren't qualified to be taught @x1.",A.Name()));
 			return false;
 		}
-		final int teacherClassLevel = CMLib.ableMapper().qualifyingClassLevel(target, this);
 		if((teacherClassLevel <0)
 		&&(!auto))
 		{
@@ -555,7 +598,6 @@ public class Studying extends CommonSkill implements AbilityContainer
 			return false;
 
 		final double quickPct = getXTIMELevel(mob) * 0.05;
-		final int teacherQualifyingLevel = CMLib.ableMapper().qualifyingLevel(target, A);
 		final int teachTicks = (int)(((teacherQualifyingLevel * 60000L) 
 							- (10000L * (teacherClassLevel-teacherQualifyingLevel)) 
 							- (15000L * super.getXLEVELLevel(mob))) / CMProps.getTickMillis());
@@ -570,14 +612,15 @@ public class Studying extends CommonSkill implements AbilityContainer
 		*/
 		successfullyTaught = super.proficiencyCheck(mob, 0, auto);
 		{
-			final Session sess = target.session();
+			final Session sess = (target instanceof MOB)?((MOB)target).session() : null;
 			final Studying thisOne=this;
-			thisOne.verb=L("teaching @x1 about @x2",mob.name(target),A.name());
+			thisOne.verb=L("teaching @x1 about @x2",mob.name(),A.name());
 			thisOne.displayText=L("You are @x1",verb);
+			final Physical P=target;
 			final Runnable R=new Runnable()
 			{
 				final MOB		M	= mob;
-				final MOB		tM	= target;
+				final MOB		tM	= (P instanceof MOB)? (MOB)P : CMClass.getFactoryMOB(P.name(), P.phyStats().level(), mob.location());
 				final Ability	tA	= A;
 				final Studying	oA	= thisOne;
 				
@@ -596,14 +639,14 @@ public class Studying extends CommonSkill implements AbilityContainer
 							int ticks=duration;
 							if(ticks < 1)
 								ticks = 1;
-							oA.beneficialAffect(M,tM,asLevel,ticks);
+							oA.beneficialAffect(M,P,asLevel,ticks);
 							oA.teachingA=null;
 						}
 					}
 				}
 				
 			};
-			if(target.isMonster() || (sess==null))
+			if((!(target instanceof MOB)) || ((MOB)target).isMonster() || (sess==null))
 				R.run();
 			else
 			{
@@ -621,8 +664,9 @@ public class Studying extends CommonSkill implements AbilityContainer
 							timeStr = CMLib.lang().L("around @x1 seconds",""+seconds);
 						else
 							timeStr = CMLib.lang().L("around @x1 minutes",""+minutes);
-						sess.promptPrint(L("\n\r@x1 wants you to try to teach @x2 about @x3. It will take @x4.  Is that OK (y/N)? ",
-								mob.name(target), target.charStats().himher(), A.name(), timeStr));
+						if(P instanceof MOB)
+							sess.promptPrint(L("\n\r@x1 wants you to try to teach @x2 about @x3. It will take @x4.  Is that OK (y/N)? ",
+									mob.name((MOB)P), ((MOB)P).charStats().himher(), A.name(), timeStr));
 					}
 
 					@Override
