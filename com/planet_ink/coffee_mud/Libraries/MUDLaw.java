@@ -467,6 +467,15 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
+	public boolean isLandOwnable(Room room)
+	{
+		final LandTitle title=getLandTitle(room);
+		if(title==null)
+			return false;
+		return true;
+	}
+
+	@Override
 	public boolean doesOwnThisLand(String name, Room room)
 	{
 		final LandTitle title=getLandTitle(room);
