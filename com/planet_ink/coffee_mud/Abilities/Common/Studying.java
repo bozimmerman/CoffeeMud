@@ -352,7 +352,9 @@ public class Studying extends CommonSkill implements AbilityContainer
 			{
 				teacherM=CMClass.getFactoryMOB(teacherP.name(), 30, mob.location());
 				teacherM.setAttribute(Attrib.NOTEACH, false);
-				teacherM.addAbility(teachingA);
+				final Ability teacherMA=CMClass.getAbility(teachingA.ID());
+				teacherMA.setProficiency(100);
+				teacherM.addAbility(teacherMA);
 			}
 			try
 			{
