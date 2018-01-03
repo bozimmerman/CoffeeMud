@@ -1194,17 +1194,20 @@ public class MOBloader
 				if(thisItem instanceof Container)
 				{
 					final List<Item> contents=((Container)thisItem).getDeepContents();
-					if((contents.size()==0)
-					&&(thisItem instanceof DeadBody)
-					&&(((DeadBody)thisItem).getMobName().equalsIgnoreCase(mob.Name())))
-						finalCollection.remove(i);
-					else
+					if(thisItem instanceof DeadBody)
 					{
-						for(final Item I : contents)
+						if((contents.size()==0)
+						&&(thisItem.container()==null)
+						&&(((DeadBody)thisItem).getMobName().equalsIgnoreCase(mob.Name())))
 						{
-							if(!finalCollection.contains(I))
-								extraItems.add(I);
+							finalCollection.remove(i);
+							continue;
 						}
+					}
+					for(final Item I : contents)
+					{
+						if(!finalCollection.contains(I))
+							extraItems.add(I);
 					}
 				}
 			}
