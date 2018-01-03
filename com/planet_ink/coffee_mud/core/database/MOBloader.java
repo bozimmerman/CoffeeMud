@@ -1178,21 +1178,34 @@ public class MOBloader
 			for(int i=coll.numItems()-1;i>=0;i--)
 			{
 				final Item thisItem=coll.getItem(i);
-				if((thisItem!=null)&&(!thisItem.amDestroyed()))
+				if(thisItem!=null)
 				{
-					final Item cont=thisItem.ultimateContainer(null);
-					if(cont.owner() instanceof Room)
-						finalCollection.add(thisItem);
+					if(!thisItem.amDestroyed())
+					{
+						final Item cont=thisItem.ultimateContainer(null);
+						if(cont.owner() instanceof Room)
+							finalCollection.add(thisItem);
+					}
 				}
 			}
-			for(final Item thisItem : finalCollection)
+			for(int i=finalCollection.size()-1;i>=0;i--)
 			{
+				final Item thisItem = finalCollection.get(i);
 				if(thisItem instanceof Container)
 				{
 					final List<Item> contents=((Container)thisItem).getDeepContents();
-					for(final Item I : contents)
-						if(!finalCollection.contains(I))
-							extraItems.add(I);
+					if((contents.size()==0)
+					&&(thisItem instanceof DeadBody)
+					&&(((DeadBody)thisItem).getMobName().equalsIgnoreCase(mob.Name())))
+						finalCollection.remove(i);
+					else
+					{
+						for(final Item I : contents)
+						{
+							if(!finalCollection.contains(I))
+								extraItems.add(I);
+						}
+					}
 				}
 			}
 			finalCollection.addAll(extraItems);
