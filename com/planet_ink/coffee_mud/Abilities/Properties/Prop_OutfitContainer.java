@@ -219,10 +219,10 @@ public class Prop_OutfitContainer extends Property
 						if(!done)
 							thingsToReDo.add(I);
 					}
-					for(Item I : thingsToReDo)
-					{
+					//for(Item I : thingsToReDo)
+					//{
 						//TODO: I have no idea .. but it will be layer related..
-					}
+					//}
 					
 					for(Item I : thingsToRemove)
 						CMLib.commands().postRemove(msg.source(), I, true);
