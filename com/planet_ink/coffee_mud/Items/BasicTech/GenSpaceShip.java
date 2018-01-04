@@ -759,7 +759,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
 											"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","AREA","COORDS","RADIUS",
 											"ROLL","DIRECTION","SPEED","FACING","OWNER","PRICE","DEFCLOSED","DEFLOCKED",
-											"PUTSTR","MOUNTSTR","DISMOUNTSTR","EXITNAME","TECHLEVEL"
+											"EXITNAME","TECHLEVEL",
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR","STATESTR","STATESUBJSTR","RIDERSTR"
 										  };
 
 	@Override
@@ -814,15 +815,21 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		case 21:
 			return "" + defaultsLocked();
 		case 22:
-			return putString;
-		case 23:
-			return mountString;
-		case 24:
-			return dismountString;
-		case 25:
 			return "" + doorName();
-		case 26:
+		case 23:
 			return "" + techLevel();
+		case 24:
+			return this.getPutString();
+		case 25:
+			return this.getMountString();
+		case 26:
+			return this.getDismountString();
+		case 27:
+			return this.getStateString();
+		case 28:
+			return this.getStateStringSubject();
+		case 29:
+			return this.getRideString();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -904,19 +911,28 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
 			break;
 		case 22:
-			putString = val;
-			break;
-		case 23:
-			mountString = val;
-			break;
-		case 24:
-			dismountString = val;
-			break;
-		case 25:
 			doorName = val;
 			break;
-		case 26:
+		case 23:
 			setTechLevel(CMath.s_parseIntExpression(val));
+			break;
+		case 24:
+			setPutString(val);
+			break;
+		case 25:
+			setMountString(val);
+			break;
+		case 26:
+			setDismountString(val);
+			break;
+		case 27:
+			setStateString(val);
+			break;
+		case 28:
+			setStateStringSubject(val);
+			break;
+		case 29:
+			setRideString(val);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

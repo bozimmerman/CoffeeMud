@@ -72,7 +72,8 @@ public class GrinderItems
 		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML,RECIPESKILLHELP,
 		MINTHRUST,ISCONSTTHRUST,AVAILPORTS,CONTENTSACCESS,BLENDEDVIEW,
 		ISSHIPWARCOMP,SWARNUMPORTS,SWARPORTS,SWARMTYPES,
-		RECHARGERATE,OPENTICKS,ISCLOAK,ISBOOK,MAXPAGES,MAXCHARSPAGE
+		RECHARGERATE,OPENTICKS,ISCLOAK,ISBOOK,MAXPAGES,MAXCHARSPAGE,
+		STATESTR,STATESUBJSTR,RIDERSTR
 		;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
@@ -677,16 +678,28 @@ public class GrinderItems
 				case ISPORTAL: // isportal
 					break;
 				case PUTSTR: // putstr
-					if((I instanceof Rideable)&&(I instanceof Exit))
-						I.setStat("PUTSTR", old);
+					if(I instanceof Rideable)
+						((Rideable) I).setPutString(old);
 					break;
 				case MOUNTSTR: // mountstr
-					if((I instanceof Rideable)&&(I instanceof Exit))
-						I.setStat("MOUNTSTR", old);
+					if(I instanceof Rideable)
+						((Rideable) I).setMountString(old);
 					break;
 				case DISMOUNTSTR: // dismountstr
-					if((I instanceof Rideable)&&(I instanceof Exit))
-						I.setStat("DISMOUNTSTR", old);
+					if(I instanceof Rideable)
+						((Rideable) I).setDismountString(old);
+					break;
+				case STATESTR: // statestr
+					if(I instanceof Rideable)
+						((Rideable) I).setStateString(old);
+					break;
+				case STATESUBJSTR: // statesubjstr
+					if(I instanceof Rideable)
+						((Rideable) I).setStateStringSubject(old);
+					break;
+				case RIDERSTR: // riderstr
+					if(I instanceof Rideable)
+						((Rideable) I).setRideString(old);
 					break;
 				case BEINGWORN:
 					break;

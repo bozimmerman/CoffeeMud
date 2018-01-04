@@ -2615,9 +2615,11 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		this.courseDirections.add(Integer.valueOf(-1));
 	}
 	
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
-											"AREA","OWNER","PRICE","PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED",
-											"EXITNAME"
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
+											"RESETTIME","RIDEBASIS","MOBSHELD",
+											"AREA","OWNER","PRICE","DEFCLOSED","DEFLOCKED",
+											"EXITNAME",
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR","STATESTR","STATESUBJSTR","RIDERSTR"
 										  };
 
 	@Override
@@ -2648,17 +2650,23 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		case 9:
 			return "" + getPrice();
 		case 10:
-			return putString;
-		case 11:
-			return mountString;
-		case 12:
-			return dismountString;
-		case 13:
 			return "" + defaultsClosed();
-		case 14:
+		case 11:
 			return "" + defaultsLocked();
-		case 15:
+		case 12:
 			return "" + doorName();
+		case 13:
+			return this.getPutString();
+		case 14:
+			return this.getMountString();
+		case 15:
+			return this.getDismountString();
+		case 16:
+			return this.getStateString();
+		case 17:
+			return this.getStateStringSubject();
+		case 18:
+			return this.getRideString();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -2701,22 +2709,31 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			setPrice(CMath.s_int(val));
 			break;
 		case 10:
-			putString = val;
-			break;
-		case 11:
-			mountString = val;
-			break;
-		case 12:
-			dismountString = val;
-			break;
-		case 13:
 			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
 			break;
-		case 14:
+		case 11:
 			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
 			break;
-		case 15:
+		case 12:
 			this.doorName = val;
+			break;
+		case 13:
+			setPutString(val);
+			break;
+		case 14:
+			setMountString(val);
+			break;
+		case 15:
+			setDismountString(val);
+			break;
+		case 16:
+			setStateString(val);
+			break;
+		case 17:
+			setStateStringSubject(val);
+			break;
+		case 18:
+			setRideString(val);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

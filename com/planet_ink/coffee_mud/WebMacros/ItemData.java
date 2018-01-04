@@ -1127,18 +1127,33 @@ public class ItemData extends StdWebMacro
 					case ISPORTAL: // isportal
 						return (((I instanceof Rideable)&&(I instanceof Exit))?"true":"false");
 					case PUTSTR: // putstr
-						if(firstTime)
-							old=I.getStat("PUTSTR");
+						if((firstTime)&&(I instanceof Rideable))
+							old=((Rideable)I).putString(CMClass.sampleMOB());
 						str.append(old+", ");
 						break;
 					case MOUNTSTR: // mountstr
-						if(firstTime)
-							old=I.getStat("MOUNTSTR");
+						if((firstTime)&&(I instanceof Rideable))
+							old=((Rideable)I).mountString(0,CMClass.sampleMOB());
 						str.append(old+", ");
 						break;
 					case DISMOUNTSTR: // dismountstr
-						if(firstTime)
-							old=I.getStat("DISMOUNTSTR");
+						if((firstTime)&&(I instanceof Rideable))
+							old=((Rideable)I).dismountString(CMClass.sampleMOB());
+						str.append(old+", ");
+						break;
+					case STATESTR: // statestr
+						if((firstTime)&&(I instanceof Rideable))
+							old=((Rideable)I).stateString(CMClass.sampleMOB());
+						str.append(old+", ");
+						break;
+					case STATESUBJSTR: // statesubjstr
+						if((firstTime)&&(I instanceof Rideable))
+							old=((Rideable)I).stateStringSubject(CMClass.sampleMOB());
+						str.append(old+", ");
+						break;
+					case RIDERSTR: // riderstr
+						if((firstTime)&&(I instanceof Rideable))
+							old=((Rideable)I).rideString(CMClass.sampleMOB());
 						str.append(old+", ");
 						break;
 					case DEFAULTSCLOSED: // defaults closed

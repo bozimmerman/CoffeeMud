@@ -1370,33 +1370,70 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(L("(blended)"));
 	}
 
-	protected void genMountText(MOB mob, Modifiable E, int showNumber, int showFlag)
+	protected void genMountText(MOB mob, Rideable E, int showNumber, int showFlag)
 			throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		if(mob.session()==null)
 			return;
-		mob.session().safeRawPrintln(L("@x1. Mount Strings: '@x2'.",""+showNumber,E.getStat("PUTSTR")+"/"+E.getStat("MOUNTSTR")+"/"+E.getStat("DISMOUNTSTR")));
+		mob.session().safeRawPrintln(L("@x1. Mount Strings: '@x2'.",""+showNumber,
+							E.putString(CMClass.sampleMOB())+"/"+
+							E.mountString(0, CMClass.sampleMOB())+"/"+
+							E.dismountString(CMClass.sampleMOB())));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName;
-		mob.session().safeRawPrintln(L("Enter new 'put' string (ENTER='"+E.getStat("PUTSTR")+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'put' string (ENTER='"+E.putString(CMClass.sampleMOB())+"')"));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
-			E.setStat("PUTSTR",newName);
+			E.setPutString(newName);
 		else
 			mob.tell(L("(no change)"));
-		mob.session().safeRawPrintln(L("Enter new 'mount' string (ENTER='"+E.getStat("MOUNTSTR")+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'mount' string (ENTER='"+E.mountString(0,CMClass.sampleMOB())+"')"));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
-			E.setStat("MOUNTSTR",newName);
+			E.setMountString(newName);
 		else
 			mob.tell(L("(no change)"));
-		mob.session().safeRawPrintln(L("Enter new 'dismount' string (ENTER='"+E.getStat("DISMOUNTSTR")+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'dismount' string (ENTER='"+E.dismountString(CMClass.sampleMOB())+"')"));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
-			E.setStat("DISMOUNTSTR",newName);
+			E.setDismountString(newName);
+		else
+			mob.tell(L("(no change)"));
+	}
+	
+	protected void genMountText2(MOB mob, Rideable E, int showNumber, int showFlag)
+			throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		if(mob.session()==null)
+			return;
+		mob.session().safeRawPrintln(L("@x1. State Strings: '@x2'.",""+showNumber,
+							E.stateString(CMClass.sampleMOB())+"/"+
+							E.stateStringSubject(CMClass.sampleMOB())+"/"+
+							E.rideString(CMClass.sampleMOB())));
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
+		String newName;
+		mob.session().safeRawPrintln(L("Enter new 'state' string (ENTER='"+E.stateString(CMClass.sampleMOB())+"')"));
+		newName=mob.session().prompt(":","");
+		if(newName.length()>0)
+			E.setStateString(newName);
+		else
+			mob.tell(L("(no change)"));
+		mob.session().safeRawPrintln(L("Enter new 'state subject' string (ENTER='"+E.stateStringSubject(CMClass.sampleMOB())+"')"));
+		newName=mob.session().prompt(":","");
+		if(newName.length()>0)
+			E.setStateStringSubject(newName);
+		else
+			mob.tell(L("(no change)"));
+		mob.session().safeRawPrintln(L("Enter new 'ride verb' string (ENTER='"+E.rideString(CMClass.sampleMOB())+"')"));
+		newName=mob.session().prompt(":","");
+		if(newName.length()>0)
+			E.setRideString(newName);
 		else
 			mob.tell(L("(no change)"));
 	}
@@ -9163,15 +9200,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+				genMountText(mob,(Rideable)me,++showNumber,showFlag);
+				if(!(me instanceof Exit)) // doesn't make sense for portals
+					genMountText2(mob,(Rideable)me,++showNumber,showFlag);
 			}
 			if(me instanceof Exit)
 			{
 				genDoorName(mob,(Exit)me,++showNumber,showFlag);
 				genClosedText(mob,(Exit)me,++showNumber,showFlag);
-			}
-			if((me instanceof Rideable)&&(me instanceof Exit)) // it's a portal!
-			{
-				genMountText(mob,me,++showNumber,showFlag);
 			}
 			if((me instanceof BoardableShip)&&(!(me instanceof SpaceObject)))
 				genAbility(mob,me,++showNumber,showFlag,L("Moves per Tick"));
@@ -9236,6 +9272,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+				genMountText(mob,(Rideable)me,++showNumber,showFlag);
+				if(!(me instanceof Exit)) // doesn't make sense for portals
+					genMountText2(mob,(Rideable)me,++showNumber,showFlag);
 			}
 			if(me instanceof Wand)
 			{
@@ -9579,6 +9618,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+				genMountText(mob,(Rideable)me,++showNumber,showFlag);
+				if(!(me instanceof Exit)) // doesn't make sense for portals
+					genMountText2(mob,(Rideable)me,++showNumber,showFlag);
 			}
 			if(me instanceof Deity)
 			{
@@ -9725,6 +9767,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+				genMountText(mob,(Rideable)me,++showNumber,showFlag);
+				if(!(me instanceof Exit)) // doesn't make sense for portals
+					genMountText2(mob,(Rideable)me,++showNumber,showFlag);
 			}
 			genFaction(mob,me,++showNumber,showFlag);
 			genTattoos(mob,me,++showNumber,showFlag);

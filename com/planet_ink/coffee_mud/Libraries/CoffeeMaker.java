@@ -630,12 +630,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			text.append(CMLib.xml().convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
 			text.append(CMLib.xml().convertXMLtoTag("RIDEC",((Rideable)E).riderCapacity()));
-			if(E instanceof Exit) // it's a portal!
-			{
-				text.append(CMLib.xml().convertXMLtoTag("PUTSTR",E.getStat("PUTSTR")));
-				text.append(CMLib.xml().convertXMLtoTag("MOUNTSTR",E.getStat("MOUNTSTR")));
-				text.append(CMLib.xml().convertXMLtoTag("DISMOUNTSTR",E.getStat("DISMOUNTSTR")));
-			}
+			text.append(CMLib.xml().convertXMLtoTag("PUTSTR",((Rideable)E).getPutString()));
+			text.append(CMLib.xml().convertXMLtoTag("MOUNTSTR",((Rideable)E).getMountString()));
+			text.append(CMLib.xml().convertXMLtoTag("DISMOUNTSTR",((Rideable)E).getDismountString()));
+			text.append(CMLib.xml().convertXMLtoTag("STATESTR",((Rideable)E).getStateString()));
+			text.append(CMLib.xml().convertXMLtoTag("STATESUBJSTR",((Rideable)E).getStateStringSubject()));
+			text.append(CMLib.xml().convertXMLtoTag("RIDERSTR",((Rideable)E).getRideString()));
 		}
 
 		if(E instanceof RawMaterial)
@@ -3204,12 +3204,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		{
 			((Rideable)E).setRideBasis(CMLib.xml().getIntFromPieces(buf,"RIDET"));
 			((Rideable)E).setRiderCapacity(CMLib.xml().getIntFromPieces(buf,"RIDEC"));
-			if(E instanceof Exit) // it's a portal!
-			{
-				E.setStat("PUTSTR", CMLib.xml().getValFromPieces(buf, "PUTSTR", "in"));
-				E.setStat("MOUNTSTR", CMLib.xml().getValFromPieces(buf, "MOUNTSTR", "enter(s)"));
-				E.setStat("DISMOUNTSTR", CMLib.xml().getValFromPieces(buf, "DISMOUNTSTR", "emerge(s) from"));
-			}
+			((Rideable)E).setPutString(CMLib.xml().getValFromPieces(buf, "PUTSTR", ""));
+			((Rideable)E).setMountString(CMLib.xml().getValFromPieces(buf, "MOUNTSTR", ""));
+			((Rideable)E).setDismountString(CMLib.xml().getValFromPieces(buf, "DISMOUNTSTR", ""));
+			((Rideable)E).setRideString(CMLib.xml().getValFromPieces(buf, "RIDERSTR", ""));
+			((Rideable)E).setStateString(CMLib.xml().getValFromPieces(buf, "STATESTR", ""));
+			((Rideable)E).setStateStringSubject(CMLib.xml().getValFromPieces(buf, "STATESUBJSTR", ""));
 		}
 		if(E instanceof Electronics)
 		{
