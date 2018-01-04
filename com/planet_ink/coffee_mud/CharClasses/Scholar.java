@@ -261,11 +261,52 @@ public class Scholar extends StdCharClass
 			Ability.DOMAIN_NATURELORE, Ability.DOMAIN_COMBATLORE,
 			Ability.DOMAIN_CALLIGRAPHY };
 	
+	public static void visitationBonusMessage(Environmental host, CMMsg msg)
+	{
+		if((msg.target() instanceof Room)
+		&&(msg.source()==host)
+		&&(!msg.source().isMonster())
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(msg.source().playerStats()!=null))
+		{
+			final Room R=(Room)msg.target();
+			if(((R.roomID().length()>0)
+				||((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0)))
+			&&(!CMath.bset(R.getArea().flags(),Area.FLAG_INSTANCE_CHILD))
+			&&(!msg.source().playerStats().hasVisited(R))
+			)
+			{
+				MOB M=null;
+				boolean bookDealer=false;
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					M=R.fetchInhabitant(m);
+					if((M instanceof ShopKeeper)
+					&&(M.getStartRoom()==R))
+					{
+						if((((ShopKeeper)M).getWhatIsSoldMask() & ShopKeeper.DEAL_BOOKS)!=0)
+						{
+							bookDealer=true;
+						}
+					}
+				}
+				if(bookDealer)
+				{
+					final int xpGain=50;
+					if(CMLib.leveler().postExperience((MOB)host,null,null,xpGain,true))
+						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have discovered a new place of books and gain @x1 experience.^?",""+xpGain),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				}
+			}
+		}
+	}
+
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.source()==myHost)
 		{
+			Scholar.visitationBonusMessage(myHost,msg);
+			
 			if((msg.targetMinor()==CMMsg.TYP_TEACH)
 			&&(msg.target() instanceof MOB))
 				CMLib.leveler().postExperience(msg.source(), null, null, 100, false);
@@ -429,6 +470,6 @@ public class Scholar extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Earn experience from teaching skills, making maps, writing books, using certain skills daily. Gives bonus profficiency gains for group members.");
+		return L("Earn experience from teaching skills, making maps, writing books, visiting bookstores/libraries, and using certain skills daily. Gives bonus profficiency gains for group members.");
 	}
 }
