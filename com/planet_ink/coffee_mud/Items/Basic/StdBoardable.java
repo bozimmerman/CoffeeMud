@@ -766,11 +766,17 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 					if(clanSale && ((C=CMLib.clans().getClan(me.getOwnerName()))!=null))
 					{
 						if(!C.getExtItems().isContent(me))
+						{
+							me.setSavable(false); // if the clan is saving it, rooms are NOT.
 							C.getExtItems().addItem(me);
+						}
 					}
 					else
 					if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(me)))
+					{
+						me.setSavable(false); // if the player is saving it, rooms are NOT.
 						buyer.playerStats().getExtItems().addItem(me);
+					}
 				}
 			};
 			session.prompt(namer[0]);
@@ -781,7 +787,10 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			if((this.getOwnerName().equals(buyer.Name()) && (buyer.playerStats() != null)))
 			{
 				if(!buyer.playerStats().getExtItems().isContent(this))
+				{
+					this.setSavable(false); // if the player is saving it, rooms are NOT.
 					buyer.playerStats().getExtItems().addItem(this);
+				}
 			}
 			else
 			{
@@ -789,7 +798,10 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				if(C!=null)
 				{
 					if(!C.getExtItems().isContent(this))
+					{
+						this.setSavable(false); // if the clan is saving it, rooms are NOT.
 						C.getExtItems().addItem(this);
+					}
 				}
 				else
 				{

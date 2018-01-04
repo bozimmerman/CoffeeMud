@@ -1615,7 +1615,10 @@ public class StdMOB implements MOB
 		{
 			bodyI = charStats().getMyRace().getCorpseContainer(this, deathRoom);
 			if ((bodyI != null) && (playerStats() != null))
+			{
+				bodyI.setSavable(false); // if the player is saving it, rooms are NOT.
 				playerStats().getExtItems().addItem(bodyI);
+			}
 		}
 		amDead = true;
 		makePeace(false);

@@ -1180,7 +1180,9 @@ public class RoomLoader
 		for(int i=0;i<room.numItems();i++)
 		{
 			final Item thisItem=room.getItem(i);
-			if((thisItem!=null)&&(!contents.contains(thisItem))&&thisItem.isSavable())
+			if((thisItem!=null)
+			&&(!contents.contains(thisItem))
+			&&thisItem.isSavable())
 				contents.add(thisItem);
 		}
 		return contents;
