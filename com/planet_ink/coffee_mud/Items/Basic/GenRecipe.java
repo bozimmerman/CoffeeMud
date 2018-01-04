@@ -110,6 +110,11 @@ public class GenRecipe extends GenReadable implements Recipe
 					return false;
 				}
 				final Ability A=CMClass.getAbility( getCommonSkillID() );
+				if(!(A instanceof CraftorAbility))
+				{
+					msg.source().tell(L("This recipe book is un-prepped."));
+					return false;
+				}
 				for(String r : recipes)
 				{
 					List<String> V=CMParms.parseTabs(r+" ", false);
@@ -118,33 +123,30 @@ public class GenRecipe extends GenReadable implements Recipe
 						msg.source().tell(L("Your recipes are clearly bad."));
 						return false;
 					}
-					if(A instanceof CraftorAbility)
+					final CraftorAbility C=(CraftorAbility)A;
+					final String components = C.getDecodedComponentsDescription( msg.source(), V );
+					if(components.equals("?"))
 					{
-						final CraftorAbility C=(CraftorAbility)A;
-						final String components = C.getDecodedComponentsDescription( msg.source(), V );
-						if(components.equals("?"))
+						msg.source().tell(L("Your recipes are clearly bad."));
+						return false;
+					}
+					else
+					{
+						if(this.getRecipeCodeLines().length>0)
 						{
-							msg.source().tell(L("Your recipes are clearly bad."));
-							return false;
-						}
-						else
-						{
-							if(this.getRecipeCodeLines().length>0)
+							boolean found=false;
+							for(int i=0;i<this.getRecipeCodeLines().length;i++)
 							{
-								boolean found=false;
-								for(int i=0;i<this.getRecipeCodeLines().length;i++)
+								if(CMParms.parseTabs(this.getRecipeCodeLines()[i]+" ", false).size() == V.size())
 								{
-									if(CMParms.parseTabs(this.getRecipeCodeLines()[i]+" ", false).size() == V.size())
-									{
-										found=true;
-										break;
-									}
+									found=true;
+									break;
 								}
-								if(!found)
-								{
-									msg.source().tell(L("Your recipes might be bad?"));
-									return false;
-								}
+							}
+							if(!found)
+							{
+								msg.source().tell(L("Your recipes might be bad?"));
+								return false;
 							}
 						}
 					}
