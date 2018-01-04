@@ -339,6 +339,10 @@ public class MOBloader
 					{
 						CMLib.map().registerWorldObjectLoaded(null, null, newItem);
 						mob.playerStats().getExtItems().addItem(newItem);
+						if((newItem instanceof DeadBody) // legacy fix
+						&&(((DeadBody)newItem).isPlayerCorpse())
+						&&(newItem.isSavable()))
+							newItem.setSavable(false); // so the rooms dont save it.
 					}
 				}
 			}
