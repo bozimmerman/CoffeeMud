@@ -110,10 +110,15 @@ public class Transcribing extends CommonSkill
 							&&(m2.sourceMinor()==CMMsg.TYP_WASREAD))
 								tmsg+=m2.targetMessage();
 						}
+						if((foundI instanceof Recipe)
+						&&(targetI instanceof Recipe)
+						&&(CMClass.getAbilityPrototype(((Recipe)targetI).getCommonSkillID())==null))
+							((Recipe)targetI).setCommonSkillID(((Recipe)foundI).getCommonSkillID());
+							
 						final CMMsg msg=CMClass.getMsg(mob,targetI,this,CMMsg.TYP_WRITE,
-								L("<S-NAME> transcribe(s) <T-NAME> into @x1."),
+								L("<S-NAME> transcribe(s) from @x1 into <T-NAME>.",foundI.name(mob)),
 								tmsg,
-								L("<S-NAME> transcribe(s) <T-NAME> into @x1."));
+								L("<S-NAME> transcribe(s) from @x1 into <T-NAME>.",foundI.name(mob)));
 						if(mob.location().okMessage(mob,msg))
 							mob.location().send(mob,msg);
 					}
@@ -215,6 +220,15 @@ public class Transcribing extends CommonSkill
 		if((copyToI instanceof Recipe) != (copyFromI instanceof Recipe))
 		{
 			commonTell(mob,L("@x1 can not be copied to @x2.",copyFromI.name(mob),copyToI.name(mob)));
+			return false;
+		}
+		if((copyFromI instanceof Recipe)
+		&&(copyToI instanceof Recipe)
+		&&(CMClass.getAbilityPrototype(((Recipe)copyFromI).getCommonSkillID())!=null)
+		&&(CMClass.getAbilityPrototype(((Recipe)copyToI).getCommonSkillID())!=null)
+		&&(CMClass.getAbilityPrototype(((Recipe)copyToI).getCommonSkillID())!=CMClass.getAbilityPrototype(((Recipe)copyFromI).getCommonSkillID())))
+		{
+			commonTell(mob,L("@x1 can not be copied to @x2, as it would break up the recipe types.",copyFromI.name(mob),copyToI.name(mob)));
 			return false;
 		}
 		final Ability write=mob.fetchAbility("Skill_Write");
