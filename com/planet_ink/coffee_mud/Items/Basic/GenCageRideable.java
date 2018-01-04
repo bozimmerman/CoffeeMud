@@ -86,7 +86,11 @@ public class GenCageRideable extends StdCageRideable
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD","DEFCLOSED","DEFLOCKED"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
+											"RESETTIME","RIDEBASIS","MOBSHELD",
+											"DEFCLOSED","DEFLOCKED",
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR","STATESTR","STATESUBJSTR","RIDERSTR"
+											};
 	@Override
 	public String getStat(String code)
 	{
@@ -112,6 +116,18 @@ public class GenCageRideable extends StdCageRideable
 			return "" + defaultsClosed();
 		case 8:
 			return "" + defaultsLocked();
+		case 9:
+			return this.getPutString();
+		case 10:
+			return this.getMountString();
+		case 11:
+			return this.getDismountString();
+		case 12:
+			return this.getStateString();
+		case 13:
+			return this.getStateStringSubject();
+		case 14:
+			return this.getRideString();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -151,6 +167,24 @@ public class GenCageRideable extends StdCageRideable
 			break;
 		case 8:
 			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+			break;
+		case 9:
+			setPutString(val);
+			break;
+		case 10:
+			setMountString(val);
+			break;
+		case 11:
+			setDismountString(val);
+			break;
+		case 12:
+			setStateString(val);
+			break;
+		case 13:
+			setStateStringSubject(val);
+			break;
+		case 14:
+			setRideString(val);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

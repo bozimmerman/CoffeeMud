@@ -65,24 +65,6 @@ public class GenPortal extends StdPortal
 	}
 
 	@Override
-	public String putString(Rider R)
-	{
-		return putString;
-	}
-
-	@Override
-	public String mountString(int commandType, Rider R)
-	{
-		return mountString;
-	}
-
-	@Override
-	public String dismountString(Rider R)
-	{
-		return dismountString;
-	}
-	
-	@Override
 	public String keyName()
 	{
 		return readableText;

@@ -232,13 +232,17 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	@Override
 	public String putString(Rider R)
 	{
-		return "in";
+		if((R==null)||(putString.length()==0))
+			return "in";
+		return putString;
 	}
 
 	@Override
 	public String stateStringSubject(Rider R)
 	{
-		return "being used by";
+		if((R==null)||(stateSubjectStr.length()==0))
+			return "being used by";
+		return stateSubjectStr;
 	}
 
 	@Override

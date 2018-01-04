@@ -51,9 +51,6 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	protected int 		price 			= 1000;
 	protected int		internalPrice	= 0;
 	protected Area 		area			= null;
-	protected String 	putString		= "load(s)";
-	protected String 	mountString		= "board(s)";
-	protected String 	dismountString	= "disembark(s) from";
 	protected String	homePortID		= "";
 
 	public StdBoardable()
@@ -821,24 +818,30 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		return R;
 	}
 	
-	@Override 
+	@Override
 	public String putString(Rider R)
-	{ 
+	{
+		if((R==null)||(putString.length()==0))
+			return "load(s)";
 		return putString;
 	}
-	
-	@Override 
+
+	@Override
 	public String mountString(int commandType, Rider R)
-	{ 
+	{
+		if((R==null)||(mountString.length()==0))
+			return "board(s)";
 		return mountString;
 	}
-	
-	@Override 
+
+	@Override
 	public String dismountString(Rider R)
-	{	
+	{
+		if((R==null)||(dismountString.length()==0))
+			return "disembark(s) from";
 		return dismountString;
 	}
-	
+
 	@Override
 	public boolean isSavable()
 	{
