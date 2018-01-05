@@ -3116,6 +3116,47 @@ public class CMParms
 	}
 
 	/**
+	 * Returns the index of the given string in the given string array.
+	 * The search is case sensitive.
+	 * @param stringList the string array
+	 * @param str the string to search for
+	 * @param startIndex the index to start from
+	 * @return the index of the string in the list, or -1 if not found
+	 */
+	public final static int indexOf(final String[] stringList, final String str, final int startIndex)
+	{
+		if(stringList==null) 
+			return -1;
+		if(str==null) 
+			return -1;
+		for(int i=startIndex;i<stringList.length;i++)
+		{
+			if(stringList[i].equals(str))
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the number of the given items in the given array
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param str the string to search for
+	 * @return the number of times the item appears in the list
+	 */
+	public final static int numContains(final String[] theList, final String str)
+	{
+		int idx=indexOf(theList,str);
+		int ct=0;
+		while(idx >=0)
+		{
+			ct++;
+			idx=indexOf(theList,str,idx+1);
+		}
+		return ct;
+	}
+
+	/**
 	 * Returns the index of the string in the given string array that starts
 	 * with the given one. The search is case sensitive.
 	 * @param stringList the string array
@@ -3218,6 +3259,44 @@ public class CMParms
 	}
 
 	/**
+	 * Returns the index of the given number in the given array.
+	 * @param theList the int array
+	 * @param x the number to search for
+	 * @param startIndex the index to start the search from
+	 * @return the index of the number in the list, or -1 if not found
+	 */
+	public final static int indexOf(final int[] theList, final int x, final int startIndex)
+	{
+		if(theList==null) 
+			return -1;
+		for(int i=startIndex;i<theList.length;i++)
+		{
+			if(theList[i]==x)
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the number of the given items in the given array
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param x the int to search for
+	 * @return the number of times the item appears in the list
+	 */
+	public final static int numContains(final int[] theList, final int x)
+	{
+		int idx=indexOf(theList,x);
+		int ct=0;
+		while(idx >=0)
+		{
+			ct++;
+			idx=indexOf(theList,x,idx+1);
+		}
+		return ct;
+	}
+
+	/**
 	 * Returns the index of the first of the given numbers in the given array.
 	 * @param theList the int array
 	 * @param xs the numbers to search for
@@ -3254,6 +3333,44 @@ public class CMParms
 				return i;
 		}
 		return -1;
+	}
+	
+	/**
+	 * Returns the index of the given byte in the given array.
+	 * @param theList the byte array
+	 * @param x the byte to search for
+	 * @param startIndex the index to start from
+	 * @return the index of the byte in the list, or -1 if not found
+	 */
+	public final static int indexOf(final byte[] theList, final byte x, final int startIndex)
+	{
+		if(theList==null) 
+			return -1;
+		for(int i=startIndex;i<theList.length;i++)
+		{
+			if(theList[i]==x)
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the number of the given items in the given array
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param x the byte to search for
+	 * @return the number of times the item appears in the list
+	 */
+	public final static int numContains(final byte[] theList, final byte x)
+	{
+		int idx=indexOf(theList,x);
+		int ct=0;
+		while(idx >=0)
+		{
+			ct++;
+			idx=indexOf(theList,x,idx+1);
+		}
+		return ct;
 	}
 
 	/**
@@ -3295,6 +3412,27 @@ public class CMParms
 		}
 		return -1;
 	}
+	
+	/**
+	 * Returns the index of the given bytes in the given array.
+	 * @param theList the byte array
+	 * @param x the bytes to search for
+	 * @param startIndex the index to start from
+	 * @return the index of the bytes in the list, or -1 if not found
+	 */
+	public final static int indexOf(final byte[] theList, final byte[] x, final int startIndex)
+	{
+		if(theList==null) 
+			return -1;
+		if(x.length==0)
+			return 0;
+		for(int i=startIndex;i<theList.length;i++)
+		{
+			if(equals(theList,i,x))
+				return i;
+		}
+		return -1;
+	}
 
 	/**
 	 * Returns the index of the given number in the given array.
@@ -3312,6 +3450,44 @@ public class CMParms
 				return i;
 		}
 		return -1;
+	}
+
+	/**
+	 * Returns the index of the given number in the given array.
+	 * @param theList the string array
+	 * @param x the number to search for
+	 * @param startIndex the index to start from
+	 * @return the index of the number in the list, or -1 if not found
+	 */
+	public final static int indexOf(final long[] theList, final long x, final int startIndex)
+	{
+		if(theList==null) 
+			return -1;
+		for(int i=startIndex;i<theList.length;i++)
+		{
+			if(theList[i]==x)
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the number of the given items in the given array
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param x the long to search for
+	 * @return the number of times the item appears in the list
+	 */
+	public final static int numContains(final long[] theList, final long x)
+	{
+		int idx=indexOf(theList,x);
+		int ct=0;
+		while(idx >=0)
+		{
+			ct++;
+			idx=indexOf(theList,x,idx+1);
+		}
+		return ct;
 	}
 
 	/**
@@ -3397,6 +3573,86 @@ public class CMParms
 				return i;
 		}
 		return -1;
+	}
+	
+	/**
+	 * Returns the index of the given Object appears in the given list.
+	 * @param theList the list
+	 * @param obj the Object to search for
+	 * @param startIndex the index to start from
+	 * @return the index of the object in the list, or -1 if not found
+	 */
+	public final static int indexOf(final Object[] theList, final Object obj, final int startIndex)
+	{
+		if(theList==null) 
+			return -1;
+		if(obj==null) 
+			return -1;
+		for(int i=startIndex;i<theList.length;i++)
+		{
+			if(theList[i].equals(obj))
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the number of the given items in the given array
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param obj the obj to search for
+	 * @return the number of times the item appears in the list
+	 */
+	public final static int numContains(final Object[] theList, final Object obj)
+	{
+		int idx=indexOf(theList,obj);
+		int ct=0;
+		while(idx >=0)
+		{
+			ct++;
+			idx=indexOf(theList,obj,idx+1);
+		}
+		return ct;
+	}
+	
+	/**
+	 * Returns the index of the given Object appears in the given list.
+	 * @param theList the list
+	 * @param obj the Object to search for
+	 * @param startIndex the index to start from
+	 * @return the index of the object in the list, or -1 if not found
+	 */
+	public final static int indexOf(final List<?> theList, final Object obj, final int startIndex)
+	{
+		if(theList==null) 
+			return -1;
+		if(obj==null) 
+			return -1;
+		for(int i=startIndex;i<theList.size();i++)
+		{
+			if(theList.get(i).equals(obj))
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the number of the given items in the given array
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param obj the Object to search for
+	 * @return the number of times the item appears in the list
+	 */
+	public final static int numContains(final List<?> theList, final Object obj)
+	{
+		int idx=theList.indexOf(obj);
+		int ct=0;
+		while(idx >=0)
+		{
+			ct++;
+			idx=indexOf(theList,obj,idx+1);
+		}
+		return ct;
 	}
 
 	/**

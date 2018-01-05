@@ -138,22 +138,36 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 			if(P instanceof MOB)
 			{
 				final MOB mob=(MOB)P;
-				if(mob.numAbilities()!=numSkills)
+				if(mob.numAbilities()!=0)//BZ:TODO:RESTORE:numSkills)
 				{
 					numSkills = mob.numAbilities();
 					this.myClasses.clear();
 					this.myTitles.clear();
 					final String[][] allDegrees = this.getAllDegrees();
-					final int[] counts=new int[allDegrees.length];
 					final Ability studyingA=mob.fetchAbility("Studying");
 					final AbilityContainer collection=(studyingA==null)?mob:(AbilityContainer)studyingA;
-					for(Enumeration<Ability> a=collection.abilities();a.hasMoreElements();)
+					final int[] counts=new int[allDegrees.length];
+					boolean fail=true;
+					while(fail)
 					{
-						final Ability A=a.nextElement();
-						for(int ci=0;ci<allDegrees.length;ci++)
+						fail=false;
+						try
 						{
-							if(CMLib.ableMapper().getAbleMap(allDegrees[ci][0], A.ID()) != null)
-								counts[ci]++;
+							for(Enumeration<Ability> a=collection.abilities();a.hasMoreElements();)
+							{
+								final Ability A=a.nextElement();
+								for(int ci=0;ci<allDegrees.length;ci++)
+								{
+									if(CMLib.ableMapper().getAbleMap(allDegrees[ci][0], A.ID()) != null)
+										counts[ci]++;
+								}
+							}
+						}
+						catch(java.util.ConcurrentModificationException e)
+						{
+							for(int i=0;i<counts.length;i++)
+								counts[i]=0;
+							fail=true;
 						}
 					}
 					final int threshold = 3;
@@ -187,12 +201,14 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 							final String[] degree = allDegrees[ci];
 							if(pStats.getTitles().contains(degree[DEG_TITLE]))
 							{
+								while(CMParms.numContains(pStats.getTitles(), degree[DEG_TITLE]) > 1)
+									pStats.getTitles().remove(degree[DEG_TITLE]);
 								if(!this.myClasses.contains(degree))
-									pStats.getTitles().add(degree[DEG_TITLE]);
+									pStats.getTitles().remove(degree[DEG_TITLE]);
 							}
 							else
 							if(this.myClasses.contains(degree))
-								pStats.getTitles().remove(degree[DEG_TITLE]);
+								pStats.getTitles().add(degree[DEG_TITLE]);
 						}
 					}
 					this.lastTitle="";
