@@ -243,6 +243,11 @@ public class GrinderAreas
 		if(img==null)
 			img="";
 		A.setImage(CMLib.coffeeFilter().safetyFilter(img));
+		
+		// playerlevel
+		String plvl=httpReq.getUrlParameter("PLAYERLEVEL");
+		if(plvl!=null)
+			A.setPlayerLevel(CMath.s_int(plvl));
 
 		// gridy
 		final String gridy=httpReq.getUrlParameter("GRIDY");

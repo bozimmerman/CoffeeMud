@@ -5297,6 +5297,24 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		E.setServiceRitual(prompt(mob,E.getServiceRitual(),showNumber,showFlag,"Service Ritual",false,false)); 
 	}
 
+	protected void genPlayerLevel(MOB mob, Area A, int showNumber, int showFlag) throws IOException
+	{ 
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+		{
+			final StringBuffer buf=new StringBuffer();
+			buf.append(showNumber+". ");
+			buf.append(L("Player Level: @x1",""+A.getPlayerLevel()));
+			if(A.getPlayerLevel()==0)
+				buf.append(L(" (Med MOB Lvl)"));
+			buf.append("\n\r");
+			mob.tell(buf.toString());
+			return;
+		}
+		A.setPlayerLevel(prompt(mob,A.getPlayerLevel(),showNumber,showFlag,"New Player Level")); 
+	}
+
 	protected void genGridLocaleX(MOB mob, GridZones E, int showNumber, int showFlag) throws IOException
 	{ 
 		E.setXGridSize(prompt(mob,E.xGridSize(),showNumber,showFlag,"Size (X)")); 
@@ -10458,6 +10476,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genClimateType(mob,myArea,++showNumber,showFlag);
 			myArea.setAtmosphere(genAnyMaterialCode(mob,"Atmosphere",myArea.getAtmosphereCode(),true,++showNumber,showFlag));
 			genTimeClock(mob,myArea,++showNumber,showFlag);
+			genPlayerLevel(mob,myArea,++showNumber,showFlag);
 			genParentAreas(mob,myArea,++showNumber,showFlag,alsoUpdateAreas);
 			genChildAreas(mob,myArea,++showNumber,showFlag,alsoUpdateAreas);
 			genSubOps(mob,myArea,++showNumber,showFlag);

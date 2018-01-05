@@ -136,7 +136,11 @@ public class Surveying extends CommonSkill
 						if(expertise > 0)
 							msgBuilder.append(L("^HPct Visited: ^N")).append(mob.playerStats().percentVisited(mob,A)).append("\n\r");
 						if(expertise > 1)
+						{
 							msgBuilder.append(L("^HMedian Lvl : ^N")).append(A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]).append("\n\r");
+							if(A.getPlayerLevel()>0)
+								msgBuilder.append(L("^HPlayer Lvl : ^N")).append(A.getPlayerLevel()).append("\n\r");
+						}
 						if(expertise > 2)
 						{
 							msgBuilder.append(L("^HLevel Range: ^N")).append(A.getAreaIStats()[Area.Stats.MIN_LEVEL.ordinal()])

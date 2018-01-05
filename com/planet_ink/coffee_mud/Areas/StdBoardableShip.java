@@ -1351,6 +1351,17 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
+	public int getPlayerLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setPlayerLevel(int level)
+	{
+	}
+
+	@Override
 	public Behavior fetchBehavior(int index)
 	{
 		try

@@ -332,6 +332,13 @@ public class AreaData extends StdWebMacro
 						name=A.rawImage();
 					str.append(name);
 				}
+				if(parms.containsKey("PLAYERLEVEL"))
+				{
+					String name=httpReq.getUrlParameter("PLAYERLEVEL");
+					if((name==null)||(name.length()==0))
+						name=""+A.getPlayerLevel();
+					str.append(name);
+				}
 				if((parms.containsKey("GRIDX"))&&(A instanceof GridZones))
 				{
 					String name=httpReq.getUrlParameter("GRIDX");

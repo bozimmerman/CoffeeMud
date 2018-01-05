@@ -179,7 +179,9 @@ public class PlanarAbility extends StdAbility
 			if(affected instanceof Area)
 			{
 				planeArea=(Area)affected;
-				int medianLevel=planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+				int medianLevel=planeArea.getPlayerLevel();
+				if(medianLevel == 0)
+					medianLevel=planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				planarLevel=medianLevel;
 			}
 			String specflags = planeVars.get(PlanarVar.SPECFLAGS.toString());

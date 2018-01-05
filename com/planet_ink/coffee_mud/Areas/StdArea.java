@@ -48,6 +48,7 @@ public class StdArea implements Area
 	protected String	miscText		= "";
 	protected String	archPath		= "";
 	protected String	imageName   	= "";
+	protected int		playerLevel		= 0;
 	protected int   	theme			= Area.THEME_INHERIT;
 	protected int		atmosphere		= Room.ATMOSPHERE_INHERIT;
 	protected int		derivedTheme	= Area.THEME_INHERIT;
@@ -1676,6 +1677,18 @@ public class StdArea implements Area
 	}
 
 	@Override
+	public int getPlayerLevel()
+	{
+		return playerLevel;
+	}
+
+	@Override
+	public void setPlayerLevel(int level)
+	{
+		playerLevel=level;
+	}
+
+	@Override
 	public int[] getAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -1746,7 +1759,10 @@ public class StdArea implements Area
 			}
 			s.append("Level range    : ^H"+statData[Area.Stats.MIN_LEVEL.ordinal()]+"^N to ^H"+statData[Area.Stats.MAX_LEVEL.ordinal()]+"^N\n\r");
 			//s.append("Average level  : ^H"+statData[Area.Stats.AVG_LEVEL.ordinal()]+"^N\n\r");
-			s.append("Median level   : ^H"+statData[Area.Stats.MED_LEVEL.ordinal()]+"^N\n\r");
+			if(getPlayerLevel()>0)
+				s.append("Player level   : ^H"+getPlayerLevel()+"^N\n\r");
+			else
+				s.append("Median level   : ^H"+statData[Area.Stats.MED_LEVEL.ordinal()]+"^N\n\r");
 			if(theFaction!=null)
 				s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": ^H"+theFaction.fetchRangeName(statData[Area.Stats.AVG_ALIGNMENT.ordinal()])+"^N\n\r");
 			if(theFaction!=null)
@@ -2415,7 +2431,8 @@ public class StdArea implements Area
 												  "PRICEMASKS",
 												  "ATMOSPHERE",
 												  "AUTHOR",
-												  "NAME"
+												  "NAME",
+												  "PLAYERLEVEL"
 												  };
 	private static String[] codes=null;
 	
@@ -2473,6 +2490,8 @@ public class StdArea implements Area
 			return getAuthorID();
 		case 14:
 			return name();
+		case 15:
+			return ""+playerLevel;
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -2550,6 +2569,9 @@ public class StdArea implements Area
 			break;
 		case 14:
 			setName(val);
+			break;
+		case 15:
+			setPlayerLevel((int)Math.round(CMath.parseMathExpression(val)));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
