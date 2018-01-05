@@ -192,7 +192,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 							}
 							else
 							if(this.myClasses.contains(degree))
-								pStats.getTitles().add(degree[DEG_TITLE]);
+								pStats.getTitles().remove(degree[DEG_TITLE]);
 						}
 					}
 					this.lastTitle="";
