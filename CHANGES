@@ -3,6 +3,7 @@
    2. A lot of the old static strings in rideables are now customizable by editors.
    3. Small boats can TENDER themselves to large ships now, and be RAISEd and LOWERd.
    4. New Area field: Player Level, for overriding median level as a fake statistic.
+   5. MUDGrinder Statistic report now has Areas report, just like command line did.
 
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)

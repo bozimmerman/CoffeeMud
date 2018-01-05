@@ -295,6 +295,109 @@ public class CoffeeTableRows extends StdWebMacro
 			}
 		}
 		else
+		if(parms.containsKey("AREANAME")||parms.containsKey("AREARPT"))
+		{
+			final List<CoffeeTableRow> set=new ArrayList<CoffeeTableRow>();
+			for(int v=V.size()-1;v>=0;v--)
+			{
+				final CoffeeTableRow T=V.get(v);
+				if((T.startTime()>ENDQ.getTimeInMillis())&&((T.startTime()+TimeManager.MILI_DAY)<=curTime))
+				{
+					set.add(T);
+					V.remove(v);
+				}
+			}
+			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			{
+				Area A=a.nextElement();
+				if((!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))&&(!(A instanceof SpaceObject)))
+				{
+					code = "X"+A.Name().toUpperCase().replace(' ','_');
+					final long[] totals=new long[CoffeeTableRow.STAT_TOTAL];
+					long highestOnline=0;
+					long numberOnlineTotal=0;
+					long numberOnlineCounter=0;
+					for(int s=0;s<set.size();s++)
+					{
+						final CoffeeTableRow T=set.get(s);
+						T.totalUp(code,totals);
+						if(T.highestOnline()>highestOnline)
+							highestOnline=T.highestOnline();
+						numberOnlineTotal+=T.numberOnlineTotal();
+						numberOnlineCounter+=T.numberOnlineCounter();
+					}
+					final long minsOnline=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/(1000*60);
+					totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/scale/(1000*60);
+					double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
+					avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
+					table.append("<TR>");
+					for(int i=0;i<orderedParms.size();i++)
+					{
+						final String key=orderedParms.getFirst(i);
+						if(key.equals("COLSPAN"))
+							colspan=" COLSPAN="+orderedParms.getSecond(i);
+						else 
+						if(key.equals("AREANAME"))
+							table.append("<TD" + colspan + ">" + header + A.Name() + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("DATERANGE"))
+							table.append("<TD" + colspan + ">" + header + CMLib.time().date2DateString(curTime + 1) + " - " + CMLib.time().date2DateString(lastCur - 1) + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("DATESTART"))
+							table.append("<TD" + colspan + ">" + header + CMLib.time().date2DateString(curTime + 1) + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("DATEEND"))
+							table.append("<TD" + colspan + ">" + header + CMLib.time().date2DateString(lastCur) + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("LOGINS"))
+							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_LOGINS] + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("MOSTONLINE"))
+							table.append("<TD" + colspan + ">" + header + highestOnline + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("AVERAGEONLINE"))
+							table.append("<TD" + colspan + ">" + header + avgOnline + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("AVERAGETICKS"))
+							table.append("<TD" + colspan + ">" + header + ((totals[CoffeeTableRow.STAT_LOGINS] > 0) ? (minsOnline / totals[CoffeeTableRow.STAT_LOGINS]) : 0) + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("TOTALHOURS"))
+							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_TICKSONLINE] + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("NEWPLAYERS"))
+							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_NEWPLAYERS] + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("DEATHS"))
+							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_DEATHS] + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("PKDEATHS"))
+							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_PKDEATHS] + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("CLASSCHANGES"))
+							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_CLASSCHANGE] + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("PURGES"))
+							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_PURGES] + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("MARRIAGES"))
+							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_MARRIAGES] + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("BIRTHS"))
+							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_BIRTHS] + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("DIVORCES"))
+							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_DIVORCES] + footer + "</TD>");
+						else 
+						if (key.equalsIgnoreCase("LEVELSUP"))
+							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_LEVELSGAINED] + footer + "</TD>");
+					}
+				}
+				table.append("</TR>");
+				if(scale==0)
+					break;
+			}
+		}
+		else
 		{
 			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 			{

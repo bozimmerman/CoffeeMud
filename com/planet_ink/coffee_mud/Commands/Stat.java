@@ -365,20 +365,11 @@ public class Stat  extends Skills
 		if(areaStats)
 		{
 			lastCur=ENDQ.getTimeInMillis();
-			final Calendar C2=Calendar.getInstance();
-			C2.setTimeInMillis(curTime);
-			C2.add(Calendar.DATE,-(scale));
-			curTime=C2.getTimeInMillis();
-			C2.set(Calendar.HOUR_OF_DAY,23);
-			C2.set(Calendar.MINUTE,59);
-			C2.set(Calendar.SECOND,59);
-			C2.set(Calendar.MILLISECOND,999);
-			curTime=C2.getTimeInMillis();
 			final ArrayList<CoffeeTableRow> set=new ArrayList<CoffeeTableRow>();
 			for(int v=V.size()-1;v>=0;v--)
 			{
 				final CoffeeTableRow T=V.get(v);
-				if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+				if((T.startTime()>lastCur)&&(T.endTime()<=curTime))
 				{
 					set.add(T);
 					V.remove(v);

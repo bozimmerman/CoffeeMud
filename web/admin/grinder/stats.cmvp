@@ -13,7 +13,7 @@
 			document.CONTROL.action=action;
 			document.CONTROL.submit();
 		}
-		function ClickedBox(skillRpt,questRpt)
+		function ClickedBox(skillRpt,questRpt,areaRpt)
 		{
 			var newVal='';
 			if(skillRpt=='SKILLRPT') {
@@ -24,14 +24,20 @@
     			 	 if(document.CONTROL.QUESTRPT.value!='')
 	    			     document.CONTROL.RPTTYP[0].checked=true;
 	    			 else
+    			 	 if(document.CONTROL.AREARPT.value!='')
+	    			     document.CONTROL.RPTTYP[3].checked=true;
+	    			 else
 	                     document.CONTROL.RPTTYP[2].checked=true;
                      document.CONTROL.RPTTYP[1].checked=false;
                      return;
     			 }
 			} 
-			if((skillRpt!=document.CONTROL.SKILLRPT.value)||(questRpt!=document.CONTROL.QUESTRPT.value))
+			if((skillRpt!=document.CONTROL.SKILLRPT.value)
+			||(areaRpt!=document.CONTROL.QUESTRPT.value)
+			||(questRpt!=document.CONTROL.QUESTRPT.value))
 			{
 				document.CONTROL.QUESTRPT.value=questRpt;
+				document.CONTROL.AREARPT.value=areaRpt;
 				document.CONTROL.SKILLRPT.value=skillRpt;
 				Clicked('/grinder/stats.cmvp');
 			}
@@ -58,6 +64,7 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=SKILLRPT VALUE="@RequestParameter?SKILLRPT@">
 <INPUT TYPE=HIDDEN NAME=QUESTRPT VALUE="@RequestParameter?QUESTRPT@">
+<INPUT TYPE=HIDDEN NAME=AREARPT VALUE="@RequestParameter?AREARPT@">
 	<TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=100% COLSPAN=15 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud Statistics Report</H2></FONT></TD></TR>
 	<TR>
@@ -169,9 +176,10 @@
 		<OPTION VALUE=30>Months
 		<OPTION VALUE=365>Years
 		</SELECT>
-		<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?QUESTRPT=@ @if?CheckReqParm?SKILLRPT=USAGERPT@checked@endif@ @if?CheckReqParm?SKILLRPT=@checked@endif@ @endif@ VALUE=USAGERPT ONCLICK="ClickedBox('USAGERPT','');"><FONT COLOR=WHITE>Usage Report</FONT>
-		<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?SKILLRPT=SKILLRPT@checked@endif@ VALUE=SKILLRPT ONCLICK="ClickedBox('SKILLRPT','');"><FONT COLOR=WHITE>Skills Report</FONT>
-		<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?QUESTRPT=QUESTRPT@checked@endif@ VALUE=QUESTRPT ONCLICK="ClickedBox('','QUESTRPT');"><FONT COLOR=WHITE>Quest Report</FONT>
+		<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?QUESTRPT=@ @if?CheckReqParm?SKILLRPT=USAGERPT@checked@endif@ @if?CheckReqParm?SKILLRPT=@checked@endif@ @endif@ VALUE=USAGERPT ONCLICK="ClickedBox('USAGERPT','','');"><FONT COLOR=WHITE>Usage Report</FONT>
+		<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?SKILLRPT=SKILLRPT@checked@endif@ VALUE=SKILLRPT ONCLICK="ClickedBox('SKILLRPT','','');"><FONT COLOR=WHITE>Skills Report</FONT>
+		<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?QUESTRPT=QUESTRPT@checked@endif@ VALUE=QUESTRPT ONCLICK="ClickedBox('','QUESTRPT','');"><FONT COLOR=WHITE>Quest Report</FONT>
+		<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?AREARPT=AREARPT@checked@endif@ VALUE=AREARPT ONCLICK="ClickedBox('','','AREARPT');"><FONT COLOR=WHITE>Area Report</FONT>
 		</TD>
 		<TD WIDTH=58% COLSPAN=8 ALIGN=CENTER>
 		<FONT COLOR=WHITE>Report on...</FONT>
@@ -384,7 +392,11 @@
 				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Stops</B></FONT></TD>
 
 			@else@
-				<TD WIDTH=15%><FONT COLOR=WHITE><B>Date Range</B></FONT></TD>
+				@if?CheckReqParm?AREARPT=AREARPT@
+					<TD WIDTH=15%><FONT COLOR=WHITE><B>Area Name</B></FONT></TD>
+				@else@
+					<TD WIDTH=15%><FONT COLOR=WHITE><B>Date Range</B></FONT></TD>
+				@endif@
 				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Newbies</B></FONT></TD>
 				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Logins</B></FONT></TD>
 				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Tot. Hr.</B></FONT></TD>
@@ -438,7 +450,11 @@
 			@if?CheckReqParm?QUESTRPT=QUESTRPT@
 				@CoffeeTableRows?HEADER=<FONT COLOR=WHITE SIZE=-1>&FOOTER=</FONT>&QUESTNAME&STARTATTEMPT&TIMESTART&FAILEDSTART&ACCEPTED&SUCCESS&FAILED&DROPPED&TIMESTOP&STOP@
 			@else@
-				@CoffeeTableRows?HEADER=<FONT COLOR=WHITE SIZE=-1>&FOOTER=</FONT>&DATERANGE&NEWPLAYERS&LOGINS&TOTALHOURS&AVERAGETICKS&AVERAGEONLINE&MOSTONLINE&DEATHS&PKDEATHS&LEVELSUP&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES@
+				@if?CheckReqParm?AREARPT=AREARPT@
+					@CoffeeTableRows?HEADER=<FONT COLOR=WHITE SIZE=-1>&FOOTER=</FONT>&AREANAME&NEWPLAYERS&LOGINS&TOTALHOURS&AVERAGETICKS&AVERAGEONLINE&MOSTONLINE&DEATHS&PKDEATHS&LEVELSUP&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES@
+				@else@
+					@CoffeeTableRows?HEADER=<FONT COLOR=WHITE SIZE=-1>&FOOTER=</FONT>&DATERANGE&NEWPLAYERS&LOGINS&TOTALHOURS&AVERAGETICKS&AVERAGEONLINE&MOSTONLINE&DEATHS&PKDEATHS&LEVELSUP&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES@
+				@endif@
 			@endif@
 		@endif@
 	</TABLE>
