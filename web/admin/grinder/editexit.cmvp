@@ -7,6 +7,7 @@
  	<link rel="grinder icon" href="/images/grinder.ico" >
 </head>
 <FRAMESET ROWS=80%,20% FRAMEBORDER=NO FRAMESPACING=0>
+	@if?CheckReqParm?CREATEEXIT=@ @else@ @MUDGrinder?CREATEEXIT@ @endif@
 	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/editexitform.cmvp?@RequestParametersEncoded@" NAME=MAP>
 	<FRAME NORESIZE FRAMEBORDER=NO FRAMESPACING=0 SCROLLING=AUTO SRC="/grinder/canmenu.cmvp?@RequestParametersEncoded@" NAME=MENU>
 </FRAMESET>

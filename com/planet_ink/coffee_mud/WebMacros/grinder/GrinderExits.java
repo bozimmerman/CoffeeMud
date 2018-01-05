@@ -262,4 +262,23 @@ public class GrinderExits
 		}
 		return "";
 	}
+	
+	public static String createExitForRoom(Room R, int dir)
+	{
+		synchronized(("SYNC"+R.roomID()).intern())
+		{
+			R=CMLib.map().getRoom(R);
+			R.clearSky();
+			if(R instanceof GridLocale)
+				((GridLocale)R).clearGrid(null);
+
+			if(R.getRawExit(dir)==null)
+				R.setRawExit(dir,CMClass.getExit("StdOpenDoorway"));
+
+			CMLib.database().DBUpdateExits(R);
+
+			R.getArea().fillInAreaRoom(R);
+		}
+		return "";
+	}
 }

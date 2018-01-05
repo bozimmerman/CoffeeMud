@@ -32,6 +32,10 @@
 		{
 			Clicked('edxmenu.cmvp',dir,room,room2);
 		}
+		function CNEX(dir,room,room2)
+		{
+			Clicked('crxmenu.cmvp',dir,room,room2);
+		}
 		function Clicked(action,link,room,linksto)
 		{
 			document.SELECTAREA.OLDROOM.value=document.SELECTAREA.ROOM.value;
