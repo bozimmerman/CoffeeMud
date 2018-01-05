@@ -170,6 +170,22 @@ public class Spell_PurgeInvisibility extends Spell
 							else
 								beneficialAffect(mob,M,asLevel,0);
 						}
+						for(Enumeration<Item> i=M.items();i.hasMoreElements();)
+						{
+							final Item I=i.nextElement();
+							if(I!=null)
+							{
+								List<Ability> list2=returnOffensiveAffects(I);
+								for(Ability A : list2)
+								{
+									if(A.canBeUninvoked()
+									&&((A.invoker()==null)||(mob.phyStats().level() >= A.adjustedLevel(invoker(), 0))))
+										A.unInvoke();
+									else
+										beneficialAffect(mob,I,asLevel,0);
+								}
+							}
+						}
 					}
 				}
 				for(Enumeration<Item> i=R.items();i.hasMoreElements();)
