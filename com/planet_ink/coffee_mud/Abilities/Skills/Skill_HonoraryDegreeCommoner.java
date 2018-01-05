@@ -138,7 +138,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 			if(P instanceof MOB)
 			{
 				final MOB mob=(MOB)P;
-				if(mob.numAbilities()!=0)//BZ:TODO:RESTORE:numSkills)
+				if(mob.numAbilities()!=numSkills)
 				{
 					numSkills = mob.numAbilities();
 					this.myClasses.clear();
