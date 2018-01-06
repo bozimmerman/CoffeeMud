@@ -705,6 +705,41 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		return rate;
 	}
 
+	protected boolean isLotTooLarge(ShopKeeper shop, Environmental product)
+	{
+		final double number = this.getProductCount(product);
+		if(number <= 1.0)
+			return false;
+		final double[] rates=shop.finalDevalueRate();
+		if(rates == null)
+			return false;
+		double rate=(product instanceof RawMaterial)?rates[1]:rates[0];
+		if(rate<=0.0)
+			return false;
+		int baseNum=shop.getShop().numberInStock(product);
+		int num = baseNum + (int)Math.round(Math.floor(number/2.0));
+		if(num<=0)
+			return false;
+		double baseRateAdj = rate * baseNum;
+		if(baseRateAdj >= .95)
+			return false;
+		double totalRateAdj = rate * num;
+		if(totalRateAdj >= .95)
+			return true;
+		return false;
+	}
+
+	protected double getProductCount(Environmental product)
+	{
+		double number=1.0;
+		if(product instanceof PackagedItems)
+			number=((PackagedItems)product).numberOfItemsInPackage();
+		else
+		if(product instanceof RawMaterial)
+			number = ((RawMaterial)product).basePhyStats().weight();
+		return number;
+	}
+	
 	@Override
 	public ShopKeeper.ShopPrice pawningPrice(MOB seller,
 											 MOB buyer,
@@ -712,19 +747,15 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 											 ShopKeeper shopKeeper, 
 											 CoffeeShop shop)
 	{
-		double number=1.0;
+		double number=getProductCount(product);
 		final ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
 		try
 		{
 			if(product instanceof PackagedItems)
-			{
-				number=((PackagedItems)product).numberOfItemsInPackage();
 				product=((PackagedItems)product).peekFirstItem();
-			}
 			else
 			if(product instanceof RawMaterial)
 			{
-				number = ((RawMaterial)product).basePhyStats().weight();
 				product = (Environmental)product.copyOf();
 				((RawMaterial) product).basePhyStats().setWeight(1);
 				((RawMaterial) product).phyStats().setWeight(1);
@@ -851,7 +882,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			final double yourValue=pawningPrice(seller,buyer,product,shop, shop.getShop()).absoluteGoldPrice;
 			if(yourValue<2)
 			{
-				CMLib.commands().postSay(seller,buyer,L("I'm not interested."),true,false);
+				if(!isLotTooLarge(shop, product))
+					CMLib.commands().postSay(seller,buyer,L("I'm not interested."),true,false);
+				else
+					CMLib.commands().postSay(seller,buyer,L("I'm not interested in the whole lot, but maybe a smaller count..."),true,false);
 				return false;
 			}
 			if((product instanceof Physical)&&CMLib.flags().isEnspelled((Physical)product) || CMLib.flags().isOnFire((Physical)product))
