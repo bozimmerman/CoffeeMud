@@ -206,7 +206,7 @@ public class ListCmd extends StdCommand
 			thisThang=r.nextElement();
 			thisOne=thisThang.roomID();
 			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
-				lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",COL_LEN1)+": "+CMStrings.limit(thisThang.displayText(),COL_LEN2)+"\n\r");
+				lines.append(CMStrings.padRightPreserve("^N^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",COL_LEN1)+": "+CMStrings.limit(thisThang.displayText(),COL_LEN2)+"^N^.\n\r");
 		}
 		lines.append("\n\r");
 		return lines;
@@ -275,7 +275,7 @@ public class ListCmd extends StdCommand
 			{
 				thisOne=thisThang.roomID();
 				if((thisOne.length()>0)&&((owner==null)||(t.getOwnerName().equalsIgnoreCase(owner))))
-					lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+CMStrings.limit(thisThang.displayText(),23)+CMStrings.limit(" ("+t.getOwnerName()+", $"+t.getPrice()+")",20)+"\n\r");
+					lines.append(CMStrings.padRightPreserve("^N^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+CMStrings.limit(thisThang.displayText(),23)+CMStrings.limit(" ^.^N("+t.getOwnerName()+", $"+t.getPrice()+")",20)+"\n\r");
 			}
 		}
 		lines.append("\n\r");
@@ -468,7 +468,7 @@ public class ListCmd extends StdCommand
 						{
 							lines.append("^!"+CMStrings.padRight("*",17)+"^?| ");
 							lines.append(R.displayText(mob));
-							lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+							lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 							lines.append("\n\r");
 						}
 					}
@@ -484,7 +484,7 @@ public class ListCmd extends StdCommand
 								||(CMLib.english().containsString(E.viewableText(mob,R).toString(),rest))))
 							{
 								lines.append("^!"+CMStrings.padRight(CMLib.directions().getDirectionName(d),17)+"^N| ");
-								lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+								lines.append("^N^. (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 								lines.append("\n\r");
 							}
 						}
@@ -523,7 +523,7 @@ public class ListCmd extends StdCommand
 								{
 									lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
 									lines.append(R.displayText(mob));
-									lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+									lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 									lines.append("\n\r");
 								}
 							}
@@ -534,7 +534,7 @@ public class ListCmd extends StdCommand
 								{
 									lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
 									lines.append(R.displayText(mob));
-									lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+									lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 									lines.append("\n\r");
 								}
 							}
@@ -546,7 +546,7 @@ public class ListCmd extends StdCommand
 							{
 								lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
 								lines.append(R.displayText(mob));
-								lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+								lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 								lines.append("\n\r");
 							}
 						}
@@ -564,7 +564,7 @@ public class ListCmd extends StdCommand
 									{
 										lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),17)+"^N| ");
 										lines.append(R.displayText(mob));
-										lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+										lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 										lines.append("\n\r");
 									}
 								}
@@ -575,7 +575,7 @@ public class ListCmd extends StdCommand
 									{
 										lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),17)+"^N| ");
 										lines.append(R.displayText(mob));
-										lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+										lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 										lines.append("\n\r");
 									}
 								}
@@ -587,7 +587,7 @@ public class ListCmd extends StdCommand
 								{
 									lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),17)+"^N| ");
 									lines.append(R.displayText(mob));
-									lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+									lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 									lines.append("\n\r");
 								}
 							}
@@ -828,8 +828,31 @@ public class ListCmd extends StdCommand
 		{
 			if (tArray[i] != null)
 			{
-				if((ignoreZeroTickThreads)&&(!tArray[i].isAlive()))
-					continue;
+				if(ignoreZeroTickThreads)
+				{
+					final java.lang.StackTraceElement[] s=tArray[i].getStackTrace();
+					boolean isAlive=tArray[i].isAlive();
+					if(isAlive)
+					{
+						for (final StackTraceElement element : s)
+						{
+							if(element.getMethodName().equalsIgnoreCase("sleep")
+							&&(element.getClassName().equalsIgnoreCase("java.lang.Thread")))
+								isAlive=false;
+							else
+							if(element.getMethodName().equalsIgnoreCase("park")
+							&&(element.getClassName().equalsIgnoreCase("sun.misc.Unsafe")))
+								isAlive=false;
+							else
+							if(element.getMethodName().equalsIgnoreCase("wait")
+							&&(element.getClassName().equalsIgnoreCase("java.lang.Object")))
+								isAlive=false;
+							break;
+						}
+					}
+					if(!isAlive)
+						continue;
+				}
 				lines.append(tArray[i].isAlive()? "  ok   " : " BAD!  ");
 				lines.append(CMStrings.padRight(tArray[i].getName(),20)+": ");
 				final String summary;
@@ -5045,7 +5068,9 @@ public class ListCmd extends StdCommand
 			s.println(listThread(mob.session(), mob, rest).toString());
 			break;
 		case THREADS:
-			s.println(listThreads(mob.session(), mob, CMParms.containsIgnoreCase(commands, "SHORT"), CMParms.containsIgnoreCase(commands, "EXTEND")).toString());
+			s.println(listThreads(mob.session(), mob, 
+					CMParms.containsIgnoreCase(commands, "SHORT")||CMParms.containsIgnoreCase(commands, "ACTIVE"), 
+					CMParms.containsIgnoreCase(commands, "EXTEND")).toString());
 			break;
 		case RESOURCES:
 			s.println(listResources(mob, CMParms.combine(commands, 1)));
