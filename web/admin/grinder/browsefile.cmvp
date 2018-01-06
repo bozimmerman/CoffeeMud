@@ -37,11 +37,11 @@
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=NEW VALUE="">
 <P ALIGN=RIGHT><A href="javascript:openUp('SCRIPTABLE');"><FONT COLOR=PINK><I>scriptable help</I></FONT></A></P>
-<FONT COLOR=YELLOW>File: <B>@RequestParameter?PATH@/
+<FONT COLOR=YELLOW>File: <B>
 @if?!CheckReqParm?FILE=@
-	@RequestParameter?FILE@<INPUT TYPE=HIDDEN NAME=FILE VALUE="@RequestParameter?FILE@">
+	@RequestParameter?PATH@/@RequestParameter?FILE@<INPUT TYPE=HIDDEN NAME=FILE VALUE="@RequestParameter?FILE@">
 @else@
-	<INPUT TYPE=TEXT SIZE=30 MAXLENGTH=50 NAME=FILE VALUE="new.script">
+	@RequestParameter?PATH@/<INPUT TYPE=TEXT SIZE=30 MAXLENGTH=50 NAME=FILE VALUE="new.script">
 @endif@
 </B></FONT><BR>
 @if?!CheckReqParm?RAWTEXT=@
