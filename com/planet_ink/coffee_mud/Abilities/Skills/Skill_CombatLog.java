@@ -502,7 +502,7 @@ public class Skill_CombatLog extends StdSkill
 			}
 			else
 			{
-				mob.tell(L("'@x1' is an unknown command while logging.  Try STOP, REPORT, or WRITE <target>."));
+				mob.tell(L("'@x1' is an unknown command while logging.  Try STOP, REPORT, or WRITE <target>.",cmd));
 				return false;
 			}
 		}
