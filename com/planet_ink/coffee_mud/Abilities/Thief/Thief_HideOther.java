@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_HideOther extends ThiefSkill
 {
 	@Override
@@ -212,7 +211,7 @@ public class Thief_HideOther extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		final MOB highestMOB=getHighestLevelMOB(mob,new XVector(target));
+		final MOB highestMOB=getHighestLevelMOB(mob,new XVector<MOB>(target));
 		final int levelDiff=(mob.phyStats().level()+(2*getXLEVELLevel(mob)))-getMOBLevel(highestMOB);
 
 		final String str=L("You carefully hide <T-NAMESELF> and direct <T-HIM-HER> to hold still.");

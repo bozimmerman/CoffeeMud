@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Skill_JailKey extends StdSkill
 {
 	@Override
@@ -122,7 +121,7 @@ public class Skill_JailKey extends StdSkill
 				if(B==null)
 					unlockThis=null;
 				else
-				if(!B.isJailRoom(legalA,new XVector(mob.location())))
+				if(!B.isJailRoom(legalA,new XVector<Room>(mob.location())))
 					unlockThis=null;
 			}
 		}

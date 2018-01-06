@@ -32,17 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class BribeGateGuard extends StdBehavior
 {
 	protected Exit e;
 	protected int dir = -1;
 	protected int tickTock = 0;
 	protected Vector<MOB> paidPlayers = new Vector<MOB>();
-	protected Hashtable<String,Boolean> toldAlready = new Hashtable();
+	protected Hashtable<String,Boolean> toldAlready = new Hashtable<String,Boolean>();
 	protected static boolean debug = false; // debuggin
 	protected static boolean surviveReboot=false; // survive reboot
-	protected static Hashtable notTheJournal=new Hashtable();
+	protected static Map<String,Map<String,Double>> notTheJournal=new Hashtable<String,Map<String,Double>>();
 
 	@Override
 	public String ID()
@@ -175,10 +174,10 @@ public class BribeGateGuard extends StdBehavior
 		}
 		else
 		{
-			Hashtable H=(Hashtable)notTheJournal.get(gates());
+			Map<String,Double> H=notTheJournal.get(gates());
 			if(H==null)
 			{
-				H=new Hashtable();
+				H=new Hashtable<String,Double>();
 				notTheJournal.put(gates(),H);
 			}
 			Double D=(Double)H.get(mob.Name());
@@ -233,7 +232,7 @@ public class BribeGateGuard extends StdBehavior
 		}
 		else
 		{
-			final Hashtable H=(Hashtable)notTheJournal.get(gates());
+			final Map<String,Double> H=notTheJournal.get(gates());
 			if(H==null)
 				return;
 			final Double D=(Double)H.get(mob.Name());
@@ -253,10 +252,10 @@ public class BribeGateGuard extends StdBehavior
 		}
 		else
 		{
-			Hashtable H=(Hashtable)notTheJournal.get(gates());
+			Map<String,Double> H=notTheJournal.get(gates());
 			if(H==null)
 			{
-				H=new Hashtable();
+				H=new Hashtable<String,Double>();
 				notTheJournal.put(gates(),H);
 			}
 			final Double D=(Double)H.get(mob.Name());

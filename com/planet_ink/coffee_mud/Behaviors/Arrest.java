@@ -37,7 +37,7 @@ import java.io.ByteArrayOutputStream;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Arrest extends StdBehavior implements LegalBehavior
 {
 	@Override
@@ -525,7 +525,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(lawName.equalsIgnoreCase("laws.ini"))
 			return super.externalFiles();
 		if(new CMFile(Resources.makeFileResourceName(lawName),null).exists())
-			return new XVector(lawName);
+			return new XVector<String>(lawName);
 		return super.externalFiles();
 	}
 

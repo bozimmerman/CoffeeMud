@@ -1246,7 +1246,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return E.name()+"."+number;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Environmental parseShopkeeper(MOB mob, List<String> commands, String error)
 	{
@@ -1291,7 +1290,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				commands.remove(commands.size()-1);
 			else
 			{
-				CMLib.commands().postCommandFail(mob,new XVector(commands),L("You don't see anyone called '@x1' here buying or selling.",commands.get(commands.size()-1)));
+				CMLib.commands().postCommandFail(mob,new XVector<String>(commands),
+						L("You don't see anyone called '@x1' here buying or selling.",commands.get(commands.size()-1)));
 				return null;
 			}
 			return shopkeeper;

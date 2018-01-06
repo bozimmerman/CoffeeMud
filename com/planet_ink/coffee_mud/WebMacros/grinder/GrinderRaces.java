@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class GrinderRaces
 {
 	public String name()
@@ -152,7 +151,7 @@ public class GrinderRaces
 				{
 					I2=RoomData.getItemFromAnywhere(items,MATCHING);
 					if(I2!=null)
-						RoomData.contributeItems(new XVector(I2));
+						RoomData.contributeItems(new XVector<Item>(I2));
 				}
 				if(I2!=null)
 					classes.addElement(I2);
@@ -403,7 +402,7 @@ public class GrinderRaces
 			R.setStat("GETOFTID"+l,((Environmental)V.get(l)).ID());
 			R.setStat("GETOFTPARM"+l,((Environmental)V.get(l)).text());
 		}
-		V=itemList(new XVector(oldR.myNaturalWeapon()),'W',httpReq,true);
+		V=itemList(new XVector<Item>(oldR.myNaturalWeapon()),'W',httpReq,true);
 		if(V.size()==0)
 			R.setStat("WEAPONCLASS","StdWeapon");
 		else

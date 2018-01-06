@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_Brainwash extends Spell
 {
 
@@ -160,7 +159,7 @@ public class Spell_Brainwash extends Spell
 				return false;
 			}
 			message=CMParms.combine(commands,1);
-			commands=new XVector(commands.get(0));
+			commands=new XVector<String>(commands.get(0));
 		}
 		else
 		if(text().length()>0)

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class FileNext extends StdWebMacro
 {
 	@Override
@@ -83,7 +82,7 @@ public class FileNext extends StdWebMacro
 			directory=new CMFile(path,M);
 			httpReq.getRequestObjects().put(fileKey, directory);
 		}
-		final XVector fileList=new XVector();
+		final XVector<String> fileList=new XVector<String>();
 		if((directory.canRead())&&(directory.isDirectory()))
 		{
 			httpReq.addFakeUrlParameter("PATH",directory.getVFSPathAndName());

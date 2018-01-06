@@ -5483,7 +5483,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(arg2.length()==0)
 						returnable=((Rideable)E).numRiders()==0;
 					else
-						returnable=CMLib.english().fetchEnvironmental(new XVector(((Rideable)E).riders()), arg2, false)!=null;
+						returnable=CMLib.english().fetchEnvironmental(new XVector<Rider>(((Rideable)E).riders()), arg2, false)!=null;
 				}
 				if(E instanceof Container)
 				{
@@ -11996,7 +11996,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=CMath.s_int(t[1]);
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								final List<ScriptableResponse> V=new XVector(que);
+								final List<ScriptableResponse> V=new XVector<ScriptableResponse>(que);
 								ScriptableResponse SB=null;
 								String roomID=null;
 								if(msg.target()!=null)
@@ -12030,7 +12030,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=CMath.s_int(t[1]);
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								final List<ScriptableResponse> V=new XVector(que);
+								final List<ScriptableResponse> V=new XVector<ScriptableResponse>(que);
 								ScriptableResponse SB=null;
 								String roomID=null;
 								if(msg.target()!=null)

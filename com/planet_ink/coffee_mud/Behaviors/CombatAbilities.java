@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class CombatAbilities extends StdBehavior
 {
 	@Override
@@ -575,12 +575,12 @@ public class CombatAbilities extends StdBehavior
 			}
 			if(target==null)
 				return null;
-			boolean skillUsed=tryA.invoke(mob,new XVector(target.name()),null,false,0);
+			boolean skillUsed=tryA.invoke(mob,new XVector<String>(target.name()),null,false,0);
 			if((combatMode==COMBAT_ONLYALWAYS)&&(!skillUsed))
 			{
 				int retries=0;
 				while((++retries<10)&&(!skillUsed))
-					skillUsed=tryA.invoke(mob,new XVector(target.name()),null,false,0);
+					skillUsed=tryA.invoke(mob,new XVector<String>(target.name()),null,false,0);
 			}
 			if(skillUsed)
 			{

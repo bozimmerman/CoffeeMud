@@ -1071,7 +1071,7 @@ public class RoomData extends StdWebMacro
 		final Pair<String,String>[] activePairs = makePairs(stuff,new Vector<Pair<String,String>>());
 		final List<Pair<String,String>> submittedRoomPairsList = toPairs(mergeParams);
 		final List<Pair<String,String>> commonRoomsPairsList=Arrays.asList(setPairs);
-		final List<Pair<String,String>> currentRoomPairsList=new XVector(Arrays.asList(activePairs));
+		final List<Pair<String,String>> currentRoomPairsList=new XVector<Pair<String,String>>(Arrays.asList(activePairs));
 		RoomData.mergeRoomField(currentRoomPairsList,commonRoomsPairsList,submittedRoomPairsList,new String[]{"AFFECT","ADATA"});
 		RoomData.mergeRoomField(currentRoomPairsList,commonRoomsPairsList,submittedRoomPairsList,new String[]{"BEHAV","BDATA"});
 		RoomData.mergeRoomField(currentRoomPairsList,commonRoomsPairsList,submittedRoomPairsList,new String[]{"MOB"});

@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Fighter_Gouge extends MonkSkill
 {
 	boolean doneTicking=false;
@@ -220,14 +219,14 @@ public class Fighter_Gouge extends MonkSkill
 				}
 				if(gone!=null)
 				{
-					Ability injuryA=CMClass.getAbility("Injury");
+					LimbDamage injuryA=(LimbDamage)CMClass.getAbility("Injury");
 					if(injuryA!=null)
 					{
 						injuryA.setMiscText(mob.Name()+"/"+gone);
 						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_DAMAGE,L("<S-NAME> <DAMAGE> <T-NAME>."));
 						msg2.setValue(target.maxState().getHitPoints()/(20-getXLEVELLevel(mob)));
-						injuryA.invoke(mob,new XVector(msg2),target,true,0);
-						injuryA=target.fetchEffect("Injury");
+						injuryA.invoke(mob,target,true,0);
+						injuryA=(LimbDamage)target.fetchEffect("Injury");
 						if( injuryA != null )
 						{
 							injuryA.setMiscText(mob.Name()+"/"+gone);

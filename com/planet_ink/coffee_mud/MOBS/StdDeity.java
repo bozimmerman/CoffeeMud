@@ -124,7 +124,7 @@ public class StdDeity extends StdMOB implements Deity
 			clericCurseTriggers=new XVector<DeityTrigger>(((StdDeity)E).clericCurseTriggers);
 			blessings=new XVector<DeityPower>(((StdDeity)E).blessings);
 			curses=new XVector<DeityPower>(((StdDeity)E).curses);
-			powers=new XVector(((StdDeity)E).powers);
+			powers=new XVector<Ability>(((StdDeity)E).powers);
 			trigBlessingParts=new XHashtable<String,boolean[]>(((StdDeity)E).trigBlessingParts);
 			trigBlessingTimes=new XHashtable<String,Long>(((StdDeity)E).trigBlessingTimes);
 			trigPowerParts=new XHashtable<String,boolean[]>(((StdDeity)E).trigPowerParts);

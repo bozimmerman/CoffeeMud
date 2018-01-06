@@ -722,7 +722,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			List<Integer> rscs=myResources();
 			if(rscs.size()==0)
-				rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+				rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 			material=rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue();
 		}
 		while(((building==null)||(building.name().endsWith(" bundle")))&&(((++tries)<100)))
@@ -793,7 +793,7 @@ public class CraftingSkill extends GatheringSkill
 			String recipeName = CMParms.combine(commands);
 			List<Integer> rscs=myResources();
 			if(rscs.size()==0)
-				rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+				rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 			final int material=RawMaterial.CODES.MOST_FREQUENT(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK);
 			ItemKeyPair pair = craftItem(mob,recipe,material,false);
 			if(pair == null)
@@ -817,7 +817,7 @@ public class CraftingSkill extends GatheringSkill
 	{
 		List<Integer> rscs=myResources();
 		if(rscs.size()==0)
-			rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+			rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		final int material=rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue();
 		return craftItem(recipeName,material,false, false);
 	}
@@ -828,7 +828,7 @@ public class CraftingSkill extends GatheringSkill
 		final List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
 		List<ItemKeyPair> pairs=null;
 		if(rscs.size()==0)
-			rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+			rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		for(int r=0;r<rscs.size();r++)
 		{
 			pairs=craftAllItemSets(rscs.get(r).intValue(), forceLevels);

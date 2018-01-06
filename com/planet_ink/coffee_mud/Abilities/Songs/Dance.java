@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Dance extends StdAbility
 {
 	@Override
@@ -257,7 +256,7 @@ public class Dance extends StdAbility
 		}
 		final int depth=super.getXMAXRANGELevel(invoker()) / 2; // decreased because fireball
 		if(depth==0)
-			return new XVector(invoker().location());
+			return new XVector<Room>(invoker().location());
 		final Vector<Room> rooms=new Vector<Room>();
 		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;

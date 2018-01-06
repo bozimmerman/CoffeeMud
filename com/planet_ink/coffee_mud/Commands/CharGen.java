@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class CharGen extends StdCommand
 {
 	public CharGen()
@@ -553,8 +553,8 @@ public class CharGen extends StdCommand
 						final XVector<Double> medIsHitPct=new XVector<Double>();
 						final XVector<Integer> medPhysTaken=new XVector<Integer>();
 						final XVector<Integer> medLossIters=new XVector<Integer>();
-						final XVector<Double> medPlayerDamPct = new XVector();
-						final XVector<Double> medPlayerManaPct = new XVector();
+						final XVector<Double> medPlayerDamPct = new XVector<Double>();
+						final XVector<Double> medPlayerManaPct = new XVector<Double>();
 
 						int H1=0;
 						int H2=0;

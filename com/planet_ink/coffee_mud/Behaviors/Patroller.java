@@ -35,7 +35,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Patroller extends ActiveTicker
 {
 	@Override
@@ -382,7 +381,7 @@ public class Patroller extends ActiveTicker
 							flags.plus(TrackingLibrary.TrackingFlag.NOAIR);
 						if(!waterOk)
 							flags.plus(TrackingLibrary.TrackingFlag.NOWATER);
-						correction=CMLib.tracking().findTrailToAnyRoom(thisRoom,new XVector(R),flags,diameter);
+						correction=CMLib.tracking().findTrailToAnyRoom(thisRoom,new XVector<Room>(R),flags,diameter);
 						tickStatus=Tickable.STATUS_MISC+9;
 						if(correction!=null)
 							direction=CMLib.tracking().trackNextDirectionFromHere(correction,thisRoom,ticking instanceof Item);

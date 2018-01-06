@@ -2167,7 +2167,7 @@ public class CMClass extends ClassLoader
 			x=requestedPathList.indexOf(';');
 		}
 		loadObjectListToObj(v,defaultPath,requestedPathList,ancestor);
-		return new XVector(new TreeSet(v));
+		return new XVector<Object>(new TreeSet<Object>(v));
 	}
 
 	/**

@@ -35,7 +35,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class GenAbility extends StdAbility
 {
 	// data should be stored in a common instance object .. something common to all genability of same id,
@@ -700,7 +699,7 @@ public class GenAbility extends StdAbility
 								if(P!=null)
 								{
 									final Set<Ability> oldEffects = getEffectsList(finalTarget);
-									P.invoke(mob,new XVector(afterCast),finalTarget,true,asLevel);
+									P.invoke(mob,new XVector<String>(afterCast),finalTarget,true,asLevel);
 									postEffects.addAll(getEffectsDiff(finalTarget, oldEffects));
 								}
 							}

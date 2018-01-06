@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Auction extends Channel implements Tickable
 {
 	public Auction(){}
@@ -394,7 +393,7 @@ public class Auction extends Channel implements Tickable
 				return false;
 			}
 			final String amount=CMParms.combine(commands,0);
-			doLiveAuction(mob,new XVector(amount),null);
+			doLiveAuction(mob,new XVector<String>(amount),null);
 			return true;
 		}
 		else

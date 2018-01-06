@@ -34,8 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-@SuppressWarnings({"unchecked","rawtypes"})
 public class StdLanguage extends StdAbility implements Language
 {
 	@Override
@@ -154,7 +152,7 @@ public class StdLanguage extends StdAbility implements Language
 	@Override
 	public List<String> languagesSupported()
 	{
-		return new XVector(ID());
+		return new XVector<String>(ID());
 	}
 
 	@Override

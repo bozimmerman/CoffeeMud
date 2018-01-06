@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Squatting extends ThiefSkill
 {
 	@Override
@@ -173,7 +172,7 @@ public class Thief_Squatting extends ThiefSkill
 				mob.tell(L("Your squat has succeeded.  This property now belongs to you."));
 				title.setOwnerName(mob.Name());
 				title.updateTitle();
-				title.updateLot(new XVector(mob.name()));
+				title.updateLot(new XVector<String>(mob.name()));
 			}
 		}
 		failed=false;

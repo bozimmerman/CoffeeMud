@@ -33,7 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 {
 	@Override
@@ -84,10 +84,10 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 		return null;
 	}
 
-	private Enumeration determineRooms(Environmental forMe)
+	private Enumeration<Room> determineRooms(Environmental forMe)
 	{
 		if(forMe instanceof Room)
-			return new XVector(forMe).elements();
+			return new XVector<Room>((Room)forMe).elements();
 		else
 		if(forMe instanceof Area)
 			return ((Area)forMe).getMetroMap();

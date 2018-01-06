@@ -1753,11 +1753,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return -1;
 				}
 				
-				@SuppressWarnings({ "unchecked", "rawtypes" })
 				@Override
 				public void createChoices()
 				{
-					final XVector V  = new XVector();
+					final XVector<Environmental> V  = new XVector<Environmental>();
 					V.addAll(CMClass.basicItems());
 					V.addAll(CMClass.weapons());
 					V.addAll(CMClass.tech());

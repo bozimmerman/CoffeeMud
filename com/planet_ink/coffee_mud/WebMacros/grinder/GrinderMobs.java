@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class GrinderMobs
 {
 	public enum MOBDataField
@@ -867,7 +867,7 @@ public class GrinderMobs
 				&&(httpReq.isUrlParameter("SHP1")))
 				{
 					final ShopKeeper SK=(ShopKeeper)M;
-					final XVector inventory=new XVector(SK.getShop().getStoreInventory());
+					final XVector<Environmental> inventory=new XVector<Environmental>(SK.getShop().getStoreInventory());
 					SK.getShop().emptyAllShelves();
 
 					int num=1;
@@ -997,7 +997,7 @@ public class GrinderMobs
 				}
 				else
 				{
-					RoomData.contributeMOBs(new XVector(M));
+					RoomData.contributeMOBs(new XVector<MOB>(M));
 					final MOB M2=RoomData.getReferenceMOB(M);
 					newMobCode=RoomData.getMOBCode(RoomData.getMOBCache(),M2);
 				}

@@ -48,7 +48,7 @@ import java.nio.charset.Charset;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class DefaultSession implements Session
 {
 	protected static final int		SOTIMEOUT		= 300;
@@ -870,7 +870,7 @@ public class DefaultSession implements Session
 	@Override
 	public List<String> getLastMsgs()
 	{
-		return new XVector(prevMsgs);
+		return new XVector<String>(prevMsgs);
 	}
 
 	@Override
@@ -3065,7 +3065,7 @@ public class DefaultSession implements Session
 						}
 						for(final String stuff : all_stuff)
 						{
-							final List THIS_CMDS=new XVector(CMDS);
+							final List<String> THIS_CMDS=new XVector<String>(CMDS);
 							ALL_CMDS.add(THIS_CMDS);
 							final List<String> preCommands=CMParms.parse(stuff);
 							for(int v=preCommands.size()-1;v>=0;v--)

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Spells  extends Skills
 {
 	public Spells()
@@ -59,7 +58,7 @@ public class Spells  extends Skills
 		final String[] domainName=new String[1];
 		domainName[0]="";
 		level[0]=-1;
-		parseDomainInfo(mob,commands,new XVector(Integer.valueOf(Ability.ACODE_SPELL)),level,domain,domainName);
+		parseDomainInfo(mob,commands,new XVector<Integer>(Integer.valueOf(Ability.ACODE_SPELL)),level,domain,domainName);
 		final StringBuffer msg=new StringBuffer("");
 		msg.append(L("\n\r^HYour @x1spells:^? @x2",domainName[0].replace('_',' '),getAbilities(mob,mob,Ability.ACODE_SPELL,domain[0],true,level[0]).toString()));
 		if(!mob.isMonster())

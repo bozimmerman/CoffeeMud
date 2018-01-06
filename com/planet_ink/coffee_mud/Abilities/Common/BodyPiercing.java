@@ -33,7 +33,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class BodyPiercing extends CommonSkill
 {
 	@Override
@@ -153,7 +152,7 @@ public class BodyPiercing extends CommonSkill
 			}
 		}
 
-		final MOB target=super.getTarget(mob,new XVector(name),givenTarget);
+		final MOB target=super.getTarget(mob,new XVector<String>(name),givenTarget);
 		if(target==null)
 			return false;
 		if((target.isMonster())

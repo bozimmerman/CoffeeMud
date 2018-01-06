@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Druid_ShapeShift extends StdAbility
 {
 	@Override
@@ -496,7 +495,7 @@ public class Druid_ShapeShift extends StdAbility
 						for(int i1=raceLevel;i1>=0;i1--)
 						{
 							if(CMLib.english().containsString(shapes[i1][A.myRaceCode],parm))
-								return A.invoke(mob,new XVector(parm),givenTarget,auto,asLevel);
+								return A.invoke(mob,new XVector<String>(parm),givenTarget,auto,asLevel);
 						}
 					}
 				}

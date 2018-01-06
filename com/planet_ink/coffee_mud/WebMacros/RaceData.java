@@ -286,7 +286,7 @@ public class RaceData extends StdWebMacro
 				{
 					I2=RoomData.getItemFromAnywhere(items,MATCHING);
 					if(I2!=null)
-						RoomData.contributeItems(new XVector(I2));
+						RoomData.contributeItems(new XVector<Item>(I2));
 				}
 				if(I2!=null)
 					classes.addElement(I2);

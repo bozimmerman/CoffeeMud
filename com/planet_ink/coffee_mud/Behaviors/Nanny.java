@@ -322,7 +322,7 @@ public class Nanny extends StdBehavior
 		{
 			if(isDropOffable(msg.tool()))
 			{
-				final String pronoun=this.getPronoun(new XVector(msg.tool()));
+				final String pronoun=this.getPronoun(new XVector<PhysicalAgent>((PhysicalAgent)msg.tool()));
 				msg.source().tell(msg.source(),host,msg.tool(),L("<T-NAME> won't accept <O-NAME>.  You should probably leave your @x1 here.",pronoun));
 				return false;
 			}
