@@ -77,17 +77,23 @@ public class Package extends StdCommand
 		final Vector<Item> V=new Vector<Item>();
 		int addendum=1;
 		String addendumStr="";
+		boolean packagingPackagesProblem=false;
 		do
 		{
 			Environmental getThis=null;
 			getThis=mob.location().fetchFromRoomFavorItems(null,whatToGet+addendumStr);
 			if(getThis==null)
 				break;
-			if((getThis instanceof Item)
-			&&(CMLib.flags().canBeSeenBy(getThis,mob))
-			&&((!allFlag)||CMLib.flags().isGettable(((Item)getThis))||(getThis.displayText().length()>0))
-			&&(!V.contains(getThis)))
-				V.add((Item)getThis);
+			if(getThis instanceof PackagedItems)
+				packagingPackagesProblem=true;
+			else
+			{
+				if((getThis instanceof Item)
+				&&(CMLib.flags().canBeSeenBy(getThis,mob))
+				&&((!allFlag)||CMLib.flags().isGettable(((Item)getThis))||(getThis.displayText().length()>0))
+				&&(!V.contains(getThis)))
+					V.add((Item)getThis);
+			}
 			addendumStr="."+(++addendum);
 		}
 		while((allFlag)&&(addendum<=maxToGet))
@@ -95,7 +101,10 @@ public class Package extends StdCommand
 
 		if(V.size()==0)
 		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatName));
+			if(packagingPackagesProblem)
+				CMLib.commands().postCommandFail(mob,origCmds,L("You can't package up packages.",whatName));
+			else
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatName));
 			return false;
 		}
 
