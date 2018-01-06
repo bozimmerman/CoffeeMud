@@ -359,10 +359,40 @@ See guides/RandomAreas.html for information about documents of this type.
 </STRING>
 
 <STRING id="oceanfloor_path_prefix" select="any-1">
-    <STRING>sandy</STRING><STRING>silty</STRING><STRING>rocky</STRING><STRING>barren</STRING>
-    <STRING>lush</STRING><STRING>vast</STRING><STRING>creepy</STRING><STRING>overgrown</STRING>
-    <STRING>extensive</STRING><STRING>flourishing</STRING><STRING>thriving</STRING><STRING>desolate</STRING>
-    <STRING>empty</STRING><STRING>bouldered</STRING><STRING>errie</STRING><STRING>weird</STRING>
+    <STRING>sandy</STRING>
+    <STRING>silty</STRING>
+    <STRING>rocky</STRING>
+    <STRING>barren</STRING>
+    <STRING>lush</STRING>
+    <STRING>vast</STRING>
+    <STRING>creepy</STRING>
+    <STRING>overgrown</STRING>
+    <STRING>extensive</STRING>
+    <STRING>ever-changing</STRING>
+    <STRING>shifting</STRING>
+    <STRING>unstable</STRING>
+    <STRING>briny</STRING>
+    <STRING>calm</STRING>
+    <STRING>relaxing</STRING>
+    <STRING>immense</STRING>
+    <STRING>deep blue</STRING>
+    <STRING>crystal clear</STRING>
+    <STRING>majestic</STRING>
+    <STRING>never-ending</STRING>
+    <STRING>ominous</STRING>    
+    <STRING>flourishing</STRING>
+    <STRING>colorful</STRING>
+    <STRING>bright</STRING>
+    <STRING>glowing</STRING>
+    <STRING>thriving</STRING>
+    <STRING>desolate</STRING>
+    <STRING>empty</STRING>
+    <STRING>bouldered</STRING>
+    <STRING>eerie</STRING>
+    <STRING>weird</STRING>
+    <STRING>shimmering</STRING>
+    <STRING>flowing</STRING>
+    <STRING>forceful</STRING>
 </STRING>
 
 <STRING id="oceanfloor_nouns" select="any-1">
@@ -371,6 +401,8 @@ See guides/RandomAreas.html for information about documents of this type.
     <STRING>sea bottom</STRING>
     <STRING>sea floor</STRING>
     <STRING>coral reef</STRING>
+    <STRING>reef</STRING>
+    <STRING>ledge</STRING>
     <STRING>mid-ocean ridge</STRING>
     <STRING>abyssal plain</STRING>
     <STRING>continental shelf</STRING>
@@ -384,4 +416,7 @@ See guides/RandomAreas.html for information about documents of this type.
     <STRING>abyss</STRING>
     <STRING>rift valley</STRING>
     <STRING>whale fall</STRING>
+    <STRING>shallows</STRING>
+    <STRING>canyon</STRING>
+    <STRING>crevice</STRING>
 </STRING>
