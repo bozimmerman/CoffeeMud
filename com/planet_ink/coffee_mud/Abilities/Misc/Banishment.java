@@ -194,18 +194,97 @@ public class Banishment extends StdAbility
 	}
 	
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if((!(target instanceof Area))&&(commands.size()>0))
-			target=CMLib.map().findArea(CMParms.combine(commands));
-		if(target instanceof Area)
+		if((givenTarget instanceof Area)&&(auto))
 		{
-			synchronized(banishedFromAs)
+			Banishment B=(Banishment)mob.fetchEffect(ID());
+			if(B==null)
+				B=this;
+			synchronized(B.banishedFromAs)
 			{
-				this.banishedFromAs.add((Area)target);
+				B.banishedFromAs.add((Area)givenTarget);
+			}
+			if((B==this)||(B.affecting()!=mob))
+				this.startTickDown(mob, mob, 0);
+			return true;
+		}
+		if((commands.size()<2)&&(auto))
+		{
+			if(givenTarget instanceof MOB)
+			{
+				if(commands.size()==0)
+				{
+					commands.add(givenTarget.Name());
+					commands.add(mob.location().getArea().Name());
+				}
+				else
+					commands.add(0,givenTarget.Name());
+			}
+			else
+			{
+				if(commands.size()==0)
+				{
+					commands.add(mob.Name());
+					commands.add(mob.location().getArea().Name());
+				}
+				else
+					commands.add(0,mob.Name());
 			}
 		}
-		this.startTickDown(mob, target, 0);
+		if(commands.size()<2)
+		{
+			mob.tell(L("Banish whom from where?"));
+			return false;
+		}
+		
+		final MOB target = getTarget(mob, new XVector<String>(commands.get(0)), givenTarget);
+		if (target == null)
+			return false;
+		Area theArea=CMLib.map().findArea(CMParms.combine(commands,1));
+		boolean forever=false;
+		if((theArea == null)
+		&&(commands.size()>1)
+		&&(commands.get(commands.size()-1).equalsIgnoreCase("FOREVER")))
+		{
+			commands.remove(commands.size()-1);
+			forever=true;
+			theArea=CMLib.map().findArea(CMParms.combine(commands,1));
+		}
+		if(theArea == null)
+		{
+			mob.tell(L("You don't know of a place called '@x1'.",CMParms.combine(commands,1)));
+			return false;
+		}
+		if (!super.invoke(mob, commands, givenTarget, auto, asLevel))
+			return false;
+		final boolean success = proficiencyCheck(mob, 0, auto);
+		if (success)
+		{
+			if (mob.location().show(mob, target, this, CMMsg.TYP_GENERAL, auto ? null : L("<S-NAME> banish(s) <T-NAMESELF> from @x1.",theArea.Name())))
+			{
+				Banishment B=(Banishment)target.fetchEffect("Banishment");
+				if(forever)
+				{
+					if(B==null)
+					{
+						B=(Banishment)copyOf();
+						target.addNonUninvokableEffect(B);
+					}
+				}
+				else
+				{
+					B=(Banishment)this.beneficialAffect(mob, target, asLevel, 0);
+				}
+				synchronized(B.banishedFromAs)
+				{
+					this.banishedFromAs.clear();
+					this.banishedFromAs.add(theArea);
+				}
+			}
+		}
+		else if (!auto)
+			return beneficialVisualFizzle(mob, target, L("<S-NAME> attempt(s) to banish <T-NAMESELF>, but fail(s)!"));
 		return true;
 	}
 }
