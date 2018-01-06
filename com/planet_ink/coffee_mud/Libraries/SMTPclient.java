@@ -231,6 +231,11 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 								   String subject,
 								   String message)
 	{
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.SMTPCLIENT))
+		{
+			Log.debugOut("SMTPclient", "Message not sent: "+from+"/"+replyTo+"/"+to+"/"+to+"/"+subject+"/"+message);
+			return false;
+		}
 		try
 		{
 			SMTPclient SC=null;

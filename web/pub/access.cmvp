@@ -25,6 +25,12 @@
 			document.ACCESS.LASTPAGE.value='/access.cmvp';
 			Clicked('register.cmvp');
 		}
+		
+		function Forgot()
+		{
+			document.ACCESS.LASTPAGE.value='/access.cmvp';
+			Clicked('forgot.cmvp');
+		}
 	//-->
 	</SCRIPT>
 </head>
@@ -58,6 +64,10 @@
 			</FORM>
 		</TD></TR>
 		</TABLE>
+		@if?MudInfo?REALEMAILOK@
+		<BR><BR>
+		<a href="javascript:Forgot()"><FONT SIZE=-1 COLOR=BLUE>I forgot my account name or password.</FONT></A>
+		@endif@
 		</CENTER>
 		</FORM>
 	@else@

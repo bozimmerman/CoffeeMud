@@ -3511,6 +3511,78 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return NewCharNameCheckResult.CREATE_LIMIT_REACHED;
 		return NewCharNameCheckResult.OK;
 	}
+	
+	@Override
+	public boolean performSpamConnectionCheck(final String address)
+	{
+		int proceed=0;
+		if(CMSecurity.isBanned(address))
+			proceed=1;
+		int numAtThisAddress=0;
+		final long LastConnectionDelay=(5*60*1000);
+		boolean anyAtThisAddress=false;
+		final int maxAtThisAddress=6;
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONNSPAMBLOCK))
+		{
+			if(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, address))
+			{
+				if(CMSecurity.isIPBlocked(address))
+				{
+					proceed = 1;
+				}
+				else
+				{
+					@SuppressWarnings("unchecked")
+					List<Triad<String,Long,Integer>> accessed= (LinkedList<Triad<String,Long,Integer>>)Resources.staticInstance()._getResource("SYSTEM_IPACCESS_STATS");
+					if(accessed == null)
+					{
+						accessed= new LinkedList<Triad<String,Long,Integer>>();
+						Resources.staticInstance()._submitResource("SYSTEM_IPACCESS_STATS",accessed);
+					}
+					synchronized(accessed)
+					{
+						for(final Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
+						{
+							final Triad<String,Long,Integer> triad=i.next();
+							if((triad.second.longValue()+LastConnectionDelay)<System.currentTimeMillis())
+								i.remove();
+							else
+							if(triad.first.trim().equalsIgnoreCase(address))
+							{
+								anyAtThisAddress=true;
+								triad.second=Long.valueOf(System.currentTimeMillis());
+								numAtThisAddress=triad.third.intValue()+1;
+								triad.third=Integer.valueOf(numAtThisAddress);
+							}
+						}
+						if(!anyAtThisAddress)
+							accessed.add(new Triad<String,Long,Integer>(address,Long.valueOf(System.currentTimeMillis()),Integer.valueOf(1)));
+					}
+				}
+				@SuppressWarnings("unchecked")
+				Set<String> autoblocked= (Set<String>)Resources.staticInstance()._getResource("SYSTEM_IPACCESS_AUTOBLOCK");
+				if(autoblocked == null)
+				{
+					autoblocked= new TreeSet<String>();
+					Resources.staticInstance()._submitResource("SYSTEM_IPACCESS_AUTOBLOCK",autoblocked);
+				}
+				if(autoblocked.contains(address.toUpperCase()))
+				{
+					if(!anyAtThisAddress)
+						autoblocked.remove(address.toUpperCase());
+					else
+						proceed=2;
+				}
+				else
+				if(numAtThisAddress>=maxAtThisAddress)
+				{
+					autoblocked.add(address.toUpperCase());
+					proceed=2;
+				}
+			}
+		}
+		return proceed == 0;
+	}
 
 	@Override
 	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean skipAccountNameCheck)

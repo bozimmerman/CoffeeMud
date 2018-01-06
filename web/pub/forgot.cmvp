@@ -1,0 +1,87 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<link rel="coffeemud icon" href="images/coffeemud.ico" >
+	<!-- tell spiders to sod off -->
+	<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
+	<link rel="STYLESHEET" TYPE="TEXT/CSS" HREF="coffeemud.css">
+	<title>Forgotten Password</title>
+	<script language=JavaScript>
+	<!--
+		function Clicked(action)
+		{
+			document.ACCESS.action=action;
+			document.ACCESS.submit();
+		}
+		function Back()
+		{
+			Clicked('@RequestParameter?LASTPAGE@');
+		}
+	//-->
+	</SCRIPT>
+</head>
+
+<body BGCOLOR=WHITE onLoad="javascript:if(newloc)window.location=newloc;">
+	<CENTER>
+	<h2>Forgotten Password Page</H2>
+	<br>
+	<a href="/"><FONT COLOR=BLUE>Back to public pages</FONT></A><br>
+	<br>
+	<FORM  ACCEPT-CHARSET="UTF-8" NAME=LOGIN METHOD=POST ACTION=forgot.cmvp TARGET=_top>
+	<INPUT TYPE=HIDDEN NAME=LASTPAGE VALUE="@RequestParameter?LASTPAGE@">
+	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@RequestParameter?AUTH@">
+	<INPUT TYPE=HIDDEN NAME=ACTION VALUE="REGISTER">
+	@if?CheckReqParm?ACTION=REGISTER@
+	<FONT COLOR=RED SIZE=5><B>
+	<SCRIPT LANGUAGE=JavaScript>
+	<!--
+		var errorCode='@AccountCreate?FORGOT@';
+		if(errorCode=='')
+		{
+		    var lp='@RequestParameter?LASTPAGE@';
+		    var x=lp.indexOf('AUTH=');
+		    if(x<0) x=lp.indexOf('auth=');
+		    if(x>=0)
+		       lp=lp.substr(0,x)+'FAKE'+lp.substr(x);
+		    if(lp.indexOf('?')<0)
+		      lp=lp+'?';
+		    else
+		      lp=lp+'&';
+			var newloc=lp+'AUTH=@RequestParameter?AUTH@';
+			Clicked(newloc);
+		}
+		else
+		{
+			if(errorCode=='NO_EMAIL')
+				document.write('That email address was not in our records.');
+			else
+			if((errorCode=='NO_VERIFY')||(errorCode=='NO_VERIFYKEY')||(errorCode=='BAD_VERIFY'))
+				document.write('You need to enter the characters in the image.  Case is not sensitive.');
+			else
+				document.write(errorCode);
+		}
+	//-->
+	</SCRIPT>
+	</FONT></B><P>
+	@endif@
+	Please enter the email address associated with your @if?IsAccountSystem@account@else@character@endif@.<BR>
+	@if?MudInfo?HASHPASSWORD@
+		If we find the address in our system, an email will be sent with your login and a newly generated password.<P>
+	@else@
+		If we find the address in our system, an email will be sent with your login and password.<P>
+	@endif@
+	<TABLE WIDTH=400 BORDER=1>
+	<TR><TD WIDTH=100><FONT COLOR=BLACK>Email Address:</FONT></TD><TD><INPUT TYPE=TEXT SIZE=30 ID=EMAIL NAME=EMAIL VALUE="@RequestParameter?EMAIL@"></TD></TR>
+	<TR><TD><IMG SRC="/ImageVerificationImage?IMAGE"></TD>
+		<TD><INPUT TYPE=HIDDEN SIZE=15 NAME=IMGVERKEY VALUE="@ImageVerificationImage@"><INPUT TYPE=TEXT SIZE=15 ID=VERIFY NAME=VERIFY></TD>
+	</TR>
+	<TR><TD COLSPAN=2 ALIGN=CENTER>
+		<INPUT TYPE=SUBMIT NAME=LOGINBUTTON VALUE=Send Password>
+		<INPUT TYPE=BUTTON NAME=BACKBUTTON VALUE=Cancel ONCLICK="Back();">
+	</TD></TR>
+	</TABLE>
+	</CENTER>
+	</FORM>
+</body>
+</html>

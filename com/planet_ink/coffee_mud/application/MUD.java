@@ -83,7 +83,6 @@ public class MUD extends Thread implements MudHost
 	private static IMC2Driver			imc2server			= null;
 	private static List<WebServer>		webServers			= new Vector<WebServer>();
 	private static SMTPserver			smtpServerThread	= null;
-	private static List<String> 		autoblocked			= new Vector<String>();
 	private static List<DBConnector>	databases			= new Vector<DBConnector>();
 	private static List<CM1Server>		cm1Servers			= new Vector<CM1Server>();
 	private static final ServiceEngine	serviceEngine		= new ServiceEngine();
@@ -202,6 +201,13 @@ public class MUD extends Thread implements MudHost
 									if(!anyAtThisAddress)
 										accessed.add(new Triad<String,Long,Integer>(address,Long.valueOf(System.currentTimeMillis()),Integer.valueOf(1)));
 								}
+							}
+							@SuppressWarnings("unchecked")
+							Set<String> autoblocked= (Set<String>)Resources.staticInstance()._getResource("SYSTEM_IPACCESS_AUTOBLOCK");
+							if(autoblocked == null)
+							{
+								autoblocked= new TreeSet<String>();
+								Resources.staticInstance()._submitResource("SYSTEM_IPACCESS_AUTOBLOCK",autoblocked);
 							}
 							if(autoblocked.contains(address.toUpperCase()))
 							{
