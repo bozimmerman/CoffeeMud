@@ -301,9 +301,10 @@ public class GenRecipe extends GenReadable implements Recipe
 				if((max-num)>=recipes.size())
 				{
 					int startPos = this.recipeLines.length;
-					this.recipeLines = Arrays.copyOf(this.recipeLines, this.recipeLines.length + recipes.size());
+					String[] newRecipeLines = Arrays.copyOf(this.recipeLines, this.recipeLines.length + recipes.size());
 					for(int i=0;i<recipes.size();i++)
-						this.recipeLines[i+startPos]=recipes.get(i);
+						newRecipeLines[i+startPos]=recipes.get(i);
+					this.setRecipeCodeLines(newRecipeLines);
 				}
 			}
 			return;
