@@ -76,39 +76,67 @@ public class Banishment extends StdAbility
 		return Ability.ACODE_PROPERTY;
 	}
 
-	protected Area banishedFrom = null;
+	protected final List<Area> banishedFromAs = new LinkedList<Area>();
 
 	protected boolean badDestination(final MOB mob, final Room R)
 	{
-		final Area fromA=banishedFrom;
-		if(fromA == null)
+		if(banishedFromAs.size() == 0)
 			return false;
 		
-		if(R.getArea()==fromA)
-			return true;
-		if(fromA.inMyMetroArea(R.getArea()))
-			return true;
+		synchronized(banishedFromAs)
+		{
+			for(final Area fromA : banishedFromAs)
+			{
+				if(R.getArea()==fromA)
+					return true;
+				if(fromA.inMyMetroArea(R.getArea()))
+					return true;
+			}
+		}
 		return false;
 	}
 	
 	@Override
 	public void setMiscText(String newMiscText)
 	{
-		super.setMiscText(newMiscText);
+		//super.setMiscText(newMiscText);
 		if(newMiscText.length()>0)
 		{
-			Area newArea=CMLib.map().findArea(newMiscText);
-			if(newArea!=null)
-				banishedFrom=newArea;
+			for(final String areaName : CMParms.parseSemicolons(newMiscText, true))
+			{
+				Area newArea=CMLib.map().findArea(areaName);
+				synchronized(banishedFromAs)
+				{
+					if((newArea!=null)&&(!banishedFromAs.contains(newArea)))
+						banishedFromAs.add(newArea);
+				}
+			}
 		}
 		else
-			banishedFrom=null;
+		synchronized(banishedFromAs)
+		{
+			banishedFromAs.clear();
+		}
+	}
+	
+	@Override
+	public String text()
+	{
+		StringBuilder names=new StringBuilder("");
+		synchronized(banishedFromAs)
+		{
+			for(final Area fromA : banishedFromAs)
+			{
+				names.append(fromA.Name()).append(";");
+			}
+		}
+		return names.toString();
 	}
 	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(banishedFrom == null)
+		if(banishedFromAs.size() == 0)
 			return super.okMessage(myHost, msg);
 		
 		if((affected instanceof MOB)&&(msg.amISource((MOB)affected)))
@@ -168,8 +196,15 @@ public class Banishment extends StdAbility
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto, int asLevel)
 	{
+		if((!(target instanceof Area))&&(commands.size()>0))
+			target=CMLib.map().findArea(CMParms.combine(commands));
 		if(target instanceof Area)
-			this.banishedFrom=(Area)target;
+		{
+			synchronized(banishedFromAs)
+			{
+				this.banishedFromAs.add((Area)target);
+			}
+		}
 		this.startTickDown(mob, target, 0);
 		return true;
 	}
