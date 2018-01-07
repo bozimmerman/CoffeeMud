@@ -280,6 +280,8 @@ See guides/RandomAreas.html for information about documents of this type.
     <STRING>typical</STRING>
     <STRING>common</STRING>
     <STRING>huge</STRING>
+    <STRING>iridescent</STRING>
+    <STRING>lustrous</STRING>
 </STRING>
 
 <STRING id="noun_oceanfloor_fishes" select="any-1">
@@ -309,6 +311,8 @@ See guides/RandomAreas.html for information about documents of this type.
     <STRING>common</STRING>
     <STRING>rare</STRING>
     <STRING>native</STRING>
+    <STRING>shimmering</STRING>
+    <STRING>horrific</STRING>
 </STRING>
 
 <STRING id="noun_oceanfloor_rocks" select="any-1">
@@ -317,6 +321,7 @@ See guides/RandomAreas.html for information about documents of this type.
     <STRING>$noun_oceanfloor_rocks_adj boulders</STRING>
     <STRING>$noun_oceanfloor_rocks_adj gravel</STRING>
     <STRING>$noun_oceanfloor_rocks_adj rubble</STRING>
+    <STRING>$noun_oceanfloor_rocks_adj stones</STRING>
 </STRING>
 
 <STRING id="noun_oceanfloor_rocks_adj" select="any-1">
@@ -327,6 +332,7 @@ See guides/RandomAreas.html for information about documents of this type.
     <STRING>broken</STRING>
     <STRING>common</STRING>
     <STRING>typical</STRING>
+    <STRING>jagged</STRING>
 </STRING>
 
 <STRING id="verb_oceanfloor_tread" select="any-1">
