@@ -573,6 +573,11 @@ public class Studying extends CommonSkill implements AbilityContainer
 				commonTell(mob,L("You can't learn anything from '@x1'.",target.Name()));
 			return false;
 		}
+		if(mob.fetchAbility(A.ID())!=null)
+		{
+			mob.tell(L("You already know @x1.",A.name()));
+			return false;
+		}
 		final int lowestQualifyingLevel = CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 		final int classLevel = CMLib.ableMapper().qualifyingClassLevel(mob, this);
 		if((classLevel >=0)
