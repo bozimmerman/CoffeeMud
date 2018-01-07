@@ -129,14 +129,19 @@ public class Skill_Befriend extends BardSkill
 						}
 						if(name.equals(srcM.Name()))
 						{
+							final MOB theMob = srcM;
+							final int oldCha = srcM.baseCharStats().getStat(CharStats.STAT_CHARISMA);
+							srcM.baseCharStats().setStat(CharStats.STAT_CHARISMA, oldCha + amt);
 							srcM.recoverCharStats();
-							srcM.charStats().setStat(CharStats.STAT_CHARISMA, msg.source().charStats().getStat(CharStats.STAT_CHARISMA) + amt);
 							msg.addTrailerRunnable(new Runnable()
 							{
+								final MOB mob=theMob;
+								final int cha=oldCha;
 								@Override
 								public void run()
 								{
-									srcM.recoverCharStats();
+									mob.baseCharStats().setStat(CharStats.STAT_CHARISMA, cha);
+									mob.recoverCharStats();
 								}
 							});
 						}
@@ -164,10 +169,13 @@ public class Skill_Befriend extends BardSkill
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if(ticking instanceof MOB)
+		if((ticking instanceof MOB)
+		&&((text().length()==0)||(text().indexOf('=')<0)))
 		{
 			final MOB mob=(MOB)ticking;
-			if((mob.amFollowing()==null)||(mob.amFollowing().isMonster())||(!CMLib.flags().isInTheGame(mob.amFollowing(), true)))
+			if((mob.amFollowing()==null)
+			||(mob.amFollowing().isMonster())
+			||(!CMLib.flags().isInTheGame(mob.amFollowing(), true)))
 			{
 				if(mob.getStartRoom()==null)
 					mob.destroy();
