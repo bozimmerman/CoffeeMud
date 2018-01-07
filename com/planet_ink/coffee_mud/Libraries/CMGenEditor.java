@@ -5308,7 +5308,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			buf.append(L("Player Level: @x1",""+A.getPlayerLevel()));
 			if(A.getPlayerLevel()==0)
 				buf.append(L(" (Med MOB Lvl)"));
-			buf.append("\n\r");
 			mob.tell(buf.toString());
 			return;
 		}
