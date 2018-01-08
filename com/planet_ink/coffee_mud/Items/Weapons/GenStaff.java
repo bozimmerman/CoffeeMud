@@ -132,6 +132,8 @@ public class GenStaff extends GenWeapon implements Wand
 	@Override
 	public Ability getSpell()
 	{
+		if((readableText()==null)||(readableText().length()==0))
+			return null;
 		return CMClass.getAbility(readableText());
 	}
 

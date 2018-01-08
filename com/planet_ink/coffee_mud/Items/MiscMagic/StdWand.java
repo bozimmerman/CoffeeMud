@@ -131,6 +131,8 @@ public class StdWand extends StdItem implements Wand
 	@Override
 	public Ability getSpell()
 	{
+		if(text().length()==0)
+			return null;
 		return CMClass.getAbility(text());
 	}
 

@@ -393,7 +393,19 @@ public class CraftingSkill extends GatheringSkill
 			return;
 		final List<Ability> V=CMLib.ableParms().getCodedSpells(spells);
 		for(int v=0;v<V.size();v++)
-			P.addNonUninvokableEffect(V.get(v));
+		{
+			final Ability A=V.get(v);
+			if(P instanceof Wand)
+			{
+				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
+				||(((Wand)P).getSpell()!=null))
+					P.addNonUninvokableEffect(A);
+				else
+					((Wand)P).setSpell(A);
+			}
+			else
+				P.addNonUninvokableEffect(A);
+		}
 	}
 
 	protected void setWearLocation(Item I, String wearLocation, int hardnessMultiplier)
