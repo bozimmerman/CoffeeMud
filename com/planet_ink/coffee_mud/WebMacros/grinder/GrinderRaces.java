@@ -368,7 +368,9 @@ public class GrinderRaces
 		}
 		R.setStat("WEAR",""+mask);
 		R.setStat("AVAIL",""+CMath.s_long(httpReq.getUrlParameter("PLAYABLEID")));
-		R.setStat("BODYKILL",""+CMath.s_bool(httpReq.getUrlParameter("BODYKILL")));
+		String bodyKill=httpReq.getUrlParameter("BODYKILL");
+		if(bodyKill != null)
+			R.setStat("BODYKILL",""+bodyKill.equalsIgnoreCase("on"));
 		R.setStat("DISFLAGS",""+CMath.s_long(httpReq.getUrlParameter("DISFLAGS")));
 		R.setStat("ESTATS",getPStats('E',httpReq));
 		R.setStat("CSTATS",getCStats('S',httpReq));
