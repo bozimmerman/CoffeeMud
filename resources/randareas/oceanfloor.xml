@@ -53,6 +53,12 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING>You are deep in (a(n)) ${l:_oceanfloor_path_name}. </STRING>
 				<STRING>The ${l:_oceanfloor_path_name} surrounds you. </STRING>
 				<STRING>The ${l:_oceanfloor_path_name} is all around you. </STRING>
+				<STRING>The $(l:_oceanfloor_path_name} is full of $oceanfloor_nouns.</STRING>
+				<STRING>(A(n)) $(l:_oceanfloor_path_name} is full of $oceanfloor_nouns.</STRING>
+				<STRING>The $oceanfloor_nouns make traveling through the $(l:_oceanfloor_path_name} more difficult.</STRING>
+				<STRING>The $(l:_oceanfloor_path_name} causes your mind to drift as you travel through the $oceanfloor_nouns.</STRING>
+				<STRING>The $oceanfloor_nouns cover the $(l:_oceanfloor_path_name} you are traveling along.</STRING>
+				<STRING>You notice several $oceanfloor_nouns as you continue $verb_oceanfloor_tread through he $(l:_oceanfloor_path_name}.</STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>The $_oceanfloor_path_type is crossed by $adj_sparse cacti and plants. ${c:adj_desolate} sands otherwise surrounds you. </STRING>
