@@ -12270,7 +12270,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
 							String str=null;
 							final CMChannel officialChannel=CMLib.channels().getChannel(channelInt);
-							if((officialChannel!=null)&&(channel.equalsIgnoreCase(officialChannel.name())))
+							if(officialChannel==null)
+								Log.errOut("Script","Unknown channel for code '"+channelInt+"': "+msg.othersMessage());
+							else
+							if(channel.equalsIgnoreCase(officialChannel.name()))
 							{
 								str=msg.sourceMessage();
 								if(str==null)
