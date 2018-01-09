@@ -1429,7 +1429,8 @@ public class RoomLoader
 		{
 			final MOB thisMOB=mobs.get(m);
 			CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisMOB);
-			statements.add(getDBCreateMOBString(room.roomID(),thisMOB));
+			final DBConnector.DBPreparedBatchEntry entry=getDBCreateMOBString(room.roomID(),thisMOB);
+			statements.add(entry);
 		}
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done updating mobs for room "+room.roomID());
