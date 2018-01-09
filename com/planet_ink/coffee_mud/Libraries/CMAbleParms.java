@@ -3830,6 +3830,61 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
+			new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL_AMT","Rsc Amt",ParmType.NUMBER)
+			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					return ((o instanceof Weapon) && (!(o instanceof Ammunition))) ? 2 : -1;
+				}
+	
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(I==null)
+						return "";
+					List<String> words=CMParms.parse(I.name());
+					for(int i=words.size()-1;i>=0;i--)
+					{
+						String s=words.get(i);
+						int y=s.indexOf('-');
+						if(y>=0)
+						{
+							words.add(s.substring(0, y));
+							words.add(s.substring(0, y+1));
+						}
+					}
+					for(String word : words)
+					{
+						if(word.length()>0)
+						{
+							int rsc=RawMaterial.CODES.FIND_IgnoreCase(word);
+							if((rsc > 0)&&(rsc != I.material()))
+							{
+								if(I.basePhyStats().level()>80)
+									return ""+4;
+								
+								if(I.basePhyStats().level()>40)
+									return ""+2;
+								
+								return ""+1;
+							}
+						}
+					}
+					return "";
+				}
+			},
 			new AbilityParmEditorImpl("OPTIONAL_BUILDING_RESOURCE_OR_MATERIAL","Rsc/Mat",ParmType.CHOICES)
 			{
 				@Override
@@ -3849,6 +3904,26 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
+					List<String> words=CMParms.parse(I.name());
+					for(int i=words.size()-1;i>=0;i--)
+					{
+						String s=words.get(i);
+						int y=s.indexOf('-');
+						if(y>=0)
+						{
+							words.add(s.substring(0, y));
+							words.add(s.substring(0, y+1));
+						}
+					}
+					for(String word : words)
+					{
+						if(word.length()>0)
+						{
+							int rsc=RawMaterial.CODES.FIND_IgnoreCase(word);
+							if((rsc > 0)&&(rsc != I.material()))
+								return RawMaterial.CODES.NAME(rsc);
+						}
+					}
 					return "";
 				}
 	
