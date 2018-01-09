@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -12268,7 +12269,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final String channel=t[1];
 							final int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
 							String str=null;
-							if(channel.equalsIgnoreCase(CMLib.channels().getChannel(channelInt).name()))
+							final CMChannel officialChannel=CMLib.channels().getChannel(channelInt);
+							if((officialChannel!=null)&&(channel.equalsIgnoreCase(officialChannel.name())))
 							{
 								str=msg.sourceMessage();
 								if(str==null)
