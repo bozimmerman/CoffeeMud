@@ -8,7 +8,6 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.Clan.Authority;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -19,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2018 Bo Zimmerman
+   Copyright 2018-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +32,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
-public class ClanDetails extends StdCommand
+
+public class Leave extends StdCommand
 {
-	public ClanDetails()
-	{
-	}
+	public Leave(){}
 
-	private final String[]	access	= I(new String[] { "CLANDETAILS", "CLAN" });
-
+	private final String[] access=I(new String[]{"LEAVE"});
 	@Override
 	public String[] getAccessWords()
 	{
@@ -52,50 +48,44 @@ public class ClanDetails extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
-		if((clanName.length()==0)&&(mob.clans().iterator().hasNext()))
-			clanName=mob.clans().iterator().next().first.clanID();
-		final StringBuffer msg=new StringBuffer("");
-		if(clanName.length()>0)
+		final String cmdWord = commands.size()> 0 ? commands.get(0): "";
+		Vector<String> origCmds=new XVector<String>(commands);
+		commands.remove(0);
+		if(mob.riding()==null)
 		{
-			Clan foundClan=CMLib.clans().getClan(clanName);
-			if(foundClan == null)
+			if(cmdWord.startsWith("L"))
 			{
-				for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
-				{
-					final Clan C=(Clan)e.nextElement();
-					if(CMLib.english().containsString(C.getName(), clanName))
-					{
-						foundClan=C;
-						break;
-					}
-				}
+				CMLib.commands().postCommandFail(mob,origCmds,L("Which way? Try EXITS."));
+				return false;
 			}
-			if(foundClan==null)
-				msg.append(L("No clan was found by the name of '@x1'.\n\r",clanName));
 			else
 			{
-				msg.append(foundClan.getDetail(mob));
-				final Pair<Clan,Integer> p=mob.getClanRole(foundClan.clanID());
-				if((p!=null)&&(mob.clans().iterator().next().first!=p.first))
-				{
-					mob.setClan(foundClan.clanID(), mob.getClanRole(foundClan.clanID()).second.intValue());
-					msg.append(L("\n\rYour default clan is now @x1.",p.first.getName()));
-				}
+				CMLib.commands().postCommandFail(mob,origCmds,L("But you aren't inside anything?!"));
+				return false;
 			}
 		}
-		else
-		{
-			msg.append(L("You need to specify which clan you would like details on. Try 'CLANLIST'.\n\r"));
-		}
-		mob.tell(msg.toString());
+		final CMMsg msg=CMClass.getMsg(mob,mob.riding(),null,CMMsg.MSG_DISMOUNT,L("<S-NAME> @x1 <T-NAMESELF>.",mob.riding().dismountString(mob)));
+		if(mob.location().okMessage(mob,msg))
+			mob.location().send(mob,msg);
 		return false;
+	}
+
+	@Override
+	public double combatActionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandCombatActionCost(ID());
+	}
+
+	@Override
+	public double actionsCost(final MOB mob, final List<String> cmds)
+	{
+		return CMProps.getCommandActionCost(ID());
 	}
 
 	@Override
 	public boolean canBeOrdered()
 	{
-		return false;
+		return true;
 	}
 
 }

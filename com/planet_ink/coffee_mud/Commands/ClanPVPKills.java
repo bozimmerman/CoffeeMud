@@ -34,13 +34,13 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("rawtypes")
-public class ClanDetails extends StdCommand
+public class ClanPVPKills extends StdCommand
 {
-	public ClanDetails()
+	public ClanPVPKills()
 	{
 	}
 
-	private final String[]	access	= I(new String[] { "CLANDETAILS", "CLAN" });
+	private final String[]	access	= I(new String[] {"CLANPVPKILLS"});
 
 	@Override
 	public String[] getAccessWords()
@@ -75,12 +75,42 @@ public class ClanDetails extends StdCommand
 				msg.append(L("No clan was found by the name of '@x1'.\n\r",clanName));
 			else
 			{
-				msg.append(foundClan.getDetail(mob));
-				final Pair<Clan,Integer> p=mob.getClanRole(foundClan.clanID());
-				if((p!=null)&&(mob.clans().iterator().next().first!=p.first))
+				if(mob.getClanRole(foundClan.clanID())==null)
 				{
-					mob.setClan(foundClan.clanID(), mob.getClanRole(foundClan.clanID()).second.intValue());
-					msg.append(L("\n\rYour default clan is now @x1.",p.first.getName()));
+					msg.append(L("You are not a member of @x1.\n\r",foundClan.name()));
+				}
+				else
+				{
+					final List<Pair<String,Integer>> topKillers = new ArrayList<Pair<String,Integer>>();
+					for(final Clan.MemberRecord M : foundClan.getMemberList())
+					{
+						if(M.playerpvps > 0)
+							topKillers.add(new Pair<String,Integer>(M.name,new Integer(M.playerpvps)));
+					}
+					@SuppressWarnings("unchecked")
+					final Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
+					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()
+					{
+						@Override
+						public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
+						{
+							return o2.second.compareTo(o1.second);
+						}
+					});
+					if(topKillers.size()==0)
+						msg.append(L("There have not been any rival clan playerkills...\n\r"));
+					else
+					{
+						msg.append(L("^XTop ranked rival clan playerkillers of @x1^?^.\n\r\n\r",foundClan.name()));
+						topKillers.clear();
+						final List<String> reverseList = new ArrayList<String>();
+						for(int x=0;x<killerArray.length;x++)
+						{
+							final Pair<String,Integer> p=killerArray[x];
+							reverseList.add((x+1)+". "+p.first+" ("+p.second.intValue()+")");
+						}
+						msg.append(CMLib.lister().threeColumns(mob, reverseList));
+					}
 				}
 			}
 		}
@@ -95,7 +125,6 @@ public class ClanDetails extends StdCommand
 	@Override
 	public boolean canBeOrdered()
 	{
-		return false;
+		return true;
 	}
-
 }

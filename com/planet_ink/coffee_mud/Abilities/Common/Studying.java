@@ -172,7 +172,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_COMMON_SKILL;
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_EDUCATIONLORE;
 	}
 
 	@Override

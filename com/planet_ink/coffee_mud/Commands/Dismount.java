@@ -37,7 +37,7 @@ public class Dismount extends StdCommand
 {
 	public Dismount(){}
 
-	private final String[] access=I(new String[]{"DISMOUNT","DISEMBARK","LEAVE"});
+	private final String[] access=I(new String[]{"DISMOUNT"});
 	@Override
 	public String[] getAccessWords()
 	{
