@@ -2820,6 +2820,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(randomRoll)
 		{
 			loginObj.baseStats.copyInto(mob.baseCharStats());
+			mob.baseCharStats().setWearableRestrictionsBitmap(0);
 			reRollStats(mob.baseCharStats(),loginObj.statPoints);
 		}
 
@@ -2936,6 +2937,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(prompt.toLowerCase().startsWith("r"))
 		{
 			loginObj.baseStats.copyInto(mob.baseCharStats());
+			mob.baseCharStats().setWearableRestrictionsBitmap(0);
 			reRollStats(mob.baseCharStats(),getTotalBonusStatPoints(mob.playerStats(), loginObj.acct));
 			loginObj.statPoints=0;
 			loginObj.state=LoginState.CHARCR_STATSTART;

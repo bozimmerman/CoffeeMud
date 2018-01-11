@@ -518,7 +518,6 @@ public class Destroy extends StdCommand
 			if(max>1)
 				allFlag=true;
 		}
-		
 		int num=0;
 		while((deadItem!=null)&&(max-->0))
 		{
@@ -569,7 +568,10 @@ public class Destroy extends StdCommand
 		mob.location().recoverRoomStats();
 		if(!doneSomething)
 		{
-			mob.tell(L("I don't see '@x1 here.\n\r",itemID));
+			if(mob.findItem(itemID)!=null)
+				mob.tell(L("I don't see '@x1 here. You might need to drop it first.\n\r",itemID));
+			else
+				mob.tell(L("I don't see '@x1 here.\n\r",itemID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -1777,7 +1779,8 @@ public class Destroy extends StdCommand
 			Environmental thang=mob.location().fetchFromRoomFavorItems(null,allWord);
 			if(thang==null)
 				thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Wearable.FILTER_ANY);
-			if((thang == null)&&(commands.size()>2)
+			if((thang == null)
+			&&(commands.size()>2)
 			&&(CMath.isInteger(commands.get(1).toString())||commands.get(1).toString().equalsIgnoreCase("all")))
 			{
 				allWord=CMParms.combine(commands,2);

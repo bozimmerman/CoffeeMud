@@ -882,7 +882,7 @@ public class StdMOB implements MOB
 	{
 		baseCharStats.setClassLevel(baseCharStats.getCurrentClass(), basePhyStats().level()
 				- baseCharStats().combinedSubLevels());
-		baseCharStats().copyInto(charStats);
+		baseCharStats.copyInto(charStats);
 
 		final Rideable riding = riding();
 		if (riding != null)
