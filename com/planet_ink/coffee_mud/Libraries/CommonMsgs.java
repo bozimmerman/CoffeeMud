@@ -1060,6 +1060,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final StringBuilder buf=new StringBuilder("");
 		if(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS))
 		{
+			String decayTime="";
+			if(item instanceof Decayable)
+			{
+				if(((Decayable)item).decayTime()==Long.MAX_VALUE)
+					decayTime=L("/  Never Decays");
+				else
+					decayTime=L("/  Decay on @x1",CMLib.time().date2String(((Decayable)item).decayTime()));
+			}
 			StringBuilder spells=new StringBuilder("");
 			for(Enumeration<Ability> a=item.effects();a.hasMoreElements();)
 			{
@@ -1087,7 +1095,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			""+item.basePhyStats().weight(),
 			""+item.basePhyStats().ability(),
 			""+item.basePhyStats().level(),
-			dispossessionTimeLeftString(item),
+			dispossessionTimeLeftString(item)+decayTime,
 			((item instanceof Container)?(L("\n\rCapac.: ")+((Container)item).capacity()):""),
 			spells.toString(),
 			""+item.text().length(),

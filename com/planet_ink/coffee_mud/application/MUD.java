@@ -1579,6 +1579,20 @@ public class MUD extends Thread implements MudHost
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: filling map ("+A.Name()+")");
 					A.fillInAreaRooms();
 				}
+				final MOB mob=CMClass.getFactoryMOB();
+				final CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_STARTUP,null);
+				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Sending room startup.");
+				for(final Enumeration<Room> a=CMLib.map().rooms();a.hasMoreElements();)
+				{
+					final Room R=a.nextElement();
+					if(R!=null)
+					{
+						msg.setTarget(R);
+						R.send(mob, msg);
+					}
+				}
+				
+				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Map Load Complete.");
 				Log.sysOut(Thread.currentThread().getName(),"Mapped rooms      : "+CMLib.map().numRooms()+" in "+CMLib.map().numAreas()+" areas");
 				if(CMLib.map().numSpaceObjects()>0)
 					Log.sysOut(Thread.currentThread().getName(),"Space objects     : "+CMLib.map().numSpaceObjects());

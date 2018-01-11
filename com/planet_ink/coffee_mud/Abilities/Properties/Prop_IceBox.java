@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 
+import com.planet_ink.coffee_mud.core.collections.EnumerationIterator;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -45,11 +46,37 @@ public class Prop_IceBox extends Property
 		return Ability.CAN_ITEMS | Ability.CAN_ROOMS;
 	}
 
+	boolean started=false;
+	
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if(msg.targetMinor()==CMMsg.TYP_STARTUP)
+		{
+			Iterator<Item> i;
+			if(affected instanceof Container)
+				i=((Container)affected).getContents().iterator();
+			else
+			if(affected instanceof Room)
+				i=new EnumerationIterator<Item>(((Room)affected).items());
+			else
+				return;
+			for(;i.hasNext();)
+			{
+				final Item I=i.next();
+				if(I instanceof Decayable)
+					((Decayable)I).setDecayTime(Long.MAX_VALUE);
+			}
+		}
+	}
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
+		
 		switch(msg.targetMinor())
 		{
 		case CMMsg.TYP_PUT:
