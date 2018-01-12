@@ -2088,6 +2088,76 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return maxToGive;
 	}
 
+	@Override
+	public int probabilityOfBeingEnglish(String str)
+	{
+		if(str.length()<100)
+			return 100;
+		final double[] englishFreq = new double[]{
+		0.08167, 0.01492, 0.02782, 0.04253, 0.12702, 0.02228, 0.02015,  // A-G
+		0.06094, 0.06966, 0.00153, 0.00772, 0.04025, 0.02406, 0.06749,  // H-N
+		0.07507, 0.01929, 0.00095, 0.05987, 0.06327, 0.09056, 0.02758,  // O-U
+		0.00978, 0.02360, 0.00150, 0.01974, 0.00074                     // V-Z
+		};
+		double punctuationCount=0;
+		double wordCount=0;
+		double totalLetters=0;
+		double thisLetterCount=0;
+		int[] lettersUsed = new int[26];
+		double len=str.length();
+		for(int i=0;i<str.length();i++)
+		{
+			char c=str.charAt(i);
+			if(Character.isLetter(c))
+			{
+				thisLetterCount+=1;
+				lettersUsed[Character.toLowerCase(c)-'a']++;
+			}
+			else
+			if((c==' ')||(isPunctuation((byte)c)))
+			{
+				if(thisLetterCount>0)
+				{
+					totalLetters+=thisLetterCount;
+					wordCount+=1.0;
+					thisLetterCount=0;
+				}
+				if(c!=' ')
+					punctuationCount++;
+			}
+			else
+				punctuationCount++;
+		}
+		if(thisLetterCount>0)
+		{
+			totalLetters+=thisLetterCount;
+			wordCount+=1.0;
+			thisLetterCount=0;
+		}
+		double pctPunctuation=punctuationCount/len;
+		if(pctPunctuation > .2)
+			return 0;
+		double avgWordSize=totalLetters/wordCount;
+		if((avgWordSize < 2.0)||(avgWordSize > 8.0))
+			return 0;
+		double wordCountChi=avgWordSize-4.7;
+		wordCountChi=(wordCountChi*wordCountChi)/4.7;
+		double chi2=10.0*wordCountChi;
+		for (int i = 0; i < 26; i++) 
+		{
+			final double observed = lettersUsed[i];
+			final double expected = totalLetters * englishFreq[i];
+			final double difference = observed - expected;
+			chi2 += (difference*difference) / expected / 26.0;
+		}
+		final int finalChance=(int)Math.round(100.0 - chi2);
+		if(finalChance<0)
+			return 0;
+		if(finalChance>100)
+			return 100;
+		return finalChance;
+	}
+
 	protected static class FetchFlags
 	{
 		public String	srchStr;

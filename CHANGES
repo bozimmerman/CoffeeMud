@@ -9,6 +9,7 @@
    8. New Property: Banishment
    9. ROMGangMember behavior messages now customizable.
   10. Scavenger behavior now allows an item zappermask to limit types of items picked up.
+  11. New Disease: Writers Block.  Caused by frequently writing garbage.
 
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)

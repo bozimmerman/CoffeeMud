@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.EachApplicable.ApplyAffectPhyStats;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.exceptions.CharStatOutOfRangeException;
@@ -3266,6 +3267,23 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_ATTACKMISS:
 					if(!isAttributeSet(Attrib.NOBATTLESPAM))
 						tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
+					break;
+				case CMMsg.TYP_WROTE:
+					if((msg.target() instanceof Item)
+					&&(msg.targetMessage()!=null)
+					&&(msg.targetMessage().length()>0)
+					&&(!CMSecurity.isDisabled(DisFlag.AUTODISEASE)))
+					{
+						final String msgStr =msg.targetMessage().trim();
+						if((msgStr.length()>10)
+						&&(CMLib.dice().rollPercentage()<10)
+						&&(CMLib.dice().rollPercentage()>CMLib.english().probabilityOfBeingEnglish(msgStr)))
+						{
+							final Ability A=CMClass.getAbility("Disease_WritersBlock");
+							if((A!=null)&&(fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+								A.invoke(this, this, true, 0);
+						}
+					}
 					break;
 				default:
 					if((msg.targetMinor()==CMMsg.TYP_DAMAGE)

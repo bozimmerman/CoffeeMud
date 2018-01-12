@@ -98,6 +98,7 @@ public interface EnglishParsing extends CMLibrary
 	public Item possibleContainer(MOB mob, List<String> commands, boolean withStuff, Filterer<Environmental> filter);
 	public String returnTime(long millis, long ticks);
 	public int calculateMaxToGive(MOB mob, List<String> commands, boolean breakPackages, Environmental checkWhat, boolean getOnly);
+	public int probabilityOfBeingEnglish(String str);
 	public String sizeDescShort(long size);
 	public String distanceDescShort(long distance);
 	public String coordDescShort(long[] coords);
