@@ -243,6 +243,10 @@ public class Fighter_Hammering extends FighterSkill implements HealthCondition
 		// now see if it worked
 		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
 		boolean success=proficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_CONSTITUTION)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto)&&(hit);
+		if(CMLib.flags().isUndead(target) 
+		|| CMLib.flags().isGolem(target)
+		|| (target.charStats().getBodyPart(Race.BODY_HEAD)==0))
+			success=false;
 		if(success)
 		{
 			invoker=mob;
