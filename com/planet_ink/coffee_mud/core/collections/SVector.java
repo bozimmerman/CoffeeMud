@@ -275,6 +275,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		return me.toArray();
 	}
 	
+	@SuppressWarnings("hiding")
 	@Override
 	public <T> T[] toArray(T[] a)
 	{
@@ -393,5 +394,15 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 	public List<T> subList(int fromIndex, int toIndex)
 	{
 		return me.subList(fromIndex, toIndex);
+	}
+	
+	public boolean removeElement(Object obj)
+	{
+		return me.remove(obj);
+	}
+
+	public void removeElementAt(int index)
+	{
+		me.remove(index);
 	}
 }
