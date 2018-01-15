@@ -85,7 +85,8 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 	protected static final int	RCP_CAPACITY	= 7;
 	protected static final int	RCP_NUMRIDERS	= 8;
 	protected static final int	RCP_CONTAINMASK	= 9;
-	protected static final int	RCP_SPELL		= 10;
+	protected static final int	RCP_STRINGS		= 10;
+	protected static final int	RCP_SPELL		= 11;
 
 	protected Item key=null;
 
@@ -373,6 +374,23 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 		setBrand(mob, buildingI);
+		String strstr=foundRecipe.get(RCP_STRINGS);
+		if((strstr!=null)&&(strstr.length()>0)&&(buildingI instanceof Rideable))
+		{
+			List<String> strstrl=CMParms.parseSemicolons(strstr, false);
+			if((strstrl.size()>0)&&(strstrl.get(0).trim().length()>0))
+				((Rideable)buildingI).setStateString(strstrl.get(0).trim());
+			if((strstrl.size()>1)&&(strstrl.get(1).trim().length()>0))
+				((Rideable)buildingI).setStateStringSubject(strstrl.get(1).trim());
+			if((strstrl.size()>2)&&(strstrl.get(2).trim().length()>0))
+				((Rideable)buildingI).setRideString(strstrl.get(2).trim());
+			if((strstrl.size()>3)&&(strstrl.get(3).trim().length()>0))
+				((Rideable)buildingI).setMountString(strstrl.get(3).trim());
+			if((strstrl.size()>4)&&(strstrl.get(4).trim().length()>0))
+				((Rideable)buildingI).setDismountString(strstrl.get(4).trim());
+			if((strstrl.size()>5)&&(strstrl.get(5).trim().length()>0))
+				((Rideable)buildingI).setPutString(strstrl.get(5).trim());
+		}
 		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
 		final int riders=CMath.s_int(foundRecipe.get(RCP_NUMRIDERS));
