@@ -1802,6 +1802,31 @@ public class MobData extends StdWebMacro
 					if(M instanceof ShopKeeper)
 						str.append(((ShopKeeper)M).getWhatIsSoldZappermask());
 					break;
+				case MOUNTSTR: // mountstr
+					if((firstTime)&&(M instanceof Rideable))
+						old=((Rideable)M).mountString(0,CMClass.sampleMOB());
+					str.append(old+", ");
+					break;
+				case DISMOUNTSTR: // dismountstr
+					if((firstTime)&&(M instanceof Rideable))
+						old=((Rideable)M).dismountString(CMClass.sampleMOB());
+					str.append(old+", ");
+					break;
+				case STATESTR: // statestr
+					if((firstTime)&&(M instanceof Rideable))
+						old=((Rideable)M).stateString(CMClass.sampleMOB());
+					str.append(old+", ");
+					break;
+				case STATESUBJSTR: // statesubjstr
+					if((firstTime)&&(M instanceof Rideable))
+						old=((Rideable)M).stateStringSubject(CMClass.sampleMOB());
+					str.append(old+", ");
+					break;
+				case RIDERSTR: // riderstr
+					if((firstTime)&&(M instanceof Rideable))
+						old=((Rideable)M).rideString(CMClass.sampleMOB());
+					str.append(old+", ");
+					break;
 				}
 				if(firstTime)
 					httpReq.addFakeUrlParameter(parmName,old.equals("checked")?"on":old);

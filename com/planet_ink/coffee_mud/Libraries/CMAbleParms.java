@@ -2177,6 +2177,184 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return maxPages+"/"+maxCharsPage;
 				}
 			},
+			new AbilityParmEditorImpl("RIDE_OVERRIDE_STRS","Ride Strings.",ParmType.SPECIAL)
+			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					return (o instanceof Rideable) ? 1 : -1;
+				}
+	
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(I instanceof Rideable)
+					{
+						Rideable R=(Rideable)I;
+						StringBuilder str=new StringBuilder("");
+						//STATESTR,STATESUBJSTR,RIDERSTR,MOUNTSTR,DISMOUNTSTR,PUTSTR
+						str.append(R.getStateString().replace(';', ',')).append(';');
+						str.append(R.getStateStringSubject().replace(';', ',')).append(';');
+						str.append(R.getRideString().replace(';', ',')).append(';');
+						str.append(R.getMountString().replace(';', ',')).append(';');
+						str.append(R.getDismountString().replace(';', ',')).append(';');
+						str.append(R.getPutString().replace(';', ','));
+						if(str.length()==5)
+							return "";
+						return str.toString();
+					}
+					return "";
+				}
+				
+				@Override
+				public boolean confirmValue(String oldVal)
+				{
+					return true;
+				}
+	
+				@Override
+				public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					String[] finput = this.fakeUserInput(oldVal);
+					String stateStr=finput[0];
+					String stateSubjectStr=finput[1];
+					String riderStr=finput[2];
+					String mountStr=finput[3];
+					String dismountStr=finput[4];
+					String putStr=finput[5];
+					if(httpReq.isUrlParameter(fieldName+"_RSTATESTR"))
+						stateStr = httpReq.getUrlParameter(fieldName+"_RSTATESTR");
+					if(httpReq.isUrlParameter(fieldName+"_RSTATESUBJSTR"))
+						stateSubjectStr = httpReq.getUrlParameter(fieldName+"_RSTATESUBJSTR");
+					if(httpReq.isUrlParameter(fieldName+"_RRIDERSTR"))
+						riderStr = httpReq.getUrlParameter(fieldName+"_RRIDERSTR");
+					if(httpReq.isUrlParameter(fieldName+"_RMOUNTSTR"))
+						mountStr = httpReq.getUrlParameter(fieldName+"_RMOUNTSTR");
+					if(httpReq.isUrlParameter(fieldName+"_RDISMOUNTSTR"))
+						dismountStr = httpReq.getUrlParameter(fieldName+"_RDISMOUNTSTR");
+					if(httpReq.isUrlParameter(fieldName+"_RPUTSTR"))
+						putStr = httpReq.getUrlParameter(fieldName+"_RPUTSTR");
+					StringBuilder str=new StringBuilder("");
+					str.append(stateStr.replace(';', ',')).append(';');
+					str.append(stateSubjectStr.replace(';', ',')).append(';');
+					str.append(riderStr.replace(';', ',')).append(';');
+					str.append(mountStr.replace(';', ',')).append(';');
+					str.append(dismountStr.replace(';', ',')).append(';');
+					str.append(putStr.replace(';', ','));
+					if(str.length()==5)
+						return "";
+					return str.toString();
+				}
+
+				@Override
+				public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					final String value = webValue(httpReq, parms, oldVal, fieldName);
+					final StringBuffer str = new StringBuffer("");
+					str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
+					String[] vals = this.fakeUserInput(value);
+					str.append("<TR>");
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("State")+"</FONT></TD>");
+					str.append("<TD><INPUT TYPE=TEXT SIZE=5 NAME="+fieldName+"_RSTATESTR VALUE=\""+vals[0]+"\">");
+					str.append("</TR>");
+					str.append("<TR>");
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("State Subj.")+"</FONT></TD>");
+					str.append("<TD><INPUT TYPE=TEXT SIZE=5 NAME="+fieldName+"_RSTATESUBJSTR VALUE=\""+vals[0]+"\">");
+					str.append("</TR>");
+					str.append("<TR>");
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("Rider")+"</FONT></TD>");
+					str.append("<TD><INPUT TYPE=TEXT SIZE=5 NAME="+fieldName+"_RRIDERSTR VALUE=\""+vals[0]+"\">");
+					str.append("</TR>");
+					str.append("<TR>");
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("Mount")+"</FONT></TD>");
+					str.append("<TD><INPUT TYPE=TEXT SIZE=5 NAME="+fieldName+"_RMOUNTSTR VALUE=\""+vals[0]+"\">");
+					str.append("</TR>");
+					str.append("<TR>");
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("Dismount")+"</FONT></TD>");
+					str.append("<TD><INPUT TYPE=TEXT SIZE=5 NAME="+fieldName+"_RDISMOUNTSTR VALUE=\""+vals[0]+"\">");
+					str.append("</TR>");
+					str.append("<TR>");
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("Put")+"</FONT></TD>");
+					str.append("<TD><INPUT TYPE=TEXT SIZE=5 NAME="+fieldName+"_RPUTSTR VALUE=\""+vals[0]+"\">");
+					str.append("</TR>");
+					str.append("</TABLE>");
+					return str.toString();
+				}
+				
+				@Override
+				public String[] fakeUserInput(String oldVal)
+				{
+					final ArrayList<String> V = new ArrayList<String>();
+					String stateStr="";
+					String stateSubjectStr="";
+					String riderStr="";
+					String mountStr="";
+					String dismountStr="";
+					String putStr="";
+					if(oldVal.length()>0)
+					{
+						List<String> lst=CMParms.parseSemicolons(oldVal.trim(),false);
+						if(lst.size()>0)
+							stateStr=lst.get(0).replace(';',',');
+						if(lst.size()>1)
+							stateSubjectStr=lst.get(1).replace(';',',');
+						if(lst.size()>2)
+							riderStr=lst.get(2).replace(';',',');
+						if(lst.size()>3)
+							mountStr=lst.get(3).replace(';',',');
+						if(lst.size()>4)
+							dismountStr=lst.get(4).replace(';',',');
+						if(lst.size()>5)
+							putStr=lst.get(5).replace(';',',');
+					}
+					V.add(stateStr);
+					V.add(stateSubjectStr);
+					V.add(riderStr);
+					V.add(mountStr);
+					V.add(dismountStr);
+					V.add(putStr);
+					return CMParms.toStringArray(V);
+				}
+
+				@Override
+				public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+				{
+					String[] finput = this.fakeUserInput(oldVal);
+					String stateStr=finput[0];
+					String stateSubjectStr=finput[1];
+					String riderStr=finput[2];
+					String mountStr=finput[3];
+					String dismountStr=finput[4];
+					String putStr=finput[5];
+					stateStr = CMLib.genEd().prompt(mob, stateStr, ++showNumber[0], showFlag, L("State Str"), true);
+					stateSubjectStr = CMLib.genEd().prompt(mob, stateSubjectStr, ++showNumber[0], showFlag, L("State Subject"), true);
+					riderStr = CMLib.genEd().prompt(mob, riderStr, ++showNumber[0], showFlag, L("Ride Str"), true);
+					mountStr = CMLib.genEd().prompt(mob, mountStr, ++showNumber[0], showFlag, L("Mount Str"), true);
+					dismountStr = CMLib.genEd().prompt(mob, dismountStr, ++showNumber[0], showFlag, L("Dismount Str"), true);
+					putStr = CMLib.genEd().prompt(mob, putStr, ++showNumber[0], showFlag, L("Put Str"), true);
+					StringBuilder str=new StringBuilder("");
+					str.append(stateStr.replace(';', ',')).append(';');
+					str.append(stateSubjectStr.replace(';', ',')).append(';');
+					str.append(riderStr.replace(';', ',')).append(';');
+					str.append(mountStr.replace(';', ',')).append(';');
+					str.append(dismountStr.replace(';', ',')).append(';');
+					str.append(putStr.replace(';', ','));
+					if(str.length()==5)
+						return "";
+					return str.toString();
+				}
+			},
 			new AbilityParmEditorImpl("CONTAINER_CAPACITY","Cap.",ParmType.NUMBER)
 			{
 				@Override

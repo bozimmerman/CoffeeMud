@@ -74,7 +74,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tRIDE_BASIS\tCONTAINER_CAPACITY||RIDE_CAPACITY\tCONTAINER_TYPE\t"
-		+"CODED_SPELL_LIST";
+		+"RIDE_OVERRIDE_STRS\tCODED_SPELL_LIST";
 	}
 
 	private int					doorDir			= -1;

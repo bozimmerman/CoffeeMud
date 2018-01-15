@@ -9636,8 +9636,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
 				genMountText(mob,(Rideable)me,++showNumber,showFlag);
-				if(!(me instanceof Exit)) // doesn't make sense for portals
-					genMountText2(mob,(Rideable)me,++showNumber,showFlag);
+				genMountText2(mob,(Rideable)me,++showNumber,showFlag);
 			}
 			if(me instanceof Deity)
 			{
@@ -9785,8 +9784,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
 				genMountText(mob,(Rideable)me,++showNumber,showFlag);
-				if(!(me instanceof Exit)) // doesn't make sense for portals
-					genMountText2(mob,(Rideable)me,++showNumber,showFlag);
+				genMountText2(mob,(Rideable)me,++showNumber,showFlag);
 			}
 			genFaction(mob,me,++showNumber,showFlag);
 			genTattoos(mob,me,++showNumber,showFlag);

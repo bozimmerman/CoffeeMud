@@ -72,7 +72,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tLID_LOCK\tCONTAINER_CAPACITY\tRIDE_CAPACITY\tCONTAINER_TYPE\t"
-		+"CODED_SPELL_LIST";
+		+"RIDE_OVERRIDE_STRS\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;

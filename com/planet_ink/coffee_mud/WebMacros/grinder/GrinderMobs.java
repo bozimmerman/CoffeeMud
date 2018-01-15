@@ -57,7 +57,8 @@ public class GrinderMobs
 		MINDAYS,ISAUCTION,DEITYID,VARMONEY,
 		CATACAT,SELLIMASK,LIBRCHAIN,LIBROVERCHG,
 		LIBRDAYCHG,LIBROVERPCT,LIBDAYPCT,LIBMINDAYS,
-		LIBMAXDAYS,LIBMAXBORROW,ISLIBRARIAN,LIBCMASK
+		LIBMAXDAYS,LIBMAXBORROW,ISLIBRARIAN,LIBCMASK,
+		STATESTR,STATESUBJSTR,RIDERSTR,MOUNTSTR,DISMOUNTSTR
 		;
 		
 		public boolean isGenField;
@@ -819,6 +820,26 @@ public class GrinderMobs
 							cataData=CMLib.catalog().sampleCataData("");
 						cataData.setCategory(old.toUpperCase().trim());
 					}
+					break;
+				case MOUNTSTR: // mountstr
+					if(M instanceof Rideable)
+						((Rideable) M).setMountString(old);
+					break;
+				case DISMOUNTSTR: // dismountstr
+					if(M instanceof Rideable)
+						((Rideable) M).setDismountString(old);
+					break;
+				case STATESTR: // statestr
+					if(M instanceof Rideable)
+						((Rideable) M).setStateString(old);
+					break;
+				case STATESUBJSTR: // statesubjstr
+					if(M instanceof Rideable)
+						((Rideable) M).setStateStringSubject(old);
+					break;
+				case RIDERSTR: // riderstr
+					if(M instanceof Rideable)
+						((Rideable) M).setRideString(old);
 					break;
 				}
 			}
