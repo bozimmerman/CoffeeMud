@@ -49,6 +49,14 @@ public class Skill_RevealText extends StdSkill
 		return localizedName;
 	}
 
+	private final static String	localizedDisplay = CMLib.lang().L("(Revealing Text)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedDisplay;
+	}
+
 	@Override
 	protected int canAffectCode()
 	{

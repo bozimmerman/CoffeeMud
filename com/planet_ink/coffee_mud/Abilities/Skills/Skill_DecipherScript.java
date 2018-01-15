@@ -49,6 +49,14 @@ public class Skill_DecipherScript extends StdSkill
 		return localizedName;
 	}
 
+	private final static String	localizedDisplay = CMLib.lang().L("(Decipher Script)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedDisplay;
+	}
+
 	@Override
 	protected int canAffectCode()
 	{
