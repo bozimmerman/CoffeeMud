@@ -27,10 +27,10 @@ import javax.naming.OperationNotSupportedException;
  * and removes by copying the underlying CopyOnWriteArrayList whenever those
  * operations are done.
  */
-public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable, Iterable<T>, Collection<T>, CList<T>, RandomAccess
+public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CList<T>, RandomAccess
 {
 	private static final long	serialVersionUID	= 6687178785122561992L;
-	private List<T> me = Collections.synchronizedList(this);
+	private List<T> list = Collections.synchronizedList(new CopyOnWriteArrayList<T>());
 
 	public SVector()
 	{
@@ -65,7 +65,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		if (T != null)
 		{
 			for (; T.hasMoreElements();)
-				me.add(T.nextElement());
+				list.add(T.nextElement());
 		}
 	}
 
@@ -75,7 +75,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		if (T != null)
 		{
 			for (; T.hasNext();)
-				me.add(T.next());
+				list.add(T.next());
 		}
 	}
 
@@ -85,7 +85,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		if (T != null)
 		{
 			for (final T o : T)
-				me.add(o);
+				list.add(o);
 		}
 	}
 
@@ -94,7 +94,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		if (T != null)
 		{
 			for (; T.hasMoreElements();)
-				me.add(T.nextElement());
+				list.add(T.nextElement());
 		}
 	}
 
@@ -103,7 +103,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		if (T != null)
 		{
 			for (final T e : T)
-				me.add(e);
+				list.add(e);
 		}
 	}
 
@@ -112,7 +112,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		if (T != null)
 		{
 			for (; T.hasNext();)
-				me.add(T.next());
+				list.add(T.next());
 		}
 	}
 
@@ -121,7 +121,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		if (T != null)
 		{
 			for (; T.hasMoreElements();)
-				me.remove(T.nextElement());
+				list.remove(T.nextElement());
 		}
 	}
 
@@ -130,7 +130,7 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		if (T != null)
 		{
 			for (; T.hasNext();)
-				me.remove(T.next());
+				list.remove(T.next());
 		}
 	}
 
@@ -139,18 +139,18 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		if (T != null)
 		{
 			for (final T o : T)
-				me.remove(o);
+				list.remove(o);
 		}
 	}
 
 	public int capacity()
 	{
-		return me.size();
+		return list.size();
 	}
 
 	public Vector<T> toVector()
 	{
-		return new XVector<T>(me);
+		return new XVector<T>(list);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -159,30 +159,30 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		try
 		{
 			SVector<T> copy= (SVector<T>) clone();
-			copy.me = Collections.synchronizedList(copy);
+			copy.list = Collections.synchronizedList(copy);
 			return copy;
 		}
 		catch (final Exception e)
 		{
-			return new SVector<T>(me);
+			return new SVector<T>(list);
 		}
 	}
 
 	public void copyInto(Object[] anArray)
 	{
-		me.toArray(anArray);
+		list.toArray(anArray);
 	}
 
 	public T elementAt(int index)
 	{
-		return me.get(index);
+		return list.get(index);
 	}
 
 	public Enumeration<T> elements()
 	{
 		return new Enumeration<T>() 
 		{
-			final Iterator<T>	i	= me.iterator();
+			final Iterator<T>	i	= list.iterator();
 
 			@Override
 			public boolean hasMoreElements()
@@ -205,23 +205,23 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 
 	public T firstElement()
 	{
-		return (me.size() == 0) ? null : me.get(0);
+		return (list.size() == 0) ? null : list.get(0);
 	}
 
 	public T lastElement()
 	{
-		return (me.size() == 0) ? null : me.get(size() - 1);
+		return (list.size() == 0) ? null : list.get(size() - 1);
 	}
 
 	public void setElementAt(T obj, int index)
 	{
-		me.set(index, obj);
+		list.set(index, obj);
 	}
 
 	public void setSize(int newSize)
 	{
 		if (newSize == 0)
-			me.clear();
+			list.clear();
 		else
 			throw new IllegalArgumentException();
 	}
@@ -232,177 +232,177 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 
 	public void addElement(T obj)
 	{
-		me.add(obj);
+		list.add(obj);
 	}
 
 	public void insertElementAt(T obj, int index)
 	{
-		me.add(index, obj);
+		list.add(index, obj);
 	}
 
 	public void removeAllElements()
 	{
-		me.clear();
+		list.clear();
 	}
 
 	@Override
 	public int size()
 	{
-		return me.size();
+		return list.size();
 	}
 	
 	@Override
 	public boolean isEmpty()
 	{
-		return me.isEmpty();
+		return list.isEmpty();
 	}
 	
 	@Override
 	public boolean contains(Object o)
 	{
-		return me.contains(o);
+		return list.contains(o);
 	}
 	
 	@Override
 	public Iterator<T> iterator()
 	{
-		return me.iterator();
+		return list.iterator();
 	}
 	
 	@Override
 	public Object[] toArray()
 	{
-		return me.toArray();
+		return list.toArray();
 	}
 	
 	@SuppressWarnings("hiding")
 	@Override
 	public <T> T[] toArray(T[] a)
 	{
-		return me.toArray(a);
+		return list.toArray(a);
 	}
 	
 	@Override
 	public boolean add(T e)
 	{
-		return me.add(e);
+		return list.add(e);
 	}
 	
 	@Override
 	public boolean remove(Object o)
 	{
-		return me.remove(o);
+		return list.remove(o);
 	}
 	
 	@Override
 	public boolean containsAll(Collection<?> c)
 	{
-		return me.containsAll(c);
+		return list.containsAll(c);
 	}
 	
 	@Override
 	public boolean addAll(Collection<? extends T> c)
 	{
-		return me.addAll(c);
+		return list.addAll(c);
 	}
 	
 	@Override
 	public boolean addAll(int index, Collection<? extends T> c)
 	{
-		return me.addAll(c);
+		return list.addAll(c);
 	}
 	
 	@Override
 	public boolean removeAll(Collection<?> c)
 	{
-		return me.removeAll(c);
+		return list.removeAll(c);
 	}
 	
 	@Override
 	public boolean retainAll(Collection<?> c)
 	{
-		return me.retainAll(c);
+		return list.retainAll(c);
 	}
 	
 	@Override
 	public void clear()
 	{
-		me.clear();
+		list.clear();
 	}
 	
 	@Override
 	public boolean equals(Object o)
 	{
-		return me.equals(o);
+		return list.equals(o);
 	}
 	
 	@Override
 	public int hashCode()
 	{
-		return me.hashCode();
+		return list.hashCode();
 	}
 	
 	@Override
 	public T get(int index)
 	{
-		return me.get(index);
+		return list.get(index);
 	}
 	
 	@Override
 	public T set(int index, T element)
 	{
-		return me.set(index, element);
+		return list.set(index, element);
 	}
 	
 	@Override
 	public void add(int index, T element)
 	{
-		me.add(index,element);
+		list.add(index,element);
 	}
 	
 	@Override
 	public T remove(int index)
 	{
-		return me.remove(index);
+		return list.remove(index);
 	}
 	
 	@Override
 	public int indexOf(Object o)
 	{
-		return me.indexOf(o);
+		return list.indexOf(o);
 	}
 	
 	@Override
 	public int lastIndexOf(Object o)
 	{
-		return me.lastIndexOf(o);
+		return list.lastIndexOf(o);
 	}
 	
 	@Override
 	public ListIterator<T> listIterator()
 	{
-		return me.listIterator();
+		return list.listIterator();
 	}
 	
 	@Override
 	public ListIterator<T> listIterator(int index)
 	{
-		return me.listIterator(index);
+		return list.listIterator(index);
 	}
 	
 	@Override
 	public List<T> subList(int fromIndex, int toIndex)
 	{
-		return me.subList(fromIndex, toIndex);
+		return list.subList(fromIndex, toIndex);
 	}
 	
 	public boolean removeElement(Object obj)
 	{
-		return me.remove(obj);
+		return list.remove(obj);
 	}
 
 	public void removeElementAt(int index)
 	{
-		me.remove(index);
+		list.remove(index);
 	}
 }
