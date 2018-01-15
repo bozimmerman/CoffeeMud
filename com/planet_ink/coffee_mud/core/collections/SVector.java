@@ -30,7 +30,8 @@ import javax.naming.OperationNotSupportedException;
 public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CList<T>, RandomAccess
 {
 	private static final long	serialVersionUID	= 6687178785122561992L;
-	private List<T> list = Collections.synchronizedList(new CopyOnWriteArrayList<T>());
+	private CopyOnWriteArrayList<T> underList = new CopyOnWriteArrayList<T>();
+	private List<T> list = Collections.synchronizedList(underList);
 
 	public SVector()
 	{
@@ -159,7 +160,8 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		try
 		{
 			SVector<T> copy= (SVector<T>) clone();
-			copy.list = Collections.synchronizedList(copy);
+			copy.underList = (CopyOnWriteArrayList<T>)underList.clone();
+			copy.list = Collections.synchronizedList(copy.underList);
 			return copy;
 		}
 		catch (final Exception e)
