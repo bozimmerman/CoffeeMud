@@ -30,6 +30,7 @@ import javax.naming.OperationNotSupportedException;
 public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable, Iterable<T>, Collection<T>, CList<T>, RandomAccess
 {
 	private static final long	serialVersionUID	= 6687178785122561992L;
+	private List<T> me = Collections.synchronizedList(this);
 
 	public SVector()
 	{
@@ -41,145 +42,147 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		super();
 	}
 
-	public SVector(List<T> E)
+	public SVector(List<T> T)
 	{
 		super();
-		if (E != null)
-			this.addAll(E);
+		if (T != null)
+			this.addAll(T);
 	}
 
-	public SVector(T[] E)
+	public SVector(T[] T)
 	{
 		super();
-		if (E != null)
+		if (T != null)
 		{
-			for (final T o : E)
+			for (final T o : T)
 				add(o);
 		}
 	}
 
-	public SVector(Enumeration<T> E)
+	public SVector(Enumeration<T> T)
 	{
 		super();
-		if (E != null)
+		if (T != null)
 		{
-			for (; E.hasMoreElements();)
-				add(E.nextElement());
+			for (; T.hasMoreElements();)
+				me.add(T.nextElement());
 		}
 	}
 
-	public SVector(Iterator<T> E)
+	public SVector(Iterator<T> T)
 	{
 		super();
-		if (E != null)
+		if (T != null)
 		{
-			for (; E.hasNext();)
-				add(E.next());
+			for (; T.hasNext();)
+				me.add(T.next());
 		}
 	}
 
-	public SVector(Set<T> E)
+	public SVector(Set<T> T)
 	{
 		super();
-		if (E != null)
+		if (T != null)
 		{
-			for (final T o : E)
-				add(o);
+			for (final T o : T)
+				me.add(o);
 		}
 	}
 
-	public synchronized void addAll(Enumeration<T> E)
+	public void addAll(Enumeration<T> T)
 	{
-		if (E != null)
+		if (T != null)
 		{
-			for (; E.hasMoreElements();)
-				add(E.nextElement());
+			for (; T.hasMoreElements();)
+				me.add(T.nextElement());
 		}
 	}
 
-	public synchronized void addAll(T[] E)
+	public void addAll(T[] T)
 	{
-		if (E != null)
+		if (T != null)
 		{
-			for (final T e : E)
-				add(e);
+			for (final T e : T)
+				me.add(e);
 		}
 	}
 
-	public synchronized void addAll(Iterator<T> E)
+	public void addAll(Iterator<T> T)
 	{
-		if (E != null)
+		if (T != null)
 		{
-			for (; E.hasNext();)
-				add(E.next());
+			for (; T.hasNext();)
+				me.add(T.next());
 		}
 	}
 
-	public synchronized void removeAll(Enumeration<T> E)
+	public void removeAll(Enumeration<T> T)
 	{
-		if (E != null)
+		if (T != null)
 		{
-			for (; E.hasMoreElements();)
-				remove(E.nextElement());
+			for (; T.hasMoreElements();)
+				me.remove(T.nextElement());
 		}
 	}
 
-	public synchronized void removeAll(Iterator<T> E)
+	public void removeAll(Iterator<T> T)
 	{
-		if (E != null)
+		if (T != null)
 		{
-			for (; E.hasNext();)
-				remove(E.next());
+			for (; T.hasNext();)
+				me.remove(T.next());
 		}
 	}
 
-	public synchronized void removeAll(List<T> E)
+	public void removeAll(List<T> T)
 	{
-		if (E != null)
+		if (T != null)
 		{
-			for (final T o : E)
-				remove(o);
+			for (final T o : T)
+				me.remove(o);
 		}
 	}
 
 	public int capacity()
 	{
-		return size();
+		return me.size();
 	}
 
-	public synchronized Vector<T> toVector()
+	public Vector<T> toVector()
 	{
-		return new XVector<T>(this);
+		return new XVector<T>(me);
 	}
 
 	@SuppressWarnings("unchecked")
-	public synchronized SVector<T> copyOf()
+	public SVector<T> copyOf()
 	{
 		try
 		{
-			return (SVector<T>) clone();
+			SVector<T> copy= (SVector<T>) clone();
+			copy.me = Collections.synchronizedList(copy);
+			return copy;
 		}
 		catch (final Exception e)
 		{
-			return new SVector<T>(this);
+			return new SVector<T>(me);
 		}
 	}
 
-	public synchronized void copyInto(Object[] anArray)
+	public void copyInto(Object[] anArray)
 	{
-		toArray(anArray);
+		me.toArray(anArray);
 	}
 
-	public synchronized T elementAt(int index)
+	public T elementAt(int index)
 	{
-		return get(index);
+		return me.get(index);
 	}
 
-	public synchronized Enumeration<T> elements()
+	public Enumeration<T> elements()
 	{
 		return new Enumeration<T>() 
 		{
-			final Iterator<T>	i	= iterator();
+			final Iterator<T>	i	= me.iterator();
 
 			@Override
 			public boolean hasMoreElements()
@@ -195,60 +198,200 @@ public class SVector<T> extends CopyOnWriteArrayList<T> implements Serializable,
 		};
 	}
 
-	public synchronized void ensureCapacity(int minCapacity)
+	public void ensureCapacity(int minCapacity)
 	{
 		throw new IllegalArgumentException();
 	}
 
-	public synchronized T firstElement()
+	public T firstElement()
 	{
-		return (size() == 0) ? null : get(0);
+		return (me.size() == 0) ? null : me.get(0);
 	}
 
-	public synchronized T lastElement()
+	public T lastElement()
 	{
-		return (size() == 0) ? null : get(size() - 1);
+		return (me.size() == 0) ? null : me.get(size() - 1);
 	}
 
-	public synchronized void setElementAt(T obj, int index)
+	public void setElementAt(T obj, int index)
 	{
-		set(index, obj);
+		me.set(index, obj);
 	}
 
-	public synchronized void setSize(int newSize)
+	public void setSize(int newSize)
 	{
 		if (newSize == 0)
-			clear();
+			me.clear();
 		else
 			throw new IllegalArgumentException();
 	}
 
-	public synchronized void trimToSize()
+	public void trimToSize()
 	{
 	}
 
-	public synchronized void addElement(T obj)
+	public void addElement(T obj)
 	{
-		add(obj);
+		me.add(obj);
 	}
 
-	public synchronized void insertElementAt(T obj, int index)
+	public void insertElementAt(T obj, int index)
 	{
-		add(index, obj);
+		me.add(index, obj);
 	}
 
-	public synchronized void removeAllElements()
+	public void removeAllElements()
 	{
-		clear();
+		me.clear();
 	}
 
-	public synchronized boolean removeElement(Object obj)
+	@Override
+	public int size()
 	{
-		return remove(obj);
+		return me.size();
 	}
-
-	public synchronized void removeElementAt(int index)
+	
+	@Override
+	public boolean isEmpty()
 	{
-		remove(index);
+		return me.isEmpty();
+	}
+	
+	@Override
+	public boolean contains(Object o)
+	{
+		return me.contains(o);
+	}
+	
+	@Override
+	public Iterator<T> iterator()
+	{
+		return me.iterator();
+	}
+	
+	@Override
+	public Object[] toArray()
+	{
+		return me.toArray();
+	}
+	
+	@Override
+	public <T> T[] toArray(T[] a)
+	{
+		return me.toArray(a);
+	}
+	
+	@Override
+	public boolean add(T e)
+	{
+		return me.add(e);
+	}
+	
+	@Override
+	public boolean remove(Object o)
+	{
+		return me.remove(o);
+	}
+	
+	@Override
+	public boolean containsAll(Collection<?> c)
+	{
+		return me.containsAll(c);
+	}
+	
+	@Override
+	public boolean addAll(Collection<? extends T> c)
+	{
+		return me.addAll(c);
+	}
+	
+	@Override
+	public boolean addAll(int index, Collection<? extends T> c)
+	{
+		return me.addAll(c);
+	}
+	
+	@Override
+	public boolean removeAll(Collection<?> c)
+	{
+		return me.removeAll(c);
+	}
+	
+	@Override
+	public boolean retainAll(Collection<?> c)
+	{
+		return me.retainAll(c);
+	}
+	
+	@Override
+	public void clear()
+	{
+		me.clear();
+	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		return me.equals(o);
+	}
+	
+	@Override
+	public int hashCode()
+	{
+		return me.hashCode();
+	}
+	
+	@Override
+	public T get(int index)
+	{
+		return me.get(index);
+	}
+	
+	@Override
+	public T set(int index, T element)
+	{
+		return me.set(index, element);
+	}
+	
+	@Override
+	public void add(int index, T element)
+	{
+		me.add(index,element);
+	}
+	
+	@Override
+	public T remove(int index)
+	{
+		return me.remove(index);
+	}
+	
+	@Override
+	public int indexOf(Object o)
+	{
+		return me.indexOf(o);
+	}
+	
+	@Override
+	public int lastIndexOf(Object o)
+	{
+		return me.lastIndexOf(o);
+	}
+	
+	@Override
+	public ListIterator<T> listIterator()
+	{
+		return me.listIterator();
+	}
+	
+	@Override
+	public ListIterator<T> listIterator(int index)
+	{
+		return me.listIterator(index);
+	}
+	
+	@Override
+	public List<T> subList(int fromIndex, int toIndex)
+	{
+		return me.subList(fromIndex, toIndex);
 	}
 }
