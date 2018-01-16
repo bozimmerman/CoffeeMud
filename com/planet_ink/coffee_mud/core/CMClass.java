@@ -875,6 +875,18 @@ public class CMClass extends ClassLoader
 	}
 
 	/**
+	 * Returns the prototype instance of a locale object of the given ID from your
+	 * classloader
+	 * 
+	 * @param calledThis the ID() of the object to return
+	 * @return the prototype instance of a locale object of the given ID
+	 */
+	public static final Room getLocalePrototype(final String calledThis)
+	{
+		return (Room) getGlobal(c().locales, calledThis);
+	}
+
+	/**
 	 * Returns a reference to the prototype for the library of the given ID from
 	 * your classloader
 	 * 
