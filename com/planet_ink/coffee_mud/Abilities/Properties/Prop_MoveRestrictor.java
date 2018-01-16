@@ -49,6 +49,7 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 		return "Moving restrictor";
 	}
 
+	protected int			chance			= 100;
 	protected String		message			= L("<S-NAME> can`t go that way.");
 	protected boolean		publicMsg		= false;
 	protected int[]			noDomains		= new int[0];
@@ -64,6 +65,8 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 	{
 		return Ability.CAN_MOBS | Ability.CAN_ITEMS;
 	}
+	
+	protected PairList<String, String>	castings = new PairVector<String, String>();
 
 	@Override
 	public long flags()
@@ -77,12 +80,23 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 		return TriggeredAffect.TRIGGER_ENTER;
 	}
 
+	protected void addCasting(StringBuilder id, StringBuilder parms)
+	{
+		if(id.length()>0)
+		{
+			castings.add(new Pair<String,String>(id.toString(),parms.toString()));
+			id.setLength(0);
+			parms.setLength(0);
+		}
+	}
+	
 	@Override
 	public void setMiscText(String newText)
 	{
 		super.setMiscText(newText);
-		message				= L("<S-NAME> can`t go that way.");
-		publicMsg			= CMParms.getParmBool(newText, "PUBLIC", false);
+		message = L("<S-NAME> can`t go that way.");
+		chance = CMParms.getParmInt(newText, "CHANCE", 100);
+		publicMsg = CMParms.getParmBool(newText, "PUBLIC", false);
 		final List<Integer> lst = new ArrayList<Integer>();
 		lst.clear();
 		for(final String locals : CMParms.parseCommas(CMParms.getParmStr(newText, "NODOMAINS", ""), true))
@@ -129,7 +143,60 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 			if(s!=null)
 				onlyLocaleIDs.add(R.ID());
 		}
-		
+		final String cast=CMParms.getParmStr(newText, "CAST", "");
+		castings.clear();
+		if(cast.length()>0)
+		{
+			int state=0;
+			StringBuilder id=new StringBuilder("");
+			StringBuilder parms=new StringBuilder("");
+			for(int i=0;i<cast.length();i++)
+			{
+				switch(Character.toLowerCase(cast.charAt(i)))
+				{
+				case ' ':
+				case '\t':
+					if(state==1)
+						state=3;
+					break;
+				case '(':
+					if((state==1)||(state==3))
+						state=2;
+					break;
+				case ')':
+					if(state==2)
+					{
+						addCasting(id,parms);
+						state=0;
+					}
+					break;
+				default:
+					switch(state)
+					{
+					case 0:
+					case 1:
+						id.append(cast.charAt(i));
+						state=1;
+						break;
+					case 2:
+						parms.append(cast.charAt(i));
+						break;
+					case 3:
+						addCasting(id,parms);
+						id.append(cast.charAt(i));
+						state=1;
+						break;
+					}
+					break;
+				}
+			}
+			addCasting(id,parms);
+			for(int i=castings.size()-1;i>=0;i--)
+			{
+				if(CMClass.getAbilityPrototype(castings.getFirst(i))==null)
+					castings.remove(i);
+			}
+		}
 	}
 
 	@Override
@@ -163,11 +230,47 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 				&&(!onlyLocaleIDs.contains(R.ID())))
 			)
 			{
-				if(publicMsg)
-					R.show(msg.source(), null, CMMsg.MSG_OK_ACTION, message);
-				else
-					msg.source().tell(message);
-				return false;
+				if(CMLib.dice().rollPercentage()<chance)
+				{
+					if(publicMsg)
+						R.show(msg.source(), null, CMMsg.MSG_OK_ACTION, message);
+					else
+						msg.source().tell(message);
+					if(castings.size()>0)
+					{
+						CMLib.threads().scheduleRunnable(new Runnable(){
+							final MOB mob=msg.source();
+							
+							@Override
+							public void run()
+							{
+								Prop_SpellAdder adder=new Prop_SpellAdder(); 
+								final MOB qualMOB=adder.getInvokerMOB(affected,mob);
+								for(Pair<String,String> cast : castings)
+								{
+									final Ability A=CMClass.getAbility(cast.first);
+									if(A != null)
+									{
+										final List<String> cmds=CMParms.parse(cast.second);
+										if(affected instanceof Rideable)
+										{
+											Rideable R=(Rideable)affected;
+											for(int i=0;i<R.numRiders();i++)
+											{
+												Rider rM=R.fetchRider(i);
+												if(rM instanceof MOB)
+													A.invoke(qualMOB,cmds,rM,true,0);
+											}
+										}
+										else
+											A.invoke(qualMOB,cmds,mob,true,0);
+									}
+								}
+							}
+						}, 500);
+					}
+					return false;
+				}
 			}
 		}
 		return super.okMessage(myHost,msg);
