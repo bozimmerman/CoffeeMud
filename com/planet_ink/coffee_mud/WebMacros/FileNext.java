@@ -104,7 +104,7 @@ public class FileNext extends StdWebMacro
 		String lastID="";
 		for(int q=0;q<fileList.size();q++)
 		{
-			final String name=(String)fileList.elementAt(q);
+			final String name=fileList.elementAt(q);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!name.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("FILE",name);

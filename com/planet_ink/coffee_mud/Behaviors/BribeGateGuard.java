@@ -180,7 +180,7 @@ public class BribeGateGuard extends StdBehavior
 				H=new Hashtable<String,Double>();
 				notTheJournal.put(gates(),H);
 			}
-			Double D=(Double)H.get(mob.Name());
+			Double D=H.get(mob.Name());
 			if(D==null)
 			{
 				D=Double.valueOf(0.0);
@@ -235,7 +235,7 @@ public class BribeGateGuard extends StdBehavior
 			final Map<String,Double> H=notTheJournal.get(gates());
 			if(H==null)
 				return;
-			final Double D=(Double)H.get(mob.Name());
+			final Double D=H.get(mob.Name());
 			if(D==null)
 				return;
 			H.remove(mob.Name());
@@ -258,7 +258,7 @@ public class BribeGateGuard extends StdBehavior
 				H=new Hashtable<String,Double>();
 				notTheJournal.put(gates(),H);
 			}
-			final Double D=(Double)H.get(mob.Name());
+			final Double D=H.get(mob.Name());
 			if(D!=null)
 				H.remove(mob.Name());
 			H.put(mob.Name(),Double.valueOf(balance.getTotalValue()));

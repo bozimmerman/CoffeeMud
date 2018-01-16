@@ -899,7 +899,7 @@ public class GrinderMobs
 					{
 						if(CMath.isNumber(MATCHING)&&(inventory.size()>0))
 						{
-							final Environmental O=(Environmental)inventory.elementAt(CMath.s_int(MATCHING)-1);
+							final Environmental O=inventory.elementAt(CMath.s_int(MATCHING)-1);
 							if(O!=null)
 								SK.getShop().addStoreInventory(O,CMath.s_int(theparm),CMath.s_int(theprice));
 						}
