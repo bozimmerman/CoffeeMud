@@ -4329,7 +4329,9 @@ public class ListCmd extends StdCommand
 				String helpStr="";
 				if(help==null)
 					help=CMLib.help().getHelpText(A.name(),null,archon,true);
-				if((help!=null)&&(help.toString().startsWith("<ABILITY>")||help.toString().startsWith("Property")))
+				if((help!=null)&&(help.toString().startsWith("<ABILITY>")
+				||help.toString().startsWith("Property")
+				||help.toString().startsWith("Disease")))
 				{
 					helpStr=help.toString().substring(9);
 					while(helpStr.trim().startsWith(": "))
@@ -4385,6 +4387,8 @@ public class ListCmd extends StdCommand
 				String templateName = "SkillTemplate";
 				if((A.classificationCode()&Ability.ALL_ACODES)==(Ability.ACODE_PROPERTY))
 					templateName="PropertyTemplate";
+				if((A.classificationCode()&Ability.ALL_ACODES)==(Ability.ACODE_DISEASE))
+					templateName="DiseaseTemplate";
 				str.append("{{"+templateName
 						+ "|ID="+A.ID()
 						+ "|Name="+A.name()
