@@ -2177,7 +2177,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return maxPages+"/"+maxCharsPage;
 				}
 			},
-			new AbilityParmEditorImpl("RIDE_OVERRIDE_STRS","Ride Strings.",ParmType.SPECIAL)
+			new AbilityParmEditorImpl("RIDE_OVERRIDE_STRS","Ride Strings",ParmType.SPECIAL)
 			{
 				@Override
 				public int appliesToClass(Object o)
