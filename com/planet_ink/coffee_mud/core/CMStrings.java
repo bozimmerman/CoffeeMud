@@ -2071,6 +2071,21 @@ public class CMStrings
 			H.put(obj[i],Integer.valueOf(i));
 		return H;
 	}
+
+	/**
+	 * Given an array of objects, this method creates a map of those
+	 * objects to their ordinal numeric values, with a given opener.
+	 * @param obj the array of objects
+	 * @param firstInt the ordinal value to start with
+	 * @return a map of the objects and their ordinal numeric values.
+	 */
+	public final static Map<Object,Integer> makeNumericHash(final Object[] obj, final int firstInt)
+	{
+		final Hashtable<Object,Integer> H=new Hashtable<Object,Integer>();
+		for(int i=0;i<obj.length;i++)
+			H.put(obj[i],Integer.valueOf(i+firstInt));
+		return H;
+	}
 	
 	/**
 	 * Pads the string equally to the left and right with spaces until it is the 

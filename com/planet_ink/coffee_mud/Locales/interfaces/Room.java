@@ -125,6 +125,11 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		"SEAPORT"
 	};
 
+	/**
+	 * A map of outdoor domain descs strings to their ordinal integer
+	 */
+	public final static Map<Object,Integer> DOMAIN_OUTDOOR_MAP = CMStrings.makeNumericHash(DOMAIN_OUTDOOR_DESCS,0);
+	
 	/** Domain type mask denoting whether the room is indoors, and made of worked stone @see {@link Room#domainType()} */
 	public final static int DOMAIN_INDOORS_STONE=INDOORS+0;
 	/** Domain type mask denoting whether the room is indoors, and made of wood @see {@link Room#domainType()} */
@@ -155,6 +160,11 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		"METAL"
 	};
 
+	/**
+	 * A map of indoor domain descs strings to their ordinal integer
+	 */
+	public final static Map<Object,Integer> DOMAIN_INDOOR_MAP = CMStrings.makeNumericHash(DOMAIN_INDOORS_DESCS,INDOORS);
+			
 	/** a constant used in the Locale item search classes to filter on only items in rooms */
 	public static final Filterer<Environmental> FILTER_ROOMONLY=new Filterer<Environmental>()
 	{

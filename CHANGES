@@ -6,7 +6,7 @@
    5. MUDGrinder Statistic Report now has Areas Report, just like command line did.
    6. New Command and Property: Gait - similar to mood or pose, for your walk-around.
    7. Can now retrieve lost password from player access menu.
-   8. New Property: Banishment
+   8. New Properties: Banishment, Prop_MoveRestrictor
    9. ROMGangMember behavior messages now customizable.
   10. Scavenger behavior now allows an item zappermask to limit types of items picked up.
   11. New Disease: Writers Block.  Caused by frequently writing garbage.
