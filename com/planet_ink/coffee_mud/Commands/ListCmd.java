@@ -2340,6 +2340,31 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
+	public StringBuilder listCommandJournals(Session viewerS)
+	{
+		final StringBuilder buf=new StringBuilder("");
+		Enumeration<JournalsLibrary.CommandJournal> enumJ=CMLib.journals().commandJournals();
+		final List<JournalsLibrary.CommandJournal> journals=new XVector<JournalsLibrary.CommandJournal>(enumJ);
+
+		if(journals.size()==0)
+			buf.append(L("No command journals exits."));
+		else
+		{
+			final int COL_LEN1=CMLib.lister().fixColWidth(5.0,viewerS);
+			final int COL_LEN2=CMLib.lister().fixColWidth(30.0,viewerS);
+			buf.append("\n\r^xCommand Journals List:^.^N\n\r");
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Name"),COL_LEN2)+" Messages^.^N\n\r");
+			for(int i=0;i<journals.size();i++)
+			{
+				final JournalsLibrary.CommandJournal journal=journals.get(i);
+				final int messages=CMLib.database().DBCountJournal(journal.JOURNAL_NAME(),null,null);
+				buf.append(CMStrings.padRight(""+(i+1),COL_LEN1)+CMStrings.padRight(journal.NAME(),COL_LEN2)+" "+messages);
+				buf.append("^N\n\r");
+			}
+		}
+		return buf;
+	}
+
 	public StringBuilder listTicks(Session viewerS, String whichGroupStr)
 	{
 		final StringBuilder msg=new StringBuilder("\n\r");
@@ -3797,6 +3822,7 @@ public class ListCmd extends StdCommand
 		THIEFSKILLS("THIEFSKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		COMMON("COMMON",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		JOURNALS("JOURNALS",new SecFlag[]{SecFlag.JOURNALS}),
+		COMMANDJOURNALS("COMMANDJOURNALS",new SecFlag[]{SecFlag.JOURNALS}),
 		SKILLS("SKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		QUESTS("QUESTS",new SecFlag[]{SecFlag.CMDQUESTS}),
 		QUESTWINNERS("QUESTWINNERS",new SecFlag[]{SecFlag.CMDQUESTS}),
@@ -4994,6 +5020,9 @@ public class ListCmd extends StdCommand
 			break;
 		case JOURNALS:
 			s.println(listJournals(mob.session()).toString());
+			break;
+		case COMMANDJOURNALS:
+			s.println(listCommandJournals(mob.session()).toString());
 			break;
 		case SKILLS:
 			listAbilities(mob,s,commands,"Skill",Ability.ACODE_SKILL);
