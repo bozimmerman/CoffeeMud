@@ -1693,7 +1693,7 @@ public class Modify extends StdCommand
 			commandType=commands.get(1).toUpperCase();
 		if(commands.size()==1)
 		{
-			mob.tell(L("\n\rModify what?. Try an "+listOfThings()+"."));
+			mob.tell(L("\n\rModify what? Try an "+listOfThings()+"."));
 		}
 		if(commandType.equals("ITEM"))
 		{
