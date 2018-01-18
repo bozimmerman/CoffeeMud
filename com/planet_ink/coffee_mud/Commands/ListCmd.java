@@ -3573,7 +3573,7 @@ public class ListCmd extends StdCommand
 						final Item I=M.getItem(i);
 						if(I!=null)
 						{
-							buf.append("    ^I"+CMStrings.padRight(I.ID(),SCREEN_LEN1)
+							buf.append("    ^I"+CMStrings.padRight(I.ID(),SCREEN_LEN1-4)
 									+": "+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),SCREEN_LEN2)+": "
 									+CMStrings.padRight(I.phyStats().level()+"",SCREEN_LEN3)+": "
 									+"^N"+CMStrings.limit(((I.container()!=null)?I.container().Name():""),SCREEN_LIMIT)+"\n\r");
