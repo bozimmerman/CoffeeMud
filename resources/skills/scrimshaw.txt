@@ -17,7 +17,7 @@ Drinking Horn	4	10	4	5	GenDrink		100
 % Sword	11	20	6	320	GenWeapon	SWORD	10	
 % Statue	12	22	100	100	GenItem	STATUE		
 % Pipe	12	40	2	10	GenPipe		3	
-% Wand	12	30	4	3	GenWand			
+% Wand	12	30	4	3	GenWand		10	
 % Flail	13	40	15	692	GenWeapon	FLAILED	14	
 % Spear	14	20	6	408	GenSpear	THROWN	12	
 Ornate % Table	15	40	60	80	GenRideable	TABLE	200	

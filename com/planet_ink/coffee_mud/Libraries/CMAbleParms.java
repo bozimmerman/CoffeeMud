@@ -3351,6 +3351,33 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return ""+((Drink)I).liquidHeld();
 				}
 			},
+			new AbilityParmEditorImpl("MAX_WAND_USES","Max.",ParmType.NUMBER)
+			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					return (o instanceof Wand) ? 5 : -1;
+				}
+	
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "25";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(!(I instanceof Wand))
+						return "";
+					return ""+((Wand)I).maxUses();
+				}
+			},
 			new AbilityParmEditorImpl("WEAPON_CLASS","WClas",ParmType.CHOICES)
 			{
 				@Override
@@ -4027,6 +4054,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 	
+				@Override
+				public boolean confirmValue(String oldVal)
+				{
+					if(oldVal.trim().length()==0)
+						return true;
+					return CMath.isInteger(oldVal);
+				}
+
 				@Override
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{

@@ -73,7 +73,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tSTATUE||RIDE_BASIS||CONTAINER_TYPE_OR_LIDLOCK\t"
-		+"CONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";
+		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -484,6 +484,11 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 					((Drink)buildingI).setThirstQuenched(capacity*50);
 				((Drink)buildingI).setLiquidRemaining(0);
 			}
+		}
+		if((buildingI instanceof Wand)
+		&&(foundRecipe.get(RCP_CAPACITY).trim().length()>0))
+		{
+			((Wand)buildingI).setMaxUses(capacity);
 		}
 		if(bundling)
 			buildingI.setBaseValue(lostValue);

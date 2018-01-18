@@ -70,7 +70,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 	{ 
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
-		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tBASE_DAMAGE\t"
+		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tMAX_WAND_USES\tBASE_DAMAGE\t"
 		+"OPTIONAL_RESOURCE_OR_MATERIAL\tOPTIONAL_RESOURCE_OR_MATERIAL_AMT\tCODED_SPELL_LIST";
 	}
 
@@ -82,9 +82,10 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int	RCP_CLASSTYPE	= 5;
 	protected static final int	RCP_MAXRANGE	= 6;
 	protected static final int	RCP_ARMORDMG	= 7;
-	protected static final int	RCP_EXTRAREQ	= 8;
-	protected static final int	RCP_EXTRAREQAMT	= 9;
-	protected static final int	RCP_SPELL		= 10;
+	protected static final int	RCP_MAXUSES		= 8;
+	protected static final int	RCP_EXTRAREQ	= 9;
+	protected static final int	RCP_EXTRAREQAMT	= 10;
+	protected static final int	RCP_SPELL		= 11;
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -494,9 +495,13 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 				buildingI.basePhyStats().setLevel(1);
 			setBrand(mob, buildingI);
 			final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
+			final int maxuses=CMath.s_int(foundRecipe.get(RCP_MAXUSES));
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
 			addSpells(buildingI,spell);
+			if((buildingI instanceof Wand)
+			&&(foundRecipe.get(RCP_MAXUSES).trim().length()>0))
+				((Wand)buildingI).setMaxUses(maxuses);
 			if(buildingI instanceof Weapon)
 			{
 				buildingI.basePhyStats().setAttackAdjustment((baseYield()+abilityCode()+(hardness*5)-1));
