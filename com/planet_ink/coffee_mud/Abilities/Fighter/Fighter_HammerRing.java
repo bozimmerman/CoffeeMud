@@ -33,15 +33,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Fighter_Hammering extends FighterSkill implements HealthCondition
+public class Fighter_HammerRing extends FighterSkill implements HealthCondition
 {
 	@Override
 	public String ID()
 	{
-		return "Fighter_Hammering";
+		return "Fighter_HammerRing";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Hammering");
+	private final static String localizedName = CMLib.lang().L("HammerRing");
 
 	@Override
 	public String name()
@@ -57,7 +57,7 @@ public class Fighter_Hammering extends FighterSkill implements HealthCondition
 		return localizedStaticDisplay;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"HAMMERING"});
+	private static final String[] triggerStrings =I(new String[] {"HAMMERRING","HAMMERING"});
 	@Override
 	public int abstractQuality()
 	{

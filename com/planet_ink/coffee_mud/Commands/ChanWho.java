@@ -60,6 +60,11 @@ public class ChanWho extends StdCommand
 		{
 			mud=channel.substring(x+1);
 			final int channelInt=CMLib.channels().getChannelIndex(channel.substring(0,x).toUpperCase());
+			if(channelInt<0)
+			{
+				mob.tell(L("You must specify a valid channel name. Try CHANNELS for a list."));
+				return false;
+			}
 			channel=CMLib.channels().getChannel(channelInt).name().toUpperCase();
 			if((channel.length()==0)||(channelInt<0))
 			{
