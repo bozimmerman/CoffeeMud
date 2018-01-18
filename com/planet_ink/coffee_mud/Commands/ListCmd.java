@@ -3536,6 +3536,16 @@ public class ListCmd extends StdCommand
 		final int SCREEN_LEN1=CMLib.lister().fixColWidth(15.0,mob);
 		final int SCREEN_LEN2=CMLib.lister().fixColWidth(35.0,mob);
 		final int SCREEN_LEN3=CMLib.lister().fixColWidth(3.0,mob);
+		final int SCREEN_LIMIT=CMLib.lister().fixColWidth(22.0 - (2*3),mob);
+		buf.append("^N"+CMStrings.padRight("Class",SCREEN_LEN1)+": "+CMStrings.padRight("Display/Name",SCREEN_LEN2)+": "
+				+CMStrings.padRight("Lvl",SCREEN_LEN3)+": "
+				+CMStrings.limit("Align/Container",SCREEN_LIMIT)
+				+"^N\n\r");
+		buf.append("^N"+CMStrings.repeat('-',SCREEN_LEN1)+": "+CMStrings.repeat('-',SCREEN_LEN2)+": "
+				+CMStrings.repeat('-',SCREEN_LEN3)+": "
+				+CMStrings.repeat('-',SCREEN_LIMIT)
+				+"^N\n\r");
+		boolean first=true;
 		for(;roomsToDo.hasMoreElements();)
 		{
 			R=roomsToDo.nextElement();
@@ -3547,7 +3557,8 @@ public class ListCmd extends StdCommand
 			else
 			{
 				CMLib.database().DBReadContent(TR.roomID(),TR,false);
-				buf.append("\n\r^NRoomID: "+CMLib.map().getDescriptiveExtendedRoomID(TR)+"\n\r");
+				if(roomsToDo.hasMoreElements() || !first)
+					buf.append("\n\r^NRoomID: "+CMLib.map().getDescriptiveExtendedRoomID(TR)+"\n\r");
 				for(int m=0;m<TR.numInhabitants();m++)
 				{
 					final MOB M=TR.fetchInhabitant(m);
@@ -3555,7 +3566,7 @@ public class ListCmd extends StdCommand
 						continue;
 					buf.append("^M"+CMStrings.padRight(M.ID(),SCREEN_LEN1)+": "+CMStrings.padRight(M.displayText(),SCREEN_LEN2)+": "
 								+CMStrings.padRight(M.phyStats().level()+"",SCREEN_LEN3)+": "
-								+CMLib.flags().getAlignmentName(M)
+								+CMStrings.limit(CMLib.flags().getAlignmentName(M),SCREEN_LIMIT)
 								+"^N\n\r");
 					for(int i=0;i<M.numItems();i++)
 					{
@@ -3565,7 +3576,7 @@ public class ListCmd extends StdCommand
 							buf.append("    ^I"+CMStrings.padRight(I.ID(),SCREEN_LEN1)
 									+": "+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),SCREEN_LEN2)+": "
 									+CMStrings.padRight(I.phyStats().level()+"",SCREEN_LEN3)+": "
-									+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
+									+"^N"+CMStrings.limit(((I.container()!=null)?I.container().Name():""),SCREEN_LIMIT)+"\n\r");
 						}
 					}
 				}
@@ -3577,11 +3588,12 @@ public class ListCmd extends StdCommand
 						buf.append("^I"+CMStrings.padRight(I.ID(),SCREEN_LEN1)+": "
 								+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),SCREEN_LEN2)+": "
 								+CMStrings.padRight(I.phyStats().level()+"",SCREEN_LEN3)+": "
-								+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
+								+"^N"+CMStrings.limit(((I.container()!=null)?I.container().Name():""),SCREEN_LIMIT)+"\n\r");
 					}
 				}
 				TR.destroy();
 			}
+			first=false;
 		}
 		return buf;
 	}
