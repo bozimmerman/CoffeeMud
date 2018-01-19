@@ -47,7 +47,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 	{
 		super();
 		if (T != null)
-			this.addAll(T);
+			addAll(T);
 	}
 
 	public SVector(T[] T)
@@ -66,7 +66,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		if (T != null)
 		{
 			for (; T.hasMoreElements();)
-				list.add(T.nextElement());
+				add(T.nextElement());
 		}
 	}
 
@@ -76,7 +76,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		if (T != null)
 		{
 			for (; T.hasNext();)
-				list.add(T.next());
+				add(T.next());
 		}
 	}
 
@@ -86,7 +86,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		if (T != null)
 		{
 			for (final T o : T)
-				list.add(o);
+				add(o);
 		}
 	}
 
@@ -95,7 +95,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		if (T != null)
 		{
 			for (; T.hasMoreElements();)
-				list.add(T.nextElement());
+				add(T.nextElement());
 		}
 	}
 
@@ -104,7 +104,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		if (T != null)
 		{
 			for (final T e : T)
-				list.add(e);
+				add(e);
 		}
 	}
 
@@ -113,7 +113,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		if (T != null)
 		{
 			for (; T.hasNext();)
-				list.add(T.next());
+				add(T.next());
 		}
 	}
 
@@ -122,7 +122,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		if (T != null)
 		{
 			for (; T.hasMoreElements();)
-				list.remove(T.nextElement());
+				remove(T.nextElement());
 		}
 	}
 
@@ -131,7 +131,7 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		if (T != null)
 		{
 			for (; T.hasNext();)
-				list.remove(T.next());
+				remove(T.next());
 		}
 	}
 
@@ -140,13 +140,13 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 		if (T != null)
 		{
 			for (final T o : T)
-				list.remove(o);
+				remove(o);
 		}
 	}
 
 	public int capacity()
 	{
-		return list.size();
+		return size();
 	}
 
 	public Vector<T> toVector()
@@ -172,19 +172,19 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 
 	public void copyInto(Object[] anArray)
 	{
-		list.toArray(anArray);
+		toArray(anArray);
 	}
 
 	public T elementAt(int index)
 	{
-		return list.get(index);
+		return get(index);
 	}
 
 	public Enumeration<T> elements()
 	{
 		return new Enumeration<T>() 
 		{
-			final Iterator<T>	i	= list.iterator();
+			final Iterator<T>	i	= iterator();
 
 			@Override
 			public boolean hasMoreElements()
@@ -207,23 +207,23 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 
 	public T firstElement()
 	{
-		return (list.size() == 0) ? null : list.get(0);
+		return (size() == 0) ? null : get(0);
 	}
 
 	public T lastElement()
 	{
-		return (list.size() == 0) ? null : list.get(size() - 1);
+		return (size() == 0) ? null : get(size() - 1);
 	}
 
 	public void setElementAt(T obj, int index)
 	{
-		list.set(index, obj);
+		set(index, obj);
 	}
 
 	public void setSize(int newSize)
 	{
 		if (newSize == 0)
-			list.clear();
+			clear();
 		else
 			throw new IllegalArgumentException();
 	}
@@ -234,17 +234,17 @@ public class SVector<T> implements Serializable, Iterable<T>, Collection<T>, CLi
 
 	public void addElement(T obj)
 	{
-		list.add(obj);
+		add(obj);
 	}
 
 	public void insertElementAt(T obj, int index)
 	{
-		list.add(index, obj);
+		add(index, obj);
 	}
 
 	public void removeAllElements()
 	{
-		list.clear();
+		clear();
 	}
 
 	@Override
