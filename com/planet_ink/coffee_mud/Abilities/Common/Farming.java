@@ -278,6 +278,8 @@ public class Farming extends GatheringSkill
 		if((!auto)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_HILLS)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_PLAINS)
+		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
+		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_SWAMP))
 		{
 			commonTell(mob,L("The land is not suitable for farming here."));
