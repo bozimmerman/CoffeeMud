@@ -2709,7 +2709,6 @@ public class Test extends StdCommand
 						}
 					}
 				}
-				//TODO: come up with some tests for this.
 			}
 			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("notrandom")))
@@ -2720,6 +2719,105 @@ public class Test extends StdCommand
 				mob.tell(""+CMath.NotRandomHigh.nextDouble());
 			}
 
+			if((what.equalsIgnoreCase("all"))
+			||(what.equalsIgnoreCase("cmuniqsortsvec")))
+			{
+				final String[] tests=new String[]{
+					"Elvish",
+					"Fighter_FastSlinging",
+					"Common",
+					"Proficiency_Sling",
+					"Skill_Befriend",
+					"Skill_Haggle",
+					"Skill_Recall",
+					"Skill_Write",
+					"Song_Detection",
+					"Song_Nothing",
+					"Specialization_EdgedWeapon",
+					"SignLanguage",
+					"Song_Seeing",
+					"Specialization_EdgedWeapon",
+					"FireBuilding",
+					"Song_Valor",
+					"Specialization_EdgedWeapon",
+					"Fighter_FastSlinging",
+					"FireBuilding",
+					"Proficiency_Sling",
+					"FireBuilding",
+					"Song_Charm",
+					"Fighter_FastSlinging",
+					"FireBuilding",
+					"Proficiency_Sling",
+					"Specialization_Sword",
+					"Butchering",
+					"Skill_Befriend",
+					"Skill_Haggle",
+					"Song_Armor",
+					"Song_Babble",
+					"Song_Charm",
+					"Song_Seeing",
+					"FireBuilding",
+					"Play_Break",
+					"Play_Tempo",
+					"Skill_Befriend",
+					"Skill_Recall",
+					"Skill_Write",
+					"Song_Nothing",
+					"Specialization_Ranged",
+					"Fighter_FastSlinging",
+				};
+				for(int y=0;y<100;y++)
+				for(int x=0;x<100;x++)
+				{
+					final java.util.concurrent.atomic.AtomicInteger counter=new java.util.concurrent.atomic.AtomicInteger(0); 
+					final CMUniqSortSVec<Ability> vec = new CMUniqSortSVec<Ability>();
+					final int delayType = x/30;
+					for(int i=0;i<tests.length;i++)
+					{
+						final Ability A1=CMClass.getAbility(tests[i]);
+						if(delayType == 0)
+						{
+							final Ability A=A1;
+							if(vec.find(A.ID())==null)
+								vec.addElement(A);
+							counter.incrementAndGet();
+						}
+						else
+						CMLib.threads().executeRunnable(new Runnable(){
+							final Ability A=A1;
+							@Override
+							public void run()
+							{
+								if(delayType == 2)
+									CMLib.s_sleep(CMLib.dice().roll(1, 10, -1));
+								if(vec.find(A.ID())==null)
+									vec.addElement(A);
+								counter.incrementAndGet();
+							}
+						});
+					}
+					while(counter.get() < tests.length)
+						CMLib.s_sleep(10);
+					Set<String> found=new TreeSet<String>();
+					for(int i=0;i<vec.size();i++)
+						if(found.contains(vec.get(i).ID()))
+						{
+							mob.tell(L("Error28-1-"+i+"("+vec.get(i).ID()+")"));
+							return false;
+						}
+						else
+						{
+							found.add(vec.get(i).ID());
+						}
+					if(vec.size() != found.size())
+					{
+						mob.tell(L("Error28-2-"));
+						return false;
+					}
+				}
+				mob.tell(L("Dun"));
+			}
+			
 			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("clans")))
 			{
