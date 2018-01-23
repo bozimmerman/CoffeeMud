@@ -1879,6 +1879,18 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			visualCondition.append(staticL("\n\r^c@x1^c is in perfect condition.^N",name));
 	}
 
+	protected void cleanMsgForRepeat(CMMsg msg)
+	{
+		msg.setSourceCode(CMMsg.NO_EFFECT);
+		if(msg.trailerRunnables()!=null)
+			msg.trailerRunnables().clear();
+		if(msg.trailerMsgs()!=null)
+		{
+			for(CMMsg msg2 : msg.trailerMsgs())
+				cleanMsgForRepeat(msg2);
+		}
+	}
+	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -1894,11 +1906,12 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			if((msg.source().riding()==this)
 			||(msg.othersMessage()==null)
 			)
-				this.sendAreaMessage(msg, true);
+				sendAreaMessage(msg, true);
 			else
 			{
 				final CMMsg msg2=(CMMsg)msg.copyOf();
 				msg2.setOthersMessage(L("^HOff the deck you see: ^N")+msg.othersMessage());
+				cleanMsgForRepeat(msg2);
 				sendAreaMessage(msg2, true);
 			}
 		}

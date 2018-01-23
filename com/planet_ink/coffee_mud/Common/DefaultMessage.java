@@ -91,7 +91,20 @@ public class DefaultMessage implements CMMsg
 	{
 		try
 		{
-			return (DefaultMessage)this.clone();
+			final DefaultMessage msg = (DefaultMessage)this.clone();
+			if(msg.trailMsgs!=null)
+			{
+				msg.trailMsgs = new SLinkedList<CMMsg>();
+				for(CMMsg msg2 : trailMsgs)
+					msg.trailMsgs.add((CMMsg)msg2.copyOf());
+			}
+			if(msg.trailRunnables!=null)
+			{
+				msg.trailRunnables = new SLinkedList<Runnable>();
+				for(Runnable r : trailRunnables)
+					msg.trailRunnables.add(r);
+			}
+			return msg;
 		}
 		catch(final CloneNotSupportedException e)
 		{
