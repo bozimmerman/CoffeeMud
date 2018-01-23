@@ -380,15 +380,20 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		final List<String> VF=customer.fetchFactionRanges();
 		final String align=CMLib.flags().getAlignmentName(customer);
 		final String sex=customer.charStats().genderName();
+		final String className=customer.charStats().displayClassName();
+		final String raceName=customer.charStats().raceName();
+		final String raceCatName=customer.charStats().getMyRace().racialCategory();
+		final String displayClassName=customer.charStats().getCurrentClass().name(customer.charStats().getCurrentClassLevel());
 		for(int v=0;v<V.size();v++)
 		{
 			final String bit = V.elementAt(v);
 			if (CMath.s_double(bit) != 0.0)
 				d = CMath.s_double(bit);
-			if ((bit.equalsIgnoreCase(customer.charStats().getCurrentClass().name()))
-			||(bit.equalsIgnoreCase(customer.charStats().getCurrentClass().name(customer.charStats().getCurrentClassLevel())))
+			if ((bit.equalsIgnoreCase(className))
+			||(bit.equalsIgnoreCase(displayClassName))
 			||(bit.equalsIgnoreCase(sex))
-			||(bit.equalsIgnoreCase(customer.charStats().getMyRace().racialCategory()))
+			||(bit.equalsIgnoreCase(raceCatName))
+			||(bit.equalsIgnoreCase(raceName))
 			||(bit.equalsIgnoreCase(align)))
 			{
 				yes = true;
@@ -396,7 +401,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 			for (int vf = 0; vf < VF.size(); vf++)
 			{
-				if (bit.equalsIgnoreCase(V.elementAt(v)))
+				if (bit.equalsIgnoreCase(VF.get(vf)))
 				{
 					yes = true;
 					break;
