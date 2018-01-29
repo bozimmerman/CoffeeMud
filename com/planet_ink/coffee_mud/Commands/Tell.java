@@ -83,7 +83,7 @@ public class Tell extends StdCommand
 					if(S!=null)
 						S.snoopSuspension(1);
 					for(int i=V.size()-num;i<V.size();i++)
-						mob.tell(V.get(i));
+						mob.tell("^t"+V.get(i)+"^N^.");
 				}
 				finally
 				{
