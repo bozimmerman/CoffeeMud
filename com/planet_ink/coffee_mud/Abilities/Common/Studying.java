@@ -361,6 +361,12 @@ public class Studying extends CommonSkill implements AbilityContainer
 				teacherMA.setProficiency(100);
 				teacherM.addAbility(teacherMA);
 			}
+			String teachingAName=(teachingA!=null)?teachingA.name():L("something");
+			String doneMsgStr;
+			if(aborted)
+				doneMsgStr=L("<S-NAME> stop(s) learning @x1 from <T-NAME>.",teachingAName);
+			else
+				doneMsgStr=L("<S-NAME> <S-IS-ARE> done learning @x1 from <T-NAME>.",teachingAName);
 			try
 			{
 				if((teachingA != null)
@@ -393,14 +399,11 @@ public class Studying extends CommonSkill implements AbilityContainer
 			}
 			finally
 			{
+				mob.location().show(mob,teacherM,getActivityMessageType(),doneMsgStr);
 				if((teacherP instanceof Item)&&(!teacherM.isPlayer()))
 					teacherM.destroy();
 				this.teacherP=null;
 			}
-			if(aborted)
-				mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> stop(s) @x1.",verb));
-			else
-				mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> <S-IS-ARE> done @x1.",verb));
 			helping=false;
 			helpingAbility=null;
 		}
