@@ -491,6 +491,10 @@ public class StdContainer extends StdItem implements Container
 					if(I instanceof Drink)
 						return true;
 					break;
+				case CONTAIN_EATABLES:
+					if(I instanceof Food)
+						return true;
+					break;
 				case CONTAIN_CLOTHES:
 					if((I instanceof Armor)
 					&&(((Armor)I).fitsOn(Wearable.WORN_ABOUT_BODY)

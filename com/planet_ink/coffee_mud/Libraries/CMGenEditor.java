@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -590,6 +591,77 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 		}
+		if(oldVal.equals(newVal))
+			mob.tell(L("(no change)"));
+		return newVal;
+	}
+
+	@Override
+	public String promptMultiSelectList(MOB mob, String oldVal, String delimiter, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices, boolean nullOK)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return oldVal;
+		final Vector<String> oldVals = new Vector<String>();
+		for(String s : CMParms.parseAny(oldVal,delimiter,!nullOK))
+		{
+			if(choices.contains(s.toUpperCase().trim())&&(!oldVals.contains(s.toUpperCase().trim())))
+				oldVals.addElement(s);
+		}
+		if((showFlag!=showNumber)&&(showFlag>-999))
+		{
+			mob.tell(showNumber+". "+FieldDisp+": '"+CMParms.toListString(oldVals)+"'.");
+			return oldVal;
+		}
+		String thisVal="?";
+		while(thisVal.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
+		{
+			mob.tell(showNumber+". "+FieldDisp+": '"+CMParms.toListString(oldVals)+"'.");
+			thisVal=mob.session().prompt(L("Enter a new choice to add/remove (?):"),"").trim();
+			if(thisVal.equals("?"))
+				mob.tell(CMParms.toListString(choices.toArraySecond(new String[0])));
+			else
+			if(thisVal.equalsIgnoreCase("NULL") && nullOK)
+			{
+				oldVals.clear();
+				thisVal="?";
+			}
+			else
+			if(thisVal.trim().length()>0)
+			{
+				String foundChoice = null;
+				String foundVal = "";
+				for(int c=0;c<choices.size();c++)
+				{
+					if(choices.get(c).second.equalsIgnoreCase(thisVal))
+					{
+						foundChoice = choices.get(c).second;
+						foundVal = choices.get(c).first.toString();
+					}
+				}
+				if(foundChoice == null)
+				{
+					mob.tell(L("'@x1' is not an available option.  Use ? for a list.",thisVal));
+					thisVal = "?";
+				}
+				else
+				{
+					if(oldVals.contains(foundChoice))
+					{
+						oldVals.remove(foundChoice);
+						mob.tell(L("'@x1' removed.",foundChoice));
+						thisVal = "?";
+					}
+					else
+					{
+						oldVals.add(foundChoice);
+						mob.tell(L("'@x1' added.",foundChoice));
+						thisVal = "?";
+					}
+				}
+			}
+		}
+		String newVal=CMParms.combineWith(oldVals, "|");
 		if(oldVal.equals(newVal))
 			mob.tell(L("(no change)"));
 		return newVal;
@@ -8991,6 +9063,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genDisposition(mob,me.basePhyStats(),++showNumber,showFlag);
 			if(me instanceof Container)
 			{
+				genContainerTypes(mob,(Container)me,++showNumber,showFlag);
 				genCapacity(mob,(Container)me,++showNumber,showFlag);
 				genDoorsNLocks(mob,(Container)me,L("lid"),++showNumber,showFlag);
 			}

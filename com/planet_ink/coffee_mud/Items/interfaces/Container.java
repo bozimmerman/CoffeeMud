@@ -159,6 +159,8 @@ public interface Container extends Item, CloseableLockable
 	public static final int CONTAIN_FOOTWEAR=32768;
 	/** Container Type flag that means the container can hold raw resources */
 	public static final int CONTAIN_RAWMATERIALS=65536;
+	/** Container Type flag that means the container can hold foods */
+	public static final int CONTAIN_EATABLES=131072;
 	
 	/**
 	 * Ordinal list of the names of all the container bitmask types.
@@ -182,6 +184,7 @@ public interface Container extends Item, CloseableLockable
 												"SMOKEABLES",
 												"SS COMPONENTS",
 												"FOOTWEAR",
-												"RAWMATERIALS"
+												"RAWMATERIALS",
+												"EATABLES"
 												};
 }

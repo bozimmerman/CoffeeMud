@@ -350,7 +350,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 		if(amount>woodRequired)
 			woodRequired=amount;
-		final String misctype=foundRecipe.get(RCP_MISCTYPE);
+		final String misctype=foundRecipe.get(RCP_MISCTYPE).toUpperCase();
 		final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 		bundling=misctype.equalsIgnoreCase("BUNDLE");
 		final int[][] data=fetchFoundResourceData(mob,
@@ -374,7 +374,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			fireRequired=false;
 
 		final Session session=mob.session();
-		if((misctype.equalsIgnoreCase("statue"))
+		if((misctype.indexOf("STATUE")>=0)
 		&&(session!=null)
 		&&((statue==null)||(statue.trim().length()==0)))
 		{
@@ -441,7 +441,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		addSpells(buildingI,spell);
 
-		if((misctype.equalsIgnoreCase("statue"))
+		if((misctype.indexOf("STATUE")>=0)
 		&&(statue!=null)
 		&&(statue.trim().length()>0))
 		{
@@ -463,16 +463,15 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		if(buildingI instanceof Container)
 		{
 			((Container)buildingI).setCapacity(capacity+woodRequired);
-			if(misctype.equalsIgnoreCase("LID"))
-				((Container)buildingI).setDoorsNLocks(true,false,true,false,false,false);
-			else
-			if(misctype.equalsIgnoreCase("LOCK"))
+			if(misctype.indexOf("LOCK")>=0)
 			{
 				((Container)buildingI).setDoorsNLocks(true,false,true,true,false,true);
 				((Container)buildingI).setKeyName(Double.toString(Math.random()));
 			}
 			else
-				((Container)buildingI).setContainTypes(getContainerType(misctype));
+			if(misctype.indexOf("LID")>=0)
+				((Container)buildingI).setDoorsNLocks(true,false,true,false,false,false);
+			((Container)buildingI).setContainTypes(getContainerType(misctype));
 		}
 		if(buildingI instanceof Drink)
 		{

@@ -2446,15 +2446,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return str.toString();
 				}
 			},
-			new AbilityParmEditorImpl("CONTAINER_TYPE_OR_LIDLOCK","Con.",ParmType.MULTICHOICES)
+			new AbilityParmEditorImpl("CONTAINER_TYPE_OR_LIDLOCK","Con.",ParmType.SPECIAL)
 			{
 				@Override
 				public void createChoices() 
 				{
-					createBinaryChoices(Container.CONTAIN_DESCS);
+					super.choices = new PairVector<String,String>();
+					for(String s : Container.CONTAIN_DESCS)
+						choices().add(s.toUpperCase().trim(),s);
 					choices().add("LID","Lid");
 					choices().add("LOCK","Lock");
-					choices().add("","");
 				}
 	
 				@Override
@@ -2472,24 +2473,96 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
-					if(!(I instanceof Container))
-						return "";
-					final Container C=(Container)I;
-					if(C.hasALock())
-						return "LOCK";
-					if(C.hasADoor())
-						return "LID";
-					final StringBuilder str=new StringBuilder("");
-					for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
+					StringBuilder str=new StringBuilder("");
+					if(I instanceof Container)
 					{
-						if(CMath.isSet(C.containTypes(), i-1))
+						final Container C=(Container)I;
+						if(C.hasALock())
+							str.append("LOCK");
+						if(str.length()>0)
+							str.append("|");
+						if(C.hasADoor())
+							str.append("LID");
+						if(str.length()>0)
+							str.append("|");
+						for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
 						{
-							if(str.length()>0)
-								str.append("|");
-							str.append(Container.CONTAIN_DESCS[i]);
+							if(CMath.isSet(C.containTypes(), i-1))
+							{
+								if(str.length()>0)
+									str.append("|");
+								str.append(Container.CONTAIN_DESCS[i]);
+							}
 						}
 					}
 					return str.toString();
+				}
+				
+				@Override
+				public String[] fakeUserInput(String oldVal)
+				{
+					if(oldVal.trim().length()==0) 
+						return new String[]{"NULL"};
+					return CMParms.parseAny(oldVal,'|',true).toArray(new String[0]);
+				}
+				
+				@Override
+				public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					final String webValue = httpReq.getUrlParameter(fieldName);
+					if(webValue == null)
+						return oldVal;
+					String id="";
+					int index=0;
+					StringBuilder str=new StringBuilder("");
+					for(;httpReq.isUrlParameter(fieldName+id);id=""+(++index))
+					{
+						final String newVal = httpReq.getUrlParameter(fieldName+id);
+						if((newVal!=null)&&(newVal.length()>0)&&(choices().containsFirst(newVal)))
+							str.append(newVal).append("|");
+					}
+					return str.toString();
+				}
+				
+				@Override
+				public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag)
+				throws java.io.IOException
+				{
+					return CMLib.genEd().promptMultiSelectList(mob,oldVal,"|",++showNumber[0],showFlag,prompt(),choices(),false);
+				}
+				
+				@Override
+				public boolean confirmValue(String oldVal)
+				{
+					final List<String> webVals=CMParms.parseAny(oldVal.toUpperCase().trim(), "|", true);
+					for(String s : webVals)
+					{
+						if(!choices().containsFirst(s))
+							return false;
+					}
+					return true;
+				}
+				
+				@Override
+				public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					final String webValue = webValue(httpReq,parms,oldVal,fieldName);
+					final List<String> webVals=CMParms.parseAny(webValue.toUpperCase().trim(), "|", true);
+					String onChange = null;
+					onChange = " MULTIPLE ";
+					if(!parms.containsKey("NOSELECT"))
+						onChange+= "ONCHANGE=\"MultiSelect(this);\"";
+					StringBuilder str=new StringBuilder("");
+					str.append("\n\r<SELECT NAME="+fieldName+onChange+">");
+					for(int i=0;i<choices().size();i++)
+					{
+						final String option = (choices().get(i).first);
+						str.append("<OPTION VALUE=\""+option+"\" ");
+						if(webVals.contains(option))
+							str.append("SELECTED");
+						str.append(">"+(choices().get(i).second));
+					}
+					return str.toString()+"</SELECT>";
 				}
 			},
 			new AbilityParmEditorImpl("CODED_SPELL_LIST","Spell Affects",ParmType.SPECIAL)

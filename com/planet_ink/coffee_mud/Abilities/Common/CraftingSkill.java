@@ -207,17 +207,18 @@ public class CraftingSkill extends GatheringSkill
 	{
 		if(s.length()==0)
 			return 0;
-		if(CMath.isInteger(s))
-			return CMath.s_int(s);
 		long ret=0;
-		final String[] allTypes=s.split("|");
+		final String[] allTypes=CMParms.parseAny(s, "|", true).toArray(new String[0]);
 		for(final String splitS : allTypes)
 		{
-			final int bit=CMParms.indexOf(Container.CONTAIN_DESCS, splitS.toUpperCase().trim());
-			if(bit>0)
-				return 0;
+			if(CMath.isInteger(splitS))
+				ret = ret | CMath.s_int(splitS);
 			else
-				ret = ret | CMath.pow(2,(bit-1));
+			{
+				final int bit=CMParms.indexOf(Container.CONTAIN_DESCS, splitS.toUpperCase().trim());
+				if(bit>0)
+					ret = ret | CMath.pow(2,(bit-1));
+			}
 		}
 		return ret;
 	}
@@ -1277,19 +1278,20 @@ public class CraftingSkill extends GatheringSkill
 
 	protected void setRideBasis(Rideable rideable, String type)
 	{
-		if(type.equalsIgnoreCase("CHAIR"))
+		final List<String> basises=CMParms.parseAny(type.toUpperCase().trim(), '|', true);
+		if(basises.indexOf("CHAIR")>=0)
 			rideable.setRideBasis(Rideable.RIDEABLE_SIT);
 		else
-		if(type.equalsIgnoreCase("TABLE"))
+		if(basises.indexOf("TABLE")>=0)
 			rideable.setRideBasis(Rideable.RIDEABLE_TABLE);
 		else
-		if(type.equalsIgnoreCase("LADDER"))
+		if(basises.indexOf("LADDER")>=0)
 			rideable.setRideBasis(Rideable.RIDEABLE_LADDER);
 		else
-		if(type.equalsIgnoreCase("ENTER"))
+		if(basises.indexOf("ENTER")>=0)
 			rideable.setRideBasis(Rideable.RIDEABLE_ENTERIN);
 		else
-		if(type.equalsIgnoreCase("BED"))
+		if(basises.indexOf("BED")>=0)
 			rideable.setRideBasis(Rideable.RIDEABLE_SLEEP);
 	}
 
