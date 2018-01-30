@@ -3275,13 +3275,16 @@ public class StdMOB implements MOB
 					&&(!CMSecurity.isDisabled(DisFlag.AUTODISEASE)))
 					{
 						final String msgStr =msg.targetMessage().trim();
-						if((msgStr.length()>10)
-						&&(CMLib.dice().rollPercentage()<10)
-						&&(CMLib.dice().rollPercentage()>CMLib.english().probabilityOfBeingEnglish(msgStr)))
+						if(msgStr.length()>10)
 						{
-							final Ability A=CMClass.getAbility("Disease_WritersBlock");
-							if((A!=null)&&(fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
-								A.invoke(this, this, true, 0);
+							final int chc=30 + (((msg.target() instanceof Book)&&((Book)msg.target()).isJournal())?30:0);
+							if((CMLib.dice().rollPercentage()<chc)
+							&&(CMLib.dice().rollPercentage()>CMLib.english().probabilityOfBeingEnglish(msgStr)))
+							{
+								final Ability A=CMClass.getAbility("Disease_WritersBlock");
+								if((A!=null)&&(fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+									A.invoke(this, this, true, 0);
+							}
 						}
 					}
 					break;
