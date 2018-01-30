@@ -607,7 +607,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 		}
 		List<String> name = new XVector<String>(commands.remove(0));
 		final String skillName = CMParms.combine(commands);
-		Physical target = super.getAnyTarget(mob, new XVector<String>(name), givenTarget, Wearable.FILTER_UNWORNONLY);
+		Physical target = super.getAnyTarget(mob, new XVector<String>(name), givenTarget, Wearable.FILTER_UNWORNONLY,false,true);
 		final Ability A;
 		final int teacherClassLevel;
 		final int teacherQualifyingLevel;
