@@ -9604,7 +9604,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final int oldLevel=me.basePhyStats().level();
 			genLevel(mob,me,++showNumber,showFlag);
 			if((oldLevel<2)&&(me.basePhyStats().level()>1))
+			{
 				CMLib.leveler().fillOutMOB(me,me.basePhyStats().level());
+				mob.tell("^XCombat stats rescored.^.^N");
+			}
 			genRejuv(mob,me,++showNumber,showFlag);
 			genRace(mob,me,++showNumber,showFlag);
 			CMLib.factions().updatePlayerFactions(me,me.location(), false);
@@ -10122,7 +10125,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final int oldLevel=M.basePhyStats().level();
 			genLevel(mob,M,++showNumber,showFlag);
 			if((oldLevel<2)&&(M.basePhyStats().level()>1))
+			{
 				CMLib.leveler().fillOutMOB(M,M.basePhyStats().level());
+				mob.tell("^XCombat stats rescored.^.^N");
+			}
 			genRejuv(mob,M,++showNumber,showFlag);
 			genRace(mob,M,++showNumber,showFlag);
 			genHeight(mob,M,++showNumber,showFlag);
