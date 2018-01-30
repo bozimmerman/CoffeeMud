@@ -52,6 +52,7 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 	protected int			chance			= 100;
 	protected String		message			= L("<S-NAME> can`t go that way.");
 	protected boolean		publicMsg		= false;
+	protected boolean		dismount		= false;
 	protected int[]			noDomains		= new int[0];
 	protected int[]			onlyDomains		= new int[0];
 	protected String		restrictKeyword	= "";
@@ -97,6 +98,7 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 		message = L("<S-NAME> can`t go that way.");
 		chance = CMParms.getParmInt(newText, "CHANCE", 100);
 		publicMsg = CMParms.getParmBool(newText, "PUBLIC", false);
+		dismount = CMParms.getParmBool(newText, "DISMOUNT", false);
 		final List<Integer> lst = new ArrayList<Integer>();
 		lst.clear();
 		for(final String locals : CMParms.parseCommas(CMParms.getParmStr(newText, "NODOMAINS", ""), true))
@@ -236,6 +238,19 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 						R.show(msg.source(), null, CMMsg.MSG_OK_ACTION, message);
 					else
 						msg.source().tell(message);
+					if(dismount)
+					{
+						if(affected instanceof Rideable)
+						{
+							Rideable rI=(Rideable)affected;
+							List<Rider> riders=new XVector<Rider>(rI.riders());
+							for(Rider rR : riders)
+								rR.setRiding(null);
+						}
+						else
+						if(affected instanceof Rider)
+							((Rider)affected).setRiding(null);
+					}
 					if(castings.size()>0)
 					{
 						CMLib.threads().scheduleRunnable(new Runnable(){
