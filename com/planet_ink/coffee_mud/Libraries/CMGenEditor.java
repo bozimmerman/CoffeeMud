@@ -9606,7 +9606,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((oldLevel<2)&&(me.basePhyStats().level()>1))
 			{
 				CMLib.leveler().fillOutMOB(me,me.basePhyStats().level());
-				mob.tell("^XCombat stats rescored.^.^N");
+				mob.tell("^ZCombat stats rescored.^.^N");
 			}
 			genRejuv(mob,me,++showNumber,showFlag);
 			genRace(mob,me,++showNumber,showFlag);
@@ -10127,7 +10127,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((oldLevel<2)&&(M.basePhyStats().level()>1))
 			{
 				CMLib.leveler().fillOutMOB(M,M.basePhyStats().level());
-				mob.tell("^XCombat stats rescored.^.^N");
+				mob.tell("^ZCombat stats rescored.^.^N");
 			}
 			genRejuv(mob,M,++showNumber,showFlag);
 			genRace(mob,M,++showNumber,showFlag);
