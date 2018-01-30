@@ -115,7 +115,8 @@ public class Fighter_SmokeSignals extends FighterSkill
 		&&(msg.sourceMinor()==CMMsg.NO_EFFECT)
 		&&(msg.targetMinor()==CMMsg.NO_EFFECT)
 		&&(msg.targetMessage()!=null)
-		&&(msg.othersMessage()!=null))
+		&&(msg.othersMessage()!=null)
+		&&(CMLib.flags().canBeSeenBy(((MOB)affected).location(), (MOB)affected)))
 			msg.addTrailerMsg(CMClass.getMsg((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,L("The smoke signals seem to say '@x1'.",msg.targetMessage()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		super.executeMsg(myHost,msg);
 	}
