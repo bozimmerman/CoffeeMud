@@ -12525,34 +12525,41 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((!mob.amDead())&&canTrigger(16))
 				{
 					int targetTick=-1;
-					if(delayTargetTimes.containsKey(Integer.valueOf(thisScriptIndex)))
-						targetTick=delayTargetTimes.get(Integer.valueOf(thisScriptIndex)).intValue();
-					else
+					final Integer thisScriptIndexI=Integer.valueOf(thisScriptIndex);
+					boolean exec=false;
+					synchronized(delayTargetTimes)
 					{
-						if(t==null)
-							t=parseBits(script,0,"CCR");
-						if(t!=null)
+						if(delayTargetTimes.containsKey(thisScriptIndexI))
+							targetTick=delayTargetTimes.get(thisScriptIndexI).intValue();
+						else
 						{
-							final int low=CMath.s_int(t[1]);
-							int high=CMath.s_int(t[2]);
-							if(high<low)
-								high=low;
-							targetTick=CMLib.dice().roll(1,high-low+1,low-1);
-							delayTargetTimes.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(targetTick));
+							if(t==null)
+								t=parseBits(script,0,"CCR");
+							if(t!=null)
+							{
+								final int low=CMath.s_int(t[1]);
+								int high=CMath.s_int(t[2]);
+								if(high<low)
+									high=low;
+								targetTick=CMLib.dice().roll(1,high-low+1,low-1);
+								delayTargetTimes.put(thisScriptIndexI,Integer.valueOf(targetTick));
+							}
 						}
+						int delayProgCounter=0;
+						if(delayProgCounters.containsKey(thisScriptIndexI))
+							delayProgCounter=delayProgCounters.get(thisScriptIndexI).intValue();
+						else
+							delayProgCounters.put(thisScriptIndexI,Integer.valueOf(0));
+						if(delayProgCounter==targetTick)
+						{
+							exec=true;
+							delayProgCounter=-1;
+						}
+						delayProgCounters.remove(thisScriptIndexI);
+						delayProgCounters.put(thisScriptIndexI,Integer.valueOf(delayProgCounter+1));
 					}
-					int delayProgCounter=0;
-					if(delayProgCounters.containsKey(Integer.valueOf(thisScriptIndex)))
-						delayProgCounter=delayProgCounters.get(Integer.valueOf(thisScriptIndex)).intValue();
-					else
-						delayProgCounters.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(0));
-					if(delayProgCounter==targetTick)
-					{
+					if(exec)
 						execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
-						delayProgCounter=-1;
-					}
-					delayProgCounters.remove(Integer.valueOf(thisScriptIndex));
-					delayProgCounters.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(delayProgCounter+1));
 				}
 				break;
 			case 7: // fightProg
