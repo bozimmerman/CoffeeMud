@@ -81,7 +81,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected Tickable				altStatusTickable= null;
 	protected List<DVector>			oncesDone		 = new Vector<DVector>();
 	protected Map<Integer,Integer>	delayTargetTimes = new Hashtable<Integer,Integer>();
-	protected Map<Integer,Integer>	delayProgCounters= new Hashtable<Integer,Integer>();
+	protected Map<Integer,int[]>	delayProgCounters= new Hashtable<Integer,int[]>();
 	protected Map<Integer,Integer>	lastTimeProgsDone= new Hashtable<Integer,Integer>();
 	protected Map<Integer,Integer>	lastDayProgsDone = new Hashtable<Integer,Integer>();
 	protected Set<Integer>			registeredEvents = new HashSet<Integer>();
@@ -631,7 +631,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		altStatusTickable= null;
 		oncesDone = new Vector<DVector>();
 		delayTargetTimes = new Hashtable<Integer,Integer>();
-		delayProgCounters= new Hashtable<Integer,Integer>();
+		delayProgCounters= new Hashtable<Integer,int[]>();
 		lastTimeProgsDone= new Hashtable<Integer,Integer>();
 		lastDayProgsDone = new Hashtable<Integer,Integer>();
 		registeredEvents = new HashSet<Integer>();
@@ -12526,8 +12526,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					int targetTick=-1;
 					final Integer thisScriptIndexI=Integer.valueOf(thisScriptIndex);
-					boolean exec=false;
-					synchronized(delayTargetTimes)
+					final int[] delayProgCounter;
+					synchronized(thisScriptIndexI)
 					{
 						if(delayTargetTimes.containsKey(thisScriptIndexI))
 							targetTick=delayTargetTimes.get(thisScriptIndexI).intValue();
@@ -12545,18 +12545,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								delayTargetTimes.put(thisScriptIndexI,Integer.valueOf(targetTick));
 							}
 						}
-						int delayProgCounter=0;
 						if(delayProgCounters.containsKey(thisScriptIndexI))
-							delayProgCounter=delayProgCounters.get(thisScriptIndexI).intValue();
+							delayProgCounter=delayProgCounters.get(thisScriptIndexI);
 						else
-							delayProgCounters.put(thisScriptIndexI,Integer.valueOf(0));
-						if(delayProgCounter==targetTick)
+						{
+							delayProgCounter=new int[]{0};
+							delayProgCounters.put(thisScriptIndexI,delayProgCounter);
+						}
+					}
+					boolean exec=false;
+					synchronized(delayProgCounter)
+					{
+						if(delayProgCounter[0]>=targetTick)
 						{
 							exec=true;
-							delayProgCounter=-1;
+							delayProgCounter[0]=0;
 						}
-						delayProgCounters.remove(thisScriptIndexI);
-						delayProgCounters.put(thisScriptIndexI,Integer.valueOf(delayProgCounter+1));
+						else
+							delayProgCounter[0]++;
 					}
 					if(exec)
 						execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
