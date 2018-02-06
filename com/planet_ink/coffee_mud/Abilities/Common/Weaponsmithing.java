@@ -474,7 +474,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 													enhancedTypes);
 			if(data==null)
 				return false;
-			fixDataForComponents(data,woodRequiredStr,autoGenerate>0,componentsFoundList);;
+			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

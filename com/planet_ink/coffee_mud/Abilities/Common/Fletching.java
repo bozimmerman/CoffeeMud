@@ -397,7 +397,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 													  enhancedTypes);
 			if(data==null)
 				return false;
-			fixDataForComponents(data,woodRequiredStr,autoGenerate>0,componentsFoundList);;
+			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			if(((data[1][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 			||((data[1][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
