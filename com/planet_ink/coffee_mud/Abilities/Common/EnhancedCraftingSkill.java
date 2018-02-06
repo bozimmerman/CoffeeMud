@@ -184,12 +184,43 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				bundle,autoGeneration,expMods);
 	}
 
-	public void fixDataForComponents(int[][] data, List<Object> componentsFoundList)
+	public void fixDataForComponents(int[][] data, String woodRequiredStr, boolean autoGeneration, List<Object> componentsFoundList)
 	{
+		boolean emptyComponents=false;
 		if((componentsFoundList==null)||(componentsFoundList.size()==0))
-			return;
+		{
+			emptyComponents=true;
+			if(componentsFoundList==null)
+				componentsFoundList=new ArrayList<Object>();
+			final List<AbilityComponent> componentsRequirements=getNonStandardComponentRequirements(woodRequiredStr);
+			if(componentsRequirements!=null)
+			{
+				final List<Item> components=CMLib.ableComponents().componentsSample(componentsRequirements, true);
+				if(components != null)
+					componentsFoundList.addAll(components);
+			}
+		}
 
-		if((data[0][FOUND_CODE]==0)&&(data[1][FOUND_CODE]==0))
+		if(autoGeneration)
+		{
+			List<Integer> compInts=new ArrayList<Integer>();
+			for(final Object o : componentsFoundList)
+			{
+				if(o instanceof Item)
+				{
+					final Item I=(Item)o;
+					compInts.add(Integer.valueOf(I.material()));
+					data[0][FOUND_AMT] += I.phyStats().weight();
+				}
+			}
+			if(compInts.size()>0)
+			{
+				Collections.sort(compInts);
+				data[0][FOUND_CODE]=compInts.get((int)Math.round(Math.floor(compInts.size()/2))).intValue();
+			}
+		}
+		else
+		if(((data[0][FOUND_CODE]==0)&&(data[1][FOUND_CODE]==0)))
 		{
 			final List<Integer> rscs=myResources();
 			for(final Object o : componentsFoundList)
@@ -205,20 +236,36 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					}
 				}
 			}
-			if(data[0][FOUND_CODE]!=0)
-				return;
-			List<Integer> compInts=new ArrayList<Integer>();
+			if(data[0][FOUND_CODE]==0)
+			{
+				List<Integer> compInts=new ArrayList<Integer>();
+				for(final Object o : componentsFoundList)
+				{
+					if(o instanceof Item)
+					{
+						final Item I=(Item)o;
+						compInts.add(Integer.valueOf(I.material()));
+						data[0][FOUND_AMT] += I.phyStats().weight();
+					}
+				}
+				if(compInts.size()>0)
+				{
+					Collections.sort(compInts);
+					data[0][FOUND_CODE]=compInts.get((int)Math.round(Math.floor(compInts.size()/2))).intValue();
+				}
+			}
+		}
+		if(emptyComponents)
+		{
 			for(final Object o : componentsFoundList)
 			{
 				if(o instanceof Item)
 				{
 					final Item I=(Item)o;
-					compInts.add(Integer.valueOf(I.material()));
-					data[0][FOUND_AMT] += I.phyStats().weight();
+					I.destroy();
 				}
 			}
-			Collections.sort(compInts);
-			data[0][FOUND_CODE]=compInts.get((int)Math.round(Math.floor(compInts.size()/2))).intValue();
+			componentsFoundList.clear();
 		}
 	}
 

@@ -807,7 +807,26 @@ public class CraftingSkill extends GatheringSkill
 			List<Integer> rscs=myResources();
 			if(rscs.size()==0)
 				rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
-			final int material=RawMaterial.CODES.MOST_FREQUENT(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK);
+			final int material;
+			switch(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)
+			{
+			case RawMaterial.MATERIAL_CLOTH:
+				material = RawMaterial.RESOURCE_COTTON;
+				break;
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL:
+				material = RawMaterial.RESOURCE_IRON;
+				break;
+			case RawMaterial.MATERIAL_WOODEN:
+				material = RawMaterial.RESOURCE_WOOD;
+				break;
+			case RawMaterial.MATERIAL_ROCK:
+				material = RawMaterial.RESOURCE_STONE;
+				break;
+			default:
+				material=RawMaterial.CODES.MOST_FREQUENT(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK);
+				break;
+			}
 			ItemKeyPair pair = craftItem(mob,recipe,material,false);
 			if(pair == null)
 			{
@@ -1321,22 +1340,31 @@ public class CraftingSkill extends GatheringSkill
 		return true;
 	}
 
+	protected List<AbilityComponent> getNonStandardComponentRequirements(String woodRequiredStr)
+	{
+		final List<AbilityComponent> componentsRequirements;
+		if(woodRequiredStr==null)
+			componentsRequirements=null;
+		else
+		if(woodRequiredStr.trim().startsWith("("))
+		{
+			final Map<String, List<AbilityComponent>> H=new TreeMap<String, List<AbilityComponent>>();
+			final String error=CMLib.ableComponents().addAbilityComponent("ID="+woodRequiredStr, H);
+			if(error!=null)
+				Log.errOut(ID(),"Error parsing custom component: "+woodRequiredStr);
+			componentsRequirements=H.get("ID");
+		}
+		else
+			componentsRequirements=CMLib.ableComponents().getAbilityComponentMap().get(woodRequiredStr.toUpperCase());
+		return componentsRequirements;
+	}
+	
 	public List<Object> getAbilityComponents(MOB mob, String componentID, String doingWhat, int autoGenerate, int[] compData)
 	{
 		if(autoGenerate>0)
 			return new LinkedList<Object>();
 
-		final List<AbilityComponent> componentsRequirements;
-		if(componentID.trim().startsWith("("))
-		{
-			final Map<String, List<AbilityComponent>> H=new TreeMap<String, List<AbilityComponent>>();
-			final String error=CMLib.ableComponents().addAbilityComponent("ID="+componentID, H);
-			if(error!=null)
-				Log.errOut(ID(),"Error parsing custom component: "+componentID);
-			componentsRequirements=H.get("ID");
-		}
-		else
-			componentsRequirements=CMLib.ableComponents().getAbilityComponentMap().get(componentID.toUpperCase());
+		final List<AbilityComponent> componentsRequirements=getNonStandardComponentRequirements(componentID);
 		if(componentsRequirements!=null)
 		{
 			final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements, true);

@@ -58,6 +58,18 @@ public interface AbilityComponents extends CMLibrary
 	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req, boolean mithrilOK);
 	
 	/**
+	 * Returns a very dirty approximate of a sample of what components appear
+	 * to be required.  Named items are not required, but raw material components
+	 * are created, and most rules are ignored in order to generate as many as
+	 * possible.
+	 * @see AbilityComponents#getAbilityComponents(String)
+	 * @param req the ability components rules definition
+	 * @param mithrilOK true to allow mithril as a metal substitute
+	 * @return a list of sample items
+	 */
+	public List<Item> componentsSample(List<AbilityComponent> req, boolean mithrilOK);
+	
+	/**
 	 * If the ability component recipe used to build the list of found
 	 * components needed to use a skill requires that any of the componenets
 	 * are destroyed.

@@ -513,7 +513,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 													enhancedTypes);
 			if(data==null)
 				return false;
-			fixDataForComponents(data,componentsFoundList);
+			fixDataForComponents(data,woodRequiredStr,autoGenerate>0,componentsFoundList);;
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;

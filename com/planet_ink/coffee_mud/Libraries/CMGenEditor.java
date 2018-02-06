@@ -630,14 +630,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(thisVal.trim().length()>0)
 			{
 				String foundChoice = null;
-				String foundVal = "";
 				for(int c=0;c<choices.size();c++)
 				{
 					if(choices.get(c).second.equalsIgnoreCase(thisVal))
-					{
 						foundChoice = choices.get(c).second;
-						foundVal = choices.get(c).first.toString();
-					}
 				}
 				if(foundChoice == null)
 				{
