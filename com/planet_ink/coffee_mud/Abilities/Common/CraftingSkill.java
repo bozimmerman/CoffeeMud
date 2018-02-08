@@ -401,7 +401,7 @@ public class CraftingSkill extends GatheringSkill
 				String ableID=rawV.get(s);
 				if(ableID.startsWith("-"))
 				{
-					rawV.remove(ableID);
+					rawV.remove(s);
 					Ability oldA=P.fetchEffect(ableID.substring(1));
 					if(oldA!=null)
 					{
