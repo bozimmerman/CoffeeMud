@@ -1447,12 +1447,17 @@ public class StdAbility implements Ability
 			if(((int)Math.round(Math.sqrt((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)))*34.0*Math.random()))>=currentProficiency)
 			{
 				final int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,A);
-				final float fatigueFactor=(mob.curState().getFatigue() > CharState.FATIGUED_MILLIS ? 50.0f : 100.0f);
-				final int maxLevel=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
-				final double adjustedChance=fatigueFactor * CMath.div((maxLevel+1-qualLevel),((2*maxLevel)+(10*qualLevel)));
+				final double adjustedChance;
 				if((qualLevel<0)
-				||(qualLevel>30)
-				||(CMLib.dice().rollPercentage()<Math.round(adjustedChance)))
+				||(qualLevel>30))
+					adjustedChance=100.1;
+				else
+				{
+					final float fatigueFactor=(mob.curState().getFatigue() > CharState.FATIGUED_MILLIS ? 50.0f : 100.0f);
+					final int maxLevel=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
+					adjustedChance=fatigueFactor * CMath.div((maxLevel+1-qualLevel),((2*maxLevel)+(10*qualLevel)));
+				}
+				if(CMLib.dice().rollPercentage()<Math.round(adjustedChance))
 				{
 					// very important, since these can be autoinvoked affects (copies)!
 					A.setProficiency(A.proficiency()+1);
