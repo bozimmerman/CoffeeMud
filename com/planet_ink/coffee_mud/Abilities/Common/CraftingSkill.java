@@ -392,26 +392,16 @@ public class CraftingSkill extends GatheringSkill
 			return;
 		if(spells.equalsIgnoreCase("bundle"))
 			return;
-		if(!spells.startsWith("*"))
+		if(spells.startsWith("*") && spells.endsWith(";__DELETE__"))
 		{
-			final List<String> rawV=CMParms.parseSemicolons(spells,true);
-			final int oldNum=P.numEffects();
-			for(int s=rawV.size();s>=0;s--)
+			String ableID=spells.substring(0, spells.indexOf(';'));
+			Ability oldA=P.fetchEffect(ableID.substring(1));
+			if(oldA!=null)
 			{
-				String ableID=rawV.get(s);
-				if(ableID.startsWith("-"))
-				{
-					rawV.remove(s);
-					Ability oldA=P.fetchEffect(ableID.substring(1));
-					if(oldA!=null)
-					{
-						oldA.unInvoke();
-						P.delEffect(oldA);
-					}
-				}
+				oldA.unInvoke();
+				P.delEffect(oldA);
+				spells="";
 			}
-			if(oldNum != P.numEffects())
-				spells=CMParms.combineWith(rawV,';');
 		}
 		final List<Ability> V=CMLib.ableParms().getCodedSpells(spells);
 		for(int v=0;v<V.size();v++)
