@@ -49,7 +49,7 @@ public class GardenSnake extends Snake
 		return localizedStaticName;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	private final static String localizedStaticRacialCat = CMLib.lang().L("Ophidian");
 

@@ -126,6 +126,8 @@ public class Walrus extends Seal
 		return naturalWeapon;
 	}
 	
+	private static Vector<RawMaterial>	resources = new Vector<RawMaterial>();
+	
 	@Override
 	public List<RawMaterial> myResources()
 	{

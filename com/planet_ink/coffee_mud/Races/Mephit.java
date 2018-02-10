@@ -198,7 +198,7 @@ public class Mephit extends StdRace
 		return makeMobName('N',Race.AGE_MATURE);
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public List<RawMaterial> myResources()

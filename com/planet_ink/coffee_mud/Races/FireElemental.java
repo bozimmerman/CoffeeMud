@@ -125,7 +125,7 @@ public class FireElemental extends StdRace
 		return culturalAbilityProficiencies;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public int availabilityCode()

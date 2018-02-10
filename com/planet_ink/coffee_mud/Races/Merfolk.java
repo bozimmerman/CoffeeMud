@@ -174,7 +174,7 @@ public class Merfolk extends StdRace
 		return agingChart;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public String arriveStr()

@@ -60,7 +60,7 @@ public class Shadow extends Spirit
 		return true;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public int availabilityCode()

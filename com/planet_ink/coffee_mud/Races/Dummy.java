@@ -142,6 +142,8 @@ public class Dummy extends Doll
 		return body;
 	}
 	
+	private static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

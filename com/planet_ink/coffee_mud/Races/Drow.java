@@ -168,7 +168,7 @@ public class Drow extends Elf
 		return agingChart;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public int availabilityCode()

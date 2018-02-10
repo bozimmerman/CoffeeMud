@@ -136,6 +136,8 @@ public class Jelly extends Unique
 		return body;
 	}
 	
+	private static Vector<RawMaterial>	resources = new Vector<RawMaterial>();
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

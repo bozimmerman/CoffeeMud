@@ -79,7 +79,7 @@ public class Spirit extends Undead
 		return breatheAnythingArray;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	protected Weapon funHumanoidWeapon()

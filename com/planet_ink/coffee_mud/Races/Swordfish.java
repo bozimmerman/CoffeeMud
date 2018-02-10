@@ -93,7 +93,7 @@ public class Swordfish extends GiantFish
 		return naturalWeapon;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

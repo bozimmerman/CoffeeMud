@@ -128,6 +128,8 @@ public class Dolphin extends Seal
 		return naturalWeapon;
 	}
 	
+	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

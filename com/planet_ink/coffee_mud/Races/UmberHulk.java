@@ -98,7 +98,7 @@ public class UmberHulk extends StdRace
 		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
 
-	protected static Vector<RawMaterial>	resources					= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources					= new Vector<RawMaterial>();
 	private final String[]					racialAbilityNames			= { "Chant_Stonewalking", "Spell_Confusion" };
 	private final int[]						racialAbilityLevels			= { 1, 10 };
 	private final int[]						racialAbilityProficiencies	= { 100, 50 };

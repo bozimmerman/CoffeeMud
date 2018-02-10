@@ -245,7 +245,7 @@ public class Turtle extends StdRace
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public List<RawMaterial> myResources()

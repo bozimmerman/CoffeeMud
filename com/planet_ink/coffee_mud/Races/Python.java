@@ -95,7 +95,7 @@ public class Python extends Snake
 		return parts;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public Weapon myNaturalWeapon()

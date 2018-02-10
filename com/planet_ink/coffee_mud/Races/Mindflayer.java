@@ -220,7 +220,7 @@ public class Mindflayer extends Humanoid
 		{
 			if(resources.size()==0)
 			{
-				resources=super.myResources();
+				resources.addAll(super.myResources());
 				resources.add(makeResource
 				(L("a @x1 tenticle",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 			}

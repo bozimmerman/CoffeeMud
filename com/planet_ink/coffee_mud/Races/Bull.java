@@ -78,7 +78,7 @@ public class Bull extends Buffalo
 		return 100;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	private final static String localizedStaticRacialCat = CMLib.lang().L("Bovine");
 

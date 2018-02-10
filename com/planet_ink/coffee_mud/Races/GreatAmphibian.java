@@ -92,7 +92,7 @@ public class GreatAmphibian extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	protected static Vector<RawMaterial>	resources					= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources					= new Vector<RawMaterial>();
 
 	private final String[]					racialAbilityNames			= { "Aquan","Skill_Swim" };
 	private final int[]						racialAbilityLevels			= { 1,1 };

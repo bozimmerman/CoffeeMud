@@ -92,7 +92,7 @@ public class Whale extends GiantFish
 		return localizedStaticRacialCat;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public int[] getBreathables()
