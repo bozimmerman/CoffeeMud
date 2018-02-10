@@ -73,7 +73,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	{ 
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tRIDE_BASIS\tCONTAINER_CAPACITY||RIDE_CAPACITY\tCONTAINER_TYPE\t"
+		+"ITEM_CLASS_ID\tRIDE_BASIS\tRIDE_CAPACITY\tCONTAINER_CAPACITY\t"
 		+"RIDE_OVERRIDE_STRS\tCODED_SPELL_LIST";
 	}
 
@@ -773,7 +773,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			key=null;
 			if(buildingI instanceof Rideable)
 			{
-				setRideBasis((Rideable)buildingI,misctype);
+				if(misctype.length()>0)
+					setRideBasis((Rideable)buildingI,misctype);
 				if(CMath.isInteger(capacity))
 					((Rideable)buildingI).setRiderCapacity(CMath.s_int(capacity));
 				((Container)buildingI).setContainTypes(canContain);
