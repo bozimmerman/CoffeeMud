@@ -54,8 +54,6 @@ public class Githyanki extends Humanoid
 		return localizedStaticName;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
-
 	@Override
 	public int availabilityCode()
 	{

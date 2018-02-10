@@ -172,7 +172,7 @@ public class UnderWaterColumnGrid extends UnderWaterGrid
 			if(grid!=null)
 			{
 				final XYVector xy=((GridLocale)loc).getRoomXY(oldLoc);
-				if((xy.x>=0)&&(xy.y>=0))
+				if((xy!=null)&&(xy.x>=0)&&(xy.y>=0))
 				{
 					switch(opDirection)
 					{
