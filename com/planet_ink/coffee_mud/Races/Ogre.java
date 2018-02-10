@@ -146,8 +146,6 @@ public class Ogre extends Humanoid
 		return parts;
 	}
 
-	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
-
 	@Override
 	public int availabilityCode()
 	{
@@ -205,5 +203,25 @@ public class Ogre extends Humanoid
 			outfitChoices.add(s3);
 		}
 		return outfitChoices;
+	}
+	
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				(L("a @x1 brain",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
+			}
+		}
+		return resources;
 	}
 }

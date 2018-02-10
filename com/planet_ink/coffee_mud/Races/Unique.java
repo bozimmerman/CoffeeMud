@@ -115,8 +115,6 @@ public class Unique extends StdRace
 		return agingChart;
 	}
 
-	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
-
 	@Override
 	public int availabilityCode()
 	{
@@ -160,6 +158,8 @@ public class Unique extends StdRace
 		else
 			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
+
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public List<RawMaterial> myResources()

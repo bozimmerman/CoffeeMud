@@ -124,4 +124,28 @@ public class Goose extends WaterFowl
 				}
 		}
 	}
+	
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				(L("some webbed @x1 feet",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
+				resources.addElement(makeResource
+				(L("some @x1 feathers",name().toLowerCase()),RawMaterial.RESOURCE_FEATHERS));
+				resources.addElement(makeResource
+				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_POULTRY));
+				resources.addElement(makeResource
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
+			}
+		}
+		return resources;
+	}
 }

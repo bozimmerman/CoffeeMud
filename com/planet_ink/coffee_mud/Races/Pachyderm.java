@@ -151,8 +151,6 @@ public class Pachyderm extends StdRace
 		return agingChart;
 	}
 
-	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
-
 	@Override
 	public int availabilityCode()
 	{
@@ -271,6 +269,8 @@ public class Pachyderm extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
+
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public List<RawMaterial> myResources()

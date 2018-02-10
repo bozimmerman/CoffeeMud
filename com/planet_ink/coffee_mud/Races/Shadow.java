@@ -76,5 +76,20 @@ public class Shadow extends Spirit
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
+	
+	
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				(L("some @x1 essence",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
+			}
+		}
+		return resources;
+	}
 }
 

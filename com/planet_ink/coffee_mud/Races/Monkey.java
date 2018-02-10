@@ -152,8 +152,6 @@ public class Monkey extends StdRace
 		return agingChart;
 	}
 
-	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
-
 	@Override
 	public int availabilityCode()
 	{
@@ -234,6 +232,8 @@ public class Monkey extends StdRace
 				A.invoke(msg.source(),myChar,true,0);
 		}
 	}
+
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public List<RawMaterial> myResources()

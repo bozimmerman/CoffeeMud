@@ -1,4 +1,7 @@
 package com.planet_ink.coffee_mud.Races;
+import java.util.List;
+import java.util.Vector;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -109,5 +112,27 @@ public class Alligator extends GreatLizard
 			default :
 				return super.makeMobName(gender, age);
 		}
+	}
+	
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				for(int i=0;i<5;i++)
+					resources.addElement(makeResource
+					(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
+				for(int i=0;i<15;i++)
+					resources.addElement(makeResource
+					(L("a @x1 scale",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
+				resources.addElement(makeResource
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
+			}
+		}
+		return resources;
 	}
 }

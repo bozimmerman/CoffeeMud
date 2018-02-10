@@ -127,8 +127,6 @@ public class MetalGolem extends StdRace
 		return agingChart;
 	}
 
-	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
-
 	@Override
 	public int availabilityCode()
 	{
@@ -209,6 +207,8 @@ public class MetalGolem extends StdRace
 		return body;
 	}
 	
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

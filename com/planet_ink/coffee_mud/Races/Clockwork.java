@@ -52,4 +52,22 @@ public class Clockwork extends MetalGolem
 	{
 		return localizedStaticName;
 	}
+	
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					(L("a pound of iron"),RawMaterial.RESOURCE_IRON));
+				resources.addElement(makeResource
+					(L("essence of golem"),RawMaterial.RESOURCE_BLOOD));
+			}
+		}
+		return resources;
+	}
 }
