@@ -62,10 +62,13 @@ public class Herbology extends CommonSkill
 		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE;
 	}
 
-	public String parametersFormat(){ return "HERB_NAME";}
+	public String parametersFormat()
+	{
+		return "HERB_NAME";
+	}
 
-	protected Item found=null;
-	protected boolean messedUp=false;
+	protected Item		found		= null;
+	protected boolean	messedUp	= false;
 
 	@Override
 	protected boolean canBeDoneSittingDown()
