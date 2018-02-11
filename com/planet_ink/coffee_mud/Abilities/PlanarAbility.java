@@ -557,6 +557,7 @@ public class PlanarAbility extends StdAbility
 							{
 								M.baseCharStats().setMyRace(R);
 								M.charStats().setMyRace(R);
+								M.charStats().setWearableRestrictionsBitmap(M.charStats().getWearableRestrictionsBitmap()|M.charStats().getMyRace().forbiddenWornBits());
 							}
 						}
 					}

@@ -169,6 +169,7 @@ public class Prop_AstralSpirit extends Property
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		affectableStats.setMyRace(spiritRace());
+		affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
 		super.affectCharStats(affected, affectableStats);
 	}
 

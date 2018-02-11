@@ -81,6 +81,7 @@ public class Chant_Shamblermorph extends Chant
 		{
 			final int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(treeForm);
+			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,treeForm.getAgingChart()[oldCat]);
 		}

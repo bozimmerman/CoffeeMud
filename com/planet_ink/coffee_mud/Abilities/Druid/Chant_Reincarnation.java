@@ -99,7 +99,10 @@ public class Chant_Reincarnation extends Chant
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
+		{
 			affectableStats.setMyRace(newRace);
+			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
+		}
 	}
 
 	@Override

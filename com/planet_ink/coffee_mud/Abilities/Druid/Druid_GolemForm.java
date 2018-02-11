@@ -167,7 +167,10 @@ public class Druid_GolemForm extends StdAbility
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
+		{
 			affectableStats.setMyRace(newRace);
+			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
+		}
 	}
 
 	@Override

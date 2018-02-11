@@ -1093,7 +1093,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				if(M.baseCharStats().getMyRace()==oldR)
 					M.baseCharStats().setMyRace(newR);
 				if(M.charStats().getMyRace()==oldR)
+				{
 					M.charStats().setMyRace(newR);
+					M.charStats().setWearableRestrictionsBitmap(M.charStats().getWearableRestrictionsBitmap()|M.charStats().getMyRace().forbiddenWornBits());
+				}
 			}
 			for(final Enumeration<MOB> e2=CMLib.players().players();e2.hasMoreElements();)
 			{
@@ -1101,7 +1104,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				if(M.baseCharStats().getMyRace()==oldR)
 					M.baseCharStats().setMyRace(newR);
 				if(M.charStats().getMyRace()==oldR)
+				{
 					M.charStats().setMyRace(newR);
+					M.charStats().setWearableRestrictionsBitmap(M.charStats().getWearableRestrictionsBitmap()|M.charStats().getMyRace().forbiddenWornBits());
+				}
 			}
 		}
 	}

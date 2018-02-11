@@ -125,6 +125,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 						M.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE, 10);
 						M.charStats().setMyRace(R);
 						M.charStats().setStat(CharStats.STAT_INTELLIGENCE, 10);
+						M.charStats().setWearableRestrictionsBitmap(M.charStats().getWearableRestrictionsBitmap()|M.charStats().getMyRace().forbiddenWornBits());
 						R.affectCharStats(M, M.charStats());
 						raceIDs.put(R.ID(), Boolean.valueOf(M.charStats().getStat(CharStats.STAT_INTELLIGENCE) == 1));
 					}

@@ -2701,6 +2701,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				mob=setMOBClass(newRace.useRideClass() ? "StdRideable" : "StdMOB", loginObj, session);
 				mob.baseCharStats().setMyRace(newRace);
 				mob.charStats().setMyRace(newRace);
+				mob.charStats().setWearableRestrictionsBitmap(mob.charStats().getWearableRestrictionsBitmap()|mob.charStats().getMyRace().forbiddenWornBits());
 				loginObj.state=LoginState.CHARCR_RACECONFIRMED;
 				return LoginResult.INPUT_REQUIRED;
 			}

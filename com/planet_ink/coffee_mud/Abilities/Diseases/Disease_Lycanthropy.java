@@ -160,6 +160,7 @@ public class Disease_Lycanthropy extends Disease
 		if(lycanRace()!=null)
 		{
 			affectableStats.setMyRace(lycanRace());
+			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,lycanRace().getAgingChart()[affected.baseCharStats().ageCategory()]);
 		}

@@ -368,6 +368,7 @@ public class Prop_HaveAdjuster extends Property implements TriggeredAffect
 					break;
 				case 'R':
 					charStats.setMyRace((Race) changes[i + 1]);
+					charStats.setWearableRestrictionsBitmap(charStats.getWearableRestrictionsBitmap()|charStats.getMyRace().forbiddenWornBits());
 					break;
 				}
 			}

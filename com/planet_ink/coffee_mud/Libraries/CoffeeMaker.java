@@ -3394,6 +3394,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				final Race R=CMClass.getRace(raceID);
 				((DeadBody)E).charStats().setMyRace(R);
+				((DeadBody)E).charStats().setWearableRestrictionsBitmap(((DeadBody)E).charStats().getWearableRestrictionsBitmap()|((DeadBody)E).charStats().getMyRace().forbiddenWornBits());
 			}
 		}
 		if(E instanceof MOB)

@@ -651,10 +651,7 @@ public class DefaultCharStats implements CharStats
 	public void setMyRace(Race newVal)
 	{
 		if(newVal != null)
-		{
 			myRace=newVal;
-			unwearableBitmap=unwearableBitmap|myRace.forbiddenWornBits();
-		}
 	}
 
 	@Override
