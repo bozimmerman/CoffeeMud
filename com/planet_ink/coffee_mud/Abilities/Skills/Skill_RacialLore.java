@@ -113,6 +113,12 @@ public class Skill_RacialLore extends StdSkill
 			mob.tell(L("Recall information about which race?  These include: @x1",CMLib.english().toEnglishStringList(names)));
 			return false;
 		}
+		boolean report=false;
+		if((commands.size()>1)&&(commands.get(commands.size()-1).equalsIgnoreCase("REPORT")))
+		{
+			commands.remove(commands.size()-1);
+			report=true;
+		}
 		
 		if((System.currentTimeMillis() - lastFail) < 10000)
 		{
@@ -236,13 +242,21 @@ public class Skill_RacialLore extends StdSkill
 			if(targetR.useRideClass())
 				tidbits.add(L("they can be ridden by humanoids"));
 			if(tidbits.size()==0)
-				mob.tell(L("You know almost nothing about that race.  I guess it's not your area of Expertise. "));
+			{
+				if(report)
+					CMLib.commands().postSay(mob, L("I know almost nothing about that race.  I guess it's not my area of Expertise. "));
+				else
+					mob.tell(L("You know almost nothing about that race.  I guess it's not your area of Expertise. "));
+			}
 			else
 			{
 				for(int i=0;i<expertise+1 && tidbits.size()>0;i++)
 				{
 					final String str=tidbits.remove(CMLib.dice().roll(1, tidbits.size(), -1));
-					mob.tell(L("You recall that @x1.",Character.toLowerCase(str.charAt(0))+str.substring(1)));
+					if(report)
+						CMLib.commands().postSay(mob, L("I recall that @x1.",Character.toLowerCase(str.charAt(0))+str.substring(1)));
+					else
+						mob.tell(L("You recall that @x1.",Character.toLowerCase(str.charAt(0))+str.substring(1)));
 				}
 			}
 		}
