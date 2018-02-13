@@ -4337,15 +4337,27 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return null;
 		if(ammo.endsWith("s"))
 			ammo=ammo.substring(0,ammo.length()-1);
+		if(number>9)
+		{
+			neww.setName(L("a stack of @x1 @x2",""+number,CMLib.english().makePlural(ammo)));
+			neww.setDisplayText(L("@x1 sit here.",neww.Name()));
+		}
+		else
+		if(number>5)
+		{
+			neww.setName(L("a bunch of @x1",CMLib.english().makePlural(ammo)));
+			neww.setDisplayText(L("@x1 sit here.",neww.Name()));
+		}
+		else
 		if(number>1)
 		{
 			neww.setName(L("several @x1",CMLib.english().makePlural(ammo)));
-			neww.setDisplayText(L("@x1 sit here.",ammo));
+			neww.setDisplayText(L("@x1 sit here.",neww.Name()));
 		}
 		else
 		{
 			neww.setName(CMLib.english().startWithAorAn(ammo));
-			neww.setDisplayText(L("@x1 sits here.",ammo));
+			neww.setDisplayText(L("@x1 sits here.",neww.Name()));
 		}
 		((Ammunition)neww).setAmmunitionType(ammo);
 		((Ammunition)neww).setAmmoRemaining(number);
