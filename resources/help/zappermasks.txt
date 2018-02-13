@@ -23,6 +23,8 @@
 +NAMES -bob "-my name" (<WORD> only those with one of the given names)
 -SUBNAMES +*ending +*inside* (<WORD> all except those with partial name)
 +SUBNAMES -*ending -*insid* (<WORD> only those with partial name mask)
+-ACCOUNTS +bob "+my name" (<WORD> all except those in the given accts)
++ACCOUNTS -bob "-my name" (<WORD> only those with one of the given accts)
 -TATTOOS +mytatto +thistattoo (<WORD> all but those with excepted tatts)
 +TATTOOS -mytatt -anytattoo, (<WORD> only those with a listed tattoo)
 -EXPERTISES +myedu +thisedu (<WORD> all but those with listed expertise)

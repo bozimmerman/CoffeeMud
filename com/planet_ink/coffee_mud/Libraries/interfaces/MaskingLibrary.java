@@ -197,6 +197,8 @@ public interface MaskingLibrary extends CMLibrary
 		WEAPONTYPE("+WEAPONTYPE"),
 		_WEAPONAMMO("-WEAPONAMMO"),
 		WEAPONAMMO("+WEAPONAMMO"),
+		_ACCOUNT("-ACCOUNTS"),
+		ACCOUNT("+ACCOUNTS")
 		;
 		private final String[] keys;
 		private ZapperKey(String... exts)
