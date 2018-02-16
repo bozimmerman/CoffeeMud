@@ -248,11 +248,24 @@ public class Spell_AstralStep extends Spell
 				if(R.okMessage(mob,msg))
 				{
 					R.send(mob,msg);
-					mob.addEffect(this);
-					mob.recoverPhyStats();
 					mob.tell(L("\n\r\n\r"));
-					CMLib.tracking().walk(mob,dirCode,false,false);
-					mob.delEffect(this);
+					if(mob.fetchEffect(ID())==null)
+					{
+						final Ability A=(Ability)this.copyOf();
+						A.setSavable(false);
+						try
+						{
+							mob.addEffect(A);
+							mob.recoverPhyStats();
+							CMLib.tracking().walk(mob,dirCode,false,false);
+						}
+						finally
+						{
+							mob.delEffect(A);
+						}
+					}
+					else
+						CMLib.tracking().walk(mob,dirCode,false,false);
 					mob.recoverPhyStats();
 				}
 				else

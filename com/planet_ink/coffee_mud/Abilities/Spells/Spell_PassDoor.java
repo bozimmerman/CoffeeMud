@@ -222,11 +222,23 @@ public class Spell_PassDoor extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.addEffect(this);
-				mob.recoverPhyStats();
-				mob.tell(L("\n\r\n\r"));
-				CMLib.tracking().walk(mob,dirCode,false,false);
-				mob.delEffect(this);
+				if(mob.fetchEffect(ID())==null)
+				{
+					final Ability A=(Ability)this.copyOf();
+					A.setSavable(false);
+					try
+					{
+						mob.addEffect(A);
+						mob.recoverPhyStats();
+						CMLib.tracking().walk(mob,dirCode,false,false);
+					}
+					finally
+					{
+						mob.delEffect(A);
+					}
+				}
+				else
+					CMLib.tracking().walk(mob,dirCode,false,false);
 				mob.recoverPhyStats();
 			}
 		}

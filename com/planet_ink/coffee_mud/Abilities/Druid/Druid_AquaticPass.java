@@ -159,12 +159,21 @@ public class Druid_AquaticPass extends StdAbility
 		{
 			if(mob.fetchEffect(ID())==null)
 			{
-				mob.addEffect(this);
-				mob.recoverPhyStats();
+				final Ability A=(Ability)this.copyOf();
+				A.setSavable(false);
+				try
+				{
+					mob.addEffect(A);
+					mob.recoverPhyStats();
+					CMLib.tracking().walk(mob,dirCode,false,false);
+				}
+				finally
+				{
+					mob.delEffect(A);
+				}
 			}
-
-			CMLib.tracking().walk(mob,dirCode,false,false);
-			mob.delEffect(this);
+			else
+				CMLib.tracking().walk(mob,dirCode,false,false);
 			mob.recoverPhyStats();
 		}
 		else
@@ -181,11 +190,21 @@ public class Druid_AquaticPass extends StdAbility
 				mob.tell(L("\n\r\n\r"));
 				if(mob.fetchEffect(ID())==null)
 				{
-					mob.addEffect(this);
-					mob.recoverPhyStats();
+					final Ability A=(Ability)this.copyOf();
+					A.setSavable(false);
+					try
+					{
+						mob.addEffect(A);
+						mob.recoverPhyStats();
+						CMLib.tracking().walk(mob,dirCode,false,false);
+					}
+					finally
+					{
+						mob.delEffect(A);
+					}
 				}
-				CMLib.tracking().walk(mob,dirCode,false,false);
-				mob.delEffect(this);
+				else
+					CMLib.tracking().walk(mob,dirCode,false,false);
 				mob.recoverPhyStats();
 				exit.setDoorsNLocks(exit.hasADoor(),open,exit.defaultsClosed(),exit.hasALock(),locked,exit.defaultsLocked());
 				if(opExit!=null)

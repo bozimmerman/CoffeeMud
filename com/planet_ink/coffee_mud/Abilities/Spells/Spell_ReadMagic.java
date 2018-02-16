@@ -92,10 +92,16 @@ public class Spell_ReadMagic extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(mob.fetchEffect(this.ID())==null))
 		{
-			final Ability thisNewOne=(Ability)this.copyOf();
-			mob.addEffect(thisNewOne);
-			CMLib.commands().postRead(mob, target, "", false);
-			mob.delEffect(thisNewOne);
+			final Ability A=(Ability)this.copyOf();
+			mob.addEffect(A);
+			try
+			{
+				CMLib.commands().postRead(mob, target, "", false);
+			}
+			finally
+			{
+				mob.delEffect(A);
+			}
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) and gaze(s) over <T-NAMESELF>, but nothing more happens."));

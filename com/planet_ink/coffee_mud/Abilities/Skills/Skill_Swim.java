@@ -210,12 +210,23 @@ public class Skill_Swim extends StdSkill
 			else
 			{
 				if(mob.fetchEffect(ID())==null)
-					mob.addEffect(this);
-				mob.recoverPhyStats();
-
-				CMLib.tracking().walk(mob,dirCode,false,false);
+				{
+					final Ability A=(Ability)this.copyOf();
+					A.setSavable(false);
+					try
+					{
+						mob.addEffect(A);
+						mob.recoverPhyStats();
+						CMLib.tracking().walk(mob,dirCode,false,false);
+					}
+					finally
+					{
+						mob.delEffect(A);
+					}
+				}
+				else
+					CMLib.tracking().walk(mob,dirCode,false,false);
 			}
-			mob.delEffect(this);
 			mob.recoverPhyStats();
 			if(mob.location()!=R)
 				mob.location().show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,null);

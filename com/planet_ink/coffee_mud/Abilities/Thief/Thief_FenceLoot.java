@@ -131,12 +131,21 @@ public class Thief_FenceLoot extends ThiefSkill
 				mob.location().send(mob,msg);
 				invoker=mob;
 				addBackMap.clear();
-				mob.addEffect(this);
-				mob.recoverCharStats();
-				commands.add(0,CMStrings.capitalizeAndLower("SELL"));
-				mob.doCommand(commands,MUDCmdProcessor.METAFLAG_FORCED);
-				commands.add(shopkeeper.name());
-				mob.delEffect(this);
+				final Ability A=(Ability)this.copyOf();
+				A.setSavable(false);
+				mob.addEffect(A);
+				try
+				{
+					mob.recoverCharStats();
+					commands.add(0,CMStrings.capitalizeAndLower("SELL"));
+					mob.doCommand(commands,MUDCmdProcessor.METAFLAG_FORCED);
+					commands.add(shopkeeper.name());
+				}
+				finally
+				{
+					mob.delEffect(A);
+					mob.recoverCharStats();
+				}
 				for(Item I : addBackMap.keySet())
 				{
 					if(mob.isMine(I))

@@ -120,12 +120,20 @@ public class Skill_Haggle extends StdSkill
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				mob.addEffect(this);
-				mob.recoverCharStats();
-				commands.add(0,CMStrings.capitalizeAndLower(cmd));
-				mob.doCommand(commands,MUDCmdProcessor.METAFLAG_FORCED);
-				commands.add(shopkeeper.name());
-				mob.delEffect(this);
+				final Ability A=(Ability)this.copyOf();
+				A.setSavable(false);
+				try
+				{
+					mob.addEffect(A);
+					mob.recoverCharStats();
+					commands.add(0,CMStrings.capitalizeAndLower(cmd));
+					mob.doCommand(commands,MUDCmdProcessor.METAFLAG_FORCED);
+					commands.add(shopkeeper.name());
+				}
+				finally
+				{
+					mob.delEffect(A);
+				}
 				mob.recoverCharStats();
 			}
 		}

@@ -119,12 +119,21 @@ public class Power_SuperClimb extends SuperPower
 
 			if(mob.fetchEffect(ID())==null)
 			{
-				mob.addEffect(this);
-				mob.recoverPhyStats();
+				final Ability A=(Ability)this.copyOf();
+				A.setSavable(false);
+				try
+				{
+					mob.addEffect(A);
+					mob.recoverPhyStats();
+					CMLib.tracking().walk(mob,dirCode,false,false);
+				}
+				finally
+				{
+					mob.delEffect(A);
+				}
 			}
-
-			CMLib.tracking().walk(mob,dirCode,false,false);
-			mob.delEffect(this);
+			else
+				CMLib.tracking().walk(mob,dirCode,false,false);
 			mob.recoverPhyStats();
 			if(!success)
 				mob.location().executeMsg(mob,CMClass.getMsg(mob,mob.location(),CMMsg.MASK_MOVE|CMMsg.TYP_GENERAL,null));
