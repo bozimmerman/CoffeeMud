@@ -34,16 +34,16 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Spell_MagicBullets extends Spell
+public class Spell_HardenBullets extends Spell
 {
 
 	@Override
 	public String ID()
 	{
-		return "Spell_MagicBullets";
+		return "Spell_HardenBullets";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Magic Bullets");
+	private final static String localizedName = CMLib.lang().L("Harden Bullets");
 
 	@Override
 	public String name()
@@ -66,7 +66,7 @@ public class Spell_MagicBullets extends Spell
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
 	}
 
 	@Override
@@ -108,7 +108,7 @@ public class Spell_MagicBullets extends Spell
 			&&(!(msg.tool() instanceof Wand)))
 			{
 				final int damage=msg.value() + CMath.s_int(text());
-				final String str=L("^F^<FIGHT^><S-YOUPOSS> magic bullet <DAMAGE> <T-NAME>!^</FIGHT^>^?");
+				final String str=L("^F^<FIGHT^><S-YOUPOSS> hard bullet <DAMAGE> <T-NAME>!^</FIGHT^>^?");
 				synchronized(this)
 				{
 					if(!norecurse)
@@ -137,13 +137,13 @@ public class Spell_MagicBullets extends Spell
 			return false;
 		if((!(target instanceof Ammunition))||(!((Ammunition)target).ammunitionType().equals("bullets")))
 		{
-			mob.tell(mob,target,null,L("You can only enchant sling bullets with this spell, which <T-NAME> is not."));
+			mob.tell(mob,target,null,L("You can only alter sling bullets with this spell, which <T-NAME> is not."));
 			return false;
 		}
 		
-		if(target.fetchEffect("Spell_MagicBullets")!=null)
+		if(target.fetchEffect("Spell_HardenBullets")!=null)
 		{
-			mob.tell(mob,target,null,L("<T-NAME> is already enchanted."));
+			mob.tell(mob,target,null,L("<T-NAME> is already altered."));
 			return false;
 		}
 
@@ -154,11 +154,11 @@ public class Spell_MagicBullets extends Spell
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),L("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),L("^S<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> chang(es) shape, becoming more deadly"));
+				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,L("<T-NAME> become(s) denser and harder."));
 				Ability A=CMClass.getAbility(ID());
 				if(A!=null)
 				{
@@ -169,7 +169,7 @@ public class Spell_MagicBullets extends Spell
 			}
 		}
 		else
-			beneficialWordsFizzle(mob,target,L("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF>, incanting softly, and looking very frustrated."));
+			beneficialVisualFizzle(mob,target,L("<S-NAME> move(s) <S-HIS-HER> fingers around <T-NAMESELF> and looking very frustrated."));
 		// return whether it worked
 		return success;
 	}

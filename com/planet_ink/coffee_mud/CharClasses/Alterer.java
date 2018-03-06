@@ -70,7 +70,7 @@ public class Alterer extends SpecialistMage
 		super.initializeClass();
 		CMLib.ableMapper().delCharAbilityMapping(ID(),"Spell_Shield");
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_MagicBullets",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_HardenBullets",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_ShapeObject",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Spell_FlamingArrows",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Spell_KeenEdge",25,true);
