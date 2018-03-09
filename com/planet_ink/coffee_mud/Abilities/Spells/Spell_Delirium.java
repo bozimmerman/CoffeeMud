@@ -257,8 +257,8 @@ public class Spell_Delirium extends Spell
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
-			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to feel a bit less delirious."));
+		if((mob.location()!=null)&&(!mob.amDead())&&(super.canBeUninvoked()))
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to feel a bit less delirious."));
 	}
 
 	@Override

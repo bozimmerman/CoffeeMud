@@ -119,7 +119,7 @@ public class Thief_Observation extends ThiefSkill
 	{
 		final MOB M=(MOB)affected;
 		super.unInvoke();
-		if((M!=null)&&(!M.amDead()))
+		if((M!=null)&&(!M.amDead())&&(super.canBeUninvoked()))
 			M.tell(L("You stop observing."));
 	}
 

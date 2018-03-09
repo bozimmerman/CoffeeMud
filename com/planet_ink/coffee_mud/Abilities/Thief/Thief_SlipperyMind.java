@@ -161,7 +161,7 @@ public class Thief_SlipperyMind extends ThiefSkill
 	{
 		final Environmental E=affected;
 		super.unInvoke();
-		if((E instanceof MOB)&&(oldFactions!=null))
+		if((E instanceof MOB)&&(oldFactions!=null)&&(super.canBeUninvoked()))
 		{
 			if(!((MOB)E).amDead())
 				((MOB)E).tell(L("You've lost your slippery mind concentration."));

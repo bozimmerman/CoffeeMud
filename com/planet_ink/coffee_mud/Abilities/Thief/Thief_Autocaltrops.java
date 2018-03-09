@@ -120,7 +120,7 @@ public class Thief_Autocaltrops extends ThiefSkill
 	@Override
 	public void unInvoke()
 	{
-		if((affected instanceof MOB)&&(!((MOB)affected).amDead()))
+		if((affected instanceof MOB)&&(!((MOB)affected).amDead())&&(super.canBeUninvoked()))
 			((MOB)affected).tell(L("You stop throwing down caltrops."));
 		super.unInvoke();
 	}

@@ -110,7 +110,8 @@ public class Dance_Swords extends Dance
 		if((E!=null)
 		&&(E instanceof Item)
 		&&(((Item)E).owner()!=null)
-		&&(((Item)E).owner() instanceof Room))
+		&&(((Item)E).owner() instanceof Room)
+		&&(canBeUninvoked()))
 		{
 			((Room)((Item)E).owner()).showHappens(CMMsg.MSG_OK_ACTION,L("@x1 stops dancing!",E.name()));
 		}

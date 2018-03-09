@@ -109,16 +109,16 @@ public class Spell_Siphon extends Spell
 		return success;
 	}
 
-   @Override
-public void unInvoke()
+	@Override
+	public void unInvoke()
 	{
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
-
-		mob.tell(L("You no longer feel a thirst for the energy of others."));
+		if(super.canBeUninvoked())
+			mob.tell(L("You no longer feel a thirst for the energy of others."));
 	}
 
 	@Override

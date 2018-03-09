@@ -84,7 +84,7 @@ public class Spell_Fear extends Spell
 		if(affected instanceof MOB)
 			M=(MOB)affected;
 		super.unInvoke();
-		if(M!=null)
+		if((M!=null)&&(super.canBeUninvoked()))
 		{
 			if(!M.isMonster())
 				CMLib.commands().postStand(M,true);

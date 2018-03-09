@@ -111,7 +111,7 @@ public class Poison_Slumberall extends Poison
 	@Override
 	public void unInvoke()
 	{
-		if(affected instanceof MOB)
+		if((affected instanceof MOB)&&(super.canBeUninvoked()))
 		{
 			final MOB mob=(MOB)affected;
 			CMLib.commands().postStand(mob,true);

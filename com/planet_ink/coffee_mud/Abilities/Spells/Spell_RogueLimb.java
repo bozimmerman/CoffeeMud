@@ -137,7 +137,7 @@ public class Spell_RogueLimb extends Spell
 		if((affected!=null)
 		&&(affected instanceof MOB))
 			((MOB)affected).location().show(((MOB)affected),rogueLimb,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> gain(s) control of <T-NAMESELF>."));
-		if(rogueLimb!=null)
+		if((rogueLimb!=null)&&(super.canBeUninvoked()))
 		{
 			rogueLimb.destroy();
 			rogueLimb=null;

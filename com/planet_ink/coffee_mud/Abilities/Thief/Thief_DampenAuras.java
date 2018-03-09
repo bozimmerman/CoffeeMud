@@ -129,7 +129,7 @@ public class Thief_DampenAuras extends ThiefSkill
 	{
 		final Environmental E=affected;
 		super.unInvoke();
-		if((E instanceof MOB)&&(!((MOB)E).amDead()))
+		if((E instanceof MOB)&&(!((MOB)E).amDead())&&(super.canBeUninvoked()))
 			((MOB)E).tell(L("You noticed the aura dampening is wearing away on @x1.",E.name()));
 	}
 

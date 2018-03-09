@@ -93,7 +93,7 @@ public class Skill_CurtainCall extends BardSkill
 		if(affected instanceof MOB)
 			M=(MOB)affected;
 		super.unInvoke();
-		if(M!=null)
+		if((M!=null)&&(super.canBeUninvoked()))
 			M.tell(L("You have left the building."));
 	}
 

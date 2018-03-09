@@ -163,7 +163,6 @@ public class Spell_ChangeSex extends Spell
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> feel(s) like <S-HIS-HER> old self again."));
 
 			}
-
 		}
 		else
 		if(affected instanceof MOB)

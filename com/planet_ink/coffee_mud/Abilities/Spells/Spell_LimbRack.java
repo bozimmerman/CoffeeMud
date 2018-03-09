@@ -101,7 +101,8 @@ public class Spell_LimbRack extends Spell
 	public void unInvoke()
 	{
 		if((affected instanceof MOB)
-		&&(((MOB)affected).amDead()))
+		&&(((MOB)affected).amDead())
+		&&(super.canBeUninvoked()))
 		{
 			final MOB mob=(MOB)affected;
 			if((mob.location()!=null)

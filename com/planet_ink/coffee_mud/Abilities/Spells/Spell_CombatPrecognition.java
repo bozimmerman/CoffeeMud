@@ -171,7 +171,8 @@ public class Spell_CombatPrecognition extends Spell
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		mob.tell(L("Your combat precognition fades away."));
+		if(super.canBeUninvoked())
+			mob.tell(L("Your combat precognition fades away."));
 	}
 
 	@Override

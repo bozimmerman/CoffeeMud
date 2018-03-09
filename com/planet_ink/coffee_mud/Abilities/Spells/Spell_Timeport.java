@@ -124,7 +124,7 @@ public class Spell_Timeport extends Spell
 			CMLib.threads().resumeTicking(mob,-1);
 		}
 		super.unInvoke();
-		if(room!=null)
+		if((room!=null)&&(super.canBeUninvoked()))
 			room.show(mob, null, CMMsg.MSG_OK_VISUAL, L("<S-NAME> reappear(s)!"));
 	}
 

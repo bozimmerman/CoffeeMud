@@ -115,7 +115,7 @@ public class Spell_Grow extends Spell
 	@Override
 	public void unInvoke()
 	{
-		if(affected instanceof MOB)
+		if((affected instanceof MOB)&&(super.canBeUninvoked()))
 		{
 			final MOB mob=(MOB)affected;
 			if(getOldWeight()<1)

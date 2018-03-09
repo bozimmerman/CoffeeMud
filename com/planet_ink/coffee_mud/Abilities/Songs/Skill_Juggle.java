@@ -392,7 +392,7 @@ public class Skill_Juggle extends BardSkill
 	@Override
 	public void unInvoke()
 	{
-		if(affected instanceof MOB)
+		if((affected instanceof MOB)&&(super.canBeUninvoked()))
 		{
 			final MOB M=(MOB)affected;
 			while(juggles.size()>0)

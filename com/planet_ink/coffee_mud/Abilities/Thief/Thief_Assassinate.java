@@ -253,7 +253,8 @@ public class Thief_Assassinate extends ThiefSkill
 		&&(mob.isMonster())
 		&&(!CMLib.flags().isMobile(mob))
 		&&(mob.getStartRoom()!=null)
-		&&(mob.location()!=mob.getStartRoom()))
+		&&(mob.location()!=mob.getStartRoom())
+		&&(super.canBeUninvoked()))
 			CMLib.tracking().wanderAway(mob,false,true);
 	}
 

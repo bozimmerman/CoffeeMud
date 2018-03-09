@@ -123,8 +123,8 @@ public class Spell_ManaBurn extends Spell
 		final MOB mob=(MOB)affected;
 
 		super.unInvoke();
-
-		mob.tell(L("You feel less drained."));
+		if(super.canBeUninvoked())
+			mob.tell(L("You feel less drained."));
 	}
 
 	@Override

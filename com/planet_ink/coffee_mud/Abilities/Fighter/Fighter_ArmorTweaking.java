@@ -119,7 +119,8 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	{
 		if((affected instanceof Item)
 		&&(!((Item)affected).amDestroyed())
-		&&(((Item)affected).owner() instanceof MOB))
+		&&(((Item)affected).owner() instanceof MOB)
+		&&(canBeUninvoked()))
 		{
 			final MOB M=(MOB)((Item)affected).owner();
 			if((!M.amDead())&&(CMLib.flags().isInTheGame(M,true))&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))

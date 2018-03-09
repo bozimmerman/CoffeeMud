@@ -134,11 +134,12 @@ public class Skill_Upstage extends BardSkill
 		return true;
 	}
 	
+	@Override
 	public void unInvoke()
 	{
 		final Physical affected=this.affected;
 		super.unInvoke();
-		if(affected instanceof MOB)
+		if((affected instanceof MOB)&&(super.canBeUninvoked()))
 		{
 			MOB M=(MOB)affected;
 			M.setVictim(previousVictim);

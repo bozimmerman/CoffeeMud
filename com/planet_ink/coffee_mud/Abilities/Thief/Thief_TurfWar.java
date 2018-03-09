@@ -229,7 +229,7 @@ public class Thief_TurfWar extends ThiefSkill
 			defender.setAttribute(MOB.Attrib.PLAYERKILL,this.defenderPKILLON);
 		}
 
-		if(affected instanceof Room)
+		if((affected instanceof Room)&&(super.canBeUninvoked()))
 		{
 			final Room R=(Room)affected;
 			if((attacker!=null)&&(attacker.location()==R)
@@ -242,7 +242,8 @@ public class Thief_TurfWar extends ThiefSkill
 			}
 			else
 			if((attacker!=null)&&(attacker.location()!=R)
-			&&((defender!=null)&&defender.location()==R))
+			&&((defender!=null)&&defender.location()==R)
+			)
 				R.showHappens(CMMsg.MSG_OK_ACTION,L("@x1 has won the turf war!",defender.Name()));
 		}
 		super.unInvoke();

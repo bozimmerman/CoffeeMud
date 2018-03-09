@@ -182,6 +182,7 @@ public class Skill_Puppeteer extends BardSkill
 		if((affected!=null)
 		&&(affected instanceof Item)
 		&&(((Item)affected).owner()!=null)
+		&&(super.canBeUninvoked())
 		&&(((Item)affected).owner() instanceof Room))
 			((Room)((Item)affected).owner()).showHappens(CMMsg.MSG_OK_ACTION,L("@x1 stops moving.",affected.name()));
 		super.unInvoke();

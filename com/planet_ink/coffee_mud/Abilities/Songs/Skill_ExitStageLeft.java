@@ -100,7 +100,7 @@ public class Skill_ExitStageLeft extends BardSkill
 			M=(MOB)affected;
 		final MOB invoker = invoker();
 		super.unInvoke();
-		if(M!=null)
+		if((M!=null)&&(super.canBeUninvoked()))
 		{
 			if(!M.isMonster())
 				CMLib.commands().postStand(M,true);

@@ -167,7 +167,7 @@ public class Poison_Alcohol extends Poison
 	@Override
 	public void unInvoke()
 	{
-		if(affected instanceof MOB)
+		if((affected instanceof MOB)&&(canBeUninvoked()))
 		{
 			final MOB mob=(MOB)affected;
 			if((CMLib.dice().rollPercentage()==1)&&(!((MOB)affected).isMonster())&&(drunkness>0))

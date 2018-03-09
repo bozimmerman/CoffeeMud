@@ -221,7 +221,7 @@ public class Thief_Listen extends ThiefSkill
 	{
 		final MOB M=invoker();
 		super.unInvoke();
-		if((M!=null)&&(!M.amDead()))
+		if((M!=null)&&(!M.amDead())&&(super.canBeUninvoked()))
 			M.tell(L("You stop listening."));
 	}
 

@@ -103,7 +103,7 @@ public class Spell_Summon extends Spell
 	@Override
 	public void unInvoke()
 	{
-		if(affected instanceof MOB)
+		if((affected instanceof MOB)&&(super.canBeUninvoked()))
 		{
 			final MOB mob=(MOB)affected;
 			if((!mob.amDead())&&(mob.location()!=null))

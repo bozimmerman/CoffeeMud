@@ -101,7 +101,7 @@ public class Chant_TapGrapevine extends Chant
 	@Override
 	public void unInvoke()
 	{
-		if((affected instanceof MOB)&&(myChants!=null))
+		if((affected instanceof MOB)&&(myChants!=null)&&(super.canBeUninvoked()))
 		{
 			final List<Ability> V=myChants;
 			myChants=null;

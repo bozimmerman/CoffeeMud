@@ -127,7 +127,7 @@ public class Thief_EscapeBonds extends ThiefSkill
 	{
 		final MOB M=(MOB)affected;
 		super.unInvoke();
-		if((M!=null)&&(!M.amDead()))
+		if((M!=null)&&(!M.amDead())&&(super.canBeUninvoked()))
 		{
 			if(!CMLib.flags().isBound(M))
 				M.tell(L("You slip free of your bonds."));

@@ -92,7 +92,7 @@ public class Poison_Liquor extends Poison_Alcohol
 			CMLib.commands().postStand(mob,true);
 		}
 		super.unInvoke();
-		if((mob!=null)&&(!mob.isInCombat())&&(drunkness>0))
+		if((mob!=null)&&(!mob.isInCombat())&&(drunkness>0)&&(super.canBeUninvoked()))
 			mob.location().show(mob,null,CMMsg.MSG_SLEEP,L("<S-NAME> curl(s) up on the ground and fall(s) asleep."));
 	}
 }

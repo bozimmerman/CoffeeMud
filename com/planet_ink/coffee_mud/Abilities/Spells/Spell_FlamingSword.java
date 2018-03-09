@@ -141,7 +141,7 @@ public class Spell_FlamingSword extends Spell
 		if((canBeUninvoked())&&(room!=null))
 		{
 			room.recoverRoomStats();
-		  item.destroy();
+			item.destroy();
 		}
 	}
 

@@ -81,7 +81,7 @@ public class Spell_FakeWeapon extends Spell
 		if(affected instanceof Item)
 			item=(Item)affected;
 		super.unInvoke();
-		if(item != null)
+		if((item != null)&&(super.canBeUninvoked()))
 			item.destroy();
 	}
 
