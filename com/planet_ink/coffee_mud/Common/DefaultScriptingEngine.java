@@ -10285,7 +10285,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								final int dispo1 = follower.basePhyStats().disposition() &  dispmask;
 								final int dispo2 = follower.phyStats().disposition() &  dispmask;
 								follower.basePhyStats().setDisposition(follower.basePhyStats().disposition() & (~dispmask));
-								follower.phyStats().setDisposition(follower.basePhyStats().disposition() & (~dispmask));
+								follower.phyStats().setDisposition(follower.phyStats().disposition() & (~dispmask));
 								// scripting guide calls for NO text -- empty is probably req tho
 								final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER," "+CMLib.protocol().msp("appear.wav",10));
 								final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,null,CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS," ");
