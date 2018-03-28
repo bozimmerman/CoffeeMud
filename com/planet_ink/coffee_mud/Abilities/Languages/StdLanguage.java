@@ -537,7 +537,7 @@ public class StdLanguage extends StdAbility implements Language
 		{
 			if(teacher != null)
 				teacher.tell(L("@x1 can not learn any more languages.",student.name(teacher)));
-			student.tell(L("You have learned the maximum @xlanguages, and may not learn any more.",""+remainders.maxLanguageSkills()));
+			student.tell(L("You have learned the maximum @x1 languages, and may not learn any more.",""+remainders.maxLanguageSkills()));
 			return false;
 		}
 		return true;
