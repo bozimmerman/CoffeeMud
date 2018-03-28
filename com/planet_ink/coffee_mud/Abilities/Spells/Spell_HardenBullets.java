@@ -80,7 +80,7 @@ public class Spell_HardenBullets extends Spell
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
-		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
+		//affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BONUS);
 	}
 
 	@Override
