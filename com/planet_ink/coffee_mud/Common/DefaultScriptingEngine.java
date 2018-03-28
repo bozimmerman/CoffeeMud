@@ -10281,6 +10281,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							{
 								final MOB follower=(MOB)V.get(v);
 								final Room thisRoom=follower.location();
+								final int dispo1 = follower.basePhyStats().disposition() &  (PhyStats.IS_SLEEPING | PhyStats.IS_SITTING);
+								final int dispo2 = follower.phyStats().disposition() &  (PhyStats.IS_SLEEPING | PhyStats.IS_SITTING);
 								// scripting guide calls for NO text -- empty is probably req tho
 								final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER," "+CMLib.protocol().msp("appear.wav",10));
 								final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,null,CMMsg.MSG_LEAVE," ");
@@ -10296,8 +10298,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									thisRoom.send(follower,leaveMsg);
 									newRoom.bringMobHere(follower,false);
 									newRoom.send(follower,enterMsg);
-									follower.tell(CMLib.lang().L("\n\r\n\r"));
-									CMLib.commands().postLook(follower,true);
+									follower.basePhyStats().setDisposition(follower.basePhyStats().disposition() | dispo1);
+									follower.phyStats().setDisposition(follower.phyStats().disposition() | dispo2);
+									if(!CMLib.flags().isSleeping(follower))
+									{
+										follower.tell(CMLib.lang().L("\n\r\n\r"));
+										CMLib.commands().postLook(follower,true);
+									}
+								}
+								else
+								{
+									follower.basePhyStats().setDisposition(follower.basePhyStats().disposition() | dispo1);
+									follower.phyStats().setDisposition(follower.phyStats().disposition() | dispo2);
 								}
 							}
 							else
