@@ -8798,7 +8798,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					CMLib.commands().postChannel(monster,channel,val,sysmsg);
 				break;
 			}
-			case 68: // unload
+			case 68: // MPUNLOADSCRIPT
 			{
 				if(tt==null)
 				{
