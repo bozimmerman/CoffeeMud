@@ -8828,7 +8828,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 				break;
 			}
-			case 60: // trains
+			case 60: // MPTRAINS
 			{
 				if(tt==null)
 				{
@@ -8853,7 +8853,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
-			case 61: // pracs
+			case 61: // mppracs
 			{
 				if(tt==null)
 				{
@@ -12047,7 +12047,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					break;
-				case 9: // exit prog
+				case 9: // exit_prog
 					if((msg.targetMinor()==CMMsg.TYP_LEAVE)&&canTrigger(9)
 					&&(msg.amITarget(lastKnownLocation))
 					&&(!msg.amISource(eventMob))
@@ -12081,7 +12081,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					break;
-				case 10: // death prog
+				case 10: // death_prog
 					if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&canTrigger(10)
 					&&(msg.amISource(eventMob)||(!(affecting instanceof MOB))))
 					{
@@ -12097,7 +12097,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return;
 					}
 					break;
-				case 44: // kill prog
+				case 44: // kill_prog
 					if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&canTrigger(44)
 					&&((msg.tool()==affecting)||(!(affecting instanceof MOB))))
 					{
@@ -12113,7 +12113,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return;
 					}
 					break;
-				case 26: // damage prog
+				case 26: // damage_prog
 					if((msg.targetMinor()==CMMsg.TYP_DAMAGE)&&canTrigger(26)
 					&&(msg.amITarget(eventMob)||(msg.tool()==affecting)))
 					{
@@ -12258,7 +12258,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					break;
-				case 38: // social prog
+				case 38: // social_prog
 					if(!msg.amISource(monster)
 					&&canTrigger(38)
 					&&(msg.tool() instanceof Social))
@@ -12280,7 +12280,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					break;
-				case 33: // channel prog
+				case 33: // channel_prog
 					if(!registeredEvents.contains(Integer.valueOf(CMMsg.TYP_CHANNEL)))
 					{
 						CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_CHANNEL);
@@ -12362,7 +12362,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					break;
-				case 31: // regmask prog
+				case 31: // regmask_prog
 					if(!msg.amISource(monster)&&canTrigger(31))
 					{
 						boolean doIt=false;
@@ -12731,7 +12731,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				break;
-			case 13: // quest time prog
+			case 13: // questtime_prog
 				if(!oncesDone.contains(script)&&canTrigger(13))
 				{
 					if(t==null)
