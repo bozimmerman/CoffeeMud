@@ -12597,7 +12597,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
 				}
 				break;
-			case 7: // fightProg
+			case 7: // fight_Prog
 				if((mob.isInCombat())&&(!mob.amDead())&&canTrigger(7))
 				{
 					if(t==null)
@@ -12629,7 +12629,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				break;
-			case 11: // hitprcnt
+			case 11: // hitprcnt_prog
 				if((mob.isInCombat())&&(!mob.amDead())&&canTrigger(11))
 				{
 					if(t==null)
@@ -12731,7 +12731,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				break;
-			case 13: // questtime_prog
+			case 13: // quest_time_prog
 				if(!oncesDone.contains(script)&&canTrigger(13))
 				{
 					if(t==null)
