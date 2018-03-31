@@ -869,15 +869,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		switch(SIGN.intValue())
 		{
-		case SIGN_EQUL: return (val1==val2);
+		case SIGN_EQUL:
+			return (val1 == val2);
 		case SIGN_EQGT:
-		case SIGN_GTEQ: return val1>=val2;
+		case SIGN_GTEQ:
+			return val1 >= val2;
 		case SIGN_EQLT:
-		case SIGN_LTEQ: return val1<=val2;
-		case SIGN_GRAT: return (val1>val2);
-		case SIGN_LEST: return (val1<val2);
-		case SIGN_NTEQ: return (val1!=val2);
-		default: return (val1==val2);
+		case SIGN_LTEQ:
+			return val1 <= val2;
+		case SIGN_GRAT:
+			return (val1 > val2);
+		case SIGN_LEST:
+			return (val1 < val2);
+		case SIGN_NTEQ:
+			return (val1 != val2);
+		default:
+			return (val1 == val2);
 		}
 	}
 
@@ -893,15 +900,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		switch(SIGN.intValue())
 		{
-		case SIGN_EQUL: return (val1==val2);
+		case SIGN_EQUL:
+			return (val1 == val2);
 		case SIGN_EQGT:
-		case SIGN_GTEQ: return val1>=val2;
+		case SIGN_GTEQ:
+			return val1 >= val2;
 		case SIGN_EQLT:
-		case SIGN_LTEQ: return val1<=val2;
-		case SIGN_GRAT: return (val1>val2);
-		case SIGN_LEST: return (val1<val2);
-		case SIGN_NTEQ: return (val1!=val2);
-		default: return (val1==val2);
+		case SIGN_LTEQ:
+			return val1 <= val2;
+		case SIGN_GRAT:
+			return (val1 > val2);
+		case SIGN_LEST:
+			return (val1 < val2);
+		case SIGN_NTEQ:
+			return (val1 != val2);
+		default:
+			return (val1 == val2);
 		}
 	}
 
@@ -1558,7 +1572,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				case '@':
 					if ((t < varifyable.length() - 2) && Character.isLetter(varifyable.charAt(t + 2)))
 					{
-						final Environmental E = getArgumentItem("$" + varifyable.charAt(t + 2), 
+						final Environmental E = getArgumentItem("$" + varifyable.charAt(t + 2),
 								source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
 						middle = (E == null) ? "null" : "" + E;
 					}
