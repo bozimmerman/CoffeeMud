@@ -114,7 +114,7 @@ public class Prop_LocationBound extends Property
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((msg.sourceMinor()!=CMMsg.TYP_ENTER)
+		if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target() instanceof Room)
 		&&((msg.source()==affected)
 			||((affected instanceof Item)&&(msg.source()==((Item)affected).owner()))))
