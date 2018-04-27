@@ -133,17 +133,30 @@ public class Skill_Befriend extends BardSkill
 							final int oldCha = srcM.baseCharStats().getStat(CharStats.STAT_CHARISMA);
 							srcM.baseCharStats().setStat(CharStats.STAT_CHARISMA, oldCha + amt);
 							srcM.recoverCharStats();
-							msg.addTrailerRunnable(new Runnable()
+							Runnable R=new Runnable()
 							{
 								final MOB mob=theMob;
 								final int cha=oldCha;
+								volatile boolean alreadyRun=false;
 								@Override
 								public void run()
 								{
-									mob.baseCharStats().setStat(CharStats.STAT_CHARISMA, cha);
-									mob.recoverCharStats();
+									if(!alreadyRun)
+									{
+										synchronized(this)
+										{
+											if(!alreadyRun)
+											{
+												alreadyRun=true;
+												mob.baseCharStats().setStat(CharStats.STAT_CHARISMA, cha);
+												mob.recoverCharStats();
+											}
+										}
+									}
 								}
-							});
+							};
+							msg.addTrailerRunnable(R);
+							CMLib.threads().scheduleRunnable(R, 250);
 						}
 					}
 				}
