@@ -167,15 +167,17 @@ public class RoomData extends StdWebMacro
 		String origCode=code;
 		for(int i=0;i<M.numItems();i++)
 		{
-			if(getItemCode(M,M.getItem(i)).equals(code))
-				return M.getItem(i);
+			final Item I=M.getItem(i);
+			if((I!=null)&&(getItemCode(M,I).equals(code)))
+				return I;
 		}
 		if(code.length()>2)
 			code=code.substring(0,code.length()-2);
 		for(int i=0;i<M.numItems();i++)
 		{
-			if(getItemCode(M,M.getItem(i)).startsWith(code))
-				return M.getItem(i);
+			final Item I=M.getItem(i);
+			if((I!=null)&&(getItemCode(M,I).startsWith(code)))
+				return I;
 		}
 		if(M instanceof ShopKeeper)
 		{
