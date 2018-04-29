@@ -98,8 +98,10 @@
 @else@
 	<h3>Modify Item of player '@PlayerID@'.</H3>
 @endif@
+@if?!CheckReqParm?ERRMSG=@
 <P><FONT COLOR=RED><H1>@RequestParameter?ERRMSG@</H1></FONT>
 <BR>
+@endif@
 @if?CheckReqParm?PLAYER=@
 	@if?CheckReqParm?ROOM=ANY@
 		<FORM  ACCEPT-CHARSET="UTF-8" NAME=AREAEDIT TARGET=_top METHOD=POST ACTION="/grinder/editnewitemdone.cmvp">
