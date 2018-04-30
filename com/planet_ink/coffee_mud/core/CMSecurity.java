@@ -2586,7 +2586,7 @@ public class CMSecurity
 		RETIREREASON("early char delete prompt"), 
 		MAXCONNSPERACCOUNT("connections per account limit"),
 		ALLERGIES("auto player allergies"), 
-		LOGINS("non-archin player logins"), 
+		LOGINS("non-archon player logins"), 
 		NEWPLAYERS("new player creation"), 
 		MAXNEWPERIP("new character per ip limit"),
 		MAXCONNSPERIP("connections per ip limit"), 
