@@ -256,6 +256,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.source()==affected)
+		&&(msg.targetMinor()!=CMMsg.TYP_TEACH)
 		&&(msg.tool() instanceof Ability)
 		&&(skillList.contains(msg.tool())))
 		{
