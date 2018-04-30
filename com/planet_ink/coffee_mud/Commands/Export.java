@@ -543,7 +543,7 @@ public class Export extends StdCommand
 			}
 		}
 		else
-		if(commandType.equalsIgnoreCase("PLAYER")||commandType.equalsIgnoreCase("USER"))
+		if(commandType.equalsIgnoreCase("PLAYERS")||commandType.equalsIgnoreCase("USERS"))
 		{
 			final StringBuffer x=new StringBuffer("<PLAYERS>");
 			final MOB M=CMLib.players().getLoadPlayer(subType);
