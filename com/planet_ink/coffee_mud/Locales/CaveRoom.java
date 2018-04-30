@@ -89,7 +89,6 @@ public class CaveRoom extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_IRON),
 		Integer.valueOf(RawMaterial.RESOURCE_LEAD),
 		Integer.valueOf(RawMaterial.RESOURCE_GOLD),
-		Integer.valueOf(RawMaterial.RESOURCE_WHITE_GOLD),
 		Integer.valueOf(RawMaterial.RESOURCE_CHROMIUM),
 		Integer.valueOf(RawMaterial.RESOURCE_SILVER),
 		Integer.valueOf(RawMaterial.RESOURCE_ZINC),
