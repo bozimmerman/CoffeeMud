@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.EachApplicable.ApplyAffectPhyStats;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
+import com.planet_ink.coffee_mud.core.threads.AlwaysRunnable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -690,154 +691,168 @@ public class StdRoom implements Room
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!getArea().okMessage(this,msg))
-			return false;
-
-		if(msg.amITarget(this))
+		try
 		{
-			final MOB mob=msg.source();
-			switch(msg.targetMinor())
+			if(!getArea().okMessage(this,msg))
+				return false;
+	
+			if(msg.amITarget(this))
 			{
-			case CMMsg.TYP_EXPIRE:
-			{
-				if((gridParent!=null)&&(!gridParent.okMessage(myHost,msg)))
-					return false;
-				if(!CMLib.map().isClearableRoom(this))
-					return false;
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				final MOB mob=msg.source();
+				switch(msg.targetMinor())
 				{
-					final Room R2=rawDoors()[d];
-					if((R2!=null)&&(!CMLib.map().isClearableRoom(R2)))
+				case CMMsg.TYP_EXPIRE:
+				{
+					if((gridParent!=null)&&(!gridParent.okMessage(myHost,msg)))
+						return false;
+					if(!CMLib.map().isClearableRoom(this))
+						return false;
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					{
+						final Room R2=rawDoors()[d];
+						if((R2!=null)&&(!CMLib.map().isClearableRoom(R2)))
+							return false;
+					}
+					break;
+				}
+				case CMMsg.TYP_LEAVE:
+					if((!CMLib.flags().allowsMovement(this))||(!getMobility()))
+						return false;
+					break;
+				case CMMsg.TYP_FLEE:
+				case CMMsg.TYP_ENTER:
+					if((!CMLib.flags().allowsMovement(this))||(!getMobility()))
+						return false;
+					if(!mob.isMonster())
+					{
+						final Room R=mob.location();
+						if((R!=null)&&(R.getArea()!=getArea()))
+							CMLib.factions().updatePlayerFactions(mob,this,false);
+						giveASky(0);
+					}
+					break;
+				case CMMsg.TYP_AREAAFFECT:
+					// obsolete with the area objects
+					break;
+				case CMMsg.TYP_CAST_SPELL:
+				case CMMsg.TYP_DELICATE_HANDS_ACT:
+				case CMMsg.TYP_NOISYMOVEMENT:
+				case CMMsg.TYP_OK_ACTION:
+				case CMMsg.TYP_JUSTICE:
+				case CMMsg.TYP_OK_VISUAL:
+				case CMMsg.TYP_SNIFF:
+					break;
+				case CMMsg.TYP_LIST:
+				case CMMsg.TYP_BUY:
+				case CMMsg.TYP_BID:
+				case CMMsg.TYP_SELL:
+				case CMMsg.TYP_VIEW:
+				case CMMsg.TYP_VALUE:
+					if(CMLib.coffeeShops().getShopKeeper(this)==null)
+					{
+						mob.tell(L("You can't shop here."));
+						return false;
+					}
+					break;
+				case CMMsg.TYP_SPEAK:
+					break;
+				case CMMsg.TYP_DIG:
+					if(CMLib.map().getExtendedRoomID(this).length()==0)
+					{
+						mob.tell(L("You can't really dig here."));
+						return false;
+					}
+					switch(this.domainType())
+					{
+					case Room.DOMAIN_OUTDOORS_DESERT:
+					case Room.DOMAIN_OUTDOORS_HILLS:
+					case Room.DOMAIN_OUTDOORS_JUNGLE:
+					case Room.DOMAIN_OUTDOORS_PLAINS:
+					case Room.DOMAIN_OUTDOORS_SWAMP:
+					case Room.DOMAIN_OUTDOORS_WOODS:
+						break;
+					case Room.DOMAIN_OUTDOORS_WATERSURFACE:
+					case Room.DOMAIN_OUTDOORS_UNDERWATER:
+					{
+						if(getRoomInDir(Directions.DOWN)==null)
+							break;
+					}
+					//$FALL-THROUGH$
+					default:
+						mob.tell(L("You can't really dig here."));
+						return false;
+					}
+					break;
+				default:
+					if(((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOUTH)))
+					&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_MAGIC))
+					&&(!(msg.tool() instanceof Ability))
+					&&(msg.targetMinor()!=CMMsg.TYP_THROW)
+					&&(isInhabitant(msg.source())))
+					{
+						mob.tell(L("You can't do that here."));
+						return false;
+					}
+					break;
+				}
+			}
+	
+			if(isInhabitant(msg.source()))
+			{
+				if(!msg.source().okMessage(this,msg))
+					return false;
+			}
+			for(final Enumeration<MOB> m=inhabitants();m.hasMoreElements();)
+			{
+				final MOB M=m.nextElement();
+				if((M!=msg.source())
+				&&(!M.okMessage(this,msg)))
+					return false;
+			}
+			for(final Enumeration<Item> i=items();i.hasMoreElements();)
+			{
+				final Item I=i.nextElement();
+				if(!I.okMessage(this,msg))
+					return false;
+			}
+			for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
+			{
+				final Ability A=a.nextElement();
+				if(!A.okMessage(this,msg))
+					return false;
+			}
+			for(final Enumeration<Behavior> b=behaviors();b.hasMoreElements();)
+			{
+				final Behavior B=b.nextElement();
+				if(!B.okMessage(this,msg))
+					return false;
+			}
+			for(final Enumeration<ScriptingEngine> s=scripts();s.hasMoreElements();)
+			{
+				final ScriptingEngine S=s.nextElement();
+				if(!S.okMessage(this,msg))
+					return false;
+			}
+	
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+			{
+				final Exit thisExit=getRawExit(d);
+				if(thisExit!=null)
+				{
+					if(!thisExit.okMessage(this,msg))
 						return false;
 				}
-				break;
-			}
-			case CMMsg.TYP_LEAVE:
-				if((!CMLib.flags().allowsMovement(this))||(!getMobility()))
-					return false;
-				break;
-			case CMMsg.TYP_FLEE:
-			case CMMsg.TYP_ENTER:
-				if((!CMLib.flags().allowsMovement(this))||(!getMobility()))
-					return false;
-				if(!mob.isMonster())
-				{
-					final Room R=mob.location();
-					if((R!=null)&&(R.getArea()!=getArea()))
-						CMLib.factions().updatePlayerFactions(mob,this,false);
-					giveASky(0);
-				}
-				break;
-			case CMMsg.TYP_AREAAFFECT:
-				// obsolete with the area objects
-				break;
-			case CMMsg.TYP_CAST_SPELL:
-			case CMMsg.TYP_DELICATE_HANDS_ACT:
-			case CMMsg.TYP_NOISYMOVEMENT:
-			case CMMsg.TYP_OK_ACTION:
-			case CMMsg.TYP_JUSTICE:
-			case CMMsg.TYP_OK_VISUAL:
-			case CMMsg.TYP_SNIFF:
-				break;
-			case CMMsg.TYP_LIST:
-			case CMMsg.TYP_BUY:
-			case CMMsg.TYP_BID:
-			case CMMsg.TYP_SELL:
-			case CMMsg.TYP_VIEW:
-			case CMMsg.TYP_VALUE:
-				if(CMLib.coffeeShops().getShopKeeper(this)==null)
-				{
-					mob.tell(L("You can't shop here."));
-					return false;
-				}
-				break;
-			case CMMsg.TYP_SPEAK:
-				break;
-			case CMMsg.TYP_DIG:
-				if(CMLib.map().getExtendedRoomID(this).length()==0)
-				{
-					mob.tell(L("You can't really dig here."));
-					return false;
-				}
-				switch(this.domainType())
-				{
-				case Room.DOMAIN_OUTDOORS_DESERT:
-				case Room.DOMAIN_OUTDOORS_HILLS:
-				case Room.DOMAIN_OUTDOORS_JUNGLE:
-				case Room.DOMAIN_OUTDOORS_PLAINS:
-				case Room.DOMAIN_OUTDOORS_SWAMP:
-				case Room.DOMAIN_OUTDOORS_WOODS:
-					break;
-				case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-				case Room.DOMAIN_OUTDOORS_UNDERWATER:
-				{
-					if(getRoomInDir(Directions.DOWN)==null)
-						break;
-				}
-				//$FALL-THROUGH$
-				default:
-					mob.tell(L("You can't really dig here."));
-					return false;
-				}
-				break;
-			default:
-				if(((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOUTH)))
-				&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_MAGIC))
-				&&(!(msg.tool() instanceof Ability))
-				&&(msg.targetMinor()!=CMMsg.TYP_THROW)
-				&&(isInhabitant(msg.source())))
-				{
-					mob.tell(L("You can't do that here."));
-					return false;
-				}
-				break;
 			}
 		}
-
-		if(isInhabitant(msg.source()))
+		finally
 		{
-			if(!msg.source().okMessage(this,msg))
-				return false;
-		}
-		for(final Enumeration<MOB> m=inhabitants();m.hasMoreElements();)
-		{
-			final MOB M=m.nextElement();
-			if((M!=msg.source())
-			&&(!M.okMessage(this,msg)))
-				return false;
-		}
-		for(final Enumeration<Item> i=items();i.hasMoreElements();)
-		{
-			final Item I=i.nextElement();
-			if(!I.okMessage(this,msg))
-				return false;
-		}
-		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
-		{
-			final Ability A=a.nextElement();
-			if(!A.okMessage(this,msg))
-				return false;
-		}
-		for(final Enumeration<Behavior> b=behaviors();b.hasMoreElements();)
-		{
-			final Behavior B=b.nextElement();
-			if(!B.okMessage(this,msg))
-				return false;
-		}
-		for(final Enumeration<ScriptingEngine> s=scripts();s.hasMoreElements();)
-		{
-			final ScriptingEngine S=s.nextElement();
-			if(!S.okMessage(this,msg))
-				return false;
-		}
-
-		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-		{
-			final Exit thisExit=getRawExit(d);
-			if(thisExit!=null)
+			if(msg.trailerRunnables()!=null)
 			{
-				if(!thisExit.okMessage(this,msg))
-					return false;
+				for(final Runnable r : msg.trailerRunnables())
+				{
+					if(r instanceof AlwaysRunnable)
+						r.run();
+				}
 			}
 		}
 		return true;

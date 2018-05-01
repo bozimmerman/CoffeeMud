@@ -242,7 +242,8 @@ public class DefaultClan implements Clan
 		clanKills();
 		clanKills.add(Long.valueOf(System.currentTimeMillis()));
 		updateClanKills();
-		if((killer != null)&&(killed != null))
+		if((killer != null)
+		&&(killed != null))
 		{
 			if(killed.isMonster())
 				CMLib.database().DBUpdateClanKills(this.clanID(), killer.Name(), 1, 0);

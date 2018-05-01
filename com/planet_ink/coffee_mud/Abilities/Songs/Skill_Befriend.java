@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.threads.AlwaysRunnable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -106,14 +107,13 @@ public class Skill_Befriend extends BardSkill
 					{
 						srcM.recoverCharStats();
 						srcM.charStats().setStat(CharStats.STAT_CHARISMA, srcM.charStats().getStat(CharStats.STAT_CHARISMA) + 10);
-						msg.addTrailerRunnable(new Runnable()
+						msg.addTrailerRunnable(new AlwaysRunnable()
 						{
 							@Override
 							public void run()
 							{
 								srcM.recoverCharStats();
 							}
-							
 						});
 					}
 					else
@@ -133,7 +133,7 @@ public class Skill_Befriend extends BardSkill
 							final int oldCha = srcM.baseCharStats().getStat(CharStats.STAT_CHARISMA);
 							srcM.baseCharStats().setStat(CharStats.STAT_CHARISMA, oldCha + amt);
 							srcM.recoverCharStats();
-							Runnable R=new Runnable()
+							final Runnable R=new AlwaysRunnable()
 							{
 								final MOB mob=theMob;
 								final int cha=oldCha;
@@ -156,7 +156,6 @@ public class Skill_Befriend extends BardSkill
 								}
 							};
 							msg.addTrailerRunnable(R);
-							CMLib.threads().scheduleRunnable(R, 250);
 						}
 					}
 				}
