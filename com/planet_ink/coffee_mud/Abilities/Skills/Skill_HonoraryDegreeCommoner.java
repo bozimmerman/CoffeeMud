@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.AlwaysRunnable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -276,7 +275,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 		}
 		final Skill_HonoraryDegreeCommoner me = this;
 		final MOB mob=msg.source();
-		msg.addTrailerRunnable(new AlwaysRunnable()
+		msg.addTrailerRunnable(new Runnable()
 		{
 			@Override
 			public void run()

@@ -1,6 +1,5 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.threads.AlwaysRunnable;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -107,7 +106,7 @@ public class Skill_Befriend extends BardSkill
 					{
 						srcM.recoverCharStats();
 						srcM.charStats().setStat(CharStats.STAT_CHARISMA, srcM.charStats().getStat(CharStats.STAT_CHARISMA) + 10);
-						msg.addTrailerRunnable(new AlwaysRunnable()
+						msg.addTrailerRunnable(new Runnable()
 						{
 							@Override
 							public void run()
@@ -133,29 +132,19 @@ public class Skill_Befriend extends BardSkill
 							final int oldCha = srcM.baseCharStats().getStat(CharStats.STAT_CHARISMA);
 							srcM.baseCharStats().setStat(CharStats.STAT_CHARISMA, oldCha + amt);
 							srcM.recoverCharStats();
-							final Runnable R=new AlwaysRunnable()
+							final Runnable R=new Runnable()
 							{
 								final MOB mob=theMob;
 								final int cha=oldCha;
-								volatile boolean alreadyRun=false;
 								@Override
 								public void run()
 								{
-									if(!alreadyRun)
-									{
-										synchronized(this)
-										{
-											if(!alreadyRun)
-											{
-												alreadyRun=true;
-												mob.baseCharStats().setStat(CharStats.STAT_CHARISMA, cha);
-												mob.recoverCharStats();
-											}
-										}
-									}
+									mob.baseCharStats().setStat(CharStats.STAT_CHARISMA, cha);
+									mob.recoverCharStats();
 								}
 							};
 							msg.addTrailerRunnable(R);
+							CMLib.threads().scheduleRunnable(R, 250);
 						}
 					}
 				}
