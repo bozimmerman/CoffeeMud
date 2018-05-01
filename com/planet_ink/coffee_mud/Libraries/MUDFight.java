@@ -2287,7 +2287,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 						CMLib.players().bumpPrideStat(killer,PrideStat.PVPKILLS, 1);
 				}
 				if((killer.session()!=null)
-				&&((deadmob.session()==null)||(!deadmob.session().getAddress().equalsIgnoreCase(killer.session().getAddress()))))
+				&&((deadmob.session()==null)
+					||(!deadmob.session().getAddress().equalsIgnoreCase(killer.session().getAddress())))
+				&&((deadmob.playerStats()==null)
+					||(killer.playerStats()==null)
+					||(deadmob.playerStats().getAccount()==null)
+					||(killer.playerStats().getAccount()==null)
+					||(deadmob.playerStats().getAccount()!=killer.playerStats().getAccount())))
 				{
 					final List<Pair<Clan,Integer>> list = CMLib.clans().findRivalrousClans(killer, deadmob);
 					for(final Pair<Clan,Integer> c : list)
