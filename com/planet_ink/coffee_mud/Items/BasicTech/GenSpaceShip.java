@@ -624,7 +624,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			manufacturer=name; 
 	}
 
-	@Override public long getMass()
+	@Override 
+	public long getMass()
 	{
 		return basePhyStats().weight()+((area instanceof SpaceShip)?((SpaceShip)area).getMass(): 1000);
 	}

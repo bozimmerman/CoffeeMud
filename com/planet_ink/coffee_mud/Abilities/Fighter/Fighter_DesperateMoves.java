@@ -49,7 +49,8 @@ public class Fighter_DesperateMoves extends FighterSkill
 		return localizedName;
 	}
 
-	@Override public String displayText()
+	@Override 
+	public String displayText()
 	{
 		if((affected==invoker)&&(invoker!=null)&&(invoker.curState().getHitPoints()<(int)Math.round(CMath.div(invoker.maxState().getHitPoints(),10.0))))
 			return L("(Desperate Moves)");

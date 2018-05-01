@@ -56,7 +56,12 @@ public class Poison_Rotten extends Poison
 		return triggerStrings;
 	}
 
-	@Override protected int POISON_TICKS(){return 50;} // 0 means no adjustment!
+	@Override
+	protected int POISON_TICKS()
+	{
+		return 50;
+	} // 0 means no adjustment!
+
 	@Override
 	protected int POISON_DELAY()
 	{

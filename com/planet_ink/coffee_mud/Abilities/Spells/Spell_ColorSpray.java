@@ -50,7 +50,9 @@ public class Spell_ColorSpray extends Spell
 		return localizedName;
 	}
 
-	@Override public String displayText() { 
+	@Override
+	public String displayText()
+	{
 		if(text().equalsIgnoreCase("UNCONSCIOUS"))
 			return L("(Dazed into unconsciousness)");
 		else

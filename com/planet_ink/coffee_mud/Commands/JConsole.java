@@ -115,7 +115,8 @@ public class JConsole extends StdCommand
 				{
 				}
 
-				@Override public void callBack()
+				@Override 
+				public void callBack()
 				{
 					if(this.input.equalsIgnoreCase("exit"))
 						return;

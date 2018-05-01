@@ -56,7 +56,12 @@ public class Poison_Peppersauce extends Poison
 		return triggerStrings;
 	}
 
-	@Override protected int POISON_TICKS(){return 10;} // 0 means no adjustment!
+	@Override
+	protected int POISON_TICKS()
+	{
+		return 10;
+	} // 0 means no adjustment!
+
 	@Override
 	protected int POISON_DELAY()
 	{

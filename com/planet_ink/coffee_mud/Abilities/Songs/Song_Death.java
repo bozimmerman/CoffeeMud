@@ -54,7 +54,11 @@ public class Song_Death extends Song
 		return Ability.QUALITY_MALICIOUS;
 	}
 
-	@Override protected int getXMAXRANGELevel(MOB mob){return 0;} // people are complaining about multi-room death
+	@Override
+	protected int getXMAXRANGELevel(MOB mob)
+	{
+		return 0;
+	} // people are complaining about multi-room death
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

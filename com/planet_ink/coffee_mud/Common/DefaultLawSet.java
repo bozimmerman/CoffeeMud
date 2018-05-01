@@ -246,7 +246,8 @@ public class DefaultLawSet implements Law
 		return warrants;
 	}
 
-	@Override public boolean arrestMobs()
+	@Override 
+	public boolean arrestMobs()
 	{ 
 		return arrestMobs;
 	}

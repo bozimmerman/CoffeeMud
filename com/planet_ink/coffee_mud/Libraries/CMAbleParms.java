@@ -1584,7 +1584,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 									L.add(new Pair<String,Integer>(RawMaterial.CODES.NAME(x),Integer.valueOf(RawMaterial.CODES.GET(x))));
 								Collections.sort(L,new Comparator<Pair<String,Integer>>()
 								{
-									@Override public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
+									@Override 
+									public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
 									{
 										return o1.first.compareToIgnoreCase(o2.first);
 									}

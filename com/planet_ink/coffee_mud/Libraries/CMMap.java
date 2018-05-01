@@ -844,7 +844,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			return within;
 		Collections.sort(within, new Comparator<SpaceObject>()
 		{
-			@Override public int compare(SpaceObject o1, SpaceObject o2)
+			@Override 
+			public int compare(SpaceObject o1, SpaceObject o2)
 			{
 				final long distTo1=getDistanceFrom(o1,ofObj);
 				final long distTo2=getDistanceFrom(o2,ofObj);

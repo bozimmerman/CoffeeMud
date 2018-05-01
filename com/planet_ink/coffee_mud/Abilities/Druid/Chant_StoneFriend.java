@@ -81,7 +81,11 @@ public class Chant_StoneFriend extends Chant
 		return CAN_MOBS;
 	}
 
-	@Override public long flags(){return 0;} // NOT charming because golems are resistant to that.
+	@Override
+	public long flags()
+	{
+		return 0;
+	} // NOT charming because golems are resistant to that.
 
 	protected MOB charmer=null;
 	protected MOB getCharmer()

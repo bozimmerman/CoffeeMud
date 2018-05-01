@@ -62,7 +62,12 @@ public class Poison_Ghoultouch extends Poison
 		return Ability.FLAG_PARALYZING|Ability.FLAG_UNHOLY;
 	}
 
-	@Override protected int POISON_TICKS(){return 7;} // 0 means no adjustment!
+	@Override
+	protected int POISON_TICKS()
+	{
+		return 7;
+	} // 0 means no adjustment!
+
 	@Override
 	protected int POISON_DELAY()
 	{

@@ -4166,7 +4166,8 @@ public class ListCmd extends StdCommand
 		final List<Manufacturer> l=new XVector<Manufacturer>(CMLib.tech().manufacterers());
 		Collections.sort(l,new Comparator<Manufacturer>()
 		{
-			@Override public int compare(Manufacturer o1, Manufacturer o2)
+			@Override 
+			public int compare(Manufacturer o1, Manufacturer o2)
 			{
 				return o1.name().compareToIgnoreCase(o2.name());
 			}

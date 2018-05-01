@@ -201,15 +201,36 @@ public class CWDataBuffers implements DataBuffers
 		}
 	}
 
-	@Override public boolean hasNext() { return tryNext()!=null;}
+	@Override
+	public boolean hasNext()
+	{
+		return tryNext() != null;
+	}
 
-	@Override public ByteBuffer next() { return tryNext(); }
+	@Override
+	public ByteBuffer next()
+	{
+		return tryNext();
+	}
 
-	@Override public void remove() { throw new java.lang.NoSuchMethodError(); }
+	@Override
+	public void remove()
+	{
+		throw new java.lang.NoSuchMethodError();
+	}
 
-	private final void created() { }
-	private final void accessed() { }
-	private final void finalized() { }
+	private final void created()
+	{
+	}
+
+	private final void accessed()
+	{
+	}
+
+	private final void finalized()
+	{
+	}
+
 	public void finalize() throws Throwable
 	{
 		if(list.size()>0)

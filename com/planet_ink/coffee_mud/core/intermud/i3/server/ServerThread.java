@@ -219,7 +219,8 @@ public class ServerThread implements Tickable
 		CMLib.threads().startTickDown(this, Tickable.TICKID_SUPPORT, 250, 1);
 	}
 
-	@Override public boolean tick(Tickable ticking, int tickID)
+	@Override 
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(CMSecurity.isDisabled(DisFlag.I3))
 			return running;

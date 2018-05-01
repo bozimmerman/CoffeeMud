@@ -1923,7 +1923,8 @@ public class CMFile extends File
 		return this; 
 	}
 
-	@Override public File	getCanonicalFile() 
+	@Override 
+	public File	getCanonicalFile() 
 	{ 
 		return this; 
 	}

@@ -38,12 +38,14 @@ public class RTree<T extends BoundedObject>
 
 		public RTreeNode() {}
 
-		public RTreeNode(boolean isLeaf)	{
+		public RTreeNode(boolean isLeaf)	
+		{
 			if (isLeaf)
 			{
 				data = new TrackingVector<T>(trackMap,maxSize+1,new TrackingVector.TrackBack<T>()
 				{
-					@Override public void removed(T o)
+					@Override 
+					public void removed(T o)
 					{
 						me.computeMBR(true);
 					}

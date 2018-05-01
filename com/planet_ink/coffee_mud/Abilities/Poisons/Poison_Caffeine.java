@@ -63,7 +63,12 @@ public class Poison_Caffeine extends Poison {
 		return triggerStrings;
 	}
 
-	@Override protected int POISON_TICKS(){return 30;} // 0 means no adjustment!
+	@Override
+	protected int POISON_TICKS()
+	{
+		return 30;
+	} // 0 means no adjustment!
+
 	@Override
 	protected int POISON_DELAY()
 	{

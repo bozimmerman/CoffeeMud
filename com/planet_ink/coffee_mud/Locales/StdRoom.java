@@ -1011,7 +1011,8 @@ public class StdRoom implements Room
 				final LinkedList<DeadBody> deadBodies=new LinkedList<DeadBody>();
 				eachItem(new EachApplicable<Item>()
 				{
-					@Override public final void apply(final Item I)
+					@Override 
+					public final void apply(final Item I)
 					{
 						if((I instanceof DeadBody)
 						&&(((DeadBody)I).isPlayerCorpse()))
