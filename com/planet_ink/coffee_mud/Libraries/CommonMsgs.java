@@ -2108,7 +2108,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		}
 
 		final boolean useShipNames=((room instanceof BoardableShip)||(room.getArea() instanceof BoardableShip));
-		final StringBuilder buf=new StringBuilder("^DObvious exits:^.^N\n\r");
+		final StringBuilder buf=new StringBuilder("^<RExits^>^DObvious exits:^.^N\n\r");
 		String Dir=null;
 		for(int d : Directions.DISPLAY_CODES())
 		{
@@ -2158,6 +2158,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 			}
 		}
+		buf.append("^</RExits^>");
 		mob.tell(buf.toString());
 	}
 
@@ -2170,7 +2171,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			return;
 
 		final boolean useShipNames=((room instanceof BoardableShip)||(room.getArea() instanceof BoardableShip));
-		final StringBuilder buf=new StringBuilder(L("^D[Exits: "));
+		final StringBuilder buf=new StringBuilder(L("^<RExits^>^D[Exits: "));
 		for(int d : Directions.DISPLAY_CODES())
 		{
 			final Exit exit=room.getExitInDir(d);
@@ -2193,6 +2194,6 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			&&((!(I instanceof BoardableShip))||(!noBoardableShips)))
 				buf.append("^<MEX^>"+((Exit)I).doorName()+"^</MEX^> ");
 		}
-		mob.tell(buf.toString().trim()+"]^.^N");
+		mob.tell(buf.toString().trim()+"]^</RExits^>^.^N");
 	}
 }
