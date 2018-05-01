@@ -298,7 +298,8 @@ public class Charlatan extends StdCharClass
 			return super.okMessage(myHost,msg);
 
 		final MOB myChar=(MOB)myHost;
-		if(msg.tool() instanceof Ability)
+		if((msg.tool() instanceof Ability)
+		&&(msg.targetMinor()!=CMMsg.TYP_TEACH))
 		{
 			if(msg.amISource(myChar)
 			&&(!myChar.isMonster())
