@@ -1143,8 +1143,16 @@ public class DefaultClanGovernment implements ClanGovernment
 			{
 				str.append(CMLib.lang().L("\n\rBenefits per Clan Level:\n\r"));
 				int maxLevel=-1;
-				for(final int x : clanEffectLevels) if(x>maxLevel) maxLevel=x;
-				for(final int x : clanAbilityLevels) if(x>maxLevel) maxLevel=x;
+				for(final int x : clanEffectLevels)
+				{
+					if(x>maxLevel) 
+						maxLevel=x;
+				}
+				for(final int x : clanAbilityLevels) 
+				{
+					if(x>maxLevel) 
+						maxLevel=x;
+				}
 				for(int l=1;l<=maxLevel;l++)
 				{
 					final List<String> levelBenefits=new LinkedList<String>();

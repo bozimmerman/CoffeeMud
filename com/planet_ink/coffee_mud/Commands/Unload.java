@@ -230,6 +230,8 @@ public class Unload extends StdCommand
 				if((F.exists())&&(F.canRead())&&(F.canWrite())&&(F.isDirectory()))
 				{
 					CMLib.help().unloadHelpFile(mob);
+					for(ClanGovernment G : CMLib.clans().getStockGovernments())
+						G.setLongDesc(G.getLongDesc());
 					return false;
 				}
 				mob.tell(L("No access to help."));

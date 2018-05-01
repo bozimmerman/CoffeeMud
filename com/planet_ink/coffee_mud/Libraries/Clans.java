@@ -1045,23 +1045,9 @@ public class Clans extends StdLibrary implements ClanManager
 			if(category==null)
 				category="";
 
-			final Authority[]	baseFunctionChart = new Authority[Function.values().length];
-			for(int i=0;i<Function.values().length;i++)
-				baseFunctionChart[i]=Authority.CAN_NOT_DO;
 			final XMLTag votingTag = clanTypePieceTag.getPieceFromPieces( "VOTING");
 			final int maxVotingDays = CMath.s_int(votingTag.parms().get("MAXDAYS"));
 			final int minVotingPct = CMath.s_int(votingTag.parms().get("QUORUMPCT"));
-			for(final XMLTag piece : votingTag.contents())
-			{
-				if(piece.tag().equalsIgnoreCase("POWER"))
-				{
-					final Function power = (Function)CMath.s_valueOf(Clan.Function.values(),piece.value());
-					if(power == null)
-						Log.errOut("Clans","Illegal power found in xml: "+piece.value());
-					else
-						baseFunctionChart[power.ordinal()] = Authority.MUST_VOTE_ON;
-				}
-			}
 
 			final List<ClanPosition> positions=new SVector<ClanPosition>();
 			final XMLTag positionsTag = clanTypePieceTag.getPieceFromPieces( "POSITIONS");
@@ -1069,7 +1055,40 @@ public class Clans extends StdLibrary implements ClanManager
 			{
 				if(posPiece.tag().equalsIgnoreCase("POSITION"))
 				{
-					final Authority[]	functionChart = baseFunctionChart.clone();
+					final Authority[]	functionChart = new Authority[Function.values().length];
+					for(int i=0;i<Function.values().length;i++)
+						functionChart[i]=Authority.CAN_NOT_DO;
+					Authority defaultAssignFunc = Authority.CAN_NOT_DO;
+					Authority defaultOtherVoteFunc = Authority.CAN_NOT_DO;
+					for(final XMLTag powerPiece : posPiece.contents())
+					{
+						if(powerPiece.tag().equalsIgnoreCase("POWER"))
+						{
+							final Function power = (Function)CMath.s_valueOf(Clan.Function.values(),powerPiece.value());
+							if(power == null)
+								Log.errOut("Clans","Illegal power found in xml: "+powerPiece.value());
+							else
+							if(power == Function.VOTE_ASSIGN)
+								defaultAssignFunc = Authority.MUST_VOTE_ON;
+							else
+							if(power == Function.VOTE_OTHER)
+								defaultOtherVoteFunc = Authority.MUST_VOTE_ON;
+						}
+					}
+					for(final XMLTag piece : votingTag.contents())
+					{
+						if(piece.tag().equalsIgnoreCase("POWER"))
+						{
+							final Function power = (Function)CMath.s_valueOf(Clan.Function.values(),piece.value());
+							if(power == null)
+								Log.errOut("Clans","Illegal power found in xml: "+piece.value());
+							else
+							if(power == Function.ASSIGN)
+								functionChart[power.ordinal()] = defaultAssignFunc;
+							else
+								functionChart[power.ordinal()] = defaultOtherVoteFunc;
+						}
+					}
 					final String ID=posPiece.parms().get("ID");
 					final int roleID=CMath.s_int(posPiece.parms().get("ROLEID"));
 					final int rank=CMath.s_int(posPiece.parms().get("RANK"));
