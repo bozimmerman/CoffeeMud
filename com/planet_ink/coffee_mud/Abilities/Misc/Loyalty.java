@@ -111,6 +111,22 @@ public class Loyalty extends StdAbility
 	}
 	
 	@Override
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		
+		if((msg.source()==affected)
+		&&(msg.source().amFollowing()!=null)
+		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
+		{
+			msg.source().tell(L("You like @x1 too much.",msg.source().amFollowing().name()));
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((ticking instanceof MOB)
