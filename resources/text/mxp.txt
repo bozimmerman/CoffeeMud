@@ -35,9 +35,9 @@
 <!ELEMENT MENU '<SEND>'>
 <!ELEMENT CLAN '<SEND HREF="CLAN &text;" hint="Click for info.|CLAN &text;">' >
 <!-- ********************************************************************* -->
-<GAUGE hp Max=maxhp color=green Caption="Hit Points">
-<GAUGE mana Max=maxmana color=yellow Caption="Mana">
-<GAUGE move Max=maxmove color=white Caption="Movement">
+<GAUGE Hp Max=MaxHp color=green Caption="Hit Points">
+<GAUGE Mana Max=MaxMana color=yellow Caption="Mana">
+<GAUGE Move Max=MaxMove color=white Caption="Movement">
 <GAUGE vichp Max=vicmaxhp color=red Caption="Enemy Damage">
 <!-- ********************************************************************* -->
 <!-- here are some archon tool elements -->
