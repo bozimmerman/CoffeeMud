@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Songs;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.ExtAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -128,23 +129,67 @@ public class Skill_Befriend extends BardSkill
 						}
 						if(name.equals(srcM.Name()))
 						{
-							final MOB theMob = srcM;
-							final int oldCha = srcM.baseCharStats().getStat(CharStats.STAT_CHARISMA);
-							srcM.baseCharStats().setStat(CharStats.STAT_CHARISMA, oldCha + amt);
-							srcM.recoverCharStats();
-							final Runnable R=new Runnable()
+							final int chaAmt = amt;
+							final ExtAbility A=(ExtAbility)CMClass.getAbility("ExtAbility");
+							A.setAbilityID(ID()+"_Stat");
+							A.setStatsAffector(new StatsAffecting()
 							{
-								final MOB mob=theMob;
-								final int cha=oldCha;
+								final int amt=chaAmt;
+								@Override
+								public void affectPhyStats(Physical affected, PhyStats affectableStats)
+								{
+								}
+
+								@Override
+								public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+								{
+									affectableStats.setStat(CharStats.STAT_CHARISMA, affectableStats.getStat(CharStats.STAT_CHARISMA)+amt);
+								}
+
+								@Override
+								public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+								{
+								}
+							});
+							final CMMsg thisMsg = msg;
+							A.setMsgListener(new MsgListener()
+							{
+								final CMMsg msg2=thisMsg;
+								final Ability extA = A;
+								@Override
+								public void executeMsg(Environmental myHost, CMMsg msg)
+								{
+									if((msg != msg2)&&(myHost instanceof MOB))
+									{
+										((MOB)myHost).delEffect(extA);
+										((MOB)myHost).recoverCharStats();
+									}
+								}
+
+								@Override
+								public boolean okMessage(Environmental myHost, CMMsg msg)
+								{
+									if((msg != msg2)&&(myHost instanceof MOB))
+									{
+										((MOB)myHost).delEffect(extA);
+										((MOB)myHost).recoverCharStats();
+									}
+									return true;
+								}
+							});
+							srcM.addEffect(A);
+							srcM.recoverCharStats();
+							msg.addTrailerRunnable(new Runnable()
+							{
+								final Ability extA = A;
+								final MOB mob=srcM;
 								@Override
 								public void run()
 								{
-									mob.baseCharStats().setStat(CharStats.STAT_CHARISMA, cha);
+									mob.delEffect(extA);
 									mob.recoverCharStats();
 								}
-							};
-							msg.addTrailerRunnable(R);
-							CMLib.threads().scheduleRunnable(R, 250);
+							});
 						}
 					}
 				}
