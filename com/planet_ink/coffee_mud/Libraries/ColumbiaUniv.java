@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 /*
-   Copyright 2006-2017 Bo Zimmerman
+   Copyright 2006-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -220,6 +220,30 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		return V;
 	}
 
+	@Override
+	public int getExpertiseLevel(final MOB mob, final String abilityID, final ExpertiseLibrary.Flag code)
+	{
+		if((mob==null)||(code==null)||(abilityID==null)||(abilityID.length()==0))
+			return 0;
+		int expertiseLvl=0;
+		final int[][] usageCache=mob.getAbilityUsageCache(abilityID);
+		if(usageCache[Ability.CACHEINDEX_EXPERTISE]!=null)
+			expertiseLvl=usageCache[Ability.CACHEINDEX_EXPERTISE][code.ordinal()];
+		else
+		{
+			final int[] xFlagCache=new int[ExpertiseLibrary.Flag.values().length];
+			final CharClass charClass = mob.baseCharStats().getCurrentClass();
+			for(ExpertiseLibrary.Flag flag : ExpertiseLibrary.Flag.values())
+			{
+				xFlagCache[flag.ordinal()]=CMLib.expertises().getApplicableExpertiseLevel(abilityID,flag,mob)
+											+charClass.addedExpertise(mob, flag, abilityID);
+			}
+			usageCache[Ability.CACHEINDEX_EXPERTISE]=xFlagCache;
+			expertiseLvl = xFlagCache[code.ordinal()];
+		}
+		return expertiseLvl;
+	}
+	
 	private int getStageNumber(ExpertiseDefinition D)
 	{
 		if(D.ID().startsWith(D.getBaseName()))

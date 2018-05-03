@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2008-2017 Bo Zimmerman
+   Copyright 2008-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,8 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
-@SuppressWarnings({"unchecked","rawtypes"})
 public class StdLanguage extends StdAbility implements Language
 {
 	@Override
@@ -154,7 +152,7 @@ public class StdLanguage extends StdAbility implements Language
 	@Override
 	public List<String> languagesSupported()
 	{
-		return new XVector(ID());
+		return new XVector<String>(ID());
 	}
 
 	@Override
@@ -539,7 +537,7 @@ public class StdLanguage extends StdAbility implements Language
 		{
 			if(teacher != null)
 				teacher.tell(L("@x1 can not learn any more languages.",student.name(teacher)));
-			student.tell(L("You have learned the maximum @xlanguages, and may not learn any more.",""+remainders.maxLanguageSkills()));
+			student.tell(L("You have learned the maximum @x1 languages, and may not learn any more.",""+remainders.maxLanguageSkills()));
 			return false;
 		}
 		return true;

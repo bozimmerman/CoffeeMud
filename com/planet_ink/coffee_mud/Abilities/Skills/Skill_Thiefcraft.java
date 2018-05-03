@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Songs;
+package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2017-2017 Bo Zimmerman
+   Copyright 2017-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Thiefcraft extends Skill_Songcraft
+public class Skill_Thiefcraft extends Skill_Skillcraft
 {
 	@Override
 	public String ID()
@@ -48,9 +48,11 @@ public class Skill_Thiefcraft extends Skill_Songcraft
 		return localizedName;
 	}
 
+	final int[] localTypes = new int[] { Ability.ACODE_THIEF_SKILL };
+	
 	@Override
-	public int craftType()
+	public int[] craftTypes()
 	{
-		return Ability.ACODE_THIEF_SKILL;
+		return localTypes;
 	}
 }

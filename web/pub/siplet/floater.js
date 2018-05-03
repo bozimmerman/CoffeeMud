@@ -113,6 +113,7 @@ function closewindow(wname,wnum)
 	var obj2 = document.getElementById(wname);
 	obj2.style.display="none";
 	var obj3 = top.term.allapplets[wnum];
+	window.console.info("Siplet floater closewindow");
 	obj3.disconnectFromURL();
 	alldivs[wnum]=null;
 	obj2.innerHTML = '';
@@ -140,7 +141,8 @@ function front(wname,wnum)
 	    			obj.style.zIndex=0;
 	    	}
 	    top.term.currentWindow = wnum;
-	    top.entry.boxFocus();
+	    if(top && top.entry && top.entry.boxFocus)
+		    top.entry.boxFocus();
 	    top.bar.greenIfLight(wnum);
 	    return false;
 	}

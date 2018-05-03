@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2006-2017 Bo Zimmerman
+   Copyright 2006-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -508,7 +508,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			try
 			{
 				if(C!=null)
-					C.execute(mob,new XVector<String>("GTELL",",<S-HAS-HAVE> gained a level."),MUDCmdProcessor.METAFLAG_FORCED);
+					C.execute(mob,new XVector<String>("GTELL","I have gained a level."),MUDCmdProcessor.METAFLAG_FORCED);
 			}
 			catch(final Exception e)
 			{

@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -48,6 +48,7 @@ public class StdArea implements Area
 	protected String	miscText		= "";
 	protected String	archPath		= "";
 	protected String	imageName   	= "";
+	protected int		playerLevel		= 0;
 	protected int   	theme			= Area.THEME_INHERIT;
 	protected int		atmosphere		= Room.ATMOSPHERE_INHERIT;
 	protected int		derivedTheme	= Area.THEME_INHERIT;
@@ -1664,11 +1665,27 @@ public class StdArea implements Area
 			Collections.sort(alignRanges);
 			statData[Area.Stats.MED_LEVEL.ordinal()]=levelRanges.get((int)Math.round(Math.floor(CMath.div(levelRanges.size(),2.0)))).intValue();
 			if(alignRanges.size()>0)
+			{
 				statData[Area.Stats.MED_ALIGNMENT.ordinal()]=alignRanges.get((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0)))).intValue();
+				statData[Area.Stats.MIN_ALIGNMENT.ordinal()]=alignRanges.get(0).intValue();
+				statData[Area.Stats.MAX_ALIGNMENT.ordinal()]=alignRanges.get(alignRanges.size()-1).intValue();
+			}
 			statData[Area.Stats.AVG_LEVEL.ordinal()]=(int)Math.round(CMath.div(statData[Area.Stats.TOTAL_LEVELS.ordinal()],statData[Area.Stats.POPULATION.ordinal()]));
 			statData[Area.Stats.AVG_ALIGNMENT.ordinal()]=(int)Math.round(((double)totalAlignments[0])/((double)statData[Area.Stats.POPULATION.ordinal()]));
 		}
 		return statData;
+	}
+
+	@Override
+	public int getPlayerLevel()
+	{
+		return playerLevel;
+	}
+
+	@Override
+	public void setPlayerLevel(int level)
+	{
+		playerLevel=level;
 	}
 
 	@Override
@@ -1742,7 +1759,10 @@ public class StdArea implements Area
 			}
 			s.append("Level range    : ^H"+statData[Area.Stats.MIN_LEVEL.ordinal()]+"^N to ^H"+statData[Area.Stats.MAX_LEVEL.ordinal()]+"^N\n\r");
 			//s.append("Average level  : ^H"+statData[Area.Stats.AVG_LEVEL.ordinal()]+"^N\n\r");
-			s.append("Median level   : ^H"+statData[Area.Stats.MED_LEVEL.ordinal()]+"^N\n\r");
+			if(getPlayerLevel()>0)
+				s.append("Player level   : ^H"+getPlayerLevel()+"^N\n\r");
+			else
+				s.append("Median level   : ^H"+statData[Area.Stats.MED_LEVEL.ordinal()]+"^N\n\r");
 			if(theFaction!=null)
 				s.append("Avg. "+CMStrings.padRight(theFaction.name(),10)+": ^H"+theFaction.fetchRangeName(statData[Area.Stats.AVG_ALIGNMENT.ordinal()])+"^N\n\r");
 			if(theFaction!=null)
@@ -1755,7 +1775,8 @@ public class StdArea implements Area
 			for(final Enumeration<String> f= allBlurbFlags();f.hasMoreElements();)
 			{
 				flag=getBlurbFlag(f.nextElement());
-				if(flag!=null)
+				if((flag!=null)
+				&&((!flag.startsWith("{"))||(!flag.endsWith("}"))))
 				{
 					if (!blurbed)
 					{
@@ -2410,7 +2431,8 @@ public class StdArea implements Area
 												  "PRICEMASKS",
 												  "ATMOSPHERE",
 												  "AUTHOR",
-												  "NAME"
+												  "NAME",
+												  "PLAYERLEVEL"
 												  };
 	private static String[] codes=null;
 	
@@ -2468,6 +2490,8 @@ public class StdArea implements Area
 			return getAuthorID();
 		case 14:
 			return name();
+		case 15:
+			return ""+playerLevel;
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -2545,6 +2569,9 @@ public class StdArea implements Area
 			break;
 		case 14:
 			setName(val);
+			break;
+		case 15:
+			setPlayerLevel((int)Math.round(CMath.parseMathExpression(val)));
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

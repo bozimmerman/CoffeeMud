@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.*;
 
 /*
-   Copyright 2008-2017 Bo Zimmerman
+   Copyright 2008-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1822,9 +1822,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					{
 						ItemCraftor.ItemKeyPair pair;
 						if(material>=0)
-							pair=skill.craftItem(recipe,material,true);
+							pair=skill.craftItem(recipe,material,true, false);
 						else
-							pair=skill.craftItem(recipe,-1,true);
+							pair=skill.craftItem(recipe,-1,true, false);
 						if(pair!=null)
 						{
 							contents.add(pair.item);
@@ -1847,9 +1847,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						{
 							ItemCraftor.ItemKeyPair pair;
 							if(material>=0)
-								pair=skill.craftItem(recipe,material,true);
+								pair=skill.craftItem(recipe,material,true, false);
 							else
-								pair=skill.craftItem(recipe,0,true);
+								pair=skill.craftItem(recipe,0,true, false);
 							if(pair!=null)
 							{
 								contents.add(pair.item);

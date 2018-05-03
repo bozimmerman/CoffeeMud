@@ -115,7 +115,17 @@
 					@JournalMessageNext@
 					<LI><a href="javascript:Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@','@RequestParameter?JOURNALCARDINAL@')">
 					<FONT COLOR=YELLOW>@RequestParameter?JOURNALCARDINAL@</FONT>
-					<FONT COLOR=WHITE>. @JournalInfo?SUBJECT@
+					@AddRequestParameter?TEMPFROM=@@JournalInfo?FROM@@ @
+					@AddRequestParameter?TEMPTO=@@JournalInfo?TO@@ @
+					@if?CheckReqParm?TEMPFROM=@@JournalInfo?TO@@ @
+						<FONT COLOR=GREY>. <I>@JournalInfo?SUBJECT@</I>
+					@else@
+						@if?!CheckReqParm?TEMPTO=ALL@
+							<FONT COLOR=LIGHTBLUE>. @JournalInfo?SUBJECT@
+						@else@
+							<FONT COLOR=WHITE>. @JournalInfo?SUBJECT@
+						@endif@
+					@endif@
 					</FONT>
 					</a>
 				@back@
@@ -265,8 +275,13 @@
 									@JournalNext@
 									<OPTION VALUE="@JournalName@">@JournalName?NOCOLOR@
 								@back@
-								</SELECT>
 								@AddRequestParameter?JOURNAL=@@RequestParameter?THISJOURNAL@@ @
+								@JournalInfo?ASSIGN&RESET@
+								@loop@
+									@JournalInfo?ASSIGN&NEXT@
+									<OPTION VALUE="@RequestParameter?JOURNALASSIGN@">@RequestParameter?JOURNALASSIGN@
+								@back@
+								</SELECT>
 								@endif@
 							</TD>
 							<TD WIDTH=17% ALIGN=CENTER VALIGN=TOP>

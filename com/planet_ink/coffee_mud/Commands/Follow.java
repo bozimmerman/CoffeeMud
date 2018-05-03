@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -145,7 +145,7 @@ public class Follow extends StdCommand
 		
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Follow whom?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Follow whom?"));
 			return false;
 		}
 
@@ -159,23 +159,23 @@ public class Follow extends StdCommand
 		final MOB target=R.fetchInhabitant(whomToFollow);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see them here."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see them here."));
 			return false;
 		}
 		if((target.isMonster())&&(!mob.isMonster()))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You cannot follow '@x1'.",target.name(mob)));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You cannot follow '@x1'.",target.name(mob)));
 			return false;
 		}
 		if(target.isAttributeSet(MOB.Attrib.NOFOLLOW))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is not accepting followers.",target.name(mob)));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is not accepting followers.",target.name(mob)));
 			return false;
 		}
 		final MOB ultiTarget=target.amUltimatelyFollowing();
 		if((ultiTarget!=null)&&(ultiTarget.isAttributeSet(MOB.Attrib.NOFOLLOW)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is not accepting followers.",ultiTarget.name()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is not accepting followers.",ultiTarget.name()));
 			return false;
 		}
 		processFollow(mob,target,quiet);

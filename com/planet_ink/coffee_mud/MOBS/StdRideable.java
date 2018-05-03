@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -44,6 +44,12 @@ public class StdRideable extends StdMOB implements Rideable
 	protected int			rideBasis		= Rideable.RIDEABLE_LAND;
 	protected int			riderCapacity	= 2;
 	protected List<Rider>	riders			= new SVector();
+	protected String		putString		= "";
+	protected String		rideString		= "";
+	protected String		stateString		= "";
+	protected String		stateSubjectStr	= "";
+	protected String		mountString		= "";
+	protected String		dismountString	= "";
 
 	public StdRideable()
 	{
@@ -174,7 +180,29 @@ public class StdRideable extends StdMOB implements Rideable
 	@Override
 	public String putString(Rider R)
 	{
-		return "on";
+		if((R==null)||(putString.length()==0))
+			return "on";
+		return putString;
+	}
+
+	@Override
+	public String getPutString()
+	{
+		return putString;
+	}
+
+	@Override
+	public void setPutString(String str)
+	{
+		if((str==null)||(str.trim().length()==0))
+			putString="";
+		else
+		{
+			if(str.equalsIgnoreCase(this.putString(null)))
+				putString="";
+			else
+				putString=str.trim();
+		}
 	}
 
 	@Override
@@ -281,27 +309,145 @@ public class StdRideable extends StdMOB implements Rideable
 	@Override
 	public String stateString(Rider R)
 	{
-		return "riding on";
+		if((R==null)||(stateString.length()==0))
+			return "riding on";
+		return stateString;
+	}
+
+	@Override
+	public String getStateString()
+	{
+		return stateString;
+	}
+
+	@Override
+	public void setStateString(String str)
+	{
+		if((str==null)||(str.trim().length()==0))
+			stateString="";
+		else
+		{
+			if(str.equalsIgnoreCase(this.stateString(null)))
+				stateString="";
+			else
+				stateString=str.trim();
+		}
 	}
 
 	@Override
 	public String mountString(int commandType, Rider R)
 	{
-		return "mount(s)";
+		if((R==null)||(mountString.length()==0))
+			return "mount(s)";
+		return mountString;
+	}
+
+	@Override
+	public String getMountString()
+	{
+		return mountString;
+	}
+
+	@Override
+	public void setMountString(String str)
+	{
+		if((str==null)||(str.trim().length()==0))
+			mountString="";
+		else
+		{
+			if(str.equalsIgnoreCase(this.mountString(0,null)))
+				mountString="";
+			else
+				mountString=str.trim();
+		}
 	}
 
 	@Override
 	public String dismountString(Rider R)
 	{
-		return "dismount(s)";
+		if((R==null)||(dismountString.length()==0))
+			return "dismount(s)";
+		return dismountString;
+	}
+
+	@Override
+	public String getDismountString()
+	{
+		return dismountString;
+	}
+	
+	@Override
+	public void setDismountString(String str)
+	{
+		if((str==null)||(str.trim().length()==0))
+			dismountString="";
+		else
+		{
+			if(str.equalsIgnoreCase(this.dismountString(null)))
+				dismountString="";
+			else
+				dismountString=str.trim();
+		}
+	}
+
+	@Override
+	public String rideString(Rider R)
+	{
+		if((R==null)||(rideString.length()==0))
+			return "ride(s)";
+		return rideString;
+	}
+
+	@Override
+	public String getRideString()
+	{
+		return rideString;
+	}
+
+	@Override
+	public void setRideString(String str)
+	{
+		if((str==null)||(str.trim().length()==0))
+			rideString="";
+		else
+		{
+			if(str.equalsIgnoreCase(this.rideString(null)))
+				rideString="";
+			else
+				rideString=str.trim();
+		}
 	}
 
 	@Override
 	public String stateStringSubject(Rider R)
 	{
-		if((R instanceof Rideable)&&((Rideable)R).rideBasis()==Rideable.RIDEABLE_WAGON)
-			return "pulling along";
-		return "being ridden by";
+		if((R==null)||(stateSubjectStr.length()==0))
+		{
+			if((R instanceof Rideable)&&((Rideable)R).rideBasis()==Rideable.RIDEABLE_WAGON)
+				return "pulling along";
+			return "being ridden by";
+		}
+		return stateSubjectStr;
+	}
+
+	@Override
+	public String getStateStringSubject()
+	{
+		return stateSubjectStr;
+	}
+
+	@Override
+	public void setStateStringSubject(String str)
+	{
+		if((str==null)||(str.trim().length()==0))
+			this.stateSubjectStr="";
+		else
+		{
+			if(str.equalsIgnoreCase(this.stateStringSubject(null)))
+				stateSubjectStr="";
+			else
+				stateSubjectStr=str.trim();
+		}
 	}
 
 	@Override

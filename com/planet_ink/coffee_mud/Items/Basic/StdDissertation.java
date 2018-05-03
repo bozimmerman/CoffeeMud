@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2017-2017 Bo Zimmerman
+   Copyright 2017-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -163,7 +163,7 @@ public class StdDissertation extends StdItem implements Scroll
 					&&(R!=null))
 					{
 						String ableID=null;
-						switch(thisOne.abilityCode()&Ability.ALL_ACODES)
+						switch(thisOne.classificationCode()&Ability.ALL_ACODES)
 						{
 							case Ability.ACODE_SKILL:
 								ableID="Skill_Skillcraft";

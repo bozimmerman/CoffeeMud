@@ -21,7 +21,7 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
-   Copyright 2014-2017 Bo Zimmerman
+   Copyright 2014-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -108,6 +108,22 @@ public class Loyalty extends StdAbility
 		else
 			loyaltyPlayer = new WeakReference<MOB>(player);
 		return player;
+	}
+	
+	@Override
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		
+		if((msg.source()==affected)
+		&&(msg.source().amFollowing()!=null)
+		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW))
+		{
+			msg.source().tell(L("You like @x1 too much.",msg.source().amFollowing().name()));
+			return false;
+		}
+		return true;
 	}
 	
 	@Override

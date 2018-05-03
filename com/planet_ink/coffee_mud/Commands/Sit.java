@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class Sit extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(CMLib.flags().isSitting(mob))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You are already sitting!"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You are already sitting!"));
 			return false;
 		}
 		final Room R=mob.location();
@@ -78,7 +78,7 @@ public class Sit extends StdCommand
 				E=R.fetchExit(possibleRideable);
 			if((E==null)||(!CMLib.flags().canBeSeenBy(E,mob)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",possibleRideable));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",possibleRideable));
 				return false;
 			}
 			if(E instanceof MOB)

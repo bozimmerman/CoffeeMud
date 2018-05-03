@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -245,11 +245,24 @@ public class LockSmith extends CraftingSkill
 			commands.remove(0);
 		}
 		boolean ldelock=false;
+		String label = "";
 		if((commands.size()>0)&&("DELOCK".startsWith((commands.get(0)).toUpperCase())))
 		{
 			ldelock=true;
 			commands.remove(0);
 		}
+		else
+		if((commands.size()>2)&&("LABEL".equalsIgnoreCase((commands.get(0)).toUpperCase())))
+		{
+			commands.remove(0);
+			label = commands.remove(0);
+			if((label.length()>7) || (label.indexOf(' ')>=0))
+			{
+				commonTell(mob,L("That can't be etched on a key."));
+				return false;
+			}
+		}
+		
 		final String recipeName=CMParms.combine(commands,0);
 		final int dir=CMLib.directions().getGoodDirectionCode(recipeName);
 		if(dir<0)
@@ -349,9 +362,10 @@ public class LockSmith extends CraftingSkill
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
-			itemName=(RawMaterial.CODES.NAME(data[0][FOUND_CODE])+" key").toLowerCase();
-			itemName=CMLib.english().startWithAorAn(itemName);
 			makeResource=data[0][FOUND_CODE];
+			String prefix = (label.length()>0) ? label : RawMaterial.CODES.NAME(makeResource);
+			itemName=(prefix+" key").toLowerCase();
+			itemName=CMLib.english().startWithAorAn(itemName);
 		}
 		buildingI=getBuilding(workingOn);
 		if(buildingI==null)

@@ -21,7 +21,7 @@ import java.util.*;
 import java.io.IOException;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1676,6 +1676,13 @@ public class Modify extends StdCommand
 		mob.tell(L("You are not allowed to do that here."));
 		return false;
 	}
+	
+	protected String listOfThings()
+	{
+		return "ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, "
+			+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, "
+			+ "GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, TIME, HOUR, or ROOM";
+	}
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
@@ -1684,6 +1691,10 @@ public class Modify extends StdCommand
 		String commandType="";
 		if(commands.size()>1)
 			commandType=commands.get(1).toUpperCase();
+		if(commands.size()==1)
+		{
+			mob.tell(L("\n\rModify what? Try an "+listOfThings()+"."));
+		}
 		if(commandType.equals("ITEM"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS))
@@ -2317,9 +2328,7 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
-				mob.tell(L("\n\rYou cannot modify a '@x1'. However, you might try an ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, "
-						+ "ALLQUALIFY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, ACHIEVEMENT, MANUFACTURER, "
-						+ "GOVERNMENT, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, NEWS, DAY, MONTH, YEAR, TIME, HOUR, or ROOM.",commandType));
+				mob.tell(L("\n\rYou cannot modify a '@x1'. However, you might try an "+listOfThings()+"."));
 		}
 		return false;
 	}

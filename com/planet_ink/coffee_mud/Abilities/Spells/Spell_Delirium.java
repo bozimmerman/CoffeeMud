@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -257,8 +257,8 @@ public class Spell_Delirium extends Spell
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
-			if((mob.location()!=null)&&(!mob.amDead()))
-				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to feel a bit less delirious."));
+		if((mob.location()!=null)&&(!mob.amDead())&&(super.canBeUninvoked()))
+			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> begin(s) to feel a bit less delirious."));
 	}
 
 	@Override

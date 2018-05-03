@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.regex.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -883,7 +883,11 @@ public class GModify extends StdCommand
 				if(saveitems)
 					CMLib.database().DBUpdateItems(R);
 				if(savemobs)
+				{
+					for(Enumeration<MOB> r1=R.inhabitants();r1.hasMoreElements();)
+						System.out.println(r1.nextElement().fetchBehavior("VeryAggressive"));
 					CMLib.database().DBUpdateMOBs(R);
+				}
 				if((mob.session()!=null)&&(changes.size()>0))
 					mob.session().rawPrint(".");
 				A.setAreaState(oldFlag);

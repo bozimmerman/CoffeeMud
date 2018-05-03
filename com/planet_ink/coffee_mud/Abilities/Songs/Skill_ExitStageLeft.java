@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2014-2017 Bo Zimmerman
+   Copyright 2014-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ public class Skill_ExitStageLeft extends BardSkill
 			M=(MOB)affected;
 		final MOB invoker = invoker();
 		super.unInvoke();
-		if(M!=null)
+		if((M!=null)&&(super.canBeUninvoked()))
 		{
 			if(!M.isMonster())
 				CMLib.commands().postStand(M,true);

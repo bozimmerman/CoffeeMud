@@ -23,7 +23,7 @@ import java.net.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -2586,7 +2586,7 @@ public class CMSecurity
 		RETIREREASON("early char delete prompt"), 
 		MAXCONNSPERACCOUNT("connections per account limit"),
 		ALLERGIES("auto player allergies"), 
-		LOGINS("non-archin player logins"), 
+		LOGINS("non-archon player logins"), 
 		NEWPLAYERS("new player creation"), 
 		MAXNEWPERIP("new character per ip limit"),
 		MAXCONNSPERIP("connections per ip limit"), 

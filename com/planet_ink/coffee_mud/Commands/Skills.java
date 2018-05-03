@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Skills extends StdCommand
 {
 	public Skills()
@@ -49,10 +48,10 @@ public class Skills extends StdCommand
 
 	protected boolean parsedOutIndividualSkill(MOB mob, String qual, int acode)
 	{
-		return parsedOutIndividualSkill(mob, qual, new XVector(Integer.valueOf(acode)));
+		return parsedOutIndividualSkill(mob, qual, new XVector<Integer>(Integer.valueOf(acode)));
 	}
 
-	protected boolean parsedOutIndividualSkill(MOB mob, String qual, Vector<Integer> acodes)
+	protected boolean parsedOutIndividualSkill(MOB mob, String qual, List<Integer> acodes)
 	{
 		if((qual==null)||(qual.length()==0)||(qual.equalsIgnoreCase("all")))
 			return false;
@@ -116,6 +115,7 @@ public class Skills extends StdCommand
 	 */
 	public boolean isDomainIncludedInAnyAbility(int domain, int acode)
 	{
+		@SuppressWarnings("unchecked")
 		Map<Integer, Set<Integer>> completeDomainMap = (Map<Integer, Set<Integer>>)Resources.getResource("SYSYETM_ABLEDOMAINMAP");
 		if(completeDomainMap == null)
 		{

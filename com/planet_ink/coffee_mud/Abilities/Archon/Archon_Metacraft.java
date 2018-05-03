@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -300,13 +300,13 @@ public class Archon_Metacraft extends ArchonSkill
 				else
 				if(material>=0)
 				{
-					final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipeName,material,false);
+					final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipeName,material,false, true);
 					if(pair!=null)
 						items.addAll(pair.asList());
 				}
 				else
 				{
-					final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipeName);
+					final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipeName,-1,false,true);
 					if(pair!=null)
 						items.addAll(pair.asList());
 				}
@@ -314,13 +314,13 @@ public class Archon_Metacraft extends ArchonSkill
 			else
 			if(material>=0)
 			{
-				final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipeName,material,false);
+				final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipeName,material,false, true);
 				if(pair!=null)
 					items.addAll(pair.asList());
 			}
 			else
 			{
-				final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipeName);
+				final ItemCraftor.ItemKeyPair pair = skill.craftItem(recipeName,-1,false,true);
 				if(pair!=null)
 					items.addAll(pair.asList());
 			}

@@ -22,7 +22,7 @@ import java.util.*;
 import java.net.URLEncoder;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -917,7 +917,7 @@ public class GrinderFlatMap
 		final String theRest=".gif\" BORDER=0 ALT=\""+dirName+" to "+dir.room+"\"></a>";
 		final Exit exit=dir.exit;
 		if(exit==null)
-			return "<a href=\"javascript:CEX('"+dirName+"','"+room.roomID+"','"+dir.room+"');\"><IMG SRC=\"images/U"+dirLetter+theRest;
+			return "<a href=\"javascript:CNEX('"+dirName+"','"+room.roomID+"','"+dir.room+"');\"><IMG SRC=\"images/U"+dirLetter+theRest;
 		else
 		if(exit.hasADoor())
 			return "<a href=\"javascript:CEX('"+dirName+"','"+room.roomID+"','"+dir.room+"');\"><IMG SRC=\"images/D"+dirLetter+theRest;

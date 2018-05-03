@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -102,7 +102,7 @@ public class Go extends StdCommand
 		{
 			if(!CMath.bset(R.domainType(),Room.INDOORS))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You aren't indoors."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You aren't indoors."));
 				return false;
 			}
 
@@ -114,7 +114,7 @@ public class Go extends StdCommand
 				{
 					if(direction>=0)
 					{
-						CMLib.commands().doCommandFail(mob,origCmds,L("Which way out?  Try @x1.",validDirs));
+						CMLib.commands().postCommandFail(mob,origCmds,L("Which way out?  Try @x1.",validDirs));
 						return false;
 					}
 					direction=d;
@@ -122,7 +122,7 @@ public class Go extends StdCommand
 			}
 			if(direction<0)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("There is no direct way out of this place.  Try a direction."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("There is no direct way out of this place.  Try a direction."));
 				return false;
 			}
 		}

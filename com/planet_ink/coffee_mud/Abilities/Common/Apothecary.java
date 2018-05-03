@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -95,7 +95,41 @@ public class Apothecary extends Cooking
 	@Override
 	protected List<List<String>> loadRecipes()
 	{
-		return super.loadRecipes(parametersFile());
+		if(text().toUpperCase().indexOf("ANTIDOTE")<0)
+			return super.loadRecipes();
+		final String filename=parametersFile();
+		@SuppressWarnings("unchecked")
+		List<List<String>> recipes=(List<List<String>>)Resources.getResource("PARSED_ANTIDOTE_RECIPE: "+filename);
+		if(recipes==null)
+		{
+			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
+			recipes=loadList(str);
+			if(recipes.size()==0)
+				Log.errOut("Apothecary","Recipes not found!");
+			else
+			{
+				for(int r=recipes.size()-1;r>=0;r--)
+				{
+					final List<String> V=recipes.get(r);
+					if(V.size()>RCP_BONUSSPELL)
+					{
+						final String spells=V.get(RCP_BONUSSPELL);
+						final List<Ability> spellsV=CMLib.ableParms().getCodedSpells(spells);
+						if(spellsV.size()>0)
+						{
+							final String name=V.get(RCP_FINALNAME);
+							V.set(RCP_FINALNAME,L("@x1 antidote",name));
+						}
+						else
+							recipes.remove(r);
+					}
+					else
+						recipes.remove(r);
+				}
+			}
+			Resources.submitResource("PARSED_ANTIDOTE_RECIPE: "+filename,recipes);
+		}
+		return recipes;
 	}
 
 	public Apothecary()
@@ -157,8 +191,30 @@ public class Apothecary extends Cooking
 		if((A2!=null)
 		&&(buildingI instanceof Drink))
 		{
-			((Drink)buildingI).setLiquidType(RawMaterial.RESOURCE_POISON);
-			buildingI.setMaterial(RawMaterial.RESOURCE_POISON);
+			if(text().toUpperCase().indexOf("ANTIDOTE")<0)
+			{
+				((Drink)buildingI).setLiquidType(RawMaterial.RESOURCE_POISON);
+				buildingI.setMaterial(RawMaterial.RESOURCE_POISON);
+			}
+			else
+			{
+				((Drink)buildingI).setLiquidType(RawMaterial.RESOURCE_DRINKABLE);
+				buildingI.setMaterial(RawMaterial.RESOURCE_DRINKABLE);
+				final Ability antidoteA=CMClass.getAbility("Antidote");
+				boolean found=false;
+				for(int i=buildingI.numEffects()-1;i>=0;i--)
+				{
+					final Ability A=buildingI.fetchEffect(i);
+					if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
+					{
+						found=true;
+						antidoteA.setMiscText(antidoteA.text()+" "+A.ID());
+						buildingI.delEffect(A);
+					}
+				}
+				if(found)
+					buildingI.addNonUninvokableEffect(antidoteA);
+			}
 		}
 		return true;
 	}

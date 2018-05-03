@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -39,6 +39,12 @@ public class Put extends StdCommand
 	{
 	}
 
+	@SuppressWarnings("rawtypes")
+	private final static Class[][] internalParameters=new Class[][]
+	{
+		{Item.class,Container.class,Boolean.class},
+	};
+
 	private final String[]	access	= I(new String[] { "PUT", "PU", "P" });
 
 	@Override
@@ -53,7 +59,7 @@ public class Put extends StdCommand
 		final Room R=mob.location();
 		if((commands.size()<3)||(R==null))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Put out what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Put out what?"));
 			return;
 		}
 		commands.remove(1);
@@ -67,7 +73,7 @@ public class Put extends StdCommand
 				items.add(I);
 		}
 		if(items.size()==0)
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<items.size();i++)
 		{
@@ -81,6 +87,26 @@ public class Put extends StdCommand
 		}
 	}
 
+	public boolean put(MOB mob, Environmental container, Item putThis, boolean quiet)
+	{
+		final Room R=mob.location();
+		final String putWord=(container instanceof Rideable)?((Rideable)container).putString(mob):"in";
+		final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,quiet?null:L("<S-NAME> put(s) <O-NAME> @x1 <T-NAME>.",putWord));
+		boolean success;
+		if(R.okMessage(mob,putMsg))
+		{
+			R.send(mob,putMsg);
+			success = true;
+		}
+		else
+			success = false;
+		if(putThis instanceof Coins)
+			((Coins)putThis).putCoinsBack();
+		if(putThis instanceof RawMaterial)
+			((RawMaterial)putThis).rebundle();
+		return success;
+	}
+
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -88,7 +114,7 @@ public class Put extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Put what where?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Put what where?"));
 			return false;
 		}
 
@@ -135,7 +161,7 @@ public class Put extends StdCommand
 		commands.remove(0);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Where should I put the @x1",commands.get(0)));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Where should I put the @x1",commands.get(0)));
 			return false;
 		}
 
@@ -169,7 +195,7 @@ public class Put extends StdCommand
 		}
 		if((container==null)||(!CMLib.flags().canBeSeenBy(container,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see a @x1 here.",containerName));
+			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see a @x1 here.",containerName));
 			return false;
 		}
 
@@ -224,23 +250,41 @@ public class Put extends StdCommand
 			V.remove(container);
 
 		if(V.size()==0)
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
 		{
 			putThis=V.get(i);
-			final String putWord=(container instanceof Rideable)?((Rideable)container).putString(mob):"in";
-			final CMMsg putMsg=CMClass.getMsg(mob,container,putThis,CMMsg.MASK_OPTIMIZE|CMMsg.MSG_PUT,L("<S-NAME> put(s) <O-NAME> @x1 <T-NAME>.",putWord));
-			if(R.okMessage(mob,putMsg))
-				R.send(mob,putMsg);
-			if(putThis instanceof Coins)
-				((Coins)putThis).putCoinsBack();
-			if(putThis instanceof RawMaterial)
-				((RawMaterial)putThis).rebundle();
+			put(mob,container,putThis,false);
 		}
 		R.recoverRoomStats();
 		R.recoverRoomStats();
 		return false;
+	}
+	
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return Boolean.FALSE;
+		
+		if(args[0] instanceof Item)
+		{
+			final Item item=(Item)args[0];
+			Item container=null;
+			boolean quiet=false;
+			for(int i=1;i<args.length;i++)
+			{
+				if(args[i] instanceof Container)
+					container=(Item)args[1];
+				else
+				if(args[i] instanceof Boolean)
+					quiet=((Boolean)args[i]).booleanValue();
+			}
+			final boolean success=put(mob,container,item,quiet);
+			return Boolean.valueOf(success);
+		}
+		return Boolean.FALSE;
 	}
 	
 	@Override

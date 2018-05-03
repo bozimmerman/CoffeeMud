@@ -30,7 +30,7 @@ import java.math.BigInteger;
 import java.util.*;
 import java.util.Map.Entry;
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -532,15 +532,43 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 	
 	@Override
-	public void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration)
+	public void moveSpaceObject(final SpaceObject O, final double[] accelDirection, final long newAccelleration)
 	{
-		final double directionYaw = O.direction()[0];
-		final double directionPitch = (O.direction()[1] > Math.PI) ? Math.abs(Math.PI-O.direction()[1]) : O.direction()[1];
+		O.setSpeed(moveSpaceObject(O.direction(),O.speed(),accelDirection,newAccelleration));
+	}
 
-		final double facingYaw = newDirection[0];
-		final double facingPitch = (newDirection[1] > Math.PI) ? Math.abs(Math.PI-newDirection[1]) : newDirection[1];
+	@Override
+	public double getAngleDelta(final double[] fromAngle, final double[] toAngle)
+	{
+		final double directionYaw = fromAngle[0];
+		final double directionPitch = (fromAngle[1] > Math.PI) ? Math.abs(Math.PI-fromAngle[1]) : fromAngle[1];
 
-		final double currentSpeed = O.speed();
+		final double facingYaw = toAngle[0];
+		final double facingPitch = (toAngle[1] > Math.PI) ? Math.abs(Math.PI-toAngle[1]) : toAngle[1];
+		
+		double yawDelta = (directionYaw >  facingYaw) ? (directionYaw - facingYaw) : (facingYaw - directionYaw);
+		if(yawDelta > Math.PI)
+			yawDelta=PI_TIMES_2-yawDelta;
+		double pitchDelta = (directionPitch >  facingPitch) ? (directionPitch - facingPitch) : (facingPitch - directionPitch);
+		if(pitchDelta > PI_BY_2)
+			pitchDelta=Math.PI-pitchDelta;
+		
+		double finalDelta =  yawDelta + pitchDelta;
+		if(finalDelta > Math.PI)
+			finalDelta = Math.abs(PI_TIMES_2-finalDelta);
+		return finalDelta;
+	}
+	
+	@Override
+	public double moveSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final long newAccelleration)
+	{
+		final double directionYaw = curDirection[0];
+		final double directionPitch = (curDirection[1] > Math.PI) ? Math.abs(Math.PI-curDirection[1]) : curDirection[1];
+
+		final double facingYaw = accelDirection[0];
+		final double facingPitch = (accelDirection[1] > Math.PI) ? Math.abs(Math.PI-accelDirection[1]) : accelDirection[1];
+
+		final double currentSpeed = curSpeed;
 		final double acceleration = newAccelleration;
 
 		double yawDelta = (directionYaw >  facingYaw) ? (directionYaw - facingYaw) : (facingYaw - directionYaw);
@@ -550,19 +578,21 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(pitchDelta > PI_BY_2)
 			pitchDelta=Math.PI-pitchDelta;
 		
-		final double anglesDelta = yawDelta + pitchDelta;
+		double anglesDelta =  yawDelta + pitchDelta;
+		if(anglesDelta > Math.PI)
+			anglesDelta = Math.abs(PI_TIMES_2-anglesDelta);
 		final double accelerationMultiplier = acceleration / currentSpeed;
 
 		double newDirectionYaw;
 		if(yawDelta < 0.1)
-			newDirectionYaw = directionYaw;
+			newDirectionYaw = facingYaw;
 		else
 			newDirectionYaw = directionYaw + ((directionYaw > facingYaw) ? -(accelerationMultiplier * Math.sin(yawDelta)) : (accelerationMultiplier * Math.sin(yawDelta)));
 		if (newDirectionYaw < 0.0)
 			newDirectionYaw = PI_TIMES_2 + newDirectionYaw;
 		double newDirectionPitch;
 		if(pitchDelta < 0.1)
-			newDirectionPitch = directionPitch;
+			newDirectionPitch = facingPitch;
 		else
 			newDirectionPitch = directionPitch + ((directionPitch > facingPitch) ? -(accelerationMultiplier * Math.sin(pitchDelta)) : (accelerationMultiplier * Math.sin(pitchDelta)));
 		if (newDirectionPitch < 0.0)
@@ -576,14 +606,14 @@ public class CMMap extends StdLibrary implements WorldMap
 			newDirectionPitch = facingPitch;
 		}
 
-		if((O.direction()[0]>Math.PI)&&(O.direction()[1]<=Math.PI))
-			newDirectionPitch=Math.PI+newDirectionPitch;
+		//if((curDirection[0]>Math.PI)&&(curDirection[1]<=Math.PI))
+		//	newDirectionPitch=Math.PI+newDirectionPitch;
 
-		O.direction()[0]=newDirectionYaw;
-		O.direction()[1]=newDirectionPitch;
-		O.setSpeed(newSpeed);
+		curDirection[0]=newDirectionYaw;
+		curDirection[1]=newDirectionPitch;
+		return newSpeed;
 	}
-
+	
 	@Override
 	public TechComponent.ShipDir getDirectionFromDir(double[] facing, double roll, double[] direction)
 	{
@@ -814,7 +844,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			return within;
 		Collections.sort(within, new Comparator<SpaceObject>()
 		{
-			@Override public int compare(SpaceObject o1, SpaceObject o2)
+			@Override 
+			public int compare(SpaceObject o1, SpaceObject o2)
 			{
 				final long distTo1=getDistanceFrom(o1,ofObj);
 				final long distTo2=getDistanceFrom(o2,ofObj);
@@ -1195,7 +1226,52 @@ public class CMMap extends StdLibrary implements WorldMap
 					return found;
 			}
 			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
-				CMLib.s_sleep(1000 - delay); startTime=System.currentTimeMillis();
+			{
+				CMLib.s_sleep(1000 - delay); 
+				startTime=System.currentTimeMillis();
+			}
+		}
+		return found;
+	}
+
+	@Override
+	public List<MOB> findInhabitantsFavorExact(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
+	{
+		final Vector<MOB> found=new Vector<MOB>();
+		final Vector<MOB> exact=new Vector<MOB>();
+		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
+		if(delay>1000)
+			delay=1000;
+		final boolean useTimer = delay>1;
+		final boolean allRoomsAllowed=(mob==null);
+		long startTime=System.currentTimeMillis();
+		Room room;
+		for(;rooms.hasMoreElements();)
+		{
+			room=rooms.nextElement();
+			if((room != null) && (allRoomsAllowed || CMLib.flags().canAccess(mob,room)))
+			{
+				final MOB M=room.fetchInhabitantExact(srchStr);
+				if(M!=null)
+				{
+					exact.add(M);
+					if((returnFirst)&&(exact.size()>0))
+						return exact;
+				}
+				found.addAll(room.fetchInhabitants(srchStr));
+			}
+			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
+			{
+				CMLib.s_sleep(1000 - delay); 
+				startTime=System.currentTimeMillis();
+			}
+		}
+		if(exact.size()>0)
+			return exact;
+		if((returnFirst)&&(found.size()>0))
+		{
+			exact.add(found.get(0));
+			return exact;
 		}
 		return found;
 	}
@@ -1252,7 +1328,10 @@ public class CMMap extends StdLibrary implements WorldMap
 					return found;
 			}
 			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
-				CMLib.s_sleep(1000 - delay); startTime=System.currentTimeMillis();
+			{
+				CMLib.s_sleep(1000 - delay); 
+				startTime=System.currentTimeMillis();
+			}
 		}
 		return found;
 	}
@@ -1428,7 +1507,10 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 			}
 			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
-				CMLib.s_sleep(1000 - delay); startTime=System.currentTimeMillis();
+			{
+				CMLib.s_sleep(1000 - delay); 
+				startTime=System.currentTimeMillis();
+			}
 		}
 		for (final Area A : areas)
 		{
@@ -1486,7 +1568,10 @@ public class CMMap extends StdLibrary implements WorldMap
 					return found;
 			}
 			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
-				CMLib.s_sleep(1000 - delay); startTime=System.currentTimeMillis();
+			{
+				CMLib.s_sleep(1000 - delay); 
+				startTime=System.currentTimeMillis();
+			}
 		}
 		return found;
 	}

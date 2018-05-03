@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -109,16 +109,16 @@ public class Spell_Siphon extends Spell
 		return success;
 	}
 
-   @Override
-public void unInvoke()
+	@Override
+	public void unInvoke()
 	{
 		// undo the affects of this spell
 		if(!(affected instanceof MOB))
 			return;
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
-
-		mob.tell(L("You no longer feel a thirst for the energy of others."));
+		if(super.canBeUninvoked())
+			mob.tell(L("You no longer feel a thirst for the energy of others."));
 	}
 
 	@Override

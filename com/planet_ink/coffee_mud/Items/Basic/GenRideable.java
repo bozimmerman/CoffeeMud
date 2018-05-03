@@ -19,7 +19,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -99,7 +99,11 @@ public class GenRideable extends StdRideable
 		recoverPhyStats();
 	}
 
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD","DEFCLOSED","DEFLOCKED"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
+											"RESETTIME","RIDEBASIS","MOBSHELD",
+											"DEFCLOSED","DEFLOCKED",
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR","STATESTR","STATESUBJSTR","RIDERSTR"
+											};
 
 	@Override
 	public String getStat(String code)
@@ -126,6 +130,18 @@ public class GenRideable extends StdRideable
 			return "" + defaultsClosed();
 		case 8:
 			return "" + defaultsLocked();
+		case 9:
+			return this.getPutString();
+		case 10:
+			return this.getMountString();
+		case 11:
+			return this.getDismountString();
+		case 12:
+			return this.getStateString();
+		case 13:
+			return this.getStateStringSubject();
+		case 14:
+			return this.getRideString();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -139,36 +155,54 @@ public class GenRideable extends StdRideable
 		else
 		switch(getCodeNum(code))
 		{
-			case 0:
-				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
-				break;
-			case 1:
-				setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
-				break;
-			case 2:
-				setCapacity(CMath.s_parseIntExpression(val));
-				break;
-			case 3:
-				setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
-				break;
-			case 4:
-				setOpenDelayTicks(CMath.s_parseIntExpression(val));
-				break;
-			case 5:
-				setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS, val));
-				break;
-			case 6:
-				setRiderCapacity(CMath.s_parseIntExpression(val));
-				break;
-			case 7:
-				setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
-				break;
-			case 8:
-				setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
-				break;
-			default:
-				CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+		case 0:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), CMath.s_bool(val), false, CMath.s_bool(val) && defaultsLocked());
 			break;
+		case 1:
+			setDoorsNLocks(CMath.s_bool(val), isOpen(), CMath.s_bool(val) && defaultsClosed(), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 2:
+			setCapacity(CMath.s_parseIntExpression(val));
+			break;
+		case 3:
+			setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS, val));
+			break;
+		case 4:
+			setOpenDelayTicks(CMath.s_parseIntExpression(val));
+			break;
+		case 5:
+			setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS, val));
+			break;
+		case 6:
+			setRiderCapacity(CMath.s_parseIntExpression(val));
+			break;
+		case 7:
+			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
+			break;
+		case 8:
+			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+			break;
+		case 9:
+			setPutString(val);
+			break;
+		case 10:
+			setMountString(val);
+			break;
+		case 11:
+			setDismountString(val);
+			break;
+		case 12:
+			setStateString(val);
+			break;
+		case 13:
+			setStateStringSubject(val);
+			break;
+		case 14:
+			setRideString(val);
+			break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+		break;
 		}
 	}
 	

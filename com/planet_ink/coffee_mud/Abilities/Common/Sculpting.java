@@ -17,12 +17,13 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -72,7 +73,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tSTATUE||LID_LOCK||RIDE_BASIS\tCONTAINER_CAPACITY||LIGHT_DURATION\t"
+		+"ITEM_CLASS_ID\tSTATUE||LID_LOCK||RIDE_BASIS\tCONTAINER_CAPACITY||LIGHT_DURATION||MAX_WAND_USES\t"
 		+"CONTAINER_TYPE\tCODED_SPELL_LIST";
 	}
 
@@ -386,7 +387,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 													enhancedTypes);
 			if(data==null)
 				return false;
-			fixDataForComponents(data,componentsFoundList);
+			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
@@ -508,7 +509,8 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			buildingI.recoverPhyStats();
 			if((!CMLib.flags().isGettable(buildingI))
-			&&(!CMLib.law().doesOwnThisProperty(mob,mob.location())))
+			&&(!CMLib.law().doesOwnThisProperty(mob,mob.location()))
+			&&((autoGenerate==0)||(!mob.isAttributeSet(Attrib.SYSOPMSGS))))
 			{
 				commonTell(mob,L("You are not allowed to build that here."));
 				return false;

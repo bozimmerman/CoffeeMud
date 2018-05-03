@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -91,7 +91,9 @@ public class Antidote extends StdAbility
 			final Ability A=fromMe.fetchEffect(a);
 			if((A!=null)
 			&&((A.classificationCode()&ALL_ACODES)==Ability.ACODE_POISON)
-			&&((text().length()==0)||(A.name().toUpperCase().indexOf(text().toUpperCase())>=0)||(A.ID().toUpperCase().indexOf(text().toUpperCase())>=0)))
+			&&((text().length()==0)
+				||(A.name().toUpperCase().indexOf(text().toUpperCase())>=0)
+				||(A.ID().toUpperCase().indexOf(text().toUpperCase())>=0)))
 				offenders.addElement(A);
 		}
 		return offenders;

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class Reply extends StdCommand
 			return false;
 		if((!mob.isMonster())&&mob.isAttributeSet(MOB.Attrib.QUIET))
 		{
-			CMLib.commands().doCommandFail(mob,commands,L("You have QUIET mode on.  You must turn it off first."));
+			CMLib.commands().postCommandFail(mob,commands,L("You have QUIET mode on.  You must turn it off first."));
 			return false;
 		}
 		Vector<String> origCmds=new XVector<String>(commands);
@@ -61,7 +61,7 @@ public class Reply extends StdCommand
 			return false;
 		if(pstats.getReplyToMOB()==null)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("No one has told you anything yet!"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("No one has told you anything yet!"));
 			return false;
 		}
 		if((pstats.getReplyToMOB().Name().indexOf('@')<0)
@@ -69,12 +69,12 @@ public class Reply extends StdCommand
 			||(pstats.getReplyToMOB().isMonster())
 			||(!CMLib.flags().isInTheGame(pstats.getReplyToMOB(),true))))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is no longer logged in.",pstats.getReplyToMOB().Name()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is no longer logged in.",pstats.getReplyToMOB().Name()));
 			return false;
 		}
 		if(CMParms.combine(commands,1).length()==0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Tell '@x1' what?",pstats.getReplyToMOB().Name()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Tell '@x1' what?",pstats.getReplyToMOB().Name()));
 			return false;
 		}
 		final int replyType=pstats.getReplyType();
@@ -85,7 +85,7 @@ public class Reply extends StdCommand
 			if((pstats.getReplyToMOB().Name().indexOf('@')<0)
 			&&((mob.location()==null)||(!mob.location().isInhabitant(pstats.getReplyToMOB()))))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is no longer in the room.",pstats.getReplyToMOB().Name()));
+				CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is no longer in the room.",pstats.getReplyToMOB().Name()));
 				return false;
 			}
 			CMLib.commands().postSay(mob,pstats.getReplyToMOB(),CMParms.combine(commands,1),false,false);
@@ -95,7 +95,7 @@ public class Reply extends StdCommand
 			final Session S=pstats.getReplyToMOB().session();
 			if(pstats.getReplyToMOB().isAttributeSet(MOB.Attrib.QUIET))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("That person can not hear you."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("That person can not hear you."));
 				return false;
 			}
 			if(S!=null)

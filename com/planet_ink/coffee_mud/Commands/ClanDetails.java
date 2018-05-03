@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ public class ClanDetails extends StdCommand
 	{
 	}
 
-	private final String[]	access	= I(new String[] { "CLANDETAILS", "CLANPVPKILLS", "CLANKILLS", "CLAN" });
+	private final String[]	access	= I(new String[] { "CLANDETAILS", "CLAN" });
 
 	@Override
 	public String[] getAccessWords()
@@ -52,7 +52,6 @@ public class ClanDetails extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final String subCommand = (commands.size()>0)?commands.get(0).toUpperCase():"CLAN";
 		String clanName=(commands.size()>1)?CMParms.combine(commands,1,commands.size()):"";
 		if((clanName.length()==0)&&(mob.clans().iterator().hasNext()))
 			clanName=mob.clans().iterator().next().first.clanID();
@@ -74,88 +73,6 @@ public class ClanDetails extends StdCommand
 			}
 			if(foundClan==null)
 				msg.append(L("No clan was found by the name of '@x1'.\n\r",clanName));
-			else
-			if((subCommand.length()>4)&&("CLANPVPKILLS".startsWith(subCommand)))
-			{
-				if(mob.getClanRole(foundClan.clanID())==null)
-				{
-					msg.append(L("You are not a member of @x1.\n\r",foundClan.name()));
-				}
-				else
-				{
-					final List<Pair<String,Integer>> topKillers = new ArrayList<Pair<String,Integer>>();
-					for(final Clan.MemberRecord M : foundClan.getMemberList())
-					{
-						if(M.playerpvps > 0)
-							topKillers.add(new Pair<String,Integer>(M.name,new Integer(M.playerpvps)));
-					}
-					@SuppressWarnings("unchecked")
-					final Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
-					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()
-					{
-						@Override
-						public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
-						{
-							return o2.second.compareTo(o1.second);
-						}
-					});
-					if(topKillers.size()==0)
-						msg.append(L("There have not been any rival clan playerkills...\n\r"));
-					else
-					{
-						msg.append(L("^XTop ranked rival clan playerkillers of @x1^?^.\n\r\n\r",foundClan.name()));
-						topKillers.clear();
-						final List<String> reverseList = new ArrayList<String>();
-						for(int x=0;x<killerArray.length;x++)
-						{
-							final Pair<String,Integer> p=killerArray[x];
-							reverseList.add((x+1)+". "+p.first+" ("+p.second.intValue()+")");
-						}
-						msg.append(CMLib.lister().threeColumns(mob, reverseList));
-					}
-				}
-			}
-			else
-			if((subCommand.length()>4)&&("CLANKILLS".startsWith(subCommand)))
-			{
-				if(mob.getClanRole(foundClan.clanID())==null)
-				{
-					msg.append(L("You are not a member of @x1.\n\r",foundClan.name()));
-				}
-				else
-				{
-					final List<Pair<String,Integer>> topKillers = new ArrayList<Pair<String,Integer>>();
-					for(final Clan.MemberRecord M : foundClan.getMemberList())
-					{
-						if((M.mobpvps+M.playerpvps) > 0)
-							topKillers.add(new Pair<String,Integer>(M.name,new Integer(M.mobpvps+M.playerpvps)));
-					}
-					@SuppressWarnings("unchecked")
-					final Pair<String,Integer>[] killerArray = topKillers.toArray(new Pair[0]);
-					Arrays.sort(killerArray,new Comparator<Pair<String,Integer>>()
-					{
-						@Override
-						public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
-						{
-							return o2.second.compareTo(o1.second);
-						}
-					});
-					if(topKillers.size()==0)
-						msg.append(L("There have not been any rival clan kills...\n\r"));
-					else
-					{
-						msg.append(L("^XTop ranked rival clan killers of @x1^?^.\n\r\n\r",foundClan.name()));
-						topKillers.clear();
-						final List<String> reverseList = new ArrayList<String>();
-						for(int x=0;x<killerArray.length;x++)
-						{
-							final Pair<String,Integer> p=killerArray[x];
-							reverseList.add((x+1)+". "+p.first+" ("+p.second.intValue()+")");
-						}
-						msg.append(CMLib.lister().threeColumns(mob, reverseList));
-					}
-				}
-			}
 			else
 			{
 				msg.append(foundClan.getDetail(mob));

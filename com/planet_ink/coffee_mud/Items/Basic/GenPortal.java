@@ -19,7 +19,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -43,10 +43,6 @@ public class GenPortal extends StdPortal
 
 	protected String	readableText	= "";
 
-	protected String	putString		= "in";
-	protected String	mountString		= "enter(s)";
-	protected String	dismountString	= "emerge(s) from";
-
 	public GenPortal()
 	{
 		super();
@@ -68,24 +64,6 @@ public class GenPortal extends StdPortal
 		return CMLib.coffeeMaker().getPropertiesStr(this,false);
 	}
 
-	@Override
-	public String putString(Rider R)
-	{
-		return putString;
-	}
-
-	@Override
-	public String mountString(int commandType, Rider R)
-	{
-		return mountString;
-	}
-
-	@Override
-	public String dismountString(Rider R)
-	{
-		return dismountString;
-	}
-	
 	@Override
 	public String keyName()
 	{
@@ -120,8 +98,9 @@ public class GenPortal extends StdPortal
 
 	private final static String[] MYCODES={ "HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
 											"RIDEBASIS","MOBSHELD","EXITNAME","CLOSEDTEXT",
-											"PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED",
-											"DEFLOCKED","CLOSEWORD","OPENWORD","CLOSEDTEXT"
+											"DEFCLOSED",
+											"DEFLOCKED","CLOSEWORD","OPENWORD","CLOSEDTEXT",
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR","STATESTR","STATESUBJSTR","RIDERSTR"
 										  };
 
 	@Override
@@ -150,21 +129,27 @@ public class GenPortal extends StdPortal
 		case 8:
 			return "" + closedText();
 		case 9:
-			return putString;
-		case 10:
-			return mountString;
-		case 11:
-			return dismountString;
-		case 12:
 			return "" + defaultsClosed();
-		case 13:
+		case 10:
 			return "" + defaultsLocked();
-		case 14:
+		case 11:
 			return this.closeWord();
-		case 15:
+		case 12:
 			return this.openWord();
-		case 16:
+		case 13:
 			return this.closedText();
+		case 14:
+			return this.getPutString();
+		case 15:
+			return this.getMountString();
+		case 16:
+			return this.getDismountString();
+		case 17:
+			return this.getStateString();
+		case 18:
+			return this.getStateStringSubject();
+		case 19:
+			return this.getRideString();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -204,28 +189,37 @@ public class GenPortal extends StdPortal
 			setExitParams(doorName(), closeWord(), openWord(), val);
 			break;
 		case 9:
-			putString = val;
-			break;
-		case 10:
-			mountString = val;
-			break;
-		case 11:
-			dismountString = val;
-			break;
-		case 12:
 			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
 			break;
-		case 13:
+		case 10:
 			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
 			break;
-		case 14:
+		case 11:
 			//this.closeName = val;
 			break;
-		case 15:
+		case 12:
 			//this.openName = val;
 			break;
-		case 16:
+		case 13:
 			this.closedText = val;
+			break;
+		case 14:
+			setPutString(val);
+			break;
+		case 15:
+			setMountString(val);
+			break;
+		case 16:
+			setDismountString(val);
+			break;
+		case 17:
+			setStateString(val);
+			break;
+		case 18:
+			setStateStringSubject(val);
+			break;
+		case 19:
+			setRideString(val);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

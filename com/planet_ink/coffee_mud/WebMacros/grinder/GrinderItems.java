@@ -23,7 +23,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -72,7 +72,8 @@ public class GrinderItems
 		PANELTYPE,GENAMTPERTICK,CONSUMEDMATS,AREAXML,RECIPESKILLHELP,
 		MINTHRUST,ISCONSTTHRUST,AVAILPORTS,CONTENTSACCESS,BLENDEDVIEW,
 		ISSHIPWARCOMP,SWARNUMPORTS,SWARPORTS,SWARMTYPES,
-		RECHARGERATE,OPENTICKS,ISCLOAK
+		RECHARGERATE,OPENTICKS,ISCLOAK,ISBOOK,MAXPAGES,MAXCHARSPAGE,
+		STATESTR,STATESUBJSTR,RIDERSTR
 		;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
@@ -677,16 +678,28 @@ public class GrinderItems
 				case ISPORTAL: // isportal
 					break;
 				case PUTSTR: // putstr
-					if((I instanceof Rideable)&&(I instanceof Exit))
-						I.setStat("PUTSTR", old);
+					if(I instanceof Rideable)
+						((Rideable) I).setPutString(old);
 					break;
 				case MOUNTSTR: // mountstr
-					if((I instanceof Rideable)&&(I instanceof Exit))
-						I.setStat("MOUNTSTR", old);
+					if(I instanceof Rideable)
+						((Rideable) I).setMountString(old);
 					break;
 				case DISMOUNTSTR: // dismountstr
-					if((I instanceof Rideable)&&(I instanceof Exit))
-						I.setStat("DISMOUNTSTR", old);
+					if(I instanceof Rideable)
+						((Rideable) I).setDismountString(old);
+					break;
+				case STATESTR: // statestr
+					if(I instanceof Rideable)
+						((Rideable) I).setStateString(old);
+					break;
+				case STATESUBJSTR: // statesubjstr
+					if(I instanceof Rideable)
+						((Rideable) I).setStateStringSubject(old);
+					break;
+				case RIDERSTR: // riderstr
+					if(I instanceof Rideable)
+						((Rideable) I).setRideString(old);
 					break;
 				case BEINGWORN:
 					break;
@@ -842,6 +855,16 @@ public class GrinderItems
 				case AREAXML:
 					if((I instanceof BoardableShip)&&(old.trim().length()>0))
 						((BoardableShip)I).setShipArea(CMLib.xml().restoreAngleBrackets(old));
+					break;
+				case ISBOOK:
+					break;
+				case MAXPAGES:
+					if(I instanceof Book)
+						((Book)I).setMaxPages(CMath.s_int(old));
+					break;
+				case MAXCHARSPAGE:
+					if(I instanceof Book)
+						((Book)I).setMaxCharsPerPage(CMath.s_int(old));
 					break;
 				default:
 					break;

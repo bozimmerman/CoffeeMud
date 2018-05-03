@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -439,6 +439,17 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		}
 		else
 		{
+			String label="";
+			if((commands.size()>2) && ("LABEL".equalsIgnoreCase(str)))
+			{
+				commands.remove(0);
+				label=commands.remove(0);
+				if((label.length()>7) || (label.indexOf(' ')>=0))
+				{
+					commonTell(mob,L("That's too much label."));
+					return false;
+				}
+			}
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
@@ -502,7 +513,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 													enhancedTypes);
 			if(data==null)
 				return false;
-			fixDataForComponents(data,componentsFoundList);
+			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -517,7 +528,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
-			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
+			String pctReplacement = (label.length()>0) ? label : RawMaterial.CODES.NAME(buildingI.material());
+			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME), pctReplacement).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else

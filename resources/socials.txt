@@ -81,7 +81,8 @@ oo	BOUNCE	BOIINNNNNNNGG!	<S-NAME> bounces around with a happy smile.			bounce.wa
 oo	BOUNCE <T-NAME>	You bounce up and down on <T-HIS-HER> lap. WHEEE!	<S-NAME> bounces onto <T-NAMESELF>'s lap and wiggles about.	<S-NAME> bounces onto your lap and wiggles about.	You don't see your plaything.	
 ov	BOUNCE SELF	You bounce your head like a basketball.	<S-NAME> plays basketball with <S-HIS-HER> head.			bounce.wav
 oo	BOW	You bow deeply.	<S-NAME> bows deeply.			
-oo	BOW <T-NAME>	You bow before <T-HIM-HER>.	<S-NAME> bows before <T-NAMESELF>.	<S-NAME> bows before you.	Who's that?	
+oo	BOW <I-NAME>	You bow before <T-NAME>.	<S-NAME> bows before <T-NAMESELF>.	<S-NAME> bows you.	Bow who?	
+oo	BOW <T-NAME>	You bow before <T-HIM-HER>.	<S-NAME> bows before <T-NAMESELF>.	<S-NAME> bows before you.	Who`s that?	
 oo	BOW SELF	You kiss your toes.	<S-NAME> folds up like a jacknife and kisses <S-HIS-HER> own toes.			
 ss	BRB	Hope to see you soon!	<S-NAME> will be right back!			
 ov	BRICK	You throw a brick at someone, but miss.	<S-NAME> throws a brick wildly through the air.  <S-HE-SHE> looks pissed!			
@@ -335,6 +336,9 @@ ss	HUSH SELF	You realize you are loud and obnoxious and try to silence yourself.
 ss	INNOCENT	You innocently whistle a tune.	<S-NAME> looks around and whistles innocently.			
 ss	INNOCENT <T-NAME>	You look at <T-NAMESELF> and bat your eyelashes -- the picture of innocence!	<S-NAME> bats <S-HIS-HER> eyelashes innocently at <T-NAMESELF>.	<S-NAME> looks at you and innocently bats <S-HIS-HER> eyelashes.	Don't even TRY -- they've already left.	
 mo	INSANE	You feel your sanity slipping away...	Before your eyes, <S-NAME>'s sanity is slipping away...			
+oo	JIG	You do a little jig.	<S-NAME> does a little jig.			
+oo	JIG <T-NAME>	You grab <T-NAME> and do a little jig.	<S-NAME> grabs <T-NAMESELF> and does a little jig.	<S-NAME> does a jig with you.	Jig with who?	
+
 mo	JUDGE	Yes, but who?				
 mo	JUDGE <T-NAME>	You judge <S-HIM-HER> on a scale of 1 to 10.	On a scale from 1 to 10, <S-NAME> thinks <T-NAMESELF> is a complete ZERO!!!	<S-NAME> judges your actions on a scale of 1 to 10 and comes up with ZERO!!!	They aren't here right now.	
 mo	JUDGE SELF	You don't REALLY want to do that.				
@@ -453,7 +457,7 @@ mv	PET SELF	You happily pet yourself.	<S-NAME> pets <S-HIM-HERSELF>. What a show
 ov	PIE <T-NAME>	You toss a pie at <T-NAMESELF> and hit <T-HIM-HER> right in the FACE!	<S-NAME> tosses a pie at <T-NAMESELF> and hits <T-HIM-HER> right in the FACE!	<S-NAME> tossed a pie in your face... and now you are all covered in GOO!	That person isn't here...	
 mo	PIE SELF	You bury your face in the pie... yummmmm!!! :)	<S-NAME> buries <S-HIS-HER> face in the pie, licking the pan clean.			
 oo	PILLOW	You raise a pillow over your head and look around savagely.	<S-NAME> raises a pillow over <S-HIS-HER> head and looks around savagely.			
-oo	PILLOW <T-NAME>	You *WHACK* <T-NAMESELF> over the head with a pillow.	<S-NAME> *WHACKS* you over the head with a pillow.			
+oo	PILLOW <T-NAME>	You *WHACK* <T-NAMESELF> over the head with a pillow.	<S-NAME> *WHACKS* <T-NAME> over the head with a pillow.	<S-NAME> *WHACKS* you over the head with a pillow.		
 oo	PILLOW SELF	You bop yourself on the head with a pillow.	<S-NAME> bop(s) <S-HIM-HERSELF> over the head with a pillow.			
 ww	PINCH	You say, 'A pinch of this, and a dab of that.'	<S-NAME> says, 'A pinch of this and a dab of that.'			
 mt	PINCH <T-NAME>	You squeeze <T-HIS-HER> bottom and grin.	<S-NAME> pinches <T-NAMESELF>'s bottom and grins.	<S-NAME> pinches your bottom and grins.	You'd like to, wouldn't you?	
@@ -463,8 +467,9 @@ mo	PISSED <T-NAME>	You turn a stoney gaze toward <T-NAMESELF>... you are SOOO pi
 mo	PISSED SELF	You are PISSED at yourself!	<S-NAME> is so pissed at <S-HIM-HERSELF>.  How could <S-HE-SHE> be so stupid???			
 ww	PLEAD	You beg and plead to anyone who will listen.	<S-NAME> pleads <S-HIS-HER> case to anyone who will listen... You ALMOST feel sorry for <S-HIS-HER>.			
 mv	POCKETS	You shove your hands into your pockets, look skyward and whistle a jaunty tune.	<S-NAME> shoves <S-HIS-HER> hands into <S-HIS-HER> pockets, looks skyward and whistles a jaunty tune.			
-mv	POINT	You point in every direction.	<S-NAME> points excitedly!			
-mv	POINT <T-NAME>	You point at <T-NAMESELF>.	<S-NAME> points excitedly at <T-NAMESELF>!	<S-NAME> points at you.  How rude!	You point at no one in particular.	
+mo	POINT	You point in every direction.	<S-NAME> points excitedly!			
+oo	POINT <I-NAME>	You point at <T-NAME>.	<S-NAME> points at <T-NAMESELF>.	<S-NAME> points you.	Point who?	
+mo	POINT <T-NAME>	You point at <T-NAMESELF>.	<S-NAME> points excitedly at <T-NAMESELF>!	<S-NAME> points at you.  How rude!	You point at no one in particular.	
 mv	POINT DOWN	You point down.	<S-NAME> points down.			
 mv	POINT EAST	You point east.	<S-NAME> point(s) east.			
 mv	POINT NORTH	You point north.	<S-NAME> points north.			
@@ -492,6 +497,9 @@ ww	PRAY SELF	Talk about narcissism...	<S-NAME> performs some strange yoga-exerci
 ww	PROPOSE	You propose to everyone in the room.	<S-NAME> proposes to everyone in the room.  Very odd.			
 mw	PROPOSE <T-NAME>	You kneel and romantically propose to <T-NAMESELF>.	<S-NAME> gets on one knee and proposes to <T-NAMESELF>.	<S-NAME> gets down on one knee and romantically proposes to you.	You must be lonely.  They aren't here.	
 ww	PROPOSE SELF	You are SO full of yourself!	<S-NAME> proposes to <S-HIM-HERSELF> -- how narcissistic!			
+oo	PROPS <T-NAME>	You give <T-NAME> mad props!	<S-NAME> gives <T-NAMESELF> mad props!	<S-NAME> gives you mad props! Awesome!	Give mad props to who?	
+oo	PROPS SELF	You give mad props!	<S-NAME> gives <S-HIM-HERSELF> mad props. Lame!			
+
 mv	PUKE	You puke...chunks everywhere!!! YUK!	<S-NAME> pukes.			puke.wav
 ov	PUKE <T-NAME>	You puke on <T-HIM-HER>.	<S-NAME> pukes on <T-NAMESELF>.	<S-NAME> spews vomit and pukes all over your clothing!	Once again?	puke.wav
 mv	PUKE SELF	You puke on yourself.	<S-NAME> pukes on <S-HIS-HER> clothes.			puke.wav
@@ -506,8 +514,8 @@ mv	PURSE <T-NAME>	You gaze at <T-NAME>, pursing your lips.	<S-NAME> gazes at <T-
 ww	RAMBLE	You ramble on and on.	<S-NAME> rambles on about a boring exploit.			
 ww	RAMBLE <T-NAME>	You ramble on to <T-NAMESELF> about your past adventures.	<S-NAME> blithers on and on to <T-NAMESELF> about something.	<S-NAME> tells you a rather boring tale, you feign interest.	??EH??	
 ss	RASPBERRY	You stick your tongue out at ... well, no one.	<S-NAME> sticks <S-HIS-HER> tongue out, catching a few flies in the process.			
-ss	RASPBERRY <T-NAME>	You give <T-NAMESELF> the raspberry... and spit all over yourself.	<S-NAME> gives <T-NAMESELF> the raspberry... PHBT!  What a mess... Spit EVERYWHERE!	You are splattered with saliva as <S-NAME> gives you the raspberry... HOW RUDE!	Hang your tongue out if you like, <S-HE-SHE> isn't here.	raspberry.wav
-ss	RASPBERRY SELF	You try to stick your tongue out at yourself... somehow, it isn't the same.				raspberry.wav
+ss	RASPBERRY <T-NAME>	You give <T-NAMESELF> the raspberry... and spit all over yourself.	<S-NAME> gives <T-NAMESELF> the raspberry... PHBT!  What a mess... Spit EVERYWHERE!	You are splattered with saliva as <S-NAME> gives you the raspberry... HOW RUDE!	Hang your tongue out if you like, <T-HE-SHE> isn`t here.	raspberry.wav
+ss	RASPBERRY SELF	You try to stick your tongue out at yourself... somehow, it isn`t the same.				raspberry.wav
 mv	REGAL	You sit up straight.	<S-NAME> sits up straight, lending <S-HIM-HER> a regal appearance.			
 mv	REGAL <T-NAME>	You look regally down your nose at <T-NAME>.	<S-NAME> looks down upon <T-NAME> haughtily.	<S-NAME> looks down upon <T-NAME> haughtily.	They left too quickly, it seems.	
 ss	ROAR	ROOOOOAAAARRRR!!!!	<S-NAME> lets forth a mighty ROAR!			roar.wav
@@ -746,6 +754,7 @@ mo	WINK SELF	You wink at yourself ?? - what are you up to?	<S-NAME> winks at <S-
 mo	WONDER	You wonder about how things could have been.	<S-NAME> gets a blank stare on <S-HIS-HER> face.  What could <S-HE-SHE> be wondering about?			
 mo	WONDER <T-NAME>	You look at <T-NAMESELF> and wonder what will happen.	<S-NAME> looks at <T-NAMESELF> and wonders....	<S-NAME> looks at you quizzically.	You wonder what would have happened had they been here.	
 mo	WONDER SELF	You wonder about yourself and your purpose here.	A blank stare crosses <S-NAME>'s face.  What could <S-HE-SHE> be wondering about?			
+oo	WORM	You drop on your belly and worm like nobody`s business!	<S-NAME> drops to the ground and does the worm!			
 mo	WORRY	You worry about what's going to happen.	A troubled look suddenly crosses <S-NAME>'s face.  Wonder what's wrong?			
 mo	WORRY <T-NAME>	You look at <T-NAMESELF> worriedly.	<S-NAME> looks at <T-NAMESELF> with a troubled gaze.	<S-NAME> looks at you worriedly.	Well they obviously aren't worried -- they left!	
 mo	WORRY SELF	You worry about what's going to happen.	A troubled look suddenly crosses <S-NAME>'s face.  Wonder what's wrong?			

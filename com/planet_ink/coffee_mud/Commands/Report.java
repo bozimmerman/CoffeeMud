@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -82,15 +82,26 @@ public class Report extends Skills
 					aff.append(C.executeInternal(mob,metaFlags,mob).toString());
 				say.append(aff.toString());
 			}
+			if("EXPERTISES".startsWith(s)||(s.equalsIgnoreCase("ALL")))
+			{
+
+				final StringBuffer aff=new StringBuffer("\n\r^!My expertises are:^?\n\r");
+				final Command C=CMClass.getCommand("Expertises");
+				if(C!=null)
+					aff.append(C.executeInternal(mob,metaFlags,mob).toString());
+				say.append(aff.toString());
+			}
 			if("STATS".startsWith(s)||(s.equalsIgnoreCase("ALL")))
 			{
 				final StringBuffer stats=new StringBuffer("");
 				final int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 				final CharStats CT=mob.charStats();
 				for(final int i : CharStats.CODES.BASECODES())
+				{
 					stats.append("^c" + CMStrings.capitalizeAndLower(CMStrings.limit(CharStats.CODES.NAME(i),3))+": ^w"
 							+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)
 							+"/"+(max+CT.getStat(CharStats.CODES.toMAXBASE(i)))+", ");
+				}
 				say.append("\n\r^NMy stats:^? "+stats.toString());
 			}
 			if(s.equalsIgnoreCase("ALL"))
@@ -103,6 +114,7 @@ public class Report extends Skills
 				V.add(Integer.valueOf(Ability.ACODE_SPELL));
 				V.add(Integer.valueOf(Ability.ACODE_PRAYER));
 				V.add(Integer.valueOf(Ability.ACODE_SUPERPOWER));
+				V.add(Integer.valueOf(Ability.ACODE_LANGUAGE));
 				V.add(Integer.valueOf(Ability.ACODE_TECH));
 				V.add(Integer.valueOf(Ability.ACODE_CHANT));
 				V.add(Integer.valueOf(Ability.ACODE_SONG));
@@ -134,11 +146,14 @@ public class Report extends Skills
 			if("SONGS".startsWith(s))
 				say.append("\n\r^NMy songs:^? "+getAbilities(null,mob,Ability.ACODE_SONG,-1,false,level));
 			else
+			if("LANGS".startsWith(s)||"LANGUAGES".startsWith(s))
+				say.append("\n\r^NMy languages:^? "+getAbilities(null,mob,Ability.ACODE_LANGUAGE,-1,false,level));
+			else
 			if("TECH SKILLS".startsWith(s))
 				say.append("\n\r^NMy tech skills:^? "+getAbilities(null,mob,Ability.ACODE_TECH,-1,false,level));
 
 			if(say.length()==0)
-				mob.tell(L("'@x1' is unknown.  Try SPELLS, SKILLS, PRAYERS, CHANTS, SONGS, STATS, or ALL.",s));
+				mob.tell(L("'@x1' is unknown.  Try SPELLS, SKILLS, PRAYERS, CHANTS, SONGS, LANGUAGES, EXPERTISES, STATS, or ALL.",s));
 			else
 				CMLib.commands().postSay(mob,null,say.toString(),false,false);
 		}

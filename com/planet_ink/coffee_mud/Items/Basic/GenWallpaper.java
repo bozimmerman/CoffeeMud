@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
- Copyright 2002-2017 Bo Zimmerman
+ Copyright 2002-2018 Bo Zimmerman
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -608,6 +608,7 @@ public class GenWallpaper implements Item
 			case CMMsg.TYP_LOOK:
 			case CMMsg.TYP_EXAMINE:
 			case CMMsg.TYP_READ:
+			case CMMsg.TYP_WASREAD:
 			case CMMsg.TYP_SPEAK:
 			case CMMsg.TYP_OK_ACTION:
 			case CMMsg.TYP_OK_VISUAL:

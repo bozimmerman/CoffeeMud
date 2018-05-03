@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Songs;
+package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2017-2017 Bo Zimmerman
+   Copyright 2017-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,25 +32,47 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Skillcraft extends Skill_Songcraft
+
+public class Gait extends StdCommand
 {
-	@Override
-	public String ID()
+	public Gait()
 	{
-		return "Skill_Skillcraft";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Skillcraft");
+	private final String[]	access	= I(new String[] { "GAIT", "NOGAIT" });
 
 	@Override
-	public String name()
+	public String[] getAccessWords()
 	{
-		return localizedName;
+		return access;
 	}
 
 	@Override
-	public int craftType()
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+		throws java.io.IOException
 	{
-		return Ability.ACODE_SKILL;
+		final Ability A=CMClass.getAbility("Gait");
+		if(A!=null)
+		{
+			if((commands.size()>0)&&(commands.get(0).toUpperCase().startsWith("NO")))
+			{
+				A.invoke(mob, new XVector<String>("NORMAL"),mob, true, 0);
+			}
+			else
+			{
+				final Vector<String> V=new XVector<String>(commands);
+				V.remove(0);
+				A.invoke(mob,V,mob,true,0);
+			}
+		}
+		else
+			mob.tell(L("This command is not implemented."));
+		return false;
+	}
+
+	@Override
+	public boolean canBeOrdered()
+	{
+		return true;
 	}
 }

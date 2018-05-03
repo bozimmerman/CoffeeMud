@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -112,7 +112,7 @@ public class Say extends StdCommand
 		final Room R=mob.location();
 		if((commands.size()==1)||(R==null))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 what?",theWord));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 what?",theWord));
 			return false;
 		}
 
@@ -256,12 +256,12 @@ public class Say extends StdCommand
 			combinedCommands=CMParms.combineQuoted(commands,1);
 		if(combinedCommands.equals(""))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1  what?",theWord));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1  what?",theWord));
 			return false;
 		}
 		if(toFlag&&((target==null)||(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("you don't see @x1 here to speak to.",whom));
+			CMLib.commands().postCommandFail(mob,origCmds,L("you don't see @x1 here to speak to.",whom));
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);

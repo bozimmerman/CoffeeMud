@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2016-2017 Bo Zimmerman
+   Copyright 2016-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -214,7 +214,7 @@ public class Thief_MerchantFlag extends ThiefSkill
 		if(P instanceof BoardableShip)
 		{
 			final Room R=CMLib.map().roomLocation(P);
-			if((R!=null)&&(CMLib.flags().isWaterySurfaceRoom(R)))
+			if((R!=null)&&(CMLib.flags().isWaterySurfaceRoom(R))&&(super.canBeUninvoked()))
 				R.showHappens(CMMsg.MSG_OK_VISUAL, L("@x1 lower(s) its Merchant Flag.",P.name()));
 		}
 	}

@@ -29,7 +29,7 @@ import javax.naming.directory.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -231,6 +231,11 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 								   String subject,
 								   String message)
 	{
+		if(CMSecurity.isDisabled(CMSecurity.DisFlag.SMTPCLIENT))
+		{
+			Log.debugOut("SMTPclient", "Message not sent: "+from+"/"+replyTo+"/"+to+"/"+to+"/"+subject+"/"+message);
+			return false;
+		}
 		try
 		{
 			SMTPclient SC=null;

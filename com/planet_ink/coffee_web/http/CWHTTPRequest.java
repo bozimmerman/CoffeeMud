@@ -28,7 +28,7 @@ import com.planet_ink.coffee_web.util.CWThread;
 import com.planet_ink.coffee_web.util.CWConfig.DisableFlag;
 
 /*
-   Copyright 2012-2017 Bo Zimmerman
+   Copyright 2012-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -94,7 +94,7 @@ public class CWHTTPRequest implements HTTPRequest
 	private final Set<DisableFlag>	disableFlags;
 	private List<String>		 	headerRefs  	= new LinkedList<String>();
 	private final List<String>		expects	 		= new LinkedList<String>();
-	private Map<String,Object>   	objects		 	= new HashMap<String,Object>();
+	private Map<String,Object>   	reqObjects	 	= new HashMap<String,Object>();
 
 	/**
 	 * constructs a request object to handle requests from the given address
@@ -330,7 +330,7 @@ public class CWHTTPRequest implements HTTPRequest
 		
 		this.bodyLength=contentLength;
 	}
-	
+
 	/**
 	 * An important method! When the end of headers is received,
 	 * and the headers indicated chunked encoding is forthcoming,
@@ -797,8 +797,8 @@ public class CWHTTPRequest implements HTTPRequest
 				buffer=ByteBuffer.wrap(new byte[0]); // free some memory early, why don't ya
 			}
 			else // if this is some sort of multi-part thing, then the entire body is forfeit and MultiPartDatas are generated
-				if(headers.containsKey(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()) 
-				&&(headers.get(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()).startsWith("multipart/")))
+			if(headers.containsKey(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()) 
+			&&(headers.get(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()).startsWith("multipart/")))
 			{
 				if (isDebugging) debugLogger.finest("Got multipart request");
 					final String boundaryDefStr=headers.get(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName());
@@ -1153,8 +1153,8 @@ public class CWHTTPRequest implements HTTPRequest
 	@Override
 	public Map<String,Object> getRequestObjects()
 	{
-		if(objects==null)
-			objects=new HashMap<String,Object>();
-		return objects;
+		if(reqObjects==null)
+			reqObjects=new HashMap<String,Object>();
+		return reqObjects;
 	}
 }

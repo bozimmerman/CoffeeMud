@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -174,7 +174,7 @@ public class Spell_Scry extends Spell
 		{
 			try
 			{
-				final List<MOB> targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 50);
+				final List<MOB> targets=CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob, mobName, false, 50);
 				if(targets.size()>0)
 					target=targets.get(CMLib.dice().roll(1,targets.size(),-1));
 			}

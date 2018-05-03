@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class Reset extends StdCommand
 {
 	public Reset()
@@ -1096,7 +1096,7 @@ public class Reset extends StdCommand
 						{
 							T.setOwnerName(mob.Name());
 							T.setOwnerName("");
-							T.updateLot(new XVector(mob.name()));
+							T.updateLot(new XVector<String>(mob.name()));
 						}
 					}
 				}

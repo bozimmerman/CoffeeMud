@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -48,11 +48,37 @@ public class Emote extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
+		final Room R=mob.location();
+		if(R==null)
+			return false;
 		if(commands.size()<2)
 		{
-			mob.tell(L(" EMOTE what?"));
+			if((commands.size()>0)&&(commands.get(0).equalsIgnoreCase(",")))
+				CMLib.commands().postCommandFail(mob, commands, L(" EMOTE which social? Try SOCIALS."));
+			else
+				CMLib.commands().postCommandFail(mob, commands, L(" EMOTE what?"));
 			return false;
 		}
+		
+		if(commands.get(0).equalsIgnoreCase(","))
+		{
+			commands.remove(0);
+			Social social=CMLib.socials().fetchSocial(commands,true,true);
+			if(social==null)
+			{
+				social=CMLib.socials().fetchSocial(commands,false,true);
+				if(social!=null)
+					commands.set(0,social.baseName());
+			}
+			if(social==null)
+				commands.add(0,",");
+			else
+			{
+				social.invoke(mob, new XVector<String>(commands), null, false);
+				return true;
+			}
+		}
+		
 		String combinedCommands=CMParms.combine(commands,1);
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.EMOTEFILTER);
 		if(combinedCommands.trim().startsWith("'")||combinedCommands.trim().startsWith("`"))
@@ -79,7 +105,7 @@ public class Emote extends StdCommand
 			}
 			if(rest.length()>0)
 			{
-				final Environmental E=mob.location().fetchFromRoomFavorMOBs(null, rest);
+				final Environmental E=R.fetchFromRoomFavorMOBs(null, rest);
 				if((E!=null)&&(CMLib.flags().canBeSeenBy(E, mob)))
 				{
 					target=E;
@@ -90,8 +116,8 @@ public class Emote extends StdCommand
 		}
 		final String emote="^E<S-NAME>"+combinedCommands+" ^?";
 		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_EMOTE,emote);
-		if(mob.location().okMessage(mob,msg))
-			mob.location().send(mob,msg);
+		if(R.okMessage(mob,msg))
+			R.send(mob,msg);
 		return false;
 	}
 

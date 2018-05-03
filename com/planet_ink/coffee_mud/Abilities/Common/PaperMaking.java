@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	public String parametersFormat()
 	{
 		return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t" 
-			+ "ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tLID_LOCK||STATUE||\tCONTAINER_CAPACITY||\tCODED_SPELL_LIST";
+			+ "ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tLID_LOCK||STATUE||\tCONTAINER_CAPACITY||PAGES_CHARS\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -209,9 +209,17 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					String material=V.get(RCP_WOODTYPE);
-					final String wood=getComponentDescription(mob,V,RCP_WOOD);
-					if(wood.length()>5)
+					String wood=getComponentDescription(mob,V,RCP_WOOD);
+					if(!CMath.isInteger(wood))
+					{
 						material="";
+						wood=wood.toLowerCase();
+					}
+					else
+					if(CMath.s_int(wood)>1)
+						material="pounds of "+material;
+					else
+						material="pound of "+material;
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+" "+material.toLowerCase()+"\n\r");
@@ -353,7 +361,22 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			buildingI.setMaterial(RawMaterial.RESOURCE_PAPER);
 		if(buildingI instanceof Recipe)
 			((Recipe)buildingI).setTotalRecipePages(CMath.s_int(woodRequiredStr));
-		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
+		final int capacity;
+		if(buildingI instanceof Book)
+		{
+			capacity=0;
+			final String pgs=foundRecipe.get(RCP_CAPACITY);
+			int x=pgs.indexOf('/');
+			if(x<0)
+				((Book)buildingI).setMaxPages(CMath.s_int(pgs));
+			else
+			{
+				((Book)buildingI).setMaxPages(CMath.s_int(pgs.substring(0, x)));
+				((Book)buildingI).setMaxCharsPerPage(CMath.s_int(pgs.substring(x+1)));
+			}
+		}
+		else
+			capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 		buildingI.recoverPhyStats();
 		buildingI.text();

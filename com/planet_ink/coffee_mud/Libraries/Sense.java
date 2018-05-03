@@ -20,7 +20,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1535,8 +1535,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				{
 					if(((invoker==null)||(A.invoker()==invoker))
 					&&(((flag<0)||(A.flags()&flag)>0))
-					&&(((abilityCode<0)||((A.abilityCode()&Ability.ALL_ACODES)==abilityCode)))
-					&&(((domain<0)||((A.abilityCode()&Ability.ALL_DOMAINS)==domain))))
+					&&(((abilityCode<0)||((A.classificationCode()&Ability.ALL_ACODES)==abilityCode)))
+					&&(((domain<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==domain))))
 						V.addElement(A);
 				}
 			});

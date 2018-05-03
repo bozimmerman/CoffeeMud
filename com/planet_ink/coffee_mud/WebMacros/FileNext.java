@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class FileNext extends StdWebMacro
 {
 	@Override
@@ -83,7 +82,7 @@ public class FileNext extends StdWebMacro
 			directory=new CMFile(path,M);
 			httpReq.getRequestObjects().put(fileKey, directory);
 		}
-		final XVector fileList=new XVector();
+		final XVector<String> fileList=new XVector<String>();
 		if((directory.canRead())&&(directory.isDirectory()))
 		{
 			httpReq.addFakeUrlParameter("PATH",directory.getVFSPathAndName());
@@ -105,7 +104,7 @@ public class FileNext extends StdWebMacro
 		String lastID="";
 		for(int q=0;q<fileList.size();q++)
 		{
-			final String name=(String)fileList.elementAt(q);
+			final String name=fileList.elementAt(q);
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!name.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("FILE",name);

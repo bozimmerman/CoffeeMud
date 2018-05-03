@@ -24,7 +24,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
-   Copyright 2014-2017 Bo Zimmerman
+   Copyright 2014-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,9 +51,6 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	protected int 		price 			= 1000;
 	protected int		internalPrice	= 0;
 	protected Area 		area			= null;
-	protected String 	putString		= "load(s)";
-	protected String 	mountString		= "board(s)";
-	protected String 	dismountString	= "disembark(s) from";
 	protected String	homePortID		= "";
 
 	public StdBoardable()
@@ -766,11 +763,17 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 					if(clanSale && ((C=CMLib.clans().getClan(me.getOwnerName()))!=null))
 					{
 						if(!C.getExtItems().isContent(me))
+						{
+							me.setSavable(false); // if the clan is saving it, rooms are NOT.
 							C.getExtItems().addItem(me);
+						}
 					}
 					else
 					if ((buyer.playerStats() != null) && (!buyer.playerStats().getExtItems().isContent(me)))
+					{
+						me.setSavable(false); // if the player is saving it, rooms are NOT.
 						buyer.playerStats().getExtItems().addItem(me);
+					}
 				}
 			};
 			session.prompt(namer[0]);
@@ -781,7 +784,10 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			if((this.getOwnerName().equals(buyer.Name()) && (buyer.playerStats() != null)))
 			{
 				if(!buyer.playerStats().getExtItems().isContent(this))
+				{
+					this.setSavable(false); // if the player is saving it, rooms are NOT.
 					buyer.playerStats().getExtItems().addItem(this);
+				}
 			}
 			else
 			{
@@ -789,7 +795,10 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				if(C!=null)
 				{
 					if(!C.getExtItems().isContent(this))
+					{
+						this.setSavable(false); // if the clan is saving it, rooms are NOT.
 						C.getExtItems().addItem(this);
+					}
 				}
 				else
 				{
@@ -809,24 +818,30 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		return R;
 	}
 	
-	@Override 
+	@Override
 	public String putString(Rider R)
-	{ 
+	{
+		if((R==null)||(putString.length()==0))
+			return "load(s)";
 		return putString;
 	}
-	
-	@Override 
+
+	@Override
 	public String mountString(int commandType, Rider R)
-	{ 
+	{
+		if((R==null)||(mountString.length()==0))
+			return "board(s)";
 		return mountString;
 	}
-	
-	@Override 
+
+	@Override
 	public String dismountString(Rider R)
-	{	
+	{
+		if((R==null)||(dismountString.length()==0))
+			return "disembark(s) from";
 		return dismountString;
 	}
-	
+
 	@Override
 	public boolean isSavable()
 	{

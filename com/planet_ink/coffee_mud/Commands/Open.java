@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -108,7 +108,7 @@ public class Open extends StdCommand
 		final String whatToOpen=CMParms.combine(commands,1);
 		if(whatToOpen.length()==0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Open what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Open what?"));
 			return false;
 		}
 		Environmental openThis=null;
@@ -120,7 +120,7 @@ public class Open extends StdCommand
 
 		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatToOpen));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatToOpen));
 			return false;
 		}
 		open(mob,openThis,whatToOpen,dirCode,false);

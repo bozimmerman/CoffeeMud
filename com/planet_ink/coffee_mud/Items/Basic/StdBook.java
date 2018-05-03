@@ -23,7 +23,7 @@ import java.util.*;
 import java.io.IOException;
 
 /*
-   Copyright 2006-2017 Bo Zimmerman
+   Copyright 2006-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import java.io.IOException;
    limitations under the License.
 */
 
-public class StdBook extends StdItem
+public class StdBook extends StdItem implements Book
 {
 	@Override
 	public String ID()
@@ -57,9 +57,11 @@ public class StdBook extends StdItem
 		recoverPhyStats();
 	}
 
-	protected MOB lastReadTo=null;
-	protected long lastDateRead=-1;
-	
+	protected int	maxPages		= 0;	// 0=unlimited
+	protected int	maxCharsPage	= 0;	// 0=unlimited
+	protected MOB	lastReadTo		= null;
+	protected long	lastDateRead	= -1;
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -111,6 +113,15 @@ public class StdBook extends StdItem
 					msg.source().tell(L("You are not allowed to write on @x1",name()));
 					return false;
 				}
+				if(this.getMaxPages() != 0)
+				{
+					int numPages = this.getChapterCount("ALL");
+					if(numPages >= this.getMaxPages())
+					{
+						msg.source().tell(L("All the available pages in @x1 are used.",name()));
+						return false;
+					}
+				}
 				return true;
 			}
 			case CMMsg.TYP_REWRITE:
@@ -140,6 +151,30 @@ public class StdBook extends StdItem
 						{
 							msg.source().tell(L("You need permission to edit that chapter."));
 							return false;
+						}
+					}
+				}
+				else
+				if(msg.targetMessage().toUpperCase().startsWith("EDIT "))
+				{
+					int x=msg.targetMessage().indexOf(' ',5);
+					if(x>5)
+					{
+						int msgNum=CMath.s_int(msg.targetMessage().substring(5,x).trim());
+						if((msgNum <1)||(msgNum>this.getChapterCount("ALL")))
+						{
+							msg.source().tell(L("There is no Chapter @x1",""+(msgNum)));
+							return false;
+						}
+						if((!admin)
+						&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
+						{
+							JournalEntry entry = this.readChaptersByCreateDate().get(msgNum-1);
+							if(!entry.from().equalsIgnoreCase(msg.source().Name()))
+							{
+								msg.source().tell(L("You need permission to edit that chapter."));
+								return false;
+							}
 						}
 					}
 				}
@@ -300,6 +335,7 @@ public class StdBook extends StdItem
 				final String[] subject=new String[1];
 				final String[] message=new String[1];
 				final String editKey[] = new String[1];
+				final int maxCharsPerPage = this.getMaxCharsPerPage() > 0 ? this.getMaxCharsPerPage() : Integer.MAX_VALUE;
 				if(!mob.isMonster())
 				{
 					final Runnable addComplete=new Runnable() 
@@ -321,19 +357,29 @@ public class StdBook extends StdItem
 							}
 							if(editKey[0]==null)
 							{
-								addNewChapter(mob.Name(),to,subject[0],message[0]);
-								if((R!=null)&&(msg.targetMessage().length()<=1))
-									R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter added."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+								if(message[0].length()>maxCharsPerPage)
+									mob.tell(L("That won't fit on the pages for this chapter.  The limit is @x1.",""+maxCharsPerPage));
 								else
-									mob.tell(L("Chapter added."));
+								{
+									addNewChapter(mob.Name(),to,subject[0],message[0]);
+									if((R!=null)&&(msg.targetMessage().length()<=1))
+										R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter added."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+									else
+										mob.tell(L("Chapter added."));
+								}
 							}
 							else
 							{
-								editOldChapter(mob.Name(),to,editKey[0],subject[0],message[0]);
-								if((R!=null)&&(msg.targetMessage().length()<=1))
-									R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter modified."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+								if(message[0].length()>maxCharsPerPage)
+									mob.tell(L("That won't fit on the pages for this chapter.  The limit is @x1.",""+maxCharsPerPage));
 								else
-									mob.tell(L("Chapter modified."));
+								{
+									editOldChapter(mob.Name(),to,editKey[0],subject[0],message[0]);
+									if((R!=null)&&(msg.targetMessage().length()<=1))
+										R.send(mob, ((CMMsg)msg.copyOf()).modify(CMMsg.MSG_WROTE, L("Chapter modified."), CMMsg.MSG_WROTE, subject+"\n\r"+message, -1, null));
+									else
+										mob.tell(L("Chapter modified."));
+								}
 							}
 						}
 					};
@@ -346,6 +392,30 @@ public class StdBook extends StdItem
 						mob.tell(L("Chapter removed."));
 					}
 					else
+					if((msg.targetMinor()==CMMsg.TYP_REWRITE)
+					&&(msg.targetMessage().toUpperCase().startsWith("EDIT ")))
+					{
+						int x=msg.targetMessage().indexOf(' ',5);
+						if(x>5)
+						{
+							int msgNum=CMath.s_int(msg.targetMessage().substring(5,x).trim());
+							subject[0]=L("Chapter @x1",""+(msgNum));
+							message[0]=msg.targetMessage().substring(x+1).trim();
+							JournalEntry entry = this.readChaptersByCreateDate().get(msgNum-1);
+							editKey[0] = entry.key();
+							if(message[0].startsWith("::"))
+							{
+								x=message[0].indexOf("::",2);
+								if(x>1)
+								{
+									subject[0]=message[0].substring(2,x);
+									message[0]=message[0].substring(x+2);
+								}
+							}
+							addComplete.run();
+						}
+					}
+					else
 					if((msg.targetMessage().length()>1)
 					&&(msg.targetMinor()==CMMsg.TYP_WRITE)
 					&&(!CMath.isInteger(msg.targetMessage())))
@@ -353,6 +423,15 @@ public class StdBook extends StdItem
 						message[0]=msg.targetMessage();
 						int numMessages=getChapterCount("ALL");
 						subject[0]=L("Chapter @x1",""+(numMessages+1));
+						if(message[0].startsWith("::"))
+						{
+							int x=message[0].indexOf("::",2);
+							if(x>1)
+							{
+								subject[0]=message[0].substring(2,x);
+								message[0]=message[0].substring(x+2);
+							}
+						}
 						addComplete.run();
 					}
 					else
@@ -512,9 +591,9 @@ public class StdBook extends StdItem
 				final String subject=entry.subj();
 				final StringBuffer selection=new StringBuffer("");
 				if(to.equals("ALL")
-				||to.equalsIgnoreCase(readerMOB.Name())
-				||from.equalsIgnoreCase(readerMOB.Name())
-				||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),readerMOB,true)))
+				||((readerMOB!=null)&&to.equalsIgnoreCase(readerMOB.Name()))
+				||((readerMOB!=null)&&from.equalsIgnoreCase(readerMOB.Name()))
+				||((readerMOB!=null)&&to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),readerMOB,true)))
 				{
 					//if(CMath.s_long(compdate)>lastTimeDate)
 					//    selection.append("*");
@@ -570,9 +649,14 @@ public class StdBook extends StdItem
 			reply.second = entry.subj();
 
 			//String compdate=(String)entry.elementAt(6);
-			final boolean mineAble=to.equalsIgnoreCase(readerMOB.Name())
+			final boolean mineAble;
+			if(readerMOB!=null)
+				mineAble=to.equalsIgnoreCase(readerMOB.Name())
 							||(to.toUpperCase().trim().startsWith("MASK=")&&(CMLib.masking().maskCheck(to.trim().substring(5),readerMOB,true)))
 							||from.equalsIgnoreCase(readerMOB.Name());
+			else
+				mineAble=true;
+			
 			if(mineAble)
 				buf.append("*");
 			else
@@ -592,6 +676,84 @@ public class StdBook extends StdItem
 		}
 		reply.third = buf;
 		return reply;
+	}
+
+	@Override
+	public int getUsedPages()
+	{
+		return this.getChapterCount("ALL");
+	}
+	
+	@Override
+	public int getMaxPages()
+	{
+		return this.maxPages;
+	}
+	
+	@Override
+	public void setMaxPages(int max)
+	{
+		this.maxPages=max;
+	}
+	
+
+	@Override
+	public int getMaxCharsPerPage()
+	{
+		return this.maxCharsPage;
+	}
+
+	@Override
+	public void setMaxCharsPerPage(int max)
+	{
+		this.maxCharsPage=max;
+	}
+
+	@Override
+	public String getRawContent(int page)
+	{
+		final List<JournalEntry> journal=this.readChaptersByCreateDate();
+		if((page < 1)||(page>journal.size()))
+			return "";
+		else
+		{
+			JournalEntry J=journal.get(page-1);
+			if((J.subj()!=null)&&(J.subj().length()>0))
+				return "::"+J.subj()+"::"+J.msg();
+			else
+				return "::"+J.subj()+"::"+J.msg();
+		}
+	}
+	
+	@Override
+	public String getContent(int page)
+	{
+		Triad<String,String,StringBuffer> t=this.DBRead(null, page-1, 0, false, false);
+		if((t.second!=null)&&(t.second.length()>0))
+			return "::"+t.second+"::"+t.third.toString();
+		else
+			return t.third.toString();
+	}
+	
+	@Override
+	public void addRawContent(String authorName, String content)
+	{
+		if(content.startsWith("::")&&(content.length()>2)&&(content.charAt(2)!=':'))
+		{
+			int x=content.indexOf("::",2);
+			if(x>2)
+				addNewChapter(authorName,"ALL",content.substring(2,x),content.substring(x+2));
+			else
+				addNewChapter(authorName,"ALL","",content);
+		}
+		else
+			addNewChapter(authorName,"ALL","",content);
+	}
+	
+	@Override
+	public boolean isJournal()
+	{
+		return false;
 	}
 
 	protected String getParm(String parmName)

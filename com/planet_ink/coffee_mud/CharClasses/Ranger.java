@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -207,6 +207,7 @@ public class Ranger extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_WindGust",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_HoldAnimal",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_AnimalCompanion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Trip",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_Bury",false);

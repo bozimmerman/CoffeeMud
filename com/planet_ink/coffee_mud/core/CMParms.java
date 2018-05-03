@@ -8,7 +8,7 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.Environmental;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1015,11 +1015,38 @@ public class CMParms
 			for(int c=0;c<255;c++)
 				switch(c)
 				{
-				case '`': case '~': case '!': case '@': case '#': case '$': case '%':
-				case '^': case '&': case '*': case '(': case ')': case '_': case '-':
-				case '+': case '=': case '[': case ']': case '{': case '}': case '\\':
-				case '|': case ';': case ':': case '\'': case '\"': case ',': case '<':
-				case '.': case '>': case '/': case '?':
+				case '`':
+				case '~':
+				case '!':
+				case '@':
+				case '#':
+				case '$':
+				case '%':
+				case '^':
+				case '&':
+				case '*':
+				case '(':
+				case ')':
+				case '_':
+				case '-':
+				case '+':
+				case '=':
+				case '[':
+				case ']':
+				case '{':
+				case '}':
+				case '\\':
+				case '|':
+				case ';':
+				case ':':
+				case '\'':
+				case '\"':
+				case ',':
+				case '<':
+				case '.':
+				case '>':
+				case '/':
+				case '?':
 					PUNCTUATION_TEMP_TABLE[c]=true;
 					break;
 				default:
@@ -1121,8 +1148,12 @@ public class CMParms
 							{
 								switch(text.charAt(x))
 								{
-								case ' ': case '\n': case '\r': case '\t':
-								case ':': case ';':
+								case ' ':
+								case '\n':
+								case '\r':
+								case '\t':
+								case ':':
+								case ';':
 									return text.substring(valStart,x);
 								}
 								x++;
@@ -1137,6 +1168,92 @@ public class CMParms
 				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
 		}
 		return defaultVal;
+	}
+
+	/**
+	 * This method is a sloppy, forgiving method removing KEY=VALUE value pair from a string.
+	 * @param text the string to search
+	 * @param key the key to search for, case insensitive
+	 * @return the string without the pair, if found
+	 */
+	public final static String delParmStr(String text, final String key)
+	{
+		int x=text.toUpperCase().indexOf(key.toUpperCase());
+		while(x>=0)
+		{
+			final int startx=x;
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='='))
+				{
+					if((text.charAt(x)=='+')||(text.charAt(x)=='-'))
+					{
+						while((x<text.length())&&(!Character.isWhitespace(text.charAt(x))))
+							x++;
+						if(x==text.length())
+							return text.substring(0,startx).trim();
+						else
+							return text.substring(0,startx)+text.substring(x);
+					}
+					x++;
+				}
+				if(x<text.length())
+				{
+					if(hasPunctuation(text.substring(startx, x)))
+					{
+						x=text.toUpperCase().indexOf(key.toUpperCase(),startx+1);
+						continue;
+					}
+					boolean endWithQuote=false;
+					while((x<text.length())&&(!Character.isLetterOrDigit(text.charAt(x))))
+					{
+						if(text.charAt(x)=='\"')
+						{
+							endWithQuote=true;
+							x++;
+							break;
+						}
+						x++;
+					}
+					if(x<text.length())
+					{
+						if(endWithQuote)
+						{
+							while(x<text.length())
+							{
+								if((text.charAt(x)=='\"')&&(text.charAt(x-1)!='\\'))
+								{
+									return text.substring(0,startx)+text.substring(x+1);
+								}
+								x++;
+							}
+						}
+						else
+						{
+							while(x<text.length())
+							{
+								switch(text.charAt(x))
+								{
+								case ' ':
+								case '\n':
+								case '\r':
+								case '\t':
+								case ':':
+								case ';':
+									return text.substring(0,startx)+text.substring(x+1);
+								}
+								x++;
+							}
+						}
+						return text.substring(0,startx);
+					}
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		return text;
 	}
 
 	/**
@@ -1203,9 +1320,12 @@ public class CMParms
 							}
 							switch(comp)
 							{
-								case '>': return value > found;
-								case '<': return value < found;
-								case '!': return true;
+							case '>':
+								return value > found;
+							case '<':
+								return value < found;
+							case '!':
+								return true;
 							}
 							return false;
 						}
@@ -1869,6 +1989,59 @@ public class CMParms
 				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
 		}
 		return defaultValue;
+	}
+
+	/**
+	 * This method is a sloppy, forgiving method removing KEY=VALUE value pair from a string.
+	 * @param text the string to search
+	 * @param key the key to search for, case insensitive
+	 * @return the string without the key and value, if found.
+	 */
+	public final static String delParmLong(String text, final String key)
+	{
+		int x=text.toUpperCase().indexOf(key.toUpperCase());
+		while(x>=0)
+		{
+			final int startx=x;
+			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
+			{
+				while((x<text.length())&&(text.charAt(x)!='=')&&(!Character.isDigit(text.charAt(x))))
+				{
+					if((text.charAt(x)=='+')||(text.charAt(x)=='-'))
+					{
+						while((x<text.length())&&(!Character.isWhitespace(text.charAt(x))))
+							x++;
+						if(x==text.length())
+							return text.substring(0,startx).trim();
+						else
+							return text.substring(0,startx)+text.substring(x);
+					}
+					x++;
+				}
+				if((x<text.length())&&(text.charAt(x)=='='))
+				{
+					if(hasPunctuation(text.substring(startx, x)))
+					{
+						x=text.toUpperCase().indexOf(key.toUpperCase(),startx+1);
+						continue;
+					}
+					while((x<text.length())&&(!Character.isDigit(text.charAt(x))))
+						x++;
+					if(x<text.length())
+					{
+						while((x<text.length())&&(Character.isDigit(text.charAt(x))))
+							x++;
+						if(x==text.length())
+							return text.substring(0,startx);
+						return text.substring(0,startx)+text.substring(x);
+					}
+				}
+				x=-1;
+			}
+			else
+				x=text.toUpperCase().indexOf(key.toUpperCase(),x+1);
+		}
+		return text;
 	}
 
 	/**
@@ -2943,6 +3116,47 @@ public class CMParms
 	}
 
 	/**
+	 * Returns the index of the given string in the given string array.
+	 * The search is case sensitive.
+	 * @param stringList the string array
+	 * @param str the string to search for
+	 * @param startIndex the index to start from
+	 * @return the index of the string in the list, or -1 if not found
+	 */
+	public final static int indexOf(final String[] stringList, final String str, final int startIndex)
+	{
+		if(stringList==null) 
+			return -1;
+		if(str==null) 
+			return -1;
+		for(int i=startIndex;i<stringList.length;i++)
+		{
+			if(stringList[i].equals(str))
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the number of the given items in the given array
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param str the string to search for
+	 * @return the number of times the item appears in the list
+	 */
+	public final static int numContains(final String[] theList, final String str)
+	{
+		int idx=indexOf(theList,str);
+		int ct=0;
+		while(idx >=0)
+		{
+			ct++;
+			idx=indexOf(theList,str,idx+1);
+		}
+		return ct;
+	}
+
+	/**
 	 * Returns the index of the string in the given string array that starts
 	 * with the given one. The search is case sensitive.
 	 * @param stringList the string array
@@ -3045,6 +3259,44 @@ public class CMParms
 	}
 
 	/**
+	 * Returns the index of the given number in the given array.
+	 * @param theList the int array
+	 * @param x the number to search for
+	 * @param startIndex the index to start the search from
+	 * @return the index of the number in the list, or -1 if not found
+	 */
+	public final static int indexOf(final int[] theList, final int x, final int startIndex)
+	{
+		if(theList==null) 
+			return -1;
+		for(int i=startIndex;i<theList.length;i++)
+		{
+			if(theList[i]==x)
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the number of the given items in the given array
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param x the int to search for
+	 * @return the number of times the item appears in the list
+	 */
+	public final static int numContains(final int[] theList, final int x)
+	{
+		int idx=indexOf(theList,x);
+		int ct=0;
+		while(idx >=0)
+		{
+			ct++;
+			idx=indexOf(theList,x,idx+1);
+		}
+		return ct;
+	}
+
+	/**
 	 * Returns the index of the first of the given numbers in the given array.
 	 * @param theList the int array
 	 * @param xs the numbers to search for
@@ -3081,6 +3333,44 @@ public class CMParms
 				return i;
 		}
 		return -1;
+	}
+	
+	/**
+	 * Returns the index of the given byte in the given array.
+	 * @param theList the byte array
+	 * @param x the byte to search for
+	 * @param startIndex the index to start from
+	 * @return the index of the byte in the list, or -1 if not found
+	 */
+	public final static int indexOf(final byte[] theList, final byte x, final int startIndex)
+	{
+		if(theList==null) 
+			return -1;
+		for(int i=startIndex;i<theList.length;i++)
+		{
+			if(theList[i]==x)
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the number of the given items in the given array
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param x the byte to search for
+	 * @return the number of times the item appears in the list
+	 */
+	public final static int numContains(final byte[] theList, final byte x)
+	{
+		int idx=indexOf(theList,x);
+		int ct=0;
+		while(idx >=0)
+		{
+			ct++;
+			idx=indexOf(theList,x,idx+1);
+		}
+		return ct;
 	}
 
 	/**
@@ -3122,6 +3412,27 @@ public class CMParms
 		}
 		return -1;
 	}
+	
+	/**
+	 * Returns the index of the given bytes in the given array.
+	 * @param theList the byte array
+	 * @param x the bytes to search for
+	 * @param startIndex the index to start from
+	 * @return the index of the bytes in the list, or -1 if not found
+	 */
+	public final static int indexOf(final byte[] theList, final byte[] x, final int startIndex)
+	{
+		if(theList==null) 
+			return -1;
+		if(x.length==0)
+			return 0;
+		for(int i=startIndex;i<theList.length;i++)
+		{
+			if(equals(theList,i,x))
+				return i;
+		}
+		return -1;
+	}
 
 	/**
 	 * Returns the index of the given number in the given array.
@@ -3139,6 +3450,44 @@ public class CMParms
 				return i;
 		}
 		return -1;
+	}
+
+	/**
+	 * Returns the index of the given number in the given array.
+	 * @param theList the string array
+	 * @param x the number to search for
+	 * @param startIndex the index to start from
+	 * @return the index of the number in the list, or -1 if not found
+	 */
+	public final static int indexOf(final long[] theList, final long x, final int startIndex)
+	{
+		if(theList==null) 
+			return -1;
+		for(int i=startIndex;i<theList.length;i++)
+		{
+			if(theList[i]==x)
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the number of the given items in the given array
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param x the long to search for
+	 * @return the number of times the item appears in the list
+	 */
+	public final static int numContains(final long[] theList, final long x)
+	{
+		int idx=indexOf(theList,x);
+		int ct=0;
+		while(idx >=0)
+		{
+			ct++;
+			idx=indexOf(theList,x,idx+1);
+		}
+		return ct;
 	}
 
 	/**
@@ -3221,6 +3570,107 @@ public class CMParms
 		for(int i=0;i<theList.length;i++)
 		{
 			if(theList[i].equals(obj))
+				return i;
+		}
+		return -1;
+	}
+	
+	/**
+	 * Returns the index of the given Object appears in the given list.
+	 * @param theList the list
+	 * @param obj the Object to search for
+	 * @param startIndex the index to start from
+	 * @return the index of the object in the list, or -1 if not found
+	 */
+	public final static int indexOf(final Object[] theList, final Object obj, final int startIndex)
+	{
+		if(theList==null) 
+			return -1;
+		if(obj==null) 
+			return -1;
+		for(int i=startIndex;i<theList.length;i++)
+		{
+			if(theList[i].equals(obj))
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the number of the given items in the given array
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param obj the obj to search for
+	 * @return the number of times the item appears in the list
+	 */
+	public final static int numContains(final Object[] theList, final Object obj)
+	{
+		int idx=indexOf(theList,obj);
+		int ct=0;
+		while(idx >=0)
+		{
+			ct++;
+			idx=indexOf(theList,obj,idx+1);
+		}
+		return ct;
+	}
+	
+	/**
+	 * Returns the index of the given Object appears in the given list.
+	 * @param theList the list
+	 * @param obj the Object to search for
+	 * @param startIndex the index to start from
+	 * @return the index of the object in the list, or -1 if not found
+	 */
+	public final static int indexOf(final List<?> theList, final Object obj, final int startIndex)
+	{
+		if(theList==null) 
+			return -1;
+		if(obj==null) 
+			return -1;
+		for(int i=startIndex;i<theList.size();i++)
+		{
+			if(theList.get(i).equals(obj))
+				return i;
+		}
+		return -1;
+	}
+
+	/**
+	 * Returns the number of the given items in the given array
+	 * It is case sensitive.
+	 * @param theList the list
+	 * @param obj the Object to search for
+	 * @return the number of times the item appears in the list
+	 */
+	public final static int numContains(final List<?> theList, final Object obj)
+	{
+		int idx=theList.indexOf(obj);
+		int ct=0;
+		while(idx >=0)
+		{
+			ct++;
+			idx=indexOf(theList,obj,idx+1);
+		}
+		return ct;
+	}
+
+	/**
+	 * Returns the index of the given Object appears in the given list,
+	 * after calling toString on both the obj given and the list Object.
+	 * @param theList the list of Objects to call toString ob
+	 * @param obj the Object to search for, after calling toString
+	 * @return the index of the object in the list, or -1 if not found
+	 */
+	public final static int indexOfAsString(final Object[] theList, final Object obj)
+	{
+		if(theList==null) 
+			return -1;
+		if(obj==null) 
+			return -1;
+		for(int i=0;i<theList.length;i++)
+		{
+			if(theList[i].toString().equals(obj.toString()))
 				return i;
 		}
 		return -1;
@@ -3385,6 +3835,18 @@ public class CMParms
 	public final static boolean contains(final Object[] theList, final Object obj)
 	{
 		return indexOf(theList,obj)>=0;
+	}
+
+	/**
+	 * Returns whether the given Object appears in the given list, after 
+	 * calling toString on both the list object and the given object
+	 * @param theList the list
+	 * @param obj the Object to search for, which is a toString
+	 * @return true if the Object is in the list, false otherwise
+	 */
+	public final static boolean containsAsString(final Object[] theList, final Object obj)
+	{
+		return indexOfAsString(theList,obj) >=0;
 	}
 
 	/**

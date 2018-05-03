@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class Enter extends Go
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<=1)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Enter what or where? Try LOOK or EXITS."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Enter what or where? Try LOOK or EXITS."));
 			return false;
 		}
 		Environmental enterThis=null;
@@ -89,7 +89,7 @@ public class Enter extends Go
 			dir=CMLib.tracking().findExitDir(mob,R,enterWhat);
 			if(dir<0)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",enterWhat.toLowerCase()));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",enterWhat.toLowerCase()));
 				return false;
 			}
 		}

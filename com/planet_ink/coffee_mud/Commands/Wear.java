@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -93,7 +93,7 @@ public class Wear extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Wear what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Wear what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -119,7 +119,7 @@ public class Wear extends StdCommand
 				}
 				else
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("You can't wear anything on your '@x1'",possibleWearLocation));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You can't wear anything on your '@x1'",possibleWearLocation));
 					return false;
 				}
 				// will always break out here, one way or the other.
@@ -127,7 +127,7 @@ public class Wear extends StdCommand
 		}
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		{
 			// sort hold-onlys down.

@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tSTATUE||RIDE_BASIS||CONTAINER_TYPE_OR_LIDLOCK\t"
-		+"CONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";
+		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -350,7 +350,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 		if(amount>woodRequired)
 			woodRequired=amount;
-		final String misctype=foundRecipe.get(RCP_MISCTYPE);
+		final String misctype=foundRecipe.get(RCP_MISCTYPE).toUpperCase();
 		final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 		bundling=misctype.equalsIgnoreCase("BUNDLE");
 		final int[][] data=fetchFoundResourceData(mob,
@@ -361,7 +361,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 												enhancedTypes);
 		if(data==null)
 			return false;
-		fixDataForComponents(data,componentsFoundList);
+		fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList);
 		woodRequired=data[0][FOUND_AMT];
 		if(!bundling)
 		{
@@ -374,7 +374,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			fireRequired=false;
 
 		final Session session=mob.session();
-		if((misctype.equalsIgnoreCase("statue"))
+		if((misctype.indexOf("STATUE")>=0)
 		&&(session!=null)
 		&&((statue==null)||(statue.trim().length()==0)))
 		{
@@ -441,7 +441,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		addSpells(buildingI,spell);
 
-		if((misctype.equalsIgnoreCase("statue"))
+		if((misctype.indexOf("STATUE")>=0)
 		&&(statue!=null)
 		&&(statue.trim().length()>0))
 		{
@@ -463,16 +463,15 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		if(buildingI instanceof Container)
 		{
 			((Container)buildingI).setCapacity(capacity+woodRequired);
-			if(misctype.equalsIgnoreCase("LID"))
-				((Container)buildingI).setDoorsNLocks(true,false,true,false,false,false);
-			else
-			if(misctype.equalsIgnoreCase("LOCK"))
+			if(misctype.indexOf("LOCK")>=0)
 			{
 				((Container)buildingI).setDoorsNLocks(true,false,true,true,false,true);
 				((Container)buildingI).setKeyName(Double.toString(Math.random()));
 			}
 			else
-				((Container)buildingI).setContainTypes(getContainerType(misctype));
+			if(misctype.indexOf("LID")>=0)
+				((Container)buildingI).setDoorsNLocks(true,false,true,false,false,false);
+			((Container)buildingI).setContainTypes(getContainerType(misctype));
 		}
 		if(buildingI instanceof Drink)
 		{
@@ -484,6 +483,11 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 					((Drink)buildingI).setThirstQuenched(capacity*50);
 				((Drink)buildingI).setLiquidRemaining(0);
 			}
+		}
+		if((buildingI instanceof Wand)
+		&&(foundRecipe.get(RCP_CAPACITY).trim().length()>0))
+		{
+			((Wand)buildingI).setMaxUses(capacity);
 		}
 		if(bundling)
 			buildingI.setBaseValue(lostValue);

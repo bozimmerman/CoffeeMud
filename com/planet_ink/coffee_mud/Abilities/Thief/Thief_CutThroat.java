@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2014-2017 Bo Zimmerman
+   Copyright 2014-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -213,12 +213,15 @@ public class Thief_CutThroat extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
+			Ability A=null;
 			if(((!success)||(CMLib.flags().canBeSeenBy(mob,target))||(msg.value()>0))&&(!CMLib.flags().isSleeping(target)))
 				mob.location().show(target,mob,CMMsg.MSG_OK_VISUAL,auto?"":L("<S-NAME> spot(s) <T-NAME>!"));
 			else
 			{
 				setInvoker(mob);
-				mob.addEffect(this);
+				A=(Ability)this.copyOf();
+				A.setSavable(false);
+				mob.addEffect(A);
 				mob.recoverPhyStats();
 			}
 			try
@@ -227,7 +230,8 @@ public class Thief_CutThroat extends ThiefSkill
 			}
 			finally
 			{
-				mob.delEffect(this);
+				if(A!=null)
+					mob.delEffect(A);
 				mob.recoverPhyStats();
 			}
 			lastMOB=""+target;

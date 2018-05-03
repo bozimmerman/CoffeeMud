@@ -1,5 +1,5 @@
 <!--  
-   Copyright 2013-2017 Bo Zimmerman
+   Copyright 2013-2018 Bo Zimmerman
 
    Licensed under the Apache License</STRING><STRING>Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -770,7 +770,7 @@ See guides/RandomAreas.html for information about documents of this type.
 </STRING>
 
 <STRING id="adj_random_moody_words1" select="any-1">
-	<STRING>errie</STRING>
+	<STRING>eerie</STRING>
 	<STRING>chilling</STRING>
 	<STRING>spooky</STRING>
 	<STRING>happy</STRING>
@@ -793,4 +793,5 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING>comforting</STRING>
 	<STRING>soothing</STRING>
 	<STRING>frightning</STRING>
+	<STRING>tranquil</STRING>
 </STRING>

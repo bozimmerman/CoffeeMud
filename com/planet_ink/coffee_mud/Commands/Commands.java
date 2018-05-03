@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,8 +51,8 @@ public class Commands extends StdCommand
 		if(!mob.isMonster())
 		{
 			if ((commands!=null) 
-			&& (commands.size()>0) 
-			&& ("CLEAR".startsWith(commands.get(0).toString().toUpperCase())))
+			&& (commands.size()>1) 
+			&& ("CLEAR".startsWith(commands.get(1).toString().toUpperCase())))
 			{
 				mob.clearCommandQueue();
 				mob.tell(L("Command queue cleared."));

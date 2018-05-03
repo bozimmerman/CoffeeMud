@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,12 +51,12 @@ public class Undress extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<3)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Undress whom? What would you like to remove?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Undress whom? What would you like to remove?"));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Not while you are in combat!"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Not while you are in combat!"));
 			return false;
 		}
 		commands.remove(0);
@@ -66,7 +66,7 @@ public class Undress extends StdCommand
 		final MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see @x1 here.",whom));
+			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",whom));
 			return false;
 		}
 		if(target.willFollowOrdersOf(mob)||(CMLib.flags().isBoundOrHeld(target)))
@@ -76,12 +76,12 @@ public class Undress extends StdCommand
 			   ||(!CMLib.flags().canBeSeenBy(item,mob))
 			   ||(item.amWearingAt(Wearable.IN_INVENTORY)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("@x1 doesn't seem to be equipped with '@x2'.",target.name(mob),what));
+				CMLib.commands().postCommandFail(mob,origCmds,L("@x1 doesn't seem to be equipped with '@x2'.",target.name(mob),what));
 				return false;
 			}
 			if(target.isInCombat())
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("Not while @x1 is in combat!",target.name(mob)));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Not while @x1 is in combat!",target.name(mob)));
 				return false;
 			}
 			CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
@@ -99,14 +99,14 @@ public class Undress extends StdCommand
 							mob.location().show(mob,target,item,CMMsg.MASK_ALWAYS|CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> take(s) <O-NAME> off <T-NAMESELF>."));
 					}
 					else
-						CMLib.commands().doCommandFail(mob,origCmds,L("You cannot seem to get @x1 off @x2.",item.name(),target.name(mob)));
+						CMLib.commands().postCommandFail(mob,origCmds,L("You cannot seem to get @x1 off @x2.",item.name(),target.name(mob)));
 				}
 				else
-					CMLib.commands().doCommandFail(mob,origCmds,L("You cannot seem to get @x1 off of @x2.",item.name(),target.name(mob)));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You cannot seem to get @x1 off of @x2.",item.name(),target.name(mob)));
 			}
 		}
 		else
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 won't let you.",target.name(mob)));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 won't let you.",target.name(mob)));
 		return false;
 	}
 

@@ -1,5 +1,6 @@
 package com.planet_ink.siplet.applet;
 import com.planet_ink.coffee_mud.core.CMLib;
+import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.siplet.support.*;
 import com.jcraft.jzlib.*;
 
@@ -9,7 +10,7 @@ import java.net.*;
 import java.io.*;
 
 /*
-   Copyright 2000-2017 Bo Zimmerman
+   Copyright 2000-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -28,7 +29,7 @@ public class Siplet
 	public final static boolean debugDataOut=false;
 
 	public final static long serialVersionUID=7;
-	public static final float VERSION_MAJOR=(float)2.2;
+	public static final float VERSION_MAJOR=(float)2.3;
 	public static final long  VERSION_MINOR=0;
 	
 	protected StringBuffer		buf			= new StringBuffer("");
@@ -65,7 +66,7 @@ public class Siplet
 
 	public String info()
 	{
-		return "Siplet V"+VERSION_MAJOR+"."+VERSION_MINOR+" (C)2005-2017 Bo Zimmerman";
+		return "Siplet V"+VERSION_MAJOR+"."+VERSION_MINOR+" (C)2005-2018 Bo Zimmerman";
 	}
 
 	public void start()
@@ -112,7 +113,9 @@ public class Siplet
 	{
 		connected=false;
 		if(sock!=null)
+		{
 			disconnectFromURL();
+		}
 		try
 		{
 			lastURL=url;
@@ -135,11 +138,27 @@ public class Siplet
 		}
 		return true;
 	}
+	
+	public boolean hasWaitingData()
+	{
+		try
+		{
+			return this.in[0] != null && (this.in[0].ready() || this.rawin.available() > 0);
+		}
+		catch (Exception e)
+		{
+			this.disconnectFromURL();
+			return false;
+		}
+	}
+	
 	public boolean connectToURL(String url, int port, Socket sock)
 	{
 		connected=false;
 		if(this.sock!=null)
+		{
 			disconnectFromURL();
+		}
 		try
 		{
 			lastURL=url;
@@ -204,19 +223,44 @@ public class Siplet
 			try
 			{
 				if(sock.isClosed())
+				{
 					disconnectFromURL();
+				}
 				else
 				if(!sock.isConnected())
+				{
 					disconnectFromURL();
+				}
 				else
 				{
 					final byte[] bytes=Telnet.peruseInput(data);
 					if(bytes!=null)
 					{
-						out.write(bytes);
-						if((bytes.length==0)||((bytes[bytes.length-1]!=13)&&(bytes[bytes.length-1]!=10)))
-							out.writeBytes("\n");
-						out.flush();
+						boolean success = false;
+						int attempts=10000;
+						while(connected && !success && (--attempts>0))
+						{
+							try
+							{
+								out.write(bytes);
+								if((bytes.length==0)||((bytes[bytes.length-1]!=13)&&(bytes[bytes.length-1]!=10)))
+									out.writeBytes("\n");
+								out.flush();
+								success=true;
+							}
+							catch(IOException e)
+							{
+								try
+								{
+									Thread.sleep(1);
+								}
+								catch(Exception e2)
+								{
+								}
+							}
+						}
+						if(!success)
+							throw new IOException("Failed to read.");
 					}
 				}
 			}
@@ -271,7 +315,21 @@ public class Siplet
 		}
 	}
 
-	public boolean isConnectedToURL(){return connected;}
+	public boolean isConnectedToURL()
+	{
+		try
+		{
+			if(connected
+			&&(!sock.isClosed())
+			&&(sock.isConnected()))
+				return true;
+		}
+		catch(Exception e)
+		{
+			connected=false;
+		}
+		return false;
+	}
 
 	public void readURLData()
 	{
@@ -322,10 +380,14 @@ public class Siplet
 				}
 			}
 			if(sock.isClosed())
+			{
 				disconnectFromURL();
+			}
 			else
 			if(!sock.isConnected())
+			{
 				disconnectFromURL();
+			}
 			else
 			if(buf.length()>0)
 				Telnet.TelenetFilter(buf,out,rawin,in);

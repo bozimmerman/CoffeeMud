@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -485,7 +485,9 @@ public class Where extends StdCommand
 				&&(CMLib.flags().canBeLocated(A))
 				&&(A.getAreaIStats()!=null))
 				{
-					final int median=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+					int median=A.getPlayerLevel();
+					if(median==0)
+						median=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 					int medianDiff=0;
 					final int diffLimit=6;
 					if((median<(moblevel+diffLimit))
@@ -549,15 +551,23 @@ public class Where extends StdCommand
 				@Override
 				public int compare(Area o1, Area o2)
 				{
-					final int lvlDiff1=Math.abs(mobLevel - o1.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
-					final int lvlDiff2=Math.abs(mobLevel - o2.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]);
+					int median1=o1.getPlayerLevel();
+					if(median1==0)
+						median1=o1.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+					int median2=o2.getPlayerLevel();
+					if(median2==0)
+						median2=o2.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+					final int lvlDiff1=Math.abs(mobLevel - median1);
+					final int lvlDiff2=Math.abs(mobLevel - median2);
 					return lvlDiff1==lvlDiff2?0:(lvlDiff1>lvlDiff2)?1:-1;
 				}
 				
 			});
 			for(Area A : finalScoreList)
 			{
-				final int lvl=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+				int lvl=A.getPlayerLevel();
+				if(lvl==0)
+					lvl=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				final int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
 
 				msg.append(CMStrings.padRight(A.name(),35))

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,13 +51,13 @@ public class Hold extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Hold what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Hold what?"));
 			return false;
 		}
 		commands.remove(0);
 		final List<Item> items=CMLib.english().fetchItemList(mob,mob,null,commands,Wearable.FILTER_UNWORNONLY,false);
 		if(items.size()==0)
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<items.size();i++)
 		{

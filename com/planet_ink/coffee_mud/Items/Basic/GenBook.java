@@ -18,7 +18,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
-   Copyright 2006-2017 Bo Zimmerman
+   Copyright 2006-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -93,12 +93,22 @@ public class GenBook extends StdBook
 		recoverPhyStats();
 	}
 
+	private final static String[] MYCODES={"MAXPAGES","MAXCHARSPAGE"};
+
 	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
-		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		switch(getCodeNum(code))
+		{
+		case 0:
+			return "" + this.getMaxPages();
+		case 1:
+			return "" + this.getMaxCharsPerPage();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
 	}
 
 	@Override
@@ -106,16 +116,47 @@ public class GenBook extends StdBook
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
-		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0:
+			this.setMaxPages(CMath.parseIntExpression(val));
+			break;
+		case 1:
+			this.setMaxCharsPerPage(CMath.parseIntExpression(val));
+			break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
+		}
 	}
 
-	private static String[] codes=null;
+	@Override
+	protected int getCodeNum(String code)
+	{
+		for(int i=0;i<MYCODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
+		}
+		return -1;
+	}
+
+	private static String[]	codes	= null;
 
 	@Override
 	public String[] getStatCodes()
 	{
-		if(codes==null)
-			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
+		if(codes!=null)
+			return codes;
+		final String[] MYCODES=CMProps.getStatCodesList(GenBook.MYCODES,this);
+		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
 		return codes;
 	}
 

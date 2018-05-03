@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ public class Throw extends StdCommand
 			commands.add(mob.getVictim().location().getContextName(mob.getVictim()));
 		if(commands.size()<3)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Throw what, where or at whom?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Throw what, where or at whom?"));
 			return false;
 		}
 		commands.remove(0);
@@ -68,12 +68,12 @@ public class Throw extends StdCommand
 			item=mob.findItem(null,what);
 		if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to have a '@x1'!",what));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to have a '@x1'!",what));
 			return false;
 		}
 		if((!item.amWearingAt(Wearable.WORN_HELD))&&(!item.amWearingAt(Wearable.WORN_WIELD)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You aren't holding or wielding @x1!",item.name()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You aren't holding or wielding @x1!",item.name()));
 			return false;
 		}
 
@@ -94,7 +94,7 @@ public class Throw extends StdCommand
 				}
 				else
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("You can't throw anything that way!"));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You can't throw anything that way!"));
 					return false;
 				}
 			}
@@ -106,13 +106,13 @@ public class Throw extends StdCommand
 			if(amOutside&&isOutside&&(!isUp)&&(!isDown)
 			&&((((Room)target).domainType()&Room.DOMAIN_OUTDOORS_AIR)==0))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("That's too far to throw @x1.",item.name()));
+				CMLib.commands().postCommandFail(mob,origCmds,L("That's too far to throw @x1.",item.name()));
 				return false;
 			}
 		}
 		if((dir<0)&&((target==null)||((target!=mob.getVictim())&&(!CMLib.flags().canBeSeenBy(target,mob)))))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You can't target @x1 at '@x2'!",item.name(),str));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You can't target @x1 at '@x2'!",item.name(),str));
 			return false;
 		}
 

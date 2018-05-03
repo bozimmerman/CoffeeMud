@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2012-2017 Bo Zimmerman
+   Copyright 2012-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -142,6 +142,8 @@ public class Dummy extends Doll
 		return body;
 	}
 	
+	private static Vector<RawMaterial> resources=new Vector<RawMaterial>();
+
 	@Override
 	public List<RawMaterial> myResources()
 	{

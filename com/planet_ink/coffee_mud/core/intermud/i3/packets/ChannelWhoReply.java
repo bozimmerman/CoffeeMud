@@ -85,7 +85,7 @@ public class ChannelWhoReply extends Packet {
 
 		for(i=0; i<who.size(); i++)
 		{
-			final String nom = (String)who.elementAt(0);
+			final String nom = (String)who.elementAt(i);
 			cmd += "\"" + nom + "\",";
 		}
 		cmd += "}),})";

@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2006-2017 Bo Zimmerman
+   Copyright 2006-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -94,9 +94,10 @@ public interface ItemCraftor extends CraftorAbility
 	 * @param recipeName the name of the item to make
 	 * @param material the rawmaterial code to make the item out of, or -1
 	 * @param forceLevels forces crafted item to have a level if it otherwise doesn't
+	 * @param noSafety whether normal safeguards against creating broken items are overridden
 	 * @return a vector of Item(s)
 	 */
-	public ItemKeyPair craftItem(String recipeName, int material, boolean forceLevels);
+	public ItemKeyPair craftItem(String recipeName, int material, boolean forceLevels, boolean noSafety);
 
 	/**
 	 * For auto-crafting, this object represents an item,

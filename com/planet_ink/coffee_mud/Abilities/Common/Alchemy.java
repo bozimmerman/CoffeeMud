@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -226,7 +226,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	public ItemKeyPair craftItem(String recipe)
 	{
-		return craftItem(recipe,0,false);
+		return craftItem(recipe,0,false, false);
 	}
 
 	protected Item buildItem(Ability theSpell, int level)

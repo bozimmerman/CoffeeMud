@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class Fill extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Fill what, from what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Fill what, from what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -70,7 +70,7 @@ public class Fill extends StdCommand
 
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("From what should I fill the @x1?",commands.get(0)));
+			CMLib.commands().postCommandFail(mob,origCmds,L("From what should I fill the @x1?",commands.get(0)));
 			return false;
 		}
 		Environmental fillFromThis=null;
@@ -91,7 +91,7 @@ public class Fill extends StdCommand
 			fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Wearable.FILTER_ANY);
 			if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("I don't see @x1 here.",thingToFillFrom));
+				CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",thingToFillFrom));
 				return false;
 			}
 			while(commands.size()>=(fromDex+1))
@@ -131,7 +131,7 @@ public class Fill extends StdCommand
 		}
 
 		if(V.size()==0)
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",thingToFill));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",thingToFill));
 		else
 		for(int i=0;i<V.size();i++)
 		{

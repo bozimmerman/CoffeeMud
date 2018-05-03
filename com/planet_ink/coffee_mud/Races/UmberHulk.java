@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -98,7 +98,7 @@ public class UmberHulk extends StdRace
 		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
 	}
 
-	protected static Vector<RawMaterial>	resources					= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources					= new Vector<RawMaterial>();
 	private final String[]					racialAbilityNames			= { "Chant_Stonewalking", "Spell_Confusion" };
 	private final int[]						racialAbilityLevels			= { 1, 10 };
 	private final int[]						racialAbilityProficiencies	= { 100, 50 };

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -158,88 +158,106 @@ public class StdTub extends StdRideable implements Drink
 	@Override
 	public String stateString(Rider R)
 	{
-		switch(rideBasis)
+		if((R==null)||(stateString.length()==0))
 		{
-		case Rideable.RIDEABLE_AIR:
-		case Rideable.RIDEABLE_LAND:
-		case Rideable.RIDEABLE_WAGON:
-		case Rideable.RIDEABLE_WATER:
+			switch(rideBasis)
+			{
+			case Rideable.RIDEABLE_AIR:
+			case Rideable.RIDEABLE_LAND:
+			case Rideable.RIDEABLE_WAGON:
+			case Rideable.RIDEABLE_WATER:
+				return "riding in";
+			case Rideable.RIDEABLE_ENTERIN:
+			case Rideable.RIDEABLE_SIT:
+			case Rideable.RIDEABLE_TABLE:
+			case Rideable.RIDEABLE_LADDER:
+			case Rideable.RIDEABLE_SLEEP:
+				return "in";
+			}
 			return "riding in";
-		case Rideable.RIDEABLE_ENTERIN:
-		case Rideable.RIDEABLE_SIT:
-		case Rideable.RIDEABLE_TABLE:
-		case Rideable.RIDEABLE_LADDER:
-		case Rideable.RIDEABLE_SLEEP:
-			return "in";
 		}
-		return "riding in";
+		return stateString;
 	}
 
 	@Override
 	public String putString(Rider R)
 	{
-		return "in";
+		if((R==null)||(putString.length()==0))
+			return "in";
+		return putString;
 	}
 
 	@Override
 	public String mountString(int commandType, Rider R)
 	{
-		switch(rideBasis)
+		if((R==null)||(mountString.length()==0))
 		{
-		case Rideable.RIDEABLE_AIR:
-		case Rideable.RIDEABLE_LAND:
-		case Rideable.RIDEABLE_WAGON:
-		case Rideable.RIDEABLE_WATER:
+			switch(rideBasis)
+			{
+			case Rideable.RIDEABLE_AIR:
+			case Rideable.RIDEABLE_LAND:
+			case Rideable.RIDEABLE_WAGON:
+			case Rideable.RIDEABLE_WATER:
+				return "board(s)";
+			case Rideable.RIDEABLE_SIT:
+			case Rideable.RIDEABLE_TABLE:
+			case Rideable.RIDEABLE_ENTERIN:
+			case Rideable.RIDEABLE_SLEEP:
+				return "get(s) into";
+			case Rideable.RIDEABLE_LADDER:
+				return "climb(s) into";
+			}
 			return "board(s)";
-		case Rideable.RIDEABLE_SIT:
-		case Rideable.RIDEABLE_TABLE:
-		case Rideable.RIDEABLE_ENTERIN:
-		case Rideable.RIDEABLE_SLEEP:
-			return "get(s) into";
-		case Rideable.RIDEABLE_LADDER:
-			return "climb(s) into";
 		}
-		return "board(s)";
+		return mountString;
 	}
 
 	@Override
 	public String dismountString(Rider R)
 	{
-		switch(rideBasis)
+		if((R==null)||(dismountString.length()==0))
 		{
-		case Rideable.RIDEABLE_AIR:
-		case Rideable.RIDEABLE_LAND:
-		case Rideable.RIDEABLE_WATER:
+			switch(rideBasis)
+			{
+			case Rideable.RIDEABLE_AIR:
+			case Rideable.RIDEABLE_LAND:
+			case Rideable.RIDEABLE_WATER:
+				return "disembark(s) from";
+			case Rideable.RIDEABLE_TABLE:
+			case Rideable.RIDEABLE_SIT:
+			case Rideable.RIDEABLE_SLEEP:
+			case Rideable.RIDEABLE_WAGON:
+			case Rideable.RIDEABLE_LADDER:
+			case Rideable.RIDEABLE_ENTERIN:
+				return "get(s) out of";
+			}
 			return "disembark(s) from";
-		case Rideable.RIDEABLE_TABLE:
-		case Rideable.RIDEABLE_SIT:
-		case Rideable.RIDEABLE_SLEEP:
-		case Rideable.RIDEABLE_WAGON:
-		case Rideable.RIDEABLE_LADDER:
-		case Rideable.RIDEABLE_ENTERIN:
-			return "get(s) out of";
 		}
-		return "disembark(s) from";
+		return dismountString;
 	}
 
 	@Override
 	public String stateStringSubject(Rider R)
 	{
-		switch(rideBasis)
+		if((R==null)||(stateSubjectStr.length()==0))
 		{
-		case Rideable.RIDEABLE_AIR:
-		case Rideable.RIDEABLE_LAND:
-		case Rideable.RIDEABLE_WATER:
-		case Rideable.RIDEABLE_WAGON:
-			return "being ridden by";
-		case Rideable.RIDEABLE_TABLE:
-		case Rideable.RIDEABLE_SIT:
-		case Rideable.RIDEABLE_SLEEP:
-		case Rideable.RIDEABLE_ENTERIN:
-		case Rideable.RIDEABLE_LADDER:
-			return "occupied by";
+			switch(rideBasis)
+			{
+			case Rideable.RIDEABLE_AIR:
+			case Rideable.RIDEABLE_LAND:
+			case Rideable.RIDEABLE_WATER:
+			case Rideable.RIDEABLE_WAGON:
+				return "being ridden by";
+			case Rideable.RIDEABLE_TABLE:
+			case Rideable.RIDEABLE_SIT:
+			case Rideable.RIDEABLE_SLEEP:
+			case Rideable.RIDEABLE_ENTERIN:
+			case Rideable.RIDEABLE_LADDER:
+				return "occupied by";
+			}
+			return "";
 		}
-		return "";
+		return stateSubjectStr;
 	}
 
 	@Override

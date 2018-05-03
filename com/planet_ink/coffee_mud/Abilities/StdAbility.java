@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -358,22 +358,14 @@ public class StdAbility implements Ability
 		return castingQuality(mob,target,abstractQuality());
 	}
 
-	protected synchronized static int expertise(final MOB mob, final Ability A, final ExpertiseLibrary.Flag code)
+	protected synchronized int expertise(final MOB mob, final Ability A, final ExpertiseLibrary.Flag code)
 	{
-		if((mob!=null)&&(A.isNowAnAutoEffect()||(A.canBeUninvoked())||A.isAutoInvoked()))
+		if((mob!=null)
+		&&(A.isNowAnAutoEffect()
+			||(A.canBeUninvoked())
+			||A.isAutoInvoked()))
 		{
-			final int[][] usageCache=mob.getAbilityUsageCache(A.ID());
-			if(usageCache[Ability.CACHEINDEX_EXPERTISE]!=null)
-				return usageCache[Ability.CACHEINDEX_EXPERTISE][code.ordinal()];
-			final int[] xFlagCache=new int[ExpertiseLibrary.Flag.values().length];
-			final CharClass charClass = mob.baseCharStats().getCurrentClass();
-			for(ExpertiseLibrary.Flag flag : ExpertiseLibrary.Flag.values())
-			{
-				xFlagCache[flag.ordinal()]=CMLib.expertises().getApplicableExpertiseLevel(A.ID(),flag,mob)
-											+charClass.addedExpertise(mob, flag, A.ID());
-			}
-			usageCache[Ability.CACHEINDEX_EXPERTISE]=xFlagCache;
-			return xFlagCache[code.ordinal()];
+			return CMLib.expertises().getExpertiseLevel(mob, A.ID(), code);
 		}
 		return 0;
 	}
@@ -853,12 +845,40 @@ public class StdAbility implements Ability
 		return getAnyTarget(mob,commands,givenTarget,filter,false,false);
 	}
 
+	protected Physical getAnyTarget(MOB mob, Room location, boolean anyContainer, List<String> commands, 
+									Physical givenTarget, Filterer<Environmental> filter)
+	{
+		final Physical P=getAnyTarget(mob,commands,givenTarget,filter,false,false, true);
+		if(P!=null)
+			return P;
+		return getTarget(mob, location, givenTarget, anyContainer, commands, filter);
+	}
+
+	protected Physical getAnyTarget(MOB mob, Room location, boolean anyContainer, List<String> commands, 
+			Physical givenTarget, Filterer<Environmental> filter, boolean quiet)
+	{
+		final Physical P=getAnyTarget(mob,commands,givenTarget,filter,false,false, true);
+		if(P!=null)
+			return P;
+		return getTarget(mob, location, givenTarget, anyContainer, commands, filter, quiet);
+	}
+	
 	protected Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory)
 	{
 		return getAnyTarget(mob,commands,givenTarget,filter,checkOthersInventory,false);
 	}
 
-	protected Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, Filterer<Environmental> filter, boolean checkOthersInventory, boolean alreadyAffOk)
+	protected Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, 
+			Filterer<Environmental> filter, 
+			boolean checkOthersInventory, boolean alreadyAffOk)
+	{
+		return getAnyTarget(mob,commands,givenTarget,filter,checkOthersInventory,alreadyAffOk,false);
+	}
+	
+	protected Physical getAnyTarget(MOB mob, List<String> commands, Physical givenTarget, 
+			Filterer<Environmental> filter, 
+			boolean checkOthersInventory, boolean alreadyAffOk,
+			boolean quiet)
 	{
 		final Room R=mob.location();
 		String targetName=CMParms.combine(commands,0);
@@ -908,11 +928,14 @@ public class StdAbility implements Ability
 		   &&((!CMLib.flags().canBeHeardMovingBy(target,mob))
 				||((target instanceof MOB)&&(!((MOB)target).isInCombat())))))
 		{
-			if(targetName.trim().length()==0)
-				mob.tell(L("You don't see that here."));
-			else
-			if(!CMLib.flags().isSleeping(mob))
-				mob.tell(L("You don't see '@x1' here.",targetName));
+			if(!quiet)
+			{
+				if(targetName.trim().length()==0)
+					mob.tell(L("You don't see that here."));
+				else
+				if(!CMLib.flags().isSleeping(mob))
+					mob.tell(L("You don't see '@x1' here.",targetName));
+			}
 			return null;
 		}
 
@@ -920,10 +943,13 @@ public class StdAbility implements Ability
 		{
 			if(givenTarget==null)
 			{
-				if(target==mob)
-					mob.tell(L("You are already affected by @x1.",name()));
-				else
-					mob.tell(mob,target,null,L("<T-NAME> is already affected by @x1.",name()));
+				if(!quiet)
+				{
+					if(target==mob)
+						mob.tell(L("You are already affected by @x1.",name()));
+					else
+						mob.tell(mob,target,null,L("<T-NAME> is already affected by @x1.",name()));
+				}
 			}
 			return null;
 		}
@@ -953,7 +979,65 @@ public class StdAbility implements Ability
 		return getTarget(mob,location,givenTarget,null,commands,filter);
 	}
 
-	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, List<String> commands, Filterer<Environmental> filter)
+	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, 
+			boolean anyContainer, List<String> commands, Filterer<Environmental> filter)
+	{
+		return getTarget(mob, location, givenTarget, anyContainer, commands, filter, false);
+	}
+	
+	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, 
+			boolean anyContainer, List<String> commands, Filterer<Environmental> filter, 
+			boolean quiet)
+	{
+		Item I=this.getTarget(mob, location, givenTarget, null, commands, filter, anyContainer);
+		if(I!=null)
+			return I;
+		if(!anyContainer)
+			return I;
+		List<Item> containers=new ArrayList<Item>();
+		if(location!=null)
+		{
+			for(Enumeration<Item> i=location.items();i.hasMoreElements();)
+			{
+				Item C=i.nextElement();
+				if((C instanceof Container)
+				&&(((Container)C).isOpen()))
+					containers.add(C);
+			}
+		}
+		else
+		{
+			for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
+			{
+				Item C=i.nextElement();
+				if((C instanceof Container)
+				&&(((Container)C).isOpen()))
+					containers.add(C);
+			}
+		}
+		if(containers.size()==0)
+			return this.getTarget(mob, location, givenTarget, null, commands, filter, quiet);
+		else
+		{
+			for(int c=0;c<containers.size();c++)
+			{
+				Item C=containers.get(c);
+				I=this.getTarget(mob, location, givenTarget, C, commands, filter, quiet || (c<containers.size()-1));
+				if(I!=null)
+					return I;
+			}
+		}
+		return null;
+	}
+	
+	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, 
+			List<String> commands, Filterer<Environmental> filter)
+	{
+		return getTarget(mob, location, givenTarget, container, commands, filter, false);
+	}
+	
+	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, 
+			List<String> commands, Filterer<Environmental> filter, boolean quiet)
 	{
 		String targetName=CMParms.combine(commands,0);
 
@@ -977,21 +1061,24 @@ public class StdAbility implements Ability
 		||(!(target instanceof Item))
 		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
-			if(targetName.length()==0)
-				mob.tell(L("You need to be more specific."));
-			else
-			if((target==null)||(target instanceof Item))
+			if(!quiet)
 			{
-				if(targetName.trim().length()==0)
-					mob.tell(L("You don't see that here."));
+				if(targetName.length()==0)
+					mob.tell(L("You need to be more specific."));
 				else
-				if(!CMLib.flags().isSleeping(mob)) // no idea why this is here :(
-					mob.tell(L("You don't see anything called '@x1' here.",targetName));
-				else // this was added for clan donate (and other things I'm sure) while sleeping.
-					mob.tell(L("You don't see '@x1' in your dreams.",targetName));
+				if((target==null)||(target instanceof Item))
+				{
+					if(targetName.trim().length()==0)
+						mob.tell(L("You don't see that here."));
+					else
+					if(!CMLib.flags().isSleeping(mob)) // no idea why this is here :(
+						mob.tell(L("You don't see anything called '@x1' here.",targetName));
+					else // this was added for clan donate (and other things I'm sure) while sleeping.
+						mob.tell(L("You don't see '@x1' in your dreams.",targetName));
+				}
+				else
+					mob.tell(mob,target,null,L("You can't do that to <T-NAMESELF>."));
 			}
-			else
-				mob.tell(mob,target,null,L("You can't do that to <T-NAMESELF>."));
 			return null;
 		}
 		return (Item)target;
@@ -1360,7 +1447,17 @@ public class StdAbility implements Ability
 			if(((int)Math.round(Math.sqrt((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)))*34.0*Math.random()))>=currentProficiency)
 			{
 				final int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,A);
-				if((qualLevel<0)||(qualLevel>30)||(CMLib.dice().rollPercentage()<(int)Math.round(100.0*CMath.div(31-qualLevel,30+qualLevel))))
+				final double adjustedChance;
+				if((qualLevel<0)
+				||(qualLevel>30))
+					adjustedChance=100.1;
+				else
+				{
+					final float fatigueFactor=(mob.curState().getFatigue() > CharState.FATIGUED_MILLIS ? 50.0f : 100.0f);
+					final int maxLevel=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
+					adjustedChance=fatigueFactor * CMath.div((maxLevel+1-qualLevel),((2*maxLevel)+(10*qualLevel)));
+				}
+				if(CMLib.dice().rollPercentage()<Math.round(adjustedChance))
 				{
 					// very important, since these can be autoinvoked affects (copies)!
 					A.setProficiency(A.proficiency()+1);
@@ -2057,6 +2154,8 @@ public class StdAbility implements Ability
 			final int defProficiency=CMLib.ableMapper().getDefaultProficiency(student.charStats().getCurrentClass().ID(),true,ID());
 			if((defProficiency>0)&&(defProficiency>newAbility.proficiency()))
 				newAbility.setProficiency(defProficiency);
+			final String defParms=CMLib.ableMapper().getDefaultParm(student.charStats().getCurrentClass().ID(), true, ID());
+			newAbility.setMiscText(defParms);
 			student.addAbility(newAbility);
 			newAbility.autoInvocation(student, false);
 		}

@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2008-2017 Bo Zimmerman
+   Copyright 2008-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -180,7 +180,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	@Override
 	public ItemKeyPair craftItem(String recipe)
 	{
-		return craftItem(recipe, 0, false);
+		return craftItem(recipe, 0, false, false);
 	}
 
 	protected void eraseFromScrollItem(Scroll buildingI, Ability theSpell, int level)
@@ -361,7 +361,8 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			}
 			if((!(buildingI instanceof Scroll))
 			||(!buildingI.isGeneric())
-			||(!(buildingI instanceof MiscMagic)))
+			||(!(buildingI instanceof MiscMagic))
+			||(buildingI instanceof Recipe))
 			{
 				commonTell(mob,L("There's can't enscribe magic on @x1!",buildingI.name(mob)));
 				return false;

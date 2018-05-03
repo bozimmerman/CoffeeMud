@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class Deactivate extends StdCommand
 		final Room R=mob.location();
 		if((commands.size()<2)||(R==null))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Deactivate what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Deactivate what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -116,13 +116,13 @@ public class Deactivate extends StdCommand
 		}
 		if(E==null)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see anything called '@x1' or '@x2' here that you can deactivate.",what,whole));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see anything called '@x1' or '@x2' here that you can deactivate.",what,whole));
 			return false;
 		}
 		else
 		if(item==null)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You can't deactivate '@x1'.",E.name()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You can't deactivate '@x1'.",E.name()));
 		}
 
 		final String rest=CMParms.combine(commands,0);

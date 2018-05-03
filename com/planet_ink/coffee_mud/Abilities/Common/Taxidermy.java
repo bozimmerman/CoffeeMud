@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -65,6 +65,9 @@ public class Taxidermy extends CraftingSkill
 
 	public String parametersFormat(){ return "POSE_NAME\nPOSE_DESCRIPTION\n...\n";}
 
+	protected final static String CRAFTING_RACE_STR_PREFIX="This statue was once ";
+	protected final static String CRAFTING_RACE_STR=CRAFTING_RACE_STR_PREFIX+"@x1.";
+	
 	protected String foundShortName="";
 
 	public Taxidermy()
@@ -95,6 +98,23 @@ public class Taxidermy extends CraftingSkill
 			}
 		}
 		super.unInvoke();
+	}
+
+	protected static String getStatueRace(final Item buildingI)
+	{
+		if(buildingI != null)
+		{
+			final int x=buildingI.secretIdentity().indexOf(CRAFTING_RACE_STR_PREFIX);
+			if(x>=0)
+			{
+				int y=buildingI.secretIdentity().indexOf('.',x+CRAFTING_RACE_STR_PREFIX.length());
+				if(y>=0)
+				{
+					return buildingI.secretIdentity().substring(x,y);
+				}
+			}
+		}
+		return "";
 	}
 
 	@Override
@@ -180,7 +200,9 @@ public class Taxidermy extends CraftingSkill
 			return false;
 		}
 		foundShortName=I.Name();
-		if((!(I instanceof DeadBody))||(((DeadBody)I).isPlayerCorpse())||(((DeadBody)I).getMobName().length()==0))
+		if((!(I instanceof DeadBody))
+		||(((DeadBody)I).isPlayerCorpse())
+		||(((DeadBody)I).getMobName().length()==0))
 		{
 			commonTell(mob,L("You don't know how to stuff @x1.",I.name(mob)));
 			return false;
@@ -237,6 +259,8 @@ public class Taxidermy extends CraftingSkill
 		}
 		buildingI.setDescription(desc);
 		setBrand(mob, buildingI);
+		if(C!=null)
+			buildingI.setSecretIdentity((buildingI.secretIdentity()+"  "+L(CRAFTING_RACE_STR,C.getMyRace().name())).trim());
 		buildingI.recoverPhyStats();
 		displayText=L("You are stuffing @x1",I.name());
 		verb=L("stuffing @x1",I.name());

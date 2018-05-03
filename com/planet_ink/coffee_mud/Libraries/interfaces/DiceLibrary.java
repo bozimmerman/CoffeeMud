@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -52,4 +52,6 @@ public interface DiceLibrary extends CMLibrary
 	public int plusOrMinus(final int range);
 	public int inRange(final int min, final int max);
 	public long inRange(final long min, final long max);
+	public void scramble(List<?> objs);
+	public void scramble(int[] objs);
 }

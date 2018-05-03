@@ -20,7 +20,7 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 import java.util.Map.Entry;
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -89,6 +89,7 @@ public interface WorldMap extends CMLibrary
 	public List<Room> findRooms(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
 	public Room findFirstRoom(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
 	public MOB findFirstInhabitant(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
+	public List<MOB> findInhabitantsFavorExact(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, int timePct);
 	public List<MOB> findInhabitants(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct);
 	public List<Item> findRoomItems(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
 	public Item findFirstRoomItem(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
@@ -155,13 +156,15 @@ public interface WorldMap extends CMLibrary
 	public void addObjectToSpace(SpaceObject O, long[] coords);
 	public long getDistanceFrom(SpaceObject O1, SpaceObject O2);
 	public long getDistanceFrom(final long[] coord1, final long[] coord2);
+	public double getAngleDelta(final double[] fromAngle, final double[] toAngle);
 	public double getMinDistanceFrom(SpaceObject FROM, long prevDistance, SpaceObject TO);
 	public double[] getDirection(SpaceObject FROM, SpaceObject TO);
 	public TechComponent.ShipDir getDirectionFromDir(double[] facing, double roll, double[] direction);
 	public long[] getLocation(long[] oldLocation, double[] direction, long distance);
 	public void moveSpaceObject(SpaceObject O);
 	public void moveSpaceObject(SpaceObject O, long[] coords);
-	public void moveSpaceObject(SpaceObject O, double[] newDirection, long newAccelleration);
+	public void moveSpaceObject(final SpaceObject O, final double[] accelDirection, final long newAccelleration);
+	public double moveSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final long newAccelleration);
 	public long[] moveSpaceObject(final long[] coordinates, final double[] direction, long speed);
 	public SpaceObject getSpaceObject(CMObject o, boolean ignoreMobs);
 	public Enumeration<SpaceObject> getSpaceObjects();

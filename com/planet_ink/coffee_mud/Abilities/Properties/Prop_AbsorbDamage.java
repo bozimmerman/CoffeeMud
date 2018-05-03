@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -426,5 +426,119 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 			}
 		}
 		return true;
+	}
+
+	private String makeStatMsg(String type, Object current)
+	{
+		if(current instanceof Integer)
+		{
+			int x=((Integer)current).intValue();
+			String xs=""+x;
+			if(x < 0)
+				xs=""+(-x);
+			if(x>0)
+				return L("Absorb @x1 points of @x2 damage.",xs,type);
+			else
+				return L("Take @x1 extra points of @x2 damage.",xs,type);
+		}
+		else
+		if(current instanceof Double)
+		{
+			double d=((Double)current).doubleValue();
+			String pct=(d<0)?CMath.toPct(-d):CMath.toPct(d);
+			if(d>0)
+				return L("Absorb @x1 of all @x2 damage.",pct,type);
+			else
+				return L("Take @x1 extra @x2 damage.",pct,type);
+		}
+		return "";
+	}
+	
+	@Override
+	public String getStat(String statVar)
+	{
+		if(statVar != null)
+		{
+			statVar=statVar.toUpperCase();
+			if(statVar.startsWith("TIDBITS"))
+			{
+				String parmText = text().toUpperCase();
+				if(statVar.startsWith("TIDBITS="))
+					parmText = statVar.substring(8).toUpperCase().trim();
+				StringBuilder str=new StringBuilder("");
+				List<String> parms = CMParms.parse(parmText);
+				boolean allFound=parms.contains("+ALL");
+				Object current=null;
+				for(String s : parms)
+				{
+					if(CMath.isPct(s))
+					{
+						current=Double.valueOf(CMath.s_pct(s));
+						break;
+					}
+					else
+					if(CMath.isInteger(s))
+					{
+						current=Integer.valueOf(CMath.s_int(s));
+						break;
+					}
+				}
+				if(current==null)
+					current=Double.valueOf(0.5);
+				for(String s : parms)
+				{
+					if(s.equals("ENHANCED"))
+					{
+						enhFlag=true;
+						continue;
+					}
+					if(CMath.isPct(s))
+						current=Double.valueOf(CMath.s_pct(s));
+					else
+					if(CMath.isInteger(s))
+						current=Integer.valueOf(CMath.s_int(s));
+					else
+					if((s.startsWith("+") && (!allFound))
+					||(s.startsWith("-") && allFound))
+					{
+						s=s.substring(1);
+						int code=CharStats.CODES.findWhole(s,true);
+						if(code>=0)
+						{
+							code=CharStats.CODES.CMMSGMAP(code);
+							if(code>0)
+								str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
+						}
+						code=CMParms.indexOf(Weapon.TYPE_DESCS, s);
+						if(code>=0)
+							str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
+						code=CMParms.indexOf(Weapon.CLASS_DESCS, s);
+						if(code>=0)
+							str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
+						code=CMParms.indexOf(Ability.ACODE_DESCS_, s);
+						if(code>=0)
+							str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
+						code=CMParms.indexOf(Ability.DOMAIN_DESCS, s);
+						if(code>=0)
+							str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
+						code=CMParms.indexOf(Ability.FLAG_DESCS, s);
+						if(code>=0)
+							str.append(this.makeStatMsg(s.toLowerCase(), current)+"\n\r");
+						Ability A=CMClass.getAbility(s);
+						if(A!=null)
+							str.append(this.makeStatMsg(A.Name()+" effects or ", current)+"\n\r");
+						code=RawMaterial.CODES.FIND_CaseSensitive(s);
+						if(code>=0)
+							str.append(this.makeStatMsg(s.toLowerCase()+" weapon", current)+"\n\r");
+						if(s.equals("MAGIC"))
+							str.append(this.makeStatMsg(s.toLowerCase()+" weapon", current)+"\n\r");
+						if(s.startsWith("LEVEL")&&(CMath.isInteger(s.substring(5))))
+							str.append(this.makeStatMsg(s.toLowerCase()+" level or lower weapon", current)+"\n\r");
+					}
+				}
+				return str.toString();
+			}
+		}
+		return "";
 	}
 }

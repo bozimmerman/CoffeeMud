@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -55,12 +55,12 @@ public class Withdraw extends StdCommand
 		final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof PostOffice))&&(!(SHOP instanceof Librarian)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You can not withdraw anything from @x1.",shopkeeper.name()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You can not withdraw anything from @x1.",shopkeeper.name()));
 			return false;
 		}
 		if(commands.size()==0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Withdraw what or how much?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Withdraw what or how much?"));
 			return false;
 		}
 		String str=CMParms.combine(commands,0);
@@ -77,7 +77,7 @@ public class Withdraw extends StdCommand
 			{
 				if(denomination==0.0)
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("Withdraw how much?"));
+					CMLib.commands().postCommandFail(mob,origCmds,L("Withdraw how much?"));
 					return false;
 				}
 				thisThang=((Banker)SHOP).findDepositInventory(accountName,""+Integer.MAX_VALUE);
@@ -102,7 +102,7 @@ public class Withdraw extends StdCommand
 							thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
 						else
 						{
-							CMLib.commands().doCommandFail(mob,origCmds,L("Withdraw how much?"));
+							CMLib.commands().postCommandFail(mob,origCmds,L("Withdraw how much?"));
 							return false;
 						}
 					}
@@ -131,7 +131,7 @@ public class Withdraw extends StdCommand
 
 		if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("That doesn't appear to be available.  Try LIST."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("That doesn't appear to be available.  Try LIST."));
 			return false;
 		}
 		String str2="<S-NAME> withdraw(s) <O-NAME> from <S-HIS-HER> account with "+shopkeeper.name()+".";

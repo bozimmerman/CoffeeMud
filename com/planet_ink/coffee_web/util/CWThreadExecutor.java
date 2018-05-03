@@ -8,7 +8,7 @@ import java.util.concurrent.*;
 import java.util.logging.Logger;
 
 /*
-   Copyright 2012-2017 Bo Zimmerman
+   Copyright 2012-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -45,8 +45,14 @@ public class CWThreadExecutor extends ThreadPoolExecutor
 	protected static class CMLinkedBlockingQueue<E> extends ArrayBlockingQueue<E>{
 		private static final long serialVersionUID = -4357809818979881831L;
 		public CWThreadExecutor executor = null;
-		public CMLinkedBlockingQueue(int capacity) { super(capacity);}
-		@Override public boolean offer(E o)
+
+		public CMLinkedBlockingQueue(int capacity)
+		{
+			super(capacity);
+		}
+
+		@Override
+		public boolean offer(E o)
 		{
 			final int allWorkingThreads = executor.getActiveCount() + super.size();
 			return (allWorkingThreads < executor.getPoolSize()) && super.offer(o);
@@ -68,7 +74,8 @@ public class CWThreadExecutor extends ThreadPoolExecutor
 		this.logger=config.getLogger();
 		setRejectedExecutionHandler(new RejectedExecutionHandler()
 		{
-			@Override public void rejectedExecution(Runnable r, ThreadPoolExecutor executor)
+			@Override 
+			public void rejectedExecution(Runnable r, ThreadPoolExecutor executor)
 			{
 				try { executor.getQueue().put(r); } catch (final InterruptedException e) { throw new RejectedExecutionException(e); }
 			}

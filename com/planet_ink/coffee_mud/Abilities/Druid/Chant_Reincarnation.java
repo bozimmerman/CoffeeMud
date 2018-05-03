@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -99,7 +99,10 @@ public class Chant_Reincarnation extends Chant
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
+		{
 			affectableStats.setMyRace(newRace);
+			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
+		}
 	}
 
 	@Override

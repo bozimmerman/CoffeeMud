@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -120,12 +120,20 @@ public class Skill_Haggle extends StdSkill
 			{
 				mob.location().send(mob,msg);
 				invoker=mob;
-				mob.addEffect(this);
-				mob.recoverCharStats();
-				commands.add(0,CMStrings.capitalizeAndLower(cmd));
-				mob.doCommand(commands,MUDCmdProcessor.METAFLAG_FORCED);
-				commands.add(shopkeeper.name());
-				mob.delEffect(this);
+				final Ability A=(Ability)this.copyOf();
+				A.setSavable(false);
+				try
+				{
+					mob.addEffect(A);
+					mob.recoverCharStats();
+					commands.add(0,CMStrings.capitalizeAndLower(cmd));
+					mob.doCommand(commands,MUDCmdProcessor.METAFLAG_FORCED);
+					commands.add(shopkeeper.name());
+				}
+				finally
+				{
+					mob.delEffect(A);
+				}
 				mob.recoverCharStats();
 			}
 		}

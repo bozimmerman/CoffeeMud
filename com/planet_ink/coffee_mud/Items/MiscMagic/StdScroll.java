@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -137,10 +137,14 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	{
 		if(mob.isMine(this))
 		{
+			int addedExpertise = 0;
 			final boolean readingMagic=(mob.fetchEffect("Spell_ReadMagic")!=null);
 			if(readingMagic)
 			{
 				mob.tell(L("@x1 glows softly.",name()));
+				final Ability A=mob.fetchAbility("Spell_ReadMagic");
+				if(A!=null)
+					addedExpertise=CMLib.expertises().getExpertiseLevel(mob, A.ID(), ExpertiseLibrary.Flag.LEVEL);
 				setReadableScrollBy(mob.Name());
 			}
 			if(isReadableScrollBy(mob.Name()))
@@ -182,7 +186,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 						if((thisOne!=null)&&(useTheScroll(thisOne,mob)))
 						{
 							thisOne=(Ability)thisOne.copyOf();
-							int level=phyStats().level();
+							int level=phyStats().level() + addedExpertise;
 							final int lowest=CMLib.ableMapper().lowestQualifyingLevel(thisOne.ID());
 							if(level<lowest)
 								level=lowest;

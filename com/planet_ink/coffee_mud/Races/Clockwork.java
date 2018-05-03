@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2016-2017 Bo Zimmerman
+   Copyright 2016-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,5 +51,23 @@ public class Clockwork extends MetalGolem
 	public String name()
 	{
 		return localizedStaticName;
+	}
+	
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+					(L("a pound of iron"),RawMaterial.RESOURCE_IRON));
+				resources.addElement(makeResource
+					(L("essence of golem"),RawMaterial.RESOURCE_BLOOD));
+			}
+		}
+		return resources;
 	}
 }

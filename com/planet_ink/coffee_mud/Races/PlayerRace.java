@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -139,7 +139,7 @@ public class PlayerRace extends Human
 		return agingChart;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)

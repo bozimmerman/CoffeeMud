@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tLID_LOCK\tCONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";
+		+"ITEM_CLASS_ID\tLID_LOCK\tCONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -429,6 +429,11 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 				if((capacity*50)<250)
 					((Drink)buildingI).setThirstQuenched(capacity*50);
 			}
+		}
+		if((buildingI instanceof Wand)
+		&&(foundRecipe.get(RCP_CAPACITY).trim().length()>0))
+		{
+			((Wand)buildingI).setMaxUses(capacity);
 		}
 		if(bundling)
 			buildingI.setBaseValue(lostValue);

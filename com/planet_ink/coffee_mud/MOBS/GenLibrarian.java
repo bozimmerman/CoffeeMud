@@ -18,7 +18,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
-   Copyright 2017-2017 Bo Zimmerman
+   Copyright 2017-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -136,9 +136,9 @@ public class GenLibrarian extends StdLibrarian
 		case 4:
 			return "" + this.getDailyOverdueCharge();
 		case 5:
-			return "" + CMath.toPct(this.getOverdueChargePct());
+			return "" + CMath.toPct(100.0*this.getOverdueChargePct());
 		case 6:
-			return "" + CMath.toPct(this.getDailyOverdueChargePct());
+			return "" + CMath.toPct(100.0*this.getDailyOverdueChargePct());
 		case 7:
 			return "" + this.getMinOverdueDays();
 		case 8:

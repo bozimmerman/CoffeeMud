@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -278,6 +278,8 @@ public class Farming extends GatheringSkill
 		if((!auto)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_HILLS)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_PLAINS)
+		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
+		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE)
 		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_SWAMP))
 		{
 			commonTell(mob,L("The land is not suitable for farming here."));

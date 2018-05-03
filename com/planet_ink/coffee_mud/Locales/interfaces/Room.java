@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -125,6 +125,11 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		"SEAPORT"
 	};
 
+	/**
+	 * A map of outdoor domain descs strings to their ordinal integer
+	 */
+	public final static Map<Object,Integer> DOMAIN_OUTDOOR_MAP = CMStrings.makeNumericHash(DOMAIN_OUTDOOR_DESCS,0);
+	
 	/** Domain type mask denoting whether the room is indoors, and made of worked stone @see {@link Room#domainType()} */
 	public final static int DOMAIN_INDOORS_STONE=INDOORS+0;
 	/** Domain type mask denoting whether the room is indoors, and made of wood @see {@link Room#domainType()} */
@@ -155,6 +160,11 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 		"METAL"
 	};
 
+	/**
+	 * A map of indoor domain descs strings to their ordinal integer
+	 */
+	public final static Map<Object,Integer> DOMAIN_INDOOR_MAP = CMStrings.makeNumericHash(DOMAIN_INDOORS_DESCS,INDOORS);
+			
 	/** a constant used in the Locale item search classes to filter on only items in rooms */
 	public static final Filterer<Environmental> FILTER_ROOMONLY=new Filterer<Environmental>()
 	{
@@ -808,6 +818,7 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * suffixes, such as .1, .2 to specify which of identical mobs
 	 * to return.
 	 * @see Room#fetchInhabitants(String)
+	 * @see Room#fetchInhabitantExact(String)
 	 * @see Room#fetchInhabitant(int)
 	 * @see Room#fetchRandomInhabitant()
 	 * @see Room#inhabitants()
@@ -822,6 +833,28 @@ public interface Room extends PhysicalAgent, ItemPossessor, Places
 	 * @return the first mob to match the search string
 	 */
 	public MOB fetchInhabitant(String inhabitantID);
+	
+	/**
+	 * Searches the inhabitants of this room for a mob with the given
+	 * ID(), name, or display name.  This method also respects index
+	 * suffixes, such as .1, .2 to specify which of identical mobs
+	 * to return.
+	 * @see Room#fetchInhabitants(String)
+	 * @see Room#fetchInhabitant(String)
+	 * @see Room#fetchInhabitant(int)
+	 * @see Room#fetchRandomInhabitant()
+	 * @see Room#inhabitants()
+	 * @see Room#addInhabitant(MOB)
+	 * @see Room#delInhabitant(MOB)
+	 * @see Room#isInhabitant(MOB)
+	 * @see Room#numInhabitants()
+	 * @see Room#bringMobHere(MOB, boolean)
+	 * @see Room#numPCInhabitants()
+	 * @see Room#eachInhabitant(EachApplicable)
+	 * @param inhabitantID the name, id, or keyword to search for
+	 * @return the first mob to match the search string
+	 */
+	public MOB fetchInhabitantExact(String inhabitantID);
 	
 	/**
 	 * Searches the inhabitants of this room for mobs with the given

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class DrinkCmd extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Drink what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Drink what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -74,7 +74,7 @@ public class DrinkCmd extends StdCommand
 			||((!mob.isMine(thisThang))
 			   &&(!CMLib.flags().canBeSeenBy(thisThang,mob))))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",CMParms.combine(commands,0)));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",CMParms.combine(commands,0)));
 				return false;
 			}
 		}

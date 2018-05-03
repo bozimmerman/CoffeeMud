@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Weapons;
+import java.util.*;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -16,7 +18,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -59,6 +61,44 @@ public class StdLasso extends StdWeapon
 		setRawLogicalAnd(true);
 	}
 
+	protected MOB lastBinder = null;
+
+	protected void untieIfPoss(final MOB binder, final MOB boundM)
+	{
+		final Room R=boundM.location();
+		if(R==null)
+			return;
+		if((CMLib.flags().canBeSeenBy(boundM, binder))
+		&&(CMLib.flags().isAliveAwakeMobileUnbound(binder, true)))
+		{
+			final Ability A=boundM.fetchEffect("Thief_Bind");
+			if((A==null)||(A.invoker()!=binder))
+			{
+				binder.tell(L("You can't figure out the knots."));
+			}
+			else
+			{
+				final CMMsg msg2=CMClass.getMsg(binder,boundM,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> untie(s) <T-NAME>."));
+				if(R.okMessage(binder, msg2))
+				{
+					if((CMLib.flags().isAnimalIntelligence(boundM))&&(boundM.getVictim()==binder))
+						boundM.makePeace(true);
+					A.unInvoke();
+					if((CMLib.flags().isAnimalIntelligence(boundM))&&(boundM.getVictim()==binder))
+						boundM.makePeace(true);
+					if(!CMLib.flags().isBound(boundM))
+					{
+						msg2.addTrailerMsg(CMClass.getMsg(boundM,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_DROP,null));
+						msg2.addTrailerMsg(CMClass.getMsg(binder,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_GET,null));
+					}
+					R.send(binder, msg2);
+				}
+			}
+		}
+		else
+			binder.tell(L("You don't see that here."));
+	}
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -72,6 +112,97 @@ public class StdLasso extends StdWeapon
 		&&(weaponClassification()==Weapon.CLASS_THROWN))
 		{
 			msg.setValue(0);
+			final MOB targetMOB=(MOB)msg.target();
+			if((CMLib.flags().isAnimalIntelligence(targetMOB)))
+			{
+				final Set<MOB> allMyFam=msg.source().getGroupMembers(new HashSet<MOB>());
+				boolean anyCombatants=false;
+				for(final MOB M : allMyFam)
+				{
+					if(M.isInCombat())
+						anyCombatants=true;
+				}
+				if(!anyCombatants)
+				{
+					if(CMLib.law().doesHavePriviledgesHere(msg.source(), msg.source().location()))
+						targetMOB.makePeace(false);
+					msg.addTrailerRunnable(new Runnable(){
+						@Override
+						public void run()
+						{
+							for(final MOB M : allMyFam)
+							{
+								if(M.getVictim()==targetMOB)
+									M.makePeace(true);
+							}
+						}
+					});
+				}
+			}
+		}
+		else
+		if(((msg.sourceMinor()==CMMsg.TYP_HUH)||(msg.sourceMinor()==CMMsg.TYP_COMMANDFAIL))
+		&&(msg.source()==lastBinder)
+		&&(owner() instanceof MOB)
+		&&(owner() != msg.source())
+		&&(msg.targetMessage()!=null)
+		&&(msg.targetMessage().length()>0)
+		&&(CMLib.flags().isBound(owner())))
+		{
+			String tmsg=msg.targetMessage().toLowerCase();
+			if(tmsg.startsWith("get ")||tmsg.startsWith("take "))
+			{
+				final MOB boundM=(MOB)owner();
+				final Room R=boundM.location();
+				if(R!=null)
+				{
+					tmsg=tmsg.substring(4).trim();
+					List<String> rest=CMParms.parse(tmsg);
+					String itemName=tmsg;
+					int x=rest.indexOf("from");
+					if((x>0)&&(x<rest.size()-1))
+					{
+						itemName=CMParms.combine(rest, 0, x);
+						String mobName=CMParms.combine(rest,x+1);
+						final MOB M=R.fetchInhabitant(mobName);
+						if((M!=null)
+						&&(M==boundM)
+						&&(CMLib.english().containsString(name(), itemName)))
+						{
+							untieIfPoss(msg.source(), boundM);
+							return false;
+						}
+						return true;
+					}
+					if(CMLib.english().containsString(name(), itemName))
+					{
+						untieIfPoss(msg.source(), boundM);
+						return false;
+					}
+					return true;
+				}
+				else
+					lastBinder=null;
+			}
+			else
+			if(tmsg.startsWith("untie "))
+			{
+				final MOB boundM=(MOB)owner();
+				tmsg=tmsg.substring(6).trim();
+				final Room R=boundM.location();
+				if(R!=null)
+				{
+					final MOB M=R.fetchInhabitant(tmsg);
+					if((M!=null)
+					&&(M==boundM))
+					{
+						untieIfPoss(msg.source(), boundM);
+						return false;
+					}
+				}
+				else
+					lastBinder=null;
+			}
 		}
 		return true;
 	}
@@ -103,11 +234,19 @@ public class StdLasso extends StdWeapon
 		&&(((MOB)msg.target()).isMine(this))
 		&&(msg.sourceMessage()==null))
 		{
-			final Ability A=CMClass.getAbility("Thief_Bind");
+			final MOB tmob=(MOB)msg.target();
+			Ability A=CMClass.getAbility("Thief_Bind");
 			if(A!=null)
 			{
 				A.setAffectedOne(this);
-				A.invoke(msg.source(),(MOB)msg.target(),true,phyStats().level());
+				A.invoke(msg.source(),tmob,true,phyStats().level());
+				A=tmob.fetchEffect("Thief_Bind");
+				if(A!=null)
+				{
+					lastBinder=A.invoker();
+					if(lastBinder==null)
+						lastBinder=msg.source();
+				}
 			}
 		}
 		else

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -92,7 +92,7 @@ public class Poison_Liquor extends Poison_Alcohol
 			CMLib.commands().postStand(mob,true);
 		}
 		super.unInvoke();
-		if((mob!=null)&&(!mob.isInCombat())&&(drunkness>0))
+		if((mob!=null)&&(!mob.isInCombat())&&(drunkness>0)&&(super.canBeUninvoked()))
 			mob.location().show(mob,null,CMMsg.MSG_SLEEP,L("<S-NAME> curl(s) up on the ground and fall(s) asleep."));
 	}
 }

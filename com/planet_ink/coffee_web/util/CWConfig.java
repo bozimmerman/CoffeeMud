@@ -24,7 +24,7 @@ import com.planet_ink.coffee_mud.core.collections.Triad;
 import com.planet_ink.coffee_mud.core.collections.KeyPairSearchTree;
 
 /*
-   Copyright 2012-2017 Bo Zimmerman
+   Copyright 2012-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -46,8 +46,8 @@ import com.planet_ink.coffee_mud.core.collections.KeyPairSearchTree;
  */
 public class CWConfig implements Cloneable
 {
-	public  static final int  	  DEFAULT_HTP_LISTEN_PORT 		= 80;
-	public  static final int  	  DEFAULT_SSL_PORT 				= 443;
+	public  static final int	  DEFAULT_HTP_LISTEN_PORT 		= 80;
+	public  static final int	  DEFAULT_SSL_PORT 				= 443;
 
 	private static final String   DEFAULT_PAGE 					= "index.html"; // this would normally be configurable as a list
 	private static final String   DEFAULT_ERROR_PAGE 			= "root\\errorpage.cwhtml";
@@ -56,22 +56,22 @@ public class CWConfig implements Cloneable
 	public  static final long  	  DEFAULT_THROTTLE_BYTES 		= Long.MAX_VALUE / 2;
 	
 	// configuration for the request thread pool
-	private static final int      DEFAULT_CORE_THREAD_POOL_SIZE	= 1;
-	private static final int      DEFAULT_MAX_THREAD_POOL_SIZE 	= 10;
-	private static final int      DEFAULT_THREAD_KEEP_ALIVE_MS 	= 60 * 1000; // max age of idle threads
-	private static final int      DEFAULT_THREAD_TIMEOUT_SECS	= 30; //Timeout for active request threads
-	private static final int      DEFAULT_THREAD_QUEUE_SIZE		= 500;//Above this and they start getting rejected
+	private static final int	  DEFAULT_CORE_THREAD_POOL_SIZE	= 1;
+	private static final int	  DEFAULT_MAX_THREAD_POOL_SIZE 	= 10;
+	private static final int	  DEFAULT_THREAD_KEEP_ALIVE_MS 	= 60 * 1000; // max age of idle threads
+	private static final int	  DEFAULT_THREAD_TIMEOUT_SECS	= 30; //Timeout for active request threads
+	private static final int	  DEFAULT_THREAD_QUEUE_SIZE		= 500;//Above this and they start getting rejected
 	
-	private static final long     DEFAULT_FILECACHE_EXPIRE_MS	= 5 * 60 * 1000; 		// 5 minutes -- how long a cache entry lived
-	private static final long     DEFAULT_FILECACHE_MAX_BYTES	= 10 * 1024 * 1024;	// the maximum number of bytes this cache will hold total
-	private static final long     DEFAULT_FILECACHE_MAX_FBYTES	= 2 * 1024 * 1024;	// the maximum size of file the cache will hold
+	private static final long	  DEFAULT_FILECACHE_EXPIRE_MS	= 5 * 60 * 1000; 		// 5 minutes -- how long a cache entry lived
+	private static final long	  DEFAULT_FILECACHE_MAX_BYTES	= 10 * 1024 * 1024;	// the maximum number of bytes this cache will hold total
+	private static final long	  DEFAULT_FILECACHE_MAX_FBYTES	= 2 * 1024 * 1024;	// the maximum size of file the cache will hold
 
-	private static final long     DEFAULT_FILECOMP_MAX_FBYTES	= 16 * 1024 * 1024;	// the maximum size of file the cache will hold
+	private static final long	  DEFAULT_FILECOMP_MAX_FBYTES	= 16 * 1024 * 1024;	// the maximum size of file the cache will hold
 	
-	private static final long     DEFAULT_MAX_BODY_BYTES   		= 1024 * 1024 * 2; // maximum size of a request body
-	private static final long     DEFAULT_MAX_IDLE_MILLIS  		= 30 * 1000;		// maximum time a request can be idle (between reads)
-	private static final int 	  DEFAULT_LINE_BUFFER_SIZE		= 4096; // maximum length of a single line in the main request
-	private static final int  	  DEFAULT_MAX_ALIVE_SECS 		= 15;	// maximum age, in seconds, of a request connection
+	private static final long	  DEFAULT_MAX_BODY_BYTES   		= 1024 * 1024 * 2; // maximum size of a request body
+	private static final long	  DEFAULT_MAX_IDLE_MILLIS  		= 30 * 1000;		// maximum time a request can be idle (between reads)
+	private static final int	  DEFAULT_LINE_BUFFER_SIZE		= 4096; // maximum length of a single line in the main request
+	private static final int	  DEFAULT_MAX_ALIVE_SECS 		= 15;	// maximum age, in seconds, of a request connection
 	private static final int	  DEFAULT_MAX_PIPELINED_REQUESTS= 10;	// maximum number of requests per connection
 	
 	private static final String   DEFAULT_SSL_KEYSTORE_TYPE		= "JKS";
@@ -81,8 +81,8 @@ public class CWConfig implements Cloneable
 	
 	private static final String   DEFAULT_ACCESSLOG_FLAG		= "OFF";
 
-	private static final long     DEFAULT_SESSION_IDLE_MILLIS 	= 30 * 60 * 1000;		// maximum time a session can be idle (between requests)
-	private static final long     DEFAULT_SESSION_AGE_MILLIS  	= 24 *60 * 60 * 1000;	// maximum time a session can be in existence
+	private static final long	  DEFAULT_SESSION_IDLE_MILLIS 	= 30 * 60 * 1000;		// maximum time a session can be idle (between requests)
+	private static final long	  DEFAULT_SESSION_AGE_MILLIS  	= 24 *60 * 60 * 1000;	// maximum time a session can be in existence
 	
 	private static final Integer  ALL_PORTS						= Integer.valueOf(-1);
 	private static final String   ALL_HOSTS						= "";
@@ -96,7 +96,7 @@ public class CWConfig implements Cloneable
 	private SimpleServletManager  servletMan					= null;
 	private ServletSessionManager sessions						= null;
 	private MimeConverterManager  converters					= null;
-	private FileCacheManager      fileCache						= null;
+	private FileCacheManager	  fileCache						= null;
 	private Logger				  logger						= null;
 	private HTTPFileGetter		  fileGetter					= null;
 	private WebServer			  coffeeWebServer				= null;
@@ -1300,7 +1300,7 @@ public class CWConfig implements Cloneable
 		}
 		return null;
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Map<String,Map<Integer,KeyPairSearchTree<String>>> getContextMap(final String prefix, final Properties props, final Class<? extends KeyPairSearchTree> treeClass)
 	{
@@ -1417,11 +1417,11 @@ public class CWConfig implements Cloneable
 		final Map<String,Map<Integer,KeyPairSearchTree<String>>> newCGIMounts = getContextMap("CGIMOUNT",props,KeyPairWildSearchTree.class);
 		if(newCGIMounts != null)
 			cgimnts = newCGIMounts;
-		
+
 		final Map<String,Map<Integer,KeyPairSearchTree<String>>> newBrowse = getContextMap("BROWSE",props,KeyPairSearchTree.class);
 		if(newBrowse != null)
 			browse = newBrowse;
-		
+
 		final Map<String,String> extraMimeTypes=getPrefixedPairs(props,"MIME",'.');
 		if(extraMimeTypes != null)
 			for(String key : extraMimeTypes.keySet())

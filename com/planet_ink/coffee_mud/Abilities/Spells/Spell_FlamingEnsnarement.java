@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -197,7 +197,7 @@ public class Spell_FlamingEnsnarement extends Spell
 							if(target.location()==mob.location())
 							{
 								success=maliciousAffect(mob,target,asLevel,0,-1)!=null;
-								target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) ensnared in the flaming tendrils erupting from the ground, and is unable to move <S-HIS-HER> feet!"));
+								target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> become(s) ensnared in the flaming tendrils erupting from the ground, and <S-IS-ARE> unable to move <S-HIS-HER> feet!"));
 							}
 						}
 					}

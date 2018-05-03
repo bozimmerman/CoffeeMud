@@ -25,7 +25,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1258,19 +1258,45 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		{
 			switch(state)
 			{
-			case START:				startState(buf.charAt(bufDex)); break;
-			case BEFORETAG:			beforeTag(buf.charAt(bufDex)); break;
-			case INTAG:				inTag(buf.charAt(bufDex)); break;
-			case BEGINTAGSELFEND:	beginTagSelfEnd(buf.charAt(bufDex)); break;
-			case BEFORECLOSETAG:	beforeCloseTag(buf.charAt(bufDex)); break;
-			case INCLOSETAG:		inCloseTag(buf.charAt(bufDex)); break;
-			case AFTERCLOSETAG:		afterCloseTag(buf.charAt(bufDex)); break;
-			case BEFOREATTRIB:		beforeAttrib(buf.charAt(bufDex)); break;
-			case INATTRIB:			inAttrib(buf.charAt(bufDex)); break;
-			case INPOSTATTRIB:		inPostAttrib(buf.charAt(bufDex)); break;
-			case BEFOREATTRIBVALUE:	beforeAttribValue(buf.charAt(bufDex)); break;
-			case INATTRIBVALUE:		inAttribValue(buf.charAt(bufDex)); break;
-			case INQUOTEDATTRIBVALUE: inQuotedAttribValue(buf.charAt(bufDex)); break;
+			case START:
+				startState(buf.charAt(bufDex));
+				break;
+			case BEFORETAG:
+				beforeTag(buf.charAt(bufDex));
+				break;
+			case INTAG:
+				inTag(buf.charAt(bufDex));
+				break;
+			case BEGINTAGSELFEND:
+				beginTagSelfEnd(buf.charAt(bufDex));
+				break;
+			case BEFORECLOSETAG:
+				beforeCloseTag(buf.charAt(bufDex));
+				break;
+			case INCLOSETAG:
+				inCloseTag(buf.charAt(bufDex));
+				break;
+			case AFTERCLOSETAG:
+				afterCloseTag(buf.charAt(bufDex));
+				break;
+			case BEFOREATTRIB:
+				beforeAttrib(buf.charAt(bufDex));
+				break;
+			case INATTRIB:
+				inAttrib(buf.charAt(bufDex));
+				break;
+			case INPOSTATTRIB:
+				inPostAttrib(buf.charAt(bufDex));
+				break;
+			case BEFOREATTRIBVALUE:
+				beforeAttribValue(buf.charAt(bufDex));
+				break;
+			case INATTRIBVALUE:
+				inAttribValue(buf.charAt(bufDex));
+				break;
+			case INQUOTEDATTRIBVALUE:
+				inQuotedAttribValue(buf.charAt(bufDex));
+				break;
 			}
 		}
 		while((piece!=null)&&(piece.parent()!=null))

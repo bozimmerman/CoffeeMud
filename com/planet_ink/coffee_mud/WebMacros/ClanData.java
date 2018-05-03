@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -464,7 +464,8 @@ public class ClanData extends StdWebMacro
 						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
-								@Override public int compare(MemberRecord o1, MemberRecord o2)
+								@Override 
+								public int compare(MemberRecord o1, MemberRecord o2)
 								{
 									return o1.name.compareTo(o2.name);
 								}
@@ -475,7 +476,8 @@ public class ClanData extends StdWebMacro
 						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
-								@Override public int compare(MemberRecord o1, MemberRecord o2)
+								@Override 
+								public int compare(MemberRecord o1, MemberRecord o2)
 								{
 									return new Integer(o1.role).compareTo(new Integer(o2.role));
 								}
@@ -486,7 +488,8 @@ public class ClanData extends StdWebMacro
 						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
-								@Override public int compare(MemberRecord o1, MemberRecord o2)
+								@Override 
+								public int compare(MemberRecord o1, MemberRecord o2)
 								{
 									return new Integer(o2.mobpvps+o2.playerpvps).compareTo(new Integer(o1.mobpvps+o1.playerpvps));
 								}
@@ -497,7 +500,8 @@ public class ClanData extends StdWebMacro
 						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
-								@Override public int compare(MemberRecord o1, MemberRecord o2)
+								@Override 
+								public int compare(MemberRecord o1, MemberRecord o2)
 								{
 									return new Integer(o2.mobpvps).compareTo(new Integer(o1.mobpvps));
 								}
@@ -508,7 +512,8 @@ public class ClanData extends StdWebMacro
 						{
 							Collections.sort(members, new Comparator<MemberRecord>()
 							{
-								@Override public int compare(MemberRecord o1, MemberRecord o2)
+								@Override 
+								public int compare(MemberRecord o1, MemberRecord o2)
 								{
 									return new Integer(o2.playerpvps).compareTo(new Integer(o1.playerpvps));
 								}

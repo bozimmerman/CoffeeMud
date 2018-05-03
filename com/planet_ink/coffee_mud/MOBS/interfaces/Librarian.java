@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Vector;
 
 /*
-   Copyright 2017-2017 Bo Zimmerman
+   Copyright 2017-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ public interface Librarian extends ShopKeeper
 	 * withdrawn item, in base currency charge, due the moment
 	 * a withdrawn item becomes overdue.
 	 */
-	public final static double	DEFAULT_PCT_OVERDUE_CHARGE	= 10.0;
+	public final static double	DEFAULT_PCT_OVERDUE_CHARGE	= 0.1;
 
 	/**
 	 * The default daily base currency charge due every day
@@ -74,7 +74,7 @@ public interface Librarian extends ShopKeeper
 	 * withdrawn item, in base currency charge, due every
 	 * day that a withdrawn item remains overdue.
 	 */
-	public final static double	DEFAULT_PCT_OVERDUE_DAILY	= 10.0;
+	public final static double	DEFAULT_PCT_OVERDUE_DAILY	= 0.1;
 
 	/**
 	 * The default number of mud-days that an item can be checked
@@ -124,17 +124,17 @@ public interface Librarian extends ShopKeeper
 	 * 
 	 * @see Librarian#setDailyOverdueCharge(double)
 	 * 
-	 * @return the daily charge
+	 * @return the daily charge from 0-1
 	 */
 	public double getDailyOverdueCharge();
 
 	/**
 	 * Sets the daily base currency charge due every day
-	 * a withdrawn item remains overdue.
+	 * a withdrawn item remains overdue. Value 0-1.
 	 * 
 	 * @see Librarian#setDailyOverdueCharge(double)
 	 * 
-	 * @param charge the daily charge
+	 * @param charge the daily charge from 0-1
 	 */
 	public void setDailyOverdueCharge(double charge);
 
@@ -145,7 +145,7 @@ public interface Librarian extends ShopKeeper
 	 * 
 	 * @see Librarian#setOverdueChargePct(double)
 	 * 
-	 * @return the base charge as pct of item value
+	 * @return the base charge as pct of item value from 0-1
 	 */
 	public double getOverdueChargePct();
 
@@ -156,7 +156,7 @@ public interface Librarian extends ShopKeeper
 	 * 
 	 * @see Librarian#setOverdueChargePct(double)
 	 * 
-	 * @param pct the base charge as pct of item value
+	 * @param pct the base charge as pct of item value from 0-1
 	 */
 	public void setOverdueChargePct(double pct);
 
@@ -167,7 +167,7 @@ public interface Librarian extends ShopKeeper
 	 * 
 	 * @see Librarian#setDailyOverdueChargePct(double)
 	 * 
-	 * @return the base charge as pct of item value
+	 * @return the base charge as pct of item value from 0-1
 	 */
 	public double getDailyOverdueChargePct();
 
@@ -178,7 +178,7 @@ public interface Librarian extends ShopKeeper
 	 * 
 	 * @see Librarian#setDailyOverdueChargePct(double)
 	 * 
-	 * @param pct the base charge as pct of item value
+	 * @param pct the base charge as pct of item value from 0-1
 	 */
 	public void setDailyOverdueChargePct(double pct);
 

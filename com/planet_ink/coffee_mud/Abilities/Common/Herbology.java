@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -62,10 +62,13 @@ public class Herbology extends CommonSkill
 		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE;
 	}
 
-	public String parametersFormat(){ return "HERB_NAME";}
+	public String parametersFormat()
+	{
+		return "HERB_NAME";
+	}
 
-	protected Item found=null;
-	protected boolean messedUp=false;
+	protected Item		found		= null;
+	protected boolean	messedUp	= false;
 
 	@Override
 	protected boolean canBeDoneSittingDown()
@@ -85,7 +88,10 @@ public class Herbology extends CommonSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping))
+			if((affected!=null)
+			&&(affected instanceof MOB)
+			&&(!aborted)
+			&&(!helping))
 			{
 				final MOB mob=(MOB)affected;
 				if(messedUp)

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -52,13 +52,13 @@ public class Tell extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if((!mob.isMonster())&&mob.isAttributeSet(MOB.Attrib.QUIET))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You have QUIET mode on.  You must turn it off first."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You have QUIET mode on.  You must turn it off first."));
 			return false;
 		}
 
 		if(commands.size()<3)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Tell whom what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Tell whom what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -71,7 +71,7 @@ public class Tell extends StdCommand
 			if((V.size()==0)
 			||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_AS))
 			||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_POSSESSED)))
-				CMLib.commands().doCommandFail(mob,origCmds,L("No telling."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("No telling."));
 			else
 			{
 				int num=CMath.s_int(CMParms.combine(commands,1));
@@ -83,7 +83,7 @@ public class Tell extends StdCommand
 					if(S!=null)
 						S.snoopSuspension(1);
 					for(int i=V.size()-num;i<V.size();i++)
-						mob.tell(V.get(i));
+						mob.tell("^t"+V.get(i)+"^N^.");
 				}
 				finally
 				{
@@ -129,7 +129,7 @@ public class Tell extends StdCommand
 		String combinedCommands=CMParms.combine(commands,1);
 		if(combinedCommands.equals(""))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Tell them what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Tell them what?"));
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);
@@ -142,19 +142,19 @@ public class Tell extends StdCommand
 				if(CMLib.intermud().i3online()||CMLib.intermud().imc2online())
 					CMLib.intermud().i3tell(mob,targetName,mudName,combinedCommands);
 				else
-					CMLib.commands().doCommandFail(mob,origCmds,L("Intermud is unavailable."));
+					CMLib.commands().postCommandFail(mob,origCmds,L("Intermud is unavailable."));
 				return false;
 			}
-			CMLib.commands().doCommandFail(mob,origCmds,L("That person doesn't appear to be online."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("That person doesn't appear to be online."));
 			return false;
 		}
 
 		if(targetM.isAttributeSet(MOB.Attrib.QUIET))
 		{
 			if(CMLib.flags().isCloaked(targetM))
-				CMLib.commands().doCommandFail(mob,origCmds,L("That person doesn't appear to be online."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("That person doesn't appear to be online."));
 			else
-				CMLib.commands().doCommandFail(mob,origCmds,L("That person can not hear you."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("That person can not hear you."));
 			return false;
 		}
 
@@ -175,7 +175,7 @@ public class Tell extends StdCommand
 		{
 			mob.tell(targetM.session().getAfkMessage());
 			if(CMLib.flags().isCloaked(targetM))
-				CMLib.commands().doCommandFail(mob,origCmds,L("That person doesn't appear to be online."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("That person doesn't appear to be online."));
 		}
 		return false;
 	}

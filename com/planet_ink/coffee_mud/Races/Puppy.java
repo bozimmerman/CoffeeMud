@@ -14,9 +14,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.List;
 import java.util.Vector;
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -99,7 +101,7 @@ public class Puppy extends Dog
 		return parts;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -114,5 +116,27 @@ public class Puppy extends Dog
 	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
 	{
 		affectableMaxState.setMovement(affectableMaxState.getMovement()+50);
+	}
+	
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				(L("a @x1 nose",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				(L("some @x1 hair",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
+				resources.addElement(makeResource
+				(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
+				resources.addElement(makeResource
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
+			}
+		}
+		return resources;
 	}
 }

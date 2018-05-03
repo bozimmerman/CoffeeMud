@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1788,6 +1788,38 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 					break;
+				case ACCOUNT: // +Account
+					{
+						buf.append(L("Disallows the following player account"+(multipleQuals(V,v,"-")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("-"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case _ACCOUNT: // -Account
+					{
+						buf.append(L((skipFirstWord?"The":"Requires")+" following player account"+(multipleQuals(V,v,"+")?"s":"")+": "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("+"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
 				case _QUESTWIN: // -Questwin
 					{
 						buf.append(L((skipFirstWord?"Completing":"Requires completing")+" the following quest"+(multipleQuals(V,v,"+")?"s":"")+": "));
@@ -2618,6 +2650,48 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			{
 				switch(zapCodes.get(str))
 				{
+				case _MAXCLASSLEVEL: // max class level...
+					//TODO:?!
+					break;
+				case _BASECLASS: // huh?
+					//TODO:?!
+					break;
+				case JAVACLASS: // +JAVACLASS
+					for(int v2=v+1;v2<V.size();v2++)
+					{
+						str2=V.get(v2);
+						if(zapCodes.containsKey(str2))
+							break;
+						if(str2.startsWith("-"))
+						{
+							str2=str2.substring(1);
+							final int x=str2.indexOf('(');
+							if(x>0)
+								str2=str2.substring(0,x);
+							final Ability A=CMClass.getAbilityPrototype(str2);
+							if(A!=null)
+								preReqs.remove(A.ID());
+						}
+					}
+					break;
+				case _JAVACLASS: // -JAVACLASS
+					for(int v2=v+1;v2<V.size();v2++)
+					{
+						str2=V.get(v2);
+						if(zapCodes.containsKey(str2))
+							break;
+						if(str2.startsWith("+"))
+						{
+							str2=str2.substring(1);
+							final int x=str2.indexOf('(');
+							if(x>0)
+								str2=str2.substring(0,x);
+							final Ability A=CMClass.getAbilityPrototype(str2);
+							if((A!=null)&&(!preReqs.contains(A.ID())))
+								preReqs.addElement(A.ID());
+						}
+					}
+					break;
 				case _EXPERTISE: // -expertises
 					{
 						for(int v2=v+1;v2<V.size();v2++)
@@ -2647,7 +2721,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 								final int x=str2.indexOf('(');
 								if(x>0)
 									str2=str2.substring(0,x);
-								final Ability A=CMClass.getAbility(str2);
+								final Ability A=CMClass.getAbilityPrototype(str2);
 								if((A!=null)&&(!preReqs.contains(A.ID())))
 									preReqs.addElement(A.ID());
 							}
@@ -3312,6 +3386,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _EXPERTISE: // -expertise
 				case _DEITY: // -Deity
 				case _NAME: // -Names
+				case _ACCOUNT: // -Accounts
 				case _QUESTWIN: // -Questwin
 				case _HOME: // -Home
 				case _JAVACLASS: // -JavaClass
@@ -3413,6 +3488,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case EXPERTISE: // +expertise
 				case DEITY: // +Deity
 				case NAME: // +Names
+				case ACCOUNT: // +Account
 				case QUESTWIN: // +Questwin
 				case HOME: // +Home
 				case JAVACLASS: // +JavaClass
@@ -4784,6 +4860,25 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							return false;
 					}
 					break;
+				case _ACCOUNT: // -accounts
+					{
+						boolean found=false;
+						final String name=((mob.playerStats()!=null)
+											&&(mob.playerStats().getAccount()!=null))?
+												mob.playerStats().getAccount().getAccountName():
+											E.Name();
+						for(final Object o : entry.parms())
+						{
+							if(name.equalsIgnoreCase((String)o))
+							{
+								found = true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
+					}
+					break;
 				case SUBNAME: // +subname
 					{
 						final String name=(actual?E.Name():E.name()).toLowerCase();
@@ -5433,6 +5528,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case NAME: // +name
 					{
 						final String name=actual?E.Name():E.name();
+						for(final Object o : entry.parms())
+						{
+							if(name.equalsIgnoreCase((String)o))
+								return false;
+						}
+					}
+					break;
+				case ACCOUNT: // +account
+					{
+						final String name=((mob.playerStats()!=null)
+											&&(mob.playerStats().getAccount()!=null))?
+												mob.playerStats().getAccount().getAccountName():
+											E.Name();
 						for(final Object o : entry.parms())
 						{
 							if(name.equalsIgnoreCase((String)o))
@@ -6312,6 +6420,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						}
 					}
 					break;
+				case ACCOUNT:// +accounts
+				case _ACCOUNT:// -accounts
 				case _ALIGNMENT: // -alignment
 				case _GENDER: // -gender
 				case _CLASSLEVEL: // -classlevel

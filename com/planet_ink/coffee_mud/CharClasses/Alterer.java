@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ public class Alterer extends SpecialistMage
 		super.initializeClass();
 		CMLib.ableMapper().delCharAbilityMapping(ID(),"Spell_Shield");
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_MagicBullets",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_HardenBullets",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_ShapeObject",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Spell_FlamingArrows",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Spell_KeenEdge",25,true);

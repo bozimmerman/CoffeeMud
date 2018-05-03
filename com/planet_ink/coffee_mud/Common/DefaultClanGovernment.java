@@ -25,7 +25,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.lang.ref.WeakReference;
 import java.util.*;
 /*
-   Copyright 2011-2017 Bo Zimmerman
+   Copyright 2011-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1143,8 +1143,16 @@ public class DefaultClanGovernment implements ClanGovernment
 			{
 				str.append(CMLib.lang().L("\n\rBenefits per Clan Level:\n\r"));
 				int maxLevel=-1;
-				for(final int x : clanEffectLevels) if(x>maxLevel) maxLevel=x;
-				for(final int x : clanAbilityLevels) if(x>maxLevel) maxLevel=x;
+				for(final int x : clanEffectLevels)
+				{
+					if(x>maxLevel) 
+						maxLevel=x;
+				}
+				for(final int x : clanAbilityLevels) 
+				{
+					if(x>maxLevel) 
+						maxLevel=x;
+				}
 				for(int l=1;l<=maxLevel;l++)
 				{
 					final List<String> levelBenefits=new LinkedList<String>();

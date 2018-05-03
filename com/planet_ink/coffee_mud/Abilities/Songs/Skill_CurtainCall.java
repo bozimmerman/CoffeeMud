@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2014-2017 Bo Zimmerman
+   Copyright 2014-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -93,7 +93,7 @@ public class Skill_CurtainCall extends BardSkill
 		if(affected instanceof MOB)
 			M=(MOB)affected;
 		super.unInvoke();
-		if(M!=null)
+		if((M!=null)&&(super.canBeUninvoked()))
 			M.tell(L("You have left the building."));
 	}
 

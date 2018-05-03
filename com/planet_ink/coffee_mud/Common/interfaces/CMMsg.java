@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1181,6 +1181,12 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_REWRITE=126;
 	/** MINOR_MASK minor action code type, denoting a finally read message */
 	public static final int TYP_WASREAD=127;
+	/** MINOR_MASK minor action code type, denoting an intention to move */
+	public static final int TYP_TRAVEL=128;
+	/** MINOR_MASK minor action code type, denoting thinking */
+	public static final int TYP_THINK=129;
+	/** MINOR_MASK minor action code type, denoting a room coming to life */
+	public static final int TYP_STARTUP=130;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1209,7 +1215,7 @@ public interface CMMsg extends CMCommon
 		"PREINVOKE","POSSESS","DISPOSSESS","POWERCURRENT","CONTEMPLATE","POUR","LOOKEXITS",
 		"LASER","SONIC","REPAIR","ENHANCE","INSTALL","COLLISION","AROMA","DUELLOSS",
 		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED",
-		"WROTE", "REWRITE", "WASREAD"
+		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1527,6 +1533,12 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_REWRITE=MASK_HANDS|TYP_REWRITE;
 	/** combined MAJOR and MINOR codes for useful event message type for a was read event*/
 	public static final int MSG_WASREAD=MASK_EYES|TYP_WASREAD;
+	/** combined MAJOR and MINOR codes for useful event message type for a enter event */
+	public static final int MSG_TRAVEL=MASK_MOVE|MASK_SOUND|TYP_TRAVEL;
+	/** combined MAJOR and MINOR codes for useful event message type for a thinking event */
+	public static final int MSG_THINK=TYP_THINK;
+	/** combined MAJOR and MINOR codes for useful event message type for a mud startup */
+	public static final int MSG_STARTUP=MASK_ALWAYS|TYP_STARTUP;
 	
 	/**
 	 * An enum to use for an external message check from inside 

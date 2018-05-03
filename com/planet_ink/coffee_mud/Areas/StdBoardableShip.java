@@ -23,7 +23,7 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
-   Copyright 2014-2017 Bo Zimmerman
+   Copyright 2014-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1348,6 +1348,17 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	public StringBuffer getAreaStats()
 	{
 		return new StringBuffer(description());
+	}
+
+	@Override
+	public int getPlayerLevel()
+	{
+		return 0;
+	}
+
+	@Override
+	public void setPlayerLevel(int level)
+	{
 	}
 
 	@Override

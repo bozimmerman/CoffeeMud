@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2012-2017 Bo Zimmerman
+   Copyright 2012-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -133,10 +133,18 @@ public class Skill_Struggle extends BardSkill
 			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> attempt(s) to struggle with <S-HIS-HER> bonds."));
 			if(mob.location().okMessage(mob,msg))
 			{
-				mob.addEffect(this);
-				mob.recoverCharStats();
-				mob.location().send(mob,msg);
-				mob.delEffect(this);
+				final Ability A=(Ability)this.copyOf();
+				A.setSavable(false);
+				try
+				{
+					mob.addEffect(A);
+					mob.recoverCharStats();
+					mob.location().send(mob,msg);
+				}
+				finally
+				{
+					mob.delEffect(A);
+				}
 				mob.recoverCharStats();
 			}
 		}

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -76,6 +76,7 @@ public class Evoker extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_ContinualLight",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Spell_Shockshield",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_IceLance",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_KineticPulse",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Ignite",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_ForkedLightning",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_Levitate",25,true);

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ public class Shadow extends Spirit
 		return true;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public int availabilityCode()
@@ -75,6 +75,21 @@ public class Shadow extends Spirit
 		||((affected instanceof MOB)&&(((MOB)affected).location()!=null)&&(CMLib.flags().isInDark((((MOB)affected).location())))))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
+	}
+	
+	
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				(L("some @x1 essence",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
+			}
+		}
+		return resources;
 	}
 }
 

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -84,7 +84,7 @@ public class Spell_Fear extends Spell
 		if(affected instanceof MOB)
 			M=(MOB)affected;
 		super.unInvoke();
-		if(M!=null)
+		if((M!=null)&&(super.canBeUninvoked()))
 		{
 			if(!M.isMonster())
 				CMLib.commands().postStand(M,true);

@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Dance extends StdAbility
 {
 	@Override
@@ -257,7 +256,7 @@ public class Dance extends StdAbility
 		}
 		final int depth=super.getXMAXRANGELevel(invoker()) / 2; // decreased because fireball
 		if(depth==0)
-			return new XVector(invoker().location());
+			return new XVector<Room>(invoker().location());
 		final Vector<Room> rooms=new Vector<Room>();
 		// needs to be area-only, because of the aggro-tracking rule
 		TrackingLibrary.TrackingFlags flags;

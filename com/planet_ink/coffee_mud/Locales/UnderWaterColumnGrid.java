@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2016-2017 Bo Zimmerman
+   Copyright 2016-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -172,7 +172,7 @@ public class UnderWaterColumnGrid extends UnderWaterGrid
 			if(grid!=null)
 			{
 				final XYVector xy=((GridLocale)loc).getRoomXY(oldLoc);
-				if((xy.x>=0)&&(xy.y>=0))
+				if((xy!=null)&&(xy.x>=0)&&(xy.y>=0))
 				{
 					switch(opDirection)
 					{

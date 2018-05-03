@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -196,6 +196,7 @@ public class Export extends StdCommand
 		&&(!commandType.equalsIgnoreCase("WORLD"))
 		&&(!commandType.equalsIgnoreCase("CATALOG"))
 		&&(!commandType.equalsIgnoreCase("PLAYER"))
+		&&(!commandType.equalsIgnoreCase("USER"))
 		&&(!(commandType.equalsIgnoreCase("ACCOUNT")&&(CMProps.isUsingAccountSystem())))
 		&&(!commandType.equalsIgnoreCase("AREA")))
 		{
@@ -208,7 +209,7 @@ public class Export extends StdCommand
 			}
 			return false;
 		}
-		if(commandType.equalsIgnoreCase("PLAYER")||commandType.equalsIgnoreCase("ACCOUNT"))
+		if(commandType.equalsIgnoreCase("PLAYER")||commandType.equalsIgnoreCase("ACCOUNT")||commandType.equalsIgnoreCase("USER"))
 		{
 			if(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.EXPORTPLAYERS))
 			{
@@ -234,6 +235,7 @@ public class Export extends StdCommand
 				||sub.equalsIgnoreCase("WEAPONS")
 				||sub.equalsIgnoreCase("ARMOR"))
 			&&(!commandType.equalsIgnoreCase("PLAYER"))
+			&&(!commandType.equalsIgnoreCase("USER"))
 			&&(!commandType.equalsIgnoreCase("CATALOG"))
 			&&(!commandType.equalsIgnoreCase("ACCOUNT")))
 			{
@@ -244,7 +246,7 @@ public class Export extends StdCommand
 			if(sub.equalsIgnoreCase("data"))
 				commands.remove(0);
 			else
-			if((commandType.equalsIgnoreCase("PLAYER"))
+			if((commandType.equalsIgnoreCase("PLAYER")||commandType.equalsIgnoreCase("USER"))
 			&&(CMLib.players().getLoadPlayer(sub)!=null))
 			{
 				subType=sub;
@@ -413,7 +415,7 @@ public class Export extends StdCommand
 		String xml="";
 		if(subType.equalsIgnoreCase("DATA"))
 		{
-			if(commandType.equalsIgnoreCase("PLAYER"))
+			if(commandType.equalsIgnoreCase("PLAYER")||commandType.equalsIgnoreCase("USER"))
 			{
 				final StringBuffer x=new StringBuffer("<PLAYERS>");
 				if(S!=null)
@@ -541,7 +543,7 @@ public class Export extends StdCommand
 			}
 		}
 		else
-		if(commandType.equalsIgnoreCase("PLAYER"))
+		if(commandType.equalsIgnoreCase("PLAYERS")||commandType.equalsIgnoreCase("USERS"))
 		{
 			final StringBuffer x=new StringBuffer("<PLAYERS>");
 			final MOB M=CMLib.players().getLoadPlayer(subType);

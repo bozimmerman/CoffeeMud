@@ -14,10 +14,10 @@ Small % Shield	3	30	15	5	GenShield	HELD	1	6	0
 % Shiv	3	15	3	250	GenWeapon	DAGGER	1	6	0	
 % Mug	4	10	8	1	GenDrink		5		1	
 % Plate	4	10	8	1	GenContainer		5		0	
-% Staff	4	20	15	392	GenStaff	STAFF	2	12	0	
+% Staff	4	20	15	392	GenStaff	STAFF	10	12	0	
 % Pitcher	5	15	15	1	GenDrink		15		1	
 % Barrel	5	30	30	5	GenDrink		300		0	
-% Quarterstaff	5	15	10	267	GenStaff	STAFF	2	10	0	
+% Quarterstaff	5	15	10	267	GenStaff	STAFF	0	10	0	
 % Wheel	6	20	10	1	GenItem					
 % Bucket	6	20	5	5	GenDrink		15		0	
 Small % Chest	6	50	20	20	GenContainer	LOCK	100		0	
@@ -51,8 +51,8 @@ Solid % Club	16	85	50	350	GenWeapon	BLUNT	1	12	-20
 Solid % Mace	20	95	15	1028	GenWeapon	BLUNT	1	16	0	
 % Bench	21	40	40	15	GenChair	CHAIR	10		0	
 % Bed	22	50	60	20	GenBed	BED	2		0	
-% Wand	22	30	5	3	GenWand					
-Solid % Quarterstaff	22	105	75	667	GenStaff	STAFF	2	27	0	
+% Wand	22	30	5	3	GenWand		20			
+Solid % Quarterstaff	22	105	75	667	GenStaff	STAFF	20	27	0	
 Small % Crib	23	50	20	60	GenContainer		20		0	
 % Bar	24	30	60	20	GenRideable	TABLE	50		0	
 Large % Table	25	45	90	30	GenRideable	TABLE	100		0	
@@ -82,7 +82,7 @@ The Mighty % Shiv	45	30	12	500	GenWeapon	DAGGER	1	20	10
 Kingly % Coffin	52	50	70	70	GenContainer		500		64	Prop_NoPurge
 Ornate % Desk	54	60	80	40	GenRideable	TABLE	100		0	
 Decorative % Desk	54	90	180	80	GenRideable	TABLE	150		0	
-Ornate % Quarterstaff	55	180	150	1376	GenStaff	STAFF	2	55	0	
+Ornate % Quarterstaff	55	180	150	1376	GenStaff	STAFF	20	55	0	
 Ornate % Stool	56	60	40	24	GenChair	CHAIR	1		0	
 Decorative % Stool	56	90	60	24	GenChair	CHAIR	1		0	
 Ornate % Bar	58	60	80	80	GenRideable	TABLE	100		0	
@@ -102,7 +102,7 @@ Knights % Armor Rack	74	150	160	300	GenContainer		1500		4096	Prop_NoPurge
 The Mighty % Dagger	75	40	12	1200	GenWeapon	DAGGER	1	36	10	
 Knights % Weapon Rack	76	130	130	240	GenContainer		1000		60	Prop_NoPurge
 Kingly % Crib	78	140	100	250	GenContainer		400		0	
-The % Quarterstaff	80	270	300	2700	GenStaff	STAFF	2	80	0	
+The % Quarterstaff	80	270	300	2700	GenStaff	STAFF	20	80	0	
 Princely % Chest of Drawers	80	200	90	180	GenContainer	LID	200		0	
 Decorative % Vanity	82	200	80	400	GenContainer	LOCK	120		0	
 Decorative % Armoire	84	40	50	80	GenContainer	LID	150		4096	

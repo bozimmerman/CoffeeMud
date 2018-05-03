@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /*
-   Copyright 2016-2017 Bo Zimmerman
+   Copyright 2016-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -298,7 +298,7 @@ public class Pixie extends SmallElfKin
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public List<RawMaterial> myResources()

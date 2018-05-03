@@ -1,5 +1,5 @@
 <!--  
-   Copyright 2013-2017 Bo Zimmerman
+   Copyright 2013-2018 Bo Zimmerman
 
    Licensed under the Apache License</STRING><STRING>Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -169,7 +169,7 @@ See guides/RandomAreas.html for information about documents of this type.
 
 <MOB id="forest_mob" select="any-1" requires="level_range=int,aggrochance=int">
 	<MOB id="forest_mobs" select="all" requires="level_range=int,aggrochance=int">
-		<MOB class="genmob" copyof="Doe" level="$level_range" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+		<MOB class="genmob" copyof="Doe" level="$level_range" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display" gender="F">
 			<BEHAVIOR CLASS="Mobile" />
 			<BEHAVIOR CLASS="BrotherHelper" />
 		</MOB>

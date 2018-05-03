@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -202,7 +202,8 @@ public class CommonSkill extends StdAbility
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
+		if((affected instanceof MOB)
+		&&(tickID==Tickable.TICKID_MOB))
 		{
 			final MOB mob=(MOB)affected;
 			if((mob.isInCombat())
@@ -297,6 +298,9 @@ public class CommonSkill extends StdAbility
 	{
 		if(buildingI != null)
 		{
+			Ability A=buildingI.fetchEffect("Copyright");
+			if((A!=null)&&(A.text().length()>0))
+				return A.text();
 			final int x=buildingI.secretIdentity().indexOf(CRAFTING_BRAND_STR_PREFIX);
 			if(x>=0)
 			{
@@ -808,6 +812,7 @@ public class CommonSkill extends StdAbility
 				final Ability A=a.nextElement();
 				if((A!=null)
 				&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)||(A.ID().equalsIgnoreCase("AstroEngineering")))
+				&&(!A.isNowAnAutoEffect())
 				&&(!getUninvokeException().contains(A.ID())))
 				{
 					if(A instanceof CommonSkill)

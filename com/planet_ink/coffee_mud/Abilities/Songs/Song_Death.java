@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -54,7 +54,11 @@ public class Song_Death extends Song
 		return Ability.QUALITY_MALICIOUS;
 	}
 
-	@Override protected int getXMAXRANGELevel(MOB mob){return 0;} // people are complaining about multi-room death
+	@Override
+	protected int getXMAXRANGELevel(MOB mob)
+	{
+		return 0;
+	} // people are complaining about multi-room death
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)

@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.util.*;
 /*
-   Copyright 2017-2017 Bo Zimmerman
+   Copyright 2017-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Studying extends CommonSkill
+public class Studying extends CommonSkill implements AbilityContainer
 {
 	@Override
 	public String ID()
@@ -62,18 +62,20 @@ public class Studying extends CommonSkill
 	
 	protected static enum perLevelLimits 
 	{
-		COMMON(1,6,1, ACODE_COMMON_SKILL, ACODE_LANGUAGE),
-		SKILL(1,6,2,ACODE_SKILL, ACODE_THIEF_SKILL),
-		SONG(1,6,3,ACODE_SONG, -1),
-		SPELL(1,6,4,ACODE_SPELL, -1),
-		CHANT(1,6,5,ACODE_CHANT, -1),
-		PRAYER(1,6,6,ACODE_PRAYER, -1)
+		COMMON(1, 6, 1, ACODE_COMMON_SKILL, ACODE_LANGUAGE),
+		SKILL(1, 6, 2, ACODE_SKILL, ACODE_THIEF_SKILL),
+		SONG(1, 6, 3, ACODE_SONG, -1),
+		SPELL(1, 6, 4, ACODE_SPELL, -1),
+		CHANT(1, 6, 5, ACODE_CHANT, -1),
+		PRAYER(1, 6, 6, ACODE_PRAYER, -1)
 		;
-		private int type1 = -1;
-		private int type2 = -1;
-		private int num = 1;
-		private int perLevels = 1;
-		private int aboveLevel = 1;
+
+		private int	type1		= -1;
+		private int	type2		= -1;
+		private int	num			= 1;
+		private int	perLevels	= 1;
+		private int	aboveLevel	= 1;
+
 		private perLevelLimits(int num, int perLevels, int aboveLevel, int type1, int type2)
 		{
 			this.num=num;
@@ -86,8 +88,13 @@ public class Studying extends CommonSkill
 		public boolean doesRuleApplyTo(final Ability A)
 		{
 			return (A!=null) 
-					&& (((A.classificationCode()&Ability.ALL_ACODES)==type1)
-						||((A.classificationCode()&Ability.ALL_ACODES)==type2));
+				&& (((A.classificationCode()&Ability.ALL_ACODES)==type1)
+					||((A.classificationCode()&Ability.ALL_ACODES)==type2));
+		}
+
+		public boolean doesRuleApplyTo(final int abilityCode)
+		{
+			return ((abilityCode==type1) || (abilityCode==type2));
 		}
 
 		public int numAllowed(final int classLevel)
@@ -115,24 +122,18 @@ public class Studying extends CommonSkill
 		return !isAnAutoEffect;
 	}
 
-/*
- * 	TODO:
-
-When the command is initiated, it looks like a reverse TEACH.  It will provide the teaching character 
-with a y/n dialogue option if they want to train the scholar, and it will tell them about how long to 
-train the scholar.  .  
-
-We could also make this 6 different abilities, Common Skill Studying, Skills 
-Studying, Songs Studying, Chants Studying, Spells Studying, and Prayers Studying if you would prefer
-granting each ability at the lowest level above (1,2,3,4,5,6).
-
- */
+	/*
+	We could also make this 6 different abilities, Common Skill Studying, Skills 
+	Studying, Songs Studying, Chants Studying, Spells Studying, and Prayers Studying if you would prefer
+	granting each ability at the lowest level above (1,2,3,4,5,6).
+	 */
 	
-	protected Ability teachingA = null;
-	protected volatile boolean distributed = false;
-	protected boolean successfullyTaught = false;
-	protected List<Ability> skillList = new LinkedList<Ability>();
-	
+	protected Physical			teacherP			= null;
+	protected Ability			teachingA			= null;
+	protected volatile boolean	distributed			= false;
+	protected boolean			successfullyTaught	= false;
+	protected List<Ability>		skillList			= new LinkedList<Ability>();
+
 	@Override
 	public void setMiscText(final String newMiscText)
 	{
@@ -142,17 +143,17 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 	
 	@Override
 	public String displayText()
-	{
-		if(this.isNowAnAutoEffect())
+	{	
+		if((teacherP == null)||(teachingA==null))
 			return L("(Scholarly)"); // prevents it from being uninvokeable through autoaffects
-		final MOB invoker=this.invoker;
-		final Ability teachingA = this.teachingA;
-		final Physical affected = this.affected;
-		if((invoker != null)
-		&&(teachingA != null)
-		&&(affected instanceof MOB))
-			return L("You are teaching @x1 @x2.",invoker.name((MOB)affected),teachingA.name());
-		return L("You are teaching someone something somehow!");
+		else
+		{
+			final Ability teachingA = this.teachingA;
+			if((teachingA != null)
+			&&(affected instanceof MOB))
+				return L("You are being taught @x2 by @x1.",teacherP.name((MOB)affected),teachingA.name());
+			return L("You are being taught something by someone!");
+		}
 	}
 
 	@Override
@@ -176,7 +177,7 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_COMMON_SKILL;
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_EDUCATIONLORE;
 	}
 
 	@Override
@@ -204,7 +205,7 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 				forget(mob,A.ID());
 		}
 	}
-
+	
 	protected boolean forget(final MOB mob, final String abilityID)
 	{
 		if(mob == null)
@@ -254,29 +255,27 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if(!canBeUninvoked())
+		if((msg.source()==affected)
+		&&(msg.targetMinor()!=CMMsg.TYP_TEACH)
+		&&(msg.tool() instanceof Ability)
+		&&(skillList.contains(msg.tool())))
 		{
-			if((msg.source()==affected)
-			&&(msg.tool() instanceof Ability)
-			&&(skillList.contains(msg.tool())))
-			{
-				msg.source().tell(L("You don't know how to do that in practice."));
-				return false;
-			}
-			else
-			if((msg.target()==affected)
-			&&(msg.targetMinor()==CMMsg.TYP_TEACH)
-			&&(msg.tool() instanceof Ability))
-				forget((MOB)msg.target(),msg.tool().ID());
-			else
-			if((msg.tool() instanceof Ability)
-			&&(msg.source()==affected)
-			&&(msg.targetMinor()==CMMsg.TYP_WROTE)
-			&&(msg.targetMessage().length()>0)
-			&&(msg.tool().ID().equals("Skill_Dissertation")))
-			{
-				forget(msg.source(),msg.targetMessage());
-			}
+			msg.source().tell(L("You don't know how to do that in practice."));
+			return false;
+		}
+		else
+		if((msg.target()==affected)
+		&&(msg.targetMinor()==CMMsg.TYP_TEACH)
+		&&(msg.tool() instanceof Ability))
+			forget((MOB)msg.target(),msg.tool().ID());
+		else
+		if((msg.tool() instanceof Ability)
+		&&(msg.source()==affected)
+		&&(msg.targetMinor()==CMMsg.TYP_WROTE)
+		&&(msg.targetMessage().length()>0)
+		&&(msg.tool().ID().equals("Skill_Dissertation")))
+		{
+			forget(msg.source(),msg.targetMessage());
 		}
 			
 		return super.okMessage(myHost,msg);
@@ -285,7 +284,8 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!canBeUninvoked())
+		if((affected instanceof MOB)
+		&&(tickID==Tickable.TICKID_MOB))
 		{
 			final MOB mob=(MOB)affected;
 			if((!distributed)
@@ -303,59 +303,37 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 				}
 				if(doWorkOn)
 				{
-					if(skillList.size() > 0)
-					{
-						for(Ability a : skillList)
-						{
-							final Ability A=mob.fetchAbility(a.ID());
-							if((A!=null)&&(!A.isSavable()))
-							{
-								mob.delAbility(A);
-								final Ability fA=mob.fetchEffect(A.ID());
-								fA.unInvoke();
-								mob.delEffect(fA);
-							}
-						}
-						skillList.clear();
-					}
-					for(final String as : CMParms.parseSemicolons(text(), false))
-					{
-						final List<String> idProf = CMParms.parseCommas(as, true);
-						if(idProf.size()>1)
-						{
-							final Ability A=CMClass.getAbility(idProf.get(0));
-							if(A!=null)
-							{
-								A.setSavable(false);
-								A.setProficiency(CMath.s_int(idProf.get(1)));
-								mob.addAbility(A);
-								skillList.add(A);
-							}
-						}
-					}
+					distributeSkills(mob);
 				}
 			}
-		}
-		else
-		{
-			if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
+			if((this.teacherP != null)
+			&&(this.teachingA!=null)
+			&&(this.affected instanceof MOB))
 			{
-				final MOB mob=(MOB)affected;
-				final MOB invoker=this.invoker();
-				if((invoker == null)
-				||(invoker == mob)
-				||(invoker.location()!=mob.location())
-				||(invoker.isInCombat())
-				||(invoker.location()!=activityRoom)
-				||(!CMLib.flags().isAliveAwakeMobileUnbound(invoker,true)))
+				final Physical teacher=this.teacherP;
+				if((teacher == null)
+				||(teacher == affected)
+				||(mob.location()!=CMLib.map().roomLocation(teacher))
+				||((teacher instanceof MOB)&&(((MOB)teacher).isInCombat()))
+				||(mob.isInCombat())
+				||(mob.location()!=activityRoom)
+				||((teacher instanceof MOB)&&(!CMLib.flags().isAliveAwakeMobileUnbound((MOB)teacher,true)))
+				||(!CMLib.flags().isAliveAwakeMobileUnbound(mob, true)))
 				{
 					aborted=true;
 					unInvoke();
-					return false;
+					return true;
 				}
+				if((--tickDown)<=0)
+				{
+					tickDown=-1;
+					unInvoke();
+					return true;
+				}
+				else
+					tickUp++;
+				super.tick(ticking, tickID);
 			}
-			if(!super.tick(ticking, tickID))
-				return false;
 		}
 		return true;
 	}
@@ -363,52 +341,135 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 	@Override
 	public void unInvoke()
 	{
-		if( canBeUninvoked() 
-		&& (!super.unInvoked) 
-		&& (affected instanceof MOB)
-		&& (!aborted))
+		if((this.teacherP != null)
+		&&(this.teachingA!=null)
+		&&(this.activityRoom!=null)
+		&&(this.affected instanceof MOB))
 		{
-			final MOB mob=(MOB)affected;
-			final MOB invoker=this.invoker;
+			final MOB mob=(MOB)this.affected;
 			final Ability teachingA=this.teachingA;
-			if((mob!=null)
-			&&(invoker !=null)
-			&&(teachingA != null)
-			&&(mob.location()!=null)
-			&&(invoker.location()==mob.location()))
+			this.teachingA=null;
+			this.activityRoom=null;
+			this.tickDown=Integer.MAX_VALUE/2;
+			final MOB teacherM;
+			if(this.teacherP instanceof MOB)
+				teacherM=(MOB)this.teacherP;
+			else
 			{
-				if(this.successfullyTaught)
+				teacherM=CMClass.getFactoryMOB(teacherP.name(), 30, mob.location());
+				teacherM.setAttribute(Attrib.NOTEACH, false);
+				final Ability teacherMA=CMClass.getAbility(teachingA.ID());
+				teacherMA.setProficiency(100);
+				teacherM.addAbility(teacherMA);
+			}
+			String teachingAName=(teachingA!=null)?teachingA.name():L("something");
+			String doneMsgStr;
+			if(aborted)
+				doneMsgStr=L("<S-NAME> stop(s) learning @x1 from <T-NAME>.",teachingAName);
+			else
+				doneMsgStr=L("<S-NAME> <S-IS-ARE> done learning @x1 from <T-NAME>.",teachingAName);
+			try
+			{
+				if((teachingA != null)
+				&&(mob.location()!=null)
+				&&(!aborted)
+				&&(CMLib.map().roomLocation(teacherP)==mob.location()))
 				{
-					final Ability A=invoker.fetchAbility(ID());
-					final Ability fA=invoker.fetchEffect(ID());
-					final Ability mTeachingA=mob.fetchAbility(teachingA.ID());
-					if((A==null)||(fA==null)||(mTeachingA==null)||(!A.isSavable())||(!fA.isNowAnAutoEffect()))
-						aborted=true;
-					else
+					if(this.successfullyTaught)
 					{
-						final StringBuilder str=new StringBuilder(A.text());
-						if(str.length()>0)
-							str.append(';');
-						final int prof = mTeachingA.proficiency() + (5 * super.expertise(mob, mTeachingA, ExpertiseLibrary.Flag.LEVEL));
-						str.append(mTeachingA.ID()).append(',').append(prof);
-						fA.setMiscText(str.toString()); // and this should do it.
-						A.setMiscText(str.toString()); // and this should be savable
+						final Ability A=mob.fetchAbility(ID());
+						final Ability fA=mob.fetchEffect(ID());
+						final Ability mTeachingA=teacherM.fetchAbility(teachingA.ID());
+						if((A==null)||(fA==null)||(mTeachingA==null)||(!A.isSavable())||(!fA.isNowAnAutoEffect()))
+							aborted=true;
+						else
+						{
+							final StringBuilder str=new StringBuilder(A.text());
+							if(str.length()>0)
+								str.append(';');
+							final int prof = mTeachingA.proficiency() + (5 * super.expertise(mob, mTeachingA, ExpertiseLibrary.Flag.LEVEL));
+							str.append(mTeachingA.ID()).append(',').append(prof);
+							fA.setMiscText(str.toString()); // and this should do it.
+							A.setMiscText(str.toString()); // and this should be savable
+						}
+					}
+					else
+						mob.location().show(teacherM,mob,getActivityMessageType(),L("<S-NAME> fail(s) to teach <T-NAME> @x1.",teachingA.name()));
+					// let super announce it
+				}
+			}
+			finally
+			{
+				mob.location().show(mob,teacherM,getActivityMessageType(),doneMsgStr);
+				if((teacherP instanceof Item)&&(!teacherM.isPlayer()))
+					teacherM.destroy();
+				this.teacherP=null;
+			}
+			helping=false;
+			helpingAbility=null;
+		}
+	}
+	
+	public void distributeSkills(final MOB mob)
+	{
+		if(skillList.size() > 0)
+		{
+			for(Ability a : skillList)
+			{
+				final Ability A=mob.fetchAbility(a.ID());
+				if((A!=null)&&(!A.isSavable()))
+				{
+					mob.delAbility(A);
+					final Ability fA=mob.fetchEffect(A.ID());
+					if(fA!=null)
+					{
+						fA.unInvoke();
+						mob.delEffect(fA);
 					}
 				}
-				else
-					mob.location().show(mob,invoker,getActivityMessageType(),L("<S-NAME> fail(s) to teach <T-NAME> @x1.",teachingA.name()));
-				// let super announce it
+			}
+			skillList.clear();
+		}
+		for(final String as : CMParms.parseSemicolons(text(), false))
+		{
+			final List<String> idProf = CMParms.parseCommas(as, true);
+			if(idProf.size()>1)
+			{
+				final Ability A=CMClass.getAbility(idProf.get(0));
+				if(A!=null)
+				{
+					A.setSavable(false);
+					A.setProficiency(CMath.s_int(idProf.get(1)));
+					mob.addAbility(A);
+					skillList.add(A);
+				}
 			}
 		}
-		this.teachingA=null;
-		super.unInvoke();
 	}
-
+	
+	public void confirmSkills(final MOB mob)
+	{
+		final Studying studyA=(Studying)mob.fetchEffect(ID());
+		if((studyA!=null)
+		&&(studyA.distributed))
+		{
+			boolean broken=false;
+			for(final Ability A : skillList)
+			{
+				if(mob.fetchAbility(A.ID())==null)
+					broken=true;
+			}
+			if(broken)
+				studyA.distributeSkills(mob);
+		}
+	}
+	
 	@Override
 	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()==0)
 		{
+			confirmSkills(mob);
 			mob.tell(L("You've been taught: "));
 			final List<List<String>> taughts = CMParms.parseDoubleDelimited(text(), ';', ',');
 			StringBuilder str=new StringBuilder("");
@@ -427,25 +488,116 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 							eA.unInvoke();
 							mob.delEffect(eA);
 						}
-						if(str.length()>0)
-							str.append(", ");
-						str.append(CMStrings.padRight(L(Ability.ACODE_DESCS[A.abilityCode()&Ability.ALL_ACODES]), 12)+": "+A.Name()+"\n\r");
+						str.append(CMStrings.padRight(L(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]), 12)+": "+A.Name()+"\n\r");
 					}
 				}
 			}
-			mob.tell(str.toString());
+			str.append("\n\rYou may learn ");
+			for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+			{
+				perLevelLimits limitObj = null;
+				for(perLevelLimits l : perLevelLimits.values())
+				{
+					if(l.doesRuleApplyTo(i))
+						limitObj = l;
+				}
+				if(limitObj == null)
+					continue;
+				if((getSupportedSkillType()!=null) && (getSupportedSkillType()!=limitObj))
+					continue;
+				final int classLevel = CMLib.ableMapper().qualifyingClassLevel(mob, this);
+				int numAllowed = limitObj.numAllowed(classLevel);
+				int numHas = 0;
+				for(final List<String> l : taughts)
+				{
+					if(l.size()>0)
+					{
+						final Ability A1=CMClass.getAbility(l.get(0));
+						if(limitObj.doesRuleApplyTo(A1))
+							numHas++;
+					}
+				}
+				str.append(numAllowed-numHas).append(" more ").append(CMLib.english().makePlural(Ability.ACODE_DESCS[i].toLowerCase())).append(", ");
+			}
+			final String fstr=str.toString();
+			if(fstr.endsWith(", "))
+				mob.tell(fstr.substring(0,fstr.length()-2)+".");
+			else
+				mob.tell(fstr);
 			return true;
+		}
+		if((commands.size()>0)&&(commands.size()<3))
+		{
+			String combStr=CMParms.combine(commands);
+			final List<List<String>> taughts = CMParms.parseDoubleDelimited(text(), ';', ',');
+			for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+			{
+				perLevelLimits limitObj = null;
+				for(perLevelLimits l : perLevelLimits.values())
+				{
+					if(l.doesRuleApplyTo(i))
+						limitObj = l;
+				}
+				if(limitObj == null)
+					continue;
+				if((getSupportedSkillType()!=null) && (getSupportedSkillType()!=limitObj))
+					continue;
+				if(Ability.ACODE_DESCS[i].equalsIgnoreCase(combStr)
+				||CMLib.english().makePlural(Ability.ACODE_DESCS[i].toLowerCase()).equalsIgnoreCase(combStr))
+				{
+					final int classLevel = CMLib.ableMapper().qualifyingClassLevel(mob, this);
+					int numAllowed = limitObj.numAllowed(classLevel);
+					int numHas = 0;
+					for(final List<String> l : taughts)
+					{
+						if(l.size()>0)
+						{
+							final Ability A1=CMClass.getAbility(l.get(0));
+							if(limitObj.doesRuleApplyTo(A1))
+								numHas++;
+						}
+					}
+					StringBuilder str=new StringBuilder("You may learn ");
+					str.append(numAllowed-numHas).append(" more ").append(CMLib.english().makePlural(Ability.ACODE_DESCS[i].toLowerCase())).append(". ");
+					str.append("\n\rAvailable ").append(CMLib.english().makePlural(Ability.ACODE_DESCS[i].toLowerCase())).append(" include: ");
+					List<String> all=new ArrayList<String>(100);
+					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					{
+						final Ability A=a.nextElement();
+						if((A!=null)
+						&&((A.classificationCode()&Ability.ALL_ACODES)==i))
+						{
+							final int lowestQualifyingLevel = CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+							if((lowestQualifyingLevel <= classLevel)
+							&&(lowestQualifyingLevel >= 1)
+							&&(mob.fetchAbility(A.ID())==null))
+							{
+								all.add(A.name());
+							}
+						}
+					}
+					str.append(CMLib.english().toEnglishStringList(all));
+					mob.tell(str.toString());
+					return true;
+				}
+			}
 		}
 		if(commands.get(0).equalsIgnoreCase("FORGET") && (commands.size()>1))
 		{
 			commands.remove(0);
-			final Ability A=CMClass.findAbility(CMParms.combine(commands));
-			if(A!=null)
+			final String name=CMParms.combine(commands);
+			if(name.trim().length()==0)
+				mob.tell(L("Forget what?",name));
+			else
 			{
-				if(forget(mob,A.ID()))
-					mob.tell(L("You have forgotten @x1.",A.name()));
-				else
-					mob.tell(L("You haven't studied @x1.",A.name()));
+				final Ability A=CMClass.findAbility(name);
+				if(A!=null)
+				{
+					if(forget(mob,A.ID()))
+						mob.tell(L("You have forgotten @x1.",A.name()));
+					else
+						mob.tell(L("You haven't studied @x1.",A.name()));
+				}
 			}
 			return true;
 		}
@@ -455,25 +607,70 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 			return false;
 		}
 		List<String> name = new XVector<String>(commands.remove(0));
-		final MOB target=super.getTarget(mob, name, givenTarget);
-		if(target==null)
-			return false;
-		if(target == mob)
-		{
-			mob.tell(L("You can't teach yourself."));
-			return false;
-		}
-		if((target.isAttributeSet(MOB.Attrib.NOTEACH))
-		&&((!target.isMonster())||(!target.willFollowOrdersOf(mob))))
-		{
-			mob.tell(L("@x1 is not accepting students right now.",target.name(mob)));
-			return false;
-		}
 		final String skillName = CMParms.combine(commands);
-		final Ability A=CMClass.findAbility(skillName, target);
-		if(A==null)
+		Physical target = super.getAnyTarget(mob, new XVector<String>(name), givenTarget, Wearable.FILTER_UNWORNONLY,false,true);
+		final Ability A;
+		final int teacherClassLevel;
+		final int teacherQualifyingLevel;
+		if(target instanceof Item)
 		{
-			mob.tell(L("@x1 doesn't know '@x2'.",target.name(mob),skillName));
+			if(!(target instanceof SpellHolder))
+			{
+				commonTell(mob,L("You aren't going to learn much from @x1.",target.Name()));
+				return false;
+			}
+			if(target.ID().indexOf("issertation")<0)
+			{
+				commonTell(mob,L("You don't know how to learn from @x1.",target.Name()));
+				return false;
+			}
+			SpellHolder aC=(SpellHolder)target;
+			Ability possA=(Ability)CMLib.english().fetchEnvironmental(aC.getSpells(),skillName,true);
+			if(possA==null)
+				possA=(Ability)CMLib.english().fetchEnvironmental(aC.getSpells(),skillName,false);
+			if(possA==null)
+			{
+				commonTell(mob,L("@x1 doesn't seem to be about '@x2'.",target.Name(),skillName));
+				return false;
+			}
+			A=possA;
+			int lowestQualifyingLevel = CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+			teacherClassLevel = (target.phyStats().level() > lowestQualifyingLevel) ? target.phyStats().level() : lowestQualifyingLevel;
+			teacherQualifyingLevel = lowestQualifyingLevel;
+		}
+		else
+		if(target instanceof MOB)
+		{
+			final MOB targetM=(MOB)target;
+			if(target == mob)
+			{
+				mob.tell(L("You can't teach yourself."));
+				return false;
+			}
+			if((targetM.isAttributeSet(MOB.Attrib.NOTEACH))
+			&&((!targetM.isMonster())||(!targetM.willFollowOrdersOf(mob))))
+			{
+				mob.tell(L("@x1 is not accepting students right now.",target.name(mob)));
+				return false;
+			}
+			A=CMClass.findAbility(skillName, targetM);
+			if(A==null)
+			{
+				mob.tell(L("@x1 doesn't know '@x2'.",targetM.name(mob),skillName));
+				return false;
+			}
+			teacherClassLevel = CMLib.ableMapper().qualifyingClassLevel(targetM, A);
+			teacherQualifyingLevel = CMLib.ableMapper().qualifyingLevel(targetM, A);
+		}
+		else
+		{
+			if(target != null)
+				commonTell(mob,L("You can't learn anything from '@x1'.",target.Name()));
+			return false;
+		}
+		if(mob.fetchAbility(A.ID())!=null)
+		{
+			mob.tell(L("You already know @x1.",A.name()));
 			return false;
 		}
 		final int lowestQualifyingLevel = CMLib.ableMapper().lowestQualifyingLevel(A.ID());
@@ -485,7 +682,6 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 			mob.tell(L("You aren't qualified to be taught @x1.",A.Name()));
 			return false;
 		}
-		final int teacherClassLevel = CMLib.ableMapper().qualifyingClassLevel(target, this);
 		if((teacherClassLevel <0)
 		&&(!auto))
 		{
@@ -522,14 +718,23 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 		}
 		if(numHas >= numAllowed)
 		{
-			mob.tell(L("You may not study any more @x1 at this time.",CMLib.english().makePlural(Ability.ACODE_DESCS[A.abilityCode()&Ability.ALL_ACODES])));
+			mob.tell(L("You may not study any more @x1 at this time.",CMLib.english().makePlural(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES])));
 			return false;
 		}
+		
+		final Studying thisOne=(Studying)mob.fetchEffect(ID());
+		if((thisOne.teacherP!=null)
+		&&(thisOne.teachingA!=null)
+		&&(thisOne.activityRoom!=null))
+		{
+			mob.tell(L("You are already @x1.",thisOne.verb));
+			return false;
+		}
+		thisOne.aborted=false;
 		if(!super.invoke(mob, commands, givenTarget, auto, asLevel))
 			return false;
 
 		final double quickPct = getXTIMELevel(mob) * 0.05;
-		final int teacherQualifyingLevel = CMLib.ableMapper().qualifyingLevel(target, A);
 		final int teachTicks = (int)(((teacherQualifyingLevel * 60000L) 
 							- (10000L * (teacherClassLevel-teacherQualifyingLevel)) 
 							- (15000L * super.getXLEVELLevel(mob))) / CMProps.getTickMillis());
@@ -544,22 +749,31 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 		*/
 		successfullyTaught = super.proficiencyCheck(mob, 0, auto);
 		{
-			final Session sess = target.session();
-			final Studying thisOne=this;
-			thisOne.verb=L("teaching @x1 about @x2",mob.name(target),A.name());
+			final Session sess = (target instanceof MOB)?((MOB)target).session() : null;
+			if(target instanceof MOB)
+				thisOne.verb=L("learning @x2 from @x1",target.name(),A.name());
+			else
+				thisOne.verb=L("studying @x2 from @x1",target.name(),A.name());
 			thisOne.displayText=L("You are @x1",verb);
+			final Physical P=target;
+			final Room mobroom=mob.location();
+			final boolean success=this.successfullyTaught;
+			thisOne.activityRoom=mobroom;
+			thisOne.teachingA=null;
+			thisOne.teacherP=null;
 			final Runnable R=new Runnable()
 			{
 				final MOB		M	= mob;
-				final MOB		tM	= target;
 				final Ability	tA	= A;
+				final Physical	tP	= P;
 				final Studying	oA	= thisOne;
-				
+				final boolean	ss	= success;
+				//final Room		mR	= mobroom;
 				@Override
 				public void run()
 				{
-					String str=L("<T-NAME> start(s) teaching <S-NAME> about @x1.",tA.Name());
-					final CMMsg msg=CMClass.getMsg(M,tM,oA,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),str);
+					String str=L("<S-NAME> start(s) learning @x1 from <T-NAME>.",tA.Name());
+					final CMMsg msg=CMClass.getMsg(M,tP,oA,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),str);
 					final Room R=M.location();
 					if(R!=null)
 					{
@@ -567,17 +781,20 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 						{
 							R.send(M, msg);
 							oA.teachingA=tA;
+							oA.teacherP=tP;
+							oA.successfullyTaught=ss;
+							//oA.activityRoom=mR;
 							int ticks=duration;
 							if(ticks < 1)
 								ticks = 1;
-							oA.beneficialAffect(M,tM,asLevel,ticks);
-							oA.teachingA=null;
+							ticks = getBeneficialTickdownTime(mob,mob,ticks,asLevel);
+							oA.tickDown=ticks;
 						}
 					}
 				}
 				
 			};
-			if(target.isMonster() || (sess==null))
+			if((!(target instanceof MOB)) || ((MOB)target).isMonster() || (sess==null))
 				R.run();
 			else
 			{
@@ -595,8 +812,9 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 							timeStr = CMLib.lang().L("around @x1 seconds",""+seconds);
 						else
 							timeStr = CMLib.lang().L("around @x1 minutes",""+minutes);
-						sess.promptPrint(L("\n\r@x1 wants you to try to teach @x2 about @x3. It will take @x4.  Is that OK (y/N)? ",
-								mob.name(target), target.charStats().himher(), A.name(), timeStr));
+						if(P instanceof MOB)
+							sess.promptPrint(L("\n\r@x1 wants you to try to teach @x2 about @x3. It will take @x4.  Is that OK (y/N)? ",
+									mob.name((MOB)P), ((MOB)P).charStats().himher(), A.name(), timeStr));
 					}
 
 					@Override
@@ -623,5 +841,98 @@ granting each ability at the lowest level above (1,2,3,4,5,6).
 		}
 			
 		return true;
+	}
+
+	@Override
+	public void addAbility(Ability to)
+	{
+		throw new java.lang.UnsupportedOperationException();
+	}
+
+	@Override
+	public void delAbility(Ability to)
+	{
+		if(to==null)
+			return;
+		final List<String> strList = CMParms.parseSemicolons(text(), true);
+		boolean removed=false;
+		for(int i=0;i<strList.size();i++)
+		{
+			if(strList.get(i).startsWith(to.ID()+","))
+			{
+				strList.remove(i);
+				removed = true;
+				break;
+			}
+		}
+		if(removed)
+		{
+			final String text=CMParms.combineWith(strList,';');
+			for(final Ability A : skillList)
+			{
+				if(A.ID().equalsIgnoreCase(A.ID()))
+				{
+					skillList.remove(A);
+				}
+			}
+			setMiscText(text);
+		}
+	}
+
+	@Override
+	public int numAbilities()
+	{
+		return skillList.size();
+	}
+
+	@Override
+	public Ability fetchAbility(int index)
+	{
+		return skillList.get(index);
+	}
+
+	@Override
+	public Ability fetchAbility(String ID)
+	{
+		for(Ability A : skillList)
+		{
+			if(A.ID().equalsIgnoreCase(ID))
+				return A;
+		}
+		return null;
+	}
+
+	@Override
+	public Ability fetchRandomAbility()
+	{
+		if(numAbilities()==0)
+			return null;
+		return fetchAbility(CMLib.dice().roll(1, numAbilities(), -1));
+	}
+
+	@Override
+	public Enumeration<Ability> abilities()
+	{
+		return new IteratorEnumeration<Ability>(skillList.iterator());
+	}
+
+	@Override
+	public void delAllAbilities()
+	{
+		XVector<Ability> all=new XVector<Ability>(skillList);
+		for(final Ability A : all)
+			delAbility(A);
+	}
+
+	@Override
+	public int numAllAbilities()
+	{
+		return numAbilities();
+	}
+
+	@Override
+	public Enumeration<Ability> allAbilities()
+	{
+		return abilities();
 	}
 }

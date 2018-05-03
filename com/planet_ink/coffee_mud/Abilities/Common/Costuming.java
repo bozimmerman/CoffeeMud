@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -454,7 +454,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 													  enhancedTypes);
 			if(data==null)
 				return false;
-			fixDataForComponents(data,componentsFoundList);
+			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;

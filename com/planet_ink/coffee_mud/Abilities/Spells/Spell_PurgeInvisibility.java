@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2014-2017 Bo Zimmerman
+   Copyright 2014-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -169,6 +169,22 @@ public class Spell_PurgeInvisibility extends Spell
 								A.unInvoke();
 							else
 								beneficialAffect(mob,M,asLevel,0);
+						}
+						for(Enumeration<Item> i=M.items();i.hasMoreElements();)
+						{
+							final Item I=i.nextElement();
+							if(I!=null)
+							{
+								List<Ability> list2=returnOffensiveAffects(I);
+								for(Ability A : list2)
+								{
+									if(A.canBeUninvoked()
+									&&((A.invoker()==null)||(mob.phyStats().level() >= A.adjustedLevel(invoker(), 0))))
+										A.unInvoke();
+									else
+										beneficialAffect(mob,I,asLevel,0);
+								}
+							}
 						}
 					}
 				}

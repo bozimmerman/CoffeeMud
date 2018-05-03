@@ -35,7 +35,7 @@ import java.util.*;
 
 /*
 * <p>Portions Copyright (c) 2003 Jeremy Vyska</p>
-* <p>Portions Copyright (c) 2004-2017 Bo Zimmerman</p>
+* <p>Portions Copyright (c) 2004-2018 Bo Zimmerman</p>
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -2638,12 +2638,184 @@ public class Test extends StdCommand
 				}
 			}
 			if((what.equalsIgnoreCase("all"))
+			||(what.equalsIgnoreCase("spacemotion")))
+			{
+				List<double[]> results = new ArrayList<double[]>();
+				for(double dir0 = 0; dir0 <=Math.PI*2; dir0 += (Math.PI/12.0))
+				{
+					for(double dir1 = 0; dir1 <=Math.PI; dir1 += (Math.PI/12.0))
+					{
+						for(double adir0 = 0; adir0 <=Math.PI*2; adir0 += (Math.PI/12.0))
+						{
+							for(double adir1 = 0; adir1 <=Math.PI; adir1 += (Math.PI/12.0))
+							{
+								double[] curDir = new double[] {dir0, dir1};
+								double[] accelDir = new double[] {adir0, adir1};
+								double curSpeed = 1000;
+								long newAccelleration = 200;
+								int steps = 0;
+								double totDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
+								if(Math.round(Math.toDegrees(totDirDiff))>180)
+								{
+									System.out.print("Interesting: ");
+									System.out.print("Swing from "+Math.round(Math.toDegrees(curDir[0])));
+									System.out.print("mk"+Math.round(Math.toDegrees(curDir[1])));
+									System.out.print("   to   "+Math.round(Math.toDegrees(accelDir[0])));
+									System.out.print("mk"+Math.round(Math.toDegrees(accelDir[1])));
+									System.out.println(" is "+Math.round(Math.toDegrees(totDirDiff)));
+								}
+								double halfPI = Math.PI/2.0;
+								while(!Arrays.equals(curDir, accelDir))
+								{
+									double oldCurSpeed = curSpeed;
+									double curDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
+									double[] oldCurDir=new double[]{curDir[0],curDir[1]};
+									curSpeed = CMLib.map().moveSpaceObject(curDir,curSpeed,accelDir, newAccelleration);
+									double newDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
+									if((curDirDiff > halfPI)
+									&&(newDirDiff > halfPI))
+									{
+										if(curSpeed > oldCurSpeed)
+										{
+											System.out.println("Step "+steps+" of "+
+													Math.round(Math.toDegrees(oldCurDir[0]))+"@"+Math.round(Math.toDegrees(oldCurDir[1]))
+													+" -> "
+													+Math.round(Math.toDegrees(accelDir[0]))+"@"+Math.round(Math.toDegrees(accelDir[1]))
+													+" (angle Diff "+curDirDiff+") went from speed "+oldCurSpeed+" to "+curSpeed);
+											//CMLib.map().moveSpaceObject(oldCurDir,oldCurSpeed,accelDir, newAccelleration);
+											//curDirDiff = CMLib.map().getAngleDelta(oldCurDir, accelDir);
+										}
+									}
+									else
+									if((curDirDiff < halfPI)
+									&&(newDirDiff < halfPI))
+									{
+										if(curSpeed < oldCurSpeed)
+										{
+											System.out.println("Step "+steps+" of "+
+													Math.round(Math.toDegrees(oldCurDir[0]))+"@"+Math.round(Math.toDegrees(oldCurDir[1]))
+													+" -> "
+													+Math.round(Math.toDegrees(accelDir[0]))+"@"+Math.round(Math.toDegrees(accelDir[1]))
+													+" (angle Diff "+curDirDiff+") went from speed "+oldCurSpeed+" to "+curSpeed);
+										}
+									}
+									steps++;
+								}
+								//TODO: Test Ideas
+								//TODO: test whether smaller angle diffs result in fewer steps. 
+								System.out.println(Math.round(Math.toDegrees(totDirDiff))+", ="+steps+"                      fspeed="+curSpeed);
+								results.add(new double[]{Math.round(Math.toDegrees(totDirDiff)),steps});
+							}
+						}
+					}
+				}
+			}
+			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("notrandom")))
 			{
 				mob.tell(""+CMath.NotRandomHigh.nextInt());
 				mob.tell(""+CMath.NotRandomHigh.nextInt(10));
 				mob.tell(""+CMath.NotRandomHigh.nextLong());
 				mob.tell(""+CMath.NotRandomHigh.nextDouble());
+			}
+
+			if((what.equalsIgnoreCase("all"))
+			||(what.equalsIgnoreCase("cmuniqsortsvec")))
+			{
+				final String[] tests=new String[]{
+					"Elvish",
+					"Fighter_FastSlinging",
+					"Common",
+					"Proficiency_Sling",
+					"Skill_Befriend",
+					"Skill_Haggle",
+					"Skill_Recall",
+					"Skill_Write",
+					"Song_Detection",
+					"Song_Nothing",
+					"Specialization_EdgedWeapon",
+					"SignLanguage",
+					"Song_Seeing",
+					"Specialization_EdgedWeapon",
+					"FireBuilding",
+					"Song_Valor",
+					"Specialization_EdgedWeapon",
+					"Fighter_FastSlinging",
+					"FireBuilding",
+					"Proficiency_Sling",
+					"FireBuilding",
+					"Song_Charm",
+					"Fighter_FastSlinging",
+					"FireBuilding",
+					"Proficiency_Sling",
+					"Specialization_Sword",
+					"Butchering",
+					"Skill_Befriend",
+					"Skill_Haggle",
+					"Song_Armor",
+					"Song_Babble",
+					"Song_Charm",
+					"Song_Seeing",
+					"FireBuilding",
+					"Play_Break",
+					"Play_Tempo",
+					"Skill_Befriend",
+					"Skill_Recall",
+					"Skill_Write",
+					"Song_Nothing",
+					"Specialization_Ranged",
+					"Fighter_FastSlinging",
+				};
+				for(int y=0;y<100;y++)
+				for(int x=0;x<100;x++)
+				{
+					final java.util.concurrent.atomic.AtomicInteger counter=new java.util.concurrent.atomic.AtomicInteger(0); 
+					final CMUniqSortSVec<Ability> vec = new CMUniqSortSVec<Ability>();
+					final int delayType = x/30;
+					for(int i=0;i<tests.length;i++)
+					{
+						final Ability A1=CMClass.getAbility(tests[i]);
+						if(delayType == 0)
+						{
+							final Ability A=A1;
+							if(vec.find(A.ID())==null)
+								vec.addElement(A);
+							counter.incrementAndGet();
+						}
+						else
+						CMLib.threads().executeRunnable(new Runnable(){
+							final Ability A=A1;
+							@Override
+							public void run()
+							{
+								if(delayType == 2)
+									CMLib.s_sleep(CMLib.dice().roll(1, 10, -1));
+								if(vec.find(A.ID())==null)
+									vec.addElement(A);
+								counter.incrementAndGet();
+							}
+						});
+					}
+					while(counter.get() < tests.length)
+						CMLib.s_sleep(10);
+					Set<String> found=new TreeSet<String>();
+					for(int i=0;i<vec.size();i++)
+						if(found.contains(vec.get(i).ID()))
+						{
+							mob.tell(L("Error28-1-"+i+"("+vec.get(i).ID()+")"));
+							return false;
+						}
+						else
+						{
+							found.add(vec.get(i).ID());
+						}
+					if(vec.size() != found.size())
+					{
+						mob.tell(L("Error28-2-"));
+						return false;
+					}
+				}
+				mob.tell(L("Dun"));
 			}
 			
 			if((what.equalsIgnoreCase("all"))

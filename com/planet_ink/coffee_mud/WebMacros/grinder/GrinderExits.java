@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -259,6 +259,25 @@ public class GrinderExits
 				R2.setRawExit(dir2,CMClass.getExit("StdOpenDoorway"));
 			R.getArea().fillInAreaRoom(R2);
 			CMLib.database().DBUpdateExits(R2);
+		}
+		return "";
+	}
+	
+	public static String createExitForRoom(Room R, int dir)
+	{
+		synchronized(("SYNC"+R.roomID()).intern())
+		{
+			R=CMLib.map().getRoom(R);
+			R.clearSky();
+			if(R instanceof GridLocale)
+				((GridLocale)R).clearGrid(null);
+
+			if(R.getRawExit(dir)==null)
+				R.setRawExit(dir,CMClass.getExit("StdOpenDoorway"));
+
+			CMLib.database().DBUpdateExits(R);
+
+			R.getArea().fillInAreaRoom(R);
 		}
 		return "";
 	}

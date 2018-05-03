@@ -12,7 +12,7 @@ import java.util.List;
 
 import com.planet_ink.coffee_web.interfaces.DataBuffers;
 /*
-   Copyright 2012-2017 Bo Zimmerman
+   Copyright 2012-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -201,15 +201,36 @@ public class CWDataBuffers implements DataBuffers
 		}
 	}
 
-	@Override public boolean hasNext() { return tryNext()!=null;}
+	@Override
+	public boolean hasNext()
+	{
+		return tryNext() != null;
+	}
 
-	@Override public ByteBuffer next() { return tryNext(); }
+	@Override
+	public ByteBuffer next()
+	{
+		return tryNext();
+	}
 
-	@Override public void remove() { throw new java.lang.NoSuchMethodError(); }
+	@Override
+	public void remove()
+	{
+		throw new java.lang.NoSuchMethodError();
+	}
 
-	private final void created() { }
-	private final void accessed() { }
-	private final void finalized() { }
+	private final void created()
+	{
+	}
+
+	private final void accessed()
+	{
+	}
+
+	private final void finalized()
+	{
+	}
+
 	public void finalize() throws Throwable
 	{
 		if(list.size()>0)

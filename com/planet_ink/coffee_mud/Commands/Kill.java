@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ public class Kill extends StdCommand
 		{
 			if(!mob.isInCombat())
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("Kill whom?"));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Kill whom?"));
 				return false;
 			}
 			else
@@ -94,7 +94,7 @@ public class Kill extends StdCommand
 			target=mob.location().fetchInhabitant(whomToKill);
 			if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("I don't see '@x1' here.",whomToKill));
+				CMLib.commands().postCommandFail(mob,origCmds,L("I don't see '@x1' here.",whomToKill));
 				return false;
 			}
 		}
@@ -118,7 +118,7 @@ public class Kill extends StdCommand
 			if(((oldVictim!=null)&&(oldVictim==target)
 			&&(CMProps.getIntVar(CMProps.Int.COMBATSYSTEM)==CombatLibrary.CombatSystem.DEFAULT.ordinal())))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("^f^<FIGHT^>You are already fighting @x1.^</FIGHT^>^?",mob.getVictim().name()));
+				CMLib.commands().postCommandFail(mob,origCmds,L("^f^<FIGHT^>You are already fighting @x1.^</FIGHT^>^?",mob.getVictim().name()));
 				return false;
 			}
 
@@ -136,7 +136,7 @@ public class Kill extends StdCommand
 					if(range>=0)
 						mob.setRangeToTarget(range);
 				}
-				CMLib.commands().doCommandFail(mob,origCmds,L("^f^<FIGHT^>You are now targeting @x1.^</FIGHT^>^?",target.name(mob)));
+				CMLib.commands().postCommandFail(mob,origCmds,L("^f^<FIGHT^>You are now targeting @x1.^</FIGHT^>^?",target.name(mob)));
 				mob.setVictim(target);
 				return false;
 			}
@@ -148,7 +148,7 @@ public class Kill extends StdCommand
 			final CMMsg msg=CMClass.getMsg(mob,target,CMMsg.MSG_NOISYMOVEMENT|CMMsg.MASK_MALICIOUS,null);
 			final Room R=target.location();
 			if((R==null)||(R.okMessage(mob, msg)))
-				CMLib.commands().doCommandFail(mob,origCmds,L("You are not allowed to attack @x1.",target.name(mob)));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You are not allowed to attack @x1.",target.name(mob)));
 		}
 		else
 		{

@@ -28,7 +28,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -620,16 +620,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof Wand)
 			text.append(CMLib.xml().convertXMLtoTag("MAXUSE",((Wand)E).maxUses()));
 
+		if(E instanceof Book)
+		{
+			text.append(CMLib.xml().convertXMLtoTag("MAXPG",((Book)E).getMaxPages()));
+			text.append(CMLib.xml().convertXMLtoTag("MAXCHPG",((Book)E).getMaxCharsPerPage()));
+		}
+		
 		if(E instanceof Rideable)
 		{
 			text.append(CMLib.xml().convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
 			text.append(CMLib.xml().convertXMLtoTag("RIDEC",((Rideable)E).riderCapacity()));
-			if(E instanceof Exit) // it's a portal!
-			{
-				text.append(CMLib.xml().convertXMLtoTag("PUTSTR",E.getStat("PUTSTR")));
-				text.append(CMLib.xml().convertXMLtoTag("MOUNTSTR",E.getStat("MOUNTSTR")));
-				text.append(CMLib.xml().convertXMLtoTag("DISMOUNTSTR",E.getStat("DISMOUNTSTR")));
-			}
+			text.append(CMLib.xml().convertXMLtoTag("PUTSTR",((Rideable)E).getPutString()));
+			text.append(CMLib.xml().convertXMLtoTag("MOUNTSTR",((Rideable)E).getMountString()));
+			text.append(CMLib.xml().convertXMLtoTag("DISMOUNTSTR",((Rideable)E).getDismountString()));
+			text.append(CMLib.xml().convertXMLtoTag("STATESTR",((Rideable)E).getStateString()));
+			text.append(CMLib.xml().convertXMLtoTag("STATESUBJSTR",((Rideable)E).getStateStringSubject()));
+			text.append(CMLib.xml().convertXMLtoTag("RIDERSTR",((Rideable)E).getRideString()));
 		}
 
 		if(E instanceof RawMaterial)
@@ -3188,16 +3194,22 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			}
 		}
 
+		if(E instanceof Book)
+		{
+			((Book)E).setMaxPages(CMLib.xml().getIntFromPieces(buf, "MAXPG"));
+			((Book)E).setMaxCharsPerPage(CMLib.xml().getIntFromPieces(buf, "MAXCHPG"));
+		}
+		
 		if(E instanceof Rideable)
 		{
 			((Rideable)E).setRideBasis(CMLib.xml().getIntFromPieces(buf,"RIDET"));
 			((Rideable)E).setRiderCapacity(CMLib.xml().getIntFromPieces(buf,"RIDEC"));
-			if(E instanceof Exit) // it's a portal!
-			{
-				E.setStat("PUTSTR", CMLib.xml().getValFromPieces(buf, "PUTSTR", "in"));
-				E.setStat("MOUNTSTR", CMLib.xml().getValFromPieces(buf, "MOUNTSTR", "enter(s)"));
-				E.setStat("DISMOUNTSTR", CMLib.xml().getValFromPieces(buf, "DISMOUNTSTR", "emerge(s) from"));
-			}
+			((Rideable)E).setPutString(CMLib.xml().getValFromPieces(buf, "PUTSTR", ""));
+			((Rideable)E).setMountString(CMLib.xml().getValFromPieces(buf, "MOUNTSTR", ""));
+			((Rideable)E).setDismountString(CMLib.xml().getValFromPieces(buf, "DISMOUNTSTR", ""));
+			((Rideable)E).setRideString(CMLib.xml().getValFromPieces(buf, "RIDERSTR", ""));
+			((Rideable)E).setStateString(CMLib.xml().getValFromPieces(buf, "STATESTR", ""));
+			((Rideable)E).setStateStringSubject(CMLib.xml().getValFromPieces(buf, "STATESUBJSTR", ""));
 		}
 		if(E instanceof Electronics)
 		{
@@ -3382,6 +3394,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			{
 				final Race R=CMClass.getRace(raceID);
 				((DeadBody)E).charStats().setMyRace(R);
+				((DeadBody)E).charStats().setWearableRestrictionsBitmap(((DeadBody)E).charStats().getWearableRestrictionsBitmap()|((DeadBody)E).charStats().getMyRace().forbiddenWornBits());
 			}
 		}
 		if(E instanceof MOB)
@@ -4324,15 +4337,27 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			return null;
 		if(ammo.endsWith("s"))
 			ammo=ammo.substring(0,ammo.length()-1);
+		if(number>9)
+		{
+			neww.setName(L("a stack of @x1 @x2",""+number,CMLib.english().makePlural(ammo)));
+			neww.setDisplayText(L("@x1 sit here.",neww.Name()));
+		}
+		else
+		if(number>5)
+		{
+			neww.setName(L("a bunch of @x1",CMLib.english().makePlural(ammo)));
+			neww.setDisplayText(L("@x1 sit here.",neww.Name()));
+		}
+		else
 		if(number>1)
 		{
 			neww.setName(L("several @x1",CMLib.english().makePlural(ammo)));
-			neww.setDisplayText(L("@x1 sit here.",ammo));
+			neww.setDisplayText(L("@x1 sit here.",neww.Name()));
 		}
 		else
 		{
 			neww.setName(CMLib.english().startWithAorAn(ammo));
-			neww.setDisplayText(L("@x1 sits here.",ammo));
+			neww.setDisplayText(L("@x1 sits here.",neww.Name()));
 		}
 		((Ammunition)neww).setAmmunitionType(ammo);
 		((Ammunition)neww).setAmmoRemaining(number);

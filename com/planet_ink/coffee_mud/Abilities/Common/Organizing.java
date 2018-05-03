@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2017-2017 Bo Zimmerman
+   Copyright 2017-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -74,6 +74,7 @@ public class Organizing extends CommonSkill
 		WEIGHT
 	}
 	
+	protected boolean		descending	= false;
 	protected Physical		building	= null;
 	protected OrganizeBy	orgaType	= null;
 	protected boolean		messedUp	= false;
@@ -156,7 +157,7 @@ public class Organizing extends CommonSkill
 									result=CMLib.english().cleanArticles(o1.Name()).compareTo(CMLib.english().cleanArticles(o2.Name()));
 									break;
 								case TAG:
-									result=Tagging.getCurrentTag(o1).compareTo(Tagging.getCurrentTag(o2));
+									result=Labeling.getCurrentTag(o1).compareTo(Labeling.getCurrentTag(o2));
 									break;
 								case TYPE:
 									result = CMClass.getObjectType(o1).name().compareTo(CMClass.getObjectType(o2).name());
@@ -172,6 +173,8 @@ public class Organizing extends CommonSkill
 								}
 								if((result == 0)&&(orgaT != OrganizeBy.NAME))
 									result=CMLib.english().cleanArticles(o1.Name()).compareTo(CMLib.english().cleanArticles(o2.Name()));
+								if(me.descending)
+									result = (result == 0) ? 0 : (result < 0) ? 1 : -1;
 								return result;
 							}
 						};
@@ -215,6 +218,21 @@ public class Organizing extends CommonSkill
 		building=null;
 		orgaType=null;
 		messedUp=false;
+		this.descending=false;
+		
+		if(commands.size()>2)
+		{
+			if("ASCENDING".startsWith(commands.get(commands.size()-1).toUpperCase()))
+			{
+				commands.remove(commands.size()-1);
+			}
+			else
+			if("DESCENDING".startsWith(commands.get(commands.size()-1).toUpperCase()))
+			{
+				commands.remove(commands.size()-1);
+				this.descending=true;
+			}
+		}
 		
 		if(commands.size()<2)
 		{
@@ -231,6 +249,8 @@ public class Organizing extends CommonSkill
 					+CMLib.english().toEnglishStringList(OrganizeBy.class,false),orgaTypeName));
 			return false;
 		}
+		
+		
 		
 		final String str=CMParms.combine(commands);
 		building=null;

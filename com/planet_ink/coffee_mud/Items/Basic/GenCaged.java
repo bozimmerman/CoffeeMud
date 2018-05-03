@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -69,6 +69,13 @@ public class GenCaged extends GenItem implements CagedAnimal
 		readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);
 	}
 
+	@Override
+	public void recoverPhyStats()
+	{
+		super.recoverPhyStats();
+		phyStats().setSensesMask(phyStats.sensesMask() | PhyStats.SENSE_ITEMNOWISH |PhyStats.SENSE_ITEMNORUIN);
+	}
+	
 	@Override
 	public boolean cageMe(MOB M)
 	{

@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.EachApplicable.ApplyAffectPhyStats;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.exceptions.CharStatOutOfRangeException;
@@ -29,7 +30,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 
 /*
-   Copyright 2000-2017 Bo Zimmerman
+   Copyright 2000-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -882,7 +883,7 @@ public class StdMOB implements MOB
 	{
 		baseCharStats.setClassLevel(baseCharStats.getCurrentClass(), basePhyStats().level()
 				- baseCharStats().combinedSubLevels());
-		baseCharStats().copyInto(charStats);
+		baseCharStats.copyInto(charStats);
 
 		final Rideable riding = riding();
 		if (riding != null)
@@ -1610,12 +1611,15 @@ public class StdMOB implements MOB
 			deathRoom = CMLib.login().getDefaultBodyRoom(this);
 		if (location() != null)
 			location().delInhabitant(this);
-		DeadBody Body = null;
+		DeadBody bodyI = null;
 		if (createBody)
 		{
-			Body = charStats().getMyRace().getCorpseContainer(this, deathRoom);
-			if ((Body != null) && (playerStats() != null))
-				playerStats().getExtItems().addItem(Body);
+			bodyI = charStats().getMyRace().getCorpseContainer(this, deathRoom);
+			if ((bodyI != null) && (playerStats() != null))
+			{
+				bodyI.setSavable(false); // if the player is saving it, rooms are NOT.
+				playerStats().getExtItems().addItem(bodyI);
+			}
 		}
 		amDead = true;
 		makePeace(false);
@@ -1649,7 +1653,7 @@ public class StdMOB implements MOB
 			bringToLife(CMLib.login().getDefaultDeathRoom(this), true);
 		if (deathRoom != null)
 			deathRoom.recoverRoomStats();
-		return Body;
+		return bodyI;
 	}
 
 	@Override
@@ -2935,7 +2939,8 @@ public class StdMOB implements MOB
 				}
 				break;
 			case CMMsg.TYP_PUSH:
-				if ((!CMLib.flags().isBoundOrHeld(this)) && (!CMLib.flags().isSleeping(this)))
+				if ((!CMLib.flags().isBoundOrHeld(this)) 
+				&& (!CMLib.flags().isSleeping(this)))
 				{
 					srcM.tell(srcM, this, null, L("You can't do that to <T-NAMESELF>."));
 					return false;
@@ -3262,6 +3267,26 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_ATTACKMISS:
 					if(!isAttributeSet(Attrib.NOBATTLESPAM))
 						tell(srcM, msg.target(), msg.tool(), msg.sourceMessage());
+					break;
+				case CMMsg.TYP_WROTE:
+					if((msg.target() instanceof Item)
+					&&(msg.targetMessage()!=null)
+					&&(msg.targetMessage().length()>0)
+					&&(!CMSecurity.isDisabled(DisFlag.AUTODISEASE)))
+					{
+						final String msgStr =msg.targetMessage().trim();
+						if(msgStr.length()>10)
+						{
+							final int chc=30 + (((msg.target() instanceof Book)&&((Book)msg.target()).isJournal())?30:0);
+							if((CMLib.dice().rollPercentage()<chc)
+							&&(CMLib.dice().rollPercentage()>CMLib.english().probabilityOfBeingEnglish(msgStr)))
+							{
+								final Ability A=CMClass.getAbility("Disease_WritersBlock");
+								if((A!=null)&&(fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+									A.invoke(this, this, true, 0);
+							}
+						}
+					}
 					break;
 				default:
 					if((msg.targetMinor()==CMMsg.TYP_DAMAGE)

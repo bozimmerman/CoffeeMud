@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2006-2017 Bo Zimmerman
+   Copyright 2006-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -322,7 +322,7 @@ public class Nanny extends StdBehavior
 		{
 			if(isDropOffable(msg.tool()))
 			{
-				final String pronoun=this.getPronoun(new XVector(msg.tool()));
+				final String pronoun=this.getPronoun(new XVector<PhysicalAgent>((PhysicalAgent)msg.tool()));
 				msg.source().tell(msg.source(),host,msg.tool(),L("<T-NAME> won't accept <O-NAME>.  You should probably leave your @x1 here.",pronoun));
 				return false;
 			}

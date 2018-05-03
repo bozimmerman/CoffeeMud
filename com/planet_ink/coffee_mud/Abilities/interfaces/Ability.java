@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -820,6 +820,8 @@ public interface Ability extends Environmental
 	public static final int DOMAIN_SEATRAVEL=76<<5;
 	/** constant mask returned by classificationCode() designating this ability as being a studying skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int DOMAIN_EDUCATIONLORE=77<<5;
+	/** constant mask returned by classificationCode() designating this ability as being a studying skill @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
+	public static final int DOMAIN_EPICUREAN=78<<5;
 	/** constant used to mask classificationCode() to return only the higher order DOMAIN_* constant. @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#classificationCode() */
 	public static final int ALL_DOMAINS=(255<<5);
 	/** array of string describtions for the DOMAIN_* constants, indexed by their values */
@@ -843,7 +845,7 @@ public interface Ability extends Environmental
 		"RACIAL_ABILITY","ARTISTIC","ANATOMY","ARMOR_USE",
 		"SHIELD_USE","CRIMINAL","LEGAL","FITNESS","THEATRE",
 		"BUILDING","WATER_LORE","WATER_CONTROL","SEA_TRAVEL",
-		"EDUCATION_LORE"
+		"EDUCATION_LORE","EPICUREAN"
 	};
 	/** array of string verbs for the DOMAIN_* constants, indexed by their values */
 	public static final String[] DOMAIN_VERBS={
@@ -865,7 +867,7 @@ public interface Ability extends Environmental
 		"Combat Loring","Combat Fluidisizing","Evading","Matrial Loring",
 		"Racial Knowing","Artmaking","Anatomy","Armor Using",
 		"Shield Using","Crimemaking","Legalizing","Fitness","Acting",
-		"Building","Water Lore","Water Control","Sea Travel"
+		"Building","Water Lore","Water Control","Sea Travel","Indulging"
 	};
 
 	/** constant descriptions for the minRange()/maxRange() values @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#minRange() */

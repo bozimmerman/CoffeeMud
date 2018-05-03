@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -56,7 +56,12 @@ public class Poison_Slumberall extends Poison
 		return triggerStrings;
 	}
 
-	@Override protected int POISON_TICKS(){return 50;} // 0 means no adjustment!
+	@Override
+	protected int POISON_TICKS()
+	{
+		return 50;
+	} // 0 means no adjustment!
+
 	@Override
 	protected int POISON_DELAY()
 	{
@@ -111,7 +116,7 @@ public class Poison_Slumberall extends Poison
 	@Override
 	public void unInvoke()
 	{
-		if(affected instanceof MOB)
+		if((affected instanceof MOB)&&(super.canBeUninvoked()))
 		{
 			final MOB mob=(MOB)affected;
 			CMLib.commands().postStand(mob,true);

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -159,6 +159,8 @@ public interface Container extends Item, CloseableLockable
 	public static final int CONTAIN_FOOTWEAR=32768;
 	/** Container Type flag that means the container can hold raw resources */
 	public static final int CONTAIN_RAWMATERIALS=65536;
+	/** Container Type flag that means the container can hold foods */
+	public static final int CONTAIN_EATABLES=131072;
 	
 	/**
 	 * Ordinal list of the names of all the container bitmask types.
@@ -182,6 +184,7 @@ public interface Container extends Item, CloseableLockable
 												"SMOKEABLES",
 												"SS COMPONENTS",
 												"FOOTWEAR",
-												"RAWMATERIALS"
+												"RAWMATERIALS",
+												"EATABLES"
 												};
 }

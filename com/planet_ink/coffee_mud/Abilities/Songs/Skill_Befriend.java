@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Songs;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.ExtAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -18,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2006-2017 Bo Zimmerman
+   Copyright 2006-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -113,7 +114,6 @@ public class Skill_Befriend extends BardSkill
 							{
 								srcM.recoverCharStats();
 							}
-							
 						});
 					}
 					else
@@ -129,14 +129,65 @@ public class Skill_Befriend extends BardSkill
 						}
 						if(name.equals(srcM.Name()))
 						{
+							final int chaAmt = amt;
+							final ExtAbility A=(ExtAbility)CMClass.getAbility("ExtAbility");
+							A.setAbilityID(ID()+"_Stat");
+							A.setStatsAffector(new StatsAffecting()
+							{
+								final int amt=chaAmt;
+								@Override
+								public void affectPhyStats(Physical affected, PhyStats affectableStats)
+								{
+								}
+
+								@Override
+								public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+								{
+									affectableStats.setStat(CharStats.STAT_CHARISMA, affectableStats.getStat(CharStats.STAT_CHARISMA)+amt);
+								}
+
+								@Override
+								public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+								{
+								}
+							});
+							final CMMsg thisMsg = msg;
+							A.setMsgListener(new MsgListener()
+							{
+								final CMMsg msg2=thisMsg;
+								final Ability extA = A;
+								@Override
+								public void executeMsg(Environmental myHost, CMMsg msg)
+								{
+									if((msg != msg2)&&(myHost instanceof MOB))
+									{
+										((MOB)myHost).delEffect(extA);
+										((MOB)myHost).recoverCharStats();
+									}
+								}
+
+								@Override
+								public boolean okMessage(Environmental myHost, CMMsg msg)
+								{
+									if((msg != msg2)&&(myHost instanceof MOB))
+									{
+										((MOB)myHost).delEffect(extA);
+										((MOB)myHost).recoverCharStats();
+									}
+									return true;
+								}
+							});
+							srcM.addEffect(A);
 							srcM.recoverCharStats();
-							srcM.charStats().setStat(CharStats.STAT_CHARISMA, msg.source().charStats().getStat(CharStats.STAT_CHARISMA) + amt);
 							msg.addTrailerRunnable(new Runnable()
 							{
+								final Ability extA = A;
+								final MOB mob=srcM;
 								@Override
 								public void run()
 								{
-									srcM.recoverCharStats();
+									mob.delEffect(extA);
+									mob.recoverCharStats();
 								}
 							});
 						}
@@ -164,10 +215,13 @@ public class Skill_Befriend extends BardSkill
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
-		if(ticking instanceof MOB)
+		if((ticking instanceof MOB)
+		&&((text().length()==0)||(text().indexOf('=')<0)))
 		{
 			final MOB mob=(MOB)ticking;
-			if((mob.amFollowing()==null)||(mob.amFollowing().isMonster())||(!CMLib.flags().isInTheGame(mob.amFollowing(), true)))
+			if((mob.amFollowing()==null)
+			||(mob.amFollowing().isMonster())
+			||(!CMLib.flags().isInTheGame(mob.amFollowing(), true)))
 			{
 				if(mob.getStartRoom()==null)
 					mob.destroy();

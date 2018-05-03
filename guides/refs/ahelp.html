@@ -28,6 +28,8 @@
 			
 			<li> <a href="#ANNOUNCE">ANNOUNCE</a>
 			
+			<li> <a href="#ARCHON_MATRIX_POSSESS">ARCHON_MATRIX_POSSESS</a>
+			
 			<li> <a href="#AREAS">AREAS</a>
 			
 			<li> <a href="#AS">AS</a>
@@ -116,6 +118,8 @@
 			
 			<li> <a href="#IMPORT">IMPORT</a>
 			
+			<li> <a href="#INFECT">INFECT</a>
+			
 			<li> <a href="#INJURE">INJURE</a>
 			
 			<li> <a href="#JCONSOLE">JCONSOLE</a>
@@ -125,6 +129,10 @@
 			<li> <a href="#LINK">LINK</a>
 			
 			<li> <a href="#LIST">LIST</a>
+			
+			<li> <a href="#LIST_ABILITIES">LIST_ABILITIES</a>
+			
+			<li> <a href="#LIST_ABILITYDOMAINS">LIST_ABILITYDOMAINS</a>
 			
 			<li> <a href="#LIST_ACCOUNTS">LIST_ACCOUNTS</a>
 			
@@ -138,11 +146,15 @@
 			
 			<li> <a href="#LIST_AREAS">LIST_AREAS</a>
 			
+			<li> <a href="#LIST_AREATYPES">LIST_AREATYPES</a>
+			
 			<li> <a href="#LIST_ARMOR">LIST_ARMOR</a>
 			
 			<li> <a href="#LIST_BANNED">LIST_BANNED</a>
 			
 			<li> <a href="#LIST_BEHAVIORS">LIST_BEHAVIORS</a>
+			
+			<li> <a href="#LIST_BUGS">LIST_BUGS</a>
 			
 			<li> <a href="#LIST_CHANTS">LIST_CHANTS</a>
 			
@@ -153,6 +165,8 @@
 			<li> <a href="#LIST_CLASSES">LIST_CLASSES</a>
 			
 			<li> <a href="#LIST_COMMANDJOURNAL">LIST_COMMANDJOURNAL</a>
+			
+			<li> <a href="#LIST_COMMANDS">LIST_COMMANDS</a>
 			
 			<li> <a href="#LIST_COMMON">LIST_COMMON</a>
 			
@@ -170,6 +184,8 @@
 			
 			<li> <a href="#LIST_DISEASES">LIST_DISEASES</a>
 			
+			<li> <a href="#LIST_ENABLEFLAG">LIST_ENABLEFLAG</a>
+			
 			<li> <a href="#LIST_ENVRESOURCES">LIST_ENVRESOURCES</a>
 			
 			<li> <a href="#LIST_EXITS">LIST_EXITS</a>
@@ -182,11 +198,15 @@
 			
 			<li> <a href="#LIST_FILEUSE">LIST_FILEUSE</a>
 			
+			<li> <a href="#LIST_GENSTATS">LIST_GENSTATS</a>
+			
 			<li> <a href="#LIST_GOVERNMENTS">LIST_GOVERNMENTS</a>
 			
 			<li> <a href="#LIST_HELPFILEREQUESTS">LIST_HELPFILEREQUESTS</a>
 			
 			<li> <a href="#LIST_HOLIDAYS">LIST_HOLIDAYS</a>
+			
+			<li> <a href="#LIST_IDEAS">LIST_IDEAS</a>
 			
 			<li> <a href="#LIST_ITEMS">LIST_ITEMS</a>
 			
@@ -226,7 +246,11 @@
 			
 			<li> <a href="#LIST_PROPERTIES">LIST_PROPERTIES</a>
 			
+			<li> <a href="#LIST_QUESTNAMES">LIST_QUESTNAMES</a>
+			
 			<li> <a href="#LIST_QUESTS">LIST_QUESTS</a>
+			
+			<li> <a href="#LIST_QUESTWINNERS">LIST_QUESTWINNERS</a>
 			
 			<li> <a href="#LIST_RACECATS">LIST_RACECATS</a>
 			
@@ -248,6 +272,8 @@
 			
 			<li> <a href="#LIST_SKILLS">LIST_SKILLS</a>
 			
+			<li> <a href="#LIST_SOCIALS">LIST_SOCIALS</a>
+			
 			<li> <a href="#LIST_SOFTWARE">LIST_SOFTWARE</a>
 			
 			<li> <a href="#LIST_SONGS">LIST_SONGS</a>
@@ -268,11 +294,17 @@
 			
 			<li> <a href="#LIST_THIEFSKILLS">LIST_THIEFSKILLS</a>
 			
+			<li> <a href="#LIST_THREAD">LIST_THREAD</a>
+			
 			<li> <a href="#LIST_THREADS">LIST_THREADS</a>
 			
 			<li> <a href="#LIST_TICKS">LIST_TICKS</a>
 			
+			<li> <a href="#LIST_TIMEZONES">LIST_TIMEZONES</a>
+			
 			<li> <a href="#LIST_TITLES">LIST_TITLES</a>
+			
+			<li> <a href="#LIST_TYPOS">LIST_TYPOS</a>
 			
 			<li> <a href="#LIST_UNLINKEDEXITS">LIST_UNLINKEDEXITS</a>
 			
@@ -352,6 +384,8 @@
 			
 			<li> <a href="#TATTOO">TATTOO</a>
 			
+			<li> <a href="#TEST">TEST</a>
+			
 			<li> <a href="#TICKTOCK">TICKTOCK</a>
 			
 			<li> <a href="#TRAILTO">TRAILTO</a>
@@ -422,6 +456,11 @@
 			</P>
 			
 			<p>
+			<a name="ARCHON_MATRIX_POSSESS"><B>ARCHON_MATRIX_POSSESS</B></a>
+			<pre><BR>Skill    : Matrix Possess<BR>Domain   : Archon<BR>Use Cost : Movement (51) <BR>Quality  : Malicious<BR>Targets  : Creatures <BR>Range    : Touch, or not applicable<BR>Commands : MPOSSESS<BR>Usage    : MPOSSESS [PLAYER NAME]<BR>Example  : mpossess bob<BR>This skill will allow you automatically possess a new mob in the same room as<BR>the target player whenever the target moves to a new room.  Just like possess,<BR>use QUIT to shut it down.</pre>
+			</P>
+			
+			<p>
 			<a name="AREAS"><B>AREAS</B></a>
 			<pre>See the normal HELP AREAS for usage information. The Archon version of this<BR>command will color the area names based on whether the area is active or<BR>passive, frozen or stopped.  Also, area names will be in parenthesis if they<BR>are currently Hidden from normal users.</pre>
 			</P>
@@ -468,17 +507,17 @@
 			
 			<p>
 			<a name="BUG"><B>BUG</B></a>
-			<pre>A COMMAND JOURNAL.  See Archon Help (AHELP) on COMMAND JOURNALS</pre>
+			<pre>Command : BUG<BR>Usage   : BUG [MESSAGE]/REVIEW (FILTER) (STARTING MSG)<BR>Usage   : BUG TRANSFER (FILTER) [MESSAGE NUMBER] [TARGET]<BR>Example : bug nothing is spelled right in this room!<BR>Example : bug review<BR>Example : bug review 7<BR>Example : bug review bob 7<BR>Short(s): <BR>This command can be used to submit bugs to the system.  When the REVIEW<BR>parameter is given, the bugs will be iterated through one at a time to give the<BR>archon a chance to delete, comment on, or email each one.  An optional starting<BR>number can be given to REVIEW. An optional filter can be given to list only<BR>messages assigned to a particular user.</pre>
 			</P>
 			
 			<p>
 			<a name="CATALOG"><B>CATALOG</B></a>
-			<pre>Command  : CATALOG<BR>Usage    : CATALOG LIST (MOBS/ITEMS/) (NAME MASK)<BR>Usage    : CATALOG (DELETE) [ITEM/MOB NAME]<BR>Usage    : CATALOG (ROOM/AREA/WORLD) (MOBS/ITEMS/)<BR>Usage    : CATALOG EDIT [ITEM NAME]<BR>Usage    : CATALOG CATEGORY [CATEGORY NAME]<BR>Usage    : CATALOG SCAN/DBSCAN (ROOM/AREA/WORLD) (MOBS/ITEMS/)<BR>Usage    : CATALOG OVERLOOK/DBOVERLOOK (ROOM/AREA/WORLD) (MOBS/ITEMS/)<BR>Example  : catalog list<BR>Example  : catalog list mobs the st<BR>Example  : catalog the waiter<BR>Example  : catalog delete the waiter<BR>Example  : catalog edit the sword<BR>Example  : catalog room mobs<BR>Example  : catalog scan area<BR>Example  : catalog dboverlook area mobs<BR>Short(s) : <BR>This command is used to manage your muds global catalog of generic mobs and/or<BR>items. The catalog is a place where you can store templates of mobs and items<BR>for reuse, or for quick global modification and analysis.  Mobs and items in<BR>your catalog can be changed globally simply by creating and then changing any<BR>instance of one of them.  You can create new instances of a cataloged object<BR>simply by entering CREATE &lt;cataloged object name>. Your catalog is keyed by<BR>name, so once the name of a cataloged item or mob is set, it should not be<BR>changed. <BR><BR>Cataloged items can be placed into categories by issueing the catalog category<BR>command before adding or modifying catalog entries.  Mobs and items so<BR>cataloged must still have a unique global name, but flagging them this way can<BR>make listing them must easier. <BR><BR>You may review the objects in your catalog using the catalog list command. You<BR>can also check the catalog synchronicity of the objects in your live rooms with<BR>scan, or your saved rooms with dbscan.  You can check for uncataloged objects<BR>in live rooms with the overlook parameter, or in your saved rooms with<BR>dboverlook. <BR><BR>You may delete an object from your catalog to stop using it as a global<BR>template. Deleting an object from the catalog only detaches instances of a<BR>cataloged object from all others, but does not destroy any actual instances.<BR><BR>The catalog is also used to manage a global random item-drop table.  Items can<BR>be set to randomly appear in the inventories of selected mobs when those mobs<BR>are brought to life, or at the moment of their death. Use CATALOG EDIT &lt;item<BR>name> to change drop settings.</pre>
+			<pre>Command  : CATALOG<BR>Usage    : CATALOG LIST (MOBS/ITEMS/CATEGORIES/) [NAME MASK]<BR>Usage    : CATALOG (DELETE) [ITEM/MOB NAME]<BR>Usage    : CATALOG (ROOM/AREA/WORLD) (MOBS/ITEMS/)<BR>Usage    : CATALOG EDIT [ITEM NAME]<BR>Usage    : CATALOG CATEGORY [CATEGORY NAME]<BR>Usage    : CATALOG SCAN/DBSCAN (ROOM/AREA/WORLD) (MOBS/ITEMS/)<BR>Usage    : CATALOG OVERLOOK/DBOVERLOOK (ROOM/AREA/WORLD) (MOBS/ITEMS/)<BR>Example  : catalog list<BR>Example  : catalog list mobs the st<BR>Example  : catalog list mob categories<BR>Example  : catalog the waiter<BR>Example  : catalog delete the waiter<BR>Example  : catalog edit the sword<BR>Example  : catalog room mobs<BR>Example  : catalog scan area<BR>Example  : catalog dboverlook area mobs<BR>Short(s) : <BR>This command is used to manage your muds global catalog of generic mobs and/or<BR>items. The catalog is a place where you can store templates of mobs and items<BR>for reuse, or for quick global modification and analysis.  Mobs and items in<BR>your catalog can be changed globally simply by creating and then changing any<BR>instance of one of them.  You can create new instances of a cataloged object<BR>simply by entering CREATE &lt;cataloged object name>. Your catalog is keyed by<BR>name, so once the name of a cataloged item or mob is set, it should not be<BR>changed. <BR><BR>Cataloged items can be placed into categories by issueing the catalog category<BR>command before adding or modifying catalog entries.  Mobs and items so<BR>cataloged must still have a unique global name, but flagging them this way can<BR>make listing them must easier. <BR><BR>You may review the objects in your catalog using the catalog list command. You<BR>can also check the catalog synchronicity of the objects in your live rooms with<BR>scan, or your saved rooms with dbscan.  You can check for uncataloged objects<BR>in live rooms with the overlook parameter, or in your saved rooms with<BR>dboverlook. <BR><BR>You may delete an object from your catalog to stop using it as a global<BR>template. Deleting an object from the catalog only detaches instances of a<BR>cataloged object from all others, but does not destroy any actual instances.<BR><BR>The catalog is also used to manage a global random item-drop table.  Items can<BR>be set to randomly appear in the inventories of selected mobs when those mobs<BR>are brought to life, or at the moment of their death. Use CATALOG EDIT &lt;item<BR>name> to change drop settings.</pre>
 			</P>
 			
 			<p>
 			<a name="CHARGEN"><B>CHARGEN</B></a>
-			<pre>Skill    : CHARGEN<BR>Usage    : CHARGEN<BR>Example  : chargen<BR>Short(s) : <BR>A little utility designed to give example characters of various levels, for<BR>comparison with MOBs of similar level.</pre>
+			<pre>Skill    : CHARGEN<BR>Usage    : CHARGEN (COMBAT/NEW/PLAYER/EQUIP) (CHARCLASS/ALL) (LEVEL)<BR>Example  : chargen combat figher 10<BR>Example  : chargen equip bob<BR>Example  : chargen weapon ([ARG]=[VALUE] ...)<BR>Short(s) : <BR>A little utility designed to give example characters and weapons of various<BR>levels, for comparison with MOBs of similar level.  It's basically a class<BR>balancing tool.</pre>
 			</P>
 			
 			<p>
@@ -493,7 +532,7 @@
 			
 			<p>
 			<a name="COLORCODES"><B>COLORCODES</B></a>
-			<pre>The following codes are available for channels definitions:<BR>WHITE, LIGHTGREEN, LIGHTBLUE, LIGHTRED, YELLOW, LIGHTCYAN, LIGHTPURPLE, GREY,<BR>GREEN, BLUE, RED, BROWN, CYAN, PURPLE, DARKGREY, BLACK, NONE, BOLD, UNDERLINE,<BR>BLINK, ITALICS, BGWHITE, BGGREEN, BGBLUE, BGRED, BGYELLOW, BGCYAN, BGPURPLE,<BR>BGBLACK, BGDEFAULT</pre>
+			<pre>The following codes are available for channels definitions:<BR><FONT COLOR=WHITE>WHITE, <FONT COLOR=LIGHTGREEN>LIGHTGREEN, <FONT COLOR=BLUE>LIGHTBLUE, <FONT COLOR=RED>LIGHTRED, <FONT COLOR=YELLOW>YELLOW, <FONT COLOR=CYAN>LIGHTCYAN, <FONT COLOR=VIOLET>LIGHTPURPLE, <FONT COLOR=LIGHTGREY>GREY,<BR>&lt;FONT COLOR=GREEN>GREEN, <FONT COLOR=#000099>BLUE, <FONT COLOR=#993300>RED, <FONT COLOR=#999966>BROWN, <FONT COLOR=DARKCYAN>CYAN, <FONT COLOR=PURPLE>PURPLE, <FONT COLOR=GRAY>DARKGREY, </I></U></BLINK></B></FONT>BLACK, NONE,<BR>BOLD, UNDERLINE, BLINK, ITALICS, <FONT COLOR=BLUE>^~wBGWHITE, <FONT COLOR=WHITE>^~gBGGREEN, <FONT COLOR=WHITE>^~bBGBLUE, <FONT COLOR=WHITE>^~rBGRED,<BR>&lt;FONT COLOR=#000099>^~yBGYELLOW, <FONT COLOR=GRAY>^~cBGCYAN, <FONT COLOR=WHITE>^~pBGPURPLE, </I></U></BLINK></B></FONT>BGBLACK, BGDEFAULT</pre>
 			</P>
 			
 			<p>
@@ -503,7 +542,7 @@
 			
 			<p>
 			<a name="COMMAND_JOURNALS"><B>COMMAND_JOURNALS</B></a>
-			<pre>Usage      : [JOURNAL_NAME] (REVIEW/TRANSFER) [MSG NUMBER]<BR>Example    : list ideas<BR>Example    : ideas review 10<BR>Example    : ideas transfer 10 bugs<BR>A command journal is a special kind of command that can be created and modified<BR>from the MUDGrinder Control Panel or the coffeemud.ini file.  It is a special<BR>kind of journal that users can write to from the command line with the command<BR>journal command word, such as BUG, or IDEA, or TYPO.  The Command Journal's<BR>entries can then be listed by those with the necessary security clearance by<BR>using the LIST [JOURNALNAME] command.  Entries can also be stepped through<BR>using the command [JOURNALNAME] REVIEW ([MSG NUMBER]) syntax.  They can be<BR>transferred from the step-through menu to other journals, or they can be<BR>transferred directly from the command line with [JOURNALNAME] TRANSFER [MSG<BR>NUMBER] [2ND_JOURNALNAME]. Lastly, entries in a command journal can be deleted<BR>from the step-through menu, or by entering DESTROY [JOURNALNAME] [MSG NUMBER].</pre>
+			<pre>Usage      : [JOURNAL_NAME] (REVIEW/TRANSFER) [MSG NUMBER]<BR>Example    : list ideas<BR>Example    : idea review 10<BR>Example    : idea transfer 10 bug<BR>A command journal is a special kind of command that can be created and modified<BR>from the MUDGrinder Control Panel or the coffeemud.ini file.  It is a special<BR>kind of journal that users can write to from the command line with the command<BR>journal command word, such as BUG, or IDEA, or TYPO.  The Command Journal's<BR>entries can then be listed by those with the necessary security clearance by<BR>using the LIST [JOURNALNAME] command.  Entries can also be stepped through<BR>using the command [JOURNALNAME] REVIEW ([MSG NUMBER]) syntax.  They can be<BR>transferred from the step-through menu to other journals, or they can be<BR>transferred directly from the command line with [JOURNALNAME] TRANSFER [MSG<BR>NUMBER] [2ND_JOURNALNAME]. Lastly, entries in a command journal can be deleted<BR>from the step-through menu, or by entering DESTROY [JOURNALNAME] [MSG NUMBER].</pre>
 			</P>
 			
 			<p>
@@ -633,12 +672,17 @@
 			
 			<p>
 			<a name="IDEA"><B>IDEA</B></a>
-			<pre>Command : IDEA<BR>Usage   : IDEA [MESSAGE]/REVIEW (STARTING MSG)<BR>Example : idea nothing is spelled right in this room!<BR>Example : idea review<BR>Example : idea review 7<BR>Short(s): <BR>This command can be used to submit ideas to the system.  When the REVIEW<BR>parameter is given, the ideas will be iterated through one at a time to give<BR>the archon a chance to delete, comment on, or email each one.  An optional<BR>starting number can be given to REVIEW.</pre>
+			<pre>Command : IDEA<BR>Usage   : IDEA [MESSAGE]/REVIEW (FILTER) (STARTING MSG)<BR>Usage   : IDEA TRANSFER (FILTER) [MESSAGE NUMBER] [TARGET]<BR>Example : idea nothing is spelled right in this room!<BR>Example : idea review<BR>Example : idea review 7<BR>Example : idea review bob 7<BR>Short(s): <BR>This command can be used to submit ideas to the system.  When the REVIEW<BR>parameter is given, the ideas will be iterated through one at a time to give<BR>the archon a chance to delete, comment on, or email each one.  An optional<BR>starting number can be given to REVIEW. An optional filter can be given to list<BR>only messages assigned to a particular user.</pre>
 			</P>
 			
 			<p>
 			<a name="IMPORT"><B>IMPORT</B></a>
 			<pre>Command  : IMPORT<BR>Usage    : IMPORT (NOPROMPT) (NODELETE) (AREATYPE=TYPE) [FILE NAME(S)] <BR>Example  : import /areas/myarea.cmare<BR>Example  : import noprompt nodelete /areas/midgaard.are<BR>Example  : import areatype=stdthininstance /areas/midgaard.are<BR>/areas/school.are<BR>Example  : import noprompt /areas/areas.lst<BR>Example  : import noprompt /areas/<BR>Short(s) : <BR>The import command will allow you to import official coffeemud area files,<BR>whose extension is "*.cmare"<BR>CoffeeMud may also import, with varying levels of success, the "*.are" files<BR>used by other muds.  Some formats are better supported than others, so be sure<BR>to carefully examine the imported area afterwards.<BR>The import command will auto detect, based on the file given, whether the file<BR>refers to a coffeemud area file, room file, a "*.are" from another mud, or a<BR>"*.lst" list of other area files.<BR>The CoffeeMud "resources" directory is the default path.  Remember that all<BR>paths in CoffeeMud treat the install directory as "root'. This means that the<BR>files being imported must be copied into a folder underneath your install<BR>directory before use.  See the help on VFS for more information on this<BR>concept.</pre>
+			</P>
+			
+			<p>
+			<a name="INFECT"><B>INFECT</B></a>
+			<pre><BR>Skill    : Infect<BR>Domain   : Archon<BR>Use Cost : Movement (51) <BR>Quality  : Malicious<BR>Targets  : Creatures <BR>Range    : Touch - Range 1<BR>Commands : INFECT<BR>Usage    : INFECT [PLAYER/MOB NAME] [DISEASE NAME]<BR>Example  : infect gunther flu<BR>The player with this skill can cause the target to become infected with a given<BR>disease.</pre>
 			</P>
 			
 			<p>
@@ -667,8 +711,18 @@
 			</P>
 			
 			<p>
+			<a name="LIST_ABILITIES"><B>LIST_ABILITIES</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST ABILITIES (DOMAIN)<BR>Example  : list abilities<BR>Example  : list abilities enchantment/charm<BR>Shows the list of java classes (ability ids) available to archons.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_ABILITYDOMAINS"><B>LIST_ABILITYDOMAINS</B></a>
+			<pre>Command  : LIST<BR>Usage    : LIST ABILITYDOMAINS<BR>Example  : list abilitydomains<BR>Shows the list of domains that abilities, skills, spells, chants, etc belong<BR>to.</pre>
+			</P>
+			
+			<p>
 			<a name="LIST_ACCOUNTS"><B>LIST_ACCOUNTS</B></a>
-			<pre>Command  : LIST<BR>Usage    : LIST ACCOUNTS ([COLUMN NAME])<BR>Example  : list accounts<BR>Example  : list accounts email<BR>If your mud is using the account system, this will list all the accounts in the<BR>game, along with their last login date, email address, and all players<BR>associated with that account. If you specify a column name of NAME, LAST,<BR>EMAIL, or IP, then that column will be shown if it is not available, and the<BR>list will be sorted by that column.</pre>
+			<pre>Command  : LIST<BR>Usage    : LIST ACCOUNTS ([COLUMN NAME])<BR>Example  : list accounts<BR>Example  : list accounts email<BR>If your mud is using the account system, this will list all the accounts in the<BR>game, along with their last login date, email address, and all players<BR>associated with that account. If you specify a column name of NAME, LAST,<BR>EMAIL, or IP, then that column will be shown if it is not available, and the<BR>list will be sorted by that column.  You can specify column name </pre>
 			</P>
 			
 			<p>
@@ -683,7 +737,7 @@
 			
 			<p>
 			<a name="LIST_AREA"><B>LIST_AREA</B></a>
-			<pre>Command  : LIST<BR>Usage    : LIST AREA (ROOM/MOB/ITEM/MOBMASK/ITEMMASK) ([MASK])<BR>Example  : list area<BR>Example  : list area mob creeper<BR>Example  : list area mobmask -race +elf<BR>Lists all the rooms in the current area, along with the locale type of each<BR>room. Optionally, a specifier can be added to search for rooms, mobs, items by<BR>name, or mobs and items by zapper mask using the mobmask/itemmask parameters. </pre>
+			<pre>Command  : LIST<BR>Usage    : LIST AREA (ROOM/MOB/ITEM/SHOPS/MOBMASK/ITEMMASK) ([MASK])<BR>Example  : list area<BR>Example  : list area mob creeper<BR>Example  : list area mobmask -race +elf<BR>Lists all the rooms in the current area, along with the locale type of each<BR>room. Optionally, a specifier can be added to search for rooms, mobs, items by<BR>name, or mobs and items by zapper mask using the mobmask/itemmask parameters. </pre>
 			</P>
 			
 			<p>
@@ -694,6 +748,11 @@
 			<p>
 			<a name="LIST_AREAS"><B>LIST_AREAS</B></a>
 			<pre>Command  : LIST<BR>Usage    : LIST AREAS (SORTBY [COLUMN]...) (COLS [COLUMN]...))<BR>Example  : list areas<BR>Example  : list areas sortby name cols name population<BR>Example  : list areas sortby name<BR>Lists all the standard areas in your game.  By default, it also shows whether<BR>the area is Hidden, how many rooms are in the area, whether it is in a passive<BR>or active state, its current population, and the median level.  If the sortby<BR>parameter is used, then you can follow it with the order of columns to sort by.<BR> Valid columns include: NAME, AUTHOR, DESCRIPTION , ROOMS, STATE, HIDDEN,<BR>POPULATION, MIN_LEVEL, MAX_LEVEL, AVG_LEVEL, MED_LEVEL, AVG_ALIGNMENT,<BR>MED_ALIGNMENT, TOTAL_LEVELS, TOTAL_INTELLIGENT_LEVELS, VISITABLE_ROOMS,<BR>INDOOR_ROOMS.  If the columns parameter is used, then you can follow it with<BR>columns to substitute in the table.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_AREATYPES"><B>LIST_AREATYPES</B></a>
+			<pre>Command  : LIST<BR>Usage    : LIST AREATYPES<BR>Example  : list areatypes<BR>Shows the list of the area type ids (class ids).</pre>
 			</P>
 			
 			<p>
@@ -712,8 +771,13 @@
 			</P>
 			
 			<p>
+			<a name="LIST_BUGS"><B>LIST_BUGS</B></a>
+			<pre>Command  : LIST<BR>Usage    : LIST BUGS (TO)<BR>Example  : list bugs<BR>Example  : list bugs bob<BR>Lists all the entries in the SYSTEM_BUGS journal.  An optional name can be<BR>appended to show entries assign to that name.</pre>
+			</P>
+			
+			<p>
 			<a name="LIST_CHANTS"><B>LIST_CHANTS</B></a>
-			<pre>Command  : LIST<BR>Usage    : LIST CHANTS<BR>Example  : list chants<BR>Shows all the chant spell java class names (ability ids) available to your<BR>archons.</pre>
+			<pre>Command  : LIST<BR>Usage    : LIST CHANTS (DOMAIN)<BR>Example  : list chants<BR>Shows all the chant spell java class names (ability ids) available to your<BR>archons.</pre>
 			</P>
 			
 			<p>
@@ -737,8 +801,13 @@
 			</P>
 			
 			<p>
+			<a name="LIST_COMMANDS"><B>LIST_COMMANDS</B></a>
+			<pre>Command  : LIST<BR>Usage    : LIST COMMANDS ([PLAYER])<BR>Example  : list commands<BR>Example  : list commands bob<BR>Shows the list of all trigger/command words.  A player may optionally be given<BR>to change the available commands list. </pre>
+			</P>
+			
+			<p>
 			<a name="LIST_COMMON"><B>LIST_COMMON</B></a>
-			<pre>Command  : LIST <BR>Usage    : LIST COMMON<BR>Example  : list common<BR>Shows the list of common skill java classes (ability ids) available to archons.</pre>
+			<pre>Command  : LIST <BR>Usage    : LIST COMMON (DOMAIN)<BR>Example  : list common<BR>Shows the list of common skill java classes (ability ids) available to archons.</pre>
 			</P>
 			
 			<p>
@@ -758,7 +827,7 @@
 			
 			<p>
 			<a name="LIST_CURRENTS"><B>LIST_CURRENTS</B></a>
-			<pre>Command  : LIST<BR>Usage    : LIST CURRENTS<BR>Example  : list currents<BR>Lists all the the electronic devices receiving electronic current processing in<BR>the game. This could be groups of computers in a lab, or devices aboard a<BR>single space ship.</pre>
+			<pre>Command  : LIST<BR>Usage    : LIST CURRENTS<BR>Example  : list currents<BR>Lists all the electronic devices receiving electronic current processing in the<BR>game. This could be groups of computers in a lab, or devices aboard a single<BR>space ship.</pre>
 			</P>
 			
 			<p>
@@ -774,6 +843,11 @@
 			<p>
 			<a name="LIST_DISEASES"><B>LIST_DISEASES</B></a>
 			<pre>Command  : LIST<BR>Usage    : LIST DISEASES<BR>Example  : list diseases<BR>Shows the list of all diseases (ability ids) available to archons.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_ENABLEFLAG"><B>LIST_ENABLEFLAG</B></a>
+			<pre>Command  : LIST<BR>Usage    : LIST ENABLEFLAG<BR>Example  : list enableflag<BR>Lists all the currently enabled (but normally disabled) subsystems in your mud.</pre>
 			</P>
 			
 			<p>
@@ -807,6 +881,11 @@
 			</P>
 			
 			<p>
+			<a name="LIST_GENSTATS"><B>LIST_GENSTATS</B></a>
+			<pre>Command  : LIST<BR>Usage    : LIST GENSTATS ([CLASS]/[ID]/[ITEM/MOB/WHATEVER NAME])<BR>Example  : list genstats GenWeapon<BR>Example  : list genstats orc<BR>Example  : list genstats GenItem<BR>Example  : list genstats door<BR>Shows the Generic Item stat names for the given class or item.  These names are<BR>used in scripting, in random area xml, and the gmodify command.</pre>
+			</P>
+			
+			<p>
 			<a name="LIST_GOVERNMENTS"><B>LIST_GOVERNMENTS</B></a>
 			<pre>Command  : LIST<BR>Usage    : LIST GOVERNMENTS<BR>Example  : list governments<BR>Lists all the clan governments that have been defined in your mud.</pre>
 			</P>
@@ -819,6 +898,11 @@
 			<p>
 			<a name="LIST_HOLIDAYS"><B>LIST_HOLIDAYS</B></a>
 			<pre>Command  : LIST<BR>Usage    : LIST HOLIDAYS<BR>Example  : list holidays<BR>Lists all the official Holidays defined in your game, along with the areas that<BR>they are specified to apply in (or *special* if they are multi-area).</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_IDEAS"><B>LIST_IDEAS</B></a>
+			<pre>Command  : LIST<BR>Usage    : LIST IDEAS (TO)<BR>Example  : list ideas<BR>Example  : list ideas bob<BR>Lists all the entries in the SYSTEM_IDEAS journal.  An optional name can be<BR>appended to show entries assign to that name.</pre>
 			</P>
 			
 			<p>
@@ -838,7 +922,7 @@
 			
 			<p>
 			<a name="LIST_LINKAGES"><B>LIST_LINKAGES</B></a>
-			<pre>Command  : LIST<BR>Usage    : LIST LINKAGES (WORLD)<BR>Example  : list linkages<BR>This bizarre command will list area rooms, showing number of rooms, number of<BR>mobs, average mob levels, and average alignment.  It will also show how many<BR>groups of rooms refer back to other rooms in the area, and which areas rooms in<BR>this area link to. If you add the WORLD parameter, then all areas are listed.</pre>
+			<pre>Command  : LIST<BR>Usage    : LIST LINKAGES (WORLD) (SUBSTATS)<BR>Example  : list linkages<BR>This bizarre command will list area rooms, showing number of rooms, number of<BR>mobs, average mob levels, and average alignment.  It will also show how many<BR>groups of rooms refer back to other rooms in the area, and which areas rooms in<BR>this area link to. If you add the WORLD parameter, then all areas are listed. <BR>If you add the SUBSTATS parameter, then the linking areas stats are shown<BR>instead of the linking room ids.</pre>
 			</P>
 			
 			<p>
@@ -908,7 +992,7 @@
 			
 			<p>
 			<a name="LIST_PRAYERS"><B>LIST_PRAYERS</B></a>
-			<pre>Command  : LIST <BR>Usage    : LIST PRAYERS<BR>Example  : list prayers<BR>Shows the list of prayer java classes (ability ids) available to archons.</pre>
+			<pre>Command  : LIST <BR>Usage    : LIST PRAYERS (DOMAIN)<BR>Example  : list prayers<BR>Shows the list of prayer java classes (ability ids) available to archons.</pre>
 			</P>
 			
 			<p>
@@ -917,8 +1001,18 @@
 			</P>
 			
 			<p>
+			<a name="LIST_QUESTNAMES"><B>LIST_QUESTNAMES</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST QUESTNAMES<BR>Example  : list questNAMEs<BR>Lists all the quests being managed by the quest manager, along with the display<BR>name of the quests (if any).</pre>
+			</P>
+			
+			<p>
 			<a name="LIST_QUESTS"><B>LIST_QUESTS</B></a>
 			<pre>Command  : LIST <BR>Usage    : LIST QUESTS<BR>Example  : list quests<BR>Lists all the quests being managed by the quest manager, along with the current<BR>status of the quest (running, or not), and if it is time-delayed, how long<BR>until the quest will attempt to start again.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_QUESTWINNERS"><B>LIST_QUESTWINNERS</B></a>
+			<pre>Command  : LIST <BR>Usage    : LIST QUESTWINNERS (NAME)<BR>Example  : list questwinners<BR>Example  : list questwinners myquest<BR>Lists all the quests being managed by the quest manager, along with all the<BR>winners of the quests.  A name may be optionally given to narrow down which<BR>quests are shown.</pre>
 			</P>
 			
 			<p>
@@ -968,7 +1062,12 @@
 			
 			<p>
 			<a name="LIST_SKILLS"><B>LIST_SKILLS</B></a>
-			<pre>Command  : LIST <BR>Usage    : LIST SKILLS<BR>Example  : list skills<BR>Shows the list of all skills (ability ids) available to archons.</pre>
+			<pre>Command  : LIST <BR>Usage    : LIST SKILLS (DOMAIN)<BR>Example  : list skills<BR>Shows the list of all skills (ability ids) available to archons.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_SOCIALS"><B>LIST_SOCIALS</B></a>
+			<pre>Command  : LIST<BR>Usage    : LIST SOCIALS<BR>Example  : list socials<BR>Shows the list of all base socials.</pre>
 			</P>
 			
 			<p>
@@ -978,7 +1077,7 @@
 			
 			<p>
 			<a name="LIST_SONGS"><B>LIST_SONGS</B></a>
-			<pre>Command  : LIST <BR>Usage    : LIST SONGS<BR>Example  : list songs<BR>Shows the list of song java classes (ability ids) available to archons.</pre>
+			<pre>Command  : LIST <BR>Usage    : LIST SONGS (DOMAIN)<BR>Example  : list songs<BR>Shows the list of song java classes (ability ids) available to archons.</pre>
 			</P>
 			
 			<p>
@@ -993,7 +1092,7 @@
 			
 			<p>
 			<a name="LIST_SPELLS"><B>LIST_SPELLS</B></a>
-			<pre>Command  : LIST <BR>Usage    : LIST SPELLS<BR>Example  : list spells<BR>Shows the list of spell java classes (ability ids) available to archons.</pre>
+			<pre>Command  : LIST <BR>Usage    : LIST SPELLS (DOMAIN)<BR>Example  : list spells<BR>Example  : list spells enchantment/charm<BR>Shows the list of spell java classes (ability ids) available to archons.</pre>
 			</P>
 			
 			<p>
@@ -1003,7 +1102,7 @@
 			
 			<p>
 			<a name="LIST_SUPERPOWERS"><B>LIST_SUPERPOWERS</B></a>
-			<pre>Command  : LIST<BR>Usage    : LIST POWERS<BR>Example  : list powers<BR>Shows all the superpower java class names (ability ids) available to your<BR>archons.</pre>
+			<pre>Command  : LIST<BR>Usage    : LIST POWERS (DOMAIN)<BR>Example  : list powers<BR>Shows all the superpower java class names (ability ids) available to your<BR>archons.</pre>
 			</P>
 			
 			<p>
@@ -1018,7 +1117,12 @@
 			
 			<p>
 			<a name="LIST_THIEFSKILLS"><B>LIST_THIEFSKILLS</B></a>
-			<pre>Command  : LIST <BR>Usage    : LIST THIEFSKILLS<BR>Example  : list thiefskills<BR>Shows the list of thief skill java classes (ability ids) available to archons.</pre>
+			<pre>Command  : LIST <BR>Usage    : LIST THIEFSKILLS (DOMAIN)<BR>Example  : list thiefskills<BR>Shows the list of thief skill java classes (ability ids) available to archons.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_THREAD"><B>LIST_THREAD</B></a>
+			<pre>Command  : LIST<BR>Usage    : LIST THREAD (NAMED)<BR>Example  : list thread Worker0#12<BR>This will just give a stack dump of a thread of the given name.  See LIST<BR>THREADS for more information.</pre>
 			</P>
 			
 			<p>
@@ -1032,8 +1136,18 @@
 			</P>
 			
 			<p>
+			<a name="LIST_TIMEZONES"><B>LIST_TIMEZONES</B></a>
+			<pre>Command  : LIST<BR>Usage    : LIST TIMEZONES<BR>Example  : list timezones<BR>Lists all areas grouped by their shared calendar/time.</pre>
+			</P>
+			
+			<p>
 			<a name="LIST_TITLES"><B>LIST_TITLES</B></a>
 			<pre>Command  : LIST<BR>Usage    : LIST TITLES<BR>Example  : list titles<BR>Lists all the auto-applied player titles defined in your game, along with the<BR>requirements, that is, the trigger, that will make them available.</pre>
+			</P>
+			
+			<p>
+			<a name="LIST_TYPOS"><B>LIST_TYPOS</B></a>
+			<pre>Command  : LIST<BR>Usage    : LIST TYPOS (TO)<BR>Example  : list typos<BR>Example  : list typos bob<BR>Lists all the entries in the SYSTEM_TYPOS journal.  An optional name can be<BR>appended to show entries assign to that name.</pre>
 			</P>
 			
 			<p>
@@ -1058,12 +1172,12 @@
 			
 			<p>
 			<a name="LOAD"><B>LOAD</B></a>
-			<pre>Command : LOAD<BR>Usage   : LOAD [OBJECT TYPE] [PATH/NAME]<BR>Example : load resource banned.ini<BR>Example : load ability /myclasses/blah.class<BR>Example : load weapon /myclasses/blah2.class<BR>Example : load class com.planet_ink.coffee_mud.Items.Weapons.Sword.class<BR>Example : load weapon com/planet_ink/coffee_mud/Items/Weapons/Sword.java<BR>Short(s): <BR>A command for the loading of resources, faction ini files, or class files of<BR>java or javascript.<BR><BR>Use LIST RESOURCES to see a list of resources.<BR><BR>For class files, the LIST command can also show whats already loaded.  This<BR>command will automatically attempt to unload a class if it is already loaded. <BR>If the specified class is a java source file or javascript, it will attempt to<BR>compile it first.  For loading classes, the second parameter may be the word<BR>"class" and the system will attempt to correct your ambiguity.  If it is unable<BR>to determine the type of class being loaded, however, you may get an error.  It<BR>is therefore better just to use the load [CLASS-TYPE] syntax instead.</pre>
+			<pre>Command : LOAD<BR>Usage   : LOAD [OBJECT TYPE] [PATH/NAME]<BR>Example : load resource banned.ini<BR>Example : load ability /myclasses/blah.class<BR>Example : load weapon /myclasses/blah2.class<BR>Example : load class com.planet_ink.coffee_mud.Items.Weapons.Sword.class<BR>Example : load weapon com/planet_ink/coffee_mud/Items/Weapons/Sword.java<BR>Short(s): <BR>A command for the loading of resources, faction ini files, unloaded areas, or<BR>class files of java or javascript.<BR><BR>Use LIST RESOURCES to see a list of resources.<BR><BR>Use LOAD AREA area name re-load areas in the database that have been unloaded.<BR><BR>For class files, the LIST command can also show whats already loaded.  This<BR>command will automatically attempt to unload a class if it is already loaded. <BR>If the specified class is a java source file or javascript, it will attempt to<BR>compile it first.  For loading classes, the second parameter may be the word<BR>"class" and the system will attempt to correct your ambiguity.  If it is unable<BR>to determine the type of class being loaded, however, you may get an error.  It<BR>is therefore better just to use the load [CLASS-TYPE] syntax instead.</pre>
 			</P>
 			
 			<p>
 			<a name="MASKS"><B>MASKS</B></a>
-			<pre>In numerous parameters, places, and input fields, CoffeeMud will ask you for<BR>something called a "Zapper Mask".  The mask is used to help select particular<BR>mobs, items, etc from the universe of available selections by "filtering out"<BR>those you don't want. For example, if you wanted to only select mobs named Bob,<BR>you would compose a mask that Disallows non-mobs, and Disallows things that<BR>dont have the name Bob.  This is done using the Zapper Mask syntax, shown<BR>below:<BR>+SYSOP (allow archons to bypass the rules)<BR>-SYSOP (always disallow archons)<BR>+SUBOP (allow local-room area staff to bypass the rules)<BR>-SUBOP (always disallow local-room area staff)<BR>-PLAYER (disallow all players)<BR>-MOB (disallow all mobs/npcs)<BR>-CLASS  (disallow all classes)<BR>-CLASS +thief +mage +ranger (create exceptions)<BR>-BASECLASS  (disallow all base classes)<BR>-BASECLASS +thief +mage +ranger (create exceptions)<BR>-thief -mage  -ranger (disallow only listed classes)<BR>-RACE (disallow all races)<BR>-RACE +elf +dwarf +human +half +gnome (create exceptions)<BR>-elf -dwarf -human -half -gnome (disallow only listed races)<BR>-RACECAT (disallow all racial categories)<BR>-RACECAT +elf +insect +humanoid +canine +gnome (create exceptions)<BR>+RACECAT (do not disallow all racial categories)<BR>+RACECAT -elf -insect -humanoid -canine -gnome (create exceptions)<BR>-ALIGNMENT (disallow all alignments)<BR>-ALIGNMENT +evil +good +neutral (create exceptions)<BR>-evil -good -neutral (disallow only listed alignments)<BR>-GENDER (disallow all genders)<BR>-GENDER +male +female +neuter (create exceptions)<BR>-male -female -neuter (disallow only listed genders)<BR>-FACTION (disallow all faction and values, even a lack of faction)<BR>-FACTION +myfactionrange +faction.rangename (create exceptions)<BR>-rangename -faction.rangename (disallow only faction range named)<BR>-TATTOOS (disallow all tattoos, even a lack of a tattoo)<BR>-TATTOOS +mytatto +thistattoo +anytattoo etc..  (create exceptions)<BR>+TATTOOS (do not disallow any or no tattoos)<BR>+TATTOOS -mytattoo -anytatto, etc.. (create exceptions)<BR>-EXPERTISES (disallow all expertises, even a lack of a edus)<BR>-EXPERTISES +myedu +thisedu +anyedu etc..  (create exceptions)<BR>+EXPERTISES (do not disallow any or no expertises)<BR>+EXPERTISES -myedu -anyedu, etc.. (create exceptions)<BR>-SECURITY (disallow all security flags, even a lack of a security flag)<BR>-SECURITY +cmdrooms +area cmditems etc..  (create exceptions)<BR>+SECURITY (do not disallow any or no security flags)<BR>+SECURITY -cmdrooms +area cmditems, etc.. (create exceptions)<BR>-MOOD +grumpy +normal (disallow all except those with given moods)<BR>+MOOD -grumpy -normal (disallow only those with subtracted moods)<BR>-LEVEL (disallow all levels)<BR>-LEVEL +=1 +>5 +>=7 +&lt;13 +&lt;=20 (create exceptions)<BR>-=1 ->5 ->=7 -&lt;13 -&lt;=20 (disallow only listed levels range)<BR>-NAMES (disallow everyone)<BR>-NAMES +bob "+my name" etc.. (create name exceptions)<BR>+NAMES (do not disallow anyone who has a name)<BR>+NAMES -bob "-my name" etc.. (create name exceptions)<BR>-CLASSLEVEL  (disallow all current class levels)<BR>-CLASSLEVEL +=1 +>5 +>=7 +&lt;13 +&lt;=20 (create exceptions)<BR>-MAXCLASSLEVEL  (disallow all max class levels)<BR>-MAXCLASSLEVEL +=1 +>5 +>=7 +&lt;13 +&lt;=20 (create exceptions)<BR>-CLAN (disallow everyone, even no clan)<BR>-CLAN +Killers "+Holy Avengers" etc.. (create clan exceptions)<BR>+CLAN (do not disallow anyone, even non clan people)<BR>+CLAN -Killers "-Holy Avengers" etc.. (create clan exceptions)<BR>-DEITY (disallow anyone, even no deity)<BR>-DEITY +Apollo "+Grothon The Great" etc.. (create deity exceptions)<BR>+DEITY (do not disallow anyone, even non deity worshipping people)<BR>+DEITY -Apollo "-rothon The Great" etc.. (create deity exceptions)<BR>-ANYCLASS (disallow all multi-class combinations)<BR>-ANYCLASS +thief +mage +ranger (exceptions, allow any class)<BR>+ANYCLASS (do not disallow all multi-class combinations)<BR>+ANYCLASS -thief -mage -ranger (exceptions, disallow any class)<BR>-ANYCLASSLEVEL (disallow all multi-class level combinations)<BR>-ANYCLASSLEVEL +thief +>5 +mage +&lt;10 +ranger +=5 (exceptions)<BR>+ANYCLASSLEVEL (do not disallow all multi-class combinations)<BR>+ANYCLASSLEVEL -thief ->5 -mage -&lt;10 -ranger -=5 (exceptions)<BR>-STR X (disallow those with strength greater than X)<BR>+STR X (disallow those with strength less than X)<BR>-INT X (disallow those with intelligence greater than X)<BR>+INT X (disallow those with intelligence less than X)<BR>-WIS X (disallow those with wisdom greater than X)<BR>+WIS X (disallow those with wisdom less than X)<BR>-CON X (disallow those with constitution greater than X)<BR>+CON X (disallow those with constitution less than X)<BR>-CHA X (disallow those with charisma greater than X)<BR>+CHA X (disallow those with charisma less than X)<BR>-DEX X (disallow those with dexterity greater than X)<BR>+DEX X (disallow those with dexterity less than X)<BR>+-ADJSTR...ADJCON (Same as above, but uses current values)<BR>-GROUPSIZE X (disallow those in groups larger than X)<BR>+GROUPSIZE X (disallow those in groups smaller than X)<BR>-AREA (disallow in all areas)<BR>-AREA "+my areaname" etc.. (create exceptions)<BR>+AREA (do not disallow any areas)<BR>+AREA "-my areaname" etc.. (create exceptions)<BR>-HOME (disallow in all home/beacon areas)<BR>-HOME "+my home/beacon areaname" etc.. (create exceptions)<BR>+HOME (do not disallow any home/beacon areas)<BR>+HOME "-my home/beacon areaname" etc.. (create exceptions)<BR>-ITEM "+item name" etc... (disallow only those with an item name)<BR>-WORN "+item name" etc... (disallow only those wearing item name)<BR>-EFFECTS (disallow everyone, even no effects)<BR>-EFFECTS +Sleep "+Wood Chopping" etc.. (create name exceptions)<BR>+EFFECTS (do not disallow anyone, even non effected people)<BR>+EFFECTS -Sleep "-Wood Chopping" etc.. (create name exceptions)<BR>-SKILLS (disallow everyone, even those with no skill)<BR>-SKILLS +Spell_Sleep(75) etc.. (create exceptions with proficiency)<BR>+SKILLS (do not disallow anyone, even non skilled people)<BR>+SKILLS -Spell_Sleep(75) etc.. (create exceptions with proficiency)<BR>-MATERIAL "+WOODEN" etc.. (disallow only items of added materials)<BR>+MATERIAL "-WOODEN" etc.. (Do not disallow items of -materials)<BR>-RESOURCES "+OAK" etc.. (disallow only items of added resources)<BR>+RESOURCES "-OAK" etc.. (Do not disallow items of -resources)<BR>-JAVACLASS "+GENMOB" etc.. (disallow only objects of +java class)<BR>+JAVACLASS "-GENITEM" etc.. (Do not disallow objs of -classes)<BR>-ABILITY X (disallow those with magical ability less than X)<BR>+ABILITY X (disallow those with magical ability greater than X)<BR>-IF &lt;CONDITION> (disallow, unless they meet Scriptable conditions)<BR>+IF &lt;CONDITION> (never disallow anyone who meets Scriptable cond)<BR>-VALUE X (disallow those with value or money less than X)<BR>+VALUE X (disallow those with value or money greater than X)<BR>-WEIGHT X (disallow those weighing less than X)<BR>+WEIGHT X (disallow those weighing more than X)<BR>-ARMOR X (disallow those with armor bonus less than X)<BR>+ARMOR X (disallow those with armor bonus more than X)<BR>-DAMAGE X (disallow those with damage bonus less than X)<BR>+DAMAGE X (disallow those with damage bonus more than X)<BR>-ATTACK X (disallow those with attack bonus less than X)<BR>+ATTACK X (disallow those with attack bonus more than X)<BR>-WORNON "+TORSO" etc.. (disallow only items wearable on +locations)<BR>+WORNON "-NECK" etc.. (Do not disallow items wearable on -locations)<BR>-DISPOSITION "+ISHIDDEN" etc.. (disallow only with +dispositions)<BR>+DISPOSITION "-ISHIDDEN" etc.. (Do not disallow only with sub disp)<BR>-SENSES "+CANSEEDARK" etc.. (disallow only those with +senses)<BR>+SENSES "-CANSEEDARK" etc.. (Do not disallow those with -senses)<BR>-HOUR +X (disallow always, unless the hour is X)<BR>+HOUR -X (disallow those only when the hour is X)<BR>-SEASON +FALL (disallow those only when season is FALL)<BR>+SEASON -SPRING (disallow those whenever the season is SPRING)<BR>-MONTH +X (disallow those only when month number is X)<BR>+MONTH -X (disallow those whenever the month number is X)<BR>-DAY +X (disallow those only when day number is X)<BR>+DAY -X (disallow those whenever the day number is X)<BR>-WEATHER +DROUGHT (disallow those only when weather is DROUGHT)<BR>+WEATHER -BLIZZARD (disallow those whenever the weather is BLIZZARD)<BR>-QUESTWIN "+MY QUEST" (disallow those who have not my MY QUEST)<BR>+QUESTWIN "-MY QUEST" (disallow those who have won MY QUEST)<BR>-SKILLFLAG (disallow everyone, even those with no skills)<BR>-SKILLFLAG +ENCHANTMENT etc.. (create exceptions to -skillflag)<BR>+SKILLFLAG (do not disallow anyone, even non skilled people)<BR>+SKILLFLAG -ENCHANTMENT etc.. (create exceptions to +skillflag)<BR>-ACCCHIEVES (disallow all Account achievements, even a lack of a achievements)<BR>-ACCCHIEVES +mytatto +thistattoo +anytattoo etc..  (create exceptions)<BR>+ACCCHIEVES (do not disallow any or no Account achievements)<BR>+ACCCHIEVES -mytattoo -anytatto, etc.. (create exceptions)<BR>-CHANCE 50 (disallow the given % of the time)<BR></pre>
+			<pre>In numerous parameters, places, and input fields, CoffeeMud will ask you for<BR>something called a "Zapper Mask".  The mask is used to help select particular<BR>mobs, items, etc from the universe of available selections by "filtering out"<BR>those you don't want. For example, if you wanted to only select mobs named Bob,<BR>you would compose a mask that Disallows non-mobs, and Disallows things that<BR>dont have the name Bob.  This is done using the Zapper Mask syntax, shown<BR>below:<BR>+SYSOP (allow archons to bypass the rules), -SYSOP (disallow archons)<BR>+SUBOP (allow local area staff to bypass the rules), -SUBOP (disallow)<BR>-PLAYER (disallow all players),  -MOB (disallow all mobs/npcs)<BR>-CHANCE 50 (disallow the given % of the time)<BR>-JAVACLASS "+GENMOB" etc.. (disallow only objects of +java class)<BR>+JAVACLASS "-GENITEM" etc.. (Do not disallow objs of -classes)<BR>-CLASS +thief +mage +ranger (disallow all but excepted char classes)<BR>+CLASS -thief -mage  -ranger (disallow only listed classes)<BR>-BASECLASS +thief +mage (disallow all but excepted base char classes)<BR>+BASECLASS -thief -mage  -ranger (disallow only listed base char classes)<BR>-RACE +elf +dwarf (disallow all but excepted races)<BR>+RACE -elf -dwarf -human -half -gnome (disallow only listed races)<BR>-RACECAT +elf +insect +humanoid (disallow all but listed racial categories)<BR>+RACECAT -elf -humanoid (disallow only listed racial categories)<BR>-ALIGNMENT +evil +neutral +good (disallow all but excepted alignments)<BR>+ALIGNMENT -evil -good -neutral (disallow only listed alignments)<BR>-GENDER (disallow genders), -GENDER +male +neuter (create exceptions)<BR>+GENDER -male -female -neuter (disallow only listed genders)<BR>-FACTION (disallow all faction and values, even a lack of faction)<BR>-FACTION +myfactionrange +faction.rangecode (create exceptions)<BR>+FACTION -rangecode -faction.rangecode (disallow only faction range code)<BR>-NAMES +bob "+my name" (disallow all except those with given names)<BR>+NAMES -bob "-my name" (disallow only those with one of the given names)<BR>-SUBNAMES +*ending +*inside* (disallow all except those with partial name)<BR>+SUBNAMES -*ending -*insid* (disallow only those with partial name mask)<BR>-TATTOOS +mytatto +thistattoo (disallow all but those with excepted tatts)<BR>+TATTOOS -mytatt -anytattoo, (disallow only those with a listed tattoo)<BR>-EXPERTISES +myedu +thisedu (disallow all but those with listed expertise)<BR>+EXPERTISES -myedu -anyedu (disallow those with a listed expertise)<BR>-LEVEL +=1 +>5 +>=7 +&lt;13 +&lt;=20 (disallow all but those player level ranges)<BR>-=1 ->5 ->=7 -&lt;13 -&lt;=20 (disallow only listed levels range)<BR>-CLASSLEVEL +=1 +>5 +&lt;=20 (disallow all except those with current class lvl)<BR>-MAXCLASSLEVEL +=1 +&lt;13 (disallow only those with current class level range)<BR>+ANYCLASS -thief -mage (disallow only those with a listed multi-class)<BR>-ANYCLASSLEVEL +thief +>5 +mage +&lt;10 (disallow all except multi-class lvl)<BR>+ANYCLASSLEVEL -thief ->5 -mage -&lt;10 (disallow only these multi-class lvls)<BR>-SECURITY +cmdrooms +area cmditems (disallow all but listed security flags)<BR>+SECURITY -cmdrooms +area cmditems,(disallow only those with listed flags)<BR>-MOOD +grumpy +normal (disallow all except those with given moods)<BR>+MOOD -grumpy -normal (disallow only those with subtracted moods)<BR>-CLAN +Killers "+The Avengers" (disallow all except those in listed clan)<BR>+CLAN -Killers "-Avengers" (disallow only those in a listed clan)<BR>-DEITY +Apollo "+Grothon" (disallow all except worshippers of listed deity)<BR>+DEITY -God "-Rothon 1" (disallow only worshippers of a listed deity)<BR>-ANYCLASS +thief +ranger (disallow all except those with a multi-class)<BR>-STR X (disallow those with strength greater than X)<BR>+STR X (disallow those with strength less than X)<BR>-INT, -WIS, -CON, -CHA, -DEX (Same as -STR, for other current stats)<BR>+INT, +WIS, +CON, +CHA, +DEX (Same as +STR, for other current stats)<BR>+-ADJSTR...ADJCON (Same as above, but uses current values)<BR>-GROUPSIZE X (disallow those in groups larger than X)<BR>+GROUPSIZE X (disallow those in groups smaller than X)<BR>-AREA +thatarea "+my areaname" (disallow all except those in listed area)<BR>+AREA -thatarea "-my areaname" (disallow only those in listed area)<BR>-HOME "+area name" (disallow all except those from listed home/beacon area)<BR>+HOME "-my areaname" (disallow only those from listed home/beacon area)<BR>-ISHOME (disallow all npcs not currently in their home/beacon areas)<BR>+ISHOME (disallow all npcs unless they are in their home/beacon areas)<BR>-ITEM "+item name" etc... (disallow only those with an item name)<BR>-WORN "+item name" etc... (disallow only those wearing item name)<BR>-MATERIAL "+WOODEN" etc.. (disallow only items of added materials)<BR>+MATERIAL "-WOODEN" etc.. (Do not disallow items of -materials)<BR>-RESOURCES "+OAK" etc.. (disallow only items of added resources)<BR>+RESOURCES "-OAK" etc.. (Do not disallow items of -resources)<BR>-IF &lt;CONDITION> (disallow, unless they meet Scriptable conditions)<BR>+IF &lt;CONDITION> (never disallow anyone who meets Scriptable cond)<BR>-IFSTAT +STAT=VALUE +STAT=VALUE (disallow, unless a stat value is true)<BR>+IF -STAT=VALUE -STAT=VALUE (disallow those with a stat value)<BR>-VALUE X (disallow those with value or money less than X)<BR>+VALUE X (disallow those with value or money greater than X)<BR>-WEIGHT X (disallow those weighing less than X)<BR>+WEIGHT X (disallow those weighing more than X)<BR>-ARMOR/-DAMAGE/-ATTACK X (disallow armor/damage/attack bonus less than X)<BR>+ARMOR/+DAMAGE/+ATTACK X (disallow armor/damage/attack bonus more than X)<BR>+-WEAPONTYPE, +-WEAPONCLASS, and +-WEAPONAMMO for wielded weaponchecks<BR>-WORNON "+TORSO" etc.. (disallow only items wearable on +locations)<BR>+WORNON "-NECK" etc.. (Do not disallow items wearable on -locations)<BR>-DISPOSITION "+ISHIDDEN" etc.. (disallow only with +dispositions)<BR>+DISPOSITION "-ISHIDDEN" etc.. (Do not disallow only with sub disp)<BR>-SENSES "+CANSEEDARK" etc.. (disallow only those with +senses)<BR>+SENSES "-CANSEEDARK" etc.. (Do not disallow those with -senses)<BR>-ABILITY X (disallow those with magical ability less than X)<BR>+ABILITY X (disallow those with magical ability greater than X)<BR>-HOUR/-MONTH/-DAY +X (disallow always, unless the hour/month/day is X)<BR>+HOUR/+MONTH/+DAY -X (disallow those only when the hour/month/day is X)<BR>-SEASON +FALL (disallow those only when season is FALL)<BR>+SEASON -SPRING (disallow those whenever the season is SPRING)<BR>-WEATHER +DROUGHT (disallow those only when weather is DROUGHT)<BR>+WEATHER -BLIZZARD (disallow those whenever the weather is BLIZZARD)<BR>-QUESTWIN "+MY QUEST" (disallow those who have not my MY QUEST)<BR>+QUESTWIN "-MY QUEST" (disallow those who have won MY QUEST)<BR>-EFFECTS +Sleep "+Wood Chopping" (disallow all except those with effects)<BR>+EFFECTS -Sleep "-Wood Chopping" (disallow only those with listed effect)<BR>-SKILLS +Spell_Sleep(75) (disallow all except those with skill proficiency)<BR>+SKILLS -Spell_Sleep(75) (disallow only those with skill proficiency)<BR>-SKILLFLAG +ENCHANTMENT etc.. (disallow all except those with skillflag)<BR>+SKILLFLAG -ENCHANTMENT etc.. (disallow only those with listed skillflag)<BR>-ACCCHIEVES +mytatto etc..  (disallow all except those with achievements)<BR>+ACCCHIEVES -mytattoo etc.. (disallow only those with listed achievements)<BR></pre>
 			</P>
 			
 			<p>
@@ -1073,7 +1187,7 @@
 			
 			<p>
 			<a name="MERGE"><B>MERGE</B></a>
-			<pre>Command  : MERGE<BR>Usage    : MERGE (AREA/ROOM) (CHANGE=[FIELD,..]) (ON=[FIELD,..])<BR>(IGNORE=[FIELD,..]) [PATH & FILE NAME]<BR>Usage    : MERGE (AREA/ROOM) DATABASE (MOBS/ITEMS/ROOMS) DBCLASS=[JAVACLASS]<BR>DBSERVICE=[DB SERVICE URL]<BR>:       DBUSER=[USERNAME] DBPASS=[PASSWORD] (IGNORE=[FIELD,..])<BR>(MASK=[ZAPPERMASK])<BR>Example  : merge /myfiles/myitems.cmare<BR>Example  : merge change=damage,level,ability /myfiles/myweapons.cmare<BR>Example  : merge area change=material ignore=level /myfiles/myweapons.cmare<BR>Example  : merge change=damage on=name /myfiles/weapons.cmare<BR>Example  : merge area database dbclass=com.mysql.jdbc.Driver<BR>dbservice=jdbc:mysql://localhost:3306/db<BR>:            dbuser=username dbpass=password ignore="IMG,ATTACK" MASK="-NAMES<BR>+Bob"<BR>Short(s) : <BR>Allows you to selectively modify all instances of a mob or item in the world<BR>based on the contents of a CMARE file containing items or mobs, or another<BR>CoffeeMud database. <BR><BR>When using CMARE files, the files must be generated using the EXPORT<BR>(WORLD/AREA/ROOM) (ITEMS/WEAPONS) command. The first parameter specifies<BR>whether the items in the text file are to be merged with those in the entire<BR>world, in your current area, or just the room. The second parameter (CHANGE) is<BR>implied to be ALL unless specified otherwise. It denotes which fields in the<BR>existing items may be changed based on what changes are seen to the item inside<BR>the CMARE file.   The third parameter (ON) is implied to be ALL unless<BR>specified otherwise.  It denotes how an item in the CMARE file is matched with<BR>an existing item in your world.  If the listed fields from the CMARE file and<BR>the existing item are equal, the items will be considered a match for the<BR>purposes of merging.  The fourth parameter (IGNORE) is implied to be NONE<BR>unless specified otherwise.  It denotes exceptions to the (ON) parameter,<BR>namely which fields are allowed to differ between items in the CMARE file and<BR>an existing item in cases where they would otherwise be considered a match<BR>according to the (ON) parameter.  Matched items in your existing world, in<BR>every room, will be modified accordingly, and the room will be resaved to your<BR>database.  The log will reflect all changes made to your world.  Every room in<BR>every area in your world will be reloaded from the database prior to any<BR>evaluations or changes.<BR><BR>When using a database as a source, the merge command will compare and match the<BR>database version of the room contents with the local world.  The user is then<BR>given the opportunity to make changes to the local world depending on<BR>differences. The merge requires DBCLASS, DBSERVICE, DBUSER, and DBPASS<BR>parameters be set.  The IGNORE parameters is a comma delimited list of fields<BR>to ignore when displaying differences.  To mask the types of objects checked,<BR>the user can specify mobs, items, or the whole rooms after the word database,<BR>and a zappermask can be included after the mask parameters.</pre>
+			<pre>Command  : MERGE<BR>Usage    : MERGE (AREA/ROOM) (CHANGE=[FIELD,..]) (ON=[FIELD,..])<BR>(IGNORE=[FIELD,..]) [PATH & FILE NAME]<BR>Usage    : MERGE (AREA/ROOM) DATABASE (MOBS/ITEMS/ROOMS) DBCLASS=[JAVACLASS]<BR>DBSERVICE=[DB SERVICE URL]<BR>:        :       DBUSER=[USERNAME] DBPASS=[PASSWORD] (IGNORE=[FIELD,..])<BR>(MASK=[ZAPPERMASK])<BR>Example  : merge /myfiles/myitems.cmare<BR>Example  : merge change=damage,level,ability /myfiles/myweapons.cmare<BR>Example  : merge area change=material ignore=level /myfiles/myweapons.cmare<BR>Example  : merge change=damage on=name /myfiles/weapons.cmare<BR>Example  : merge area database dbclass=com.mysql.jdbc.Driver<BR>dbservice=jdbc:mysql://localhost:3306/db<BR>:        :            dbuser=username dbpass=password ignore="IMG,ATTACK"<BR>MASK="-NAMES +Bob"<BR>Short(s) : <BR>Allows you to selectively modify all instances of a mob or item in the world<BR>based on the contents of a CMARE file containing items or mobs, or another<BR>CoffeeMud database. <BR><BR>When using CMARE files, the files must be generated using the EXPORT<BR>(WORLD/AREA/ROOM) (ITEMS/WEAPONS) command. The first parameter specifies<BR>whether the items in the text file are to be merged with those in the entire<BR>world, in your current area, or just the room. The second parameter (CHANGE) is<BR>implied to be ALL unless specified otherwise. It denotes which fields in the<BR>existing items may be changed based on what changes are seen to the item inside<BR>the CMARE file.   The third parameter (ON) is implied to be ALL unless<BR>specified otherwise.  It denotes how an item in the CMARE file is matched with<BR>an existing item in your world.  If the listed fields from the CMARE file and<BR>the existing item are equal, the items will be considered a match for the<BR>purposes of merging.  The fourth parameter (IGNORE) is implied to be NONE<BR>unless specified otherwise.  It denotes exceptions to the (ON) parameter,<BR>namely which fields are allowed to differ between items in the CMARE file and<BR>an existing item in cases where they would otherwise be considered a match<BR>according to the (ON) parameter.  Matched items in your existing world, in<BR>every room, will be modified accordingly, and the room will be resaved to your<BR>database.  The log will reflect all changes made to your world.  Every room in<BR>every area in your world will be reloaded from the database prior to any<BR>evaluations or changes.<BR><BR>When using a database as a source, the merge command will compare and match the<BR>database version of the room contents with the local world.  The user is then<BR>given the opportunity to make changes to the local world depending on<BR>differences. The merge requires DBCLASS, DBSERVICE, DBUSER, and DBPASS<BR>parameters be set.  The IGNORE parameters is a comma delimited list of fields<BR>to ignore when displaying differences.  To mask the types of objects checked,<BR>the user can specify mobs, items, or the whole rooms after the word database,<BR>and a zappermask can be included after the mask parameters.</pre>
 			</P>
 			
 			<p>
@@ -1083,7 +1197,7 @@
 			
 			<p>
 			<a name="METACRAFT"><B>METACRAFT</B></a>
-			<pre>Usage    : METACRAFT (EVERY) [ITEM NAME] ([MATERIAL NAME]) (TO SELF/HERE/FILE<BR>[FILENAME])<BR>Example  : metacraft wagon oak<BR>Example  : metacraft wagon<BR>Example  : metacraft "every sword" bronze<BR>Example  : metacraft "every sword"<BR>Example  : metacraft "every sword" iron to file /items.cmare<BR>This skill will allow you to create any item that is craftable from the<BR>numerous common skills.  The item created may be made of a material specified,<BR>or automatically crafted by a random material valid to the appropriate skill. <BR>You can also specify the destination of the items, whether it be the room, your<BR>inventory, or an xml file.</pre>
+			<pre>Usage    : METACRAFT (EVERY) [ITEM NAME] ([MATERIAL NAME]) (TO SELF/HERE/FILE<BR>[FILENAME])<BR>Usage    : METACRAFT ALL [SKILL NAME] ([MATERIAL NAME]) (TO SELF/HERE/FILE<BR>[FILENAME])<BR>Example  : metacraft wagon oak<BR>Example  : metacraft wagon<BR>Example  : metacraft "every sword" bronze<BR>Example  : metacraft "every sword"<BR>Example  : metacraft "every sword" iron to file /items.cmare<BR>Example  : metacraft "all carpentry"<BR>This skill will allow you to create any item that is craftable from the<BR>numerous common skills.  The item created may be made of a material specified,<BR>or automatically crafted by a random material valid to the appropriate skill. <BR>You can also specify the destination of the items, whether it be the room, your<BR>inventory, or an xml file.</pre>
 			</P>
 			
 			<p>
@@ -1143,7 +1257,7 @@
 			
 			<p>
 			<a name="POSSESS"><B>POSSESS</B></a>
-			<pre>Skill    : POSSESS<BR>Usage    : POSSESS [MOB NAME]<BR>Example  : possess dragon<BR>Short(s) : <BR>This command will allow your character to possess and control any given mob. <BR>That mob will be controlled as if it were your own character.  Use the QUIT<BR>command to return to your own characters body.  Should the mob die, you will be<BR>returned automatically.  POSSESS does not transfer your security levels to the<BR>possessed mob UNLESS you have turned on your SYSMSGS flag before possessing.</pre>
+			<pre>Skill    : POSSESS<BR>Usage    : POSSESS [MOB NAME]<BR>Example  : possess dragon<BR>Example  : possess dragon@MyArea#23<BR>Example  : possess dragon@MyArea<BR>Short(s) : <BR>This command will allow your character to possess and control any given mob. <BR>That mob will be controlled as if it were your own character.  Use the QUIT<BR>command to return to your own characters body.  Should the mob die, you will be<BR>returned automatically.  POSSESS does not transfer your security levels to the<BR>possessed mob UNLESS you have turned on your SYSMSGS flag before possessing.</pre>
 			</P>
 			
 			<p>
@@ -1158,7 +1272,7 @@
 			
 			<p>
 			<a name="QUESTS"><B>QUESTS</B></a>
-			<pre>Command : QUESTS<BR>Usage   : QUESTS (WON/[QUEST NAME]/[PLAYER NAME])<BR>Example : quests<BR>Example : quests won<BR>Example : quests bob<BR>Short(s): <BR>This command is for listing quests one is either involved in, or were involved<BR>in. The admin version of this command allows a player name to be specified when<BR>retreiving information.  Enter HELP QUESTS for more information on the mundane<BR>use of the command.</pre>
+			<pre>Command : QUESTS<BR>Usage   : QUESTS (WON/[QUEST NAME]/[PLAYER NAME])<BR>Example : quests<BR>Example : quests won<BR>Example : quests bob<BR>Short(s): <BR>This command is for listing quests one is either involved in, or were involved<BR>in. The admin version of this command allows a player name to be specified when<BR>retreiving information, or if the quest name is supplied, the winners of the<BR>quest.  Enter HELP QUESTS for more information on the mundane use of the<BR>command.</pre>
 			</P>
 			
 			<p>
@@ -1168,7 +1282,7 @@
 			
 			<p>
 			<a name="RESET"><B>RESET</B></a>
-			<pre>Command  : RESET<BR>Usage    : RESET (REJUV) ROOM/AREA (ITEMS/MOBS)<BR>Usage    : RESET MOBSTATS ROOM/AREA/WORLD/CATALOG (NOSAVE) ([AREANAME])<BR>Usage    : RESET ITEMSTATS ROOM/AREA/WORLD/CATALOG (NOSAVE) ([AREANAME])<BR>Usage    : RESET INIFILE<BR>Usage    : RESET PASSWORD [NAME]<BR>Example  : reset room<BR>Example  : reset area<BR>Example  : reset rejuv area items<BR>Example  : reset mobstats world<BR>Example  : reset itemstats catalog nosave midgaard<BR>Example  : reset password krogon<BR>Short(s) : <BR>The reset room or area command will revive any wandered or dead mobs whose<BR>location is the same as the invokers.  Any removed items which are resettable<BR>will also return.  Any items or mobs which do not belong in the location will<BR>be returned to their proper homes.<BR><BR>The reset rejuv room or area command will revive any dead mobs or resettable<BR>items at the location of the invoker.  Mobs that have wandered away will not be<BR>returned.  No other mobs or items in the room will be affected.<BR><BR>The reset itemstats and reset mobstats commands serve a similar purpose.  Both<BR>will modify the vital statistics of all the mobs or items in the room, area,<BR>world, or catalog specified.  The statistics will be "normalizations" of vital<BR>combat scores based on the mob or items level, and the game engine's definition<BR>of nominal ratings for that level.  They will allow a "preview" of changes to<BR>be made by specifying the "nosave" parameter on the command line, which<BR>prevents permanent changes.  Area names may also be specified on the command<BR>line to cause the command to skip certain areas (for use with WORLD parameter<BR>only).<BR><BR>The reset password command will let you generate a random password for the<BR>given player or account and email it to their address on file, or change it to<BR>a neutral word when no email address is on file.<BR><BR>You can also reload your ini settings, or the lists.ini file using reset<BR>inifile.</pre>
+			<pre>Command  : RESET<BR>Usage    : RESET (REJUV) ROOM/AREA (ITEMS/MOBS)<BR>Usage    : RESET MOBSTATS ROOM/AREA/WORLD/CATALOG (NOSAVE) ([AREANAME])<BR>Usage    : RESET ITEMSTATS ROOM/AREA/WORLD/CATALOG (NOSAVE) ([AREANAME])<BR>Usage    : RESET INIFILE<BR>Usage    : RESET PASSWORD [NAME]<BR>Usage    : RESET RELEVEL<BR>Example  : reset room<BR>Example  : reset area<BR>Example  : reset rejuv area items<BR>Example  : reset mobstats world<BR>Example  : reset itemstats catalog nosave midgaard<BR>Example  : reset password krogon<BR>Short(s) : <BR>The reset room or area command will revive any wandered or dead mobs whose<BR>location is the same as the invokers.  Any removed items which are resettable<BR>will also return.  Any items or mobs which do not belong in the location will<BR>be returned to their proper homes.<BR><BR>The reset rejuv room or area command will revive any dead mobs or resettable<BR>items at the location of the invoker.  Mobs that have wandered away will not be<BR>returned.  No other mobs or items in the room will be affected.<BR><BR>The reset itemstats and reset mobstats commands serve a similar purpose.  Both<BR>will modify the vital statistics of all the mobs or items in the room, area,<BR>world, or catalog specified.  The statistics will be "normalizations" of vital<BR>combat scores based on the mob or items level, and the game engine's definition<BR>of nominal ratings for that level.  They will allow a "preview" of changes to<BR>be made by specifying the "nosave" parameter on the command line, which<BR>prevents permanent changes.  Area names may also be specified on the command<BR>line to cause the command to skip certain areas (for use with WORLD parameter<BR>only).<BR><BR>Reset relevel is a dangerous but potentially time saving command to change the<BR>levels of all mobs and items in the same area as the user from falling within<BR>its current range of levels to a new range.  See help [areaname] to see the<BR>existing minimum and maximum levels of the area. <BR>The reset password command will let you generate a random password for the<BR>given player or account and email it to their address on file, or change it to<BR>a neutral word when no email address is on file.<BR><BR>You can also reload your ini settings, or the lists.ini file using reset<BR>inifile.</pre>
 			</P>
 			
 			<p>
@@ -1178,7 +1292,7 @@
 			
 			<p>
 			<a name="SAVE"><B>SAVE</B></a>
-			<pre>Command : SAVE<BR>Usage   : SAVE [ROOM, QUESTS, MOBS, ITEMS, USERS]<BR>Example : save room<BR>Short(s): <BR>A command to permanently save the contents of a room, the mobs in the room, the<BR>current quests list, or the users who are logged in.  The command will apply to<BR>the room in which your Character is located.</pre>
+			<pre>Command : SAVE<BR>Usage   : SAVE [ROOM, MOBS, ITEMS, QUESTS, FACTION, USERS]<BR>Example : save room<BR>Example : save users<BR>Example : save quests<BR>Example : save faction area_my_area<BR>Short(s): <BR>A command to permanently save the contents of a room, the mobs in the room, the<BR>current quests list, a specific faction, or the users who are logged in.  The<BR>command will apply to the room in which your Character is located.</pre>
 			</P>
 			
 			<p>
@@ -1203,7 +1317,7 @@
 			
 			<p>
 			<a name="STAT"><B>STAT</B></a>
-			<pre>Command : STAT<BR>Usage   : STAT ((SKILL/STAT TYPE) [TARGET NAME])/([NUMBER]<BR>[DAYS/WEEKS/MONTHS/YEARS] (/SKILLUSE/QUEST))<BR>Example : stat<BR>Example : stat 2 weeks<BR>Example : stat tom<BR>Example : stat equipment bob<BR>Example : stat combat bob<BR>Example : stat inventory bob<BR>Example : stat questwins bob<BR>Example : stat tattoos bob<BR>Example : stat titles bob<BR>Example : stat scripts bob<BR>Example : stat charstats bob<BR>Example : stat roomsexplored bob<BR>Example : stat factions bob<BR>Example : stat spell bob<BR>Example : stat skill hassan<BR>Example : stat chant hassan<BR>Example : stat prayer hassan<BR>Short(s): <BR>This command serves two purposes.  The first is to allow you to view a usage<BR>statistics report on your mud.  Entering STAT alone allows you to see<BR>information gathered since midnight.  You may also enter a number and a scale<BR>(days, weeks, months, or years) to view information going farther back.<BR><BR>STAT will also allow you to retrieve basic stat information on a player or mob<BR>in the game.  Entering STAT and the players name brings up the most basic SCORE<BR>information.  Including a skill type before the name will list their abilities<BR>of that type.  Valid skill types include: SKILL, SPELL, PRAYER, SONG, TRAP,<BR>PROPERTY, "THIEF SKILL", LANGUAGE, CHANT, "COMMON SKILL", DISEASE, POISON.  You<BR>can also get special reports by entering one of the following before the name:<BR>EQUIPMENT, COMBAT, INVENTORY, QUESTWINS, TATTOOS, TITLES, SCRIPTS,<BR>WORLDEXPLORED, AREASEXPLORED, ROOMSEXPLORED, FACTIONS, and CHARSTATS.  As per<BR>the player version of this command, you can also use basic stats, such as:<BR>HITS, MANA, MOVE, HUNGER, THIRST, FATIGUE, MAXHITS, MAXMANA, MAXMOVE,<BR>MAXHUNGER, MAXTHIRST, MAXFATIGUE, STRENGTH, INTELLIGENCE, DEXTERITY,<BR>CONSTITUTION, CHARISMA, WISDOM, GENDER, PARALYSIS, FIRE, COLD, WATER, GAS,<BR>MIND, GENERAL, JUSTICE, ACID, ELECTRICITY, POISON, UNDEAD, MAGIC, DISEASE,<BR>TRAPS, MAXSTRENGTH, MAXINTELLIGENCE, MAXDEXTERITY, MAXCONSTITUTION,<BR>MAXCHARISMA, MAXWISDOM, AGE, DETECTION, OVERLOOKING, CONVERSION, WEIGHTADJ</pre>
+			<pre>Command : STAT<BR>Usage   : STAT ((SKILL/STAT TYPE) [TARGET NAME])/([NUMBER]<BR>[DAYS/WEEKS/MONTHS/YEARS]<BR>Usage   : ... (/SKILLUSE/QUEST))<BR>Example : stat<BR>Example : stat 2 weeks<BR>Example : stat tom<BR>Example : stat equipment bob<BR>Example : stat combat bob<BR>Example : stat inventory bob<BR>Example : stat questwins bob<BR>Example : stat tattoos bob<BR>Example : stat titles bob<BR>Example : stat scripts bob<BR>Example : stat charstats bob<BR>Example : stat roomsexplored bob<BR>Example : stat factions bob<BR>Example : stat spell bob<BR>Example : stat skill hassan<BR>Example : stat chant hassan<BR>Example : stat prayer hassan<BR>Example : stat area midgaard<BR>Example : stat item my longsword<BR>Example : stat fountain<BR>Short(s): <BR>This command serves two purposes.  The first is to allow you to view a usage<BR>statistics report on your mud.  Entering STAT alone allows you to see<BR>information gathered since midnight.  You may also enter a number and a scale<BR>(days, weeks, months, or years) to view information going farther back.<BR><BR>STAT will also allow you to retrieve basic stat information on a player, mob,<BR>item, room, or exit in the game.  Entering STAT and the objects name brings up<BR>the most basic information.  Specifying AREA, MOB, ITEM, ROOM, or EXIT before<BR>the name will make the search more specific. Including a skill type before a<BR>mob or player name will list their abilities of that type.  Valid skill types<BR>include: SKILL, SPELL, PRAYER, SONG, TRAP, PROPERTY, "THIEF SKILL", LANGUAGE,<BR>CHANT, "COMMON SKILL", DISEASE, POISON.  You can also get special reports by<BR>entering one of the following before the name: EQUIPMENT, COMBAT, INVENTORY,<BR>QUESTWINS, TATTOOS, TITLES, SCRIPTS, WORLDEXPLORED, AREASEXPLORED,<BR>ROOMSEXPLORED, FACTIONS, LEVELTIMES, and CHARSTATS.  As per the player version<BR>of this command, you can also use basic stats, such as: HITS, MANA, MOVE,<BR>HUNGER, THIRST, FATIGUE, MAXHITS, MAXMANA, MAXMOVE, MAXHUNGER, MAXTHIRST,<BR>MAXFATIGUE, STRENGTH, INTELLIGENCE, DEXTERITY, CONSTITUTION, CHARISMA, WISDOM,<BR>GENDER, PARALYSIS, FIRE, COLD, WATER, GAS, MIND, GENERAL, JUSTICE, ACID,<BR>ELECTRICITY, POISON, UNDEAD, MAGIC, DISEASE, TRAPS, MAXSTRENGTH,<BR>MAXINTELLIGENCE, MAXDEXTERITY, MAXCONSTITUTION, MAXCHARISMA, MAXWISDOM, AGE,<BR>DETECTION, CONVERSION, WEIGHTADJ, LEVEL, SENSES, ARMOR, DAMAGE, ATTACK,<BR>DISPOSITION, REJUV, WEIGHT, ABILITY, HEIGHT, XP (experience), XPFNL (experience<BR>for next level), and XPTNL (experience to next level), QUESTPOINTS, TRAINS,<BR>PRACTICES, and any factions shown in the score command, such as ALIGNMENT.</pre>
 			</P>
 			
 			<p>
@@ -1223,12 +1337,17 @@
 			
 			<p>
 			<a name="TASK"><B>TASK</B></a>
-			<pre>Command : TASK<BR>Usage   : TASK [MESSAGE]/REVIEW (STARTING MSG)<BR>Example : task nothing is spelled right in this room!<BR>Example : task review<BR>Example : task review 7<BR>Short(s): <BR>This command can be used to submit builder tasks to the system.  When the<BR>REVIEW parameter is given, the tasks will be iterated through one at a time to<BR>give the builder a chance to delete, comment on, or email each one.  An<BR>optional starting number can be given to REVIEW. The player must be either an<BR>Archon, or a player with the TASKS security string to use this feature.</pre>
+			<pre>Command : TASK<BR>Usage   : TASK [MESSAGE]/REVIEW (FILTER) (STARTING MSG)<BR>Usage   : TASK TRANSFER (FILTER) [MESSAGE NUMBER] [TARGET]<BR>Example : task nothing is spelled right in this room!<BR>Example : task review<BR>Example : task review 7<BR>Example : task review bob 7<BR>Short(s): <BR>This command can be used to submit builder tasks to the system.  When the<BR>REVIEW parameter is given, the tasks will be iterated through one at a time to<BR>give the builder a chance to delete, comment on, or email each one.  An<BR>optional starting number can be given to REVIEW. An optional filter can be<BR>given to list only messages assigned to a particular user. The player must be<BR>either an Archon, or a player with the TASKS security string to use this<BR>feature. </pre>
 			</P>
 			
 			<p>
 			<a name="TATTOO"><B>TATTOO</B></a>
 			<pre>Tattoo's are intended to act as miscellaneous flags which players may obtain,<BR>not unlike a quest point.  These tattoo's can then be checked for as<BR>requirements to enter rooms or exits, or to possess certain items.  If the<BR>common account system is used, accounts can also have tattoos on them as well. <BR>An example would be like this:  The completion of a specific quest occurs when<BR>Gunther defeats the evil sorcerer Nunder and enters his inner chamber (where<BR>all the treasure is hidden).  Entering this inner chamber automatically grants<BR>Gunther a Tatto called "NUNDERKILLER".  Now, elsewhere in the realm is the<BR>second quest where Nunder's apprentice has escaped with an ancient artifact and<BR>is up to no good.  However, to even ENTER the area where Nunder's apprentice is<BR>operating, the system (via the Prop_ReqTattoo property on this other Area)<BR>requires that Gunther already have the "NUNDERKILLER" Tattoo.  If Gunther had<BR>not defeated Nunder and obtained the "NUNDERKILLER" Tattoo, he would not be<BR>allowed into the realm of Nunder's apprentice.</pre>
+			</P>
+			
+			<p>
+			<a name="TEST"><B>TEST</B></a>
+			<pre>Command  : TEST<BR>Usage    : TEST ALL/[TEST NAME]<BR>Example  : test all<BR>Short(s) : <BR>Runs a series of internal tests.  This command is only for code developers, and<BR>takes a lot of time and resources to complete, so use it only if you know why<BR>you are doing it.</pre>
 			</P>
 			
 			<p>
@@ -1238,12 +1357,12 @@
 			
 			<p>
 			<a name="TRAILTO"><B>TRAILTO</B></a>
-			<pre>Command : TRAILTO<BR>Usage   : TRAILTO (CONFIRM) (AREANAMES) (IGNOREROOMS=[ROOMS LIST]) [AREA NAME]<BR>/[ROOM ID] /EVERYROOM /EVERYAREA<BR>Example : trailto MyArea#394<BR>Example : trailto everyarea<BR>Example : trailto confirm areanames "ignorerooms=myarea#10,myarea#20" everyarea<BR>Short(s): <BR>This command shows the directions one must travel to get from their current<BR>position to the destination given.</pre>
+			<pre>Command : TRAILTO<BR>Usage   : TRAILTO (CONFIRM) (AREANAMES) (IGNOREROOMS=[ROOMS LIST]) [AREA NAME]<BR>/[ROOM ID] /EVERYROOM /EVERYAREA<BR>Example : trailto MyArea#394<BR>Example : trailto everyarea<BR>Example : trailto confirm areanames "ignorerooms=myarea#10,myarea#20" everyarea<BR>Short(s): <BR>This command shows the directions one must travel to get from their current<BR>position to the destination given. You can end the areas with 'areanames',<BR>'ignorerooms=', and 'confirm!' flags.  You can also include one of these flags:<BR>NOHOMES, OPENONLY, UNLOCKEDONLY, AREAONLY, NOHIDDENAREAS, NOEMPTYGRIDS, NOAIR,<BR>NOWATER, WATERSURFACEONLY, UNDERWATERONLY, FLOORSONLY, CEILINGSSONLY, NOCLIMB,<BR>NOCRAWL, OUTDOORONLY, FALLBACK, RADIUS=X, or MINSIZE=X. MINSIZE will change the<BR>minimum area size for use with EVERYAREA, FALLBACK will remove flags in reverse<BR>order until a trail is found. RADIUS changes the width of the space to look for<BR>trails in.</pre>
 			</P>
 			
 			<p>
 			<a name="TRANSFER"><B>TRANSFER</B></a>
-			<pre>Skill    : TRANSFER<BR>Usage    : TRANSFER [ALL/[MOB NAME]/"ITEMS X"] [ROOM ID/DESC/MOB/AREA]<BR>Example  : transfer all Midgaard#3001<BR>Example  : transfer all midgaard<BR>Example  : transfer all north<BR>Example  : transfer bob #3001<BR>Example  : transfer smurf hassan<BR>Example  : transfer bobbyjoe temple of mota<BR>Example  : transfer "item sword" north<BR>Example  : transfer "all item sword" north<BR>Example  : transfer "all items" north<BR>Short(s) : <BR>The targets and their followers will be transported, with very little fanfare,<BR>to the destination listed.  This ability is not magical in nature, and is thus<BR>not affected by no-teleport areas and rooms.  If all or item is used, it will<BR>refer only to those in the same room as the admin.  Otherwise, the admins<BR>present area will be checked for all instances of the name and transfers all of<BR>them.  If none are found in the same area, the whole world will be checked.</pre>
+			<pre>Skill    : TRANSFER<BR>Usage    : TRANSFER [ALL/[MOB NAME]/"ITEMS X"] [ROOM ID/DESC/MOB/AREA]<BR>Example  : transfer all Midgaard#3001<BR>Example  : transfer all midgaard<BR>Example  : transfer all north<BR>Example  : transfer bob #3001<BR>Example  : transfer smurf hassan<BR>Example  : transfer bobbyjoe temple of mota<BR>Example  : transfer "item sword" north<BR>Example  : transfer "all item sword" north<BR>Example  : transfer "all items" north<BR>Short(s) : <BR>The targets and their followers will be transported, with very little fanfare,<BR>to the destination listed.  This ability is not magical in nature, and is thus<BR>not affected by no-teleport areas and rooms.  If all or item is used, it will<BR>refer only to those in the same room as the admin.  Otherwise, the admins<BR>present area will be checked for all instances of the name and transfers all of<BR>them.  If none are found in the same area, the whole world will be checked.  If<BR>the word items is used, then an item can also be transported to a room<BR>destination, though the word INVENTORY is also a valid destination to move the<BR>item into your inventory.</pre>
 			</P>
 			
 			<p>
@@ -1258,7 +1377,7 @@
 			
 			<p>
 			<a name="UNLOAD"><B>UNLOAD</B></a>
-			<pre>Command  : UNLOAD<BR>Usage    : UNLOAD HELP/CLASS/USER/FACTION<BR>Usage    : UNLOAD INIFILE/ALL/[RESOURCE NAME]<BR>Example  : unload help<BR>Example  : unload all<BR>Example  : unload armorsmith<BR>Example  : unload class Thief_Search<BR>Example  : unload user joe<BR>Short(s) : <BR>Unloads most resource text, cached users, class objects, coffeemud.ini,<BR>lists.ini, and help files for easy refreshing.</pre>
+			<pre>Command  : UNLOAD<BR>Usage    : UNLOAD HELP/CLASS/USER/FACTION/AREA<BR>Usage    : UNLOAD INIFILE/ALL/[RESOURCE NAME]<BR>Example  : unload help<BR>Example  : unload all<BR>Example  : unload armorsmith<BR>Example  : unload class Thief_Search<BR>Example  : unload user joe<BR>Short(s) : <BR>Unloads most resource text, cached users, class objects, areas, coffeemud.ini,<BR>lists.ini, and help files for easy refreshing.</pre>
 			</P>
 			
 			<p>
@@ -1303,7 +1422,7 @@
 			
 			<p>
 			<a name="ZAPPERMASKS"><B>ZAPPERMASKS</B></a>
-			<pre>+SYSOP (allow archons to bypass the rules)<BR>-SYSOP (always disallow archons)<BR>+SUBOP (allow local-room area staff to bypass the rules)<BR>-SUBOP (always disallow local-room area staff)<BR>-PLAYER (disallow all players)<BR>-MOB (disallow all mobs/npcs)<BR>-CLASS  (disallow all classes)<BR>-CLASS +thief +mage +ranger (create exceptions)<BR>-BASECLASS  (disallow all base classes)<BR>-BASECLASS +thief +mage +ranger (create exceptions)<BR>-thief -mage  -ranger (disallow only listed classes)<BR>-RACE (disallow all races)<BR>-RACE +elf +dwarf +human +half +gnome (create exceptions)<BR>-elf -dwarf -human -half -gnome (disallow only listed races)<BR>-RACECAT (disallow all racial categories)<BR>-RACECAT +elf +insect +humanoid +canine +gnome (create exceptions)<BR>+RACECAT (do not disallow all racial categories)<BR>+RACECAT -elf -insect -humanoid -canine -gnome (create exceptions)<BR>-ALIGNMENT (disallow all alignments)<BR>-ALIGNMENT +evil +good +neutral (create exceptions)<BR>-evil -good -neutral (disallow only listed alignments)<BR>-GENDER (disallow all genders)<BR>-GENDER +male +female +neuter (create exceptions)<BR>-male -female -neuter (disallow only listed genders)<BR>-FACTION (disallow all faction and values, even a lack of faction)<BR>-FACTION +myfactionrange +faction.rangename (create exceptions)<BR>-rangename -faction.rangename (disallow only faction range named)<BR>-TATTOOS (disallow all tattoos, even a lack of a tattoo)<BR>-TATTOOS +mytatto +thistattoo +anytattoo etc..  (create exceptions)<BR>+TATTOOS (do not disallow any or no tattoos)<BR>+TATTOOS -mytattoo -anytatto, etc.. (create exceptions)<BR>-EXPERTISES (disallow all expertises, even a lack of a edus)<BR>-EXPERTISES +myedu +thisedu +anyedu etc..  (create exceptions)<BR>+EXPERTISES (do not disallow any or no expertises)<BR>+EXPERTISES -myedu -anyedu, etc.. (create exceptions)<BR>-SECURITY (disallow all security flags, even a lack of a security flag)<BR>-SECURITY +cmdrooms +area cmditems etc..  (create exceptions)<BR>+SECURITY (do not disallow any or no security flags)<BR>+SECURITY -cmdrooms +area cmditems, etc.. (create exceptions)<BR>-MOOD +grumpy +normal (disallow all except those with given moods)<BR>+MOOD -grumpy -normal (disallow only those with subtracted moods)<BR>-LEVEL (disallow all levels)<BR>-LEVEL +=1 +>5 +>=7 +&lt;13 +&lt;=20 (create exceptions)<BR>-=1 ->5 ->=7 -&lt;13 -&lt;=20 (disallow only listed levels range)<BR>-NAMES (disallow everyone)<BR>-NAMES +bob "+my name" etc.. (create name exceptions)<BR>+NAMES (do not disallow anyone who has a name)<BR>+NAMES -bob "-my name" etc.. (create name exceptions)<BR>-CLASSLEVEL  (disallow all current class levels)<BR>-CLASSLEVEL +=1 +>5 +>=7 +&lt;13 +&lt;=20 (create exceptions)<BR>-MAXCLASSLEVEL  (disallow all max class levels)<BR>-MAXCLASSLEVEL +=1 +>5 +>=7 +&lt;13 +&lt;=20 (create exceptions)<BR>-CLAN (disallow everyone, even no clan)<BR>-CLAN +Killers "+Holy Avengers" etc.. (create clan exceptions)<BR>+CLAN (do not disallow anyone, even non clan people)<BR>+CLAN -Killers "-Holy Avengers" etc.. (create clan exceptions)<BR>-DEITY (disallow anyone, even no deity)<BR>-DEITY +Apollo "+Grothon The Great" etc.. (create deity exceptions)<BR>+DEITY (do not disallow anyone, even non deity worshipping people)<BR>+DEITY -Apollo "-rothon The Great" etc.. (create deity exceptions)<BR>-ANYCLASS (disallow all multi-class combinations)<BR>-ANYCLASS +thief +mage +ranger (exceptions, allow any class)<BR>+ANYCLASS (do not disallow all multi-class combinations)<BR>+ANYCLASS -thief -mage -ranger (exceptions, disallow any class)<BR>-ANYCLASSLEVEL (disallow all multi-class level combinations)<BR>-ANYCLASSLEVEL +thief +>5 +mage +&lt;10 +ranger +=5 (exceptions)<BR>+ANYCLASSLEVEL (do not disallow all multi-class combinations)<BR>+ANYCLASSLEVEL -thief ->5 -mage -&lt;10 -ranger -=5 (exceptions)<BR>-STR X (disallow those with strength greater than X)<BR>+STR X (disallow those with strength less than X)<BR>-INT X (disallow those with intelligence greater than X)<BR>+INT X (disallow those with intelligence less than X)<BR>-WIS X (disallow those with wisdom greater than X)<BR>+WIS X (disallow those with wisdom less than X)<BR>-CON X (disallow those with constitution greater than X)<BR>+CON X (disallow those with constitution less than X)<BR>-CHA X (disallow those with charisma greater than X)<BR>+CHA X (disallow those with charisma less than X)<BR>-DEX X (disallow those with dexterity greater than X)<BR>+DEX X (disallow those with dexterity less than X)<BR>+-ADJSTR...ADJCON (Same as above, but uses current values)<BR>-GROUPSIZE X (disallow those in groups larger than X)<BR>+GROUPSIZE X (disallow those in groups smaller than X)<BR>-AREA (disallow in all areas)<BR>-AREA "+my areaname" etc.. (create exceptions)<BR>+AREA (do not disallow any areas)<BR>+AREA "-my areaname" etc.. (create exceptions)<BR>-HOME (disallow in all home/beacon areas)<BR>-HOME "+my home/beacon areaname" etc.. (create exceptions)<BR>+HOME (do not disallow any home/beacon areas)<BR>+HOME "-my home/beacon areaname" etc.. (create exceptions)<BR>-ITEM "+item name" etc... (disallow only those with an item name)<BR>-WORN "+item name" etc... (disallow only those wearing item name)<BR>-EFFECTS (disallow everyone, even no effects)<BR>-EFFECTS +Sleep "+Wood Chopping" etc.. (create name exceptions)<BR>+EFFECTS (do not disallow anyone, even non effected people)<BR>+EFFECTS -Sleep "-Wood Chopping" etc.. (create name exceptions)<BR>-SKILLS (disallow everyone, even those with no skill)<BR>-SKILLS +Spell_Sleep(75) etc.. (create exceptions with proficiency)<BR>+SKILLS (do not disallow anyone, even non skilled people)<BR>+SKILLS -Spell_Sleep(75) etc.. (create exceptions with proficiency)<BR>-MATERIAL "+WOODEN" etc.. (disallow only items of added materials)<BR>+MATERIAL "-WOODEN" etc.. (Do not disallow items of -materials)<BR>-RESOURCES "+OAK" etc.. (disallow only items of added resources)<BR>+RESOURCES "-OAK" etc.. (Do not disallow items of -resources)<BR>-JAVACLASS "+GENMOB" etc.. (disallow only objects of +java class)<BR>+JAVACLASS "-GENITEM" etc.. (Do not disallow objs of -classes)<BR>-ABILITY X (disallow those with magical ability less than X)<BR>+ABILITY X (disallow those with magical ability greater than X)<BR>-IF &lt;CONDITION> (disallow, unless they meet Scriptable conditions)<BR>+IF &lt;CONDITION> (never disallow anyone who meets Scriptable cond)<BR>-VALUE X (disallow those with value or money less than X)<BR>+VALUE X (disallow those with value or money greater than X)<BR>-WEIGHT X (disallow those weighing less than X)<BR>+WEIGHT X (disallow those weighing more than X)<BR>-ARMOR X (disallow those with armor bonus less than X)<BR>+ARMOR X (disallow those with armor bonus more than X)<BR>-DAMAGE X (disallow those with damage bonus less than X)<BR>+DAMAGE X (disallow those with damage bonus more than X)<BR>-ATTACK X (disallow those with attack bonus less than X)<BR>+ATTACK X (disallow those with attack bonus more than X)<BR>-WORNON "+TORSO" etc.. (disallow only items wearable on +locations)<BR>+WORNON "-NECK" etc.. (Do not disallow items wearable on -locations)<BR>-DISPOSITION "+ISHIDDEN" etc.. (disallow only with +dispositions)<BR>+DISPOSITION "-ISHIDDEN" etc.. (Do not disallow only with sub disp)<BR>-SENSES "+CANSEEDARK" etc.. (disallow only those with +senses)<BR>+SENSES "-CANSEEDARK" etc.. (Do not disallow those with -senses)<BR>-HOUR +X (disallow always, unless the hour is X)<BR>+HOUR -X (disallow those only when the hour is X)<BR>-SEASON +FALL (disallow those only when season is FALL)<BR>+SEASON -SPRING (disallow those whenever the season is SPRING)<BR>-MONTH +X (disallow those only when month number is X)<BR>+MONTH -X (disallow those whenever the month number is X)<BR>-DAY +X (disallow those only when day number is X)<BR>+DAY -X (disallow those whenever the day number is X)<BR>-WEATHER +DROUGHT (disallow those only when weather is DROUGHT)<BR>+WEATHER -BLIZZARD (disallow those whenever the weather is BLIZZARD)<BR>-QUESTWIN "+MY QUEST" (disallow those who have not my MY QUEST)<BR>+QUESTWIN "-MY QUEST" (disallow those who have won MY QUEST)<BR>-SKILLFLAG (disallow everyone, even those with no skills)<BR>-SKILLFLAG +ENCHANTMENT etc.. (create exceptions to -skillflag)<BR>+SKILLFLAG (do not disallow anyone, even non skilled people)<BR>+SKILLFLAG -ENCHANTMENT etc.. (create exceptions to +skillflag)<BR>-ACCCHIEVES (disallow all Account achievements, even a lack of a achievements)<BR>-ACCCHIEVES +mytatto +thistattoo +anytattoo etc..  (create exceptions)<BR>+ACCCHIEVES (do not disallow any or no Account achievements)<BR>+ACCCHIEVES -mytattoo -anytatto, etc.. (create exceptions)<BR>-CHANCE 50 (disallow the given % of the time)<BR></pre>
+			<pre>+SYSOP (allow archons to bypass the rules), -SYSOP (disallow archons)<BR>+SUBOP (allow local area staff to bypass the rules), -SUBOP (disallow)<BR>-PLAYER (disallow all players),  -MOB (disallow all mobs/npcs)<BR>-CHANCE 50 (disallow the given % of the time)<BR>-JAVACLASS "+GENMOB" etc.. (disallow only objects of +java class)<BR>+JAVACLASS "-GENITEM" etc.. (Do not disallow objs of -classes)<BR>-CLASS +thief +mage +ranger (disallow all but excepted char classes)<BR>+CLASS -thief -mage  -ranger (disallow only listed classes)<BR>-BASECLASS +thief +mage (disallow all but excepted base char classes)<BR>+BASECLASS -thief -mage  -ranger (disallow only listed base char classes)<BR>-RACE +elf +dwarf (disallow all but excepted races)<BR>+RACE -elf -dwarf -human -half -gnome (disallow only listed races)<BR>-RACECAT +elf +insect +humanoid (disallow all but listed racial categories)<BR>+RACECAT -elf -humanoid (disallow only listed racial categories)<BR>-ALIGNMENT +evil +neutral +good (disallow all but excepted alignments)<BR>+ALIGNMENT -evil -good -neutral (disallow only listed alignments)<BR>-GENDER (disallow genders), -GENDER +male +neuter (create exceptions)<BR>+GENDER -male -female -neuter (disallow only listed genders)<BR>-FACTION (disallow all faction and values, even a lack of faction)<BR>-FACTION +myfactionrange +faction.rangecode (create exceptions)<BR>+FACTION -rangecode -faction.rangecode (disallow only faction range code)<BR>-NAMES +bob "+my name" (disallow all except those with given names)<BR>+NAMES -bob "-my name" (disallow only those with one of the given names)<BR>-SUBNAMES +*ending +*inside* (disallow all except those with partial name)<BR>+SUBNAMES -*ending -*insid* (disallow only those with partial name mask)<BR>-TATTOOS +mytatto +thistattoo (disallow all but those with excepted tatts)<BR>+TATTOOS -mytatt -anytattoo, (disallow only those with a listed tattoo)<BR>-EXPERTISES +myedu +thisedu (disallow all but those with listed expertise)<BR>+EXPERTISES -myedu -anyedu (disallow those with a listed expertise)<BR>-LEVEL +=1 +>5 +>=7 +&lt;13 +&lt;=20 (disallow all but those player level ranges)<BR>-=1 ->5 ->=7 -&lt;13 -&lt;=20 (disallow only listed levels range)<BR>-CLASSLEVEL +=1 +>5 +&lt;=20 (disallow all except those with current class lvl)<BR>-MAXCLASSLEVEL +=1 +&lt;13 (disallow only those with current class level range)<BR>+ANYCLASS -thief -mage (disallow only those with a listed multi-class)<BR>-ANYCLASSLEVEL +thief +>5 +mage +&lt;10 (disallow all except multi-class lvl)<BR>+ANYCLASSLEVEL -thief ->5 -mage -&lt;10 (disallow only these multi-class lvls)<BR>-SECURITY +cmdrooms +area cmditems (disallow all but listed security flags)<BR>+SECURITY -cmdrooms +area cmditems,(disallow only those with listed flags)<BR>-MOOD +grumpy +normal (disallow all except those with given moods)<BR>+MOOD -grumpy -normal (disallow only those with subtracted moods)<BR>-CLAN +Killers "+The Avengers" (disallow all except those in listed clan)<BR>+CLAN -Killers "-Avengers" (disallow only those in a listed clan)<BR>-DEITY +Apollo "+Grothon" (disallow all except worshippers of listed deity)<BR>+DEITY -God "-Rothon 1" (disallow only worshippers of a listed deity)<BR>-ANYCLASS +thief +ranger (disallow all except those with a multi-class)<BR>-STR X (disallow those with strength greater than X)<BR>+STR X (disallow those with strength less than X)<BR>-INT, -WIS, -CON, -CHA, -DEX (Same as -STR, for other current stats)<BR>+INT, +WIS, +CON, +CHA, +DEX (Same as +STR, for other current stats)<BR>+-ADJSTR...ADJCON (Same as above, but uses current values)<BR>-GROUPSIZE X (disallow those in groups larger than X)<BR>+GROUPSIZE X (disallow those in groups smaller than X)<BR>-AREA +thatarea "+my areaname" (disallow all except those in listed area)<BR>+AREA -thatarea "-my areaname" (disallow only those in listed area)<BR>-HOME "+area name" (disallow all except those from listed home/beacon area)<BR>+HOME "-my areaname" (disallow only those from listed home/beacon area)<BR>-ISHOME (disallow all npcs not currently in their home/beacon areas)<BR>+ISHOME (disallow all npcs unless they are in their home/beacon areas)<BR>-ITEM "+item name" etc... (disallow only those with an item name)<BR>-WORN "+item name" etc... (disallow only those wearing item name)<BR>-MATERIAL "+WOODEN" etc.. (disallow only items of added materials)<BR>+MATERIAL "-WOODEN" etc.. (Do not disallow items of -materials)<BR>-RESOURCES "+OAK" etc.. (disallow only items of added resources)<BR>+RESOURCES "-OAK" etc.. (Do not disallow items of -resources)<BR>-IF &lt;CONDITION> (disallow, unless they meet Scriptable conditions)<BR>+IF &lt;CONDITION> (never disallow anyone who meets Scriptable cond)<BR>-IFSTAT +STAT=VALUE +STAT=VALUE (disallow, unless a stat value is true)<BR>+IF -STAT=VALUE -STAT=VALUE (disallow those with a stat value)<BR>-VALUE X (disallow those with value or money less than X)<BR>+VALUE X (disallow those with value or money greater than X)<BR>-WEIGHT X (disallow those weighing less than X)<BR>+WEIGHT X (disallow those weighing more than X)<BR>-ARMOR/-DAMAGE/-ATTACK X (disallow armor/damage/attack bonus less than X)<BR>+ARMOR/+DAMAGE/+ATTACK X (disallow armor/damage/attack bonus more than X)<BR>+-WEAPONTYPE, +-WEAPONCLASS, and +-WEAPONAMMO for wielded weaponchecks<BR>-WORNON "+TORSO" etc.. (disallow only items wearable on +locations)<BR>+WORNON "-NECK" etc.. (Do not disallow items wearable on -locations)<BR>-DISPOSITION "+ISHIDDEN" etc.. (disallow only with +dispositions)<BR>+DISPOSITION "-ISHIDDEN" etc.. (Do not disallow only with sub disp)<BR>-SENSES "+CANSEEDARK" etc.. (disallow only those with +senses)<BR>+SENSES "-CANSEEDARK" etc.. (Do not disallow those with -senses)<BR>-ABILITY X (disallow those with magical ability less than X)<BR>+ABILITY X (disallow those with magical ability greater than X)<BR>-HOUR/-MONTH/-DAY +X (disallow always, unless the hour/month/day is X)<BR>+HOUR/+MONTH/+DAY -X (disallow those only when the hour/month/day is X)<BR>-SEASON +FALL (disallow those only when season is FALL)<BR>+SEASON -SPRING (disallow those whenever the season is SPRING)<BR>-WEATHER +DROUGHT (disallow those only when weather is DROUGHT)<BR>+WEATHER -BLIZZARD (disallow those whenever the weather is BLIZZARD)<BR>-QUESTWIN "+MY QUEST" (disallow those who have not my MY QUEST)<BR>+QUESTWIN "-MY QUEST" (disallow those who have won MY QUEST)<BR>-EFFECTS +Sleep "+Wood Chopping" (disallow all except those with effects)<BR>+EFFECTS -Sleep "-Wood Chopping" (disallow only those with listed effect)<BR>-SKILLS +Spell_Sleep(75) (disallow all except those with skill proficiency)<BR>+SKILLS -Spell_Sleep(75) (disallow only those with skill proficiency)<BR>-SKILLFLAG +ENCHANTMENT etc.. (disallow all except those with skillflag)<BR>+SKILLFLAG -ENCHANTMENT etc.. (disallow only those with listed skillflag)<BR>-ACCCHIEVES +mytatto etc..  (disallow all except those with achievements)<BR>+ACCCHIEVES -mytattoo etc.. (disallow only those with listed achievements)<BR></pre>
 			</P>
 			
 		</td></tr></table></center>

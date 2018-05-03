@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2010-2017 Bo Zimmerman
+   Copyright 2010-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Spell_AweOther extends Spell
 {
 
@@ -136,7 +135,7 @@ public class Spell_AweOther extends Spell
 			return false;
 		}
 		final String aweWhom=CMParms.combine(commands,1);
-		final MOB target=getTarget(mob,new XVector(commands.get(0)),givenTarget);
+		final MOB target=getTarget(mob,new XVector<String>(commands.get(0)),givenTarget);
 		if(target==null)
 			return false;
 		Room R=CMLib.map().roomLocation(target);

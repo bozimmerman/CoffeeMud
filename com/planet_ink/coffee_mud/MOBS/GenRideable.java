@@ -19,7 +19,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -78,7 +78,10 @@ public class GenRideable extends StdRideable
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
 
-	private final static String[] MYCODES={"RIDEBASIS","MOBSHELD"};
+	private final static String[] MYCODES={"RIDEBASIS","MOBSHELD",
+		"PUTSTR","MOUNTSTR","DISMOUNTSTR","STATESTR","STATESUBJSTR","RIDERSTR"
+	};
+	
 	@Override
 	public String getStat(String code)
 	{
@@ -90,6 +93,18 @@ public class GenRideable extends StdRideable
 			return "" + rideBasis();
 		case 1:
 			return "" + riderCapacity();
+		case 2:
+			return this.getPutString();
+		case 3:
+			return this.getMountString();
+		case 4:
+			return this.getDismountString();
+		case 5:
+			return this.getStateString();
+		case 6:
+			return this.getStateStringSubject();
+		case 7:
+			return this.getRideString();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -108,6 +123,24 @@ public class GenRideable extends StdRideable
 			break;
 		case 1:
 			setRiderCapacity(CMath.s_parseIntExpression(val));
+			break;
+		case 2:
+			setPutString(val);
+			break;
+		case 3:
+			setMountString(val);
+			break;
+		case 4:
+			setDismountString(val);
+			break;
+		case 5:
+			setStateString(val);
+			break;
+		case 6:
+			setStateStringSubject(val);
+			break;
+		case 7:
+			setRideString(val);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

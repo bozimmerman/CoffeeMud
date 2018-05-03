@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -124,7 +124,7 @@ public class StdDeity extends StdMOB implements Deity
 			clericCurseTriggers=new XVector<DeityTrigger>(((StdDeity)E).clericCurseTriggers);
 			blessings=new XVector<DeityPower>(((StdDeity)E).blessings);
 			curses=new XVector<DeityPower>(((StdDeity)E).curses);
-			powers=new XVector(((StdDeity)E).powers);
+			powers=new XVector<Ability>(((StdDeity)E).powers);
 			trigBlessingParts=new XHashtable<String,boolean[]>(((StdDeity)E).trigBlessingParts);
 			trigBlessingTimes=new XHashtable<String,Long>(((StdDeity)E).trigBlessingTimes);
 			trigPowerParts=new XHashtable<String,boolean[]>(((StdDeity)E).trigPowerParts);

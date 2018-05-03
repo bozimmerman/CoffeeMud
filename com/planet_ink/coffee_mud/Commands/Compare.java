@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class Compare extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Compare what to what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Compare what to what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -74,13 +74,13 @@ public class Compare extends StdCommand
 				}
 				if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob)))
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("You don't have a @x1.",( commands.get(0))));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You don't have a @x1.",( commands.get(0))));
 					return false;
 				}
 			}
 			else
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't have a @x1.",( commands.get(0))));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't have a @x1.",( commands.get(0))));
 				return false;
 			}
 		}
@@ -121,7 +121,7 @@ public class Compare extends StdCommand
 				toThis=possible;
 			if((toThis==null)||(!CMLib.flags().canBeSeenBy(toThis,mob)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("Compare a @x1 to what?",compareThis.name()));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Compare a @x1 to what?",compareThis.name()));
 				return false;
 			}
 		}
@@ -129,7 +129,7 @@ public class Compare extends StdCommand
 			toThis=mob.findItem(null,CMParms.combine(commands,1));
 		if((toThis==null)||(!CMLib.flags().canBeSeenBy(toThis,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't have a @x1.",(commands.get(1))));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't have a @x1.",(commands.get(1))));
 			return false;
 		}
 
@@ -174,7 +174,7 @@ public class Compare extends StdCommand
 				mob.tell(L("@x1 looks like it holds less than @x2.",compareThis.name(),toThis.name()));
 		}
 		else
-			CMLib.commands().doCommandFail(mob,origCmds,L("You can't compare @x1 and @x2.",compareThis.name(),toThis.name()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You can't compare @x1 and @x2.",compareThis.name(),toThis.name()));
 		return false;
 	}
 

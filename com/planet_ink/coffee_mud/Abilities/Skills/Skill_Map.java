@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -88,8 +88,17 @@ public class Skill_Map extends StdSkill
 		return Ability.ACODE_SKILL | Ability.DOMAIN_CALLIGRAPHY;
 	}
 
-	Vector<Room>	roomsMappedAlready	= new Vector<Room>();
-	protected Item	map					= null;
+	protected final Set<Room>	roomsMappedAlready	= new TreeSet<Room>(new Comparator<Room>(){
+		@Override
+		public int compare(Room o1, Room o2)
+		{
+			final String s1=CMLib.map().getExtendedRoomID(o1);
+			final String s2=CMLib.map().getExtendedRoomID(o2);
+			return s1.compareTo(s2);
+		}
+		
+	});
+	protected Item	map				= null;
 
 	@Override
 	public void unInvoke()
@@ -147,7 +156,7 @@ public class Skill_Map extends StdSkill
 				&&(!roomsMappedAlready.contains(msg.target()))
 				&&(!CMath.bset(((Room)msg.target()).phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE)))
 				{
-					roomsMappedAlready.addElement((Room)msg.target());
+					roomsMappedAlready.add((Room)msg.target());
 					final Room R=mob.location();
 					if(R!=null)
 						R.send(mob, CMClass.getMsg(mob,map,this,CMMsg.MSG_WROTE, null, CMMsg.MSG_WROTE, CMLib.map().getExtendedRoomID((Room)msg.target()),-1,null));
@@ -240,28 +249,33 @@ public class Skill_Map extends StdSkill
 					mob.addItem(B);
 					item=B;
 				}
+
+				roomsMappedAlready.clear();
+				final List<String> oldRoomIDs=CMParms.parseSemicolons(item.readableText(), true);
+				for(final String roomID : oldRoomIDs)
+				{
+					if(roomID.length()>0)
+					{
+						final Room R=CMLib.map().getRoom(roomID);
+						if(R!=null)
+							roomsMappedAlready.add(R);
+					}
+				}
+
 				map=item;
 				final Room firstRoom=getCurrentRoom(mob);
-				if(!roomsMappedAlready.contains(firstRoom))
+				if((firstRoom!=null)
+				&&(!CMath.bset(firstRoom.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE)))
 				{
-					roomsMappedAlready.addElement(firstRoom);
-					map.setReadableText(map.readableText()+";"+CMLib.map().getExtendedRoomID(firstRoom));
-					if(map instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
-						((com.planet_ink.coffee_mud.Items.interfaces.RoomMap)map).doMapArea();
-				}
-				String rooms=item.readableText();
-				int x=rooms.indexOf(';');
-				while(x>=0)
-				{
-					final String roomID=rooms.substring(0,x);
-					final Room room=CMLib.map().getRoom(roomID);
-					if(room!=null)
+					final String firstRoomID=CMLib.map().getExtendedRoomID(firstRoom);
+					if((!roomsMappedAlready.contains(firstRoom))&&(firstRoomID.length()>0))
 					{
-						if(!roomsMappedAlready.contains(room))
-							roomsMappedAlready.addElement(room);
+						roomsMappedAlready.add(firstRoom);
+						oldRoomIDs.add(firstRoomID);
+						map.setReadableText(map.readableText()+";"+firstRoomID);
+						if(map instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
+							((com.planet_ink.coffee_mud.Items.interfaces.RoomMap)map).doMapArea();
 					}
-					rooms=rooms.substring(x+1);
-					x=rooms.indexOf(';');
 				}
 				beneficialAffect(mob,mob,asLevel,0);
 			}

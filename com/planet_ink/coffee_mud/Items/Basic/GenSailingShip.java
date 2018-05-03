@@ -25,7 +25,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
-   Copyright 2014-2017 Bo Zimmerman
+   Copyright 2014-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -57,6 +57,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	protected volatile Room				shipCombatRoom		= null;
 	protected PairList<Item, int[]>		coordinates			= null;
 	protected PairList<Weapon, int[]>	aimings				= new PairVector<Weapon, int[]>();
+	protected List<Item>				smallTenderRequests	= new SLinkedList<Item>();
 
 	protected int					maxHullPoints	= -1;
 	protected volatile int			lastSpamCt		= 0;
@@ -127,7 +128,9 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		TARGET,
 		AIM,
 		SINK,
-		TENDER
+		TENDER,
+		RAISE,
+		LOWER
 		;
 	}
 
@@ -340,9 +343,11 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				return true;
 			final String word=cmds.get(0).toUpperCase();
 			final String secondWord=(cmds.size()>1) ? cmds.get(1).toUpperCase() : "";
-			SailingCommand cmd = (SailingCommand)CMath.s_valueOf(SailingCommand.class, word);
-			if((cmd == null)&&(secondWord.length()>0))
+			SailingCommand cmd=null;
+			if(secondWord.length()>0)
 				cmd = (SailingCommand)CMath.s_valueOf(SailingCommand.class, word+"_"+secondWord);
+			if(cmd == null)
+				cmd = (SailingCommand)CMath.s_valueOf(SailingCommand.class, word);
 			if(cmd != null)
 			{
 				switch(cmd)
@@ -546,6 +551,114 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						}
 					}
 					return false;
+				}
+				case RAISE:
+				{
+					if(!securityCheck(msg.source()))
+					{
+						msg.source().tell(L("The captain does not permit you."));
+						return false;
+					}
+					final Room R=CMLib.map().roomLocation(this);
+					final Room targetR=msg.source().location();
+					if((R!=null)&&(targetR!=null))
+					{
+						if(((targetR.domainType()&Room.INDOORS)==0)
+						&& (targetR.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+						&&(msg.source().isPlayer()))
+						{
+							msg.source().tell(L("You must be on deck to raise a tendered ship."));
+							return false;
+						}
+						String rest = CMParms.combine(cmds,1);
+						final Item I=R.findItem(rest);
+						if((I!=this)&&(CMLib.flags().canBeSeenBy(I, msg.source())))
+						{
+							if((I instanceof Rideable)
+							&&(((Rideable)I).mobileRideBasis()))
+							{
+								if(smallTenderRequests.contains(I))
+								{
+									final MOB riderM=getBestRider(R,(Rideable)I);
+									if(((riderM==null)||(R.show(riderM, R, CMMsg.MSG_LEAVE, null)))
+									&&(R.show(msg.source(), I, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> raise(s) <T-NAME> up onto @x1.",name())))
+									&&((riderM==null)||(R.show(riderM, targetR, CMMsg.MSG_ENTER, null))))
+									{
+										smallTenderRequests.remove(I);
+										targetR.moveItemTo(I, Expire.Never, Move.Followers);
+									}
+									return false;
+								}
+								else
+								{
+									msg.source().tell(L("You can only raise @x1 once it has tendered itself to this one.",I.name()));
+									return false;
+								}
+							}
+							else
+							{
+								msg.source().tell(L("You don't think @x1 is a suitable boat.",I.name()));
+								return false;
+							}
+						}
+						else
+						{
+							msg.source().tell(L("You don't see '@x1' out there!",rest));
+							return false;
+						}
+					}
+					break;
+				}
+				case LOWER:
+				{
+					if(!securityCheck(msg.source()))
+					{
+						msg.source().tell(L("The captain does not permit you."));
+						return false;
+					}
+					final Room R=msg.source().location();
+					final Room targetR=CMLib.map().roomLocation(this);
+					if((R!=null)&&(targetR!=null))
+					{
+						if(((R.domainType()&Room.INDOORS)==0)
+						&& (R.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+						&&(msg.source().isPlayer()))
+						{
+							msg.source().tell(L("You must be on deck to lower a boat."));
+							return false;
+						}
+						String rest = CMParms.combine(cmds,1);
+						final Item I=R.findItem(rest);
+						if((I!=this)&&(CMLib.flags().canBeSeenBy(I, msg.source())))
+						{
+							if((I instanceof Rideable)
+							&&(((Rideable)I).mobileRideBasis())
+							&&((((Rideable)I).rideBasis()==Rideable.RIDEABLE_WATER)
+								||(((Rideable)I).rideBasis()==Rideable.RIDEABLE_AIR)))
+							{
+								final MOB riderM=getBestRider(R,(Rideable)I);
+								if(((riderM==null)||(R.show(riderM, R, CMMsg.MSG_LEAVE, null)))
+								&&(targetR.show(msg.source(), I, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> lower(s) <T-NAME> off of @x1.",name())))
+								&&((riderM==null)||(R.show(riderM, targetR, CMMsg.MSG_ENTER, null))))
+								{
+									this.smallTenderRequests.remove(I);
+									targetR.moveItemTo(I, Expire.Never, Move.Followers);
+								}
+								return false;
+							}
+							else
+							{
+								msg.source().tell(L("You don't think @x1 is a suitable thing for lowering.",I.name()));
+								return false;
+							}
+						}
+						else
+						{
+							msg.source().tell(L("You don't see '@x1' out there!",rest));
+							return false;
+						}
+					}
+					break;
 				}
 				case WEIGH_ANCHOR:
 				case RAISE_ANCHOR:
@@ -906,9 +1019,11 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				return true;
 			final String word=cmds.get(0).toUpperCase();
 			final String secondWord=(cmds.size()>1) ? cmds.get(1).toUpperCase() : "";
-			SailingCommand cmd = (SailingCommand)CMath.s_valueOf(SailingCommand.class, word);
-			if((cmd == null)&&(secondWord.length()>0))
+			SailingCommand cmd = null;
+			if(secondWord.length()>0)
 				cmd = (SailingCommand)CMath.s_valueOf(SailingCommand.class, word+"_"+secondWord);
+			if(cmd == null)
+				cmd = (SailingCommand)CMath.s_valueOf(SailingCommand.class, word);
 			if(cmd == null)
 				return true;
 			switch(cmd)
@@ -1181,6 +1296,79 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		&&(msg.othersMessage().indexOf("<S-NAME>")>=0)
 		&&(msg.othersMessage().indexOf(L(CMLib.flags().getPresentDispositionVerb(msg.source(),CMFlagLibrary.ComingOrGoing.ARRIVES)))>=0))
 			msg.setOthersMessage(L("<S-NAME> disembark(s) @x1.",Name()));
+		else
+		if((msg.sourceMinor()==CMMsg.TYP_HUH)
+		&&(msg.targetMessage()!=null)
+		&&(msg.source().riding() instanceof Item)
+		&&(msg.source().riding().mobileRideBasis())
+		&&(owner() == CMLib.map().roomLocation(msg.source())))
+		{
+			final List<String> cmds=CMParms.parse(msg.targetMessage());
+			if(cmds.size()==0)
+				return true;
+			final String word=cmds.get(0).toUpperCase();
+			final String secondWord=(cmds.size()>1) ? cmds.get(1).toUpperCase() : "";
+			SailingCommand cmd = (SailingCommand)CMath.s_valueOf(SailingCommand.class, word);
+			if((cmd == null)&&(secondWord.length()>0))
+				cmd = (SailingCommand)CMath.s_valueOf(SailingCommand.class, word+"_"+secondWord);
+			if(cmd != null)
+			{
+				switch(cmd)
+				{
+				default:
+					break;
+				case TENDER:
+				{
+					if(cmds.size()==1)
+					{
+						msg.source().tell(L("You must specify another ship to offer to board."));
+						return false;
+					}
+					final Room thisRoom = (Room)owner();
+					if(thisRoom==null)
+					{
+						msg.source().tell(L("This ship is nowhere to be found!"));
+						return false;
+					}
+					/*//TODO: maybe check to see if the lil ship is 
+					if(this.targetedShip!=null)
+					{
+						msg.source().tell(L("Not while you are in combat!"));
+						return false;
+					}
+					*/
+					String rest = CMParms.combine(cmds,1);
+					final Item meI=thisRoom.findItem(rest);
+					if((meI==this)&&(CMLib.flags().canBeSeenBy(this, msg.source())))
+					{
+						if(targetedShip != null)
+						{
+							msg.source().tell(L("Not while @x1 is in in combat!",Name()));
+							return false;
+						}
+						final Room R=CMLib.map().roomLocation(msg.source());
+						if((R!=null)&&(R.show(msg.source(), this, CMMsg.TYP_ADVANCE, L("<S-NAME> tender(s) @x1 alonside <T-NAME>, wating to be raised on board.",msg.source().riding().name()))))
+						{
+							for(Iterator<Item> i=smallTenderRequests.iterator();i.hasNext();)
+							{
+								final Item I=i.next();
+								if(!R.isContent(I))
+									smallTenderRequests.remove(I);
+							}
+							if(!smallTenderRequests.contains(msg.source().riding()))
+								smallTenderRequests.add((Item)msg.source().riding());
+						}
+					}
+					else
+					{
+						msg.source().tell(L("You don't see the ship '@x1' here to tender with",rest));
+						return false;
+					}
+					break;
+				}
+				}
+			}
+		}
 		if(!super.okMessage(myHost, msg))
 			return false;
 		return true;
@@ -1628,6 +1816,26 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		return false;
 	}
 	
+	protected static MOB getBestRider(final Room R, final Rideable rI)
+	{
+		MOB bestM=null;
+		for(final Enumeration<Rider> m=rI.riders();m.hasMoreElements();)
+		{
+			final Rider R2=m.nextElement();
+			if((R2 instanceof MOB) && (R.isInhabitant((MOB)R2)))
+			{
+				if(((MOB)R2).isPlayer())
+					return (MOB)R2;
+				else
+				if((bestM!=null)&&(bestM.amFollowing()!=null))
+					bestM=(MOB)R2;
+				else
+					bestM=(MOB)R2;
+			}
+		}
+		return bestM;
+	}
+	
 	protected static String staticL(final String str, final String... xs)
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);
@@ -1671,6 +1879,18 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			visualCondition.append(staticL("\n\r^c@x1^c is in perfect condition.^N",name));
 	}
 
+	protected void cleanMsgForRepeat(CMMsg msg)
+	{
+		msg.setSourceCode(CMMsg.NO_EFFECT);
+		if(msg.trailerRunnables()!=null)
+			msg.trailerRunnables().clear();
+		if(msg.trailerMsgs()!=null)
+		{
+			for(CMMsg msg2 : msg.trailerMsgs())
+				cleanMsgForRepeat(msg2);
+		}
+	}
+	
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -1686,11 +1906,12 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			if((msg.source().riding()==this)
 			||(msg.othersMessage()==null)
 			)
-				this.sendAreaMessage(msg, true);
+				sendAreaMessage(msg, true);
 			else
 			{
 				final CMMsg msg2=(CMMsg)msg.copyOf();
 				msg2.setOthersMessage(L("^HOff the deck you see: ^N")+msg.othersMessage());
+				cleanMsgForRepeat(msg2);
 				sendAreaMessage(msg2, true);
 			}
 		}
@@ -2615,9 +2836,11 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		this.courseDirections.add(Integer.valueOf(-1));
 	}
 	
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
-											"AREA","OWNER","PRICE","PUTSTR","MOUNTSTR","DISMOUNTSTR","DEFCLOSED","DEFLOCKED",
-											"EXITNAME"
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
+											"RESETTIME","RIDEBASIS","MOBSHELD",
+											"AREA","OWNER","PRICE","DEFCLOSED","DEFLOCKED",
+											"EXITNAME",
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR","STATESTR","STATESUBJSTR","RIDERSTR"
 										  };
 
 	@Override
@@ -2648,17 +2871,23 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		case 9:
 			return "" + getPrice();
 		case 10:
-			return putString;
-		case 11:
-			return mountString;
-		case 12:
-			return dismountString;
-		case 13:
 			return "" + defaultsClosed();
-		case 14:
+		case 11:
 			return "" + defaultsLocked();
-		case 15:
+		case 12:
 			return "" + doorName();
+		case 13:
+			return this.getPutString();
+		case 14:
+			return this.getMountString();
+		case 15:
+			return this.getDismountString();
+		case 16:
+			return this.getStateString();
+		case 17:
+			return this.getStateStringSubject();
+		case 18:
+			return this.getRideString();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -2701,22 +2930,31 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			setPrice(CMath.s_int(val));
 			break;
 		case 10:
-			putString = val;
-			break;
-		case 11:
-			mountString = val;
-			break;
-		case 12:
-			dismountString = val;
-			break;
-		case 13:
 			setDoorsNLocks(hasADoor(), isOpen(), CMath.s_bool(val), hasALock(), isLocked(), defaultsLocked());
 			break;
-		case 14:
+		case 11:
 			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
 			break;
-		case 15:
+		case 12:
 			this.doorName = val;
+			break;
+		case 13:
+			setPutString(val);
+			break;
+		case 14:
+			setMountString(val);
+			break;
+		case 15:
+			setDismountString(val);
+			break;
+		case 16:
+			setStateString(val);
+			break;
+		case 17:
+			setStateStringSubject(val);
+			break;
+		case 18:
+			setRideString(val);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

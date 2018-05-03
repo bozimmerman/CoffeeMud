@@ -168,12 +168,33 @@ public class Drow extends Elf
 		return agingChart;
 	}
 
-	protected static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
 	public int availabilityCode()
 	{
-		return Area.THEME_FANTASY;
+		return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;
+	}
+	
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(ticking instanceof MOB)
+		{
+			final MOB mob=(MOB)ticking;
+			if((!mob.isPlayer())
+			&&(!CMLib.flags().canBeSeenBy(mob.location(), mob))
+			&&(!CMLib.flags().isInDark(mob.location()))
+			&&(mob.location()!=null)
+			&&(mob.fetchEffect("Spell_DarknessGlobe")==null)
+			&&(CMLib.dice().roll(1, 10, -1)==1))
+			{
+				Ability A=mob.fetchAbility("Spell_DarknessGlobe");
+				if(A!=null)
+					mob.enqueCommands(new XVector<List<String>>(new XVector<String>("CAST","DARKNESS GLOBE")), 0);
+			}
+		}
+		return true;
 	}
 
 	@Override

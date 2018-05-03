@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -54,13 +54,13 @@ public class View extends StdCommand
 			return false;
 		if(commands.size()==0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("View what merchandise?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("View what merchandise?"));
 			return false;
 		}
 
 		if(CMLib.coffeeShops().getShopKeeper(shopkeeper)==null)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is not a shopkeeper!",shopkeeper.name()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is not a shopkeeper!",shopkeeper.name()));
 			return false;
 		}
 

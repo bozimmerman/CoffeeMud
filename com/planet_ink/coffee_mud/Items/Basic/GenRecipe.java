@@ -15,10 +15,11 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -56,44 +57,257 @@ public class GenRecipe extends GenReadable implements Recipe
 	}
 
 	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		
+		if(msg.amITarget( this ) 
+		&& (msg.targetMinor()==CMMsg.TYP_READ) 
+		&& (recipeLines.length>0))
+		{
+			if((msg.targetMessage()!=null)
+			&&(CMath.isInteger(msg.targetMessage())))
+			{
+				int x=CMath.s_int(msg.targetMessage());
+				int z=this.getRecipeCodeLines().length;
+				if(x<1)
+				{
+					msg.source().tell(L("Which recipe?"));
+					return false;
+				}
+				else
+				if(x>z)
+				{
+					if(z==1)
+						msg.source().tell(L("There is only 1 recipe."));
+					else
+						msg.source().tell(L("There are only 1 recipes.",""+z));
+					return false;
+				}
+			}
+		}
+		if(msg.amITarget( this ) 
+		&& (msg.targetMinor()==CMMsg.TYP_WRITE))
+		{
+			final List<String> recipes=CMParms.parseAny(msg.targetMessage(), "\n\r", true);
+			if(recipes.size()>0)
+			{
+				int max=this.getTotalRecipePages();
+				int num=this.getRecipeCodeLines().length;
+				if((max-num)==0)
+				{
+					msg.source().tell(L("There are no more pages in this recipe book."));
+					return false;
+				}
+				else
+				if((max-num)<recipes.size())
+				{
+					if((max-num)==1)
+						msg.source().tell(L("There is only one more page in this recipe book."));
+					else
+						msg.source().tell(L("There are only @x1 more pages in this recipe book.",""+(max-num)));
+					return false;
+				}
+				final Ability A=CMClass.getAbility( getCommonSkillID() );
+				if(!(A instanceof CraftorAbility))
+				{
+					msg.source().tell(L("This recipe book is un-prepped."));
+					return false;
+				}
+				for(String r : recipes)
+				{
+					List<String> V=CMParms.parseTabs(r+" ", false);
+					if(V.size()<2)
+					{
+						msg.source().tell(L("Your recipes are clearly bad."));
+						return false;
+					}
+					final CraftorAbility C=(CraftorAbility)A;
+					final String components = C.getDecodedComponentsDescription( msg.source(), V );
+					if(components.equals("?"))
+					{
+						msg.source().tell(L("Your recipes are clearly bad."));
+						return false;
+					}
+					else
+					{
+						if(this.getRecipeCodeLines().length>0)
+						{
+							boolean found=false;
+							for(int i=0;i<this.getRecipeCodeLines().length;i++)
+							{
+								if(CMParms.parseTabs(this.getRecipeCodeLines()[i]+" ", false).size() == V.size())
+								{
+									found=true;
+									break;
+								}
+							}
+							if(!found)
+							{
+								msg.source().tell(L("Your recipes might be bad?"));
+								return false;
+							}
+						}
+					}
+				}
+			}
+			else
+			{
+				msg.source().tell(L("Write what recipe?"));
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	protected void executeMsg(final CMMsg msg)
+	{
+		// the order that these things are checked in should
+		// be holy, and etched in stone.
+		if(numBehaviors()>0)
+		{
+			eachBehavior(new EachApplicable<Behavior>()
+			{ 
+				@Override
+				public final void apply(final Behavior B)
+				{
+					B.executeMsg(me,msg);
+				} 
+			});
+		}
+		if(numScripts()>0)
+		{
+			eachScript(new EachApplicable<ScriptingEngine>()
+			{ 
+				@Override
+				public final void apply(final ScriptingEngine S)
+				{
+					S.executeMsg(me,msg);
+				} 
+			});
+		}
+		if(numEffects()>0)
+		{
+			eachEffect(new EachApplicable<Ability>()
+			{ 
+				@Override
+				public final void apply(final Ability A)
+				{
+					A.executeMsg(me, msg);
+				}
+			});
+		}
+	}
+	
+	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget( this ) 
 		&& (msg.targetMinor()==CMMsg.TYP_READ) 
-		&& (super.readableText().length()==0) 
 		&& (recipeLines.length>0))
 		{
-			final StringBuilder str = new StringBuilder("");
-			final Ability A=CMClass.getAbility( getCommonSkillID() );
-			if(getTotalRecipePages() > 1)
+			this.executeMsg(msg);
+			if((msg.targetMessage()!=null)
+			&&(CMath.isInteger(msg.targetMessage())))
 			{
-				str.append( L("@x1 contains @x2 recipe(s)/schematic(s) out of @x3 total entries.\n\r",name(),""+recipeLines.length,""+getTotalRecipePages()));
-				if(A!=null)
-					str.append( L("The following recipes are for the @x1 skill:\n\r",A.name()));
+				final StringBuilder str = new StringBuilder("");
+				int x=CMath.s_int(msg.targetMessage());
+				if((x>0)&&(x<=this.getRecipeCodeLines().length))
+				{
+					final Ability A=CMClass.getAbility( getCommonSkillID() );
+					if(A!=null)
+						str.append( L("The following recipe is for the @x1 skill:\n\r",A.name()));
+					if(A instanceof CraftorAbility)
+					{
+						final CraftorAbility C=(CraftorAbility)A;
+						final List<String> V=CMParms.parseTabs( this.getRecipeCodeLines()[x-1]+" ", false );
+						final Pair<String,Integer> nameAndLevel = C.getDecodedItemNameAndLevel( V );
+						final String components = C.getDecodedComponentsDescription( msg.source(), V );
+						final String name=CMStrings.replaceAll( nameAndLevel.first, "% ", "");
+	
+						str.append( name).append(", level "+nameAndLevel.second);
+						if(CMath.s_int(components)>0)
+							str.append( L(", which requires @x1 standard components.\n\r",components));
+						else
+							str.append( L(", which requires: @x1.\n\r",components));
+					}
+				}
+				CMMsg readMsg=CMClass.getMsg(msg.source(), msg.target(), msg.tool(), 
+						 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, L("It says '@x1'.",str.toString()),
+						 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, this.getRecipeCodeLines()[x-1]+" ", 
+						 CMMsg.NO_EFFECT, null);
+				msg.addTrailerMsg(readMsg);
 			}
 			else
 			{
-				if(A!=null)
-					str.append( L("The following recipe is for the @x1 skill:\n\r",A.name()));
-			}
-			if(A instanceof CraftorAbility)
-			{
-				final CraftorAbility C=(CraftorAbility)A;
-				for(final String line : recipeLines)
+				final StringBuilder str = new StringBuilder("");
+				final Ability A=CMClass.getAbility( getCommonSkillID() );
+				if(getTotalRecipePages() > 1)
 				{
-					final List<String> V=CMParms.parseTabs( line+" ", false );
-					final Pair<String,Integer> nameAndLevel = C.getDecodedItemNameAndLevel( V );
-					final String components = C.getDecodedComponentsDescription( msg.source(), V );
-					final String name=CMStrings.replaceAll( nameAndLevel.first, "% ", "");
-
-					str.append( name).append(", level "+nameAndLevel.second);
-					if(CMath.s_int(components)>0)
-						str.append( L(", which requires @x1 standard components.\n\r",components));
-					else
-						str.append( L(", which requires: @x1.\n\r",components));
+					str.append( L("@x1 contains @x2 recipe(s)/schematic(s) out of @x3 total entries.\n\r",name(),""+recipeLines.length,""+getTotalRecipePages()));
+					if(A!=null)
+						str.append( L("The following recipes are for the @x1 skill:\n\r",A.name()));
+				}
+				else
+				{
+					if(A!=null)
+						str.append( L("The following recipe is for the @x1 skill:\n\r",A.name()));
+				}
+				StringBuilder rawCodes=new StringBuilder("");
+				if(A instanceof CraftorAbility)
+				{
+					final CraftorAbility C=(CraftorAbility)A;
+					int lineNum=1;
+					for(final String line : recipeLines)
+					{
+						rawCodes.append(line).append("\n\r");
+						final List<String> V=CMParms.parseTabs( line+" ", false );
+						final Pair<String,Integer> nameAndLevel = C.getDecodedItemNameAndLevel( V );
+						final String components = C.getDecodedComponentsDescription( msg.source(), V );
+						final String name=CMStrings.replaceAll( nameAndLevel.first, "% ", "");
+	
+						str.append(lineNum).append(") ").append( name).append(", level "+nameAndLevel.second);
+						if(CMath.s_int(components)>0)
+							str.append( L(", which requires @x1 standard components.\n\r",components));
+						else
+							str.append( L(", which requires: @x1.\n\r",components));
+						lineNum++;
+					}
+				}
+				String writing=str.substring( 0, str.length()-2 );
+				CMMsg readMsg=CMClass.getMsg(msg.source(), msg.target(), msg.tool(), 
+						 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, L("It says '@x1'.",writing),
+						 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, rawCodes.toString()+" ", 
+						 CMMsg.NO_EFFECT, null);
+				msg.addTrailerMsg(readMsg);
+			}
+			return;
+		}
+		if(msg.amITarget( this ) 
+		&& (msg.targetMinor()==CMMsg.TYP_WRITE))
+		{
+			this.executeMsg(msg);
+			final List<String> recipes=CMParms.parseAny(msg.targetMessage(), "\n\r", true);
+			if(recipes.size()>0)
+			{
+				final int max=this.getTotalRecipePages();
+				final int num=this.getRecipeCodeLines().length;
+				for(int i=recipes.size()-1;i>=0;i--)
+				{
+					if(recipes.get(i).trim().length()==0)
+						recipes.remove(i);
+				}
+				if((max-num)>=recipes.size())
+				{
+					int startPos = this.recipeLines.length;
+					String[] newRecipeLines = Arrays.copyOf(this.recipeLines, this.recipeLines.length + recipes.size());
+					for(int i=0;i<recipes.size();i++)
+						newRecipeLines[i+startPos]=recipes.get(i);
+					this.setRecipeCodeLines(newRecipeLines);
 				}
 			}
-			super.setReadableText( str.substring( 0, str.length()-2 ));
+			return;
 		}
 		super.executeMsg( myHost, msg );
 	}

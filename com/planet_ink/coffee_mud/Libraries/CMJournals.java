@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -287,6 +287,19 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			}
 			final String name=item.toUpperCase().trim();
 			CMSecurity.registerJournal(name);
+			String flagVal = flags.get(CommandJournalFlags.ASSIGN);
+			if(flagVal == null)
+				flags.put(CommandJournalFlags.ASSIGN, "ALL");
+			else
+			{
+				List<String> flagValL=CMParms.parseAny(flagVal.toUpperCase().trim(), ':', true);
+				if(!flagValL.contains("ALL"))
+					flagValL.add("ALL");
+				StringBuilder newFlags=new StringBuilder("");
+				for(String flag : flagValL)
+					newFlags.append(flag).append(':');
+				flags.put(CommandJournalFlags.ASSIGN, newFlags.toString());
+			}
 			final String journalAdminMask = mask;
 			commandJournals.put(name,new CommandJournal()
 			{
@@ -692,7 +705,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		return true;
 	}
 
-	@Override public boolean tick(Tickable ticking, int tickID)
+	@Override 
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_ALIVE;
 		try
@@ -958,6 +972,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						{
 							sess.println(L("(aborted)"));
 							state=MsgMkrState.MENU;
+							break;
 						}
 						else
 							param1=this.input;
@@ -985,6 +1000,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						{
 							sess.println(L("(aborted)"));
 							state=MsgMkrState.MENU;
+							break;
 						}
 						else
 						{
@@ -1060,6 +1076,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						{
 							sess.println(L("(aborted)"));
 							state=MsgMkrState.MENU;
+							break;
 						}
 						else
 						{
@@ -1161,7 +1178,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 										vbuf.set(ln,param2);
 								}
 								else
-									state=MsgMkrState.SRPROMPT;
+									state=MsgMkrState.EDITPROMPT;
 							}
 							break;
 						}
@@ -1267,7 +1284,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			}
 			else
 			{
-				final boolean canExtEdit=((sess!=null)&&(sess.getClientTelnetMode(Session.TELNET_GMCP)));
+				final boolean canExtEdit=((sess.getClientTelnetMode(Session.TELNET_GMCP)));
 				final LinkedList<String> paramsOut=new LinkedList<String>();
 				final String option=sess.choose(L("^HMenu ^N(?/A/D/L/I/E/R/S/Q@x1)^H: ^N",(canExtEdit?"/W":"")),L("ADLIERSQ?@x1",(canExtEdit?"W":"")),"?",-1,paramsOut);
 				final String paramAll=(paramsOut.size()>0)?CMParms.combine(paramsOut,0):null;
@@ -1364,24 +1381,21 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 					break;
 				case 'W':
 				{
-					if(sess!=null)
+					StringBuilder oldDoc=new StringBuilder();
+					for(final String s : vbuf)
+						oldDoc.append(s).append("\n");
+					vbuf.clear();
+					sess.sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\",\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
+					oldDoc=null;
+					String newText=unsafePrompt(sess,L("Re-Enter the whole doc using your GMCP editor.\n\rIf the editor has not popped up, just hit enter and QUIT Without Saving immediately.\n\rProceed: "),"");
+					if((newText.length()>0)&&(newText.charAt(newText.length()-1)=='\\'))
+						newText = newText.substring(0,newText.length()-1);
+					final String[] newDoc=newText.split("\\\\n");
+					for(final String s : newDoc)
+						vbuf.add(s);
+					if(newDoc.length>1)
 					{
-						StringBuilder oldDoc=new StringBuilder();
-						for(final String s : vbuf)
-							oldDoc.append(s).append("\n");
-						vbuf.clear();
-						sess.sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(messageTitle)+"\",\"text\":\""+MiniJSON.toJSONString(oldDoc.toString())+"\"}");
-						oldDoc=null;
-						String newText=unsafePrompt(sess,L("Re-Enter the whole doc using your GMCP editor.\n\rIf the editor has not popped up, just hit enter and QUIT Without Saving immediately.\n\rProceed: "),"");
-						if((newText.length()>0)&&(newText.charAt(newText.length()-1)=='\\'))
-							newText = newText.substring(0,newText.length()-1);
-						final String[] newDoc=newText.split("\\\\n");
-						for(final String s : newDoc)
-							vbuf.add(s);
-						if(newDoc.length>1)
-						{
-							mob.tell(L("\n\r^HNew text successfully imported.^N"));
-						}
+						mob.tell(L("\n\r^HNew text successfully imported.^N"));
 					}
 					break;
 				}

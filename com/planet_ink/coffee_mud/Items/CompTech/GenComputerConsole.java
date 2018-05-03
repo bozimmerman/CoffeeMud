@@ -19,7 +19,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
-   Copyright 2012-2017 Bo Zimmerman
+   Copyright 2012-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -72,9 +72,14 @@ public class GenComputerConsole extends StdComputerConsole
 		recoverPhyStats();
 	}
 	
-	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
-										   "POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED",
-										   "RECHRATE"};
+	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
+											"RESETTIME","RIDEBASIS","MOBSHELD",
+											"POWERCAP","ACTIVATED","POWERREM",
+											"MANUFACTURER","INSTFACT",
+											"DEFCLOSED","DEFLOCKED",
+											"RECHRATE",
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR","STATESTR","STATESUBJSTR","RIDERSTR"
+											};
 	
 	@Override
 	public String getStat(String code)
@@ -113,6 +118,18 @@ public class GenComputerConsole extends StdComputerConsole
 			return "" + defaultsLocked();
 		case 14:
 			return "" + getRechargeRate();
+		case 15:
+			return this.getPutString();
+		case 16:
+			return this.getMountString();
+		case 17:
+			return this.getDismountString();
+		case 18:
+			return this.getStateString();
+		case 19:
+			return this.getStateStringSubject();
+		case 20:
+			return this.getRideString();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -170,6 +187,24 @@ public class GenComputerConsole extends StdComputerConsole
 			break;
 		case 14:
 			setRechargeRate(CMath.s_parseLongExpression(val));
+			break;
+		case 15:
+			setPutString(val);
+			break;
+		case 16:
+			setMountString(val);
+			break;
+		case 17:
+			setDismountString(val);
+			break;
+		case 18:
+			setStateString(val);
+			break;
+		case 19:
+			setStateStringSubject(val);
+			break;
+		case 20:
+			setRideString(val);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

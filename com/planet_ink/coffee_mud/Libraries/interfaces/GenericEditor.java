@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.util.*;
 /*
-   Copyright 2008-2017 Bo Zimmerman
+   Copyright 2008-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -68,6 +68,7 @@ public interface GenericEditor extends CMLibrary
 
 	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices) throws IOException;
 	public int promptMulti(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices) throws IOException;
+	public String promptMultiSelectList(MOB mob, String oldVal, String delimiter, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices, boolean nullOK) throws IOException;
 	public String promptMultiOrExtra(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices) throws IOException;
 	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
 	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK) throws IOException;

@@ -9,7 +9,7 @@ import com.planet_ink.coffee_web.http.HTTPStatus;
 import com.planet_ink.coffee_web.server.WebServer;
 
 /*
-   Copyright 2012-2017 Bo Zimmerman
+   Copyright 2012-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -72,6 +72,13 @@ public interface HTTPIOHandler extends Runnable
 	 */
 	public boolean isRunning();
 	
+	/**
+	 * Notifies the I/O handler that it has data to process from somewhere
+	 * other than its internal read buffers.
+	 * @return true if the scheduling was successful
+	 */
+	public boolean scheduleProcessing();
+
 	/**
 	 * Reads bytes from the given buffer into the internal channel channel.
 	 * @param buffer source buffer for the data write

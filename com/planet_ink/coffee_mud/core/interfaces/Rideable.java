@@ -19,7 +19,7 @@ import java.util.Enumeration;
 import java.util.Set;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -120,6 +120,7 @@ public interface Rideable extends Rider
 	 * @return the rider riding
 	 */
 	public Rider fetchRider(int which);
+
 	/**
 	 * Adds a new Rider to this Rideable.  Is called by Rider.setRiding(Rideable)
 	 * Should also call Rider.setRiding(Rideable) without recursion
@@ -128,6 +129,7 @@ public interface Rideable extends Rider
 	 * @param mob Rider object, either an item or a mob
 	 */
 	public void addRider(Rider mob);
+
 	/**
 	 * Removes a Rider from this Rideable.  Is called by Rider.setRiding(null)
 	 * Should also call Rider.setRiding(null) without recursion
@@ -136,6 +138,7 @@ public interface Rideable extends Rider
 	 * @param mob Rider object, either an item or a mob
 	 */
 	public void delRider(Rider mob);
+
 	/**
 	 * Returns whether Rider is currently mounted on this Rideable
 	 * @see Rider
@@ -144,33 +147,131 @@ public interface Rideable extends Rider
 	 * @return true if the Rider is mounted on this Rideable
 	 */
 	public boolean amRiding(Rider mob);
+
 	/**
 	 * Returns a string grammatically correct for the given rider when
 	 * they are mounted on this Rideable
 	 * @see Rider
-	 * @see Rideable
+	 * @see Rideable#setStateString(String)
+	 * @see Rideable#getStateString()
 	 * @param R The rider object to make grammatically correct.
 	 * @return a string describing  the riders state of riding this Rideable
 	 */
 	public String stateString(Rider R);
+
+	/**
+	 * Returns the custom string grammatically correct for the given rider when
+	 * they are mounted on this Rideable
+	 * @see Rider
+	 * @see Rideable#setStateString(String)
+	 * @see Rideable#stateString(Rider)
+	 * @return a custom string describing  the riders state of riding this Rideable
+	 */
+	public String getStateString();
+
+	/**
+	 * Returns a string grammatically correct for the given rider when
+	 * they are mounted on this Rideable
+	 * @see Rider
+	 * @see Rideable#stateString(Rider)
+	 * @see Rideable#getStateString()
+	 * @param str a string describing  the riders state of riding this Rideable
+	 */
+	public void setStateString(String str);
+
+	/**
+	 * Returns a verb string describing what one does when one rides
+	 * this Rideable from room to room.
+	 * @see Rider
+	 * @see Rideable#setRideString(String)
+	 * @see Rideable#getRideString(Rider)
+	 * @param R The rider object to make grammatically correct.
+	 * @return a string describing  the riders verb of riding this Rideable somewhere
+	 */
+	public String rideString(Rider R);
+
+	/**
+	 * Returns a custom verb string describing what one does when one rides
+	 * this Rideable from room to room.
+	 * @see Rider
+	 * @see Rideable#setRideString(String)
+	 * @see Rideable#rideString(Rider)
+	 * @return a custom string describing  the riders verb of riding this Rideable somewhere
+	 */
+	public String getRideString();
+
+	/**
+	 * Sets a verb string describing what one does when one rides
+	 * this Rideable from room to room.
+	 * @see Rider
+	 * @see Rideable#rideString(Rider)
+	 * @see Rideable#getRideString(Rider)
+	 * @param str a string describing  the riders verb of riding this Rideable somewhere
+	 */
+	public void setRideString(String str);
+
 	/**
 	 * Returns a string grammatically correct for the given rider when
 	 * they are putting something on this Rideable
 	 * @see Rider
-	 * @see Rideable
+	 * @see Rideable#setPutString(String)
+	 * @see Rideable#getPutString()
 	 * @param R The rider object to make grammatically correct.
 	 * @return a string describing  the riders state of putting something on this Rideable
 	 */
 	public String putString(Rider R);
+
+	/**
+	 * Returns a custom string grammatically correct for the given rider when
+	 * they are putting something on this Rideable
+	 * @see Rider
+	 * @see Rideable#setPutString(String)
+	 * @see Rideable#putString(Rider)
+	 * @return a custom string describing  the riders state of putting something on this Rideable
+	 */
+	public String getPutString();
+
+	/**
+	 * Set a string grammatically correct for the given rider when
+	 * they are putting something on this Rideable
+	 * @see Rider
+	 * @see Rideable#putString(Rider)
+	 * @see Rideable#getPutString()
+	 * @param str a string describing  the riders state of putting something on this Rideable
+	 */
+	public void setPutString(final String str);
+
 	/**
 	 * Returns a string grammatically correct for this Rideable when
 	 * Riders are mounted
 	 * @see Rider
-	 * @see Rideable
+	 * @see Rideable#setStateStringSubject(String)
+	 * @see Rideable#getStateStringSubject()
 	 * @param R The rider object to make grammatically correct.
 	 * @return a string describing the Riderable state of being ridden
 	 */
 	public String stateStringSubject(Rider R);
+
+	/**
+	 * Returns a custom string grammatically correct for this Rideable when
+	 * Riders are mounted
+	 * @see Rider
+	 * @see Rideable#setStateStringSubject(String)
+	 * @see Rideable#stateStringSubject(Rider)
+	 * @return a custom string describing the Riderable state of being ridden
+	 */
+	public String getStateStringSubject();
+
+	/**
+	 * Sets a string grammatically correct for this Rideable when
+	 * Riders are mounted
+	 * @see Rider
+	 * @see Rideable#stateStringSubject(Rider)
+	 * @see Rideable#getStateStringSubject()
+	 * @param str a string describing the Riderable state of being ridden
+	 */
+	public void setStateStringSubject(String str);
+
 	/**
 	 * Whether this Rideable moves when the Rider wants to move it.  Largely derived
 	 * from rideBasis().
@@ -178,26 +279,73 @@ public interface Rideable extends Rider
 	 * @return whether this item moves with the rider
 	 */
 	public boolean mobileRideBasis();
+
 	/**
 	 * Returns a string grammatically correct for the given rider when
 	 * they are mounting this Rideable
 	 * @see Rider
-	 * @see Rideable
+	 * @see Rideable#setMountString(String)
+	 * @see Rideable#getMountString()
 	 * @see Rideable#RIDEABLE_DESCS
 	 * @param commandType one of the RIDEABLE_ constants as a type
 	 * @param R The rider object to make grammatically correct.
 	 * @return a string describing the riders state of mounting this Rideable
 	 */
 	public String mountString(int commandType, Rider R);
+
+	/**
+	 * Returns a custom string grammatically correct for the given rider when
+	 * they are mounting this Rideable
+	 * @see Rider
+	 * @see Rideable#setMountString(String)
+	 * @see Rideable#mountString(int, Rider)
+	 * @see Rideable#RIDEABLE_DESCS
+	 * @return a custom string describing the riders state of mounting this Rideable
+	 */
+	public String getMountString();
+
+	/**
+	 * Setss a string grammatically correct for the given rider when
+	 * they are mounting this Rideable
+	 * @see Rider
+	 * @see Rideable#mountString(int, Rider)
+	 * @see Rideable#getDismountString()
+	 * @see Rideable#RIDEABLE_DESCS
+	 * @param str a string describing the riders state of mounting this Rideable
+	 */
+	public void setMountString(String str);
+
 	/**
 	 * Returns a string grammatically correct for the given rider when
 	 * they are dismounting this Rideable
 	 * @see Rider
-	 * @see Rideable
+	 * @see Rideable#setDismountString(String)
+	 * @see Rideable#getDismountString()
 	 * @param R The rider object to make grammatically correct.
 	 * @return a string describing the riders state of dismounting this Rideable
 	 */
 	public String dismountString(Rider R);
+
+	/**
+	 * Returns a custom string grammatically correct for the given rider when
+	 * they are dismounting this Rideable
+	 * @see Rider
+	 * @see Rideable#setDismountString(String)
+	 * @see Rideable#dismountString(Rider)
+	 * @return a custom string describing the riders state of dismounting this Rideable
+	 */
+	public String getDismountString();
+
+	/**
+	 * Sets a string grammatically correct for the given rider when
+	 * they are dismounting this Rideable
+	 * @see Rider
+	 * @see Rideable#dismountString(Rider)
+	 * @see Rideable#getDismountString()
+	 * @param str a string describing the riders state of dismounting this Rideable
+	 */
+	public void setDismountString(String str);
+
 	/**
 	 * Adds all of the MOB Riders on this Rideable to the given Set and returns it
 	 * @param list the hashset into which to add all the mob riders

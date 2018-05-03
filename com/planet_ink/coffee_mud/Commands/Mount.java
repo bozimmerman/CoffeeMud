@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class Mount extends StdCommand
 		List<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 what?",(commands.get(0))));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 what?",(commands.get(0))));
 			return false;
 		}
 		String cmd=commands.remove(0).toString();
@@ -87,12 +87,12 @@ public class Mount extends StdCommand
 				{
 					if(!CMLib.flags().canBeSeenBy(M,mob))
 					{
-						CMLib.commands().doCommandFail(mob,origCmds,L("You don't see @x1 here.",(commands.get(0))));
+						CMLib.commands().postCommandFail(mob,origCmds,L("You don't see @x1 here.",(commands.get(0))));
 						return false;
 					}
 					if((!CMLib.flags().isBoundOrHeld(M))&&(!M.willFollowOrdersOf(mob)))
 					{
-						CMLib.commands().doCommandFail(mob,origCmds,L("Only the bound or servants can be mounted unwillingly."));
+						CMLib.commands().postCommandFail(mob,origCmds,L("Only the bound or servants can be mounted unwillingly."));
 						return false;
 					}
 					RI=M;
@@ -108,7 +108,7 @@ public class Mount extends StdCommand
 			recipient=mob.location().fetchFromRoomFavorMOBs(null,CMParms.combine(commands,0));
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",CMParms.combine(commands,0)));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",CMParms.combine(commands,0)));
 			return false;
 		}
 		if((recipient instanceof BoardableShip)

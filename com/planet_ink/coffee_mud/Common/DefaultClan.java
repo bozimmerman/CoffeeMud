@@ -28,7 +28,7 @@ import java.util.*;
 
 /**
  * Portions Copyright (c) 2003 Jeremy Vyska
- * Portions Copyright (c) 2004-2017 Bo Zimmerman
+ * Portions Copyright (c) 2004-2018 Bo Zimmerman
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -242,7 +242,8 @@ public class DefaultClan implements Clan
 		clanKills();
 		clanKills.add(Long.valueOf(System.currentTimeMillis()));
 		updateClanKills();
-		if((killer != null)&&(killed != null))
+		if((killer != null)
+		&&(killed != null))
 		{
 			if(killed.isMonster())
 				CMLib.database().DBUpdateClanKills(this.clanID(), killer.Name(), 1, 0);

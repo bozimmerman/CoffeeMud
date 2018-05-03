@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	public String parametersFormat(){ return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION\t"
-		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_DAMAGE||BASE_ARMOR_AMOUNT\t"
+		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||WEAPON_HANDS_REQUIRED||MAX_WAND_USES\tBASE_DAMAGE||BASE_ARMOR_AMOUNT\t"
 		+"CONTAINER_TYPE\tCODED_SPELL_LIST";}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -512,7 +512,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 													enhancedTypes);
 			if(data==null)
 				return false;
-			fixDataForComponents(data,componentsFoundList);
+			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -555,6 +555,16 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				buildingI.setBaseValue(lostValue);
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			addSpells(buildingI,spell);
+			if(buildingI instanceof Wand)
+			{
+				if(foundRecipe.get(RCP_CAPACITY).trim().length()>0)
+					((Wand)buildingI).setMaxUses(capacity);
+			}
+			else
+			if(buildingI instanceof Weapon)
+			{
+				((Weapon)buildingI).setRawLogicalAnd((capacity>1));
+			}
 			if(buildingI instanceof Weapon)
 			{
 				((Weapon)buildingI).basePhyStats().setAttackAdjustment(baseYield()+abilityCode()+(hardness*5)-1);
@@ -562,7 +572,6 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 				setWeaponTypeClass((Weapon)buildingI,misctype,Weapon.TYPE_SLASHING);
 				buildingI.basePhyStats().setDamage(armordmg+hardness);
 				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
-				((Weapon)buildingI).setRawLogicalAnd((capacity>1));
 			}
 			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 			{

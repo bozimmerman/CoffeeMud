@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,20 +51,20 @@ public class Display extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Show what to whom?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Show what to whom?"));
 			return false;
 		}
 		commands.remove(0);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("To whom should I show that?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("To whom should I show that?"));
 			return false;
 		}
 
 		final MOB recipient=mob.location().fetchInhabitant(commands.get(commands.size()-1));
 		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see anyone called @x1 here.",commands.get(commands.size()-1)));
+			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see anyone called @x1 here.",commands.get(commands.size()-1)));
 			return false;
 		}
 		commands.remove(commands.size()-1);
@@ -115,7 +115,7 @@ public class Display extends StdCommand
 		}
 
 		if(V.size()==0)
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be carrying that."));
 		else
 		for(int i=0;i<V.size();i++)
 		{

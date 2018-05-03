@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2007-2017 Bo Zimmerman
+   Copyright 2007-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -54,19 +54,19 @@ public class Bid extends StdCommand
 			return false;
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Bid how much on what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Bid how much on what?"));
 			return false;
 		}
 		if(!(CMLib.coffeeShops().getShopKeeper(shopkeeper) instanceof Auctioneer))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is not an auctioneer!",shopkeeper.name()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is not an auctioneer!",shopkeeper.name()));
 			return false;
 		}
 
 		String bidStr=commands.get(0);
 		if(CMLib.english().numPossibleGold(mob,bidStr)<=0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("It does not look like '@x1' is enough to offer.",bidStr));
+			CMLib.commands().postCommandFail(mob,origCmds,L("It does not look like '@x1' is enough to offer.",bidStr));
 			return false;
 		}
 		final Triad<String,Double,Long> bidThang=CMLib.english().parseMoneyStringSDL(mob,bidStr,null);

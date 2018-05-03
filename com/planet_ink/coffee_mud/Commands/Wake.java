@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class Wake extends StdCommand
 		if((commands==null)||(commands.size()==0))
 		{
 			if(!CMLib.flags().isSleeping(mob))
-				CMLib.commands().doCommandFail(mob,origCmds,L("You aren't sleeping!?"));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You aren't sleeping!?"));
 			else
 			{
 				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_SIT,L("<S-NAME> awake(s) and get(s) up."));
@@ -73,12 +73,12 @@ public class Wake extends StdCommand
 			final MOB M=mob.location().fetchInhabitant(whom);
 			if((M==null)||(!CMLib.flags().canBeSeenBy(M,mob)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",whom));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whom));
 				return false;
 			}
 			if(!CMLib.flags().isSleeping(M))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is awake!",M.name(mob)));
+				CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is awake!",M.name(mob)));
 				return false;
 			}
 			final CMMsg msg=CMClass.getMsg(mob,M,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> attempt(s) to wake <T-NAME> up."));

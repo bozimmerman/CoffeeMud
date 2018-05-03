@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ public class Buy extends StdCommand
 			final MOB M=mob.location().fetchInhabitant(commands.get(commands.size()-1));
 			if(M==null)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("There is noone called '@x1' here.",(commands.get(commands.size()-1))));
+				CMLib.commands().postCommandFail(mob,origCmds,L("There is noone called '@x1' here.",(commands.get(commands.size()-1))));
 				return false;
 			}
 			commands.remove(commands.size()-1);
@@ -69,7 +69,7 @@ public class Buy extends StdCommand
 			return false;
 		if(commands.size()==0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Buy what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Buy what?"));
 			return false;
 		}
 		if(CMLib.coffeeShops().getShopKeeper(shopkeeper)==null)

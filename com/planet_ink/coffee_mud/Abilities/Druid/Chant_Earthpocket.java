@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -83,7 +83,7 @@ public class Chant_Earthpocket extends Chant
 		final MOB mob=(MOB)affected;
 		super.unInvoke();
 
-		if((pocket!=null) && (!pocket.amDestroyed()))
+		if((pocket!=null) && (!pocket.amDestroyed())&&(super.canBeUninvoked()))
 		{
 			mob.tell(L("Your earthpocket fades away, dumping its contents into your inventory!"));
 			final List<Item> V=pocket.getDeepContents();

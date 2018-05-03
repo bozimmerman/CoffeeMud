@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2017-2017 Bo Zimmerman
+   Copyright 2017-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -119,7 +119,7 @@ public class Scholar extends StdCharClass
 	@Override
 	public int availabilityCode()
 	{
-		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+		return Area.THEME_FANTASY;
 	}
 
 	public Scholar()
@@ -139,7 +139,7 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Studying",true);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Tagging",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Labeling",true);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"PaperMaking",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_CombatLog",false);
@@ -160,6 +160,7 @@ public class Scholar extends StdCharClass
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_SeaMapping",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_DecipherScript",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_RevealText",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Transcribing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Semaphore",false);
@@ -168,30 +169,56 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"BookNaming",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Speculate",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Siegecraft",false);
-/*
-11	Thief_Lore (G), Skillcraft (Q), InvisibleInk (Q)		
-12	Studying (G), Honorary Degree: Commonerness (Q)		
-13	Cataloging (G), Songcraft (Q), Skill_Map (Q)		
-14	Honorary Degree: Fighterness (Q), Thief_Observere (Q), Thief_AnalyzeMark (Q)		
-15	Spell_DetectMagic (Q)  Spellcraft (Q), Plant Lore (Q)		
-16	 Instructing (G), Honorary Degree: Bardness (Q), Taxidermy (Q)		
-17	 Shush (Q)  Prayercraft (Q), Appraise (Q)			
-18	Recipecopying (G) Honorary Degree: Thiefness (Q), 		
-19	ScrollScribing (Q)  Chantcraft (Q)		
-20	Publish (Q) Honorary Degree: Mageness (Q)		
-21	Revise (Q), Encrypting (Q)		
-22	Surveying (G), Honorary Degree: Druidness (Q)		
-23	Lecturing (G)		
-24	Honorary Degree: Clericness (Q), Thief_Comprehension		
-25	Enrolling (G)		
-26			
-27			
-28			
-29			
-30	 Guildmaster (G)		
- */
 		
-//		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Costuming",false,CMParms.parseSemicolons("Tailoring",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Lore",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Skillcraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_SecretWriting",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_HonoraryDegreeCommoner", false, CMParms.parseSemicolons("Studying",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_RacialLore", true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Cataloging",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Songcraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Map",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_HonoraryDegreeFighter",false, CMParms.parseSemicolons("Studying",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Observation",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_AnalyzeMark",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Spellcraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"PlantLore",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_HonoraryDegreeBard",false, CMParms.parseSemicolons("Studying",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"AttributeTraining",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Taxidermy",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Shush",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Prayercraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Appraise",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Recollecting",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_HonoraryDegreeThief",false, CMParms.parseSemicolons("Studying",true));
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"ScrollScribing",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_Chantcraft",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Publishing",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_HonoraryDegreeMage",false, CMParms.parseSemicolons("Studying",true));
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_PlanarLore",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_EncryptedWriting",false);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Surveying",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_HonoraryDegreeDruid",false, CMParms.parseSemicolons("Studying",true));
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Lecturing",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Comprehension",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_HonoraryDegreeCleric",false, CMParms.parseSemicolons("Studying",true));
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Enrolling",true);
+		
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_Guildmaster",true);
 	}
 
 	@Override
@@ -229,11 +256,61 @@ public class Scholar extends StdCharClass
 		return 0;
 	}
 
+	private static final int[] FAV_DOMAINS= new int[] { 
+			Ability.DOMAIN_EDUCATIONLORE, Ability.DOMAIN_ARCANELORE, 
+			Ability.DOMAIN_NATURELORE, Ability.DOMAIN_COMBATLORE,
+			Ability.DOMAIN_CALLIGRAPHY };
+	
+	public static void visitationBonusMessage(Environmental host, CMMsg msg)
+	{
+		if((msg.target() instanceof Room)
+		&&(msg.source()==host)
+		&&(!msg.source().isMonster())
+		&&(msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(msg.source().playerStats()!=null))
+		{
+			final Room R=(Room)msg.target();
+			if(((R.roomID().length()>0)
+				||((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0)))
+			&&(!CMath.bset(R.getArea().flags(),Area.FLAG_INSTANCE_CHILD))
+			&&(!msg.source().playerStats().hasVisited(R))
+			)
+			{
+				MOB M=null;
+				boolean bookDealer=false;
+				for(int m=0;m<R.numInhabitants();m++)
+				{
+					M=R.fetchInhabitant(m);
+					if((M instanceof ShopKeeper)
+					&&(M.getStartRoom()==R))
+					{
+						if((((ShopKeeper)M).getWhatIsSoldMask() & ShopKeeper.DEAL_BOOKS)!=0)
+						{
+							bookDealer=true;
+						}
+					}
+				}
+				if(bookDealer)
+				{
+					final int xpGain=50;
+					if(CMLib.leveler().postExperience((MOB)host,null,null,xpGain,true))
+						msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("^HYou have discovered a new place of books and gain @x1 experience.^?",""+xpGain),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+				}
+			}
+		}
+	}
+
 	@Override
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.source()==myHost)
 		{
+			Scholar.visitationBonusMessage(myHost,msg);
+			
+			if((msg.targetMinor()==CMMsg.TYP_TEACH)
+			&&(msg.target() instanceof MOB))
+				CMLib.leveler().postExperience(msg.source(), null, null, 100, false);
+			else
 			if(((msg.targetMinor()==CMMsg.TYP_WRITE)
 				||(msg.targetMinor()==CMMsg.TYP_REWRITE)
 				||(msg.targetMinor()==CMMsg.TYP_WROTE))
@@ -256,7 +333,7 @@ public class Scholar extends StdCharClass
 					int numChars = msgStr.length()-CMStrings.countChars(msgStr, ' ');
 					if(numChars > 10)
 					{
-						final Map<String,Object> persMap = Resources.getPersonalMap(myHost, true);
+						final Map<String,Object> persMap = Resources.getPersonalMap(msg.source(), true);
 						if(persMap != null)
 						{
 							int xp = numChars/10;
@@ -269,9 +346,10 @@ public class Scholar extends StdCharClass
 							if(System.currentTimeMillis() > xpTrap[1])
 							{
 								xpTrap[0]=0;
-								xpTrap[1]=System.currentTimeMillis() + TimeManager.MILI_HOUR;
+								xpTrap[1]=System.currentTimeMillis() + (TimeManager.MILI_MINUTE * 10);
 							}
-							if(xpTrap[0]<100)
+							final long maxLevel = msg.source().getExpNeededLevel() / 24;
+							if(xpTrap[0] < maxLevel)
 							{
 								if(100-xpTrap[0]<xp)
 									xp=(int)(100-xpTrap[0]);
@@ -283,19 +361,48 @@ public class Scholar extends StdCharClass
 				}
 			}
 		}
-		else
 		if((msg.tool() instanceof Ability)
-		&&(myHost instanceof MOB)
-		&&(((MOB)myHost).getVictim()!=msg.source())
-		&&(msg.source().getVictim()!=myHost)
-		&&(CMLib.dice().rollPercentage()<25)
-		&&(msg.source().fetchAbility(msg.tool().ID())!=null)
-		&&(((MOB)myHost).fetchAbility(msg.tool().ID())!=null)
-		&&(((MOB)myHost).getGroupMembers(new TreeSet<MOB>()).contains(msg.source())))
+		&&(myHost instanceof MOB))
 		{
-			final Ability A=(Ability)msg.tool();
-			if((A!=null)&&(A.isSavable()))
-				A.helpProficiency(msg.source(), 0);
+			Ability A;
+			if((myHost == msg.source())
+			&&((A=msg.source().fetchAbility(msg.tool().ID()))!=null)
+			&&(A.isSavable())
+			&&(msg.source().isPlayer())
+			&&(CMParms.contains(FAV_DOMAINS, ((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)))
+			{
+				final Map<String,Object> persMap = msg.source().playerStats().getClassVariableMap(this);
+				if(persMap != null)
+				{
+					final String key = "LAST_DATE_FOR_"+A.ID().toUpperCase().trim();
+					long[] lastTime = (long[])persMap.get(key);
+					if(lastTime == null)
+					{
+						lastTime = new long[1];
+						persMap.put(key, lastTime);
+					}
+					final Area homeA=CMLib.map().areaLocation(msg.source().getStartRoom());
+					final TimeClock homeL = (homeA == null) ? null : homeA.getTimeObj();
+					if((homeL!=null)
+					&&((homeL.toHoursSinceEpoc() - lastTime[0])>homeL.getHoursInDay()))
+					{
+						lastTime[0] = homeL.toHoursSinceEpoc(); 
+						CMLib.leveler().postExperience(msg.source(), null, null, 25, false);
+					}
+				}
+			}
+			
+			if((((MOB)myHost).getVictim()!=msg.source())
+			&&(msg.source().getVictim()!=myHost)
+			&&(CMLib.dice().rollPercentage()<25)
+			&&((A=msg.source().fetchAbility(msg.tool().ID()))!=null)
+			&&(((MOB)myHost).fetchAbility(msg.tool().ID())!=null)
+			&&(((MOB)myHost).getGroupMembers(new TreeSet<MOB>()).contains(msg.source())))
+			{
+				final Ability A1=(Ability)msg.tool();
+				if((A1!=null)&&(A1.isSavable()))
+					A1.helpProficiency(msg.source(), 0);
+			}
 		}
 		super.executeMsg(myHost, msg);
 	}
@@ -363,6 +470,6 @@ public class Scholar extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Earn experience from teaching skills, making maps, writing books and journals. Gives bonus profficiency gains for group members.");
+		return L("Earn experience from teaching skills, making maps, writing books, visiting bookstores/libraries, and using certain skills daily. Gives bonus profficiency gains for group members.");
 	}
 }

@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +33,15 @@ import java.util.concurrent.atomic.AtomicInteger;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Tagging extends CommonSkill
+public class Labeling extends CommonSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Tagging";
+		return "Labeling";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Tagging");
+	private final static String	localizedName	= CMLib.lang().L("Labeling");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Tagging extends CommonSkill
 		return localizedName;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "TAGGING"});
+	private static final String[]	triggerStrings	= I(new String[] { "LABELING","LABEL"});
 
 	@Override
 	public String[] triggerStrings()
@@ -76,11 +76,11 @@ public class Tagging extends CommonSkill
 		return true;
 	}
 
-	public Tagging()
+	public Labeling()
 	{
 		super();
-		displayText=L("You are tagging...");
-		verb=L("tagging");
+		displayText=L("You are labeling...");
+		verb=L("labeling");
 	}
 
 	public static final String getTagLabel()
@@ -179,7 +179,7 @@ public class Tagging extends CommonSkill
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
-					commonTell(mob,L("You mess up your tagging."));
+					commonTell(mob,L("You mess up your labeling."));
 				else
 				{
 					String desc=found.description();
@@ -233,7 +233,7 @@ public class Tagging extends CommonSkill
 		}
 		if(commands.size()<1)
 		{
-			commonTell(mob,L("You must specify what you want to tag.  Start with the word remove to remove a tag."));
+			commonTell(mob,L("You must specify what you want to label.  Start with the word remove to remove a tag label."));
 			return false;
 		}
 		String what=CMParms.combine(commands);
@@ -268,13 +268,13 @@ public class Tagging extends CommonSkill
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)
 		{
-			commonTell(mob,L("You must know how to write to tag."));
+			commonTell(mob,L("You must know how to write to label."));
 			return false;
 		}
 
 		if(!target.isGeneric())
 		{
-			commonTell(mob,L("You can't tag that."));
+			commonTell(mob,L("You can't label that."));
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -288,7 +288,7 @@ public class Tagging extends CommonSkill
 		else
 		{
 			writing="TAG1";
-			verb=L("tagging @x1",target.name());
+			verb=L("labeling @x1",target.name());
 			//TOOD: add prop_unsellable
 		}
 		displayText=L("You are @x1",verb);
@@ -296,7 +296,7 @@ public class Tagging extends CommonSkill
 		if((!proficiencyCheck(mob,0,auto))||(!write.proficiencyCheck(mob,0,auto)))
 			writing="";
 		final int duration=getDuration(20,mob,1,11)-super.getXLEVELLevel(mob);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),remove?L("<S-NAME> start(s) untagging <T-NAME>."):L("<S-NAME> start(s) tagging <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),remove?L("<S-NAME> start(s) untagging <T-NAME>."):L("<S-NAME> start(s) labeling <T-NAME>."));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);

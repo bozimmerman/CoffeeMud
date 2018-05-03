@@ -23,7 +23,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /*
-   Copyright 2010-2017 Bo Zimmerman
+   Copyright 2010-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -594,16 +594,16 @@ public interface Wearable extends Environmental
 			return -1;
 		}
 		/**
-		 * Returns the index of the names locations, or -1
+		 * Returns the code of the names , or -1
 		 * @param rsc the resource name
-		 * @return the index of the names locations, or -1
+		 * @return the code of the names , or -1
 		 */
 		public static long FIND_ignoreCase(String rsc) { return c().find_ignoreCase(rsc);}
 
 		/**
-		 * Returns the index of the names locations, or -1
+		 * Returns the code of the names , or -1
 		 * @param rsc the resource name
-		 * @return the index of the names locations, or -1
+		 * @return the code of the names , or -1
 		 */
 		public long find_ignoreCase(String rsc)
 		{

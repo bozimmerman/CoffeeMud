@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class CharGen extends StdCommand
 {
 	public CharGen()
@@ -553,8 +553,8 @@ public class CharGen extends StdCommand
 						final XVector<Double> medIsHitPct=new XVector<Double>();
 						final XVector<Integer> medPhysTaken=new XVector<Integer>();
 						final XVector<Integer> medLossIters=new XVector<Integer>();
-						final XVector<Double> medPlayerDamPct = new XVector();
-						final XVector<Double> medPlayerManaPct = new XVector();
+						final XVector<Double> medPlayerDamPct = new XVector<Double>();
+						final XVector<Double> medPlayerManaPct = new XVector<Double>();
 
 						int H1=0;
 						int H2=0;
@@ -1034,6 +1034,283 @@ public class CharGen extends StdCommand
 		c.A.destroy();
 	}
 
+	
+	protected boolean setWeaponFields(final MOB mob, final List<String> commands, Map<String,String> baseItem, String fieldName, String suffix)
+	{
+		boolean foundOne=false;
+		final String notValue="(*DY(*HHK#H(*H";
+		for(String cmd : commands)
+		{
+			if(cmd.toLowerCase().trim().startsWith(suffix+fieldName))
+			{
+				String val=CMParms.getParmStr(cmd, suffix+fieldName, notValue);
+				if(!val.equals(notValue))
+				{
+					baseItem.put(fieldName, val);
+					foundOne=true;
+				}
+			}
+		}
+		return foundOne;
+	}
+	
+	protected boolean confirmField(final MOB mob, int fieldIndex, String val)
+	{
+		switch(fieldIndex)
+		{
+		case 0:
+			if(!CMParms.contains(Weapon.CLASS_DESCS, val.toUpperCase().trim()))
+			{
+				mob.tell(L("Illegal weapon class '@x1', values are: "+CMParms.toListString(Weapon.CLASS_DESCS),val));
+				return false;
+			}
+			break;
+		case 1:
+			if(!CMParms.contains(Weapon.TYPE_DESCS, val.toUpperCase().trim()))
+			{
+				mob.tell(L("Illegal weapon damage types '@x1', values are: "+CMParms.toListString(Weapon.TYPE_DESCS),val));
+				return false;
+			}
+			break;
+		case 2:
+		{
+			if(!CMath.isInteger(val))
+			{
+				mob.tell(L("Not a level '@x1'.",val));
+				return false;
+			}
+			int v=CMath.s_int(val);
+			if(v<0)
+			{
+				mob.tell(L("Not a valid level '@x1'.",val));
+				return false;
+			}
+			break;
+		}
+		case 3:
+		{
+			if(!CMath.isInteger(val))
+			{
+				mob.tell(L("Not a number of hands '@x1'.",val));
+				return false;
+			}
+			int v=CMath.s_int(val);
+			if((v<=0)||(v>2))
+			{
+				mob.tell(L("Not a valid number of hands '@x1'.",val));
+				return false;
+			}
+			break;
+		}
+		case 4:
+		{
+			if(!CMath.isInteger(val))
+			{
+				mob.tell(L("Not a reach '@x1'.",val));
+				return false;
+			}
+			int v=CMath.s_int(val);
+			if((v<0)||(v>10))
+			{
+				mob.tell(L("Not a valid reach '@x1'.",val));
+				return false;
+			}
+			break;
+		}
+		case 5:
+		{
+			if(!CMath.isInteger(val))
+			{
+				mob.tell(L("Not a weight '@x1'.",val));
+				return false;
+			}
+			int v=CMath.s_int(val);
+			if(v<=0)
+			{
+				mob.tell(L("Not a valid weight '@x1'.",val));
+				return false;
+			}
+			break;
+		}
+		case 6:
+			if(!CMParms.contains(RawMaterial.CODES.NAMES(), val.toUpperCase().trim()))
+			{
+				mob.tell(L("Illegal material/resource type '@x1', values are: "+CMParms.toListString(RawMaterial.CODES.NAMES()),val));
+				return false;
+			}
+			break;
+		}
+		return true;
+	}
+	
+	protected void weaponRun(final MOB mob, List<String> commands)
+	{
+		String[] fields=new String[]{"class","type","level","hands","reach","weight","material"};
+		String[] defaults=new String[]{"BLUNT","BASHING","1","1","0","6","IRON"};
+		StringBuilder str=new StringBuilder("\n\rInputs:\n\r");
+		str.append("\n\r");
+		for(int x=0;x<fields.length;x++)
+			str.append("\"").append(fields[x]).append("=").append(defaults[x]).append("\"\n\r");
+		str.append("\n\r")
+		   .append("Put numbers BEFORE field name to add more items like the base item.\n\r")
+		   .append("\n\r");
+		if(commands.size()==0)
+		{
+			mob.tell(L(str.toString()));
+			return;
+		}
+		final List<Map<String,String>> map=new ArrayList<Map<String,String>>();
+		final Hashtable<String,String> template=new Hashtable<String,String>();
+		for(int x=0;x<fields.length;x++)
+			template.put(fields[x], defaults[x]);
+		map.add(template);
+		if(commands.size()>0)
+		{
+			for(int x=0;x<fields.length;x++)
+			{
+				setWeaponFields(mob, commands, template, fields[x], "");
+				if(!confirmField(mob, x, template.get(fields[x])))
+					return;
+			}
+			for(int i=0;i<100;i++)
+			{
+				boolean setOne=false;
+				Hashtable<String,String> newItem=new XHashtable<String,String>(template);
+				for(int x=0;x<fields.length;x++)
+				{
+					boolean newSetOne=setWeaponFields(mob, commands, newItem, fields[x], ""+i);
+					setOne = newSetOne || setOne;
+					if(newSetOne && (!confirmField(mob, x, newItem.get(fields[x]))))
+						return;
+				}
+				if(setOne)
+					map.add(newItem);
+				else
+				if(i>9)
+					break;
+			}
+		}
+
+		final Session viewerS=mob.session();
+		StringBuilder headStr=new StringBuilder("");
+		final int[] cols=new int[]
+		{
+			CMLib.lister().fixColWidth(12.0,viewerS),
+			CMLib.lister().fixColWidth(12.0,viewerS),
+			CMLib.lister().fixColWidth(6.0,viewerS),
+			CMLib.lister().fixColWidth(6.0,viewerS),
+			CMLib.lister().fixColWidth(6.0,viewerS),
+			CMLib.lister().fixColWidth(6.0,viewerS),
+			CMLib.lister().fixColWidth(12.0,viewerS),
+			CMLib.lister().fixColWidth(6.0,viewerS),
+			CMLib.lister().fixColWidth(6.0,viewerS)
+		};
+		headStr.append(CMStrings.padRight(L("WClass"), cols[0]));
+		headStr.append(CMStrings.padRight(L("WType"), cols[1]));
+		headStr.append(CMStrings.padRight(L("Lvl"), cols[2]));
+		headStr.append(CMStrings.padRight(L("Hands"), cols[3]));
+		headStr.append(CMStrings.padRight(L("Reach"), cols[4]));
+		headStr.append(CMStrings.padRight(L("Weit#"), cols[5]));
+		headStr.append(CMStrings.padRight(L("Mat."), cols[6]));
+		headStr.append(CMStrings.padRight(L("Att"), cols[7]));
+		headStr.append(CMStrings.padRight(L("Dmg"), cols[8]));
+		headStr.append("\n\r");
+		StringBuilder chart=new StringBuilder("");
+		chart.append(headStr.toString());
+		for(final Map<String,String> item : map)
+		{
+			Weapon W=CMClass.getWeapon("GenWeapon");
+			int level=1;
+			int material=RawMaterial.RESOURCE_IRON;
+			int hands=1;
+			int wclass=Weapon.CLASS_BLUNT;
+			int reach=0;
+			long wornData=Wearable.WORN_WIELD|Wearable.WORN_HELD;
+			for(int f=0;f<fields.length;f++)
+			{
+				String val=item.get(fields[f]);
+				switch(f)
+				{
+				case 0:
+					wclass=CMParms.indexOf(Weapon.CLASS_DESCS, val.toUpperCase().trim());
+					break;
+				case 1:
+					W.setWeaponDamageType(CMParms.indexOf(Weapon.TYPE_DESCS, val.toUpperCase().trim()));
+					break;
+				case 2:
+					level=CMath.s_int(val.trim());
+					break;
+				case 3:
+					hands=CMath.s_int(val.trim());
+					break;
+				case 4:
+					reach=CMath.s_int(val.trim());
+					break;
+				case 5:
+					W.basePhyStats().setWeight(CMath.s_int(val.trim()));
+					W.phyStats().setWeight(CMath.s_int(val.trim()));
+					break;
+				case 6:
+					material=RawMaterial.CODES.FIND_IgnoreCase(val.toUpperCase().trim());
+					break;
+				}
+			}
+			W.setWeaponClassification(wclass);
+			W.basePhyStats().setLevel(level);
+			W.phyStats().setLevel(level);
+			W.setRawLogicalAnd(hands>1?true:false);
+			W.setRanges(0, reach);
+			W.setMaterial(material);
+			final Map<String,String> H=CMLib.itemBuilder().timsItemAdjustments(W, level, material, hands, wclass, reach, wornData);
+			W.basePhyStats().setDamage(CMath.s_int(H.get("DAMAGE")));
+			W.phyStats().setDamage(CMath.s_int(H.get("DAMAGE")));
+			W.basePhyStats().setAttackAdjustment(CMath.s_int(H.get("ATTACK")));
+			W.phyStats().setAttackAdjustment(CMath.s_int(H.get("ATTACK")));
+			W.recoverPhyStats();
+			for(int i=0;i<cols.length;i++)
+			{
+				if(i<fields.length)
+				{
+					switch(i)
+					{
+					case 0:
+						chart.append(CMStrings.padRight(Weapon.CLASS_DESCS[W.weaponClassification()], cols[i]));
+						break;
+					case 1:
+						chart.append(CMStrings.padRight(Weapon.TYPE_DESCS[W.weaponDamageType()], cols[i]));
+						break;
+					case 2:
+						chart.append(CMStrings.padRight(""+W.basePhyStats().level(), cols[i]));
+						break;
+					case 3:
+						chart.append(CMStrings.padRight(""+(W.rawLogicalAnd()?2:1), cols[i]));
+						break;
+					case 4:
+						chart.append(CMStrings.padRight(""+(W.maxRange()), cols[i]));
+						break;
+					case 5:
+						chart.append(CMStrings.padRight(""+(W.basePhyStats().weight()), cols[i]));
+						break;
+					case 6:
+						chart.append(CMStrings.padRight(RawMaterial.CODES.NAME(W.material()), cols[i]));
+						break;
+					default:
+						chart.append(CMStrings.padRight(item.get(fields[i]), cols[i]));
+						break;
+					}
+				}
+				else
+				if(i==fields.length)
+					chart.append(CMStrings.padRight(""+W.basePhyStats().attackAdjustment(), cols[i]));
+				else
+				if(i==fields.length+1)
+					chart.append(CMStrings.padRight(""+W.basePhyStats().damage(), cols[i]));
+			}
+			chart.append("\n\r");
+		}
+		mob.tell(chart.toString());
+	}
+	
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
@@ -1052,6 +1329,13 @@ public class CharGen extends StdCommand
 				return true;
 			}
 
+			if(commands.get(0).equalsIgnoreCase("WEAPON"))
+			{
+				commands.remove(0);
+				weaponRun(mob,commands);
+				return true;
+			}
+			
 			if(commands.get(0).equalsIgnoreCase("NEW"))
 			{
 				commands.remove(0);

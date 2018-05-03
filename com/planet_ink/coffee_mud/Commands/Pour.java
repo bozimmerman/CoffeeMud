@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -53,7 +53,7 @@ public class Pour extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Pour what, into/onto what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Pour what, into/onto what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -64,7 +64,7 @@ public class Pour extends StdCommand
 			verb=PourVerb.OUT;
 			if(commands.size()==0)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("Pour out what?"));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Pour out what?"));
 				return false;
 			}
 		}
@@ -73,7 +73,7 @@ public class Pour extends StdCommand
 		fillFromThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToFillFrom);
 		if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",thingToFillFrom));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to have '@x1'.",thingToFillFrom));
 			return false;
 		}
 		commands.remove(0);
@@ -116,14 +116,14 @@ public class Pour extends StdCommand
 		{
 			if(commands.size()<1)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("@x1 what should I pour the @x2?",CMStrings.capitalizeAndLower(verb.name()),thingToFillFrom));
+				CMLib.commands().postCommandFail(mob,origCmds,L("@x1 what should I pour the @x2?",CMStrings.capitalizeAndLower(verb.name()),thingToFillFrom));
 				return false;
 			}
 			final String thingToFill=CMParms.combine(commands,0);
 			fillThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFill,Wearable.FILTER_ANY);
 			if((fillThis==null)||(!CMLib.flags().canBeSeenBy(fillThis,mob)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("I don't see '@x1' here.",thingToFill));
+				CMLib.commands().postCommandFail(mob,origCmds,L("I don't see '@x1' here.",thingToFill));
 				return false;
 			}
 			if((verb==PourVerb.DEFAULT)&&(!(fillThis instanceof Drink)))

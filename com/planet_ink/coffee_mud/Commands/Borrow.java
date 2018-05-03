@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2006-2017 Bo Zimmerman
+   Copyright 2006-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -55,15 +55,15 @@ public class Borrow extends StdCommand
 		final ShopKeeper SHOP=CMLib.coffeeShops().getShopKeeper(shopkeeper);
 		if((!(SHOP instanceof Banker))&&(!(SHOP instanceof Librarian)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You can not borrow from @x1.",shopkeeper.name()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You can not borrow from @x1.",shopkeeper.name()));
 			return false;
 		}
 		if(commands.size()==0)
 		{
 			if(SHOP instanceof Banker)
-				CMLib.commands().doCommandFail(mob,origCmds,L("Borrow how much?"));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Borrow how much?"));
 			else
-				CMLib.commands().doCommandFail(mob,origCmds,L("Borrow what?"));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Borrow what?"));
 			return false;
 		}
 		String str=CMParms.combine(commands,0);
@@ -77,7 +77,7 @@ public class Borrow extends StdCommand
 			final double denomination=CMLib.english().numPossibleGoldDenomination(shopkeeper,currency,str);
 			if((numCoins==0)||(denomination==0.0))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("Borrow how much?"));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Borrow how much?"));
 				return false;
 			}
 			thisThang=CMLib.beanCounter().makeCurrency(currency,denomination,numCoins);
@@ -91,7 +91,7 @@ public class Borrow extends StdCommand
 
 		if((thisThang==null)||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("That doesn't appear to be available.  Try LIST."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("That doesn't appear to be available.  Try LIST."));
 			return false;
 		}
 		final String str2="<S-NAME> borrow(s) <O-NAME> from "+shopkeeper.name()+".";

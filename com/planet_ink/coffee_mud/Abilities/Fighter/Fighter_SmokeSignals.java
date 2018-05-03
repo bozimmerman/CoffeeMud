@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -115,7 +115,8 @@ public class Fighter_SmokeSignals extends FighterSkill
 		&&(msg.sourceMinor()==CMMsg.NO_EFFECT)
 		&&(msg.targetMinor()==CMMsg.NO_EFFECT)
 		&&(msg.targetMessage()!=null)
-		&&(msg.othersMessage()!=null))
+		&&(msg.othersMessage()!=null)
+		&&(CMLib.flags().canBeSeenBy(((MOB)affected).location(), (MOB)affected)))
 			msg.addTrailerMsg(CMClass.getMsg((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,L("The smoke signals seem to say '@x1'.",msg.targetMessage()),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 		super.executeMsg(myHost,msg);
 	}

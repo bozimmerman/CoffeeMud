@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("rawtypes")
 public class GrinderMobs
 {
 	public enum MOBDataField
@@ -57,7 +57,8 @@ public class GrinderMobs
 		MINDAYS,ISAUCTION,DEITYID,VARMONEY,
 		CATACAT,SELLIMASK,LIBRCHAIN,LIBROVERCHG,
 		LIBRDAYCHG,LIBROVERPCT,LIBDAYPCT,LIBMINDAYS,
-		LIBMAXDAYS,LIBMAXBORROW,ISLIBRARIAN,LIBCMASK
+		LIBMAXDAYS,LIBMAXBORROW,ISLIBRARIAN,LIBCMASK,
+		STATESTR,STATESUBJSTR,RIDERSTR,MOUNTSTR,DISMOUNTSTR
 		;
 		
 		public boolean isGenField;
@@ -820,6 +821,26 @@ public class GrinderMobs
 						cataData.setCategory(old.toUpperCase().trim());
 					}
 					break;
+				case MOUNTSTR: // mountstr
+					if(M instanceof Rideable)
+						((Rideable) M).setMountString(old);
+					break;
+				case DISMOUNTSTR: // dismountstr
+					if(M instanceof Rideable)
+						((Rideable) M).setDismountString(old);
+					break;
+				case STATESTR: // statestr
+					if(M instanceof Rideable)
+						((Rideable) M).setStateString(old);
+					break;
+				case STATESUBJSTR: // statesubjstr
+					if(M instanceof Rideable)
+						((Rideable) M).setStateStringSubject(old);
+					break;
+				case RIDERSTR: // riderstr
+					if(M instanceof Rideable)
+						((Rideable) M).setRideString(old);
+					break;
 				}
 			}
 
@@ -867,7 +888,7 @@ public class GrinderMobs
 				&&(httpReq.isUrlParameter("SHP1")))
 				{
 					final ShopKeeper SK=(ShopKeeper)M;
-					final XVector inventory=new XVector(SK.getShop().getStoreInventory());
+					final XVector<Environmental> inventory=new XVector<Environmental>(SK.getShop().getStoreInventory());
 					SK.getShop().emptyAllShelves();
 
 					int num=1;
@@ -878,7 +899,7 @@ public class GrinderMobs
 					{
 						if(CMath.isNumber(MATCHING)&&(inventory.size()>0))
 						{
-							final Environmental O=(Environmental)inventory.elementAt(CMath.s_int(MATCHING)-1);
+							final Environmental O=inventory.elementAt(CMath.s_int(MATCHING)-1);
 							if(O!=null)
 								SK.getShop().addStoreInventory(O,CMath.s_int(theparm),CMath.s_int(theprice));
 						}
@@ -997,7 +1018,7 @@ public class GrinderMobs
 				}
 				else
 				{
-					RoomData.contributeMOBs(new XVector(M));
+					RoomData.contributeMOBs(new XVector<MOB>(M));
 					final MOB M2=RoomData.getReferenceMOB(M);
 					newMobCode=RoomData.getMOBCode(RoomData.getMOBCache(),M2);
 				}

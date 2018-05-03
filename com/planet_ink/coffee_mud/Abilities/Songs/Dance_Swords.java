@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -110,7 +110,8 @@ public class Dance_Swords extends Dance
 		if((E!=null)
 		&&(E instanceof Item)
 		&&(((Item)E).owner()!=null)
-		&&(((Item)E).owner() instanceof Room))
+		&&(((Item)E).owner() instanceof Room)
+		&&(canBeUninvoked()))
 		{
 			((Room)((Item)E).owner()).showHappens(CMMsg.MSG_OK_ACTION,L("@x1 stops dancing!",E.name()));
 		}

@@ -1,0 +1,68 @@
+Copper-shod Staff	2	30	10	120	GenStaff	5	6	Copper	2	
+% Staff	4	15	15	270	GenStaff	5	9			
+Bronze-shod Staff	3	30	10	163	GenStaff	5	7	Bronze	2	
+% Quarterstaff	5	15	10	163	GenStaff	5	7			
+Tin-shod Staff	5	35	10	213	GenStaff	5	8	Tin	2	
+Lead-shod Staff	6	35	10	213	GenStaff	5	8	Lead	2	
+Zinc-shod Staff	7	35	10	270	GenStaff	5	9	Zinc	2	
+Walking Staff	8	20	14	333	GenStaff	5	10			
+Gnarly Staff	10	25	18	563	GenStaff	5	13			
+Crooked Staff	12	30	20	750	GenStaff	5	15			
+Brass-shod Staff	13	40	10	480	GenStaff	5	12	Brass	2	
+Iron-shod Staff	14	40	10	480	GenStaff	5	12	Iron	2	
+Copper-core Staff	15	105	10	653	GenStaff	5	14	Copper	4	
+Bronze-core Staff	16	105	10	653	GenStaff	5	14	Bronze	4	
+Tin-core Staff	17	105	10	750	GenStaff	5	15	Tin	4	
+Lead-core Staff	18	105	10	750	GenStaff	5	15	Lead	4	
+Zinc-core Staff	19	105	10	853	GenStaff	5	16	Zinc	4	
+Bent Staff	20	25	8	563	GenStaff	5	13			
+Hooked Staff	21	30	12	853	GenStaff	5	16			
+Quartz-tipped Staff	22	50	12	963	GenStaff	5	17	Quartz	2	
+Forked Staff	23	40	20	1470	GenStaff	5	21			
+Curved Staff	24	35	15	1203	GenStaff	5	19			
+Silver-shod Staff	25	55	10	1080	GenStaff	5	18	Silver	2	
+Orator Staff	26	40	18	1470	GenStaff	5	21			
+Priestly Staff	27	45	20	1763	GenStaff	5	23			
+Magely Staff	28	40	12	1203	GenStaff	5	19			
+Brass-core Staff	29	115	10	1470	GenStaff	5	21	Brass	4	
+Massive Staff	30	55	25	2430	GenStaff	5	27			
+Iron-core Staff	31	120	10	1613	GenStaff	5	22	Iron	4	
+Druidic Staff	32	45	14	1613	GenStaff	5	22			
+Reinforced Staff	33	45	12	1613	GenStaff	5	22			
+Jade-tipped Staff	34	65	12	1763	GenStaff	5	23	Jade	2	
+Aquamarine-tipped Staff	35	65	12	1920	GenStaff	5	24	Aquamarine	2	
+Crysoberyl-tipped Staff	36	65	12	1920	GenStaff	5	24	Crysoberyl	2	
+Silver-core Staff	39	125	10	2253	GenStaff	5	26	Silver	4	
+Peridot-tipped Staff	42	70	12	2430	GenStaff	5	27	Peridot	2	
+Garnet-tipped Staff	44	75	12	2613	GenStaff	5	28	Garnet	2	
+Onyx-tipped Staff	45	75	12	2803	GenStaff	5	29	Onyx	2	
+Turquoise-tipped Staff	46	75	12	2803	GenStaff	5	29	Turquoise	2	
+Lapis-tipped Staff	47	75	12	3000	GenStaff	5	30	Lapis	2	
+Steel-shod Staff	48	75	10	2803	GenStaff	5	29	Steel	2	
+Chromium-shod Staff	49	75	10	3000	GenStaff	5	30	Chromium	2	
+Opal-tipped Staff	50	80	12	3203	GenStaff	5	31	Opal	2	
+Amber-tipped Staff	51	80	12	3413	GenStaff	5	32	Amber	2	
+Bloodstone-tipped Staff	52	80	12	3413	GenStaff	5	32	Bloodstone	2	
+Moonstone-tipped Staff	53	85	12	3630	GenStaff	5	33	Moonstone	2	
+Alexandrite-tipped Staff	54	85	12	3630	GenStaff	5	33	Alexandrite	2	
+Ornate % Quartertaff	55	75	20	4563	GenStaff	5	37			
+Agate-tipped Staff	56	85	12	3853	GenStaff	5	34	Agate	2	
+Citrine-tipped Staff	58	90	12	4083	GenStaff	5	35	Citrine	2	
+Gold-shod Staff	60	90	10	4083	GenStaff	5	35	Gold	2	
+Steel-core Staff	62	150	10	4563	GenStaff	5	37	Steel	4	
+Chromium-core Staff	64	150	10	4813	GenStaff	5	38	Chromium	4	
+Sapphire-tipped Staff	66	95	12	5070	GenStaff	5	39	Sapphire	2	
+Topaz-tipped Staff	68	100	12	5333	GenStaff	5	40	Topaz	2	
+Emerald-tipped Staff	70	100	12	5603	GenStaff	5	41	Emerald	2	
+Amethyst-tipped Staff	72	100	12	5880	GenStaff	5	42	Amethyst	2	
+Ruby-tipped Staff	74	105	12	6163	GenStaff	5	43	Ruby	2	
+Gold-core Staff	76	165	10	6453	GenStaff	5	44	Gold	4	
+Pearl-tipped Staff	78	110	12	6750	GenStaff	5	45	Pearl	2	
+Diamond-tipped Staff	79	110	12	7053	GenStaff	5	46	Diamond	2	
+The % Staff	80	110	30	9720	GenStaff	5	54			
+Platinum-shod Staff	81	110	10	7053	GenStaff	5	46	Platinum	2	
+Mithril-shod Staff	82	110	10	7053	GenStaff	5	46	Mithril	2	
+Platinum-core Staff	84	170	10	7680	GenStaff	5	48	Platinum	4	
+Adamantite-shod Staff	86	115	10	7680	GenStaff	5	48	Adamantite	2	
+Mithril-core Staff	88	175	10	8333	GenStaff	5	50	Mithril	4	
+Adamantite-core Staff	90	180	10	8670	GenStaff	5	51	Adamantite	4	

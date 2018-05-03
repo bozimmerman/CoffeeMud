@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import java.util.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -380,15 +380,20 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		final List<String> VF=customer.fetchFactionRanges();
 		final String align=CMLib.flags().getAlignmentName(customer);
 		final String sex=customer.charStats().genderName();
+		final String className=customer.charStats().displayClassName();
+		final String raceName=customer.charStats().raceName();
+		final String raceCatName=customer.charStats().getMyRace().racialCategory();
+		final String displayClassName=customer.charStats().getCurrentClass().name(customer.charStats().getCurrentClassLevel());
 		for(int v=0;v<V.size();v++)
 		{
 			final String bit = V.elementAt(v);
 			if (CMath.s_double(bit) != 0.0)
 				d = CMath.s_double(bit);
-			if ((bit.equalsIgnoreCase(customer.charStats().getCurrentClass().name()))
-			||(bit.equalsIgnoreCase(customer.charStats().getCurrentClass().name(customer.charStats().getCurrentClassLevel())))
+			if ((bit.equalsIgnoreCase(className))
+			||(bit.equalsIgnoreCase(displayClassName))
 			||(bit.equalsIgnoreCase(sex))
-			||(bit.equalsIgnoreCase(customer.charStats().getMyRace().racialCategory()))
+			||(bit.equalsIgnoreCase(raceCatName))
+			||(bit.equalsIgnoreCase(raceName))
 			||(bit.equalsIgnoreCase(align)))
 			{
 				yes = true;
@@ -396,7 +401,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			}
 			for (int vf = 0; vf < VF.size(); vf++)
 			{
-				if (bit.equalsIgnoreCase(V.elementAt(v)))
+				if (bit.equalsIgnoreCase(VF.get(vf)))
 				{
 					yes = true;
 					break;
@@ -705,6 +710,41 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		return rate;
 	}
 
+	protected boolean isLotTooLarge(ShopKeeper shop, Environmental product)
+	{
+		final double number = this.getProductCount(product);
+		if(number <= 1.0)
+			return false;
+		final double[] rates=shop.finalDevalueRate();
+		if(rates == null)
+			return false;
+		double rate=(product instanceof RawMaterial)?rates[1]:rates[0];
+		if(rate<=0.0)
+			return false;
+		int baseNum=shop.getShop().numberInStock(product);
+		int num = baseNum + (int)Math.round(Math.floor(number/2.0));
+		if(num<=0)
+			return false;
+		double baseRateAdj = rate * baseNum;
+		if(baseRateAdj >= .95)
+			return false;
+		double totalRateAdj = rate * num;
+		if(totalRateAdj >= .95)
+			return true;
+		return false;
+	}
+
+	protected double getProductCount(Environmental product)
+	{
+		double number=1.0;
+		if(product instanceof PackagedItems)
+			number=((PackagedItems)product).numberOfItemsInPackage();
+		else
+		if(product instanceof RawMaterial)
+			number = ((RawMaterial)product).basePhyStats().weight();
+		return number;
+	}
+	
 	@Override
 	public ShopKeeper.ShopPrice pawningPrice(MOB seller,
 											 MOB buyer,
@@ -712,19 +752,15 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 											 ShopKeeper shopKeeper, 
 											 CoffeeShop shop)
 	{
-		double number=1.0;
+		double number=getProductCount(product);
 		final ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
 		try
 		{
 			if(product instanceof PackagedItems)
-			{
-				number=((PackagedItems)product).numberOfItemsInPackage();
 				product=((PackagedItems)product).peekFirstItem();
-			}
 			else
 			if(product instanceof RawMaterial)
 			{
-				number = ((RawMaterial)product).basePhyStats().weight();
 				product = (Environmental)product.copyOf();
 				((RawMaterial) product).basePhyStats().setWeight(1);
 				((RawMaterial) product).phyStats().setWeight(1);
@@ -816,7 +852,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			final Room sellerR=seller.location();
 			if(sellerR!=null)
 			{
-				final int medianLevel=sellerR.getArea().getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+				int medianLevel=sellerR.getArea().getPlayerLevel();
+				if(medianLevel==0)
+					medianLevel=sellerR.getArea().getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				if(medianLevel>0)
 				{
 					final String range=CMParms.getParmStr(shop.finalPrejudiceFactors(),"RANGE","0");
@@ -849,7 +887,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			final double yourValue=pawningPrice(seller,buyer,product,shop, shop.getShop()).absoluteGoldPrice;
 			if(yourValue<2)
 			{
-				CMLib.commands().postSay(seller,buyer,L("I'm not interested."),true,false);
+				if(!isLotTooLarge(shop, product))
+					CMLib.commands().postSay(seller,buyer,L("I'm not interested."),true,false);
+				else
+					CMLib.commands().postSay(seller,buyer,L("I'm not interested in the whole lot, but maybe a smaller count..."),true,false);
 				return false;
 			}
 			if((product instanceof Physical)&&CMLib.flags().isEnspelled((Physical)product) || CMLib.flags().isOnFire((Physical)product))

@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Vector;
 
 /*
-   Copyright 2016-2017 Bo Zimmerman
+   Copyright 2016-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -54,5 +54,31 @@ public class Angelfish extends Fish
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSpeed(affectableStats.speed() + 1.0);
+	}
+	
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				for(int i=0;i<3;i++)
+				{
+					resources.addElement(makeResource
+					(L("some @x1",name().toLowerCase()),RawMaterial.RESOURCE_FISH));
+				}
+				for(int i=0;i<2;i++)
+				{
+					resources.addElement(makeResource
+					(L("a @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
+				}
+				resources.addElement(makeResource
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
+			}
+		}
+		return resources;
 	}
 }

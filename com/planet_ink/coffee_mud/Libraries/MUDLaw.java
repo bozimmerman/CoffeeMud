@@ -21,7 +21,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
-   Copyright 2006-2017 Bo Zimmerman
+   Copyright 2006-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -464,6 +464,15 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if(title.getOwnerName()==null)
 			return "";
 		return title.getOwnerName();
+	}
+
+	@Override
+	public boolean isLandOwnable(Room room)
+	{
+		final LandTitle title=getLandTitle(room);
+		if(title==null)
+			return false;
+		return true;
 	}
 
 	@Override

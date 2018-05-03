@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ public class Pull extends Go
 				||(mob.location().getExitInDir(dirCode)==null)
 				||(!mob.location().getExitInDir(dirCode).isOpen()))
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("You can't pull anything that way."));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You can't pull anything that way."));
 					return false;
 				}
 				E=mob.location().getRoomInDir(dirCode);
@@ -85,7 +85,7 @@ public class Pull extends Go
 			pullThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,itemName,Wearable.FILTER_ANY);
 		if((pullThis==null)||(!CMLib.flags().canBeSeenBy(pullThis,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",itemName));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",itemName));
 			return false;
 		}
 		final CMMsg msg=CMClass.getMsg(mob,pullThis,E,CMMsg.MSG_PULL,L("<S-NAME> pull(s) <T-NAME>@x1.",dir));

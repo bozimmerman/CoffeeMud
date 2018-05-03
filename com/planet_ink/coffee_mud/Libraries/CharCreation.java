@@ -32,7 +32,7 @@ import java.net.SocketException;
 import java.util.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1630,9 +1630,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			final String onc = ((mob == null)||(mob.session()==null)||(mob.session().isStopped())) ?"":" ^y*^?";
 			buf.append(CMStrings.padRight(player.name()+onc,longest));
 			buf.append("^.^N");
-			buf.append(" " + CMStrings.padRight(player.race(),10));
-			buf.append(" " + CMStrings.padRight(""+player.level(),5));
-			buf.append(" " + CMStrings.padRight(player.charClass(),15));
+			if(mob != null)
+				buf.append(" " + CMStrings.padRight(mob.baseCharStats().raceName(),10));
+			else
+				buf.append(" " + CMStrings.padRight(player.race(),10));
+			if(mob != null)
+				buf.append(" " + CMStrings.padRight(""+mob.basePhyStats().level(),5));
+			else
+				buf.append(" " + CMStrings.padRight(""+player.level(),5));
+			if(mob!=null)
+				buf.append(" " + CMStrings.padRight(mob.baseCharStats().displayClassName(),15));
+			else
+				buf.append(" " + CMStrings.padRight(player.charClass(),15));
 			buf.append("^.^N\n\r");
 		}
 		session.println(buf.toString());
@@ -2201,6 +2210,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	public LoginResult completePlayerLogin(final Session session, boolean wizi) throws IOException
 	{
 		final MOB realMOB = session.mob();
+		if(realMOB==null || (realMOB.playerStats()==null))
+			return null;
 		final PlayerAccount acct = realMOB.playerStats().getAccount();
 		if(acct != null)
 		{
@@ -2690,6 +2701,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 				mob=setMOBClass(newRace.useRideClass() ? "StdRideable" : "StdMOB", loginObj, session);
 				mob.baseCharStats().setMyRace(newRace);
 				mob.charStats().setMyRace(newRace);
+				mob.charStats().setWearableRestrictionsBitmap(mob.charStats().getWearableRestrictionsBitmap()|mob.charStats().getMyRace().forbiddenWornBits());
 				loginObj.state=LoginState.CHARCR_RACECONFIRMED;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -2809,13 +2821,21 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(randomRoll)
 		{
 			loginObj.baseStats.copyInto(mob.baseCharStats());
-			reRollStats(mob.baseCharStats(),loginObj.statPoints);
+			mob.baseCharStats().setWearableRestrictionsBitmap(0);
+			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
+			{
+				for(int i=0;i<50 && qualifyingClassListV.size()==0;i++)
+				{
+					reRollStats(mob.baseCharStats(),loginObj.statPoints);
+					mob.recoverCharStats();
+					qualifyingClassListV=classQualifies(mob,loginObj.theme);
+				}
+			}
 		}
-
 		mob.recoverCharStats();
 		qualifyingClassListV=classQualifies(mob,loginObj.theme);
 
-		if(!randomRoll || (qualifyingClassListV.size()>0)||CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
+		if(!randomRoll || (qualifyingClassListV.size()>0) ||CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES))
 		{
 			final int max=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 			final StringBuffer statstr=new StringBuffer(L("Your current stats are: \n\r"));
@@ -2925,6 +2945,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(prompt.toLowerCase().startsWith("r"))
 		{
 			loginObj.baseStats.copyInto(mob.baseCharStats());
+			mob.baseCharStats().setWearableRestrictionsBitmap(0);
 			reRollStats(mob.baseCharStats(),getTotalBonusStatPoints(mob.playerStats(), loginObj.acct));
 			loginObj.statPoints=0;
 			loginObj.state=LoginState.CHARCR_STATSTART;
@@ -3499,6 +3520,78 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		&&(!CMProps.isOnWhiteList(CMProps.WhiteList.NEWPLAYERS, ipAddress)))
 			return NewCharNameCheckResult.CREATE_LIMIT_REACHED;
 		return NewCharNameCheckResult.OK;
+	}
+	
+	@Override
+	public boolean performSpamConnectionCheck(final String address)
+	{
+		int proceed=0;
+		if(CMSecurity.isBanned(address))
+			proceed=1;
+		int numAtThisAddress=0;
+		final long LastConnectionDelay=(5*60*1000);
+		boolean anyAtThisAddress=false;
+		final int maxAtThisAddress=6;
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.CONNSPAMBLOCK))
+		{
+			if(!CMProps.isOnWhiteList(CMProps.WhiteList.CONNS, address))
+			{
+				if(CMSecurity.isIPBlocked(address))
+				{
+					proceed = 1;
+				}
+				else
+				{
+					@SuppressWarnings("unchecked")
+					List<Triad<String,Long,Integer>> accessed= (LinkedList<Triad<String,Long,Integer>>)Resources.staticInstance()._getResource("SYSTEM_IPACCESS_STATS");
+					if(accessed == null)
+					{
+						accessed= new LinkedList<Triad<String,Long,Integer>>();
+						Resources.staticInstance()._submitResource("SYSTEM_IPACCESS_STATS",accessed);
+					}
+					synchronized(accessed)
+					{
+						for(final Iterator<Triad<String,Long,Integer>> i=accessed.iterator();i.hasNext();)
+						{
+							final Triad<String,Long,Integer> triad=i.next();
+							if((triad.second.longValue()+LastConnectionDelay)<System.currentTimeMillis())
+								i.remove();
+							else
+							if(triad.first.trim().equalsIgnoreCase(address))
+							{
+								anyAtThisAddress=true;
+								triad.second=Long.valueOf(System.currentTimeMillis());
+								numAtThisAddress=triad.third.intValue()+1;
+								triad.third=Integer.valueOf(numAtThisAddress);
+							}
+						}
+						if(!anyAtThisAddress)
+							accessed.add(new Triad<String,Long,Integer>(address,Long.valueOf(System.currentTimeMillis()),Integer.valueOf(1)));
+					}
+				}
+				@SuppressWarnings("unchecked")
+				Set<String> autoblocked= (Set<String>)Resources.staticInstance()._getResource("SYSTEM_IPACCESS_AUTOBLOCK");
+				if(autoblocked == null)
+				{
+					autoblocked= new TreeSet<String>();
+					Resources.staticInstance()._submitResource("SYSTEM_IPACCESS_AUTOBLOCK",autoblocked);
+				}
+				if(autoblocked.contains(address.toUpperCase()))
+				{
+					if(!anyAtThisAddress)
+						autoblocked.remove(address.toUpperCase());
+					else
+						proceed=2;
+				}
+				else
+				if(numAtThisAddress>=maxAtThisAddress)
+				{
+					autoblocked.add(address.toUpperCase());
+					proceed=2;
+				}
+			}
+		}
+		return proceed == 0;
 	}
 
 	@Override

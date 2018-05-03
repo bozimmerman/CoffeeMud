@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.regex.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1246,7 +1246,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return E.name()+"."+number;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Environmental parseShopkeeper(MOB mob, List<String> commands, String error)
 	{
@@ -1291,7 +1290,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				commands.remove(commands.size()-1);
 			else
 			{
-				CMLib.commands().doCommandFail(mob,new XVector(commands),L("You don't see anyone called '@x1' here buying or selling.",commands.get(commands.size()-1)));
+				CMLib.commands().postCommandFail(mob,new XVector<String>(commands),
+						L("You don't see anyone called '@x1' here buying or selling.",commands.get(commands.size()-1)));
 				return null;
 			}
 			return shopkeeper;
@@ -1563,13 +1563,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public double numPossibleGoldDenomination(Environmental mine, String currency, String itemID)
+	public double numPossibleGoldDenomination(Environmental mine, String currency, String moneyStr)
 	{
-		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
-			itemID=itemID.substring(10);
-		if(CMath.isInteger(itemID))
+		if(moneyStr.toUpperCase().trim().startsWith("A PILE OF "))
+			moneyStr=moneyStr.substring(10);
+		if(CMath.isInteger(moneyStr))
 		{
-			final long num=CMath.s_long(itemID);
+			final long num=CMath.s_long(moneyStr);
 			if(mine instanceof MOB)
 			{
 				final List<Coins> V=CMLib.beanCounter().getStandardCurrency((MOB)mine,currency);
@@ -1581,7 +1581,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 			return CMLib.beanCounter().getLowestDenomination(currency);
 		}
-		final Vector<String> V=CMParms.parse(itemID);
+		final Vector<String> V=CMParms.parse(moneyStr);
 		if((V.size()>1)&&(CMath.isInteger(V.firstElement())))
 			return matchAnyDenomination(currency,CMParms.combine(V,1));
 		else
@@ -1594,7 +1594,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public String matchAnyCurrencySet(String itemID)
+	public String matchAnyCurrencySet(String moneyStr)
 	{
 		final List<String> V=CMLib.beanCounter().getAllCurrencies();
 		List<String> V2=null;
@@ -1606,7 +1606,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				String s=V2.get(v2);
 				if(s.toLowerCase().endsWith("(s)"))
 					s=s.substring(0,s.length()-3)+"s";
-				if(containsString(s,itemID))
+				if(containsString(s,moneyStr))
 					return V.get(v);
 			}
 		}
@@ -1614,48 +1614,75 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 
 	@Override
-	public double matchAnyDenomination(String currency, String itemID)
+	public double matchAnyDenomination(String currency, String moneyStr)
 	{
-		final MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
-		itemID=itemID.toUpperCase();
-		String s=null;
-		if(DV!=null)
+		if(currency == null)
 		{
-			for (final MoneyDenomination element : DV)
+			for(final String curr : CMLib.beanCounter().getAllCurrencies())
 			{
-				s=element.name().toUpperCase();
-				if(s.endsWith("(S)"))
-					s=s.substring(0,s.length()-3)+"S";
-				if(containsString(s,itemID))
-					return element.value();
-				else
-				if((s.length()>0)
-				&&(containsString(s,itemID)))
-					return element.value();
+				final MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(curr);
+				moneyStr=moneyStr.toUpperCase();
+				String s=null;
+				if(DV!=null)
+				{
+					for (final MoneyDenomination element : DV)
+					{
+						s=element.name().toUpperCase();
+						if(s.endsWith("(S)"))
+							s=s.substring(0,s.length()-3)+"S";
+						if(containsString(s,moneyStr))
+							return element.value();
+						else
+						if((s.length()>0)
+						&&(containsString(s,moneyStr)))
+							return element.value();
+					}
+				}
+			}
+		}
+		else
+		{
+			final MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
+			moneyStr=moneyStr.toUpperCase();
+			String s=null;
+			if(DV!=null)
+			{
+				for (final MoneyDenomination element : DV)
+				{
+					s=element.name().toUpperCase();
+					if(s.endsWith("(S)"))
+						s=s.substring(0,s.length()-3)+"S";
+					if(containsString(s,moneyStr))
+						return element.value();
+					else
+					if((s.length()>0)
+					&&(containsString(s,moneyStr)))
+						return element.value();
+				}
 			}
 		}
 		return 0.0;
 	}
 
 	@Override
-	public Item possibleRoomGold(MOB seer, Room room, Container container, String itemID)
+	public Item possibleRoomGold(MOB seer, Room room, Container container, String moneyStr)
 	{
-		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
-			itemID=itemID.substring(10);
+		if(moneyStr.toUpperCase().trim().startsWith("A PILE OF "))
+			moneyStr=moneyStr.substring(10);
 		long gold=0;
-		if(CMath.isInteger(itemID))
+		if(CMath.isInteger(moneyStr))
 		{
-			gold=CMath.s_long(itemID);
-			itemID="";
+			gold=CMath.s_long(moneyStr);
+			moneyStr="";
 		}
 		else
 		{
-			final Vector<String> V=CMParms.parse(itemID);
+			final Vector<String> V=CMParms.parse(moneyStr);
 			if((V.size()>1)&&(CMath.isInteger(V.firstElement())))
 				gold=CMath.s_long(V.firstElement());
 			else
 				return null;
-			itemID=CMParms.combine(V,1);
+			moneyStr=CMParms.combine(V,1);
 		}
 		if(gold>0)
 		{
@@ -1665,7 +1692,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				if((I.container()==container)
 				&&(I instanceof Coins)
 				&&(CMLib.flags().canBeSeenBy(I,seer))
-				&&((itemID.length()==0)||(containsString(I.name(),itemID))))
+				&&((moneyStr.length()==0)||(containsString(I.name(),moneyStr))))
 				{
 					if(((Coins)I).getNumberOfCoins()<=gold)
 						return I;
@@ -1982,7 +2009,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							max=3000;
 						if(maxToGive>max)
 						{
-							CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You can only handle @x1 at a time.",""+max));
+							CMLib.commands().postCommandFail(mob,new XVector<String>(commands),L("You can only handle @x1 at a time.",""+max));
 							return -1;
 						}
 						final Environmental toWhat=CMLib.materials().unbundle((Item)fromWhat,maxToGive,null);
@@ -1990,7 +2017,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						{
 							if(throwError)
 							{
-								CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You can't get anything from @x1.",fromWhat.name()));
+								CMLib.commands().postCommandFail(mob,new XVector<String>(commands),L("You can't get anything from @x1.",fromWhat.name()));
 								return -1;
 							}
 						}
@@ -2014,7 +2041,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					else
 					if(throwError)
 					{
-						CMLib.commands().doCommandFail(mob,new XVector<String>(commands),L("You don't see '@x1' here.",packCheckName));
+						CMLib.commands().postCommandFail(mob,new XVector<String>(commands),L("You don't see '@x1' here.",packCheckName));
 						return -1;
 					}
 				}
@@ -2059,6 +2086,76 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		}
 		return maxToGive;
+	}
+
+	@Override
+	public int probabilityOfBeingEnglish(String str)
+	{
+		if(str.length()<100)
+			return 100;
+		final double[] englishFreq = new double[]{
+		0.08167, 0.01492, 0.02782, 0.04253, 0.12702, 0.02228, 0.02015,  // A-G
+		0.06094, 0.06966, 0.00153, 0.00772, 0.04025, 0.02406, 0.06749,  // H-N
+		0.07507, 0.01929, 0.00095, 0.05987, 0.06327, 0.09056, 0.02758,  // O-U
+		0.00978, 0.02360, 0.00150, 0.01974, 0.00074                     // V-Z
+		};
+		double punctuationCount=0;
+		double wordCount=0;
+		double totalLetters=0;
+		double thisLetterCount=0;
+		int[] lettersUsed = new int[26];
+		double len=str.length();
+		for(int i=0;i<str.length();i++)
+		{
+			char c=str.charAt(i);
+			if(Character.isLetter(c))
+			{
+				thisLetterCount+=1;
+				lettersUsed[Character.toLowerCase(c)-'a']++;
+			}
+			else
+			if((c==' ')||(isPunctuation((byte)c)))
+			{
+				if(thisLetterCount>0)
+				{
+					totalLetters+=thisLetterCount;
+					wordCount+=1.0;
+					thisLetterCount=0;
+				}
+				if(c!=' ')
+					punctuationCount++;
+			}
+			else
+				punctuationCount++;
+		}
+		if(thisLetterCount>0)
+		{
+			totalLetters+=thisLetterCount;
+			wordCount+=1.0;
+			thisLetterCount=0;
+		}
+		double pctPunctuation=punctuationCount/len;
+		if(pctPunctuation > .2)
+			return 0;
+		double avgWordSize=totalLetters/wordCount;
+		if((avgWordSize < 2.0)||(avgWordSize > 8.0))
+			return 0;
+		double wordCountChi=avgWordSize-4.7;
+		wordCountChi=(wordCountChi*wordCountChi)/4.7;
+		double chi2=10.0*wordCountChi;
+		for (int i = 0; i < 26; i++) 
+		{
+			final double observed = lettersUsed[i];
+			final double expected = totalLetters * englishFreq[i];
+			final double difference = observed - expected;
+			chi2 += (difference*difference) / expected / 26.0;
+		}
+		final int finalChance=(int)Math.round(100.0 - chi2);
+		if(finalChance<0)
+			return 0;
+		if(finalChance>100)
+			return 100;
+		return finalChance;
 	}
 
 	protected static class FetchFlags

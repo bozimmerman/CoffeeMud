@@ -19,7 +19,7 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
-   Copyright 2000-2017 Bo Zimmerman, Jeremy Vyska
+   Copyright 2000-2018 Bo Zimmerman, Jeremy Vyska
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -514,6 +514,27 @@ public interface Area extends Economics, PhysicalAgent, Places
 	public int[] getAreaIStats();
 
 	/**
+	 * Returns a fake player-level, to be used instead of median or average
+	 * actual mob level, for cases where you want an area to reflect its
+	 * higher level mobs over low level trash.  Returns 0 if none is applied
+	 * and the median or average should instead be used.
+	 * @see Area#setPlayerLevel(int)
+	 * @return the player level, or 0
+	 */
+	public int getPlayerLevel();
+	
+	/**
+	 * Sets a fake player-level, to be used instead of median or average
+	 * actual mob level, for cases where you want an area to reflect its
+	 * higher level mobs over low level trash.  Returns 0 if none is applied
+	 * and the median or average should instead be used.
+	 * @see Area#getPlayerLevel()
+	 * @param level the player level, or 0
+	 */
+	public void setPlayerLevel(int level);
+	
+	
+	/**
 	 * An enumerator list of Area objects representing the Children Areas of this
 	 * Area.
 	 * A Child Area inherets certain behaviors and property effects from its parents
@@ -718,7 +739,9 @@ public interface Area extends Economics, PhysicalAgent, Places
 		TOTAL_LEVELS,
 		TOTAL_INTELLIGENT_LEVELS,
 		VISITABLE_ROOMS,
-		INDOOR_ROOMS
+		INDOOR_ROOMS,
+		MIN_ALIGNMENT,
+		MAX_ALIGNMENT
 	}
 
 	/**

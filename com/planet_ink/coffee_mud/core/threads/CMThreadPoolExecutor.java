@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.core.collections.STreeSet;
 import com.planet_ink.coffee_mud.core.collections.UniqueEntryBlockingQueue;
 import com.planet_ink.coffee_mud.core.interfaces.TickableGroup;
 /*
-   Copyright 2010-2017 Bo Zimmerman
+   Copyright 2010-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -47,8 +47,14 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 	protected static class CMArrayBlockingQueue<E> extends ArrayBlockingQueue<E>{
 		private static final long serialVersionUID = -4557809818979881831L;
 		public CMThreadPoolExecutor executor = null;
-		public CMArrayBlockingQueue(int capacity) { super(capacity);}
-		@Override public boolean offer(E o)
+
+		public CMArrayBlockingQueue(int capacity)
+		{
+			super(capacity);
+		}
+
+		@Override 
+		public boolean offer(E o)
 		{
 			final int allWorkingThreads = executor.getActiveCount() + super.size();
 			return (allWorkingThreads < executor.getPoolSize()) && super.offer(o);

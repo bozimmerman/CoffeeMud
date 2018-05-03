@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -83,7 +83,9 @@ public class GenTub extends StdTub
 	}
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","RIDEBASIS","MOBSHELD",
-											"QUENCHED","LIQUIDHELD","LIQUIDTYPE","DEFCLOSED","DEFLOCKED"};
+											"QUENCHED","LIQUIDHELD","LIQUIDTYPE","DEFCLOSED","DEFLOCKED",
+											"PUTSTR","MOUNTSTR","DISMOUNTSTR","STATESTR","STATESUBJSTR","RIDERSTR"
+											};
 
 	@Override
 	public String getStat(String code)
@@ -116,6 +118,18 @@ public class GenTub extends StdTub
 			return "" + defaultsClosed();
 		case 11:
 			return "" + defaultsLocked();
+		case 12:
+			return this.getPutString();
+		case 13:
+			return this.getMountString();
+		case 14:
+			return this.getDismountString();
+		case 15:
+			return this.getStateString();
+		case 16:
+			return this.getStateStringSubject();
+		case 17:
+			return this.getRideString();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -168,6 +182,24 @@ public class GenTub extends StdTub
 			break;
 		case 11:
 			setDoorsNLocks(hasADoor(), isOpen(), defaultsClosed(), hasALock(), isLocked(), CMath.s_bool(val));
+			break;
+		case 12:
+			setPutString(val);
+			break;
+		case 13:
+			setMountString(val);
+			break;
+		case 14:
+			setDismountString(val);
+			break;
+		case 15:
+			setStateString(val);
+			break;
+		case 16:
+			setStateStringSubject(val);
+			break;
+		case 17:
+			setRideString(val);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

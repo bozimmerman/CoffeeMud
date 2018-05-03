@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -238,7 +238,7 @@ public class Prop_ClosedDayNight extends Property
 					R=rooms.get(CMLib.dice().roll(1,rooms.size(),-1));
 				else
 				{
-					final List<MOB> inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, Home, 10);
+					final List<MOB> inhabs=CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob, Home, false, 10);
 					if(inhabs.size()>0)
 						R=CMLib.map().roomLocation(inhabs.get(CMLib.dice().roll(1,inhabs.size(),-1)));
 				}

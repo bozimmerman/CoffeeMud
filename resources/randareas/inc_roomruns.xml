@@ -1,5 +1,5 @@
 <!--  
-   Copyright 2013-2017 Bo Zimmerman
+   Copyright 2013-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -99,8 +99,140 @@ See guides/RandomAreas.html for information about documents of this type.
 	<STRING condition="$ROOMTAG_NODEEXITS=',w,u,d,'">west, upwards, and downwards</STRING>
 	<STRING condition="$ROOMTAG_NODEEXITS=',w,d,'">west and downwards</STRING>
 	<STRING condition="$ROOMTAG_NODEEXITS=',u,'">upwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',u,d,'">upwards and downwards</STRING>
-<STRING condition="$ROOMTAG_NODEEXITS=',d,'">downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',u,d,'">upwards and downwards</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',d,'">downwards</STRING>
+</STRING>
+
+<STRING id="roomexits_desc_list" select="any-1">
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,'">north</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,'">north south</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,'">north south east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,'">north south east west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,u,'">north south east west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,u,d,'">north south east west up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,d,'">north south east west down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,u,'">north south east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,u,d,'">north south east up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,d,'">north south east down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,'">north south west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,u,'">north south west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,u,d,'">north south west up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,d,'">north south west down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,u,'">north south up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,u,d,'">north south up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,d,'">north south down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,'">north east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,'">north east west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,u,'">north east west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,u,d,'">north east west up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,d,'">north east west down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,u,'">north east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,u,d,'">north east up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,d,'">north east down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,w,'">north west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,w,u,'">north west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,w,u,d,'">north west up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,w,d,'">north west down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,u,'">north up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,u,d,'">north up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,d,'">north down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,'">south</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,'">south east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,'">south east west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,u,'">south east west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,u,d,'">south east west up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,d,'">south east west down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,u,'">south east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,u,d,'">south east up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,d,'">south east down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,w,'">south west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,w,u,'">south west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,w,u,d,'">south west up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,w,d,'">south west down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,u,'">south up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,u,d,'">south up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,d,'">south down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,'">east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,w,'">east west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,w,u,'">east west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,w,u,d,'">east west up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,w,d,'">east west down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,u,'">east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,u,d,'">east up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,d,'">east down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',w,'">west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',w,u,'">west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',w,u,d,'">west up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',w,d,'">west down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',u,'">up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',u,d,'">up down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',d,'">down</STRING>
+</STRING>
+
+<STRING id="roomexits_list_favored" select="any-1">
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,'">north</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,'">north/STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,'">north east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,'">north east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,u,'">north east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,u,d,'">north east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,w,d,'">north east down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,u,'">north east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,u,d,'">north east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,e,d,'">north east down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,'">north west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,u,'">north west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,u,d,'">north west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,w,d,'">north west down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,u,'">north up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,u,d,'">north up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,s,d,'">north down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,'">north east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,'">north east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,u,'">north east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,u,d,'">north east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,w,d,'">north east down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,u,'">north east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,u,d,'">north east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,e,d,'">north east down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,w,'">north west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,w,u,'">north west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,w,u,d,'">north west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,w,d,'">north west down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,u,'">north up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,u,d,'">north up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',n,d,'">north down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,'">south</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,'">south east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,'">south east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,u,'">south east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,u,d,'">south east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,w,d,'">south east down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,u,'">south east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,u,d,'">south east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,e,d,'">south east down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,w,'">south west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,w,u,'">south west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,w,u,d,'">south west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,w,d,'">south west down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,u,'">south up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,u,d,'">south up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',s,d,'">south down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,'">east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,w,'">east</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,w,u,'">east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,w,u,d,'">east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,w,d,'">east down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,u,'">east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,u,d,'">east up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',e,d,'">east down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',w,'">west</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',w,u,'">west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',w,u,d,'">west up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',w,d,'">west down</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',u,'">up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',u,d,'">up</STRING>
+	<STRING condition="$ROOMTAG_NODEEXITS=',d,'">down</STRING>
 </STRING>
 
 <STRING id="a_streetprefix" select="pick-1">

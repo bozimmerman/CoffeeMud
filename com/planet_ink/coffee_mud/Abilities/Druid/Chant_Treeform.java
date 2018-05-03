@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -111,13 +111,19 @@ public class Chant_Treeform extends Chant
 		mob.curState().setThirst(1000);
 		mob.recoverCharStats();
 		mob.recoverPhyStats();
+		
+		if((msg.tool() instanceof Ability)
+		&&(msg.tool().ID().equals("Skill_Revoke")))
+			return super.okMessage(myHost, msg);
 
 		// when this spell is on a MOBs Affected list,
 		// it should consistantly prevent the mob
 		// from trying to do ANYTHING except sleep
 		if(msg.amISource(mob))
 		{
-			if((msg.sourceMinor()==CMMsg.TYP_ENTER)||(msg.sourceMinor()==CMMsg.TYP_LEAVE))
+			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
+			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
+			||(msg.sourceMinor()==CMMsg.TYP_TRAVEL))
 				unInvoke();
 			else
 			if((!msg.sourceMajor(CMMsg.MASK_ALWAYS))

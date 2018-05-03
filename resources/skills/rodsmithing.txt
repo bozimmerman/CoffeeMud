@@ -1,0 +1,12 @@
+Short % Staff	1	10	10	83	GenStaff	5	5			
+Long % Staff	5	20	16	333	GenStaff	5	10			
+% Quarterstaff	9	20	12	333	GenStaff	5	10			
+% Jo Staff	11	15	8	270	GenStaff	5	9			
+Master Short % Staff	31	40	10	1333	GenStaff	5	20			
+Master Long % Staff	35	50	16	2083	GenStaff	5	25			
+Short % rod	37	50	14	2083	GenStaff	5	25			
+Long % rod	38	60	24	3000	GenStaff	5	30			
+Master % Quarterstaff	39	50	12	2083	GenStaff	5	25			
+Hollow % rod	40	45	8	1763	GenStaff	5	23			
+Master % Jo Staff	41	45	8	1920	GenStaff	5	24			
+Thick % rod	43	65	22	3413	GenStaff	5	32			

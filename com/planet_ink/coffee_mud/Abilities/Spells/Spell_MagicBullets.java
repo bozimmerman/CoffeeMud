@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2014-2017 Bo Zimmerman
+   Copyright 2014-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -66,7 +66,7 @@ public class Spell_MagicBullets extends Spell
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;
+		return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class Spell_MagicBullets extends Spell
 		
 		if(target.fetchEffect("Spell_MagicBullets")!=null)
 		{
-			mob.tell(mob,target,null,L("<T-NAME> is already altered."));
+			mob.tell(mob,target,null,L("<T-NAME> is already enchanted."));
 			return false;
 		}
 

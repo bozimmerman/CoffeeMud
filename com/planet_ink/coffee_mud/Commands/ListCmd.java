@@ -24,6 +24,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Experti
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.StatAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.TitleAward;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.*;
@@ -33,7 +34,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -205,7 +206,7 @@ public class ListCmd extends StdCommand
 			thisThang=r.nextElement();
 			thisOne=thisThang.roomID();
 			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
-				lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",COL_LEN1)+": "+CMStrings.limit(thisThang.displayText(),COL_LEN2)+"\n\r");
+				lines.append(CMStrings.padRightPreserve("^N^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",COL_LEN1)+": "+CMStrings.limit(thisThang.displayText(),COL_LEN2)+"^N^.\n\r");
 		}
 		lines.append("\n\r");
 		return lines;
@@ -274,7 +275,7 @@ public class ListCmd extends StdCommand
 			{
 				thisOne=thisThang.roomID();
 				if((thisOne.length()>0)&&((owner==null)||(t.getOwnerName().equalsIgnoreCase(owner))))
-					lines.append(CMStrings.padRightPreserve("^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+CMStrings.limit(thisThang.displayText(),23)+CMStrings.limit(" ("+t.getOwnerName()+", $"+t.getPrice()+")",20)+"\n\r");
+					lines.append(CMStrings.padRightPreserve("^N^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",30)+": "+CMStrings.limit(thisThang.displayText(),23)+CMStrings.limit(" ^.^N("+t.getOwnerName()+", $"+t.getPrice()+")",20)+"\n\r");
 			}
 		}
 		lines.append("\n\r");
@@ -467,7 +468,7 @@ public class ListCmd extends StdCommand
 						{
 							lines.append("^!"+CMStrings.padRight("*",17)+"^?| ");
 							lines.append(R.displayText(mob));
-							lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+							lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 							lines.append("\n\r");
 						}
 					}
@@ -483,7 +484,7 @@ public class ListCmd extends StdCommand
 								||(CMLib.english().containsString(E.viewableText(mob,R).toString(),rest))))
 							{
 								lines.append("^!"+CMStrings.padRight(CMLib.directions().getDirectionName(d),17)+"^N| ");
-								lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+								lines.append("^N^. (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 								lines.append("\n\r");
 							}
 						}
@@ -522,7 +523,7 @@ public class ListCmd extends StdCommand
 								{
 									lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
 									lines.append(R.displayText(mob));
-									lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+									lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 									lines.append("\n\r");
 								}
 							}
@@ -533,7 +534,7 @@ public class ListCmd extends StdCommand
 								{
 									lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
 									lines.append(R.displayText(mob));
-									lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+									lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 									lines.append("\n\r");
 								}
 							}
@@ -545,7 +546,7 @@ public class ListCmd extends StdCommand
 							{
 								lines.append("^!"+CMStrings.padRight(cataMark(I)+I.name(mob),17)+"^N| ");
 								lines.append(R.displayText(mob));
-								lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+								lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 								lines.append("\n\r");
 							}
 						}
@@ -563,7 +564,7 @@ public class ListCmd extends StdCommand
 									{
 										lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),17)+"^N| ");
 										lines.append(R.displayText(mob));
-										lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+										lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 										lines.append("\n\r");
 									}
 								}
@@ -574,7 +575,7 @@ public class ListCmd extends StdCommand
 									{
 										lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),17)+"^N| ");
 										lines.append(R.displayText(mob));
-										lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+										lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 										lines.append("\n\r");
 									}
 								}
@@ -586,7 +587,7 @@ public class ListCmd extends StdCommand
 								{
 									lines.append("^!"+CMStrings.padRight(cataMark(M)+M.name(mob),17)+"^N| ");
 									lines.append(R.displayText(mob));
-									lines.append(" (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
+									lines.append("^.^N (^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(R)+"^</LSTROOMID^>)");
 									lines.append("\n\r");
 								}
 							}
@@ -827,8 +828,31 @@ public class ListCmd extends StdCommand
 		{
 			if (tArray[i] != null)
 			{
-				if((ignoreZeroTickThreads)&&(!tArray[i].isAlive()))
-					continue;
+				if(ignoreZeroTickThreads)
+				{
+					final java.lang.StackTraceElement[] s=tArray[i].getStackTrace();
+					boolean isAlive=tArray[i].isAlive();
+					if(isAlive)
+					{
+						for (final StackTraceElement element : s)
+						{
+							if(element.getMethodName().equalsIgnoreCase("sleep")
+							&&(element.getClassName().equalsIgnoreCase("java.lang.Thread")))
+								isAlive=false;
+							else
+							if(element.getMethodName().equalsIgnoreCase("park")
+							&&(element.getClassName().equalsIgnoreCase("sun.misc.Unsafe")))
+								isAlive=false;
+							else
+							if(element.getMethodName().equalsIgnoreCase("wait")
+							&&(element.getClassName().equalsIgnoreCase("java.lang.Object")))
+								isAlive=false;
+							break;
+						}
+					}
+					if(!isAlive)
+						continue;
+				}
 				lines.append(tArray[i].isAlive()? "  ok   " : " BAD!  ");
 				lines.append(CMStrings.padRight(tArray[i].getName(),20)+": ");
 				final String summary;
@@ -1352,31 +1376,68 @@ public class ListCmd extends StdCommand
 		return buf;
 	}
 
-	public StringBuilder journalList(Session viewerS, String partialjournal)
+	public StringBuilder journalList(final MOB mob, Session viewerS, String partialjournal, String rest)
 	{
 		final StringBuilder buf=new StringBuilder("");
 		String journal=null;
+		List<String> flagsV=new ArrayList<String>();
 		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 		{
 			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
 			if((CMJ.NAME()+"S").startsWith(partialjournal.toUpperCase().trim()))
+			{
 				journal=CMJ.NAME().trim();
+				flagsV=CMParms.parseAny(CMJ.getFlag(CommandJournalFlags.ASSIGN), ':', true);
+			}
 		}
 		if(journal==null)
 			return buf;
-		final List<JournalEntry> V=CMLib.database().DBReadJournalMsgsByUpdateDate("SYSTEM_"+journal+"S", true);
+		final String fullJournalName="SYSTEM_"+journal+"S";
+		final List<String> toV=new ArrayList<String>();
+		if(CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.LISTADMIN)
+		||(CMSecurity.isAllowed(mob, mob.location(),CMSecurity.SecFlag.JOURNALS))
+		||(CMSecurity.isJournalAccessAllowed(mob,journal)))
+		{
+			if(rest.trim().length()==0)
+			{
+			}
+			else
+			{
+				List<String> chosen=CMParms.parseCommas(rest.toUpperCase().trim(), true);
+				for(String chosen1 : chosen)
+				{
+					if(CMLib.players().playerExists(CMStrings.capitalizeAndLower(chosen1)))
+						toV.add(CMStrings.capitalizeAndLower(chosen1));
+					else
+					if(flagsV.contains(chosen1))
+						toV.add(chosen1);
+				}
+			}
+		}
+		else
+			toV.add(mob.Name());
+		
+		final List<JournalEntry> V=CMLib.database().DBReadJournalMsgsByUpdateDate(fullJournalName, true, 100000, toV.toArray(new String[0]));
 		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(10.0,viewerS);
+		final int COL_LEN3=CMLib.lister().fixColWidth(10.0,viewerS);
 		if(V!=null)
 		{
-			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1+2)+CMStrings.padRight(L("From"),COL_LEN2)+" Entry^.^N\n\r");
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1+2)
+					+CMStrings.padRight(L("From"),COL_LEN2)
+					+CMStrings.padRight(L("To"),COL_LEN3)
+					+" Entry^.^N\n\r");
 			buf.append("---------------------------------------------\n\r");
 			for(int j=0;j<V.size();j++)
 			{
 				final JournalEntry entry=V.get(j);
 				final String from=entry.from();
 				final String message=entry.msg();
-				buf.append("^x"+CMStrings.padRight((j+1)+"",COL_LEN1)+") "+CMStrings.padRight(from,COL_LEN2)+"^?^. "+message+"\n\r");
+				final String to=entry.to();
+				buf.append("^x"+CMStrings.padRight((j+1)+"",COL_LEN1)+") "
+				+CMStrings.padRight(from,COL_LEN2)
+				+CMStrings.padRight(to,COL_LEN2)
+				+"^?^. "+message+"\n\r");
 			}
 		}
 		return buf;
@@ -2273,6 +2334,31 @@ public class ListCmd extends StdCommand
 				final String journal=journals.get(i);
 				final int messages=CMLib.database().DBCountJournal(journal,null,null);
 				buf.append(CMStrings.padRight(""+(i+1),COL_LEN1)+CMStrings.padRight(journal,COL_LEN2)+" "+messages);
+				buf.append("^N\n\r");
+			}
+		}
+		return buf;
+	}
+
+	public StringBuilder listCommandJournals(Session viewerS)
+	{
+		final StringBuilder buf=new StringBuilder("");
+		Enumeration<JournalsLibrary.CommandJournal> enumJ=CMLib.journals().commandJournals();
+		final List<JournalsLibrary.CommandJournal> journals=new XVector<JournalsLibrary.CommandJournal>(enumJ);
+
+		if(journals.size()==0)
+			buf.append(L("No command journals exits."));
+		else
+		{
+			final int COL_LEN1=CMLib.lister().fixColWidth(5.0,viewerS);
+			final int COL_LEN2=CMLib.lister().fixColWidth(30.0,viewerS);
+			buf.append("\n\r^xCommand Journals List:^.^N\n\r");
+			buf.append("\n\r^x"+CMStrings.padRight("#",COL_LEN1)+CMStrings.padRight(L("Name"),COL_LEN2)+" Messages^.^N\n\r");
+			for(int i=0;i<journals.size();i++)
+			{
+				final JournalsLibrary.CommandJournal journal=journals.get(i);
+				final int messages=CMLib.database().DBCountJournal(journal.JOURNAL_NAME(),null,null);
+				buf.append(CMStrings.padRight(""+(i+1),COL_LEN1)+CMStrings.padRight(journal.NAME(),COL_LEN2)+" "+messages);
 				buf.append("^N\n\r");
 			}
 		}
@@ -3475,6 +3561,16 @@ public class ListCmd extends StdCommand
 		final int SCREEN_LEN1=CMLib.lister().fixColWidth(15.0,mob);
 		final int SCREEN_LEN2=CMLib.lister().fixColWidth(35.0,mob);
 		final int SCREEN_LEN3=CMLib.lister().fixColWidth(3.0,mob);
+		final int SCREEN_LIMIT=CMLib.lister().fixColWidth(22.0 - (2*3),mob);
+		buf.append("^N"+CMStrings.padRight("Class",SCREEN_LEN1)+": "+CMStrings.padRight("Display/Name",SCREEN_LEN2)+": "
+				+CMStrings.padRight("Lvl",SCREEN_LEN3)+": "
+				+CMStrings.limit("Align/Container",SCREEN_LIMIT)
+				+"^N\n\r");
+		buf.append("^N"+CMStrings.repeat('-',SCREEN_LEN1)+": "+CMStrings.repeat('-',SCREEN_LEN2)+": "
+				+CMStrings.repeat('-',SCREEN_LEN3)+": "
+				+CMStrings.repeat('-',SCREEN_LIMIT)
+				+"^N\n\r");
+		boolean first=true;
 		for(;roomsToDo.hasMoreElements();)
 		{
 			R=roomsToDo.nextElement();
@@ -3486,7 +3582,8 @@ public class ListCmd extends StdCommand
 			else
 			{
 				CMLib.database().DBReadContent(TR.roomID(),TR,false);
-				buf.append("\n\r^NRoomID: "+CMLib.map().getDescriptiveExtendedRoomID(TR)+"\n\r");
+				if(roomsToDo.hasMoreElements() || !first)
+					buf.append("\n\r^NRoomID: "+CMLib.map().getDescriptiveExtendedRoomID(TR)+"\n\r");
 				for(int m=0;m<TR.numInhabitants();m++)
 				{
 					final MOB M=TR.fetchInhabitant(m);
@@ -3494,17 +3591,17 @@ public class ListCmd extends StdCommand
 						continue;
 					buf.append("^M"+CMStrings.padRight(M.ID(),SCREEN_LEN1)+": "+CMStrings.padRight(M.displayText(),SCREEN_LEN2)+": "
 								+CMStrings.padRight(M.phyStats().level()+"",SCREEN_LEN3)+": "
-								+CMLib.flags().getAlignmentName(M)
+								+CMStrings.limit(CMLib.flags().getAlignmentName(M),SCREEN_LIMIT)
 								+"^N\n\r");
 					for(int i=0;i<M.numItems();i++)
 					{
 						final Item I=M.getItem(i);
 						if(I!=null)
 						{
-							buf.append("    ^I"+CMStrings.padRight(I.ID(),SCREEN_LEN1)
+							buf.append("    ^I"+CMStrings.padRight(I.ID(),SCREEN_LEN1-4)
 									+": "+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),SCREEN_LEN2)+": "
 									+CMStrings.padRight(I.phyStats().level()+"",SCREEN_LEN3)+": "
-									+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
+									+"^N"+CMStrings.limit(((I.container()!=null)?I.container().Name():""),SCREEN_LIMIT)+"\n\r");
 						}
 					}
 				}
@@ -3516,11 +3613,12 @@ public class ListCmd extends StdCommand
 						buf.append("^I"+CMStrings.padRight(I.ID(),SCREEN_LEN1)+": "
 								+CMStrings.padRight((I.displayText().length()>0?I.displayText():I.Name()),SCREEN_LEN2)+": "
 								+CMStrings.padRight(I.phyStats().level()+"",SCREEN_LEN3)+": "
-								+"^N"+((I.container()!=null)?I.Name():"")+"\n\r");
+								+"^N"+CMStrings.limit(((I.container()!=null)?I.container().Name():""),SCREEN_LIMIT)+"\n\r");
 					}
 				}
 				TR.destroy();
 			}
+			first=false;
 		}
 		return buf;
 	}
@@ -3724,6 +3822,7 @@ public class ListCmd extends StdCommand
 		THIEFSKILLS("THIEFSKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		COMMON("COMMON",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		JOURNALS("JOURNALS",new SecFlag[]{SecFlag.JOURNALS}),
+		COMMANDJOURNALS("COMMANDJOURNALS",new SecFlag[]{SecFlag.JOURNALS}),
 		SKILLS("SKILLS",new SecFlag[]{SecFlag.CMDMOBS,SecFlag.CMDITEMS,SecFlag.CMDROOMS,SecFlag.CMDAREAS,SecFlag.CMDEXITS,SecFlag.CMDRACES,SecFlag.CMDCLASSES,SecFlag.CMDABILITIES}),
 		QUESTS("QUESTS",new SecFlag[]{SecFlag.CMDQUESTS}),
 		QUESTWINNERS("QUESTWINNERS",new SecFlag[]{SecFlag.CMDQUESTS}),
@@ -4067,7 +4166,8 @@ public class ListCmd extends StdCommand
 		final List<Manufacturer> l=new XVector<Manufacturer>(CMLib.tech().manufacterers());
 		Collections.sort(l,new Comparator<Manufacturer>()
 		{
-			@Override public int compare(Manufacturer o1, Manufacturer o2)
+			@Override 
+			public int compare(Manufacturer o1, Manufacturer o2)
 			{
 				return o1.name().compareToIgnoreCase(o2.name());
 			}
@@ -4202,13 +4302,17 @@ public class ListCmd extends StdCommand
 				s.println("==="+title+"s===");
 			else
 				s.println("==="+title+"===");
-			s.wraplessPrintln(CMLib.lister().reallyWikiList(mob, CMClass.abilities(), ofType|domain).toString());
+			final XVector<Ability> sortedAs = new XVector<Ability>(CMClass.abilities());
+			CMClass.sortEnvironmentalsByName(sortedAs);
+			s.wraplessPrintln(CMLib.lister().reallyWikiList(mob, sortedAs.elements(), ofType|domain).toString());
 		}
 		else
 		if(wiki == WikiFlag.WIKIHELP)
 		{
 			StringBuilder str=new StringBuilder("");
-			for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			final XVector<Ability> sortedAs = new XVector<Ability>(CMClass.abilities());
+			CMClass.sortEnvironmentalsByName(sortedAs);
+			for(final Enumeration<Ability> e=sortedAs.elements();e.hasMoreElements();)
 			{
 				final Ability A=e.nextElement();
 				if((ofType>=0)&&(ofType!=Ability.ALL_ACODES))
@@ -4264,7 +4368,9 @@ public class ListCmd extends StdCommand
 				String helpStr="";
 				if(help==null)
 					help=CMLib.help().getHelpText(A.name(),null,archon,true);
-				if((help!=null)&&(help.toString().startsWith("<ABILITY>")||help.toString().startsWith("Property")))
+				if((help!=null)&&(help.toString().startsWith("<ABILITY>")
+				||help.toString().startsWith("Property")
+				||help.toString().startsWith("Disease")))
 				{
 					helpStr=help.toString().substring(9);
 					while(helpStr.trim().startsWith(": "))
@@ -4320,6 +4426,8 @@ public class ListCmd extends StdCommand
 				String templateName = "SkillTemplate";
 				if((A.classificationCode()&Ability.ALL_ACODES)==(Ability.ACODE_PROPERTY))
 					templateName="PropertyTemplate";
+				if((A.classificationCode()&Ability.ALL_ACODES)==(Ability.ACODE_DISEASE))
+					templateName="DiseaseTemplate";
 				str.append("{{"+templateName
 						+ "|ID="+A.ID()
 						+ "|Name="+A.name()
@@ -4719,7 +4827,7 @@ public class ListCmd extends StdCommand
 		lines.append(CMStrings.padRight(L("IP"),17)+"| ");
 		lines.append(CMStrings.padRight(L("Idle"),17)+"^.^N\n\r");
 		final Vector<String[]> broken=new Vector<String[]>();
-		final boolean skipUnnamed = (sort.length()>0)&&("NAME".startsWith(sort))||("PLAYER".startsWith(sort));
+		final boolean skipUnnamed = (sort.length()>0)&&("NAME".startsWith(sort)||"PLAYER".startsWith(sort));
 		for(final Session S : CMLib.sessions().allIterable())
 		{
 			final String[] set=new String[6];
@@ -4914,6 +5022,9 @@ public class ListCmd extends StdCommand
 		case JOURNALS:
 			s.println(listJournals(mob.session()).toString());
 			break;
+		case COMMANDJOURNALS:
+			s.println(listCommandJournals(mob.session()).toString());
+			break;
 		case SKILLS:
 			listAbilities(mob,s,commands,"Skill",Ability.ACODE_SKILL);
 			break;
@@ -4955,7 +5066,7 @@ public class ListCmd extends StdCommand
 			s.wraplessPrintln(CMLib.lister().reallyList(mob, CMClass.areaTypes()).toString());
 			break;
 		case COMMANDJOURNAL:
-			s.println(journalList(mob.session(), listWord).toString());
+			s.println(journalList(mob,mob.session(), listWord, rest).toString());
 			break;
 		case REALESTATE:
 			s.wraplessPrintln(roomPropertyDetails(mob.session(), mob.location().getArea(), rest).toString());
@@ -5003,7 +5114,9 @@ public class ListCmd extends StdCommand
 			s.println(listThread(mob.session(), mob, rest).toString());
 			break;
 		case THREADS:
-			s.println(listThreads(mob.session(), mob, CMParms.containsIgnoreCase(commands, "SHORT"), CMParms.containsIgnoreCase(commands, "EXTEND")).toString());
+			s.println(listThreads(mob.session(), mob, 
+					CMParms.containsIgnoreCase(commands, "SHORT")||CMParms.containsIgnoreCase(commands, "ACTIVE"), 
+					CMParms.containsIgnoreCase(commands, "EXTEND")).toString());
 			break;
 		case RESOURCES:
 			s.println(listResources(mob, CMParms.combine(commands, 1)));

@@ -24,7 +24,7 @@ import com.planet_ink.coffee_mud.WebMacros.grinder.GrinderItems.ItemDataField;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1127,18 +1127,33 @@ public class ItemData extends StdWebMacro
 					case ISPORTAL: // isportal
 						return (((I instanceof Rideable)&&(I instanceof Exit))?"true":"false");
 					case PUTSTR: // putstr
-						if(firstTime)
-							old=I.getStat("PUTSTR");
+						if((firstTime)&&(I instanceof Rideable))
+							old=((Rideable)I).putString(CMClass.sampleMOB());
 						str.append(old+", ");
 						break;
 					case MOUNTSTR: // mountstr
-						if(firstTime)
-							old=I.getStat("MOUNTSTR");
+						if((firstTime)&&(I instanceof Rideable))
+							old=((Rideable)I).mountString(0,CMClass.sampleMOB());
 						str.append(old+", ");
 						break;
 					case DISMOUNTSTR: // dismountstr
-						if(firstTime)
-							old=I.getStat("DISMOUNTSTR");
+						if((firstTime)&&(I instanceof Rideable))
+							old=((Rideable)I).dismountString(CMClass.sampleMOB());
+						str.append(old+", ");
+						break;
+					case STATESTR: // statestr
+						if((firstTime)&&(I instanceof Rideable))
+							old=((Rideable)I).stateString(CMClass.sampleMOB());
+						str.append(old+", ");
+						break;
+					case STATESUBJSTR: // statesubjstr
+						if((firstTime)&&(I instanceof Rideable))
+							old=((Rideable)I).stateStringSubject(CMClass.sampleMOB());
+						str.append(old+", ");
+						break;
+					case RIDERSTR: // riderstr
+						if((firstTime)&&(I instanceof Rideable))
+							old=((Rideable)I).rideString(CMClass.sampleMOB());
 						str.append(old+", ");
 						break;
 					case DEFAULTSCLOSED: // defaults closed
@@ -1354,6 +1369,25 @@ public class ItemData extends StdWebMacro
 								CMLib.xml().parseOutAngleBracketsAndQuotes(CMLib.coffeeMaker().getAreaObjectXML(((BoardableShip)I).getShipArea(), null, null, null, true).toString()) :
 								old).append(", ");
 						}
+						break;
+					case ISBOOK:
+						str.append(""+(I instanceof Book));
+						break;
+					case MAXPAGES:
+						if(I instanceof Book)
+						{
+							if(firstTime)
+								old=""+((Book)I).getMaxPages();
+						}
+						str.append(old).append(", ");
+						break;
+					case MAXCHARSPAGE:
+						if(I instanceof Book)
+						{
+							if(firstTime)
+								old=""+((Book)I).getMaxCharsPerPage();
+						}
+						str.append(old).append(", ");
 						break;
 					}
 					if(firstTime)

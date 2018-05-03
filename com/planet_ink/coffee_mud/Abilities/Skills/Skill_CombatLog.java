@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /*
-   Copyright 2017-2017 Bo Zimmerman
+   Copyright 2017-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -502,7 +502,7 @@ public class Skill_CombatLog extends StdSkill
 			}
 			else
 			{
-				mob.tell(L("'@x1' is an unknown command while logging.  Try STOP, REPORT, or WRITE <target>."));
+				mob.tell(L("'@x1' is an unknown command while logging.  Try STOP, REPORT, or WRITE <target>.",cmd));
 				return false;
 			}
 		}

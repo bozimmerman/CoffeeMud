@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -55,25 +55,25 @@ public class Take extends StdCommand
 		{
 			if(commands.size()<3)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("Take what from whom?"));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Take what from whom?"));
 				return false;
 			}
 			commands.remove(0);
 			if(commands.size()<2)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("From whom should I take the @x1",commands.get(0)));
+				CMLib.commands().postCommandFail(mob,origCmds,L("From whom should I take the @x1",commands.get(0)));
 				return false;
 			}
 
 			final MOB victim=mob.location().fetchInhabitant(commands.get(commands.size()-1));
 			if((victim==null)||(!CMLib.flags().canBeSeenBy(victim,mob)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("I don't see anyone called @x1 here.",commands.get(commands.size()-1)));
+				CMLib.commands().postCommandFail(mob,origCmds,L("I don't see anyone called @x1 here.",commands.get(commands.size()-1)));
 				return false;
 			}
 			if((!victim.isMonster())&&(!CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ORDER)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is a player!",victim.Name()));
+				CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is a player!",victim.Name()));
 				return false;
 			}
 			commands.remove(commands.size()-1);
@@ -112,12 +112,12 @@ public class Take extends StdCommand
 				if((victim.getQuestPoint()<=0)||(victim.getQuestPoint()<numToTake))
 				{
 					if(victim.getQuestPoint()<=0)
-						CMLib.commands().doCommandFail(mob,origCmds,L("@x1 has no quest points!",victim.name()));
+						CMLib.commands().postCommandFail(mob,origCmds,L("@x1 has no quest points!",victim.name()));
 					else
-						CMLib.commands().doCommandFail(mob,origCmds,L("@x1 has only @x2 quest points!",victim.name(),""+victim.getQuestPoint()));
+						CMLib.commands().postCommandFail(mob,origCmds,L("@x1 has only @x2 quest points!",victim.name(),""+victim.getQuestPoint()));
 					return false;
 				}
-				CMLib.commands().doCommandFail(mob,origCmds,L("You silently take @x1 quest points from @x2.",""+numToTake,victim.name()));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You silently take @x1 quest points from @x2.",""+numToTake,victim.name()));
 				victim.setQuestPoint(victim.getQuestPoint()-numToTake);
 				return false;
 			}
@@ -153,7 +153,7 @@ public class Take extends StdCommand
 			}
 
 			if(V.size()==0)
-				CMLib.commands().doCommandFail(mob,origCmds,L("@x1 does not seem to be carrying that.",victim.name()));
+				CMLib.commands().postCommandFail(mob,origCmds,L("@x1 does not seem to be carrying that.",victim.name()));
 			else
 			for(int i=0;i<V.size();i++)
 			{

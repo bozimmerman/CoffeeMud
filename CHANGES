@@ -1,10 +1,31 @@
-# Build 5.9.6 Release ??/??/2017
+# Build 5.9.7 Release ??/??/2018
+   1. Scholars gain XP from visiting bookstores, and can study dissertations.
+   2. A lot of the old static strings in rideables are now customizable by editors, Shipwright/Wainwright
+   3. Small boats can TENDER themselves to large ships now, and be RAISEd and LOWERd.
+   4. New Area field: Player Level, for overriding median level as a fake statistic.
+   5. MUDGrinder Statistic Report now has Areas Report, just like command line did.
+   6. New Command and Property: Gait - similar to mood or pose, for your walk-around.
+   7. Can now retrieve lost password from player access menu.
+   8. New Properties: Banishment, Prop_MoveRestrictor
+   9. ROMGangMember behavior messages now customizable.
+  10. Scavenger behavior now allows an item zappermask to limit types of items picked up.
+  11. New Disease: Writers Block.  Caused by frequently writing garbage.
+  12. New Skill: Hammering
+  13. Lassos are more farmer friendly now -- can be untied after throwing, no combat starting, etc.
+  14. Wands and Staffs now have their max charges settable from common skill recipes.
+  15. New LIST COMMANDJOURNALS
+  16. Shipwright has all new recipes with new wonders to behold.
+  17. REPORT command can now report expertises and languages also.
+  18. New Spells: Conjure Ammunition, Harden Bullets
+  19. ZapperMask now supports +-ACCOUNTS
+  
+# Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
    1. Hunger and Thirst system can now be tweeked.  See coffeemud.ini file
    2. Entering SHUTDOWN RESTART HARD will now attempt to run a restart.sh/restart.bat.
    3. GMODIFY now supports changing the CLASS of objects, including rooms.
    4. RESET RELEVEL tool added to refactor an areas level range.
-   5. New skills: Studying, Tagging, Organizing, Dissertating, Shush, Titling
+   5. New skills: Studying, Labeling, Organizing, Dissertating, Shush, Titling
    6. Areas can now be unloaded.  And then loaded back again.  See UNLOAD and LOAD.
    7. New FORMULA_s in the coffeemud.ini for total and individual combat experience.
    8. Movement = weight/3 now required to push/pull, and the moves are consumed.
@@ -20,9 +41,27 @@
   18. Players can now use KILL/ATTACK, with a weapon, to a fight a MOBEater stomach, but will lose.
   19. New input parser: RAW-INPUT-PROCESSOR, to capture char creation and prompt filtering
   20. New items: StdPlayerBook, and GenPlayerBook - a version of StdBook with data tied to players.
-  21. New Properties: Prop_Unsellable, Prop_CloseCommand
-  22. New Language: Encrypto -- random simplistic encryption (word and letter rot)
-  23. New skills: Decipher Script, BookEdit, BookNaming, Transcribing
+  21. New Properties: Prop_Unsellable, Prop_CloseCommand, Copyright
+  22. New Languages: InvisibleInk, Encrypto -- random simplistic encryption (word and letter rot)
+  23. New skills: Decipher Script, BookEdit, BookNaming, Transcribing, Secret Writing
+  24. Siplet Web-Sockets are now optimized and great! Some js fixes, and new info in Web Server Guide.
+  25. New skills: Honorary Degree skills: Fighter, Mage, Bard, Cleric, Commoner, Druid, and Thief.
+  26. New skills: Cataloging, Attribute Training, Recollecting, Publishing, Encrypted Writing
+  27. Rangers and Barbarians can now make Antidotes using Apothecary instead of poisons.
+  28. Players can now eat from containers.
+  29. New Item Type: StdPaper, a single-page, simple form of the Book, GenPaper also
+  30. PaperMaking now supports special parameters for GenBook and GenPaper
+  31. New skills:  Planar Lore, Racial Lore, Surveying, Guildmaster, Lecturing
+  32. New expertises for new skill Domains: Educating, and Legal Lore
+  33. New commoner class: Scholar, with achievements to match
+  34. New item type: StdDice and GenDice .. give them a THROW (or ROLL)
+  35. , (comma) is now a way to specify a social precisely.  e.g. ,smile 
+  36. New Property: Prop_WearOverride, for making gear for races that can't wear gear.
+  37. New CommandJournal flags: ASSIGN, REPLYSELF, REPLYALL for assigning to people and categories.
+  38. Locksmith can now label keys.  Weavers can now label containers (bags, sacks, baskets..)
+  39. New Property: Prop_OutfitContainer, for making gear sets you can swap in/out.
+  40. List <journal>, <journal> review, and <journal> transfer now support to-name filters.
+  41. Drow is no longer, by default, a selectable player race. It can still be enabled in the coffeemud.ini file.
 
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.

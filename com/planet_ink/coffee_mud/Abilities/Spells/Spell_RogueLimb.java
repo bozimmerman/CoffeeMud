@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -137,7 +137,7 @@ public class Spell_RogueLimb extends Spell
 		if((affected!=null)
 		&&(affected instanceof MOB))
 			((MOB)affected).location().show(((MOB)affected),rogueLimb,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> gain(s) control of <T-NAMESELF>."));
-		if(rogueLimb!=null)
+		if((rogueLimb!=null)&&(super.canBeUninvoked()))
 		{
 			rogueLimb.destroy();
 			rogueLimb=null;

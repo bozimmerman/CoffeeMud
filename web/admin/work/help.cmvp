@@ -12,13 +12,13 @@
 		<h2> CoffeeMud 5.9 </h2>
 		</td></tr><tr><td width=20% valign=top align=left>
 		<ul>
-			@HelpTopics?reset@
+			@HelpTopics?RESET@
 			@loop@
 			<li> @HelpTopics?SHORT&NEXT@<a href="#@HelpTopics@">@HelpTopics@</a>
 			@back@
 		</ul>
 		</td><td valign=top align=left>
-			@HelpTopics?reset@
+			@HelpTopics?RESET@
 			@loop@
 			<p>
 			@HelpTopics?SHORT&NEXT@<a name="@HelpTopics@"><B>@HelpTopics@</B></a>

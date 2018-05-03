@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class Practice extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You have @x1 practice points.  Enter HELP PRACTICE for more information.",""+mob.getPractices()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You have @x1 practice points.  Enter HELP PRACTICE for more information.",""+mob.getPractices()));
 			return false;
 		}
 		commands.remove(0);
@@ -84,29 +84,29 @@ public class Practice extends StdCommand
 		final Ability myAbility=mob.findAbility(abilityName);
 		if(myAbility==null)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to know @x1.",abilityName));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to know @x1.",abilityName));
 			return false;
 		}
 		
 		if((teacher==null)||(!CMLib.flags().canBeSeenBy(teacher,mob)))
 		{
 			if(triedTeacher)
-				CMLib.commands().doCommandFail(mob,origCmds,L("That person doesn't seem to be here."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("That person doesn't seem to be here."));
 			else
-				CMLib.commands().doCommandFail(mob,origCmds,L("There doesn't seem to be a teacher to practice with here."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("There doesn't seem to be a teacher to practice with here."));
 			return false;
 		}
 
 		if(!myAbility.isSavable())
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 cannot be practiced, as it is a native skill.",myAbility.name()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 cannot be practiced, as it is a native skill.",myAbility.name()));
 			return false;
 		}
 
 		final Ability teacherAbility=mob.findAbility(abilityName);
 		if(teacherAbility==null)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 doesn't seem to know @x2.",teacher.name(),abilityName));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 doesn't seem to know @x2.",teacher.name(),abilityName));
 			return false;
 		}
 

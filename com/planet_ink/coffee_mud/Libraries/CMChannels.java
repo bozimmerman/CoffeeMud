@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -817,7 +817,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	 */
 	private void tweet(String msg)
 	{
-		msg = CMStrings.scrunchWord(CMStrings.removeColors(msg), 140);
+		msg = CMStrings.scrunchWord(CMStrings.removeColors(msg), 280);
 		try
 		{
 			Class<?> cbClass = Class.forName("twitter4j.conf.ConfigurationBuilder");

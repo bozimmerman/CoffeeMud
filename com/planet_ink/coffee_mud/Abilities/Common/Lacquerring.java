@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -73,7 +73,7 @@ public class Lacquerring extends CommonSkill
 		verb=L("lacquering");
 	}
 
-	protected String fixColor(String name, String colorWord)
+	protected String fixColor(String name, char color, String colorWord)
 	{
 		final int end=name.indexOf("^?");
 		if((end>0)&&(end<=name.length()-3))
@@ -82,7 +82,7 @@ public class Lacquerring extends CommonSkill
 			if((start>=0)&&(start<(end-3)))
 				name=name.substring(0,start)+name.substring(end+3);
 		}
-		colorWord="^"+colorWord.charAt(0)+colorWord+"^?";
+		colorWord="^"+color+colorWord+"^?";
 		final Vector<String> V=CMParms.parse(name);
 		for(int v=0;v<V.size();v++)
 		{
@@ -138,8 +138,9 @@ public class Lacquerring extends CommonSkill
 					if(!d.startsWith("^"+writing.charAt(0)))
 						desc.insert(0,"^"+writing.charAt(0));
 					found.setDescription(desc.toString());
-					found.setName(fixColor(found.Name(),writing));
-					found.setDisplayText(fixColor(found.displayText(),writing));
+					final String writingName=Character.isUpperCase(writing.charAt(0))?"dark "+writing.toLowerCase():writing.toLowerCase();
+					found.setName(fixColor(found.Name(),writing.charAt(0),writingName));
+					found.setDisplayText(fixColor(found.displayText(),writing.charAt(0),writingName));
 					found.text();
 				}
 			}
@@ -209,7 +210,7 @@ public class Lacquerring extends CommonSkill
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		verb=L("lacquering @x1 @x2",target.name(),writing);
+		verb=L("lacquering @x1 @x2",target.name(),(darkFlag?"dark ":"")+writing);
 		displayText=L("You are @x1",verb);
 		found=target;
 		if(darkFlag)

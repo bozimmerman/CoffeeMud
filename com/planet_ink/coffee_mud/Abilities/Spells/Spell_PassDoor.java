@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -222,11 +222,23 @@ public class Spell_PassDoor extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.addEffect(this);
-				mob.recoverPhyStats();
-				mob.tell(L("\n\r\n\r"));
-				CMLib.tracking().walk(mob,dirCode,false,false);
-				mob.delEffect(this);
+				if(mob.fetchEffect(ID())==null)
+				{
+					final Ability A=(Ability)this.copyOf();
+					A.setSavable(false);
+					try
+					{
+						mob.addEffect(A);
+						mob.recoverPhyStats();
+						CMLib.tracking().walk(mob,dirCode,false,false);
+					}
+					finally
+					{
+						mob.delEffect(A);
+					}
+				}
+				else
+					CMLib.tracking().walk(mob,dirCode,false,false);
 				mob.recoverPhyStats();
 			}
 		}

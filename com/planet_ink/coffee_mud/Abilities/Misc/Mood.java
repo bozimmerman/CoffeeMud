@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2006-2017 Bo Zimmerman
+   Copyright 2006-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Mood extends StdAbility
 {
 	@Override
@@ -951,7 +950,7 @@ public class Mood extends StdAbility
 					default:
 						break;
 					}
-					((MOB)affected).doCommand(new XVector(CHANNELS[channelC],"*I* just killed "+msg.source().Name()+addOn),MUDCmdProcessor.METAFLAG_FORCED);
+					((MOB)affected).doCommand(new XVector<String>(CHANNELS[channelC],"*I* just killed "+msg.source().Name()+addOn),MUDCmdProcessor.METAFLAG_FORCED);
 				}
 			}
 			break;

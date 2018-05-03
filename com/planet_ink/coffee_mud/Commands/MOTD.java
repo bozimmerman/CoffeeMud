@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
@@ -22,7 +23,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPRedirectException;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,7 +52,7 @@ public class MOTD extends StdCommand
 	private static Vector<String> DEFAULT_CMD=new ReadOnlyVector<String>(new String[]{"MOTD","AGAIN"});
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean pause=false;
@@ -189,16 +190,14 @@ public class MOTD extends StdCommand
 				for(int cj=0;cj<myEchoableCommandJournals.size();cj++)
 				{
 					final JournalsLibrary.CommandJournal CMJ=myEchoableCommandJournals.get(cj);
-					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsByUpdateDate("SYSTEM_"+CMJ.NAME()+"S", true);
+					final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan("SYSTEM_"+CMJ.NAME()+"S", "ALL", mob.playerStats().getLastDateTime());
 					if(items!=null)
-					for(int i=0;i<items.size();i++)
 					{
-						final JournalEntry entry=items.get(i);
-						final String from=entry.from();
-						final String message=entry.msg();
-						final long compdate=entry.update();
-						if(compdate>mob.playerStats().getLastDateTime())
+						for(int i=0;i<items.size();i++)
 						{
+							final JournalEntry entry=items.get(i);
+							final String from=entry.from();
+							final String message=entry.msg();
 							buf.append("\n\rNEW "+CMJ.NAME()+" from "+from+": "+message+"\n\r");
 							CJseparator=true;
 						}
@@ -257,6 +256,40 @@ public class MOTD extends StdCommand
 					else
 					if(parm.equals("AGAIN"))
 						mob.session().println(L("No @x1 to re-read.",what));
+					
+					// check for new commandjournal postings that require a reply-to-self...
+					for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
+					{
+						final JournalsLibrary.CommandJournal CMJ=e.nextElement();
+						if(CMJ.getFlag(CommandJournalFlags.MOTD)==null)
+							continue;
+						final List<JournalEntry> items=CMLib.database().DBReadJournalMsgsNewerThan(CMJ.JOURNAL_NAME(), mob.Name(), -1);
+						if((items!=null)&&(items.size()>0))
+						{
+							final Session session=mob.session();
+							if(session.confirm(L("You have messages waiting response in @x1. Read now (y/N)? ", CMJ.NAME()),"N",5000))
+							{
+								int count=1;
+								final Item journalItem=CMClass.getItem("StdJournal");
+								journalItem.setName(CMJ.JOURNAL_NAME());
+								journalItem.setReadableText("FILTER="+mob.Name());
+								while(count<=items.size())
+								{
+									final CMMsg msg2=CMClass.getMsg(mob,journalItem,null,CMMsg.MSG_READ,null,CMMsg.MSG_READ,""+count,CMMsg.MSG_READ,null);
+									msg2.setValue(1);
+									journalItem.executeMsg(mob,msg2);
+									if(msg2.value()==0)
+										break;
+									else
+									if(msg2.value()<0)
+										items.remove(count-1);
+									else
+									if(msg2.value()>0)
+										count++;
+								}
+							}
+						}
+					}
 				}
 			}
 			catch(final HTTPRedirectException e)

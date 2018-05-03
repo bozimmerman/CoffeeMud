@@ -25,11 +25,25 @@ public interface ProtocolHandler
 	 * 
 	 * The method should exit with the buffer in the same writeable state it
 	 * was handed.
-	 * 
+	 * @param handler the I/O handler that generated the processing
 	 * @param request the request currently being parsed
 	 * @param buffer the bytebuffer to process data from
+	 * 
 	 * @throws HTTPException any parse or protocol errors
 	 */
-	public DataBuffers processBuffer(HTTPRequest request, ByteBuffer buffer) throws HTTPException;
-
+	public DataBuffers processBuffer(HTTPIOHandler handler, HTTPRequest request, ByteBuffer buffer) throws HTTPException;
+	
+	/**
+	 * Returns whether, according to this protocol handler, the client has not engaged in
+	 * enough activity recently to maintain the connection, and the IO handler should
+	 * immediately shut it down.
+	 * @return true to shut down the connection, false to maintain it
+	 */
+	public boolean isTimedOut();
+	
+	/**
+	 * Close and dispose of this handler, typically because the web server
+	 * has lost its connection to the client.
+	 */
+	public void closeAndWait();
 }

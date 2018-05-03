@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.net.SocketException;
 import java.util.*;
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @see CharCreationLibrary#promptGender(int, MOB, Session)
 	 * @param theme the theme code to use for stat allocation
 	 * @param mob the mob who is getting the new char stats
-	 * @param timeoutSecs TODO
+	 * @param timeoutSecs number of seconds before prompt times out
 	 * @param session the session which might help allocate the points
 	 * @param bonusPoints any bonus points to allocate to stats
 	 * @throws IOException any input errors that occur
@@ -355,8 +355,8 @@ public interface CharCreationLibrary extends CMLibrary
 	 * Based on the rules of the system, this method returns the number of
 	 * bonus stat points available to players to allocate, if the system
 	 * lets them do such a thing.
-	 * @param playerStats TODO
-	 * @param account TODO
+	 * @param playerStats The player stats object for the player
+	 * @param account the player account object for the player, if applicable
 	 * @return the number of stat points available to allocate
 	 */
 	public int getTotalBonusStatPoints(PlayerStats playerStats, PlayerAccount account);
@@ -381,7 +381,15 @@ public interface CharCreationLibrary extends CMLibrary
 	 * @throws IOException any I/O errors during the process
 	 */
 	public LoginResult finishLogin(final Session session, final MOB mob, final Room startRoom, final boolean resetStats) throws IOException;
-	
+
+	/**
+	 * Does a connection spam check against the given address, returning true if all
+	 * is well, and false if it needs blocking.
+	 * @param address the address to check
+	 * @return true to proceed, false to block
+	 */
+	public boolean performSpamConnectionCheck(final String address);
+
 	/**
 	 * Takes the given session and mobs login by putting the mob into the given start room
 	 * in the world, checking their email, and seeing if they are allowed in.  It does the

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ public class Dismount extends StdCommand
 {
 	public Dismount(){}
 
-	private final String[] access=I(new String[]{"DISMOUNT","DISEMBARK","LEAVE"});
+	private final String[] access=I(new String[]{"DISMOUNT"});
 	@Override
 	public String[] getAccessWords()
 	{
@@ -57,12 +57,12 @@ public class Dismount extends StdCommand
 			{
 				if(cmdWord.startsWith("L"))
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("Which way? Try EXITS."));
+					CMLib.commands().postCommandFail(mob,origCmds,L("Which way? Try EXITS."));
 					return false;
 				}
 				else
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("But you aren't riding anything?!"));
+					CMLib.commands().postCommandFail(mob,origCmds,L("But you aren't riding anything?!"));
 					return false;
 				}
 			}
@@ -75,7 +75,7 @@ public class Dismount extends StdCommand
 			final Environmental E=mob.location().fetchFromRoomFavorItems(null,CMParms.combine(commands,0));
 			if((E==null)||(!(E instanceof Rider)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see anything called '@x1' here to dismount from anything.",CMParms.combine(commands,0)));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see anything called '@x1' here to dismount from anything.",CMParms.combine(commands,0)));
 				return false;
 			}
 			final Rider RI=(Rider)E;
@@ -84,12 +84,12 @@ public class Dismount extends StdCommand
 			   ||((RI.riding() instanceof Item)&&(!mob.location().isContent((Item)RI.riding())))
 			   ||(!CMLib.flags().canBeSeenBy(RI.riding(),mob)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("But @x1 is not mounted to anything?!",RI.name(mob)));
+				CMLib.commands().postCommandFail(mob,origCmds,L("But @x1 is not mounted to anything?!",RI.name(mob)));
 				return false;
 			}
 			if((RI instanceof MOB)&&(!CMLib.flags().isBoundOrHeld(RI))&&(!((MOB)RI).willFollowOrdersOf(mob)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("@x1 may not want you to do that.",RI.name(mob)));
+				CMLib.commands().postCommandFail(mob,origCmds,L("@x1 may not want you to do that.",RI.name(mob)));
 				return false;
 			}
 			final CMMsg msg=CMClass.getMsg(mob,RI.riding(),RI,CMMsg.MSG_DISMOUNT,L("<S-NAME> dismount(s) <O-NAME> from <T-NAMESELF>."));

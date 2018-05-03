@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ public class Description extends StdCommand
 			mob.tell(L("Your description exceeds @x1 characters in length.  Please re-enter a shorter one.",""+CHAR_LIMIT));
 		else
 		{
-			mob.setDescription(s);
+			mob.setDescription(CMStrings.convertHtmlToText(new StringBuilder(s)));
 			mob.tell(L("Your description has been changed."));
 		}
 		return false;

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -206,7 +206,7 @@ public class Thief_ContractHit extends ThiefSkill
 		super.unInvoke();
 		if((M!=null)&&(M2!=null)&&(((done)||(M2.amDead()))))
 		{
-			if(M.location()!=null)
+			if((M.location()!=null)&&(super.canBeUninvoked()))
 			{
 				M.location().showHappens(CMMsg.MSG_OK_VISUAL,L("Someone steps out of the shadows and whispers something to @x1.",M.name()));
 				M.tell(L("'It is done.'"));
@@ -260,7 +260,7 @@ public class Thief_ContractHit extends ThiefSkill
 		List<MOB> V=new Vector<MOB>();
 		try
 		{
-			V=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,CMParms.combine(commands,0), 10);
+			V=CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob,CMParms.combine(commands,0), false, 10);
 		}
 		catch(final NoSuchElementException nse)
 		{

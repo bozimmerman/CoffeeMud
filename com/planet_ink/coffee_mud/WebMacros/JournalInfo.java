@@ -9,6 +9,8 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournal;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournalFlags;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -16,11 +18,12 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.WebMacros.AreaScriptNext.AreaScriptInstance;
 
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -175,6 +178,48 @@ public class JournalInfo extends StdWebMacro
 
 		if(parms.containsKey("JOURNALLIMIT"))
 			return ""+CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
+		
+		if(parms.containsKey("ASSIGN"))
+		{
+			CommandJournal CJ=CMLib.journals().getCommandJournal(journalName);
+			if((CJ==null)&&(journalName.startsWith("SYSTEM_")))
+				CJ=CMLib.journals().getCommandJournal(journalName.substring(7));
+			if((CJ==null)&&(journalName.startsWith("SYSTEM_"))&&(journalName.endsWith("S")))
+				CJ=CMLib.journals().getCommandJournal(journalName.substring(7,journalName.length()-1));
+			List<String> assigns=new ArrayList<String>();
+			if(CJ!=null)
+				assigns.addAll(CMParms.parseAny(CJ.getFlag(CommandJournalFlags.ASSIGN), ':', true));
+			if(!assigns.contains("ALL"))
+				assigns.add("ALL");
+			if(!assigns.contains("FROM"))
+				assigns.add("FROM");
+			
+			if(parms.containsKey("NEXT")||parms.containsKey("RESET"))
+			{
+				String last=httpReq.getUrlParameter("JOURNALASSIGN");
+				if(parms.containsKey("RESET"))
+				{
+					if(last!=null)
+						httpReq.removeUrlParameter("JOURNALASSIGN");
+					return "";
+				}
+				String lastID="";
+				for(final String inst : assigns)
+				{
+					if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!inst.equals(lastID))))
+					{
+						httpReq.addFakeUrlParameter("JOURNALASSIGN",inst);
+						last=inst;
+						return "";
+					}
+					lastID=inst;
+				}
+				httpReq.addFakeUrlParameter("JOURNALASSIGN","");
+				if(parms.containsKey("EMPTYOK"))
+					return "<!--EMPTY-->";
+				return " @break@";
+			}
+		}
 
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		if((CMLib.journals().isArchonJournalName(journalName))&&((M==null)||(!CMSecurity.isASysOp(M))))

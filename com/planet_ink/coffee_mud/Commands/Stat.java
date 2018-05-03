@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -236,7 +236,7 @@ public class Stat  extends Skills
 			{
 				lastCur=curTime;
 				final Calendar C2=Calendar.getInstance();
-				C.setTimeInMillis(curTime);
+				C2.setTimeInMillis(curTime);
 				C2.add(Calendar.DATE,-(scale));
 				curTime=C2.getTimeInMillis();
 				C2.set(Calendar.HOUR_OF_DAY,23);
@@ -267,7 +267,7 @@ public class Stat  extends Skills
 			for(int x=0;x<allSkills.size();x++)
 			{
 				Ability A=allSkills.get(x);
-				if((CharC==null)||(CMLib.ableMapper().getQualifyingLevel(CharC.ID(),true,A.ID())<0))
+				if((CharC!=null)&&(CMLib.ableMapper().getQualifyingLevel(CharC.ID(),true,A.ID())<0))
 					continue;
 				if(totals[x][CoffeeTableRow.STAT_SKILLUSE]>0)
 				{
@@ -298,12 +298,20 @@ public class Stat  extends Skills
 		else
 		if(questStats)
 		{
-			final long[][] totals=new long[CMLib.quests().numQuests()][CoffeeTableRow.STAT_TOTAL];
+			final List<Quest> sortedQuests=new XVector<Quest>(CMLib.quests().enumQuests());
+			Collections.sort(sortedQuests,new Comparator<Quest>(){
+				@Override
+				public int compare(Quest o1, Quest o2)
+				{
+					return o1.name().toLowerCase().compareTo(o2.name().toLowerCase());
+				}
+			});
+			final long[][] totals=new long[sortedQuests.size()][CoffeeTableRow.STAT_TOTAL];
 			while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 			{
 				lastCur=curTime;
 				final Calendar C2=Calendar.getInstance();
-				C.setTimeInMillis(curTime);
+				C2.setTimeInMillis(curTime);
 				C2.add(Calendar.DATE,-(scale));
 				curTime=C2.getTimeInMillis();
 				C2.set(Calendar.HOUR_OF_DAY,23);
@@ -329,15 +337,15 @@ public class Stat  extends Skills
 				for(int s=0;s<set.size();s++)
 				{
 					final CoffeeTableRow T=set.get(s);
-					for(int x=0;x<CMLib.quests().numQuests();x++)
-						T.totalUp("U"+T.tagFix(CMLib.quests().fetchQuest(x).name()),totals[x]);
+					for(int x=0;x<sortedQuests.size();x++)
+						T.totalUp("U"+T.tagFix(sortedQuests.get(x).name()),totals[x]);
 				}
 				if(scale==0)
 					break;
 			}
-			for(int x=0;x<CMLib.quests().numQuests();x++)
+			for(int x=0;x<sortedQuests.size();x++)
 			{
-				final Quest Q=CMLib.quests().fetchQuest(x);
+				final Quest Q=sortedQuests.get(x);
 				table.append(
 						 CMStrings.padRight(Q.name(),30)
 						+CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTSTARTATTEMPT],5)
@@ -357,20 +365,11 @@ public class Stat  extends Skills
 		if(areaStats)
 		{
 			lastCur=ENDQ.getTimeInMillis();
-			final Calendar C2=Calendar.getInstance();
-			C2.setTimeInMillis(curTime);
-			C2.add(Calendar.DATE,-(scale));
-			curTime=C2.getTimeInMillis();
-			C2.set(Calendar.HOUR_OF_DAY,23);
-			C2.set(Calendar.MINUTE,59);
-			C2.set(Calendar.SECOND,59);
-			C2.set(Calendar.MILLISECOND,999);
-			curTime=C2.getTimeInMillis();
 			final ArrayList<CoffeeTableRow> set=new ArrayList<CoffeeTableRow>();
 			for(int v=V.size()-1;v>=0;v--)
 			{
 				final CoffeeTableRow T=V.get(v);
-				if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+				if((T.startTime()>lastCur)&&(T.endTime()<=curTime))
 				{
 					set.add(T);
 					V.remove(v);
@@ -527,9 +526,9 @@ public class Stat  extends Skills
 		{
 			try
 			{
-				final List<MOB> inhabs=CMLib.map().findInhabitants(mob.location().getArea().getProperMap(), mob,MOBname,100);
+				final List<MOB> inhabs=CMLib.map().findInhabitantsFavorExact(mob.location().getArea().getProperMap(), mob,MOBname,false,100);
 				if(inhabs.size()==0)
-					inhabs.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100));
+					inhabs.addAll(CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob,MOBname,false,100));
 				for(final MOB mob2 : inhabs)
 				{
 					final Room R=mob2.location();
@@ -673,6 +672,10 @@ public class Stat  extends Skills
 			final String s2=(commands.size()>1)?commands.get(1).toUpperCase():"";
 			if(s1.equalsIgnoreCase("TODAY"))
 				return showTableStats(mob,1,1,CMParms.combine(commands,1));
+			else
+			if((commands.size()==1)
+			&&(s1.equalsIgnoreCase("SKILLUSE")||s1.equalsIgnoreCase("AREA")||s1.equalsIgnoreCase("QUEST")))
+				return showTableStats(mob,1,1,CMParms.combine(commands,0));
 			else
 			if(commands.size()>1)
 			{
@@ -1112,10 +1115,15 @@ public class Stat  extends Skills
 					if((target.playerStats()!=null)&&(CMProps.isUsingAccountSystem()))
 						str.append(L("\n\r^xMember of Account:^.^N ^w@x1^?",(target.playerStats().getAccount()!=null)?target.playerStats().getAccount().getAccountName():L("None"))).append("\n\r");
 					str.append(CMLib.commands().getScore(target));
-					if(target.playerStats()!=null)
-						CMLib.genEd().modifyPlayer(mob, target, -950);
-					else
-						CMLib.genEd().genMiscSet(mob, target, -950);
+					for(Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
+					{
+						final Quest Q=q.nextElement();
+						if((Q!=null)
+						&&(Q.running())
+						&&(Q.isObjectInUse(target)))
+							str.append(L("\n\r^xIn use by quest:^.^N ^w@x1^?",Q.name())).append("\n\r");
+					}
+					CMLib.genEd().genMiscSet(mob, target, -950);
 				}
 			}
 		}
@@ -1158,6 +1166,14 @@ public class Stat  extends Skills
 					Environmental itarget=getItemTarget(mob, restWords);
 					if(itarget!=null)
 					{
+						for(Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
+						{
+							final Quest Q=q.nextElement();
+							if((Q!=null)
+							&&(Q.running())
+							&&(Q.isObjectInUse(itarget)))
+								mob.tell(L("\n\r^xIn use by quest:^.^N ^w@x1^?",Q.name()));
+						}
 						CMLib.genEd().genMiscSet(mob, itarget, -950);
 						return true;
 					}
@@ -1235,6 +1251,14 @@ public class Stat  extends Skills
 							itarget=mob.location().fetchExit(MOBname);
 						if(itarget!=null)
 						{
+							for(Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
+							{
+								final Quest Q=q.nextElement();
+								if((Q!=null)
+								&&(Q.running())
+								&&(Q.isObjectInUse(itarget)))
+									mob.tell(L("\n\r^xIn use by quest:^.^N ^w@x1^?",Q.name()));
+							}
 							CMLib.genEd().genMiscSet(mob, itarget, -950);
 							return true;
 						}

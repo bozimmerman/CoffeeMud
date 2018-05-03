@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -246,7 +246,8 @@ public class DefaultLawSet implements Law
 		return warrants;
 	}
 
-	@Override public boolean arrestMobs()
+	@Override 
+	public boolean arrestMobs()
 	{ 
 		return arrestMobs;
 	}

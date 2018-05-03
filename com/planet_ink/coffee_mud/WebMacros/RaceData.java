@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -286,7 +286,7 @@ public class RaceData extends StdWebMacro
 				{
 					I2=RoomData.getItemFromAnywhere(items,MATCHING);
 					if(I2!=null)
-						RoomData.contributeItems(new XVector(I2));
+						RoomData.contributeItems(new XVector<Item>(I2));
 				}
 				if(I2!=null)
 					classes.addElement(I2);

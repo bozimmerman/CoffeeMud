@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 /*
-   Copyright 2015-2017 Bo Zimmerman
+   Copyright 2015-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -56,6 +56,18 @@ public interface AbilityComponents extends CMLibrary
 	 * @return null if missing components, or the list of found components
 	 */
 	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req, boolean mithrilOK);
+	
+	/**
+	 * Returns a very dirty approximate of a sample of what components appear
+	 * to be required.  Named items are not required, but raw material components
+	 * are created, and most rules are ignored in order to generate as many as
+	 * possible.
+	 * @see AbilityComponents#getAbilityComponents(String)
+	 * @param req the ability components rules definition
+	 * @param mithrilOK true to allow mithril as a metal substitute
+	 * @return a list of sample items
+	 */
+	public List<Item> componentsSample(List<AbilityComponent> req, boolean mithrilOK);
 	
 	/**
 	 * If the ability component recipe used to build the list of found

@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -161,7 +161,8 @@ public class Paladin_MountedCharge extends StdAbility
 			return false;
 		}
 
-		if(mob.riding()==null)
+		final Rideable mount=mob.riding();
+		if(mount==null)
 		{
 			mob.tell(L("You must be mounted to use this skill."));
 			return false;
@@ -174,7 +175,7 @@ public class Paladin_MountedCharge extends StdAbility
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,L("<S-NAME> ride(s) hard at <T-NAMESELF>!"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_ADVANCE,L("<S-NAME> "+mount.rideString(mob)+" hard at <T-NAMESELF>!"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -197,7 +198,7 @@ public class Paladin_MountedCharge extends StdAbility
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,L("<S-NAME> ride(s) at <T-NAMESELF>, but miss(es)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> "+mount.rideString(mob)+" at <T-NAMESELF>, but miss(es)."));
 
 		// return whether it worked
 		return success;

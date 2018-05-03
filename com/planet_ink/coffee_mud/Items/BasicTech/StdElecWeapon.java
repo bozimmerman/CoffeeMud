@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2013-2017 Bo Zimmerman
+   Copyright 2013-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -87,7 +87,8 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	// this method is the reason not to make the types an editable field; the
 	// murder-motel-like interaction between shields and weapons is finely
 	// balanced based on what this does.
-	@Override public int weaponDamageType()
+	@Override 
+	public int weaponDamageType()
 	{
 		switch(mode)
 		{

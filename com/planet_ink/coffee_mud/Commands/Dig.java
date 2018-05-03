@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2011-2017 Bo Zimmerman
+   Copyright 2011-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -94,12 +94,12 @@ public class Dig extends StdCommand
 		{
 			if(isOccupiedWithOtherWork(mob))
 			{
-				CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("You are too busy to dig right now."));
+				CMLib.commands().postCommandFail(mob,new StringXVector(commands),L("You are too busy to dig right now."));
 				return false;
 			}
 			if(mob.isInCombat())
 			{
-				CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("You are too busy fighting right now."));
+				CMLib.commands().postCommandFail(mob,new StringXVector(commands),L("You are too busy fighting right now."));
 				return false;
 			}
 
@@ -119,7 +119,7 @@ public class Dig extends StdCommand
 		{
 			if(mob.isInCombat())
 			{
-				CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("You stop digging."));
+				CMLib.commands().postCommandFail(mob,new StringXVector(commands),L("You stop digging."));
 				return false;
 			}
 			final String msgStr=L("<S-NAME> continue(s) digging a hole with <O-NAME>.");

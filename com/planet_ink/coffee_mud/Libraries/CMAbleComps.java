@@ -35,7 +35,7 @@ import java.net.Socket;
 import java.util.*;
 
 /*
-   Copyright 2015-2017 Bo Zimmerman
+   Copyright 2015-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -69,7 +69,20 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		return false;
 	}
 	
-	public boolean IsItemComponent(MOB mob, AbilityComponent comp, int[] amt, Item I, List<Object> thisSet, final boolean mithrilOK)
+	protected Item makeItemComponent(AbilityComponent comp, final boolean mithrilOK)
+	{
+		if(comp.getType()==AbilityComponent.CompType.STRING)
+			return null;
+		else
+		if(comp.getType()==AbilityComponent.CompType.RESOURCE)
+			return CMLib.materials().makeItemResource((int)comp.getLongType());
+		else
+		if(comp.getType()==AbilityComponent.CompType.MATERIAL)
+			return CMLib.materials().makeItemResource(RawMaterial.CODES.MOST_FREQUENT(((int)comp.getLongType())&RawMaterial.MATERIAL_MASK));
+		return null;
+	}
+
+	protected boolean IsItemComponent(MOB mob, AbilityComponent comp, int[] amt, Item I, List<Object> thisSet, final boolean mithrilOK)
 	{
 		if(I==null)
 			return false;
@@ -143,17 +156,34 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		return false;
 	}
 
+	// returns list of components for the requirement list.
+	@Override
+	public List<Item> componentsSample(List<AbilityComponent> req, boolean mithrilOK)
+	{
+		if((req==null)||(req.size()==0))
+			return new Vector<Item>(0);
+		final List<Item> passes=new Vector<Item>();
+		AbilityComponent comp = null;
+		for(int i=0;i<req.size();i++)
+		{
+			comp=req.get(i);
+			Item I=this.makeItemComponent(comp,mithrilOK);
+			passes.add(I);
+		}
+		return passes;
+	}
+
 	// returns list of components found if all good, returns Integer of bad row if not.
 	@Override
 	public List<Object> componentCheck(MOB mob, List<AbilityComponent> req, boolean mithrilOK)
 	{
 		if((mob==null)||(req==null)||(req.size()==0))
-			return new Vector<Object>();
+			return new Vector<Object>(0);
 		boolean currentAND=false;
 		boolean previousValue=true;
 		final int[] amt={0};
 		final List<Object> passes=new Vector<Object>();
-		final List<Object> thisSet=new Vector<Object>();
+		final List<Object> thisSet=new ArrayList<Object>();
 		boolean found=false;
 		AbilityComponent comp = null;
 		final Room room = mob.location();

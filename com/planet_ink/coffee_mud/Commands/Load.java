@@ -20,7 +20,7 @@ import java.io.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Load extends StdCommand
 {
 	public Load()
@@ -110,7 +109,7 @@ public class Load extends StdCommand
 		if(!tryArchon)
 		{
 			commands.remove(0);
-			final XVector ammoV=new XVector(what);
+			final XVector<String> ammoV=new XVector<String>(what);
 			final List<Item> baseAmmoItems=CMLib.english().fetchItemList(mob,mob,null,ammoV,Wearable.FILTER_UNWORNONLY,false);
 			final List<Ammunition> ammos=new XVector<Ammunition>();
 			for (Item I : baseAmmoItems)

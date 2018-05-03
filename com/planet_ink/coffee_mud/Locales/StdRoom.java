@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -783,6 +783,7 @@ public class StdRoom implements Room
 			default:
 				if(((msg.targetMajor(CMMsg.MASK_HANDS))||(msg.targetMajor(CMMsg.MASK_MOUTH)))
 				&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_MAGIC))
+				&&(!(msg.tool() instanceof Ability))
 				&&(msg.targetMinor()!=CMMsg.TYP_THROW)
 				&&(isInhabitant(msg.source())))
 				{
@@ -1010,7 +1011,8 @@ public class StdRoom implements Room
 				final LinkedList<DeadBody> deadBodies=new LinkedList<DeadBody>();
 				eachItem(new EachApplicable<Item>()
 				{
-					@Override public final void apply(final Item I)
+					@Override 
+					public final void apply(final Item I)
 					{
 						if((I instanceof DeadBody)
 						&&(((DeadBody)I).isPlayerCorpse()))
@@ -1984,6 +1986,14 @@ public class StdRoom implements Room
 		if(mob==null)
 			mob=(MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID, false);
 		return mob;
+	}
+
+	@Override
+	public MOB fetchInhabitantExact(String inhabitantID)
+	{
+		if(inhabitants.isEmpty())
+			return null;
+		return (MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID,true);
 	}
 
 	private static final ReadOnlyVector<MOB> emptyMOBV=new ReadOnlyVector<MOB>(1);

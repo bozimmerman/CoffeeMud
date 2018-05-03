@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,12 +51,12 @@ public class Dress extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<3)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Dress whom in what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Dress whom in what?"));
 			return false;
 		}
 		if(mob.isInCombat())
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Not while you are in combat!"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Not while you are in combat!"));
 			return false;
 		}
 		commands.remove(0);
@@ -66,7 +66,7 @@ public class Dress extends StdCommand
 		final MOB target=mob.location().fetchInhabitant(whom);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("I don't see @x1 here.",whom));
+			CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",whom));
 			return false;
 		}
 		if((target.willFollowOrdersOf(mob))||(CMLib.flags().isBoundOrHeld(target)))
@@ -74,7 +74,7 @@ public class Dress extends StdCommand
 			final Item item=mob.findItem(null,what);
 			if((item==null)||(!CMLib.flags().canBeSeenBy(item,mob)))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("I don't see @x1 here.",what));
+				CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",what));
 				return false;
 			}
 			if(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.ORDER)
@@ -114,17 +114,17 @@ public class Dress extends StdCommand
 			{
 				if(!item.amWearingAt(Wearable.IN_INVENTORY))
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("You might want to remove that first."));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You might want to remove that first."));
 					return false;
 				}
 				if(item instanceof Coins)
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("I don't think you want to dress someone in @x1.",item.name()));
+					CMLib.commands().postCommandFail(mob,origCmds,L("I don't think you want to dress someone in @x1.",item.name()));
 					return false;
 				}
 				if(target.isInCombat())
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("Not while @x1 is in combat!",target.name(mob)));
+					CMLib.commands().postCommandFail(mob,origCmds,L("Not while @x1 is in combat!",target.name(mob)));
 					return false;
 				}
 				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_QUIETMOVEMENT,null);
@@ -143,16 +143,16 @@ public class Dress extends StdCommand
 								mob.location().show(mob,target,item,CMMsg.MSG_QUIETMOVEMENT,L("<S-NAME> put(s) <O-NAME> on <T-NAMESELF>."));
 							}
 							else
-								CMLib.commands().doCommandFail(mob,origCmds,L("You cannot seem to get @x1 on @x2.",item.name(),target.name(mob)));
+								CMLib.commands().postCommandFail(mob,origCmds,L("You cannot seem to get @x1 on @x2.",item.name(),target.name(mob)));
 						}
 						else
-							CMLib.commands().doCommandFail(mob,origCmds,L("You cannot seem to get @x1 to @x2.",item.name(),target.name(mob)));
+							CMLib.commands().postCommandFail(mob,origCmds,L("You cannot seem to get @x1 to @x2.",item.name(),target.name(mob)));
 					}
 				}
 			}
 		}
 		else
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 won't let you.",target.name(mob)));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 won't let you.",target.name(mob)));
 		return false;
 	}
 

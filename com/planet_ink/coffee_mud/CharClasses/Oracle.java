@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -114,8 +114,7 @@ public class Oracle extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Prayer_Freedom",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_TurnUndead",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_ControlUndead",false);
-
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_ControlUndead",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_CureDeafness",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Prayer_SoulPeering",false);
 
@@ -306,7 +305,9 @@ public class Oracle extends Cleric
 								&&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)))
 								&&(mob.fetchAbility(A.ID())==null))
 								{
-									newOne=A;
+									final DVector prereqs=CMLib.ableMapper().getUnmetPreRequisites(mob,A);
+									if((prereqs==null)||(prereqs.size()==0))
+										newOne=A;
 								}
 							}
 						}

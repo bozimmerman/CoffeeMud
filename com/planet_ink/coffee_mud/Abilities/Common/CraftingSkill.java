@@ -16,12 +16,13 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -206,17 +207,18 @@ public class CraftingSkill extends GatheringSkill
 	{
 		if(s.length()==0)
 			return 0;
-		if(CMath.isInteger(s))
-			return CMath.s_int(s);
 		long ret=0;
-		final String[] allTypes=s.split("|");
+		final String[] allTypes=CMParms.parseAny(s, "|", true).toArray(new String[0]);
 		for(final String splitS : allTypes)
 		{
-			final int bit=CMParms.indexOf(Container.CONTAIN_DESCS, splitS.toUpperCase().trim());
-			if(bit>0)
-				return 0;
+			if(CMath.isInteger(splitS))
+				ret = ret | CMath.s_int(splitS);
 			else
-				ret = ret | CMath.pow(2,(bit-1));
+			{
+				final int bit=CMParms.indexOf(Container.CONTAIN_DESCS, splitS.toUpperCase().trim());
+				if(bit>0)
+					ret = ret | CMath.pow(2,(bit-1));
+			}
 		}
 		return ret;
 	}
@@ -390,9 +392,32 @@ public class CraftingSkill extends GatheringSkill
 			return;
 		if(spells.equalsIgnoreCase("bundle"))
 			return;
+		if(spells.startsWith("*") && spells.endsWith(";__DELETE__"))
+		{
+			String ableID=spells.substring(0, spells.indexOf(';'));
+			Ability oldA=P.fetchEffect(ableID.substring(1));
+			if(oldA!=null)
+			{
+				oldA.unInvoke();
+				P.delEffect(oldA);
+				spells="";
+			}
+		}
 		final List<Ability> V=CMLib.ableParms().getCodedSpells(spells);
 		for(int v=0;v<V.size();v++)
-			P.addNonUninvokableEffect(V.get(v));
+		{
+			final Ability A=V.get(v);
+			if(P instanceof Wand)
+			{
+				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
+				||(((Wand)P).getSpell()!=null))
+					P.addNonUninvokableEffect(A);
+				else
+					((Wand)P).setSpell(A);
+			}
+			else
+				P.addNonUninvokableEffect(A);
+		}
 	}
 
 	protected void setWearLocation(Item I, String wearLocation, int hardnessMultiplier)
@@ -664,7 +689,7 @@ public class CraftingSkill extends GatheringSkill
 
 	public ItemKeyPair craftAnyItem(int material)
 	{
-		return craftItem(null,material,false);
+		return craftItem(null,material,false, false);
 	}
 
 	/**
@@ -689,12 +714,14 @@ public class CraftingSkill extends GatheringSkill
 		return false;
 	}
 	
-	public ItemKeyPair craftItem(String recipeName, int material, boolean forceLevels)
+	public ItemKeyPair craftItem(String recipeName, int material, boolean forceLevels, boolean noSafety)
 	{
 		MOB mob=null;
 		try
 		{
 			mob=CMLib.map().getFactoryMOBInAnyRoom();
+			if(noSafety)
+				mob.setAttribute(Attrib.SYSOPMSGS, true);
 			mob.basePhyStats().setLevel(Integer.MAX_VALUE/2);
 			mob.basePhyStats().setSensesMask(mob.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 			mob.recoverPhyStats();
@@ -703,7 +730,10 @@ public class CraftingSkill extends GatheringSkill
 		finally
 		{
 			if(mob!=null)
+			{
+				mob.setAttribute(Attrib.SYSOPMSGS, false);
 				mob.destroy();
+			}
 		}
 	}
 	
@@ -716,12 +746,12 @@ public class CraftingSkill extends GatheringSkill
 		{
 			List<Integer> rscs=myResources();
 			if(rscs.size()==0)
-				rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+				rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 			material=rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue();
 		}
 		while(((building==null)||(building.name().endsWith(" bundle")))&&(((++tries)<100)))
 		{
-			List<Item> V=new Vector<Item>(1);
+			List<Item> V=new ArrayList<Item>(1);
 			autoGenInvoke(mob,recipes,null,true,-1,material,forceLevels,V);
 			if(V.size()>0)
 			{
@@ -762,7 +792,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			s=recipes.get(r).get(RCP_FINALNAME);
 			s=replacePercent(s,"").trim();
-			pair=craftItem(s,material,forceLevels);
+			pair=craftItem(s,material,forceLevels, false);
 			if(pair==null)
 				continue;
 			built=pair.item;
@@ -787,8 +817,27 @@ public class CraftingSkill extends GatheringSkill
 			String recipeName = CMParms.combine(commands);
 			List<Integer> rscs=myResources();
 			if(rscs.size()==0)
-				rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
-			final int material=RawMaterial.CODES.MOST_FREQUENT(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK);
+				rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+			final int material;
+			switch(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)
+			{
+			case RawMaterial.MATERIAL_CLOTH:
+				material = RawMaterial.RESOURCE_COTTON;
+				break;
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL:
+				material = RawMaterial.RESOURCE_IRON;
+				break;
+			case RawMaterial.MATERIAL_WOODEN:
+				material = RawMaterial.RESOURCE_WOOD;
+				break;
+			case RawMaterial.MATERIAL_ROCK:
+				material = RawMaterial.RESOURCE_STONE;
+				break;
+			default:
+				material=RawMaterial.CODES.MOST_FREQUENT(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK);
+				break;
+			}
 			ItemKeyPair pair = craftItem(mob,recipe,material,false);
 			if(pair == null)
 			{
@@ -811,9 +860,9 @@ public class CraftingSkill extends GatheringSkill
 	{
 		List<Integer> rscs=myResources();
 		if(rscs.size()==0)
-			rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+			rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		final int material=rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue();
-		return craftItem(recipeName,material,false);
+		return craftItem(recipeName,material,false, false);
 	}
 
 	public List<ItemKeyPair> craftAllItemSets(boolean forceLevels)
@@ -822,7 +871,7 @@ public class CraftingSkill extends GatheringSkill
 		final List<ItemKeyPair> allItems=new Vector<ItemKeyPair>();
 		List<ItemKeyPair> pairs=null;
 		if(rscs.size()==0)
-			rscs=new XVector(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
+			rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 		for(int r=0;r<rscs.size();r++)
 		{
 			pairs=craftAllItemSets(rscs.get(r).intValue(), forceLevels);
@@ -1259,19 +1308,20 @@ public class CraftingSkill extends GatheringSkill
 
 	protected void setRideBasis(Rideable rideable, String type)
 	{
-		if(type.equalsIgnoreCase("CHAIR"))
+		final List<String> basises=CMParms.parseAny(type.toUpperCase().trim(), '|', true);
+		if(basises.indexOf("CHAIR")>=0)
 			rideable.setRideBasis(Rideable.RIDEABLE_SIT);
 		else
-		if(type.equalsIgnoreCase("TABLE"))
+		if(basises.indexOf("TABLE")>=0)
 			rideable.setRideBasis(Rideable.RIDEABLE_TABLE);
 		else
-		if(type.equalsIgnoreCase("LADDER"))
+		if(basises.indexOf("LADDER")>=0)
 			rideable.setRideBasis(Rideable.RIDEABLE_LADDER);
 		else
-		if(type.equalsIgnoreCase("ENTER"))
+		if(basises.indexOf("ENTER")>=0)
 			rideable.setRideBasis(Rideable.RIDEABLE_ENTERIN);
 		else
-		if(type.equalsIgnoreCase("BED"))
+		if(basises.indexOf("BED")>=0)
 			rideable.setRideBasis(Rideable.RIDEABLE_SLEEP);
 	}
 
@@ -1301,22 +1351,31 @@ public class CraftingSkill extends GatheringSkill
 		return true;
 	}
 
+	protected List<AbilityComponent> getNonStandardComponentRequirements(String woodRequiredStr)
+	{
+		final List<AbilityComponent> componentsRequirements;
+		if(woodRequiredStr==null)
+			componentsRequirements=null;
+		else
+		if(woodRequiredStr.trim().startsWith("("))
+		{
+			final Map<String, List<AbilityComponent>> H=new TreeMap<String, List<AbilityComponent>>();
+			final String error=CMLib.ableComponents().addAbilityComponent("ID="+woodRequiredStr, H);
+			if(error!=null)
+				Log.errOut(ID(),"Error parsing custom component: "+woodRequiredStr);
+			componentsRequirements=H.get("ID");
+		}
+		else
+			componentsRequirements=CMLib.ableComponents().getAbilityComponentMap().get(woodRequiredStr.toUpperCase());
+		return componentsRequirements;
+	}
+	
 	public List<Object> getAbilityComponents(MOB mob, String componentID, String doingWhat, int autoGenerate, int[] compData)
 	{
 		if(autoGenerate>0)
 			return new LinkedList<Object>();
 
-		final List<AbilityComponent> componentsRequirements;
-		if(componentID.trim().startsWith("("))
-		{
-			final Map<String, List<AbilityComponent>> H=new TreeMap<String, List<AbilityComponent>>();
-			final String error=CMLib.ableComponents().addAbilityComponent("ID="+componentID, H);
-			if(error!=null)
-				Log.errOut(ID(),"Error parsing custom component: "+componentID);
-			componentsRequirements=H.get("ID");
-		}
-		else
-			componentsRequirements=CMLib.ableComponents().getAbilityComponentMap().get(componentID.toUpperCase());
+		final List<AbilityComponent> componentsRequirements=getNonStandardComponentRequirements(componentID);
 		if(componentsRequirements!=null)
 		{
 			final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements, true);

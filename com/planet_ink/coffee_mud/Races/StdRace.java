@@ -21,7 +21,7 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -975,9 +975,9 @@ public class StdRace implements Race
 			}
 		}
 
-		final Vector<Item> items=new Vector<Item>();
-		final Hashtable<Item,Container> containerMap=new Hashtable<Item,Container>();
-		final Hashtable<Item,Container> itemMap=new Hashtable<Item,Container>();
+		final List<Item> items=new ArrayList<Item>();
+		final HashMap<Item,Container> containerMap=new HashMap<Item,Container>();
+		final HashMap<Item,Container> itemMap=new HashMap<Item,Container>();
 		final LinkedList<Item> itemsToGo=new LinkedList<Item>();
 		for(int i=0;i<mob.numItems();i++)
 		{
@@ -987,7 +987,8 @@ public class StdRace implements Race
 		}
 		for(Item thisItem : itemsToGo)
 		{
-			if((thisItem!=null)&&(thisItem.isSavable()))
+			if(thisItem.isSavable() 
+			|| (thisItem.fetchEffect("QuestBound")!=null)) // a quest-item drop must be preserved, even unsavable ones!
 			{
 				if(mob.isMonster())
 				{
@@ -1016,11 +1017,12 @@ public class StdRace implements Race
 					thisItem.setContainer(bodyI);
 				if(room!=null)
 					room.addItem(thisItem);
-				items.addElement(thisItem);
+				items.add(thisItem);
 			}
 			else
-			if(thisItem!=null)
+			{
 				mob.delItem(thisItem);
+			}
 		}
 		itemsToGo.clear();
 
@@ -1032,12 +1034,11 @@ public class StdRace implements Race
 				dropItem.setContainer(bodyI);
 			if(room!=null)
 				room.addItem(dropItem);
-			items.addElement(dropItem);
+			items.add(dropItem);
 		}
 
-		for(final Enumeration e=itemMap.keys();e.hasMoreElements();)
+		for(final Item oldItem : itemMap.keySet())
 		{
-			final Item oldItem=(Item)e.nextElement();
 			final Item newItem=itemMap.get(oldItem);
 			final Item oldContainer=containerMap.get(oldItem);
 			if((oldContainer!=null)&&(newItem!=null))

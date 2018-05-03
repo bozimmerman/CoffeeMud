@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -211,15 +211,15 @@ public class Sheath extends StdCommand
 		{
 			if(!noerrors)
 				if(sheaths.size()==0)
-					CMLib.commands().doCommandFail(mob,origCmds,L("You are not wearing an appropriate sheath."));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You are not wearing an appropriate sheath."));
 				else
 				if(sheathable!=null)
-					CMLib.commands().doCommandFail(mob,origCmds,L("You aren't wearing anything you can sheath @x1 in.",sheathable.name()));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You aren't wearing anything you can sheath @x1 in.",sheathable.name()));
 				else
 				if(commands.size()==0)
-					CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be wielding anything you can sheath."));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be wielding anything you can sheath."));
 				else
-					CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to be wielding that."));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to be wielding that."));
 		}
 		else
 		for(int i=0;i<items.size();i++)

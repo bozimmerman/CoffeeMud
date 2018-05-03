@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -172,5 +172,21 @@ public class Demon extends Unique
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
 		affectableStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,affectableStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)+5);
 		affectableStats.setStat(CharStats.STAT_SAVE_FIRE,affectableStats.getStat(CharStats.STAT_SAVE_FIRE)+50);
+	}
+	
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				(L("a @x1 internal organ",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
+			}
+		}
+		return resources;
 	}
 }

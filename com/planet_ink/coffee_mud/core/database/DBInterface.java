@@ -27,7 +27,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.AckRecord;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.AckStats;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -640,9 +640,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBWriteJournalReply(String journalID, String key, String from, String to, String subject, String message)
+	public JournalEntry DBWriteJournalReply(String journalID, String key, String from, String to, String subject, String message)
 	{
-		JournalLoader.DBWriteJournalReply(journalID, key, from, to, subject, message);
+		return JournalLoader.DBWriteJournalReply(journalID, key, from, to, subject, message);
 	}
 
 	@Override
@@ -808,9 +808,9 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBDeletePlayer(String mobName)
+	public void DBDeletePlayerOnly(String mobName)
 	{
-		MOBloader.DBDelete(mobName);
+		MOBloader.DBDeleteCharOnly(mobName);
 	}
 
 	@Override

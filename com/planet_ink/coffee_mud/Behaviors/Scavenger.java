@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -45,7 +45,10 @@ public class Scavenger extends ActiveTicker
 	{
 		return Behavior.CAN_MOBS;
 	}
-	int origItems=-1;
+	
+	protected int origItems=-1;
+	protected MaskingLibrary.CompiledZMask mask = null;
+	protected String trashRoomID="";
 
 	public Scavenger()
 	{
@@ -58,9 +61,25 @@ public class Scavenger extends ActiveTicker
 	@Override
 	public String accountForYourself()
 	{
-		return "refuse scavenging";
+		return "scavenging";
 	}
 
+	@Override
+	public void setParms(String newParms)
+	{
+		super.setParms(newParms);
+		String argParms="";
+		String maskStr="";
+		int x=newParms.indexOf(';');
+		if(x>=0)
+		{
+			argParms=newParms.substring(0,x);
+			maskStr=newParms.substring(x+1);
+		}
+		trashRoomID=CMParms.getParmStr(argParms,"TRASH","");
+		mask=(maskStr.length()==0)?null:CMLib.masking().getPreCompiledMask(maskStr);
+	}
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -81,18 +100,19 @@ public class Scavenger extends ActiveTicker
 			{
 				if(CMLib.flags().isATrackingMonster(mob))
 					return true;
-				final String trashRoomID=CMParms.getParmStr(getParms(),"TRASH","");
 				if(trashRoomID.equalsIgnoreCase("NO"))
 					return true;
-				final Room R=CMLib.map().getRoom(trashRoomID);
-				if(mob.location()==R)
+				final Room R=(trashRoomID.length()>0)?CMLib.map().getRoom(trashRoomID):null;
+				if((mob.location()==R)&&(R!=null))
 				{
 					Container C=null;
 					int maxCapacity=0;
 					for(int i=0;i<R.numItems();i++)
 					{
 						final Item I=R.getItem(i);
-						if((I instanceof Container)&&(I.container()==null)&&(!CMLib.flags().isGettable(I)))
+						if((I instanceof Container)
+						&&(I.container()==null)
+						&&(!CMLib.flags().isGettable(I)))
 						{
 							if(((Container)I).capacity()>maxCapacity)
 							{
@@ -145,7 +165,8 @@ public class Scavenger extends ActiveTicker
 				&&(thisItem.container()==null)
 				&&(CMLib.flags().isGettable(thisItem))
 				&&(CMLib.flags().canBeSeenBy(thisItem, mob))
-				&&(!(thisItem instanceof DeadBody)))
+				&&(!(thisItem instanceof DeadBody))
+				&&(mask==null)||(CMLib.masking().maskCheck(mask, thisItem, false)))
 					choices.add(thisItem);
 			}
 			if(choices.size()==0)

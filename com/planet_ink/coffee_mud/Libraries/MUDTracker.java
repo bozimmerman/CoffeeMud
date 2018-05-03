@@ -23,7 +23,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFl
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary.TrackingFlags;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1301,12 +1301,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		return move(mob,directionCode,flee,nolook,noriders,always,true);
 	}
 	
-	public boolean move(final MOB mob, final int directionCode, final boolean flee, final boolean nolook, final boolean noriders, final boolean always, final boolean running)
+	protected boolean move(final MOB mob, final int directionCode, final boolean flee, final boolean nolook, final boolean noriders, final boolean always, final boolean running)
 	{
-		if(directionCode<0)
-			return false;
-		if(mob==null)
-			return false;
 		final Room thisRoom=mob.location();
 		if(thisRoom==null)
 			return false;
@@ -1330,7 +1326,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		if((exit instanceof PrepositionExit)&&(((PrepositionExit)exit).getExitPreposition().length()>0))
 			directionName=((PrepositionExit)exit).getExitPreposition();
 		else
-			directionName=(directionCode==Directions.GATE)&&(exit!=null)?"through "+exit.name():dirName;
+			directionName=(directionCode==Directions.GATE)&&(exit!=null)?"through "+exit.name():dirName.toLowerCase();
 		final String otherDirectionPhrase;
 		if((exit instanceof PrepositionExit)&&(((PrepositionExit)exit).getEntryPreposition().length()>0))
 			otherDirectionPhrase=((PrepositionExit)exit).getEntryPreposition();
@@ -1346,14 +1342,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 		final CMMsg enterMsg;
 		final CMMsg leaveMsg;
-		if((mob.riding()!=null)&&(mob.riding().mobileRideBasis()))
+		if((mob.riding()!=null)
+		&&(mob.riding().mobileRideBasis()))
 		{
-			final String enterStr=L("<S-NAME> ride(s) @x1 in @x2.",mob.riding().name(),otherDirectionPhrase);
+			final String enterStr=L("<S-NAME> @x1 @x2 in @x3.",mob.riding().rideString(mob),mob.riding().name(),otherDirectionPhrase);
 			enterMsg=CMClass.getMsg(mob,destRoom,exit,generalMask|CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,enterStr);
 			if(flee)
-				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,L("You flee @x1.",directionName),leaveCode,null,leaveCode,L("<S-NAME> flee(s) with @x1 @x2.",mob.riding().name()+" "+directionName+"."));
+				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,L("You flee @x1.",directionName),leaveCode,null,leaveCode,L("<S-NAME> flee(s) with @x1 @x2.",mob.riding().name(),directionName));
 			else
-				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,null,leaveCode,null,leaveCode,L("<S-NAME> ride(s) @x1 @x2.",mob.riding().name()+" "+directionName+"."));
+				leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,leaveCode,null,leaveCode,null,leaveCode,L("<S-NAME> @x1 @x2 @x3.",mob.riding().rideString(mob),mob.riding().name(),directionName));
 		}
 		else
 		{
@@ -1378,6 +1375,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		else
 		if(exit==null)
 			thisRoom.showHappens(CMMsg.MSG_OK_VISUAL,L("The area to the @x1 shimmers and becomes transparent.",directionName));
+		else
+		if(!mob.okMessage(mob,leaveMsg)&&(!gotoAllowed)) // added for honorary degrees .. what will this break?
+			return false;
 		else
 		if((!exit.okMessage(mob,enterMsg))&&(!gotoAllowed))
 			return false;

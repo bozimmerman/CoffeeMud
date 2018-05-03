@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1801,6 +1801,31 @@ public class MobData extends StdWebMacro
 				case SELLIMASK:
 					if(M instanceof ShopKeeper)
 						str.append(((ShopKeeper)M).getWhatIsSoldZappermask());
+					break;
+				case MOUNTSTR: // mountstr
+					if((firstTime)&&(M instanceof Rideable))
+						old=((Rideable)M).mountString(0,CMClass.sampleMOB());
+					str.append(old+", ");
+					break;
+				case DISMOUNTSTR: // dismountstr
+					if((firstTime)&&(M instanceof Rideable))
+						old=((Rideable)M).dismountString(CMClass.sampleMOB());
+					str.append(old+", ");
+					break;
+				case STATESTR: // statestr
+					if((firstTime)&&(M instanceof Rideable))
+						old=((Rideable)M).stateString(CMClass.sampleMOB());
+					str.append(old+", ");
+					break;
+				case STATESUBJSTR: // statesubjstr
+					if((firstTime)&&(M instanceof Rideable))
+						old=((Rideable)M).stateStringSubject(CMClass.sampleMOB());
+					str.append(old+", ");
+					break;
+				case RIDERSTR: // riderstr
+					if((firstTime)&&(M instanceof Rideable))
+						old=((Rideable)M).rideString(CMClass.sampleMOB());
+					str.append(old+", ");
 					break;
 				}
 				if(firstTime)

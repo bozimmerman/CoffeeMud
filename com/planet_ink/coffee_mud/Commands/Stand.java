@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -53,11 +53,11 @@ public class Stand extends StdCommand
 		if(CMLib.flags().isStanding(mob))
 		{
 			if(!ifnecessary)
-				CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("You are already standing!"));
+				CMLib.commands().postCommandFail(mob,new StringXVector(commands),L("You are already standing!"));
 		}
 		else
 		if((mob.session()!=null)&&(mob.session().isStopped()))
-			CMLib.commands().doCommandFail(mob,new StringXVector(commands),L("You may not stand up."));
+			CMLib.commands().postCommandFail(mob,new StringXVector(commands),L("You may not stand up."));
 		else
 		if(room!=null)
 		{

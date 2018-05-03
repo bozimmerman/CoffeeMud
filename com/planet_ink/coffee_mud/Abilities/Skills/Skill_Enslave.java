@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -429,7 +429,9 @@ public class Skill_Enslave extends StdSkill
 			return false;
 		}
 
-		if((!CMLib.flags().isBoundOrHeld(target))&&(target.fetchEffect(ID())==null)&&(!CMSecurity.isAllowed(mob,target.location(), CMSecurity.SecFlag.CMDMOBS)))
+		if((!CMLib.flags().isBoundOrHeld(target))
+		&&(target.fetchEffect(ID())==null)
+		&&(!CMSecurity.isAllowed(mob,target.location(), CMSecurity.SecFlag.CMDMOBS)))
 		{
 			mob.tell(L("@x1 must be bound first.",target.name(mob)));
 			return false;

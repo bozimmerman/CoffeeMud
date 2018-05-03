@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -110,7 +110,7 @@ public class Examine extends StdCommand
 						thisThang=exit;
 					else
 					{
-						CMLib.commands().doCommandFail(mob,origCmds,L("You don't see anything that way."));
+						CMLib.commands().postCommandFail(mob,origCmds,L("You don't see anything that way."));
 						return false;
 					}
 				}
@@ -134,7 +134,7 @@ public class Examine extends StdCommand
 					msg.addTrailerMsg(CMClass.getMsg(mob,thisThang,null,CMMsg.MSG_LOOK_EXITS,null));
 			}
 			else
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see that here!"));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see that here!"));
 		}
 		else
 		{

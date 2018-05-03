@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.ForumJournalFlags;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -20,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -393,41 +394,69 @@ public class JournalFunction extends StdWebMacro
 					{
 						if((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 							return "Email not submitted -- Unauthorized.";
-						final String journal=httpReq.getUrlParameter("NEWJOURNAL"+fieldSuffix);
+						String journal=httpReq.getUrlParameter("NEWJOURNAL"+fieldSuffix);
 						if((journal==null) || (journal.length()==0))
 							messages.append("Transfer #"+cardinalNumber+" not completed -- No journal!<BR>");
+						
 						String realName=null;
 						if(journal!=null)
 						{
-							for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
+							List<String> users=new ArrayList<String>();
+							if(forum != null)
+								users.addAll(CMParms.parseAny(forum.getFlag(CommandJournalFlags.ASSIGN),':',true));
+							if(!users.contains("ALL"))
+								users.add("ALL");
+							final boolean isPlayer=CMLib.players().playerExists(CMStrings.capitalizeAndLower(journal));
+							if(journal.equals("FROM")||users.contains(journal)||isPlayer)
 							{
-								final JournalsLibrary.CommandJournal CMJ=e.nextElement();
-								if(journal.equalsIgnoreCase(CMJ.NAME())
-								||journal.equalsIgnoreCase(CMJ.NAME()+"s")
-								||journal.equalsIgnoreCase(CMJ.JOURNAL_NAME()))
+								if(journal.equals("FROM"))
+									entry.to(entry.from());
+								else
+								if(isPlayer)
+									entry.to(CMStrings.capitalizeAndLower(journal));
+								else
+									entry.to(journal);
+								CMLib.journals().clearJournalSummaryStats(forum);
+								JournalInfo.clearJournalCache(httpReq, journalName);
+								CMLib.database().DBUpdateJournal(journalName, entry);
+								journal=null;
+								messages.append("Message #"+cardinalNumber+" transferred<BR>");
+							}
+							else
+							{
+								for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 								{
-									realName=CMJ.JOURNAL_NAME();
-									break;
+									final JournalsLibrary.CommandJournal CMJ=e.nextElement();
+									if(journal.equalsIgnoreCase(CMJ.NAME())
+									||journal.equalsIgnoreCase(CMJ.NAME()+"s")
+									||journal.equalsIgnoreCase(CMJ.JOURNAL_NAME()))
+									{
+										realName=CMJ.JOURNAL_NAME();
+										break;
+									}
 								}
 							}
 						}
-						if(realName==null)
-							realName=CMLib.database().DBGetRealJournalName(journal);
-						if((realName==null)&&(journal!=null))
-							realName=CMLib.database().DBGetRealJournalName(journal.toUpperCase());
-						if(realName==null)
-							messages.append("The journal '"+journal+"' does not presently exist.  Aborted.<BR>");
-						else
+						if(journal != null)
 						{
-							CMLib.journals().clearJournalSummaryStats(forum);
-							CMLib.database().DBDeleteJournal(journalName,entry.key());
-							if(journalName.toUpperCase().startsWith("SYSTEM_"))
-								entry.update(System.currentTimeMillis());
-							CMLib.database().DBWriteJournal(realName,entry);
-							CMLib.journals().clearJournalSummaryStats(forum);
-							JournalInfo.clearJournalCache(httpReq, journalName);
-							httpReq.addFakeUrlParameter("JOURNALMESSAGE","");
-							messages.append("Message #"+cardinalNumber+" transferred<BR>");
+							if(realName==null)
+								realName=CMLib.database().DBGetRealJournalName(journal);
+							if(realName==null)
+								realName=CMLib.database().DBGetRealJournalName(journal.toUpperCase());
+							if(realName==null)
+								messages.append("The journal '"+journal+"' does not presently exist.  Aborted.<BR>");
+							else
+							{
+								CMLib.journals().clearJournalSummaryStats(forum);
+								CMLib.database().DBDeleteJournal(journalName,entry.key());
+								if(journalName.toUpperCase().startsWith("SYSTEM_"))
+									entry.update(System.currentTimeMillis());
+								CMLib.database().DBWriteJournal(realName,entry);
+								CMLib.journals().clearJournalSummaryStats(forum);
+								JournalInfo.clearJournalCache(httpReq, journalName);
+								httpReq.addFakeUrlParameter("JOURNALMESSAGE","");
+								messages.append("Message #"+cardinalNumber+" transferred<BR>");
+							}
 						}
 					}
 				}

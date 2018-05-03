@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -112,7 +112,7 @@ public class Look extends StdCommand
 				thisThang=R.fetchFromMOBRoomFavorsItems(mob,null,ID2,Wearable.FILTER_ANY);
 				if((thisThang!=null)&&((!(thisThang instanceof Container))||(((Container)thisThang).capacity()==0)))
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("That's not a container."));
+					CMLib.commands().postCommandFail(mob,origCmds,L("That's not a container."));
 					return false;
 				}
 			}
@@ -144,7 +144,7 @@ public class Look extends StdCommand
 					}
 					else
 					{
-						CMLib.commands().doCommandFail(mob,origCmds,L("You don't see anything that way."));
+						CMLib.commands().postCommandFail(mob,origCmds,L("You don't see anything that way."));
 						return false;
 					}
 				}
@@ -175,7 +175,7 @@ public class Look extends StdCommand
 					R.send(mob,msg);
 			}
 			else
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see that here!"));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see that here!"));
 		}
 		else
 		{
@@ -183,7 +183,7 @@ public class Look extends StdCommand
 			{
 				if(commands.get(0).toUpperCase().startsWith("E"))
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("Examine what?"));
+					CMLib.commands().postCommandFail(mob,origCmds,L("Examine what?"));
 					return false;
 				}
 			}

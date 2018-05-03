@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMClass.CMObjectType;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.SecGroup;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -32,7 +33,7 @@ import java.util.Map.Entry;
 import java.util.regex.*;
 
 /*
-   Copyright 2008-2017 Bo Zimmerman
+   Copyright 2008-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -590,6 +591,73 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 			}
 		}
+		if(oldVal.equals(newVal))
+			mob.tell(L("(no change)"));
+		return newVal;
+	}
+
+	@Override
+	public String promptMultiSelectList(MOB mob, String oldVal, String delimiter, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices, boolean nullOK)
+		throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return oldVal;
+		final Vector<String> oldVals = new Vector<String>();
+		for(String s : CMParms.parseAny(oldVal,delimiter,!nullOK))
+		{
+			if(choices.contains(s.toUpperCase().trim())&&(!oldVals.contains(s.toUpperCase().trim())))
+				oldVals.addElement(s);
+		}
+		if((showFlag!=showNumber)&&(showFlag>-999))
+		{
+			mob.tell(showNumber+". "+FieldDisp+": '"+CMParms.toListString(oldVals)+"'.");
+			return oldVal;
+		}
+		String thisVal="?";
+		while(thisVal.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
+		{
+			mob.tell(showNumber+". "+FieldDisp+": '"+CMParms.toListString(oldVals)+"'.");
+			thisVal=mob.session().prompt(L("Enter a new choice to add/remove (?):"),"").trim();
+			if(thisVal.equals("?"))
+				mob.tell(CMParms.toListString(choices.toArraySecond(new String[0])));
+			else
+			if(thisVal.equalsIgnoreCase("NULL") && nullOK)
+			{
+				oldVals.clear();
+				thisVal="?";
+			}
+			else
+			if(thisVal.trim().length()>0)
+			{
+				String foundChoice = null;
+				for(int c=0;c<choices.size();c++)
+				{
+					if(choices.get(c).second.equalsIgnoreCase(thisVal))
+						foundChoice = choices.get(c).second;
+				}
+				if(foundChoice == null)
+				{
+					mob.tell(L("'@x1' is not an available option.  Use ? for a list.",thisVal));
+					thisVal = "?";
+				}
+				else
+				{
+					if(oldVals.contains(foundChoice))
+					{
+						oldVals.remove(foundChoice);
+						mob.tell(L("'@x1' removed.",foundChoice));
+						thisVal = "?";
+					}
+					else
+					{
+						oldVals.add(foundChoice);
+						mob.tell(L("'@x1' added.",foundChoice));
+						thisVal = "?";
+					}
+				}
+			}
+		}
+		String newVal=CMParms.combineWith(oldVals, "|");
 		if(oldVal.equals(newVal))
 			mob.tell(L("(no change)"));
 		return newVal;
@@ -1370,33 +1438,70 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			mob.tell(L("(blended)"));
 	}
 
-	protected void genMountText(MOB mob, Modifiable E, int showNumber, int showFlag)
+	protected void genMountText(MOB mob, Rideable E, int showNumber, int showFlag)
 			throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		if(mob.session()==null)
 			return;
-		mob.session().safeRawPrintln(L("@x1. Mount Strings: '@x2'.",""+showNumber,E.getStat("PUTSTR")+"/"+E.getStat("MOUNTSTR")+"/"+E.getStat("DISMOUNTSTR")));
+		mob.session().safeRawPrintln(L("@x1. Mount Strings: '@x2'.",""+showNumber,
+							E.putString(CMClass.sampleMOB())+"/"+
+							E.mountString(0, CMClass.sampleMOB())+"/"+
+							E.dismountString(CMClass.sampleMOB())));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName;
-		mob.session().safeRawPrintln(L("Enter new 'put' string (ENTER='"+E.getStat("PUTSTR")+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'put' string (ENTER='"+E.putString(CMClass.sampleMOB())+"')"));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
-			E.setStat("PUTSTR",newName);
+			E.setPutString(newName);
 		else
 			mob.tell(L("(no change)"));
-		mob.session().safeRawPrintln(L("Enter new 'mount' string (ENTER='"+E.getStat("MOUNTSTR")+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'mount' string (ENTER='"+E.mountString(0,CMClass.sampleMOB())+"')"));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
-			E.setStat("MOUNTSTR",newName);
+			E.setMountString(newName);
 		else
 			mob.tell(L("(no change)"));
-		mob.session().safeRawPrintln(L("Enter new 'dismount' string (ENTER='"+E.getStat("DISMOUNTSTR")+"')"));
+		mob.session().safeRawPrintln(L("Enter new 'dismount' string (ENTER='"+E.dismountString(CMClass.sampleMOB())+"')"));
 		newName=mob.session().prompt(":","");
 		if(newName.length()>0)
-			E.setStat("DISMOUNTSTR",newName);
+			E.setDismountString(newName);
+		else
+			mob.tell(L("(no change)"));
+	}
+	
+	protected void genMountText2(MOB mob, Rideable E, int showNumber, int showFlag)
+			throws IOException
+	{
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		if(mob.session()==null)
+			return;
+		mob.session().safeRawPrintln(L("@x1. State Strings: '@x2'.",""+showNumber,
+							E.stateString(CMClass.sampleMOB())+"/"+
+							E.stateStringSubject(CMClass.sampleMOB())+"/"+
+							E.rideString(CMClass.sampleMOB())));
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
+		String newName;
+		mob.session().safeRawPrintln(L("Enter new 'state' string (ENTER='"+E.stateString(CMClass.sampleMOB())+"')"));
+		newName=mob.session().prompt(":","");
+		if(newName.length()>0)
+			E.setStateString(newName);
+		else
+			mob.tell(L("(no change)"));
+		mob.session().safeRawPrintln(L("Enter new 'state subject' string (ENTER='"+E.stateStringSubject(CMClass.sampleMOB())+"')"));
+		newName=mob.session().prompt(":","");
+		if(newName.length()>0)
+			E.setStateStringSubject(newName);
+		else
+			mob.tell(L("(no change)"));
+		mob.session().safeRawPrintln(L("Enter new 'ride verb' string (ENTER='"+E.rideString(CMClass.sampleMOB())+"')"));
+		newName=mob.session().prompt(":","");
+		if(newName.length()>0)
+			E.setRideString(newName);
 		else
 			mob.tell(L("(no change)"));
 	}
@@ -2719,7 +2824,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				else
 					modifyGenItem(mob,(Item)E,showFlag);
 			}
-			if(E instanceof Physical)
+			if((E instanceof Physical)&&(showFlag != -950))
 				catalogCheckUpdate(mob, (Physical)E);
 		}
 		finally
@@ -5258,6 +5363,23 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	protected void genDeity11(MOB mob, Deity E, int showNumber, int showFlag) throws IOException
 	{ 
 		E.setServiceRitual(prompt(mob,E.getServiceRitual(),showNumber,showFlag,"Service Ritual",false,false)); 
+	}
+
+	protected void genPlayerLevel(MOB mob, Area A, int showNumber, int showFlag) throws IOException
+	{ 
+		if((showFlag>0)&&(showFlag!=showNumber))
+			return;
+		if((showFlag!=showNumber)&&(showFlag>-999))
+		{
+			final StringBuffer buf=new StringBuffer();
+			buf.append(showNumber+". ");
+			buf.append(L("Player Level: @x1",""+A.getPlayerLevel()));
+			if(A.getPlayerLevel()==0)
+				buf.append(L(" (Med MOB Lvl)"));
+			mob.tell(buf.toString());
+			return;
+		}
+		A.setPlayerLevel(prompt(mob,A.getPlayerLevel(),showNumber,showFlag,"New Player Level")); 
 	}
 
 	protected void genGridLocaleX(MOB mob, GridZones E, int showNumber, int showFlag) throws IOException
@@ -8696,6 +8818,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genLevel(mob,me,++showNumber,showFlag);
 			genSecretIdentity(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);
+			if(me instanceof Book)
+			{
+				((Book)me).setMaxPages(prompt(mob, ((Book)me).getMaxPages(), ++showNumber, showFlag, "Max Pages"));
+				((Book)me).setMaxCharsPerPage(prompt(mob, ((Book)me).getMaxCharsPerPage(), ++showNumber, showFlag, "Chars/Page"));
+			}
 			if(me instanceof ClanItem)
 				genClanItem(mob,(ClanItem)me,++showNumber,showFlag);
 			if(me instanceof Electronics)
@@ -8932,6 +9059,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genDisposition(mob,me.basePhyStats(),++showNumber,showFlag);
 			if(me instanceof Container)
 			{
+				genContainerTypes(mob,(Container)me,++showNumber,showFlag);
 				genCapacity(mob,(Container)me,++showNumber,showFlag);
 				genDoorsNLocks(mob,(Container)me,L("lid"),++showNumber,showFlag);
 			}
@@ -9158,15 +9286,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+				genMountText(mob,(Rideable)me,++showNumber,showFlag);
+				if(!(me instanceof Exit)) // doesn't make sense for portals
+					genMountText2(mob,(Rideable)me,++showNumber,showFlag);
 			}
 			if(me instanceof Exit)
 			{
 				genDoorName(mob,(Exit)me,++showNumber,showFlag);
 				genClosedText(mob,(Exit)me,++showNumber,showFlag);
-			}
-			if((me instanceof Rideable)&&(me instanceof Exit)) // it's a portal!
-			{
-				genMountText(mob,me,++showNumber,showFlag);
 			}
 			if((me instanceof BoardableShip)&&(!(me instanceof SpaceObject)))
 				genAbility(mob,me,++showNumber,showFlag,L("Moves per Tick"));
@@ -9231,6 +9358,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+				genMountText(mob,(Rideable)me,++showNumber,showFlag);
+				if(!(me instanceof Exit)) // doesn't make sense for portals
+					genMountText2(mob,(Rideable)me,++showNumber,showFlag);
 			}
 			if(me instanceof Wand)
 			{
@@ -9543,7 +9673,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final int oldLevel=me.basePhyStats().level();
 			genLevel(mob,me,++showNumber,showFlag);
 			if((oldLevel<2)&&(me.basePhyStats().level()>1))
+			{
 				CMLib.leveler().fillOutMOB(me,me.basePhyStats().level());
+				mob.tell("^ZCombat stats rescored.^.^N");
+			}
 			genRejuv(mob,me,++showNumber,showFlag);
 			genRace(mob,me,++showNumber,showFlag);
 			CMLib.factions().updatePlayerFactions(me,me.location(), false);
@@ -9574,6 +9707,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+				genMountText(mob,(Rideable)me,++showNumber,showFlag);
+				genMountText2(mob,(Rideable)me,++showNumber,showFlag);
 			}
 			if(me instanceof Deity)
 			{
@@ -9720,6 +9855,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{
 				genRideable1(mob,(Rideable)me,++showNumber,showFlag);
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
+				genMountText(mob,(Rideable)me,++showNumber,showFlag);
+				genMountText2(mob,(Rideable)me,++showNumber,showFlag);
 			}
 			genFaction(mob,me,++showNumber,showFlag);
 			genTattoos(mob,me,++showNumber,showFlag);
@@ -10057,7 +10194,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			final int oldLevel=M.basePhyStats().level();
 			genLevel(mob,M,++showNumber,showFlag);
 			if((oldLevel<2)&&(M.basePhyStats().level()>1))
+			{
 				CMLib.leveler().fillOutMOB(M,M.basePhyStats().level());
+				mob.tell("^ZCombat stats rescored.^.^N");
+			}
 			genRejuv(mob,M,++showNumber,showFlag);
 			genRace(mob,M,++showNumber,showFlag);
 			genHeight(mob,M,++showNumber,showFlag);
@@ -10120,9 +10260,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				((Librarian)me).setMinOverdueDays(prompt(mob,((Librarian)me).getMinOverdueDays(),++showNumber,showFlag,"Overdue mud-days"));
 				((Librarian)me).setMaxOverdueDays(prompt(mob,((Librarian)me).getMaxOverdueDays(),++showNumber,showFlag,"Reclaim mud-days"));
 				((Librarian)me).setOverdueCharge(prompt(mob,((Librarian)me).getOverdueCharge(),++showNumber,showFlag,"Overdue charge"));
-				((Librarian)me).setOverdueChargePct(CMath.s_pct(prompt(mob,CMath.toPct(((Librarian)me).getOverdueCharge()),++showNumber,showFlag,"Overdue charge pct")));
+				((Librarian)me).setOverdueChargePct(CMath.s_pct(prompt(mob,CMath.toPct(((Librarian)me).getOverdueChargePct()),++showNumber,showFlag,"Overdue charge pct")));
 				((Librarian)me).setDailyOverdueCharge(prompt(mob,((Librarian)me).getDailyOverdueCharge(),++showNumber,showFlag,"Daily overdue charge"));
-				((Librarian)me).setDailyOverdueChargePct(CMath.s_pct(prompt(mob,CMath.toPct(((Librarian)me).getDailyOverdueCharge()),++showNumber,showFlag,"Daily overdue charge pct")));
+				((Librarian)me).setDailyOverdueChargePct(CMath.s_pct(prompt(mob,CMath.toPct(((Librarian)me).getDailyOverdueChargePct()),++showNumber,showFlag,"Daily overdue charge pct")));
 			}
 			else
 			if(me instanceof Auctioneer)
@@ -10408,6 +10548,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genClimateType(mob,myArea,++showNumber,showFlag);
 			myArea.setAtmosphere(genAnyMaterialCode(mob,"Atmosphere",myArea.getAtmosphereCode(),true,++showNumber,showFlag));
 			genTimeClock(mob,myArea,++showNumber,showFlag);
+			genPlayerLevel(mob,myArea,++showNumber,showFlag);
 			genParentAreas(mob,myArea,++showNumber,showFlag,alsoUpdateAreas);
 			genChildAreas(mob,myArea,++showNumber,showFlag,alsoUpdateAreas);
 			genSubOps(mob,myArea,++showNumber,showFlag);

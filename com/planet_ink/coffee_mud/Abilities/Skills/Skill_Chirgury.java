@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -289,6 +289,7 @@ public class Skill_Chirgury extends StdSkill
 						for(final int i: CharStats.CODES.MAXCODES())
 							baby.charStats().setStat(i,1);
 						baby.charStats().setMyRace(((MOB)target).charStats().getMyRace());
+						baby.charStats().setWearableRestrictionsBitmap(baby.charStats().getWearableRestrictionsBitmap()|baby.charStats().getMyRace().forbiddenWornBits());
 						baby.recoverPhyStats();
 						baby.setDescription(L("@x1 body parts can be faintly made out in the twisted and mangled flesh.",CMStrings.capitalizeAndLower(baby.charStats().hisher())));
 						baby.setMobDescription(baby.description());

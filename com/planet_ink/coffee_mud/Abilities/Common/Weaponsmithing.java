@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -77,7 +77,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tWEAPON_CLASS\tWEAPON_TYPE\tBASE_DAMAGE\tATTACK_MODIFICATION\t"
-		+"WEAPON_HANDS_REQUIRED\tMAXIMUM_RANGE\tOPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";
+		+"WEAPON_HANDS_REQUIRED||MAX_WAND_USES\tMAXIMUM_RANGE\tOPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -474,7 +474,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 													enhancedTypes);
 			if(data==null)
 				return false;
-			fixDataForComponents(data,componentsFoundList);
+			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -516,6 +516,12 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				w.setWeaponDamageType(specType(foundRecipe.get(RCP_WEAPONTYPE)));
 				w.setRanges(w.minRange(),CMath.s_int(foundRecipe.get(RCP_MAXRANGE)));
 			}
+			if(buildingI instanceof Wand)
+			{
+				if(foundRecipe.get(RCP_HANDS).trim().length()>0)
+					((Wand)buildingI).setMaxUses(CMath.s_int(foundRecipe.get(RCP_HANDS).trim()));
+			}
+			else
 			if(CMath.s_int(foundRecipe.get(RCP_HANDS))==2)
 				buildingI.setRawLogicalAnd(true);
 			buildingI.basePhyStats().setAttackAdjustment(CMath.s_int(foundRecipe.get(RCP_ATTACK))+(hardness*5)+(baseYield()+abilityCode()-1));

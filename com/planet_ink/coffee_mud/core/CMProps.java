@@ -19,7 +19,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -426,6 +426,7 @@ public class CMProps extends Properties
 		EXP_CHART,
 		ARMOR_MISFITS,
 		MAGIC_WORDS,
+		GAIT_LIST,
 		TOD_CHANGE_OUTSIDE,
 		TOD_CHANGE_INSIDE,
 		WEATHER_ENDS,
@@ -1899,6 +1900,11 @@ public class CMProps extends Properties
 		return ((int[])objs[var.ordinal()]);
 	}
 
+	/**
+	 * Returns a two dimensional list of string terms from the list file
+	 * @param var the list entry to return
+	 * @return the two-dimensional list.
+	 */
 	private static final Object[][] getListFileStringChoices(final ListFile var)
 	{
 		if(var==null)

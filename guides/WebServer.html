@@ -28,6 +28,7 @@
         <li><a href="#customize">Customizing the error pages</a></li>
         <li><a href="#add">Adding new macros to CMVP</a></li>
         <li><a href="#javascript">Using Javascript in your pages</a></li>
+        <li><a href="#siplet">Siplet and SipletInterface</a></li>
       </ul>
       </td>
       <td align="left" valign="top">
@@ -95,7 +96,7 @@ SSLPORT</b>=xx <i>(e.g. SSLPORT=443)</i> <br />
 and HTTPS requests on; this cannot be the same port as the main MUD
 server or another web servers. This list may be comma delimited to
 start more than one instance on different ports. Normally this would go
-in <i />pub.ini</i> and <I>admin.ini</I>.</p>
+in <i>pub.ini</i> and <i>admin.ini</i>.</p>
         </li>
         <li> <b>DEBUGFLAG</b>=xx : <i>(e.g. DEBUGFLAG=false)</i>
           <p>An alternative way to turn on debugging messages in the
@@ -605,17 +606,21 @@ Too complicated to describe.</td>
           </tr>
           <tr>
             <td>for</td>
-            <td>The parameters for this macro are a variable name followed
-by an equal sign (=) followed by another macro name which evaluates to the 
-a comma-delimited string. That macro does not follow the
-embedding rules above. This macro requires an @next@ macro, and will assign
-a request parameter of the same name as the variable name equal to an entry
+            <td>The parameters for this macro are a variable name
+followed
+by an equal sign (=) followed by another macro name which evaluates to
+the a comma-delimited string. That macro does not follow the
+embedding rules above. This macro requires an @next@ macro, and will
+assign
+a request parameter of the same name as the variable name equal to an
+entry
 in the string returned by the macro in each iteration. For example:
-@for?EXITFLAG=ExitData?ISGENERIC&NAME@ would iterate twice, with
-reqparm EXITFLAG = true (or false) the first time, and a NAME the second time.
-@for?COUNTER=1,2,3,4@ would iterate 4 times, with reqparm COUNTER = 1 on
-the first iteration, then 2, 3 and finally 4. 
-          </td>
+@for?EXITFLAG=ExitData?ISGENERIC&amp;NAME@ would iterate twice, with
+reqparm EXITFLAG = true (or false) the first time, and a NAME the
+second time.
+@for?COUNTER=1,2,3,4@ would iterate 4 times, with reqparm COUNTER = 1
+on
+the first iteration, then 2, 3 and finally 4. </td>
           </tr>
           <tr>
             <td>HelpTopics</td>
@@ -981,11 +986,12 @@ macro, and a String representing the data after the first question
 mark? in the macro reference.</p>
       <p>If <code>runMacro()</code> returns <i>null</i>, the string
 [Error] is used to replace the macro.
-&nbsp;<b>If <code>runMacro()</code> returns <i>@break@</i>,&nbsp;this will cause a @loop@-@back@ segment
+&nbsp;<b>If <code>runMacro()</code> returns <i>@break@</i>,&nbsp;this
+will cause a @loop@-@back@ segment
 to terminate</b>.</p>
       <p>Example: this is the complete code for the <b>@HTTPCLIENTIP@</b>
 macro (HTTPclientIP.java):</p>
-      <pre>package com.planet_ink.coffee_mud.WebMacros;<br /><br />import com.planet_ink.coffee_web.interfaces.*;<br />import com.planet_ink.coffee_mud.core.interfaces.*;<br />import com.planet_ink.coffee_mud.core.*;<br />import com.planet_ink.coffee_mud.core.collections.*;<br />import com.planet_ink.coffee_mud.Abilities.interfaces.*;<br />import com.planet_ink.coffee_mud.Areas.interfaces.*;<br />import com.planet_ink.coffee_mud.Behaviors.interfaces.*;<br />import com.planet_ink.coffee_mud.CharClasses.interfaces.*;<br />import com.planet_ink.coffee_mud.Libraries.interfaces.*;<br />import com.planet_ink.coffee_mud.Common.interfaces.*;<br />import com.planet_ink.coffee_mud.Exits.interfaces.*;<br />import com.planet_ink.coffee_mud.Items.interfaces.*;<br />import com.planet_ink.coffee_mud.Locales.interfaces.*;<br />import com.planet_ink.coffee_mud.MOBS.interfaces.*;<br />import com.planet_ink.coffee_mud.Races.interfaces.*;<br />import java.util.*;<br /><br />/* <br />   Copyright 2000-2017 Bo Zimmerman<br /><br />   Licensed under the Apache License, Version 2.0 (the "License");<br />   you may not use this file except in compliance with the License.<br />   You may obtain a copy of the License at<br /><br />	   http://www.apache.org/licenses/LICENSE-2.0<br /><br />   Unless required by applicable law or agreed to in writing, software<br />   distributed under the License is distributed on an "AS IS" BASIS,<br />   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<br />   See the License for the specific language governing permissions and<br />   limitations under the License.<br />*/<br />public class HTTPclientIP extends StdWebMacro<br />{<br />	public String name()	{return "HTTPclientIP";}<br /><br />	public String runMacro(HTTPRequest httpReq, String parm)<br />	{<br />		if(httpReq.getClientAddress()!=null)<br />			return httpReq.getClientAddress().getHostAddress();<br />		return "Unknown";<br />	}<br />}<br /></pre>
+      <pre>package com.planet_ink.coffee_mud.WebMacros;<br /><br />import com.planet_ink.coffee_web.interfaces.*;<br />import com.planet_ink.coffee_mud.core.interfaces.*;<br />import com.planet_ink.coffee_mud.core.*;<br />import com.planet_ink.coffee_mud.core.collections.*;<br />import com.planet_ink.coffee_mud.Abilities.interfaces.*;<br />import com.planet_ink.coffee_mud.Areas.interfaces.*;<br />import com.planet_ink.coffee_mud.Behaviors.interfaces.*;<br />import com.planet_ink.coffee_mud.CharClasses.interfaces.*;<br />import com.planet_ink.coffee_mud.Libraries.interfaces.*;<br />import com.planet_ink.coffee_mud.Common.interfaces.*;<br />import com.planet_ink.coffee_mud.Exits.interfaces.*;<br />import com.planet_ink.coffee_mud.Items.interfaces.*;<br />import com.planet_ink.coffee_mud.Locales.interfaces.*;<br />import com.planet_ink.coffee_mud.MOBS.interfaces.*;<br />import com.planet_ink.coffee_mud.Races.interfaces.*;<br />import java.util.*;<br /><br />/* <br />   Copyright 2000-2018 Bo Zimmerman<br /><br />   Licensed under the Apache License, Version 2.0 (the "License");<br />   you may not use this file except in compliance with the License.<br />   You may obtain a copy of the License at<br /><br />	   http://www.apache.org/licenses/LICENSE-2.0<br /><br />   Unless required by applicable law or agreed to in writing, software<br />   distributed under the License is distributed on an "AS IS" BASIS,<br />   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<br />   See the License for the specific language governing permissions and<br />   limitations under the License.<br />*/<br />public class HTTPclientIP extends StdWebMacro<br />{<br />	public String name()	{return "HTTPclientIP";}<br /><br />	public String runMacro(HTTPRequest httpReq, String parm)<br />	{<br />		if(httpReq.getClientAddress()!=null)<br />			return httpReq.getClientAddress().getHostAddress();<br />		return "Unknown";<br />	}<br />}<br /></pre>
       <p>If your macro is intended to be for the admin server only, you
 can override the <code>.isAdminMacro()</code> member to return <code>true.</code></p>
       <h2><a name="javascript">Using Javascript in your pages</a></h2>
@@ -1004,7 +1010,124 @@ writing text into the page.</p>
       <p>Notice how we used the <code>write()</code> method to insert
 our HTML into the page. We also used the <code>request()</code> object
 to fetch the client ip address. Now here is a more involved example:</p>
-      <pre>&lt;HTML&gt;<br />&lt;HEAD&gt;<br />&lt;TITLE&gt;My JavaScript Enabled Web Page&lt;/TITLE&gt;<br />&lt;/HEAD&gt;<br />&lt;BODY&gt;<br />&lt;H1&gt;An Example of using JavaScript in a CMVP Web Page to fetch MUD Server data.&lt;/H1&gt;<br /><br />@jscript@<br />var lib=Packages.com.planet_ink.coffee_mud.core.CMLib;<br />// define a shortcut to the CoffeeMud libraries.<br /><br />var randomRoom=lib.map().getRandomRoom();<br />var randomArea=lib.map().getRandomArea();<br />// finding random rooms and areas is easy<br /><br />var randomMob=null;<br />var randomItem=null;<br />// assign our random mobs and items to null until they are found<br /><br />var attempts=1000;<br />// finding random items and mobs is more difficult.  We will<br />// select a random room, and attempt to pick out a random mob<br />// and/or item from the room.  We will do this a maximum of 1000<br />// times before giving up, until we find one of each.<br />while(((--attempts)&gt;0)&amp;&amp;((randomMob==null)||(randomItem==null)))<br />{<br />  var room=lib.map().getRandomRoom();<br />  if((randomMob==null)&amp;&amp;(room.numInhabitants()&gt;0))<br />  {<br />    randomMob=room.fetchRandomInhabitant();<br />  }<br />  if((randomItem==null)&amp;&amp;(room.numItems()&gt;0))<br />  {<br />    randomItem = room.getRandomItem();<br />  }<br />} //now we have all our random things. We could easily insert our HTML using<br />  // the write() method as we did in example 1.  To be fancy, however, we'll use the<br />  // the request() object to assign the names of our selections to HTTP Request<br />  // strings.<br /><br />request().addFakeUrlParameter("RANDOMROOM",randomRoom.displayText());<br />request().addFakeUrlParameter("RANDOMAREA",randomArea.name());<br />if(randomMob!=null)<br /> request().addFakeUrlParameter("RANDOMMOB",randomMob.name());<br />if(randomItem!=null)<br /> request().addFakeUrlParameter("RANDOMITEM",randomItem.name());<br />// now we exit back and continue with our HTML, using standard CMVP web macros<br />// to fetch the random names we saved.<br />@/jscript@<br /><br />&lt;FONT FACE="Courier New"&gt;<br />&lt;B&gt;A random area: &lt;B&gt;@RequestParameter?RANDOMAREA@&lt;BR&gt;<br />&lt;B&gt;A random room: &lt;B&gt;@RequestParameter?RANDOMROOM@&lt;BR&gt;<br />&lt;B&gt;A random mob : &lt;B&gt;@RequestParameter?RANDOMMOB@&lt;BR&gt;<br />&lt;B&gt;A random item: &lt;B&gt;@RequestParameter?RANDOMITEM@&lt;BR&gt;<br /><br />&lt;/FONT&gt;<br />&lt;P&gt;<br />&lt;/BODY&gt;<br />&lt;/HTML&gt;<br /></pre>
+      <pre>&lt;HTML&gt;<br />&lt;HEAD&gt;<br />&lt;TITLE&gt;My JavaScript Enabled Web Page&lt;/TITLE&gt;<br />&lt;/HEAD&gt;<br />&lt;BODY&gt;<br />&lt;H1&gt;An Example of using JavaScript in a CMVP Web Page to fetch MUD Server data.&lt;/H1&gt;<br /><br />@jscript@<br />var lib=Packages.com.planet_ink.coffee_mud.core.CMLib;<br />// define a shortcut to the CoffeeMud libraries.<br /><br />var randomRoom=lib.map().getRandomRoom();<br />var randomArea=lib.map().getRandomArea();<br />// finding random rooms and areas is easy<br /><br />var randomMob=null;<br />var randomItem=null;<br />// assign our random mobs and items to null until they are found<br /><br />var attempts=1000;<br />// finding random items and mobs is more difficult.  We will<br />// select a random room, and attempt to pick out a random mob<br />// and/or item from the room.  We will do this a maximum of 1000<br />// times before giving up, until we find one of each.<br />while(((--attempts)&gt;0)&amp;&amp;((randomMob==null)||(randomItem==null)))<br />{<br />  var room=lib.map().getRandomRoom();<br />  if((randomMob==null)&amp;&amp;(room.numInhabitants()&gt;0))<br />  {<br />    randomMob=room.fetchRandomInhabitant();<br />  }<br />  if((randomItem==null)&amp;&amp;(room.numItems()&gt;0))<br />  {<br />    randomItem = room.getRandomItem();<br />  }<br />} //now we have all our random things. We could easily insert our HTML using<br />  // the write() method as we did in example 1.  To be fancy, however, we'll use the<br />  // the request() object to assign the names of our selections to HTTP Request<br />  // strings.<br /><br />request().addFakeUrlParameter("RANDOMROOM",randomRoom.displayText());<br />request().addFakeUrlParameter("RANDOMAREA",randomArea.name());<br />if(randomMob!=null)<br /> request().addFakeUrlParameter("RANDOMMOB",randomMob.name());<br />if(randomItem!=null)<br /> request().addFakeUrlParameter("RANDOMITEM",randomItem.name());<br />// now we exit back and continue with our HTML, using standard CMVP web macros<br />// to fetch the random names we saved.<br />@/jscript@<br /><br />&lt;FONT FACE="Courier New"&gt;<br />&lt;B&gt;A random area: &lt;B&gt;@RequestParameter?RANDOMAREA@&lt;BR&gt;<br />&lt;B&gt;A random room: &lt;B&gt;@RequestParameter?RANDOMROOM@&lt;BR&gt;<br />&lt;B&gt;A random mob : &lt;B&gt;@RequestParameter?RANDOMMOB@&lt;BR&gt;<br />&lt;B&gt;A random item: &lt;B&gt;@RequestParameter?RANDOMITEM@&lt;BR&gt;<br /><br />&lt;/FONT&gt;<br />&lt;P&gt;<br />&lt;/BODY&gt;<br />&lt;/HTML&gt;<br /><br /></pre>
+      <h2><a name="siplet">Siplet and SipletInterface</a></h2>
+The CoffeeMud web server supports HTTP Web Sockets technology, and uses
+it to provide a web game client. &nbsp;This client can be found on your
+public pages with the Play Now link, which is directed at
+/web/siplet/index.html. &nbsp;The client supports ANSI color, Telnet
+codes, MSP, and MXP protocols. &nbsp;Input is entered through the large
+text box at the bottom, and the numbered tabs along the top can be used
+to open or navigate through multiple sessions. &nbsp;GMCP command can
+be sent to the mud through Siplet by entering the command into the
+input box prefixed with \GMCP and a space. &nbsp;MSDP commands can also
+be sent to the mud with the \MSDP prefix.<br />
+      <br />
+Siplet communicates with the mud through WebSockets by using a special
+&nbsp;URL-triggered WebMacro called SipletInterface, which is then used
+to send commands. &nbsp;The Url to connect to SipletInterface is <span
+ style="font-family: monospace;">ws://localhost:27744/SipletInterface</span>
+&nbsp; where 'localhost' is your coffeemud web server domain name, and
+'27744' is the port of your public pages. &nbsp;<br />
+      <br />
+SipletInterface supports the following commands from the browser:<br
+ style="font-family: monospace;" />
+      <span style="font-family: monospace;"><br />
+      </span><span style="font-weight: bold;">Connect Command:</span><br />
+      <span style="font-family: monospace;">CONNECT&amp;URL=&lt;mud
+telnet host&gt;&amp;PORT=&lt;mud port&gt;<br />
+      </span>&nbsp; &nbsp; This command establishes a connection
+through the SipletInterface to the target mud, which is hopefully
+yours. &nbsp;The host and port should be the same ones used in any
+normal web client, and should be url-encoded if there are any special
+characters that might interfere with the format of the command. &nbsp;<br />
+      <br />
+After sending this command, the next data received on the web socket
+will be the formatted response to this command. The response is in the
+following format:<br />
+      <span style="font-family: monospace;">&lt;success
+true/false&gt;;&lt;token&gt;;&lt;siplet info string&gt;&lt;token&gt;;</span><br />
+The success argument is the string 'true' or 'false', depending on
+whether the connection was successful.<br />
+The token argument is a delimiter token string that must be preserved
+throughout the web socket session.<br />
+The siplet info string is some information about the SipletInterface,
+such as 'Siplet V2.3.0 (C)2005-20XX Bo Zimmerman'<br />
+The final token and semicolon are the same as above, and denote the end
+of the siplet info string, and the end of this response.<br />
+An example response for a successful connection might be:<br />
+      <span style="font-family: monospace;">true;318cae09;Siplet V2.2.0
+(C)2005-2018 Bo Zimmerman318cae09;</span><br />
+      <br style="font-family: monospace;" />
+      <span style="font-weight: bold;">Disconnect Command:</span><br />
+      <span style="font-family: monospace;">DISCONNECT&amp;TOKEN=&lt;connection
+token&gt;<br />
+      </span>&nbsp; &nbsp; This command tells the socket that the
+connection to the mud should be closed. &nbsp;The connection can then
+be re-used for a new connection. &nbsp;
+The token argument is the same delimiter token string that was received
+from the Connect command above. &nbsp;After sending this command, the
+next data received on the web socket
+will be the formatted response to this command. The response is in the
+following format:<br />
+      <span style="font-family: monospace;">&lt;success true/false&gt;;</span><br />
+The success argument is the string 'true' or 'false', depending on
+whether the disconnection was successful.<br />
+      <br />
+      <span style="font-weight: bold;">Poll Command:</span><br />
+      <span style="font-family: monospace;">POLL</span><span
+ style="font-family: monospace;">&amp;TOKEN=&lt;connection token&gt;</span><br />
+&nbsp; &nbsp; This command acts like a ping command to the siplet
+interface, and is used to let the interface know that the web client is
+still there, and to check whether the connection to the underlying mud
+is still active. &nbsp;
+The token argument is the same delimiter token string that was received
+from the Connect command above. &nbsp;This command should be sent every
+20 seconds or so to prevent the SipletInterface from timing out your
+connection.<br />
+      <br />
+After sending this command, the next data received on the web socket
+will be the formatted response to this command. The response is in the
+following format:<br />
+      <span style="font-family: monospace;">&lt;success
+true/false&gt;;&lt;html&gt;&lt;token&gt;;&lt;javascript&gt;&lt;token&gt;;</span><br />
+The success argument is the string 'true' or 'false', depending on
+whether the connection to the underlying mud is still active. &nbsp;If
+false is returned, your connection is lost..<br />
+The html string is a block of html that should be added to the browser
+window. &nbsp;<br />
+The token argument is the same delimiter token string that was received
+from the Connect command above..<br />
+The javascript string is a block of javascript that can be executed
+with the eval() command, or ignored.<br />
+An example response for a successful connection might be:<br />
+      <span style="font-family: monospace;">true;You have connected to
+the mud!318cae09;window.alert('hi')</span><span
+ style="font-family: monospace;">318cae09;<br />
+      <br />
+      </span><span style="font-weight: bold;">Send Data Command:</span><br />
+      <span style="font-family: monospace;">SENDATA</span><span
+ style="font-family: monospace;">&amp;TOKEN=&lt;connection
+token&gt;&amp;DATA=&lt;string to send&gt;</span><br />
+&nbsp; &nbsp; This command is used to send user input and commands to
+the mud through the web socket. The token argument is the same
+delimiter token string that was received from the Connect command
+above, and the &lt;string to send&gt; is the user input.<br />
+      <br />
+After sending this command, the next data received on the web socket
+will be the formatted response to this command, which is identical to
+the Poll Command output above.<br />
+      <span style="font-family: monospace;" /><br />
+      <span style="font-weight: bold;">* Note:<br />
+      </span>After connection to a mud through the web socket, you will
+periodically receive spontaneous packets that are not in response to
+any particular command. &nbsp;These are incoming data from the mud, and
+will be formatted exactly the same as if you had sent a Poll Command
+above.<br />
+&nbsp;<span style="font-weight: bold;"><br />
+      </span><br />
+      <br />
+      <pre><br /></pre>
       </td>
     </tr>
   </tbody>

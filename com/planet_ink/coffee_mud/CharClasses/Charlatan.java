@@ -19,7 +19,7 @@ import java.lang.ref.WeakReference;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -298,7 +298,8 @@ public class Charlatan extends StdCharClass
 			return super.okMessage(myHost,msg);
 
 		final MOB myChar=(MOB)myHost;
-		if(msg.tool() instanceof Ability)
+		if((msg.tool() instanceof Ability)
+		&&(msg.targetMinor()!=CMMsg.TYP_TEACH))
 		{
 			if(msg.amISource(myChar)
 			&&(!myChar.isMonster())
@@ -366,7 +367,11 @@ public class Charlatan extends StdCharClass
 				&&(!CMLib.ableMapper().qualifiesOnlyByClan(mob, A))
 				&&(!CMLib.ableMapper().qualifiesOnlyByRace(mob, A))
 				&&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0))))
-					choices.add(A);
+				{
+					final DVector prereqs=CMLib.ableMapper().getUnmetPreRequisites(mob,A);
+					if((prereqs==null)||(prereqs.size()==0))
+						choices.add(A);
+				}
 			}
 			
 			// now count those you already have

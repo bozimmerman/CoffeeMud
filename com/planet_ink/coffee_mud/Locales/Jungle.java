@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -59,11 +59,12 @@ public class Jungle extends StdRoom
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
-		   &&(!msg.source().isMonster())
-		   &&(msg.source().curState().getHitPoints()<msg.source().maxState().getHitPoints())
-		   &&(CMLib.dice().rollPercentage()==1)
-		   &&(CMLib.dice().rollPercentage()==1)
-		   &&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+		&&(!msg.source().isMonster())
+		&&(msg.source().curState().getHitPoints()<msg.source().maxState().getHitPoints())
+		&&(CMLib.dice().rollPercentage()==1)
+		&&(CMLib.dice().rollPercentage()==1)
+		&&(isInhabitant(msg.source()))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 		{
 			Ability A=null;
 			if(CMLib.dice().rollPercentage()>50)

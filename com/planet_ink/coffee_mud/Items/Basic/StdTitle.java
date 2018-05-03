@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -480,7 +480,10 @@ public class StdTitle extends StdItem implements LandTitle
 				{
 					Clan C=(Clan)owner;
 					if(!C.getExtItems().isContent(I))
+					{
+						I.setSavable(false); // if the clan is saving it, rooms are NOT.
 						C.getExtItems().addItem(I);
+					}
 				}
 				else
 				if(owner instanceof MOB)
@@ -488,7 +491,10 @@ public class StdTitle extends StdItem implements LandTitle
 					final PlayerStats pStats = ((MOB)owner()).playerStats();
 					if((pStats != null)
 					&&(!pStats.getExtItems().isContent(I)))
+					{
+						I.setSavable(false); // if the clan is saving it, rooms are NOT.
 						pStats.getExtItems().addItem(I);
+					}
 				}
 			}
 		}

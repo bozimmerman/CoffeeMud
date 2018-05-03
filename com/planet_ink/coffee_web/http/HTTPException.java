@@ -16,7 +16,7 @@ import com.planet_ink.coffee_web.util.CWThread;
 import com.planet_ink.coffee_web.util.CWConfig;
 
 /*
-   Copyright 2012-2017 Bo Zimmerman
+   Copyright 2012-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -162,7 +162,22 @@ public class HTTPException extends Exception
 			str.append(HTTPIOHandler.CONN_HEADER);
 			str.append(HTTPHeader.Common.getKeepAliveHeader());
 		}
-		str.append(HTTPHeader.Common.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
+		final long time = System.currentTimeMillis();
+		final Date date=new Date(time);
+		try
+		{
+			str.append(HTTPHeader.Common.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(date)));
+		}
+		catch(java.lang.ArrayIndexOutOfBoundsException e)
+		{
+			try
+			{
+				str.append(HTTPHeader.Common.DATE.makeLine(HTTPIOHandler.DATE_FORMAT.format(new Date(System.currentTimeMillis()))));
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException e2)
+			{
+			}
+		}
 		if(isDebugging)
 		{
 			final StringBuilder dbgBuilder=new StringBuilder(str.toString().replace('\r', ',').replace('\n', ' ')); 

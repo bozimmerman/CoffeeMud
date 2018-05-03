@@ -19,7 +19,7 @@ import java.sql.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -362,8 +362,9 @@ public class JournalLoader
 			String sql="SELECT CMJKEY FROM CMJRNL WHERE CMUPTM > " + olderDate+" AND CMJRNL='"+journal+"'";
 			if(to != null) 
 				sql += " AND CMTONM='"+to+"'";
-			sql += "ORDER BY CMUPTM ASC";
-			return this.makeJournalEntryList(journal, D.query(sql));
+			sql += " ORDER BY CMUPTM ASC";
+			final ResultSet R=D.query(sql);
+			return this.makeJournalEntryList(journal, R);
 		}
 		catch(final Exception sqle)
 		{
@@ -845,7 +846,7 @@ public class JournalLoader
 		}
 	}
 
-	public void DBWriteJournalReply(String journal, String messageKey, String from, String to, String subject, String message)
+	public JournalEntry DBWriteJournalReply(String journal, String messageKey, String from, String to, String subject, String message)
 	{
 		journal 	= DB.injectionClean(journal);
 		messageKey	= DB.injectionClean(messageKey);
@@ -855,12 +856,12 @@ public class JournalLoader
 		message		= DB.injectionClean(message);
 
 		if(journal==null) 
-			return;
+			return null;
 		synchronized(journal.toUpperCase().intern())
 		{
 			final JournalEntry entry=DBReadJournalEntry(journal, messageKey);
 			if(entry==null)
-				return;
+				return null;
 			final long now=System.currentTimeMillis();
 			final String oldkey=entry.key();
 			final String oldmsg=entry.msg();
@@ -868,10 +869,12 @@ public class JournalLoader
 			message=oldmsg+JournalsLibrary.JOURNAL_BOUNDARY
 			 +"^yReply from^N: "+from+"    ^yDate/Time ^N: "+CMLib.time().date2String(now)+"%0D"
 			 +message;
+			entry.msg(message);
 			final String sql="UPDATE CMJRNL SET CMUPTM="+now+", CMMSGT=?, CMREPL="+replies+" WHERE CMJKEY='"+oldkey+"'";
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
 				Log.debugOut("JournalLoader",sql);
 			DB.updateWithClobs(sql,message);
+			return entry;
 		}
 	}
 

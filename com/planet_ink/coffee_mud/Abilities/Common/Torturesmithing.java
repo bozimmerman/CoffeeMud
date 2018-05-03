@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
 		+"LID_LOCK||CONTAINER_TYPE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION\t"
-		+"CONTAINER_CAPACITY||LIQUID_CAPACITY\t"
+		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES\t"
 		+"BASE_ARMOR_AMOUNT\tWOOD_METAL_CLOTH\tCODED_SPELL_LIST";
 	}
 
@@ -404,6 +404,11 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 					((Drink)buildingI).setThirstQuenched(capacity*50);
 				((Drink)buildingI).setLiquidRemaining(0);
 			}
+		}
+		if((buildingI instanceof Wand)
+		&&(foundRecipe.get(RCP_CAPACITY).trim().length()>0))
+		{
+			((Wand)buildingI).setMaxUses(capacity);
 		}
 		if(bundling)
 			buildingI.setBaseValue(lostValue);

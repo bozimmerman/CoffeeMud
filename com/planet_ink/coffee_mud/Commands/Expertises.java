@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2006-2017 Bo Zimmerman
+   Copyright 2006-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -45,12 +45,8 @@ public class Expertises extends StdCommand
 		return access;
 	}
 
-	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
-		throws java.io.IOException
+	protected void appendExpertise(final MOB mob, final StringBuffer msg)
 	{
-		final StringBuffer msg=new StringBuffer("");
-		msg.append(L("\n\r^HYour expertises:^? \n\r"));
 		int col=0;
 		final int COL_LEN=CMLib.lister().fixColWidth(25.0,mob);
 		final XVector<String> expers=new XVector<String>();
@@ -100,6 +96,15 @@ public class Expertises extends StdCommand
 				col=0;
 			}
 		}
+	}
+	
+	@Override
+	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+		throws java.io.IOException
+	{
+		final StringBuffer msg=new StringBuffer("");
+		msg.append(L("\n\r^HYour expertises:^? \n\r"));
+		appendExpertise(mob,msg);
 		if(!msg.toString().endsWith("\n\r"))
 			msg.append("\n\r");
 		if(!mob.isMonster())
@@ -113,4 +118,20 @@ public class Expertises extends StdCommand
 		return true;
 	}
 
+
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		//if(!super.checkArguments(internalParameters, args)) return Boolean.FALSE.toString();
+
+		MOB target=mob;
+		for(final Object o : args)
+		{
+			if(o instanceof MOB)
+				target=(MOB)o;
+		}
+		StringBuffer msg=new StringBuffer("");
+		this.appendExpertise(target, msg);
+		return msg;
+	}
 }

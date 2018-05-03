@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -330,6 +330,13 @@ public class AreaData extends StdWebMacro
 					String name=httpReq.getUrlParameter("IMAGE");
 					if((name==null)||(name.length()==0))
 						name=A.rawImage();
+					str.append(name);
+				}
+				if(parms.containsKey("PLAYERLEVEL"))
+				{
+					String name=httpReq.getUrlParameter("PLAYERLEVEL");
+					if((name==null)||(name.length()==0))
+						name=""+A.getPlayerLevel();
 					str.append(name);
 				}
 				if((parms.containsKey("GRIDX"))&&(A instanceof GridZones))

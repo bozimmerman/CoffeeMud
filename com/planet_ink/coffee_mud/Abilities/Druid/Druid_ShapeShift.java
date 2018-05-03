@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -34,7 +34,6 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Druid_ShapeShift extends StdAbility
 {
 	@Override
@@ -172,6 +171,7 @@ public class Druid_ShapeShift extends StdAbility
 		{
 			final int oldCat=affected.baseCharStats().ageCategory();
 			affectableStats.setMyRace(newRace);
+			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,newRace.getAgingChart()[oldCat]);
 		}
@@ -496,7 +496,7 @@ public class Druid_ShapeShift extends StdAbility
 						for(int i1=raceLevel;i1>=0;i1--)
 						{
 							if(CMLib.english().containsString(shapes[i1][A.myRaceCode],parm))
-								return A.invoke(mob,new XVector(parm),givenTarget,auto,asLevel);
+								return A.invoke(mob,new XVector<String>(parm),givenTarget,auto,asLevel);
 						}
 					}
 				}

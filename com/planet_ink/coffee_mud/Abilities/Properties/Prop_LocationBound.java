@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -49,24 +49,83 @@ public class Prop_LocationBound extends Property
 	{
 		return Ability.CAN_ITEMS|Ability.CAN_MOBS;
 	}
-
+	
+	protected enum BoundToType
+	{
+		CURRENT_ROOM,
+		CURRENT_AREA,
+		SPECIFIC_ROOM,
+		SPECIFIC_AREA
+	}
+	protected BoundToType	type = null;
+	protected Environmental boundTo = null;
+	
+	protected BoundToType getBoundToType()
+	{
+		if(type != null)
+			return type;
+		if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
+		{
+			final String text=super.text();
+			if(text.length()>0)
+			{
+				int x=text.indexOf(';');
+				String roomID = text;
+				//String rest="";
+				if(x>0)
+				{
+					roomID=text.substring(0,x).trim();
+					//rest=text.substring(x+1).trim();
+				}
+				boundTo=null;
+				if(roomID.equalsIgnoreCase("ROOM"))
+					type=BoundToType.CURRENT_ROOM;
+				else
+				if(roomID.equalsIgnoreCase("AREA"))
+					type=BoundToType.CURRENT_AREA;
+				else
+				{
+					boundTo=CMLib.map().getRoom(roomID);
+					if(boundTo instanceof Room)
+						type=BoundToType.SPECIFIC_ROOM;
+					else
+					{
+						boundTo=CMLib.map().getArea(roomID);
+						if(boundTo instanceof Area)
+							type=BoundToType.SPECIFIC_AREA;
+					}
+				}
+			}
+		}
+		return type;
+	}
+	
+	@Override
+	public void setMiscText(String text)
+	{
+		super.setMiscText(text);
+		boundTo=null;
+		type=null;
+	}
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if((msg.sourceMinor()!=CMMsg.TYP_ENTER)
+		if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target() instanceof Room)
 		&&((msg.source()==affected)
 			||((affected instanceof Item)&&(msg.source()==((Item)affected).owner()))))
 		{
 			final Room whereTo=(Room)msg.target();
 			final Room R=CMLib.map().roomLocation(affected);
-			if((whereTo==null)||(R==null))
+			if((whereTo==null) || (R==null))
 				return true;
 
-			if(text().length()==0)
+			BoundToType type = this.getBoundToType();
+			if(type == null)
 			{
 				if(affected instanceof MOB)
 					msg.source().tell(L("You are not allowed to leave this place."));
@@ -75,7 +134,7 @@ public class Prop_LocationBound extends Property
 				return false;
 			}
 			else
-			if(text().equalsIgnoreCase("ROOM"))
+			if(type == BoundToType.CURRENT_ROOM)
 			{
 				if(whereTo!=R)
 				{
@@ -87,7 +146,7 @@ public class Prop_LocationBound extends Property
 				}
 			}
 			else
-			if(text().equalsIgnoreCase("AREA"))
+			if(type == BoundToType.CURRENT_AREA)
 			{
 				if(whereTo.getArea()!=R.getArea())
 				{
@@ -99,8 +158,9 @@ public class Prop_LocationBound extends Property
 				}
 			}
 			else
+			if(type == BoundToType.SPECIFIC_ROOM)
 			{
-				final Room tR=CMLib.map().getRoom(text());
+				final Room tR=(Room)boundTo;
 				if((tR!=null)&&(whereTo!=tR))
 				{
 					if(R!=tR)
@@ -126,7 +186,11 @@ public class Prop_LocationBound extends Property
 					}
 					return false;
 				}
-				final Area A=CMLib.map().getArea(text());
+			}
+			else
+			if(type == BoundToType.SPECIFIC_AREA)
+			{
+				final Area A=(Area)boundTo;
 				if((A!=null)&&(!A.inMyMetroArea(whereTo.getArea())))
 				{
 					if(!A.inMyMetroArea(R.getArea()))

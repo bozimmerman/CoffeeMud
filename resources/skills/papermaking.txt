@@ -1,27 +1,71 @@
-a piece of paper	1	40	1	1	GenReadable	WOOD			
-a leaflet	2	40	1	1	GenReadable	WOOD			
-a flyer	3	40	1	1	GenReadable	WOOD			
-a posterboard	4	40	3	1	GenReadable	WOOD			
-a banner	5	40	5	1	GenReadable	WOOD			
-a sheet of parchment	6	10	1	1	GenReadable	HIDE			
-a % trading card	7	20	4	3	GenReadable	WOOD	STATUE		
-a sheet of rice paper	8	10	1	2	GenReadable	RICE			
-a canvas	9	20	10	5	GenReadable	COTTON			
-a sheet of vellum	10	30	1	1	GenReadable	LEATHER			
-a poster of %	12	40	3	1	GenReadable	WOOD	STATUE		
-a sheet of silkscreen	15	50	5	20	GenReadable	SILK			
-a scroll	15	60	1	20	GenScroll	SILK			
+a piece of paper	1	40	1	1	GenPaper	WOOD		1/2000	
+a scroll	1	120	(onground:consumed:1:a piece of paper:)	20	GenScroll	PAPER			
+a leaflet	2	40	1	1	GenPaper	WOOD		1/280	
+a pound of paper	2	80	5	10	GenResource	WOOD			
+a flyer	3	40	1	1	GenPaper	WOOD		1/500	
+a log book	3	60	5	10	GenPlayerBook	WOOD		2/5000	
+a posterboard	4	40	3	1	GenPaper	WOOD		1/1000	
+the log book	4	60	5	10	GenPlayerBook	WOOD		2/5000	
+a cigarette	5	20	(onground:consumed:1:PIPEWEED:)&&(onground:consumed:1:a piece of paper:)	5	GenCigar	PAPER		0	
+a small paper bag	5	10	2	1	GenContainer	PAPER		20	
+an essay	5	40	1	1	GenPaper	WOOD		1/3000	
+a book	7	70	8	20	GenPlayerBook	WOOD		10/5000	
+a sheet of parchment	6	10	1	1	GenPaper	HIDE		1/5000	
 a recipe page	7	15	1	10	GenRecipe	WOOD			
+the book	8	70	8	20	GenPlayerBook	WOOD		10/5000	
+a booklet	6	30	3	15	GenPlayerBook	WOOD		5/5000	
+a sheet of rice paper	8	10	1	2	GenPaper	RICE		1/1500	
+a banner	9	40	5	1	GenPaper	WOOD		1/2500	
+a canvas	9	20	10	5	GenReadable	COTTON			
+a % trading card	10	20	4	3	GenPaper	WOOD	STATUE	1/500	
+a nice scroll	10	120	(onground:consumed:2:a piece of paper:)	40	GenScroll	PAPER			
+a sheet of vellum	10	30	1	1	GenPaper	LEATHER		1/4000	
+a small spellbook	11	200	(onground:consumed:4:a piece of paper:)	50	GenScroll	PAPER			
+a cigar	11	20	(onground:consumed:1:A PIECE OF PAPER:)&&(onground:consumed:2:PIPEWEED:)	5	GenCigar	PAPER		0	
+a poster of %	12	40	3	1	GenPaper	WOOD	STATUE	1/5000	
 a small recipe book	12	30	5	50	GenRecipe	WOOD			
+a brochure	13	25	2	5	GenPlayerBook	WOOD		3/2000	
+a catalogue	13	80	10	25	GenPlayerBook	WOOD		10/5000	
+a medium paper bag	14	20	4	10	GenContainer	PAPER		40	
+the catalogue	14	80	10	25	GenPlayerBook	WOOD		10/5000	
+a sheet of silkscreen	15	50	5	20	GenPaper	SILK		1/6000	
+a wedding banner	15	40	(onground:consumed:10:a piece of paper:)	35	GenPaper	PAPER		1/280	
+a journal	16	90	4	30	GenPlayerBook	WOOD		12/5000	
+a kite	17	100	5	40	GenItem	BALSA			*Spell_Fly
 a nice recipe book	18	45	10	65	GenRecipe	WOOD			
+an improved scroll	20	120	(onground:consumed:3:a sheet of parchment:)	60	GenScroll	HIDE			
+a travelling spellbook	21	200	(onground:consumed:4:a sheet of parchment:)	100	GenScroll	HIDE			
+a joint	21	20	(onground:consumed:1:PIPEWEED:)&&(onground:consumed:1:A PIECE OF PAPER:)	50	GenCigar	PAPER		0	*Prop_WearSpellCast;Spell_delirium
 a large recipe book	22	60	25	75	GenRecipe	WOOD			
+a large paper bag	23	30	6	20	GenContainer	PAPER		100	
+a doobie	24	20	(onground:consumed:1:A PIECE OF PAPER:)&&(onground:consumed:1:PIPEWEED:)	50	GenCigar	PAPER		0	*Prop_WearSpellCast;Spell_Hunger
+a novel	24	100	6	50	GenPlayerBook	WOOD		16/5000	
 a huge recipe book	25	70	50	100	GenRecipe	WOOD			
+the novel	25	100	6	50	GenPlayerBook	WOOD		16/5000	
+a blunt	26	20	(onground:consumed:1:A PIECE OF PAPER:)&&(onground:consumed:1:PIPEWEED:)	50	GenCigar	PAPER		0	*Prop_WearSpellCast;Spell_FeignInvisibility
 an enormous recipe book	28	90	100	125	GenRecipe	WOOD			
-a deck of cards	30	60	104	50	StdDeckOfCards	WOOD		53	
-a Cigarette	5	20	(onground:consumed:1:PIPEWEED:)&&(onground:consumed:1:a piece of paper:)	5	GenCigar	PAPER		0	
-a Cigar	11	20	(onground:consumed:1:A PIECE OF PAPER:)&&(onground:consumed:2:PIPEWEED:)	5	GenCigar	PAPER		0	
-a Joint	21	20	(onground:consumed:1:PIPEWEED:)&&(onground:consumed:1:A PIECE OF PAPER:)	50	GenCigar	PAPER		0	*Prop_WearSpellCast;Spell_delirium
-a Blunt	26	20	(onground:consumed:1:A PIECE OF PAPER:)&&(onground:consumed:1:PIPEWEED:)	50	GenCigar	PAPER		0	*Prop_WearSpellCast;Spell_FeignInvisibility
-a Doobie	24	20	(onground:consumed:1:A PIECE OF PAPER:)&&(onground:consumed:1:PIPEWEED:)	50	GenCigar	PAPER		0	*Prop_WearSpellCast;Spell_Hunger
-a wedding banner	11	40	(onground:consumed:10:a piece of paper:)	35	GenReadable	PAPER			
-a small paper bag	5	10	(onground:consumed:2:A piece of paper:)	1	GenContainer	PAPER		20	
+a deck of cards	29	60	4	50	StdDeckOfCards	WOOD		53	
+a heavy scroll	30	120	(onground:consumed:6:a sheet of parchment:)	80	GenScroll	HIDE			
+a huge paper bag	35	40	10	50	GenContainer	PAPER		300	
+a magazine	36	40	3	25	GenPlayerBook	WOOD		8/5000	
+a manual	38	120	12	100	GenPlayerBook	WOOD		20/5000	
+an advanced scroll	40	120	(onground:consumed:3:a sheet of rice paper:)	100	GenScroll	PAPER			
+a spellbook	41	200	(onground:consumed:4:a sheet of rice paper:)	250	GenScroll	PAPER			
+a gigantic recipe book	45	120	200	250	GenRecipe	WOOD			
+a textbook	48	125	14	150	GenPlayerBook	WOOD		25/5000	
+an intricate scroll	50	120	(onground:consumed:6:a sheet of rice paper:)	500	GenScroll	PAPER			
+small origami figure	54	20	1	25	GenItem	PAPER	STATUE		
+a handbook	58	130	16	200	GenPlayerBook	WOOD		30/5000	
+a master scroll	60	120	(onground:consumed:3:a sheet of vellum:)	1000	GenScroll	LEATHER			
+a large spellbook	61	200	(onground:consumed:4:a sheet of vellum:)	1500	GenScroll	LEATHER			
+origami figure	64	80	2	50	GenItem	PAPER	STATUE		
+a treatise	68	135	18	250	GenPlayerBook	WOOD		35/5000	
+a powerful scroll	70	120	(onground:consumed:6:a sheet of vellum:)	2000	GenScroll	LEATHER			
+large origami figure	74	160	5	100	GenItem	PAPER	STATUE		
+a humongous recipe book	75	200	300	1000	GenRecipe	WOOD			
+a tome	78	140	20	500	GenPlayerBook	WOOD		40/5000	
+a very powerful scroll	80	120	(onground:consumed:3:a sheet of silkscreen:)	2500	GenScroll	SILK			
+a huge spellbook	81	200	(onground:consumed:4:a sheet of silkscreen:)	5000	GenScroll	SILK			
+huge origami figure	84	240	10	150	GenItem	PAPER	STATUE		
+the omnibus	88	150	25	1000	GenPlayerBook	WOOD		0/0	
+an ultrapowerful scroll	90	120	(onground:consumed:6:a sheet of silkscreen:)	3000	GenScroll	SILK			

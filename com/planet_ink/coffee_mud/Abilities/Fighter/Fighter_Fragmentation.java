@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -100,6 +100,13 @@ public class Fighter_Fragmentation extends FighterSkill
 		super.executeMsg(myHost,msg);
 	}
 
+	public static int[] fragmentingMaterials=new int[] {
+		RawMaterial.MATERIAL_GLASS,
+		RawMaterial.MATERIAL_METAL,
+		RawMaterial.MATERIAL_ROCK,
+		RawMaterial.MATERIAL_WOODEN
+	};
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -109,7 +116,8 @@ public class Fighter_Fragmentation extends FighterSkill
 		&&(msg.tool() instanceof Weapon)
 		&&(msg.value()>0)
 		&&(msg.target() instanceof MOB)
-		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN))
+		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_THROWN)
+		&&(CMParms.contains(fragmentingMaterials, ((Weapon)msg.tool()).material()&RawMaterial.MATERIAL_MASK)))
 		{
 			if(CMLib.dice().rollPercentage()<25)
 				helpProficiency((MOB)affected, 0);

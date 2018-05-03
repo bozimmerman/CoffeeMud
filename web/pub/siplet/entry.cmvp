@@ -80,6 +80,7 @@
     
     function disconnect()
     {
+    	window.console.info("Siplet Entry disconnect");
         top.term.closeWindow();
     }
     function reconnect(event)
@@ -89,6 +90,7 @@
             event.cancelBubble=true;
             event.returnValue=0;
         }
+    	window.console.info("Siplet Entry reconnect");
         top.term.reconnect();
         return false;
     }

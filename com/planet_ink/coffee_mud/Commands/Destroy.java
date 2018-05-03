@@ -18,12 +18,13 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.Achievement;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 
 import java.util.*;
 import java.io.IOException;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -517,7 +518,6 @@ public class Destroy extends StdCommand
 			if(max>1)
 				allFlag=true;
 		}
-		
 		int num=0;
 		while((deadItem!=null)&&(max-->0))
 		{
@@ -568,7 +568,10 @@ public class Destroy extends StdCommand
 		mob.location().recoverRoomStats();
 		if(!doneSomething)
 		{
-			mob.tell(L("I don't see '@x1 here.\n\r",itemID));
+			if(mob.findItem(itemID)!=null)
+				mob.tell(L("I don't see '@x1 here. You might need to drop it first.\n\r",itemID));
+			else
+				mob.tell(L("I don't see '@x1 here.\n\r",itemID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a spell.."));
 			return false;
 		}
@@ -1151,10 +1154,54 @@ public class Destroy extends StdCommand
 			if((CMJ.NAME().equals(commandType))
 			&&(CMSecurity.isJournalAccessAllowed(mob,CMJ.NAME())))
 			{
-				int which=-1;
-				if(commands.size()>2)
-					which=CMath.s_int(commands.get(2));
-				final List<JournalEntry> entries = CMLib.database().DBReadJournalMsgsByUpdateDate(CMJ.JOURNAL_NAME(), true);
+				int which = -1;
+				String to = null;
+				final String second=(commands.size()>2)?commands.get(2):"";
+				final String third=(commands.size()>3)?CMParms.combine(commands,3):"";
+				List<String> flagsV=CMParms.parseAny(CMJ.getFlag(CommandJournalFlags.ASSIGN), ':', true);
+				if(second.length()>0)
+				{
+					String possTo=null;
+					if(CMath.isNumber(second))
+					{
+						which=CMath.s_int(second);
+						if(third.length()>0)
+							possTo=third;
+					}
+					else
+					{
+						possTo=second;
+						if(third.length()>0)
+						{
+							if(CMath.isNumber(third))
+								which=CMath.s_int(third);
+							else
+							{
+								mob.tell(L("@x1 is not a number",third));
+								return true;
+							}
+						}
+					}
+					if(possTo != null)
+					{
+						if(CMLib.players().playerExists(CMStrings.capitalizeAndLower(possTo)))
+							to=CMStrings.capitalizeAndLower(possTo);
+						else
+						if(flagsV.contains(possTo))
+							to=possTo;
+						else
+						if(possTo.equalsIgnoreCase("ALL"))
+							to="ALL";
+						else
+						{
+							mob.tell(L("@x1 is not a valid name. ",possTo));
+		 					return true;
+						}
+					}
+				}
+
+				final String[] tos = (to != null)? new String[]{to} : new String[0];
+				final List<JournalEntry> entries = CMLib.database().DBReadJournalMsgsByUpdateDate(CMJ.JOURNAL_NAME(), true, 100000, tos);
 
 				if((which<=0)||(which>entries.size()))
 					mob.tell(L("Please enter a valid @x1 number to delete.  Use LIST @x2S for more information.",CMJ.NAME().toLowerCase(),CMJ.NAME()));
@@ -1330,6 +1377,37 @@ public class Destroy extends StdCommand
 			else
 			{
 				mob.tell(L("'@x1' is no longer debugging",named));
+				if(flag == CMSecurity.DbgFlag.HTTPACCESS)
+				{
+					for(MudHost host : CMLib.hosts())
+					{
+						try
+						{
+							host.executeCommand("WEBSERVER ADMIN ACCESS OFF");
+							host.executeCommand("WEBSERVER PUB ACCESS OFF");
+						}
+						catch (Exception e)
+						{
+							mob.tell(e.getMessage());
+						}
+					}
+				}
+				else
+				if(flag == CMSecurity.DbgFlag.HTTPREQ)
+				{
+					for(MudHost host : CMLib.hosts())
+					{
+						try
+						{
+							host.executeCommand("WEBSERVER ADMIN DEBUG OFF");
+							host.executeCommand("WEBSERVER PUB DEBUG OFF");
+						}
+						catch (Exception e)
+						{
+							mob.tell(e.getMessage());
+						}
+					}
+				}
 				CMSecurity.removeDebugVar(flag);
 			}
 			return false;
@@ -1701,7 +1779,8 @@ public class Destroy extends StdCommand
 			Environmental thang=mob.location().fetchFromRoomFavorItems(null,allWord);
 			if(thang==null)
 				thang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,allWord,Wearable.FILTER_ANY);
-			if((thang == null)&&(commands.size()>2)
+			if((thang == null)
+			&&(commands.size()>2)
 			&&(CMath.isInteger(commands.get(1).toString())||commands.get(1).toString().equalsIgnoreCase("all")))
 			{
 				allWord=CMParms.combine(commands,2);

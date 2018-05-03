@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -802,7 +802,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * record and clan affiliation.
 	 * @param mobName the mob to delete
 	 */
-	public void DBDeletePlayer(String mobName);
+	public void DBDeletePlayerOnly(String mobName);
 
 	/**
 	 * Table category: DBPLAYERS
@@ -1162,8 +1162,9 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param to who the recipient of the reply is
 	 * @param subject the subject of the reply
 	 * @param message the reply text
+	 * @return the updated journal entry
 	 */
-	public void DBWriteJournalReply(String journalID, String messageKey, String from, String to, String subject, String message);
+	public JournalEntry DBWriteJournalReply(String journalID, String messageKey, String from, String to, String subject, String message);
 
 	/**
 	 * Table category: DBJOURNALS

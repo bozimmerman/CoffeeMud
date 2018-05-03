@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -41,6 +41,8 @@ public class ROMGangMember extends StdBehavior
 	}
 
 	int tickTock=5;
+	String gangName="";
+	String[] messages=new String[0];
 
 	@Override
 	public String accountForYourself()
@@ -48,28 +50,46 @@ public class ROMGangMember extends StdBehavior
 		return "gang membership";
 	}
 
+	@Override
+	public void setParms(String newParms)
+	{
+		super.setParms(newParms);
+		List<String> list=CMParms.parseSemicolons(newParms, true);
+		messages=new String[0];
+		if(list.size()==0)
+			gangName=CMLib.dice().rollPercentage()>50?"Red":"Blue";
+		else
+		{
+			gangName=list.remove(0);
+			messages=list.toArray(messages);
+		}
+	}
+	
 	public void pickAFight(MOB observer)
 	{
 		if(!canFreelyBehaveNormal(observer))
 			return;
-		if(observer.location().numPCInhabitants()==0)
+		final Room R=observer.location();
+		if(R==null)
+			return;
+		if(R.numPCInhabitants()==0)
 			return;
 
 		MOB victim=null;
 		String vicParms="";
-		for(int i=0;i<observer.location().numInhabitants();i++)
+		for(int i=0;i<R.numInhabitants();i++)
 		{
-			final MOB inhab=observer.location().fetchInhabitant(i);
+			final MOB inhab=R.fetchInhabitant(i);
 			if((inhab!=null)
 			&&((inhab.isMonster())||(CMLib.clans().findCommonRivalrousClans(inhab,observer).size()==0)))
 			{
 				for(final Enumeration<Behavior> e=inhab.behaviors();e.hasMoreElements();)
 				{
 					final Behavior B=e.nextElement();
-					if(B.ID().equals(ID())&&(!B.getParms().equals(getParms())))
+					if(B.ID().equals(ID())&&(!((ROMGangMember)B).gangName.equals(gangName)))
 					{
 						victim=inhab;
-						vicParms=B.getParms();
+						vicParms=((ROMGangMember)B).gangName;
 					}
 					else
 					if((B.ID().indexOf("GoodGuardian")>=0)||(B.ID().indexOf("Patrolman")>=0))
@@ -85,29 +105,36 @@ public class ROMGangMember extends StdBehavior
 			weapon=observer.getNaturalWeapon();
 
 		/* say something, then raise hell */
-		switch (CMLib.dice().roll(1,7,-1))
+		if(messages.length>0)
 		{
-		case 0:
-			observer.location().show(observer,null,CMMsg.MSG_SPEAK,L("^T<S-NAME> yell(s) 'I've been looking for you, punk!'^?"));
-			break;
-		case 1:
-			observer.location().show(observer,victim,CMMsg.MSG_NOISYMOVEMENT,L("With a scream of rage, <S-NAME> attack(s) <T-NAME>."));
-			break;
-		case 2:
-			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'What's slimy @x1 trash like you doing around here?'^?",vicParms));
-			break;
-		case 3:
-			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> crack(s) <S-HIS-HER> knuckles and say(s) 'Do ya feel lucky?'^?"));
-			break;
-		case 4:
-			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'There's no cops to save you this time!'^?"));
-			break;
-		case 5:
-			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Time to join your brother, spud.'^?"));
-			break;
-		case 6:
-			observer.location().show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Let's rock.'^?"));
-			break;
+			R.show(observer,null,CMMsg.MSG_SPEAK,"^T<S-NAME> say(s) '"+messages[CMLib.dice().roll(1,messages.length,-1)]+"'.^?");
+		}
+		else
+		{
+			switch (CMLib.dice().roll(1,7,-1))
+			{
+			case 0:
+				R.show(observer,null,CMMsg.MSG_SPEAK,L("^T<S-NAME> yell(s) 'I've been looking for you, punk!'^?"));
+				break;
+			case 1:
+				R.show(observer,victim,CMMsg.MSG_NOISYMOVEMENT,L("With a scream of rage, <S-NAME> attack(s) <T-NAME>."));
+				break;
+			case 2:
+				R.show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'What's slimy @x1 trash like you doing around here?'^?",vicParms));
+				break;
+			case 3:
+				R.show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> crack(s) <S-HIS-HER> knuckles and say(s) 'Do ya feel lucky?'^?"));
+				break;
+			case 4:
+				R.show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'There's no cops to save you this time!'^?"));
+				break;
+			case 5:
+				R.show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Time to join your brother, spud.'^?"));
+				break;
+			case 6:
+				R.show(observer,victim,CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Let's rock.'^?"));
+				break;
+			}
 		}
 
 		CMLib.combat().postAttack(observer,victim,weapon);

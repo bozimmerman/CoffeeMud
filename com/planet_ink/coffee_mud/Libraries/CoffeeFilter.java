@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -301,14 +301,22 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			&&(buf.charAt(loop)!=10))
 			{
 				amperStop=loop;
-				if(buf.charAt(lastSp+1)==' ')
+				if(buf.charAt(lastSp)==' ')
 				{
-					buf.setCharAt(lastSp,(char)13);
-					buf.setCharAt(lastSp+1,(char)10);
+					if(buf.charAt(lastSp+1)==' ')
+					{
+						buf.setCharAt(lastSp,(char)13);
+						buf.setCharAt(lastSp+1,(char)10);
+					}
+					else
+					{
+						buf.setCharAt(lastSp,(char)13);
+						buf.insert(lastSp,(char)10);
+					}
 				}
 				else
 				{
-					buf.setCharAt(lastSp,(char)13);
+					buf.insert(lastSp,(char)13);
 					buf.insert(lastSp,(char)10);
 				}
 				loop=lastSp+2;
@@ -675,7 +683,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				break;
 			case '^':
 				if(loop<buf.length()-1)
+				{
 					loop=convertEscape(CS, buf, loop);
+				}
 				break;
 			default:
 				break;
@@ -1422,7 +1432,10 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							final int oldLoop=loop;
 							loop=convertEscape(S, buf, loop);
 							if(wrap>0)
+							{
 								len=(loop-oldLoop)+len+1;
+							}
+							lastSp=loop+1;
 						}
 						break;
 					}
@@ -1445,14 +1458,22 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			&&(buf.charAt(loop)!=10))
 			{
 				amperStop=loop;
-				if(buf.charAt(lastSp+1)==' ')
+				if(buf.charAt(lastSp)==' ')
 				{
-					buf.setCharAt(lastSp,(char)13);
-					buf.setCharAt(lastSp+1,(char)10);
+					if(buf.charAt(lastSp+1)==' ')
+					{
+						buf.setCharAt(lastSp,(char)13);
+						buf.setCharAt(lastSp+1,(char)10);
+					}
+					else
+					{
+						buf.setCharAt(lastSp,(char)13);
+						buf.insert(lastSp,(char)10);
+					}
 				}
 				else
 				{
-					buf.setCharAt(lastSp,(char)13);
+					buf.insert(lastSp,(char)13);
 					buf.insert(lastSp,(char)10);
 				}
 				loop=lastSp+2;

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /*
-   Copyright 2010-2017 Bo Zimmerman
+   Copyright 2010-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ public class XVector<T> extends Vector<T>
 {
 	private static final long	serialVersionUID	= 6687178785122563992L;
 
-	public XVector(List<T> V)
+	public XVector(List<? extends T> V)
 	{
 		super();
 		if (V != null)
@@ -118,7 +118,7 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
-	public synchronized void addAll(Enumeration<T> E)
+	public synchronized void addAll(Enumeration<? extends T> E)
 	{
 		if (E != null)
 		{
@@ -136,7 +136,7 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
-	public synchronized void addAll(Iterator<T> E)
+	public synchronized void addAll(Iterator<? extends T> E)
 	{
 		if (E != null)
 		{
@@ -145,7 +145,7 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
-	public synchronized void removeAll(Enumeration<T> E)
+	public synchronized void removeAll(Enumeration<? extends T> E)
 	{
 		if (E != null)
 		{
@@ -154,7 +154,7 @@ public class XVector<T> extends Vector<T>
 		}
 	}
 
-	public synchronized void removeAll(Iterator<T> E)
+	public synchronized void removeAll(Iterator<? extends T> E)
 	{
 		if (E != null)
 		{

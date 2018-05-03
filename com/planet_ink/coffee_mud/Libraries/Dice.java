@@ -6,7 +6,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -95,6 +95,27 @@ public class Dice extends StdLibrary implements DiceLibrary
 		return roll(r,d,p);
 	}
 
+	@Override
+	public void scramble(List<?> objs)
+	{
+		Collections.shuffle(objs, randomizer);
+	}
+	
+	@Override
+	public void scramble(int[] objs)
+	{
+		if(objs.length<2)
+			return;
+		final int sz=objs.length;
+		for(int i=0;i<sz;i++)
+		{
+			final int k=i+randomizer.nextInt(sz-i);
+			int o=objs[k];
+			objs[k]=objs[i];
+			objs[i]=o;
+		}
+	}
+	
 	@Override
     public long plusOrMinus(final long range)
 	{

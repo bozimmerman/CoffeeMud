@@ -3,6 +3,7 @@ package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_web.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -19,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -55,6 +56,15 @@ public class MudInfo extends StdWebMacro
 			return CMProps.getVar(CMProps.Str.MUDDOMAIN);
 		if(parms.containsKey("EMAILOK"))
 			return ""+(CMProps.getVar(CMProps.Str.MAILBOX).length()>0);
+		if(parms.containsKey("REALEMAILOK"))
+			return "" + ((CMProps.getVar(CMProps.Str.SMTPSERVERNAME).length()>0)
+					&& (CMProps.getVar(CMProps.Str.MAILBOX).length()>0)
+					&& (CMProps.getVar(CMProps.Str.MUDDOMAIN).length()>0)
+					&& (!CMSecurity.isCommandDisabled("Email"))
+					&& (!CMSecurity.isDisabled(DisFlag.SMTPCLIENT))
+					&& (!CMProps.getVar(CMProps.Str.EMAILREQ).toUpperCase().startsWith("D")));
+		if(parms.containsKey("HASHPASSWORDS"))
+			return "" + CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS);
 		if(parms.containsKey("MAILBOX"))
 			return CMProps.getVar(CMProps.Str.MAILBOX);
 		if(parms.containsKey("NAME"))

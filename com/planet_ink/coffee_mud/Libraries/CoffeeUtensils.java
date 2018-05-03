@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1093,7 +1093,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				if(M.baseCharStats().getMyRace()==oldR)
 					M.baseCharStats().setMyRace(newR);
 				if(M.charStats().getMyRace()==oldR)
+				{
 					M.charStats().setMyRace(newR);
+					M.charStats().setWearableRestrictionsBitmap(M.charStats().getWearableRestrictionsBitmap()|M.charStats().getMyRace().forbiddenWornBits());
+				}
 			}
 			for(final Enumeration<MOB> e2=CMLib.players().players();e2.hasMoreElements();)
 			{
@@ -1101,7 +1104,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				if(M.baseCharStats().getMyRace()==oldR)
 					M.baseCharStats().setMyRace(newR);
 				if(M.charStats().getMyRace()==oldR)
+				{
 					M.charStats().setMyRace(newR);
+					M.charStats().setWearableRestrictionsBitmap(M.charStats().getWearableRestrictionsBitmap()|M.charStats().getMyRace().forbiddenWornBits());
+				}
 			}
 		}
 	}

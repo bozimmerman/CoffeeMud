@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -136,7 +136,7 @@ public class Jester extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Ranged",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_Sword",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Alchemy",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Apothecary",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Write",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);

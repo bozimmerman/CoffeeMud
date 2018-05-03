@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -674,7 +674,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 									autoGive(me,msg.source(),(Item)msg.tool());
 								}
 
-								@Override public void callBack()
+								@Override 
+								public void callBack()
 								{
 									if((this.input!=null)&&(this.input.length()>0)
 									&&((CMLib.players().getLoadPlayer(this.input)!=null)||(CMLib.clans().findClan(this.input)!=null)))
@@ -688,7 +689,9 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 										final double amt=getSimplePostage(getChargeableWeight((Item)msg.tool()));
 										S.prompt(new InputCallback(InputCallback.Type.CHOOSE,"P","CP\n",0)
 										{
-											@Override public void showPrompt() {
+											@Override
+											public void showPrompt()
+											{
 												S.promptPrint(L("Postage on this will be @x1.\n\rWould you like to P)ay this now, or be C)harged on delivery (c/P)?",CMLib.beanCounter().nameCurrencyShort(me,amt)));
 											}
 
@@ -698,7 +701,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 												autoGive(me,msg.source(),(Item)msg.tool());
 											}
 
-											@Override public void callBack()
+											@Override 
+											public void callBack()
 											{
 												final String choice=this.input.trim().toUpperCase();
 												if(choice.startsWith("C"))

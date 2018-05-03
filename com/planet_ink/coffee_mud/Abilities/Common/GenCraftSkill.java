@@ -24,7 +24,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /*
-   Copyright 2011-2017 Bo Zimmerman
+   Copyright 2011-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -83,7 +83,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
 		+"LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
-		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION\t"
+		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION||MAX_WAND_USES\t"
 		+"BASE_ARMOR_AMOUNT||BASE_DAMAGE\tCONTAINER_TYPE||ATTACK_MODIFICATION\tCODED_SPELL_LIST";}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -747,7 +747,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 													enhancedTypes);
 			if(data==null)
 				return false;
-			fixDataForComponents(data,componentsFoundList);
+			fixDataForComponents(data,requiredMats,autoGenerate>0,componentsFoundList);
 			numRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -828,6 +828,16 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			{
 				setRideBasis((Rideable)buildingI,misctype);
 			}
+			if(buildingI instanceof Wand)
+			{
+				if(foundRecipe.get(RCP_CAPACITY).trim().length()>0)
+					((Wand)buildingI).setMaxUses(capacity);
+			}
+			else
+			if(buildingI instanceof Weapon)
+			{
+				((Weapon)buildingI).setRawLogicalAnd((capacity>1));
+			}
 			if(buildingI instanceof Weapon)
 			{
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_BLUNT);
@@ -835,7 +845,6 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				buildingI.basePhyStats().setAttackAdjustment((baseYield()+abilityCode()+(hardness*5)-1));
 				buildingI.basePhyStats().setDamage(armordmg+hardness);
 				((Weapon)buildingI).setRawProperLocationBitmap(Wearable.WORN_WIELD|Wearable.WORN_HELD);
-				((Weapon)buildingI).setRawLogicalAnd((capacity>1));
 				if(!(buildingI instanceof Container))
 					buildingI.basePhyStats().setAttackAdjustment(buildingI.basePhyStats().attackAdjustment()+(int)canContain);
 			}

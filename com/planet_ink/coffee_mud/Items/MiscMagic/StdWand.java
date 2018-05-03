@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -131,6 +131,8 @@ public class StdWand extends StdItem implements Wand
 	@Override
 	public Ability getSpell()
 	{
+		if(text().length()==0)
+			return null;
 		return CMClass.getAbility(text());
 	}
 
@@ -139,8 +141,13 @@ public class StdWand extends StdItem implements Wand
 	{
 		String id=super.secretIdentity();
 		final Ability A=getSpell();
+		String uses;
+		if(this.maxUses() < 999999)
+			uses=""+usesRemaining()+"/"+maxUses();
+		else
+			uses = ""+usesRemaining();
 		if(A!=null)
-			id="'A wand of "+A.name()+"' Charges: "+usesRemaining()+"\n\r"+id;
+			id="'A wand of "+A.name()+"' Charges: "+uses+"\n\r"+id;
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
 	}
 
@@ -202,7 +209,8 @@ public class StdWand extends StdItem implements Wand
 							V.addAll(CMParms.parse(message));
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("@x1 glows brightly.",me.name()));
 							me.setUsesRemaining(me.usesRemaining()-1);
-							int level=me.phyStats().level();
+							int level=me.phyStats().level() 
+									+ CMLib.expertises().getExpertiseLevel(mob, "Skill_WandUse", ExpertiseLibrary.Flag.LEVEL);
 							final int lowest=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 							if(level<lowest)
 								level=lowest;

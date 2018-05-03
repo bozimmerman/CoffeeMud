@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ public class Unlock extends StdCommand
 		final String whatTounlock=CMParms.combine(commands,1);
 		if(whatTounlock.length()==0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Unlock what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Unlock what?"));
 			return false;
 		}
 		Environmental unlockThis=null;
@@ -64,7 +64,7 @@ public class Unlock extends StdCommand
 
 		if((unlockThis==null)||(!CMLib.flags().canBeSeenBy(unlockThis,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatTounlock));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",whatTounlock));
 			return false;
 		}
 		final String unlockMsg="<S-NAME> unlock(s) <T-NAMESELF>."+CMLib.protocol().msp("doorunlock.wav",10);

@@ -9,7 +9,7 @@ import java.util.TreeMap;
 import java.lang.reflect.*;
 
 /*
-   Copyright 2013-2017 Bo Zimmerman
+   Copyright 2013-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -486,7 +486,7 @@ public class MiniJSON
 		final StringBuilder value=new StringBuilder("");
 		if(doc[index[0]]!='\"')
 		{
-			throw new MJSONException("Expectged quote at: "+doc[index[0]]);
+			throw new MJSONException("Expected quote at: "+doc[index[0]]);
 		}
 		index[0]++;
 		while(index[0] < doc.length)

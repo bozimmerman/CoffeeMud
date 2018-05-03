@@ -259,7 +259,8 @@ building.</p>
 view the files in your
 coffeemud folder, copy and delete files, and even put them in your
 database. Saving files in the database? See the first section of the <a
- href="GameBuildersGuide.html">Game Builders Guide</a> for more info on
+ href="GameBuildersGuide.html">Game Builders Guide</a>
+for more info on
 the CoffeeMud VFS system.</p>
 <p align="left"><em>SNOOP<br>
 </em> This command can let you watch
@@ -569,11 +570,13 @@ water perhaps</td>
     </tr>
     <tr>
       <td>IndoorUnderWaterColumnGrid</td>
-      <td>tall narrow under water indoor rooms </td>
+      <td>tall narrow under water
+indoor rooms </td>
     </tr>
     <tr>
       <td>IndoorUnderWaterGrid</td>
-      <td>grid of under water indoor rooms </td>
+      <td>grid of under water
+indoor rooms </td>
     </tr>
     <tr>
       <td>IndoorWaterSurface</td>
@@ -627,15 +630,18 @@ large enough to bring mounts into</td>
     </tr>
     <tr>
       <td>LongRoad</td>
-      <td>the open road, cost more move</td>
+      <td>the open road, cost more
+move</td>
     </tr>
     <tr>
       <td>LongerRoad</td>
-      <td>the open road, cost more move</td>
+      <td>the open road, cost more
+move</td>
     </tr>
     <tr>
       <td>LongestRoad</td>
-      <td>the open road, cost most move</td>
+      <td>the open road, cost most
+move</td>
     </tr>
     <tr>
       <td>MagicFreeRoom</td>
@@ -732,7 +738,8 @@ less memory, more cpu</td>
     </tr>
     <tr>
       <td>SaltWaterSurfaceColumn</td>
-      <td>the narrow surface of the ocean</td>
+      <td>the narrow surface of
+the ocean</td>
     </tr>
     <tr>
       <td>SaltWaterThinSurface</td>
@@ -881,7 +888,8 @@ river</td>
     </tr>
     <tr>
       <td>WaterSurfaceColumn</td>
-      <td>the narrow surface of a lake or
+      <td>the narrow surface of a
+lake or
 river</td>
     </tr>
     <tr>
@@ -1036,7 +1044,8 @@ across or fall and DIE!</td>
     </tr>
     <tr>
       <td>GenCurtain</td>
-      <td>the maleable walk-through door</td>
+      <td>the maleable
+walk-through door</td>
     </tr>
     <tr>
       <td>GenDoor</td>
@@ -1722,12 +1731,15 @@ your more standard areas, for instance.</td>
     </tr>
     <tr>
       <td>SubThinInstance</td>
-      <td>Like a Standard Thin Instance, but with a name requirement.
-&nbsp;If the name of the SubThinInstance has an underscore followed by
+      <td>Like a Standard Thin
+Instance, but with a name requirement.
+&nbsp;If the name of the SubThinInstance has an underscore followed
+by
 the name of an existing normal area, or a word followed by a space
 followed by the name of an existing area, then this instance will be a
 thin copy of the area whose
-name follows. &nbsp;For example, "New_Midgaard" or "New Midgaard" would
+name follows. &nbsp;For example, "New_Midgaard" or "New Midgaard"
+would
 create a thin
 version of Midgaard.</td>
     </tr>
@@ -1747,7 +1759,12 @@ through it, and how mild or severe the winters and summers may be, or
 the <span style="font-style: italic;">atmosphere</span>
 in the area,
 which will decide whether your players can breathe, or you can set them
-both to inherit their values from parent areas . This
+both to inherit their values from parent areas . &nbsp; You may also
+change the&nbsp;<span style="font-style: italic;">player level.&nbsp;</span>This
+field is normally 0, and will cause the actual median level of the mobs
+in the area to be used for calculating area suggestions, whereas a
+non-0 number will use that one instead.</p>
+<p>This
 editor is also where you may add <em>Staff</em>.
 A player whose name is listed as Staff has no additional powers unless
 their player Security settings grant them specific AREA privileges. In
@@ -2464,7 +2481,8 @@ found with magic such as the Locate Object spell.</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Blend Display</span></td>
-      <td>whether item appears in the room description instead of the
+      <td>whether item appears in
+the room description instead of the
 item list, such as when the player is viewing compressed room data.</td>
     </tr>
     <tr>
@@ -2628,7 +2646,7 @@ Destroyed after burnout</em></td>
       <td>Whether the item is
 destroyed after burnout. This
 defaults to true for GenCigar and GenLightSource (torches), which
-vanish after use. GenLanterns and GenCigars default this to false,
+vanish after use. GenLanterns and GenPipes default this to false,
 meaning the item remains after it burns out (though no longer gives off
 light). The GenLantern may be refilled with oil at this time, or the
 GenPipe may be refilled with herbs to continue.</td>
@@ -2674,7 +2692,8 @@ characters &lt;cmvp&gt;. If those six characters start the
 message,
 then the message may contain web macros. See the WebServer Guide for
 more information on this feature.</p>
-<p>Whenever a GenJournal, GenBook, or
+<p>Whenever a GenJournal, GenBook,
+or
 GenPlayerBook is created, much like the GenItem
 above, you are presented with a list of properties to fill in. Pressing
 enter will leave the property unchanged. The properties include all of
@@ -2702,6 +2721,9 @@ A reply requirement is specified by putting REPLY=
 followed by some requirements. <br>
 A writing requirement is specified by
 putting WRITE= followed by some requirements. <br>
+A named TO: filter can be given by putting
+FILTER= followed by a comma-delimited list of names (or ALL).<br>
+putting WRITE= followed by some requirements. <br>
 An optional
 administrative requirement is specified by putting ADMIN= followed by
 some requirements. <br>
@@ -2712,7 +2734,8 @@ criteria used for that property are also used for these options.
 journal
 as a private diary, where messages can only be read by the person who
 wrote them, and you may specify MAILBOX=TRUE to turn the journal into a
-miniature mailbox, by prohibiting messages to ALL. &nbsp;Lastly, you
+miniature mailbox, by prohibiting messages to ALL. &nbsp;Lastly,
+you
 can set SORTBY=CREATE to sort the messages by their creation date
 instead of their update time. &nbsp;The
 Journal
@@ -2897,7 +2920,8 @@ defaults closed?</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Open Ticks</span></td>
-      <td>If the container has a lid that defaults closed and is NOT
+      <td>If the container has a
+lid that defaults closed and is NOT
 gettable, this is the number of ticks (4 second periods) after being
 opened, that item will automatically be re-closed.</td>
     </tr>
@@ -2910,7 +2934,8 @@ it default locked?</td>
       <td><em>Can
 Contain</em></td>
       <td>This can help you limit
-what goes inside. &nbsp;The choices are: &nbsp;ANYTHING, LIQUID, COINS,
+what goes inside. &nbsp;The choices are: &nbsp;ANYTHING,
+LIQUID, COINS,
 SWORDS, DAGGERS, OTHER WEAPONS, ONE-HANDED WEAPONS, BODIES, READABLES,
 SCROLLS, CAGED ANIMALS, KEYS, DRINKABLES, CLOTHES, SMOKEABLES, SS
 COMPONENTS, FOOTWEAR, &nbsp;RAWMATERIALS</td>
@@ -2923,8 +2948,10 @@ in the container.</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Contents Accessible</span></td>
-      <td>normally one must remove an item from a container to look at
-it, or manipulate things inside a contained container. &nbsp;This flag
+      <td>normally one must remove
+an item from a container to look at
+it, or manipulate things inside a contained container. &nbsp;This
+flag
 makes the contents accessible as if uncontained.</td>
     </tr>
   </tbody>
@@ -3145,7 +3172,8 @@ badly cursed item, up to 5 for an extremely high level magical item.</td>
 <br>
 <p><strong><a name="geni26"><font style="background-color: lime;">The
 "GenCloak"</font></a></strong></p>
-<p>A GenCloak is special armor that changes the name of the wearer when
+<p>A GenCloak is special armor
+that changes the name of the wearer when
 worn. &nbsp;It may, but need not actually be, a cloak.</p>
 <p>Whenever a GenCloak is created,
 much like the GenArmor above, you are
@@ -3160,8 +3188,10 @@ under GenArmor, plus one more:</p>
       <td width="75%"><strong>Description</strong></td>
     </tr>
     <tr>
-      <td><em>Cloak Name</em></td>
-      <td>The name that a mob wearing the cloak seems to be</td>
+      <td><em>Cloak
+Name</em></td>
+      <td>The name that a mob
+wearing the cloak seems to be</td>
     </tr>
   </tbody>
 </table>
@@ -3206,9 +3236,39 @@ sitting on, sleeping on, or climbing into.</td>
     <tr>
       <td><em>MOBs
 Held</em></td>
-      <td>th emaximum number of
+      <td>the&nbsp;maximum number of
 mobs which may occupy this piece of
 furniture at once.</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">Mount Stiring</span></td>
+      <td>the present-tense verb or verb phrase, shown when entering or
+mounting this</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">Dismount String</span></td>
+      <td>the present-tense verb or verb phrase, shown when leaving or
+dismounting this</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">Put String</span></td>
+      <td>the preposition shown when putting something in, into, or on
+this</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">State String</span></td>
+      <td>the predicate phrase when the subject is mounted to this
+thing, seen in the room</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">State Subject String</span></td>
+      <td>the predicate phrase when the subject is this thing, which
+ends with the list of those mounted</td>
+    </tr>
+    <tr>
+      <td><span style="font-style: italic;">Ride Verb String</span></td>
+      <td>the present-tense verb, or verb phrase, shown when driving
+the thing from place-to-place</td>
     </tr>
   </tbody>
 </table>
@@ -3592,12 +3652,38 @@ uses remaining field so that the scroll can have a little clarity!</td>
   </tbody>
 </table>
 <br>
+<p><strong><a name="geni27"><font style="background-color: lime;">The
+"GenDice"</font></a></strong></p>
+<p>A GenDice is special item that
+can be ROLL or THROWN, which causes it to be dropped, and then show a
+number between 1 and &lt;Magical Ability&gt; (inclusive)..</p>
+<p>Whenever a GenDice is created,
+much like the GenArmor above, you are
+presented with a list of properties to fill in. Pressing enter will
+leave the property unchanged. The properties include everything listed
+under GenArmor, plus one more:</p>
+<table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1"
+ cellspacing="1" width="100%">
+  <tbody>
+    <tr>
+      <td width="25%"><strong>Property</strong></td>
+      <td width="75%"><strong>Description</strong></td>
+    </tr>
+    <tr>
+      <td><em>Magical
+Ability</em></td>
+      <td>The number of 'sides' on
+the dice. &nbsp;Should always be greater than 1.</td>
+    </tr>
+  </tbody>
+</table>
 <br>
 <p><strong><a name="geni18"><font style="background-color: lime;">The
 "GenTitle"</font></a></strong></p>
 <p>A GenTitle is a piece of paper
 which designates ownership of a piece
-of property. A piece of property can&nbsp;be a room or a set of rooms
+of property. A piece of property can&nbsp;be a room or a set of
+rooms
 with Prop_RoomForSale, Prop_RoomsForSale, or Prop_LotsForSale on it, or
 a GenSailingShip.
 Titles are unique in that whenever they are GIVEn to another player,
@@ -3620,21 +3706,27 @@ under GenItem, plus&nbsp;more:</p>
     </tr>
     <tr>
       <td><em>Owner</em></td>
-      <td>The name of the Clan or Player who is the principle owner of
-the property. &nbsp;An empty entry denotes an unowned item. &nbsp;An
+      <td>The name of the Clan or
+Player who is the principle owner of
+the property. &nbsp;An empty entry denotes an unowned item.
+&nbsp;An
 Owner name that starts with the "#" character denotes a special
 property that should be treated as owned for certain legal purposes,
 but not by any real Clan or Player.</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Price</span></td>
-      <td>The price, in base value, of the property.</td>
+      <td>The price, in base
+value, of the property.</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Assigned Property ID</span></td>
-      <td>The ID of the property, whether it be an Area Name, a Room
-ID, or the name of a ship. &nbsp;Remember, just having a title is not
-enough to own anything. &nbsp;The property itself must exist and also
+      <td>The ID of the property,
+whether it be an Area Name, a Room
+ID, or the name of a ship. &nbsp;Remember, just having a title is
+not
+enough to own anything. &nbsp;The property itself must exist and
+also
 be similarly designated.</td>
     </tr>
   </tbody>
@@ -3771,8 +3863,10 @@ are created the
 same
 way as in any other area, except that, instead of NORTH, SOUTH, etc.
 you must use ship-directions, such as PORT, STARBOARD, FORE, AFT,
-ABOVE, and BELOW.&nbsp; A ship should generally be built NORTH-SOUTH
-(which is the same as FORE-AFT). &nbsp;At least one of the rooms should
+ABOVE, and BELOW.&nbsp; A ship should generally be built
+NORTH-SOUTH
+(which is the same as FORE-AFT). &nbsp;At least one of the rooms
+should
 be outdoors, preferably something like a WoodenDeck locale, so that
 players can see what is around the ship, and so that they have a place
 to build siege weapons. &nbsp;The deck is also the
@@ -3787,14 +3881,16 @@ unique name. &nbsp;Many skills and systems need to look up rooms by
 their IDs, but if multiple ships all have the same room ids, the system
 can become confused about which ship is actually being addressed.
 &nbsp;NPC ships can be populated with mobs, shipwright mobs, mobile
-mobs,&nbsp;siege weapons, siege ammunition, etc. &nbsp; Behaviors like
+mobs,&nbsp;siege weapons, siege ammunition, etc. &nbsp;
+Behaviors like
 the Sailor behavior can be given to mobs to make them sail the ship
 around and engage in ship combat.<br>
 <br>
 When designing your sailing ships, be sure to put Prop_ReqCapacity on
 your rooms, especially the deck rooms. &nbsp;This is the only thing
 that can limit the number of siege weapons that players can add to
-their ship. &nbsp;Using parameters of "weight=715" will allow one of
+their ship. &nbsp;Using parameters of "weight=715" will allow one
+of
 all of the siege weapons to be built, but not two. &nbsp;Using
 parameters of "weight=400" will allow only one of the light
 weapons,&nbsp;"weight=600" will allow one of the normal or light
@@ -3803,7 +3899,8 @@ normal or one light. etc.<br>
 <br>
 When this is completed, you
 can add the GenSailingShip
-item to the shopkeepers inventory. &nbsp;Don't run around with ships in
+item to the shopkeepers inventory. &nbsp;Don't run around with
+ships in
 your own inventory, or, for goodness sake, inside another ship.<br>
 <br>
 Whenever a GenSailingShip is
@@ -3823,7 +3920,8 @@ will leave the property unchanged. <br>
       <td><em>Owner</em></td>
       <td>The
 name of the Clan or Player who is the principle owner of the property.
-&nbsp;An empty entry denotes an unowned item. &nbsp;An Owner name that
+&nbsp;An empty entry denotes an unowned item. &nbsp;An Owner
+name that
 starts
 with the "#" character denotes a special property that should be
 treated as owned for certain legal purposes, but not by any real Clan
@@ -3831,7 +3929,8 @@ or Player.</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Price</span></td>
-      <td>The price, in base value, of the property.</td>
+      <td>The price, in base
+value, of the property.</td>
     </tr>
   </tbody>
 </table>
@@ -4110,6 +4209,7 @@ be owned.<br>
 "Prop_LocationBound" limits where an item can be taken from.<br>
 "Prop_ModExperience" modifies experience gained when
 holding/wielding/wearing this.<br>
+"Prop_MoveRestrictor" can be used to limit rideable items<br>
 "Prop_NoDamage" makes the item incapable of doing damage.<br>
 "Prop_NoPurge" makes the item a permanent piece of garbage.<br>
 "Prop_NoRecall" makes the item prevent recalling.<br>
@@ -4602,16 +4702,19 @@ prayers, skills, or songs, Casts prayers, spells, or songs on the
 buyer, Potions, Land, and more! All shopkeepers can also buy what they
 sell, excluding Trainers and Casters. a shopkeeper can also sell a
 combination of these, though some combinations will not be allowed
-(such as a spell caster and a spell trainer). &nbsp;You can even narrow
+(such as a spell caster and a spell trainer). &nbsp;You can even
+narrow
 the type further using the mask described by the next field.</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Item Buy Mask</span></td>
-      <td>if the above shopkeeper type isn't enough to narrow the types
+      <td>if the above shopkeeper
+type isn't enough to narrow the types
 of items your shopkeeper will buy and sell, then a Zapper Mask may also
 be given to further filter the appropriate items. &nbsp;See help on
 ZAPPERMASKS for more information on how to construct one.
-&nbsp;Zappermasks are usually used with mobs, but you'll find many of
+&nbsp;Zappermasks are usually used with mobs, but you'll find many
+of
 the fields can be used with items as well.</td>
     </tr>
     <tr>
@@ -4704,7 +4807,8 @@ of ShopKeeper that sells items for
 players over a limited amount of time. Auctioneers can charge a flat
 fee for their service, a fee based on the number of days the auctioneer
 will sell the item and the base value of the item, and a fee based on
-the final selling price. Auctioneers are&nbsp;interacted with using the
+the final selling price. Auctioneers are&nbsp;interacted with using
+the
 BID, SELL, INFO, and LIST commands for their unique services.</p>
 <p>Whenever a GenAuctioneer is
 created, much like the GenShopKeeper
@@ -4778,7 +4882,8 @@ in a special private account for players. Bankers can pay or charge
 interest on money left in the account, and charge interest on items
 left with them. Bakers can also loan money based on those same items as
 collateral, and automatically handle interest and payment plans.
-&nbsp;Bankers are&nbsp;interacted with using the BORROW, WITHDRAW, and
+&nbsp;Bankers are&nbsp;interacted with using the BORROW,
+WITHDRAW, and
 DEPOSIT commands for their unique services, and LIST, BUY, SELL, VALUE,
 and INFO for some of their mundaine ones. &nbsp;A
 Banker may also be designated as a Clan Banker, meaning that it will
@@ -4832,13 +4937,16 @@ players.</td>
 <br>
 <p><strong><a name="genm7"><font style="background-color: lime;">The
 "GenLibrarian"</font></a></strong></p>
-<p>A Librarian is a special type of
+<p>A Librarian is a special type
+of
 ShopKeeper that loans out items instead of selling them. &nbsp;The
 player who borrows from a librarian is obligated to return the items,
-lest they incur charges. &nbsp;Each librarian can have unique items,
+lest they incur charges. &nbsp;Each librarian can have unique
+items,
 but when librarians are part of a single Library Chain, then every
 member of the chain will share checkout records and assume to be
-sharing their common items. &nbsp;Librarians are&nbsp;interacted with
+sharing their common items. &nbsp;Librarians
+are&nbsp;interacted with
 using the BORROW, GIVE, LIST, SELL, and INFO commands for their unique
 services.</p>
 <p>Whenever a GenLibrarian is
@@ -4854,53 +4962,64 @@ fields listed above under GenMob and GenShopKeeper, plus a few more:</p>
       <td width="75%"><strong>Description</strong></td>
     </tr>
     <tr>
-      <td><em>Overdue Charge</em></td>
-      <td>This is the amount that a player is charged for having an
+      <td><em>Overdue
+Charge</em></td>
+      <td>This is the amount that
+a player is charged for having an
 item longer that the Overdue mud-days.</td>
     </tr>
     <tr>
-      <td><em>Overdue Charge Pct</em></td>
-      <td>This is the percent of the value of an item that a player is
+      <td><em>Overdue
+Charge Pct</em></td>
+      <td>This is the percent of
+the value of an item that a player is
 charged for having an item longer than the Overdue mud-days.</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Daily Overdue Charge</span></td>
-      <td>This is the amount that a player is charged every mud-day
+      <td>This is the amount that
+a player is charged every mud-day
 after the
 first day, for having an item longer that the Overdue mud-days.</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Daily Overdue Charge Pct</span></td>
-      <td>This is the percent of the value of an item that a player is
+      <td>This is the percent of
+the value of an item that a player is
 charged every mud-day after the
 first day, for having an item longer than the Overdue mud-days.</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Overdue Mud-Days</span></td>
-      <td>The number of mud-days, after the time checked out, that the
+      <td>The number of mud-days,
+after the time checked out, that the
 item will not be considered overdue. After this time, charges will
 begin to accrue.</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Reclaim Mud-Days</span></td>
-      <td>The number of mud-days, after the time checked out, that an
+      <td>The number of mud-days,
+after the time checked out, that an
 item will automatically return to the Library. &nbsp;Any charges
 incurred will remain in effect.</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">Max Borrowed</span></td>
-      <td>The maximum number of unique items that any player can borrow
+      <td>The maximum number of
+unique items that any player can borrow
 at one time.</td>
     </tr>
     <tr>
-      <td><em>Library Name</em></td>
+      <td><em>Library
+Name</em></td>
       <td>This is a unique
 identifier for the library chain. All
 GenLibrarians with the same Library Name will share check-out records.</td>
     </tr>
     <tr>
-      <td><span style="font-style: italic;">Contrbutor Mask</span></td>
-      <td>A Zapper Mask to apply to anyone who attempt to contribute
+      <td><span style="font-style: italic;">Contributor Mask</span></td>
+      <td>A Zapper Mask to apply
+to anyone who attempt to contribute
 new items to the library.</td>
     </tr>
   </tbody>
@@ -4917,7 +5036,8 @@ from one box to another, and can charge for the amount of time an item
 remains in a box. Every player receives a free box with any postman in
 the same area as their Recall/Beacon point. Other boxes with other
 postmen must be purchased. Clans must always purchases their boxes.
-Postmen are&nbsp;interacted with using the GIVE, WITHDRAW, LIST, and
+Postmen are&nbsp;interacted with using the GIVE, WITHDRAW, LIST,
+and
 SAY commands for their unique services.</p>
 <p>Whenever a GenPostman is
 created, much like the GenShopKeeper above,
@@ -5754,7 +5874,8 @@ using this race are rideable.</td>
     </tr>
     <tr>
       <td><span style="font-style: italic;">XP Adjustment Pct</span></td>
-      <td>the amount to adjust gained and lost experience by, as a
+      <td>the amount to adjust
+gained and lost experience by, as a
 percentage of the experience, + or -</td>
     </tr>
     <tr>
@@ -6152,8 +6273,9 @@ area, and use material bonuses based on that type. If you create a
 weapon out of a non-standard, ALLOWABLE MATERIAL, use the appropriate
 charts for determining attack and damage bonuses after the level has
 been set.</p>
-<table style="left: 10px; width: 100%; top: 28408px;" bgcolor="yellow"
- border="1" cellpadding="1" cellspacing="1" width="100%">
+<table
+ style="left: 10px; top: 28408px; background-color: yellow; width: 100%;"
+ border="1" cellpadding="1" cellspacing="1">
   <tbody>
     <tr>
       <td valign="top" width="91"><br>
@@ -6855,8 +6977,7 @@ Axe</p>
   </tbody>
 </table>
 <br>
-<br>
-<p>Notice: On the
+Notice: On the
 Executioner&rsquo;s Axe, and the Katana, the size
 does not correspond to the size formula given above. That&rsquo;s
 OK,
@@ -6866,21 +6987,31 @@ compare many of these levels to that of the weaponsmithing skill, you
 will some discrepancies on the levels. Weapon construction
 isn&rsquo;t
 an exact science, as long as you get it in the general range the game
-will remain balanced.</p>
-<p><u><strong><font style="background-color: aqua;">Determining Weapon
+will remain balanced.<br>
+<br>
+<p><u><strong><font style="background-color: aqua;">Determining Attack
+Bonus and Weapon
 Damage</font></strong></u></p>
 <p>If you wish to create a weapon
 based on the level of a MOB, you can
 use some algebra and convert the equation into a damage equation to
-give you the following formula:</p>
-<p>D= ((L-1)/((R/W)+2) + (W-A)/5
--R)*(((H*2)+1)/2)</p>
+give you the following formulas:</p>
+<p>Attack Bonus = A + (L * N)</p>
+<p>Weapon Damage =
+(((L-1)/((R/W)+2) + (W-A)/5
+-R)*(((H*2)+1)/2)) * M</p>
 <p>where</p>
 <p>L=Level required to use weapon,<br>
 H=number of hands required to wield<br>
-A=base ATTACK bonus of the weapon<br>
+A=base ATTACK bonus of the weapon, -5 for flailed, 10 for edged, dagger<br>
 R=REACH/RANGE of weapon<br>
-W=WEIGHT of weapon</p>
+W=WEIGHT of weapon<br>
+M=Weapon class damage modifier: 1.1 for flailed, 0.8 for edged, 0.5 for
+dagger, 1.5 for thrown, 0.9
+for blunt and staff, 1.0 for all others.<br>
+N=Weapon class attack modifier: &nbsp;-0.3 for flailed, 0.6 for
+edged,
+1.3 for dagger, 0.3 for blunt and staff, 0.0 for all others.</p>
 <p>Round the final number down, to
 a minimum level of 1.</p>
 <p><u><strong><font style="background-color: aqua;">Determining Weapon
@@ -10460,7 +10591,7 @@ Tools</font></a></td>
     <tr>
       <td> <a href="#geni4"><font color="black">GenWeapon</font></a> </td>
       <td> <a href="#geni26">GenCloak</a></td>
-      <td> </td>
+      <td> <a href="#geni27">GenDice</a> </td>
       <td> </td>
       <td> </td>
     </tr>

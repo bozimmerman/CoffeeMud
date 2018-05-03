@@ -22,7 +22,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /*
-   Copyright 2016-2017 Bo Zimmerman
+   Copyright 2016-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ public class PlanarAbility extends StdAbility
 
 	protected Pair<Pair<Integer,Integer>,List<Pair<String,String>>> enableList=null;
 	
-	protected enum PlanarVar
+	public static enum PlanarVar
 	{
 		ID,
 		TRANSITIONAL,
@@ -130,7 +130,7 @@ public class PlanarAbility extends StdAbility
 		AREAEMOTER
 	}
 	
-	public enum PlanarSpecFlag
+	public static enum PlanarSpecFlag
 	{
 		NOINFRAVISION,
 		BADMUNDANEARMOR,
@@ -179,7 +179,9 @@ public class PlanarAbility extends StdAbility
 			if(affected instanceof Area)
 			{
 				planeArea=(Area)affected;
-				int medianLevel=planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+				int medianLevel=planeArea.getPlayerLevel();
+				if(medianLevel == 0)
+					medianLevel=planeArea.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
 				planarLevel=medianLevel;
 			}
 			String specflags = planeVars.get(PlanarVar.SPECFLAGS.toString());
@@ -555,6 +557,7 @@ public class PlanarAbility extends StdAbility
 							{
 								M.baseCharStats().setMyRace(R);
 								M.charStats().setMyRace(R);
+								M.charStats().setWearableRestrictionsBitmap(M.charStats().getWearableRestrictionsBitmap()|M.charStats().getMyRace().forbiddenWornBits());
 							}
 						}
 					}
@@ -984,7 +987,7 @@ public class PlanarAbility extends StdAbility
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected static Map<String,Map<String,String>> getPlaneMap()
+	public static Map<String,Map<String,String>> getPlaneMap()
 	{
 		Map<String,Map<String,String>> map = (Map)Resources.getResource("SKILL_PLANES_OF_EXISTENCE");
 		if(map == null)
@@ -1391,6 +1394,7 @@ public class PlanarAbility extends StdAbility
 		String newPlaneName = planeIDNum.addAndGet(1)+"_"+cloneArea.Name();
 		Area planeArea = CMClass.getAreaType("SubThinInstance");
 		planeArea.setName(newPlaneName);
+		planeArea.addBlurbFlag("PLANEOFEXISTENCE {"+newPlaneName+"}");
 		CMLib.map().addArea(planeArea);
 		planeArea.setAreaState(Area.State.ACTIVE); // starts ticking
 		Room target=CMClass.getLocale("StdRoom");

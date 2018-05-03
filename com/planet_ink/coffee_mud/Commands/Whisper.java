@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ public class Whisper extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()==1)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Whisper what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Whisper what?"));
 			return false;
 		}
 		Environmental target=null;
@@ -82,7 +82,7 @@ public class Whisper extends StdCommand
 		final String combinedCommands=CMParms.combine(commands,1);
 		if(combinedCommands.equals(""))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Whisper what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Whisper what?"));
 			return false;
 		}
 

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -89,6 +89,26 @@ public class Thief_Lore extends ThiefSkill
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		if((givenTarget instanceof Item)&&(auto)&&(asLevel==-1))
+		{
+			if(commands.size()==1)
+			{
+				if(commands.get(0).equals("MSG"))
+				{
+					int levelDiff=givenTarget.phyStats().level()-(mob.phyStats().level()+abilityCode()+(2*getXLEVELLevel(mob)));
+					if(levelDiff<0)
+						levelDiff=0;
+					levelDiff*=5;
+					final boolean success=proficiencyCheck(mob,-levelDiff,auto);
+					commands.clear();
+					if(success && ((Item)givenTarget).secretIdentity().length()>0)
+						commands.add(((Item)givenTarget).secretIdentity());
+					else
+						commands.add(L("You discover no ancient lore about @x1.",givenTarget.name()));
+					return true;
+				}
+			}
+		}
 		final Item target=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_ANY);
 		if(target==null)
 			return false;

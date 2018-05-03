@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -76,7 +76,7 @@ public class Train extends StdCommand
 		List<String> origCmds=new StringXVector(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You have @x1 training sessions. Enter HELP TRAIN for more information.",""+mob.getTrains()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You have @x1 training sessions. Enter HELP TRAIN for more information.",""+mob.getTrains()));
 			return false;
 		}
 		commands.remove(0);
@@ -154,7 +154,7 @@ public class Train extends StdCommand
 			{
 				if(abilityCode<0)
 				{
-					CMLib.commands().doCommandFail(mob,origCmds,L("You can't train for '@x1'. Try @x2HIT POINTS, MANA, MOVE, GAIN, or PRACTICES.",abilityName,thingsToTrainFor.toString()));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You can't train for '@x1'. Try @x2HIT POINTS, MANA, MOVE, GAIN, or PRACTICES.",abilityName,thingsToTrainFor.toString()));
 					return false;
 				}
 			}
@@ -164,14 +164,14 @@ public class Train extends StdCommand
 		{
 			if(mob.getPractices()<7)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to have enough practices to do that."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to have enough practices to do that."));
 				return false;
 			}
 		}
 		else
 		if(mob.getTrains()<=0)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to have enough training sessions to do that."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to have enough training sessions to do that."));
 			return false;
 		}
 		else
@@ -179,13 +179,13 @@ public class Train extends StdCommand
 		{
 			if(trainsRequired>1)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("Training that ability further will require @x1 training points.",""+trainsRequired));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Training that ability further will require @x1 training points.",""+trainsRequired));
 				return false;
 			}
 			else
 			if(trainsRequired==1)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("Training that ability further will require @x1 training points.",""+trainsRequired));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Training that ability further will require @x1 training points.",""+trainsRequired));
 				return false;
 			}
 		}
@@ -215,22 +215,22 @@ public class Train extends StdCommand
 		}
 		if(teacher==mob)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You cannot train with yourself!"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You cannot train with yourself!"));
 			return false;
 		}
 		if(teacher.isAttributeSet(MOB.Attrib.NOTEACH))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is refusing to teach right now.",teacher.name()));
+			CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is refusing to teach right now.",teacher.name()));
 			return false;
 		}
 		if(mob.isAttributeSet(MOB.Attrib.NOTEACH))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You are refusing training at this time."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You are refusing training at this time."));
 			return false;
 		}
 		if(CMLib.flags().isSleeping(mob)||CMLib.flags().isSitting(mob))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("You need to stand up for your training."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You need to stand up for your training."));
 			return false;
 		}
 		if(CMLib.flags().isSleeping(teacher)||CMLib.flags().isSitting(teacher))
@@ -239,18 +239,18 @@ public class Train extends StdCommand
 				CMLib.commands().postStand(teacher,true);
 			if(CMLib.flags().isSleeping(teacher)||CMLib.flags().isSitting(teacher))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("@x1 looks a bit too relaxed to train with you.",teacher.name()));
+				CMLib.commands().postCommandFail(mob,origCmds,L("@x1 looks a bit too relaxed to train with you.",teacher.name()));
 				return false;
 			}
 		}
 		if(mob.isInCombat())
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Not while you are fighting!"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Not while you are fighting!"));
 			return false;
 		}
 		if(teacher.isInCombat())
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Your teacher seems busy right now."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Your teacher seems busy right now."));
 			return false;
 		}
 
@@ -270,7 +270,7 @@ public class Train extends StdCommand
 				{
 					final CharClass C=CMClass.getCharClass(mob.charStats().getCurrentClass().baseClass());
 					final String baseClassName=(C!=null)?C.name():mob.charStats().getCurrentClass().baseClass();
-					CMLib.commands().doCommandFail(mob,origCmds,L("You can only learn that from another @x1.",baseClassName));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You can only learn that from another @x1.",baseClassName));
 				}
 				else
 				if(theClass!=null)
@@ -278,7 +278,7 @@ public class Train extends StdCommand
 					int classLevel=mob.charStats().getClassLevel(theClass);
 					if(classLevel<0)
 						classLevel=0;
-					CMLib.commands().doCommandFail(mob,origCmds,L("You can only learn that from another @x1.",theClass.name(classLevel)));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You can only learn that from another @x1.",theClass.name(classLevel)));
 				}
 				return false;
 			}
@@ -289,7 +289,7 @@ public class Train extends StdCommand
 			final int teachStat=teacher.charStats().getStat(abilityCode);
 			if(curStat>=teachStat)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You can only train with someone whose score is higher than yours."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You can only train with someone whose score is higher than yours."));
 				return false;
 			}
 			curStat=mob.baseCharStats().getStat(abilityCode);

@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -248,9 +248,12 @@ public class Sessions extends StdLibrary implements SessionsList
 						if(S instanceof Thread)
 							CMLib.threads().debugDumpStack("Sessions",(Thread)S);
 					}
-					if(((S.getStatus())!=Session.SessionStatus.LOGIN)
-					||((S.getPreviousCMD()!=null)&&(S.getPreviousCMD().size()>0)))
-						Log.errOut(serviceClient.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?S.getPreviousCMD().toString():""));
+					if(S.getStatus()!=Session.SessionStatus.HANDSHAKE_MCCP)
+					{
+						if(((S.getStatus())!=Session.SessionStatus.LOGIN)
+						||((S.getPreviousCMD()!=null)&&(S.getPreviousCMD().size()>0)))
+							Log.errOut(serviceClient.getName(),"STATUS was :"+S.getStatus()+", LASTCMD was :"+((S.getPreviousCMD()!=null)?S.getPreviousCMD().toString():""));
+					}
 					setThreadStatus(serviceClient,"killing session ");
 					stopSessionAtAllCosts(S);
 					setThreadStatus(serviceClient,"checking player sessions");
@@ -271,7 +274,8 @@ public class Sessions extends StdLibrary implements SessionsList
 		return true;
 	}
 
-	@Override public boolean tick(Tickable ticking, int tickID)
+	@Override 
+	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_ALIVE;
 		try

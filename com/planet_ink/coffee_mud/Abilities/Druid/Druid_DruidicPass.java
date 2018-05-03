@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -165,12 +165,21 @@ public class Druid_DruidicPass extends StdAbility
 		{
 			if(mob.fetchEffect(ID())==null)
 			{
-				mob.addEffect(this);
-				mob.recoverPhyStats();
+				final Ability A=(Ability)this.copyOf();
+				A.setSavable(false);
+				try
+				{
+					mob.addEffect(A);
+					mob.recoverPhyStats();
+					CMLib.tracking().walk(mob,dirCode,false,false);
+				}
+				finally
+				{
+					mob.delEffect(A);
+				}
 			}
-
-			CMLib.tracking().walk(mob,dirCode,false,false);
-			mob.delEffect(this);
+			else
+				CMLib.tracking().walk(mob,dirCode,false,false);
 			mob.recoverPhyStats();
 		}
 		else
@@ -187,11 +196,21 @@ public class Druid_DruidicPass extends StdAbility
 				mob.tell(L("\n\r\n\r"));
 				if(mob.fetchEffect(ID())==null)
 				{
-					mob.addEffect(this);
-					mob.recoverPhyStats();
+					final Ability A=(Ability)this.copyOf();
+					A.setSavable(false);
+					try
+					{
+						mob.addEffect(A);
+						mob.recoverPhyStats();
+						CMLib.tracking().walk(mob,dirCode,false,false);
+					}
+					finally
+					{
+						mob.delEffect(A);
+					}
 				}
-				CMLib.tracking().walk(mob,dirCode,false,false);
-				mob.delEffect(this);
+				else
+					CMLib.tracking().walk(mob,dirCode,false,false);
 				mob.recoverPhyStats();
 				exit.setDoorsNLocks(exit.hasADoor(),open,exit.defaultsClosed(),exit.hasALock(),locked,exit.defaultsLocked());
 				if(opExit!=null)

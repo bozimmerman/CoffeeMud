@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2016-2017 Bo Zimmerman
+   Copyright 2016-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -209,5 +209,23 @@ public class Devil extends Unique
 		affectableStats.setStat(CharStats.STAT_SAVE_POISON,affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
 		affectableStats.setStat(CharStats.STAT_SAVE_ACID,affectableStats.getStat(CharStats.STAT_SAVE_ACID)+10);
 		affectableStats.setStat(CharStats.STAT_SAVE_COLD,affectableStats.getStat(CharStats.STAT_SAVE_COLD)+10);
+	}
+	
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public List<RawMaterial> myResources()
+	{
+		synchronized(resources)
+		{
+			if(resources.size()==0)
+			{
+				resources.addElement(makeResource
+				(L("a @x1 internal organ",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
+				resources.addElement(makeResource
+				(L("a @x1 horn",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
+			}
+		}
+		return resources;
 	}
 }

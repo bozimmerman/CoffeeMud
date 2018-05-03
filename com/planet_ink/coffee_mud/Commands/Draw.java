@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -234,12 +234,12 @@ public class Draw extends Get
 			{
 				final Container container=containers.get(0);
 				if(container.isOpen())
-					CMLib.commands().doCommandFail(mob,origCmds,L("You don't see that in @x1.",container.name()));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You don't see that in @x1.",container.name()));
 				else
-					CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is closed.",container.name()));
+					CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is closed.",container.name()));
 			}
 			else
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see @x1 here.",containerName));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see @x1 here.",containerName));
 		}
 		return false;
 	}

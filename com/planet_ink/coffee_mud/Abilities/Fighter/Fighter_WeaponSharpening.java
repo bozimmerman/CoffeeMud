@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2014-2017 Bo Zimmerman
+   Copyright 2014-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -148,32 +148,35 @@ public class Fighter_WeaponSharpening extends FighterSkill
 	@Override
 	public void unInvoke()
 	{
-		if((affected instanceof MOB)
-		&&(weapon != null)
-		&&(!weapon.amDestroyed()))
+		if(canBeUninvoked())
 		{
-			final MOB mob=(MOB)affected;
-			beneficialAffect(mob,weapon,0,0);
-			final Ability A=weapon.fetchEffect(ID());
-			if(A!=null)
+			if((affected instanceof MOB)
+			&&(weapon != null)
+			&&(!weapon.amDestroyed()))
 			{
-				A.setMiscText(text());
-				A.makeLongLasting();
+				final MOB mob=(MOB)affected;
+				beneficialAffect(mob,weapon,0,0);
+				final Ability A=weapon.fetchEffect(ID());
+				if(A!=null)
+				{
+					A.setMiscText(text());
+					A.makeLongLasting();
+				}
+				weapon.recoverPhyStats();
+				if(mob.location()!=null)
+					mob.location().recoverRoomStats();
+				mob.tell(mob,weapon,null,L("You have finished sharpening <T-NAME>."));
+				weapon = null;
 			}
-			weapon.recoverPhyStats();
-			if(mob.location()!=null)
-				mob.location().recoverRoomStats();
-			mob.tell(mob,weapon,null,L("You have finished sharpening <T-NAME>."));
-			weapon = null;
-		}
-		else
-		if((affected instanceof Item)
-		&&(!((Item)affected).amDestroyed())
-		&&(((Item)affected).owner() instanceof MOB))
-		{
-			final MOB M=(MOB)((Item)affected).owner();
-			if((!M.amDead())&&(CMLib.flags().isInTheGame(M,true))&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
-				M.tell(M,affected,null,L("<T-NAME> no longer seem(s) quite as sharp."));
+			else
+			if((affected instanceof Item)
+			&&(!((Item)affected).amDestroyed())
+			&&(((Item)affected).owner() instanceof MOB))
+			{
+				final MOB M=(MOB)((Item)affected).owner();
+				if((!M.amDead())&&(CMLib.flags().isInTheGame(M,true))&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
+					M.tell(M,affected,null,L("<T-NAME> no longer seem(s) quite as sharp."));
+			}
 		}
 		super.unInvoke();
 	}

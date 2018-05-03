@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -20,7 +21,7 @@ import java.net.URLEncoder;
 import java.util.*;
 
 /*
-   Copyright 2011-2017 Bo Zimmerman
+   Copyright 2011-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -55,6 +56,30 @@ public class AccountCreate extends StdWebMacro
 	}
 	// OK, NO_NEW_PLAYERS, NO_NEW_LOGINS, BAD_USED_NAME, CREATE_LIMIT_REACHED
 
+	public String checkImageVerification(HTTPRequest httpReq, String verify, String verifyKey)
+	{
+		synchronized(ImageVerificationImage.sync)
+		{
+			final SLinkedList<ImageVerificationImage.ImgCacheEntry> cache = ImageVerificationImage.getVerifyCache();
+			boolean found=false;
+			final String hisIp=httpReq.getClientAddress().getHostAddress();
+			for(final Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
+			{
+				final ImageVerificationImage.ImgCacheEntry entry=p.next();
+				if((entry.key.equalsIgnoreCase(verifyKey))
+				&&(entry.ip.equals(hisIp)))
+				{
+					found=true;
+					if(!entry.value.equalsIgnoreCase(verify))
+						return AccountCreateErrors.BAD_VERIFY.toString();
+				}
+			}
+			if(!found)
+				return AccountCreateErrors.NO_VERIFYKEY.toString();
+			return "";
+		}
+	}
+	
 	@Override
 	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
 	{
@@ -67,6 +92,109 @@ public class AccountCreate extends StdWebMacro
 			return Boolean.toString(!emailPassword);
 		if(parms.containsKey("SHOWEMAILADDRESS"))
 			return Boolean.toString(!emailDisabled);
+		
+		String address="unknown";
+		try
+		{
+			address=httpReq.getClientAddress().getHostAddress().trim();
+		}
+		catch(final Exception e)
+		{
+		}
+		if(!CMLib.login().performSpamConnectionCheck(address))
+			return "GO_AWAY";
+		
+		if(parms.containsKey("FORGOT"))
+		{
+			if(!httpReq.isUrlParameter("EMAIL"))
+				return "NO_EMAIL";
+			String emailAddress=httpReq.getUrlParameter("EMAIL");
+			if((emailAddress==null)||(emailAddress.trim().length()==0))
+				return "NO_EMAIL";
+			emailAddress = emailAddress.trim();
+			if(!CMLib.smtp().isValidEmailAddress(emailAddress))
+				return "NO_EMAIL";
+			final String verifykey=httpReq.getUrlParameter("IMGVERKEY");
+			if((verifykey==null)||(verifykey.length()==0))
+				return AccountCreateErrors.NO_VERIFYKEY.toString();
+			final String verify=httpReq.getUrlParameter("VERIFY");
+			if((verify==null)||(verify.length()==0))
+				return AccountCreateErrors.NO_VERIFY.toString();
+			String verifyResult = checkImageVerification(httpReq,verify,verifykey);
+			if(verifyResult.length()>0)
+				return verifyResult;
+			String login=null;
+			String password="";
+			AccountStats acctStats=null;
+			String emailToName=null;
+			if(CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+			{
+				final PlayerAccount acct = CMLib.players().getLoadAccountByEmail(emailAddress);
+				if(acct != null)
+				{
+					acctStats=acct;
+					login=acct.getAccountName();
+					password=acct.getPasswordStr();
+					int highestLevel=0;
+					for(Enumeration<ThinPlayer> tp=acct.getThinPlayers();tp.hasMoreElements();)
+					{
+						final ThinPlayer TP=tp.nextElement();
+						if(TP.level()>highestLevel)
+						{
+							highestLevel=TP.level();
+							emailToName=TP.name();
+						}
+					}
+					if(emailToName==null)
+						emailToName=acct.getAccountName();
+				}
+			}
+			if(login == null)
+			{
+				final MOB mob = CMLib.players().getLoadPlayerByEmail(emailAddress);
+				if(mob == null)
+					return "";
+				if(mob.playerStats()!=null)
+				{
+					emailToName=mob.name();
+					if((CMProps.getIntVar(CMProps.Int.COMMONACCOUNTSYSTEM)>1)
+					&&(mob.playerStats().getAccount()!=null))
+					{
+						acctStats=mob.playerStats().getAccount();
+						login=mob.playerStats().getAccount().getAccountName();
+						password=mob.playerStats().getAccount().getPasswordStr();
+					}
+					else
+					{
+						acctStats=mob.playerStats();
+						login=mob.name();
+						password=mob.playerStats().getPasswordStr();
+					}
+				}
+				else
+					return "";
+			}
+			if((acctStats==null)
+			||(login==null)
+			||(emailToName==null))
+				return "INTERNAL_FAILURE";
+			if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS))
+			{
+				password=CMLib.encoder().generateRandomPassword();
+				acctStats.setPassword(password);
+				if(acctStats instanceof PlayerAccount)
+					CMLib.database().DBUpdateAccount((PlayerAccount)acctStats);
+				else
+				if(acctStats instanceof PlayerStats)
+					CMLib.database().DBUpdatePassword(login,password);
+			}
+			String message="\n\r\n\rThis message was sent through the "+CMProps.getVar(CMProps.Str.MUDNAME)+" mail server at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+", port"+CMProps.getVar(CMProps.Str.MUDPORTS)+".  Please contact the administrators regarding any abuse of this system.\n\r";
+			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), emailToName, "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), emailToName,
+				"Password for "+login,
+				"Your password for "+login+" at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" is: '"+password+"'."+message);
+			return "";
+		}
+		
 		if(!parms.containsKey("CREATE"))
 			return " @break@";
 
@@ -110,25 +238,9 @@ public class AccountCreate extends StdWebMacro
 					return AccountCreateErrors.BAD_EMAILADDRESS.toString();
 			}
 		}
-		synchronized(ImageVerificationImage.sync)
-		{
-			final SLinkedList<ImageVerificationImage.ImgCacheEntry> cache = ImageVerificationImage.getVerifyCache();
-			boolean found=false;
-			final String hisIp=httpReq.getClientAddress().getHostAddress();
-			for(final Iterator<ImageVerificationImage.ImgCacheEntry> p =cache.descendingIterator();p.hasNext();)
-			{
-				final ImageVerificationImage.ImgCacheEntry entry=p.next();
-				if((entry.key.equalsIgnoreCase(verifykey))
-				&&(entry.ip.equals(hisIp)))
-				{
-					found=true;
-					if(!entry.value.equalsIgnoreCase(verify))
-						return AccountCreateErrors.BAD_VERIFY.toString();
-				}
-			}
-			if(!found)
-				return AccountCreateErrors.NO_VERIFYKEY.toString();
-		}
+		String verifyResult = checkImageVerification(httpReq,verify,verifykey);
+		if(verifyResult.length()>0)
+			return verifyResult;
 		name = CMStrings.capitalizeAndLower(name);
 		final CharCreationLibrary.NewCharNameCheckResult checkResult=CMLib.login().newAccountNameCheck(name, httpReq.getClientAddress().getHostAddress());
 		if(checkResult!=CharCreationLibrary.NewCharNameCheckResult.OK)

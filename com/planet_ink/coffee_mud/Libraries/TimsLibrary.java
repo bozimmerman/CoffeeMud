@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2006-2017 Bo Zimmerman
+   Copyright 2006-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,6 +51,69 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return timsLevelCalculator(I,ADJ,RES,CAST,castMul[0]);
 	}
 
+	protected double timsDmgModifier(int weaponClass)
+	{
+		double dmgModifier=1.0;
+		switch(weaponClass)
+		{
+		case Weapon.CLASS_FLAILED:
+			dmgModifier=1.1;
+			break;
+		case Weapon.CLASS_EDGED:
+			dmgModifier=0.8;
+			break;
+		case Weapon.CLASS_DAGGER:
+			dmgModifier=0.5;
+			break;
+		case Weapon.CLASS_BLUNT:
+		case Weapon.CLASS_STAFF:
+			dmgModifier=0.9;
+			break;
+		case Weapon.CLASS_THROWN:
+			dmgModifier=1.5;
+		}
+		return dmgModifier;
+	}
+	
+	protected double timsBaseAttackModifier(int weaponClass)
+	{
+		double baseattack=0.0;
+		switch(weaponClass)
+		{
+		case Weapon.CLASS_FLAILED:
+			baseattack=-5;
+			break;
+		case Weapon.CLASS_EDGED:
+		case Weapon.CLASS_DAGGER:
+		{
+			baseattack = 10;
+			break;
+		}
+		}
+		return baseattack;
+	}
+	
+	protected double timsAttackModifier(int weaponClass)
+	{
+		double attModifier=0.0;
+		switch(weaponClass)
+		{
+		case Weapon.CLASS_FLAILED:
+			attModifier=-0.3;
+			break;
+		case Weapon.CLASS_EDGED:
+			attModifier=0.6;
+			break;
+		case Weapon.CLASS_DAGGER:
+			attModifier=1.3;
+			break;
+		case Weapon.CLASS_BLUNT:
+		case Weapon.CLASS_STAFF:
+			attModifier=0.3;
+		}
+		return attModifier;
+	}
+	
 	@Override
 	public int timsLevelCalculator(Item I, Ability ADJ, Ability RES, Ability CAST, int castMul)
 	{
@@ -78,7 +141,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if(weight<1.0)
 				weight=1.0;
 			final double range=savedI.maxRange();
-			level=(int)Math.round(Math.floor((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)))+1;
+			final int wclass=((Weapon)savedI).weaponClassification();
+			final double dmgMod = this.timsDmgModifier(wclass);
+			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
+			final double attackLevel = (curAttack - this.timsBaseAttackModifier(wclass)) / this.timsAttackModifier(wclass);
+			level = (int)Math.round((dmgLevel + attackLevel) / 2.0);
 		}
 		else
 		{
@@ -450,15 +517,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 
 		if(I instanceof Weapon)
 		{
-			int baseattack=0;
+			int baseattack=(int)Math.round(this.timsBaseAttackModifier(wclass));
 			int basereach=0;
 			int maxreach=0;
 			int basematerial=RawMaterial.MATERIAL_WOODEN;
 			switch(wclass)
 			{
-			case Weapon.CLASS_FLAILED:
-				baseattack=-5;
-				break;
 			case Weapon.CLASS_POLEARM:
 			{
 				basereach = 1;
@@ -479,13 +543,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			}
 			case Weapon.CLASS_EDGED:
 			{
-				baseattack = 10;
 				basematerial = RawMaterial.MATERIAL_METAL;
 				break;
 			}
 			case Weapon.CLASS_DAGGER:
 			{
-				baseattack = 10;
 				basematerial = RawMaterial.MATERIAL_METAL;
 				break;
 			}
@@ -495,6 +557,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				break;
 			}
 			}
+			double dmgModifier = this.timsDmgModifier(wclass);
 			int weight = I.basePhyStats().weight();
 			if(weight<1)
 				weight=8;
@@ -512,8 +575,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if(reach>basereach)
 				basereach=reach;
 
-			int damage=(int)Math.round(((level-1.0)/(((double)reach/(double)weight)+2.0) + ((double)weight-(double)baseattack)/5.0 -reach)*(((hands*2.0)+1.0)/2.0));
+			int damage=(int)Math.round((((level-1.0)/(((double)reach/(double)weight)+2.0) + ((double)weight-(double)baseattack)/5.0 -reach)*(((hands*2.0)+1.0)/2.0))*dmgModifier);
 			final int cost=(int)Math.round(2.0*(((double)weight*(double)materialvalue)+((2.0*damage)+baseattack+(reach*10.0))*damage)/(hands+1.0));
+			baseattack += (int)Math.round(level * this.timsAttackModifier(wclass));
 
 			if(basematerial==RawMaterial.MATERIAL_METAL)
 			{
@@ -848,7 +912,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if(weight<1.0)
 				weight=1.0;
 			final double range=(I.maxRange());
-			level=(int)Math.round(Math.floor((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)))+1;
+			final int wclass = ((Weapon)I).weaponClassification();
+			final double dmgMod = this.timsDmgModifier(wclass);
+			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
+			final double attackLevel = (curAttack - this.timsBaseAttackModifier(wclass)) / this.timsAttackModifier(wclass);
+			level = (int)Math.round((dmgLevel + attackLevel) / 2.0);
 		}
 		else
 		{

@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2012-2017 Bo Zimmerman
+   Copyright 2012-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -232,13 +232,17 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	@Override
 	public String putString(Rider R)
 	{
-		return "in";
+		if((R==null)||(putString.length()==0))
+			return "in";
+		return putString;
 	}
 
 	@Override
 	public String stateStringSubject(Rider R)
 	{
-		return "being used by";
+		if((R==null)||(stateSubjectStr.length()==0))
+			return "being used by";
+		return stateSubjectStr;
 	}
 
 	@Override

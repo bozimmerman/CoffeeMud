@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -107,7 +107,7 @@ public class Get extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<2)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Get what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Get what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -214,23 +214,23 @@ public class Get extends StdCommand
 			{
 				final Container container=containers.get(0);
 				if(container.isOpen())
-					CMLib.commands().doCommandFail(mob,container,null,commands,L("You don't see '@x1' in <T-NAME>.",unmodifiedWhatToGet));
+					CMLib.commands().postCommandFail(mob,container,null,commands,L("You don't see '@x1' in <T-NAME>.",unmodifiedWhatToGet));
 				else
-					CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is closed.",container.name()));
+					CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is closed.",container.name()));
 			}
 			else
 			if(containerName.equalsIgnoreCase("all"))
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see anything here."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see anything here."));
 			else
 			{
 				final java.util.List<Container> V=CMLib.english().possibleContainers(mob,containerCommands,Wearable.FILTER_ANY,false);
 				if(V.size()==0)
-					CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",containerName));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",containerName));
 				else
 				if(V.size()==1)
-					CMLib.commands().doCommandFail(mob,V.get(0),null,commands,L("You don't see '@x1' in <T-NAME> here.",unmodifiedWhatToGet));
+					CMLib.commands().postCommandFail(mob,V.get(0),null,commands,L("You don't see '@x1' in <T-NAME> here.",unmodifiedWhatToGet));
 				else
-					CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' in any '@x2'.",unmodifiedWhatToGet,containerName));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' in any '@x2'.",unmodifiedWhatToGet,containerName));
 			}
 		}
 		return false;

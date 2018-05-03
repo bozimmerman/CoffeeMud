@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ public class Prop_Weather extends Property
 					parm=parm.substring(8);
 					for(int i=0;i<Places.CLIMATE_DESCS.length;i++)
 					{
-						if(Places.CLIMATE_DESCS[i].equalsIgnoreCase("parm"))
+						if(Places.CLIMATE_DESCS[i].equalsIgnoreCase(parm))
 						{
 							if(code<0)
 								code=0;

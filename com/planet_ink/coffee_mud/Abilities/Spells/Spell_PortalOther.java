@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -122,8 +122,8 @@ public class Spell_PortalOther extends Spell
 			mob.tell(L("Create a portal at whom?"));
 			return false;
 		}
-		final String areaName=CMParms.combine(commands,0).trim().toUpperCase();
-		if(mob.location().fetchInhabitant(areaName)!=null)
+		final String targetName=CMParms.combine(commands,0).trim().toUpperCase();
+		if(mob.location().fetchInhabitant(targetName)!=null)
 		{
 			mob.tell(L("Better look around first."));
 			return false;
@@ -135,7 +135,11 @@ public class Spell_PortalOther extends Spell
 		MOB target=null;
 		try
 		{
-			candidates=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, areaName, 10);
+			target=CMLib.players().findPlayerOnline(targetName, false);
+			if(target != null)
+				candidates.add(target);
+			else
+				candidates=CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(), mob, targetName, false, 10);
 		}
 		catch(final NoSuchElementException nse)
 		{
@@ -149,7 +153,7 @@ public class Spell_PortalOther extends Spell
 
 		if((newRoom==null) || (target == null))
 		{
-			mob.tell(L("You can't seem to fixate on '@x1', perhaps they don't exist?",areaName));
+			mob.tell(L("You can't seem to fixate on '@x1', perhaps they don't exist?",targetName));
 			return false;
 		}
 

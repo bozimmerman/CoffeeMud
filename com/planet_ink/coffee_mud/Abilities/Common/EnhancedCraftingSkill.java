@@ -20,7 +20,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 /*
-   Copyright 2006-2017 Bo Zimmerman
+   Copyright 2006-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -81,99 +81,101 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 											 PairVector<EnhancedExpertise,Integer> expMods)
 	{
 		if(expMods!=null)
-		for(int t=0;t<expMods.size();t++)
 		{
-			final EnhancedExpertise type=expMods.elementAt(t).first;
-			final int stage=expMods.elementAt(t).second.intValue();
-			switch(type)
+			for(int t=0;t<expMods.size();t++)
 			{
-			case LITECRAFT:
-				switch(stage)
+				final EnhancedExpertise type=expMods.elementAt(t).first;
+				final int stage=expMods.elementAt(t).second.intValue();
+				switch(type)
 				{
-				case 0:
-					if(req1Required>0)
-						req1Required=atLeast1(req1Required,-0.1);
-					if(req2Required>0)
-						req2Required=atLeast1(req2Required,-0.1);
+				case LITECRAFT:
+					switch(stage)
+					{
+					case 0:
+						if(req1Required>0)
+							req1Required=atLeast1(req1Required,-0.1);
+						if(req2Required>0)
+							req2Required=atLeast1(req2Required,-0.1);
+						break;
+					case 1:
+						if(req1Required>0)
+							req1Required=atLeast1(req1Required,-0.25);
+						if(req2Required>0)
+							req2Required=atLeast1(req2Required,-0.25);
+						break;
+					case 2:
+						if(req1Required>0)
+							req1Required=atLeast1(req1Required,-0.5);
+						if(req2Required>0)
+							req2Required=atLeast1(req2Required,-0.5);
+						break;
+					}
 					break;
-				case 1:
-					if(req1Required>0)
-						req1Required=atLeast1(req1Required,-0.25);
-					if(req2Required>0)
-						req2Required=atLeast1(req2Required,-0.25);
+				case DURACRAFT:
+					switch(stage)
+					{
+					case 0:
+						if(req1Required>0)
+							req1Required=atLeast1(req1Required,0.1);
+						if(req2Required>0)
+							req2Required=atLeast1(req2Required,0.1);
+						break;
+					case 1:
+						if(req1Required>0)
+							req1Required=atLeast1(req1Required,0.2);
+						if(req2Required>0)
+							req2Required=atLeast1(req2Required,0.2);
+						break;
+					case 2:
+						if(req1Required>0)
+							req1Required=atLeast1(req1Required,0.25);
+						if(req2Required>0)
+							req2Required=atLeast1(req2Required,0.25);
+						break;
+					}
 					break;
-				case 2:
-					if(req1Required>0)
-						req1Required=atLeast1(req1Required,-0.5);
-					if(req2Required>0)
-						req2Required=atLeast1(req2Required,-0.5);
+				case QUALCRAFT:
+					switch(stage)
+					{
+					case 0:
+						break;
+					case 1:
+						break;
+					case 2:
+						break;
+					}
+					break;
+				case LTHLCRAFT:
+					switch(stage)
+					{
+					case 0:
+						break;
+					case 1:
+						break;
+					case 2:
+						break;
+					}
+					break;
+				case CNTRCRAFT:
+					switch(stage)
+					{
+					case 0:
+						break;
+					case 1:
+						if(req1Required>0)
+							req1Required=atLeast1(req1Required,0.05);
+						if(req2Required>0)
+							req2Required=atLeast1(req2Required,0.05);
+						break;
+					case 2:
+						if(req1Required>0)
+							req1Required=atLeast1(req1Required,0.10);
+						if(req2Required>0)
+							req2Required=atLeast1(req2Required,0.10);
+						break;
+					}
 					break;
 				}
-				break;
-			case DURACRAFT:
-				switch(stage)
-				{
-				case 0:
-					if(req1Required>0)
-						req1Required=atLeast1(req1Required,0.1);
-					if(req2Required>0)
-						req2Required=atLeast1(req2Required,0.1);
-					break;
-				case 1:
-					if(req1Required>0)
-						req1Required=atLeast1(req1Required,0.2);
-					if(req2Required>0)
-						req2Required=atLeast1(req2Required,0.2);
-					break;
-				case 2:
-					if(req1Required>0)
-						req1Required=atLeast1(req1Required,0.25);
-					if(req2Required>0)
-						req2Required=atLeast1(req2Required,0.25);
-					break;
-				}
-				break;
-			case QUALCRAFT:
-				switch(stage)
-				{
-				case 0:
-					break;
-				case 1:
-					break;
-				case 2:
-					break;
-				}
-				break;
-			case LTHLCRAFT:
-				switch(stage)
-				{
-				case 0:
-					break;
-				case 1:
-					break;
-				case 2:
-					break;
-				}
-				break;
-			case CNTRCRAFT:
-				switch(stage)
-				{
-				case 0:
-					break;
-				case 1:
-					if(req1Required>0)
-						req1Required=atLeast1(req1Required,0.05);
-					if(req2Required>0)
-						req2Required=atLeast1(req2Required,0.05);
-					break;
-				case 2:
-					if(req1Required>0)
-						req1Required=atLeast1(req1Required,0.10);
-					if(req2Required>0)
-						req2Required=atLeast1(req2Required,0.10);
-					break;
-				}
-				break;
 			}
 		}
 		return super.fetchFoundResourceData(mob,
@@ -182,12 +184,43 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				bundle,autoGeneration,expMods);
 	}
 
-	public void fixDataForComponents(int[][] data, List<Object> componentsFoundList)
+	public void fixDataForComponents(int[][] data, String woodRequiredStr, boolean autoGeneration, List<Object> componentsFoundList)
 	{
+		boolean emptyComponents=false;
 		if((componentsFoundList==null)||(componentsFoundList.size()==0))
-			return;
+		{
+			emptyComponents=true;
+			if(componentsFoundList==null)
+				componentsFoundList=new ArrayList<Object>();
+			final List<AbilityComponent> componentsRequirements=getNonStandardComponentRequirements(woodRequiredStr);
+			if(componentsRequirements!=null)
+			{
+				final List<Item> components=CMLib.ableComponents().componentsSample(componentsRequirements, true);
+				if(components != null)
+					componentsFoundList.addAll(components);
+			}
+		}
 
-		if((data[0][FOUND_CODE]==0)&&(data[1][FOUND_CODE]==0))
+		if(autoGeneration)
+		{
+			List<Integer> compInts=new ArrayList<Integer>();
+			for(final Object o : componentsFoundList)
+			{
+				if(o instanceof Item)
+				{
+					final Item I=(Item)o;
+					compInts.add(Integer.valueOf(I.material()));
+					data[0][FOUND_AMT] += I.phyStats().weight();
+				}
+			}
+			if(compInts.size()>0)
+			{
+				Collections.sort(compInts);
+				data[0][FOUND_CODE]=compInts.get((int)Math.round(Math.floor(compInts.size()/2))).intValue();
+			}
+		}
+		else
+		if(((data[0][FOUND_CODE]==0)&&(data[1][FOUND_CODE]==0)))
 		{
 			final List<Integer> rscs=myResources();
 			for(final Object o : componentsFoundList)
@@ -197,22 +230,42 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					final Item I=(Item)o;
 					if(rscs.contains(Integer.valueOf(I.material())))
 					{
-						data[0][FOUND_CODE]=I.material();
-						return;
+						if(data[0][FOUND_CODE]==0)
+							data[0][FOUND_CODE]=I.material();
+						data[0][FOUND_AMT] += I.phyStats().weight();
 					}
 				}
 			}
-			List<Integer> compInts=new ArrayList<Integer>();
+			if(data[0][FOUND_CODE]==0)
+			{
+				List<Integer> compInts=new ArrayList<Integer>();
+				for(final Object o : componentsFoundList)
+				{
+					if(o instanceof Item)
+					{
+						final Item I=(Item)o;
+						compInts.add(Integer.valueOf(I.material()));
+						data[0][FOUND_AMT] += I.phyStats().weight();
+					}
+				}
+				if(compInts.size()>0)
+				{
+					Collections.sort(compInts);
+					data[0][FOUND_CODE]=compInts.get((int)Math.round(Math.floor(compInts.size()/2))).intValue();
+				}
+			}
+		}
+		if(emptyComponents)
+		{
 			for(final Object o : componentsFoundList)
 			{
 				if(o instanceof Item)
 				{
 					final Item I=(Item)o;
-					compInts.add(Integer.valueOf(I.material()));
+					I.destroy();
 				}
 			}
-			Collections.sort(compInts);
-			data[0][FOUND_CODE]=compInts.get((int)Math.round(Math.floor(compInts.size()/2))).intValue();
+			componentsFoundList.clear();
 		}
 	}
 

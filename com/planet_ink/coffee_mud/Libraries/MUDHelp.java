@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -127,9 +127,11 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				{
 					final String ptop = (String)e.nextElement();
 					final String thisTag=rHelpFile.getProperty(ptop);
-					if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
-						|| (rHelpFile.getProperty(thisTag)== null) )
-							reverseList.addElement(ptop);
+					if ((thisTag==null)
+					||(thisTag.length()==0)
+					||(thisTag.length()>=50)
+					|| (rHelpFile.getProperty(thisTag)== null) )
+						reverseList.addElement(ptop);
 				}
 				rHelpFile=getHelpFile();
 			}
@@ -140,9 +142,14 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			{
 				final String ptop = (String)e.nextElement();
 				final String thisTag=rHelpFile.getProperty(ptop);
-				if ((thisTag==null)||(thisTag.length()==0)||(thisTag.length()>=35)
+				if(ptop.length()>0)
+				{
+					if ((thisTag==null)
+					||(thisTag.length()==0)
+					||(thisTag.length()>=50)
 					|| (rHelpFile.getProperty(thisTag)== null) )
 						reverseList.addElement(ptop);
+				}
 			}
 		}
 		Collections.sort(reverseList);
@@ -737,12 +744,26 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		final CharClass C=CMClass.findCharClass(helpStr.toUpperCase());
 		if((C!=null)&&(C.isGeneric()))
 			thisTag="<CHARCLASS>"+C.getStat("HELP");
+
 		final Race R=CMClass.findRace(helpStr.toUpperCase());
-		if((R!=null)&&(R.isGeneric()))
-			thisTag="<RACE>"+R.getStat("HELP");
+		if((R!=null)
+		&&((CMProps.isTheme(R.availabilityCode()) && (R.getStat("HELP").length()>0))
+			|| (rHelpFile == this.getArcHelpFile())))
+		{
+			if(R.getStat("HELP").length()==0)
+				thisTag="<RACE>"+L("No further information available");
+			else
+				thisTag="<RACE>"+R.getStat("HELP");
+		}	
 
 		if(helpStr.equals("!"))
 			helpStr="EXCLAMATION_POINT";
+		if(helpStr.equals(","))
+			helpStr="COMMA";
+		if(helpStr.equals(":"))
+			helpStr="COLON";
+		if(helpStr.equals(";"))
+			helpStr="SEMICOLON";
 		boolean found=false;
 		if(thisTag==null)
 			thisTag=rHelpFile.getProperty(helpStr);

@@ -23,7 +23,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -763,6 +763,22 @@ public class MUDGrinder extends StdWebMacro
 				return "@break@";
 			Log.sysOut("Grinder",mob.Name()+" linked exit "+dir+" from "+R.roomID());
 			final String errMsg=GrinderExits.linkRooms(R,R2,dir,dir2);
+			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
+		}
+		else
+		if(parms.containsKey("CREATEEXIT"))
+		{
+			final MOB mob = Authenticate.getAuthenticatedMob(httpReq);
+			if(mob==null)
+				return "@break@";
+			final Room R=getRoomObject(httpReq,httpReq.getUrlParameter("ROOM"));
+			if(R==null)
+				return "@break@";
+			final int dir=CMLib.directions().getGoodDirectionCode(httpReq.getUrlParameter("LINK"));
+			if(dir<0)
+				return "@break@";
+			Log.sysOut("Grinder",mob.Name()+" created exit for "+dir+" from "+R.roomID());
+			final String errMsg=GrinderExits.createExitForRoom(R,dir);
 			httpReq.addFakeUrlParameter("ERRMSG",errMsg);
 		}
 		else

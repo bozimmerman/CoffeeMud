@@ -26,7 +26,7 @@ import org.mozilla.javascript.*;
 import org.mozilla.javascript.optimizer.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -872,6 +872,18 @@ public class CMClass extends ClassLoader
 	public static final Room getLocale(final String calledThis)
 	{
 		return (Room) getNewGlobal(c().locales, calledThis);
+	}
+
+	/**
+	 * Returns the prototype instance of a locale object of the given ID from your
+	 * classloader
+	 * 
+	 * @param calledThis the ID() of the object to return
+	 * @return the prototype instance of a locale object of the given ID
+	 */
+	public static final Room getLocalePrototype(final String calledThis)
+	{
+		return (Room) getGlobal(c().locales, calledThis);
 	}
 
 	/**
@@ -2059,7 +2071,7 @@ public class CMClass extends ClassLoader
 	 * Given a list of environmentals, this will sort them by {@link Environmental#ID()}
 	 * @param V the list of environmentals
 	 */
-	public static final void sortEnvironmentalsByName(final List<Environmental> V)
+	public static final void sortEnvironmentalsByName(final List<? extends Environmental> V)
 	{
 		Collections.sort(V,new Comparator<Environmental>()
 		{
@@ -2167,7 +2179,7 @@ public class CMClass extends ClassLoader
 			x=requestedPathList.indexOf(';');
 		}
 		loadObjectListToObj(v,defaultPath,requestedPathList,ancestor);
-		return new XVector(new TreeSet(v));
+		return new XVector<Object>(new TreeSet<Object>(v));
 	}
 
 	/**

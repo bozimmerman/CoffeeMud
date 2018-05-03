@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2016-2017 Bo Zimmerman
+   Copyright 2016-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -131,12 +131,21 @@ public class Thief_FenceLoot extends ThiefSkill
 				mob.location().send(mob,msg);
 				invoker=mob;
 				addBackMap.clear();
-				mob.addEffect(this);
-				mob.recoverCharStats();
-				commands.add(0,CMStrings.capitalizeAndLower("SELL"));
-				mob.doCommand(commands,MUDCmdProcessor.METAFLAG_FORCED);
-				commands.add(shopkeeper.name());
-				mob.delEffect(this);
+				final Ability A=(Ability)this.copyOf();
+				A.setSavable(false);
+				mob.addEffect(A);
+				try
+				{
+					mob.recoverCharStats();
+					commands.add(0,CMStrings.capitalizeAndLower("SELL"));
+					mob.doCommand(commands,MUDCmdProcessor.METAFLAG_FORCED);
+					commands.add(shopkeeper.name());
+				}
+				finally
+				{
+					mob.delEffect(A);
+					mob.recoverCharStats();
+				}
 				for(Item I : addBackMap.keySet())
 				{
 					if(mob.isMine(I))

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2011-2017 Bo Zimmerman
+   Copyright 2011-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -145,16 +145,36 @@ public class Prayer_Prophecy extends Prayer
 			String starting;
 			switch(CMLib.dice().roll(1, 10, 0))
 			{
-			case 1: starting="The visions say that "; break;
-			case 2: starting="You see that"; break;
-			case 3: starting="You feel that"; break;
-			case 4: starting="A voice tells you that"; break;
-			case 5: starting="Someone whispers that"; break;
-			case 6: starting="It is revealed to you that"; break;
-			case 7: starting="In your visions, you see that"; break;
-			case 8: starting="In your mind you hear that"; break;
-			case 9: starting="Your spirit tells you that"; break;
-			default: starting="You prophesy that"; break;
+			case 1:
+				starting = "The visions say that ";
+				break;
+			case 2:
+				starting = "You see that";
+				break;
+			case 3:
+				starting = "You feel that";
+				break;
+			case 4:
+				starting = "A voice tells you that";
+				break;
+			case 5:
+				starting = "Someone whispers that";
+				break;
+			case 6:
+				starting = "It is revealed to you that";
+				break;
+			case 7:
+				starting = "In your visions, you see that";
+				break;
+			case 8:
+				starting = "In your mind you hear that";
+				break;
+			case 9:
+				starting = "Your spirit tells you that";
+				break;
+			default:
+				starting = "You prophesy that";
+				break;
 			}
 			final StringBuilder message=new StringBuilder(starting);
 			for(int p=0;p<prophesies.size();p++)

@@ -18,7 +18,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -77,6 +77,8 @@ public class GenWand extends StdWand
 	@Override
 	public Ability getSpell()
 	{
+		if((readableText==null)||(readableText.length()==0))
+			return null;
 		return CMClass.getAbility(readableText);
 	}
 

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -72,10 +72,10 @@ public class Formation extends StdCommand
 		}
 		else
 		if(commands.size()==1)
-			CMLib.commands().doCommandFail(mob,origCmds,L("Put whom in what row?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Put whom in what row?"));
 		else
 		if(mob.numFollowers()==0)
-			CMLib.commands().doCommandFail(mob,origCmds,L("Noone is following you!"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Noone is following you!"));
 		else
 		{
 			String row=commands.get(commands.size()-1);
@@ -87,7 +87,7 @@ public class Formation extends StdCommand
 			if(CMLib.english().containsString(mob.name(),name)
 			   ||CMLib.english().containsString(mob.Name(),name))
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You can not move your own position.  You are always the leader of your party."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You can not move your own position.  You are always the leader of your party."));
 				return false;
 			}
 			for(int f=0;f<mob.numFollowers();f++)
@@ -104,11 +104,11 @@ public class Formation extends StdCommand
 			}
 			if(who==null)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("There is noone following you called @x1.",name));
+				CMLib.commands().postCommandFail(mob,origCmds,L("There is noone following you called @x1.",name));
 				return false;
 			}
 			if((!CMath.isNumber(row))||(CMath.s_int(row)<0))
-				CMLib.commands().doCommandFail(mob,origCmds,L("'@x1' is not a valid row in which to put @x2.  Try number greater than 0.",row,who.name()));
+				CMLib.commands().postCommandFail(mob,origCmds,L("'@x1' is not a valid row in which to put @x2.  Try number greater than 0.",row,who.name()));
 			else
 			{
 				int leaderRow=-1;
@@ -121,10 +121,10 @@ public class Formation extends StdCommand
 					}
 				}
 				if(leaderRow<0)
-					CMLib.commands().doCommandFail(mob,origCmds,L("You do not exist."));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You do not exist."));
 				else
 				if(CMath.s_int(row)<leaderRow)
-					CMLib.commands().doCommandFail(mob,origCmds,L("You can not place @x1 behind your own position, which is @x2.",who.name(),""+leaderRow));
+					CMLib.commands().postCommandFail(mob,origCmds,L("You can not place @x1 behind your own position, which is @x2.",who.name(),""+leaderRow));
 				else
 				{
 					mob.addFollower(who,CMath.s_int(row)-leaderRow);

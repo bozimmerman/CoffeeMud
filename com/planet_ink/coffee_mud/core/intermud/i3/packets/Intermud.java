@@ -313,7 +313,8 @@ public class Intermud implements Runnable, Persistent, Serializable
 					return tickStatus;
 				}
 
-				@Override public boolean tick(Tickable ticking, int tickID)
+				@Override 
+				public boolean tick(Tickable ticking, int tickID)
 				{
 					try
 					{

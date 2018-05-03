@@ -26,7 +26,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -167,15 +167,17 @@ public class RoomData extends StdWebMacro
 		String origCode=code;
 		for(int i=0;i<M.numItems();i++)
 		{
-			if(getItemCode(M,M.getItem(i)).equals(code))
-				return M.getItem(i);
+			final Item I=M.getItem(i);
+			if((I!=null)&&(getItemCode(M,I).equals(code)))
+				return I;
 		}
 		if(code.length()>2)
 			code=code.substring(0,code.length()-2);
 		for(int i=0;i<M.numItems();i++)
 		{
-			if(getItemCode(M,M.getItem(i)).startsWith(code))
-				return M.getItem(i);
+			final Item I=M.getItem(i);
+			if((I!=null)&&(getItemCode(M,I).startsWith(code)))
+				return I;
 		}
 		if(M instanceof ShopKeeper)
 		{
@@ -1071,7 +1073,7 @@ public class RoomData extends StdWebMacro
 		final Pair<String,String>[] activePairs = makePairs(stuff,new Vector<Pair<String,String>>());
 		final List<Pair<String,String>> submittedRoomPairsList = toPairs(mergeParams);
 		final List<Pair<String,String>> commonRoomsPairsList=Arrays.asList(setPairs);
-		final List<Pair<String,String>> currentRoomPairsList=new XVector(Arrays.asList(activePairs));
+		final List<Pair<String,String>> currentRoomPairsList=new XVector<Pair<String,String>>(Arrays.asList(activePairs));
 		RoomData.mergeRoomField(currentRoomPairsList,commonRoomsPairsList,submittedRoomPairsList,new String[]{"AFFECT","ADATA"});
 		RoomData.mergeRoomField(currentRoomPairsList,commonRoomsPairsList,submittedRoomPairsList,new String[]{"BEHAV","BDATA"});
 		RoomData.mergeRoomField(currentRoomPairsList,commonRoomsPairsList,submittedRoomPairsList,new String[]{"MOB"});

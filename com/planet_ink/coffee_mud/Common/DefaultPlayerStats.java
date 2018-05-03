@@ -30,7 +30,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -113,6 +113,7 @@ public class DefaultPlayerStats implements PlayerStats
 
 	protected Map<String, AbilityMapping>		ableMap		= new SHashtable<String, AbilityMapping>();
 	protected Map<String, ExpertiseDefinition>	experMap	= new SHashtable<String, ExpertiseDefinition>();
+	protected Map<CharClass,Map<String,Object>>	classMap	= new STreeMap<CharClass,Map<String,Object>>();
 	
 	protected QuadVector<Integer, Long, String, Long>		levelInfo	= new QuadVector<Integer, Long, String, Long>();
 	
@@ -485,6 +486,17 @@ public class DefaultPlayerStats implements PlayerStats
 		if(account != null)
 			return account.getIgnored();
 		return ignored;
+	}
+
+	@Override
+	public Map<String,Object> getClassVariableMap(final CharClass charClass)
+	{
+		final Map<String,Object> map=this.classMap.get(charClass);
+		if(map != null)
+			return map;
+		final Map<String,Object> newMap = new TreeMap<String,Object>();
+		this.classMap.put(charClass, newMap);
+		return newMap;
 	}
 
 	@Override
@@ -1248,6 +1260,9 @@ public class DefaultPlayerStats implements PlayerStats
 		long lowest=levelInfo.elementAtSecond(0).longValue();
 		for(int l=1;l<levelInfo.size();l++)
 		{
+			if(level==levelInfo.elementAtFirst(l).intValue())
+				return levelInfo.elementAtSecond(l).longValue();
+			else
 			if(level<levelInfo.elementAtFirst(l).intValue())
 				return lowest;
 			lowest=levelInfo.elementAtSecond(l).longValue();
@@ -1262,6 +1277,9 @@ public class DefaultPlayerStats implements PlayerStats
 			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"",Long.valueOf(0));
 		for(int l=1;l<levelInfo.size();l++)
 		{
+			if(level==levelInfo.elementAtFirst(l).intValue())
+				return levelInfo.elementAtThird(l);
+			else
 			if(level<levelInfo.elementAtFirst(l).intValue())
 				return levelInfo.elementAtThird(l-1);
 		}

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class Knock extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<=1)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Knock on what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Knock on what?"));
 			return false;
 		}
 		final String knockWhat=CMParms.combine(commands,1).toUpperCase();
@@ -61,7 +61,7 @@ public class Knock extends StdCommand
 			final Environmental getThis=mob.location().fetchFromMOBRoomItemExit(mob,null,knockWhat,Wearable.FILTER_UNWORNONLY);
 			if(getThis==null)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You don't see '@x1' here.",knockWhat.toLowerCase()));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You don't see '@x1' here.",knockWhat.toLowerCase()));
 				return false;
 			}
 			final CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,L("<S-NAME> knock(s) on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50)));
@@ -74,12 +74,12 @@ public class Knock extends StdCommand
 			Exit E=mob.location().getExitInDir(dir);
 			if(E==null)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("Knock on what?"));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Knock on what?"));
 				return false;
 			}
 			if(!E.hasADoor())
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You can't knock on @x1!",E.name()));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You can't knock on @x1!",E.name()));
 				return false;
 			}
 			final CMMsg msg=CMClass.getMsg(mob,E,null,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,CMMsg.MSG_KNOCK,L("<S-NAME> knock(s) on <T-NAMESELF>.@x1",CMLib.protocol().msp("knock.wav",50)));

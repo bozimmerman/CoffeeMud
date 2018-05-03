@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ public class Flee extends Go
 		{
 			if(!mob.isInCombat())
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("You can only flee while in combat."));
+				CMLib.commands().postCommandFail(mob,origCmds,L("You can only flee while in combat."));
 				return false;
 			}
 		}
@@ -118,7 +118,7 @@ public class Flee extends Go
 				directionCode=CMLib.directions().getGoodDirectionCode(direction);
 			if(directionCode<0)
 			{
-				CMLib.commands().doCommandFail(mob,origCmds,L("Flee where?!"));
+				CMLib.commands().postCommandFail(mob,origCmds,L("Flee where?!"));
 				return false;
 			}
 		}

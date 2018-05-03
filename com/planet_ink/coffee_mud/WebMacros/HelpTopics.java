@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2017 Bo Zimmerman
+   Copyright 2003-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -122,7 +122,6 @@ public class HelpTopics extends StdWebMacro
 				fletter=httpReq.getUrlParameter("FIRSTLETTER");
 			if(fletter==null)
 				fletter="";
-
 			String lastID="";
 			for(int h=0;h<topics.size();h++)
 			{
@@ -130,10 +129,13 @@ public class HelpTopics extends StdWebMacro
 				if(noables&&CMLib.help().isPlayerSkill(topic))
 					continue;
 				if(topic.startsWith(fletter)||(fletter.length()==0))
-				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!topic.equals(lastID))))
 				{
-					httpReq.addFakeUrlParameter("HELPTOPIC",topic);
-					return "";
+					if((last==null)
+					||((last.length()>0)&&(last.equals(lastID))&&(!topic.equals(lastID))&&(topic.length()>0)))
+					{
+						httpReq.addFakeUrlParameter("HELPTOPIC",topic);
+						return "";
+					}
 				}
 				lastID=topic;
 			}

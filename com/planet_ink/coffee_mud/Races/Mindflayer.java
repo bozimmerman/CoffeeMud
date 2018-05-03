@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2017 Bo Zimmerman
+   Copyright 2002-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -220,7 +220,12 @@ public class Mindflayer extends Humanoid
 		{
 			if(resources.size()==0)
 			{
-				resources=super.myResources();
+				resources.add(makeResource
+				(L("a @x1 brain",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
+				resources.add(makeResource
+				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
+				resources.add(makeResource
+				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				resources.add(makeResource
 				(L("a @x1 tenticle",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 			}

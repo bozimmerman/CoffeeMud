@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -92,10 +92,16 @@ public class Spell_ReadMagic extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if((success)&&(mob.fetchEffect(this.ID())==null))
 		{
-			final Ability thisNewOne=(Ability)this.copyOf();
-			mob.addEffect(thisNewOne);
-			CMLib.commands().postRead(mob, target, "", false);
-			mob.delEffect(thisNewOne);
+			final Ability A=(Ability)this.copyOf();
+			mob.addEffect(A);
+			try
+			{
+				CMLib.commands().postRead(mob, target, "", false);
+			}
+			finally
+			{
+				mob.delEffect(A);
+			}
 		}
 		else
 			return beneficialWordsFizzle(mob,target,L("<S-NAME> incant(s) and gaze(s) over <T-NAMESELF>, but nothing more happens."));

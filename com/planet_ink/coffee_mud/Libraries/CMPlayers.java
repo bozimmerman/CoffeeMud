@@ -21,7 +21,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.IOException;
 import java.util.*;
 /*
-   Copyright 2008-2017 Bo Zimmerman
+   Copyright 2008-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -524,7 +524,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		CMLib.coffeeTables().bump(deadMOB,CoffeeTableRow.STAT_PURGES);
 		
-		CMLib.database().DBDeletePlayer(deadMOB.Name());
+		CMLib.database().DBDeletePlayerOnly(deadMOB.Name());
 		deadMOB.delAllItems(false);
 		for(int i=0;i<deadMOB.numItems();i++)
 		{

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -60,6 +60,11 @@ public class ChanWho extends StdCommand
 		{
 			mud=channel.substring(x+1);
 			final int channelInt=CMLib.channels().getChannelIndex(channel.substring(0,x).toUpperCase());
+			if(channelInt<0)
+			{
+				mob.tell(L("You must specify a valid channel name. Try CHANNELS for a list."));
+				return false;
+			}
 			channel=CMLib.channels().getChannel(channelInt).name().toUpperCase();
 			if((channel.length()==0)||(channelInt<0))
 			{

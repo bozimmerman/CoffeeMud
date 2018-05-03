@@ -1,12 +1,12 @@
-% cart	1	60	150	5	GenRideable		2000	2	0	
-small % carriage	5	100	250	10	GenRideable		2000	4	0	
-% storage cart	6	100	250	8	GenRideable	LOCK	4000	1	0	
-small % wagon	7	80	200	7	GenRideable		6000	3	0	
-% chariot	8	80	200	10	GenRideable		200	2	0	
-% wagon	10	140	250	10	GenRideable		12000	6	0	
-% storage wagon	10	140	300	13	GenRideable	LOCK	24000	2	0	
-% carriage	10	180	350	15	GenRideable		12000	8	0	
-large % wagon	15	180	400	20	GenRideable		20000	8	0	
-large % storage wagon	15	180	400	25	GenRideable	LOCK	48000	10	0	
-large % carriage	15	180	450	23	GenRideable		16000	12	0	
-% wheelbarrow	1	15	30	10	GenContainer		500		0	
+% cart	1	60	150	5	GenRideable		2000	2	0		
+small % carriage	5	100	250	10	GenRideable		2000	4	0		
+% storage cart	6	100	250	8	GenRideable	LOCK	4000	1	0		
+small % wagon	7	80	200	7	GenRideable		6000	3	0		
+% chariot	8	80	200	10	GenRideable		200	2	0		
+% wagon	10	140	250	10	GenRideable		12000	6	0		
+% storage wagon	10	140	300	13	GenRideable	LOCK	24000	2	0		
+% carriage	10	180	350	15	GenRideable		12000	8	0		
+large % wagon	15	180	400	20	GenRideable		20000	8	0		
+large % storage wagon	15	180	400	25	GenRideable	LOCK	48000	10	0		
+large % carriage	15	180	450	23	GenRideable		16000	12	0		
+% wheelbarrow	1	15	30	10	GenContainer		500		0		

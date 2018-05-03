@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -115,14 +115,14 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 	
 	@Override 
-	public void setXGridSize(int x)
+	public void setXGridSize(final int x)
 	{ 
 		if(x>0)
 			xsize=x; 
 	}
 	
 	@Override 
-	public void setYGridSize(int y)
+	public void setYGridSize(final int y)
 	{ 
 		if(y>0)
 			ysize=y; 
@@ -185,7 +185,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
-	public Room prepareRoomInDir(Room fromRoom, int direction)
+	public Room prepareRoomInDir(final Room fromRoom, final int direction)
 	{
 		if(amDestroyed)
 		{
@@ -197,7 +197,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		return getAltRoomFrom(fromRoom,direction);
 	}
 
-	private int properRoomIndex(int x, int y)
+	private int properRoomIndex(final int x, final int y)
 	{
 		if(rooms.size()==0)
 			return 0;
@@ -230,7 +230,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 	}
 
-	private void addSortedRoom(Room R, int x, int y)
+	private void addSortedRoom(final Room R, final int x, final int y)
 	{
 		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())||(R==null))
 			return ;
@@ -258,7 +258,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 	}
 
-	private Room getSortedRoom(int x,int y)
+	private Room getSortedRoom(final int x, final int y)
 	{
 		if(rooms.size()==0)
 			return null;
@@ -271,7 +271,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		return null;
 	}
 
-	protected Room getGridRoomIfExists(int x, int y)
+	protected Room getGridRoomIfExists(final int x, final int y)
 	{
 		final Room R=getSortedRoom(x,y);
 		if(R!=null)
@@ -280,7 +280,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
-	public Room prepareGridLocale(Room fromRoom, Room toRoom, int direction)
+	public Room prepareGridLocale(final Room fromRoom, final Room toRoom, final int direction)
 	{
 		final XYVector xy=getRoomXY(fromRoom);
 		if((xy!=null)&&(xy.x>=0)&&(xy.x<xGridSize())&&(xy.y>=0)&&(xy.y<yGridSize()))
@@ -289,18 +289,18 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 
 	@Override 
-	public Room getGridChild(int x, int y)
+	public Room getGridChild(final int x, final int y)
 	{ 
 		return getMakeGridRoom(x,y);
 	}
 	
 	@Override 
-	public Room getGridChild(XYVector xy) 
+	public Room getGridChild(final XYVector xy) 
 	{ 
 		return getGridChild(xy.x,xy.y); 
 	}
 
-	protected Room getMakeSingleGridRoom(int x, int y)
+	protected Room getMakeSingleGridRoom(final int x, final int y)
 	{
 		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize()))
 			return null;
@@ -352,7 +352,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
-	public XYVector getRoomXY(Room room)
+	public XYVector getRoomXY(final Room room)
 	{
 		if((room.getGridParent()!=this)
 		&&(room.getGridParent()!=null))
@@ -372,7 +372,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
-	public XYVector getRoomXY(String roomID)
+	public XYVector getRoomXY(final String roomID)
 	{
 		final Room room=CMLib.map().getRoom(roomID);
 		if(room==null)
@@ -380,7 +380,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		return getRoomXY(room);
 	}
 
-	protected void fillExitsOfGridRoom(Room R, int x, int y)
+	protected void fillExitsOfGridRoom(final Room R, final int x, final int y)
 	{
 		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize()))
 			return;
@@ -534,7 +534,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 	}
 
-	public void tryFillInExtraneousExternal(CrossExit EX, Exit ox, Room linkFrom)
+	public void tryFillInExtraneousExternal(final CrossExit EX, Exit ox, final Room linkFrom)
 	{
 		if(EX==null)
 			return;
@@ -550,7 +550,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 	}
 
-	protected Room getMakeGridRoom(int x, int y)
+	protected Room getMakeGridRoom(final int x, final int y)
 	{
 		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize()))
 			return null;
@@ -569,18 +569,18 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 	
 	@Override 
-	public void delOuterExit(CrossExit x)
+	public void delOuterExit(final CrossExit x)
 	{
 		gridexits.remove(x);
 	}
 	
 	@Override 
-	public void addOuterExit(CrossExit x)
+	public void addOuterExit(final CrossExit x)
 	{
 		gridexits.addElement(x);
 	}
 
-	public Room getAltRoomFrom(Room loc, int direction)
+	public Room getAltRoomFrom(Room loc, final int direction)
 	{
 		if((loc==null)||(direction<0))
 			return null;
@@ -724,7 +724,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		return new ConvertingIterator<ThinGridEntry,Room>(rooms.iterator(),ThinGridEntryConverter.INSTANCE);
 	}
 	
-	protected Room alternativeLink(Room room, Room defaultRoom, int dir)
+	protected Room alternativeLink(final Room room, final Room defaultRoom, final int dir)
 	{
 		if(room.getGridParent()==this)
 		for(int d=0;d<gridexits.size();d++)
@@ -751,7 +751,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		return defaultRoom;
 	}
 
-	protected void halfLink(Room room, Room loc, int dirCode, Exit o)
+	protected void halfLink(final Room room, final Room loc, final int dirCode, Exit o)
 	{
 		if(room==null)
 			return;
@@ -771,7 +771,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		room.setRawExit(dirCode,o);
 	}
 
-	protected void linkRoom(Room room, Room loc, int dirCode, Exit o, Exit ao)
+	protected void linkRoom(final Room room, final Room loc, final int dirCode, Exit o, Exit ao)
 	{
 		if(loc==null)
 			return;
@@ -819,7 +819,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
-	public boolean isMyGridChild(Room loc)
+	public boolean isMyGridChild(final Room loc)
 	{
 		if(loc==null)
 			return false;
@@ -840,7 +840,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
-	public void clearGrid(Room bringBackHere)
+	public void clearGrid(final Room bringBackHere)
 	{
 		try
 		{
@@ -855,7 +855,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
-	public String getGridChildCode(Room loc)
+	public String getGridChildCode(final Room loc)
 	{
 		if(roomID().length()==0)
 			return "";
@@ -874,7 +874,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
-	public int getGridChildX(Room loc)
+	public int getGridChildX(final Room loc)
 	{
 		try
 		{
@@ -900,7 +900,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
-	public int getGridChildY(Room loc)
+	public int getGridChildY(final Room loc)
 	{
 		try
 		{
@@ -917,7 +917,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	}
 
 	@Override
-	public Room getGridChild(String childCode)
+	public Room getGridChild(final String childCode)
 	{
 		if(childCode.equalsIgnoreCase(roomID()))
 			return this;

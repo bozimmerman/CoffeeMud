@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Songs  extends Skills
 {
 	public Songs(){}
@@ -57,7 +56,7 @@ public class Songs  extends Skills
 		final String[] domainName=new String[1];
 		domainName[0]="";
 		level[0]=-1;
-		parseDomainInfo(mob,commands,new XVector(Integer.valueOf(Ability.ACODE_SONG)),level,domain,domainName);
+		parseDomainInfo(mob,commands,new XVector<Integer>(Integer.valueOf(Ability.ACODE_SONG)),level,domain,domainName);
 		msg.append(L("\n\r^HYour @x1songs:^? @x2",domainName[0].replace('_',' '),getAbilities(mob,mob,Ability.ACODE_SONG,domain[0],true,level[0]).toString()));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());

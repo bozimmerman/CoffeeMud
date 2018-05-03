@@ -14,7 +14,7 @@ import com.planet_ink.coffee_web.util.CWDataBuffers;
 import com.planet_ink.coffee_web.util.CWConfig;
 
 /*
-   Copyright 2012-2017 Bo Zimmerman
+   Copyright 2012-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -48,8 +48,8 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 	private final boolean		isDebugging;			  	  // true if the log debug channel is on -- an optomization
 	private final ByteBuffer	responseBuffer;
 	private final String		name;					  	  // the name of this handler -- to denote a request ID
-	private final CWConfig config;
-	private final WebServer server;
+	private final CWConfig		config;
+	private final WebServer		server;
 	
 	private final LinkedList<DataBuffers>writeables	= new LinkedList<DataBuffers>();
 	
@@ -269,12 +269,29 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 		return false;
 	}
 
-	@Override
-
 	/**
 	 * Returns true if this request is currently reading/processing the request
 	 * @return true if in progress
 	 */
-	public boolean isRunning() { return isRunning;}
+	@Override
+	public boolean isRunning()
+	{
+		return isRunning;
+	}
 
+	/**
+	 * Notifies the I/O handler that it has data to process from somewhere
+	 * other than its internal read buffers.
+	 * @return true if the scheduling was successful
+	 */
+	@Override
+	public boolean scheduleProcessing()
+	{
+		if(!closeMe)
+		{
+			server.registerChannelInterest(webServerChannel, SelectionKey.OP_WRITE | SelectionKey.OP_READ);
+		}
+		return !closeMe;
+	}
 }
+

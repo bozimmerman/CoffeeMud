@@ -25,7 +25,7 @@ import java.net.Socket;
 import java.util.*;
 
 /*
-   Copyright 2008-2017 Bo Zimmerman
+   Copyright 2008-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -1584,7 +1584,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 									L.add(new Pair<String,Integer>(RawMaterial.CODES.NAME(x),Integer.valueOf(RawMaterial.CODES.GET(x))));
 								Collections.sort(L,new Comparator<Pair<String,Integer>>()
 								{
-									@Override public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
+									@Override 
+									public int compare(Pair<String, Integer> o1, Pair<String, Integer> o2)
 									{
 										return o1.first.compareToIgnoreCase(o2.first);
 									}
@@ -1753,11 +1754,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return -1;
 				}
 				
-				@SuppressWarnings({ "unchecked", "rawtypes" })
 				@Override
 				public void createChoices()
 				{
-					final XVector V  = new XVector();
+					final XVector<Environmental> V  = new XVector<Environmental>();
 					V.addAll(CMClass.basicItems());
 					V.addAll(CMClass.weapons());
 					V.addAll(CMClass.tech());
@@ -2077,6 +2077,285 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
 				}
 			},
+			new AbilityParmEditorImpl("PAGES_CHARS","Max Pgs/Chrs.",ParmType.SPECIAL)
+			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					return (o instanceof Book) ? 1 : -1;
+				}
+	
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "1/0";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(I instanceof Book)
+						return ""+((Book)I).getMaxPages()+"/"+((Book)I).getMaxCharsPerPage();
+					return "1/0";
+				}
+				
+				@Override
+				public boolean confirmValue(String oldVal)
+				{
+					return oldVal.trim().length() > 0;
+				}
+	
+				@Override
+				public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					int maxPages=1;
+					int maxCharsPage=0;
+					if(oldVal.length()>0)
+					{
+						int x=oldVal.indexOf('/');
+						if(x>0)
+						{
+							maxPages=CMath.s_int(oldVal.substring(0,x));
+							maxCharsPage=CMath.s_int(oldVal.substring(x+1));
+						}
+					}
+					if(httpReq.isUrlParameter(fieldName+"_MAXPAGES"))
+						maxPages = CMath.s_int(httpReq.getUrlParameter(fieldName+"_MAXPAGES"));
+					if(httpReq.isUrlParameter(fieldName+"_MAXCHARSPAGE"))
+						maxCharsPage = CMath.s_int(httpReq.getUrlParameter(fieldName+"_MAXCHARSPAGE"));
+					return ""+maxPages+"/"+maxCharsPage;
+				}
+
+				@Override
+				public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					final String value = webValue(httpReq, parms, oldVal, fieldName);
+					final StringBuffer str = new StringBuffer("");
+					str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0><TR>");
+					String[] vals = this.fakeUserInput(value);
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("Max Pages")+"</FONT></TD>");
+					str.append("<TD WIDTH=25%><INPUT TYPE=TEXT SIZE=5 NAME="+fieldName+"_MAXPAGES VALUE=\""+vals[0]+"\">");
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("Max Chars Page")+"</FONT></TD>");
+					str.append("<TD WIDTH=25%><INPUT TYPE=TEXT SIZE=5 NAME="+fieldName+"_MAXCHARSPAGE VALUE=\""+vals[1]+"\">");
+					str.append("</TD>");
+					str.append("</TR></TABLE>");
+					return str.toString();
+				}
+				
+				@Override
+				public String[] fakeUserInput(String oldVal)
+				{
+					final ArrayList<String> V = new ArrayList<String>();
+					int maxPages=1;
+					int maxCharsPage=0;
+					if(oldVal.length()>0)
+					{
+						int x=oldVal.indexOf('/');
+						if(x>0)
+						{
+							maxPages=CMath.s_int(oldVal.substring(0,x));
+							maxCharsPage=CMath.s_int(oldVal.substring(x+1));
+						}
+					}
+					V.add(""+maxPages);
+					V.add(""+maxCharsPage);
+					return CMParms.toStringArray(V);
+				}
+
+				@Override
+				public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+				{
+					String[] input=this.fakeUserInput(oldVal);
+					int maxPages=CMath.s_int(input[0]);
+					int maxCharsPage=CMath.s_int(input[1]);
+					maxPages = CMLib.genEd().prompt(mob, maxPages, ++showNumber[0], showFlag, L("Max Pages"), null);
+					maxCharsPage = CMLib.genEd().prompt(mob, maxCharsPage, ++showNumber[0], showFlag, L("Max Chars/Page"), null);
+					return maxPages+"/"+maxCharsPage;
+				}
+			},
+			new AbilityParmEditorImpl("RIDE_OVERRIDE_STRS","Ride Strings",ParmType.SPECIAL)
+			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					return (o instanceof Rideable) ? 1 : -1;
+				}
+	
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(I instanceof Rideable)
+					{
+						Rideable R=(Rideable)I;
+						StringBuilder str=new StringBuilder("");
+						//STATESTR,STATESUBJSTR,RIDERSTR,MOUNTSTR,DISMOUNTSTR,PUTSTR
+						str.append(R.getStateString().replace(';', ',')).append(';');
+						str.append(R.getStateStringSubject().replace(';', ',')).append(';');
+						str.append(R.getRideString().replace(';', ',')).append(';');
+						str.append(R.getMountString().replace(';', ',')).append(';');
+						str.append(R.getDismountString().replace(';', ',')).append(';');
+						str.append(R.getPutString().replace(';', ','));
+						if(str.length()==5)
+							return "";
+						return str.toString();
+					}
+					return "";
+				}
+				
+				@Override
+				public boolean confirmValue(String oldVal)
+				{
+					return true;
+				}
+	
+				@Override
+				public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					String[] finput = this.fakeUserInput(oldVal);
+					String stateStr=finput[0];
+					String stateSubjectStr=finput[1];
+					String riderStr=finput[2];
+					String mountStr=finput[3];
+					String dismountStr=finput[4];
+					String putStr=finput[5];
+					if(httpReq.isUrlParameter(fieldName+"_RSTATESTR"))
+						stateStr = httpReq.getUrlParameter(fieldName+"_RSTATESTR");
+					if(httpReq.isUrlParameter(fieldName+"_RSTATESUBJSTR"))
+						stateSubjectStr = httpReq.getUrlParameter(fieldName+"_RSTATESUBJSTR");
+					if(httpReq.isUrlParameter(fieldName+"_RRIDERSTR"))
+						riderStr = httpReq.getUrlParameter(fieldName+"_RRIDERSTR");
+					if(httpReq.isUrlParameter(fieldName+"_RMOUNTSTR"))
+						mountStr = httpReq.getUrlParameter(fieldName+"_RMOUNTSTR");
+					if(httpReq.isUrlParameter(fieldName+"_RDISMOUNTSTR"))
+						dismountStr = httpReq.getUrlParameter(fieldName+"_RDISMOUNTSTR");
+					if(httpReq.isUrlParameter(fieldName+"_RPUTSTR"))
+						putStr = httpReq.getUrlParameter(fieldName+"_RPUTSTR");
+					StringBuilder str=new StringBuilder("");
+					str.append(stateStr.replace(';', ',')).append(';');
+					str.append(stateSubjectStr.replace(';', ',')).append(';');
+					str.append(riderStr.replace(';', ',')).append(';');
+					str.append(mountStr.replace(';', ',')).append(';');
+					str.append(dismountStr.replace(';', ',')).append(';');
+					str.append(putStr.replace(';', ','));
+					if(str.length()==5)
+						return "";
+					return str.toString();
+				}
+
+				@Override
+				public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					final String value = webValue(httpReq, parms, oldVal, fieldName);
+					final StringBuffer str = new StringBuffer("");
+					str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
+					String[] vals = this.fakeUserInput(value);
+					str.append("<TR>");
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("State")+"</FONT></TD>");
+					str.append("<TD><INPUT TYPE=TEXT SIZE=50 NAME="+fieldName+"_RSTATESTR VALUE=\""+vals[0]+"\">");
+					str.append("</TR>");
+					str.append("<TR>");
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("State Subj.")+"</FONT></TD>");
+					str.append("<TD><INPUT TYPE=TEXT SIZE=50 NAME="+fieldName+"_RSTATESUBJSTR VALUE=\""+vals[1]+"\">");
+					str.append("</TR>");
+					str.append("<TR>");
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("Rider")+"</FONT></TD>");
+					str.append("<TD><INPUT TYPE=TEXT SIZE=50 NAME="+fieldName+"_RRIDERSTR VALUE=\""+vals[2]+"\">");
+					str.append("</TR>");
+					str.append("<TR>");
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("Mount")+"</FONT></TD>");
+					str.append("<TD><INPUT TYPE=TEXT SIZE=50 NAME="+fieldName+"_RMOUNTSTR VALUE=\""+vals[3]+"\">");
+					str.append("</TR>");
+					str.append("<TR>");
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("Dismount")+"</FONT></TD>");
+					str.append("<TD><INPUT TYPE=TEXT SIZE=50 NAME="+fieldName+"_RDISMOUNTSTR VALUE=\""+vals[4]+"\">");
+					str.append("</TR>");
+					str.append("<TR>");
+					str.append("<TD WIDTH=25%><FONT COLOR=WHITE>"+L("Put")+"</FONT></TD>");
+					str.append("<TD><INPUT TYPE=TEXT SIZE=50 NAME="+fieldName+"_RPUTSTR VALUE=\""+vals[5]+"\">");
+					str.append("</TR>");
+					str.append("</TABLE>");
+					return str.toString();
+				}
+				
+				@Override
+				public String[] fakeUserInput(String oldVal)
+				{
+					final ArrayList<String> V = new ArrayList<String>();
+					String stateStr="";
+					String stateSubjectStr="";
+					String riderStr="";
+					String mountStr="";
+					String dismountStr="";
+					String putStr="";
+					if(oldVal.length()>0)
+					{
+						List<String> lst=CMParms.parseSemicolons(oldVal.trim(),false);
+						if(lst.size()>0)
+							stateStr=lst.get(0).replace(';',',');
+						if(lst.size()>1)
+							stateSubjectStr=lst.get(1).replace(';',',');
+						if(lst.size()>2)
+							riderStr=lst.get(2).replace(';',',');
+						if(lst.size()>3)
+							mountStr=lst.get(3).replace(';',',');
+						if(lst.size()>4)
+							dismountStr=lst.get(4).replace(';',',');
+						if(lst.size()>5)
+							putStr=lst.get(5).replace(';',',');
+					}
+					V.add(stateStr);
+					V.add(stateSubjectStr);
+					V.add(riderStr);
+					V.add(mountStr);
+					V.add(dismountStr);
+					V.add(putStr);
+					return CMParms.toStringArray(V);
+				}
+
+				@Override
+				public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+				{
+					String[] finput = this.fakeUserInput(oldVal);
+					String stateStr=finput[0];
+					String stateSubjectStr=finput[1];
+					String riderStr=finput[2];
+					String mountStr=finput[3];
+					String dismountStr=finput[4];
+					String putStr=finput[5];
+					stateStr = CMLib.genEd().prompt(mob, stateStr, ++showNumber[0], showFlag, L("State Str"), true);
+					stateSubjectStr = CMLib.genEd().prompt(mob, stateSubjectStr, ++showNumber[0], showFlag, L("State Subject"), true);
+					riderStr = CMLib.genEd().prompt(mob, riderStr, ++showNumber[0], showFlag, L("Ride Str"), true);
+					mountStr = CMLib.genEd().prompt(mob, mountStr, ++showNumber[0], showFlag, L("Mount Str"), true);
+					dismountStr = CMLib.genEd().prompt(mob, dismountStr, ++showNumber[0], showFlag, L("Dismount Str"), true);
+					putStr = CMLib.genEd().prompt(mob, putStr, ++showNumber[0], showFlag, L("Put Str"), true);
+					StringBuilder str=new StringBuilder("");
+					str.append(stateStr.replace(';', ',')).append(';');
+					str.append(stateSubjectStr.replace(';', ',')).append(';');
+					str.append(riderStr.replace(';', ',')).append(';');
+					str.append(mountStr.replace(';', ',')).append(';');
+					str.append(dismountStr.replace(';', ',')).append(';');
+					str.append(putStr.replace(';', ','));
+					if(str.length()==5)
+						return "";
+					return str.toString();
+				}
+			},
 			new AbilityParmEditorImpl("CONTAINER_CAPACITY","Cap.",ParmType.NUMBER)
 			{
 				@Override
@@ -2168,15 +2447,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return str.toString();
 				}
 			},
-			new AbilityParmEditorImpl("CONTAINER_TYPE_OR_LIDLOCK","Con.",ParmType.MULTICHOICES)
+			new AbilityParmEditorImpl("CONTAINER_TYPE_OR_LIDLOCK","Con.",ParmType.SPECIAL)
 			{
 				@Override
 				public void createChoices() 
 				{
-					createBinaryChoices(Container.CONTAIN_DESCS);
+					super.choices = new PairVector<String,String>();
+					for(String s : Container.CONTAIN_DESCS)
+						choices().add(s.toUpperCase().trim(),s);
 					choices().add("LID","Lid");
 					choices().add("LOCK","Lock");
-					choices().add("","");
 				}
 	
 				@Override
@@ -2194,24 +2474,96 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
-					if(!(I instanceof Container))
-						return "";
-					final Container C=(Container)I;
-					if(C.hasALock())
-						return "LOCK";
-					if(C.hasADoor())
-						return "LID";
-					final StringBuilder str=new StringBuilder("");
-					for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
+					StringBuilder str=new StringBuilder("");
+					if(I instanceof Container)
 					{
-						if(CMath.isSet(C.containTypes(), i-1))
+						final Container C=(Container)I;
+						if(C.hasALock())
+							str.append("LOCK");
+						if(str.length()>0)
+							str.append("|");
+						if(C.hasADoor())
+							str.append("LID");
+						if(str.length()>0)
+							str.append("|");
+						for(int i=1;i<Container.CONTAIN_DESCS.length;i++)
 						{
-							if(str.length()>0)
-								str.append("|");
-							str.append(Container.CONTAIN_DESCS[i]);
+							if(CMath.isSet(C.containTypes(), i-1))
+							{
+								if(str.length()>0)
+									str.append("|");
+								str.append(Container.CONTAIN_DESCS[i]);
+							}
 						}
 					}
 					return str.toString();
+				}
+				
+				@Override
+				public String[] fakeUserInput(String oldVal)
+				{
+					if(oldVal.trim().length()==0) 
+						return new String[]{"NULL"};
+					return CMParms.parseAny(oldVal,'|',true).toArray(new String[0]);
+				}
+				
+				@Override
+				public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					final String webValue = httpReq.getUrlParameter(fieldName);
+					if(webValue == null)
+						return oldVal;
+					String id="";
+					int index=0;
+					StringBuilder str=new StringBuilder("");
+					for(;httpReq.isUrlParameter(fieldName+id);id=""+(++index))
+					{
+						final String newVal = httpReq.getUrlParameter(fieldName+id);
+						if((newVal!=null)&&(newVal.length()>0)&&(choices().containsFirst(newVal)))
+							str.append(newVal).append("|");
+					}
+					return str.toString();
+				}
+				
+				@Override
+				public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag)
+				throws java.io.IOException
+				{
+					return CMLib.genEd().promptMultiSelectList(mob,oldVal,"|",++showNumber[0],showFlag,prompt(),choices(),false);
+				}
+				
+				@Override
+				public boolean confirmValue(String oldVal)
+				{
+					final List<String> webVals=CMParms.parseAny(oldVal.toUpperCase().trim(), "|", true);
+					for(String s : webVals)
+					{
+						if(!choices().containsFirst(s))
+							return false;
+					}
+					return true;
+				}
+				
+				@Override
+				public String webField(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					final String webValue = webValue(httpReq,parms,oldVal,fieldName);
+					final List<String> webVals=CMParms.parseAny(webValue.toUpperCase().trim(), "|", true);
+					String onChange = null;
+					onChange = " MULTIPLE ";
+					if(!parms.containsKey("NOSELECT"))
+						onChange+= "ONCHANGE=\"MultiSelect(this);\"";
+					StringBuilder str=new StringBuilder("");
+					str.append("\n\r<SELECT NAME="+fieldName+onChange+">");
+					for(int i=0;i<choices().size();i++)
+					{
+						final String option = (choices().get(i).first);
+						str.append("<OPTION VALUE=\""+option+"\" ");
+						if(webVals.contains(option))
+							str.append("SELECTED");
+						str.append(">"+(choices().get(i).second));
+					}
+					return str.toString()+"</SELECT>";
 				}
 			},
 			new AbilityParmEditorImpl("CODED_SPELL_LIST","Spell Affects",ParmType.SPECIAL)
@@ -3073,6 +3425,33 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return ""+((Drink)I).liquidHeld();
 				}
 			},
+			new AbilityParmEditorImpl("MAX_WAND_USES","Max.",ParmType.NUMBER)
+			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					return (o instanceof Wand) ? 5 : -1;
+				}
+	
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "25";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(!(I instanceof Wand))
+						return "";
+					return ""+((Wand)I).maxUses();
+				}
+			},
 			new AbilityParmEditorImpl("WEAPON_CLASS","WClas",ParmType.CHOICES)
 			{
 				@Override
@@ -3730,6 +4109,69 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
+			new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL_AMT","Rsc Amt",ParmType.NUMBER)
+			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					return ((o instanceof Weapon) && (!(o instanceof Ammunition))) ? 2 : -1;
+				}
+	
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+	
+				@Override
+				public boolean confirmValue(String oldVal)
+				{
+					if(oldVal.trim().length()==0)
+						return true;
+					return CMath.isInteger(oldVal);
+				}
+
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(I==null)
+						return "";
+					List<String> words=CMParms.parse(I.name());
+					for(int i=words.size()-1;i>=0;i--)
+					{
+						String s=words.get(i);
+						int y=s.indexOf('-');
+						if(y>=0)
+						{
+							words.add(s.substring(0, y));
+							words.add(s.substring(0, y+1));
+						}
+					}
+					for(String word : words)
+					{
+						if(word.length()>0)
+						{
+							int rsc=RawMaterial.CODES.FIND_IgnoreCase(word);
+							if((rsc > 0)&&(rsc != I.material()))
+							{
+								if(I.basePhyStats().level()>80)
+									return ""+4;
+								
+								if(I.basePhyStats().level()>40)
+									return ""+2;
+								
+								return ""+1;
+							}
+						}
+					}
+					return "";
+				}
+			},
 			new AbilityParmEditorImpl("OPTIONAL_BUILDING_RESOURCE_OR_MATERIAL","Rsc/Mat",ParmType.CHOICES)
 			{
 				@Override
@@ -3749,6 +4191,26 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
+					List<String> words=CMParms.parse(I.name());
+					for(int i=words.size()-1;i>=0;i--)
+					{
+						String s=words.get(i);
+						int y=s.indexOf('-');
+						if(y>=0)
+						{
+							words.add(s.substring(0, y));
+							words.add(s.substring(0, y+1));
+						}
+					}
+					for(String word : words)
+					{
+						if(word.length()>0)
+						{
+							int rsc=RawMaterial.CODES.FIND_IgnoreCase(word);
+							if((rsc > 0)&&(rsc != I.material()))
+								return RawMaterial.CODES.NAME(rsc);
+						}
+					}
 					return "";
 				}
 	

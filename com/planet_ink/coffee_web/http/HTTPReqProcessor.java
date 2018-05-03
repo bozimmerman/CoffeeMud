@@ -28,7 +28,7 @@ import com.planet_ink.coffee_web.util.RequestStats;
 import com.planet_ink.coffee_mud.core.collections.Pair;
 
 /*
-   Copyright 2012-2017 Bo Zimmerman
+   Copyright 2012-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -712,7 +712,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 						final String[] eTagMarker =generateETagMarker(request);
 						buffers=config.getFileCache().getFileData(pageFile, eTagMarker);
 						if((eTagMarker[0]!=null)&&(eTagMarker[0].length()>0))
-									extraHeaders.put(HTTPHeader.Common.ETAG, eTagMarker[0]);
+							extraHeaders.put(HTTPHeader.Common.ETAG, eTagMarker[0]);
 						checkIfModifiedSince(request,buffers);
 						buffers = handleEncodingRequest(request, pageFile, buffers, extraHeaders);
 					}
@@ -725,7 +725,7 @@ public class HTTPReqProcessor implements HTTPFileGetter
 					if(fullRange != null)
 					{
 						responseStatus = HTTPStatus.S206_PARTIAL_CONTENT;
-								extraHeaders.put(HTTPHeader.Common.CONTENT_RANGE, "bytes "+fullRange[0]+"-"+fullRange[1]+"/"+fullSize);
+						extraHeaders.put(HTTPHeader.Common.CONTENT_RANGE, "bytes "+fullRange[0]+"-"+fullRange[1]+"/"+fullSize);
 					}
 					break;
 				}

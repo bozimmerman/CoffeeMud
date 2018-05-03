@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ public class NoFollow extends Follow
 			if(name.equalsIgnoreCase("ALL"))
 			{
 				if(mob.numFollowers()==0)
-					CMLib.commands().doCommandFail(mob,origCmds,L("No one is following you!"));
+					CMLib.commands().postCommandFail(mob,origCmds,L("No one is following you!"));
 				else
 					unfollow(mob,((commands.size()>1)&&(commands.get(1).equalsIgnoreCase("QUIETLY"))));
 				return false; 
@@ -71,9 +71,9 @@ public class NoFollow extends Follow
 			{
 				M=mob.location().fetchInhabitant(name);
 				if(M!=null)
-					CMLib.commands().doCommandFail(mob,origCmds,L("@x1 is not following you!",M.name(mob)));
+					CMLib.commands().postCommandFail(mob,origCmds,L("@x1 is not following you!",M.name(mob)));
 				else
-					CMLib.commands().doCommandFail(mob,origCmds,L("There is noone here called '@x1' following you!",name));
+					CMLib.commands().postCommandFail(mob,origCmds,L("There is noone here called '@x1' following you!",name));
 				return false;
 			}
 			if((mob.location()!=null)&&(M!=null)&&(M.amFollowing()==mob))
@@ -81,7 +81,7 @@ public class NoFollow extends Follow
 				nofollow(M,true,false);
 				return true;
 			}
-			CMLib.commands().doCommandFail(mob,origCmds,L("There is noone called '@x1' following you!",name));
+			CMLib.commands().postCommandFail(mob,origCmds,L("There is noone called '@x1' following you!",name));
 			return false;
 		}
 		if(!mob.isAttributeSet(MOB.Attrib.NOFOLLOW))

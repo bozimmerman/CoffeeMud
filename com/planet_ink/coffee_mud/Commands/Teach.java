@@ -20,7 +20,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -56,7 +56,7 @@ public class Teach extends StdCommand
 		Vector<String> origCmds=new XVector<String>(commands);
 		if(commands.size()<3)
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("Teach who what?"));
+			CMLib.commands().postCommandFail(mob,origCmds,L("Teach who what?"));
 			return false;
 		}
 		commands.remove(0);
@@ -64,7 +64,7 @@ public class Teach extends StdCommand
 		final MOB student=mob.location().fetchInhabitant(commands.get(0));
 		if((student==null)||(!CMLib.flags().canBeSeenBy(student,mob)))
 		{
-			CMLib.commands().doCommandFail(mob,origCmds,L("That person doesn't seem to be here."));
+			CMLib.commands().postCommandFail(mob,origCmds,L("That person doesn't seem to be here."));
 			return false;
 		}
 		commands.remove(0);
@@ -115,7 +115,7 @@ public class Teach extends StdCommand
 			{
 				return CMLib.expertises().postTeach(mob,student,theExpertise);
 			}
-			CMLib.commands().doCommandFail(mob,origCmds,L("You don't seem to know @x1.",abilityName));
+			CMLib.commands().postCommandFail(mob,origCmds,L("You don't seem to know @x1.",abilityName));
 			return false;
 		}
 		return CMLib.expertises().postTeach(mob,student,myAbility);

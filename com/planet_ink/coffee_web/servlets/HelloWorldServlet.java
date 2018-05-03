@@ -13,7 +13,7 @@ import com.planet_ink.coffee_web.interfaces.SimpleServletRequest;
 import com.planet_ink.coffee_web.interfaces.SimpleServletResponse;
 
 /*
-   Copyright 2012-2017 Bo Zimmerman
+   Copyright 2012-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -88,11 +88,11 @@ public class HelloWorldServlet implements SimpleServlet
 			this.doDynamicPost(request, response);
 		else
 		{
-		for(final String cookieName : request.getCookieNames())
-			response.setCookie(cookieName, request.getCookie(cookieName));
-		for(final String field : request.getUrlParameters())
-			response.setHeader("X-"+field, request.getUrlParameter(field));
-		response.setStatusCode(HTTPStatus.S204_NO_CONTENT.getStatusCode());
+			for(final String cookieName : request.getCookieNames())
+				response.setCookie(cookieName, request.getCookie(cookieName));
+			for(final String field : request.getUrlParameters())
+				response.setHeader("X-"+field, request.getUrlParameter(field));
+			response.setStatusCode(HTTPStatus.S204_NO_CONTENT.getStatusCode());
 		}
 	}
 

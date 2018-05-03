@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings({"unchecked","rawtypes"})
 public class Thief_Squatting extends ThiefSkill
 {
 	@Override
@@ -173,7 +172,7 @@ public class Thief_Squatting extends ThiefSkill
 				mob.tell(L("Your squat has succeeded.  This property now belongs to you."));
 				title.setOwnerName(mob.Name());
 				title.updateTitle();
-				title.updateLot(new XVector(mob.name()));
+				title.updateLot(new XVector<String>(mob.name()));
 			}
 		}
 		failed=false;

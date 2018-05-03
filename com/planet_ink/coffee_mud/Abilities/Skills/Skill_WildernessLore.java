@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2017 Bo Zimmerman
+   Copyright 2004-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -90,6 +90,12 @@ public class Skill_WildernessLore extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		boolean report=false;
+		if((commands.size()>1)&&(commands.get(commands.size()-1).equalsIgnoreCase("REPORT")))
+		{
+			commands.remove(commands.size()-1);
+			report=true;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -107,70 +113,136 @@ public class Skill_WildernessLore extends StdSkill
 			switch(room.domainType())
 			{
 			case Room.DOMAIN_INDOORS_METAL:
-				mob.tell(L("You are in a metal structure."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a metal structure.")));
+				else
+					mob.tell(L("You are in a metal structure."));
 				break;
 			case Room.DOMAIN_OUTDOORS_SPACEPORT:
-				mob.tell(L("You are at a space port."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a space port.")));
+				else
+					mob.tell(L("You are at a space port."));
 				break;
 			case Room.DOMAIN_OUTDOORS_CITY:
-				mob.tell(L("You are on a city street."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a city street.")));
+				else
+					mob.tell(L("You are on a city street."));
 				break;
 			case Room.DOMAIN_OUTDOORS_WOODS:
-				mob.tell(L("You are in a forest."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a forest.")));
+				else
+					mob.tell(L("You are in a forest."));
 				break;
 			case Room.DOMAIN_OUTDOORS_ROCKS:
-				mob.tell(L("You are on a rocky plain."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a rocky plain.")));
+				else
+					mob.tell(L("You are on a rocky plain."));
 				break;
 			case Room.DOMAIN_OUTDOORS_PLAINS:
-				mob.tell(L("You are on the plains."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is the plains.")));
+				else
+					mob.tell(L("You are on the plains."));
 				break;
 			case Room.DOMAIN_OUTDOORS_UNDERWATER:
-				mob.tell(L("You are under the water."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is under the water.")));
+				else
+					mob.tell(L("You are under the water."));
 				break;
 			case Room.DOMAIN_OUTDOORS_AIR:
-				mob.tell(L("You are up in the air."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is up in the air.")));
+				else
+					mob.tell(L("You are up in the air."));
 				break;
 			case Room.DOMAIN_OUTDOORS_WATERSURFACE:
-				mob.tell(L("You are on the surface of the water."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a water surface.")));
+				else
+					mob.tell(L("You are on the surface of the water."));
 				break;
 			case Room.DOMAIN_OUTDOORS_JUNGLE:
-				mob.tell(L("You are in a jungle."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a jungle.")));
+				else
+					mob.tell(L("You are in a jungle."));
 				break;
 			case Room.DOMAIN_OUTDOORS_SEAPORT:
-				mob.tell(L("You are at a seaport."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a seaport.")));
+				else
+					mob.tell(L("You are at a seaport."));
 				break;
 			case Room.DOMAIN_OUTDOORS_SWAMP:
-				mob.tell(L("You are in a swamp."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a swamp.")));
+				else
+					mob.tell(L("You are in a swamp."));
 				break;
 			case Room.DOMAIN_OUTDOORS_DESERT:
-				mob.tell(L("You are in a desert."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a desert.")));
+				else
+					mob.tell(L("You are in a desert."));
 				break;
 			case Room.DOMAIN_OUTDOORS_HILLS:
-				mob.tell(L("You are in the hills."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is the hills.")));
+				else
+					mob.tell(L("You are in the hills."));
 				break;
 			case Room.DOMAIN_OUTDOORS_MOUNTAINS:
-				mob.tell(L("You are on a mountain."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is the mountains.")));
+				else
+					mob.tell(L("You are on a mountain."));
 				break;
 			case Room.DOMAIN_INDOORS_STONE:
-				mob.tell(L("You are in a stone structure."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a stone enclosure.")));
+				else
+					mob.tell(L("You are in a stone structure."));
 				break;
 			case Room.DOMAIN_INDOORS_WOOD:
-				mob.tell(L("You are in a wooden structure."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a wooden enclosure.")));
+				else
+					mob.tell(L("You are in a wooden structure."));
 				break;
 			case Room.DOMAIN_INDOORS_CAVE:
-				mob.tell(L("You are in a cave."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a cave.")));
+				else
+					mob.tell(L("You are in a cave."));
 				break;
 			case Room.DOMAIN_INDOORS_MAGIC:
-				mob.tell(L("You are in a magical place."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a magical place.")));
+				else
+					mob.tell(L("You are in a magical place."));
 				break;
 			case Room.DOMAIN_INDOORS_UNDERWATER:
-				mob.tell(L("You are under the water."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is an under water enclosure.")));
+				else
+					mob.tell(L("You are under the water."));
 				break;
 			case Room.DOMAIN_INDOORS_AIR:
-				mob.tell(L("You are up in a large indoor space."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is a large enclosed space.")));
+				else
+					mob.tell(L("You are up in a large indoor space."));
 				break;
 			case Room.DOMAIN_INDOORS_WATERSURFACE:
-				mob.tell(L("You are inside, on the surface of the water."));
+				if(report)
+					CMLib.commands().postSay(mob, (L("This is an enclosed water surface.")));
+				else
+					mob.tell(L("You are inside, on the surface of the water."));
 				break;
 			}
 			final int derivedClimate=room.getClimateType();
@@ -190,7 +262,56 @@ public class Skill_WildernessLore extends StdSkill
 					conditions.add("windy");
 				str.append(CMLib.english().toEnglishStringList(conditions.toArray(new String[0])));
 				str.append(L(" here."));
-				mob.tell(str.toString());
+				if(report)
+					CMLib.commands().postSay(mob, str.toString());
+				else
+					mob.tell(str.toString());
+			}
+			int xlvl = super.getXLEVELLevel(mob);
+			if((xlvl > 0)&&(room.resourceChoices()!=null)&&(room.resourceChoices().size()>0))
+			{
+				List<String> rscNames=new ArrayList<String>();
+				int maxRscs=xlvl;
+				if(room.resourceChoices().size()<maxRscs)
+					maxRscs=room.resourceChoices().size();
+				int[] chances=new int[room.resourceChoices().size()];
+				String[] chancestr=new String[room.resourceChoices().size()];
+				if(xlvl >= 5)
+				{
+					long total=0;
+					for(int i=0;i<room.resourceChoices().size();i++)
+					{
+						int rscCode=room.resourceChoices().get(i).intValue();
+						chances[i]=RawMaterial.CODES.FREQUENCY(rscCode);
+						total+=chances[i];
+					}
+					for(int i=0;i<room.resourceChoices().size();i++)
+					{
+						double chancePct = CMath.div(chances[i],(int)total)*100.0;
+						if(chancePct < 1)
+							chancestr[i] = ""+CMath.div(Math.round(chancePct*100.0),100.0);
+						else
+							chancestr[i] = ""+(int)Math.round(chancePct);
+					}
+				}
+				List<Integer> unused=new XVector<Integer>(room.resourceChoices());
+				for(int i=0;i<xlvl && unused.size()>0;i++)
+				{
+					int rscIndex=CMLib.dice().roll(1, unused.size(), -1);
+					int rscChoice=unused.remove(rscIndex).intValue();
+					String resourceName = CMLib.materials().getResourceDesc(rscChoice).toLowerCase();
+					if(!resourceName.endsWith("s"))
+						resourceName = CMLib.english().makePlural(resourceName);
+					if(xlvl >=5)
+						rscNames.add(resourceName +" ("+chancestr[i]+"%)");
+					else
+						rscNames.add(resourceName);
+				}
+				String list=CMLib.english().toEnglishStringList(rscNames);
+				if(report)
+					CMLib.commands().postSay(mob, L("This is the sort of place that one might find @x1.",list));
+				else
+					mob.tell(L("This is the sort of place that one might find @x1.",list));
 			}
 		}
 		else

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2014-2017 Bo Zimmerman
+   Copyright 2014-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -125,6 +125,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 						M.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE, 10);
 						M.charStats().setMyRace(R);
 						M.charStats().setStat(CharStats.STAT_INTELLIGENCE, 10);
+						M.charStats().setWearableRestrictionsBitmap(M.charStats().getWearableRestrictionsBitmap()|M.charStats().getMyRace().forbiddenWornBits());
 						R.affectCharStats(M, M.charStats());
 						raceIDs.put(R.ID(), Boolean.valueOf(M.charStats().getStat(CharStats.STAT_INTELLIGENCE) == 1));
 					}

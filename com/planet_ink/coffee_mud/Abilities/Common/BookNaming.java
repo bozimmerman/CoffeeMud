@@ -20,7 +20,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /*
-   Copyright 2017-2017 Bo Zimmerman
+   Copyright 2017-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -103,7 +103,7 @@ public class BookNaming extends CommonSkill
 		verb=L("naming");
 	}
 
-	public static boolean isAlreadyNamed(String Name)
+	public static boolean isAlreadyNamed(final String name)
 	{
 		if(PATTERNS.length==0)
 		{
@@ -117,7 +117,7 @@ public class BookNaming extends CommonSkill
 			}
 			PATTERNS=Ps.toArray(PATTERNS);
 		}
-		CharSequence S = Name.subSequence(0, Name.length());
+		CharSequence S = name.subSequence(0, name.length());
 		for(Pattern P : PATTERNS)
 		{
 			if(P.matcher(S).matches())
@@ -127,13 +127,16 @@ public class BookNaming extends CommonSkill
 		}
 		return false;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping))
+			if((affected!=null)
+			&&(affected instanceof MOB)
+			&&(!aborted)
+			&&(!helping))
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
@@ -170,9 +173,10 @@ public class BookNaming extends CommonSkill
 				for(String P : PREFIXES)
 				{
 					P=CMStrings.replaceAll(P, "@x1", "NAME");
-					P=CMStrings.replaceAll(P, "@x2", mob.Name());
+					P=CMStrings.replaceAll(P, "@x2", "AUTHOR");
 					
 					prefixes.append(CMStrings.padRight(""+index,2)).append(") "+P+"\n\r");
+					index++;
 				}
 				BookNaming.prefixList=prefixes.toString();
 			}
@@ -188,6 +192,7 @@ public class BookNaming extends CommonSkill
 			target=mob.location().findItem(null, itemName);
 		if((target!=null)&&(CMLib.flags().canBeSeenBy(target,mob)))
 		{
+			/*
 			final Set<MOB> followers=mob.getGroupMembers(new TreeSet<MOB>());
 			boolean ok=false;
 			for(final MOB M : followers)
@@ -200,13 +205,18 @@ public class BookNaming extends CommonSkill
 				commonTell(mob,L("You aren't allowed to work on '@x1'.",itemName));
 				return false;
 			}
+			*/
 		}
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			commonTell(mob,L("You don't seem to have a '@x1'.",itemName));
 			return false;
 		}
-		
+		if(target.fetchEffect("Copyright")!=null)
+		{
+			commonTell(mob,L("This book is copyrighted, and can't be renamed."));
+			return false;
+		}
 		
 		final Ability write=mob.fetchAbility("Skill_Write");
 		if(write==null)

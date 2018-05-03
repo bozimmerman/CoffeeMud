@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary.CMChannel;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -30,7 +31,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /*
-   Copyright 2008-2017 Bo Zimmerman
+   Copyright 2008-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -80,7 +81,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	protected Tickable				altStatusTickable= null;
 	protected List<DVector>			oncesDone		 = new Vector<DVector>();
 	protected Map<Integer,Integer>	delayTargetTimes = new Hashtable<Integer,Integer>();
-	protected Map<Integer,Integer>	delayProgCounters= new Hashtable<Integer,Integer>();
+	protected Map<Integer,int[]>	delayProgCounters= new Hashtable<Integer,int[]>();
 	protected Map<Integer,Integer>	lastTimeProgsDone= new Hashtable<Integer,Integer>();
 	protected Map<Integer,Integer>	lastDayProgsDone = new Hashtable<Integer,Integer>();
 	protected Set<Integer>			registeredEvents = new HashSet<Integer>();
@@ -630,7 +631,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		altStatusTickable= null;
 		oncesDone = new Vector<DVector>();
 		delayTargetTimes = new Hashtable<Integer,Integer>();
-		delayProgCounters= new Hashtable<Integer,Integer>();
+		delayProgCounters= new Hashtable<Integer,int[]>();
 		lastTimeProgsDone= new Hashtable<Integer,Integer>();
 		lastDayProgsDone = new Hashtable<Integer,Integer>();
 		registeredEvents = new HashSet<Integer>();
@@ -868,15 +869,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		switch(SIGN.intValue())
 		{
-		case SIGN_EQUL: return (val1==val2);
+		case SIGN_EQUL:
+			return (val1 == val2);
 		case SIGN_EQGT:
-		case SIGN_GTEQ: return val1>=val2;
+		case SIGN_GTEQ:
+			return val1 >= val2;
 		case SIGN_EQLT:
-		case SIGN_LTEQ: return val1<=val2;
-		case SIGN_GRAT: return (val1>val2);
-		case SIGN_LEST: return (val1<val2);
-		case SIGN_NTEQ: return (val1!=val2);
-		default: return (val1==val2);
+		case SIGN_LTEQ:
+			return val1 <= val2;
+		case SIGN_GRAT:
+			return (val1 > val2);
+		case SIGN_LEST:
+			return (val1 < val2);
+		case SIGN_NTEQ:
+			return (val1 != val2);
+		default:
+			return (val1 == val2);
 		}
 	}
 
@@ -892,15 +900,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		switch(SIGN.intValue())
 		{
-		case SIGN_EQUL: return (val1==val2);
+		case SIGN_EQUL:
+			return (val1 == val2);
 		case SIGN_EQGT:
-		case SIGN_GTEQ: return val1>=val2;
+		case SIGN_GTEQ:
+			return val1 >= val2;
 		case SIGN_EQLT:
-		case SIGN_LTEQ: return val1<=val2;
-		case SIGN_GRAT: return (val1>val2);
-		case SIGN_LEST: return (val1<val2);
-		case SIGN_NTEQ: return (val1!=val2);
-		default: return (val1==val2);
+		case SIGN_LTEQ:
+			return val1 <= val2;
+		case SIGN_GRAT:
+			return (val1 > val2);
+		case SIGN_LEST:
+			return (val1 < val2);
+		case SIGN_NTEQ:
+			return (val1 != val2);
+		default:
+			return (val1 == val2);
 		}
 	}
 
@@ -1266,7 +1281,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							areaThing=all.elementAt(CMLib.dice().roll(1,all.size(),-1));
 						else
 						{
-							all.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(),null,thisName,100));
+							all.addAll(CMLib.map().findInhabitantsFavorExact(CMLib.map().rooms(),null,thisName,false,100));
 							if(all.size()==0)
 								all.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), null, thisName,100));
 							for(int a=all.size()-1;a>=0;a--)
@@ -1557,7 +1572,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				case '@':
 					if ((t < varifyable.length() - 2) && Character.isLetter(varifyable.charAt(t + 2)))
 					{
-						final Environmental E = getArgumentItem("$" + varifyable.charAt(t + 2), 
+						final Environmental E = getArgumentItem("$" + varifyable.charAt(t + 2),
 								source, monster, scripted, target, primaryItem, secondaryItem, msg, tmp);
 						middle = (E == null) ? "null" : "" + E;
 					}
@@ -5483,7 +5498,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					if(arg2.length()==0)
 						returnable=((Rideable)E).numRiders()==0;
 					else
-						returnable=CMLib.english().fetchEnvironmental(new XVector(((Rideable)E).riders()), arg2, false)!=null;
+						returnable=CMLib.english().fetchEnvironmental(new XVector<Rider>(((Rideable)E).riders()), arg2, false)!=null;
 				}
 				if(E instanceof Container)
 				{
@@ -8783,7 +8798,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					CMLib.commands().postChannel(monster,channel,val,sysmsg);
 				break;
 			}
-			case 68: // unload
+			case 68: // MPUNLOADSCRIPT
 			{
 				if(tt==null)
 				{
@@ -8813,7 +8828,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 				break;
 			}
-			case 60: // trains
+			case 60: // MPTRAINS
 			{
 				if(tt==null)
 				{
@@ -8838,7 +8853,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
-			case 61: // pracs
+			case 61: // mppracs
 			{
 				if(tt==null)
 				{
@@ -10280,9 +10295,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							{
 								final MOB follower=(MOB)V.get(v);
 								final Room thisRoom=follower.location();
+								final int dispmask=(PhyStats.IS_SLEEPING | PhyStats.IS_SITTING);
+								final int dispo1 = follower.basePhyStats().disposition() &  dispmask;
+								final int dispo2 = follower.phyStats().disposition() &  dispmask;
+								follower.basePhyStats().setDisposition(follower.basePhyStats().disposition() & (~dispmask));
+								follower.phyStats().setDisposition(follower.phyStats().disposition() & (~dispmask));
 								// scripting guide calls for NO text -- empty is probably req tho
-								final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER," "+CMLib.protocol().msp("appear.wav",10));
-								final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,null,CMMsg.MSG_LEAVE," ");
+								final CMMsg enterMsg=CMClass.getMsg(follower,newRoom,null,CMMsg.MSG_ENTER|CMMsg.MASK_ALWAYS,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER," "+CMLib.protocol().msp("appear.wav",10));
+								final CMMsg leaveMsg=CMClass.getMsg(follower,thisRoom,null,CMMsg.MSG_LEAVE|CMMsg.MASK_ALWAYS," ");
 								if((thisRoom!=null)
 								&&thisRoom.okMessage(follower,leaveMsg)
 								&&newRoom.okMessage(follower,enterMsg))
@@ -10295,8 +10315,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									thisRoom.send(follower,leaveMsg);
 									newRoom.bringMobHere(follower,false);
 									newRoom.send(follower,enterMsg);
-									follower.tell(CMLib.lang().L("\n\r\n\r"));
-									CMLib.commands().postLook(follower,true);
+									follower.basePhyStats().setDisposition(follower.basePhyStats().disposition() | dispo1);
+									follower.phyStats().setDisposition(follower.phyStats().disposition() | dispo2);
+									if(!CMLib.flags().isSleeping(follower))
+									{
+										follower.tell(CMLib.lang().L("\n\r\n\r"));
+										CMLib.commands().postLook(follower,true);
+									}
+								}
+								else
+								{
+									follower.basePhyStats().setDisposition(follower.basePhyStats().disposition() | dispo1);
+									follower.phyStats().setDisposition(follower.phyStats().disposition() | dispo2);
 								}
 							}
 							else
@@ -11996,7 +12026,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=CMath.s_int(t[1]);
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								final List<ScriptableResponse> V=new XVector(que);
+								final List<ScriptableResponse> V=new XVector<ScriptableResponse>(que);
 								ScriptableResponse SB=null;
 								String roomID=null;
 								if(msg.target()!=null)
@@ -12017,7 +12047,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					break;
-				case 9: // exit prog
+				case 9: // exit_prog
 					if((msg.targetMinor()==CMMsg.TYP_LEAVE)&&canTrigger(9)
 					&&(msg.amITarget(lastKnownLocation))
 					&&(!msg.amISource(eventMob))
@@ -12030,7 +12060,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=CMath.s_int(t[1]);
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								final List<ScriptableResponse> V=new XVector(que);
+								final List<ScriptableResponse> V=new XVector<ScriptableResponse>(que);
 								ScriptableResponse SB=null;
 								String roomID=null;
 								if(msg.target()!=null)
@@ -12051,7 +12081,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					break;
-				case 10: // death prog
+				case 10: // death_prog
 					if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&canTrigger(10)
 					&&(msg.amISource(eventMob)||(!(affecting instanceof MOB))))
 					{
@@ -12067,7 +12097,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return;
 					}
 					break;
-				case 44: // kill prog
+				case 44: // kill_prog
 					if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&canTrigger(44)
 					&&((msg.tool()==affecting)||(!(affecting instanceof MOB))))
 					{
@@ -12083,7 +12113,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						return;
 					}
 					break;
-				case 26: // damage prog
+				case 26: // damage_prog
 					if((msg.targetMinor()==CMMsg.TYP_DAMAGE)&&canTrigger(26)
 					&&(msg.amITarget(eventMob)||(msg.tool()==affecting)))
 					{
@@ -12228,7 +12258,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					break;
-				case 38: // social prog
+				case 38: // social_prog
 					if(!msg.amISource(monster)
 					&&canTrigger(38)
 					&&(msg.tool() instanceof Social))
@@ -12250,7 +12280,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					break;
-				case 33: // channel prog
+				case 33: // channel_prog
 					if(!registeredEvents.contains(Integer.valueOf(CMMsg.TYP_CHANNEL)))
 					{
 						CMLib.map().addGlobalHandler(affecting,CMMsg.TYP_CHANNEL);
@@ -12268,7 +12298,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final String channel=t[1];
 							final int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
 							String str=null;
-							if(channel.equalsIgnoreCase(CMLib.channels().getChannel(channelInt).name()))
+							final CMChannel officialChannel=CMLib.channels().getChannel(channelInt);
+							if(officialChannel==null)
+								Log.errOut("Script","Unknown channel for code '"+channelInt+"': "+msg.othersMessage());
+							else
+							if(channel.equalsIgnoreCase(officialChannel.name()))
 							{
 								str=msg.sourceMessage();
 								if(str==null)
@@ -12328,7 +12362,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						}
 					}
 					break;
-				case 31: // regmask prog
+				case 31: // regmask_prog
 					if(!msg.amISource(monster)&&canTrigger(31))
 					{
 						boolean doIt=false;
@@ -12520,37 +12554,50 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				if((!mob.amDead())&&canTrigger(16))
 				{
 					int targetTick=-1;
-					if(delayTargetTimes.containsKey(Integer.valueOf(thisScriptIndex)))
-						targetTick=delayTargetTimes.get(Integer.valueOf(thisScriptIndex)).intValue();
-					else
+					final Integer thisScriptIndexI=Integer.valueOf(thisScriptIndex);
+					final int[] delayProgCounter;
+					synchronized(thisScriptIndexI)
 					{
-						if(t==null)
-							t=parseBits(script,0,"CCR");
-						if(t!=null)
+						if(delayTargetTimes.containsKey(thisScriptIndexI))
+							targetTick=delayTargetTimes.get(thisScriptIndexI).intValue();
+						else
 						{
-							final int low=CMath.s_int(t[1]);
-							int high=CMath.s_int(t[2]);
-							if(high<low)
-								high=low;
-							targetTick=CMLib.dice().roll(1,high-low+1,low-1);
-							delayTargetTimes.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(targetTick));
+							if(t==null)
+								t=parseBits(script,0,"CCR");
+							if(t!=null)
+							{
+								final int low=CMath.s_int(t[1]);
+								int high=CMath.s_int(t[2]);
+								if(high<low)
+									high=low;
+								targetTick=CMLib.dice().roll(1,high-low+1,low-1);
+								delayTargetTimes.put(thisScriptIndexI,Integer.valueOf(targetTick));
+							}
+						}
+						if(delayProgCounters.containsKey(thisScriptIndexI))
+							delayProgCounter=delayProgCounters.get(thisScriptIndexI);
+						else
+						{
+							delayProgCounter=new int[]{0};
+							delayProgCounters.put(thisScriptIndexI,delayProgCounter);
 						}
 					}
-					int delayProgCounter=0;
-					if(delayProgCounters.containsKey(Integer.valueOf(thisScriptIndex)))
-						delayProgCounter=delayProgCounters.get(Integer.valueOf(thisScriptIndex)).intValue();
-					else
-						delayProgCounters.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(0));
-					if(delayProgCounter==targetTick)
+					boolean exec=false;
+					synchronized(delayProgCounter)
 					{
-						execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
-						delayProgCounter=-1;
+						if(delayProgCounter[0]>=targetTick)
+						{
+							exec=true;
+							delayProgCounter[0]=0;
+						}
+						else
+							delayProgCounter[0]++;
 					}
-					delayProgCounters.remove(Integer.valueOf(thisScriptIndex));
-					delayProgCounters.put(Integer.valueOf(thisScriptIndex),Integer.valueOf(delayProgCounter+1));
+					if(exec)
+						execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
 				}
 				break;
-			case 7: // fightProg
+			case 7: // fight_Prog
 				if((mob.isInCombat())&&(!mob.amDead())&&canTrigger(7))
 				{
 					if(t==null)
@@ -12582,7 +12629,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				break;
-			case 11: // hitprcnt
+			case 11: // hitprcnt_prog
 				if((mob.isInCombat())&&(!mob.amDead())&&canTrigger(11))
 				{
 					if(t==null)
@@ -12684,7 +12731,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 				}
 				break;
-			case 13: // quest time prog
+			case 13: // quest_time_prog
 				if(!oncesDone.contains(script)&&canTrigger(13))
 				{
 					if(t==null)

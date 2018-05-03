@@ -6,24 +6,22 @@ var theSiplet = null;
 var lastReceived = new Date().getTime();
 
 var limit=50000;
-var pingDelay=1000;
+var pingDelay=2400;
 var halflimit=limit/2;
 var tenthlimit=limit/10;
 var errorState=false;
+var connCheck=null;
 
 function connectChecker()
 {
 	if((theSiplet!=null)&&(!errorState))
 	{
 		var ellapsed=new Date().getTime() - lastReceived;
-		if(ellapsed>30000)
-		{
-			setTimeout(displayData,pingDelay);
-		}
+		displayData();
 	}
 	else
 		lastReceived = new Date().getTime()
-	setTimeout(connectChecker,10001);
+	connCheck = setTimeout(connectChecker,10001);
 }
 
 function createGauge(entity,caption,color,value,max)
@@ -60,7 +58,10 @@ function handlePacket(txt,tk)
 {
 	var x=txt.indexOf(tk);
 	if(x<0)
+	{
+		window.console.info("Siplet: Packet missing tk: "+txt);
 		goOffline();
+	}
 	else
 	{
 		var data=txt.substr(0,x);
@@ -79,7 +80,7 @@ function handlePacket(txt,tk)
 				eval(s);
 		}
 		lastReceived = new Date().getTime();
-		setTimeout(displayData,pingDelay);
+		//setTimeout(displayData,pingDelay);
 	}
 }
 

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 /*
-   Copyright 2013-2017 Bo Zimmerman
+   Copyright 2013-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -31,8 +31,8 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 	private static final Iterator empty=EmptyIterator.INSTANCE;
 
 	@SuppressWarnings("unchecked")
-
-	@Override public Iterator<J> iterator()
+	@Override 
+	public Iterator<J> iterator()
 	{
 		if(size()==0)
 			return empty;
@@ -40,8 +40,8 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 	}
 
 	@SuppressWarnings("unchecked")
-
-	@Override public synchronized J put(K key, J value)
+	@Override 
+	public synchronized J put(K key, J value)
 	{
 		final ArrayList<J> newList;
 		if (list == null)
@@ -68,13 +68,15 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 		return super.put(key, value);
 	}
 
-	@Override public synchronized void putAll(Map<? extends K, ? extends J> t)
+	@Override 
+	public synchronized void putAll(Map<? extends K, ? extends J> t)
 	{
 		for(final Map.Entry<? extends K,? extends J> i : t.entrySet())
 			put(i.getKey(),i.getValue());
 	}
 
-	@Override public synchronized J remove(Object key)
+	@Override 
+	public synchronized J remove(Object key)
 	{
 		if(super.containsKey(key))
 		{
@@ -87,7 +89,8 @@ public class OrderedMap<K,J> extends Hashtable<K,J> implements Iterable<J>
 		return super.remove(key);
 	}
 
-	@Override public synchronized void clear()
+	@Override 
+	public synchronized void clear()
 	{
 		list=null;
 		super.clear();

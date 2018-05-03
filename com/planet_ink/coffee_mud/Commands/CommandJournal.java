@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.CommandJournalFlags;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -19,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2005-2017 Bo Zimmerman
+   Copyright 2005-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -70,21 +71,65 @@ public class CommandJournal extends StdCommand
 	{
 		final String first=commands.get(1);
 		final String second=(commands.size()>2)?(String)commands.get(2):"";
-		final String rest=(commands.size()>3)?CMParms.combine(commands,3):"";
+		final String third=(commands.size()>3)?(String)commands.get(3):"";
+		String rest=(commands.size()>3)?CMParms.combine(commands,3):"";
 		if(!("TRANSFER".startsWith(first.toUpperCase().trim())))
 			return false;
-		if(!CMSecurity.isJournalAccessAllowed(mob,security))
+		List<String> flagsV=getAssignFlags(journalID);
+		if((!CMSecurity.isAllowed(mob, mob.location(),CMSecurity.SecFlag.JOURNALS))
+		&&(!CMSecurity.isJournalAccessAllowed(mob,security)))
 		{
 			mob.tell(L("Transfer not allowed."));
 			return true;
 		}
-		if((second.length()>0)&&(!CMath.isNumber(second)))
+		String to = null;
+		int count = 0;
+		if(second.length()>0)
 		{
-			mob.tell(L("@x1 is not a number",second));
-			return true;
+			String possTo=null;
+			if(CMath.isNumber(second))
+			{
+				count=CMath.s_int(second);
+				if((third.length()>0)&&(commands.size()>4))
+				{
+					possTo=third;
+					rest=(commands.size()>4)?CMParms.combine(commands,4):"";
+				}
+			}
+			else
+			{
+				possTo=second;
+				if((third.length()>0)&&(commands.size()>4))
+				{
+					rest=(commands.size()>4)?CMParms.combine(commands,4):"";
+					if(CMath.isNumber(third))
+						count=CMath.s_int(third);
+					else
+					{
+						mob.tell(L("@x1 is not a number",third));
+						return true;
+					}
+				}
+			}
+			if(possTo != null)
+			{
+				if(CMLib.players().playerExists(CMStrings.capitalizeAndLower(possTo)))
+					to=CMStrings.capitalizeAndLower(possTo);
+				else
+				if(flagsV.contains(possTo))
+					to=possTo;
+				else
+				if(possTo.equalsIgnoreCase("ALL"))
+					to="ALL";
+				else
+				{
+					mob.tell(L("@x1 is not a valid name. ",possTo));
+ 					return true;
+				}
+			}
 		}
-		final int count=CMath.s_int(second);
-		final int size=CMLib.database().DBCountJournal(journalID,null,null);
+		
+		final int size=CMLib.database().DBCountJournal(journalID,null,to);
 		if(size<=0)
 		{
 			mob.tell(L("There are no @x1 listed at this time.",journalWord));
@@ -96,41 +141,78 @@ public class CommandJournal extends StdCommand
 			return true;
 		}
 		String realName=null;
-		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
+		if(CMLib.players().playerExists(CMStrings.capitalizeAndLower(rest)))
+			realName=CMStrings.capitalizeAndLower(rest);
+		else
+		if(flagsV.contains(rest.toUpperCase().trim()))
+			realName=rest.toUpperCase().trim();
+		else
 		{
-			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
-			if(rest.equalsIgnoreCase(CMJ.NAME())
-			||rest.equalsIgnoreCase(CMJ.NAME()+"s"))
+			for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
 			{
-				realName=CMJ.JOURNAL_NAME();
-				break;
+				final JournalsLibrary.CommandJournal CMJ=e.nextElement();
+				if(rest.equalsIgnoreCase(CMJ.NAME())
+				||rest.equalsIgnoreCase(CMJ.NAME()+"s"))
+				{
+					realName=CMJ.JOURNAL_NAME();
+					break;
+				}
 			}
-		}
-		if(realName==null)
-			realName=CMLib.database().DBGetRealJournalName(rest);
-		if(realName==null)
-			realName=CMLib.database().DBGetRealJournalName(rest.toUpperCase());
-		if(realName==null)
-		{
-			mob.tell(L("@x1 is not a journal",rest));
+			if(realName==null)
+				realName=CMLib.database().DBGetRealJournalName(rest);
+			if(realName==null)
+				realName=CMLib.database().DBGetRealJournalName(rest.toUpperCase());
+			if(realName==null)
+			{
+				mob.tell(L("@x1 is not a journal, name or other valid transfer",rest));
+				return true;
+			}
+			final String[] tos = (to != null)? new String[]{to} : new String[0];
+			final List<JournalEntry> journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(journalID, true, 1000000, tos);
+			final JournalEntry entry2=journal2.get(count-1);
+			final String from2=entry2.from();
+			final String tonm=entry2.to();
+			final String subject=entry2.subj();
+			final String message=entry2.msg();
+			CMLib.database().DBDeleteJournal(journalID,entry2.key());
+			CMLib.database().DBWriteJournal(realName,
+											  from2,
+											  tonm,
+											  subject,
+											  message);
+			mob.tell(L("Message transferred."));
 			return true;
 		}
-		final List<JournalEntry> journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(journalID, true);
+		if(realName==null)
+		{
+			mob.tell(L("@x1 is not a journal, name or other valid transfer",rest));
+			return true;
+		}
+		final String[] tos = (to != null)? new String[]{to} : new String[0];
+		final List<JournalEntry> journal2=CMLib.database().DBReadJournalMsgsByUpdateDate(journalID, true, 100000, tos);
 		final JournalEntry entry2=journal2.get(count-1);
-		final String from2=entry2.from();
-		final String to=entry2.to();
-		final String subject=entry2.subj();
-		final String message=entry2.msg();
-		CMLib.database().DBDeleteJournal(journalID,entry2.key());
-		CMLib.database().DBWriteJournal(realName,
-										  from2,
-										  to,
-										  subject,
-										  message);
+		entry2.to(realName);
+		CMLib.database().DBUpdateJournal(journalID, entry2);
 		mob.tell(L("Message transferred."));
 		return true;
 	}
 
+	public List<String> getAssignFlags(final String journalID)
+	{
+		List<String> flagsV=new ArrayList<String>();
+		for(final Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().commandJournals();e.hasMoreElements();)
+		{
+			final JournalsLibrary.CommandJournal CMJ=e.nextElement();
+			if((CMJ.NAME()+"S").startsWith(journalID.toUpperCase().trim())
+			||(CMJ.NAME().equals(journalID.toUpperCase().trim()))
+			||(CMJ.JOURNAL_NAME().equals(journalID.toUpperCase().trim())))
+			{
+				flagsV=CMParms.parseAny(CMJ.getFlag(CommandJournalFlags.ASSIGN), ':', true);
+			}
+		}
+		return flagsV;
+	}
+	
 	public boolean review(MOB mob,
 						  String journalID,
 						  String journalWord,
@@ -138,21 +220,66 @@ public class CommandJournal extends StdCommand
 						  String security)
 	{
 		final String first=commands.get(1);
-		final String second=(commands.size()>2)?CMParms.combine(commands,2):"";
+		final String second=(commands.size()>2)?commands.get(2):"";
+		final String third=(commands.size()>3)?CMParms.combine(commands,3):"";
+		List<String> flagsV=getAssignFlags(journalID);
+		String to = null;
+		int count = 0;
 		if(!("REVIEW".startsWith(first.toUpperCase().trim())))
 			return false;
-		if(!CMSecurity.isJournalAccessAllowed(mob,security))
-			return false;
-		if((second.length()>0)&&(!CMath.isNumber(second)))
-			return false;
-		int count=CMath.s_int(second);
+		if((!CMSecurity.isAllowed(mob, mob.location(),CMSecurity.SecFlag.JOURNALS))
+		&&(!CMSecurity.isJournalAccessAllowed(mob,journalID)))
+			to=mob.Name();
+		else
+		if(second.length()>0)
+		{
+			String possTo=null;
+			if(CMath.isNumber(second))
+			{
+				count=CMath.s_int(second);
+				if(third.length()>0)
+					possTo=third;
+			}
+			else
+			{
+				possTo=second;
+				if(third.length()>0)
+				{
+					if(CMath.isNumber(third))
+						count=CMath.s_int(third);
+					else
+					{
+						mob.tell(L("@x1 is not a number",third));
+						return true;
+					}
+				}
+			}
+			if(possTo != null)
+			{
+				if(CMLib.players().playerExists(CMStrings.capitalizeAndLower(possTo)))
+					to=CMStrings.capitalizeAndLower(possTo);
+				else
+				if(flagsV.contains(possTo))
+					to=possTo;
+				else
+				if(possTo.equalsIgnoreCase("ALL"))
+					to="ALL";
+				else
+				{
+					mob.tell(L("@x1 is not a valid name. ",possTo));
+ 					return true;
+				}
+			}
+		}
 
 		final Item journalItem=CMClass.getItem("StdJournal");
 		if(journalItem==null)
 			mob.tell(L("This feature has been disabled."));
 		else
 		{
-			int size=CMLib.database().DBCountJournal(journalID,null,null);
+			if(to != null)
+				journalItem.setReadableText("FILTER="+to);
+			int size=CMLib.database().DBCountJournal(journalID,null,to);
 			if(size<=0)
 				mob.tell(L("There are no @x1 listed at this time.",journalWord));
 			else

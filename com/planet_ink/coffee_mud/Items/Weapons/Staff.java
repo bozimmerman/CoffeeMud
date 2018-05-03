@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 /*
-   Copyright 2001-2017 Bo Zimmerman
+   Copyright 2001-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -102,6 +102,8 @@ public class Staff extends StdWeapon implements Wand
 	@Override
 	public Ability getSpell()
 	{
+		if(text().length()==0)
+			return null;
 		return CMClass.getAbility(text());
 	}
 
@@ -118,8 +120,13 @@ public class Staff extends StdWeapon implements Wand
 	{
 		String id=super.secretIdentity();
 		final Ability A=getSpell();
+		String uses;
+		if(this.maxUses() < 999999)
+			uses=""+usesRemaining()+"/"+maxUses();
+		else
+			uses = ""+usesRemaining();
 		if(A!=null)
-			id="'A staff of "+A.name()+"' Charges: "+usesRemaining()+"\n\r"+id;
+			id="'A staff of "+A.name()+"' Charges: "+uses+"\n\r"+id;
 		return id+"\n\rSay the magic word :`"+secretWord+"` to the target.";
 	}
 
