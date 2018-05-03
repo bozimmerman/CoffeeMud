@@ -59,15 +59,17 @@ public class StdInnKey extends StdKey implements InnKey
 	{
 		if(tickID==Tickable.TICKID_ITEM_BOUNCEBACK)
 		{
+			final ShopKeeper SK=this.myShopkeeper;
 			this.destroyed=false;
 			this.setContainer(null);
-			if((owner()!=null)&&(owner()==myShopkeeper))
+			if((owner()!=null)&&(owner()==SK))
 				return false;
 			if(owner()!=null)
 				removeFromOwnerContainer();
-			if(myShopkeeper!=null)
+			if(SK!=null)
 			{
-				myShopkeeper.getShop().addStoreInventory(this); // makes a copy
+				final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
+				shop.addStoreInventory(this); // makes a copy
 				destroy();
 			}
 			return false;

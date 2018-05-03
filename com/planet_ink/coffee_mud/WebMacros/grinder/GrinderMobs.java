@@ -888,8 +888,9 @@ public class GrinderMobs
 				&&(httpReq.isUrlParameter("SHP1")))
 				{
 					final ShopKeeper SK=(ShopKeeper)M;
-					final XVector<Environmental> inventory=new XVector<Environmental>(SK.getShop().getStoreInventory());
-					SK.getShop().emptyAllShelves();
+					final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
+					final XVector<Environmental> inventory=new XVector<Environmental>(shop.getStoreInventory());
+					shop.emptyAllShelves();
 
 					int num=1;
 					String MATCHING=httpReq.getUrlParameter("SHP"+num);
@@ -901,7 +902,7 @@ public class GrinderMobs
 						{
 							final Environmental O=inventory.elementAt(CMath.s_int(MATCHING)-1);
 							if(O!=null)
-								SK.getShop().addStoreInventory(O,CMath.s_int(theparm),CMath.s_int(theprice));
+								shop.addStoreInventory(O,CMath.s_int(theparm),CMath.s_int(theprice));
 						}
 						else
 						if(MATCHING.startsWith("CATALOG-"))
@@ -910,7 +911,7 @@ public class GrinderMobs
 							if(O==null)
 								O=RoomData.getItemFromAnywhere(null,MATCHING);
 							if(O!=null)
-								SK.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
+								shop.addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
 						}
 						else
 						if(MATCHING.indexOf('@')>0)
@@ -927,7 +928,7 @@ public class GrinderMobs
 							if(O==null)
 								O=RoomData.getItemFromAnywhere(null,MATCHING);
 							if(O!=null)
-								SK.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
+								shop.addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
 						}
 						else
 						{
@@ -954,7 +955,7 @@ public class GrinderMobs
 							if(O==null)
 								O=RoomData.getItemFromAnywhere(null,MATCHING);
 							if(O!=null)
-								SK.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
+								shop.addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice));
 						}
 						num++;
 						MATCHING=httpReq.getUrlParameter("SHP"+num);

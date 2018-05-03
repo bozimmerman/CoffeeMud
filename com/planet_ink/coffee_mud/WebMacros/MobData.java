@@ -792,7 +792,8 @@ public class MobData extends StdWebMacro
 				String MATCHING=httpReq.getUrlParameter("SHP"+num);
 				String theparm=httpReq.getUrlParameter("SDATA"+num);
 				String theprice=httpReq.getUrlParameter("SPRIC"+num);
-				final XVector<Environmental> inventory=new XVector<Environmental>(E.getShop().getStoreInventory());
+				final CoffeeShop shop=(E instanceof Librarian)?((Librarian)E).getBaseLibrary():E.getShop();
+				final XVector<Environmental> inventory=new XVector<Environmental>(shop.getStoreInventory());
 				while((MATCHING!=null)&&(theparm!=null))
 				{
 					if(CMath.isNumber(MATCHING))
@@ -868,7 +869,8 @@ public class MobData extends StdWebMacro
 			{
 				final ArrayList<Item> itemClasses=new ArrayList<Item>();
 				final ArrayList<MOB> mobClasses=new ArrayList<MOB>();
-				for(final Iterator<Environmental> i=E.getShop().getStoreInventory();i.hasNext();)
+				final CoffeeShop shop=(E instanceof Librarian)?((Librarian)E).getBaseLibrary():E.getShop();
+				for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 				{
 					final Environmental O=i.next();
 					if(O instanceof Item)
@@ -878,8 +880,8 @@ public class MobData extends StdWebMacro
 					if(O instanceof Physical)
 						CMLib.catalog().updateCatalogIntegrity((Physical)O);
 					theclasses.add(O);
-					theparms.add(""+E.getShop().numberInStock(O));
-					theprices.add(""+E.getShop().stockPrice(O));
+					theparms.add(""+shop.numberInStock(O));
+					theprices.add(""+shop.stockPrice(O));
 				}
 				RoomData.contributeItems(itemClasses);
 				RoomData.contributeMOBs(mobClasses);

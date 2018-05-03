@@ -1852,8 +1852,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			chk = ((E instanceof MOB)&&(!CMLib.flags().isAnimalIntelligence((MOB)E)));
 			break;
 		case ShopKeeper.DEAL_INVENTORYONLY:
-			chk = (shopKeeper.getShop().inEnumerableInventory(E));
+		{
+			final CoffeeShop shop=(shopKeeper instanceof Librarian)?((Librarian)shopKeeper).getBaseLibrary():shopKeeper.getShop();
+			chk = (shop.inEnumerableInventory(E));
 			break;
+		}
 		case ShopKeeper.DEAL_INNKEEPER:
 			chk = E instanceof InnKey;
 			break;

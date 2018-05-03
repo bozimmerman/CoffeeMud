@@ -198,7 +198,10 @@ public class Publishing extends CommonSkill
 							{
 								Log.infoOut("The book "+shopItem.Name()+" was published by "+mob.Name()+" to "+CMLib.map().roomLocation(SKs.second));
 								pubbed++;
-								SK.getShop().addStoreInventory((Item)shopItem.copyOf(), adjustedLevel(mob,0), (int)CMath.round(price));
+								if(SK instanceof Librarian)
+									((Librarian)SK).getBaseLibrary().addStoreInventory((Item)shopItem.copyOf(), adjustedLevel(mob,0), (int)CMath.round(price));
+								else
+									SK.getShop().addStoreInventory((Item)shopItem.copyOf(), adjustedLevel(mob,0), (int)CMath.round(price));
 								final MiniJSON.JSONObject obj=getData();
 								if(!obj.containsKey(shopItem.Name()))
 									obj.put(shopItem.Name(), new MiniJSON.JSONObject());
@@ -518,11 +521,17 @@ public class Publishing extends CommonSkill
 			commonTell(mob,L("You haven't specified an asking price."));
 			return false;
 		}
-		price = CMLib.english().matchAnyDenomination(CMLib.beanCounter().getCurrency(mob), CMParms.combine(commands,startHere));
-		Item target = super.getTarget(mob, mob.location(), givenTarget, commands, Wearable.FILTER_UNWORNONLY);
+		List<String> remainV=new ArrayList<String>();
+		for(int i=0;i<startHere;i++)
+			remainV.add(commands.get(i));
+		price=CMath.s_int(commands.get(startHere));
+		double denom=CMLib.english().matchAnyDenomination(CMLib.beanCounter().getCurrency(mob), CMParms.combine(commands,startHere+1));
+		if(denom != 0)
+			price *= denom;
+ 		Item target = super.getTarget(mob, mob.location(), givenTarget, remainV, Wearable.FILTER_UNWORNONLY);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
-			commonTell(mob,L("You don't seem to have a '@x1'.",(commands.get(0))));
+			commonTell(mob,L("You don't seem to have a '@x1'.",CMParms.combine(remainV)));
 			return false;
 		}
 		

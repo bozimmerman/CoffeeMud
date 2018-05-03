@@ -828,14 +828,15 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				text.append(CMLib.xml().convertXMLtoTag("SELLCD",((ShopKeeper)E).getWhatIsSoldMask()));
 				text.append(CMLib.xml().convertXMLtoTag("SELLIMSK",CMLib.xml().parseOutAngleBrackets(((ShopKeeper)E).getWhatIsSoldZappermask())));
 				final StringBuilder itemstr=new StringBuilder("");
-				for(final Iterator<Environmental> i=((ShopKeeper)E).getShop().getStoreInventory();i.hasNext();)
+				final CoffeeShop shop=(E instanceof Librarian)?((Librarian)E).getBaseLibrary():((ShopKeeper)E).getShop();
+				for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 				{
 					final Environmental E2=i.next();
 					itemstr.append("<SHITEM>");
 					itemstr.append(CMLib.xml().convertXMLtoTag("SICLASS",CMClass.classID(E2)));
 					itemstr.append(CMLib.xml().convertXMLtoTag("SITYPE",CMClass.getType(E2).toString()));
-					itemstr.append(CMLib.xml().convertXMLtoTag("SISTOCK",((ShopKeeper)E).getShop().numberInStock(E2)));
-					itemstr.append(CMLib.xml().convertXMLtoTag("SIPRICE",((ShopKeeper)E).getShop().stockPrice(E2)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("SISTOCK",shop.numberInStock(E2)));
+					itemstr.append(CMLib.xml().convertXMLtoTag("SIPRICE",shop.stockPrice(E2)));
 					itemstr.append(CMLib.xml().convertXMLtoTag("SIDATA",getPropertiesStr(E2,true)));
 					itemstr.append("</SHITEM>");
 				}
@@ -2710,7 +2711,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		boolean variableEq=false;
 		shopKeep.setWhatIsSoldMask(CMLib.xml().getLongFromPieces(buf,"SELLCD"));
 		shopKeep.setWhatIsSoldZappermask(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(buf, "SELLIMSK")));
-		shopKeep.getShop().emptyAllShelves();
+		final CoffeeShop shop=(shopKeep instanceof Librarian)?((Librarian)shopKeep).getBaseLibrary():shopKeep.getShop();
+		shop.emptyAllShelves();
 		final List<XMLLibrary.XMLTag> V=CMLib.xml().getContentsFromPieces(buf,"STORE");
 		if(V==null)
 		{
@@ -2780,10 +2782,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			&&(((Physical)newOne).basePhyStats().rejuv()>0)
 			&&(((Physical)newOne).basePhyStats().rejuv()!=PhyStats.NO_REJUV))
 				variableEq=true;
-			shopKeep.getShop().addStoreInventory(newOne,numStock,stockPrice);
+			shop.addStoreInventory(newOne,numStock,stockPrice);
 			newOne.destroy();
 		}
-		for(final Iterator<Environmental> i=shopKeep.getShop().getStoreInventory();i.hasNext();)
+		for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 		{
 			final Environmental stE=i.next();
 			if(stE instanceof Item)
@@ -3082,8 +3084,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			((MOB)E).delAllItems(true);
 			if(E instanceof ShopKeeper)
 			{
+				// this is correct, librarian is next
 				for(final Iterator<Environmental> i=((ShopKeeper)E).getShop().getStoreInventory();i.hasNext();)
 					((ShopKeeper)E).getShop().delAllStoreInventory(i.next());
+			}
+			if(E instanceof Librarian)
+			{
+				for(final Iterator<Environmental> i=((Librarian)E).getBaseLibrary().getStoreInventory();i.hasNext();)
+					((Librarian)E).getBaseLibrary().delAllStoreInventory(i.next());
 			}
 			if(E instanceof Deity)
 			{
@@ -4000,7 +4008,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof ShopKeeper)
 		{
-			for(final Iterator<Environmental> i=((ShopKeeper)E).getShop().getStoreInventory();i.hasNext();)
+			final CoffeeShop shop=(E instanceof Librarian)?((Librarian)E).getBaseLibrary():((ShopKeeper)E).getShop();
+			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 				fillFileSet(i.next(),H);
 		}
 	}
@@ -4065,7 +4074,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof ShopKeeper)
 		{
-			for(final Iterator<Environmental> i=((ShopKeeper)E).getShop().getStoreInventory();i.hasNext();)
+			final CoffeeShop shop=(E instanceof Librarian)?((Librarian)E).getBaseLibrary():((ShopKeeper)E).getShop();
+			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 				fillFileMap(i.next(),H);
 		}
 		if(E instanceof Room)

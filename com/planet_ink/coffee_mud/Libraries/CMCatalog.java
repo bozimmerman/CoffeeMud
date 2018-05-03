@@ -392,7 +392,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 					if((C.holder()==SK)&&(!C.deleted()))
 						newShop.addElement(C.P());
 				}
-				SK.getShop().resubmitInventory(newShop);
+				final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
+				shop.resubmitInventory(newShop);
 			}
 		}
 		for(final Environmental E : updatables)

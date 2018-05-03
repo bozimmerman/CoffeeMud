@@ -342,6 +342,15 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	}
 
 	@Override
+	public CoffeeShop getBaseLibrary()
+	{
+		Resources.removeResource(this.getLibraryShopKey());
+		curShop=null;
+		return shop;
+	}
+
+	
+	@Override
 	protected void doInventoryReset()
 	{
 		this.lastShopTime = 0;
@@ -388,6 +397,12 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	public void destroy()
 	{
 		super.destroy();
+		if(curShop!=null)
+			curShop.destroyStoreInventory();
+		curShop=null;
+		shopApply=false;
+		if(shop!=null)
+			shop.destroyStoreInventory();
 	}
 
 	@Override
@@ -515,7 +530,10 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		final MOB mob = msg.source();
-		if (msg.source().isPlayer() && (!shopApply) && ((msg.source().location() == location()) || (msg.sourceMinor() == CMMsg.TYP_ENTER)) && (!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS)))
+		if (msg.source().isPlayer() 
+		&& (!shopApply) 
+		&& ((msg.source().location() == location()) || (msg.sourceMinor() == CMMsg.TYP_ENTER)) 
+		&& (!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS)))
 			shopApply = true;
 		if (msg.amITarget(this))
 		{

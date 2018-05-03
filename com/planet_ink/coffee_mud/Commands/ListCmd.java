@@ -1026,7 +1026,8 @@ public class ListCmd extends StdCommand
 		final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
 		if(SK!=null)
 		{
-			for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();)
+			final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
+			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 			{
 				final Environmental E2=i.next();
 				if(E2 instanceof PhysicalAgent)
