@@ -1,4 +1,4 @@
-legendary butter knife	60	20	1	426	GenWeapon	DAGGER	PIERCING	10	78	1	0		
+legendary butter knife	61	20	1	426	GenWeapon	DAGGER	PIERCING	10	78	1	0		
 % legendary club	61	20	12	2634	GenWeapon	BLUNT	BASHING	38	18	1	0		
 legendary mallet	61	20	8	4328	GenWeapon	HAMMER	BASHING	53	-20	1	0	WOODEN	
 legendary % spear	61	20	12	6806	GenWeapon	POLEARM	PIERCING	83	-15	2	1		

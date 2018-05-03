@@ -18,7 +18,7 @@
   17. REPORT command can now report expertises and languages also.
   18. New Spells: Conjure Ammunition, Harden Bullets
   19. ZapperMask now supports +-ACCOUNTS
-  20. New common skills: Legendary Weaponsmithin
+  20. New common skills: Legendary Weaponsmithing
   
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
