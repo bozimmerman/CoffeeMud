@@ -66,7 +66,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		setDisplayText("The librarian is ready to help.");
 		CMLib.factions().setAlignment(this, Faction.Align.GOOD);
 		setMoney(0);
-		whatIsSoldMask = ShopKeeper.DEAL_POSTMAN;
+		whatIsSoldMask = ShopKeeper.DEAL_READABLES;
 		basePhyStats.setWeight(150);
 		setWimpHitPoint(0);
 
@@ -807,7 +807,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				}
 				if ((msg.tool() != null) && (!msg.tool().okMessage(myHost, msg)))
 					return false;
-				if (!this.shop.doIHaveThisInStock(msg.tool().Name(), null))
+				if (!this.getShop().doIHaveThisInStock(msg.tool().Name(), null))
 				{
 					CMLib.commands().postSay(this, mob, L("We don't stock anything like that."), true, false);
 					return false;
