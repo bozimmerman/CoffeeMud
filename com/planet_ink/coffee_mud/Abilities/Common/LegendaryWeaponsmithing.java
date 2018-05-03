@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2018 Tim Kassebaum
+   Copyright 2018-2018 Tim Kassebaum
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
+public class LegendaryWeaponsmithing extends Weaponsmithing implements ItemCraftor
 {
 	@Override
 	public String ID()
 	{
-		return "MasterWeaponsmithing";
+		return "LegendaryWeaponsmithing";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Master Weaponsmithing");
+	private final static String	localizedName	= CMLib.lang().L("Legendary Weaponsmithing");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 		return localizedName;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "MWEAPONSMITH", "MASTERWEAPONSMITHING" });
+	private static final String[]	triggerStrings	= I(new String[] { "LWEAPONSMITH", "LEGENDWEAPONSMITHING", "LEGENDARYWEAPONSMITHING" });
 
 	@Override
 	public String[] triggerStrings()
@@ -66,7 +66,7 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 	@Override
 	public String parametersFile()
 	{
-		return "masterweaponsmith.txt";
+		return "legendaryweaponsmith.txt";
 	}
 
 	@Override
@@ -78,9 +78,9 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 	@Override
 	protected boolean masterCraftCheck(final Item I)
 	{
-		if(I.ID().toUpperCase().startsWith("MASTER"))
+		if(I.ID().toUpperCase().startsWith("LEGENDARY"))
 			return true;
-		if((I.basePhyStats().level()<31)||(I.basePhyStats().level()>60))
+		if(I.basePhyStats().level()<61)
 			return false;
 		return true;
 	}
@@ -98,8 +98,8 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"mweaponsmith list\" for a list, \"mweaponsmith info <item>\", \"mweaponsmith scan\","
-						+ " \"mweaponsmith learn <item>\", \"mweaponsmith mend <item>\", or \"mweaponsmith stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"lweaponsmith list\" for a list, \"lweaponsmith info <item>\", \"lweaponsmith scan\","
+						+ " \"lweaponsmith learn <item>\", \"lweaponsmith mend <item>\", or \"lweaponsmith stop\" to cancel."));
 			return false;
 		}
 		return super.autoGenInvoke(mob,commands,givenTarget,auto,asLevel,autoGenerate,forceLevels,crafted);
