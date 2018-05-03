@@ -703,7 +703,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			if(levelDiff<(-levelLimit) )
 				amount=0;
 			else
-			if((levelLimit>0)&&((highestLevelPC - mob.phyStats().level())<=levelLimit))
+			if((levelLimit>0)
+			&&(((highestLevelPC - mob.phyStats().level())<=levelLimit))
+				||(levelDiff<0))
 			{
 				double levelFactor=levelDiff / levelLimit;
 				if( levelFactor > levelLimit )
