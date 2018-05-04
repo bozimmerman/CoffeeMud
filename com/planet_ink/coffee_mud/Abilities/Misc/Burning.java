@@ -80,6 +80,8 @@ public class Burning extends StdAbility
 	protected static final int	FIREFLAG_PERSISTFLAGS		= 256;
 	protected static final int	FIREFLAG_DESTROYHOST		= 512;
 	protected static final int	FIREFLAG_NEVERDESTROYHOST	= 1024;
+	protected static final int	FIREFLAG_UNEXTINGUISHABLE	= 2048;
+	protected static final int	FIREFLAG_NOSPREAD			= 4096;
 
 	protected int abilityCode = 0;
 	
@@ -95,6 +97,22 @@ public class Burning extends StdAbility
 		this.abilityCode = newCode;
 	}
 
+	@Override
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		List<String> flags=CMParms.parse(newMiscText.toUpperCase().trim());
+		if(flags.contains("PERMANENT")||flags.contains("UNEXTINGUISHABLE"))
+			this.setAbilityCode(this.abilityCode|Burning.FIREFLAG_UNEXTINGUISHABLE);
+		if(flags.contains("PERSISTFLAGS"))
+			this.setAbilityCode(this.abilityCode|Burning.FIREFLAG_PERSISTFLAGS);
+		if(flags.contains("DESTROY")||flags.contains("DESTROYHOST"))
+			this.setAbilityCode(this.abilityCode|Burning.FIREFLAG_DESTROYHOST);
+		if(flags.contains("NODESTROY")||flags.contains("NODESTROYHOST"))
+			this.setAbilityCode(this.abilityCode|Burning.FIREFLAG_NEVERDESTROYHOST);
+		if(flags.contains("NOSPREAD"))
+			this.setAbilityCode(this.abilityCode|Burning.FIREFLAG_NOSPREAD);
+	}
 	@Override
 	public void unInvoke()
 	{
@@ -119,7 +137,9 @@ public class Burning extends StdAbility
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		Physical affected=this.affected;
-		if((affected instanceof Item)&&(((Item)affected).owner() instanceof Room))
+		if((affected instanceof Item)
+		&&(((Item)affected).owner() instanceof Room)
+		&&(!CMath.bset(abilityCode(), Burning.FIREFLAG_UNEXTINGUISHABLE)))
 		{
 			int unInvokeChance;
 			if(abilityCode() < 0)
@@ -175,6 +195,7 @@ public class Burning extends StdAbility
 				{
 					final Room room=(Room)E;
 					if((affected instanceof RawMaterial)
+					&&(!CMath.bset(abilityCode(), Burning.FIREFLAG_NOSPREAD))
 					&&(room.isContent((Item)affected)))
 					{
 						for(int i=0;i<room.numItems();i++)
@@ -356,7 +377,9 @@ public class Burning extends StdAbility
 
 		if((affected instanceof Item)
 		&&(msg.amITarget(affected))
-		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
+		&&((msg.targetMinor()==CMMsg.TYP_GET)
+			||(msg.targetMinor()==CMMsg.TYP_PUSH)
+			||(msg.targetMinor()==CMMsg.TYP_PULL)))
 		{
 			if((msg.tool()==null)||(!(msg.tool() instanceof Item)))
 				return ouch(msg.source());
@@ -391,7 +414,8 @@ public class Burning extends StdAbility
 		if((affected instanceof Item)
 		&&(msg.tool()==affected)
 		&&(msg.target() instanceof Container)
-		&&(msg.targetMinor()==CMMsg.TYP_PUT))
+		&&(msg.targetMinor()==CMMsg.TYP_PUT)
+		&&(!CMath.bset(abilityCode(), Burning.FIREFLAG_UNEXTINGUISHABLE)))
 		{
 			final Item I=(Item)affected;
 			final Item C=(Container)msg.target();

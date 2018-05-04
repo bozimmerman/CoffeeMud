@@ -22,9 +22,9 @@
 % Sarcophogus	3	40	200	20	GenContainer		500	64	
 % Steps	12	80	400	5	GenRideable	LADDER	3	0	
 % Fountain	12	120	500	120	GenFountain		0	1	
-% Forge	15	80	1200	300	GenContainer	LID	1000	0	Burning
-% Stove	3	40	100	20	GenRideable	TABLE	100	0	Burning
-% Oven	6	60	500	50	GenContainer	LID	50	0	Burning
+% Forge	15	80	1200	300	GenContainer	LID	1000	0	*Burning;NODESTROY UNEXTINGUISHABLE NOSPREAD
+% Stove	3	40	100	20	GenRideable	TABLE	100	0	*Burning;NODESTROY UNEXTINGUISHABLE NOSPREAD
+% Oven	6	60	500	50	GenContainer	LID	50	0	*Burning;NODESTROY UNEXTINGUISHABLE NOSPREAD
 % Wand	28	10	2	10	GenWand		30		
 % Tub	10	60	400	75	GenTub	CHAIR	2000	0	
 % Jacuzzi	15	80	600	75	GenTub	CHAIR	2600	0	
