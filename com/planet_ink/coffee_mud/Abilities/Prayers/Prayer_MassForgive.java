@@ -1,0 +1,142 @@
+package com.planet_ink.coffee_mud.Abilities.Prayers;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.*;
+
+/*
+   Copyright 2018-2018 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+public class Prayer_MassForgive extends Prayer
+{
+	@Override
+	public String ID()
+	{
+		return "Prayer_MassForgive";
+	}
+
+	private final static String localizedName = CMLib.lang().L("Mass Forgive");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_OK_OTHERS;
+	}
+
+	@Override
+	public int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
+
+	@Override
+	public long flags()
+	{
+		return Ability.FLAG_HOLY;
+	}
+
+	@Override
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		LegalBehavior B=null;
+		if(mob.location()!=null)
+			B=CMLib.law().getLegalBehavior(mob.location());
+		else
+			return false;
+
+		List<LegalWarrant> warrants=new Vector<LegalWarrant>();
+		Area A=CMLib.law().getLegalObject(mob.location());
+		warrants=B.getWarrantsOf(A,null);
+
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+
+		final boolean success=proficiencyCheck(mob,0,auto);
+
+		if(success)
+		{
+			if(warrants.size()==0)
+				beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 to forgive everyone.",prayForWord(mob)));
+			else
+			{
+				final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":L("^S<S-NAME> @x1 to forgive everyone.^?",prayForWord(mob)));
+				if(mob.location().okMessage(mob,msg))
+				{
+					mob.location().send(mob,msg);
+					List<String> names=new ArrayList<String>();
+					for(int i=0;i<warrants.size();i++)
+					{
+						final LegalWarrant W=warrants.get(i);
+						if((W.crime()!=null)
+						&&(W.criminal()!=null)
+						&&(!W.crime().equalsIgnoreCase("pardoned"))
+						&&(B.isStillACrime(W, false)))
+						{
+							W.setCrime("pardoned");
+							W.setOffenses(0);
+							if(!names.contains(W.criminal().Name()))
+								names.add(W.criminal().Name());
+						}
+					}
+					if(names.size()>0)
+						msg.source().tell(L("You have forgiven: @x1",CMLib.english().toEnglishStringList(names)));
+				}
+			}
+		}
+		else
+			beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 to forgive everyone, but nothing happens.",prayForWord(mob)));
+
+		// return whether it worked
+		return success;
+	}
+}
