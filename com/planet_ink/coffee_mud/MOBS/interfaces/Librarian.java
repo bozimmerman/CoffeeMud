@@ -287,4 +287,10 @@ public interface Librarian extends ShopKeeper
 	 * @param mask the mask to use
 	 */
 	public void setContributorMask(String mask);
+	
+	/**
+	 * Returns the underlying basic book stock of the library, as opposed to the
+	 * current shop, which reflects only what is there at the moment.
+	 */
+	public CoffeeShop getBaseLibrary();
 }

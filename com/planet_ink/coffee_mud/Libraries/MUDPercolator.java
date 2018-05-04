@@ -1369,11 +1369,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 		if(SK!=null)
 		{
+			final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
 			final List<Triad<Environmental,Integer,Long>> iV = findShopInventory(M,piece,defined);
 			if(iV.size()>0)
-				SK.getShop().emptyAllShelves();
+				shop.emptyAllShelves();
 			for(int i=0;i<iV.size();i++)
-				SK.getShop().addStoreInventory(iV.get(i).first,iV.get(i).second.intValue(),iV.get(i).third.intValue());
+				shop.addStoreInventory(iV.get(i).first,iV.get(i).second.intValue(),iV.get(i).third.intValue());
 		}
 
 		M.recoverCharStats();

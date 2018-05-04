@@ -240,6 +240,8 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),29,"MasterBaking",false,CMParms.parseSemicolons("Baking(100)",true),"+CON 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Lore",false);
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),60,"LegendaryWeaponsmithing",false,CMParms.parseSemicolons("MasterWeaponsmithing(100)",true),"+STR 18");
+
 	}
 
 	@Override

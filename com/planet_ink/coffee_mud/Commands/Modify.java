@@ -127,19 +127,21 @@ public class Modify extends StdCommand
 		}
 		if(modItem == null)
 		{
-			ShopKeeper S=CMLib.coffeeShops().getShopKeeper(srchMob);
-			if(S!=null)
+			ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(srchMob);
+			if(SK!=null)
 			{
-				Environmental E=S.getShop().getStock(itemID,mob);
+				final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
+				Environmental E=shop.getStock(itemID,mob);
 				if(E instanceof Item)
 					modItem=(Item)E;
 			}
 			if(modItem == null)
 			{
-				S=CMLib.coffeeShops().getShopKeeper(srchRoom);
-				if(S!=null)
+				SK=CMLib.coffeeShops().getShopKeeper(srchRoom);
+				if(SK!=null)
 				{
-					Environmental E=S.getShop().getStock(itemID,mob);
+					final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
+					Environmental E=shop.getStock(itemID,mob);
 					if(E instanceof Item)
 						modItem=(Item)E;
 				}

@@ -929,7 +929,12 @@ public class GrinderItems
 				else
 				{
 					if((shopItemCode.equals(mobNum)||shopItemCode.equals("NEW")) && (shopItemCode.length()>0))
-						((ShopKeeper)M).getShop().addStoreInventory(I);
+					{
+						if(M instanceof Librarian)
+							((Librarian)M).getBaseLibrary().addStoreInventory(I);
+						else
+							((ShopKeeper)M).getShop().addStoreInventory(I);
+					}
 					else
 						M.addItem(I);
 					M.recoverPhyStats();
@@ -971,8 +976,16 @@ public class GrinderItems
 				{
 					if((shopItemCode.equals(mobNum)||shopItemCode.equals("NEW")) && (shopItemCode.length()>0))
 					{
-						((ShopKeeper)M).getShop().delAllStoreInventory(oldI);
-						((ShopKeeper)M).getShop().addStoreInventory(I);
+						if(M instanceof Librarian)
+						{
+							((Librarian)M).getBaseLibrary().delAllStoreInventory(oldI);
+							((Librarian)M).getBaseLibrary().addStoreInventory(I);
+						}
+						else
+						{
+							((ShopKeeper)M).getShop().delAllStoreInventory(oldI);
+							((ShopKeeper)M).getShop().addStoreInventory(I);
+						}
 					}
 					else
 					{

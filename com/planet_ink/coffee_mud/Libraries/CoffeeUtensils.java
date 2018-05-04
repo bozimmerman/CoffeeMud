@@ -573,7 +573,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					if(mob instanceof ShopKeeper)
 					{
 						final List<Item> rivalItems=new Vector<Item>();
-						final CoffeeShop shop = ((ShopKeeper)mob).getShop();
+						final CoffeeShop shop=(mob instanceof Librarian)?((Librarian)mob).getBaseLibrary():((ShopKeeper)mob).getShop();
 						for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 						{
 							final Environmental E=i.next();

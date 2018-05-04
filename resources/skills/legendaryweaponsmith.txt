@@ -1,0 +1,134 @@
+legendary butter knife	61	20	1	426	GenWeapon	DAGGER	PIERCING	10	78	1	0		
+% legendary club	61	20	12	2634	GenWeapon	BLUNT	BASHING	38	18	1	0		
+legendary mallet	61	20	8	4328	GenWeapon	HAMMER	BASHING	53	-20	1	0	WOODEN	
+legendary % spear	61	20	12	6806	GenWeapon	POLEARM	PIERCING	83	-15	2	1		
+legendary khopesh	61	20	10	4583	GenWeapon	SWORD	SLASHING	55	-25	1	0		
+legendary throwing iron	61	20	2	4680	GenSpear	THROWN	SLASHING	52	0	1	1		
+legendary hand ax	62	30	8	4845	GenWeapon	AXE	SLASHING	57	-30	1	0	WOODEN	
+legendary % knife	62	20	2	495	GenWeapon	DAGGER	PIERCING	11	80	1	0		
+legendary flail	62	20	12	5640	GenWeapon	FLAILED	BASHING	60	-18	1	0		
+legendary % staff	62	18	15	4730	GenStaff	STAFF	BASHING	67	18	2	0		
+legendary tulwar	62	20	14	4001	GenWeapon	SWORD	SLASHING	49	0	1	0		
+legendary % shillelagh	63	20	8	3986	GenWeapon	BLUNT	BASHING	52	-30	1	0		
+legendary sickle	63	20	8	1870	GenWeapon	EDGED	PIERCING	30	37	1	0	WOODEN	
+legendary machete	63	20	6	4246	GenWeapon	SWORD	SLASHING	52	-15	1	0		
+legendary throwing knife	63	20	2	1080	GenSpear	THROWN	PIERCING	18	80	1	1		
+legendary large axe	64	60	18	9500	GenWeapon	AXE	SLASHING	100	-25	2	0	WOODEN	
+legendary % sai	64	20	5	2647	GenWeapon	BLUNT	PIERCING	38	19	1	0		
+legendary chefs knife	64	20	3	506	GenWeapon	DAGGER	PIERCING	11	83	1	0		
+legendary throwing axe	64	50	4	2858	GenSpear	THROWN	SLASHING	35	60	1	1	WOODEN	
+legendary glaive	65	30	22	8742	GenWeapon	POLEARM	SLASHING	94	-15	2	1		
+legendary short sword	65	20	10	4335	GenWeapon	SWORD	SLASHING	51	0	1	0		
+legendary orc blade	65	40	16	4858	GenWeapon	SWORD	SLASHING	55	-10	1	0		
+legendary % boomerang	65	20	4	1200	GenSpear	THROWN	BASHING	18	100	1	1		Spell_Boomerang
+legendary hatchet	66	50	8	4335	GenWeapon	AXE	SLASHING	51	0	1	0	WOODEN	
+legendary dagger	66	20	6	580	GenWeapon	DAGGER	PIERCING	12	85	1	0		
+legendary nunchaku	66	20	8	6014	GenWeapon	FLAILED	BASHING	62	-19	1	0		
+legendary two-headed flail	66	60	15	11253	GenWeapon	FLAILED	BASHING	108	-19	2	0		
+legendary halberd	66	40	24	10400	GenWeapon	POLEARM	SLASHING	104	-30	2	1		
+legendary flamberge	66	40	24	8649	GenWeapon	SWORD	SLASHING	93	0	2	0		
+legendary broad axe	67	90	22	10706	GenWeapon	AXE	SLASHING	106	-25	2	0	WOODEN	
+legendary % sceptre	67	110	12	3220	GenWeapon	BLUNT	BASHING	42	20	1	0		
+legendary military fork	67	50	18	9797	GenWeapon	POLEARM	PIERCING	101	-30	2	1		
+legendary short % staff	67	20	10	5037	GenStaff	STAFF	BASHING	69	20	2	0		
+legendary foil	67	80	2	2625	GenWeapon	SWORD	PIERCING	35	50	1	0		
+legendary long sword	67	40	10	4506	GenWeapon	SWORD	SLASHING	52	0	1	0		
+% legendary axe	68	50	10	5786	GenWeapon	AXE	SLASHING	62	-30	1	0	WOODEN	
+legendary serrated knife	68	20	4	592	GenWeapon	DAGGER	PIERCING	12	88	1	0		
+legendary craftsmans hammer	68	40	4	4335	GenWeapon	HAMMER	BASHING	51	0	1	0	WOODEN	
+legendary maul	68	40	30	11232	GenWeapon	HAMMER	BASHING	108	-20	2	0	WOODEN	
+legendary cutlass	68	40	10	4681	GenWeapon	SWORD	SLASHING	53	0	1	0		
+legendary shuriken	68	120	2	3103	GenSpear	THROWN	SLASHING	38	45	1	1		
+legendary spiked % club	69	30	15	3520	GenWeapon	BLUNT	PIERCING	44	20	1	0		
+legendary yari	69	40	14	7568	GenWeapon	POLEARM	PIERCING	86	0	2	1		
+legendary gladius	69	40	10	4505	GenWeapon	SWORD	PIERCING	51	10	1	0		
+legendary wakizashi	69	80	14	4073	GenWeapon	SWORD	SLASHING	47	25	1	0		
+legendary giant axe	70	100	50	12321	GenWeapon	AXE	SLASHING	111	0	2	0	WOODEN	
+legendary two-handed % club	70	60	20	6252	GenWeapon	BLUNT	BASHING	77	21	2	0		
+legendary poignard	70	40	7	676	GenWeapon	DAGGER	PIERCING	13	91	1	0		
+legendary gnout	70	40	12	7012	GenWeapon	FLAILED	BASHING	67	-21	1	0		
+legendary fauchard	70	60	24	11232	GenWeapon	POLEARM	SLASHING	108	-30	2	1		
+legendary claymore	70	50	6	4681	GenWeapon	SWORD	SLASHING	53	0	1	0		
+legendary kama	71	50	6	2277	GenWeapon	EDGED	PIERCING	33	42	1	0	WOODEN	
+legendary bill-guisarme	71	70	28	12096	GenWeapon	POLEARM	SLASHING	112	-30	2	1		
+legendary long % staff	71	20	16	5481	GenStaff	STAFF	BASHING	71	21	2	1		
+legendary epee	71	90	14	2560	GenWeapon	SWORD	PIERCING	32	80	1	0		
+legendary % dart	71	60	1	746	GenSpear	THROWN	PIERCING	14	80	1	1		
+legendary dirk	72	60	5	684	GenWeapon	DAGGER	PIERCING	13	93	1	0		
+legendary kusari-gama	72	20	12	11641	GenWeapon	FLAILED	SLASHING	109	-21	2	1		
+legendary bardiche	72	90	36	14750	GenWeapon	POLEARM	SLASHING	125	-45	2	1		
+legendary giant sword	72	60	30	12876	GenWeapon	SWORD	SLASHING	116	-25	2	0		
+legendary tomahawk	72	70	6	7130	GenSpear	THROWN	SLASHING	62	25	1	1	WOODEN	
+legendary % mace	73	50	12	3848	GenWeapon	BLUNT	BASHING	46	21	1	0		
+legendary sledgehammer	73	120	40	17920	GenWeapon	HAMMER	BASHING	140	-60	2	0	WOODEN	
+legendary light lance	73	100	16	6400	GenWeapon	POLEARM	PIERCING	64	-30	1	1		
+legendary rapier	73	80	6	4240	GenWeapon	SWORD	PIERCING	48	25	1	0		
+legendary throwing hammer	73	30	4	8638	GenSpear	THROWN	BASHING	71	0	1	1	WOODEN	
+legendary double axe	74	40	16	4940	GenWeapon	AXE	SLASHING	52	25	1	0	WOODEN	
+legendary crys-knife	74	90	6	697	GenWeapon	DAGGER	PIERCING	13	96	1	0		
+legendary % chain	74	30	25	8352	GenWeapon	FLAILED	BASHING	72	-22	1	1		
+legendary great axe	75	110	27	11236	GenWeapon	AXE	SLASHING	106	0	2	0	WOODEN	
+legendary % morning star	75	30	16	4192	GenWeapon	BLUNT	PIERCING	48	22	1	0		
+legendary voulge	75	110	18	9408	GenWeapon	POLEARM	SLASHING	96	0	2	1		
+legendary bastard sword	75	50	12	4760	GenWeapon	SWORD	SLASHING	51	25	1	0		
+legendary military pick	76	50	11	6506	GenWeapon	AXE	PIERCING	64	-15	1	0	WOODEN	
+legendary jewelers hammer	76	60	3	5415	GenWeapon	HAMMER	BASHING	57	0	1	0	WOODEN	
+legendary partisan	76	120	26	13221	GenWeapon	POLEARM	PIERCING	117	-30	2	1		
+legendary throwing spike	76	50	1	1393	GenSpear	THROWN	PIERCING	22	70	1	1		
+legendary % cudgel	77	20	14	4208	GenWeapon	BLUNT	BASHING	48	23	1	0		
+legendary % quarterstaff	77	30	12	6768	GenStaff	STAFF	BASHING	80	23	2	0		
+legendary shamshir	77	50	12	6000	GenWeapon	SWORD	SLASHING	60	0	1	0		
+legendary weighted axe	77	60	6	7908	GenSpear	THROWN	SLASHING	65	30	1	1	WOODEN	
+legendary tabar	78	110	18	13104	GenWeapon	AXE	SLASHING	117	-25	2	0	WOODEN	
+legendary rondel	78	100	6	798	GenWeapon	DAGGER	PIERCING	14	101	1	0		
+legendary scourge	78	80	10	8559	GenWeapon	FLAILED	SLASHING	74	-23	1	0	LEATHER	
+legendary kyoketsu-shogi	78	20	6	11814	GenWeapon	FLAILED	SLASHING	110	-23	2	1		
+legendary great maul	78	70	50	16637	GenWeapon	HAMMER	BASHING	131	-20	2	0	WOODEN	
+legendary pike	78	120	20	14268	GenWeapon	POLEARM	PIERCING	123	-45	2	1		
+legendary no-dachi	84	120	20	10706	GenWeapon	SWORD	SLASHING	101	25	2	0		
+legendary grand % sceptre	79	140	16	4550	GenWeapon	BLUNT	BASHING	50	23	1	0		
+legendary katar	79	80	8	2861	GenWeapon	EDGED	PIERCING	37	47	1	0		
+legendary falchion	79	50	8	6000	GenWeapon	SWORD	SLASHING	60	0	1	0		
+legendary herculean club	80	80	30	8717	GenWeapon	BLUNT	BASHING	91	24	2	0		
+legendary heavy lance	80	130	30	9480	GenWeapon	POLEARM	PIERCING	79	-45	1	1		
+legendary % battle dart	80	100	1	960	GenSpear	THROWN	PIERCING	16	90	1	1		
+legendary battle axe	81	120	25	9690	GenWeapon	AXE	SLASHING	95	35	2	0	WOODEN	
+legendary % jo staff	81	40	8	7117	GenStaff	STAFF	BASHING	82	24	2	0		
+legendary drussus	81	70	8	5211	GenWeapon	SWORD	PIERCING	53	30	1	0		
+legendary manriki-gusari	81	40	3	9880	GenSpear	THROWN	BASHING	76	0	1	1		
+legendary crowbill	82	70	14	6826	GenWeapon	AXE	PIERCING	64	0	1	0	WOODEN	
+legendary stiletto	82	140	10	905	GenWeapon	DAGGER	PIERCING	15	106	1	0		
+legendary barbed whip	82	100	18	9522	GenWeapon	FLAILED	SLASHING	77	-24	1	1	LEATHER	
+legendary % hammer	82	40	10	7475	GenWeapon	HAMMER	BASHING	69	-20	1	0	WOODEN	
+legendary javelin	82	90	8	14105	GenSpear	THROWN	PIERCING	93	-30	1	2		
+legendary flanged % mace	83	80	14	4922	GenWeapon	BLUNT	BASHING	52	24	1	0		
+legendary martel de fer	83	140	40	17947	GenWeapon	HAMMER	BASHING	137	-30	2	0	WOODEN	
+legendary trident	83	150	22	14637	GenWeapon	POLEARM	PIERCING	123	-30	2	1		
+legendary scimitar	83	60	16	7260	GenWeapon	SWORD	SLASHING	66	0	1	0		
+legendary three-sectioned staff	84	20	15	17816	GenWeapon	FLAILED	BASHING	136	-25	2	0		
+legendary bec de corbin	84	170	22	16500	GenWeapon	POLEARM	SLASHING	132	-45	2	1		
+legendary zweihander	90	70	20	14641	GenWeapon	SWORD	SLASHING	121	0	2	0		
+legendary bearded axe	85	140	20	10914	GenWeapon	AXE	SLASHING	102	25	2	0	WOODEN	
+legendary % jitte	85	90	5	4760	GenWeapon	BLUNT	PIERCING	51	25	1	0		
+legendary pixie blade	85	160	3	3483	GenWeapon	SWORD	PIERCING	38	85	1	0		
+legendary war axe	86	90	14	6186	GenWeapon	AXE	SLASHING	58	30	1	0	WOODEN	
+legendary cat-o-nine tails	86	140	14	10523	GenWeapon	FLAILED	BASHING	82	-25	1	0	LEATHER	
+legendary ranseur	86	180	30	18348	GenWeapon	POLEARM	PIERCING	139	-45	2	1		
+legendary weighted knife	86	90	2	2600	GenSpear	THROWN	PIERCING	30	100	1	1		
+legendary cat claws	87	90	10	3512	GenWeapon	EDGED	SLASHING	41	52	1	0		
+legendary % bo staff	87	60	14	8754	GenStaff	STAFF	BASHING	91	26	2	0		
+legendary katana	87	150	10	6186	GenWeapon	SWORD	SLASHING	58	30	1	0		
+legendary pilum	87	130	8	12608	GenSpear	THROWN	PIERCING	85	0	1	2		
+legendary % war sceptre	88	180	18	5712	GenWeapon	BLUNT	BASHING	56	26	1	0		
+legendary main gauche	88	160	4	1034	GenWeapon	DAGGER	PIERCING	16	114	1	0		
+legendary lucern hammer	88	140	18	15621	GenWeapon	HAMMER	BASHING	127	-30	2	1		
+legendary scythe	88	200	20	15872	GenWeapon	POLEARM	SLASHING	128	-30	2	1		
+legendary executioners axe	89	150	20	17415	GenWeapon	AXE	SLASHING	135	-30	2	0	WOODEN	
+legendary warhammer	89	70	12	9360	GenWeapon	HAMMER	BASHING	78	-30	1	0	WOODEN	
+legendary sabre	89	60	8	6500	GenWeapon	SWORD	SLASHING	60	25	1	0		
+legendary dwarven thrower	89	170	4	13200	GenSpear	THROWN	BASHING	90	-30	1	2	MITHRIL	Prop_HaveZapper;-RACECAT +Dwarf;Spell_Boomerang
+legendary half-moon	90	90	25	10335	GenWeapon	BLUNT	SLASHING	99	27	2	0		
+legendary three-headed flail	90	130	18	20815	GenWeapon	FLAILED	BASHING	147	-27	2	0		
+legendary naginata	90	230	35	18765	GenWeapon	POLEARM	SLASHING	139	-30	2	1		
+legendary twohanded sword	78	70	24	11664	GenWeapon	SWORD	SLASHING	108	0	2	0		
+legendary hurlbat	90	140	8	25545	GenSpear	THROWN	SLASHING	131	-80	1	1		

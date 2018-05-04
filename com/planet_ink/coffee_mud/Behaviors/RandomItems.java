@@ -194,7 +194,10 @@ public class RandomItems extends ActiveTicker
 		if((I==null)||(I.amDestroyed()))
 			return false;
 		if(SK!=null)
-			return SK.getShop().doIHaveThisInStock(I.Name(),null);
+		{
+			final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
+			return shop.doIHaveThisInStock(I.Name(),null);
+		}
 		if(thang instanceof Area)
 		{
 			final Room R=CMLib.map().roomLocation(I);
@@ -353,7 +356,8 @@ public class RandomItems extends ActiveTicker
 						if(SK.doISellThis(I))
 						{
 							maintained.addElement(I);
-							SK.getShop().addStoreInventory((Environmental)ticking,1,-1);
+							final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
+							shop.addStoreInventory((Environmental)ticking,1,-1);
 						}
 					}
 					else

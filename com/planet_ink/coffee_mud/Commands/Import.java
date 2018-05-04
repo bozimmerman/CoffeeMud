@@ -6917,23 +6917,24 @@ public class Import extends StdCommand
 									int num=CMath.s_int(CMParms.getCleanBit(s,3).trim());
 									if(num<0)
 										num=100;
-									((ShopKeeper)M).getShop().addStoreInventory(I,num,-1);
-									if((I instanceof Light)&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("OilFlask",null)))
-										((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("OilFlask"),num*2,-1);
+									final CoffeeShop shop=(M instanceof Librarian)?((Librarian)M).getBaseLibrary():((ShopKeeper)M).getShop();
+									shop.addStoreInventory(I,num,-1);
+									if((I instanceof Light)&&(!shop.doIHaveThisInStock("OilFlask",null)))
+										shop.addStoreInventory(CMClass.getBasicItem("OilFlask"),num*2,-1);
 									else
 									if(((I.ID().equals("GenReadable"))
 									||(I instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap))
-									&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("Parchment",null)))
+									&&(!shop.doIHaveThisInStock("Parchment",null)))
 									{
 										((ShopKeeper)M).setWhatIsSoldMask(0);
 										((ShopKeeper)M).addSoldType(ShopKeeper.DEAL_INVENTORYONLY);
-										((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("Parchment"),num,-1);
+										shop.addStoreInventory(CMClass.getBasicItem("Parchment"),num,-1);
 										final Item journal2=CMClass.getBasicItem("GenJournal");
 										journal2.setName(L("the adventurers journal"));
 										journal2.setBaseValue(250);
 										journal2.recoverPhyStats();
 										journal2.text();
-										((ShopKeeper)M).getShop().addStoreInventory(journal2,num,-1);
+										shop.addStoreInventory(journal2,num,-1);
 									}
 									else
 									if(((ShopKeeper)M).isSold(ShopKeeper.DEAL_WEAPONS))
@@ -6947,7 +6948,7 @@ public class Import extends StdCommand
 										arrows.setDisplayText(L("Some arrows have been left here."));
 										arrows.recoverPhyStats();
 										arrows.text();
-										((ShopKeeper)M).getShop().addStoreInventory(arrows,num,-1);
+										shop.addStoreInventory(arrows,num,-1);
 									}
 								}
 								else

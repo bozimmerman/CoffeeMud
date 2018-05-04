@@ -114,7 +114,8 @@ public class Spell_Cogniportive extends Spell
 				{
 					final ShopKeeper S=(ShopKeeper)O;
 					final Room room=CMLib.map().getStartRoom(S);
-					final Environmental E=S.getShop().getStock(me.Name(), null);
+					final CoffeeShop shop=(S instanceof Librarian)?((Librarian)S).getBaseLibrary():S.getShop();
+					final Environmental E=shop.getStock(me.Name(), null);
 					if((E instanceof Item)
 					&&((beLoose) || me.sameAs(E))
 					&&(CMLib.law().getLandTitle(room)==null))

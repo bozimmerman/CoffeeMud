@@ -1039,6 +1039,12 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 						mob.tell(L("@x1 doesn't look interested.",mob.charStats().HeShe()));
 						return false;
 					}
+					if((msg.tool() instanceof Container)
+					&&(((Container)msg.tool()).getContents().size()>0))
+					{
+						mob.tell(this,msg.tool(),null,L("<S-HE-SHE> refuses to accept <T-NAME>.  You'll need to mail each item separately."));
+						return false;
+					}
 					if(CMLib.flags().isEnspelled((Item)msg.tool()) 
 					|| CMLib.flags().isOnFire((Item)msg.tool())
 					||(msg.tool() instanceof CagedAnimal))

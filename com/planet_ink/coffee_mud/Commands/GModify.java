@@ -854,7 +854,8 @@ public class GModify extends StdCommand
 							if(SK!=null)
 							{
 								List<CoffeeShop.ShelfProduct> removeThese=new ArrayList<CoffeeShop.ShelfProduct>();
-								for(final Iterator<CoffeeShop.ShelfProduct> i=SK.getShop().getStoreShelves();i.hasNext();)
+								final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
+								for(final Iterator<CoffeeShop.ShelfProduct> i=shop.getStoreShelves();i.hasNext();)
 								{
 									final CoffeeShop.ShelfProduct P=i.next();
 									final Environmental E2=P.product;
@@ -873,7 +874,7 @@ public class GModify extends StdCommand
 									}
 								}
 								for(final CoffeeShop.ShelfProduct  P : removeThese)
-									SK.getShop().deleteShelfProduct(P);
+									shop.deleteShelfProduct(P);
 							}
 						}
 					}

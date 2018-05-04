@@ -186,7 +186,8 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			invResetTickDown = Ability.TICKS_FOREVER;
 		else
 		{
-			this.getShop().emptyAllShelves();
+			final CoffeeShop shop=(this instanceof Librarian)?((Librarian)this).getBaseLibrary():this.getShop();
+			shop.emptyAllShelves();
 			if (miscText != null)
 			{
 				String shoptext;

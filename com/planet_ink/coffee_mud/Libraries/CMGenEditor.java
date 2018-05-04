@@ -4430,11 +4430,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(M.isSold(newValue))
 			{
 				M.addSoldType(-newValue);
-				for(final Iterator<Environmental> i=M.getShop().getStoreInventory();i.hasNext();)
+				final CoffeeShop shop=(M instanceof Librarian)?((Librarian)M).getBaseLibrary():M.getShop();
+				for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 				{
 					final Environmental E2=i.next();
 					if(!M.doISellThis(E2))
-						M.getShop().delAllStoreInventory(E2);
+						shop.delAllStoreInventory(E2);
 				}
 			}
 			else
@@ -4451,13 +4452,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		while(itemstr.length()>0)
 		{
 			String inventorystr="";
-			for(final Iterator<Environmental> i=M.getShop().getStoreInventory();i.hasNext();)
+			final CoffeeShop shop=(M instanceof Librarian)?((Librarian)M).getBaseLibrary():M.getShop();
+			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 			{
 				final Environmental E2=i.next();
 				if(E2.isGeneric())
-					inventorystr+=E2.name()+" ("+M.getShop().numberInStock(E2)+"), ";
+					inventorystr+=E2.name()+" ("+shop.numberInStock(E2)+"), ";
 				else
-					inventorystr+=CMClass.classID(E2)+" ("+M.getShop().numberInStock(E2)+"), ";
+					inventorystr+=CMClass.classID(E2)+" ("+shop.numberInStock(E2)+"), ";
 			}
 			if(inventorystr.length()>0)
 				inventorystr=inventorystr.substring(0,inventorystr.length()-2);
@@ -4482,11 +4484,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				}
 				else
 				{
-					Environmental item=M.getShop().getStock(itemstr,null);
+					Environmental item=shop.getStock(itemstr,null);
 					if(item!=null)
 					{
 						mob.tell(L("@x1 removed.",item.ID()));
-						M.getShop().delAllStoreInventory((Environmental)item.copyOf());
+						shop.delAllStoreInventory((Environmental)item.copyOf());
 					}
 					else
 					{
