@@ -106,6 +106,7 @@ public class Spell_TeleportationWard extends Spell
 			&&(!msg.amISource(mob))
 			&&(mob.location()!=msg.source().location())
 			&&(msg.tool() instanceof Ability)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING))
 			&&(!mob.amDead()))
 			{
@@ -124,6 +125,7 @@ public class Spell_TeleportationWard extends Spell
 			final Room R=(Room)affected;
 			if((msg.tool() instanceof Ability)
 			&&(msg.source().location()!=null)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 			&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE))
 			{
 				final boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);

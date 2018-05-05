@@ -59,6 +59,7 @@ public class Prop_RestrictSpells extends Property
 			return false;
 
 		if((msg.tool() instanceof Ability)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(text().toUpperCase().indexOf(msg.tool().ID().toUpperCase())>=0))
 		{
 			Room roomS=null;

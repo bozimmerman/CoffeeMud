@@ -64,6 +64,7 @@ public class Prop_NoTeleportOut extends Property
 
 		if((msg.tool() instanceof Ability)
 		&&(msg.source().location()!=null)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(msg.sourceMinor()!=CMMsg.TYP_ENTER))
 		{
 			final boolean shere=(msg.source().location()==affected)

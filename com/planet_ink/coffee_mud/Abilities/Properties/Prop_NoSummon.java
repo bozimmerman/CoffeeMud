@@ -73,6 +73,7 @@ public class Prop_NoSummon extends Property
 
 		if((msg.tool() instanceof Ability)
 		&&(msg.source().location()!=null)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&((msg.source().location()==affected)
 		   ||((affected instanceof Area)&&(((Area)affected).inMyMetroArea(msg.source().location().getArea()))))
 		&&((!nonAggroOK)||(!(msg.target() instanceof MOB))||(!CMLib.flags().isAggressiveTo((MOB)msg.target(),null)))

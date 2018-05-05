@@ -74,19 +74,22 @@ public class Prop_MagicFreedom extends Property
 		||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
 		||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MAGIC)))
 		{
-			Room room=null;
-			if(affected instanceof Room)
-				room=(Room)affected;
-			else
-			if(msg.source().location()!=null)
-				room=msg.source().location();
-			else
-			if((msg.target() instanceof MOB)
-			&&(((MOB)msg.target()).location()!=null))
-				room=((MOB)msg.target()).location();
-			if(room!=null)
-				room.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
-			return false;
+			if(msg.sourceMinor()!=CMMsg.TYP_TEACH)
+			{
+				Room room=null;
+				if(affected instanceof Room)
+					room=(Room)affected;
+				else
+				if(msg.source().location()!=null)
+					room=msg.source().location();
+				else
+				if((msg.target() instanceof MOB)
+				&&(((MOB)msg.target()).location()!=null))
+					room=((MOB)msg.target()).location();
+				if(room!=null)
+					room.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));
+				return false;
+			}
 		}
 		return true;
 	}

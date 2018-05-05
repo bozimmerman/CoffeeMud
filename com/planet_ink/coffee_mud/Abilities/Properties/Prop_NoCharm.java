@@ -64,6 +64,7 @@ public class Prop_NoCharm extends Property
 
 		if((msg.tool() instanceof Ability)
 		&&(msg.source().location()!=null)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&((msg.source().location()==affected)
 		   ||((affected instanceof Area)&&(((Area)affected).inMyMetroArea(msg.source().location().getArea())))
 		   ||(msg.target()==affected))

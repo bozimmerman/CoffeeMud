@@ -103,6 +103,7 @@ public class Spell_Anchor extends Spell
 			return true;
 
 		if((msg.tool() instanceof Ability)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&((affected==null)
 			||((affected instanceof Item)&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))&&(msg.amITarget(((Item)affected).owner())))
 			||((affected instanceof MOB)&&(msg.amITarget(affected))))

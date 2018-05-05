@@ -181,6 +181,7 @@ public class Archon_Banish extends ArchonSkill
 		{
 			if((msg.tool() instanceof Ability)
 			&&(msg.source().location()!=null)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 			&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE))
 			{
 				final boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
