@@ -303,6 +303,7 @@ public class Thief extends StdCharClass
 				||msg.tool().ID().equals("Thief_Robbery")
 				||msg.tool().ID().equals("Thief_Embezzle")
 				||msg.tool().ID().equals("Thief_Mug")
+				||msg.tool().ID().equals("Thief_Plunder")
 				||(msg.tool().ID().equals("Thief_Pick")&&(msg.value()==1))
 				||(msg.tool().ID().equals("Thief_RemoveTraps")&&(msg.value()==1))
 				||msg.tool().ID().equals("Thief_Racketeer")
