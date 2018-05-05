@@ -161,7 +161,8 @@ public class StdClanDonationList extends StdClanItem
 			if((msg.target() instanceof Item)
 			&&(msg.tool() instanceof Ability)
 			&&(msg.target()!=lastItem)
-			&&(msg.tool().ID().equalsIgnoreCase("Spell_ClanDonate")))
+			&&(msg.tool().ID().equalsIgnoreCase("Spell_ClanDonate"))
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				lastItem=(Item)msg.target();
 				CMLib.database().DBCreatePlayerData(clanID(),"DONATIONS",getDonationKey(msg.source()),makeDonationDescription(msg.source(),msg.target(),"donated"));

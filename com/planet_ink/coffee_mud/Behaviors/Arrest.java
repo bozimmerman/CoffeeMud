@@ -2015,7 +2015,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		&&(msg.othersMessage()!=null)
 		&&((laws.abilityCrimes().containsKey(msg.tool().ID().toUpperCase()))
 			||(laws.abilityCrimes().containsKey(CMLib.flags().getAbilityType_((Ability)msg.tool())))
-			||(laws.abilityCrimes().containsKey(CMLib.flags().getAbilityDomain((Ability)msg.tool())))))
+			||(laws.abilityCrimes().containsKey(CMLib.flags().getAbilityDomain((Ability)msg.tool()))))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			String[] info=laws.abilityCrimes().get(msg.tool().ID().toUpperCase());
 			if(info==null)

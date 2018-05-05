@@ -887,7 +887,8 @@ public class Conquerable extends Arrest
 		{
 			if((msg.target() instanceof Room)
 			&&(msg.tool() instanceof Ability)
-			&&(msg.tool().ID().startsWith("Prayer_Infuse")))
+			&&(msg.tool().ID().startsWith("Prayer_Infuse"))
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				if((msg.source().getClanRole(holdingClan)==null)
 				||(CMLib.clans().getClan(holdingClan)==null)
@@ -1306,7 +1307,8 @@ public class Conquerable extends Arrest
 			&&(msg.target() instanceof MOB)
 			&&((srcC=CMLib.clans().findConquerableClan(msg.source()))!=null)
 			&&(((MOB)msg.target()).isMonster())
-			&&(((MOB)msg.target()).getStartRoom()!=null)))
+			&&(((MOB)msg.target()).getStartRoom()!=null))
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				if((srcC.isWorshipConquest())
 				&&(((Area)myHost).inMyMetroArea(((MOB)msg.target()).getStartRoom().getArea()))

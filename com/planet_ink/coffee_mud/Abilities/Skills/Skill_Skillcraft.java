@@ -137,7 +137,8 @@ public class Skill_Skillcraft extends StdSkill
 		&&(mob.location()!=null)
 		&&(mob.location().isInhabitant(msg.source()))
 		&&(CMLib.flags().canBeSeenBy(msg.source(),mob))
-		&&(msg.source().fetchAbility(msg.tool().ID())!=null))
+		&&(msg.source().fetchAbility(msg.tool().ID())!=null)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			final boolean hasAble=(mob.fetchAbility(ID())!=null);
 			final int lowestLevel=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());

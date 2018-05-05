@@ -180,7 +180,9 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 				}
 			}
 
-			if((foundPlusMinus==null)&&(msg.tool() instanceof Ability))
+			if((foundPlusMinus==null)
+			&&(msg.tool() instanceof Ability)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				final int classType=((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES;
 				switch(classType)

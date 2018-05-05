@@ -104,6 +104,7 @@ public class Fighter_CounterAttack extends FighterSkill
 		&&(msg.target() instanceof MOB)
 		&&(msg.tool() instanceof Ability)
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(mob.rangeToTarget()==0))
 		{
 			if(msg.tool().ID().equals("Skill_Parry"))

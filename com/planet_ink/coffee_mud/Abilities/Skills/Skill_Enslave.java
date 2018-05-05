@@ -191,7 +191,8 @@ public class Skill_Enslave extends StdSkill
 				if((msg.tool()==null)
 				||((msg.tool() instanceof Ability)
 					&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
-					&&(mob.fetchAbility(msg.tool().ID())!=null)))
+					&&(mob.fetchAbility(msg.tool().ID())!=null)
+					&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)))
 				{
 					if(!msg.source().Name().equals(mob.getLiegeID()))
 					{
@@ -231,7 +232,8 @@ public class Skill_Enslave extends StdSkill
 				}
 				else
 				if((msg.tool() instanceof Ability)
-				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
+				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
+				&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 					CMLib.commands().postSay(mob,msg.source(),L("I don't understand your words."),false,false);
 			}
 		}

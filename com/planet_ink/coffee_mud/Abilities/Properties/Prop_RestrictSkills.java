@@ -121,6 +121,7 @@ public class Prop_RestrictSkills extends Property
 
 		if((msg.tool() instanceof Ability)
 		&&(!CMath.bset(msg.sourceMajor(), CMMsg.MASK_ALWAYS))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(skills.contains(msg.tool().ID())))
 		{
 			Room roomS=null;

@@ -117,7 +117,8 @@ public class Spell_WallOfDarkness extends Spell
 		&&(msg.amITarget(invoker))
 		&&((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0))
 		{
-			if((msg.tool() instanceof Ability))
+			if((msg.tool() instanceof Ability)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				mob.tell(L("You cannot see through the wall of darkness to target @x1.",mob.getVictim().name()));
 				return false;

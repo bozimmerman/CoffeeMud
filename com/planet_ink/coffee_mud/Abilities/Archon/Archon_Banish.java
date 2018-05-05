@@ -196,6 +196,7 @@ public class Archon_Banish extends ArchonSkill
 			}
 			if((msg.tool() instanceof Ability)
 			&&(msg.source().location()!=null)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 			&&(msg.sourceMinor()!=CMMsg.TYP_ENTER))
 			{
 				final boolean shere=(msg.source().location()==affected)||(msg.source().location().getArea()==affected);
@@ -212,6 +213,7 @@ public class Archon_Banish extends ArchonSkill
 			&&(msg.source().location()!=null)
 			&&((msg.source().location()==affected)
 			   ||(msg.source().location().getArea()==affected))
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
 			{
 				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magic energy fizzles and is absorbed into the air."));

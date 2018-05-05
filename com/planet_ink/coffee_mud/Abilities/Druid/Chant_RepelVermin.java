@@ -192,6 +192,7 @@ public class Chant_RepelVermin extends Chant
 		&&(affected instanceof MOB)
 		&&(pointsRemaining >= 0)
 		&&(msg.tool() instanceof Ability)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(msg.tool().ID().indexOf("Insect")>=0))
 		{
 			final Room R=((MOB)affected).location();

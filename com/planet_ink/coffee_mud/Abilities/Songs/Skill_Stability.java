@@ -96,10 +96,10 @@ public class Skill_Stability extends BardSkill
 		final MOB mob=(MOB)affected;
 		if((msg.tool() instanceof Ability)
 		&&(msg.amITarget(affected))
-		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS)
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
-		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-40+(2*getXLEVELLevel(mob)),false)))
+		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,-40+(2*getXLEVELLevel(mob)),false))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			Room roomS=null;
 			Room roomD=null;

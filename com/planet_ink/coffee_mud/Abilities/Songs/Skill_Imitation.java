@@ -116,7 +116,8 @@ public class Skill_Imitation extends BardSkill
 		if((myHost==null)||(!(myHost instanceof MOB)))
 			return;
 		final MOB mob=(MOB)myHost;
-		if(msg.tool()!=null)
+		if((msg.tool()!=null)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			if((msg.amISource(mob))
 			&&((msg.tool().ID().equals("Skill_Spellcraft"))

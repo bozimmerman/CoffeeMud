@@ -114,7 +114,8 @@ public class Prayer_ReligiousDoubt extends Prayer
 				return true;
 			if((msg.source()!=msg.target())
 			&&(msg.tool() instanceof Ability)
-			&&(msg.tool().ID().equalsIgnoreCase("Skill_Convert")))
+			&&(msg.tool().ID().equalsIgnoreCase("Skill_Convert"))
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				msg.source().tell((MOB)msg.target(),null,null,L("<S-NAME> is not interested in hearing your religious beliefs."));
 				return false;

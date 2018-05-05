@@ -84,6 +84,7 @@ public class Prop_CommonTwister extends Property
 		if((affected!=null)
 		&&(msg.tool() instanceof Ability)
 		&&(msg.target()!=null)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
 		&&((affected instanceof Room)||(affected instanceof Exit)||(affected instanceof Area)
 		   ||((affected instanceof Item)&&(msg.source().isMine(affected)))

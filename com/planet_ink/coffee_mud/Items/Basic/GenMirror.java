@@ -73,7 +73,8 @@ public class GenMirror extends GenItem
 		&&((msg.tool().ID().equals("Spell_FleshStone"))
 			||(msg.tool().ID().equals("Prayer_FleshRock")))
 		&&(!mob.amDead())
-		&&(mob!=msg.source()))
+		&&(mob!=msg.source())
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			oncePerRound=true;
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("@x1 reflects the vicious magic!",name()));

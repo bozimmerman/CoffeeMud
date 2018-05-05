@@ -109,6 +109,7 @@ public class Spell_SummoningWard extends Spell
 			&&(mob.location()!=msg.source().location())
 			&&(msg.tool() instanceof Ability)
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING))
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 			&&(!mob.amDead()))
 			{
 				msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magical energy fizzles and is absorbed into the air!"));
@@ -120,7 +121,8 @@ public class Spell_SummoningWard extends Spell
 		{
 			final Room R=(Room)affected;
 			if((msg.tool() instanceof Ability)
-			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING)))
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING))
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				final Ability A=(Ability)msg.tool();
 				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)

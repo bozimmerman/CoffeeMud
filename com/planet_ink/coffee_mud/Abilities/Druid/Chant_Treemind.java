@@ -97,7 +97,8 @@ public class Chant_Treemind extends Chant
 		{
 			boolean yep=(msg.targetMinor()==CMMsg.TYP_MIND);
 			if((!yep)
-			&&(msg.tool() instanceof Ability))
+			&&(msg.tool() instanceof Ability)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				final Ability A=(Ability)msg.tool();
 				if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ILLUSION)

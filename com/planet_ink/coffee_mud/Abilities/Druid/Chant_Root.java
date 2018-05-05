@@ -114,6 +114,7 @@ public class Chant_Root extends Chant
 			if(msg.amITarget(affected))
 			{
 				if((msg.tool() instanceof Ability)
+				&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 				&&((CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING))
 					||(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING))))
 				{

@@ -143,6 +143,7 @@ public class Archon extends StdCharClass
 		if(msg.target()==myHost)
 		{
 			if((msg.tool() instanceof Ability)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 			&&((CMParms.indexOf(ARCHON_IMMUNITIES,msg.tool().ID())>=0)
 				||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE)
 				||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)))

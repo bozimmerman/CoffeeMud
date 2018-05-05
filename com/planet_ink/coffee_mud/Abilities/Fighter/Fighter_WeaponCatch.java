@@ -104,6 +104,7 @@ public class Fighter_WeaponCatch extends FighterSkill
 		&&(msg.tool() instanceof Ability)
 		&&(msg.tool().ID().equals("Skill_Disarm"))
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(mob.rangeToTarget()==0))
 		{
 			final CMMsg msg2=CMClass.getMsg(mob,msg.source(),this,CMMsg.MSG_NOISYMOVEMENT,

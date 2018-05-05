@@ -81,7 +81,8 @@ public class Paladin_Courage extends PaladinSkill
 		{
 			if((CMLib.flags().isGood(invoker))
 			&&(msg.tool() instanceof Ability)
-			&&((invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
+			&&((invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false))
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				final String str1=msg.tool().ID().toUpperCase();
 				if((str1.indexOf("SPOOK")>=0)

@@ -121,12 +121,14 @@ public class Wizard extends Mage
 		if((myHost==null)||(!(myHost instanceof MOB)))
 			return;
 		final MOB mob=(MOB)myHost;
-		if(msg.amISource(mob)&&(msg.tool() instanceof Ability))
+		if(msg.amISource(mob)
+		&&(msg.tool() instanceof Ability))
 		{
 			final Ability A=(Ability)msg.tool();
 			if((mob.isMine(A))
 			&&(!CMLib.ableMapper().getDefaultGain(ID(),false,A.ID()))
-			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL))
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				mob.delAbility(A);
 				mob.recoverMaxState();
@@ -173,7 +175,8 @@ public class Wizard extends Mage
 		if(!(myHost instanceof MOB))
 			return super.okMessage(myHost,msg);
 		final MOB myChar=(MOB)myHost;
-		if((msg.tool()==null)||(!(msg.tool() instanceof Ability)))
+		if((msg.tool()==null)
+		||(!(msg.tool() instanceof Ability)))
 			return super.okMessage(myChar,msg);
 		if(msg.amISource(myChar)
 		&&(myChar.isMine(msg.tool())))

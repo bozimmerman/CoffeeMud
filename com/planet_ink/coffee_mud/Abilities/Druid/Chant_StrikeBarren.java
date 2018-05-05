@@ -105,7 +105,8 @@ public class Chant_StrikeBarren extends Chant
 		if((msg.amITarget(mob))
 		&&(msg.tool() instanceof Ability)
 		&&(((Ability)msg.tool()).ID().equalsIgnoreCase("Pregnancy"))
-		&&(!mob.amDead()))
+		&&(!mob.amDead())
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			return false;
 		return super.okMessage(myHost,msg);
 	}

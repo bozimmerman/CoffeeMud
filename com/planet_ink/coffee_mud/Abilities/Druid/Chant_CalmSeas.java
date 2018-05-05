@@ -166,7 +166,9 @@ public class Chant_CalmSeas extends Chant
 		if(msg.tool() instanceof Ability)
 		{
 			final Ability A=(Ability)msg.tool();
-			if((!msg.amISource(invoker()))&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_WATERCONTROL))
+			if((!msg.amISource(invoker()))
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
+			&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_WATERCONTROL))
 			{
 				msg.source().tell(L("The water is magically calm here, and will not heed your call."));
 				exactCost();

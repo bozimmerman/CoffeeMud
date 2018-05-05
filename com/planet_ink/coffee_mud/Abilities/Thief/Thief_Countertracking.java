@@ -101,6 +101,7 @@ public class Thief_Countertracking extends ThiefSkill
 		&&(msg.target()==mob)
 		&&(msg.tool() instanceof Ability)
 		&&(proficiencyCheck(mob,0,false))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRACKING)))
 		{
 			msg.source().tell(L("You can't get a bead on him."));
