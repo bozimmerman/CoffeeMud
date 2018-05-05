@@ -71,7 +71,7 @@ public class Spell_ClanDonate extends Spell
 	@Override
 	public long flags()
 	{
-		return super.flags() | Ability.FLAG_CLANMAGIC;
+		return super.flags() | Ability.FLAG_CLANMAGIC | Ability.FLAG_TRANSPORTING;
 	}
 
 	@Override

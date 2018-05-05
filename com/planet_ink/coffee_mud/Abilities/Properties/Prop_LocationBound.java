@@ -114,6 +114,14 @@ public class Prop_LocationBound extends Property
 		if(!super.okMessage(myHost,msg))
 			return false;
 
+		if((msg.tool() instanceof Ability)
+		&&(CMath.bset(((Ability)msg.tool()).flags(), Ability.FLAG_TRANSPORTING))
+		&&((msg.target() == affected)
+			||((msg.target() instanceof Container)&&(((Container)msg.target()).getDeepContents().contains(affected)))))
+		{
+			msg.source().tell(L("Magic energy fizzles and is absorbed by @x1.",affected.Name()));
+			return false;
+		}
 		if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target() instanceof Room)
 		&&((msg.source()==affected)
