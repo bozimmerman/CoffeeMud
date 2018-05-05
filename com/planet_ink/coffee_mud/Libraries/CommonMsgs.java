@@ -979,6 +979,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						finalCap += CMLib.dice().plusOrMinus((int)Math.round(error * finalCap));
 						response.append(L("You believe it will hold about @x1 pounds.  ",""+finalCap));
 					}
+					else
+					if((error <= 0) && (finalCap > 0))
+						response.append(L("You believe it will hold about @x1 pounds.  ",""+finalCap));
 				}
 			}
 					

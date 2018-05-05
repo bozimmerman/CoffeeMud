@@ -1405,9 +1405,12 @@ public class StdItem implements Item
 		case CMMsg.TYP_POISON: // for use poison
 			return true;
 		case CMMsg.TYP_EXTINGUISH:
-			if(CMLib.flags().isOnFire(this))
+		{
+			final Ability A=fetchEffect("Burning");
+			if((A!=null)&&(!CMath.bset(A.abilityCode(), 2048))) // yes, magic numbers suck
 				return true;
 			break;
+		}
 		case CMMsg.TYP_FILL:
 			if(this instanceof Drink)
 				return true;

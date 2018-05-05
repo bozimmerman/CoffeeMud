@@ -594,6 +594,23 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					food.setBite((int)Math.round(Math.ceil(CMath.div(food.nourishment(),2))));
 			}
 			int material=-1;
+			for(int vr=RCP_MAININGR;vr<finalRecipe.size();vr+=2)
+			{
+				final String ingredient=finalRecipe.get(vr).toUpperCase();
+				if(ingredient.length()>0)
+				{
+					int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
+					if(resourceCode >0)
+					{
+						if(((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
+						||((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
+						{
+							material=resourceCode;
+							break;
+						}
+					}
+				}
+			}
 			if(contents!=null)
 			{
 				for(int v=0;v<contents.size();v++)
@@ -601,7 +618,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					final Item I=contents.get(v);
 					if((I.material()!=RawMaterial.RESOURCE_HERBS)||(!honorHerbs()))
 						food.basePhyStats().setWeight(food.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
-					if(I instanceof Food)
+					if((I instanceof Food)
+					&&(material<0))
+					{
 						switch(((Food)I).material()&RawMaterial.MATERIAL_MASK)
 						{
 						case RawMaterial.MATERIAL_VEGETATION:
@@ -609,6 +628,26 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 							material=((Food)I).material();
 							break;
 						}
+					}
+				}
+				if(material<0)
+				{
+					for(int v=0;v<contents.size();v++)
+					{
+						final Item I=contents.get(v);
+						if((I.material()!=RawMaterial.RESOURCE_HERBS)||(!honorHerbs()))
+							food.basePhyStats().setWeight(food.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
+						if(I instanceof Food)
+						{
+							switch(((Food)I).material()&RawMaterial.MATERIAL_MASK)
+							{
+							case RawMaterial.MATERIAL_VEGETATION:
+							case RawMaterial.MATERIAL_FLESH:
+								material=((Food)I).material();
+								break;
+							}
+						}
+					}
 				}
 			}
 			if(material<0)
@@ -632,7 +671,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 							material=((Drink)I).liquidType();
 							break;
 						}
-				}
+					}
 				}
 			}
 			food.setMaterial(material<0?RawMaterial.RESOURCE_BEEF:material);
@@ -664,15 +703,35 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			buildingI.setDescription(L("It looks @x1",((messedUp)?"spoiled!":rotten?"rotten!":"good!")));
 			final Drink drink=(Drink)buildingI;
 			int liquidType=RawMaterial.RESOURCE_FRESHWATER;
-			if(contents!=null)
-			for(int v=0;v<contents.size();v++)
+			for(int vr=RCP_MAININGR;vr<finalRecipe.size();vr+=2)
 			{
-				final Item I=contents.get(v);
-				drink.basePhyStats().setWeight(drink.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
-				if(I instanceof Food)
-					drink.setLiquidRemaining(drink.liquidRemaining()+((Food)I).nourishment());
-				if((I instanceof Drink)&&((((Drink)I).liquidType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
-					liquidType=((Drink)I).liquidType();
+				final String ingredient=finalRecipe.get(vr).toUpperCase();
+				if(ingredient.length()>0)
+				{
+					int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
+					if(resourceCode >0)
+					{
+						if((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+						{
+							liquidType=resourceCode;
+							break;
+						}
+					}
+				}
+			}
+			if(contents!=null)
+			{
+				for(int v=0;v<contents.size();v++)
+				{
+					final Item I=contents.get(v);
+					drink.basePhyStats().setWeight(drink.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
+					if(I instanceof Food)
+						drink.setLiquidRemaining(drink.liquidRemaining()+((Food)I).nourishment());
+					if((I instanceof Drink)
+					&&(liquidType < 0)
+					&&((((Drink)I).liquidType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
+						liquidType=((Drink)I).liquidType();
+				}
 			}
 			if(drink.liquidRemaining()>0)
 			{

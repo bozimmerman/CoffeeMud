@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.CharClasses;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.ExtAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -446,7 +447,7 @@ public class Druid extends StdCharClass
 		}
 	}
 
-	public static void doAnimalFreeingCheck(CharClass C, Environmental host, CMMsg msg)
+	public static void doAnimalFreeingCheck(CharClass C, final Environmental host, CMMsg msg)
 	{
 		if((msg.source()!=host)
 		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW)
@@ -479,9 +480,51 @@ public class Druid extends StdCharClass
 			}
 			if((((Integer)stuff[1]).intValue()<19)&&(!((List)stuff[2]).contains(""+msg.source())))
 			{
+				final ExtAbility A=(ExtAbility)CMClass.getAbility("ExtAbility");
+				A.setAbilityID("Peace_Between_"+msg.source().Name()+"_and_"+host.Name());
+				final MOB msgSrc=msg.source();
+				A.setMsgListener(new MsgListener()
+				{
+					final MOB druidM=(MOB)host;
+					final MOB animalM=msgSrc;
+					@Override
+					public void executeMsg(Environmental myHost, CMMsg msg)
+					{
+					}
+					@Override
+					public boolean okMessage(Environmental myHost, CMMsg msg)
+					{
+						if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
+						&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+						&&(msg.amISource(animalM))
+						&&((msg.amITarget(druidM))))
+						{
+							final MOB target=(MOB)msg.target();
+							if((!target.isInCombat())
+							&&(msg.source().getVictim()!=target)
+							&&(msg.source().location()==target.location()))
+							{
+								msg.source().tell(CMLib.lang().L("You are too grateful to @x1",target.name(msg.source())));
+								if(target.getVictim()==msg.source())
+								{
+									target.makePeace(true);
+									target.setVictim(null);
+								}
+								return false;
+							}
+						}
+						return true;
+					}
+				});
+				A.startTickDown((MOB)host, msg.source(), 20);
 				stuff[1]=Integer.valueOf(((Integer)stuff[1]).intValue()+1);
 				((MOB)host).tell(CMLib.lang().L("You have freed @x1 from @x2.",msg.source().name((MOB)host),(msg.source().getStartRoom().getArea().name())));
 				CMLib.leveler().postExperience((MOB)host,null,null,((Integer)stuff[1]).intValue(),false);
+				for(Ability A2 : CMLib.flags().flaggedAffects(msg.source(), Ability.FLAG_CHARMING))
+				{
+					if(A2.canBeUninvoked())
+						A2.unInvoke();
+				}
 			}
 		}
 	}

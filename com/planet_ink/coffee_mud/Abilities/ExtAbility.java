@@ -50,6 +50,12 @@ public class ExtAbility extends StdAbility implements ExtendableAbility
 	private Tickable		tickable = null;
 	
 	@Override
+	public String displayText()
+	{
+		return "";
+	}
+
+	@Override
 	public ExtendableAbility setAbilityID(String ID) 
 	{
 		this.ID=ID;
