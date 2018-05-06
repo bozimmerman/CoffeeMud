@@ -86,7 +86,101 @@ public class Druid_ShapeShift extends StdAbility
 	public int		myRaceLevel	= -1;
 	public Race		newRace		= null;
 	public String	raceName	= "";
+	
+	protected static class ShiftShapeForm
+	{
+		public String	ID;
+		public String	form		= "";
+		public double	attackAdj	= 0.0;
+		public double	dmgAdj		= 0.0;
+		public double	armorAdj	= 0.0;
+		public double	speedAdj	= 0.0;
+		public String[]	shapes		= new String[0];
+		public String[]	raceIDs		= new String[0];
+		
+		public ShiftShapeForm(String ID)
+		{
+			this.ID=ID;
+		}
+	}
 
+	protected enum ShiftShapeField
+	{
+		NAME,
+		ATTADJ,
+		DMGADJ,
+		ARMADJ,
+		SPEEDADJ,
+		SHAPES,
+		RACES
+	}
+
+	@SuppressWarnings("unchecked")
+	private static final List<ShiftShapeForm> getShapeData()
+	{
+		List<ShiftShapeForm> shapeData = (List<ShiftShapeForm>)Resources.getResource("DRUID_SHAPESHIFT_DATA");
+		if(shapeData == null)
+		{
+			shapeData = new Vector<ShiftShapeForm>();
+			List<String> lines=Resources.getFileLineVector(Resources.getFileResource(Resources.makeFileResourceName("skills/shapeshift.txt"), true));
+			ShiftShapeForm f=null;
+			for(String s : lines)
+			{
+				s=s.trim();
+				if(s.length()>0)
+				{
+					if(s.startsWith("["))
+					{
+						f=new ShiftShapeForm(s);
+						shapeData.add(f);
+					}
+					else
+					if(f!=null)
+					{
+						int x=s.indexOf('=');
+						if(x>0)
+						{
+							String fieldName = s.substring(0,x).toUpperCase().trim();
+							String fieldValue = s.substring(x+1).trim();
+							ShiftShapeField field = (ShiftShapeField)CMath.s_valueOf(ShiftShapeField.class, fieldName);
+							if(field == null)
+								Log.errOut("Druid_ShapeShift","Unknown field '"+fieldName+"' in shapeshift.txt");
+							else
+							{
+								switch(field)
+								{
+								case ARMADJ:
+									f.armorAdj=CMath.s_double(fieldValue);
+									break;
+								case ATTADJ:
+									f.attackAdj=CMath.s_double(fieldValue);
+									break;
+								case DMGADJ:
+									f.dmgAdj=CMath.s_double(fieldValue);
+									break;
+								case NAME:
+									f.form=fieldValue;
+									break;
+								case RACES:
+									f.raceIDs=CMParms.toStringArray(CMParms.parseCommas(fieldValue,true));
+									break;
+								case SHAPES:
+									f.shapes=CMParms.toStringArray(CMParms.parseCommas(fieldValue,true));
+									break;
+								case SPEEDADJ:
+									f.speedAdj=CMath.s_double(fieldValue);
+									break;
+								}
+							}
+						}
+					}
+				}
+			}
+			Resources.submitResource("DRUID_SHAPESHIFT_DATA",shapeData);
+		}
+		return shapeData;
+	}
+	
 	@Override
 	public String displayText()
 	{
@@ -94,42 +188,6 @@ public class Druid_ShapeShift extends StdAbility
 			return super.displayText();
 		return "(in "+newRace.name().toLowerCase()+" form)";
 	}
-
-	private static String[][] shapes={
-	{"Mouse",   "Kitten",   "Puppy",	"Robin",  "Garden Snake", "Cub",	"Grasshopper","Spider Monkey","Calf",	 "Clown Fish",	"Seal"},
-	{"Rat", 	"Cat",  	"Dog",  	"Owl",    "Snake",     "Young Bear","Centipede",  "Chimp",  	  "Cow",	 "Angelfish",	"Walrus"},
-	{"Dire Rat","Puma", 	"Wolf", 	"Hawk",   "Python",    "Brown Bear","Tarantula",  "Ape",		  "Buffalo", "Swordfish",	"Dolphin"},
-	{"WereRat", "Lion", 	"Dire Wolf","Eagle",  "Cobra",     "Black Bear","Scarab",     "Gorilla",	  "Bull",	 "Shark",		"Whale"},
-	{"WereBat", "Manticore","WereWolf", "Harpy",  "Naga",      "WereBear",  "ManScorpion","Sasquatch",    "Minotaur","Merfolk",		"Selkie"}
-	};
-	
-	private static String[][] races={
-	{"Mouse",  "Kitten",   "Puppy",   "Robin",  "GardenSnake","Cub",	 "Grasshopper","Monkey",   "Calf",	  "ClownFish",	"Seal"},
-	{"Rat",    "Cat",      "Dog",     "Owl",	"Snake",	  "Cub",	 "Centipede",  "Chimp",    "Cow",	  "AngelFish",	"Walrus"},
-	{"DireRat","Puma",     "Wolf",    "Hawk",   "Python",     "Bear",    "Tarantula",  "Ape",      "Buffalo", "Swordfish",	"Dolphin"},
-	{"WereRat","Lion",     "DireWolf","Eagle",  "Cobra",	  "Bear",    "Scarab",     "Gorilla",  "Bull",	  "Shark",		"Whale"},
-	{"WereBat","Manticore","WereWolf","Harpy",  "Naga", 	  "WereBear","ManScorpion","Sasquatch","Minotaur","Merfolk",	"Selkie"}
-	};
-	private static double[]   attadj=
-	{.7		  ,1.0		  ,1.0		 ,.2	   ,.3			  ,1.2  	,.7 		 ,1.0   	   ,.7 		   ,0.3			,1.0};
-	private static double[]   dmgadj=
-	{.4		  ,.6   	  ,.8   	 ,1.0	   ,.4			  ,.6   	,.6 		  ,.8   	    ,1.0   	   ,0.4			,.5};
-	private static double[]   armadj=
-	{1.0	  ,.5   	  ,.4   	 ,.5	   ,1.0			  ,.3   	,1.0		  ,.2   	    ,.2   	   ,0.5			,.3};
-	private static double[]   spdadj=
-	{0.2	  ,.0   	  ,.0   	 ,.0	   ,0.0			  ,.0   	,0.3		  ,.0   	    ,.0   	   ,1.0   		,0.2};
-
-	private static String[] forms={"Rodent form",
-								   "Feline form",
-								   "Canine form",
-								   "Bird form",
-								   "Reptile form",
-								   "Ursine form",
-								   "Insect form",
-								   "Primate form",
-								   "Bovine form",
-								   "Fish form",
-								   "Sea Mammal form"};
 
 	@Override
 	public void setMiscText(String newText)
@@ -155,10 +213,11 @@ public class Druid_ShapeShift extends StdAbility
 			newRace.setHeightWeight(stats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
 			if(oldAdd>0)
 				stats.setWeight(stats.weight()+oldAdd);
-			stats.setAttackAdjustment(stats.attackAdjustment()+(int)Math.round(CMath.mul(adjustedLevel,attadj[raceCode])/2.0));
-			stats.setArmor(stats.armor()-(int)Math.round(CMath.mul(adjustedLevel,armadj[raceCode])/2.0));
-			stats.setDamage(stats.damage()+(int)Math.round(CMath.mul(adjustedLevel,dmgadj[raceCode])/2.0));
-			stats.setSpeed(stats.speed()+(spdadj[raceCode] * (1.0+(xlvl/3.0))));
+			final ShiftShapeForm form=Druid_ShapeShift.getShapeData().get(raceCode);
+			stats.setAttackAdjustment(stats.attackAdjustment()+(int)Math.round(CMath.mul(adjustedLevel,form.attackAdj)/2.0));
+			stats.setArmor(stats.armor()-(int)Math.round(CMath.mul(adjustedLevel,form.armorAdj)/2.0));
+			stats.setDamage(stats.damage()+(int)Math.round(CMath.mul(adjustedLevel,form.dmgAdj)/2.0));
+			stats.setSpeed(stats.speed()+(form.speedAdj * (1.0+(xlvl/3.0))));
 			//stats.setSensesMask(stats.sensesMask()|PhyStats.CAN_GRUNT_WHEN_STUPID);
 		}
 	}
@@ -254,19 +313,21 @@ public class Druid_ShapeShift extends StdAbility
 
 	public int getRaceCode()
 	{
-		if((myRaceCode<0)||
-		(myRaceCode>attadj.length)) return 0;
+		if(myRaceCode<0) 
+			return 0;
 		return myRaceCode;
 	}
 
 	public Race getRace(int classLevel, int raceCode)
 	{
-		return CMClass.getRace(races[getRaceLevel(classLevel)][myRaceCode]);
+		final List<ShiftShapeForm> forms = Druid_ShapeShift.getShapeData();
+		return CMClass.getRace(forms.get(myRaceCode).raceIDs[getRaceLevel(classLevel)]);
 	}
 	
 	public String getRaceName(int classLevel, int raceCode)
 	{
-		return shapes[getRaceLevel(classLevel)][raceCode];
+		final List<ShiftShapeForm> forms = Druid_ShapeShift.getShapeData();
+		return forms.get(myRaceCode).shapes[getRaceLevel(classLevel)];
 	}
 
 	public static boolean isShapeShifted(MOB mob)
@@ -318,7 +379,8 @@ public class Druid_ShapeShift extends StdAbility
 		}
 
 		this.myRaceLevel=-1;
-		final int[] racesTaken=new int[forms.length];
+		final List<ShiftShapeForm> forms = Druid_ShapeShift.getShapeData();
+		final int[] racesTaken=new int[forms.size()];
 		Vector<Ability> allShapeshifts=new Vector<Ability>();
 		if((myRaceCode>=0)&&(myRaceCode<racesTaken.length))
 			racesTaken[myRaceCode]++;
@@ -358,13 +420,13 @@ public class Druid_ShapeShift extends StdAbility
 						final StringBuffer str=new StringBuffer(L("Choose from the following:\n\r"));
 						final List<String> formNames=new ArrayList<String>();
 						final Map<String,Integer> formMap=new Hashtable<String,Integer>();
-						for(int i=0;i<forms.length;i++)
+						for(int i=0;i<forms.size();i++)
 						{
 							if(racesTaken[i]==0)
 							{
-								str.append(CMStrings.padLeft(""+(i+1),2)+") "+forms[i]+"\n\r");
-								formNames.add(forms[i].toLowerCase());
-								formMap.put(forms[i].toLowerCase(), Integer.valueOf(i));
+								str.append(CMStrings.padLeft(""+(i+1),2)+") "+forms.get(i).form+"\n\r");
+								formNames.add(forms.get(i).form.toLowerCase());
+								formMap.put(forms.get(i).form.toLowerCase(), Integer.valueOf(i));
 							}
 						}
 						str.append(L("Please select: "));
@@ -419,7 +481,8 @@ public class Druid_ShapeShift extends StdAbility
 			final int raceLevel=getRaceLevel(mob);
 			for(int i1=raceLevel;i1>=0;i1--)
 			{
-				if(shapes[i1][myRaceCode].equalsIgnoreCase(parm))
+				final String shape=forms.get(myRaceCode).shapes[i1];
+				if(shape.equalsIgnoreCase(parm))
 				{
 					parm="";
 					this.myRaceLevel=i1;
@@ -429,7 +492,8 @@ public class Druid_ShapeShift extends StdAbility
 			{
 				for(int i1=raceLevel;i1>=0;i1--)
 				{
-					if(CMLib.english().containsString(shapes[i1][myRaceCode],parm))
+					final String shape=forms.get(myRaceCode).shapes[i1];
+					if(CMLib.english().containsString(shape,parm))
 					{
 						parm="";
 						this.myRaceLevel=i1;
@@ -480,22 +544,25 @@ public class Druid_ShapeShift extends StdAbility
 						list.append(CMStrings.padLeft(""+(i+1),2)+") Not yet chosen.\n\r");
 					else
 					{
-						list.append(CMStrings.padLeft(""+(i+1),2)+") "+forms[A.myRaceCode]+": ");
+						final String form=forms.get(myRaceCode).form;
+						list.append(CMStrings.padLeft(""+(i+1),2)+") "+form+": ");
 						final int raceLevel=A.getRaceLevel(mob);
 						for(int i1=raceLevel;i1>=0;i1--)
 						{
-							list.append(shapes[i1][A.myRaceCode]);
+							final String shape=forms.get(myRaceCode).shapes[i1];
+							list.append(shape);
 							if(i1!=0)
 								list.append(", ");
 						}
 						list.append("\n\r");
 						if(CMLib.english().containsString(A.raceName,parm))
 							return A.invoke(mob,new Vector<String>(),givenTarget,auto,asLevel);
-						if(CMLib.english().containsString(forms[A.myRaceCode],parm))
+						if(CMLib.english().containsString(form,parm))
 							return A.invoke(mob,new Vector<String>(),givenTarget,auto,asLevel);
 						for(int i1=raceLevel;i1>=0;i1--)
 						{
-							if(CMLib.english().containsString(shapes[i1][A.myRaceCode],parm))
+							final String shape=forms.get(myRaceCode).shapes[i1];
+							if(CMLib.english().containsString(shape,parm))
 								return A.invoke(mob,new XVector<String>(parm),givenTarget,auto,asLevel);
 						}
 					}
