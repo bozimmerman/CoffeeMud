@@ -4,7 +4,7 @@ ATTADJ=0.7
 DMGADJ=0.4
 ARMADJ=1.0
 SPEEDADJ=0.2
-SHAPES=Mouse,Rat,Dire Rat,WireRat,WereBat
+SHAPES=Mouse,Rat,Dire Rat,WereRat,WereBat
 RACES=Mouse,Rat,DireRat,WereRat,WereBat
 
 [FELINE FORM]
