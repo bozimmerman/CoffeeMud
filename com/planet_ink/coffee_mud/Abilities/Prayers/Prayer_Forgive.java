@@ -115,7 +115,16 @@ public class Prayer_Forgive extends Prayer
 		if(success)
 		{
 			if(warrants.size()==0)
+			{
 				beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 to forgive @x2 for no reason at all.",prayForWord(mob),name));
+				final MOB M=CMLib.players().getPlayer(name);
+				if(M != null)
+				{
+					final Ability A=M.fetchEffect("Prisoner");
+					if(A!=null)
+						A.unInvoke();
+				}
+			}
 			else
 			{
 				final CMMsg msg=CMClass.getMsg(mob,mob.location(),this,verbalCastCode(mob,mob.location(),auto),auto?"":L("^S<S-NAME> @x1 to forgive @x2.^?",prayForWord(mob),name));

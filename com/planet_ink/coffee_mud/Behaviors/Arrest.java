@@ -2557,7 +2557,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						}
 					}
 					final Ability cuff=W.criminal().fetchEffect("Skill_HandCuff");
-					if((CMLib.flags().isSitting(W.criminal())||(cuff!=null)||(CMLib.flags().isSleeping(W.criminal())))
+					if((CMLib.flags().isSitting(W.criminal())
+						||(cuff!=null)
+						||(CMLib.flags().isSleeping(W.criminal())))
 					&&(!W.criminal().amDead())
 					&&(CMLib.flags().isInTheGame(W.criminal(),true)))
 					{
