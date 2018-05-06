@@ -183,7 +183,8 @@ public class Trapper extends Thief
 		&&(msg.tool() instanceof Ability)
 		&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
 		&&(myChar.location()!=null)
-		&&(myChar.isMine(msg.tool())))
+		&&(myChar.isMine(msg.tool()))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			// animal trade must be here because execute of trade kills the mob object
 			// also, an add trailer is done, which only hits if this msg is not cancelled,

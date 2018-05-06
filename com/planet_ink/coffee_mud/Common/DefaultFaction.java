@@ -1095,7 +1095,8 @@ public class DefaultFaction implements Faction, MsgListener
 		if((msg.tool() instanceof Ability)
 		&&(msg.target()==myHost)	// Arrested watching
 		&&(msg.tool().ID().equals("Skill_Handcuff"))
-		&&(msg.source().isMonster()))
+		&&(msg.source().isMonster())
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			final Room R=msg.source().location();
 			if((R!=null)&&(R.getArea()!=null))
@@ -1280,7 +1281,8 @@ public class DefaultFaction implements Faction, MsgListener
 		// Ability Watching
 		if((msg.tool() instanceof Ability)
 		&&(msg.othersMessage()!=null)
-		&&((events=findAbilityChangeEvents((Ability)msg.tool()))!=null))
+		&&((events=findAbilityChangeEvents((Ability)msg.tool()))!=null)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			for (final FactionChangeEvent C : events)
 			{

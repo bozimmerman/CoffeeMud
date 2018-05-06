@@ -165,7 +165,8 @@ public class Prop_LangTranslator extends Property implements Language
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(msg.tool() instanceof Ability)
+		if((msg.tool() instanceof Ability)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			if(text().length()>0)
 			{

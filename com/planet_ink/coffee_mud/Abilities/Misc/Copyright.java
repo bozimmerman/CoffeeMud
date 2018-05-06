@@ -121,7 +121,8 @@ public class Copyright extends StdAbility
 					msg.source().tell(L("This cannot be modified."));
 				return false;
 			}
-			if(msg.tool() instanceof Ability)
+			if((msg.tool() instanceof Ability)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			//&&(!msg.source().Name().equals(text()))
 			{
 				if(msg.tool().ID().equalsIgnoreCase("Transcribing") //BZ: I hate this crap.

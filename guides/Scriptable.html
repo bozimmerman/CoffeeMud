@@ -3567,7 +3567,8 @@ name&nbsp;followed by
 the item tag to search for, with optional id=value definitions after
 the item tag. Finally, the&nbsp;<b>price</b>
 syntax may be added to the end of the any of the others to designate
-the price of the item, otherwise a default value will be used.&nbsp;When
+the price of the item, otherwise a default value will be
+used.&nbsp;When
 this method completes, the value of $9 is automatically set to a string
 description of the final price.</p>
       <h3><a name="mpopen">mpopen</a></h3>
@@ -4663,7 +4664,8 @@ as part of the ADDBEHAVIOR quest command. It checks to see if a mob of
 the given number or name is alive. The numbers refer to the order in
 which they were designated in the quest script. If the Scriptable
 behavior was granted as part of a Quest, then * may be substituted for
-the questname.</p>
+the questname. &nbsp; &nbsp;If the questname given is "ALL", then all
+running quests will be searched.</p>
       <p>EXAMPLE:</p>
       <pre>if isquestmobalive(1 myquest)<br /> mpecho The first set mob in the quest myquest is still alive.<br />else<br /> mpecho He's not dead yet.<br />endif<br /><br /></pre>
       <h3><a name="isrecall">isrecall</a></h3>
@@ -4905,7 +4907,8 @@ by a quest of the given questname. This means the quest script used the
 SET ITEM, SET ITEMGROUP, or a similar command for the given item.
 &nbsp;If the Scriptable behavior was granted as part of a Quest,
 then *
-may be substituted for the questname.</p>
+may be substituted for the questname. &nbsp;If the questname given is
+"ALL", then all running quests will be searched.</p>
       <p>EXAMPLES:</p>
       <pre>if questobj($o myquest)<br /> mpecho This means that item is a quest item for quest myquest.<br />else<br /> mpecho This means the item is not a quest item for quest myquest.<br />endif<br /></pre>
       <h3><a name="questmob">questmob</a></h3>
@@ -4917,7 +4920,8 @@ created by a quest of the given questname. &nbsp;This means the
 quest
 script used the SET MOB, SET MOBGROUP, or a similar command for the
 given mob. If the Scriptable behavior was granted as part of a Quest,
-then * may be substituted for the questname.</p>
+then * may be substituted for the questname. &nbsp;If the questname
+given is "ALL", then all running quests will be searched.</p>
       <p>EXAMPLES:</p>
       <pre>if questmob($n myquest)<br /> mpecho This means that the actor is a quest mob for quest myquest.<br />else<br /> mpecho This means the actor is not a quest mob for quest myquest.<br />endif<br /></pre>
       <h3><a name="questpoints">questpoints</a></h3>
@@ -4950,7 +4954,8 @@ by a quest on them at the given moment. &nbsp;This is typically a
 way
 of telling which quests are in progress for the given character. If the
 Scriptable behavior was granted as part of a Quest, then * may be
-substituted for the questname.</p>
+substituted for the questname. &nbsp;If a quest name of ALL is given,
+then every running quest will be checked.</p>
       <p>EXAMPLES:</p>
       <pre>if questscripted($n myquestname)<br /> mpecho This means that the actor is on the quest myquestname.<br />else<br /> mpecho This means the actor is not on the quest myquestname.<br />endif</pre>
       <h3><a name="questwinner">questwinner</a></h3>

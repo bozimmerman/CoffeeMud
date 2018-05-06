@@ -106,7 +106,8 @@ public class Spell_CharmWard extends Spell
 			&&(!msg.amISource(mob))
 			&&(msg.tool() instanceof Ability)
 			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING))
-			&&(!mob.amDead()))
+			&&(!mob.amDead())
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				final Ability A=(Ability)msg.tool();
 				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
@@ -122,7 +123,8 @@ public class Spell_CharmWard extends Spell
 		{
 			final Room R=(Room)affected;
 			if((msg.tool() instanceof Ability)
-			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING)))
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_CHARMING))
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				if((msg.source().location()!=null)&&(msg.source().location()!=R))
 					msg.source().location().showHappens(CMMsg.MSG_OK_VISUAL,L("Magical energy fizzles and is absorbed into the air!"));

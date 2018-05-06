@@ -104,7 +104,8 @@ public class Thief_TagTurf extends ThiefSkill
 		&&(!msg.source().Name().equals(text()))
 		&&(msg.source().getClanRole(text())==null)
 		&&(!msg.tool().ID().equals("Thief_TurfWar"))
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_THIEF_SKILL))
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_THIEF_SKILL)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			msg.source().tell(L("You definitely aren't allowed to do that on @x1's turf.",text()));
 			return false;

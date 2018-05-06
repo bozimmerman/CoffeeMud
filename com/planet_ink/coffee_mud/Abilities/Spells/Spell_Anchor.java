@@ -107,7 +107,8 @@ public class Spell_Anchor extends Spell
 			||((affected instanceof Item)&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))&&(msg.amITarget(((Item)affected).owner())))
 			||((affected instanceof MOB)&&(msg.amITarget(affected))))
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_MOVING)
-		   ||CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
+		   ||CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			Room roomS=null;
 			Room roomD=null;

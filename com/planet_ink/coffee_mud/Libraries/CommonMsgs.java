@@ -481,7 +481,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 									String str=msg.targetMessage();
 									if((msg.tool() instanceof Ability)
 									&&((((Ability)msg.tool()).classificationCode() & Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
-									&&(target.fetchEffect(msg.tool().ID()) != null))
+									&&(target.fetchEffect(msg.tool().ID()) != null)
+									&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 										str=CMStrings.substituteSayInMessage(str,CMStrings.getSayFromMessage(msg.sourceMessage()));
 									target.playerStats().addTellStack(CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,target,null,CMStrings.removeColors(str),false));
 								}

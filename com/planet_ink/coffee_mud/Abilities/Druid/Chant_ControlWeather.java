@@ -94,6 +94,7 @@ public class Chant_ControlWeather extends Chant
 		if(!super.okMessage(myHost,msg))
 			return false;
 		if((msg.tool() instanceof Ability)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_WEATHERAFFECTING)))
 		{
 			if(abilityCode()==1)

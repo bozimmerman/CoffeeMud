@@ -293,11 +293,12 @@ public class Arcanist extends Thief
 			&&(msg.target() instanceof Wand)
 			&&(mob.charStats().getClassLevel(this)>=30))
 			{
-				final String message="<O-NAME> has "+((Wand)msg.target()).usesRemaining()+" charges remaining.";
+				final String message=L("<O-NAME> has @x1 charges remaining.",""+((Wand)msg.target()).usesRemaining());
 				msg.addTrailerMsg(CMClass.getMsg(mob, null, msg.target(), CMMsg.MSG_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, message));
 			}
 			else
-			if(msg.tool()!=null)
+			if((msg.tool()!=null)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				if(msg.tool().ID().equals("Skill_Spellcraft"))
 				{

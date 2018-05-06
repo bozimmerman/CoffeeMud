@@ -255,6 +255,7 @@ public class Gaoler extends StdCharClass
 			||msg.tool().ID().equals("BodyPiercing")
 			||msg.tool().ID().equals("Amputation"))
 		&&(CMLib.map().getStartArea(host)!=null)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(((MOB)host).charStats().getClassLevel(this)>0))
 		{
 			final CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!@x1",CMLib.protocol().msp("scream.wav",40)));

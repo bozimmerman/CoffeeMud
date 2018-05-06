@@ -121,6 +121,7 @@ public class Prayer_HolyDay extends Prayer
 		if((msg.tool() instanceof Ability)
 		&&(!((Ability)msg.tool()).isAutoInvoked())
 		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(msg.source()!=invoker()))
 		{
 			msg.source().tell(L("You are not allowed to work on the holy day of @x1.",godName));

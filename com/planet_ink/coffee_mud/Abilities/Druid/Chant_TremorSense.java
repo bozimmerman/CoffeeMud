@@ -147,7 +147,8 @@ public class Chant_TremorSense extends Chant
 			else
 			if((msg.tool() instanceof Ability)
 			&&((msg.tool().ID().equals("Prayer_Tremor"))
-				||(msg.tool().ID().endsWith("_Earthquake"))))
+				||(msg.tool().ID().endsWith("_Earthquake")))
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				if(invoker.location()==affected)
 					invoker.tell(L("You feel a ferocious rumble."));

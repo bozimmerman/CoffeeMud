@@ -101,7 +101,8 @@ public class Thief_ImprovedBoarding extends ThiefSkill
 		&&(msg.tool() instanceof Ability)
 		&&(((Ability)msg.tool()).ID().equalsIgnoreCase("Skill_Climb"))
 		&&(mob.isMine(msg.tool()))
-		&&(proficiencyCheck(mob,0,mob.isMonster())))
+		&&(proficiencyCheck(mob,0,mob.isMonster()))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			helpProficiency(mob, 0);
 			msg.addTrailerRunnable(new Runnable()

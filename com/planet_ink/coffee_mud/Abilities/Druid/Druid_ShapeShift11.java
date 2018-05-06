@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Thief;
+package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2018 Bo Zimmerman
+   Copyright 2018-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,38 +32,21 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_TrapImmunity extends ThiefSkill
+
+public class Druid_ShapeShift11 extends Druid_ShapeShift
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_TrapImmunity";
+		return "Druid_ShapeShift11";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Trap Immunity");
+	private final static String	localizedName	= CMLib.lang().L("Eleventh Totem");
 
 	@Override
 	public String name()
 	{
 		return localizedName;
-	}
-
-	@Override
-	public String displayText()
-	{
-		return "";
-	}
-
-	@Override
-	protected int canAffectCode()
-	{
-		return CAN_MOBS;
-	}
-
-	@Override
-	protected int canTargetCode()
-	{
-		return 0;
 	}
 
 	@Override
@@ -73,45 +56,9 @@ public class Thief_TrapImmunity extends ThiefSkill
 	}
 
 	@Override
-	public boolean isAutoInvoked()
+	public String[] triggerStrings()
 	{
-		return true;
+		return empty;
 	}
 
-	@Override
-	public boolean canBeUninvoked()
-	{
-		return false;
-	}
-
-	@Override
-	public int classificationCode()
-	{
-		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_DETRAP;
-	}
-
-	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
-	{
-		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_SAVE_TRAPS,affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)+(proficiency()/2)+(2*getXLEVELLevel(invoker())));
-	}
-
-	@Override
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if(!(affected instanceof MOB))
-			return super.okMessage(myHost,msg);
-		final MOB mob=(MOB)affected;
-		if(msg.amITarget(mob)
-		&&(!msg.amISource(mob))
-		&&(msg.tool() instanceof Trap)
-		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
-		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> deftly avoid(s) a trap."));
-			helpProficiency(mob, 0);
-			return false;
-		}
-		return super.okMessage(myHost,msg);
-	}
 }

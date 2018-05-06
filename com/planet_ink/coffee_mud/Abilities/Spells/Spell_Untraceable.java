@@ -101,6 +101,7 @@ public class Spell_Untraceable extends Spell
 			||(!CMLib.flags().canBeSeenBy(mob, msg.source())))
 		&&(msg.tool() instanceof Ability)
 		&&(proficiencyCheck(mob,0,false))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&((CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRACKING))
 			||(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING))
 			||(((Ability)msg.tool()).classificationCode()==(Ability.ACODE_SPELL | Ability.DOMAIN_DIVINATION))))

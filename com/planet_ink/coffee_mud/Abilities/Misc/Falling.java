@@ -314,7 +314,9 @@ public class Falling extends StdAbility
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)&&(affected instanceof MOB)&&(msg.amISource((MOB)affected)))
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected)))
 		{
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 			{
@@ -323,7 +325,8 @@ public class Falling extends StdAbility
 			}
 			else
 			if((msg.tool() instanceof Ability)
-			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING))
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				damageToTake=0;
 				unInvoke();

@@ -144,6 +144,7 @@ public class Chant_Drown extends Chant
 		if((msg.source()==affected)
 		&&(msg.sourceMajor(CMMsg.MASK_MOVE))
 		&&(msg.tool() instanceof Ability)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(((Ability)msg.tool()).ID().equalsIgnoreCase("Skill_Swim")))
 		{
 			return false;

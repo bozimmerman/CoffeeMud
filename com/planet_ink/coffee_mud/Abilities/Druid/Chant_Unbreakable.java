@@ -112,7 +112,8 @@ public class Chant_Unbreakable extends Chant
 			return false;
 		if((msg.target()==affected)
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS)
-		   ||((msg.tool() instanceof Ability)&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS))))
+		   ||((msg.tool() instanceof Ability)&&(((Ability)msg.tool()).abstractQuality()==Ability.QUALITY_MALICIOUS)))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			msg.source().tell(L("@x1 is unbreakable!",affected.name()));
 			return false;

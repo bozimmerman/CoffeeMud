@@ -352,7 +352,8 @@ public class CombatAbilities extends StdBehavior
 				if((msg.target()==victim)
 				&&(msg.source()!=host)
 				&&(msg.tool() instanceof Ability)
-				&&(CMath.bset(((Ability)msg.tool()).flags(), Ability.FLAG_AGGROFYING)))
+				&&(CMath.bset(((Ability)msg.tool()).flags(), Ability.FLAG_AGGROFYING))
+				&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 					adjustAggro(mob,msg.source(),((Ability)msg.tool()).adjustedLevel(msg.source(), 0)*2);
 				else
 				if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)

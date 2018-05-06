@@ -104,7 +104,8 @@ public class Spell_IronGrip extends Spell
 			if((msg.amITarget(mob))
 			&&(msg.tool() instanceof Ability)
 			&&(msg.targetMinor()==CMMsg.TYP_NOISYMOVEMENT)
-			&&(msg.tool().ID().toUpperCase().indexOf("DISARM")>=0))
+			&&(msg.tool().ID().toUpperCase().indexOf("DISARM")>=0)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				mob.location().show(msg.source(),mob,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to disarm <T-NAME>, but the grip is too strong!"));
 				return false;

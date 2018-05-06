@@ -1868,7 +1868,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	@Override
 	public void resistanceMsgs(MOB source, MOB target, CMMsg msg)
 	{
-		if(msg.value()>0)
+		if((msg.value()>0)||(msg.sourceMinor()==CMMsg.TYP_TEACH))
 			return;
 
 		if(target.amDead())
@@ -2006,7 +2006,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			chanceToFail = mob.charStats().getSave(charStatCode);
 		}
 		else
-		if(msg.tool() instanceof Ability)
+		if((msg.tool() instanceof Ability)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			switch(((Ability)msg.tool()).classificationCode() & Ability.ALL_ACODES)
 			{

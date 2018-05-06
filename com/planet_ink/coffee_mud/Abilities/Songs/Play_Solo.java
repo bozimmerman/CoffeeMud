@@ -91,7 +91,8 @@ public class Play_Solo extends Play
 			&&(msg.tool()!=null)
 			&&(!msg.tool().ID().equals(ID()))
 			&&(msg.tool() instanceof Ability)
-			&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
+			&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG))
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				final MOB otherBard=msg.source();
 				if(((otherBard.phyStats().level()+CMLib.dice().roll(1,30,0)+getXLEVELLevel(otherBard))>(myChar.phyStats().level()+CMLib.dice().roll(1,20,0)+getXLEVELLevel(myChar)))

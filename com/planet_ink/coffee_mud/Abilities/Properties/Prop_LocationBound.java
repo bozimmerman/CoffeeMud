@@ -1,4 +1,6 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
+import java.util.Enumeration;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -57,9 +59,14 @@ public class Prop_LocationBound extends Property
 		SPECIFIC_ROOM,
 		SPECIFIC_AREA
 	}
-	protected BoundToType	type = null;
-	protected Environmental boundTo = null;
-	
+
+	protected BoundToType	type				= null;
+	protected Environmental	boundTo				= null;
+	protected boolean		playerExcept		= false;
+	protected boolean		absolute			= false;
+	protected long			failsAt				= 0;
+	protected long			timesOutAfterMillis	= 0;
+
 	protected BoundToType getBoundToType()
 	{
 		if(type != null)
@@ -69,30 +76,54 @@ public class Prop_LocationBound extends Property
 			final String text=super.text();
 			if(text.length()>0)
 			{
-				int x=text.indexOf(';');
-				String roomID = text;
-				//String rest="";
-				if(x>0)
-				{
-					roomID=text.substring(0,x).trim();
-					//rest=text.substring(x+1).trim();
-				}
 				boundTo=null;
-				if(roomID.equalsIgnoreCase("ROOM"))
-					type=BoundToType.CURRENT_ROOM;
-				else
-				if(roomID.equalsIgnoreCase("AREA"))
-					type=BoundToType.CURRENT_AREA;
-				else
+				for(String roomID : CMParms.parseSemicolons(text,true))
 				{
-					boundTo=CMLib.map().getRoom(roomID);
-					if(boundTo instanceof Room)
-						type=BoundToType.SPECIFIC_ROOM;
+					if(roomID.equalsIgnoreCase("ROOM"))
+						type=BoundToType.CURRENT_ROOM;
+					else
+					if(roomID.equalsIgnoreCase("PLAYEROK"))
+						this.playerExcept=true;
+					else
+					if(roomID.equalsIgnoreCase("ABSOLUTE"))
+						this.absolute=true;
+					else
+					if(roomID.startsWith("TIMEOUT="))
+						this.timesOutAfterMillis=(CMath.s_long(roomID.substring(8).trim())*1000L);
+					else
+					if(roomID.equalsIgnoreCase("AREA"))
+						type=BoundToType.CURRENT_AREA;
 					else
 					{
-						boundTo=CMLib.map().getArea(roomID);
-						if(boundTo instanceof Area)
-							type=BoundToType.SPECIFIC_AREA;
+						boundTo=CMLib.map().getRoom(roomID);
+						if(boundTo instanceof Room)
+							type=BoundToType.SPECIFIC_ROOM;
+						else
+						{
+							boundTo=CMLib.map().getArea(roomID);
+							if(boundTo instanceof Area)
+								type=BoundToType.SPECIFIC_AREA;
+						}
+					}
+				}
+				if(absolute)
+				{
+					if(type == BoundToType.CURRENT_AREA)
+					{
+						boundTo=CMLib.map().areaLocation(affected);
+						if(boundTo != null)
+							type = BoundToType.SPECIFIC_AREA;
+						else
+							type = null;
+					}
+					else
+					if(type == BoundToType.CURRENT_ROOM)
+					{
+						boundTo=CMLib.map().roomLocation(affected);
+						if(boundTo != null)
+							type = BoundToType.SPECIFIC_ROOM;
+						else
+							type = null;
 					}
 				}
 			}
@@ -107,6 +138,80 @@ public class Prop_LocationBound extends Property
 		boundTo=null;
 		type=null;
 	}
+
+	protected boolean doesFailExceptionApply()
+	{
+		getBoundToType();
+		if(playerExcept)
+		{
+			if(affected instanceof Rideable)
+			{
+				final Rideable R=(Rideable)affected;
+				for(final Enumeration<Rider> r=R.riders();r.hasMoreElements();)
+				{
+					final Rider R1=r.nextElement();
+					if((R1 instanceof MOB)&&(((MOB)R1).isPlayer()))
+						return true;
+				}
+			}
+			
+			if(affected instanceof MOB)
+			{
+				final MOB M=(MOB)affected;
+				final MOB mF=M.amUltimatelyFollowing();
+				if((mF!=null)&&(mF.isPlayer()))
+					return true;
+			}
+			else
+			if(affected instanceof BoardableShip)
+			{
+				final BoardableShip B=(BoardableShip)affected;
+				final Area A=B.getShipArea();
+				if(A!=null)
+				{
+					for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+					{
+						final Room R=r.nextElement();
+						if(R!=null)
+						{
+							for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+							{
+								final MOB M=m.nextElement();
+								if((M!=null)&&(M.isPlayer()))
+									return true;
+							}
+						}
+					}
+				}
+			}
+			else
+			if(affected instanceof Item)
+			{
+				final Item I=(Item)affected;
+				if(I.owner() instanceof MOB)
+				{
+					final MOB M=(MOB)I.owner();
+					if(M.isPlayer())
+						return true;
+				}
+			}
+		}
+		if(failsAt > 0)
+		{
+			if(System.currentTimeMillis() > failsAt)
+			{
+				failsAt = 0;
+				return true;
+			}
+		}
+		else
+		if(timesOutAfterMillis > 0)
+		{
+			failsAt = System.currentTimeMillis() + timesOutAfterMillis;
+			return true;
+		}
+		return false;
+	}
 	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
@@ -114,6 +219,17 @@ public class Prop_LocationBound extends Property
 		if(!super.okMessage(myHost,msg))
 			return false;
 
+		if((msg.tool() instanceof Ability)
+		&&(CMath.bset(((Ability)msg.tool()).flags(), Ability.FLAG_TRANSPORTING))
+		&&((msg.target() == affected)
+			||((msg.target() instanceof Container)&&(((Container)msg.target()).getDeepContents().contains(affected)))))
+		{
+			if(!this.doesFailExceptionApply())
+			{
+				msg.source().tell(L("Magic energy fizzles and is absorbed by @x1.",affected.Name()));
+				return false;
+			}
+		}
 		if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 		&&(msg.target() instanceof Room)
 		&&((msg.source()==affected)
@@ -127,16 +243,7 @@ public class Prop_LocationBound extends Property
 			BoundToType type = this.getBoundToType();
 			if(type == null)
 			{
-				if(affected instanceof MOB)
-					msg.source().tell(L("You are not allowed to leave this place."));
-				else
-					msg.source().tell(L("@x1 prevents you from taking it that way.",affected.name()));
-				return false;
-			}
-			else
-			if(type == BoundToType.CURRENT_ROOM)
-			{
-				if(whereTo!=R)
+				if(!this.doesFailExceptionApply())
 				{
 					if(affected instanceof MOB)
 						msg.source().tell(L("You are not allowed to leave this place."));
@@ -146,15 +253,33 @@ public class Prop_LocationBound extends Property
 				}
 			}
 			else
+			if(type == BoundToType.CURRENT_ROOM)
+			{
+				if(whereTo!=R)
+				{
+					if(!this.doesFailExceptionApply())
+					{
+						if(affected instanceof MOB)
+							msg.source().tell(L("You are not allowed to leave this place."));
+						else
+							msg.source().tell(L("@x1 prevents you from taking it that way.",affected.name()));
+						return false;
+					}
+				}
+			}
+			else
 			if(type == BoundToType.CURRENT_AREA)
 			{
 				if(whereTo.getArea()!=R.getArea())
 				{
-					if(affected instanceof MOB)
-						msg.source().tell(L("You are not allowed to leave this place."));
-					else
-						msg.source().tell(L("@x1 prevents you from taking it that way.",affected.name()));
-					return false;
+					if(!this.doesFailExceptionApply())
+					{
+						if(affected instanceof MOB)
+							msg.source().tell(L("You are not allowed to leave this place."));
+						else
+							msg.source().tell(L("@x1 prevents you from taking it that way.",affected.name()));
+						return false;
+					}
 				}
 			}
 			else
@@ -167,24 +292,34 @@ public class Prop_LocationBound extends Property
 					{
 						if(affected instanceof MOB)
 						{
-							msg.source().tell(L("You are whisked back home!"));
-							tR.bringMobHere((MOB)affected,false);
+							if(!this.doesFailExceptionApply())
+							{
+								msg.source().tell(L("You are whisked back home!"));
+								tR.bringMobHere((MOB)affected,false);
+								return false;
+							}
 						}
 						else
 						{
-							msg.source().tell(L("@x1 is whisked from you and back to its home.",affected.name()));
-							tR.moveItemTo((Item)affected);
-							return true;
+							if(!this.doesFailExceptionApply())
+							{
+								msg.source().tell(L("@x1 is whisked from you and back to its home.",affected.name()));
+								tR.moveItemTo((Item)affected);
+								return true;
+							}
 						}
 					}
 					else
 					{
-						if(affected instanceof MOB)
-							msg.source().tell(L("You are not allowed to leave this place."));
-						else
-							msg.source().tell(L("@x1 prevents you from taking it that way.",affected.name()));
+						if(!this.doesFailExceptionApply())
+						{
+							if(affected instanceof MOB)
+								msg.source().tell(L("You are not allowed to leave this place."));
+							else
+								msg.source().tell(L("@x1 prevents you from taking it that way.",affected.name()));
+							return false;
+						}
 					}
-					return false;
 				}
 			}
 			else
@@ -197,24 +332,34 @@ public class Prop_LocationBound extends Property
 					{
 						if(affected instanceof MOB)
 						{
-							msg.source().tell(L("You are whisked back home!"));
-							A.getRandomMetroRoom().bringMobHere((MOB)affected,false);
+							if(!this.doesFailExceptionApply())
+							{
+								msg.source().tell(L("You are whisked back home!"));
+								A.getRandomMetroRoom().bringMobHere((MOB)affected,false);
+								return false;
+							}
 						}
 						else
 						{
-							msg.source().tell(L("@x1 is whisked from you and back to its home.",affected.name()));
-							A.getRandomMetroRoom().moveItemTo((Item)affected);
-							return true;
+							if(!this.doesFailExceptionApply())
+							{
+								msg.source().tell(L("@x1 is whisked from you and back to its home.",affected.name()));
+								A.getRandomMetroRoom().moveItemTo((Item)affected);
+								return true;
+							}
 						}
 					}
 					else
 					{
-						if(affected instanceof MOB)
-							msg.source().tell(L("You are not allowed to leave this place."));
-						else
-							msg.source().tell(L("@x1 prevents you from taking it that way.",affected.name()));
+						if(!this.doesFailExceptionApply())
+						{
+							if(affected instanceof MOB)
+								msg.source().tell(L("You are not allowed to leave this place."));
+							else
+								msg.source().tell(L("@x1 prevents you from taking it that way.",affected.name()));
+							return false;
+						}
 					}
-					return false;
 				}
 			}
 		}

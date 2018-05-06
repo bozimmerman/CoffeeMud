@@ -106,10 +106,12 @@ public class Spell_FakeWeapon extends Spell
 			}
 			else
 			if((msg.target()!=null)
+			&&(!(msg.target() instanceof DeadBody))
 			&&((msg.target()==affected)
 				||(msg.target()==((Item)affected).container())
 				||(msg.target()==((Item)affected).ultimateContainer(null))))
 			{
+				// what is this trying to prevent, because it's damn broad right now...
 				if(((CMath.bset(msg.sourceMajor(),CMMsg.MASK_MAGIC))
 				||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
 				||(CMath.bset(msg.othersMajor(),CMMsg.MASK_MAGIC))))

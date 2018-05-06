@@ -77,7 +77,8 @@ public class Prop_NoTeleport extends Property
 		final Room R=msg.source().location();
 		if((msg.tool() instanceof Ability)
 		&&(R!=null)
-		&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE))
+		&&(msg.sourceMinor()!=CMMsg.TYP_LEAVE)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			final boolean summon=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_SUMMONING);
 			final boolean teleport=CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING);

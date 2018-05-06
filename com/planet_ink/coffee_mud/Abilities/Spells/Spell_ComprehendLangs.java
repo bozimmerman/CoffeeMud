@@ -95,7 +95,8 @@ public class Spell_ComprehendLangs extends Spell
 		super.executeMsg(myHost,msg);
 		if((affected instanceof MOB)
 		&&(!msg.amISource((MOB)affected))
-		&&(msg.tool() instanceof Ability))
+		&&(msg.tool() instanceof Ability)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			if((msg.tool().ID().equals("Fighter_SmokeSignals"))
 			&&(msg.sourceMinor()==CMMsg.NO_EFFECT)

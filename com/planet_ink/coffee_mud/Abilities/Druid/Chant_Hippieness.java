@@ -104,7 +104,8 @@ public class Chant_Hippieness extends Chant
 		&&(!msg.tool().ID().equals("FoodPrep"))
 		&&(!msg.tool().ID().equals("Cooking"))
 		&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
-			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)))
+			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			msg.source().tell(L("No, man... work is so bourgeois..."));
 			return false;

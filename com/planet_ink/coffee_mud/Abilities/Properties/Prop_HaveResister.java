@@ -256,7 +256,8 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 	{
 		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
 		{
-			if(msg.tool() instanceof Ability)
+			if((msg.tool() instanceof Ability)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
 				final Ability A=(Ability)msg.tool();
 				if(CMath.bset(A.flags(),Ability.FLAG_TRANSPORTING))

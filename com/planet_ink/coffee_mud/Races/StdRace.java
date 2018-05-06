@@ -498,6 +498,7 @@ public class StdRace implements Race
 	{
 		if((msg.target()==myHost)
 		&&(msg.tool() instanceof Ability)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 		&&(myHost instanceof MOB))
 		{
 			if(uncharmable()

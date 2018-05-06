@@ -112,6 +112,13 @@ public class Fighter_Intimidate extends FighterSkill
 			&&(attackerM.location()==targetM.location())
 			&&((targetM.fetchAbility(ID())==null)||proficiencyCheck(null,(-(100+levelDiff))+(targetM.charStats().getStat(CharStats.STAT_CHARISMA)*2),false)))
 			{
+				final LegalBehavior B=CMLib.law().getLegalBehavior(CMLib.map().roomLocation(attackerM));
+				if(B!=null)
+				{
+					final Area A=CMLib.law().getLegalObject(CMLib.map().areaLocation(attackerM));
+					if(B.isAnyOfficer(A, attackerM))
+						return super.okMessage(myHost, msg);
+				}
 				attackerM.tell(L("You are too intimidated by @x1",targetM.name(attackerM)));
 				if(targetM.location()!=lastRoom)
 				{

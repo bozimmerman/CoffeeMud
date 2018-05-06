@@ -117,7 +117,7 @@ public class Spell_WallOfForce extends Spell
 		&&(msg.target() instanceof MOB)
 		&&((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0))
 		{
-			if((msg.tool() instanceof Ability)
+			if(((msg.tool() instanceof Ability)&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			||((msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 				&&(msg.tool() instanceof Weapon)
 				&&(!((Weapon)msg.tool()).amWearingAt(Wearable.IN_INVENTORY))

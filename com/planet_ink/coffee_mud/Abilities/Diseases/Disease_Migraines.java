@@ -134,7 +134,8 @@ public class Disease_Migraines extends Disease
 
 		final MOB mob=(MOB)affected;
 		if((msg.amISource(mob))
-		&&(msg.tool() instanceof Ability))
+		&&(msg.tool() instanceof Ability)
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			if(remember.contains(msg.tool()))
 				return true;

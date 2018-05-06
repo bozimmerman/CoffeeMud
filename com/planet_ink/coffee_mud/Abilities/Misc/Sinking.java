@@ -141,13 +141,16 @@ public class Sinking extends StdAbility
 	{
 		super.executeMsg(myHost,msg);
 		final MOB mob=msg.source();
-		if((affected!=null)&&(affected instanceof MOB)&&(msg.amISource((MOB)affected)))
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(msg.amISource((MOB)affected)))
 		{
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
 				stopSinking(mob);
 			else
 			if((msg.tool() instanceof Ability)
-			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING)))
+			&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_TRANSPORTING))
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 				stopSinking(mob);
 		}
 	}

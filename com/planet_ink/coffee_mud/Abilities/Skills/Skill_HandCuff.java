@@ -266,8 +266,13 @@ public class Skill_HandCuff extends StdSkill
 
 		if(Skill_Arrest.getWarrantsOf(target, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
 		{
-			mob.tell(L("@x1 has no warrants out here.",target.name(mob)));
-			return false;
+			final Area A=CMLib.law().getLegalObject(mob.location());
+			final LegalBehavior B=CMLib.law().getLegalBehavior(A);
+			if((B==null)||(!B.isAnyOfficer(A, mob))||(B.isElligibleOfficer(A, mob)))
+			{
+				mob.tell(L("@x1 has no warrants out here.",target.name(mob)));
+				return false;
+			}
 		}
 		if((CMLib.flags().isStanding(target))&&(!auto))
 		{

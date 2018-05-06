@@ -113,8 +113,8 @@ public class Spell_CombatPrecognition extends Spell
 			}
 			else
 			if((msg.value()<=0)
-			   &&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
-			   &&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-50,false)))
+			&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
+			&&((mob.fetchAbility(ID())==null)||proficiencyCheck(null,mob.charStats().getStat(CharStats.STAT_DEXTERITY)-50,false)))
 			{
 				String tool=null;
 				if((msg.tool() instanceof Ability))
