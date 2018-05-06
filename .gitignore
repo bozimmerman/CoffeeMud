@@ -1,0 +1,4 @@
+nbproject/
+*.class
+lib/*
+manifest.mf
