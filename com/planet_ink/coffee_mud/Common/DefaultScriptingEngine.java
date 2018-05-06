@@ -3488,11 +3488,40 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
-				final Quest Q=getQuest(arg2);
-				if(Q==null)
+				final PhysicalAgent E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
+				if(arg2.equalsIgnoreCase("ALL"))
+				{
 					returnable=false;
+					for(final Enumeration<Quest> q=CMLib.quests().enumQuests();q.hasMoreElements();)
+					{
+						final Quest Q=q.nextElement();
+						if(Q.running())
+						{
+							if(E!=null)
+							{
+								if(Q.isObjectInUse(E))
+								{
+									returnable=true;
+									break;
+								}
+							}
+							else
+							if(Q.getQuestMobIndex(arg1)>=0)
+							{
+								returnable=true;
+								break;
+							}
+						}
+					}
+				}
 				else
-					returnable=(Q.getQuestMobIndex(arg1)>=0);
+				{
+					final Quest Q=getQuest(arg2);
+					if(Q==null)
+						returnable=false;
+					else
+						returnable=(Q.getQuestMobIndex(arg1)>=0);
+				}
 				break;
 			}
 			case 31: // isquestmobalive
@@ -3501,19 +3530,44 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
-				final Quest Q=getQuest(arg2);
-				if(Q==null)
+				if(arg2.equalsIgnoreCase("ALL"))
+				{
 					returnable=false;
+					for(final Enumeration<Quest> q=CMLib.quests().enumQuests();q.hasMoreElements();)
+					{
+						final Quest Q=q.nextElement();
+						if(Q.running())
+						{
+							MOB M=null;
+							if(CMath.s_int(arg1.trim())>0)
+								M=Q.getQuestMob(CMath.s_int(arg1.trim()));
+							else
+								M=Q.getQuestMob(Q.getQuestMobIndex(arg1));
+							if(M!=null)
+							{
+								returnable=!M.amDead();
+								break;
+							}
+						}
+					}
+				}
 				else
 				{
-					MOB M=null;
-					if(CMath.s_int(arg1.trim())>0)
-						M=Q.getQuestMob(CMath.s_int(arg1.trim()));
-					else
-						M=Q.getQuestMob(Q.getQuestMobIndex(arg1));
-					if(M==null)
+					final Quest Q=getQuest(arg2);
+					if(Q==null)
 						returnable=false;
-					else returnable=!M.amDead();
+					else
+					{
+						MOB M=null;
+						if(CMath.s_int(arg1.trim())>0)
+							M=Q.getQuestMob(CMath.s_int(arg1.trim()));
+						else
+							M=Q.getQuestMob(Q.getQuestMobIndex(arg1));
+						if(M==null)
+							returnable=false;
+						else 
+							returnable=!M.amDead();
+					}
 				}
 				break;
 			}
@@ -3656,11 +3710,40 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
-				final Quest Q=getQuest(arg2);
-				if(Q==null)
+				final PhysicalAgent E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				if(arg2.equalsIgnoreCase("ALL"))
+				{
 					returnable=false;
+					for(final Enumeration<Quest> q=CMLib.quests().enumQuests();q.hasMoreElements();)
+					{
+						final Quest Q=q.nextElement();
+						if(Q.running())
+						{
+							if(E!=null)
+							{
+								if(Q.isObjectInUse(E))
+								{
+									returnable=true;
+									break;
+								}
+							}
+							else
+							if(Q.getQuestItemIndex(arg1)>=0)
+							{
+								returnable=true;
+								break;
+							}
+						}
+					}
+				}
 				else
-					returnable=(Q.getQuestItemIndex(arg1)>=0);
+				{
+					final Quest Q=getQuest(arg2);
+					if(Q==null)
+						returnable=false;
+					else
+						returnable=(Q.getQuestItemIndex(arg1)>=0);
+				}
 				break;
 			}
 			case 85: // islike
@@ -6082,6 +6165,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				String questName=CMParms.cleanBit(funcParms);
 				questName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,questName);
+				if(questName.equals("*") && (this.defaultQuestName()!=null) && (this.defaultQuestName().length()>0))
+					questName = this.defaultQuestName();
 				final Quest Q=getQuest(questName);
 				if(Q==null)
 				{
@@ -6133,6 +6218,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			{
 				String questName=CMParms.cleanBit(funcParms);
 				questName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,questName);
+				if(questName.equals("*") && (this.defaultQuestName()!=null) && (this.defaultQuestName().length()>0))
+					questName=this.defaultQuestName();
 				final Quest Q=getQuest(questName);
 				if(Q==null)
 				{
