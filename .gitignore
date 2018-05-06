@@ -1,5 +1,4 @@
 nbproject/
 *.class
-lib/CopyLibs/
-lib/nblibraries.properties
+lib/*
 manifest.mf
