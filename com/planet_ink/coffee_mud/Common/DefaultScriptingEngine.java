@@ -3456,15 +3456,58 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final PhysicalAgent E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				final String arg2=tt[t+1];
-				final Quest Q=getQuest(arg2);
-				returnable=false;
-				if((Q!=null)&&(E!=null))
+				if(arg2.equalsIgnoreCase("ALL"))
 				{
-					for(final Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+					returnable=false;
+					for(final Enumeration<Quest> q=CMLib.quests().enumQuests();q.hasMoreElements();)
 					{
-						final ScriptingEngine SE=e.nextElement();
-						if((SE!=null)&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
-							returnable=true;
+						final Quest Q=q.nextElement();
+						if(Q.running())
+						{
+							if(E!=null)
+							{
+								for(final Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+								{
+									final ScriptingEngine SE=e.nextElement();
+									if((SE!=null)&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
+										returnable=true;
+								}
+								for(final Enumeration<Behavior> b=E.behaviors();b.hasMoreElements();)
+								{
+									final Behavior B=b.nextElement();
+									if(B instanceof ScriptingEngine)
+									{
+										final ScriptingEngine SE=(ScriptingEngine)B;
+										if((SE!=null)&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
+											returnable=true;
+									}
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					final Quest Q=getQuest(arg2);
+					returnable=false;
+					if((Q!=null)&&(E!=null))
+					{
+						for(final Enumeration<ScriptingEngine> e=E.scripts();e.hasMoreElements();)
+						{
+							final ScriptingEngine SE=e.nextElement();
+							if((SE!=null)&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
+								returnable=true;
+						}
+						for(final Enumeration<Behavior> b=E.behaviors();b.hasMoreElements();)
+						{
+							final Behavior B=b.nextElement();
+							if(B instanceof ScriptingEngine)
+							{
+								final ScriptingEngine SE=(ScriptingEngine)B;
+								if((SE!=null)&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
+									returnable=true;
+							}
+						}
 					}
 				}
 				break;
@@ -6156,6 +6199,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								results.append(Q.name()+" ");
 							else
 								results.append(SE.defaultQuestName()+" ");
+						}
+					}
+					for(final Enumeration<Behavior> e=E.behaviors();e.hasMoreElements();)
+					{
+						final Behavior B=e.nextElement();
+						if(B instanceof ScriptingEngine)
+						{
+							final ScriptingEngine SE=(ScriptingEngine)B;
+							if((SE!=null)&&(SE.defaultQuestName()!=null)&&(SE.defaultQuestName().length()>0))
+							{
+								final Quest Q=CMLib.quests().fetchQuest(SE.defaultQuestName());
+								if(Q!=null)
+									results.append(Q.name()+" ");
+								else
+									results.append(SE.defaultQuestName()+" ");
+							}
 						}
 					}
 				}
