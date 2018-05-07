@@ -415,7 +415,17 @@ public class GravityFloat extends StdAbility
 				}
 			}
 			else
-				hasGravity=true;
+			{
+				SpaceObject o=null;
+				if(A instanceof SpaceObject)
+					o=(SpaceObject)A;
+				else
+					o=CMLib.map().getSpaceObject(A,true);
+				if(o==null)
+					hasGravity=true;
+				else
+					hasGravity=o.getMass() > SpaceObject.MULTIPLIER_PLANET_MASS;
+			}
 		}
 		return hasGravity;
 	}
