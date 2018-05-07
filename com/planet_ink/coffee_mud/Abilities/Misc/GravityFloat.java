@@ -414,6 +414,8 @@ public class GravityFloat extends StdAbility
 						hasGravity=true;
 				}
 			}
+			else
+				hasGravity=true;
 		}
 		return hasGravity;
 	}

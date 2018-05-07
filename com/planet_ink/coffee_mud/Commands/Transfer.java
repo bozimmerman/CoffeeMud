@@ -230,6 +230,66 @@ public class Transfer extends At
 
 		if(V.size()==0)
 		{
+			try
+			{
+				ConvertingEnumeration<SpaceObject,Item> spaceItems=new ConvertingEnumeration<SpaceObject,Item>(
+					new FilteredEnumeration<SpaceObject>(CMLib.map().getSpaceObjects(),new Filterer<SpaceObject>()
+					{
+						@Override
+						public boolean passesFilter(SpaceObject obj)
+						{
+							return obj instanceof Item;
+						}
+					}),
+					new Converter<SpaceObject,Item>()
+					{
+						@Override
+						public Item convert(SpaceObject obj)
+						{
+							return (Item)obj;
+						}
+					}
+				);
+				Environmental E=CMLib.english().fetchEnvironmental(spaceItems, searchName, true);
+				if(E instanceof Item)
+					V.add((Item)E);
+			}
+			catch (final NoSuchElementException nse)
+			{
+			}
+		}
+		if(V.size()==0)
+		{
+			try
+			{
+				ConvertingEnumeration<SpaceObject,Item> spaceItems=new ConvertingEnumeration<SpaceObject,Item>(
+					new FilteredEnumeration<SpaceObject>(CMLib.map().getSpaceObjects(),new Filterer<SpaceObject>()
+					{
+						@Override
+						public boolean passesFilter(SpaceObject obj)
+						{
+							return obj instanceof Item;
+						}
+					}),
+					new Converter<SpaceObject,Item>()
+					{
+						@Override
+						public Item convert(SpaceObject obj)
+						{
+							return (Item)obj;
+						}
+					}
+				);
+				Environmental E=CMLib.english().fetchEnvironmental(spaceItems, searchName, false);
+				if(E instanceof Item)
+					V.add((Item)E);
+			}
+			catch (final NoSuchElementException nse)
+			{
+			}
+		}
+		if(V.size()==0)
+		{
 			mob.tell(L("Transfer what?  '@x1' is unknown to you.",searchName));
 			return false;
 		}
@@ -272,7 +332,13 @@ public class Transfer extends At
 					if(inventoryFlag)
 						mob.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 					else
+					{
 						room.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+						if(I instanceof SpaceObject)
+							((SpaceObject)I).setSpeed(0);
+						if(I instanceof SpaceShip)
+							((SpaceShip)I).dockHere(room);
+					}
 				}
 			}
 			else
