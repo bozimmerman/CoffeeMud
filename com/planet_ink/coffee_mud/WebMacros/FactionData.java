@@ -764,6 +764,8 @@ public class FactionData extends StdWebMacro
 							for(final Enumeration<Command> e=CMClass.commands();e.hasMoreElements();)
 							{
 								final Command C=e.nextElement();
+								if(C.ID().equals("Mood"))
+									continue;
 								if((C.getAccessWords()!=null)&&(C.getAccessWords().length>0))
 									str.append("<OPTION VALUE=\""+C.ID()+"\">"+CMStrings.capitalizeAndLower(C.getAccessWords()[0]));
 								else
