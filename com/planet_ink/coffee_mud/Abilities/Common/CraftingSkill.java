@@ -394,29 +394,47 @@ public class CraftingSkill extends GatheringSkill
 			return;
 		if(spells.startsWith("*") && spells.endsWith(";__DELETE__"))
 		{
-			String ableID=spells.substring(0, spells.indexOf(';'));
-			Ability oldA=P.fetchEffect(ableID.substring(1));
+			String ableID=spells.substring(1, spells.indexOf(';'));
+			Ability oldA=P.fetchEffect(ableID);
 			if(oldA!=null)
 			{
 				oldA.unInvoke();
 				P.delEffect(oldA);
 				spells="";
 			}
-		}
-		final List<Ability> V=CMLib.ableParms().getCodedSpells(spells);
-		for(int v=0;v<V.size();v++)
-		{
-			final Ability A=V.get(v);
-			if(P instanceof Wand)
-			{
-				if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
-				||(((Wand)P).getSpell()!=null))
-					P.addNonUninvokableEffect(A);
-				else
-					((Wand)P).setSpell(A);
-			}
 			else
-				P.addNonUninvokableEffect(A);
+			{
+				ableID=ableID.toLowerCase();
+				for(final Enumeration<Ability> eA = P.effects();eA.hasMoreElements();)
+				{
+					oldA=eA.nextElement();
+					if((oldA!=null) && (oldA.text().toLowerCase().indexOf(ableID)>=0))
+					{
+						oldA.unInvoke();
+						P.delEffect(oldA);
+						spells="";
+						break;
+					}
+				}
+			}
+		}
+		else
+		{
+			final List<Ability> V=CMLib.ableParms().getCodedSpells(spells);
+			for(int v=0;v<V.size();v++)
+			{
+				final Ability A=V.get(v);
+				if(P instanceof Wand)
+				{
+					if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
+					||(((Wand)P).getSpell()!=null))
+						P.addNonUninvokableEffect(A);
+					else
+						((Wand)P).setSpell(A);
+				}
+				else
+					P.addNonUninvokableEffect(A);
+			}
 		}
 	}
 

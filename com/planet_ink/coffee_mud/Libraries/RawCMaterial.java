@@ -470,8 +470,10 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		if((As==null)||(As.length==0))
 			return;
 		for(final Ability A : As)
+		{
 			if(I.fetchEffect(A.ID())==null)
 				I.addNonUninvokableEffect((Ability)A.copyOf());
+		}
 	}
 
 	@Override

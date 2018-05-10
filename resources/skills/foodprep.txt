@@ -8,7 +8,7 @@ berry preserves	FOOD		4	berries	1
 maple syrup	DRINK		4	Sap	1	Maple	1										
 yeast	FOOD		4	Flour		Sugar		Water									
 orange preserves	FOOD		5	oranges	1												
-lemon preserves	FOOD		6	lemons	1												
+lemon preserves	FOOD	*Spell_ShrinkMouth;__DELETE__	6	lemons	1												
 pie crust	FOOD		6	dough	1	wheat	1										
 cactus preserves	FOOD		7	cactus	1												
 molasses	FOOD		7	sap	1												
