@@ -99,6 +99,12 @@ public class StoneGolem extends StdRace
 	}
 
 	@Override
+	public boolean infatigueable()
+	{
+		return true;
+	}
+
+	@Override
 	public boolean uncharmable()
 	{
 		return true;

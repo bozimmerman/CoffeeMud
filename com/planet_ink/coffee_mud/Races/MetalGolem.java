@@ -99,6 +99,12 @@ public class MetalGolem extends StdRace
 	}
 
 	@Override
+	public boolean infatigueable()
+	{
+		return true;
+	}
+
+	@Override
 	public boolean uncharmable()
 	{
 		return true;

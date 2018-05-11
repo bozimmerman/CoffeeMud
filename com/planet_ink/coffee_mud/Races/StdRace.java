@@ -282,6 +282,11 @@ public class StdRace implements Race
 	{
 		return true;
 	}
+	
+	public boolean infatigueable()
+	{
+		return false;
+	}
 
 	@Override
 	public CMObject copyOf()
@@ -631,8 +636,10 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public boolean tick(Tickable myChar, int tickID)
+	public boolean tick(final Tickable myChar, final int tickID)
 	{
+		if((infatigueable())&&(myChar instanceof MOB))
+			((MOB)myChar).curState().setFatigue(0);
 		return true;
 	}
 
@@ -1340,6 +1347,7 @@ public class StdRace implements Race
 								|(leveless()?Race.GENFLAG_NOLEVELS:0)
 								|(uncharmable()?Race.GENFLAG_NOCHARM:0)
 								|(fertile()?0:Race.GENFLAG_NOFERTILE)
+								|(infatigueable()?Race.GENFLAG_INFATIGUEABLE:0)
 								|(expless()?Race.GENFLAG_NOEXP:0)));
 
 		List<RawMaterial> rscs=myResources();

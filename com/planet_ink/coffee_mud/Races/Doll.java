@@ -99,6 +99,12 @@ public class Doll extends StdRace
 	}
 
 	@Override
+	public boolean infatigueable()
+	{
+		return true;
+	}
+
+	@Override
 	public int[] getBreathables()
 	{
 		return breatheAnythingArray;

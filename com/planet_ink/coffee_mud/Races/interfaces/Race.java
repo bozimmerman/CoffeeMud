@@ -534,8 +534,10 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	public final static int GENFLAG_NOCHARM=8;
 	/** constant used to set and check the fertility flag on generic races */
 	public final static int GENFLAG_NOFERTILE=16;
+	/** constant used to set and check the infatigueable flag on generic races */
+	public final static int GENFLAG_INFATIGUEABLE=32;
 	/** constant string list naming each of the GENFLAG_* constants in the order of their value */
-	public final static String[] GENFLAG_DESCS={"CLASSLESS","LEVELLESS","EXPLESS","CHARMLESS","CHILDLESS"};
+	public final static String[] GENFLAG_DESCS={"CLASSLESS","LEVELLESS","EXPLESS","CHARMLESS","CHILDLESS","INFATIGUEABLE"};
 
 	public final static Map<String,Integer> BODYPARTHASH_RL_LOWER=new SHashtable<String,Integer>(new Enumeration<Pair<String,Integer>>()
 	{

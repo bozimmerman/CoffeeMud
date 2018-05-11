@@ -187,6 +187,12 @@ public class GenRace extends StdRace
 	}
 
 	@Override
+	public boolean infatigueable()
+	{
+		return ((disableFlags & Race.GENFLAG_INFATIGUEABLE) == Race.GENFLAG_INFATIGUEABLE);
+	}
+
+	@Override
 	protected boolean uncharmable()
 	{
 		return ((disableFlags & Race.GENFLAG_NOCHARM) == Race.GENFLAG_NOCHARM);
