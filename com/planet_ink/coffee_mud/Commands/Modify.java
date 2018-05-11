@@ -904,6 +904,7 @@ public class Modify extends StdCommand
 							mob.tell(L("That quest is not running."));
 						else
 						{
+							CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTSTOP);
 							Q.stopQuest();
 							if(!Q.running())
 								mob.tell(L("Quest '@x1' stopped.",Q.name()));

@@ -10884,7 +10884,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final String q=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1].trim());
 				final Quest Q=getQuest(q);
 				if(Q!=null)
+				{
+					CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTSTOP);
 					Q.stopQuest();
+				}
 				else
 				if((tt[1].length()>0)&&(defaultQuestName!=null)&&(defaultQuestName.length()>0))
 				{

@@ -121,6 +121,7 @@ public class QuestMgr extends StdWebMacro
 			{
 				if(!Q.running())
 					return "Quest '"+Q.name()+"' was not running.";
+				CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTSTOP);
 				Q.stopQuest();
 				return "Quest '"+Q.name()+"' stopped.";
 			}

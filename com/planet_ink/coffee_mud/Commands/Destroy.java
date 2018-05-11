@@ -1715,7 +1715,10 @@ public class Destroy extends StdCommand
 				else
 				{
 					if(Q.running()&&(!Q.stopping()))
+					{
+						CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTSTOP);
 						Q.stopQuest();
+					}
 					mob.tell(L("Quest '@x1' is destroyed!",Q.name()));
 					CMLib.quests().delQuest(Q);
 				}

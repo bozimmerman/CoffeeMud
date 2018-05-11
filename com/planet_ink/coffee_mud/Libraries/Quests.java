@@ -146,6 +146,7 @@ public class Quests extends StdLibrary implements QuestManager
 	{
 		if(quests.contains(Q))
 		{
+			CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTSTOP);
 			Q.stopQuest();
 			CMLib.threads().deleteTick(Q,Tickable.TICKID_QUEST);
 			Q.internalQuestDelete();
