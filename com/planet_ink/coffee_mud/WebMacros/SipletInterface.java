@@ -279,7 +279,7 @@ public class SipletInterface extends StdWebMacro
 						p.siplet.sendData(data);
 						if(p.siplet.isConnectedToURL())
 						{
-							CMLib.s_sleep(10);
+							CMLib.s_sleep(10);  // why?
 							if(p.siplet.isConnectedToURL())
 							{
 								p.lastTouched=System.currentTimeMillis();

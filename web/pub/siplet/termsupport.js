@@ -3,6 +3,7 @@ var myname='dwindow'+top.term.currentWindow;
 var mydivname='ewindow'+top.term.currentWindow;
 var gauges=new Array();
 var theSiplet = null;
+var target = null;
 var lastReceived = new Date().getTime();
 
 var limit=50000;
@@ -22,6 +23,14 @@ function connectChecker()
 	else
 		lastReceived = new Date().getTime()
 	connCheck = setTimeout(connectChecker,10001);
+}
+
+function retarget(name)
+{
+	if((name==null)||(name.trim().length==0))
+		target=null;
+	else
+		target=name.toUpperCase().trim();
 }
 
 function createGauge(entity,caption,color,value,max)
@@ -163,6 +172,9 @@ function StopSound(key,playerName)
 
 function addToWindow(s)
 {
+	if(target=='INPUT')
+		top.entry.document.ENTER.TEXT.value=s;
+	else
 	if(s.length>0)
 	{
 		var theSpan=document.getElementById("DISPLAYSPAN");

@@ -310,32 +310,39 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	{
 		if((mob==null)||(mob.session() == null))
 			return oldVal;
+		final Session sess=mob.session();
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return oldVal;
 		String showVal=oldVal;
 		if((maxChars > 0)&&(showVal.length()>maxChars)&& (!((showFlag!=showNumber)&&(showFlag>-999))))
 			showVal=showVal.substring(0,maxChars)+"...";
 		if(rawPrint)
-			mob.session().safeRawPrintln(showNumber+". "+FieldDisp+": '"+showVal+"'.");
+		{
+			//if((showFlag==showNumber)||(showFlag<=-999))
+			//	sess.print("^<DEST NAME=INPUT^>");
+			sess.safeRawPrintln(showNumber+". "+FieldDisp+": '"+showVal+"'.");
+			//if((showFlag==showNumber)||(showFlag<=-999))
+			//	sess.print("^<DEST^>");
+		}
 		else
 			mob.tell(showNumber+". "+FieldDisp+": '"+showVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;
 		String newName="?";
-		boolean mcp =mob.session().isAllowedMcp("dns-org-mud-moo-simpleedit", (float)1.0);
+		boolean mcp =sess.isAllowedMcp("dns-org-mud-moo-simpleedit", (float)1.0);
 		final String promptStr=L("Enter a new value@x1@x2@x3\n\r:",(emptyOK?" (or NULL)":""),(mcp?" (or \\#$#)":""),(help!=null?" (?)":""));
-		while(newName.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
+		while(newName.equals("?")&&(mob.session()!=null)&&(!sess.isStopped()))
 		{
-			newName=mob.session().prompt(promptStr,"");
+			newName=sess.prompt(promptStr,"");
 			if(mcp && newName.equals("\\#$#"))
 			{
 				int tag=Math.abs(new Random(System.currentTimeMillis()).nextInt());
-				mob.session().sendMcpCommand("dns-org-mud-moo-simpleedit-content", 
+				sess.sendMcpCommand("dns-org-mud-moo-simpleedit-content", 
 						" reference: #64.name name: Data type: string content*: \"\" _data-tag: "+tag);
 				List<String> strs = Resources.getFileLineVector(new StringBuffer(oldVal));
 				for(String s : strs)
-					mob.session().rawPrintln("#$#* "+tag+" content: "+s);
-				mob.session().rawPrintln("#$#: "+tag);
+					sess.rawPrintln("#$#* "+tag+" content: "+s);
+				sess.rawPrintln("#$#: "+tag);
 				newName = "?";
 			}
 			else
