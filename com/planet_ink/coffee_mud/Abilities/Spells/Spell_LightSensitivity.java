@@ -89,8 +89,8 @@ public class Spell_LightSensitivity extends Spell
 			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 		else
 		{
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-25);
-			affectableStats.setArmor(affectableStats.armor()+25);
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-50);
+			affectableStats.setArmor(affectableStats.armor()+50);
 		}
 	}
 
@@ -118,6 +118,26 @@ public class Spell_LightSensitivity extends Spell
 					return false;
 				}
 				break;
+			case CMMsg.TYP_JUSTICE:
+			{
+				if(!msg.targetMajor(CMMsg.MASK_DELICATE))
+					return true;
+			}
+				//$FALL-THROUGH$
+			case CMMsg.TYP_DELICATE_HANDS_ACT:
+			case CMMsg.TYP_CAST_SPELL:
+			{
+				if((msg.target()!=null)
+				&&(msg.target()!=msg.source())
+				&&(!(msg.target() instanceof Room)))
+				{
+					if(CMLib.dice().rollPercentage()>50)
+					{
+						msg.source().tell(msg.source(),msg.target(),null,L("You can't seem to make out <T-NAME> in this bright light."));
+						return false;
+					}
+				}
+			}
 			}
 		}
 		return true;
