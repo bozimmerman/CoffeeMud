@@ -195,7 +195,7 @@ public class Skill_CurtainCall extends BardSkill
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,null,L("<S-NAME> calls(s) the curtain, but nothing happens."));
+			return beneficialVisualFizzle(mob,null,L("<S-NAME> call(s) the curtain, but nothing happens."));
 
 		return success;
 	}

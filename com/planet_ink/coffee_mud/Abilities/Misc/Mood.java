@@ -427,7 +427,7 @@ public class Mood extends StdAbility
 							changeAllSays(msg, "declare(s)");
 							break;
 						case 3:
-							changeAllSays(msg, "announces(s)");
+							changeAllSays(msg, "announce(s)");
 							break;
 						case 4:
 							changeAllSays(msg, "elucidate(s)");

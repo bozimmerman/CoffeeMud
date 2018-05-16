@@ -2621,7 +2621,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					inminrange=true;
 					inmaxrange=false;
 					// we advance
-					final CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_ADVANCE,L("<S-NAME> advances(s) at <T-NAMESELF>."));
+					final CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_ADVANCE,L("<S-NAME> advance(s) at <T-NAMESELF>."));
 					if(fighter.location().okMessage(fighter,msg))
 					{
 						fighter.location().send(fighter,msg);

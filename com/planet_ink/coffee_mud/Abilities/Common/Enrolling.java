@@ -106,7 +106,7 @@ public class Enrolling extends CommonSkill
 					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> tell(s) @x2 to practice @x1 now.",lectureName,randM.name()));
 					break;
 				case 2:
-					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> instructs(s) @x2 on @x1.",lectureName,randM.name()));
+					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> instruct(s) @x2 on @x1.",lectureName,randM.name()));
 					break;
 				case 3:
 					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> show(s) @x2 some improved methods of @x1.",lectureName,randM.name()));

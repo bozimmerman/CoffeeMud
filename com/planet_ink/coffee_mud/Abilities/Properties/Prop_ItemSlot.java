@@ -239,7 +239,7 @@ public class Prop_ItemSlot extends Property
 					{
 						Item gemI=(Item)E;
 						Ability A=gemI.fetchEffect("Prop_ItemSlotFiller");
-						msg.modify(msg.source(),affected,gemI,CMMsg.MSG_GET,CMLib.lang().L("<S-NAME> removes(s) <O-NAME> from <T-NAME>."));
+						msg.modify(msg.source(),affected,gemI,CMMsg.MSG_GET,CMLib.lang().L("<S-NAME> remove(s) <O-NAME> from <T-NAME>."));
 						for(int i=0;i<slots.length;i++)
 						{
 							if(slots[i]==gemI)

@@ -207,7 +207,7 @@ public class Chant_SummonJellyfish extends Chant
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,L("<S-NAME> chants(s) to the waters, but the magic fizzles."));
+			return maliciousFizzle(mob,null,L("<S-NAME> chant(s) to the waters, but the magic fizzles."));
 
 		// return whether it worked
 		return success;

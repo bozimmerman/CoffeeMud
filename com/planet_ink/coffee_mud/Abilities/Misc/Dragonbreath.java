@@ -270,7 +270,7 @@ public class Dragonbreath extends StdAbility
 			strikeType=CMMsg.TYP_ACID;
 			break;
 		case 'o':
-			puffPhrase=L("<S-NAME> bubbles(s) acidic ooze harmlessly from <S-HIS-HER> mouth.");
+			puffPhrase=L("<S-NAME> bubble(s) acidic ooze harmlessly from <S-HIS-HER> mouth.");
 			autoPhrase=L("A splurt of acidic ooze erupts!");
 			stuffWord=L("ooze");
 			castPhrase=L("<S-NAME> belch(es) acidic ooze from <S-HIS-HER> mouth!");

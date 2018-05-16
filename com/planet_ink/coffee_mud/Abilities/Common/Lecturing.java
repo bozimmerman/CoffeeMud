@@ -104,7 +104,7 @@ public class Lecturing extends CommonSkill
 					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> tell(s) the students to practice @x1 now.",lectureName));
 					break;
 				case 2:
-					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> instructs(s) the class on @x1.",lectureName));
+					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> instruct(s) the class on @x1.",lectureName));
 					break;
 				case 3:
 					R.show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> show(s) @x2 some improved methods of @x1.",lectureName,randM.name()));
