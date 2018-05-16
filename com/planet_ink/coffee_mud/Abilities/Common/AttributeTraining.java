@@ -272,13 +272,13 @@ public class AttributeTraining extends CommonSkill
 			{
 				if(trainsRequired>1)
 				{
-					commonTell(mob,L("@x1 requires @x1 training points to do that.",""+trainsRequired));
+					commonTell(mob,L("@x1 requires @x1 training points to do that.",M.name(mob),""+trainsRequired));
 					return false;
 				}
 				else
 				if(trainsRequired==1)
 				{
-					commonTell(mob,L("@x1 requires @x1 training point to do that.",""+trainsRequired));
+					commonTell(mob,L("@x1 requires @x1 training point to do that.",M.name(mob),""+trainsRequired));
 					return false;
 				}
 			}
