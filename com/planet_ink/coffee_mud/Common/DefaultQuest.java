@@ -4889,7 +4889,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			code=code.toUpperCase().trim();
 			if((code.equalsIgnoreCase("REMAINING"))&&(running()))
 				return ""+ticksRemaining;
-			if(questState.vars.containsKey(code))
+			if(questState.vars.containsKey(code) && (!questState.isStat(code)))
 				return questState.vars.get(code);
 			if(questState.isStat(code))
 			{
