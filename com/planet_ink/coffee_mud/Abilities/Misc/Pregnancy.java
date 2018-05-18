@@ -259,9 +259,13 @@ public class Pregnancy extends StdAbility implements HealthCondition
 					{
 						if (CMLib.flags().isSleeping(mob))
 							mob.enqueCommand(CMParms.parse("WAKE"), MUDCmdProcessor.METAFLAG_FORCED, 0);
-						if ((CMLib.dice().rollPercentage() > 50) 
-						&& (mob.charStats().getStat(CharStats.STAT_INTELLIGENCE) > 5))
-							mob.location().show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> moan(s) and scream(s) in labor pain!!"));
+						if (CMLib.dice().rollPercentage() > 50)
+						{
+							if (mob.charStats().getStat(CharStats.STAT_INTELLIGENCE) > 5)
+								mob.location().show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> moan(s) and scream(s) in labor pain!!"));
+							else
+								mob.location().show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> look(s) like <S-HE-SHE> is ready to give birth!!"));
+						}
 						ticksInLabor++;
 						if (ticksInLabor >= 45)
 						{

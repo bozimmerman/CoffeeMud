@@ -113,7 +113,8 @@ public class Prop_Retainable extends Property
 				if((lastMoveIn>0)&&((System.currentTimeMillis()-lastMoveIn)>4))
 				{
 					lastMoveIn=0;
-					if(mob.location()==lastRoom)
+					if((mob.location()==lastRoom)
+					&&(!CMLib.flags().isAnimalIntelligence(mob)))
 					{
 						if((mob.amFollowing()!=null)&&(mob.location().isInhabitant(mob.amFollowing())))
 							CMLib.commands().postSay(mob,mob.amFollowing(),L("Is this my new permanent post?  If so, order me to NOFOLLOW and I'll stay here."),false,false);
