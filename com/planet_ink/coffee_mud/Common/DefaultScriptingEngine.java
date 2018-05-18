@@ -3478,7 +3478,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									if(B instanceof ScriptingEngine)
 									{
 										final ScriptingEngine SE=(ScriptingEngine)B;
-										if((SE!=null)&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
+										if((SE.defaultQuestName().equalsIgnoreCase(Q.name())))
 											returnable=true;
 									}
 								}
@@ -3504,7 +3504,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(B instanceof ScriptingEngine)
 							{
 								final ScriptingEngine SE=(ScriptingEngine)B;
-								if((SE!=null)&&(SE.defaultQuestName().equalsIgnoreCase(Q.name())))
+								if((SE.defaultQuestName().equalsIgnoreCase(Q.name())))
 									returnable=true;
 							}
 						}
@@ -6207,7 +6207,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(B instanceof ScriptingEngine)
 						{
 							final ScriptingEngine SE=(ScriptingEngine)B;
-							if((SE!=null)&&(SE.defaultQuestName()!=null)&&(SE.defaultQuestName().length()>0))
+							if((SE.defaultQuestName()!=null)&&(SE.defaultQuestName().length()>0))
 							{
 								final Quest Q=CMLib.quests().fetchQuest(SE.defaultQuestName());
 								if(Q!=null)
