@@ -138,7 +138,6 @@ public class Lecturing extends CommonSkill
 					commonTell(mob,str.toString());
 					unInvoke();
 				}
-
 			}
 		}
 		return super.tick(ticking,tickID);
@@ -186,6 +185,7 @@ public class Lecturing extends CommonSkill
 				{
 					final Ability protoA=mob.fetchAbility(lectureID);
 					final int prof = protoA!=null ? protoA.proficiency() : 0;
+					int studentsWhoImproved=0;
 					for(MOB studentM : students)
 					{
 						final Ability A=studentM.fetchAbility(lectureID);
@@ -210,6 +210,8 @@ public class Lecturing extends CommonSkill
 								if(A.proficiency() + amt > 100)
 									amt = 100 - A.proficiency();
 								CMLib.leveler().postExperience(mob, null, null, 10 * amt, false);
+								if(amt > 0)
+									studentsWhoImproved++;
 								A.setProficiency(A.proficiency() + amt);
 								studentM.tell(L("You learned @x1% more about @x2 from @x3!",""+amt,lectureName,mob.Name()));
 							}
@@ -218,6 +220,11 @@ public class Lecturing extends CommonSkill
 							studentM.tell(L("You had absolutely no idea what @x1 was talking about.",mob.Name()));
 					}
 					
+					if(studentsWhoImproved == 0)
+					{
+						final StringBuffer str=new StringBuffer(L("You did your best, but none of your students learned a damn thing.\n\r"));
+						commonTell(mob,str.toString());
+					}
 					final Room R=mob.location();
 					final Area areA=(R!=null)?R.getArea():null;
 					if(areA!=null)
@@ -226,6 +233,20 @@ public class Lecturing extends CommonSkill
 						if(lecA!=null)
 							lecA.lastLecture=areA.getTimeObj().toHoursSinceEpoc();
 					}
+				}
+				else
+				if(!success)
+				{
+					final StringBuffer str=new StringBuffer(L("Your lecture just didn't go over well.\n\r"));
+					commonTell(mob,str.toString());
+					unInvoke();
+				}
+				else
+				if(!aborted)
+				{
+					final StringBuffer str=new StringBuffer(L("There aren't enough students. Your lecture failed.\n\r"));
+					commonTell(mob,str.toString());
+					unInvoke();
 				}
 			}
 		}
