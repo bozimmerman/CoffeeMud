@@ -553,6 +553,8 @@ public class Create extends StdCommand
 				newMOB = CMClass.getMOB("GenMob");
 				newMOB.setName(CMLib.english().startWithAorAn(R.name()));
 				newMOB.setDisplayText(L("@x1 is here.",newMOB.Name()));
+				newMOB.baseCharStats().setMyRace(R);
+				newMOB.recoverCharStats();
 			}
 		}
 		
