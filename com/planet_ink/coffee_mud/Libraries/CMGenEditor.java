@@ -318,11 +318,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			showVal=showVal.substring(0,maxChars)+"...";
 		if(rawPrint)
 		{
-			//if((showFlag==showNumber)||(showFlag<=-999))
-			//	sess.print("^<DEST NAME=INPUT^>");
-			sess.safeRawPrintln(showNumber+". "+FieldDisp+": '"+showVal+"'.");
-			//if((showFlag==showNumber)||(showFlag<=-999))
-			//	sess.print("^<DEST^>");
+			/*if(((showFlag==showNumber)||(showFlag<=-999))&&(sess.isAllowedMxp("DESTINATION")))
+			{
+				sess.print("^<DEST NAME=INPUT^>");
+				sess.safeRawPrintln(showNumber+". "+FieldDisp+": '"+showVal+"'.");
+				sess.print("^<DEST^>");
+			}
+			else
+			*/
+				sess.safeRawPrintln(showNumber+". "+FieldDisp+": '"+showVal+"'.");
 		}
 		else
 			mob.tell(showNumber+". "+FieldDisp+": '"+showVal+"'.");

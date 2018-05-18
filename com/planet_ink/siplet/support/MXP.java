@@ -1034,6 +1034,7 @@ public class MXP
 			{
 				jscriptBuffer.append("retarget('" + NAME + "');");
 			}
+			return;
 		}
 		else 
 		if (E.name().equalsIgnoreCase("ATTLIST") || E.name().equalsIgnoreCase("ATT"))
