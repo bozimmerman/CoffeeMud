@@ -113,7 +113,20 @@ public class BackLogLoader
 		{
 			D=DB.DBFetchPrepared("INSERT INTO CMBKLG (CMNAME,  CMINDX, CMDATE, CMDATA) VALUES ('"+channelName+"', "+counter+", "+System.currentTimeMillis()+", ?)");
 			D.setPreparedClobs(new String[]{entry});
-			D.update("",0);
+			try
+			{
+				D.update("",0);
+			}
+			catch(final Exception sqle)
+			{
+				// retry for duplicate entries, but how could that even happen?!
+				Log.errOut("Retry: "+sqle.getMessage());
+				DB.DBDone(D);
+				final int counter2 = getCounter(channelName, true);
+				D=DB.DBFetchPrepared("INSERT INTO CMBKLG (CMNAME,  CMINDX, CMDATE, CMDATA) VALUES ('"+channelName+"', "+counter2+", "+System.currentTimeMillis()+", ?)");
+				D.setPreparedClobs(new String[]{entry});
+				D.update("",0);
+			}
 		}
 		catch(final Exception sqle)
 		{
