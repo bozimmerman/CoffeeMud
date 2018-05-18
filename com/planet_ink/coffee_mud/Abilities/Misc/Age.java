@@ -303,7 +303,8 @@ public class Age extends StdAbility
 						babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
 						babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,7);
 						babe.baseCharStats().setStat(CharStats.STAT_DEXTERITY,3);
-						babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,3);
+						if(!CMLib.flags().isAnimalIntelligence(babe))
+							babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,3);
 						babe.baseCharStats().setStat(CharStats.STAT_STRENGTH,2);
 						babe.baseCharStats().setStat(CharStats.STAT_WISDOM,2);
 						babe.basePhyStats().setHeight(babe.basePhyStats().height()*2);
@@ -388,7 +389,8 @@ public class Age extends StdAbility
 					babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
 					babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,10);
 					babe.baseCharStats().setStat(CharStats.STAT_DEXTERITY,5);
-					babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,6);
+					if(!CMLib.flags().isAnimalIntelligence(babe))
+						babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,6);
 					babe.baseCharStats().setStat(CharStats.STAT_STRENGTH,6);
 					babe.baseCharStats().setStat(CharStats.STAT_WISDOM,6);
 					if(following!=null)

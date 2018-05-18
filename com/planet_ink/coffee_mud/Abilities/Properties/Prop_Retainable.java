@@ -52,13 +52,13 @@ public class Prop_Retainable extends Property
 		return Ability.CAN_MOBS;
 	}
 
-	protected Room lastRoom=null;
+	protected Room	lastRoom						= null;
 
-	protected long payPeriodLengthInMilliseconds=0;
-	protected int payPeriodLengthInMudDays=0;
-	protected int payAmountPerPayPeriod=0;
-	protected long lastPayDayTimestamp=0;
-	protected long lastMoveIn=0;
+	protected long	payPeriodLengthInMilliseconds	= 0;
+	protected int	payPeriodLengthInMudDays		= 0;
+	protected int	payAmountPerPayPeriod			= 0;
+	protected long	lastPayDayTimestamp				= 0;
+	protected long	lastMoveIn						= 0;
 
 	@Override
 	public String accountForYourself()

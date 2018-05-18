@@ -259,7 +259,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 					{
 						if (CMLib.flags().isSleeping(mob))
 							mob.enqueCommand(CMParms.parse("WAKE"), MUDCmdProcessor.METAFLAG_FORCED, 0);
-						if ((CMLib.dice().rollPercentage() > 50) && (mob.charStats().getStat(CharStats.STAT_INTELLIGENCE) > 5))
+						if ((CMLib.dice().rollPercentage() > 50) 
+						&& (mob.charStats().getStat(CharStats.STAT_INTELLIGENCE) > 5))
 							mob.location().show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> moan(s) and scream(s) in labor pain!!"));
 						ticksInLabor++;
 						if (ticksInLabor >= 45)
@@ -361,7 +362,24 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							babe.baseState().setHitPoints(1);
 							babe.baseState().setMana(0);
 							babe.baseState().setMovement(0);
+							if(CMLib.flags().isAnimalIntelligence(mob)
+							&&((otherParentM==null)||(CMLib.flags().isAnimalIntelligence(otherParentM))))
+								babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE, 1);
 							babe.recoverCharStats();
+							Ability retainA=mob.fetchEffect("Prop_Retainable");
+							if(retainA!=null)
+							{
+								String s=retainA.text();
+								if(CMLib.flags().isAnimalIntelligence(mob))
+								{
+									int xs=s.indexOf(';');
+									if(xs>0)
+										s=s.substring(0,xs);
+								}
+								retainA=CMClass.getAbility("Prop_Retainable");
+								retainA.setMiscText(s);
+								babe.addNonUninvokableEffect(retainA);
+							}
 							if (!CMLib.flags().isAnimalIntelligence(babe))
 							{
 								if (CMLib.dice().rollPercentage() > 50)
