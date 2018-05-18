@@ -12650,9 +12650,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		final MOB mob=getMakeMOB(ticking);
 		final Item defaultItem=(ticking instanceof Item)?(Item)ticking:null;
-
+		final MOB mob=getMakeMOB(ticking);
 		if((mob==null)||(lastKnownLocation==null))
 		{
 			altStatusTickable=null;
@@ -12662,13 +12661,26 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		final PhysicalAgent affecting=(ticking instanceof PhysicalAgent)?((PhysicalAgent)ticking):null;
 
 		final List<DVector> scripts=getScripts();
-		
+
 		if(!runInPassiveAreas)
 		{
 			final Area A=CMLib.map().areaLocation(ticking);
 			if((A!=null)&&(A.getAreaState() != Area.State.ACTIVE))
 			{
 				return true;
+			}
+		}
+		if(defaultItem != null)
+		{
+			final ItemPossessor poss=defaultItem.owner();
+			if(poss instanceof MOB)
+			{
+				final Room R=((MOB)poss).location();
+				if((R==null)||(R.numInhabitants()==0))
+				{
+					altStatusTickable=null;
+					return true;
+				}
 			}
 		}
 
