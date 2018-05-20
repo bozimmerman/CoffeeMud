@@ -129,7 +129,8 @@ public class Spell_LightSensitivity extends Spell
 			{
 				if((msg.target()!=null)
 				&&(msg.target()!=msg.source())
-				&&(!(msg.target() instanceof Room)))
+				&&(!(msg.target() instanceof Room))
+				&&(isLightBlind(msg.source())))
 				{
 					if(CMLib.dice().rollPercentage()>50)
 					{
