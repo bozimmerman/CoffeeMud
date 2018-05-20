@@ -239,14 +239,12 @@ public class Lecturing extends CommonSkill
 				{
 					final StringBuffer str=new StringBuffer(L("Your lecture just didn't go over well.\n\r"));
 					commonTell(mob,str.toString());
-					unInvoke();
 				}
 				else
 				if(!aborted)
 				{
 					final StringBuffer str=new StringBuffer(L("There aren't enough students. Your lecture failed.\n\r"));
 					commonTell(mob,str.toString());
-					unInvoke();
 				}
 			}
 		}
