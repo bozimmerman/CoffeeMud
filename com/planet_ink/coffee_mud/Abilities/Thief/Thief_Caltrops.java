@@ -237,7 +237,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			if(mob.location().show(mob,target,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,L("<S-NAME> throw(s) down @x1caltrops!",caltropTypeName())))
+			if(mob.location().show(mob,null,(auto?CMMsg.MASK_ALWAYS:0)|CMMsg.MSG_THIEF_ACT,L("<S-NAME> throw(s) down @x1caltrops!",caltropTypeName())))
 				maliciousAffect(mob,target,asLevel,0,-1);
 			else
 				success=false;

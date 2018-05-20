@@ -111,10 +111,10 @@ public class Prayer_GuardianHearth extends Prayer
 		}
 		final Room R=(Room)affected;
 		if(((msg.tool() instanceof Trap)
-		||(prots.contains(Integer.valueOf(msg.sourceMinor())))
-		||(prots.contains(Integer.valueOf(msg.targetMinor()))))
-		   &&(msg.target() instanceof MOB)
-		   &&((msg.source()!=msg.target())||(msg.sourceMajor(CMMsg.MASK_ALWAYS))))
+			||(prots.contains(Integer.valueOf(msg.sourceMinor())))
+			||(prots.contains(Integer.valueOf(msg.targetMinor()))))
+		&&(msg.target() instanceof MOB)
+		&&((msg.source()!=msg.target())||(msg.sourceMajor(CMMsg.MASK_ALWAYS))))
 		{
 			final Set<MOB> H=((MOB)msg.target()).getGroupMembers(new HashSet<MOB>());
 			for (final Object element : H)
