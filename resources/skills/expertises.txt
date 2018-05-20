@@ -390,7 +390,7 @@ HELP_=<EXPERTISE>The ability to use sea travel at a higher power level, producin
 EXTENDEDSAILINGL@x1=Extended Sailing @x2,10,TIME,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use sea travel that last even longer.
 
-LITECRAFT@x1=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +Weaving,,+DEX {10+(4*@x1)},0,1,0,0,0
+LITECRAFT@x1=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing +Weaving,,+DEX {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft items using less material without sacrificing quality.
 HELP_LITECRAFT1=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Light" are a little lighter, and worth a little more in value.
 HELP_LITECRAFT2=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Supple" are lighter, and worth more in value.
@@ -404,7 +404,7 @@ HELP_DURACRAFT2=<EXPERTISE>The ability to craft armors and clothing to be more p
 HELP_DURACRAFT3=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Fortified" are much heavier, a lot more protective, and worth much more.
 DATA_=Strong,Reinforced,Fortified
 
-QUALCRAFT@x1=Quality Crafting @x2,3,X3,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +Weaving,,+CHA {10+(4*@x1)},0,1,0,0,0
+QUALCRAFT@x1=Quality Crafting @x2,3,X3,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing +Weaving,,+CHA {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft items of the highest quality.
 HELP_QUALCRAFT1=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Fine" are worth more.
 HELP_QUALCRAFT2=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Beautiful" are worth more.
@@ -414,14 +414,14 @@ DATA_=Fine,Beautiful,Exquisite
 QUICKCRAFT@x1=Quick Worker @x2,10,TIME,-SKILLFLAG "+COMMON SKILL" +JAVACLASS -Dissertating,,+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft and gather items more quickly and efficiently.
 
-LTHLCRAFT@x1=Lethal Crafting @x2,3,X4,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing,,+CON {10+(4*@x1)},0,1,0,0,0
+LTHLCRAFT@x1=Lethal Crafting @x2,3,X4,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing,,+CON {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft weapons that are more deadly than usual.
 HELP_LTHLCRAFT1=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Damaging" are slightly more damaging, and worth slightly more.
 HELP_LTHLCRAFT2=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Brutal" are a little more damaging, and worth more.
 HELP_LTHLCRAFT3=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Lethal" are more damaging, and worth much more.
 DATA_=Damaging,Brutal,Lethal
 
-CNTRCRAFT@x1=Counterbalance Crafting @x2,3,X5,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing,,+INT {10+(4*@x1)},0,1,0,0,0
+CNTRCRAFT@x1=Counterbalance Crafting @x2,3,X5,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing,,+INT {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual.
 HELP_CNTRCRAFT1=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Even" are slightly better for attack, and worth a little more.
 HELP_CNTRCRAFT2=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Balanced" are better for attack, and worth more.
