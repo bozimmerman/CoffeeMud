@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
@@ -1924,15 +1925,31 @@ public class StdAbility implements Ability
 			student.tell(L("You are too stupid to learn new skills."));
 			return false;
 		}
-		final int baseInt = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT); // 18
-		final int studentInt=student.charStats().getStat(CharStats.STAT_INTELLIGENCE);
-		if(baseInt + studentInt < qLevel)
+		
+		final String qualClassID = CMLib.ableMapper().qualifyingID(student, this);
+		if((qualClassID != null) && (qualClassID.equalsIgnoreCase("All")||(CMClass.getCharClass(qualClassID) != null)))
 		{
-			if(teacher != null)
-				teacher.tell(L("@x1 is not smart enough to learn level @x2 skills.",student.name(),qLevel+""));
-			student.tell(L("You are not of high enough intelligence to learn level @x2 skills.",qLevel+""));
-			return false;
+			int highestSkillLevel=-1;
+			for(final AbilityMapping mA : CMLib.ableMapper().getAbleMapping(qualClassID).values())
+			{
+				if(mA.qualLevel() > highestSkillLevel)
+					highestSkillLevel = mA.qualLevel();
+			}
+			if(highestSkillLevel > 0)
+			{
+				final int baseInt = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT); // 18
+				final int normalizedReqInt = (int)Math.round(Math.ceil(CMath.mul(baseInt, CMath.div(qLevel, highestSkillLevel))));
+				final int studentInt=student.charStats().getStat(CharStats.STAT_INTELLIGENCE);
+				if(studentInt + 6 < normalizedReqInt)
+				{
+					if(teacher != null)
+						teacher.tell(L("@x1 is not smart enough to learn level @x2 skills.",student.name(),qLevel+""));
+					student.tell(L("You are not of high enough intelligence to learn level @x2 skills.",qLevel+""));
+					return false;
+				}
+			}
 		}
+		
 		final Ability yourAbility=student.fetchAbility(ID());
 		final Ability teacherAbility=(teacher != null) ? teacher.fetchAbility(ID()) : null;
 		if(yourAbility!=null)
