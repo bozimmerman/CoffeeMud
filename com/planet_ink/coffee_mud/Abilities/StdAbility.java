@@ -1924,9 +1924,9 @@ public class StdAbility implements Ability
 			student.tell(L("You are too stupid to learn new skills."));
 			return false;
 		}
-		final int maxInt=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
-		final int intLevel=(qLevel > maxInt) ? maxInt : qLevel;
-		if(intLevel>(student.charStats().getStat(CharStats.STAT_INTELLIGENCE)))
+		final int baseInt = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT); // 18
+		final int studentInt=student.charStats().getStat(CharStats.STAT_INTELLIGENCE);
+		if(baseInt + studentInt < qLevel)
 		{
 			if(teacher != null)
 				teacher.tell(L("@x1 is not smart enough to learn level @x2 skills.",student.name(),qLevel+""));
