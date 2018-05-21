@@ -44,6 +44,8 @@ public class Spell_RechargeWand extends Spell
 
 	private final static String localizedName = CMLib.lang().L("Recharge Wand");
 
+	private static int RECHARGE_AMT = 5;
+	
 	@Override
 	public String name()
 	{
@@ -98,7 +100,7 @@ public class Spell_RechargeWand extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if((((Wand)target).usesRemaining()+5) >= ((Wand)target).maxUses())
+				if(((Wand)target).usesRemaining() >= ((Wand)target).maxUses())
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glow(s) brightly then disintigrates!"));
 					target.destroy();
@@ -106,9 +108,15 @@ public class Spell_RechargeWand extends Spell
 				else
 				{
 					boolean willBreak = false;
-					if((((Wand)target).usesRemaining()+10) >= ((Wand)target).maxUses())
+					if((((Wand)target).usesRemaining()+RECHARGE_AMT) > ((Wand)target).maxUses())
+					{
 						willBreak = true;
-					((Wand)target).setUsesRemaining(((Wand)target).usesRemaining()+5);
+						((Wand)target).setUsesRemaining(((Wand)target).maxUses());
+					}
+					else
+					{
+						((Wand)target).setUsesRemaining(((Wand)target).usesRemaining()+RECHARGE_AMT);
+					}
 					if(!(willBreak))
 					{
 						mob.location().show(mob, target, CMMsg.MSG_OK_VISUAL, L("<T-NAME> glow(s) brightly!"));
