@@ -8,6 +8,8 @@
 </HEAD>
 <BODY BGCOLOR=BLACK ONCLICK="top.term.front(myname,mynum);">
 <script language=JavaScript>
+var fontSize=16;
+
 setTimeout(connectChecker,10001);
 
 function closeWindow()
@@ -123,6 +125,23 @@ function connect(url,port,tries)
 			setTimeout('displayData(); top.entry.boxFocus();',pingDelay);
 		}
 	}); 
+	
+	function keyDown(e)
+	{
+		if(e && e.keyCode==38 && e.ctrlKey && fontSize > 6) // up
+		{
+			fontSize -= 2;
+			document.getElementById("DISPLAYSPAN").style.fontSize=fontSize;
+		}
+		else
+		if(e && e.keyCode==40 && e.ctrlKey && fontSize < 64) // down
+		{
+			fontSize += 2;
+			document.getElementById("DISPLAYSPAN").style.fontSize=fontSize;
+		}
+	}
+	
+	top.term.keydown = keyDown;
 }
 
 

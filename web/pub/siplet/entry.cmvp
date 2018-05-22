@@ -97,6 +97,8 @@
     
     function keydown(event,textEl)
     {
+        if(top.term.keydown != null)
+            top.term.keydown(event);
         if((event.keyCode==13)||(event.keyCode==10))
         {
             sendText(textEl.value);

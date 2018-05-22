@@ -1,5 +1,5 @@
 var fileisnamed='floater.js'
-var dragapproved=false
+var dragapproved=false;
 var dragged=''
 var minrestore=0
 var saveWidth=0
@@ -14,6 +14,7 @@ var rightFudge=5
 var bottomFudge=50
 var rightBound=2000
 var botBound=2000
+var keydown=null;
 
 function minLeft(){ return leftBound+(ns6?window.pageXOffset:iecompattest().scrollLeft);}
 function minTop(){ return topBound+(ns6?window.pageYOffset:iecompattest().scrollTop);}
@@ -38,19 +39,68 @@ function drag_drop(e)
     }
 }
 
+function resize(e)
+{
+    if (ie5&&dragapproved&&event.button==1)
+    {
+        document.getElementById(dragged).style.width=tempx+event.clientX-offsetx+"px"
+        document.getElementById(dragged).style.height=tempy+event.clientY-offsety+"px"
+    }
+    else 
+    if (ns6&&dragapproved)
+    {
+        document.getElementById(dragged).style.width=tempx+e.clientX-offsetx+"px"
+        document.getElementById(dragged).style.height=tempy+e.clientY-offsety+"px"
+    }
+    fixFont(dragged);
+}
+
+function stopdrag(wname,wnum)
+{
+    if(dragapproved)
+    {
+        dragapproved=false;
+        document.onmousemove=null;
+        document.onmouseup=null;
+        var top=document.getElementById(wname).style.top;
+        var left=document.getElementById(wname).style.left;
+        if(parseInt(top) < minTop())
+            document.getElementById(wname).style.top = minTop()+"px";
+        if(parseInt(left) < minLeft())
+            document.getElementById(wname).style.left = minLeft()+"px";
+        document.getElementById(wname+"content").style.display=""
+    }
+}
+
+function fixFont(wname)
+{
+    //var width = parseInt(document.getElementById(wname).style.width);
+    //console.info(document.getElementById(wname+"frame").childNodes);
+    //var oldSize = document.getElementById(wname+"frame").getElement('DOCUMENTSPAN').style.font-size;
+    //console.info(oldSize);
+    //document.getElementById(wname).getElementById('DOCUMENTSPAN').style.font-size = newSize;
+}
+
 function initializedrag(e,wname,wnum)
 {
-	front(wname,wnum);
+    front(wname,wnum);
     offsetx=ie5? event.clientX : e.clientX
     offsety=ie5? event.clientY : e.clientY
-    document.getElementById(wname+"content").style.display="none"
-    tempx=parseInt(document.getElementById(wname).style.left)
-    tempy=parseInt(document.getElementById(wname).style.top)
-    
+    document.getElementById(wname+"content").style.display="none";
+    tempx=parseInt(document.getElementById(wname).style.left);
+    tempy=parseInt(document.getElementById(wname).style.top);
     dragapproved=true
     dragged=wname
-    document.getElementById(wname).onmousemove=drag_drop;
-    //document.getElementById(wname).onmouseout=stopdrag;
+    if(offsety > tempy+parseInt(document.getElementById(wname).style.height))
+    {
+        tempx=parseInt(document.getElementById(wname).style.width);
+        tempy=parseInt(document.getElementById(wname).style.height);
+        document.onmousemove=resize;
+    }
+    else
+        document.onmousemove=drag_drop;
+    //document.onmouseout=function(){ stopdrag(wname,wnum); }
+    document.onmouseup=function(){ stopdrag(wname,wnum); }
 }
 
 function loadwindow(url,width,height,wname,wnum)
@@ -109,44 +159,43 @@ function reposition(wname,wnum)
 
 function closewindow(wname,wnum)
 {
-	var obj = alldivs[wnum];
-	var obj2 = document.getElementById(wname);
-	obj2.style.display="none";
-	var obj3 = top.term.allapplets[wnum];
-	window.console.info("Siplet floater closewindow");
-	obj3.disconnectFromURL();
-	alldivs[wnum]=null;
-	obj2.innerHTML = '';
-	obj.innerHTML = '';
-	for(var i=0;i<10;i++)
-		if(top.term.alldivs[i] != null)
-			top.term.currentWindow = i;
-	top.bar.blackStatus(wnum);
-	front('dwindow'+top.term.currentWindow,top.term.currentWindow);
+    var obj = alldivs[wnum];
+    var obj2 = document.getElementById(wname);
+    obj2.style.display="none";
+    var obj3 = top.term.allapplets[wnum];
+    obj3.disconnectFromURL();
+    alldivs[wnum]=null;
+    obj2.innerHTML = '';
+    obj.innerHTML = '';
+    for(var i=0;i<10;i++)
+        if(top.term.alldivs[i] != null)
+            top.term.currentWindow = i;
+    top.bar.blackStatus(wnum);
+    front('dwindow'+top.term.currentWindow,top.term.currentWindow);
 }
 function front(wname,wnum)
 {
-	if(top.term.currentWindow != wnum)
-	{
-	    document.getElementById("EWINDOW"+wnum).style.zIndex=10;
-	    document.getElementById(wname).style.zIndex=10;
-	    for(var i=0;i<10;i++)
-	    	if(i!=wnum)
-	    	{
-	    		var obj = alldivs[i];
-	    		if(obj != null)
-	    			obj.style.zIndex=0;
-	    		obj = document.getElementById("dwindow"+i);
-	    		if(obj != null)
-	    			obj.style.zIndex=0;
-	    	}
-	    top.term.currentWindow = wnum;
-	    if(top && top.entry && top.entry.boxFocus)
-		    top.entry.boxFocus();
-	    top.bar.greenIfLight(wnum);
-	    return false;
-	}
-	return true;
+    if(top.term.currentWindow != wnum)
+    {
+        document.getElementById("EWINDOW"+wnum).style.zIndex=10;
+        document.getElementById(wname).style.zIndex=10;
+        for(var i=0;i<10;i++)
+            if(i!=wnum)
+            {
+                var obj = alldivs[i];
+                if(obj != null)
+                    obj.style.zIndex=0;
+                obj = document.getElementById("dwindow"+i);
+                if(obj != null)
+                    obj.style.zIndex=0;
+            }
+        top.term.currentWindow = wnum;
+        if(top && top.entry && top.entry.boxFocus)
+            top.entry.boxFocus();
+        top.bar.greenIfLight(wnum);
+        return false;
+    }
+    return true;
 }
 function hideit(wname,wnum)
 {
@@ -157,21 +206,14 @@ function unhideit(wname,wnum)
     document.getElementById(wname).style.display=""
 }
 
-function stopdrag(wname, wnum)
-{
-    dragapproved=false;
-    document.getElementById(wname).onmousemove=null;
-    document.getElementById(wname+"content").style.display=""
-}
-
 function getFrameHTML(wname,wnum)
 {
-    var s='<div id="'+wname+'" style="position:absolute;background-color:#EBEBEB;cursor:hand;left:0px;top:0px;display:none" onMousedown="initializedrag(event,\''+wname+'\','+wnum+')" onMouseup="stopdrag(\''+wname+'\','+wnum+')" onSelectStart="return false">';
+    var s='<div id="'+wname+'" style="position:absolute;background-color:#EBEBEB;cursor:hand;left:0px;top:0px;display:none" onMousedown="initializedrag(event,\''+wname+'\','+wnum+')" onSelectStart="return false">';
     s+='<div id="'+wname+'bar" style="background-color:red">';
     s+='<table width=100% border=0 cellspacing=0 cellpadding=0 onclick="top.term.front(\''+wname+'\','+wnum+')"><tr>';
     s+='<td width=80% align=left>'
     s+='<div id="'+wname+'content" style="height:100%">';
-    s+='<div id="'+wname+'namer" style="background-color:red"></div>';
+    s+='<div id="'+wname+'namer" onMousedown="this.style.display=\'\';" style="background-color:red"></div>';
     s+='</td><td width=20% align=right>'
     s+='<img src="/siplet/max.gif" id="'+wname+'max" onClick="maximize(\''+wname+'\','+wnum+')">';
     s+='<img src="/siplet/close.gif" id="'+wname+'close" onClick="closewindow(\''+wname+'\','+wnum+')">';

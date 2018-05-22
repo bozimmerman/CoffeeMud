@@ -1,6 +1,8 @@
 DIV{font-family: courier; font-size: 12; background-color: black; color: lightgrey;}
 A{ text-decoration: none}
 
+#DISPLAYSPAN{font-family: courier; font-size: 16; background-color: black; color: lightgrey;}
+
 #dropmenudiv{
 position:absolute;
 border:1px solid black;
