@@ -12,6 +12,7 @@ var halflimit=limit/2;
 var tenthlimit=limit/10;
 var errorState=false;
 var connCheck=null;
+var fontSize=16;
 
 function connectChecker()
 {
@@ -168,6 +169,21 @@ function StopSound(key,playerName)
 	theSoundPlayer.src='';
 	theSoundPlayer.Play();
 	theSoundPlayer.innerHTML='';
+}
+
+function keyDown(e)
+{
+	if(e && e.keyCode==40 && e.ctrlKey && fontSize > 6) // up
+	{
+		fontSize -= 2;
+		document.getElementById("DISPLAYSPAN").style.fontSize=fontSize;
+	}
+	else
+	if(e && e.keyCode==38 && e.ctrlKey && fontSize < 64) // down
+	{
+		fontSize += 2;
+		document.getElementById("DISPLAYSPAN").style.fontSize=fontSize;
+	}
 }
 
 function addToWindow(s)

@@ -23,6 +23,10 @@ function addToWindow(s)
 {
 	allwindows[currentWindow].addToWindow(s);
 }
+function keyDown(e)
+{
+	allwindows[currentWindow].keyDown(e);
+}
 function reconnect(s)
 {
 	window.console.info("Siplet terminal reconnect");

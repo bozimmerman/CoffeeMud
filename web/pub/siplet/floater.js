@@ -14,7 +14,6 @@ var rightFudge=5
 var bottomFudge=50
 var rightBound=2000
 var botBound=2000
-var keydown=null;
 
 function minLeft(){ return leftBound+(ns6?window.pageXOffset:iecompattest().scrollLeft);}
 function minTop(){ return topBound+(ns6?window.pageYOffset:iecompattest().scrollTop);}
