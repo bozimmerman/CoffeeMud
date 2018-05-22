@@ -320,7 +320,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		{
 			if((showFlag==showNumber)||(showFlag<=-999))
 			{
-				sess.sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(fieldDisp)+"\",\"text\":\""+MiniJSON.toJSONString(oldVal)+"\"}");
+				sess.sendGMCPEvent("Siplet.Input", "{\"title\":\""+MiniJSON.toJSONString(fieldDisp)+"\",\"text\":\""+MiniJSON.toJSONString(oldVal)+"\"}");
 				sess.safeRawPrintln(showNumber+". "+fieldDisp+": '"+showVal+"'.");
 			}
 			else

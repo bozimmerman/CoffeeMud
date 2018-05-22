@@ -62,7 +62,7 @@ public class GMCP
 			return s;
 		final String cmd = s.substring(0,x);
 		final String jsonStr = s.substring(x+1).trim();
-		if(cmd.equalsIgnoreCase("ire.composer.edit"))
+		if(cmd.equalsIgnoreCase("siplet.input"))
 		{
 			try
 			{
