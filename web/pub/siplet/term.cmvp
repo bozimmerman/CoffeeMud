@@ -128,13 +128,13 @@ function connect(url,port,tries)
 	
 	function keyDown(e)
 	{
-		if(e && e.keyCode==38 && e.ctrlKey && fontSize > 6) // up
+		if(e && e.keyCode==40 && e.ctrlKey && fontSize > 6) // up
 		{
 			fontSize -= 2;
 			document.getElementById("DISPLAYSPAN").style.fontSize=fontSize;
 		}
 		else
-		if(e && e.keyCode==40 && e.ctrlKey && fontSize < 64) // down
+		if(e && e.keyCode==38 && e.ctrlKey && fontSize < 64) // down
 		{
 			fontSize += 2;
 			document.getElementById("DISPLAYSPAN").style.fontSize=fontSize;
