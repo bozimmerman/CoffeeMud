@@ -800,6 +800,113 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @return a combat damage map
 	 */
 	public Map<String, int[]> getCombatSpams();
+
+	/**
+	 * Returns the maximum amount of role playing xp that this player
+	 * can be awarded, typically over a given level.
+	 * @see PlayerStats#setMaxRolePlayXP(int)
+	 * @see PlayerStats#getRolePlayXP()
+	 * @see PlayerStats#setRolePlayXP(int)
+	 * 
+	 * @return the maximum amount of role playing xp
+	 */
+	public int getMaxRolePlayXP();
+
+	/**
+	 * Sets the maximum amount of role playing xp that this player
+	 * can be awarded, typically over a given level.
+	 * @see PlayerStats#getMaxRolePlayXP()
+	 * @see PlayerStats#getRolePlayXP()
+	 * @see PlayerStats#setRolePlayXP(int)
+	 * 
+	 * @param amt the maximum amount of role playing xp
+	 */
+	public void setMaxRolePlayXP(int amt);
+
+	/**
+	 * Returns the current amount of role playing xp that this player
+	 * has been awarded, typically over a given level.
+	 * @see PlayerStats#setMaxRolePlayXP(int)
+	 * @see PlayerStats#getMaxRolePlayXP()
+	 * @see PlayerStats#setRolePlayXP(int)
+	 * 
+	 * @return the maximum amount of role playing xp
+	 */
+	public int getRolePlayXP();
+
+	/**
+	 * Sets the amount of role playing xp that this player
+	 * has been awarded, typically over a given level.
+	 * @see PlayerStats#getMaxRolePlayXP()
+	 * @see PlayerStats#getRolePlayXP()
+	 * @see PlayerStats#setMaxRolePlayXP(int)
+	 * 
+	 * @param amt the maximum amount of role playing xp
+	 */
+	public void setRolePlayXP(int amt);
+
+
+	/**
+	 * Returns the maximum amount of deferred xp that this player
+	 * can be awarded, typically over a given level.
+	 * @see PlayerStats#setMaxXP(int)
+	 * @see PlayerStats#getXP()
+	 * @see PlayerStats#setXP(int)
+	 * 
+	 * @return the maximum amount of deferred xp
+	 */
+	public int getMaxDeferredXP();
+
+	/**
+	 * Sets the maximum amount of deferred xp that this player
+	 * can be awarded, typically over a given level.
+	 * @see PlayerStats#getMaxDeferredXP()
+	 * @see PlayerStats#getDeferredXP()
+	 * @see PlayerStats#setDeferredXP(int)
+	 * 
+	 * @param amt the maximum amount of deferred xp
+	 */
+	public void setMaxDeferredXP(int amt);
+
+	/**
+	 * Returns the current amount of deferred xp that this player
+	 * has been awarded, typically over a given level.
+	 * @see PlayerStats#setMaxDeferredXP(int)
+	 * @see PlayerStats#getMaxDeferredXP()
+	 * @see PlayerStats#setDeferredXP(int)
+	 * 
+	 * @return the maximum amount of deferred xp
+	 */
+	public int getDeferredXP();
+
+	/**
+	 * Sets the amount of deferred xp that this player
+	 * has been awarded, typically over a given level.
+	 * @see PlayerStats#getMaxDeferredXP()
+	 * @see PlayerStats#getDeferredXP()
+	 * @see PlayerStats#setMaxDeferredXP(int)
+	 * 
+	 * @param amt the maximum amount of deferred xp
+	 */
+	public void setDeferredXP(int amt);
+
+	/**
+	 * Returns the last time this player has been awarded
+	 * XP.  This is used for the guildmaster exception, where
+	 * XP is only awarded under certain conditions.
+	 * 
+	 * @return
+	 */
+	public long getLastXPAwardMillis();
+
+	/**
+	 * Sets the last time this player has been awarded
+	 * XP.  This is used for the guildmaster exception, where
+	 * XP is only awarded under certain conditions.
+	 * 
+	 * @param time the time xp was awarded in millis
+	 */
+	public void setLastXPAwardMillis(long time);
 	
 	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_DAY = 0;

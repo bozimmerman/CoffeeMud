@@ -199,6 +199,8 @@ public class CMProps extends Properties
 		RACEMIXING,
 		FORMULA_TOTALCOMBATXP,
 		FORMULA_INDCOMBATXP,
+		EXPDEFER,
+		RPAWARDS
 	}
 
 	/**
@@ -2185,6 +2187,10 @@ public class CMProps extends Properties
 		setVar(Str.STATCOSTS,getStr("STATCOSTS","<18 1, <22 2, <25 3, <99 5"));
 		setVar(Str.REMORTMASK,getStr("REMORTMASK","-LEVEL +>60"));
 		setVar(Str.REMORTRETAIN,getStr("REMORTRETAIN","SKILLSAT100"));
+		setVar(Str.EXPDEFER,getStr("EXPDEFER",""));
+		//TODO: set variables and stuff
+		setVar(Str.RPAWARDS,getStr("RPAWARDS",""));
+		//TODO: set variables and stuff
 		
 		p().poseFilter.clear();
 		p().poseFilter.addAll(CMParms.parse((getStr("POSEFILTER")).toUpperCase()));

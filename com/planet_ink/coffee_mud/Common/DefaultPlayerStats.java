@@ -66,7 +66,12 @@ public class DefaultPlayerStats implements PlayerStats
 	protected String[]		 xtraValues		= null;
 	protected String		 lastIP			= "";
 	protected long  		 lLastDateTime	= System.currentTimeMillis();
+	protected long			 lastXPDateTime	= 0;
 	protected long  		 lastUpdated	= 0;
+	protected int			 rolePlayXP		= 0;
+	protected int			 maxRolePlayXP	= Integer.MAX_VALUE;
+	protected int			 deferredXP		= 0;
+	protected int			 maxDeferredXP	= 0;
 	protected int   		 channelMask;
 	protected String		 email			= "";
 	protected String		 password		= "";
@@ -745,6 +750,8 @@ public class DefaultPlayerStats implements PlayerStats
 			+"<DATES>"+CMLib.xml().parseOutAngleBrackets(this.getLevelDateTimesStr())+"</DATES>"
 			+"<SECGRPS>"+CMLib.xml().parseOutAngleBrackets(getSetSecurityFlags(null))+"</SECGRPS>"
 			+"<AUTOINVSET>"+CMLib.xml().parseOutAngleBrackets(getStat("AUTOINVSET"))+"</AUTOINVSET>"
+			+"<XP RP="+this.rolePlayXP+" MAXRP="+this.maxRolePlayXP+" DEF="+this.deferredXP+" MAXDEF="+this.maxDeferredXP+" />"
+			+"<LASTXPMILLIS>"+this.lastXPDateTime+"</LASTXPMILLIS>"
 			+roomSet().xml()
 			+rest.toString();
 	}
@@ -1031,6 +1038,16 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		
 		setStat("AUTOINVSET",CMLib.xml().restoreAngleBrackets(xmlLib.getValFromPieces(xml,"AUTOINVSET")));
+		
+		final XMLLibrary.XMLTag xpPiece = CMLib.xml().getPieceFromPieces(xml, "XP");
+		if(xpPiece != null)
+		{
+			this.maxRolePlayXP = CMath.s_int(xpPiece.getParmValue("MAXRP"));
+			this.rolePlayXP = CMath.s_int(xpPiece.getParmValue("RP"));
+			this.maxDeferredXP = CMath.s_int(xpPiece.getParmValue("MAXDEF"));
+			this.deferredXP = CMath.s_int(xpPiece.getParmValue("DEF"));
+		}
+		this.lastXPDateTime=CMath.s_long(xmlLib.getValFromPieces(xml, "LASTXPMILLIS"));
 	}
 
 	private String getLevelDateTimesStr()
@@ -1449,6 +1466,73 @@ public class DefaultPlayerStats implements PlayerStats
 		this.bonusLanguages = bonus;
 	}
 
+	@Override
+	public int getMaxRolePlayXP()
+	{
+		return this.maxRolePlayXP;
+	}
+
+	@Override
+	public void setMaxRolePlayXP(int amt)
+	{
+		this.maxRolePlayXP = amt;
+	}
+
+	@Override
+	public int getRolePlayXP()
+	{
+		return this.rolePlayXP;
+	}
+
+	@Override
+	public void setRolePlayXP(int amt)
+	{
+		if(amt > this.getMaxRolePlayXP())
+			this.rolePlayXP = this.getMaxRolePlayXP();
+		else
+			this.rolePlayXP = amt;
+	}
+
+
+	@Override
+	public int getMaxDeferredXP()
+	{
+		return this.maxDeferredXP;
+	}
+
+	@Override
+	public void setMaxDeferredXP(int amt)
+	{
+		this.maxDeferredXP = amt;
+	}
+
+	@Override
+	public int getDeferredXP()
+	{
+		return this.deferredXP;
+	}
+
+	@Override
+	public void setDeferredXP(int amt)
+	{
+		if(amt > getMaxDeferredXP())
+			this.deferredXP = this.getMaxDeferredXP();
+		else
+			this.deferredXP = amt;
+	}
+
+	@Override
+	public long getLastXPAwardMillis()
+	{
+		return this.lastXPDateTime;
+	}
+
+	@Override
+	public void setLastXPAwardMillis(long time)
+	{
+		this.lastXPDateTime = time;
+	}
+
 	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","TITLES",
 									 "ALIAS","LASTIP","LASTDATETIME",
 									 "CHANNELMASK",
@@ -1458,7 +1542,10 @@ public class DefaultPlayerStats implements PlayerStats
 									 "ACCTEXPIRATION","INTRODUCTIONS","PAGEBREAK",
 									 "SAVEDPOSE","THEME", "LEGLEVELS","BONUSCOMMON",
 									 "BONUSCRAFT","BONUSNONCRAFT","BONUSLANGS",
-									 "BONUSCHARSTATS","AUTOINVSET"};
+									 "BONUSCHARSTATS","AUTOINVSET",
+									 "MAXRPXP","CURRRPXP",
+									 "MAXDEFXP","CURRDEFXP",
+									 "LASTXPAWARD"};
 
 	@Override
 	public String getStat(String code)
@@ -1525,6 +1612,16 @@ public class DefaultPlayerStats implements PlayerStats
 			return "" + bonusCharStatPt;
 		case 29:
 			return CMParms.combineWith(autoInvokeSet, ',');
+		case 30:
+			return ""+this.maxRolePlayXP;
+		case 31:
+			return ""+this.rolePlayXP;
+		case 32:
+			return ""+this.maxDeferredXP;
+		case 33:
+			return ""+this.deferredXP;
+		case 34:
+			return ""+this.lastXPDateTime;
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -1631,6 +1728,21 @@ public class DefaultPlayerStats implements PlayerStats
 			break;
 		case 29:
 			autoInvokeSet = new XTreeSet<String>(CMParms.parseAny(val,',',true));
+			break;
+		case 30:
+			this.maxRolePlayXP = CMath.s_parseIntExpression(val);
+			break;
+		case 31:
+			this.setRolePlayXP(CMath.s_parseIntExpression(val));
+			break;
+		case 32:
+			this.maxDeferredXP = CMath.s_parseIntExpression(val);
+			break;
+		case 33:
+			this.setDeferredXP(CMath.s_parseIntExpression(val));
+			break;
+		case 34:
+			this.lastXPDateTime = CMath.s_parseLongExpression(val);
 			break;
 		default:
 			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);

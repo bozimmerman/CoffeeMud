@@ -329,6 +329,8 @@ public class StdMOB implements MOB
 	@Override
 	public void setExperience(int newVal)
 	{
+		if((newVal > experience) && (this.playerStats()!=null))
+			this.playerStats().setLastXPAwardMillis(System.currentTimeMillis());
 		experience = newVal;
 	}
 
