@@ -1120,6 +1120,33 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		return null;
 	}
 
+	@Override
+	public List<AbilityMapping> getQualifyingMappings(boolean checkAll, String abilityID)
+	{
+		final List<AbilityMapping> maps=new Vector<AbilityMapping>();
+		for(final String ID : completeAbleMap.keySet())
+		{
+			if((!ID.equals("All"))||(checkAll))
+			{
+				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(ID);
+				if(ableMap.containsKey(abilityID))
+				{
+					final AbilityMapping map=ableMap.get(abilityID);
+					final int qualLevel = map.qualLevel();
+					final CharClass C=CMClass.getCharClass(ID);
+					if((C!=null)&&(C.getLevelCap()>=0))
+					{
+						if(qualLevel<=C.getLevelCap())
+							maps.add(map);
+					}
+					else
+						maps.add(map);
+				}
+			}
+		}
+		return maps;
+	}
+
 	protected List<String> getOrSet(String errStr, String abilityID)
 	{
 		Ability preA=null;
@@ -1402,6 +1429,7 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		return null;
 	}
 
+	@Override
 	public final List<String> getCurrentlyQualifyingIDs(final MOB studentM, final String AID)
 	{
 		final List<String> ids=new LinkedList<String>();
@@ -1543,6 +1571,83 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		if(theLevel<0)
 			return getQualifyingLevel(studentM.charStats().getCurrentClass().ID(),true,A.ID());
 		return theLevel;
+	}
+
+	@Override
+	public String qualifyingID(MOB studentM, Ability A)
+	{
+		if(studentM==null)
+			return null;
+		String theObj = null;
+		int theLevel=-1;
+		int greatestDiff=-1;
+		final AbilityMapping personalMap = getPersonalMapping(studentM, A.ID());
+		if((personalMap != null)&&(personalMap.qualLevel() <= studentM.phyStats().level()))
+		{
+			theObj = studentM.Name();
+			theLevel = personalMap.qualLevel();
+			greatestDiff = studentM.phyStats().level() - personalMap.qualLevel();
+		}
+		for(int c=studentM.charStats().numClasses()-1;c>=0;c--)
+		{
+			final CharClass C=studentM.charStats().getMyClass(c);
+			final int level=getQualifyingLevel(C.ID(),true,A.ID());
+			final int classLevel=studentM.charStats().getClassLevel(C);
+			if((level>=0)
+			&&(classLevel>=level)
+			&&((classLevel-level)>greatestDiff))
+			{
+				theObj = C.ID();
+				greatestDiff=classLevel-level;
+				theLevel=level;
+			}
+		}
+		final int raceLevel=getQualifyingLevel(studentM.charStats().getMyRace().ID(),false,A.ID());
+		final int charLevel=studentM.basePhyStats().level();
+		if((raceLevel>=0)
+		&&(charLevel>=raceLevel)
+		&&((charLevel-raceLevel)>greatestDiff))
+		{
+			theObj = studentM.charStats().getMyRace().ID();
+			greatestDiff=charLevel-raceLevel;
+			theLevel=raceLevel;
+		}
+		for(final Pair<Clan,Integer> c : studentM.clans())
+		{
+			final int clanLevel=getQualifyingLevel(c.first.getGovernment().getName(),false,A.ID());
+			if((clanLevel>=0)
+			&&(c.first.getClanLevel()>=clanLevel)
+			&&((charLevel-clanLevel)>greatestDiff))
+			{
+				theObj = c.first.getGovernment().getName();
+				greatestDiff=charLevel-clanLevel;
+				theLevel=clanLevel;
+			}
+		}
+		if(theLevel<0)
+		{
+			final String ID = studentM.charStats().getCurrentClass().ID();
+			final String abilityID = A.ID();
+			if(completeAbleMap.containsKey(ID))
+			{
+				final Map<String,AbilityMapping> ableMap=completeAbleMap.get(ID);
+				if(ableMap.containsKey(abilityID))
+					return ID;
+			}
+			if(completeAbleMap.containsKey("All"))
+			{
+				final Map<String,AbilityMapping> ableMap=completeAbleMap.get("All");
+				if(ableMap.containsKey(abilityID))
+				{
+					final int qualLevel = ableMap.get(abilityID).qualLevel();
+					final CharClass C=CMClass.getCharClass(ID);
+					if((C!=null)&&(C.getLevelCap()>=0))
+						return qualLevel>C.getLevelCap()?null:"All";
+					return "All";
+				}
+			}
+		}
+		return theObj;
 	}
 
 	@Override

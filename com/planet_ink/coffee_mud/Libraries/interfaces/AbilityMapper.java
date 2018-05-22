@@ -407,6 +407,18 @@ public interface AbilityMapper extends CMLibrary
 	public AbilityMapping getQualifyingMapping(String ID, boolean checkAll, String abilityID);
 
 	/**
+	 * Returns the mappings which any class or race qualifies for the given ability ID(),
+	 * optionally checking the All-Qualifies list or not.  Returns empty list for no match.
+	 * @see AbilityMapper#qualifyingLevel(MOB, Ability)
+	 * @see AbilityMapper#qualifyingClassLevel(MOB, Ability)
+	 * @see AbilityMapper#lowestQualifyingClassRaceGovt(MOB, Ability)
+	 * @param checkAll true to check the All Qualifies list, false to skip it
+	 * @param abilityID the Ability ID() to find a map for
+	 * @return the level at which the give class or race qualifies, or null
+	 */
+	public List<AbilityMapping> getQualifyingMappings(boolean checkAll, String abilityID);
+	
+	/**
 	 * Returns the lowest class or player level at which the given mob (by race or 
 	 * class) qualified for the given ability if any. Returns -1 for no match.
 	 * This method is called when you are trying to guage how powerful the player
@@ -730,6 +742,27 @@ public interface AbilityMapper extends CMLibrary
 	 */
 	public String formatPreRequisites(DVector preReqs);
 
+	
+	/**
+	 * Returns the list of CharClass IDs, or Race IDs, or Clan Govt IDs, or
+	 * whatever by which the given student might qualify for the given
+	 * Ability ID.
+	 * 
+	 * @param studentM the student to learn the ability
+	 * @param AID the Ability ID
+	 * @return the list of objects to qualify for the ability
+	 */
+	public List<String> getCurrentlyQualifyingIDs(final MOB studentM, final String AID);
+	
+	/**
+	 * Returns the CharClass ID, Race ID, Clan Govt ID, etc or whatever by which
+	 * the student BEST qualifies for the given Ability.
+	 * @param studentM the student
+	 * @param A the Ability to qualify for
+	 * @return the ID, or null for no match at all.
+	 */
+	public String qualifyingID(MOB studentM, Ability A);
+	
 	/**
 	 * Gets the raw pre-requisites definition for the given mapping by
 	 * class, race, clan ID and ability ID(), optionally also checking the

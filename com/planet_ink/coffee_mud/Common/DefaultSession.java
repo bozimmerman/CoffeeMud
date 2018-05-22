@@ -320,7 +320,7 @@ public class DefaultSession implements Session
 						}
 						return !killFlag;
 					} 
-				}, 0, 100, 1);
+				}, 0, 1, 1);
 			}
 
 			if((sock == null)||(!sock.isConnected()))
@@ -615,7 +615,11 @@ public class DefaultSession implements Session
 
 	private void changeTelnetMode(OutputStream out, int telnetCode, boolean onOff) throws IOException
 	{
-		final byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
+		final byte[] command;
+		if(telnetCode == TELNET_TERMTYPE)
+			command=new byte[]{(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
+		else
+			command=new byte[]{(byte)TELNET_IAC,onOff?(byte)TELNET_WILL:(byte)TELNET_WONT,(byte)telnetCode};
 		rawBytesOut(out, command);
 		out.flush();
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.TELNET))
@@ -1052,7 +1056,7 @@ public class DefaultSession implements Session
 			{
 				final StringBuilder str=new StringBuilder("OUTPUT: '");
 				for(final byte c : bytes)
-					str.append(c).append(" ");
+					str.append((c & 0xff)).append(" ");
 				Log.debugOut( str.toString()+"'");
 			}
 			if(this.out!=null)
@@ -1093,7 +1097,7 @@ public class DefaultSession implements Session
 					{
 						final StringBuilder str=new StringBuilder("OUTPUT: '");
 						for(final char c : chars)
-							str.append(c);
+							str.append((c & 0xff)).append(" ");
 						Log.debugOut( str.toString()+"'");
 					}
 					out.write(chars);
@@ -1596,7 +1600,8 @@ public class DefaultSession implements Session
 						mxpSupportSet.add("-IMAGE.URL");
 					}
 					else
-					if(terminalType.toLowerCase().equals("simplemu"))
+					if(terminalType.toLowerCase().equals("simplemu")
+					||(terminalType.toLowerCase().startsWith("mudlet")))
 					{
 						if(CMParms.indexOf(this.promptSuffix, (byte)'\n')<0)
 						{
@@ -1985,7 +1990,7 @@ public class DefaultSession implements Session
 			if(read==-1)
 				throw new java.io.InterruptedIOException(".");
 			if(debugBinInput && Log.debugChannelOn())
-				debugBinInputBuf.append(read).append(" ");
+				debugBinInputBuf.append(read & 0xff).append(" ");
 			return read;
 		}
 		throw new java.io.InterruptedIOException(".");
@@ -2014,11 +2019,11 @@ public class DefaultSession implements Session
 		charWriter.write(b);
 		int maxBytes=inMaxBytesPerChar;
 		while((in!=null) 
-			&& !in.ready() 
-			&& !killFlag 
-			&& (rawin!=null) 
-			&&(rawin.available()>0) 
-			&& (--maxBytes>=0))
+		&& !in.ready() 
+		&& !killFlag 
+		&& (rawin!=null) 
+		&&(rawin.available()>0) 
+		&& (--maxBytes>=0))
 		{
 			try
 			{
@@ -2169,7 +2174,7 @@ public class DefaultSession implements Session
 		{
 		}
 	}
-	
+
 	@Override
 	public String blockingIn(long maxTime, boolean filter)
 		throws IOException
