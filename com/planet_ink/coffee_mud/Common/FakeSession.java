@@ -190,8 +190,9 @@ public class FakeSession implements Session
 	}
 
 	@Override
-	public void sendGMCPEvent(final String eventName, final String json)
+	public boolean sendGMCPEvent(final String eventName, final String json)
 	{
+		return false;
 	}
 
 	@Override

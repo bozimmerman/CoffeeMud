@@ -126,7 +126,9 @@ public class TelnetFilter
 
 	public String getEnquedJScript()
 	{
-		return ((mxpModule != null) ? mxpModule.getAnyJScript() : "") + ((mspModule != null) ? mspModule.getAnyJScript() : "");
+		return ((mxpModule != null) ? mxpModule.getAnyJScript() : "") 
+				+ ((mspModule != null) ? mspModule.getAnyJScript() : "")
+				+ ((gmcpModule != null) ? gmcpModule.getAnyJScript() : "");
 	}
 
 	public boolean MSPsupport()
@@ -705,6 +707,9 @@ public class TelnetFilter
 							setGMCPSupport(true);
 							response.writeBytes("" + IAC_ + IAC_SB + IAC_GMCP);
 							response.writeBytes("core.hello {\"client\":\"siplet\",\"version\":" + Siplet.VERSION_MAJOR + "}");
+							response.writeBytes("" + IAC_ + IAC_SE);
+							response.writeBytes("" + IAC_ + IAC_SB + IAC_GMCP);
+							response.writeBytes("core.supports.add [\"IRE.Composer.Edit\"]");
 							response.writeBytes("" + IAC_ + IAC_SE);
 						}
 					}

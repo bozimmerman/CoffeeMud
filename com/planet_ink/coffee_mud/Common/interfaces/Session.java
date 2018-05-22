@@ -931,8 +931,9 @@ public interface Session extends CMCommon, Modifiable, CMRunnable
 	 * doc.
 	 * @param eventName the event name, like comm.channel
 	 * @param json the json doc, like {"blah":"BLAH"}
+	 * @return true if GMCP was enabled for this session, false otherwise
 	 */
-	public void sendGMCPEvent(final String eventName, final String json);
+	public boolean sendGMCPEvent(final String eventName, final String json);
 
 	/**
 	 * Send this session fake input as if the user had typed it in.

@@ -106,8 +106,8 @@ public class MXP
 		addElement(new MXPElement("GAUGE", "", "ENTITY MAX CAPTION COLOR", "", MXPElement.BIT_SPECIAL | MXPElement.BIT_COMMAND));
 		addElement(new MXPElement("STAT", "", "ENTITY MAX CAPTION", "", MXPElement.BIT_SPECIAL | MXPElement.BIT_COMMAND | MXPElement.BIT_NOTSUPPORTED));
 		addElement(new MXPElement("FRAME", "", "NAME ACTION TITLE INTERNAL ALIGN LEFT TOP WIDTH HEIGHT SCROLLING FLOATING", "", MXPElement.BIT_SPECIAL | MXPElement.BIT_COMMAND | MXPElement.BIT_NOTSUPPORTED));
-		addElement(new MXPElement("DEST", "", "NAME", "", MXPElement.BIT_SPECIAL));
-		addElement(new MXPElement("DESTINATION", "", "NAME", "", MXPElement.BIT_SPECIAL));
+		addElement(new MXPElement("DEST", "", "NAME", "", MXPElement.BIT_SPECIAL | MXPElement.BIT_NOTSUPPORTED));
+		addElement(new MXPElement("DESTINATION", "", "NAME", "", MXPElement.BIT_SPECIAL | MXPElement.BIT_NOTSUPPORTED));
 		addElement(new MXPElement("RELOCATE", "", "URL PORT", "", MXPElement.BIT_SPECIAL | MXPElement.BIT_COMMAND | MXPElement.BIT_NOTSUPPORTED));
 		addElement(new MXPElement("USER", "", "", "", MXPElement.BIT_COMMAND | MXPElement.BIT_NOTSUPPORTED));
 		addElement(new MXPElement("PASSWORD", "", "", "", MXPElement.BIT_COMMAND | MXPElement.BIT_NOTSUPPORTED));

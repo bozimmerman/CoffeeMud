@@ -650,23 +650,25 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public void sendGMCPEvent(final String eventName, final String json)
+	public boolean sendGMCPEvent(final String eventName, final String json)
 	{
 		if((!getClientTelnetMode(TELNET_GMCP))||(gmcpSupports.size()==0))
-			return;
+			return false;
 		try
 		{
 			final String lowerEventName=eventName.toLowerCase().trim();
 			final int x=lowerEventName.lastIndexOf('.');
 			if((x<0)&&(!gmcpSupports.containsKey(lowerEventName)))
-				return;
-			if((!gmcpSupports.containsKey(lowerEventName)) && (!gmcpSupports.containsKey(lowerEventName.substring(0, x))))
-				return;
+				return false;
+			if((!gmcpSupports.containsKey(lowerEventName)) 
+			&& (!gmcpSupports.containsKey(lowerEventName.substring(0, x))))
+				return false;
 			if(CMSecurity.isDebugging(DbgFlag.TELNET))
 				Log.debugOut("GMCP Sent: "+(lowerEventName+" "+json));
 			rawBytesOut(rawout,TELNETBYTES_GMCP_HEAD);
 			rawBytesOut(rawout,(lowerEventName+" "+json).getBytes());
 			rawBytesOut(rawout,TELNETBYTES_END_SB);
+			return true;
 		}
 		catch(final IOException e)
 		{
@@ -676,6 +678,7 @@ public class DefaultSession implements Session
 		{
 			Log.errOut(e);
 		}
+		return false;
 	}
 
 	// this is stupid, but a printwriter can not be cast as an outputstream, so this dup was necessary

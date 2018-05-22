@@ -299,7 +299,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						 String oldVal,
 						 int showNumber,
 						 int showFlag,
-						 String FieldDisp,
+						 String fieldDisp,
 						 boolean emptyOK,
 						 boolean rawPrint,
 						 int maxChars,
@@ -318,18 +318,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			showVal=showVal.substring(0,maxChars)+"...";
 		if(rawPrint)
 		{
-			/*if(((showFlag==showNumber)||(showFlag<=-999))&&(sess.isAllowedMxp("DESTINATION")))
+			if((showFlag==showNumber)||(showFlag<=-999))
 			{
-				sess.print("^<DEST NAME=INPUT^>");
-				sess.safeRawPrintln(showNumber+". "+FieldDisp+": '"+showVal+"'.");
-				sess.print("^<DEST^>");
+				sess.sendGMCPEvent("IRE.Composer.Edit", "{\"title\":\""+MiniJSON.toJSONString(fieldDisp)+"\",\"text\":\""+MiniJSON.toJSONString(oldVal)+"\"}");
+				sess.safeRawPrintln(showNumber+". "+fieldDisp+": '"+showVal+"'.");
 			}
 			else
-			*/
-				sess.safeRawPrintln(showNumber+". "+FieldDisp+": '"+showVal+"'.");
+				sess.safeRawPrintln(showNumber+". "+fieldDisp+": '"+showVal+"'.");
 		}
 		else
-			mob.tell(showNumber+". "+FieldDisp+": '"+showVal+"'.");
+			mob.tell(showNumber+". "+fieldDisp+": '"+showVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;
 		String newName="?";

@@ -30,6 +30,8 @@ import com.planet_ink.siplet.support.MiniJSON.MJSONException;
  */
 public class GMCP
 {
+	private final StringBuffer					jscriptBuffer	= new StringBuffer("");
+	
 	public GMCP()
 	{
 		super();
@@ -40,9 +42,44 @@ public class GMCP
 		return 0;
 	}
 
+	public String getAnyJScript()
+	{
+		synchronized (jscriptBuffer)
+		{
+			if (jscriptBuffer.length() == 0)
+				return "";
+			final String s = jscriptBuffer.toString();
+			jscriptBuffer.setLength(0);
+			return s;
+		}
+	}
+
 	public String gmcpReceive(byte[] buffer)
 	{
-		return new String(buffer, Charset.forName("US-ASCII"));
+		final String s=new String(buffer, Charset.forName("US-ASCII"));
+		int x=s.indexOf(' ');
+		if(x<0)
+			return s;
+		final String cmd = s.substring(0,x);
+		final String jsonStr = s.substring(x+1).trim();
+		if(cmd.equalsIgnoreCase("ire.composer.edit"))
+		{
+			try
+			{
+				MiniJSON.JSONObject obj=new MiniJSON().parseObject(jsonStr);
+				String title = obj.getCheckedString("title");
+				String data = obj.getCheckedString("text");
+				synchronized (jscriptBuffer)
+				{
+					jscriptBuffer.append("retarget('" + MiniJSON.toJSONString(title) + "','"+MiniJSON.toJSONString(data)+"');");
+				}
+				return "";
+			}
+			catch (MJSONException e)
+			{
+			}
+		}
+		return s;
 	}
 
 	public byte[] convertStringToGmcp(String data) throws MJSONException

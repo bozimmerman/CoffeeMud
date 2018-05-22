@@ -26,12 +26,17 @@ function connectChecker()
 	connCheck = setTimeout(connectChecker,10001);
 }
 
-function retarget(name)
+function retarget(name, text)
 {
-	if((name==null)||(name.trim().length==0))
-		target=null;
+	if((!text)||(text == undefined))
+	{
+		if((name==null)||(name.trim().length==0))
+			target=null;
+		else
+			target=name.toUpperCase().trim();
+	}
 	else
-		target=name.toUpperCase().trim();
+		top.entry.document.ENTER.TEXT.value=text;
 }
 
 function createGauge(entity,caption,color,value,max)

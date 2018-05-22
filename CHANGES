@@ -28,6 +28,7 @@
   27. Light Sensitivity (Drow racial trait) is now less onerous.
   28. Siplet has better drag-move ability, resize ability from bottom bar, and font 
       resize with ctrl-uparrow and ctrl-downarrow
+  29. Siplet will now auto-populate the text area when editing room descriptions.
 
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
