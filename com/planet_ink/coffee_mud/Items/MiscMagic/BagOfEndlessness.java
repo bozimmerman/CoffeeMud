@@ -51,9 +51,10 @@ public class BagOfEndlessness extends BagOfHolding implements ArchonOnly
 		setDescription("A nice silk sack to put your things in.");
 		secretIdentity="The Bag of Endless Stuff";
 		basePhyStats().setLevel(1);
+		basePhyStats().setWeight(1);
 		capacity=Integer.MAX_VALUE-1000;
 
-		baseGoldValue=10000;
+		baseGoldValue=1000;
 		basePhyStats().setDisposition(basePhyStats().disposition()|PhyStats.IS_BONUS);
 		recoverPhyStats();
 	}
