@@ -51,6 +51,41 @@ public class Dragonbreath extends StdAbility
 	}
 
 	@Override
+	public String displayText()
+	{
+		String prefix;
+		if((affected instanceof MOB)&&(!CMLib.flags().canBreathe((MOB)affected)))
+			prefix="Choking on ";
+		else
+			prefix="Bothered by ";
+		switch(getBreathColor(null))
+		{
+		case 'f': // fire
+			return L("("+prefix+"fumes)");
+		case 'l': // lightning
+			return L("("+prefix+"choking)");
+		case 'c':// cold
+			return L("("+prefix+"ice)");
+		case 'a': // acid
+			return L("("+prefix+"acid)");
+		case 'o': // ooze
+			return L("("+prefix+"ooze)");
+		case 's': // slime
+			return L("("+prefix+"slime)");
+		case 'g':// gas
+			return L("("+prefix+"gas)");
+		case 'u':// undead
+			return L("("+prefix+"evil)");
+		case 'p': // pebbles
+			return L("("+prefix+"rocks)");
+		case 'd': // dust
+			return L("("+prefix+"dust)");
+		default:
+			return L("("+prefix+"fumes)");
+		}
+	}
+
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_MALICIOUS;
