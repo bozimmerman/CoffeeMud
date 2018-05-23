@@ -1416,6 +1416,7 @@ public class PlanarAbility extends StdAbility
 			if(h==null)
 				return false;
 
+			this.lastCasting=System.currentTimeMillis();
 			Ability A=this.beneficialAffect(mob, planeArea, asLevel, 0);
 			A.setMiscText(planeName);
 			
