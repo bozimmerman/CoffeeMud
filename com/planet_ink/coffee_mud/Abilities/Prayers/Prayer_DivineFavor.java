@@ -110,8 +110,10 @@ public class Prayer_DivineFavor extends Prayer
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 			unInvoke();
 		if((msg.source()==affected)
-		&&(msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
-		&&(msg.source().getWorshipCharID().length()>0))
+		&&(msg.source().getWorshipCharID().length()>0)
+		&&((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+			||(msg.sourceMinor()==CMMsg.TYP_RPXPCHANGE))
+		)
 		{
 			if(msg.value()<0)
 				msg.setValue((int)Math.round(CMath.mul(msg.value(),0.9)));

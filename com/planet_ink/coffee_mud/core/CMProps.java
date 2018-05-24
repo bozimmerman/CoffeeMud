@@ -200,6 +200,9 @@ public class CMProps extends Properties
 		FORMULA_TOTALCOMBATXP,
 		FORMULA_INDCOMBATXP,
 		EXPDEFER,
+		EXPDEFER_COMMAND,
+		EXPDEFER_ARGUMENT,
+		EXPDEFER_MASK,
 		RPAWARDS
 	}
 
@@ -297,7 +300,18 @@ public class CMProps extends Properties
 		THIRST_FULL,
 		THIRST_GAIN_PCT,
 		THIRST_LOSS_PCT,
-		MOB_HP_BASE
+		MOB_HP_BASE,
+		EXPDEFER_PCT,
+		EXPDEFER_SECS,
+		RP_AWARD_PCT,
+		RP_INTRODUCE_PC,
+		RP_INTRODUCE_NPC,
+		RP_SAY_PC,
+		RP_SAY_NPC,
+		RP_SOCIAL_PC,
+		RP_SOCIAL_NPC,
+		RP_SOCIAL_OTH,
+		RP_GOAFK
 		;
 		
 		public static final int	EXVIEW_DEFAULT		= 0;
@@ -2188,8 +2202,9 @@ public class CMProps extends Properties
 		setVar(Str.REMORTMASK,getStr("REMORTMASK","-LEVEL +>60"));
 		setVar(Str.REMORTRETAIN,getStr("REMORTRETAIN","SKILLSAT100"));
 		setVar(Str.EXPDEFER,getStr("EXPDEFER",""));
+		parseXPDeferDetails(getVar(Str.EXPDEFER));
 		setVar(Str.RPAWARDS,getStr("RPAWARDS",""));
-		//TODO: set variables and stuff
+		parseRPAwards(getVar(Str.RPAWARDS));
 		
 		p().poseFilter.clear();
 		p().poseFilter.addAll(CMParms.parse((getStr("POSEFILTER")).toUpperCase()));
@@ -2903,6 +2918,134 @@ public class CMProps extends Properties
 			name = O.getClass().getSimpleName();
 		}
 		return getStatCodeExtensions(O.getClass(), name);
+	}
+	
+	private static void parseRPAwards(final String ln)
+	{
+		CMProps.setIntVar(Int.RP_AWARD_PCT, 0);
+		CMProps.setIntVar(Int.RP_INTRODUCE_PC, 0);
+		CMProps.setIntVar(Int.RP_INTRODUCE_NPC, 0);
+		CMProps.setIntVar(Int.RP_SAY_PC, 0);
+		CMProps.setIntVar(Int.RP_SAY_NPC, 0);
+		CMProps.setIntVar(Int.RP_SOCIAL_PC, 0);
+		CMProps.setIntVar(Int.RP_SOCIAL_NPC, 0);
+		CMProps.setIntVar(Int.RP_SOCIAL_OTH, 0);
+		CMProps.setIntVar(Int.RP_GOAFK, 0);
+		if(ln.trim().length()==0)
+			return;
+		final List<String> awards=CMParms.parseCommas(ln.trim(), true);
+		if(awards.size()==0)
+			return;
+		String s=awards.get(0);
+		if((!CMath.isNumber(s)) && (!CMath.isPct(s)))
+		{
+			Log.errOut("Malformed award definition (no or bad pct): "+ln);
+			return;
+		}
+		double awardXPPct;
+		if(CMath.isPct(s))
+			awardXPPct=CMath.s_pct(s);
+		else
+		{
+			awardXPPct=CMath.s_double(s);
+			if(awardXPPct>=1.0)
+				awardXPPct=awardXPPct/100.0;
+		}
+		CMProps.setIntVar(Int.RP_AWARD_PCT, (int)Math.round(awardXPPct*100.0));
+		for(int a=1;a<awards.size();a++)
+		{
+			s=awards.get(a).toUpperCase().trim().replace('-','_');
+			int x=s.indexOf(' ');
+			if(x<0)
+				Log.errOut("Incomplete award definition ("+s+")");
+			else
+			if(!CMath.isInteger(s.substring(x+1).trim()))
+				Log.errOut("Malformed award amount definition ("+s+")");
+			else
+			{
+				final Int code=(Int)CMath.s_valueOf(Int.class, "RP_"+s.substring(0,x));
+				if(code == null)
+					Log.errOut("Malformed award type definition ("+s+")");
+				else
+					CMProps.setIntVar(code, CMath.s_int(s.substring(x+1).trim()));
+			}
+		}
+	}
+	
+	private static void parseXPDeferDetails(String ln)
+	{
+		setVar(Str.EXPDEFER_ARGUMENT, "");
+		setVar(Str.EXPDEFER_COMMAND, "");
+		setVar(Str.EXPDEFER_MASK, "");
+		CMProps.setIntVar(Int.EXPDEFER_PCT, 0);
+		CMProps.setIntVar(Int.EXPDEFER_SECS, 0);
+		ln=ln.trim();
+		if(ln.length()==0)
+			return;
+		int x=ln.indexOf(' ');
+		if(x<0)
+			x=ln.length();
+		String s=ln.substring(0,x).trim();
+		if(!CMath.isNumber(s))
+		{
+			Log.errOut("Malformed defer definition (no or bad hours): "+ln);
+			return;
+		}
+		if(x<0)
+			return;
+		ln=ln.substring(x+1).trim();
+		final long deferXPMillis=CMProps.getMillisPerMudHour() * CMath.s_int(s);
+		CMProps.setIntVar(Int.EXPDEFER_SECS, (int)(deferXPMillis/1000L));
+		x=ln.indexOf(' ');
+		if(x<0)
+			x=ln.length();
+		s=ln.substring(0,x).trim();
+		if((!CMath.isNumber(s)) && (!CMath.isPct(s)))
+		{
+			Log.errOut("Malformed defer definition (no or bad pct): "+ln);
+			return;
+		}
+		double deferXPPct;
+		if(CMath.isPct(s))
+			deferXPPct=CMath.s_pct(s);
+		else
+		{
+			deferXPPct=CMath.s_double(s);
+			if(deferXPPct>=1.0)
+				deferXPPct=deferXPPct/100.0;
+		}
+		CMProps.setIntVar(Int.EXPDEFER_PCT, (int)Math.round(deferXPPct*100.0));
+		if(x<0)
+			return;
+		ln=ln.substring(x+1).trim();
+		if(!ln.startsWith("("))
+		{
+			x=ln.indexOf('(');
+			if(x<0)
+				return;
+			final String deferXPCommand=ln.substring(0,x).trim();
+			CMProps.setVar(Str.EXPDEFER_COMMAND, deferXPCommand.toUpperCase());
+			ln=ln.substring(x);
+		}
+		if(!ln.startsWith("("))
+		{
+			Log.errOut("Malformed defer definition (no or bad command arg() ): "+ln);
+			return;
+		}
+		x=ln.indexOf(')');
+		if(x<0)
+		{
+			Log.errOut("Malformed defer definition (missing close ) in command arg ): "+ln);
+			return;
+		}
+		String deferXPArgument=ln.substring(1,x).trim();
+		CMProps.setVar(Str.EXPDEFER_COMMAND, deferXPArgument.toUpperCase());
+		ln=ln.substring(x+1).trim();
+		if(ln.length()>0)
+		{
+			final String deferXPMask=ln;
+			CMProps.setVar(Str.EXPDEFER_MASK, deferXPMask.toUpperCase());
+		}
 	}
 
 	/**

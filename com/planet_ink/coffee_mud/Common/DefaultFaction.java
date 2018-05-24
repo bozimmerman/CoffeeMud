@@ -1298,7 +1298,8 @@ public class DefaultFaction implements Faction, MsgListener
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)  // Experience is being altered
+		if(((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)  // Experience is being altered
+			||(msg.sourceMinor()==CMMsg.TYP_RPXPCHANGE))
 		&&(msg.target() instanceof MOB) 		  // because a mob died
 		&&(myHost==msg.source())	  // this Faction is on the mob that killed them
 		&&(!experienceFlag.equals("NONE"))

@@ -170,7 +170,8 @@ public class Prop_ModExperience extends Property
 	{
 		if(operation == null)
 			setMiscText(text());
-		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+		if(((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+			||(msg.sourceMinor()==CMMsg.TYP_RPXPCHANGE))
 		&&(operation != null)
 		&&((((msg.target()==affected)||(selfXP && (msg.source()==affected)))
 				&&(affected instanceof MOB))

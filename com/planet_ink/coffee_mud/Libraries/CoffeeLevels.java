@@ -42,12 +42,6 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return "CoffeeLevels";
 	}
 
-	protected String			 deferXPCommand		= "";
-	protected String			 deferXPArgument	= "";
-	protected String			 deferXPMask		= "";
-	protected double			 deferXPPct			= 0.0;
-	protected long			 	 deferXPMillis		= 0;
-	
 	public int getManaBonusNextLevel(MOB mob)
 	{
 		final CharClass charClass = mob.baseCharStats().getCurrentClass();
@@ -398,18 +392,27 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			final String mobName=mob.Name();
 			Log.killsOut("-EXP",room+":"+mobName+":"+amount);
 		}
-		if((mob.getLiegeID().length()>0)&&(amount>2)&&(!mob.isMonster()))
+		amount = loseLeigeExperience(mob, amount);
+		amount = loseClanExperience(mob, amount);
+		mob.setExperience(mob.getExperience()-amount);
+		checkLevelDown(mob);
+	}
+
+	protected void checkLevelDown(final MOB mob)
+	{
+		int neededLowest=getLevelExperience(mob.basePhyStats().level()-2);
+		if((mob.getExperience()<neededLowest)
+		&&(mob.basePhyStats().level()>1))
 		{
-			final MOB sire=CMLib.players().getPlayer(mob.getLiegeID());
-			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
-			{
-				final int sireShare=(int)Math.round(CMath.div(amount,10.0));
-				amount-=sireShare;
-				if(postExperience(sire,null,"",-sireShare,true))
-					sire.tell(L("^N^!You lose ^H@x1^N^! experience points from @x2.^N",""+sireShare,mob.Name()));
-			}
+			unLevel(mob);
+			neededLowest=getLevelExperience(mob.basePhyStats().level()-2);
 		}
-		if((amount>2)&&(!mob.isMonster()))
+	}
+	
+	protected int loseClanExperience(final MOB mob, int amount)
+	{
+		if((amount>2)
+		&&(!mob.isMonster()))
 		{
 			for(final Pair<Clan,Integer> p : mob.clans())
 			{
@@ -426,14 +429,166 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				}
 			}
 		}
-		mob.setExperience(mob.getExperience()-amount);
-		int neededLowest=getLevelExperience(mob.basePhyStats().level()-2);
-		if((mob.getExperience()<neededLowest)
-		&&(mob.basePhyStats().level()>1))
+		return amount;
+	}
+	
+	protected int loseLeigeExperience(final MOB mob, final int amount)
+	{
+		if((mob.getLiegeID().length()>0)
+		&&(amount>2)
+		&&(!mob.isMonster()))
 		{
-			unLevel(mob);
-			neededLowest=getLevelExperience(mob.basePhyStats().level()-2);
+			final MOB sire=CMLib.players().getPlayer(mob.getLiegeID());
+			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
+			{
+				final int sireShare=(int)Math.round(CMath.div(amount,10.0));
+				if(postExperience(sire,null,"",-sireShare,true))
+					sire.tell(L("^N^!You lose ^H@x1^N^! experience points from @x2.^N",""+sireShare,mob.Name()));
+				return amount - sireShare;
+			}
 		}
+		return amount;
+	}
+
+	@Override
+	public void loseRPExperience(MOB mob, int amount)
+	{
+		if((mob==null)||(mob.soulMate()!=null))
+			return;
+		amount = loseLeigeExperience(mob, amount);
+		amount = loseClanExperience(mob, amount);
+		mob.setExperience(mob.getExperience()-amount);
+		checkLevelDown(mob);
+	}
+
+	protected int gainClanExperience(final MOB mob, int amount)
+	{
+		if(mob.phyStats().level()>=CMProps.getIntVar(CMProps.Int.MINCLANLEVEL))
+		{
+			for(final Pair<Clan,Integer> p : mob.clans())
+			{
+				if(amount>2)
+					amount=p.first.applyExpMods(amount);
+			}
+		}
+		return amount;
+	}
+
+	protected int gainLeigeExperience(final MOB mob, final int amount, final boolean quiet)
+	{
+		if((mob.getLiegeID().length()>0)&&(amount>2))
+		{
+			final MOB sire=CMLib.players().getLoadPlayer(mob.getLiegeID());
+			if(sire!=null)
+			{
+				int sireShare=(int)Math.round(CMath.div(amount,10.0));
+				if(sireShare<=0)
+					sireShare=1;
+				CMLib.leveler().postExperience(sire,null," from "+mob.name(sire),sireShare,quiet);
+				return amount-sireShare;
+			}
+		}
+		return amount;
+	}
+
+	protected void checkLevelGain(final MOB mob)
+	{
+		if((mob.getExperience()>=mob.getExpNextLevel())
+		&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
+			level(mob);
+	}
+
+	@Override
+	public void gainExperience(MOB mob, MOB victim, String homageMessage, int amount, boolean quiet)
+	{
+		if(mob==null)
+			return;
+		if((Log.combatChannelOn())
+		&&((mob.location()!=null)
+			||((victim!=null)&&(victim.location()!=null))))
+		{
+			final String room=CMLib.map().getExtendedRoomID((mob.location()!=null)?mob.location():(victim==null)?null:victim.location());
+			final String mobName=mob.Name();
+			final String vicName=(victim!=null)?victim.Name():"null";
+			Log.killsOut("+EXP",room+":"+mobName+":"+vicName+":"+amount+":"+homageMessage);
+		}
+
+		amount=adjustedExperience(mob,victim,amount);
+
+		amount=gainClanExperience(mob, amount);
+		
+		amount=gainLeigeExperience(mob, amount, quiet);
+
+		CMLib.players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
+		
+		final PlayerStats pStats=mob.playerStats();
+		if((pStats!=null)&&(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
+		{
+			if(pStats.getMaxDeferredXP()==0)
+				ensureMaxDeferredXP(mob, pStats);
+			if(pStats.getDeferredXP() < pStats.getMaxDeferredXP())
+			{
+				pStats.setDeferredXP(pStats.getDeferredXP() + amount);
+				if(!quiet)
+				{
+					if(amount>1)
+						mob.tell(L("^N^!You've earned ^H@x1^N^! deferred experience points@x2.^N",""+amount,homageMessage));
+					else
+					if(amount>0)
+						mob.tell(L("^N^!You've earned ^H@x1^N^! deferred experience point@x2.^N",""+amount,homageMessage));
+				}
+			}
+			return;
+		}
+
+		mob.setExperience(mob.getExperience()+amount);
+		if(homageMessage==null)
+			homageMessage="";
+		if(!quiet)
+		{
+			if(amount>1)
+				mob.tell(L("^N^!You gain ^H@x1^N^! experience points@x2.^N",""+amount,homageMessage));
+			else
+			if(amount>0)
+				mob.tell(L("^N^!You gain ^H@x1^N^! experience point@x2.^N",""+amount,homageMessage));
+		}
+
+		checkLevelGain(mob);
+	}
+
+	@Override
+	public void gainRPExperience(MOB mob, MOB target, String homageMessage, int amount, boolean quiet)
+	{
+		if(mob==null)
+			return;
+
+		amount=adjustedExperience(mob, target, amount);
+
+		amount=gainClanExperience(mob, amount);
+
+		final PlayerStats pStats=mob.playerStats();
+		if((pStats!=null)&&(CMProps.getIntVar(CMProps.Int.RP_AWARD_PCT)>0))
+		{
+			if(pStats.getMaxRolePlayXP()==0)
+				ensureMaxRPXP(mob, pStats);
+			if(pStats.getRolePlayXP() < pStats.getMaxRolePlayXP())
+			{
+				pStats.setRolePlayXP(pStats.getRolePlayXP() + amount);
+				if(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0)
+					return;
+			}
+			else
+				return;
+		}
+		
+		CMLib.players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
+		mob.setExperience(mob.getExperience()+amount);
+		if(homageMessage==null)
+			homageMessage="";
+		if(!quiet)
+			mob.tell(L("^N^!You gain ^H@x1^N^! roleplay XP@x2.^N",""+amount,homageMessage));
+
+		checkLevelGain(mob);
 	}
 
 	@Override
@@ -462,6 +617,32 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return true;
 	}
 
+	@Override
+	public boolean postRPExperience(MOB mob, MOB target, String homage, int amount, boolean quiet)
+	{
+		if((mob==null)
+		||(CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
+		||mob.charStats().getCurrentClass().expless()
+		||mob.charStats().getMyRace().expless())
+			return false;
+		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_RPXPCHANGE,null,CMMsg.NO_EFFECT,homage,CMMsg.NO_EFFECT,""+quiet);
+		msg.setValue(amount);
+		final Room R=mob.location();
+		if(R!=null)
+		{
+			if(R.okMessage(mob,msg))
+				R.send(mob,msg);
+			else
+				return false;
+		}
+		else
+		if(amount>=0)
+			gainRPExperience(mob,target,homage,amount,quiet);
+		else
+			loseRPExperience(mob,-amount);
+		return true;
+	}
+	
 	@Override
 	public int getLevelExperience(int level)
 	{
@@ -649,11 +830,37 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		curClass.level(mob,newAbilityIDs);
 		mob.charStats().getMyRace().level(mob,newAbilityIDs);
-		
+		final PlayerStats pStats=mob.playerStats();
+		if(pStats!=null)
+		{
+			if(CMProps.getIntVar(CMProps.Int.RP_AWARD_PCT)>0)
+			{
+				if(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)==0)
+					pStats.setRolePlayXP(0);
+				ensureMaxRPXP(mob, pStats);
+			}
+			if(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0)
+				ensureMaxDeferredXP(mob, pStats);
+		}
+
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.LEVELSGAINED, 1, mob);
 		CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CLASSLEVELSGAINED, 1, mob);
 	}
 
+	protected void ensureMaxDeferredXP(final MOB mob, final PlayerStats pStats)
+	{
+		final double pct=CMath.div(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT), 100.0);
+		final int maxDeferXP=(int)Math.round(pct * mob.getExpNeededLevel());
+		pStats.setMaxDeferredXP(maxDeferXP);
+	}
+	
+	protected void ensureMaxRPXP(final MOB mob, final PlayerStats pStats)
+	{
+		final double pct=CMath.div(CMProps.getIntVar(CMProps.Int.RP_AWARD_PCT), 100.0);
+		final int maxRpXP=(int)Math.round(pct * mob.getExpNeededLevel());
+		pStats.setMaxRolePlayXP(maxRpXP);
+	}
+	
 	protected boolean fixMobStatsIfNecessary(MOB mob, int direction)
 	{
 		if((mob.playerStats()==null)&&(mob.baseCharStats().getCurrentClass().name().equals("mob"))) // mob leveling
@@ -724,63 +931,6 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 
 	@Override
-	public void gainExperience(MOB mob, MOB victim, String homageMessage, int amount, boolean quiet)
-	{
-		if(mob==null)
-			return;
-		if((Log.combatChannelOn())
-		&&((mob.location()!=null)
-			||((victim!=null)&&(victim.location()!=null))))
-		{
-			final String room=CMLib.map().getExtendedRoomID((mob.location()!=null)?mob.location():(victim==null)?null:victim.location());
-			final String mobName=mob.Name();
-			final String vicName=(victim!=null)?victim.Name():"null";
-			Log.killsOut("+EXP",room+":"+mobName+":"+vicName+":"+amount+":"+homageMessage);
-		}
-
-		amount=adjustedExperience(mob,victim,amount);
-
-		if(mob.phyStats().level()>=CMProps.getIntVar(CMProps.Int.MINCLANLEVEL))
-		{
-			for(final Pair<Clan,Integer> p : mob.clans())
-			{
-				if(amount>2)
-					amount=p.first.applyExpMods(amount);
-			}
-		}
-
-		if((mob.getLiegeID().length()>0)&&(amount>2))
-		{
-			final MOB sire=CMLib.players().getLoadPlayer(mob.getLiegeID());
-			if(sire!=null)
-			{
-				int sireShare=(int)Math.round(CMath.div(amount,10.0));
-				if(sireShare<=0)
-					sireShare=1;
-				amount-=sireShare;
-				CMLib.leveler().postExperience(sire,null," from "+mob.name(sire),sireShare,quiet);
-			}
-		}
-
-		CMLib.players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
-		mob.setExperience(mob.getExperience()+amount);
-		if(homageMessage==null)
-			homageMessage="";
-		if(!quiet)
-		{
-			if(amount>1)
-				mob.tell(L("^N^!You gain ^H@x1^N^! experience points@x2.^N",""+amount,homageMessage));
-			else
-			if(amount>0)
-				mob.tell(L("^N^!You gain ^H@x1^N^! experience point@x2.^N",""+amount,homageMessage));
-		}
-
-		if((mob.getExperience()>=mob.getExpNextLevel())
-		&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
-			level(mob);
-	}
-
-	@Override
 	public void handleExperienceChange(CMMsg msg)
 	{
 		final MOB mob=msg.source();
@@ -802,6 +952,31 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			}
 			else
 				loseExperience(mob,-msg.value());
+		}
+	}
+	
+	@Override
+	public void handleRPExperienceChange(CMMsg msg)
+	{
+		final MOB mob=msg.source();
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE)
+		&&!mob.charStats().getCurrentClass().expless()
+		&&!mob.charStats().getMyRace().expless())
+		{
+			MOB expFromTarget=null;
+			if(msg.target() instanceof MOB)
+				expFromTarget=(MOB)msg.target();
+
+			if(msg.value()>=0)
+			{
+				gainRPExperience(mob,
+							   expFromTarget,
+							   msg.targetMessage(),
+							   msg.value(),
+							   CMath.s_bool(msg.othersMessage()));
+			}
+			else
+				loseRPExperience(mob,-msg.value());
 		}
 	}
 	
@@ -831,154 +1006,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 		return posted;
 	}
-	
-	/**
-	 * Returns the command word that possibly triggers
-	 * the gaining of XP in a deferred XP system.
-	 * @see CoffeeLevels#getDeferXPArgument()
-	 * @see CoffeeLevels#getDeferXPPct()
-	 * @see CoffeeLevels#getDeferXPMask()
-	 * @see CoffeeLevels#getDeferXPMillis()
-	 * 
-	 * @return the command to trigger deferred xp
-	 */
-	public String getDeferXPCommand()
-	{
-		return deferXPCommand;
-	}
-
-	/**
-	 * Returns the argument for the command word that possibly
-	 * triggers the gaining of XP in deferred XP system.  This
-	 * may be empty, or contain a mask * character.
-	 * @see CoffeeLevels#getDeferXPCommand()
-	 * @see CoffeeLevels#getDeferXPPct()
-	 * @see CoffeeLevels#getDeferXPMask()
-	 * @see CoffeeLevels#getDeferXPMillis()
-	 * 
-	 * @return the argument for the command word
-	 */
-	public String getDeferXPArgument()
-	{
-		return deferXPArgument;
-	}
-	
-	/**
-	 * Returns the maximum percent of xp to next level which may be
-	 * deferred using the XP defer system.
-	 * @see CoffeeLevels#getDeferXPCommand()
-	 * @see CoffeeLevels#getDeferXPArgument()
-	 * @see CoffeeLevels#getDeferXPMillis()
-	 * @see CoffeeLevels#getDeferXPMask()
-	 * 
-	 * @return the max deferred xp
-	 */
-	public double getDeferXPPct()
-	{
-		return deferXPPct;
-	}
-
-	
-	/**
-	 * Returns the ZapperMask that must describe someone in the
-	 * room when the defer command word is used, in order for 
-	 * XP to be awarded.
-	 * @see CoffeeLevels#getDeferXPCommand()
-	 * @see CoffeeLevels#getDeferXPArgument()
-	 * @see CoffeeLevels#getDeferXPPct()
-	 * @see CoffeeLevels#getDeferXPMillis()
-	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
-	 * 
-	 * @return the zappermask
-	 */
-	public String getDeferXPMask()
-	{
-		return deferXPMask;
-	}
-	
-	/**
-	 * Returns the minimum amount of time between each awarding of
-	 * experience when the deferred xp system is used.
-	 * @see CoffeeLevels#getDeferXPCommand()
-	 * @see CoffeeLevels#getDeferXPArgument()
-	 * @see CoffeeLevels#getDeferXPPct()
-	 * @see CoffeeLevels#getDeferXPMask()
-	 * 
-	 * @return the minimum milliseconds between xp awards
-	 */
-	public long  getDeferXPMillis()
-	{
-		return deferXPMillis;
-	}
 
 	@Override
 	public void propertiesLoaded()
 	{
-		String ln=CMProps.getVar(CMProps.Str.EXPDEFER);
-		deferXPArgument="";
-		deferXPCommand="";
-		deferXPMask="";
-		deferXPMillis=0;
-		deferXPPct=0.0;
-		ln=ln.trim();
-		if(ln.length()==0)
-			return;
-		int x=ln.indexOf(' ');
-		if(x<0)
-			x=ln.length();
-		String s=ln.substring(0,x).trim();
-		if(!CMath.isNumber(s))
-		{
-			Log.errOut("Malformed defer definition (no or bad hours): "+ln);
-			return;
-		}
-		if(x<0)
-			return;
-		ln=ln.substring(x+1).trim();
-		deferXPMillis=CMProps.getMillisPerMudHour() * CMath.s_int(s);
-		x=ln.indexOf(' ');
-		if(x<0)
-			x=ln.length();
-		s=ln.substring(0,x).trim();
-		if((!CMath.isNumber(s)) && (!CMath.isPct(s)))
-		{
-			Log.errOut("Malformed defer definition (no or bad pct): "+ln);
-			return;
-		}
-		if(CMath.isPct(s))
-			deferXPPct=CMath.s_pct(s);
-		else
-		{
-			deferXPPct=CMath.s_double(s);
-			if(deferXPPct>=1.0)
-				deferXPPct=deferXPPct/100.0;
-		}
-		if(x<0)
-			return;
-		ln=ln.substring(x+1).trim();
-		if(!ln.startsWith("("))
-		{
-			x=ln.indexOf('(');
-			if(x<0)
-				return;
-			deferXPCommand=ln.substring(0,x).trim();
-			ln=ln.substring(x);
-		}
-		if(!ln.startsWith("("))
-		{
-			Log.errOut("Malformed defer definition (no or bad command arg() ): "+ln);
-			return;
-		}
-		x=ln.indexOf(')');
-		if(x<0)
-		{
-			Log.errOut("Malformed defer definition (missing close ) in command arg ): "+ln);
-			return;
-		}
-		deferXPArgument=ln.substring(1,x).trim();
-		ln=ln.substring(x+1).trim();
-		if(ln.length()>0)
-			deferXPMask=ln;
 	}
-
 }

@@ -2563,6 +2563,15 @@ public class StdMOB implements MOB
 					possWieldedItem = null;
 					possHeldItem = null;
 					break;
+				case CMMsg.TYP_RPXPCHANGE:
+					if((curState().getHunger()<1)
+					||(curState().getThirst()<1)
+					||(curState().getFatigue()>CharState.FATIGUED_MILLIS))
+					{
+						// silent
+						return false;
+					}
+					break;
 				case CMMsg.TYP_JUSTICE:
 					if ((isInCombat()) && (msg.target() instanceof Item))
 					{
@@ -3199,6 +3208,9 @@ public class StdMOB implements MOB
 					break;
 				case CMMsg.TYP_EXPCHANGE:
 					CMLib.leveler().handleExperienceChange(msg);
+					break;
+				case CMMsg.TYP_RPXPCHANGE:
+					CMLib.leveler().handleRPExperienceChange(msg);
 					break;
 				case CMMsg.TYP_FACTIONCHANGE:
 					if (msg.othersMessage() != null)

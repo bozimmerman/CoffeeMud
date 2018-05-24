@@ -104,8 +104,9 @@ public class Prayer_Maladiction extends Prayer
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
-		&&(msg.source()==affected))
+		if((msg.source()==affected)
+		&&((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
+			||(msg.sourceMinor()==CMMsg.TYP_RPXPCHANGE)))
 		{
 			if(msg.value()<0)
 				msg.setValue(msg.value()*2);
