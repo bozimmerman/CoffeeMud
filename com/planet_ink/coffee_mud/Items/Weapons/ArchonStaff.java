@@ -155,7 +155,8 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 						{
 							if((target.getExpNeededLevel()==Integer.MAX_VALUE)
 							||(target.charStats().getCurrentClass().expless())
-							||(target.charStats().getMyRace().expless()))
+							||(target.charStats().getMyRace().expless())
+							||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
 								CMLib.leveler().level(target);
 							else
 								CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
@@ -184,7 +185,8 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 						{
 							if((target.getExpNeededLevel()==Integer.MAX_VALUE)
 							||(target.charStats().getCurrentClass().expless())
-							||(target.charStats().getMyRace().expless()))
+							||(target.charStats().getMyRace().expless())
+							||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
 								CMLib.leveler().level(target);
 							else
 								CMLib.leveler().postExperience(target,null,null,target.getExpNeededLevel()+1,false);
@@ -277,7 +279,8 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					{
 						if((target.getExpNeededLevel()==Integer.MAX_VALUE)
 						||(target.charStats().getCurrentClass().expless())
-						||(target.charStats().getMyRace().expless()))
+						||(target.charStats().getMyRace().expless())
+						||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
 							CMLib.leveler().unLevel(target);
 						else
 						{

@@ -642,7 +642,8 @@ public class Remort extends StdCommand
 												{
 													if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
 													||(mob.charStats().getCurrentClass().expless())
-													||(mob.charStats().getMyRace().expless()))
+													||(mob.charStats().getMyRace().expless())
+													||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
 														CMLib.leveler().level(mob);
 													else
 														CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);

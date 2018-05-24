@@ -91,17 +91,20 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 						&&(!mob.charStats().isLevelCapped(mob.charStats().getCurrentClass()))
 						&&(!mob.charStats().getMyRace().leveless())
 						&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
-						while(mob.basePhyStats().level()<100)
 						{
-							final int oldLevel = mob.basePhyStats().level();
-							if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
-							||(mob.charStats().getCurrentClass().expless())
-							||(mob.charStats().getMyRace().expless()))
-								CMLib.leveler().level(mob);
-							else
-								CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
-							if(mob.basePhyStats().level()==oldLevel)
-								break;
+							while(mob.basePhyStats().level()<100)
+							{
+								final int oldLevel = mob.basePhyStats().level();
+								if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
+								||(mob.charStats().getCurrentClass().expless())
+								||(mob.charStats().getMyRace().expless())
+								||(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
+									CMLib.leveler().level(mob);
+								else
+									CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+								if(mob.basePhyStats().level()==oldLevel)
+									break;
+							}
 						}
 						mob.baseCharStats().setCurrentClass(newClass);
 						mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),30);
