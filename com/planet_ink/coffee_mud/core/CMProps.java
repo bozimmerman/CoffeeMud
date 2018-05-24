@@ -2188,7 +2188,6 @@ public class CMProps extends Properties
 		setVar(Str.REMORTMASK,getStr("REMORTMASK","-LEVEL +>60"));
 		setVar(Str.REMORTRETAIN,getStr("REMORTRETAIN","SKILLSAT100"));
 		setVar(Str.EXPDEFER,getStr("EXPDEFER",""));
-		//TODO: set variables and stuff
 		setVar(Str.RPAWARDS,getStr("RPAWARDS",""));
 		//TODO: set variables and stuff
 		

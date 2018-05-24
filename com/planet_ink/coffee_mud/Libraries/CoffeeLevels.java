@@ -42,6 +42,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return "CoffeeLevels";
 	}
 
+	protected String			 deferXPCommand		= "";
+	protected String			 deferXPArgument	= "";
+	protected String			 deferXPMask		= "";
+	protected double			 deferXPPct			= 0.0;
+	protected long			 	 deferXPMillis		= 0;
+	
 	public int getManaBonusNextLevel(MOB mob)
 	{
 		final CharClass charClass = mob.baseCharStats().getCurrentClass();
@@ -824,6 +830,155 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			}
 		}
 		return posted;
+	}
+	
+	/**
+	 * Returns the command word that possibly triggers
+	 * the gaining of XP in a deferred XP system.
+	 * @see CoffeeLevels#getDeferXPArgument()
+	 * @see CoffeeLevels#getDeferXPPct()
+	 * @see CoffeeLevels#getDeferXPMask()
+	 * @see CoffeeLevels#getDeferXPMillis()
+	 * 
+	 * @return the command to trigger deferred xp
+	 */
+	public String getDeferXPCommand()
+	{
+		return deferXPCommand;
+	}
+
+	/**
+	 * Returns the argument for the command word that possibly
+	 * triggers the gaining of XP in deferred XP system.  This
+	 * may be empty, or contain a mask * character.
+	 * @see CoffeeLevels#getDeferXPCommand()
+	 * @see CoffeeLevels#getDeferXPPct()
+	 * @see CoffeeLevels#getDeferXPMask()
+	 * @see CoffeeLevels#getDeferXPMillis()
+	 * 
+	 * @return the argument for the command word
+	 */
+	public String getDeferXPArgument()
+	{
+		return deferXPArgument;
+	}
+	
+	/**
+	 * Returns the maximum percent of xp to next level which may be
+	 * deferred using the XP defer system.
+	 * @see CoffeeLevels#getDeferXPCommand()
+	 * @see CoffeeLevels#getDeferXPArgument()
+	 * @see CoffeeLevels#getDeferXPMillis()
+	 * @see CoffeeLevels#getDeferXPMask()
+	 * 
+	 * @return the max deferred xp
+	 */
+	public double getDeferXPPct()
+	{
+		return deferXPPct;
+	}
+
+	
+	/**
+	 * Returns the ZapperMask that must describe someone in the
+	 * room when the defer command word is used, in order for 
+	 * XP to be awarded.
+	 * @see CoffeeLevels#getDeferXPCommand()
+	 * @see CoffeeLevels#getDeferXPArgument()
+	 * @see CoffeeLevels#getDeferXPPct()
+	 * @see CoffeeLevels#getDeferXPMillis()
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+	 * 
+	 * @return the zappermask
+	 */
+	public String getDeferXPMask()
+	{
+		return deferXPMask;
+	}
+	
+	/**
+	 * Returns the minimum amount of time between each awarding of
+	 * experience when the deferred xp system is used.
+	 * @see CoffeeLevels#getDeferXPCommand()
+	 * @see CoffeeLevels#getDeferXPArgument()
+	 * @see CoffeeLevels#getDeferXPPct()
+	 * @see CoffeeLevels#getDeferXPMask()
+	 * 
+	 * @return the minimum milliseconds between xp awards
+	 */
+	public long  getDeferXPMillis()
+	{
+		return deferXPMillis;
+	}
+
+	@Override
+	public void propertiesLoaded()
+	{
+		String ln=CMProps.getVar(CMProps.Str.EXPDEFER);
+		deferXPArgument="";
+		deferXPCommand="";
+		deferXPMask="";
+		deferXPMillis=0;
+		deferXPPct=0.0;
+		ln=ln.trim();
+		if(ln.length()==0)
+			return;
+		int x=ln.indexOf(' ');
+		if(x<0)
+			x=ln.length();
+		String s=ln.substring(0,x).trim();
+		if(!CMath.isNumber(s))
+		{
+			Log.errOut("Malformed defer definition (no or bad hours): "+ln);
+			return;
+		}
+		if(x<0)
+			return;
+		ln=ln.substring(x+1).trim();
+		deferXPMillis=CMProps.getMillisPerMudHour() * CMath.s_int(s);
+		x=ln.indexOf(' ');
+		if(x<0)
+			x=ln.length();
+		s=ln.substring(0,x).trim();
+		if((!CMath.isNumber(s)) && (!CMath.isPct(s)))
+		{
+			Log.errOut("Malformed defer definition (no or bad pct): "+ln);
+			return;
+		}
+		if(CMath.isPct(s))
+			deferXPPct=CMath.s_pct(s);
+		else
+		{
+			deferXPPct=CMath.s_double(s);
+			if(deferXPPct>=1.0)
+				deferXPPct=deferXPPct/100.0;
+		}
+		if(x<0)
+			return;
+		ln=ln.substring(x+1).trim();
+		if(!ln.startsWith("("))
+		{
+			x=ln.indexOf('(');
+			if(x<0)
+				return;
+			deferXPCommand=ln.substring(0,x).trim();
+			ln=ln.substring(x);
+		}
+		if(!ln.startsWith("("))
+		{
+			Log.errOut("Malformed defer definition (no or bad command arg() ): "+ln);
+			return;
+		}
+		x=ln.indexOf(')');
+		if(x<0)
+		{
+			Log.errOut("Malformed defer definition (missing close ) in command arg ): "+ln);
+			return;
+		}
+		deferXPArgument=ln.substring(1,x).trim();
+		ln=ln.substring(x+1).trim();
+		if(ln.length()>0)
+			deferXPMask=ln;
 	}
 
 }
