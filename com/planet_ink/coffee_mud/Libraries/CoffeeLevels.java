@@ -540,7 +540,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			{
 				if(pStats.getMaxDeferredXP()==0)
 					ensureMaxDeferredXP(mob, pStats);
-				if(pStats.getDeferredXP() < pStats.getMaxDeferredXP())
+				if(pStats.getDeferredXP() + pStats.getRolePlayXP() < pStats.getMaxDeferredXP())
 				{
 					pStats.setDeferredXP(pStats.getDeferredXP() + amount);
 					if(!quiet)
@@ -550,7 +550,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 						else
 						if(amount>0)
 							mob.tell(L("^N^!You've earned ^H@x1^N^! deferred experience point@x2.^N",""+amount,homageMessage));
-						if(((mob.getExperience()+amount)>=mob.getExpNextLevel())
+						if(((mob.getExperience()+pStats.getDeferredXP() + pStats.getRolePlayXP())>=mob.getExpNextLevel())
 						&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
 							mob.tell(L("^N^!You've earned enough experience to gain a level.^N",""+amount));
 					}
@@ -595,27 +595,35 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				ensureMaxRPXP(mob, pStats);
 			if(pStats.getRolePlayXP() < pStats.getMaxRolePlayXP())
 			{
-				pStats.setRolePlayXP(pStats.getRolePlayXP() + amount);
 				if(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0)
 				{
-					final long lastTime = pStats.getLastXPAwardMillis();
-					final long nextTime = lastTime + (CMProps.getIntVar(CMProps.Int.EXPDEFER_SECS) * 1000L);
-					if((CMProps.getVar(CMProps.Str.EXPDEFER_COMMAND).length()==0)
-					&&(System.currentTimeMillis() > nextTime))
+					if(pStats.getDeferredXP() + pStats.getRolePlayXP() < pStats.getMaxDeferredXP())
 					{
-						amount += pStats.getDeferredXP();
-						pStats.setDeferredXP(0);
-						amount += pStats.getRolePlayXP();
-						pStats.setRolePlayXP(0);
+						pStats.setRolePlayXP(pStats.getRolePlayXP() + amount);
+						final long lastTime = pStats.getLastXPAwardMillis();
+						final long nextTime = lastTime + (CMProps.getIntVar(CMProps.Int.EXPDEFER_SECS) * 1000L);
+						if((CMProps.getVar(CMProps.Str.EXPDEFER_COMMAND).length()==0)
+						&&(System.currentTimeMillis() > nextTime))
+						{
+							amount += pStats.getDeferredXP();
+							pStats.setDeferredXP(0);
+							amount += pStats.getRolePlayXP();
+							pStats.setRolePlayXP(0);
+						}
+						else
+						{
+							if(((mob.getExperience()+pStats.getDeferredXP()+pStats.getRolePlayXP())>=mob.getExpNextLevel())
+							&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
+								mob.tell(L("^N^!You've earned enough experience to gain a level.^N"));
+							return;
+						}
 					}
 					else
-					{
-						if(((mob.getExperience()+amount)>=mob.getExpNextLevel())
-						&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
-							mob.tell(L("^N^!You've earned enough experience to gain a level.^N"));
-						return;
-					}
+					if(!quiet)
+						mob.tell(L("^N^!You can not defer any more experience for later.^N",""+amount));
 				}
+				else
+					pStats.setRolePlayXP(pStats.getRolePlayXP() + amount);
 			}
 			else
 				return;
@@ -1007,11 +1015,6 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			final String pcmd = CMProps.getVar(CMProps.Str.EXPDEFER_COMMAND);
 			if(pcmd.length()>0)
 			{
-				if(System.currentTimeMillis() < nextTime)
-				{
-					mob.tell(L("You can not be awarded more experience at this time."));
-					return C;
-				}
 				if(C != null)
 				{
 					if(!CMStrings.contains(C.getAccessWords(),pcmd))
@@ -1047,6 +1050,18 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					else
 					if(!comb.equalsIgnoreCase(parg))
 						return C;
+				}
+				if(System.currentTimeMillis() < nextTime)
+				{
+					final Area A=CMLib.map().areaLocation(mob);
+					String diffStr=L("a later time");
+					if(A!=null)
+					{
+						final TimeClock C2=A.getTimeObj().deriveClock(nextTime);
+						diffStr = C2.getShortTimeDescription(); 
+					}
+					mob.tell(L("You can not be awarded more experience until @x1.",diffStr));
+					return C;
 				}
 			}
 			else

@@ -327,9 +327,9 @@ public class DefaultSocial implements Social
 			if (R.okMessage(mob, msg))
 			{
 				R.send(mob, msg);
-				if (target instanceof MOB)
+				if (targetE instanceof MOB)
 				{
-					final MOB tmob = (MOB) target;
+					final MOB tmob = (MOB) targetE;
 					if(mob.isPlayer())
 					{
 						if(tmob.isPlayer())

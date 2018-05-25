@@ -3060,7 +3060,7 @@ public class CMProps extends Properties
 			return;
 		}
 		String deferXPArgument=ln.substring(1,x).trim();
-		CMProps.setVar(Str.EXPDEFER_COMMAND, deferXPArgument.toUpperCase());
+		CMProps.setVar(Str.EXPDEFER_ARGUMENT, deferXPArgument.toUpperCase());
 		ln=ln.substring(x+1).trim();
 		if(ln.length()>0)
 		{
