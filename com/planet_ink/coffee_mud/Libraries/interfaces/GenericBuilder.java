@@ -98,7 +98,8 @@ public interface GenericBuilder extends CMLibrary
 		FOLLOWERS,
 		TRAINS,
 		PRACTICES,
-		STINK
+		STINK,
+		CHARCLASS
 	}
 
 	public String getGenMOBTextUnpacked(MOB mob, String newText);

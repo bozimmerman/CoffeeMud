@@ -2934,6 +2934,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					if(((MOB)P).playerStats()!=null)
 						return CMath.toPct(((MOB)P).playerStats().getHygiene()/PlayerStats.HYGIENE_DELIMIT);
 					break;
+				case CHARCLASS:
+					return ""+(current?
+							((MOB)P).charStats().getCurrentClass().name(((MOB)P).charStats().getCurrentClassLevel())
+							:((MOB)P).baseCharStats().getCurrentClass().name(((MOB)P).charStats().getCurrentClassLevel()));
 				}
 			}
 		}
@@ -3050,6 +3054,15 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				case STINK:
 					((MOB)P).playerStats().setHygiene(Math.round(CMath.s_pct(value)*PlayerStats.HYGIENE_DELIMIT));
 					return;
+				case CHARCLASS:
+				{
+					final CharClass C=CMClass.findCharClass(value);
+					if(current)
+						((MOB)P).charStats().setCurrentClass(C);
+					else
+						((MOB)P).baseCharStats().setCurrentClass(C);
+					return;
+				}
 				}
 			}
 		}

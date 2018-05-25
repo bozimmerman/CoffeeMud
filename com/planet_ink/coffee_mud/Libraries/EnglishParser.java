@@ -503,7 +503,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if((C!=null)
 		&&(C.securityCheck(mob))
 		&&(!CMSecurity.isCommandDisabled(CMClass.classID(C).toUpperCase())))
-			return C;
+			return CMLib.leveler().deferCommandCheck(mob, C, commands);
 
 		Ability A=getToEvoke(mob,new XVector<String>(commands));
 		if((A!=null)
@@ -576,7 +576,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if((C!=null)
 		&&(C.securityCheck(mob))
 		&&(!CMSecurity.isCommandDisabled(CMClass.classID(C).toUpperCase())))
-			return C;
+			return CMLib.leveler().deferCommandCheck(mob, C, commands);
 
 		social=CMLib.socials().fetchSocial(commands,false,true);
 		if(social!=null)
@@ -615,7 +615,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					return C;
 			}
 		}
-		return null;
+		return CMLib.leveler().deferCommandCheck(mob, null, commands);
 	}
 
 	@Override

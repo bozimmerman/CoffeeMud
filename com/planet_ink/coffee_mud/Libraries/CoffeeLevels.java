@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Bool;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
@@ -17,6 +18,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -536,8 +538,14 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					else
 					if(amount>0)
 						mob.tell(L("^N^!You've earned ^H@x1^N^! deferred experience point@x2.^N",""+amount,homageMessage));
+					if(((mob.getExperience()+amount)>=mob.getExpNextLevel())
+					&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
+						mob.tell(L("^N^!You've earned enough experience to gain a level.^N",""+amount));
 				}
 			}
+			else
+			if(!quiet)
+				mob.tell(L("^N^!You can not defer any more experience for later.^N",""+amount));
 			return;
 		}
 
@@ -575,7 +583,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			{
 				pStats.setRolePlayXP(pStats.getRolePlayXP() + amount);
 				if(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0)
+				{
+					if(((mob.getExperience()+amount)>=mob.getExpNextLevel())
+					&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
+						mob.tell(L("^N^!You've earned enough experience to gain a level.^N"));
 					return;
+				}
 			}
 			else
 				return;
@@ -583,10 +596,10 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		
 		CMLib.players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
 		mob.setExperience(mob.getExperience()+amount);
-		if(homageMessage==null)
-			homageMessage="";
-		if(!quiet)
-			mob.tell(L("^N^!You gain ^H@x1^N^! roleplay XP@x2.^N",""+amount,homageMessage));
+		//if(homageMessage==null)
+		//	homageMessage="";
+		//if(!quiet)
+		//	mob.tell(L("^N^!You gain ^H@x1^N^! roleplay XP@x2.^N",""+amount,homageMessage));
 
 		checkLevelGain(mob);
 	}
@@ -953,6 +966,96 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			else
 				loseExperience(mob,-msg.value());
 		}
+	}
+
+	@Override
+	public Command deferCommandCheck(final MOB mob, final Command C, List<String> cmds)
+	{
+		if(mob.isPlayer() && (CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT) >0))
+		{
+			final String pcmd = CMProps.getVar(CMProps.Str.EXPDEFER_COMMAND);
+			if(pcmd.length()>0)
+			{
+				if(C != null)
+				{
+					if(!CMStrings.contains(C.getAccessWords(),pcmd))
+						return C;
+				}
+				else
+				if((cmds != null)&&(cmds.size()>0))
+				{
+					if(!pcmd.equalsIgnoreCase(cmds.get(0)))
+						return C;
+				}
+				final String parg = CMProps.getVar(CMProps.Str.EXPDEFER_ARGUMENT);
+				if(parg.length() == 0)
+				{
+					if(cmds.size()>1)
+						return C;
+				}
+				else
+				if(!parg.equals("*"))
+				{
+					final String comb=CMParms.combine(cmds,1);
+					if(parg.startsWith("*"))
+					{
+						if(!comb.toLowerCase().endsWith(parg.substring(1).toLowerCase()))
+							return C;
+					}
+					else
+					if(parg.endsWith("*"))
+					{
+						if(!comb.toLowerCase().startsWith(parg.substring(0,parg.length()-1).toLowerCase()))
+							return C;
+					}
+					else
+					if(!comb.equalsIgnoreCase(parg))
+						return C;
+				}
+			}
+			if(CMProps.getVar(CMProps.Str.EXPDEFER_MASK).length()>0)
+			{
+				final Room R=mob.location();
+				boolean found=false;
+				if(R.numInhabitants()>1)
+				{
+					String mask=CMProps.getVar(CMProps.Str.EXPDEFER_MASK);
+					int x=mask.indexOf('{');
+					while(x>0)
+					{
+						int y=mask.indexOf('}',x+1);
+						if(y>x)
+						{
+							final String tag=mask.substring(x+1, y);
+							mask=mask.substring(0,x)+CMLib.coffeeMaker().getAnyGenStat(mob, tag)+mask.substring(y+1);
+						}
+						x=mask.indexOf('{',x+1);
+					}
+					final MaskingLibrary lib=CMLib.masking();
+					final MaskingLibrary.CompiledZMask fmask=lib.getPreCompiledMask(mask);
+					for(final Enumeration<MOB> r=R.inhabitants();r.hasMoreElements();)
+					{
+						final MOB M=r.nextElement();
+						found = found || lib.maskCheck(fmask, M, true);
+					}
+				}
+				if(!found)
+					return C;
+			}
+			final Command deferC=(Command)CMClass.getCommand("DeferCmd").newInstance();
+			if(CMProps.getBoolVar(Bool.EXPDEFER_PASSTHRU))
+			{
+				try
+				{
+					deferC.executeInternal(mob, 0, C);
+				}
+				catch (IOException e)
+				{
+				}
+			}
+			return deferC;
+		}
+		return C;
 	}
 	
 	@Override

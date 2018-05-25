@@ -242,10 +242,7 @@ public class DefaultClan implements Clan
 		clanKills();
 		final Area A=CMLib.map().areaLocation(killer);
 		if(A!=null)
-		{
-			//TODO: the bug is here -- that date is treated as an expiration!
-			clanKills.add(Long.valueOf(System.currentTimeMillis()));
-		}
+			clanKills.add(Long.valueOf(System.currentTimeMillis() + (30L * 24L * 60L * 60L * 1000)));
 		updateClanKills();
 		if((killer != null)
 		&&(killed != null))

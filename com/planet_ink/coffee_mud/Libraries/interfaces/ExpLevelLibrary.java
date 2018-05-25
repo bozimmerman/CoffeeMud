@@ -70,7 +70,9 @@ public interface ExpLevelLibrary extends CMLibrary
 	public void gainRPExperience(MOB mob, MOB target, String homageMessage, int amount, boolean quiet);
 
 	public boolean postRPExperience(MOB mob, MOB target, String homage, int amount, boolean quiet);
-	
+
+	public Command deferCommandCheck(final MOB mob, final Command C, List<String> cmds);
+
 	/**
 	 * If the given item is a boardable, this method will post the given
 	 * amount of experience to all abord.

@@ -393,7 +393,8 @@ public class CMProps extends Properties
 		MAPFINDSNOCACHE,
 		HASHPASSWORDS,
 		ACCOUNTSNOCACHE,
-		PLAYERSNOCACHE
+		PLAYERSNOCACHE,
+		EXPDEFER_PASSTHRU
 	}
 
 	/**
@@ -2979,6 +2980,7 @@ public class CMProps extends Properties
 		setVar(Str.EXPDEFER_MASK, "");
 		CMProps.setIntVar(Int.EXPDEFER_PCT, 0);
 		CMProps.setIntVar(Int.EXPDEFER_SECS, 0);
+		CMProps.setBoolAllVar(Bool.EXPDEFER_PASSTHRU, true);
 		ln=ln.trim();
 		if(ln.length()==0)
 			return;
@@ -3025,6 +3027,10 @@ public class CMProps extends Properties
 				return;
 			final String deferXPCommand=ln.substring(0,x).trim();
 			CMProps.setVar(Str.EXPDEFER_COMMAND, deferXPCommand.toUpperCase());
+			if(deferXPCommand.startsWith("$"))
+				CMProps.setVar(Str.EXPDEFER_COMMAND, deferXPCommand.toUpperCase().substring(1));
+			else
+				CMProps.setBoolAllVar(Bool.EXPDEFER_PASSTHRU, false);
 			ln=ln.substring(x);
 		}
 		if(!ln.startsWith("("))
