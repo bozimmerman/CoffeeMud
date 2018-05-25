@@ -304,18 +304,44 @@ public class Patroller extends ActiveTicker
 				if(thatRoom==null)
 				{
 					if(step>0)
-						Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" at "+CMLib.map().getDescriptiveExtendedRoomID(thisRoom)+" is impossible!");
+					{
+						thisRoom = CMLib.map().getRoom(thisRoom);
+						if((ticking instanceof Physical)&&(((Physical)ticking).amDestroyed()))
+						{
+							CMLib.threads().deleteAllTicks(ticking);
+							((Physical)ticking).destroy();
+							Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" at "+CMLib.map().getDescriptiveExtendedRoomID(thisRoom)+" is destroyed!");
+						}
+						else
+						if(thisRoom.amDestroyed() || (CMLib.map().getRoom(CMLib.map().getExtendedRoomID(thisRoom))==null))
+						{
+							Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" at "+CMLib.map().getDescriptiveExtendedRoomID(thisRoom)+" is lost room! Destroying!");
+							if(ticking instanceof Physical)
+								((Physical)ticking).destroy();
+						}
+						else
+							Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" at "+CMLib.map().getDescriptiveExtendedRoomID(thisRoom)+" is impossible!");
+					}
 					step=-1;
 					tickStatus=Tickable.STATUS_NOT;
-					final Room myStartRoom=startRoom.get();
+					final Room myStartRoom=CMLib.map().getRoom(startRoom.get());
 					if((startRoom!=null)&&(startRoom!=thisRoom))
 					{
-						final Environmental E=(Environmental)ticking;
-						if(ticking instanceof MOB)
-							myStartRoom.bringMobHere((MOB)E,true);
+						if(myStartRoom.amDestroyed() || (CMLib.map().getRoom(CMLib.map().getExtendedRoomID(myStartRoom))==null))
+						{
+							Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" FROM "+CMLib.map().getDescriptiveExtendedRoomID(thisRoom)+" is lost room! Destroying!");
+							if(ticking instanceof Physical)
+								((Physical)ticking).destroy();
+						}
 						else
-						if(E instanceof Item)
-							myStartRoom.moveItemTo((Item)E,Expire.Never,Move.Followers);
+						{
+							final Environmental E=(Environmental)ticking;
+							if(ticking instanceof MOB)
+								myStartRoom.bringMobHere((MOB)E,true);
+							else
+							if(E instanceof Item)
+								myStartRoom.moveItemTo((Item)E,Expire.Never,Move.Followers);
+						}
 					}
 					return true;
 				}
