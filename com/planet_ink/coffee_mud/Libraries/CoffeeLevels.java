@@ -526,30 +526,44 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		final PlayerStats pStats=mob.playerStats();
 		if((pStats!=null)&&(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
 		{
-			if(pStats.getMaxDeferredXP()==0)
-				ensureMaxDeferredXP(mob, pStats);
-			if(pStats.getDeferredXP() < pStats.getMaxDeferredXP())
+			final long lastTime = pStats.getLastXPAwardMillis();
+			final long nextTime = lastTime + (CMProps.getIntVar(CMProps.Int.EXPDEFER_SECS) * 1000L);
+			if((CMProps.getVar(CMProps.Str.EXPDEFER_COMMAND).length()==0)
+			&&(System.currentTimeMillis() > nextTime))
 			{
-				pStats.setDeferredXP(pStats.getDeferredXP() + amount);
-				if(!quiet)
-				{
-					if(amount>1)
-						mob.tell(L("^N^!You've earned ^H@x1^N^! deferred experience points@x2.^N",""+amount,homageMessage));
-					else
-					if(amount>0)
-						mob.tell(L("^N^!You've earned ^H@x1^N^! deferred experience point@x2.^N",""+amount,homageMessage));
-					if(((mob.getExperience()+amount)>=mob.getExpNextLevel())
-					&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
-						mob.tell(L("^N^!You've earned enough experience to gain a level.^N",""+amount));
-				}
+				amount += pStats.getDeferredXP();
+				pStats.setDeferredXP(0);
+				amount += pStats.getRolePlayXP();
+				pStats.setRolePlayXP(0);
 			}
 			else
-			if(!quiet)
-				mob.tell(L("^N^!You can not defer any more experience for later.^N",""+amount));
-			return;
+			{
+				if(pStats.getMaxDeferredXP()==0)
+					ensureMaxDeferredXP(mob, pStats);
+				if(pStats.getDeferredXP() < pStats.getMaxDeferredXP())
+				{
+					pStats.setDeferredXP(pStats.getDeferredXP() + amount);
+					if(!quiet)
+					{
+						if(amount>1)
+							mob.tell(L("^N^!You've earned ^H@x1^N^! deferred experience points@x2.^N",""+amount,homageMessage));
+						else
+						if(amount>0)
+							mob.tell(L("^N^!You've earned ^H@x1^N^! deferred experience point@x2.^N",""+amount,homageMessage));
+						if(((mob.getExperience()+amount)>=mob.getExpNextLevel())
+						&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
+							mob.tell(L("^N^!You've earned enough experience to gain a level.^N",""+amount));
+					}
+				}
+				else
+				if(!quiet)
+					mob.tell(L("^N^!You can not defer any more experience for later.^N",""+amount));
+				return;
+			}
 		}
 
 		mob.setExperience(mob.getExperience()+amount);
+		pStats.setLastXPAwardMillis(System.currentTimeMillis());
 		if(homageMessage==null)
 			homageMessage="";
 		if(!quiet)
@@ -573,6 +587,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		amount=gainLeigeExperience(mob, amount, quiet);
 		amount=gainClanExperience(mob, amount);
 
+		CMLib.players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
 		final PlayerStats pStats=mob.playerStats();
 		if((pStats!=null)&&(CMProps.getIntVar(CMProps.Int.RP_AWARD_PCT)>0))
 		{
@@ -583,18 +598,31 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				pStats.setRolePlayXP(pStats.getRolePlayXP() + amount);
 				if(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0)
 				{
-					if(((mob.getExperience()+amount)>=mob.getExpNextLevel())
-					&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
-						mob.tell(L("^N^!You've earned enough experience to gain a level.^N"));
-					return;
+					final long lastTime = pStats.getLastXPAwardMillis();
+					final long nextTime = lastTime + (CMProps.getIntVar(CMProps.Int.EXPDEFER_SECS) * 1000L);
+					if((CMProps.getVar(CMProps.Str.EXPDEFER_COMMAND).length()==0)
+					&&(System.currentTimeMillis() > nextTime))
+					{
+						amount += pStats.getDeferredXP();
+						pStats.setDeferredXP(0);
+						amount += pStats.getRolePlayXP();
+						pStats.setRolePlayXP(0);
+					}
+					else
+					{
+						if(((mob.getExperience()+amount)>=mob.getExpNextLevel())
+						&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))
+							mob.tell(L("^N^!You've earned enough experience to gain a level.^N"));
+						return;
+					}
 				}
 			}
 			else
 				return;
 		}
 		
-		CMLib.players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
 		mob.setExperience(mob.getExperience()+amount);
+		pStats.setLastXPAwardMillis(System.currentTimeMillis());
 		//if(homageMessage==null)
 		//	homageMessage="";
 		//if(!quiet)
@@ -973,9 +1001,17 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	{
 		if(mob.isPlayer() && (CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT) >0))
 		{
+			final PlayerStats pStats=mob.playerStats();
+			final long lastTime = pStats.getLastXPAwardMillis();
+			final long nextTime = lastTime + (CMProps.getIntVar(CMProps.Int.EXPDEFER_SECS) * 1000L);
 			final String pcmd = CMProps.getVar(CMProps.Str.EXPDEFER_COMMAND);
 			if(pcmd.length()>0)
 			{
+				if(System.currentTimeMillis() < nextTime)
+				{
+					mob.tell(L("You can not be awarded more experience at this time."));
+					return C;
+				}
 				if(C != null)
 				{
 					if(!CMStrings.contains(C.getAccessWords(),pcmd))
@@ -1013,6 +1049,9 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 						return C;
 				}
 			}
+			else
+			if(System.currentTimeMillis() < nextTime)
+				return C;
 			if(CMProps.getVar(CMProps.Str.EXPDEFER_MASK).length()>0)
 			{
 				final Room R=mob.location();

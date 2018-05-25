@@ -1216,15 +1216,24 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		&&(speaker.playerStats()!=null)
 		&&(msg!=null))
 		{
+			final PlayerStats pStats = speaker.playerStats();
+			if(System.currentTimeMillis() < pStats.getLastRolePlayXPTime() + CMProps.getIntVar(CMProps.Int.RP_AWARD_DELAY))
+				return;
 			if(me.isPlayer())
 			{
 				if(CMProps.getIntVar(CMProps.Int.RP_SAY_PC)>0)
+				{
+					pStats.setLastRolePlayXPTime(System.currentTimeMillis());
 					CMLib.leveler().postRPExperience(speaker, me, "", CMProps.getIntVar(CMProps.Int.RP_SAY_PC), false);
+				}
 			}
 			else
 			{
 				if(CMProps.getIntVar(CMProps.Int.RP_SAY_NPC)>0)
+				{
+					pStats.setLastRolePlayXPTime(System.currentTimeMillis());
 					CMLib.leveler().postRPExperience(speaker, me, "", CMProps.getIntVar(CMProps.Int.RP_SAY_NPC), false);
+				}
 			}
 		}
 	}

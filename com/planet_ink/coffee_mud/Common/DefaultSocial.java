@@ -228,6 +228,20 @@ public class DefaultSocial implements Social
 		return false;
 	}
 
+	protected boolean awardRPXP(final MOB mob)
+	{
+		final PlayerStats pStats=mob.playerStats();
+		if(pStats != null)
+		{
+			if(System.currentTimeMillis() >= pStats.getLastRolePlayXPTime() + CMProps.getIntVar(CMProps.Int.RP_AWARD_DELAY))
+			{
+				pStats.setLastRolePlayXPTime(System.currentTimeMillis());
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical target, boolean auto)
 	{
@@ -286,7 +300,7 @@ public class DefaultSocial implements Social
 			if (R.okMessage(mob, msg))
 			{
 				R.send(mob, msg);
-				if((mob.isPlayer())&&(CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC)>0))
+				if((mob.isPlayer())&&(CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC)>0)&&(awardRPXP(mob)))
 					CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC), false);
 			}
 		}
@@ -300,7 +314,7 @@ public class DefaultSocial implements Social
 			if (R.okMessage(mob, msg))
 			{
 				R.send(mob, msg);
-				if((mob.isPlayer())&&(CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC)>0))
+				if((mob.isPlayer())&&(CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC)>0)&&(awardRPXP(mob)))
 					CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC), false);
 			}
 		}
@@ -320,17 +334,16 @@ public class DefaultSocial implements Social
 					{
 						if(tmob.isPlayer())
 						{
-							if(CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC)>0)
+							if((CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC)>0)&&(awardRPXP(mob)))
 								CMLib.leveler().postRPExperience(mob, tmob, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC), false);
 						}
 						else
 						{
-							if(CMProps.getIntVar(CMProps.Int.RP_SOCIAL_NPC)>0)
+							if((CMProps.getIntVar(CMProps.Int.RP_SOCIAL_NPC)>0)&&(awardRPXP(mob)))
 								CMLib.leveler().postRPExperience(mob, tmob, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_NPC), false);
 						}
 					}
 
-					
 					if ((name().toUpperCase().startsWith("SMILE")) 
 					&& (mob.charStats().getStat(CharStats.STAT_CHARISMA) >= 16)
 					&& (mob.charStats().getMyRace().ID().equals(tmob.charStats().getMyRace().ID()))

@@ -304,6 +304,7 @@ public class CMProps extends Properties
 		EXPDEFER_PCT,
 		EXPDEFER_SECS,
 		RP_AWARD_PCT,
+		RP_AWARD_DELAY,
 		RP_INTRODUCE_PC,
 		RP_INTRODUCE_NPC,
 		RP_SAY_PC,
@@ -2924,6 +2925,7 @@ public class CMProps extends Properties
 	private static void parseRPAwards(final String ln)
 	{
 		CMProps.setIntVar(Int.RP_AWARD_PCT, 0);
+		CMProps.setIntVar(Int.RP_AWARD_DELAY, 0);
 		CMProps.setIntVar(Int.RP_INTRODUCE_PC, 0);
 		CMProps.setIntVar(Int.RP_INTRODUCE_NPC, 0);
 		CMProps.setIntVar(Int.RP_SAY_PC, 0);
@@ -2938,9 +2940,21 @@ public class CMProps extends Properties
 		if(awards.size()==0)
 			return;
 		String s=awards.get(0);
+		String s2="8";
+		int x=s.indexOf(' ');
+		if(x>0)
+		{
+			s2=s.substring(x+1).trim();
+			s=s.substring(0,x);
+		}
 		if((!CMath.isNumber(s)) && (!CMath.isPct(s)))
 		{
 			Log.errOut("Malformed award definition (no or bad pct): "+ln);
+			return;
+		}
+		if(!CMath.isInteger(s2))
+		{
+			Log.errOut("Malformed award definition (no or bad time): "+ln);
 			return;
 		}
 		double awardXPPct;
@@ -2953,10 +2967,11 @@ public class CMProps extends Properties
 				awardXPPct=awardXPPct/100.0;
 		}
 		CMProps.setIntVar(Int.RP_AWARD_PCT, (int)Math.round(awardXPPct*100.0));
+		CMProps.setIntVar(Int.RP_AWARD_DELAY, CMath.s_int(s2)*1000);
 		for(int a=1;a<awards.size();a++)
 		{
 			s=awards.get(a).toUpperCase().trim().replace('-','_');
-			int x=s.indexOf(' ');
+			x=s.indexOf(' ');
 			if(x<0)
 				Log.errOut("Incomplete award definition ("+s+")");
 			else

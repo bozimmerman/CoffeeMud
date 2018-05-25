@@ -55,7 +55,10 @@ public class DeferCmd extends StdCommand
 		{
 			final int amount = pStats.getDeferredXP() + pStats.getRolePlayXP();
 			final int rp = pStats.getRolePlayXP();
+			pStats.setDeferredXP(0);
+			pStats.setRolePlayXP(0);
 			mob.setExperience(mob.getExperience()+amount);
+			pStats.setLastXPAwardMillis(System.currentTimeMillis());
 			String homageMessage;
 			if(rp == 0)
 				homageMessage="";

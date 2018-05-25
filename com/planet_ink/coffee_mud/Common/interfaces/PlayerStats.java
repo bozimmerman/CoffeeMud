@@ -807,6 +807,8 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see PlayerStats#setMaxRolePlayXP(int)
 	 * @see PlayerStats#getRolePlayXP()
 	 * @see PlayerStats#setRolePlayXP(int)
+	 * @see PlayerStats#setLastDateTime(long)
+	 * @see PlayerStats#getLastRolePlayXPTime()
 	 * 
 	 * @return the maximum amount of role playing xp
 	 */
@@ -818,6 +820,8 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see PlayerStats#getMaxRolePlayXP()
 	 * @see PlayerStats#getRolePlayXP()
 	 * @see PlayerStats#setRolePlayXP(int)
+	 * @see PlayerStats#setLastDateTime(long)
+	 * @see PlayerStats#getLastRolePlayXPTime()
 	 * 
 	 * @param amt the maximum amount of role playing xp
 	 */
@@ -829,6 +833,8 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see PlayerStats#setMaxRolePlayXP(int)
 	 * @see PlayerStats#getMaxRolePlayXP()
 	 * @see PlayerStats#setRolePlayXP(int)
+	 * @see PlayerStats#setLastDateTime(long)
+	 * @see PlayerStats#getLastRolePlayXPTime()
 	 * 
 	 * @return the maximum amount of role playing xp
 	 */
@@ -840,11 +846,38 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see PlayerStats#getMaxRolePlayXP()
 	 * @see PlayerStats#getRolePlayXP()
 	 * @see PlayerStats#setMaxRolePlayXP(int)
+	 * @see PlayerStats#setLastDateTime(long)
+	 * @see PlayerStats#getLastRolePlayXPTime()
 	 * 
 	 * @param amt the maximum amount of role playing xp
 	 */
 	public void setRolePlayXP(int amt);
 
+	/**
+	 * Returns the last time roleplay xp was earned in a way
+	 * that could be spammed.
+	 * @see PlayerStats#setMaxRolePlayXP(int)
+	 * @see PlayerStats#getMaxRolePlayXP()
+	 * @see PlayerStats#setRolePlayXP(int)
+	 * @see PlayerStats#getRolePlayXP()
+	 * @see PlayerStats#setLastDateTime(long)
+	 * 
+	 * @return the last time roleplay xp
+	 */
+	public long getLastRolePlayXPTime();
+
+	/**
+	 * Sets the last time roleplay xp was earned in a way
+	 * that could be spammed.
+	 * @see PlayerStats#getMaxRolePlayXP()
+	 * @see PlayerStats#getRolePlayXP()
+	 * @see PlayerStats#setRolePlayXP(int)
+	 * @see PlayerStats#setMaxRolePlayXP(int)
+	 * @see PlayerStats#getLastRolePlayXPTime()
+	 * 
+	 * @param tm the last time roleplay xp
+	 */
+	public void setLastRolePlayXPTime(long tm);
 
 	/**
 	 * Returns the maximum amount of deferred xp that this player

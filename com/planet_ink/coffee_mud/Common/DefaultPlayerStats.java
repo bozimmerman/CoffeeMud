@@ -70,6 +70,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected long  		 lastUpdated	= 0;
 	protected int			 rolePlayXP		= 0;
 	protected int			 maxRolePlayXP	= Integer.MAX_VALUE;
+	protected long			 lastRolePlayTm = System.currentTimeMillis();
 	protected int			 deferredXP		= 0;
 	protected int			 maxDeferredXP	= 0;
 	protected int   		 channelMask;
@@ -1493,6 +1494,17 @@ public class DefaultPlayerStats implements PlayerStats
 			this.rolePlayXP = amt;
 	}
 
+	@Override
+	public long getLastRolePlayXPTime()
+	{
+		return this.lastRolePlayTm;
+	}
+
+	@Override
+	public void setLastRolePlayXPTime(final long tm)
+	{
+		this.lastRolePlayTm = tm;
+	}
 
 	@Override
 	public int getMaxDeferredXP()
