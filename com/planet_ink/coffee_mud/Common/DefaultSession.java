@@ -3139,7 +3139,11 @@ public class DefaultSession implements Session
 				if(!isAfk())
 				{
 					if(getIdleMillis()>=600000)
+					{
 						setAfkFlag(true);
+						if((mob.isPlayer())&&(CMProps.getIntVar(CMProps.Int.RP_GOAFK)>0))
+							CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_GOAFK), false);
+					}
 				}
 				else
 				if((getIdleMillis()>=10800000)&&(!isStopped())&&CMLib.flags().isInTheGame(mob(), true))

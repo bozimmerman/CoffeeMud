@@ -1187,13 +1187,46 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void handleIntroductions(MOB speaker, MOB me, String msg)
 	{
-		if((me.playerStats()!=null)
+		if(((me.playerStats()!=null)||(CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC)>0))
 		&&(speaker!=me)
 		&&(speaker.playerStats()!=null)
 		&&(msg!=null)
 		&&(!me.playerStats().isIntroducedTo(speaker.Name()))
 		&&(CMLib.english().containsString(CMStrings.getSayFromMessage(msg),speaker.Name())))
+		{
+			if(me.isPlayer())
+			{
+				if(CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_PC)>0)
+					CMLib.leveler().postRPExperience(speaker, me, L(""), CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_PC), false);
+			}
+			else
+			{
+				if(CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC)>0)
+					CMLib.leveler().postRPExperience(speaker, me, L(""), CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC), false);
+			}
 			me.playerStats().introduceTo(speaker.Name());
+		}
+	}
+
+	@Override
+	public void handleBeingSpokenTo(MOB speaker, MOB me, String msg)
+	{
+		if(((me.playerStats()!=null)||(CMProps.getIntVar(CMProps.Int.RP_SAY_NPC)>0))
+		&&(speaker!=me)
+		&&(speaker.playerStats()!=null)
+		&&(msg!=null))
+		{
+			if(speaker.isPlayer())
+			{
+				if(CMProps.getIntVar(CMProps.Int.RP_SAY_PC)>0)
+					CMLib.leveler().postRPExperience(speaker, me, "", CMProps.getIntVar(CMProps.Int.RP_SAY_PC), false);
+			}
+			else
+			{
+				if(CMProps.getIntVar(CMProps.Int.RP_SAY_NPC)>0)
+					CMLib.leveler().postRPExperience(speaker, me, "", CMProps.getIntVar(CMProps.Int.RP_SAY_NPC), false);
+			}
+		}
 	}
 
 	protected void handleBeingRoomSniffed(CMMsg msg)

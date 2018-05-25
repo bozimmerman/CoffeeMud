@@ -284,7 +284,11 @@ public class DefaultSocial implements Social
 					CMMsg.NO_EFFECT, null, 
 					CMMsg.NO_EFFECT, null);
 			if (R.okMessage(mob, msg))
+			{
 				R.send(mob, msg);
+				if((mob.isPlayer())&&(CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC)>0))
+					CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC), false);
+			}
 		}
 		else 
 		if (targetE == null)
@@ -294,7 +298,11 @@ public class DefaultSocial implements Social
 					CMMsg.NO_EFFECT, null, 
 					othersCode(), (Third_party_sees == null) ? null : Third_party_sees + mspFile);
 			if (R.okMessage(mob, msg))
+			{
 				R.send(mob, msg);
+				if((mob.isPlayer())&&(CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC)>0))
+					CMLib.leveler().postRPExperience(mob, null, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC), false);
+			}
 		}
 		else
 		{
@@ -308,6 +316,21 @@ public class DefaultSocial implements Social
 				if (target instanceof MOB)
 				{
 					final MOB tmob = (MOB) target;
+					if(mob.isPlayer())
+					{
+						if(tmob.isPlayer())
+						{
+							if(CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC)>0)
+								CMLib.leveler().postRPExperience(mob, tmob, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_PC), false);
+						}
+						else
+						{
+							if(CMProps.getIntVar(CMProps.Int.RP_SOCIAL_NPC)>0)
+								CMLib.leveler().postRPExperience(mob, tmob, "", CMProps.getIntVar(CMProps.Int.RP_SOCIAL_NPC), false);
+						}
+					}
+
+					
 					if ((name().toUpperCase().startsWith("SMILE")) 
 					&& (mob.charStats().getStat(CharStats.STAT_CHARISMA) >= 16)
 					&& (mob.charStats().getMyRace().ID().equals(tmob.charStats().getMyRace().ID()))

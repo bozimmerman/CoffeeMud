@@ -3340,9 +3340,12 @@ public class StdMOB implements MOB
 					setLiegeID("");
 				break;
 			case CMMsg.TYP_SPEAK:
+			{
 				if ((CMProps.getBoolVar(CMProps.Bool.INTRODUCTIONSYSTEM)) && (!asleep) && (canhearsrc))
 					CMLib.commands().handleIntroductions(srcM, this, msg.targetMessage());
+				CMLib.commands().handleBeingSpokenTo(srcM, this, msg.targetMessage());
 				break;
+			}
 			default:
 				if ((CMath.bset(msg.targetMajor(), CMMsg.MASK_MALICIOUS)) && (!amDead))
 					CMLib.combat().handleBeingAssaulted(msg);
