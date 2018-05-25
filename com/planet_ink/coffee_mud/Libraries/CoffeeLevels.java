@@ -570,8 +570,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(mob==null)
 			return;
 
-		amount=adjustedExperience(mob, target, amount);
-
+		amount=gainLeigeExperience(mob, amount, quiet);
 		amount=gainClanExperience(mob, amount);
 
 		final PlayerStats pStats=mob.playerStats();
@@ -636,7 +635,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if((mob==null)
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
 		||mob.charStats().getCurrentClass().expless()
-		||mob.charStats().getMyRace().expless())
+		||mob.charStats().getMyRace().expless()
+		||(CMProps.getIntVar(CMProps.Int.RP_AWARD_PCT)<=0))
 			return false;
 		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_RPXPCHANGE,null,CMMsg.NO_EFFECT,homage,CMMsg.NO_EFFECT,""+quiet);
 		msg.setValue(amount);

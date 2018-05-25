@@ -1216,7 +1216,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		&&(speaker.playerStats()!=null)
 		&&(msg!=null))
 		{
-			if(speaker.isPlayer())
+			if(me.isPlayer())
 			{
 				if(CMProps.getIntVar(CMProps.Int.RP_SAY_PC)>0)
 					CMLib.leveler().postRPExperience(speaker, me, "", CMProps.getIntVar(CMProps.Int.RP_SAY_PC), false);
