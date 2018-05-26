@@ -59,9 +59,9 @@ public class Commands extends StdCommand
 				return false;
 			}
 			final StringBuffer commandList=new StringBuffer("");
-			final Vector<String> commandSet=new Vector<String>();
+			final List<String> commandSet=new ArrayList<String>();
 			int col=0;
-			final HashSet<String> done=new HashSet<String>();
+			final Set<String> done=new HashSet<String>();
 			for(final Enumeration<Command> e=CMClass.commands();e.hasMoreElements();)
 			{
 				final Command C=e.nextElement();
@@ -79,14 +79,20 @@ public class Commands extends StdCommand
 			for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
-				if((A!=null)&&(A.triggerStrings()!=null)&&(A.triggerStrings().length>0)&&(!done.contains(A.triggerStrings()[0])))
+				if((A!=null)
+				&&(A.triggerStrings()!=null)
+				&&(A.triggerStrings().length>0)
+				&&(!done.contains(A.triggerStrings()[0])))
 				{
 					done.add(A.triggerStrings()[0]);
 					commandSet.add(A.triggerStrings()[0]);
 				}
 			}
 			Collections.sort(commandSet);
+			for(String s : commandSet)
+				System.out.println("'"+s+"'");
 			final int COL_LEN=CMLib.lister().fixColWidth(19.0,mob);
+			col-=1;
 			for(final Iterator<String> i=commandSet.iterator();i.hasNext();)
 			{
 				final String s=i.next();
