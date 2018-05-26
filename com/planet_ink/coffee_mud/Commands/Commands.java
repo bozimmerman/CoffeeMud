@@ -89,8 +89,6 @@ public class Commands extends StdCommand
 				}
 			}
 			Collections.sort(commandSet);
-			for(String s : commandSet)
-				System.out.println("'"+s+"'");
 			final int COL_LEN=CMLib.lister().fixColWidth(19.0,mob);
 			col-=1;
 			for(final Iterator<String> i=commandSet.iterator();i.hasNext();)
