@@ -352,7 +352,8 @@ public class CMProps extends Properties
 			DAMAGE_ABSOLUTE(512),
 			DAMAGE_ADV(1024),
 			DAMAGE_ADJ(2048),
-			DAMAGE_NUMBER(4096)
+			DAMAGE_NUMBER(4096),
+			SKILL_PROFICIENCY(8192)
 			;
 			public int value;
 			private Prowesses(int val)
@@ -457,6 +458,7 @@ public class CMProps extends Properties
 		RACIAL_CATEGORY_IS_FISH,
 		RACIAL_CATEGORY_IS_MARINE,
 		WIZ_NOAUTOINVOKE,
+		SKILL_PROFICIENCY_DESC,
 		TECH_LEVEL_NAMES,
 		TECH_BABBLE_VERBS,
 		TECH_BABBLE_ADJ1,
@@ -465,6 +467,14 @@ public class CMProps extends Properties
 		TECH_SECTOR_X_NAMES,
 		TECH_SECTOR_Y_NAMES,
 		TECH_SECTOR_Z_NAMES,
+		WEAPON_CONDITION_EDGED,
+		WEAPON_CONDITION_OTHER,
+		ARMOR_CONDITION_CLOTH,
+		ARMOR_CONDITION_GLASS,
+		ARMOR_CONDITION_LEATHER,
+		ARMOR_CONDITION_WOODEN,
+		ARMOR_CONDITION_METAL,
+		ARMOR_CONDITION_OTHER,
 		WEATHER_CLEAR, // try to always and forever keep these at the end...
 		WEATHER_CLOUDY, // try to always and forever keep these at the end...
 		WEATHER_WINDY, // try to always and forever keep these at the end...
@@ -1831,20 +1841,27 @@ public class CMProps extends Properties
 				{
 					rawListData=new Properties();
 					CMProps p=p();
-					String listFileName;
+					String listFileNameStr;
 					if(p.containsKey("LISTFILE"))
-						listFileName=p.getProperty("LISTFILE");
+						listFileNameStr=p.getProperty("LISTFILE");
 					else
-						listFileName = props['0'].getProperty("LISTFILE");
-					final CMFile F=new CMFile(listFileName,null,CMFile.FLAG_LOGERRORS);
-					if(F.exists())
+						listFileNameStr = props['0'].getProperty("LISTFILE");
+					final List<String> listFileNames=CMParms.parseCommas(listFileNameStr, true);
+					for(final String listFileName : listFileNames)
 					{
-						try
+						final CMFile F=new CMFile(listFileName,null,CMFile.FLAG_LOGERRORS);
+						if(F.exists())
 						{
-							rawListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(Str.CHARSETINPUT)));
-						}
-						catch (final IOException e)
-						{
+							try
+							{
+								final Properties subListData=new Properties();
+								subListData.load(new InputStreamReader(new ByteArrayInputStream(F.raw()), CMProps.getVar(Str.CHARSETINPUT)));
+								for(final Object o : subListData.keySet())
+									rawListData.put(o, subListData.get(o));
+							}
+							catch (final IOException e)
+							{
+							}
 						}
 					}
 					Resources.submitResource(rscKey, rawListData);

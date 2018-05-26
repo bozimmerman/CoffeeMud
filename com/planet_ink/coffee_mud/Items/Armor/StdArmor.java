@@ -108,103 +108,45 @@ public class StdArmor extends StdContainer implements Armor
 
 	protected String armorHealth()
 	{
-		if(usesRemaining()>=100)
-			return "";
-		else
-		if(usesRemaining()>=75)
+		final int[] condSet = new int[]{95, 75, 50, 25, 10, 5, 0};
+		int ordinal=0;
+		for(int i=0;i<condSet.length;i++)
 		{
-			switch(material()&RawMaterial.MATERIAL_MASK)
+			if(usesRemaining()>=condSet[i])
 			{
-			case RawMaterial.MATERIAL_CLOTH: 
-				return L("@x1 has a small tear (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_SYNTHETIC:
-			case RawMaterial.MATERIAL_GLASS: 
-				return L("@x1 has a few hairline cracks (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_LEATHER: 
-				return L("@x1 is a bit scuffed (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_METAL:
-			case RawMaterial.MATERIAL_MITHRIL: 
-				return L("@x1 has some small dents (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_WOODEN: 
-				return L("@x1 has a few small splinters (@x2%)",name(),""+usesRemaining());
-			default: 
-				return L("@x1 is slightly damaged (@x2%)",name(),""+usesRemaining());
+				ordinal=i;
+				break;
 			}
 		}
-		else
-		if(usesRemaining()>=50)
+		final String message;
+		switch(material()&RawMaterial.MATERIAL_MASK)
 		{
-			switch(material()&RawMaterial.MATERIAL_MASK)
-			{
-			case RawMaterial.MATERIAL_CLOTH:
-			case RawMaterial.MATERIAL_PAPER: 
-				return L("@x1 has a a few tears and rips (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_ROCK:
-			case RawMaterial.MATERIAL_PRECIOUS:
-			case RawMaterial.MATERIAL_SYNTHETIC:
-			case RawMaterial.MATERIAL_GLASS: 
-				return L("@x1 is cracked (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_FLESH:
-			case RawMaterial.MATERIAL_LEATHER: 
-				return L("@x1 is torn (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_METAL:
-			case RawMaterial.MATERIAL_MITHRIL: 
-				return L("@x1 is dented (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_WOODEN: 
-				return L("@x1 is splintered (@x2%)",name(),""+usesRemaining());
-			default: 
-				return L("@x1 is damaged (@x2%)",name(),""+usesRemaining());
-			}
+		case RawMaterial.MATERIAL_PAPER:
+		case RawMaterial.MATERIAL_CLOTH: 
+			message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_CONDITION_CLOTH, ordinal);
+			break;
+		case RawMaterial.MATERIAL_ROCK:
+		case RawMaterial.MATERIAL_PRECIOUS:
+		case RawMaterial.MATERIAL_SYNTHETIC:
+		case RawMaterial.MATERIAL_GLASS: 
+			message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_CONDITION_GLASS, ordinal);
+			break;
+		case RawMaterial.MATERIAL_FLESH:
+		case RawMaterial.MATERIAL_LEATHER: 
+			message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_CONDITION_LEATHER, ordinal);
+			break;
+		case RawMaterial.MATERIAL_METAL:
+		case RawMaterial.MATERIAL_MITHRIL: 
+			message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_CONDITION_METAL, ordinal);
+			break;
+		case RawMaterial.MATERIAL_WOODEN: 
+			message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_CONDITION_WOODEN, ordinal);
+			break;
+		default: 
+			message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_CONDITION_OTHER, ordinal);
+			break;
 		}
-		else
-		if(usesRemaining()>=25)
-		{
-			switch(material()&RawMaterial.MATERIAL_MASK)
-			{
-			case RawMaterial.MATERIAL_PAPER:
-			case RawMaterial.MATERIAL_CLOTH: 
-				return L("@x1 has numerous tears and rips (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_ROCK:
-			case RawMaterial.MATERIAL_PRECIOUS:
-			case RawMaterial.MATERIAL_SYNTHETIC:
-			case RawMaterial.MATERIAL_GLASS: 
-				return L("@x1 has numerous streaking cracks (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_FLESH:
-			case RawMaterial.MATERIAL_LEATHER: 
-				return L("@x1 is badly torn up (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_METAL:
-			case RawMaterial.MATERIAL_MITHRIL: 
-				return L("@x1 is badly dented and cracked (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_WOODEN: 
-				return L("@x1 is badly cracked and splintered (@x2%)",name(),""+usesRemaining());
-			default: 
-				return L("@x1 is badly damaged (@x2%)",name(),""+usesRemaining());
-			}
-		}
-		else
-		{
-			switch(material()&RawMaterial.MATERIAL_MASK)
-			{
-			case RawMaterial.MATERIAL_PAPER:
-			case RawMaterial.MATERIAL_CLOTH: 
-				return L("@x1 is a shredded mess (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_ROCK:
-			case RawMaterial.MATERIAL_SYNTHETIC:
-			case RawMaterial.MATERIAL_PRECIOUS:
-			case RawMaterial.MATERIAL_GLASS: 
-				return L("@x1 is practically shards (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_FLESH:
-			case RawMaterial.MATERIAL_LEATHER: 
-				return L("@x1 is badly shredded and ripped (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_METAL:
-			case RawMaterial.MATERIAL_MITHRIL: 
-				return L("@x1 is a crumpled mess (@x2%)",name(),""+usesRemaining());
-			case RawMaterial.MATERIAL_WOODEN: 
-				return L("@x1 is nothing but splinters (@x2%)",name(),""+usesRemaining());
-			default: 
-				return L("@x1 is horribly damaged (@x2%)",name(),""+usesRemaining());
-			}
-		}
+		return L(message,name(),""+usesRemaining());
 	}
 
 	protected final static long STRANGE_DEVIATION_WEAR_LOCS=

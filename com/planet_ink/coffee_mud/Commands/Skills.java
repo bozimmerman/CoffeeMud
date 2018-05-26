@@ -219,6 +219,10 @@ public class Skills extends StdCommand
 		}
 		if((maxLevel>=0)&&(maxLevel<highestLevel))
 			highestLevel=maxLevel;
+		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
+		final boolean useWords=CMProps.Int.Prowesses.SKILL_PROFICIENCY.is(prowessCode);
+		final int[] proficiencyRanges=new int[]{5,10,20,30,40,50,60,70,75,80,85,90,95,100};
+		int MAX_COLS=useWords?2:3;
 		for(int l=0;l<=highestLevel;l++)
 		{
 			final StringBuilder thisLine=new StringBuilder("");
@@ -236,15 +240,39 @@ public class Skills extends StdCommand
 					if(thisLine.length()==0)
 						thisLine.append("\n\rLevel ^!"+l+"^?:\n\r");
 					col++;
-					thisLine.append("^N[^H").append(CMStrings.padRight(Integer.toString(A.proficiency()),COL_LEN1));
-					thisLine.append("%^?]^N");
-					thisLine.append(" ");//+(A.isAutoInvoked()?"^H.^N":" ")
-					if(col < 3)
-						thisLine.append(CMStrings.padRight("^<HELP^>",A.name(),"^</HELP^>",COL_LEN2));
+					if(!useWords)
+					{
+						thisLine.append("^N[^H").append(CMStrings.padRight(Integer.toString(A.proficiency()),COL_LEN1));
+						thisLine.append("%^?]^N");
+						thisLine.append(" ");//+(A.isAutoInvoked()?"^H.^N":" ")
+						if(col < MAX_COLS)
+							thisLine.append(CMStrings.padRight("^<HELP^>",A.name(),"^</HELP^>",COL_LEN2));
+						else
+						{
+							thisLine.append(CMStrings.limit("^<HELP^>",A.name(),"^</HELP^>\n\r",COL_LEN3));
+							col=0;
+						}
+					}
 					else
 					{
-						thisLine.append(CMStrings.limit("^<HELP^>",A.name(),"^</HELP^>\n\r",COL_LEN3));
-						col=0;
+						thisLine.append(CMStrings.padRight("^<HELP^>",A.name(),"^</HELP^>",COL_LEN2));
+						int ordinal=0;
+						for(int i=0;i<proficiencyRanges.length;i++)
+						{
+							if(A.proficiency()<=proficiencyRanges[i])
+							{
+								ordinal=i;
+								break;
+							}
+						}
+						final String message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.SKILL_PROFICIENCY_DESC, ordinal);
+						if(col < MAX_COLS)
+							thisLine.append(CMStrings.padRight("^N(^H",message,"^?)^N",COL_LEN2));
+						else
+						{
+							thisLine.append(CMStrings.limit("^N(^H",message,"^?)^N\n\r",COL_LEN3));
+							col=0;
+						}
 					}
 				}
 			}

@@ -330,61 +330,31 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 
 	protected String weaponHealth()
 	{
-		if(usesRemaining()>=100)
-			return "";
-		else
-		if(usesRemaining()>=95)
-			return L("@x1 looks slightly used (@x2%)",name(),""+usesRemaining());
-		else
-		if(usesRemaining()>=85)
+		final int[] condSet = new int[]{95, 85, 75, 50, 25, 10, 5, 0};
+		int ordinal=0;
+		for(int i=0;i<condSet.length;i++)
 		{
-			switch(weaponClassification())
+			if(usesRemaining()>=condSet[i])
 			{
-			case Weapon.CLASS_AXE:
-			case Weapon.CLASS_DAGGER:
-			case Weapon.CLASS_EDGED:
-			case Weapon.CLASS_POLEARM:
-			case Weapon.CLASS_SWORD:
-				return L("@x1 is somewhat dull (@x2%)",name(),""+usesRemaining());
-			default:
-				 return L("@x1 is somewhat worn (@x2%)",name(),""+usesRemaining());
+				ordinal=i;
+				break;
 			}
 		}
-		else
-		if(usesRemaining()>=75)
+		final String message;
+		switch(weaponClassification())
 		{
-			switch(weaponClassification())
-			{
-			case Weapon.CLASS_AXE:
-			case Weapon.CLASS_DAGGER:
-			case Weapon.CLASS_EDGED:
-			case Weapon.CLASS_POLEARM:
-			case Weapon.CLASS_SWORD:
-				return L("@x1 is dull (@x2%)",name(),""+usesRemaining());
-			default:
-				 return L("@x1 is worn (@x2%)",name(),""+usesRemaining());
-			}
+		case Weapon.CLASS_AXE:
+		case Weapon.CLASS_DAGGER:
+		case Weapon.CLASS_EDGED:
+		case Weapon.CLASS_POLEARM:
+		case Weapon.CLASS_SWORD:
+			message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_CONDITION_EDGED, ordinal);
+			break;
+		default:
+			message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.WEAPON_CONDITION_OTHER, ordinal);
+			break;
 		}
-		else
-		if(usesRemaining()>50)
-		{
-			switch(weaponClassification())
-			{
-			case Weapon.CLASS_AXE:
-			case Weapon.CLASS_DAGGER:
-			case Weapon.CLASS_EDGED:
-			case Weapon.CLASS_POLEARM:
-			case Weapon.CLASS_SWORD:
-				return L("@x1 has some notches and chinks (@x2%)",name(),""+usesRemaining());
-			default:
-				return L("@x1 is damaged (@x2%)",name(),""+usesRemaining());
-			}
-		}
-		else
-		if(usesRemaining()>25)
-			return L("@x1 is heavily damaged (@x2%)",name(),""+usesRemaining());
-		else
-			return L("@x1 is so damaged, it is practically harmless (@x2%)",name(),""+usesRemaining());
+		return L(message,name(),""+usesRemaining());
 	}
 
 	@Override

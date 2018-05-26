@@ -1488,6 +1488,8 @@ public class DefaultPlayerStats implements PlayerStats
 	@Override
 	public void setRolePlayXP(int amt)
 	{
+		if(amt < 0)
+			return;
 		if(amt > this.getMaxRolePlayXP())
 			this.rolePlayXP = this.getMaxRolePlayXP();
 		else
