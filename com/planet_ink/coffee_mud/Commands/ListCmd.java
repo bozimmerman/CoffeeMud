@@ -2376,10 +2376,10 @@ public class ListCmd extends StdCommand
 		final int x=whichGroupStr.lastIndexOf(' ');
 		String finalCol="tickercodeword";
 		String finalColName="Status";
+		final String[] validCols={"tickername","tickerid","tickerstatus","tickerstatusstr","tickercodeword","tickertickdown","tickerretickdown","tickermillitotal","tickermilliavg","tickerlaststartmillis","tickerlaststopmillis","tickerlaststartdate","tickerlaststopdate","tickerlastduration","tickersuspended"};
 		if(x>0)
 		{
 			String lastWord=whichGroupStr.substring(x+1).trim().toLowerCase();
-			final String[] validCols={"tickername","tickerid","tickerstatus","tickerstatusstr","tickercodeword","tickertickdown","tickerretickdown","tickermillitotal","tickermilliavg","tickerlaststartmillis","tickerlaststopmillis","tickerlaststartdate","tickerlaststopdate","tickerlastduration","tickersuspended"};
 			final int y=CMParms.indexOf(validCols,lastWord);
 			if(y>=0)
 				finalCol=lastWord;
@@ -2413,8 +2413,22 @@ public class ListCmd extends StdCommand
 		else
 		if("PROBLEMS".startsWith(whichGroupStr.toUpperCase())&&(whichGroupStr.length()>0))
 		{
+			String probType = "tickerProblems";
+			if(x<0)
+			{
+				finalCol="tickermilliavg";
+				finalColName="Msavg";
+			}
+			if(finalCol.equals("tickermillitotal"))
+				probType="tickerProb2";
+			else
+			{
+				msg.append("\n\r^HProblems by total time used:^N\n\r");
+				msg.append(listTicks(viewerS,"problems tickermillitotal"));
+				msg.append("\n\r\n\r^HProblems by average time used:^N\n\r\n\r");
+			}
 			whichTicks=new HashSet<Pair<Integer,Integer>>();
-			final String problemSets=CMLib.threads().systemReport("tickerProblems");
+			final String problemSets=CMLib.threads().systemReport(probType);
 			final List<String> sets=CMParms.parseSemicolons(problemSets, true);
 			for(final String set : sets)
 			{
@@ -2438,9 +2452,11 @@ public class ListCmd extends StdCommand
 		final int COL_LEN2=CMLib.lister().fixColWidth(20.0,viewerS);
 		final int COL_LEN3=CMLib.lister().fixColWidth(3.0,viewerS);
 		final int COL_LEN4=CMLib.lister().fixColWidth(8.0,viewerS);
+		msg.append("^w");
 		if(!activeOnly)
-			msg.append(CMStrings.padRight(L("Grp"),COL_LEN1)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(finalColName,COL_LEN4));
-		msg.append(CMStrings.padRight(L("Grp"),COL_LEN1)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(finalColName,COL_LEN4)+"\n\r");
+			msg.append(CMStrings.padRight(L("Grp"),COL_LEN1)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(finalColName,COL_LEN4));
+		msg.append(CMStrings.padRight(L("Grp"),COL_LEN1)+" "+CMStrings.padRight(L("ID"),COL_LEN3)+CMStrings.padRight(L("Client"),COL_LEN2)+" "+CMStrings.padRight(finalColName,COL_LEN4)+"\n\r");
+		msg.append("^N");
 		int col=0;
 		final int numGroups=CMath.s_int(CMLib.threads().tickInfo("tickGroupSize"));
 		if((mask!=null)&&(mask.length()==0))
@@ -2464,17 +2480,30 @@ public class ListCmd extends StdCommand
 							if((mask==null)||(name.toUpperCase().indexOf(mask)>=0))
 							{
 								final String id=CMLib.threads().tickInfo("tickerID"+group+"-"+tick);
-								final String status=CMLib.threads().tickInfo(finalCol+group+"-"+tick);
+								String finalVal=CMLib.threads().tickInfo(finalCol+group+"-"+tick);
 								final boolean suspended=CMath.s_bool(CMLib.threads().tickInfo("tickerSuspended"+group+"-"+tick));
+								if(finalVal.length()>COL_LEN4-(suspended?2:1))
+								{
+									if(CMath.isLong(finalVal))
+									{
+										int lvl=0;
+										while((finalVal.length()>COL_LEN4-(suspended?2:1))&&(lvl<3))
+										{
+											finalVal = ""+(CMath.s_long(finalVal)/1000);
+											lvl++;
+										}
+										finalVal=finalVal+"kmbg".charAt(lvl);
+									}
+								}
 								if(((col++)>=2)||(activeOnly))
 								{
 									msg.append("\n\r");
 									col=1;
 								}
 								chunk=CMStrings.padRight(""+group,COL_LEN1)
-								   +CMStrings.padRight(name,COL_LEN2)
 								   +" "+CMStrings.padRight(id+"",COL_LEN3)
-								   +CMStrings.padRight((activeOnly?(status+(suspended?"*":"")):status+(suspended?"*":"")),COL_LEN4);
+								   +CMStrings.padRight(name,COL_LEN2)
+								   +" "+CMStrings.padRight((activeOnly?(finalVal+(suspended?"*":"")):finalVal+(suspended?"*":"")),COL_LEN4);
 								msg.append(chunk);
 							}
 						}

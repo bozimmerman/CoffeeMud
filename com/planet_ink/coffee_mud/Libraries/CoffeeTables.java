@@ -40,7 +40,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 		return "CoffeeTables";
 	}
 
-	public CoffeeTableRow todays=null;
+	public volatile CoffeeTableRow todays=null;
 
 	@Override
 	public void update()

@@ -28,6 +28,7 @@ public class StdTickClient implements TickClient
 	public volatile long	lastStart	= 0;
 	public volatile long	lastStop	= 0;
 	public volatile long	milliTotal	= 0;
+	public volatile long	nanoTotal	= 0;
 	public volatile int		tickTotal	= 0;
 	public volatile String	status		= null;
 
@@ -138,6 +139,7 @@ public class StdTickClient implements TickClient
 	@Override
 	public boolean tickTicker(boolean forceTickDown)
 	{
+		final long nanoStart=System.nanoTime();
 		try
 		{
 			lastStart=System.currentTimeMillis();
@@ -163,8 +165,17 @@ public class StdTickClient implements TickClient
 		finally
 		{
 			lastStop=System.currentTimeMillis();
-			milliTotal+=(lastStop-lastStart);
 			tickTotal++;
+			long nanoDiff = System.nanoTime() - nanoStart;
+			if(nanoDiff < 0)
+				nanoDiff = (Long.MAX_VALUE - nanoStart) + System.nanoTime();
+			nanoTotal += nanoDiff;
+			if(nanoTotal > 1000000L)
+			{
+				milliTotal+=Math.round(Math.floor(nanoTotal / 1000000L));
+				nanoTotal = nanoTotal % 1000000L;
+			}
+			
 		}
 		return false;
 	}

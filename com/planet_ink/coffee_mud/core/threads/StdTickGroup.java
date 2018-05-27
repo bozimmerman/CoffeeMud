@@ -322,13 +322,12 @@ public class StdTickGroup implements TickableGroup, Cloneable
 	@Override
 	public void run()
 	{
-
+		lastStart=System.currentTimeMillis();
 		nextTickTime=System.currentTimeMillis() + tickTime;
 		//final String oldThreadName=Thread.currentThread().getName();
 		try
 		{
 			currentThread=Thread.currentThread();
-			lastStart=System.currentTimeMillis();
 			lastClient=null;
 			final boolean allSuspended=CMLib.threads().isAllSuspended();
 			if((CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -349,9 +348,9 @@ public class StdTickGroup implements TickableGroup, Cloneable
 		finally
 		{
 			lastStop=System.currentTimeMillis();
-			milliTotal+=(lastStop-lastStart);
 			tickTotal++;
 			currentThread=null;
+			milliTotal += (lastStop - lastStart);
 			//Thread.currentThread().setName(oldThreadName);
 		}
 		if(tickers.size()==0)

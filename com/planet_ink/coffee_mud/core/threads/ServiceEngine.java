@@ -569,6 +569,49 @@ public class ServiceEngine implements ThreadEngine
 				str.append(';').append(t.second).append(',').append(t.third);
 			return str.toString().substring(1);
 		}
+		else
+		if(itemCode.toLowerCase().startsWith("tickerprob2"))
+		{
+			final int x=itemCode.indexOf('-');
+			int total=10;
+			if(x>0)
+				total=CMath.s_int(itemCode.substring(x+1));
+			final Vector<Triad<Long,Integer,Integer>> list=new Vector<Triad<Long,Integer,Integer>>();
+			int group=0;
+			for(final Iterator<TickableGroup> e=tickGroups();e.hasNext();)
+			{
+				final TickableGroup almostTock=e.next();
+				int tick=0;
+				for(final Iterator<TickClient> et=almostTock.tickers();et.hasNext();)
+				{
+					final TickClient C=et.next();
+					if(C.getTickTotal()==0)
+						continue;
+					int i=0;
+					for(;i<list.size();i++)
+					{
+						final Triad<Long,Integer,Integer> t=list.get(i);
+						if(C.getMilliTotal()>=t.first.longValue())
+						{
+							list.add(i,new Triad<Long,Integer,Integer>(new Long(C.getMilliTotal()),Integer.valueOf(group),Integer.valueOf(tick)));
+							break;
+						}
+					}
+					if((list.size()==0)||((i>=list.size())&&(list.size()<total)))
+						list.add(new Triad<Long,Integer,Integer>(new Long(C.getMilliTotal()),Integer.valueOf(group),Integer.valueOf(tick)));
+					while(list.size()>total)
+						list.remove(list.size()-1);
+					tick++;
+				}
+				group++;
+			}
+			if(list.size()==0)
+				return "";
+			final StringBuilder str=new StringBuilder("");
+			for(final Triad<Long,Integer,Integer> t : list)
+				str.append(';').append(t.second).append(',').append(t.third);
+			return str.toString().substring(1);
+		}
 
 		int totalTickers=0;
 		long totalMillis=0;
