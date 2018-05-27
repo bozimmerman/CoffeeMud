@@ -544,12 +544,12 @@ public class Druid_ShapeShift extends StdAbility
 						list.append(CMStrings.padLeft(""+(i+1),2)+") Not yet chosen.\n\r");
 					else
 					{
-						final String form=forms.get(myRaceCode).form;
+						final String form=forms.get(A.myRaceCode).form;
 						list.append(CMStrings.padLeft(""+(i+1),2)+") "+form+": ");
 						final int raceLevel=A.getRaceLevel(mob);
 						for(int i1=raceLevel;i1>=0;i1--)
 						{
-							final String shape=forms.get(myRaceCode).shapes[i1];
+							final String shape=forms.get(A.myRaceCode).shapes[i1];
 							list.append(shape);
 							if(i1!=0)
 								list.append(", ");
@@ -561,7 +561,7 @@ public class Druid_ShapeShift extends StdAbility
 							return A.invoke(mob,new Vector<String>(),givenTarget,auto,asLevel);
 						for(int i1=raceLevel;i1>=0;i1--)
 						{
-							final String shape=forms.get(myRaceCode).shapes[i1];
+							final String shape=forms.get(A.myRaceCode).shapes[i1];
 							if(CMLib.english().containsString(shape,parm))
 								return A.invoke(mob,new XVector<String>(parm),givenTarget,auto,asLevel);
 						}
