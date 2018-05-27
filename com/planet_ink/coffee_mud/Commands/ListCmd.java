@@ -2444,6 +2444,9 @@ public class ListCmd extends StdCommand
 			whichGroups.add(Integer.valueOf(CMath.s_int(whichGroupStr)));
 		}
 		else
+		if(whichGroupStr.equalsIgnoreCase("all"))
+			whichGroupStr="";
+		else
 		if(whichGroupStr.length()>0)
 		{
 			mask=whichGroupStr.toUpperCase().trim();
@@ -2482,14 +2485,15 @@ public class ListCmd extends StdCommand
 								final String id=CMLib.threads().tickInfo("tickerID"+group+"-"+tick);
 								String finalVal=CMLib.threads().tickInfo(finalCol+group+"-"+tick);
 								final boolean suspended=CMath.s_bool(CMLib.threads().tickInfo("tickerSuspended"+group+"-"+tick));
-								if(finalVal.length()>COL_LEN4-(suspended?2:1))
+								final int realCol4Len=COL_LEN4-(suspended?2:1);
+								if(finalVal.length()>realCol4Len)
 								{
 									if(CMath.isLong(finalVal))
 									{
-										int lvl=0;
-										while((finalVal.length()>COL_LEN4-(suspended?2:1))&&(lvl<3))
+										int lvl=-1;
+										while((finalVal.length()>realCol4Len)&&(lvl<3))
 										{
-											finalVal = ""+(CMath.s_long(finalVal)/1000);
+											finalVal = ""+Math.round(CMath.div(CMath.s_long(finalVal),1000.0));
 											lvl++;
 										}
 										finalVal=finalVal+"kmbg".charAt(lvl);
@@ -2502,7 +2506,7 @@ public class ListCmd extends StdCommand
 								}
 								chunk=CMStrings.padRight(""+group,COL_LEN1)
 								   +" "+CMStrings.padRight(id+"",COL_LEN3)
-								   +CMStrings.padRight(name,COL_LEN2)
+								   +CMStrings.padRight(name,COL_LEN2)+"^N"
 								   +" "+CMStrings.padRight((activeOnly?(finalVal+(suspended?"*":"")):finalVal+(suspended?"*":"")),COL_LEN4);
 								msg.append(chunk);
 							}
