@@ -8779,6 +8779,33 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 				break;
 			}
+			case 86: // mprpexp
+			{
+				if(tt==null)
+				{
+					tt=parseBits(script,si,"Ccr");
+					if(tt==null)
+						return null;
+				}
+				final Physical newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				final String amtStr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]).trim();
+				int t=CMath.s_int(amtStr);
+				if((newTarget!=null)&&(newTarget instanceof MOB))
+				{
+					if((amtStr.endsWith("%"))
+					&&(((MOB)newTarget).getExpNeededLevel()<Integer.MAX_VALUE))
+					{
+						final int baseLevel=newTarget.basePhyStats().level();
+						final int lastLevelExpNeeded=(baseLevel<=1)?0:CMLib.leveler().getLevelExperience(baseLevel-1);
+						final int thisLevelExpNeeded=CMLib.leveler().getLevelExperience(baseLevel);
+						t=(int)Math.round(CMath.mul(thisLevelExpNeeded-lastLevelExpNeeded,
+											CMath.div(CMath.s_int(amtStr.substring(0,amtStr.length()-1)),100.0)));
+					}
+					if(t!=0)
+						CMLib.leveler().postRPExperience((MOB)newTarget,null,null,t,false);
+				}
+				break;
+			}
 			case 77: // mpmoney
 			{
 				if(tt==null)
