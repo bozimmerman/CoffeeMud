@@ -58,7 +58,7 @@ public class StdItem implements Item
 	protected int		material			= RawMaterial.RESOURCE_COTTON;
 	protected String[]	xtraValues			= null;
 	protected long		dispossessionTime	= 0;
-	protected short		tickCtr				= 0;
+	protected short		tickCtr				= 5;
 	protected int		tickStatus			= Tickable.STATUS_NOT;
 	protected String	databaseID			= "";
 	protected boolean	destroyed			= false;
