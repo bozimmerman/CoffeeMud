@@ -58,6 +58,7 @@ public class StdItem implements Item
 	protected int		material			= RawMaterial.RESOURCE_COTTON;
 	protected String[]	xtraValues			= null;
 	protected long		dispossessionTime	= 0;
+	protected short		tickCtr				= 0;
 	protected int		tickStatus			= Tickable.STATUS_NOT;
 	protected String	databaseID			= "";
 	protected boolean	destroyed			= false;
@@ -705,6 +706,23 @@ public class StdItem implements Item
 		if(destroyed)
 			return false;
 		tickStatus=Tickable.STATUS_START;
+		if((--tickCtr)<=0)
+		{
+			tickCtr=10;
+			final Environmental E=owner();
+			if((E instanceof MOB)&&(!((MOB)E).isPlayer()))
+			{
+				final Room R=CMLib.map().roomLocation(this);
+				final Area A=CMLib.map().areaLocation(this);
+				if((R.amDestroyed())||(A.amDestroyed()))
+				{
+					Log.warnOut("Destroying "+Name()+" because it's not ticking in a real place ("+CMLib.map().getExtendedRoomID(R)+"): ("+A.Name()+").");
+					this.destroy();
+					return false;
+				}
+			}
+		}
+		
 		switch(tickID)
 		{
 		case Tickable.TICKID_ITEM_BEHAVIOR:
