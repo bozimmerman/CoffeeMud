@@ -1438,7 +1438,7 @@ public class RoomData extends StdWebMacro
 					itemlist=contributeItems(classes);
 				}
 				str.append("<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>");
-				final Map<Container,String> classesContainers = new TreeMap<Container,String>();
+				final Map<Container,String> classesContainers = new HashMap<Container,String>();
 				{
 					final List<String> allContextNames=CMLib.english().getAllContextNames(classes, new Filterer<Environmental>()
 					{
