@@ -1007,7 +1007,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	}
 
 	@Override
-	public Command deferCommandCheck(final MOB mob, final Command C, List<String> cmds)
+	public Command deferCommandCheck(final MOB mob, final Command C, final List<String> cmds)
 	{
 		if(mob.isPlayer() && (CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT) >0))
 		{
@@ -1031,7 +1031,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				final String parg = CMProps.getVar(CMProps.Str.EXPDEFER_ARGUMENT);
 				if(parg.length() == 0)
 				{
-					if(cmds.size()>1)
+					if((cmds!=null)&&(cmds.size()>1))
 						return C;
 				}
 				else

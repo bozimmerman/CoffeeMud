@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2018 Bo Zimmerman
+   Copyright 2018-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,15 +33,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Archon_Hush extends ArchonSkill
+public class Archon_MarkOOC extends ArchonSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Archon_Hush";
+		return "Archon_MarkOOC";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Hush");
+	private final static String localizedName = CMLib.lang().L("Mark OOC");
 
 	@Override
 	public String name()
@@ -107,16 +107,9 @@ public class Archon_Hush extends ArchonSkill
 		if(!super.okMessage(myHost,msg))
 			return false;
 
-		if(((msg.sourceMinor()==CMMsg.TYP_TELL)
-			||(msg.othersMajor(CMMsg.MASK_CHANNEL)))
-		&&((msg.source()==affected)
-			||((msg.source().location()==CMLib.map().roomLocation(affected))
-				&&(msg.source().isMonster())
-				&&(msg.source().willFollowOrdersOf((MOB)affected)))))
-		{
-			msg.source().tell(L("Your message drifts into oblivion."));
+		if((msg.sourceMinor()==CMMsg.TYP_RPXPCHANGE)
+		&&(msg.source()==affected))
 			return false;
-		}
 		return true;
 	}
 
@@ -130,7 +123,7 @@ public class Archon_Hush extends ArchonSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(L("You are no longer hushed!"));
+			mob.tell(L("You are no longer OOC cursed!"));
 	}
 
 	@Override
@@ -144,7 +137,7 @@ public class Archon_Hush extends ArchonSkill
 		if(A!=null)
 		{
 			A.unInvoke();
-			mob.tell(L("@x1 is released from his hushing.",target.Name()));
+			mob.tell(L("@x1 is released from his Out of Character curse.",target.Name()));
 			return true;
 		}
 
@@ -155,18 +148,18 @@ public class Archon_Hush extends ArchonSkill
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("Silence falls upon <T-NAME>!"):L("^F<S-NAME> hush(es) <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),auto?L("The OOC curse falls upon <T-NAME>!"):L("^F<S-NAME> curse(s) <T-NAMESELF> for being out of character.^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> hushed!"));
+				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> cursed!"));
 				beneficialAffect(mob,target,asLevel,Ability.TICKS_ALMOST_FOREVER);
-				Log.sysOut("Hugh",mob.Name()+" hushed "+target.name()+".");
+				Log.sysOut("MarkOOC",mob.Name()+" ooc cursed "+target.name()+".");
 			}
 		}
 		else
-			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to hush <T-NAMESELF>, but fail(s)."));
+			return beneficialVisualFizzle(mob,target,L("<S-NAME> attempt(s) to curse <T-NAMESELF>, but fail(s)."));
 		return success;
 	}
 }

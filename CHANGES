@@ -35,6 +35,7 @@
   33. LISTFILE now has "condition" msgs for armor and weapons, and entries are overridable.
   34. PROWESSOPTIOS and the LISTFILE can now be used to show skill proficiency as words.
   35. New LOGOUTMASK to limit when a player can logout of the game.
+  36. New Archon Skill: Mark OOC -- to stop a player from receiving RolePlay XP.
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
    1. Hunger and Thirst system can now be tweeked.  See coffeemud.ini file
