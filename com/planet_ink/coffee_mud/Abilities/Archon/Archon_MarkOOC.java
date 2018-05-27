@@ -49,7 +49,7 @@ public class Archon_MarkOOC extends ArchonSkill
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Hushed)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Out of Character)");
 
 	@Override
 	public String displayText()
@@ -75,7 +75,7 @@ public class Archon_MarkOOC extends ArchonSkill
 		return Ability.QUALITY_MALICIOUS;
 	}
 
-	private static final String[] triggerStrings = I(new String[] { "HUSH" });
+	private static final String[] triggerStrings = I(new String[] { "MARKOOC" });
 
 	@Override
 	public String[] triggerStrings()
@@ -123,7 +123,7 @@ public class Archon_MarkOOC extends ArchonSkill
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell(L("You are no longer OOC cursed!"));
+			mob.tell(L("You are no longer out of character!"));
 	}
 
 	@Override
