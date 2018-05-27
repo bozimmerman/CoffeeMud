@@ -1160,6 +1160,15 @@
 		<A HREF="javascript:openUp2('ZAPPERMASKS')">Click here for Mask help</a>
 		</TD></TR>
 		
+		<TR><TD WIDTH=20% VALIGN=TOP><FONT COLOR=WHITE>LOGOUTMASK</FONT>
+		</TD><TD WIDTH=80% VALIGN=TOP>
+		<INPUT TYPE=TEXT NAME=LOGOUTMASK SIZE=80 VALUE="@INIValue?MASK=LOGOUTMASK&VALUE@">
+		<BR>
+		<FONT COLOR=WHITE>@INIValue?MASK=LOGOUTMASK&INIHELP@
+		<A HREF="javascript:openUp2('ZAPPERMASKS')">Click here for Mask help</a>
+		</TD></TR>
+		
+		
 		</TABLE>
 	@endif@
 	@if?CheckReqParm?INIPAGE=COMBAT@

@@ -118,6 +118,15 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		}
 	}
 
+	private enum LocationType
+	{
+		OWNED,
+		CLANOWNED,
+		PRIV,
+		ROOMID,
+		ROOMSTR
+	}
+	
 	public static class CompiledZapperMaskImpl implements CompiledZMask
 	{
 		private final boolean[] flags;
@@ -378,6 +387,64 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			}
 		}
 		return o;
+	}
+	
+	protected boolean checkLocation(final Environmental E, final MOB M, final Room R, final Object o, final Object p)
+	{
+		if(!(o instanceof LocationType))
+			return false;
+		switch((LocationType)o)
+		{
+		case CLANOWNED:
+		{
+			if(E instanceof MOB)
+			{
+				for(final Pair<Clan,Integer> C : M.clans())
+				{
+					if(CMLib.law().doesOwnThisLand(C.first.getName(), R) || CMLib.law().doesOwnThisProperty(C.first.getName(), R))
+						return true;
+				}
+			}
+			else
+			{
+				final String str = CMLib.law().getLandOwnerName(R);
+				if((str.length()>0)&&(CMLib.clans().getClan(str)!=null))
+					return true;
+			}
+			break;
+		}
+		case OWNED:
+		{
+			if(E instanceof MOB)
+				return CMLib.law().doesOwnThisLand(M, R) || CMLib.law().doesOwnThisProperty(M, R);
+			else
+				return CMLib.law().getLandOwnerName(R).length()>0;
+		}
+		case PRIV:
+		{
+			return CMLib.law().doesHavePriviledgesHere(M, R);
+		}
+		case ROOMID:
+		{
+			final String roomID=CMLib.map().getExtendedRoomID(R).toLowerCase();
+			if((p!=null)&&(roomID.startsWith(p.toString().toLowerCase())))
+				return true;
+			break;
+		}
+		case ROOMSTR:
+		{
+			if(p!=null)
+			{
+				final String subStr=p.toString();
+				if(CMLib.english().containsString(R.displayText(M), subStr))
+					return true;
+				if(CMLib.english().containsString(R.description(M), subStr))
+					return true;
+			}
+			break;
+		}
+		}
+		return false;
 	}
 
 	protected boolean evaluateSkillFlagObject(final Object o, final Ability A)
@@ -920,6 +987,38 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							if(zapCodes.containsKey(str2))
 								break;
 							if(str2.startsWith("-"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case LOCATION: // +location
+					{
+						buf.append(L((skipFirstWord?"":"Disallows")+" being at places like : "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("-"))
+								buf.append(str2.substring(1)+", ");
+						}
+						if(buf.toString().endsWith(", "))
+							buf=new StringBuilder(buf.substring(0,buf.length()-2));
+						buf.append(".  ");
+					}
+					break;
+				case _LOCATION: // -location
+					{
+						buf.append(L((skipFirstWord?"":"Requires")+" being at places like : "));
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							final String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+								break;
+							if(str2.startsWith("+"))
 								buf.append(str2.substring(1)+", ");
 						}
 						if(buf.toString().endsWith(", "))
@@ -3479,6 +3578,82 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
 					}
 					break;
+				case LOCATION:
+					{
+						final ArrayList<Object> parms=new ArrayList<Object>();
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if(str2.startsWith("-"))
+							{
+								str2=str2.substring(1);
+								int x=str2.indexOf('(');
+								String id=str2;
+								String str2parms="";
+								if(x>0)
+								{
+									id=str2.substring(0,x);
+									if(str2.endsWith(")"))
+										str2parms=str2.substring(x+1,str2.length()-1);
+									else
+										str2parms=str2.substring(x+1);
+								}
+								LocationType T=(LocationType)CMath.s_valueOf(LocationType.class, id.toUpperCase());
+								if(T != null)
+								{
+									parms.add(T);
+									parms.add(str2parms);
+								}
+							}
+							v=V.size();
+						}
+						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
+					}
+					break;
+				case _LOCATION:
+					{
+						final ArrayList<Object> parms=new ArrayList<Object>();
+						for(int v2=v+1;v2<V.size();v2++)
+						{
+							String str2=V.get(v2);
+							if(zapCodes.containsKey(str2))
+							{
+								v=v2-1;
+								break;
+							}
+							else
+							if(str2.startsWith("+"))
+							{
+								str2=str2.substring(1);
+								int x=str2.indexOf('(');
+								String id=str2;
+								String str2parms="";
+								if(x>0)
+								{
+									id=str2.substring(0,x);
+									if(str2.endsWith(")"))
+										str2parms=str2.substring(x+1,str2.length()-1);
+									else
+										str2parms=str2.substring(x+1);
+								}
+								LocationType T=(LocationType)CMath.s_valueOf(LocationType.class, id.toUpperCase());
+								if(T != null)
+								{
+									parms.add(T);
+									parms.add(str2parms);
+								}
+							}
+							v=V.size();
+						}
+						buf.add(new CompiledZapperMaskEntryImpl(entryType,parms.toArray(new Object[0])));
+					}
+					break;
 				case AREA: // +Area
 					buildRoomFlag=true;
 				//$FALL-THROUGH$
@@ -4630,6 +4805,32 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							if(CMParms.indexOf(entry.parms(), "") < 0)
 								return false;
 						}
+					}
+					break;
+				case LOCATION: // +location
+					{
+						final Room R=CMLib.map().roomLocation(E);
+						for(int i=0;i<entry.parms().length-1;i+=2)
+						{
+							if(checkLocation(E, mob, R, entry.parms()[i], entry.parms()[i+1]))
+								return false;
+						}
+					}
+					break;
+				case _LOCATION: // -location
+					{
+						final Room R=CMLib.map().roomLocation(E);
+						boolean found=false;
+						for(int i=0;i<entry.parms().length-1;i+=2)
+						{
+							if(checkLocation(E, mob, R, entry.parms()[i], entry.parms()[i+1]))
+							{
+								found=true;
+								break;
+							}
+						}
+						if(!found)
+							return false;
 					}
 					break;
 				case WEAPONCLASS: // +weaponclass
@@ -6533,6 +6734,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case _WEAPONCLASS: // -weaponclass
 				case WEAPONAMMO: // +weaponammo
 				case _WEAPONAMMO: // -weaponammo
+				case LOCATION: // +location
+				case _LOCATION: // -location
 					break;
 				case _IF: // -if
 				case IF: // +if

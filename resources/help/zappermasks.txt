@@ -58,6 +58,8 @@
 +HOME "-my areaname" (<WORD> only those from listed home/beacon area)
 -ISHOME (<WORD> all npcs not currently in their home/beacon areas)
 +ISHOME (<WORD> all npcs unless they are in their home/beacon areas)
+-LOCATION +OWNED +CLANOWNED +PRIV +ROOMID(X) +ROOMSTR(X) (<WORD> all but)
++LOCATION -OWNED -CLANOWNED -PRIV -ROOMID(X) -ROOMSTR(X) (<WORD> listed)
 -ITEM "+item name" etc... (<WORD> only those with an item name)
 -WORN "+item name" etc... (<WORD> only those wearing item name)
 -MATERIAL "+WOODEN" etc.. (<WORD> only items of added materials)

@@ -563,7 +563,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
 
 		mob.setExperience(mob.getExperience()+amount);
-		pStats.setLastXPAwardMillis(System.currentTimeMillis());
+		if(pStats != null)
+			pStats.setLastXPAwardMillis(System.currentTimeMillis());
 		if(homageMessage==null)
 			homageMessage="";
 		if(!quiet)

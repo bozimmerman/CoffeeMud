@@ -81,6 +81,13 @@ public class Quit extends StdCommand
 					mob.tell(L("You must wait a few more minutes before you are allowed to quit."));
 					return false;
 				}
+				if((!CMLib.masking().maskCheck(CMProps.getVar(CMProps.Str.LOGOUTMASK), mob, true))
+				&&(!CMSecurity.isASysOp(mob)))
+				{
+					mob.tell(L("You are not permitted to quit at this time."));
+					mob.tell(L("Quitting requires: ")+CMLib.masking().maskDesc(CMProps.getVar(CMProps.Str.LOGOUTMASK), false));
+					return false;
+				}
 				session.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", 30000)
 				{
 					@Override

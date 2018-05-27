@@ -2575,7 +2575,9 @@ public class DefaultSession implements Session
 				pStats.setLastDateTime(System.currentTimeMillis());
 			if(inTheGame)
 				CMLib.database().DBUpdateFollowers(M);
-			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS))
+			if(CMSecurity.isASysOp(M)
+			||((!CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS)))
+				&&(CMLib.masking().maskCheck(CMProps.getVar(CMProps.Str.LOGOUTMASK), M, true)))
 			{
 				if(pStats!=null) // cant do this when logouts are suspended -- folks might get killed!
 					CMLib.threads().suspendResumeRecurse(M, false, true);
@@ -2974,7 +2976,9 @@ public class DefaultSession implements Session
 			{
 				try
 				{
-					if(CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS))
+					if((CMSecurity.isDisabled(CMSecurity.DisFlag.LOGOUTS)
+						||(!CMLib.masking().maskCheck(CMProps.getVar(CMProps.Str.LOGOUTMASK), M, true)))
+					&&(!CMSecurity.isASysOp(M)))
 					{
 						M.setSession(null);
 						if(M.location()==null)

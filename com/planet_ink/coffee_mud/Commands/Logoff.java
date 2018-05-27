@@ -63,6 +63,13 @@ public class Logoff extends StdCommand
 				mob.tell(L("You must wait a few more minutes before you are allowed to logout."));
 				return false;
 			}
+			if((!CMLib.masking().maskCheck(CMProps.getVar(CMProps.Str.LOGOUTMASK), mob, true))
+			&&(!CMSecurity.isASysOp(mob)))
+			{
+				mob.tell(L("You are not permitted to logout at this time."));
+				mob.tell(L("Logging out requires: ")+CMLib.masking().maskDesc(CMProps.getVar(CMProps.Str.LOGOUTMASK), false));
+				return false;
+			}
 			try
 			{
 				if(session != null)

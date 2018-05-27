@@ -74,6 +74,22 @@ public class Switch extends StdCommand
 			sysopOverride = true;
 			commands.remove(1);
 		}
+		final Session session=mob.session();
+		if((session!=null)
+		&&(session.getLastPKFight()>0)
+		&&((System.currentTimeMillis()-session.getLastPKFight())<(5*60*1000))
+		&&(!CMSecurity.isASysOp(mob)))
+		{
+			mob.tell(L("You must wait a few more minutes before you are allowed to switch."));
+			return false;
+		}
+		if((!CMLib.masking().maskCheck(CMProps.getVar(CMProps.Str.LOGOUTMASK), mob, true))
+		&&(!CMSecurity.isASysOp(mob)))
+		{
+			mob.tell(L("You are not permitted to switch at this time."));
+			mob.tell(L("Switching requires: ")+CMLib.masking().maskDesc(CMProps.getVar(CMProps.Str.LOGOUTMASK), false));
+			return false;
+		}
 		if((commands.size()>1)&&(CMath.isInteger(commands.get(1))))
 		{
 			final int port=CMath.s_int(commands.get(1));

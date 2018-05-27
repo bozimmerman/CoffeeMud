@@ -203,7 +203,8 @@ public class CMProps extends Properties
 		EXPDEFER_COMMAND,
 		EXPDEFER_ARGUMENT,
 		EXPDEFER_MASK,
-		RPAWARDS
+		RPAWARDS,
+		LOGOUTMASK
 	}
 
 	/**
@@ -2224,6 +2225,7 @@ public class CMProps extends Properties
 		parseXPDeferDetails(getVar(Str.EXPDEFER));
 		setVar(Str.RPAWARDS,getStr("RPAWARDS",""));
 		parseRPAwards(getVar(Str.RPAWARDS));
+		setVar(Str.LOGOUTMASK,getStr("LOGOUTMASK",""));
 		
 		p().poseFilter.clear();
 		p().poseFilter.addAll(CMParms.parse((getStr("POSEFILTER")).toUpperCase()));
