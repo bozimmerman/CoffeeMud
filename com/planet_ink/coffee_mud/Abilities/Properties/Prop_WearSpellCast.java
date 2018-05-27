@@ -146,30 +146,36 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 	{
 		if(processing)
 			return;
-		processing=true;
-		if((host!=null)&&(host instanceof Item))
+		try
 		{
-			myItem=(Item)host;
-
-			final boolean worn=(!myItem.amWearingAt(Wearable.IN_INVENTORY))
-			&&((!myItem.amWearingAt(Wearable.WORN_FLOATING_NEARBY))||(myItem.fitsOn(Wearable.WORN_FLOATING_NEARBY)));
-
-			if((lastMOB instanceof MOB)
-			&&(((MOB)lastMOB).location()!=null)
-			&&((myItem.owner()!=lastMOB)||(!worn)))
-				removeMyAffectsFromLastMOB();
-
-			if((lastMOB==null)
-			&&(worn)
-			&&(myItem.owner()!=null)
-			&&(myItem.owner() instanceof MOB)
-			&&(((MOB)myItem.owner()).location()!=null))
+			processing=true;
+			if((host!=null)&&(host instanceof Item))
 			{
-				if(myItem instanceof Armor)
-					check((MOB)myItem.owner(),((Armor)myItem));
-				addMeIfNeccessary(myItem.owner(),myItem.owner(),true,0,maxTicks);
+				myItem=(Item)host;
+	
+				final boolean worn=(!myItem.amWearingAt(Wearable.IN_INVENTORY))
+				&&((!myItem.amWearingAt(Wearable.WORN_FLOATING_NEARBY))||(myItem.fitsOn(Wearable.WORN_FLOATING_NEARBY)));
+	
+				if((lastMOB instanceof MOB)
+				&&(((MOB)lastMOB).location()!=null)
+				&&((myItem.owner()!=lastMOB)||(!worn)))
+					removeMyAffectsFromLastMOB();
+	
+				if((lastMOB==null)
+				&&(worn)
+				&&(myItem.owner()!=null)
+				&&(myItem.owner() instanceof MOB)
+				&&(((MOB)myItem.owner()).location()!=null))
+				{
+					if(myItem instanceof Armor)
+						check((MOB)myItem.owner(),((Armor)myItem));
+					addMeIfNeccessary(myItem.owner(),myItem.owner(),true,0,maxTicks);
+				}
 			}
 		}
-		processing=false;
+		finally
+		{
+			processing=false;
+		}
 	}
 }

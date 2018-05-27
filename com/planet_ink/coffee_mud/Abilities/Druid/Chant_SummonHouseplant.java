@@ -83,21 +83,27 @@ public class Chant_SummonHouseplant extends Chant_SummonPlants
 		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_PUSH)||(msg.targetMinor()==CMMsg.TYP_PULL)))
 		{
 			processing=true;
-			final Ability A=littlePlantsI.fetchEffect(ID());
-			if(A!=null)
+			try
 			{
-				CMLib.threads().deleteTick(A,-1);
-				littlePlantsI.delEffect(A);
-				littlePlantsI.setSecretIdentity("");
+				final Ability A=littlePlantsI.fetchEffect(ID());
+				if(A!=null)
+				{
+					CMLib.threads().deleteTick(A,-1);
+					littlePlantsI.delEffect(A);
+					littlePlantsI.setSecretIdentity("");
+				}
+				if(littlePlantsI.fetchBehavior("Decay")==null)
+				{
+					final Behavior B=CMClass.getBehavior("Decay");
+					B.setParms("min="+CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)+" max="+CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)+" chance=100");
+					littlePlantsI.addBehavior(B);
+					B.executeMsg(myHost,msg);
+				}
 			}
-			if(littlePlantsI.fetchBehavior("Decay")==null)
+			finally
 			{
-				final Behavior B=CMClass.getBehavior("Decay");
-				B.setParms("min="+CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)+" max="+CMProps.getIntVar(CMProps.Int.TICKSPERMUDMONTH)+" chance=100");
-				littlePlantsI.addBehavior(B);
-				B.executeMsg(myHost,msg);
+				processing=false;
 			}
-			processing=false;
 		}
 	}
 

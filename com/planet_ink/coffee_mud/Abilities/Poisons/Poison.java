@@ -289,55 +289,65 @@ public class Poison extends StdAbility implements HealthCondition
 				final Item myItem=(Item)affected;
 				if(myItem.owner()==null)
 					return;
-				processing=true;
-				if(msg.amITarget(myItem))
-					switch(msg.sourceMinor())
+				try
+				{
+					processing=true;
+					if(msg.amITarget(myItem))
 					{
-					case CMMsg.TYP_DRINK:
-						if(myItem instanceof Drink)
+						switch(msg.sourceMinor())
 						{
-							catchIt(msg.source(),msg.source());
-							if(((((Drink)myItem).liquidRemaining()<0)
-								||((((Drink)myItem).liquidRemaining()-((Drink)myItem).thirstQuenched())<=0))
-							&&(!((Drink)myItem).disappearsAfterDrinking()))
-								affected.delEffect(this);
+						case CMMsg.TYP_DRINK:
+							if(myItem instanceof Drink)
+							{
+								catchIt(msg.source(),msg.source());
+								if(((((Drink)myItem).liquidRemaining()<0)
+									||((((Drink)myItem).liquidRemaining()-((Drink)myItem).thirstQuenched())<=0))
+								&&(!((Drink)myItem).disappearsAfterDrinking()))
+									affected.delEffect(this);
+							}
+							break;
+						case CMMsg.TYP_EAT:
+							if(myItem instanceof Food)
+								catchIt(msg.source(),msg.source());
+							break;
 						}
-						break;
-					case CMMsg.TYP_EAT:
-						if(myItem instanceof Food)
-							catchIt(msg.source(),msg.source());
-						break;
 					}
-				else
-				if(msg.tool()==affected)
-					switch(msg.targetMinor())
+					else
+					if(msg.tool()==affected)
 					{
-					case CMMsg.TYP_DAMAGE:
-						if((msg.source()!=msg.target())
-						&&(myItem instanceof Weapon)
-						&&(msg.target() instanceof MOB))
+						switch(msg.targetMinor())
 						{
-							tickDown--;
-							catchIt(msg.source(),(MOB)msg.target());
+						case CMMsg.TYP_DAMAGE:
+							if((msg.source()!=msg.target())
+							&&(myItem instanceof Weapon)
+							&&(msg.target() instanceof MOB))
+							{
+								tickDown--;
+								catchIt(msg.source(),(MOB)msg.target());
+							}
+							break;
+						case CMMsg.TYP_FILL:
+							if((msg.target() instanceof Drink)
+							&&(affected instanceof Drink))
+							{
+								if((msg.target() instanceof Item)
+								&&((!CMLib.flags().isGettable((Item)msg.target()))
+									||(((Drink)msg.target()).liquidRemaining()>9999)))
+									invoke(msg.source(), (Physical)msg.target(), true, 0);
+								else
+									((Drink)msg.target()).addEffect((Ability)this.copyOf());
+								if((((Drink)affected).liquidRemaining()-((Drink)msg.target()).amountTakenToFillMe((Drink)affected))<=0)
+									affected.delEffect(this);
+							}
+							break;
 						}
-						break;
-					case CMMsg.TYP_FILL:
-						if((msg.target() instanceof Drink)
-						&&(affected instanceof Drink))
-						{
-							if((msg.target() instanceof Item)
-							&&((!CMLib.flags().isGettable((Item)msg.target()))
-								||(((Drink)msg.target()).liquidRemaining()>9999)))
-								invoke(msg.source(), (Physical)msg.target(), true, 0);
-							else
-								((Drink)msg.target()).addEffect((Ability)this.copyOf());
-							if((((Drink)affected).liquidRemaining()-((Drink)msg.target()).amountTakenToFillMe((Drink)affected))<=0)
-								affected.delEffect(this);
-						}
-						break;
 					}
+				}
+				finally
+				{
+					processing=false;
+				}
 			}
-			processing=false;
 		}
 		super.executeMsg(myHost,msg);
 	}

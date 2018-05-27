@@ -94,21 +94,27 @@ public class Prop_HaveSpellCast extends Prop_SpellAdder
 	{
 		if(processing)
 			return;
-		processing=true;
-		if(host instanceof Item)
+		try
 		{
-			myItem=(Item)host;
-
-			if((lastMOB instanceof MOB)
-			&&((myItem.owner()!=lastMOB)||(myItem.amDestroyed()))
-			&&(((MOB)lastMOB).location()!=null))
-				removeMyAffectsFromLastMOB();
-
-			if((lastMOB==null)
-			&&(myItem.owner() instanceof MOB)
-			&&(((MOB)myItem.owner()).location()!=null))
-				addMeIfNeccessary(myItem.owner(),myItem.owner(),true,0,maxTicks);
+			processing=true;
+			if(host instanceof Item)
+			{
+				myItem=(Item)host;
+	
+				if((lastMOB instanceof MOB)
+				&&((myItem.owner()!=lastMOB)||(myItem.amDestroyed()))
+				&&(((MOB)lastMOB).location()!=null))
+					removeMyAffectsFromLastMOB();
+	
+				if((lastMOB==null)
+				&&(myItem.owner() instanceof MOB)
+				&&(((MOB)myItem.owner()).location()!=null))
+					addMeIfNeccessary(myItem.owner(),myItem.owner(),true,0,maxTicks);
+			}
 		}
-		processing=false;
+		finally
+		{
+			processing=false;
+		}
 	}
 }

@@ -109,36 +109,42 @@ public class DiseaseCure extends StdAbility
 				final Item myItem=(Item)affected;
 				if(myItem.owner()==null)
 					return;
-				processing=true;
-				if(msg.amITarget(myItem))
+				try
 				{
-					switch(msg.sourceMinor())
+					processing=true;
+					if(msg.amITarget(myItem))
 					{
-					case CMMsg.TYP_DRINK:
-						if(myItem instanceof Drink)
+						switch(msg.sourceMinor())
 						{
-							invoke(msg.source(),null,msg.source(),true,0);
-							myItem.destroy();
+						case CMMsg.TYP_DRINK:
+							if(myItem instanceof Drink)
+							{
+								invoke(msg.source(),null,msg.source(),true,0);
+								myItem.destroy();
+							}
+							break;
+						case CMMsg.TYP_EAT:
+							if(myItem instanceof Food)
+							{
+								invoke(msg.source(),null,msg.source(),true,0);
+								myItem.destroy();
+							}
+							break;
+						case CMMsg.TYP_WEAR:
+							if(myItem.rawProperLocationBitmap()!=Wearable.WORN_HELD)
+							{
+								invoke(msg.source(),null,msg.source(),true,0);
+								myItem.destroy();
+							}
+							break;
 						}
-						break;
-					case CMMsg.TYP_EAT:
-						if(myItem instanceof Food)
-						{
-							invoke(msg.source(),null,msg.source(),true,0);
-							myItem.destroy();
-						}
-						break;
-					case CMMsg.TYP_WEAR:
-						if(myItem.rawProperLocationBitmap()!=Wearable.WORN_HELD)
-						{
-							invoke(msg.source(),null,msg.source(),true,0);
-							myItem.destroy();
-						}
-						break;
 					}
 				}
+				finally
+				{
+					processing=false;
+				}
 			}
-			processing=false;
 		}
 		super.executeMsg(myHost,msg);
 	}

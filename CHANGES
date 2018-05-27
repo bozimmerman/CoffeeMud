@@ -37,6 +37,7 @@
   35. New LOGOUTMASK to limit when a player can logout of the game.
   36. New Archon Skill: Mark OOC -- to stop a player from receiving RolePlay XP.
   37. New Scriptable Command: MPRPEXP, for granting RolePlay xp through scripts.
+  38. New Properties: Prop_UseEmoter and Prop_UseEmoter2, for quick and easy item emoting.
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
    1. Hunger and Thirst system can now be tweeked.  See coffeemud.ini file
@@ -80,7 +81,6 @@
   39. New Property: Prop_OutfitContainer, for making gear sets you can swap in/out.
   40. List <journal>, <journal> review, and <journal> transfer now support to-name filters.
   41. Drow is no longer, by default, a selectable player race. It can still be enabled in the coffeemud.ini file.
-
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.
    1. New chants: Phosphorescence, Land Legs, BurrowSpeak, Call Companions, Animal Companion

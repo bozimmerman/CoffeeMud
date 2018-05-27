@@ -130,43 +130,48 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 		if(processing)
 			return;
 		processing=true;
-
-		if(affected==null)
-			return;
-		final Item myItem=(Item)affected;
-		if(myItem.owner()==null)
-			return;
-		if(!(myItem.owner() instanceof MOB))
-			return;
-		if(msg.amISource((MOB)myItem.owner()))
-			switch(msg.sourceMinor())
-			{
-			case CMMsg.TYP_FILL:
-				if((myItem instanceof Drink)
-				&&(msg.tool()!=myItem)
-				&&(msg.amITarget(myItem)))
-					addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);
-				break;
-			case CMMsg.TYP_WEAR:
-				if((myItem instanceof Armor)
-				  &&(msg.amITarget(myItem)))
-					addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);
-				break;
-			case CMMsg.TYP_PUT:
-			case CMMsg.TYP_INSTALL:
-				if((myItem instanceof Container)
-				  &&(msg.amITarget(myItem)))
-					addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);
-				break;
-			case CMMsg.TYP_WIELD:
-			case CMMsg.TYP_HOLD:
-				if((!(myItem instanceof Drink))
-				  &&(!(myItem instanceof Armor))
-				  &&(!(myItem instanceof Container))
-				  &&(msg.amITarget(myItem)))
-					addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);
-				break;
-			}
-		processing=false;
+		try
+		{
+			if(affected==null)
+				return;
+			final Item myItem=(Item)affected;
+			if(myItem.owner()==null)
+				return;
+			if(!(myItem.owner() instanceof MOB))
+				return;
+			if(msg.amISource((MOB)myItem.owner()))
+				switch(msg.sourceMinor())
+				{
+				case CMMsg.TYP_FILL:
+					if((myItem instanceof Drink)
+					&&(msg.tool()!=myItem)
+					&&(msg.amITarget(myItem)))
+						addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);
+					break;
+				case CMMsg.TYP_WEAR:
+					if((myItem instanceof Armor)
+					  &&(msg.amITarget(myItem)))
+						addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);
+					break;
+				case CMMsg.TYP_PUT:
+				case CMMsg.TYP_INSTALL:
+					if((myItem instanceof Container)
+					  &&(msg.amITarget(myItem)))
+						addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);
+					break;
+				case CMMsg.TYP_WIELD:
+				case CMMsg.TYP_HOLD:
+					if((!(myItem instanceof Drink))
+					  &&(!(myItem instanceof Armor))
+					  &&(!(myItem instanceof Container))
+					  &&(msg.amITarget(myItem)))
+						addMeIfNeccessary(msg.source(),msg.source(),0,maxTicks);
+					break;
+				}
+		}
+		finally
+		{
+			processing=false;
+		}
 	}
 }

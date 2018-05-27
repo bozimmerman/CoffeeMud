@@ -79,34 +79,40 @@ public class Prop_RideEnabler extends Prop_HaveEnabler
 	{
 		if(processing)
 			return;
-		processing=true;
-		if(affected instanceof Rideable)
+		try
 		{
-			final Rideable RI=(Rideable)affected;
-			for(int r=0;r<RI.numRiders();r++)
+			processing=true;
+			if(affected instanceof Rideable)
 			{
-				final Rider R=RI.fetchRider(r);
-				if(R instanceof MOB)
+				final Rideable RI=(Rideable)affected;
+				for(int r=0;r<RI.numRiders();r++)
 				{
-					final MOB M=(MOB)R;
-					if((!lastRiders.contains(M))&&(RI.amRiding(M)))
+					final Rider R=RI.fetchRider(r);
+					if(R instanceof MOB)
 					{
-						if(addMeIfNeccessary(M,M,maxTicks))
-							lastRiders.add(M);
+						final MOB M=(MOB)R;
+						if((!lastRiders.contains(M))&&(RI.amRiding(M)))
+						{
+							if(addMeIfNeccessary(M,M,maxTicks))
+								lastRiders.add(M);
+						}
+					}
+				}
+				for(int i=lastRiders.size()-1;i>=0;i--)
+				{
+					final MOB M=(MOB)lastRiders.elementAt(i);
+					if(!RI.amRiding(M))
+					{
+						removeMyAffectsFrom(M);
+						while(lastRiders.contains(M))
+							lastRiders.removeElement(M);
 					}
 				}
 			}
-			for(int i=lastRiders.size()-1;i>=0;i--)
-			{
-				final MOB M=(MOB)lastRiders.elementAt(i);
-				if(!RI.amRiding(M))
-				{
-					removeMyAffectsFrom(M);
-					while(lastRiders.contains(M))
-						lastRiders.removeElement(M);
-				}
-			}
 		}
-		processing=false;
+		finally
+		{
+			processing=false;
+		}
 	}
 }

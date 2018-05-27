@@ -55,7 +55,6 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 
 	protected Physical		lastMOB			= null;
 	protected MOB			invokerMOB		= null;
-	protected boolean		processing		= false;
 	protected boolean		uninvocable		= true;
 	protected short			level			= -1;
 	protected short			maxTicks		= -1;
@@ -63,6 +62,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	protected List<Ability>	spellV			= null;
 	
 	protected MaskingLibrary.CompiledZMask compiledMask=null;
+	protected volatile boolean			   processing  = false;
 	
 	protected List<Ability> unrevocableSpells = null;
 
