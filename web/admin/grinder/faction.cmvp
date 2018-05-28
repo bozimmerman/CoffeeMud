@@ -300,9 +300,9 @@
             <TABLE WIDTH=100% BORDER=1>
             <TR>
                 <TD WIDTH=10%><FONT COLOR=WHITE>Range</FONT></TD>
-                <TD WIDTH=20%><FONT COLOR=WHITE>MOB Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
-                <TD WIDTH=40%><FONT COLOR=WHITE>Ability or Behavior</FONT></TD>
-                <TD WIDTH=20%><FONT COLOR=WHITE>Parameters</FONT></TD>
+                <TD WIDTH=30%><FONT COLOR=WHITE>MOB Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
+                <TD WIDTH=30%><FONT COLOR=WHITE>Ability or Behavior</FONT></TD>
+                <TD WIDTH=30%><FONT COLOR=WHITE>Parameters</FONT></TD>
             </TR>
             @FactionData?REACTIONS&FONT=COLOR=WHITE@
             </TABLE>

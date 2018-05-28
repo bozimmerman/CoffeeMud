@@ -753,7 +753,7 @@ public class FactionData extends StdWebMacro
 							str.append("</SELECT>");
 							str.append("</TD><TD VALIGN=TOP>");
 							val=""+httpReq.getUrlParameter("REACTIONMASK"+num);
-							str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=15 VALUE=\""+htmlOutgoingFilter(val)+"\">");
+							str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=18 VALUE=\""+htmlOutgoingFilter(val)+"\">");
 							str.append("</TD><TD>");
 							str.append("<SELECT NAME=REACTIONABC"+showNum+">");
 							val=""+httpReq.getUrlParameter("REACTIONABC"+num);
@@ -784,7 +784,7 @@ public class FactionData extends StdWebMacro
 							str.append("</SELECT>");
 							str.append("</TD><TD VALIGN=TOP>");
 							val=""+httpReq.getUrlParameter("REACTIONPARM"+num);
-							str.append("<INPUT TYPE=TEXT NAME=REACTIONPARM"+showNum+" SIZE=15 VALUE=\""+htmlOutgoingFilter(val)+"\">");
+							str.append("<INPUT TYPE=TEXT NAME=REACTIONPARM"+showNum+" SIZE=18 VALUE=\""+htmlOutgoingFilter(val)+"\">");
 							str.append("</TD>");
 							str.append("</TR>");
 						}
@@ -793,15 +793,15 @@ public class FactionData extends StdWebMacro
 					++showNum;
 					str.append("<TR><TD>");
 					str.append("<SELECT NAME=REACTIONRANGE"+showNum+" ONCHANGE=\"AddItem(this);\">");
-					str.append("<OPTION VALUE=\"\" SELECTED>Select an range");
+					str.append("<OPTION VALUE=\"\" SELECTED>Select range");
 					for(int i=0;i<rangeCodes.size();i++)
 						str.append("<OPTION VALUE=\""+(rangeCodes.getFirst(i)+"\">"+rangeCodes.getSecond(i)));
 					str.append("</SELECT>");
 					str.append("</TD><TD VALIGN=TOP>");
-					str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=15 VALUE=\"\">");
+					str.append("<INPUT TYPE=TEXT NAME=REACTIONMASK"+showNum+" SIZE=18 VALUE=\"\">");
 					str.append("</TD><TD VALIGN=TOP>");
 					str.append("<SELECT NAME=REACTIONABC"+showNum+">");
-					str.append("<OPTION VALUE=\"\" SELECTED>Select an able/behav/cmd");
+					str.append("<OPTION VALUE=\"\" SELECTED>Select action");
 					for(final Enumeration<Behavior> e=CMClass.behaviors();e.hasMoreElements();)
 					{
 						final Behavior B=e.nextElement();
@@ -822,7 +822,7 @@ public class FactionData extends StdWebMacro
 					}
 					str.append("</SELECT>");
 					str.append("</TD><TD VALIGN=TOP>");
-					str.append("<INPUT TYPE=TEXT NAME=REACTIONPARM"+showNum+" SIZE=15 VALUE=\"\">");
+					str.append("<INPUT TYPE=TEXT NAME=REACTIONPARM"+showNum+" SIZE=18 VALUE=\"\">");
 					str.append("</TD></TR>");
 				}
 
