@@ -1716,7 +1716,9 @@ groups begins to apply, in addition to any previous sets.</td>
         </tbody>
       </table>
       <p><strong><a name="factions"><font color="blue" size="5">Factions</font></a></strong></p>
-      <p>A faction can be viewed
+      <p><span style="font-weight: bold;">Introduction:</span><br>
+      <br>
+A faction can be viewed
 very simply as a glorified tattoo with
 a number value. Normal Tattoos are simply flags which a mob or player
 can have: either you do or do not have the tattoo. A Faction is a kind
@@ -1729,20 +1731,25 @@ be thought of as having a tattoo called alignment along with a numeric
 value assigned to it. Alignment can also be thought of as the
 relationship between the mob or player, and evilness, goodness, or
 neutrality. &nbsp;</p>
-      <p>Before discussing the
+      <p><span style="font-weight: bold;">AuctionReaction Factions:</span><br>
+      <br>
+Before discussing the
 nuts of bolts of the faction system, it
 should be mentioned that CoffeeMud includes some automatic and built-in
 factioning systems for you to use. &nbsp;In addition to the default
 alignment system, there is also a mob reaction system controlled in the
-coffeemud.ini file under the AUTOREACTION entry. &nbsp;This will
+coffeemud.ini file under the AUTOREACTION entry. &nbsp;This system will
 cause
 mobs to react to players based on how their area, race, or other mobs
-of the same name have been treated in the past. &nbsp;While killing
+of the same name have been treated in the past. &nbsp;</p>
+      <p>Which this system, killing
 the
 mobs will cause faction values to go down, making the mobs more likely
-to mistreat the player, doing things like chatting with the mobs, just
-hanging around their area, or even bribing them will make them happier.
-&nbsp;The default settings for the three reaction systems is found
+to mistreat the player. &nbsp;On the other hand,&nbsp;doing things like
+chatting with the mobs, just
+hanging around their area, or even bribing them will make them
+happier.&nbsp;</p>
+      <p>The default settings for the three reaction systems is found
 int
 the resources/examples directory as areareaction.ini, racereaction.ini,
 and namereaction.ini. &nbsp;You can also customize the systems for
@@ -1755,7 +1762,9 @@ name_&lt;mobname&gt;.ini with your designed faction definition.
 &nbsp;If these files do not exist, the default configuration
 mentioned
 previously will be used for all areas, races, or mobs.</p>
-      <p>The general faction
+      <p><span style="font-weight: bold;">Faction Engine:</span><br>
+      <br>
+The general faction
 system in CoffeeMud is a powerful engine
 for
 defining what factions exist, how the factions are assigned, how the
@@ -1773,62 +1782,165 @@ factions have numeric values. These
 values can be positive, like 2389473, negative, or even 0. The range of
 values which are valid for a given faction are defined by the limits of
 the divisions or Ranges of a faction.</p>
-      <p>A <strong>Range</strong>
-is a numeric division of a faction
+      <p><span style="font-weight: bold;">Faction Ranges:</span></p>
+      <p>A range is a numeric division of a faction
 you have defined. A Range has a displayable name, a special unique code
 name
-for use in Zapper Masks, and of course a low and high value. A Range
+for use in Zapper Masks, and of course a low and high value. &nbsp;For
+example, if a faction ranges from absolute evil (-10000) to pure good
+(10000), then a range might be neutral (-1000 to 1000) and somewhat
+evil might be (-5000 to -1000). Such are ranges.</p>
+      <p>A Range
 can also be tied back to CoffeeMud's built in "virtue meter", which
 allows you to define a Range as always granting the mob or player whose
-faction value falls into that range goodness, evilness, or neutrality.
-The lowest value of the lowest Range, and the highest value of the
+faction value falls into that range goodness, evilness, or
+neutrality.&nbsp;</p>
+      <p>The lowest value of the lowest Range, and the highest value of
+the
 highest Range define the overall limits of the values of the faction
 itself. No player or mob may have a value for a faction which falls
 outside those highest and lowest values of the highest and lowest
 Ranges. For this reason, ranges are the most important part of a
 faction.</p>
+      <p><strong>Change
+Triggers:</strong></p>
       <p>Another important aspect
-are the range <strong>Change
-Triggers</strong>.
+are the range <strong style="font-weight: normal;">change triggers</strong>.
 One of the ways factions differ from simple tattoos is that CoffeeMud
 can manage the rise and fall in the values of the faction on a given
 mob or player automatically. The way these changes are triggered and
-managed is first through Change Triggers, which are applied when both
+managed is first through Change Triggers.</p>
+      <p>A change triggers is triggered according to a specific action,
+and then is applied when both
 the source and target of an action have standing or value in the
-faction, and when the source and target are different creatures. Each
-Change Trigger defines 1) What triggers the change (the Trigger), 2)
-Whether value is gained or lost in the faction when the trigger occurs
-(the Direction), 3) What percentage of the amount of change (after all
-other modifiers) is applied to the value (the Amount Factor), 4)
-several miscellanous flags to define the circumstances under which the
-trigger is applied (the Flags), and 5) a Zapper mask to determine what
-criteria the target of the Trigger must meet for this trigger to apply.
-The valid Triggers include: Murder (and Murder2, ... Murder5) which is
-triggered when the holder of this faction dies,
-Kill (and Kill2, ... Kill5) which is triggered when the holder of this
-faction kills another,
-Time (a change occurs every 40
-seconds or so), a type of skill being used, the domain of a spell being
-cast, a flag associated with a skill being used, or Add Outsider, which
+faction, and when the source and target are different creatures.&nbsp;</p>
+      <p>Each change trigger includes:&nbsp;</p>
+      <ol>
+        <li>What triggers the change (the Trigger),</li>
+        <li>Change trigger arguments that are different for every
+trigger</li>
+        <li>Whether value is gained or lost in the faction when the
+trigger occurs
+(the Direction),</li>
+        <li>What percentage of the amount of change (after all
+other modifiers) is applied to the value (the Amount Factor),</li>
+        <li>Several miscellanous flags to define the circumstances
+under which the
+trigger is applied (the Flags)</li>
+        <li>A&nbsp;Zapper mask to determine what
+criteria the target of the Trigger must meet for this trigger to
+apply.&nbsp;</li>
+      </ol>
+      <p>The valid Triggers, and their parameters, if any,
+include:&nbsp;</p>
+      <ul>
+        <li>Murder, which is
+triggered when the holder of this faction dies.</li>
+        <li>Kill, which is triggered when the holder of this
+faction kills another.</li>
+        <li>Time, which is a change that occurs every 40
+seconds or so.</li>
+        <ul>
+          <li>A trigger parameter of ROUNDS=x can be used to change the
+amount of time to x ticks</li>
+        </ul>
+        <li>Add Outsider, which
 allows the faction to be added to those who do not have the faction, so
-long as they meet the other requirements. Valid Directions of change
-include: Up, Down, Opposite (opposite direction of the value of the
+long as they meet the other requirements.&nbsp;</li>
+        <li>Bribe, when someone with this faction gives money to
+another.&nbsp;</li>
+        <ul>
+          <li>A trigger parameter of PCT=x to require x% of the
+receivers money be given to trigger.</li>
+          <li>A trigger parameter of AMOUNT=x to require at least x
+money to be given.<br>
+          </li>
+        </ul>
+        <li>Talk, which is when someone with this faction speaks to
+another.&nbsp;</li>
+        <ul>
+          <li>A trigger parameter of &nbsp;REGEX=x where x is a regular
+expression of whats said</li>
+          <li>A trigger parameter of WAIT=[TICKS] to prevent spamming.</li>
+        </ul>
+        <li>MudChat, which is when someone with this faction converses
+with a mudchat mob. This refers to the MudChat behavior</li>
+        <li>Arrested, which is when someone with this faction is
+arrested by a legal mob.</li>
+        <li>Social, when someone with this faction does a social, like
+hug or eyebrow, to another.&nbsp;</li>
+        <ul>
+          <li>A trigger parameter of ID = the Social ID, like HUG, or
+EYEBROW, or SMILE</li>
+          <li>A trigger parameter of ID=ALL</li>
+          <li>A trigger parameter of WAIT=[TICKS] to prevent spamming.</li>
+        </ul>
+        <li>An Ability ID, which is the ID of a skill, spell, or
+similar ability that triggers the event.&nbsp;&nbsp;Ability IDs can
+be&nbsp; seen by entering from the command line: list skills, list
+spells, etc..</li>
+        <li>An Ability Type, which is the name of a type of an ability
+(SPELL, PRAYER, SKILLS,&nbsp; SONG, CHANT, COMMON SKILL, THIEF SKILL,
+etc..) that triggers the event.</li>
+        <li>An Ability Domain, which is the name of a spell domain
+(ILLUSION, TRANSMUTATION, &nbsp;INVOCATION / EVOCATION, DIVINATION,
+etc...) that triggers the event.</li>
+        <li>An Ability Flag, which is the name of one of the ability
+flags defined in the&nbsp; coffeemud source code in
+interfaces/Ability.java.&nbsp; HEALING, for instance, if you want ANY
+healing abilities to initiate this change.</li>
+      </ul>
+*All* of the above change triggers, even those triggers without trigger
+parameters, can have the following Trigger Parameters specified:
+      <ul>
+        <li>CHANCE=x to set a percent chance of triggering x, which, of
+course, is 100% by default</li>
+        <li>MASK=x to set a zapper mask&nbsp;to filter on event source
+mobs instead of the target, which is handled by the main mask below.</li>
+        <li>XP=x to automtically give x experience points to the source
+of the event, modified by the level of the target, when the event is
+triggered.</li>
+        <li>RPXP=x to automtically give x roleplaying experience points
+to the source of the
+event when the event is triggered.</li>
+      </ul>
+      <p>Valid Change Directions include:&nbsp;</p>
+      <ul>
+        <li>Up</li>
+        <li>Down</li>
+        <li>Opposite (opposite direction of the value of the
 creature killed and proportional in value to the distance between the
-faction value in the source and the target), Minimum (automatically
-gains minimum value), Maximum (automatically gains maximum value), Add
+faction value in the source and the target)</li>
+        <li>Minimum (automatically
+gains minimum value)</li>
+        <li>Maximum (automatically gains maximum value)</li>
+        <li>Add
 (gains the faction if they don't have it -- useful with the Add
-Outsider trigger), Away (gain if monsters value for this faction is
-lower, lose if higher), and Towards (gain if monsters value for this
-faction is higher, lose if lower). Valid Flags include: OUTSIDER, which
+Outsider trigger)</li>
+        <li>Away (gain if monsters value for this faction is
+lower, lose if higher)</li>
+        <li>Towards (gain if monsters value for this
+faction is higher, lose if lower).&nbsp;</li>
+        <li>Remove (automatically remove all faction)</li>
+      </ul>
+      <p>Valid Change Flags include:&nbsp;</p>
+      <ul>
+        <li>OUTSIDER, which
 allows the trigger to apply even if the target of the trigger (not the
-source) does not have standing in this faction, SELFOK, which allows
+source) does not have standing in this faction</li>
+        <li>SELFOK, which allows
 the trigger to apply even when the source or target are the same
-person, and JUST100, which overrides the normal modifications of a
+person</li>
+        <li>JUST100, which overrides the normal modifications of a
 change (based on experience or other factors) and uses 100 points as a
-base amount for the change from this trigger. Change triggers also
+base amount for the change from this trigger.&nbsp;</li>
+      </ul>
+      <p>Change triggers also
 include
-a mask, which refers to the target of an event, and can prevent the
-event.</p>
+a target Mask, which is a zapper mask that the target of an event must
+pass to allow the
+event. &nbsp;If the target of an event (such as the target killed, or
+the bribed) does not match this mask, the change is not processed.</p>
       <p>Now, lets discuss how to
 list existing factions:</p>
       <p><strong>LIST

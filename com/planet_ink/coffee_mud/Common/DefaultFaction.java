@@ -1132,13 +1132,26 @@ public class DefaultFaction implements Faction, MsgListener
 				final String socialName = social.baseName();
 				for (final FactionChangeEvent event : events)
 				{
+					Long time=(Long)event.stateVariable(1);
+					if(time==null)
+						time=Long.valueOf(System.currentTimeMillis());
+					if(System.currentTimeMillis()<time.longValue())
+						continue;
+					
 					final String triggerID=event.getTriggerParm("ID");
 					if((triggerID.length()>0)
 					&&(socialName.equals(triggerID)||triggerID.equalsIgnoreCase("ALL"))
-					&&(event.applies(msg.source(),(MOB)msg.target()))
-					&&((!CMath.isInteger(event.getTriggerParm("CHANCE")))
-						||(CMLib.dice().rollPercentage()<CMath.s_int(event.getTriggerParm("CHANCE")))))
+					&&(event.applies(msg.source(),(MOB)msg.target())))
+					{
+						Long addTime=(Long)event.stateVariable(1);
+						if(addTime==null)
+						{
+							addTime=Long.valueOf(CMath.s_long(event.getTriggerParm("WAIT"))*CMProps.getTickMillis());
+							event.setStateVariable(2,addTime);
+						}
+						event.setStateVariable(1,Long.valueOf(System.currentTimeMillis()+addTime.longValue()));
 						executeChange(msg.source(),(MOB)msg.target(),event);
+					}
 				}
 			}
 		}
@@ -1373,6 +1386,10 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 		else
 			target = source;
+
+		final String chance=event.getTriggerParm("CHANCE");
+		if(CMath.isInteger(chance) && (CMLib.dice().rollPercentage()<CMath.s_int(chance)))
+			return;
 
 		double baseChangeAmount=100.0;
 		if((source!=target)&&(!event.just100()))
