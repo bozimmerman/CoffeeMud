@@ -29,7 +29,7 @@
         }
         function Faction(factionid,action)
         {
-            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
             w=window.open("faction.cmvp?AUTH=@Authenticate?AUTH@&FACTION="+factionid+action,
             	"Faction",strFeatures, false);
         }

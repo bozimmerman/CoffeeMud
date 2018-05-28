@@ -136,10 +136,10 @@
 @if?CheckReqParm?FACTION=@
     Select a faction to view/edit.
 @else@
-    <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+    <TABLE WIDTH=715px BORDER=1 CELLSPACING=0 CELLPADDING=0>
         <TR>
             <TD WIDTH=5%><FONT COLOR=YELLOW>Faction ID: </FONT></TD>
-            <TD WIDTH=95%><FONT COLOR=WHITE>@RequestParameter?FACTION@</FONT></TD>
+            <TD WIDTH=90%><FONT COLOR=WHITE>@RequestParameter?FACTION@</FONT></TD>
         </TR>
         <TR>
             <TD><FONT COLOR=YELLOW>Name: </FONT></TD>
@@ -253,16 +253,19 @@
         <TR>
             <TD><FONT COLOR=YELLOW>Change Triggers: </FONT></TD>
             <TD>
-            <TABLE WIDTH=100% BORDER=1>
+            <FONT COLOR=WHITE>
+            <TABLE WIDTH=100% BORDER=1 cellpadding=0 cellspacing=0 >
             <TR>
-                <TD WIDTH=40%><FONT COLOR=WHITE>Trigger</FONT></TD>
+                <TD WIDTH=20%><FONT COLOR=WHITE>Trigger</FONT></TD>
                 <TD WIDTH=12%><FONT COLOR=WHITE>Direction</FONT></TD>
                 <TD WIDTH=8%><FONT COLOR=WHITE>Factor</FONT></TD>
-                <TD WIDTH=12%><FONT COLOR=WHITE>Flags</FONT></TD>
-                <TD WIDTH=30%><FONT COLOR=WHITE>Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
+                <TD WIDTH=10%><FONT COLOR=WHITE>Flags</FONT></TD>
+                <TD WIDTH=20%><FONT COLOR=WHITE>Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
+                <TD WIDTH=8%><FONT COLOR=WHITE>Bonus</FONT></TD>
             </TR>
             @FactionData?ADJUSTMENTCHANGES@
             </TABLE>
+            </FONT>
             </TD>
         </TR>
         <TR>
@@ -283,9 +286,9 @@
             <TD>
             <TABLE WIDTH=100% BORDER=1>
             <TR>
-                <TD WIDTH=50%><FONT COLOR=WHITE>Ability or Behavior</FONT></TD>
-                <TD WIDTH=25%><FONT COLOR=WHITE>Parameters</FONT></TD>
-                <TD WIDTH=25%><FONT COLOR=WHITE>MOB Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
+                <TD WIDTH=40%><FONT COLOR=WHITE>Ability or Behavior</FONT></TD>
+                <TD WIDTH=30%><FONT COLOR=WHITE>Parameters</FONT></TD>
+                <TD WIDTH=30%><FONT COLOR=WHITE>MOB Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
             </TR>
             @FactionData?AFFECTSBEHAVIORS&FONT=COLOR=WHITE@
             </TABLE>
@@ -298,7 +301,7 @@
             <TR>
                 <TD WIDTH=10%><FONT COLOR=WHITE>Range</FONT></TD>
                 <TD WIDTH=20%><FONT COLOR=WHITE>MOB Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
-                <TD WIDTH=50%><FONT COLOR=WHITE>Ability or Behavior</FONT></TD>
+                <TD WIDTH=40%><FONT COLOR=WHITE>Ability or Behavior</FONT></TD>
                 <TD WIDTH=20%><FONT COLOR=WHITE>Parameters</FONT></TD>
             </TR>
             @FactionData?REACTIONS&FONT=COLOR=WHITE@
