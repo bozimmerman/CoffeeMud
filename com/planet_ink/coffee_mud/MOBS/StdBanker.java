@@ -448,7 +448,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				final String name=bankDataV.get(v);
 				if(!userNames.contains(name))
 				{
-					if(!CMLib.players().playerExists(name))
+					if(!CMLib.players().playerExistsAllHosts(name))
 					{
 						if((CMLib.clans().getClan(name))==null)
 							delAllDeposits(name);

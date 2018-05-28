@@ -445,7 +445,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 							continue;
 						}
 						if (!namesChecked.containsKey(rec.playerName))
-							namesChecked.put(rec.playerName, Boolean.valueOf(CMLib.players().playerExists(rec.playerName)));
+							namesChecked.put(rec.playerName, Boolean.valueOf(CMLib.players().playerExistsAllHosts(rec.playerName)));
 						if (!namesChecked.get(rec.playerName).booleanValue())
 						{
 							recs.remove(rec);

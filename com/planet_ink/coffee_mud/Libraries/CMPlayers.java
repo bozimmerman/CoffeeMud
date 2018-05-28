@@ -248,6 +248,26 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
+	public boolean accountExistsAllHosts(String name)
+	{
+		if(name==null)
+			return false;
+		name=CMStrings.capitalizeAndLower(name);
+		if(accountExists(name))
+			return true;
+		for(Enumeration<CMLibrary> pl = CMLib.libraries(CMLib.Library.PLAYERS);pl.hasMoreElements();)
+		{
+			final PlayerLibrary pLib2 = (PlayerLibrary)pl.nextElement();
+			if((pLib2 != null)
+			&&(this!=pLib2)
+			&&(pLib2.accountExists(name)))
+				return true;
+		}
+		return false;
+	}
+
+	
+	@Override
 	public boolean playerExists(String name)
 	{
 		if(name==null)
@@ -259,6 +279,25 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				return true;
 		}
 		return CMLib.database().DBUserSearch(name)!=null;
+	}
+
+	@Override
+	public boolean playerExistsAllHosts(String name)
+	{
+		if(name==null)
+			return false;
+		name=CMStrings.capitalizeAndLower(name);
+		if(playerExists(name))
+			return true;
+		for(Enumeration<CMLibrary> pl = CMLib.libraries(CMLib.Library.PLAYERS);pl.hasMoreElements();)
+		{
+			final PlayerLibrary pLib2 = (PlayerLibrary)pl.nextElement();
+			if((pLib2 != null)
+			&&(this!=pLib2)
+			&&(pLib2.playerExists(name)))
+				return true;
+		}
+		return false;
 	}
 
 	@Override

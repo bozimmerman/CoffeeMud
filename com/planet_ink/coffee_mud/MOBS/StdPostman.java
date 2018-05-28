@@ -470,9 +470,9 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	@Override
 	public String findProperBranch(String toWhom)
 	{
-		if(CMLib.players().getLoadPlayer(toWhom)!=null)
+		final MOB M=CMLib.players().getLoadPlayer(toWhom);
+		if(M!=null)
 		{
-			final MOB M=CMLib.players().getLoadPlayer(toWhom);
 			if(M.getStartRoom()!=null)
 			{
 				final Map<String,String> allBranchBoxes=getOurOpenBoxes(toWhom);

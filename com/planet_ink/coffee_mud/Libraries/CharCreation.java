@@ -369,17 +369,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(isBadName(login))
 			return false;
 		
-		final PlayerLibrary pLib=CMLib.players();
-		for(Enumeration<CMLibrary> pl = CMLib.libraries(CMLib.Library.PLAYERS);pl.hasMoreElements();)
-		{
-			final PlayerLibrary pLib2 = (PlayerLibrary)pl.nextElement();
-			if((pLib2 != null)
-			&&(pLib!=pLib2)
-			&&((pLib2.playerExists(login))||(pLib2.accountExists(login))))
-				return true;
-		}
-
-
 		for(int c=0;c<login.length();c++)
 		{
 			if((login.charAt(c)!=' ')&&(!Character.isLetter(login.charAt(c))))
@@ -1146,7 +1135,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		if(loginObj.login.indexOf('*')>=0)
 		{
 			loginObj.login = generateRandomName(3, 6);
-			while((!isOkName(loginObj.login,false)) || (CMLib.players().playerExists(loginObj.login)) || (CMLib.players().accountExists(loginObj.login)))
+			while((!isOkName(loginObj.login,false)) || (CMLib.players().playerExistsAllHosts(loginObj.login)) || (CMLib.players().accountExistsAllHosts(loginObj.login)))
 				loginObj.login = generateRandomName(3, 8);
 		}
 		if(loginObj.login.endsWith(" !"))
@@ -1797,7 +1786,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if(parms[1].indexOf('*')>=0)
 			{
 				parms[1]=generateRandomName(3,6);
-				while((!isOkName(parms[1],false)) || (CMLib.players().playerExists(parms[1])) || (CMLib.players().accountExists(parms[1])))
+				while((!isOkName(parms[1],false)) || (CMLib.players().playerExistsAllHosts(parms[1])) || (CMLib.players().accountExistsAllHosts(parms[1])))
 					parms[1] = generateRandomName(3, 8);
 				loginObj.savedInput=CMStrings.replaceFirst(loginObj.savedInput, "*", parms[1]);
 			}
@@ -3617,8 +3606,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return NewCharNameCheckResult.NO_NEW_PLAYERS;
 		else
 		if((!isOkName(login,false))
-		|| (CMLib.players().playerExists(login))
-		|| (!skipAccountNameCheck && CMLib.players().accountExists(login)))
+		|| (CMLib.players().playerExistsAllHosts(login))
+		|| (!skipAccountNameCheck && CMLib.players().accountExistsAllHosts(login)))
 			return NewCharNameCheckResult.BAD_USED_NAME;
 		else
 			return finishNameCheck(login,ipAddress);
@@ -3633,8 +3622,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			return NewCharNameCheckResult.NO_NEW_PLAYERS;
 		else
 		if((!isOkName(login,false))
-		|| (CMLib.players().playerExists(login))
-		|| (CMLib.players().accountExists(login)))
+		|| (CMLib.players().playerExistsAllHosts(login))
+		|| (CMLib.players().accountExistsAllHosts(login)))
 			return NewCharNameCheckResult.BAD_USED_NAME;
 		else
 			return finishNameCheck(login,ipAddress);

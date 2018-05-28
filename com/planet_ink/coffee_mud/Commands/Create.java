@@ -383,10 +383,9 @@ public class Create extends StdCommand
 		}
 
 		String mobID=CMParms.combine(commands,2);
-		MOB M=CMLib.players().getLoadPlayer(mobID);
-		if(M!=null)
+		if(CMLib.players().playerExistsAllHosts(mobID))
 		{
-			mob.tell(L("There is already a player called '@x1'!",M.Name()));
+			mob.tell(L("There is already a player called '@x1'!",mobID));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
@@ -398,7 +397,7 @@ public class Create extends StdCommand
 		}
 		mobID=CMStrings.capitalizeAndLower(mobID);
 		CMLib.login().createCharacter(mobID,mob.session());
-		M=CMLib.players().getLoadPlayer(mobID);
+		final MOB M=CMLib.players().getLoadPlayer(mobID);
 		if(M!=null)
 		{
 			if(CMLib.flags().isInTheGame(M,true))

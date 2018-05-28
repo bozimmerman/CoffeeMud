@@ -88,8 +88,7 @@ public class ClanData extends StdWebMacro
 				{
 					if(behav.length()>0)
 					{
-						final MOB M=CMLib.players().getLoadPlayer(behav);
-						if(M!=null)
+						if(CMLib.players().playerExistsAllHosts(behav))
 						{
 							themembers.addElement(behav);
 							final String role=httpReq.getUrlParameter("ROLE"+num);

@@ -44,6 +44,7 @@ public interface PlayerLibrary extends CMLibrary
 	public PlayerAccount getAccount(String calledThis);
 	public void addAccount(PlayerAccount acct);
 	public boolean accountExists(String name);
+	public boolean accountExistsAllHosts(String name);
 	public Enumeration<MOB> players();
 	public Enumeration<PlayerAccount> accounts();
 	public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache);
@@ -51,6 +52,7 @@ public interface PlayerLibrary extends CMLibrary
 	public void obliterateAccountOnly(PlayerAccount deadAccount);
 	public void renamePlayer(MOB mob, String oldName);
 	public boolean playerExists(String name);
+	public boolean playerExistsAllHosts(String name);
 	public void forceTick();
 	public int savePlayers();
 	public Enumeration<ThinPlayer> thinPlayers(String sort, Map<String, Object> cache);
