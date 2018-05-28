@@ -709,19 +709,16 @@ public class StdItem implements Item
 		if((--tickCtr)<=0)
 		{
 			tickCtr=10;
-			final Environmental E=owner();
-			if((E instanceof MOB)&&(!((MOB)E).isPlayer()))
+			final Room R=CMLib.map().roomLocation(this);
+			final Area A=(R==null)?null:R.getArea();
+			if((R==null)||(A==null)||(R.amDestroyed())||(A.amDestroyed()))
 			{
-				final Room R=CMLib.map().roomLocation(this);
-				final Area A=CMLib.map().areaLocation(this);
-				if((R==null)||(A==null)||(R.amDestroyed())||(A.amDestroyed()))
-				{
-					final String aName=(A!=null)?A.Name():"null";
-					Log.warnOut("Destroying "+Name()+" because it's not ticking in a real place ("+CMLib.map().getExtendedRoomID(R)+"): ("+aName+").");
-					this.destroy();
-					return false;
-				}
+				final String aName=(A!=null)?A.Name():"null";
+				Log.warnOut("Destroying "+Name()+" because it's not ticking in a real place ("+CMLib.map().getExtendedRoomID(R)+"): ("+aName+").");
+				this.destroy();
+				return false;
 			}
+			
 		}
 		
 		switch(tickID)
