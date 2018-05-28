@@ -115,9 +115,7 @@ public class Prop_UseEmoter extends Property
 					{
 						emoter=CMClass.getFactoryMOB();
 						killEmoter=true;
-						String name=P.name();
-						if(P instanceof Environmental)
-							name=((Environmental)P).name();
+						final String name=P.name();
 						if((mob!=null)&&(CMLib.flags().isInTheGame(P,false))&&(!privateE))
 						{
 							if(CMLib.flags().isInTheGame(mob,false))

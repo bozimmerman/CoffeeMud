@@ -467,4 +467,10 @@ public class Auction extends Channel implements Tickable
 		return true;
 	}
 
+
+	@Override
+	public boolean securityCheck(MOB mob)
+	{
+		return !CMSecurity.isDisabled(CMSecurity.DisFlag.CHANNELAUCTION);
+	}
 }

@@ -368,6 +368,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 		if(isBadName(login))
 			return false;
+		
+		final PlayerLibrary pLib=CMLib.players();
+		for(Enumeration<CMLibrary> pl = CMLib.libraries(CMLib.Library.PLAYERS);pl.hasMoreElements();)
+		{
+			final PlayerLibrary pLib2 = (PlayerLibrary)pl.nextElement();
+			if((pLib2 != null)
+			&&(pLib!=pLib2)
+			&&((pLib2.playerExists(login))||(pLib2.accountExists(login))))
+				return true;
+		}
+
 
 		for(int c=0;c<login.length();c++)
 		{
@@ -3593,7 +3604,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		}
 		return proceed == 0;
 	}
-
+	
 	@Override
 	public NewCharNameCheckResult newCharNameCheck(String login, String ipAddress, boolean skipAccountNameCheck)
 	{

@@ -497,7 +497,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			commands.set(0,""+firstWord.charAt(0));
 			firstWord=""+firstWord.charAt(0);
 		}
-
+		
 		// first, exacting pass
 		Command C=CMClass.findCommandByTrigger(firstWord,true);
 		if((C!=null)

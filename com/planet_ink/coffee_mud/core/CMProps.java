@@ -1864,6 +1864,12 @@ public class CMProps extends Properties
 							{
 							}
 						}
+						else
+						{
+							int x=listFileName.indexOf('=');
+							if(x>0)
+								rawListData.setProperty(listFileName.substring(0,x).toUpperCase().trim(), listFileName.substring(x+1).trim());
+						}
 					}
 					Resources.submitResource(rscKey, rawListData);
 					for(final ListFile lfVar : ListFile.values())
@@ -2989,7 +2995,7 @@ public class CMProps extends Properties
 		CMProps.setIntVar(Int.RP_AWARD_DELAY, CMath.s_int(s2)*1000);
 		for(int a=1;a<awards.size();a++)
 		{
-			s=awards.get(a).toUpperCase().trim().replace('-','_');
+			s=awards.get(a).toUpperCase().trim();
 			x=s.indexOf(' ');
 			if(x<0)
 				Log.errOut("Incomplete award definition ("+s+")");
@@ -2998,7 +3004,7 @@ public class CMProps extends Properties
 				Log.errOut("Malformed award amount definition ("+s+")");
 			else
 			{
-				final Int code=(Int)CMath.s_valueOf(Int.class, "RP_"+s.substring(0,x));
+				final Int code=(Int)CMath.s_valueOf(Int.class, "RP_"+s.substring(0,x).replace('-','_'));
 				if(code == null)
 					Log.errOut("Malformed award type definition ("+s+")");
 				else

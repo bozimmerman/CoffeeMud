@@ -1726,7 +1726,11 @@ public class MUD extends Thread implements MudHost
 					Log.instance().configureLog(Log.Type.combat, page.getStr("CBTMSGS"));
 					Log.instance().configureLog(Log.Type.access, page.getStr("ACCMSGS"));
 				}
-				if(page.getRawPrivateStr("SYSOPMASK")!=null)
+				if((page.getRawPrivateStr("SYSOPMASK")!=null)
+				||(page.getRawPrivateStr("DISABLE")!=null)
+				||(page.getRawPrivateStr("ENABLE")!=null)
+				||(page.getRawPrivateStr("DEBUG")!=null)
+				||(page.getRawPrivateStr("SAVE")!=null))
 					page.resetSecurityVars();
 				else
 					CMSecurity.instance().markShared();

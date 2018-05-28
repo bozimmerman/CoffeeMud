@@ -794,9 +794,10 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		final Room opR=loc.rawDoors()[opCode];
 		if(opR!=null)
 		{
-			if(opR.getGridParent()==null)
+			final GridLocale opRgR=opR.getGridParent();
+			if(opRgR==null)
 				return;
-			if(opR.getGridParent().isMyGridChild(opR))
+			if(opRgR.isMyGridChild(opR))
 				return;
 			loc.rawDoors()[opCode]=null;
 		}

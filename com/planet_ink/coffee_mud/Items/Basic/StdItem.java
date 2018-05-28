@@ -716,7 +716,8 @@ public class StdItem implements Item
 				final Area A=CMLib.map().areaLocation(this);
 				if((R==null)||(A==null)||(R.amDestroyed())||(A.amDestroyed()))
 				{
-					Log.warnOut("Destroying "+Name()+" because it's not ticking in a real place ("+CMLib.map().getExtendedRoomID(R)+"): ("+A.Name()+").");
+					final String aName=(A!=null)?A.Name():"null";
+					Log.warnOut("Destroying "+Name()+" because it's not ticking in a real place ("+CMLib.map().getExtendedRoomID(R)+"): ("+aName+").");
 					this.destroy();
 					return false;
 				}

@@ -1030,10 +1030,12 @@ public class CMLib
 	{
 		final Vector<CMLibrary> V=new Vector<CMLibrary>();
 		for(int l=0;l<libs.length;l++)
+		{
 			if((libs[l]!=null)
 			&&(libs[l].libraries[code.ordinal()]!=null)
 			&&(!V.contains(libs[l].libraries[code.ordinal()])))
 				V.add(libs[l].libraries[code.ordinal()]);
+		}
 		return V.elements();
 	}
 

@@ -1,15 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
   <meta name="generator" content="HTML Tidy, see www.w3.org" />
-  <title>Installing and Using CoffeeMud 5.9</title>
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors -->
-</head>
+  
+  <title>Installing and Using CoffeeMud 5.9</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors --></head>
+
 <body>
 <center>
-<table border="1" bordercolor="gray" cellpadding="5" cellspacing="0"
- width="100%">
+<table border="1" bordercolor="gray" cellpadding="5" cellspacing="0" width="100%">
   <tbody>
     <tr>
       <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
@@ -46,8 +43,7 @@
         </ul>
       </ul>
       </td>
-      <td align="left" valign="top"> <img src="images/zip.jpg"
- alt="unzipping" />
+      <td align="left" valign="top"> <img src="images/zip.jpg" alt="unzipping" />
       <h2><a name="installation">Installation</a></h2>
       <p>The first and most critical step in installing CoffeeMud 5.9
 is to make sure that you have downloaded and installed the latest
@@ -132,8 +128,7 @@ engine, you should do the following:</p>
         <li>Go through the <a href="../coffeemud.ini">coffeemud.ini</a>
 file, and use the <a href="MUDGrinder.html">MudGrinders</a> Control
 Panel.</li>
-        <li
- style="list-style-type: none; list-style-image: none; list-style-position: outside;">
+        <li style="list-style-type: none; list-style-image: none; list-style-position: outside;">
           <ul>
             <li>Set your DOMAIN field</li>
           </ul>
@@ -397,8 +392,7 @@ A value of "TRUE" will turn on the I3 server and make the connection.</p>
         <li> <span class="bold">I3PORT</span>
           <p>This is the TCP/IP port number which the main InterMud3
 server will listen on. By default the setting is 27766. If you would
-like to change this number to some other port, you may do so. If the <span
- class="bold">RUNI3SERVER</span> entry above is FALSE, this setting
+like to change this number to some other port, you may do so. If the <span class="bold">RUNI3SERVER</span> entry above is FALSE, this setting
 will have no effect.</p>
         </li>
         <li> <span class="bold">I3CHANNELS</span>
@@ -420,8 +414,7 @@ Even if you don't wish to publish any of your MUDs information to the
 web, you may want to run the Admin web server so that you can use the
 MUDGrinder area editing tool. See the <a href="MUDGrinder.html">MUDGrinder
 Guide</a> for more information on this tool. For more information on
-the CoffeeMud web server in general, please read the <a
- href="WebServer.html">WebServer Guide</a>.</p>
+the CoffeeMud web server in general, please read the <a href="WebServer.html">WebServer Guide</a>.</p>
         </li>
         <li> <span class="bold">RUNSMTPSERVER</span>
           <p>This setting tells CoffeeMud whether to start up the
@@ -483,8 +476,7 @@ trivial query.</p>
 and settings which allow you to better customize your CoffeeMud. Make
 sure you check out the Control Panel feature in the MUDGrinder to
 modify most of&nbsp;them.</p>
-      <p><img style="width: 73px; height: 73px;"
- src="images/sprockets.jpg" alt="packages" /> </p>
+      <p><img style="width: 73px; height: 73px;" src="images/sprockets.jpg" alt="packages" /> </p>
       <h2><a name="multihosts">Multiple Hosts</a></h2>
       <p>There may be circumstances under which you may want to run
 your mud not only on multiple ports, but with multiple configurations,
@@ -624,8 +616,7 @@ also contains the <code>pub/images</code> to store image files
 displayed by the public web pages, as well as the <code>pub/sounds</code>
 directory where MSP sound files are stored for players to access.</p>
       <p>The directory <span style="font-family: monospace;">pub/images/mxp</span>
-contains all of the MXP displayable images, including the file <span
- style="font-family: monospace;">pub/images/mxp/intro.jpg</span>,
+contains all of the MXP displayable images, including the file <span style="font-family: monospace;">pub/images/mxp/intro.jpg</span>,
 which is the image displayed when players who have MXP compliant mud
 clients log into your mud. To use multiple/random intros, just insert
 numbers before the extension for additional ones (intro1.jpg,
@@ -792,7 +783,7 @@ mob reactions
 based on mob race. &nbsp;See AUTOREACTION in your coffeemud.ini file
 for more
 information on this system.</td>
-          </tr>
+          </tr><tr><td>rplists.ini</td><td>An example Delta to the standard lists.ini with more role-playey values.</td></tr>
         </tbody>
       </table>
       <p>The <code>resources/factions</code> directory is where you
@@ -1493,9 +1484,7 @@ folder.&nbsp;<code>.</code></p>
 above to the classpath string. &nbsp;For example:</li>
         <ul>
           <li><span style="font-family: monospace;">java -classpath
-".;.\lib\js.jar;.\lib\jzlib.jar;.\lib\</span><span
- style="font-family: monospace;">mysql-connector-java-5.1.6-bin.jar</span><span
- style="font-family: monospace;">" -Xms64m ....</span></li>
+".;.\lib\js.jar;.\lib\jzlib.jar;.\lib\</span><span style="font-family: monospace;">mysql-connector-java-5.1.6-bin.jar</span><span style="font-family: monospace;">" -Xms64m ....</span></li>
           <li>** Your version of the connector jar file may vary!</li>
         </ul>
         <li>
@@ -1507,16 +1496,13 @@ launch the mud.bat.</p>
 CoffeeMud on a UN*X or Linux machine</a></h3>
       <ul>
         <li>
-          <p>Download and install mysql from <a
- href="http://www.mysql.com/downloads/index.html">http://www.mysql.com/downloads/index.html</a>.
+          <p>Download and install mysql from <a href="http://www.mysql.com/downloads/index.html">http://www.mysql.com/downloads/index.html</a>.
 Make sure mysqld is being run at boot time, and not by the root user.</p>
         </li>
         <li>
-          <p>Download and install the mysql jdbc api from <a
- href="http://www.mysql.com/downloads/api-jdbc-stable.html">http://www.mysql.com/downloads/api-jdbc-stable.html</a>.
+          <p>Download and install the mysql jdbc api from <a href="http://www.mysql.com/downloads/api-jdbc-stable.html">http://www.mysql.com/downloads/api-jdbc-stable.html</a>.
 Extract the .tar.gz file to a temporary directory. Then copy the
-extracted driver JAR file into your <span
- style="font-family: monospace;">/CoffeeMud/lib</span> directory.</p>
+extracted driver JAR file into your <span style="font-family: monospace;">/CoffeeMud/lib</span> directory.</p>
         </li>
         <li>Open up the mudUNIX.sh file and add the name of the JAR
 file above to the classpath string. &nbsp;For example:</li>
@@ -1525,8 +1511,7 @@ file above to the classpath string. &nbsp;For example:</li>
 -classpath
 ".:./lib/js.jar:./lib/jzlib.jar:./lib/mysql-connector-java-5.1.6-bin.jar"
 -Xms65535000 ....</span></li>
-          <li>** Your version of the connector jar file may vary!<span
- style="font-family: monospace;"><br />
+          <li>** Your version of the connector jar file may vary!<span style="font-family: monospace;"><br />
             </span></li>
         </ul>
         <li>
@@ -1615,8 +1600,7 @@ killConnections()</code> function.</p>
 with CoffeeMud</a></h3>
       <ul>
         <li> Get the database software
-          <p>Go to <a
- href="http://db.apache.org/derby/derby_downloads.html">http://db.apache.org/derby/derby_downloads.html</a>
+          <p>Go to <a href="http://db.apache.org/derby/derby_downloads.html">http://db.apache.org/derby/derby_downloads.html</a>
 and download the distribution( lib or bin, unless you want to build the
 whole project ).</p>
         </li>
@@ -1688,8 +1672,7 @@ Path&gt;\doc\pdf\tuning.pdf.</p>
       </ul>
       <br />
       <br />
-      <img src="images/nuked.jpg"
- alt="offline and shutdown applications" />
+      <img src="images/nuked.jpg" alt="offline and shutdown applications" />
       <h2><a name="shutdown">The OffLine And Shutdown Applications</a></h2>
       <p>In the off chance you should need to keep your mud down while
 database, or other software (or hardware?) maintenance is going on, a
@@ -1725,21 +1708,17 @@ please follow closely.</p>
       <ol>
         <li>Download "twitter4j" from <a href="http://twitter4j.org/">http://twitter4j.org/</a></li>
         <li>Unzip the twitter4j package.&nbsp;</li>
-        <li>Inside the twitter4j package is a directory called "<span
- style="font-family: monospace;">lib</span>", and inside that is a file
+        <li>Inside the twitter4j package is a directory called "<span style="font-family: monospace;">lib</span>", and inside that is a file
 called "<span style="font-family: monospace;">twitter4j-core-?.?.?.jar</span>".
 &nbsp;Copy this file to your <span style="font-family: monospace;">CoffeeMud\lib</span>
-directory, so that it sits alongside <span
- style="font-family: monospace;">js.jar</span> and <span
- style="font-family: monospace;">jzlib.jar</span>.&nbsp;</li>
+directory, so that it sits alongside <span style="font-family: monospace;">js.jar</span> and <span style="font-family: monospace;">jzlib.jar</span>.&nbsp;</li>
         <li>If you are using windows, open up the "mud.bat" file in
 your CoffeeMud directory, or the "mudUNIX.sh" file if using linux or
 mac&nbsp; into a text editor and add a reference to the twitter4j jar
 file you added in step 3. &nbsp;If you don't know how to do this, well,
 it gets rougher from here, but you will need to look up how to add jar
 files to the java executeable classpath from the command line.</li>
-        <li>Now, go to twitter.com , log in. &nbsp;Then go to <a
- href="https://apps.twitter.com/">https://apps.twitter.com/</a> and
+        <li>Now, go to twitter.com , log in. &nbsp;Then go to <a href="https://apps.twitter.com/">https://apps.twitter.com/</a> and
 register a new application. &nbsp;You will need to obtain 4 different
 garbly strings. The first two are obtained by following the application
 creation steps. &nbsp;The last two come when you "authorize" access to
@@ -1754,8 +1733,7 @@ your twitter account on behalf of the application.</li>
 following entries down at the bottom:<br />
           <span style="font-family: monospace;">TWITTER-OAUTHCONSUMERKEY=Your
 OAuth Consumer Key<br />
-TWITTER-OAUTHCONSUMERSECRET=Your OAuth Consumer Secret</span><br
- style="font-family: monospace;" />
+TWITTER-OAUTHCONSUMERSECRET=Your OAuth Consumer Secret</span><br style="font-family: monospace;" />
           <span style="font-family: monospace;">TWITTER-OAUTHACCESSTOKEN=Your-Oauth
 Access Token</span><br style="font-family: monospace;" />
           <span style="font-family: monospace;">TWITTER-OAUTHACCESSTOKENSECRET=Your
@@ -1763,14 +1741,12 @@ Access Token Secret</span></li>
         <li><span style="font-family: monospace;">Now, still in the
 coffeemud.ini file, find the entry for "CHANNELS= &nbsp;..." &nbsp;Find
 the name of the channel you want to tweet from. &nbsp;When you've found
-it, put a space and the word <span
- style="font-family: Courier New,Courier,monospace;">TWITTER </span>after
+it, put a space and the word <span style="font-family: Courier New,Courier,monospace;">TWITTER </span>after
 the name of the channel, and before the next comma or end of string.
 &nbsp;Any channels with the word TWITTER in their flags list will send
 their messages to the twitter feed. &nbsp;Use the other options and
 flags to limit access to this channel so that your players can't use it.</span></li>
-        <li>Save the coffeemud.ini file and restart your mud.<br
- style="font-family: monospace;" />
+        <li>Save the coffeemud.ini file and restart your mud.<br style="font-family: monospace;" />
         </li>
       </ol>
       <p></p>
@@ -1780,5 +1756,4 @@ flags to limit access to this channel so that your players can't use it.</span><
   </tbody>
 </table>
 </center>
-</body>
-</html>
+</body></html>
