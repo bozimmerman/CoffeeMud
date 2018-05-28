@@ -964,10 +964,14 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/**
 		 * Returns the list of flags that apply to this event.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#FLAG_DESCS
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#FLAG_KEYVALS
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#setFlags(String)
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#outsiderTargetOK()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#selfTargetOK()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#just100()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getBonusRoleplayXP()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getBonusXP()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getFlagValue(String)
 		 * @return the list of applicable flags
 		 */
 		public String flagCache();
@@ -975,10 +979,14 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		/**
 		 * Sets the list of flags that apply to this event.
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#FLAG_DESCS
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#FLAG_KEYVALS
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#flagCache()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#outsiderTargetOK()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#selfTargetOK()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#just100()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getBonusRoleplayXP()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getBonusXP()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getFlagValue(String)
 		 * @param newFlagCache the new list of applicable flags
 		 */
 		public void setFlags(String newFlagCache);
@@ -990,6 +998,9 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#flagCache()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#selfTargetOK()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#just100()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getBonusRoleplayXP()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getBonusXP()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getFlagValue(String)
 		 * @return true if the target does not have to have this faction, false otherwise
 		 */
 		public boolean outsiderTargetOK();
@@ -1000,6 +1011,9 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#flagCache()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#outsiderTargetOK()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#just100()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getBonusRoleplayXP()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getBonusXP()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getFlagValue(String)
 		 * @return true if src and target are the same, false otherwise
 		 */
 		public boolean selfTargetOK();
@@ -1011,10 +1025,49 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#flagCache()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#outsiderTargetOK()
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#selfTargetOK()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getBonusRoleplayXP()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getBonusXP()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getFlagValue(String)
 		 * @return true to NOT take level into account when determining amount of faction change
 		 */
 		public boolean just100();
 
+		/**
+		 * Returns any bonus xp granted by this change event in addition to faction changes.
+		 * This XP is given to the source of the event, and normal level and alignment
+		 * based checks apply to the target.
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#flagCache()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#outsiderTargetOK()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#selfTargetOK()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#just100()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getBonusRoleplayXP()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getFlagValue(String)
+		 * @return the bonus xp
+		 */
+		public int getBonusXP();
+
+		/**
+		 * Returns any bonus roleplay xp granted by this change event in addition to faction changes.
+		 * This roleplay XP is given to the source of the event.
+		 * 
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#flagCache()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#outsiderTargetOK()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#selfTargetOK()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#just100()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getBonusXP()
+		 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#getFlagValue(String)
+		 * @return the bonus roleplay xp
+		 */
+		public int getBonusRoleplayXP();
+		
+		/**
+		 * Returns one of the raw key=value pairs from the flag cache.
+		 * @param key the key to look up
+		 * @return the value of the key, if available, or ""
+		 */
+		public String getFlagValue(String key);
+
+		
 		/**
 		 * Returns a code for a description of how an event, if applicable, will affect this
 		 * factions value.  The direction is an index into CHANGE_DIRECTION_DESCS, or one of the
@@ -1171,6 +1224,8 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		public static final String[] CHANGE_DIRECTION_DESCS={"UP","DOWN","OPPOSITE","MINIMUM","MAXIMUM","REMOVE","ADD","AWAY","TOWARD"};
 		/** the code words for the various evaluation flags to decide if this event applies and other things */
 		public static final String[] FLAG_DESCS={"OUTSIDER","SELFOK","JUST100"};
+		/** the code words for the various flags to set miscellaneous change event values, such as xp grants */
+		public static final String[] FLAG_KEYVALS={"XP","RPXP"};
 		/** some non-ability-related event trigger ids */
 		public static final String[] MISC_TRIGGERS={"MURDER","TIME","ADDOUTSIDER","KILL","BRIBE","TALK","MUDCHAT","ARRESTED","SOCIAL"};
 	}

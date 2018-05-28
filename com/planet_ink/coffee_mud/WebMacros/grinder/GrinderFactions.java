@@ -146,6 +146,12 @@ public class GrinderFactions
 				int x=0;
 				for(;httpReq.isUrlParameter("CHANGESFLAGS"+num+"_"+id);id=""+(++x))
 					old+=" "+httpReq.getUrlParameter("CHANGESFLAGS"+num+"_"+id).toUpperCase();
+				int v=CMath.s_int(httpReq.getUrlParameter("XP"+num));
+				if(v!=0)
+					old+=" XP="+v;
+				v=CMath.s_int(httpReq.getUrlParameter("RPXP"+num));
+				if(v!=0)
+					old+=" RPXP="+v;
 				old+=";";
 				old+=httpReq.getUrlParameter("CHANGESMASK"+num);
 				F.createChangeEvent(old);

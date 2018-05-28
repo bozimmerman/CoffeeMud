@@ -1408,12 +1408,10 @@ public class DefaultFaction implements Faction, MsgListener
 				baseChangeAmount=baseChangeAmount+CMath.mul(levelFactor,100);
 			}
 		}
-		final String xp = event.getTriggerParm("XP");
-		if(CMath.isInteger(xp))
-			CMLib.leveler().postExperience(source, target, "", CMath.s_int(xp), false);
-		final String rpxp = event.getTriggerParm("RPXP");
-		if(CMath.isInteger(rpxp))
-			CMLib.leveler().postRPExperience(source, target, "", CMath.s_int(rpxp), true);
+		if(event.getBonusXP()!=0)
+			CMLib.leveler().postExperience(source, target, "", event.getBonusXP(), false);
+		if(event.getBonusRoleplayXP()!=0)
+			CMLib.leveler().postRPExperience(source, target, "", event.getBonusRoleplayXP(), true);
 
 		int factionAdj=1;
 		int changeDir=0;
@@ -1663,14 +1661,17 @@ public class DefaultFaction implements Faction, MsgListener
 		private boolean		outsiderTargetOK= false;
 		private boolean		selfTargetOK	= false;
 		private boolean		just100			= false;
+		private int			bonusXP			= 0;
+		private int			bonusRPXP		= 0;
 		private Object[]	stateVariables	= new Object[0];
 		private String		triggerParms	= "";
 		
 		private final Faction	myFaction;
 		
-		private Map<String,String> savedTriggerParms=new Hashtable<String,String>();
-		private MaskingLibrary.CompiledZMask compiledTargetZapper=null;
-		private MaskingLibrary.CompiledZMask compiledSourceZapper=null;
+		private Map<String, String>				flags					= new Hashtable<String, String>();
+		private Map<String, String>				savedTriggerParms		= new Hashtable<String, String>();
+		private MaskingLibrary.CompiledZMask	compiledTargetZapper	= null;
+		private MaskingLibrary.CompiledZMask	compiledSourceZapper	= null;
 
 		@Override
 		public String eventID()
@@ -1714,6 +1715,18 @@ public class DefaultFaction implements Faction, MsgListener
 			return factor;
 		}
 
+		@Override
+		public int getBonusXP()
+		{
+			return bonusXP;
+		}
+		
+		@Override
+		public int getBonusRoleplayXP()
+		{
+			return bonusRPXP;
+		}
+		
 		@Override
 		public String targetZapper()
 		{
@@ -1939,15 +1952,21 @@ public class DefaultFaction implements Faction, MsgListener
 		public void setFlags(String newFlagCache)
 		{
 			flagCache=newFlagCache.toUpperCase().trim();
-			final Vector<String> flags=CMParms.parse(flagCache);
-			if(flags.contains("OUTSIDER"))
-				outsiderTargetOK=true;
-			if(flags.contains("SELFOK"))
-				selfTargetOK=true;
-			if(flags.contains("JUST100"))
-				just100=true;
+			flags=CMParms.parseStrictEQParms(newFlagCache);
+			outsiderTargetOK=flags.containsKey("OUTSIDER");
+			selfTargetOK=flags.containsKey("SELFOK");
+			just100=flags.containsKey("JUST100");
+			bonusXP=flags.containsKey("XP")?CMath.s_int(flags.get("XP")):0;
+			bonusRPXP=flags.containsKey("RPXP")?CMath.s_int(flags.get("RPXP")):0;
 		}
 
+		@Override
+		public String getFlagValue(String key)
+		{
+			key=key.toUpperCase().trim();
+			return flags.containsKey(key) ? flags.get(key) : "";
+		}
+		
 		@Override
 		public boolean applies(MOB source, MOB target)
 		{

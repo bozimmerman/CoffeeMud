@@ -519,6 +519,7 @@ public class CMParms
 		final char[] cs=str.toCharArray();
 		int state=0;
 		for(final char c : cs)
+		{
 			switch(state)
 			{
 			case 0:
@@ -559,6 +560,7 @@ public class CMParms
 				break;
 			}
 			}
+		}
 		if(s.length()>0)
 			commands.add(s.toString());
 		return commands;
@@ -1281,10 +1283,10 @@ public class CMParms
 			if((x==0)||(!Character.isLetter(text.charAt(x-1))))
 			{
 				while((x<text.length())
-					&&(text.charAt(x)!='>')
-					&&(text.charAt(x)!='<')
-					&&(text.charAt(x)!='!')
-					&&(text.charAt(x)!='='))
+				&&(text.charAt(x)!='>')
+				&&(text.charAt(x)!='<')
+				&&(text.charAt(x)!='!')
+				&&(text.charAt(x)!='='))
 					x++;
 
 				if(x<text.length()-1)
@@ -1397,6 +1399,115 @@ public class CMParms
 			if(val.startsWith("\"")&&(val.endsWith("\"")))
 				val=val.substring(1,val.length()-1).trim();
 			h.put(lastParm,val);
+		}
+		return h;
+	}
+
+	/**
+	 * Parses the given string for[PAREM1] [PARAM2]=[VALUE] or [PARAM]="[VALUE]" formatted key/pair
+	 * values. Returns a map of the found parameters and their values.
+	 * This method is a strict, unforgiving method doing KEY=VALUE value searches in a string.
+	 * The key is case insensitive, returned as uppercase.  Values may be put in quotes, with
+	 * escapped quotes and escapped escapes.
+	 * @param str the unparsed string
+	 * @return the map of parameters
+	 */
+	public final static Map<String,String> parseStrictEQParms(final String str)
+	{
+		final Hashtable<String,String> h=new Hashtable<String,String>();
+		int state=0;
+		StringBuilder curKey=new StringBuilder("");
+		StringBuilder curVal=new StringBuilder("");
+		for(int x=0;x<str.length();x++)
+		{
+			final char c=Character.toUpperCase(str.charAt(x));
+			switch(state)
+			{
+			case 0:
+				if(Character.isLetter(c))
+				{
+					curKey.setLength(0);
+					curKey.append(c);
+					state=1;
+				}
+				break;
+			case 1:
+				if(Character.isLetterOrDigit(c))
+					curKey.append(c);
+				else
+				if(Character.isWhitespace(c))
+					state=2;
+				break;
+			case 2:
+				if(c=='=')
+					state=3;
+				else
+				if(Character.isLetter(c))
+				{
+					h.put(curKey.toString(), "");
+					curKey.setLength(0);
+					curKey.append(c);
+					state=1;
+				}
+				break;
+			case 3:
+				if(c=='\"')
+					state=4;
+				else
+				if((c=='\\')&&(x<str.length()-1))
+				{
+					curVal.setLength(0);
+					curVal.append(str.charAt(++x));
+					state=5;
+				}
+				else
+				if(!Character.isWhitespace(c))
+				{
+					curVal.setLength(0);
+					curVal.append(str.charAt(x));
+					state=5;
+				}
+				break;
+			case 4:
+				if((c=='\\')&&(x<str.length()-1))
+					curVal.append(str.charAt(++x));
+				else
+				if(c=='\"')
+				{
+					h.put(curKey.toString(), curVal.toString());
+					state=0;
+				}
+				else
+					curVal.append(str.charAt(x));
+				break;
+			case 5:
+				if((c=='\\')&&(x<str.length()-1))
+					curVal.append(str.charAt(++x));
+				else
+				if(Character.isWhitespace(c))
+				{
+					h.put(curKey.toString(), curVal.toString());
+					state=0;
+				}
+				else
+					curVal.append(str.charAt(x));
+				break;
+					
+			}
+		}
+		switch(state)
+		{
+		case 0:
+			break;
+		case 1:
+		case 2:
+		case 3:
+			h.put(curKey.toString(), "");
+			break;
+		case 4:
+		case 5:
+			h.put(curKey.toString(), curVal.toString());
+			break;
 		}
 		return h;
 	}
@@ -2374,6 +2485,7 @@ public class CMParms
 		int lastDex=0;
 		final Vector<String> V=new Vector<String>();
 		for(int l=0;l<buf1.length();l++)
+		{
 			switch(buf1.charAt(l))
 			{
 			case '\\':
@@ -2385,6 +2497,7 @@ public class CMParms
 				lastDex=l+1;
 				break;
 			}
+		}
 		if((!ignoreNulls)||(lastDex<buf1.length()))
 			V.addElement(buf1.substring(lastDex,buf1.length()));
 		return V;

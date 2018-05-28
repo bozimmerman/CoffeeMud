@@ -313,6 +313,8 @@ public class FactionData extends StdWebMacro
 									httpReq.addFakeUrlParameter("CHANGESTRIGGER"+v,def);
 									httpReq.addFakeUrlParameter("CHANGESDIR"+v,""+E.direction());
 									httpReq.addFakeUrlParameter("CHANGESFACTOR"+v,CMath.toPct(E.factor()));
+									httpReq.addFakeUrlParameter("XP"+v,""+E.getBonusXP());
+									httpReq.addFakeUrlParameter("RPXP"+v,""+E.getBonusRoleplayXP());
 									httpReq.addFakeUrlParameter("CHANGESTPARM"+v,E.triggerParameters());
 									String id="";
 									final Vector<String> flags=CMParms.parse(E.flagCache());
@@ -377,6 +379,11 @@ public class FactionData extends StdWebMacro
 							str.append("</TD><TD>");
 							val=""+httpReq.getUrlParameter("CHANGESMASK"+num);
 							str.append("<INPUT TYPE=TEXT NAME=CHANGESMASK"+showNum+" SIZE=20 MAXLENGTH=255 VALUE=\""+htmlOutgoingFilter(val)+"\">");
+							str.append("</TD><TD>");
+							val=""+CMath.s_int(httpReq.getUrlParameter("XP"+num));
+							str.append("XP:<INPUT TYPE=TEXT NAME=XP"+showNum+" SIZE=4 VALUE=\""+val+"\"><BR>");
+							val=""+CMath.s_int(httpReq.getUrlParameter("RPXP"+num));
+							str.append("RP XP:<INPUT TYPE=TEXT NAME=RPXP"+showNum+" SIZE=4 VALUE=\""+val+"\"><BR>");
 							str.append("</TD></TR>");
 						}
 						num++;
@@ -415,6 +422,9 @@ public class FactionData extends StdWebMacro
 					str.append("</SELECT>");
 					str.append("</TD><TD>");
 					str.append("<INPUT TYPE=TEXT NAME=CHANGESMASK"+showNum+" SIZE=20 MAXLENGTH=255 VALUE=\"\">");
+					str.append("</TD><TD>");
+					str.append("XP:<INPUT TYPE=TEXT NAME=XP"+showNum+" SIZE=4 VALUE=\"0\"><BR>");
+					str.append("RP XP:<INPUT TYPE=TEXT NAME=RPXP"+showNum+" SIZE=4 VALUE=\"0\"><BR>");
 					str.append("</TD></TR>");
 				}
 				if(parms.containsKey("ADJUSTMENTFACTORS"))

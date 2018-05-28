@@ -58,7 +58,7 @@ public class StdItem implements Item
 	protected int		material			= RawMaterial.RESOURCE_COTTON;
 	protected String[]	xtraValues			= null;
 	protected long		dispossessionTime	= 0;
-	protected short		tickCtr				= 5;
+	protected short		tickCtr				= (short)(10+(hashCode()%10));
 	protected int		tickStatus			= Tickable.STATUS_NOT;
 	protected String	databaseID			= "";
 	protected boolean	destroyed			= false;
@@ -708,7 +708,7 @@ public class StdItem implements Item
 		tickStatus=Tickable.STATUS_START;
 		if((--tickCtr)<=0)
 		{
-			tickCtr=(short)(10+CMLib.dice().roll(1, 10, 0));
+			tickCtr=(short)(10+CMLib.dice().roll(1, 100, 0));
 			final Room R=CMLib.map().roomLocation(this);
 			final Area A=(R==null)?null:R.getArea();
 			if((R==null)||(A==null)||(R.amDestroyed())||(A.amDestroyed()))

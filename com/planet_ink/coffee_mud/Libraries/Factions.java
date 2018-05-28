@@ -1249,7 +1249,7 @@ public class Factions extends StdLibrary implements FactionManager
 				}
 				if(CE!=null)
 				{
-					mob.tell(L("Valid flags include: @x1\n\r",CMParms.toListString(Faction.FactionChangeEvent.FLAG_DESCS)));
+					mob.tell(L("Valid flags/keys include: @x1\n\r",CMParms.toListString(CMParms.combine(Faction.FactionChangeEvent.FLAG_DESCS,Faction.FactionChangeEvent.FLAG_KEYVALS))));
 					final String newFlags=mob.session().prompt(L("Enter new flag(s) (@x1): @x2",CE.flagCache(),CE.flagCache()),CE.flagCache());
 					if((newFlags.length()==0)||(newFlags.equals(CE.flagCache())))
 						mob.tell(L("(no change)"));
