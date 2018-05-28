@@ -1119,6 +1119,30 @@ public class DefaultFaction implements Faction, MsgListener
 			}
 		}
 
+		if((msg.tool() instanceof Social)		// socials
+		&&(msg.source()==myHost)
+		&&(msg.target() instanceof MOB)
+		&&(((Social)msg.tool()).targetable(msg.source()))
+		&&(msg.sourceMinor()!=CMMsg.TYP_CHANNEL))
+		{
+			events=getChangeEvents("SOCIAL");
+			if(events!=null)
+			{
+				final Social social = (Social)msg.tool();
+				final String socialName = social.baseName();
+				for (final FactionChangeEvent event : events)
+				{
+					final String triggerID=event.getTriggerParm("ID");
+					if((triggerID.length()>0)
+					&&(socialName.equals(triggerID)||triggerID.equalsIgnoreCase("ALL"))
+					&&(event.applies(msg.source(),(MOB)msg.target()))
+					&&((!CMath.isInteger(event.getTriggerParm("CHANCE")))
+						||(CMLib.dice().rollPercentage()<CMath.s_int(event.getTriggerParm("CHANCE")))))
+						executeChange(msg.source(),(MOB)msg.target(),event);
+				}
+			}
+		}
+
 		if((msg.sourceMinor()==CMMsg.TYP_GIVE)    // Bribe watching
 		&&(msg.source()==myHost)
 		&&(msg.tool() instanceof Coins)
@@ -1367,6 +1391,12 @@ public class DefaultFaction implements Faction, MsgListener
 				baseChangeAmount=baseChangeAmount+CMath.mul(levelFactor,100);
 			}
 		}
+		final String xp = event.getTriggerParm("XP");
+		if(CMath.isInteger(xp))
+			CMLib.leveler().postExperience(source, target, "", CMath.s_int(xp), false);
+		final String rpxp = event.getTriggerParm("RPXP");
+		if(CMath.isInteger(rpxp))
+			CMLib.leveler().postRPExperience(source, target, "", CMath.s_int(rpxp), true);
 
 		int factionAdj=1;
 		int changeDir=0;
