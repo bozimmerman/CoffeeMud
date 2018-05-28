@@ -708,13 +708,14 @@ public class StdItem implements Item
 		tickStatus=Tickable.STATUS_START;
 		if((--tickCtr)<=0)
 		{
-			tickCtr=10;
+			tickCtr=(short)(10+CMLib.dice().roll(1, 10, 0));
 			final Room R=CMLib.map().roomLocation(this);
 			final Area A=(R==null)?null:R.getArea();
 			if((R==null)||(A==null)||(R.amDestroyed())||(A.amDestroyed()))
 			{
 				final String aName=(A!=null)?A.Name():"null";
-				Log.warnOut("Destroying "+Name()+" because it's not ticking in a real place ("+CMLib.map().getExtendedRoomID(R)+"): ("+aName+").");
+				final String ownerName = (owner() != null)?owner.name():"";
+				Log.warnOut("Destroying "+Name()+" because it's not ticking in a real place ("+CMLib.map().getExtendedRoomID(R)+"): ("+aName+") ["+ownerName+"].");
 				this.destroy();
 				return false;
 			}
