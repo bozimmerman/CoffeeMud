@@ -299,6 +299,7 @@ public class Thief extends StdCharClass
 			&&(msg.target() instanceof MOB)
 			&&(msg.targetMessage()==null)
 			&&(msg.tool() instanceof Ability)
+			&&(myChar.charStats().getCurrentClass()==this)
 			&&(msg.tool().ID().equals("Thief_Steal")
 				||msg.tool().ID().equals("Thief_Robbery")
 				||msg.tool().ID().equals("Thief_Embezzle")
