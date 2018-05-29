@@ -5192,7 +5192,7 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public int fetchFaction(String which)
+	public int fetchFaction(final String which)
 	{
 		final Faction.FData data = factions.get(which.toUpperCase());
 		if (data == null)
@@ -5201,7 +5201,13 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void removeFaction(String which)
+	public Faction.FData fetchFactionData(String which)
+	{
+		return factions.get(which.toUpperCase());
+	}
+
+	@Override
+	public void removeFaction(final String which)
 	{
 		factions.remove(which.toUpperCase());
 	}

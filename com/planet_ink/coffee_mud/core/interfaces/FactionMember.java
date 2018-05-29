@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.planet_ink.coffee_mud.Abilities.interfaces.Ability;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction;
 import com.planet_ink.coffee_mud.Common.interfaces.PhyStats;
 import com.planet_ink.coffee_mud.Common.interfaces.Tattoo;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
@@ -52,14 +53,14 @@ public interface FactionMember
 	 * @param amount the amount to alter the faction by, or initial value
 	 */
 	public void adjustFaction(String of, int amount);
-	
+
 	/**
 	 * Returns an enumeration of all the faction id this is a member of.
 	 * @see FactionMember
 	 * @return an enumeration of all the faction id this is a member of.
 	 */
 	public Enumeration<String> factions();
-	
+
 	/**
 	 * Returns an enumeration of the faction range ids that represent the
 	 * rank that this member has in each of their factions.  So there is
@@ -68,7 +69,7 @@ public interface FactionMember
 	 * @return an enumeration of the faction ranges
 	 */
 	public List<String> fetchFactionRanges();
-	
+
 	/**
 	 * Returns whether this is a member of the given faction and has some
 	 * rank.
@@ -77,7 +78,7 @@ public interface FactionMember
 	 * @return true if this is a member of the given faction, false otherwise
 	 */
 	public boolean hasFaction(String which);
-	
+
 	/**
 	 * Returns the faction rank/value that this member has in the given
 	 * faction id.
@@ -86,7 +87,16 @@ public interface FactionMember
 	 * @return the rank value, or Integer.MAX_VALUE if no value found
 	 */
 	public int fetchFaction(String which);
-	
+
+	/**
+	 * Returns the complete contextual faction data for this 
+	 * member.
+	 * @see Faction.FData
+	 * @param which the faction id to return rank/value in
+	 * @return the faction data
+	 */
+	public Faction.FData fetchFactionData(String which);
+
 	/**
 	 * Returns a friendly viewable list of all the factions that this is
 	 * a member of, along with the rank/value this member has in that
@@ -95,14 +105,14 @@ public interface FactionMember
 	 * @return friendly viewable list of all the factions
 	 */
 	public String getFactionListing();
-	
+
 	/**
 	 * Removes this as a member of the given faction, losing all rank.
 	 * @see FactionMember
 	 * @param which the faction id to remove
 	 */
 	public void removeFaction(String which);
-	
+
 	/**
 	 * Copies the factions that the given member belongs to into this.
 	 * @see FactionMember
