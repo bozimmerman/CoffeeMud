@@ -794,27 +794,31 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			session.stopSession(false,false,false);
 			return LoginResult.NO_LOGIN;
 		}
-		for(final Session S : CMLib.sessions().allIterable())
+		for(final Enumeration<CMLibrary> e=CMLib.libraries(CMLib.Library.SESSIONS);e.hasMoreElements();)
 		{
-			final MOB M=S.mob();
-			if((M!=null)
-			&&(S!=session)
-			&&(M==pickedMOB))
+			final SessionsList sessList=(SessionsList)e.nextElement();
+			for(final Session S : sessList.allIterable())
 			{
-				final Room oldRoom=M.location();
-				if(oldRoom!=null)
+				final MOB M=S.mob();
+				if((M!=null)
+				&&(S!=session)
+				&&(M==pickedMOB))
 				{
-					while(oldRoom.isInhabitant(M))
-						oldRoom.delInhabitant(M);
+					final Room oldRoom=M.location();
+					if(oldRoom!=null)
+					{
+						while(oldRoom.isInhabitant(M))
+							oldRoom.delInhabitant(M);
+					}
+					session.setMob(M);
+					M.setSession(session);
+					S.setMob(null);
+					S.stopSession(false,false,false);
+					Log.sysOut("Session swap for "+session.mob().Name()+".");
+					reloadTerminal(session.mob());
+					session.mob().bringToLife(oldRoom,false);
+					return LoginResult.NORMAL_LOGIN;
 				}
-				session.setMob(M);
-				M.setSession(session);
-				S.setMob(null);
-				S.stopSession(false,false,false);
-				Log.sysOut("Session swap for "+session.mob().Name()+".");
-				reloadTerminal(session.mob());
-				session.mob().bringToLife(oldRoom,false);
-				return LoginResult.NORMAL_LOGIN;
 			}
 		}
 		return null;
