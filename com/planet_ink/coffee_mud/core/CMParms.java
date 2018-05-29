@@ -1435,6 +1435,9 @@ public class CMParms
 				if(Character.isLetterOrDigit(c))
 					curKey.append(c);
 				else
+				if(c=='=')
+					state=3;
+				else
 				if(Character.isWhitespace(c))
 					state=2;
 				break;
@@ -1475,6 +1478,8 @@ public class CMParms
 				if(c=='\"')
 				{
 					h.put(curKey.toString(), curVal.toString());
+					curVal.setLength(0);
+					curKey.setLength(0);
 					state=0;
 				}
 				else
@@ -1487,6 +1492,8 @@ public class CMParms
 				if(Character.isWhitespace(c))
 				{
 					h.put(curKey.toString(), curVal.toString());
+					curVal.setLength(0);
+					curKey.setLength(0);
 					state=0;
 				}
 				else

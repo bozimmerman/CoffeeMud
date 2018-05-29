@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -1388,6 +1389,22 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @param behaviors a vector of behaviors
 		 */
 		public void addHandlers(List<Ability> abilities, List<Behavior> behaviors);
+
+		/**
+		 * Returns a timestamp for the given event denoting when that event can
+		 * next take place.
+		 * @param event the change event to get a time for.
+		 * @return the timestamp ro the next event, or 0
+		 */
+		public long getNextChangeTimers(final Faction.FactionChangeEvent event);
+
+		/**
+		 * Sets a timestamp for the given event denoting when that event can
+		 * next take place.
+		 * @param event the change event to get a time for.
+		 * @param time the timestamp ro the next event, or 0
+		 */
+		public void setNextChangeTimers(final Faction.FactionChangeEvent event, long time);
 	}
 
 	/**

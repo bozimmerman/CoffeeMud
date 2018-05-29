@@ -24,6 +24,10 @@
         {
             ReShow();
         }
+        function DelItem(ME)
+        {
+            ReShow();
+        }
         function EditItemDone()
         {
             ReShow();
