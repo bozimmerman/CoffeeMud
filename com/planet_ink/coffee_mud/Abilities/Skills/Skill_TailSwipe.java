@@ -214,7 +214,7 @@ public class Skill_TailSwipe extends StdSkill
 				&&(proficiencyCheck(mob,tripChance,auto)))
 				{
 					if(maliciousAffect(mob,target,asLevel,2,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0)) != null)
-						R.show(mob,target,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the floor!"));
+						R.show(mob,target,CMMsg.MSG_OK_ACTION,L("<T-NAME> hit(s) the floor!"));
 				}
 			}
 		}
