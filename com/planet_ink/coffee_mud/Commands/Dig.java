@@ -89,7 +89,23 @@ public class Dig extends StdCommand
 	public boolean preExecute(MOB mob, List<String> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
 	throws java.io.IOException
 	{
-		
+		final Session sess=mob.session();
+		if((sess!=null)
+		&&(sess.getPreviousCMD()!=null)
+		&&(sess.getPreviousCMD().size()>1))
+		{
+			if(sess.getPreviousCMD().get(0).toUpperCase().equals("DIG")
+			&&sess.getPreviousCMD().get(1).toUpperCase().equals("STOP"))
+			{
+				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> stop(s) digging."));
+				if(mob.location().okMessage(mob,msg))
+				{
+					mob.location().send(mob,msg);
+					mob.clearCommandQueue();
+				}
+				return false;
+			}
+		}
 		if(secondsElapsed==0)
 		{
 			if(isOccupiedWithOtherWork(mob))
