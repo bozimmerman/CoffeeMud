@@ -674,7 +674,8 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						}
 					}
 
-					if(!A.isAutoInvoked())
+					if((!A.isAutoInvoked())
+					||((A.triggerStrings().length>0)))
 					{
 						final Vector<AbilityComponent> components=(Vector<AbilityComponent>)CMLib.ableComponents().getAbilityComponentMap().get(A.ID().toUpperCase());
 						if(components!=null)
