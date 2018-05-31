@@ -1732,6 +1732,12 @@ public class CMFile extends File
 	private static final String[] parsePathParts(String absolutePath)
 	{
 		absolutePath=vfsifyFilename(absolutePath);
+		if(absolutePath.startsWith("resources/") && CMProps.isPrivateToMe(absolutePath))
+		{
+			final String newPrefix = CMProps.getVar(CMProps.Str.PRIVATERESOURCEPATH);
+			if(newPrefix.length()>0)
+				absolutePath = newPrefix+absolutePath.substring(10);
+		}
 		String name=absolutePath;
 		final int x=absolutePath.lastIndexOf('/');
 		String path="";

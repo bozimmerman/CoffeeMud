@@ -1038,6 +1038,23 @@ public class CMLib
 		}
 		return V.elements();
 	}
+	
+	/**
+	 * Return the private thread id that belongs to the given library
+	 * @param code the library code
+	 * @param lib the library to look for
+	 * @return that libraries code
+	 */
+	public final static char getLibraryThreadID(final Library code, final CMLibrary lib)
+	{
+		for(int l=0;l<libs.length;l++)
+		{
+			if((libs[l]!=null)
+			&&(libs[l].libraries[code.ordinal()]==lib))
+				return (char)l;
+		}
+		return '\0';
+	}
 
 	/**
 	 * Calls registerLibrary on all the given CMLibrary objects

@@ -204,7 +204,8 @@ public class CMProps extends Properties
 		EXPDEFER_ARGUMENT,
 		EXPDEFER_MASK,
 		RPAWARDS,
-		LOGOUTMASK
+		LOGOUTMASK,
+		PRIVATERESOURCEPATH
 	}
 
 	/**
@@ -2232,6 +2233,12 @@ public class CMProps extends Properties
 		setVar(Str.RPAWARDS,getStr("RPAWARDS",""));
 		parseRPAwards(getVar(Str.RPAWARDS));
 		setVar(Str.LOGOUTMASK,getStr("LOGOUTMASK",""));
+		String ppath=getStr("PRIVATERESOURCEPATH","");
+		if(!ppath.endsWith("/"))
+			ppath += "/";
+		while(ppath.startsWith("/"))
+			ppath = ppath.substring(1);
+		setVar(Str.PRIVATERESOURCEPATH,ppath);
 		
 		p().poseFilter.clear();
 		p().poseFilter.addAll(CMParms.parse((getStr("POSEFILTER")).toUpperCase()));
