@@ -206,7 +206,7 @@ public class Chopping extends GatheringSkill
 				foundShortName="nothing";
 				if(found!=null)
 				{
-					foundShortName=L("@x1 tree wood",RawMaterial.CODES.NAME(found.material()).toLowerCase());
+					foundShortName=L("@x1 tree wood",RawMaterial.CODES.NAME(resourceType).toLowerCase());
 				}
 			}
 		}
