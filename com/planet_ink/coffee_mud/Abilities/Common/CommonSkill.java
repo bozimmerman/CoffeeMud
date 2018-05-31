@@ -206,8 +206,9 @@ public class CommonSkill extends StdAbility
 		&&(tickID==Tickable.TICKID_MOB))
 		{
 			final MOB mob=(MOB)affected;
+			final Room R=mob.location();
 			if((mob.isInCombat())
-			||(mob.location()!=activityRoom)
+			||(R!=activityRoom)
 			||(!CMLib.flags().isAliveAwakeMobileUnbound(mob,true)))
 			{
 				aborted=true;
@@ -216,13 +217,25 @@ public class CommonSkill extends StdAbility
 			}
 			final String sound=(playSound!=null)?CMLib.protocol().msp(playSound,10):"";
 			if(tickDown==4)
-				mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> <S-IS-ARE> almost done @x1.@x2",verb,sound));
+			{
+				if(!R.show(mob,null,getActivityMessageType(),L("<S-NAME> <S-IS-ARE> almost done @x1.@x2",verb,sound)))
+				{
+					aborted=true;
+					unInvoke();
+					return false;
+				}
+			}
 			else
 			if((tickUp%4)==0)
 			{
 				final int total=tickUp+tickDown;
 				final int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
-				mob.location().show(mob,null,this,getActivityMessageType(),L("<S-NAME> continue(s) @x1 (@x2% completed).@x3",verb,""+pct,sound),null,L("<S-NAME> continue(s) @x1.@x2",verb,sound));
+				if(!R.show(mob,null,this,getActivityMessageType(),L("<S-NAME> continue(s) @x1 (@x2% completed).@x3",verb,""+pct,sound),null,L("<S-NAME> continue(s) @x1.@x2",verb,sound)))
+				{
+					aborted=true;
+					unInvoke();
+					return false;
+				}
 			}
 			if((helping)
 			&&(helpingAbility!=null)
@@ -231,7 +244,7 @@ public class CommonSkill extends StdAbility
 				helpingAbility.tick(helpingAbility.affecting(),tickID);
 			if((mob.soulMate()==null)
 			&&(mob.playerStats()!=null)
-			&&(mob.location()!=null)
+			&&(R!=null)
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.HYGIENE)))
 				mob.playerStats().adjHygiene(PlayerStats.HYGIENE_COMMONDIRTY);
 		}
