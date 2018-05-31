@@ -2599,7 +2599,8 @@ public class StdMOB implements MOB
 				case CMMsg.TYP_LEAVE:
 					if ((isInCombat())
 					&& (location() != null)
-					&& (!msg.sourceMajor(CMMsg.MASK_MAGIC)))
+					&& (!msg.sourceMajor(CMMsg.MASK_MAGIC))
+					&&(!CMLib.flags().isFalling(this)))
 					{
 						for (final Enumeration<MOB> m = location().inhabitants(); m.hasMoreElements();)
 						{

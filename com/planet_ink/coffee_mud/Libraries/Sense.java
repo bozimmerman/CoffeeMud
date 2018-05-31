@@ -2147,10 +2147,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		String type=null;
 		if(isFalling(seen))
 		{
-			if((seen instanceof BoardableShip)
-			&&(seen instanceof Item)
+			if((seen instanceof Item)
 			&&(((Item)seen).owner() instanceof Room)
-			&&(this.isWateryRoom((Room)((Item)seen).owner())))
+			&&(isWateryRoom((Room)((Item)seen).owner())))
+				type="sinks";
+			else
+			if((seen instanceof MOB)
+			&&(isWateryRoom(((MOB)seen).location())))
 				type="sinks";
 			else
 				type="falls";
