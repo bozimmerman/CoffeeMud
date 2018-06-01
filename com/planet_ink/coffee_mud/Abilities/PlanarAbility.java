@@ -1248,7 +1248,7 @@ public class PlanarAbility extends StdAbility
 			int x=areaName.indexOf('_');
 			if((x>0)&&(CMath.isNumber(areaName.substring(0, x))))
 			{
-				Area newCloneArea=CMLib.map().getArea(areaName.substring(x+1));
+				final Area newCloneArea=CMLib.map().getArea(areaName.substring(x+1));
 				if(newCloneArea!=null)
 				{
 					cloneArea=newCloneArea;
