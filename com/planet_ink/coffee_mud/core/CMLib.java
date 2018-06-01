@@ -297,6 +297,23 @@ public class CMLib
 	}
 
 	/**
+	 * Returns the CMLib instance associated either with
+	 * the given session, or the current thread.
+	 * @param session
+	 * @return
+	 */
+	public static final CMLib get(final Session session)
+	{
+		if(session != null)
+		{
+			final CMLib lib=libs[session.getGroupID()];
+			if(lib != null)
+				return lib;
+		}
+		return l();
+	}
+	
+	/**
 	 * Returns a reference to this threads database engine library.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine
 	 * @return a reference to this threads database engine library.
@@ -814,6 +831,527 @@ public class CMLib
 	public static final ProtocolLibrary protocol()
 	{
 		return (ProtocolLibrary)l().libraries[Library.PROTOCOL.ordinal()];
+	}
+
+	
+	/**
+	 * Returns a reference to this instances database engine library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine
+	 * @return a reference to this instances database engine library.
+	 */
+	public final DatabaseEngine _database()
+	{
+		return (DatabaseEngine)libraries[Library.DATABASE.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances Thread access library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ThreadEngine
+	 * @return a reference to this instances Thread access library.
+	 */
+	public final ThreadEngine _threads()
+	{
+		return (ThreadEngine)libraries[Library.THREADS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances Intermud3 access library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.I3Interface
+	 * @return a reference to this instances Intermud3 access library.
+	 */
+	public final I3Interface _intermud()
+	{
+		return (I3Interface)libraries[Library.INTERMUD.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances item balancing library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ItemBalanceLibrary
+	 * @return a reference to this instances item balancing library.
+	 */
+	public final ItemBalanceLibrary _itemBuilder()
+	{
+		return (ItemBalanceLibrary)libraries[Library.TIMS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances web macro filtering library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.WebMacroLibrary
+	 * @return a reference to this instances web macro filtering library.
+	 */
+	public final WebMacroLibrary _webMacroFilter()
+	{
+		return (WebMacroLibrary)libraries[Library.WEBMACS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances string/item/object listing library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary
+	 * @return a reference to this instances string/item/object listing library.
+	 */
+	public final ListingLibrary _lister()
+	{
+		return (ListingLibrary)libraries[Library.LISTER.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances money handling library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary
+	 * @return a reference to this instances money handling library.
+	 */
+	public final MoneyLibrary _beanCounter()
+	{
+		return (MoneyLibrary)libraries[Library.MONEY.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances store front/shopping library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ShoppingLibrary
+	 * @return a reference to this instances store front/shopping library.
+	 */
+	public final ShoppingLibrary _coffeeShops()
+	{
+		return (ShoppingLibrary)libraries[Library.SHOPS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances raw resource/material item library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaterialLibrary
+	 * @return a reference to this instances raw resource/material item library.
+	 */
+	public final MaterialLibrary _materials()
+	{
+		return (MaterialLibrary)libraries[Library.MATERIALS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances combat library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CombatLibrary
+	 * @return a reference to this instances combat library.
+	 */
+	public final CombatLibrary _combat()
+	{
+		return (CombatLibrary)libraries[Library.COMBAT.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances help file library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.HelpLibrary
+	 * @return a reference to this instances help file library.
+	 */
+	public final HelpLibrary _help()
+	{
+		return (HelpLibrary)libraries[Library.HELP.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances mob tracking/movement library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary
+	 * @return a reference to this instances mob tracking/movement library.
+	 */
+	public final TrackingLibrary _tracking()
+	{
+		return (TrackingLibrary)libraries[Library.TRACKING.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances legal and property library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.LegalLibrary
+	 * @return a reference to this instances legal and property library.
+	 */
+	public final LegalLibrary _law()
+	{
+		return (LegalLibrary)libraries[Library.LEGAL.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances object masking/filtering library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+	 * @return a reference to this instances object masking/filtering library.
+	 */
+	public final MaskingLibrary _masking()
+	{
+		return (MaskingLibrary)libraries[Library.MASKING.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances chat channel library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary
+	 * @return a reference to this instances chat channel library.
+	 */
+	public final ChannelsLibrary _channels()
+	{
+		return (ChannelsLibrary)libraries[Library.CHANNELS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances command shortcut and common event handler library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CommonCommands
+	 * @return a reference to this instances command shortcut and common event handler library.
+	 */
+	public final CommonCommands _commands()
+	{
+		return (CommonCommands)libraries[Library.COMMANDS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances achievement system library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary
+	 * @return a reference to this instances achievement library.
+	 */
+	public final AchievementLibrary _achievements()
+	{
+		return (AchievementLibrary)libraries[Library.ACHIEVEMENTS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances english grammar and input utility library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.EnglishParsing
+	 * @return a reference to this instances english grammar and input utility library.
+	 */
+	public final EnglishParsing _english()
+	{
+		return (EnglishParsing)libraries[Library.ENGLISH.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances slavery and geas library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.SlaveryLibrary
+	 * @return a reference to this instances slavery and geas library.
+	 */
+	public final SlaveryLibrary _slavery()
+	{
+		return (SlaveryLibrary)libraries[Library.SLAVERY.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances message board and journal library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary
+	 * @return a reference to this instances message board and journal library.
+	 */
+	public final JournalsLibrary _journals()
+	{
+		return (JournalsLibrary)libraries[Library.JOURNALS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances telnet input/output filtering library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TelnetFilter
+	 * @return a reference to this instances telnet input/output filtering library.
+	 */
+	public final TelnetFilter _coffeeFilter()
+	{
+		return (TelnetFilter)libraries[Library.TELNET.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances GenObject low level construction library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder
+	 * @return a reference to this instances GenObject low level construction library.
+	 */
+	public final GenericBuilder _coffeeMaker()
+	{
+		return (GenericBuilder)libraries[Library.OBJBUILDERS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances telnet session management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.SessionsList
+	 * @return a reference to this instances telnet session management library.
+	 */
+	public final SessionsList _sessions()
+	{
+		return (SessionsList)libraries[Library.SESSIONS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances flag checking shortcut library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMFlagLibrary
+	 * @return a reference to this instances flag checking shortcut library.
+	 */
+	public final CMFlagLibrary _flags()
+	{
+		return (CMFlagLibrary)libraries[Library.FLAGS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances xml parsing library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary
+	 * @return a reference to this instances xml parsing library.
+	 */
+	public final XMLLibrary _xml()
+	{
+		return (XMLLibrary)libraries[Library.XML.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances social command collection/management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.SocialsList
+	 * @return a reference to this instances social command collection/management library.
+	 */
+	public final SocialsList _socials()
+	{
+		return (SocialsList)libraries[Library.SOCIALS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances random world utilities library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CMMiscUtils
+	 * @return a reference to this instances random world utilities library.
+	 */
+	public final CMMiscUtils _utensils()
+	{
+		return (CMMiscUtils)libraries[Library.UTENSILS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances statistics library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.StatisticsLibrary
+	 * @return a reference to this instances statistics library.
+	 */
+	public final StatisticsLibrary _coffeeTables()
+	{
+		return (StatisticsLibrary)libraries[Library.STATS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances leveling and experience gaining library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExpLevelLibrary
+	 * @return a reference to this instances leveling and experience gaining library.
+	 */
+	public final ExpLevelLibrary _leveler()
+	{
+		return (ExpLevelLibrary)libraries[Library.LEVELS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances areas and rooms access/management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap
+	 * @return a reference to this instances areas and rooms access/management library.
+	 */
+	public final WorldMap _map()
+	{
+		return (WorldMap)libraries[Library.MAP.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances quest collection/management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.QuestManager
+	 * @return a reference to this instances quest collection/management library.
+	 */
+	public final QuestManager _quests()
+	{
+		return (QuestManager)libraries[Library.QUEST.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances random map/object generation library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary
+	 * @return a reference to this instances random map/object generation library.
+	 */
+	public final AreaGenerationLibrary _percolator()
+	{
+		return (AreaGenerationLibrary)libraries[Library.AREAGEN.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances abilities collection/management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper
+	 * @return a reference to this instances abilities collection/management library.
+	 */
+	public final AbilityMapper _ableMapper()
+	{
+		return (AbilityMapper)libraries[Library.ABLEMAP.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances abilities components management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityComponents
+	 * @return a reference to this instances abilities components management library.
+	 */
+	public final AbilityComponents _ableComponents()
+	{
+		return (AbilityComponents)libraries[Library.ABLECOMP.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances string hashing and compression library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TextEncoders
+	 * @return a reference to this instances string hashing and compression library.
+	 */
+	public final TextEncoders _encoder()
+	{
+		return (TextEncoders)libraries[Library.ENCODER.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances email sending library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.SMTPLibrary
+	 * @return a reference to this instances email sending library.
+	 */
+	public final SMTPLibrary _smtp()
+	{
+		return (SMTPLibrary)libraries[Library.SMTP.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances localization library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary
+	 * @return a reference to this instances localization library.
+	 */
+	public final LanguageLibrary _lang()
+	{
+		return (LanguageLibrary)libraries[Library.LANGUAGE.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances random dice roll library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.DiceLibrary
+	 * @return a reference to this instances random dice roll library.
+	 */
+	public final DiceLibrary _dice()
+	{
+		return (DiceLibrary)libraries[Library.DICE.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances faction collection/management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.FactionManager
+	 * @return a reference to this instances faction collection/management library.
+	 */
+	public final FactionManager _factions()
+	{
+		return (FactionManager)libraries[Library.FACTIONS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances clan collection/management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ClanManager
+	 * @return a reference to this instances clan collection/management library.
+	 */
+	public final ClanManager _clans()
+	{
+		return (ClanManager)libraries[Library.CLANS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances player poll collection/management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.PollManager
+	 * @return a reference to this instances player poll collection/management library.
+	 */
+	public final PollManager _polls()
+	{
+		return (PollManager)libraries[Library.POLLS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances real time utility library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TimeManager
+	 * @return a reference to this instances real time utility library.
+	 */
+	public final TimeManager _time()
+	{
+		return (TimeManager)libraries[Library.TIME.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances ansi color library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary
+	 * @return a reference to this instances ansi color library.
+	 */
+	public final ColorLibrary _color()
+	{
+		return (ColorLibrary)libraries[Library.COLOR.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances login and char creation library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CharCreationLibrary
+	 * @return a reference to this instances login and char creation library.
+	 */
+	public final CharCreationLibrary _login()
+	{
+		return (CharCreationLibrary)libraries[Library.LOGIN.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances expertise collection/management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary
+	 * @return a reference to this instances expertise collection/management library.
+	 */
+	public final ExpertiseLibrary _expertises()
+	{
+		return (ExpertiseLibrary)libraries[Library.EXPERTISES.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances player and account collection/management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary
+	 * @return a reference to this instances player and account collection/management library.
+	 */
+	public final PlayerLibrary _players()
+	{
+		return (PlayerLibrary)libraries[Library.PLAYERS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances cataloged mob/item collection/management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary
+	 * @return a reference to this instances cataloged mob/item collection/management library.
+	 */
+	public final CatalogLibrary _catalog()
+	{
+		return (CatalogLibrary)libraries[Library.CATALOG.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances player titles collection/management library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AutoTitlesLibrary
+	 * @return a reference to this instances player titles collection/management library.
+	 */
+	public final AutoTitlesLibrary _titles()
+	{
+		return (AutoTitlesLibrary)libraries[Library.TITLES.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances recipe maker and skill parameter library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters
+	 * @return a reference to this instances recipe maker and skill parameter library.
+	 */
+	public final AbilityParameters _ableParms()
+	{
+		return (AbilityParameters)libraries[Library.ABLEPARMS.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances generic object builder/editor and prompting library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.GenericEditor
+	 * @return a reference to this instances generic object builder/editor and prompting library.
+	 */
+	public final GenericEditor _genEd()
+	{
+		return (GenericEditor)libraries[Library.GENEDITOR.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances tech and electricity library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.TechLibrary
+	 * @return a reference to this instances tech and electricity library.
+	 */
+	public final TechLibrary _tech()
+	{
+		return (TechLibrary)libraries[Library.TECH.ordinal()];
+	}
+	
+	/**
+	 * Returns a reference to this instances mud protocol mxp/msdp/etc library.
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary
+	 * @return a reference to this instances mud protocol mxp/msdp/etc library.
+	 */
+	public final ProtocolLibrary _protocol()
+	{
+		return (ProtocolLibrary)libraries[Library.PROTOCOL.ordinal()];
 	}
 
 	/**
