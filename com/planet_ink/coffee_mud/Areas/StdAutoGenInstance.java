@@ -206,11 +206,15 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 							M.setLocation(M.getStartRoom());
 					}
 					final MOB mob=CMClass.sampleMOB();
-					for(final Enumeration<Room> e=childA.getProperMap();e.hasMoreElements();)
+					final LinkedList<Room> propRooms = new LinkedList<Room>();
+					for(final Enumeration<Room> r=childA.getProperMap();r.hasMoreElements();)
+						propRooms.add(r.nextElement());
+					for(final Iterator<Room> r=propRooms.iterator();r.hasNext();)
 					{
-						final Room R=e.nextElement();
+						final Room R=r.next();
 						R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
 					}
+					propRooms.clear();
 					CMLib.map().delArea(childA);
 					childA.destroy();
 				}
@@ -285,9 +289,12 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 								parentA.instanceChildren.remove(rec);
 							}
 							final MOB mob=CMClass.sampleMOB();
-							for(final Enumeration<Room> e=getProperMap();e.hasMoreElements();)
+							final LinkedList<Room> propRooms = new LinkedList<Room>();
+							for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+								propRooms.add(r.nextElement());
+							for(final Iterator<Room> e=propRooms.iterator();e.hasNext();)
 							{
-								final Room R=e.nextElement();
+								final Room R=e.next();
 								R.executeMsg(mob,CMClass.getMsg(mob,R,null,CMMsg.MSG_EXPIRE,null));
 							}
 							msg.addTrailerMsg(CMClass.getMsg(msg.source(),CMMsg.MSG_OK_ACTION,L("The instance has been reset.")));

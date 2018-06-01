@@ -1185,13 +1185,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	}
 
 	@Override
-	public void handleIntroductions(MOB speaker, MOB me, String msg)
+	public void handleIntroductions(final MOB speaker, final MOB me, final String msg)
 	{
 		if(((me.playerStats()!=null)||(CMProps.getIntVar(CMProps.Int.RP_INTRODUCE_NPC)>0))
 		&&(speaker!=me)
 		&&(speaker.playerStats()!=null)
 		&&(msg!=null)
-		&&(!me.playerStats().isIntroducedTo(speaker.Name()))
+		&&((me.playerStats()==null)||(!me.playerStats().isIntroducedTo(speaker.Name())))
 		&&(CMLib.english().containsString(CMStrings.getSayFromMessage(msg),speaker.Name())))
 		{
 			if(me.isPlayer())

@@ -119,7 +119,7 @@ public class CMFile extends File
 
 	private CMFile (CMVFSFile info, String absolutePath, final MOB user, final int flagBitmap)
 	{
-		super(parsePathParts(absolutePath)[2]);
+		super(parsePathParts(info, absolutePath)[2]);
 		final boolean pleaseLogErrors=(flagBitmap&FLAG_LOGERRORS)>0;
 		final boolean forceAllow=(flagBitmap&FLAG_FORCEALLOW)>0;
 		accessor=user;
@@ -129,7 +129,7 @@ public class CMFile extends File
 		demandVFS=absolutePath.trim().startsWith("::");
 		if(accessor!=null)
 			author=accessor.Name();
-		final String[] pathParts=parsePathParts(absolutePath);
+		final String[] pathParts=parsePathParts(info, absolutePath);
 		absolutePath=pathParts[0];
 		path=pathParts[1];
 		name=pathParts[2];
@@ -138,7 +138,9 @@ public class CMFile extends File
 		// fill in all we can
 		vfsBits=0;
 		if(info==null)
+		{
 			info=getVFSInfo(absolutePath);
+		}
 		String ioPath=getIOReadableLocalPathAndName();
 		localFile=new File(ioPath);
 		if(!localFile.exists())
@@ -1729,10 +1731,12 @@ public class CMFile extends File
 		return vvfs;
 	}
 
-	private static final String[] parsePathParts(String absolutePath)
+	private static final String[] parsePathParts(CMVFSFile info, String absolutePath)
 	{
 		absolutePath=vfsifyFilename(absolutePath);
-		if(absolutePath.startsWith("resources/") && CMProps.isPrivateToMe(absolutePath))
+		if((info == null)
+		&& absolutePath.startsWith("resources/") 
+		&& CMProps.isPrivateToMe(absolutePath))
 		{
 			final String newPrefix = CMProps.getVar(CMProps.Str.PRIVATERESOURCEPATH);
 			if(newPrefix.length()>0)

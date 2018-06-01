@@ -3032,6 +3032,7 @@ public class DefaultSession implements Session
 
 	public void mainLoop()
 	{
+		final Socket sock=this.sock;
 		try
 		{
 			setInputLoopTime();
@@ -3191,24 +3192,18 @@ public class DefaultSession implements Session
 		}
 		catch(final SocketException e)
 		{
-			synchronized(sock)
-			{
-				if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock!=null)&&sock.isConnected())))
-					errorOut(e);
-			}
+			if(!Log.isMaskedErrMsg(e.getMessage())&&((!killFlag)||((sock!=null)&&sock.isConnected())))
+				errorOut(e);
 			setStatus(SessionStatus.LOGOUT);
 			preLogout(mob);
 			setStatus(SessionStatus.LOGOUT1);
 		}
 		catch(final Exception t)
 		{
-			synchronized(sock)
-			{
-				if((!Log.isMaskedErrMsg(t.getMessage()))
-				&&((!killFlag)
-					||(sock!=null&&sock.isConnected())))
-					errorOut(t);
-			}
+			if((!Log.isMaskedErrMsg(t.getMessage()))
+			&&((!killFlag)
+				||(sock!=null&&sock.isConnected())))
+				errorOut(t);
 			setStatus(SessionStatus.LOGOUT);
 			preLogout(mob);
 			setStatus(SessionStatus.LOGOUT1);

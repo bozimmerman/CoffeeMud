@@ -382,7 +382,6 @@ public class StdThinInstance extends StdThinArea
 		final MOB mob=CMClass.getFactoryMOB();
 		try
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
 			for(final Enumeration<Room> r=childA.getFilledProperMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
@@ -395,6 +394,7 @@ public class StdThinInstance extends StdThinArea
 					Log.errOut(e);
 				}
 			}
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
 			final LinkedList<Room> propRooms = new LinkedList<Room>();
 			for(final Enumeration<Room> r=childA.getProperMap();r.hasMoreElements();)
 				propRooms.add(r.nextElement());

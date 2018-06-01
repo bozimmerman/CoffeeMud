@@ -1495,10 +1495,13 @@ public class MUD extends Thread implements MudHost
 				CMProps.setIntVar(CMProps.Int.TICKSPERMUDDAY,""+((CMProps.getMillisPerMudHour()*CMLib.time().globalClock().getHoursInDay()/CMProps.getTickMillis())));
 				CMProps.setIntVar(CMProps.Int.TICKSPERMUDMONTH,""+((CMProps.getMillisPerMudHour()*CMLib.time().globalClock().getHoursInDay()*CMLib.time().globalClock().getDaysInMonth()/CMProps.getTickMillis())));
 			}
-			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("FACTIONS")))
+			if((tCode==MAIN_HOST)
+			||(checkPrivate&&CMProps.isPrivateToMe("FACTIONS")))
 				CMLib.factions().reloadFactions(CMProps.getVar(CMProps.Str.PREFACTIONS));
 
-			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("CHANNELS"))||(checkPrivate&&CMProps.isPrivateToMe("JOURNALS")))
+			if((tCode==MAIN_HOST)
+			||(checkPrivate&&CMProps.isPrivateToMe("CHANNELS"))
+			||(checkPrivate&&CMProps.isPrivateToMe("JOURNALS")))
 			{
 				int numChannelsLoaded=0;
 				int numJournalsLoaded=0;
@@ -1514,13 +1517,17 @@ public class MUD extends Thread implements MudHost
 				Log.sysOut(Thread.currentThread().getName(),"Channels loaded   : "+(numChannelsLoaded+numJournalsLoaded));
 			}
 
-			if((tCode==MAIN_HOST)||(page.getRawPrivateStr("SYSOPMASK")!=null)) // needs to be after journals, for journal flags
+			if((tCode==MAIN_HOST)
+			||(page.getRawPrivateStr("SYSOPMASK")!=null)
+			||(checkPrivate&&CMProps.isPrivateToMe("SECURITY"))
+			) // needs to be after journals, for journal flags
 			{
 				CMSecurity.setSysOp(page.getStr("SYSOPMASK")); // requires all classes be loaded
 				CMSecurity.parseGroups(page);
 			}
 
-			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("SOCIALS")))
+			if((tCode==MAIN_HOST)
+			||(checkPrivate&&CMProps.isPrivateToMe("SOCIALS")))
 			{
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: loading socials");
 				CMLib.socials().unloadSocials();
@@ -1731,7 +1738,9 @@ public class MUD extends Thread implements MudHost
 				||(page.getRawPrivateStr("ENABLE")!=null)
 				||(page.getRawPrivateStr("DEBUG")!=null)
 				||(page.getRawPrivateStr("SAVE")!=null))
-					page.resetSecurityVars();
+				{
+					//page.resetSecurityVars();
+				}
 				else
 					CMSecurity.instance().markShared();
 			}

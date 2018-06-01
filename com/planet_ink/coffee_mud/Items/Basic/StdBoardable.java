@@ -469,9 +469,12 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		final Area A = getShipArea();
 		if(A!=null)
 		{
-			for(final Enumeration<Room> r = A.getProperMap(); r.hasMoreElements();)
+			final LinkedList<Room> propRooms = new LinkedList<Room>();
+			for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+				propRooms.add(r.nextElement());
+			for(final Iterator<Room> e=propRooms.iterator();e.hasNext();)
 			{
-				final Room R=r.nextElement();
+				final Room R=e.next();
 				if(R!=null)
 				{
 					expireMsg.setTarget(R);
@@ -488,6 +491,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 					R.send(expireMsg.source(), expireMsg);
 				}
 			}
+			propRooms.clear();
 			A.destroy();
 		}
 		destroy();

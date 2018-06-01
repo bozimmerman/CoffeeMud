@@ -1076,14 +1076,18 @@ public class PlanarAbility extends StdAbility
 			}
 			final MOB mob=CMClass.sampleMOB();
 			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
-			for(final Enumeration<Room> e=planeA.getFilledProperMap();e.hasMoreElements();)
+			final LinkedList<Room> propRooms = new LinkedList<Room>();
+			for(final Enumeration<Room> r=planeA.getFilledProperMap();r.hasMoreElements();)
+				propRooms.add(r.nextElement());
+			for(final Iterator<Room> e=propRooms.iterator();e.hasNext();)
 			{
-				final Room R=e.nextElement();
+				final Room R=e.next();
 				CMLib.map().emptyRoom(R, null, true);
 				msg.setTarget(R);
 				R.executeMsg(mob,msg);
 				R.destroy();
 			}
+			propRooms.clear();
 			planeA.destroy();
 		}
 	}
