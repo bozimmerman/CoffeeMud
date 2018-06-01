@@ -598,6 +598,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			{
 				if(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0)
 				{
+					if(pStats.getMaxDeferredXP()==0)
+						ensureMaxDeferredXP(mob, pStats);
 					if(pStats.getDeferredXP() + pStats.getRolePlayXP() < pStats.getMaxDeferredXP())
 					{
 						pStats.setRolePlayXP(pStats.getRolePlayXP() + amount);
