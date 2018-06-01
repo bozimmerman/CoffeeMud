@@ -2205,12 +2205,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DETAILEDDEATHS);
 				final List<String> channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DEATHS);
 				if(!CMLib.flags().isCloaked(deadmob))
-				for(int i=0;i<channels.size();i++)
 				{
-					if((msg.tool() instanceof MOB))
-						CMLib.commands().postChannel(channels.get(i),deadmob.clans(),L("@x1 was just killed in @x2 by @x3.",deadmob.Name(),CMLib.map().getExtendedRoomID(deadmob.location()),msg.tool().Name()),true);
-					else
-						CMLib.commands().postChannel(channels.get(i),deadmob.clans(),L("@x1 has just died at @x2",deadmob.Name(),CMLib.map().getExtendedRoomID(deadmob.location())),true);
+					for(int i=0;i<channels.size();i++)
+					{
+						if((msg.tool() instanceof MOB))
+							CMLib.commands().postChannel(channels.get(i),deadmob.clans(),L("@x1 was just killed in @x2 by @x3.",deadmob.Name(),CMLib.map().getExtendedRoomID(deadmob.location()),msg.tool().Name()),true);
+						else
+							CMLib.commands().postChannel(channels.get(i),deadmob.clans(),L("@x1 has just died at @x2",deadmob.Name(),CMLib.map().getExtendedRoomID(deadmob.location())),true);
+					}
 				}
 				if(!CMLib.flags().isCloaked(deadmob))
 				{
