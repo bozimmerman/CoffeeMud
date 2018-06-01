@@ -395,9 +395,12 @@ public class StdThinInstance extends StdThinArea
 					Log.errOut(e);
 				}
 			}
+			final LinkedList<Room> propRooms = new LinkedList<Room>();
 			for(final Enumeration<Room> r=childA.getProperMap();r.hasMoreElements();)
+				propRooms.add(r.nextElement());
+			for(final Iterator<Room> r=propRooms.iterator();r.hasNext();)
 			{
-				final Room R=r.nextElement();
+				final Room R=r.next();
 				try
 				{
 					try
@@ -417,6 +420,7 @@ public class StdThinInstance extends StdThinArea
 					Log.errOut(e);
 				}
 			}
+			propRooms.clear();
 			CMLib.map().delArea(childA);
 			childA.destroy();
 		}
