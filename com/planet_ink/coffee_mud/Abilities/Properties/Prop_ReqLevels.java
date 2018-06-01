@@ -53,10 +53,12 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;
 	}
 
-	private boolean noFollow=false;
-	private boolean noSneak=false;
-	private boolean allFlag=false;
-	private final boolean sysopFlag=false;
+	private boolean			noFollow	= false;
+	private boolean			noSneak		= false;
+	private boolean			allFlag		= false;
+	private final boolean	sysopFlag	= false;
+	private String			message		= L("You are not allowed to go that way.");
+	private int[]			lvls		= new int[0];
 
 	@Override
 	public long flags()
@@ -75,6 +77,8 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 	{
 		noFollow=false;
 		noSneak=false;
+		message = L("You are not allowed to go that way.");
+		lvls = new int[0];
 		final Vector<String> parms=CMParms.parse(txt.toUpperCase());
 		String s;
 		for(final Enumeration<String> p=parms.elements();p.hasMoreElements();)
@@ -92,6 +96,61 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 			if("SYSOP".equals(s))
 				noSneak=true;
 		}
+		message=CMParms.getParmStr(txt, "MESSAGE", message);
+		int lastPlace=0;
+		int x=0;
+		final String text=txt.trim();
+		if(text.length()>0)
+		{
+			final List<Integer> vals=new LinkedList<Integer>();
+			while(x>=0)
+			{
+				x=text.indexOf('>',lastPlace);
+				if(x<0)
+					x=text.indexOf('<',lastPlace);
+				if(x<0)
+					x=text.indexOf('=',lastPlace);
+				if(x>=0)
+				{
+					final char primaryChar=text.charAt(x);
+					x++;
+					boolean andEqual=false;
+					if(text.charAt(x)=='=')
+					{
+						andEqual=true;
+						x++;
+					}
+					lastPlace=x;
+					String cmpString="";
+					while((x<text.length())
+					&&(((text.charAt(x)==' ')&&(cmpString.length()==0))
+						||(Character.isDigit(text.charAt(x)))))
+					{
+						if(Character.isDigit(text.charAt(x)))
+							cmpString+=text.charAt(x);
+						x++;
+					}
+					if(cmpString.length()>0)
+					{
+						final int cmpLevel=CMath.s_int(cmpString);
+						vals.add(Integer.valueOf(primaryChar));
+						vals.add(Integer.valueOf(cmpLevel));
+						if(andEqual)
+						{
+							vals.add(Integer.valueOf('='));
+							vals.add(Integer.valueOf(cmpLevel));
+						}
+					}
+				}
+			}
+			if(vals.size()>0)
+			{
+				lvls=new int[vals.size()];
+				int i=0;
+				for(Integer I : vals)
+					lvls[i++]=I.intValue();
+			}
+		}
 		super.setMiscText(txt);
 	}
 
@@ -101,7 +160,6 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 			return false;
 		if(CMLib.flags().isATrackingMonster(mob))
 			return true;
-
 		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
 			return true;
 
@@ -115,58 +173,26 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 			return false;
 
 		final int lvl=mob.phyStats().level();
-
-		int lastPlace=0;
-		int x=0;
-		final String text=text().trim();
-		if(text.length()==0)
-			return true;
-		while(x>=0)
+		for(int i=0;i<lvls.length;i+=2)
 		{
-			x=text.indexOf('>',lastPlace);
-			if(x<0)
-				x=text.indexOf('<',lastPlace);
-			if(x<0)
-				x=text.indexOf('=',lastPlace);
-			if(x>=0)
+			switch(lvls[i])
 			{
-				final char primaryChar=text.charAt(x);
-				x++;
-				boolean andEqual=false;
-				if(text.charAt(x)=='=')
-				{
-					andEqual=true;
-					x++;
-				}
-				lastPlace=x;
-
-				boolean found=false;
-				String cmpString="";
-				while((x<text.length())&&
-					  (((text.charAt(x)==' ')&&(cmpString.length()==0))
-					   ||(Character.isDigit(text.charAt(x)))))
-				{
-					if(Character.isDigit(text.charAt(x)))
-						cmpString+=text.charAt(x);
-					x++;
-				}
-				if(cmpString.length()>0)
-				{
-					final int cmpLevel=CMath.s_int(cmpString);
-					if((cmpLevel==lvl)&&(andEqual))
-						found=true;
-					else
-					switch(primaryChar)
-					{
-					case '>': found=(lvl>cmpLevel); break;
-					case '<': found=(lvl<cmpLevel); break;
-					case '=': found=(lvl==cmpLevel); break;
-					}
-				}
-				if(found)
+			case '=':
+				if(lvl == lvls[i+1])
 					return true;
+				break;
+			case '>':
+				if(lvl > lvls[i+1])
+					return true;
+				break;
+			case '<':
+				if(lvl < lvls[i+1])
+					return true;
+				break;
 			}
 		}
+		
+
 		return false;
 	}
 
@@ -196,7 +222,7 @@ public class Prop_ReqLevels extends Property implements TriggeredAffect
 				&&(passesMuster((MOB)E,msg.target())))
 					return super.okMessage(myHost,msg);
 			}
-			msg.source().tell(L("You are not allowed to go that way."));
+			msg.source().tell(message);
 			return false;
 		}
 		return super.okMessage(myHost,msg);
