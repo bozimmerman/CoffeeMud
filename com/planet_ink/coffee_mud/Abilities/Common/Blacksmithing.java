@@ -171,6 +171,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			return false;
 		if(I instanceof Container)
 			return true;
+		if(I instanceof DoorKey)
+			return false;
 		if((I instanceof Drink)&&(!(I instanceof Potion)))
 			return true;
 		if(I instanceof FalseLimb)

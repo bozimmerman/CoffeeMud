@@ -265,6 +265,8 @@ public class Say extends StdCommand
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);
+		if(mob.isPlayer() || CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED))
+			combinedCommands=CMStrings.replaceAlls(combinedCommands, new String[][]{{"<S-","[S-"},{"<T-","[T-"}});
 		CMMsg msg=null;
 		if((!theCommand.equals("ASK"))&&(target!=null))
 			theWord=L(theWord+"(s) to");
