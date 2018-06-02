@@ -380,12 +380,15 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			final Ability me=this;
 			final Physical target=givenTarget;
+			if(autoGenerate>0)
+				statue=mob.Name();
+			else
 			session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 			{
 				@Override
 				public void showPrompt()
 				{
-					session.promptPrint(L("What is a statue this of?\n\r: "));
+					session.promptPrint(L("What is this a statue of?\n\r: "));
 				}
 
 				@Override

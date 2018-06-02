@@ -63,10 +63,11 @@ public class GenRecipe extends GenReadable implements Recipe
 			return false;
 		
 		if(msg.amITarget( this ) 
-		&& (msg.targetMinor()==CMMsg.TYP_READ) 
-		&& (recipeLines.length>0))
+		&& (msg.targetMinor()==CMMsg.TYP_READ))
 		{
+			
 			if((msg.targetMessage()!=null)
+			&& (recipeLines.length>0)
 			&&(CMath.isInteger(msg.targetMessage())))
 			{
 				int x=CMath.s_int(msg.targetMessage());
@@ -85,6 +86,15 @@ public class GenRecipe extends GenReadable implements Recipe
 						msg.source().tell(L("There are only 1 recipes.",""+z));
 					return false;
 				}
+			}
+			else
+			if(this.commonSkillID.trim().length()>0)
+			{
+				final Ability A=CMClass.getAbility(this.commonSkillID);
+				if(A==null)
+					this.commonSkillID="";
+				else
+					msg.source().tell(L("This book is only for @x1 recipes.",A.name()));
 			}
 		}
 		if(msg.amITarget( this ) 

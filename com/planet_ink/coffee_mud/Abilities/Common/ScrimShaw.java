@@ -412,6 +412,9 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			{
 				final Ability me=this;
 				final Physical target=givenTarget;
+				if(autoGenerate>0)
+					statue=mob.Name();
+				else
 				session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 				{
 					@Override
