@@ -98,7 +98,7 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 	}
 	
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdElecCompItem))
 			return false;

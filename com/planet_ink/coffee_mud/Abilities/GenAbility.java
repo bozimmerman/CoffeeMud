@@ -905,7 +905,7 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 		{
@@ -1241,7 +1241,7 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenAbility))
 			return false;

@@ -749,7 +749,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public boolean isStat(String code)
+	public boolean isStat(final String code)
 	{
 		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
 	}

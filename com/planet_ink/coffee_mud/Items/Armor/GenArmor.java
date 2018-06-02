@@ -175,7 +175,7 @@ public class GenArmor extends StdArmor
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
@@ -204,7 +204,7 @@ public class GenArmor extends StdArmor
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenArmor))
 			return false;

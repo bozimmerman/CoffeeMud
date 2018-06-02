@@ -736,7 +736,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 	
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdComputerConsole))
 			return false;

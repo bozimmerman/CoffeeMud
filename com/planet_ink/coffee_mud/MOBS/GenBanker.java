@@ -193,7 +193,7 @@ public class GenBanker extends StdBanker
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
@@ -222,7 +222,7 @@ public class GenBanker extends StdBanker
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenBanker))
 			return false;

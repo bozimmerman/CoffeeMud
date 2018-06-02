@@ -116,7 +116,7 @@ public class GenSoftware extends StdProgram
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenSoftware))
 			return false;

@@ -136,7 +136,7 @@ public class GenSpaceBody extends StdSpaceBody
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
@@ -165,7 +165,7 @@ public class GenSpaceBody extends StdSpaceBody
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenSpaceBody))
 			return false;

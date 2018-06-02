@@ -63,7 +63,7 @@ public class GenWaterPowerGenerator extends GenFuellessGenerator
 	}
 	
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenWaterPowerGenerator))
 			return false;

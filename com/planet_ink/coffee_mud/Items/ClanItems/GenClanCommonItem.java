@@ -129,7 +129,7 @@ public class GenClanCommonItem extends StdClanCommonItem
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for (int i = 0; i < MYCODES.length; i++)
 		{
@@ -158,7 +158,7 @@ public class GenClanCommonItem extends StdClanCommonItem
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if (!(E instanceof GenClanCommonItem))
 			return false;

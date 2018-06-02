@@ -344,7 +344,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdShipWeapon))
 			return false;

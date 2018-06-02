@@ -129,7 +129,7 @@ public class GenMap extends StdMap
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenMap))
 			return false;

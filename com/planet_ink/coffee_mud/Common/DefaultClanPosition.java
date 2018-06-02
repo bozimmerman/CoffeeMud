@@ -85,7 +85,7 @@ public class DefaultClanPosition implements ClanPosition
 	}
 
 	@Override
-	public int compareTo(CMObject o)
+	public int compareTo(final CMObject o)
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
@@ -274,7 +274,7 @@ public class DefaultClanPosition implements ClanPosition
 	}
 
 	@Override
-	public boolean isStat(String code)
+	public boolean isStat(final String code)
 	{
 		return getStatIndex(code)!=null;
 	}

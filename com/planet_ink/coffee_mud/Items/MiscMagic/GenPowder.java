@@ -105,7 +105,7 @@ public class GenPowder extends StdPowder
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenPowder))
 			return false;

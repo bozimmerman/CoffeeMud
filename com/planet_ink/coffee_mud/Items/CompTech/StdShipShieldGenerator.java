@@ -380,7 +380,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdShipShieldGenerator))
 			return false;

@@ -4763,7 +4763,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return getStatCodes().length;
 	}
 
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		final String[] CCODES=getStatCodes();
 		for(int i=0;i<CCODES.length;i++)
@@ -4842,7 +4842,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public boolean isStat(String code)
+	public boolean isStat(final String code)
 	{
 		if((getCodeNum(code)>=0)
 		||(questState.vars.containsKey(code)))
@@ -4944,7 +4944,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public int compareTo(CMObject o)
+	public int compareTo(final CMObject o)
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}

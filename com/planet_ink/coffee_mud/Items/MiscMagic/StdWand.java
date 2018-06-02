@@ -312,7 +312,7 @@ public class StdWand extends StdItem implements Wand
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 		{
@@ -323,7 +323,7 @@ public class StdWand extends StdItem implements Wand
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdWand))
 			return false;

@@ -1069,7 +1069,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public int compareTo(CMObject o)
+	public int compareTo(final CMObject o)
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
@@ -1103,7 +1103,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public boolean isStat(String code)
+	public boolean isStat(final String code)
 	{
 		return CMParms.containsIgnoreCase(getStatCodes(), code);
 	}

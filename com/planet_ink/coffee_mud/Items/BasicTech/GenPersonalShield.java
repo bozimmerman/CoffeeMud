@@ -144,7 +144,7 @@ public class GenPersonalShield extends StdPersonalShield
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
@@ -173,7 +173,7 @@ public class GenPersonalShield extends StdPersonalShield
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenPersonalShield))
 			return false;

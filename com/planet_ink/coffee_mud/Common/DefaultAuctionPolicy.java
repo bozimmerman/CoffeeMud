@@ -74,7 +74,7 @@ public class DefaultAuctionPolicy implements AuctionPolicy, Cloneable
 	}
 
 	@Override
-	public int compareTo(CMObject o)
+	public int compareTo(final CMObject o)
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}

@@ -128,7 +128,7 @@ public class GenScroll extends StdScroll
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenScroll))
 			return false;

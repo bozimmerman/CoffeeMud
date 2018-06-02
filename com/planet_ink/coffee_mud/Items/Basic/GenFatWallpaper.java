@@ -140,7 +140,7 @@ public class GenFatWallpaper extends GenWallpaper
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenFatWallpaper))
 			return false;

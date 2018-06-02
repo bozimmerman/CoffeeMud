@@ -52,7 +52,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	public STreeMap<String,LongSet> root=new STreeMap<String,LongSet>();
 
 	@Override
-	public int compareTo(CMObject o)
+	public int compareTo(final CMObject o)
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}

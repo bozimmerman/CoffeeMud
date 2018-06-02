@@ -75,7 +75,7 @@ public interface Modifiable
 	 * @param code the name of the field to read.
 	 * @return true if the code is a real value, false otherwise
 	 */
-	public boolean isStat(String code);
+	public boolean isStat(final String code);
 	/**
 	 * An alternative means of setting the values of those fields on this object which are modifiable at
 	 * run-time by builders.  See getStatCodes() for possible values for the code passed to this method.

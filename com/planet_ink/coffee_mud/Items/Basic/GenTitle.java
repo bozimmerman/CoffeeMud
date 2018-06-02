@@ -126,7 +126,7 @@ public class GenTitle extends StdTitle
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenTitle))
 			return false;

@@ -199,7 +199,7 @@ public class GenPostman extends StdPostman
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
@@ -228,7 +228,7 @@ public class GenPostman extends StdPostman
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenPostman))
 			return false;

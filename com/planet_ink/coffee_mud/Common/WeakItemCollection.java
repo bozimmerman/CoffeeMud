@@ -121,7 +121,7 @@ public class WeakItemCollection implements ItemCollection, CMCommon
 	}
 
 	@Override
-	public int compareTo(CMObject o)
+	public int compareTo(final CMObject o)
 	{
 		return o==this?0:1;
 	}

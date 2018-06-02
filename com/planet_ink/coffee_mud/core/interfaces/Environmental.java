@@ -155,7 +155,7 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, Co
 	 * @param E the object to compare this one to
 	 * @return whether this object is the same as the one passed in
 	 */
-	public boolean sameAs(Environmental E);
+	public boolean sameAs(final Environmental E);
 
 	/**
 	 * If this object expires, it should have a timestamp saying when it expires, in real time.

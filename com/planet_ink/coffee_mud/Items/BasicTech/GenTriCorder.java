@@ -120,7 +120,7 @@ public class GenTriCorder extends StdTriCorder
 	}
 	
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
@@ -149,7 +149,7 @@ public class GenTriCorder extends StdTriCorder
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenTriCorder))
 			return false;

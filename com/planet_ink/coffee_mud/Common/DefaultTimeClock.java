@@ -802,7 +802,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public int compareTo(CMObject o)
+	public int compareTo(final CMObject o)
 	{
 		if(o instanceof TimeClock)
 		{

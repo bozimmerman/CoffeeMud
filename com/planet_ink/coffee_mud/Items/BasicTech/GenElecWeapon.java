@@ -154,7 +154,7 @@ public class GenElecWeapon extends StdElecWeapon
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
@@ -183,7 +183,7 @@ public class GenElecWeapon extends StdElecWeapon
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenElecWeapon))
 			return false;

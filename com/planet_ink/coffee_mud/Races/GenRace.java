@@ -1584,7 +1584,7 @@ public class GenRace extends StdRace
 	}
 
 	@Override
-	public boolean sameAs(Race E)
+	public boolean sameAs(final Race E)
 	{
 		if(!(E instanceof GenRace))
 			return false;

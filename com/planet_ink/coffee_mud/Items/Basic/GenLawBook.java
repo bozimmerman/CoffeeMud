@@ -111,7 +111,7 @@ public class GenLawBook extends StdLawBook
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenLawBook))
 			return false;

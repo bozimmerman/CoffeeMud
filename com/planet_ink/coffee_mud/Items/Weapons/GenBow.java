@@ -109,7 +109,7 @@ public class GenBow extends StdBow
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		return GenWeapon.getGenWeaponCodeNum(code);
 	}
@@ -133,7 +133,7 @@ public class GenBow extends StdBow
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenBow))
 			return false;

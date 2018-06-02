@@ -120,7 +120,7 @@ public class GenJournal extends StdJournal
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenJournal))
 			return false;

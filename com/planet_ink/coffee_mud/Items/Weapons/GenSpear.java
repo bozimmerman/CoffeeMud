@@ -106,7 +106,7 @@ public class GenSpear extends StdSpear
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		return GenWeapon.getGenWeaponCodeNum(code);
 	}
@@ -130,7 +130,7 @@ public class GenSpear extends StdSpear
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenSpear))
 			return false;

@@ -147,7 +147,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 					}
 	
 					@Override
-					public boolean sameAs(Environmental E)
+					public boolean sameAs(final Environmental E)
 					{
 						return E==this || E==obj;
 					}
@@ -223,7 +223,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 					}
 	
 					@Override
-					public int compareTo(CMObject o)
+					public int compareTo(final CMObject o)
 					{
 						return obj.compareTo(o);
 					}
@@ -296,7 +296,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 					}
 	
 					@Override
-					public boolean isStat(String code)
+					public boolean isStat(final String code)
 					{
 						return false;
 					}
@@ -420,7 +420,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenGraviticSensor))
 			return false;

@@ -1805,12 +1805,12 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public boolean isStat(String code)
+	public boolean isStat(final String code)
 	{
 		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
 	}
 
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 		{
@@ -1834,7 +1834,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public int compareTo(CMObject o)
+	public int compareTo(final CMObject o)
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}

@@ -128,7 +128,7 @@ public class GenDissertation extends StdDissertation
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenDissertation))
 			return false;

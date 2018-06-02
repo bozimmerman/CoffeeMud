@@ -149,7 +149,7 @@ public class GenRideable extends StdRideable
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
@@ -178,7 +178,7 @@ public class GenRideable extends StdRideable
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenRideable))
 			return false;

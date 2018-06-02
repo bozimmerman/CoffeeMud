@@ -113,7 +113,7 @@ public class GenItem extends StdItem
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenItem))
 			return false;

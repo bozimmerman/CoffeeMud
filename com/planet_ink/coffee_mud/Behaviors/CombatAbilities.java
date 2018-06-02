@@ -864,7 +864,7 @@ public class CombatAbilities extends StdBehavior
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		final String[] CODES=getStatCodes();
 		for(int i=0;i<CODES.length;i++)

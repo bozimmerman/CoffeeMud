@@ -128,7 +128,7 @@ public class GenClanFlag extends StdClanFlag
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for (int i = 0; i < MYCODES.length; i++)
 		{
@@ -157,7 +157,7 @@ public class GenClanFlag extends StdClanFlag
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if (!(E instanceof GenClanFlag))
 			return false;

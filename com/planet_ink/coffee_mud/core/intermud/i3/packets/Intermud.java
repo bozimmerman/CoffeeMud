@@ -296,7 +296,7 @@ public class Intermud implements Runnable, Persistent, Serializable
 				}
 
 				@Override
-				public int compareTo(CMObject o)
+				public int compareTo(final CMObject o)
 				{
 					return (o==this)?0:1;
 				}

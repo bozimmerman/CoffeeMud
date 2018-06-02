@@ -337,7 +337,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
@@ -366,7 +366,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenTickerShield))
 			return false;

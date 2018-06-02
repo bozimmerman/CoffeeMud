@@ -113,7 +113,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 		name = newName;
 	}
@@ -127,19 +127,19 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public String displayText(MOB viewerMob)
+	public String displayText(final MOB viewerMob)
 	{
 		return displayText();
 	}
 
 	@Override
-	public String name(MOB viewerMob)
+	public String name(final MOB viewerMob)
 	{
 		return name();
 	}
 
 	@Override
-	public void setDatabaseID(String id)
+	public void setDatabaseID(final String id)
 	{
 		databaseID = id;
 	}
@@ -178,7 +178,7 @@ public class StdItem implements Item
 	}
 	
 	@Override
-	public void setImage(String newImage)
+	public void setImage(final String newImage)
 	{
 		if((newImage==null)||(newImage.trim().isEmpty()))
 			rawImageName=null;
@@ -214,7 +214,7 @@ public class StdItem implements Item
 	}
 
  	@Override
-	public void setBasePhyStats(PhyStats newStats)
+	public void setBasePhyStats(final PhyStats newStats)
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
@@ -239,7 +239,7 @@ public class StdItem implements Item
 		return false;
 	}
 	
-	protected void cloneFix(Item I)
+	protected void cloneFix(final Item I)
 	{
 		destroyed=false;
 		me=this;
@@ -307,7 +307,7 @@ public class StdItem implements Item
 	}
 	
 	@Override
-	public void setRiding(Rideable ride)
+	public void setRiding(final Rideable ride)
 	{
 		if((ride!=null)&&(riding()!=null)&&(riding()==ride)&&(riding().amRiding(this)))
 			return;
@@ -325,7 +325,7 @@ public class StdItem implements Item
 	}
 	
 	@Override
-	public void setOwner(ItemPossessor E)
+	public void setOwner(final ItemPossessor E)
 	{
 		owner=E;
 		if((E!=null)&&(!(E instanceof Room)))
@@ -340,7 +340,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setExpirationDate(long time)
+	public void setExpirationDate(final long time)
 	{
 		dispossessionTime=time;
 	}
@@ -360,7 +360,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public boolean fitsOn(long wornCode)
+	public boolean fitsOn(final long wornCode)
 	{
 		if(wornCode<=0)
 			return true;
@@ -368,7 +368,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void wearEvenIfImpossible(MOB mob)
+	public void wearEvenIfImpossible(final MOB mob)
 	{
 		for(final long code : Wearable.CODES.ALL_ORDERED())
 		{
@@ -381,7 +381,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public boolean wearIfPossible(MOB mob, long wearCode)
+	public boolean wearIfPossible(final MOB mob, final long wearCode)
 	{
 		if(wearCode<=0)
 			return false;
@@ -396,7 +396,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public boolean wearIfPossible(MOB mob)
+	public boolean wearIfPossible(final MOB mob)
 	{
 		for(final long code : Wearable.CODES.ALL_ORDERED())
 		{
@@ -407,7 +407,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void wearAt(long wornCode)
+	public void wearAt(final long wornCode)
 	{
 		if(wornCode==Wearable.IN_INVENTORY)
 		{
@@ -434,7 +434,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setRawProperLocationBitmap(long newValue)
+	public void setRawProperLocationBitmap(final long newValue)
 	{
 		properWornBitmap=newValue;
 	}
@@ -446,7 +446,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public boolean compareProperLocations(Item toThis)
+	public boolean compareProperLocations(final Item toThis)
 	{
 		if(toThis.rawLogicalAnd()!=wornLogicalAnd)
 			return false;
@@ -456,7 +456,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public long whereCantWear(MOB mob)
+	public long whereCantWear(final MOB mob)
 	{
 		long couldHaveBeenWornAt=-1;
 		if(properWornBitmap==0)
@@ -499,7 +499,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public boolean canWear(MOB mob, long where)
+	public boolean canWear(final MOB mob, final long where)
 	{
 		if(where==0)
 			return (whereCantWear(mob)==0);
@@ -515,7 +515,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setRawWornCode(long newValue)
+	public void setRawWornCode(final long newValue)
 	{
 		myWornCode=newValue;
 	}
@@ -534,7 +534,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setMaterial(int newValue)
+	public void setMaterial(final int newValue)
 	{
 		material=newValue;
 	}
@@ -552,7 +552,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setBaseValue(int newValue)
+	public void setBaseValue(final int newValue)
 	{
 		baseGoldValue=newValue;
 	}
@@ -564,7 +564,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		miscText = text;
 	}
@@ -576,7 +576,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setReadable(boolean truefalse)
+	public void setReadable(final boolean truefalse)
 	{
 		CMLib.flags().setReadable(this, truefalse);
 	}
@@ -671,7 +671,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText=newText;
 	}
@@ -689,7 +689,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public int compareTo(CMObject o)
+	public int compareTo(final CMObject o)
 	{
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
@@ -782,7 +782,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public Item ultimateContainer(Physical stopAtC)
+	public Item ultimateContainer(final Physical stopAtC)
 	{
 		final Container C=container();
 		if(C==null)
@@ -818,7 +818,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setSecretIdentity(String newIdentity)
+	public void setSecretIdentity(final String newIdentity)
 	{
 		if((newIdentity==null)
 		||(newIdentity.trim().equalsIgnoreCase(description()))
@@ -835,7 +835,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setDisplayText(String newDisplayText)
+	public void setDisplayText(final String newDisplayText)
 	{
 		displayText=newDisplayText;
 	}
@@ -861,13 +861,13 @@ public class StdItem implements Item
 	}
 	
 	@Override 
-	public String description(MOB viewerMob) 
+	public String description(final MOB viewerMob) 
 	{ 
 		return description(); 
 	}
 
 	@Override
-	public void setDescription(String newDescription)
+	public void setDescription(final String newDescription)
 	{
 		if(newDescription.isEmpty())
 			description=null;
@@ -879,7 +879,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setContainer(Container newContainer)
+	public void setContainer(final Container newContainer)
 	{
 		if((newContainer!=this)
 		&&((newContainer==null)||(newContainer.container()!=this)))
@@ -899,7 +899,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setUsesRemaining(int newUses)
+	public void setUsesRemaining(final int newUses)
 	{
 		myUses=newUses;
 	}
@@ -915,12 +915,12 @@ public class StdItem implements Item
 	}
 
 	@Override 
-	public void setSavable(boolean truefalse)
+	public void setSavable(final boolean truefalse)
 	{ 
 		CMLib.flags().setSavable(this, truefalse);
 	}
 
-	protected boolean canWearComplete(MOB mob, long wearWhere)
+	protected boolean canWearComplete(final MOB mob, final long wearWhere)
 	{
 		if(!canWear(mob,wearWhere))
 		{
@@ -989,7 +989,7 @@ public class StdItem implements Item
 		return true;
 	}
 
-	protected boolean alreadyWornMsg(MOB mob, Item thisItem)
+	protected boolean alreadyWornMsg(final MOB mob, final Item thisItem)
 	{
 		if(!thisItem.amWearingAt(Wearable.IN_INVENTORY))
 		{
@@ -1755,7 +1755,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void addNonUninvokableEffect(Ability to)
+	public void addNonUninvokableEffect(final Ability to)
 	{
 		if(to==null)
 			return;
@@ -1770,7 +1770,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void addEffect(Ability to)
+	public void addEffect(final Ability to)
 	{
 		if(to==null)
 			return;
@@ -1783,7 +1783,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void delEffect(Ability to)
+	public void delEffect(final Ability to)
 	{
 		if(affects==null)
 			return;
@@ -1813,7 +1813,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void delAllEffects(boolean unInvoke)
+	public void delAllEffects(final boolean unInvoke)
 	{
 		final SVector<Ability> affects=this.affects;
 		if(affects==null)
@@ -1858,7 +1858,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public Ability fetchEffect(int index)
+	public Ability fetchEffect(final int index)
 	{
 		if(affects==null)
 			return null;
@@ -1873,7 +1873,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public Ability fetchEffect(String ID)
+	public Ability fetchEffect(final String ID)
 	{
 		if(affects==null)
 			return null;
@@ -1889,7 +1889,7 @@ public class StdItem implements Item
 	/** Manipulation of Behavior objects, which includes
 	 * movement, speech, spellcasting, etc, etc.*/
 	@Override
-	public void addBehavior(Behavior to)
+	public void addBehavior(final Behavior to)
 	{
 		if(to==null)
 			return;
@@ -1920,7 +1920,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void delBehavior(Behavior to)
+	public void delBehavior(final Behavior to)
 	{
 		if(behaviors==null)
 			return;
@@ -1946,7 +1946,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public Behavior fetchBehavior(int index)
+	public Behavior fetchBehavior(final int index)
 	{
 		if(behaviors==null)
 			return null;
@@ -1961,7 +1961,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public Behavior fetchBehavior(String ID)
+	public Behavior fetchBehavior(final String ID)
 	{
 		if(behaviors==null)
 			return null;
@@ -1996,7 +1996,7 @@ public class StdItem implements Item
 
 	/** Manipulation of the scripts list */
 	@Override
-	public void addScript(ScriptingEngine S)
+	public void addScript(final ScriptingEngine S)
 	{
 		if(scripts==null)
 			scripts=new SVector<ScriptingEngine>(1);
@@ -2018,7 +2018,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void delScript(ScriptingEngine S)
+	public void delScript(final ScriptingEngine S)
 	{
 		if(scripts!=null)
 		{
@@ -2056,7 +2056,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public ScriptingEngine fetchScript(int x)
+	public ScriptingEngine fetchScript(final int x)
 	{
 		try
 		{
@@ -2124,7 +2124,7 @@ public class StdItem implements Item
 	protected static String[] CODES={"CLASS","USES","LEVEL","ABILITY","TEXT"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{
@@ -2143,7 +2143,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{
@@ -2188,12 +2188,12 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public boolean isStat(String code)
+	public boolean isStat(final String code)
 	{
 		return CMParms.indexOf(getStatCodes(), code.toUpperCase().trim()) >= 0;
 	}
 
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 		{
@@ -2204,7 +2204,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdItem))
 			return false;

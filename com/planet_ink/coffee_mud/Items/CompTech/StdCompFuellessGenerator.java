@@ -135,7 +135,7 @@ public class StdCompFuellessGenerator extends StdElecCompItem implements PowerGe
 	}
 	
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdCompFuellessGenerator))
 			return false;

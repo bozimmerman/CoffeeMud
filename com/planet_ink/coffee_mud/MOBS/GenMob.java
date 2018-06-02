@@ -106,7 +106,7 @@ public class GenMob extends StdMOB
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenMob))
 			return false;

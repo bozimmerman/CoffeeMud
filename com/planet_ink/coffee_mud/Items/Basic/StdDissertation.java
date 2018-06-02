@@ -426,7 +426,7 @@ public class StdDissertation extends StdItem implements Scroll
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 		{
@@ -437,7 +437,7 @@ public class StdDissertation extends StdItem implements Scroll
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdDissertation))
 			return false;

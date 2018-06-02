@@ -66,7 +66,7 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdShipFuellessThruster))
 			return false;

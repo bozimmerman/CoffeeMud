@@ -60,7 +60,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements FuelCon
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdCompFuelConsumer))
 			return false;

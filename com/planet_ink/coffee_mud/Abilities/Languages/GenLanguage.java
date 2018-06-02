@@ -161,7 +161,7 @@ public class GenLanguage extends StdLanguage
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 		{
@@ -288,7 +288,7 @@ public class GenLanguage extends StdLanguage
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenLanguage))
 			return false;

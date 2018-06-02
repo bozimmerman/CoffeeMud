@@ -72,7 +72,7 @@ public class StdCompBattery extends StdElecCompItem implements PowerSource, Tech
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdCompBattery))
 			return false;

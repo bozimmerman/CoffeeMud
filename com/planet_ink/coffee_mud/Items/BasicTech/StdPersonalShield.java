@@ -109,7 +109,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdPersonalShield))
 			return false;

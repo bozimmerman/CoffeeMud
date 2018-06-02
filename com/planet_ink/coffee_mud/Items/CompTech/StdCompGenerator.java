@@ -127,7 +127,7 @@ public class StdCompGenerator extends StdCompFuelConsumer implements PowerGenera
 	}
 	
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdCompGenerator))
 			return false;

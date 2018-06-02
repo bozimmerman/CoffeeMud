@@ -176,7 +176,7 @@ public class GenWeapon extends StdWeapon
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		return GenWeapon.getGenWeaponCodeNum(code);
 	}
@@ -198,7 +198,7 @@ public class GenWeapon extends StdWeapon
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenWeapon))
 			return false;

@@ -81,7 +81,7 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdElecCompContainer))
 			return false;

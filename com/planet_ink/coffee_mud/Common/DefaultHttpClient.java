@@ -607,7 +607,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	}
 
 	@Override
-	public int compareTo(CMObject o)
+	public int compareTo(final CMObject o)
 	{
 		final int comp=CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 		return (comp==0)?((this==o)?0:1):comp;

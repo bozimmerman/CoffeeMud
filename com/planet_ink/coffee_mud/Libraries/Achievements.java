@@ -344,7 +344,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 
 								@Override
-								public int compareTo(CMObject o)
+								public int compareTo(final CMObject o)
 								{
 									final ExpertiseDefinition curDef = baseDef();
 									return (curDef == null) ? -1 : curDef.compareTo(o);

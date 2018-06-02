@@ -106,7 +106,7 @@ public class GenPlayingCard extends StdPlayingCard
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenPlayingCard))
 			return false;

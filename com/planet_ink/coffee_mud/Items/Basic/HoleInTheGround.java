@@ -178,7 +178,7 @@ public class HoleInTheGround extends GenContainer
 	}
 	
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof HoleInTheGround))
 			return false;

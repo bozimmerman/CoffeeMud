@@ -229,7 +229,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 		{
@@ -363,7 +363,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenCraftSkill))
 			return false;

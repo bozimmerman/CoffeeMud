@@ -148,7 +148,7 @@ public class GenWand extends StdWand
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenWand))
 			return false;

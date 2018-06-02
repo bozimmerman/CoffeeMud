@@ -173,7 +173,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 	}
 	
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<MYCODES.length;i++)
 		{
@@ -202,7 +202,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 	}
 	
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof GenSpaceDrive))
 			return false;

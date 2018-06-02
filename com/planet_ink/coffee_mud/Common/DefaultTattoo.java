@@ -103,7 +103,7 @@ public class DefaultTattoo implements Tattoo
 	}
 
 	@Override
-	public int compareTo(CMObject o)
+	public int compareTo(final CMObject o)
 	{
 		if (o == null)
 			return 1;

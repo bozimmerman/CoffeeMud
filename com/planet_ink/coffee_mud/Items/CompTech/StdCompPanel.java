@@ -254,7 +254,7 @@ public class StdCompPanel extends StdElecCompContainer implements ElecPanel, Tec
 	}
 	
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdCompPanel))
 			return false;

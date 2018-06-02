@@ -85,7 +85,7 @@ public class DefaultJournalEntry implements JournalEntry
 	}
 
 	@Override
-	public int compareTo(CMObject o)
+	public int compareTo(final CMObject o)
 	{
 		if(o instanceof JournalEntry)
 			return compareTo((JournalEntry)o);

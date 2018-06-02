@@ -224,7 +224,7 @@ public class ItemGenerator extends ActiveTicker
 		}
 
 		@Override
-		public int compareTo(CMObject o)
+		public int compareTo(final CMObject o)
 		{
 			return (o==this)?1:0;
 		}

@@ -332,7 +332,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 		{
@@ -343,7 +343,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if(!(E instanceof StdScroll))
 			return false;

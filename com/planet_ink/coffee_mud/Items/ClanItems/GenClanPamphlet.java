@@ -128,7 +128,7 @@ public class GenClanPamphlet extends StdClanPamphlet
 	}
 
 	@Override
-	protected int getCodeNum(String code)
+	protected int getCodeNum(final String code)
 	{
 		for (int i = 0; i < MYCODES.length; i++)
 		{
@@ -157,7 +157,7 @@ public class GenClanPamphlet extends StdClanPamphlet
 	}
 
 	@Override
-	public boolean sameAs(Environmental E)
+	public boolean sameAs(final Environmental E)
 	{
 		if (!(E instanceof GenClanPamphlet))
 			return false;
