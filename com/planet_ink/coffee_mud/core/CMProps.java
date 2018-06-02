@@ -659,6 +659,25 @@ public class CMProps extends Properties
 	}
 
 	/**
+	 * Returns an instance of CMProps appropriate to either
+	 * the given session, or otherwise the current thread,
+	 * as normal.
+	 * 
+	 * @param session the session to get a thread id for, or null
+	 * @return the appropriate CMProps instance
+	 */
+	public static final CMProps get(final Session session)
+	{
+		if(session != null)
+		{
+			final CMProps P=props[session.getGroupID()];
+			if(P!=null)
+				return P;
+		}
+		return p();
+	}
+	
+	/**
 	 * Returns true if this properties object has been loaded from
 	 * a stream or ini file, and false otherwise.
 	 * @return true or false, depending

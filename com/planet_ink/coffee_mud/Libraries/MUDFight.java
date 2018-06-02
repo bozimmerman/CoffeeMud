@@ -1425,7 +1425,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((target.isMonster())||(target.soulMate()!=null))
 			cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.getVar(CMProps.Str.MOBDEATH),true));
 		else
-			cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.getVar(CMProps.Str.PLAYERDEATH),true));
+			cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.get(target.session()).getStr(CMProps.Str.PLAYERDEATH),true));
 
 		DeadBody body=null; //must be done before consequences because consequences could be purging
 		if((!CMParms.containsIgnoreCase(cmds,"RECALL"))
@@ -2786,7 +2786,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(((deadM.isMonster())||(deadM.soulMate()!=null)))
 			whatToDo=CMProps.getVar(CMProps.Str.MOBDEATH).toUpperCase();
 		else
-			whatToDo=CMProps.getVar(CMProps.Str.PLAYERDEATH).toUpperCase();
+			whatToDo=CMProps.get(deadM.session()).getStr(CMProps.Str.PLAYERDEATH).toUpperCase();
 		final List<String> whatsToDo=CMParms.parseCommas(whatToDo,true);
 		final double[] fakeVarVals={1.0,1.0,1.0};
 		for(int w=0;w<whatsToDo.size();w++)

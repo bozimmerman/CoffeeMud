@@ -1155,7 +1155,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			rejuvedMOB.phyStats().setDisposition(CMath.unsetb(rejuvedMOB.basePhyStats().disposition(),PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
 			rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> get(s) up!"));
 			corpseRoom.recoverRoomStats();
-			final List<String> whatsToDo=CMParms.parseCommas(CMProps.getVar(CMProps.Str.PLAYERDEATH),true);
+			final List<String> whatsToDo=CMParms.parseCommas(CMProps.get(rejuvedMOB.session()).getStr(CMProps.Str.PLAYERDEATH),true);
 			int rejuv=rejuvedMOB.phyStats().rejuv();
 			if((rejuv==0)||(rejuv==Integer.MAX_VALUE))
 				rejuv=rejuvedMOB.phyStats().level();
