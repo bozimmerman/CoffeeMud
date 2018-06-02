@@ -87,15 +87,15 @@ public class Concierge extends StdBehavior
 		return false;
 	}
 
-	protected String getGiveMoneyMessage(Environmental observer, Environmental destination, String moneyName)
+	protected String getGiveMoneyMessage(final MOB mob, Environmental observer, Environmental destination, String moneyName)
 	{
 		if(observer instanceof MOB)
-			return L("I can help you find @x1, but you'll need to give me @x2 first.",getDestinationName(destination),moneyName);
+			return L("I can help you find @x1, but you'll need to give me @x2 first.",getDestinationName(mob,destination),moneyName);
 		else
 		if(observer instanceof Container)
-			return L("I can help you find @x1, but you'll need to put @x2 into @x3 first.",getDestinationName(destination),moneyName,observer.name());
+			return L("I can help you find @x1, but you'll need to put @x2 into @x3 first.",getDestinationName(mob,destination),moneyName,observer.name());
 		else
-			return L("I can help you find @x1, but you'll need to drop @x2 first.",getDestinationName(destination),moneyName);
+			return L("I can help you find @x1, but you'll need to drop @x2 first.",getDestinationName(mob,destination),moneyName);
 	}
 	
 	protected MOB getTalker(Environmental o, Room room)
@@ -563,9 +563,9 @@ public class Concierge extends StdBehavior
 		}
 	}
 
-	protected String getDestinationName(Environmental destination)
+	protected String getDestinationName(final MOB mob, Environmental destination)
 	{
-		return (destination instanceof Room)?destination.displayText():destination.name();
+		return (destination instanceof Room)?((Room)destination).displayText(mob):destination.name();
 	}
 	
 	protected void giveMerchandise(MOB whoM, Room destination, Environmental observer, Room room, TrackingFlags trackingFlags)
@@ -583,14 +583,14 @@ public class Concierge extends StdBehavior
 				destination=(Room)msg2.target();
 				destination.sendOthers(whoM,msg2);
 				Item I=CMClass.getItem("GenPortal");
-				I.setName(L("A portal to @x1",getDestinationName(destination)));
-				I.setDisplayText(L("A portal to @x1 swirls here",getDestinationName(destination)));
+				I.setName(L("A portal to @x1",getDestinationName(whoM,destination)));
+				I.setDisplayText(L("A portal to @x1 swirls here",getDestinationName(whoM,destination)));
 				I.setReadableText(CMLib.map().getExtendedRoomID(destination));
 				R.addItem(I, Expire.Monster_EQ);
 				Behavior B=CMClass.getBehavior("Decay");
 				B.setParms("minticks=8 maxticks=12");
 				I.addBehavior(B);
-				thingsToSay.addElement(whoM,L("Enter this portal to @x1.",getDestinationName(destination)));
+				thingsToSay.addElement(whoM,L("Enter this portal to @x1.",getDestinationName(whoM,destination)));
 			}
 		}
 		else
@@ -612,7 +612,7 @@ public class Concierge extends StdBehavior
 				CMLib.tracking().getRadiantRooms(fromM.location(),set,noAirFlags,null,maxRange,null);
 				trailStr=CMLib.tracking().getTrailToDescription(fromM.location(),set,name,false,false,maxRange,null,1);
 			}
-			thingsToSay.addElement(whoM,L("The way to @x1 from here is: @x2",getDestinationName(destination),trailStr));
+			thingsToSay.addElement(whoM,L("The way to @x1 from here is: @x2",getDestinationName(whoM,destination),trailStr));
 		}
 	}
 	
@@ -734,7 +734,7 @@ public class Concierge extends StdBehavior
 						{
 							destinations.addElement(msg.source(),roomR,owed, trackingFlags);
 							final String moneyName=CMLib.beanCounter().nameCurrencyLong(getTalker(observer,room),rate);
-							thingsToSay.addElement(msg.source(),this.getGiveMoneyMessage(observer,roomR,moneyName));
+							thingsToSay.addElement(msg.source(),getGiveMoneyMessage(msg.source(),observer,roomR,moneyName));
 						}
 					}
 				}

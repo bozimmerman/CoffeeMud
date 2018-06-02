@@ -62,15 +62,15 @@ public class TaxiBehavior extends Concierge
 	}
 
 	@Override
-	protected String getGiveMoneyMessage(Environmental observer, Environmental destination, String moneyName)
+	protected String getGiveMoneyMessage(final MOB mob, Environmental observer, Environmental destination, String moneyName)
 	{
 		if(observer instanceof MOB)
-			return L("I can take you to @x1, but you'll need to give me @x2 first.",getDestinationName(destination),moneyName);
+			return L("I can take you to @x1, but you'll need to give me @x2 first.",getDestinationName(mob,destination),moneyName);
 		else
 		if(observer instanceof Container)
-			return L("I can take you to @x1, but you'll need to put @x2 into @x3 first.",getDestinationName(destination),moneyName,observer.name());
+			return L("I can take you to @x1, but you'll need to put @x2 into @x3 first.",getDestinationName(mob,destination),moneyName,observer.name());
 		else
-			return L("I can take you to @x1, but you'll need to drop @x2 first.",getDestinationName(destination),moneyName);
+			return L("I can take you to @x1, but you'll need to drop @x2 first.",getDestinationName(mob,destination),moneyName);
 	}
 	
 	@Override
@@ -80,7 +80,7 @@ public class TaxiBehavior extends Concierge
 		final ArrayList<Room> set=new ArrayList<Room>();
 		CMLib.tracking().getRadiantRooms(fromM.location(),set,roomRadiusFlags,null,maxRange,null);
 		trailTo=CMLib.tracking().findTrailToRoom(fromM.location(), destR, trackingFlags, maxRange);
-		thingsToSay.addElement(whoM,L("OK, we're now on our way to @x1.",getDestinationName(destR)));
+		thingsToSay.addElement(whoM,L("OK, we're now on our way to @x1.",getDestinationName(whoM,destR)));
 		this.returnToRoom=fromM.location();
 		this.isEnRouter=CMClass.getAbility("Prop_Adjuster");
 		this.isEnRouter.setMiscText("sen+"+PhyStats.CAN_NOT_TRACK);

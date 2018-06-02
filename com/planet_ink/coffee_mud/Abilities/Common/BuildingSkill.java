@@ -1619,6 +1619,11 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				commonTell(mob,L("A title must be specified."));
 				return false;
 			}
+			if(titleStr.length()>253)
+			{
+				commonTell(mob,L("That title is too long."));
+				return false;
+			}
 			final TrackingLibrary.TrackingFlags trackingFlags=CMLib.tracking().newFlags();
 			final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),trackingFlags,20);
 			for (final Room room2 : checkSet)
