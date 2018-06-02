@@ -2945,10 +2945,21 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			else
 			if(whatToDo.startsWith("PUR"))
 			{
-				final MOB deadMOB=(!deadM.isPlayer())?CMLib.players().getLoadPlayer(deadM.Name()):deadM;
-				if(deadMOB!=null)
+				final MOB deadMOB=(!deadM.isPlayer())?CMLib.get(deadM.session())._players().getLoadPlayer(deadM.Name()):deadM;
+				if((deadMOB!=null)&&(deadM.session()!=null))
 				{
-					CMLib.players().obliteratePlayer(deadMOB,true,false);
+					CMLib.threads().executeRunnable(deadM.session().getGroupName(), new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							final Session session=deadMOB.session();
+							if(session!=null)
+								session.stopSession(true, true, true);
+							CMLib.players().obliteratePlayer(deadMOB,true,false);
+							deadMOB.destroy();
+						}
+					});
 					return false;
 				}
 			}
