@@ -1432,8 +1432,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		&&(!isKnockedOutUponDeath(target,source)))
 			body=target.killMeDead(true);
 
-		handleCombatLossConsequences(target,source,cmds,expLost,"^*You lose @x1 experience points.^?^.");
-
+		final boolean stillExists = handleCombatLossConsequences(target,source,cmds,expLost,"^*You lose @x1 experience points.^?^.");
 		if(!isKnockedOutUponDeath(target,source))
 		{
 			Room bodyRoom=deathRoom;
@@ -1450,7 +1449,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 			if((!target.isMonster())
 			&&(CMLib.dice().rollPercentage()==1)
-			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE))
+			&&(stillExists))
 			{
 				final Ability A=CMClass.getAbility("Disease_Amnesia");
 				if((A!=null)&&(target.fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
@@ -2945,7 +2945,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			else
 			if(whatToDo.startsWith("PUR"))
 			{
-				final MOB deadMOB=CMLib.players().getLoadPlayer(deadM.Name());
+				final MOB deadMOB=(!deadM.isPlayer())?CMLib.players().getLoadPlayer(deadM.Name()):deadM;
 				if(deadMOB!=null)
 				{
 					CMLib.players().obliteratePlayer(deadMOB,true,false);
