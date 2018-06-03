@@ -446,8 +446,8 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 									for(final Pair<Room,Integer> p  : shipExitCache)
 										changeRoomAir(p.first,null,atmoResource);
 								}
-								if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-									Log.debugOut("Refreshed the air in "+Name()+", stale rooms: "+staleAirList.size());
+								//if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+								//	Log.debugOut("Refreshed the air in "+Name()+", stale rooms: "+staleAirList.size());
 							}
 						}
 					}
