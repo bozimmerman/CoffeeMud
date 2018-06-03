@@ -268,7 +268,7 @@ public class Say extends StdCommand
 		if(mob.isPlayer() 
 		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED) 
 		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER))
-			combinedCommands=CMStrings.replaceAlls(combinedCommands, new String[][]{{"<S-","[S-"},{"<T-","[T-"}});
+			combinedCommands=CMLib.coffeeFilter().secondaryUserInputFilter(combinedCommands);
 		CMMsg msg=null;
 		if((!theCommand.equals("ASK"))&&(target!=null))
 			theWord=L(theWord+"(s) to");

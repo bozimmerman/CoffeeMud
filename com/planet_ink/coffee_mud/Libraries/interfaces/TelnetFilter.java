@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Libraries.Sense;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 /*
    Copyright 2005-2018 Bo Zimmerman
@@ -72,4 +73,5 @@ public interface TelnetFilter extends CMLibrary
 	public String simpleInFilter(StringBuilder input);
 	public String fullInFilter(String input);
 	public String safetyFilter(String s);
+	public String secondaryUserInputFilter(final String s);
 }

@@ -41,6 +41,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		return "CoffeeFilter";
 	}
 
+	private static final String[][]		finalFilter	= new String[][]{{"<S-","[S-"},{"<T-","[T-"},{"@x","0x"}};
 	private Hashtable<String, Pronoun>	tagTable	= null;
 	private ColorState					normalColor	= null;
 
@@ -332,6 +333,12 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		return buf.toString().split("\n\r");
 	}
 
+	@Override
+	public String secondaryUserInputFilter(final String s)
+	{
+		return CMStrings.replaceAlls(s,finalFilter);
+	}
+	
 	protected int convertEscape(final Session S, final StringBuffer str, final int index)
 	{
 		int enDex = index + 1;
