@@ -3223,7 +3223,7 @@ public class StdMOB implements MOB
 					}
 					break;
 				case CMMsg.TYP_DEATH:
-					CMLib.combat().handleDeath(msg);
+					CMLib.get(mySession)._combat().handleDeath(msg);
 					break;
 				case CMMsg.TYP_REBUKE:
 					if (((msg.target() == null) && (getLiegeID().length() > 0))

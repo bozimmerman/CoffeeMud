@@ -1396,12 +1396,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		for(final Enumeration<MOB> m=deathRoom.inhabitants();m.hasMoreElements();)
 		{
 			final MOB M=m.nextElement();
-			if((M!=null)&&(M.getVictim()==target))
+			if((M!=null)
+			&&(M.getVictim()==target))
 				pickNextVictim(M, target, hisGroupH);
 		}
 		final Set<MOB> dividers=getCombatDividers(source,target,combatCharClass);
 
-		dispenseExperience(beneficiaries,dividers,target);
+		if(source != null)
+			CMLib.get(source.session())._combat().dispenseExperience(beneficiaries,dividers,target);
+		else
+			dispenseExperience(beneficiaries,dividers,target);
 
 		final String currency=CMLib.beanCounter().getCurrency(target);
 		final double deadMoney=CMLib.beanCounter().getTotalAbsoluteValue(target,currency);
@@ -2727,7 +2731,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			indiVars[1]=mob.phyStats().level()*mob.phyStats().level();
 			indiVars[3]=mob.phyStats().level();
 			final int myAmount=(int)Math.round(CMath.parseMathExpression(this.individualCombatExpFormula, indiVars, 0.0));
-			CMLib.leveler().postExperience(mob,killed,"",myAmount,false);
+			CMLib.get(mob.session())._leveler().postExperience(mob,killed,"",myAmount,false);
 		}
 	}
 
