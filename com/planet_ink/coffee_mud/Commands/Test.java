@@ -547,9 +547,9 @@ public class Test extends StdCommand
 				for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
 					final Ability A=e.nextElement();
-					if(A instanceof ItemCraftor)
+					if(A instanceof CraftorAbility)
 					{
-						final ItemCraftor iA=(ItemCraftor)A;
+						final CraftorAbility iA=(CraftorAbility)A;
 						if(iA.parametersFormat().length()>0)
 						{
 							try
