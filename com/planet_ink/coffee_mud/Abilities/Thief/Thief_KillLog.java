@@ -159,13 +159,16 @@ public class Thief_KillLog extends ThiefSkill
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{
 			String[] set=theList.get(mark.Name());
-			if(set==null)
+			if((set==null)||(set[3].equals("0")))
 			{
 				set=new String[4];
 				set[0]=mark.Name();
 				set[2]="1";
 				set[3]="0";
 				theList.put(mark.Name(),set);
+			}
+			if(set[3].equals("0"))
+			{
 				final MOB mob=(MOB)affected;
 				mob.tell(L("Ah, a new one for your kill log."));
 				CMLib.leveler().postExperience(mob,null,null,mark.phyStats().level(),false);
