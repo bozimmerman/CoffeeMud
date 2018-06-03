@@ -823,11 +823,15 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		else
 			useDmg = mob;
 		final boolean isPVP=((target!=null)&&mob.isPlayer()&&target.isPlayer());
+		final int maxStr = mob.charStats().getMaxStat(CharStats.STAT_STRENGTH);
+		int currStr = mob.charStats().getStat(CharStats.STAT_STRENGTH);
+		if(currStr > maxStr)
+			currStr = maxStr;
 		if(target!=null)
 		{
 			final double[] vars = {
 					useDmg.phyStats().damage()+bonusDamage,
-					mob.charStats().getStat(CharStats.STAT_STRENGTH),
+					currStr,
 					mob.phyStats().level(),
 					target.phyStats().level(),
 					(mob.curState().getHunger()<1)?1.0:0.0,
@@ -851,7 +855,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		{
 			final double[] vars = {
 					useDmg.phyStats().damage()+bonusDamage,
-					mob.charStats().getStat(CharStats.STAT_STRENGTH),
+					currStr,
 					mob.phyStats().level(),
 					0,
 					(mob.curState().getHunger()<1)?1.0:0.0,
