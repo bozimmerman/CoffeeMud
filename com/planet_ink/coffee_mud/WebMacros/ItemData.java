@@ -955,6 +955,10 @@ public class ItemData extends StdWebMacro
 						Ability A=null;
 						if((firstTime)&&(I instanceof Recipe))
 							old=""+((Recipe)I).getCommonSkillID();
+						str.append("<OPTION VALUE=\"\"");
+						if(old.trim().length()==0)
+							str.append(" SELECTED");
+						str.append(">Open/None");
 						for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 						{
 							A=e.nextElement();
