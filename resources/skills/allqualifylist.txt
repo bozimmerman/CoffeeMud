@@ -107,3 +107,5 @@
 15 Composting MASK=+WIS 12 REQUIRES=Farming
 
 18 FoodPreserving MASK=+INT 12
+
+29 MasterHerbology MASK=+INT 12 REQUIRES=Herbology(100) 

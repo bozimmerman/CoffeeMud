@@ -217,6 +217,7 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Irrigation",false,CMParms.parseSemicolons("Drilling",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"MasterTailoring",false,CMParms.parseSemicolons("Tailoring(100)",true),"+DEX 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"MasterHerbology",false,CMParms.parseSemicolons("Herbology(100)",true),"+INT 12");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"MasterCostuming",false,CMParms.parseSemicolons("Costuming(100)",true),"+INT 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"MasterButchering",false,CMParms.parseSemicolons("Butchering(100)",true),"+STR 16");
