@@ -327,6 +327,7 @@ public class Titling extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		writing=CMParms.combine(commands,0);
+		writing=CMLib.coffeeFilter().secondaryUserInputFilter(writing);
 		catalog=newCatalog;
 		verb=L("titling @x1",target.name());
 		displayText=L("You are @x1",verb);

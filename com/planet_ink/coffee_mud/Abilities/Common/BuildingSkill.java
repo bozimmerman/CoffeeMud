@@ -1613,12 +1613,13 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				commonTell(mob,L("You can't do that here."));
 				return false;
 			}
-			final String titleStr=CMParms.combine(commands,1);
+			String titleStr=CMParms.combine(commands,1);
 			if(titleStr.length()==0)
 			{
 				commonTell(mob,L("A title must be specified."));
 				return false;
 			}
+			titleStr=CMLib.coffeeFilter().secondaryUserInputFilter(titleStr);
 			if(titleStr.length()>253)
 			{
 				commonTell(mob,L("That title is too long."));
@@ -1674,7 +1675,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			else
 				commands.remove(1);
 
-			final String descStr=CMParms.combine(commands,1);
+			String descStr=CMParms.combine(commands,1);
+			descStr=CMLib.coffeeFilter().secondaryUserInputFilter(descStr);
 			if(descStr.length()==0)
 			{
 				commonTell(mob,L("A description must be specified."));

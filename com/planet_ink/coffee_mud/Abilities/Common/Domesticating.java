@@ -173,6 +173,7 @@ public class Domesticating extends CommonSkill
 				mob.tell(L("The name may not contain a space."));
 				return false;
 			}
+			newName=CMLib.coffeeFilter().secondaryUserInputFilter(newName);
 			String oldName=M.name();
 			final Vector<String> oldV=CMParms.parse(oldName);
 			if(oldV.size()>1)

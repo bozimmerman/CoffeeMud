@@ -262,6 +262,7 @@ public class BookNaming extends CommonSkill
 			return false;
 		writing=CMStrings.replaceAll(nameType, "@x1", nameWord);
 		writing=CMStrings.replaceAll(writing, "@x2", mob.Name());
+		writing=CMLib.coffeeFilter().secondaryUserInputFilter(writing);
 		verb=L("naming @x1",target.name());
 		displayText=L("You are @x1",verb);
 		found=target;

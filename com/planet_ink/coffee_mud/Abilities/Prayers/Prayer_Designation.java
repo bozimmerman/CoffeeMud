@@ -141,6 +141,7 @@ public class Prayer_Designation extends Prayer
 		else
 		if(target.name().indexOf(' ')>=0)
 			myName=myName+", "+target.name();
+		myName=CMLib.coffeeFilter().secondaryUserInputFilter(myName);
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
