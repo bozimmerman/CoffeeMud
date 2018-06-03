@@ -86,7 +86,7 @@ public class GenCompEnviroSystem extends GenElecCompItem
 							final Area A=ship.getShipArea();
 							double pct= 1.0;
 							if(subjectToWearAndTear())
-								pct=pct*CMath.div(usesRemaining(),100);
+								pct=pct*CMath.div(usesRemaining(),50);
 							//if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 							//	Log.debugOut("Refreshing the air in "+ship.Name());
 							final String code=Technical.TechCommand.AIRREFRESH.makeCommand(Double.valueOf(pct),Integer.valueOf(airResource));
