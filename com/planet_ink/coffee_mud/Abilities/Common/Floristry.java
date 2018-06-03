@@ -69,6 +69,8 @@ public class Floristry extends CommonSkill
 
 	protected Item		found		= null;
 	protected boolean	messedUp	= false;
+	protected String	foundName	= null;
+	protected boolean	lastAuto	= false;
 
 	@Override
 	protected boolean canBeDoneSittingDown()
@@ -98,35 +100,75 @@ public class Floristry extends CommonSkill
 					commonTell(mob,L("You lose your concentration on @x1.",found.name()));
 				else
 				{
-					final List<String> herbList=Resources.getFileLineVector(Resources.getFileResource("skills/floristry.txt",true));
-					String herb=null;
-					while((herbList.size()>2)&&((herb==null)||(herb.trim().length()==0)))
-						herb=herbList.get(CMLib.dice().roll(1,herbList.size(),-1)).trim().toLowerCase();
-
-					if(found.rawSecretIdentity().length()>0)
+					final List<String> flowerList=Resources.getFileLineVector(Resources.getFileResource("skills/floristry.txt",true));
+					Item origFound=found;
+					while(found != null)
 					{
-						herb=found.rawSecretIdentity();
-						found.setSecretIdentity("");
+						if(found.phyStats().weight()>1)
+							found=(Item)CMLib.materials().unbundle(found, 1, null);
+						String flower=null;
+						while((flowerList.size()>2)&&((flower==null)||(flower.trim().length()==0)))
+							flower=flowerList.get(CMLib.dice().roll(1,flowerList.size(),-1)).trim().toLowerCase();
+	
+						if(found.rawSecretIdentity().length()>0)
+						{
+							flower=found.rawSecretIdentity();
+							found.setSecretIdentity("");
+						}
+	
+						commonTell(mob,L("@x1 appears to be @x2.",found.name(),flower));
+						String name=found.Name();
+						name=name.substring(0,name.length()-8).trim();
+						if(name.startsWith("a pound of"))
+							name="some"+name.substring(10);
+						if(name.length()>0)
+							found.setName(name+" "+flower);
+						else
+							found.setName(L("some @x1",flower));
+						found.setDisplayText(L("@x1 are here",found.Name()));
+						found.setDescription("");
+						found.text();
+						if((!isLimitedToOne()) && (foundName!=null))
+						{
+							final Item tempFound=found;
+							if((origFound!=null)
+							&&(!origFound.amDestroyed())
+							&&(origFound!=found))
+								found=origFound;
+							else
+								found=mob.fetchItem(null, Wearable.FILTER_UNWORNONLY, "$"+foundName+"$");
+							if((found != null)
+							&&((found.material()==RawMaterial.RESOURCE_HERBS))
+							&&((found.Name().toUpperCase().endsWith(" HERBS"))
+								||(found.Name().equalsIgnoreCase("herbs"))
+								||(found.Name().toUpperCase().endsWith("BUNDLE")))
+							&&(proficiencyCheck(mob,0,lastAuto)))
+							{
+								if(origFound==tempFound)
+									origFound=found;
+								continue;
+							}
+							found=null;
+						}
+						else
+							found=null;
 					}
-
-					commonTell(mob,L("@x1 appears to be @x2.",found.name(),herb));
-					String name=found.Name();
-					name=name.substring(0,name.length()-8).trim();
-					if(name.startsWith("a pound of"))
-						name="some"+name.substring(10);
-					if(name.length()>0)
-						found.setName(name+" "+herb);
-					else
-						found.setName(L("some @x1",herb));
-					found.setDisplayText(L("@x1 are here",found.Name()));
-					found.setDescription("");
-					found.text();
 				}
 			}
 		}
 		super.unInvoke();
 	}
 
+	protected boolean isLimitedToOne()
+	{
+		return true;
+	}
+	
+	protected int duration(final MOB mob)
+	{
+		return getDuration(15,mob,1,2);
+	}
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -137,7 +179,8 @@ public class Floristry extends CommonSkill
 			commonTell(mob,L("You must specify what flower you want to identify."));
 			return false;
 		}
-		final Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,CMParms.combine(commands,0));
+		String finalName=CMParms.combine(commands,0);
+		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,finalName);
 		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			commonTell(mob,L("You don't seem to have a '@x1'.",(commands.get(0))));
@@ -147,13 +190,16 @@ public class Floristry extends CommonSkill
 
 		if((target.material()!=RawMaterial.RESOURCE_FLOWERS)
 		||((!target.Name().toUpperCase().endsWith(" FLOWERS"))
-		   &&(!target.Name().equalsIgnoreCase("flowers")))
+		   &&(!target.Name().equalsIgnoreCase("flowers"))
+		   &&(!target.Name().toUpperCase().endsWith("BUNDLE")))
 		||(!(target instanceof RawMaterial))
 		||(!target.isGeneric()))
 		{
 			commonTell(mob,L("You can only identify unknown flowers."));
 			return false;
 		}
+		if(isLimitedToOne() && target.basePhyStats().weight()>1)
+			target=(Item)CMLib.materials().unbundle(target, 1, null);
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		verb=L("studying @x1",target.name());
@@ -162,11 +208,13 @@ public class Floristry extends CommonSkill
 		messedUp=false;
 		if(!proficiencyCheck(mob,0,auto))
 			messedUp=true;
-		final int duration=getDuration(15,mob,1,2);
+		final int duration=duration(mob);
 		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),L("<S-NAME> stud(ys) @x1.",target.name()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
+			this.foundName=target.Name();
+			this.lastAuto=auto;
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

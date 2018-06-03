@@ -237,6 +237,8 @@ public class Gaian extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_SweetScent",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_Shamblermorph",false);
 
+		CMLib.ableMapper().addCharAbilityMapping(ID(),26,"MasterFloristry",0,false);
+		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_GrowOak",true);
 	}
 
