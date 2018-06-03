@@ -621,7 +621,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			break;
 		case RawMaterial.MATERIAL_VEGETATION:
 		{
-			if(myResource==RawMaterial.RESOURCE_VINE)
+			if((myResource==RawMaterial.RESOURCE_VINE)
+			||(myResource==RawMaterial.RESOURCE_FLOWERS))
 				I=(RawMaterial)CMClass.getItem("GenResource");
 			else
 			{
