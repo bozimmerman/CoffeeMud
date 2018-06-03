@@ -114,6 +114,8 @@ public class Emote extends StdCommand
 			}
 			x=combinedCommands.indexOf('/',x+1);
 		}
+		if(mob.isPlayer() || CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED))
+			combinedCommands=CMStrings.replaceAlls(combinedCommands, new String[][]{{"<S-","[S-"},{"<T-","[T-"}});
 		final String emote="^E<S-NAME>"+combinedCommands+" ^?";
 		final CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_EMOTE,emote);
 		if(R.okMessage(mob,msg))
