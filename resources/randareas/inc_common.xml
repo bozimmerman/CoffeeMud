@@ -143,7 +143,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	<string define="last_gem_value=50" condition="$weighted_gem_chance&gt;50">quartz</string>
 	<string define="last_gem_value=50" condition="$weighted_gem_chance&gt;50">jade</string>
 	<string define="last_gem_value=50" condition="$weighted_gem_chance&gt;50">aquamarine</string>
-	<string define="last_gem_value=60" condition="$weighted_gem_chance&gt;50">crysoberyl</string>
+	<string define="last_gem_value=60" condition="$weighted_gem_chance&gt;50">chrysoberyl</string>
 	<string define="last_gem_value=65" condition="$weighted_gem_chance&gt;60">soapstone</string>
 	<string define="last_gem_value=65" condition="$weighted_gem_chance&gt;65">peridot</string>
 	<string define="last_gem_value=70" condition="$weighted_gem_chance&gt;70">garnet</string>

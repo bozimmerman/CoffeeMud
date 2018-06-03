@@ -31,7 +31,7 @@ Druidic Staff	32	45	14	1613	GenStaff	5	22
 Reinforced Staff	33	45	12	1613	GenStaff	5	22			
 Jade-tipped Staff	34	65	12	1763	GenStaff	5	23	Jade	2	
 Aquamarine-tipped Staff	35	65	12	1920	GenStaff	5	24	Aquamarine	2	
-Crysoberyl-tipped Staff	36	65	12	1920	GenStaff	5	24	Crysoberyl	2	
+Chrysoberyl-tipped Staff	36	65	12	1920	GenStaff	5	24	Chrysoberyl	2	
 Silver-core Staff	39	125	10	2253	GenStaff	5	26	Silver	4	
 Peridot-tipped Staff	42	70	12	2430	GenStaff	5	27	Peridot	2	
 Garnet-tipped Staff	44	75	12	2613	GenStaff	5	28	Garnet	2	

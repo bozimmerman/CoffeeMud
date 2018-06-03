@@ -413,7 +413,7 @@ public interface RawMaterial extends Item
 	public final static int	RESOURCE_GARNET			= MATERIAL_PRECIOUS | 80;
 	public final static int	RESOURCE_AMBER			= MATERIAL_PRECIOUS | 81;
 	public final static int	RESOURCE_AQUAMARINE		= MATERIAL_PRECIOUS | 82;
-	public final static int	RESOURCE_CRYSOBERYL		= MATERIAL_PRECIOUS | 83;
+	public final static int	RESOURCE_CHRYSOBERYL		= MATERIAL_PRECIOUS | 83;
 	public final static int	RESOURCE_IRONWOOD		= MATERIAL_WOODEN | 84;
 	public final static int	RESOURCE_SILK			= MATERIAL_CLOTH | 85;
 	public final static int	RESOURCE_COCOA			= MATERIAL_VEGETATION | 86;
@@ -647,7 +647,7 @@ public interface RawMaterial extends Item
 		GARNET(RESOURCE_GARNET, 70, 2, 5, 3870, "", "", null),
 		AMBER(RESOURCE_AMBER, 80, 5, 5, 2500, "", "", null),
 		AQUAMARINE(RESOURCE_AQUAMARINE, 50, 2, 5, 2800, "", "", null),
-		CRYSOBERYL(RESOURCE_CRYSOBERYL, 50, 2, 5, 2800, "", "", null),
+		CRYSOBERYL(RESOURCE_CHRYSOBERYL, 50, 2, 5, 2800, "", "", null),
 		IRONWOOD(RESOURCE_IRONWOOD, 25, 5, 4, 990, "", "", null),
 		SILK(RESOURCE_SILK, 200, 5, 1, 1100, "", "", null),
 		COCOA(RESOURCE_COCOA, 4, 5, 0, 590, "", "", ResourceFlag.WOODY),

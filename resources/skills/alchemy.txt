@@ -45,7 +45,7 @@ Spell_Blindness	FLINT
 Spell_ComprehendLangs	HICKORY
 Spell_Slow	PORK
 Spell_ResistArrows	IRON
-Spell_Mute	CRYSOBERYL
+Spell_Mute	CHRYSOBERYL
 Spell_Feeblemind	POULTRY
 Spell_Stoneskin	GRANITE
 Spell_Laughter	OLIVES
