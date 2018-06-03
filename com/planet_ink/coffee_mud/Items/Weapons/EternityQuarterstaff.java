@@ -71,9 +71,9 @@ public class EternityQuarterstaff extends Quarterstaff
 		{
 		case CMMsg.TYP_SPEAK:
 			if((mob.isMine(this))
-			   &&(!amWearingAt(Wearable.IN_INVENTORY))
-			   &&(msg.target() instanceof MOB)
-			   &&(mob.location().isInhabitant((MOB)msg.target())))
+			&&(amBeingWornProperly())
+			&&(msg.target() instanceof MOB)
+			&&(mob.location().isInhabitant((MOB)msg.target())))
 			{
 				final MOB target=(MOB)msg.target();
 				final int x=msg.targetMessage().toUpperCase().indexOf("HEAL");

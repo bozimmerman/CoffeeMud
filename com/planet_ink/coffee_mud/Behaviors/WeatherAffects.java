@@ -540,7 +540,7 @@ public class WeatherAffects extends PuddleMaker
 					for(int i=0;i<M.numItems();i++)
 					{
 						I=M.getItem(i);
-						if((I==null)||(I.amWearingAt(Wearable.IN_INVENTORY)))
+						if((I==null)||(!I.amBeingWornProperly()))
 							continue;
 						if(I.amWearingAt(Wearable.WORN_ABOUT_BODY))
 							coveredPlaces=coveredPlaces|Wearable.WORN_TORSO|Wearable.WORN_LEGS;

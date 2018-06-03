@@ -205,7 +205,7 @@ public class StdTriCorder extends StdElecContainer implements Computer
 			{
 			case CMMsg.TYP_READ:
 			case CMMsg.TYP_WRITE:
-				if(this.amWearingAt(Wearable.IN_INVENTORY))
+				if(!amBeingWornProperly())
 				{
 					msg.source().tell(L("@x1 needs to be held first.",name()));
 					return false;
@@ -217,7 +217,8 @@ public class StdTriCorder extends StdElecContainer implements Computer
 				}
 				return true;
 			case CMMsg.TYP_ACTIVATE:
-				if(this.amWearingAt(Wearable.IN_INVENTORY) && (!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+				if((!amBeingWornProperly()) 
+				&& (!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 				{
 					msg.source().tell(L("@x1 needs to be held first.",name()));
 					return false;
@@ -235,7 +236,8 @@ public class StdTriCorder extends StdElecContainer implements Computer
 				}
 				break;
 			case CMMsg.TYP_DEACTIVATE:
-				if(this.amWearingAt(Wearable.IN_INVENTORY) && (!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
+				if((amBeingWornProperly()) 
+				&& (!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 				{
 					msg.source().tell(L("@x1 needs to be held first.",name()));
 					return false;
@@ -340,8 +342,9 @@ public class StdTriCorder extends StdElecContainer implements Computer
 				break;
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
-				if(CMLib.flags().canBeSeenBy(this, msg.source()) && (!amWearingAt(Wearable.IN_INVENTORY)))
-					msg.source().tell(L("@x1 is currently @x2",name(),(activated()?"booted up and the screen ready to be read.\n\r":"deactivated.\n\r")));
+				if(CMLib.flags().canBeSeenBy(this, msg.source()) 
+				&& (amBeingWornProperly()))
+					msg.source().tell(L("@x1 is currently @x2",name(),(activated()?L("booted up and the screen ready to be read.\n\r"):L("deactivated.\n\r"))));
 				return;
 			case CMMsg.TYP_ACTIVATE:
 				if(!activated())

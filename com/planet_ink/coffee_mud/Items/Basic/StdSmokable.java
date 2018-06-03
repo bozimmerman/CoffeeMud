@@ -167,7 +167,7 @@ public class StdSmokable extends StdContainer implements Light
 			{
 				if(((durationTicks%puffTicks)==0)
 				&&(owner() instanceof MOB)
-				&&(!amWearingAt(Wearable.IN_INVENTORY)))
+				&& amBeingWornProperly())
 				{
 					final MOB mob=(MOB)owner();
 					if((mob.location()!=null)

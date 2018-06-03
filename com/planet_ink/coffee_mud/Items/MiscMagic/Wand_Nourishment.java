@@ -78,7 +78,7 @@ public class Wand_Nourishment extends StdWand
 			{
 			case CMMsg.TYP_WAND_USE:
 				if((mob.isMine(this))
-				&&(!amWearingAt(Wearable.IN_INVENTORY))
+				&&(amBeingWornProperly())
 				&&(msg.targetMessage()!=null))
 				{
 					if(msg.targetMessage().toUpperCase().indexOf("SHAZAM")>=0)

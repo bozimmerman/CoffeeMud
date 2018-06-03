@@ -60,7 +60,8 @@ public class EternityLeafArmor extends StdArmor
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if((!this.amWearingAt(Wearable.IN_INVENTORY))&&(!this.amWearingAt(Wearable.WORN_HELD)))
+		if((amBeingWornProperly())
+		&&(!this.amWearingAt(Wearable.WORN_HELD)))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
 	}
 }

@@ -97,7 +97,7 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 				&&(msg.target() instanceof MOB))
 					addMeIfNeccessary(msg.source(),(MOB)msg.target(),true,0,maxTicks);
 				else
-				if((!myItem.amWearingAt(Wearable.IN_INVENTORY))
+				if((myItem.amBeingWornProperly())
 				&&(myItem.owner() instanceof MOB)
 				&&(msg.target() instanceof MOB))
 				{

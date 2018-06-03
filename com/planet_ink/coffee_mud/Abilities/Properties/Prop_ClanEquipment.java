@@ -255,7 +255,8 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 
 	public boolean checkWave(MOB mob, String message, Wand me)
 	{
-		if((mob.isMine(me))&&(!me.amWearingAt(Wearable.IN_INVENTORY)))
+		if((mob.isMine(me))
+		&&(me.amBeingWornProperly()))
 		{
 			final int x=message.toUpperCase().indexOf(secretWord.toUpperCase());
 			return (x>=0);

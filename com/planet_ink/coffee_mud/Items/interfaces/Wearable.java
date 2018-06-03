@@ -142,6 +142,15 @@ public interface Wearable extends Environmental
 	 * @param wornCode the bitmap from Item interface constants used
 	 */
 	public void wearAt(long wornCode);
+	
+	/**
+	 * Returns whether this item is being worn properly,
+	 * regardless of layering or multi-restrictions.  If
+	 * the item is unworn, or floating via magic, it will
+	 * return false.  Otherwise true.
+	 * @return true if its being properly worn.
+	 */
+	public boolean amBeingWornProperly();
 	/**
 	 * Removes this item from a state of being worn, and puts it back into the mob or
 	 * player inventory.  setContainer(null) may still need be called to make the

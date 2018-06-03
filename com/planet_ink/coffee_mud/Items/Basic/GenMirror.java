@@ -63,7 +63,9 @@ public class GenMirror extends GenItem
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((owner==null)||(!(owner instanceof MOB))||(amWearingAt(Wearable.IN_INVENTORY)))
+		if((owner==null)
+		||(!(owner instanceof MOB))
+		||(!amBeingWornProperly()))
 			return super.okMessage(myHost,msg);
 
 		final MOB mob=(MOB)owner;

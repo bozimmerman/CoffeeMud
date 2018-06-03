@@ -70,7 +70,7 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 			disabled = false;
 		}
 		final boolean oldDisabled=disabled;
-		if(A.amWearingAt(Wearable.IN_INVENTORY))
+		if(!A.amBeingWornProperly())
 		{
 			checked=false;
 			return;
@@ -83,7 +83,7 @@ public class Prop_WearEnabler extends Prop_HaveEnabler
 		{
 			I=mob.getItem(i);
 			if((I instanceof Armor)
-			&&(!I.amWearingAt(Wearable.IN_INVENTORY))
+			&&(I.amBeingWornProperly())
 			&&((I.rawWornCode()&A.rawWornCode())>0)
 			&&(I!=A))
 			{

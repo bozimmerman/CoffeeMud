@@ -114,7 +114,9 @@ public class Spell_StoreSpell extends Spell
 
 	public void waveIfAble(MOB mob, Physical afftarget, String message, Item me)
 	{
-		if((mob.isMine(me))&&(!me.amWearingAt(Wearable.IN_INVENTORY))&&(message!=null))
+		if((mob.isMine(me))
+		&&(me.amBeingWornProperly())
+		&&(message!=null))
 		{
 			Physical target=null;
 			if((mob.location()!=null))

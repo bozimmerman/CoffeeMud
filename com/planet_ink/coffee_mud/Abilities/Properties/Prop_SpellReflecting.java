@@ -131,7 +131,7 @@ public class Prop_SpellReflecting extends Property implements TriggeredAffect
 				target=(MOB)affected;
 			else
 			if((affected instanceof Item)
-			&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))
+			&&(((Item)affected).amBeingWornProperly())
 			&&(((Item)affected).owner()!=null)
 			&&(((Item)affected).owner() instanceof MOB))
 				target=(MOB)((Item)affected).owner();

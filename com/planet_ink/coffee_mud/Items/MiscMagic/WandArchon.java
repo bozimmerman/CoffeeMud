@@ -76,7 +76,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 	@Override
 	public void affectCharState(MOB mob, CharState affectableState)
 	{
-		if(!amWearingAt(Wearable.IN_INVENTORY))
+		if(amBeingWornProperly())
 		{
 			affectableState.setHunger((Integer.MAX_VALUE/2)+10);
 			affectableState.setThirst((Integer.MAX_VALUE/2)+10);
@@ -149,7 +149,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		for (final String element : MAGIC_WORDS)
 		{
 			if(parms.contains(element))
-				return (mob.isMine(this)) && (!amWearingAt(Wearable.IN_INVENTORY));
+				return (mob.isMine(this)) && (amBeingWornProperly());
 		}
 		return super.checkWave(mob, message);
 	}
@@ -158,8 +158,8 @@ public class WandArchon extends StdWand implements ArchonOnly
 	public void waveIfAble(MOB mob, Physical afftarget, String message)
 	{
 		if((mob.isMine(this))
-		   &&(message!=null)
-		   &&(!this.amWearingAt(Wearable.IN_INVENTORY)))
+		&&(message!=null)
+		&&(amBeingWornProperly()))
 		{
 			if((mob.location()!=null)&&(afftarget!=null)&&(afftarget instanceof MOB))
 			{

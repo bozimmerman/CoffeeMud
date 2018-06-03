@@ -146,7 +146,9 @@ public class StdPersonalShield extends StdElecItem implements Armor
 					msg.addTrailerMsg(CMClass.getMsg(mob, this, null,CMMsg.MSG_OK_VISUAL,CMMsg.TYP_DEACTIVATE|CMMsg.MASK_ALWAYS,CMMsg.MSG_OK_VISUAL,fieldDeadStr(msg.source())));
 				break;
 			case CMMsg.TYP_DAMAGE: // remember 50% miss rate
-				if((activated())&&(powerRemaining()>0)&&(!amWearingAt(Wearable.IN_INVENTORY)))
+				if((activated())
+				&&(powerRemaining()>0)
+				&& amBeingWornProperly())
 				{
 					double successFactor=0.5;
 					final Manufacturer m=getFinalManufacturer();

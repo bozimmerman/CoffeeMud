@@ -99,8 +99,8 @@ public class GenTickerShield extends StdElecItem implements Armor
 			return false;
 		if(activated() && (tickID==Tickable.TICKID_ELECTRONICS))
 		{
-			if(!amWearingAt(Wearable.IN_INVENTORY))
-			setPowerRemaining(powerRemaining()-1);
+			if(amBeingWornProperly())
+				setPowerRemaining(powerRemaining()-1);
 			if(powerRemaining()<=0)
 			{
 				setPowerRemaining(0);

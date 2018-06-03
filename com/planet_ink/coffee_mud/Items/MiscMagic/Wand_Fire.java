@@ -78,9 +78,9 @@ public class Wand_Fire extends StdWand
 		{
 		case CMMsg.TYP_WAND_USE:
 			if((mob.isMine(this))
-			   &&(!amWearingAt(Wearable.IN_INVENTORY))
-			   &&(msg.target() instanceof MOB)
-			   &&(mob.location().isInhabitant((MOB)msg.target())))
+			&&(amBeingWornProperly())
+			&&(msg.target() instanceof MOB)
+			&&(mob.location().isInhabitant((MOB)msg.target())))
 			{
 				final MOB target=(MOB)msg.target();
 				int x=msg.targetMessage().toUpperCase().indexOf("BLAZE");

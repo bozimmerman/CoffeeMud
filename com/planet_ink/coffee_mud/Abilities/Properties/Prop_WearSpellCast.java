@@ -76,7 +76,7 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 			disabled=false;
 		}
 		final boolean oldDisabled=disabled;
-		if(A.amWearingAt(Wearable.IN_INVENTORY))
+		if(!A.amBeingWornProperly())
 		{
 			checked=false;
 			return;
@@ -89,7 +89,7 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 		{
 			I=mob.getItem(i);
 			if((I instanceof Armor)
-			&&(!I.amWearingAt(Wearable.IN_INVENTORY))
+			&&(I.amBeingWornProperly())
 			&&((I.rawWornCode()&A.rawWornCode())>0)
 			&&(I!=A))
 			{

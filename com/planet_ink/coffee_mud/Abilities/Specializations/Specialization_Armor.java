@@ -107,7 +107,7 @@ public class Specialization_Armor extends StdAbility
 				final Item I=mob.getItem(i);
 				if((I!=null)
 				&&(I.basePhyStats().armor()>0)
-				&&(!I.amWearingAt(Wearable.IN_INVENTORY))
+				&&(I.amBeingWornProperly())
 				&&(!I.amWearingAt(Wearable.WORN_HELD))
 				&&(!I.amWearingAt(Wearable.WORN_FLOATING_NEARBY))
 				&&(CMath.banyset(I.rawProperLocationBitmap(), WORN_ARMOR)))

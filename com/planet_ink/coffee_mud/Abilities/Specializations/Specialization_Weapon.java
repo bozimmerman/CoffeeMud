@@ -123,7 +123,7 @@ public class Specialization_Weapon extends StdAbility
 
 	protected boolean canDamage(MOB mob, Weapon W)
 	{
-		return !W.amWearingAt(Wearable.IN_INVENTORY);
+		return W.amBeingWornProperly();
 	}
 
 	protected boolean isWearableItem(Item I)

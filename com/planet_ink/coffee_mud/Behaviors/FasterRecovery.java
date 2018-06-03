@@ -189,7 +189,7 @@ public class FasterRecovery extends StdBehavior
 		{
 			if(CMLib.flags().isGettable((Item)ticking)
 			&&(((Item)ticking).owner() instanceof MOB)
-			&&(!((Item)ticking).amWearingAt(Wearable.IN_INVENTORY)))
+			&&(((Item)ticking).amBeingWornProperly()))
 				doBe((MOB)((Item)ticking).owner(),burst,health,hits,mana,move);
 			else
 			if(!CMLib.flags().isGettable((Item)ticking)

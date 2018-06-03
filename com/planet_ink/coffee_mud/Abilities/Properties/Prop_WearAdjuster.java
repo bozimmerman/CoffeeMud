@@ -69,7 +69,7 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 			checked=true;
 			disabled=false;
 		}
-		if(A.amWearingAt(Wearable.IN_INVENTORY))
+		if(!A.amBeingWornProperly())
 		{
 			checked=false;
 			return;
@@ -82,7 +82,7 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 		{
 			I=mob.getItem(i);
 			if((I instanceof Armor)
-			&&(!I.amWearingAt(Wearable.IN_INVENTORY))
+			&&(I.amBeingWornProperly())
 			&&((I.rawWornCode()&A.rawWornCode())>0)
 			&&(I!=A))
 			{

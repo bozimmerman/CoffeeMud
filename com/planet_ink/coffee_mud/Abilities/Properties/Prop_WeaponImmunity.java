@@ -105,14 +105,15 @@ public class Prop_WeaponImmunity extends Property implements TriggeredAffect
 		if(!super.okMessage(myHost,msg))
 			return false;
 		if((affected!=null)
-		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)&&(msg.value()>0))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&(msg.value()>0))
 		{
 			MOB M=null;
 			if(affected instanceof MOB)
 				M=(MOB)affected;
 			else
 			if((affected instanceof Item)
-			&&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY))
+			&&(((Item)affected).amBeingWornProperly())
 			&&(((Item)affected).owner()!=null)
 			&&(((Item)affected).owner() instanceof MOB))
 				M=(MOB)((Item)affected).owner();

@@ -170,7 +170,7 @@ public class Prop_ModFaction extends Property
 		&&(((msg.target()==affected)&&(affected instanceof MOB))
 		   ||((affected instanceof Item)
 			   &&(msg.source()==((Item)affected).owner())
-			   &&(!((Item)affected).amWearingAt(Wearable.IN_INVENTORY)))
+			   &&(((Item)affected).amBeingWornProperly()))
 		   ||(affected instanceof Room)
 		   ||(affected instanceof Area))
 		&&(msg.value()!=Integer.MAX_VALUE)

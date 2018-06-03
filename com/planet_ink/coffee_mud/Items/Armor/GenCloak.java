@@ -60,7 +60,8 @@ public class GenCloak extends GenArmor
 	public void affectPhyStats(Physical host, PhyStats stats)
 	{
 		super.affectPhyStats(host, stats);
-		if((!amWearingAt(Wearable.IN_INVENTORY))&&(readableText().length()>0))
+		if((amBeingWornProperly())
+		&&(readableText().length()>0))
 			stats.setName(readableText());
 	}
 }

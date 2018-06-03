@@ -69,7 +69,11 @@ public class GenStealthShield extends GenTickerShield
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		if(activated() && (affected==owner()) && (owner() instanceof MOB) && (!amWearingAt(Wearable.IN_INVENTORY)) && (powerRemaining() > 0))
+		if(activated() 
+		&& (affected==owner()) 
+		&& (owner() instanceof MOB) 
+		&& amBeingWornProperly() 
+		&& (powerRemaining() > 0))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_INVISIBLE);
 		super.affectPhyStats(affected, affectableStats);
 	}

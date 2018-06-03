@@ -360,6 +360,17 @@ public class StdItem implements Item
 	}
 
 	@Override
+	public boolean amBeingWornProperly()
+	{
+		if(this.myWornCode==0)
+			return false;
+		if(this.wornLogicalAnd)
+			return this.myWornCode==this.properWornBitmap;
+		else
+			return (this.properWornBitmap & this.myWornCode) != 0;
+	}
+	
+	@Override
 	public boolean fitsOn(final long wornCode)
 	{
 		if(wornCode<=0)
@@ -1329,8 +1340,8 @@ public class StdItem implements Item
 			if((msg.tool()==null)||(msg.tool() instanceof MOB))
 			{
 				if((!CMLib.flags().canBeSeenBy(this,mob))
-				   &&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
-				   &&(amWearingAt(Wearable.IN_INVENTORY)))
+				&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
+				&&(amWearingAt(Wearable.IN_INVENTORY)))
 				{
 					mob.tell(L("You can't see that."));
 					return false;

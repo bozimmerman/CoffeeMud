@@ -481,6 +481,12 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
+	public boolean amBeingWornProperly()
+	{
+		return false;
+	}
+
+	@Override
 	public String rawSecretIdentity()
 	{
 		return "";

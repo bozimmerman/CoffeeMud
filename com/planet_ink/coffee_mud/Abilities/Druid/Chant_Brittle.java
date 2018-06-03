@@ -119,7 +119,7 @@ public class Chant_Brittle extends Chant
 		{
 			final Item item=mobTarget.getItem(i);
 			if((item!=null)
-			   &&(item.subjectToWearAndTear()))
+			&&(item.subjectToWearAndTear()))
 			{
 				if(item.amWearingAt(Wearable.IN_INVENTORY))
 					possibilities.addElement(item);

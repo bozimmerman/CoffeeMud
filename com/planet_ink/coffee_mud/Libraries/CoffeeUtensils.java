@@ -761,7 +761,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(int i=0;i<mob.numItems();i++)
 		{
 			final Item I=mob.getItem(i);
-			if((I!=null)&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
+			if((I!=null)
+			&&(!I.amWearingAt(Wearable.IN_INVENTORY)))
 			{
 				final boolean ok=armorCheck(mob,I,allowedArmorLevel);
 				if((!ok)&&((I.rawWornCode()&CharClass.ARMOR_WEARMASK)>0))
@@ -883,7 +884,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(int i=0;i<mob.numItems();i++)
 		{
 			item=mob.getItem(i);
-			if((item!=null)&&(!item.amWearingAt(Wearable.IN_INVENTORY)))
+			if((item!=null)
+			&&(!item.amWearingAt(Wearable.IN_INVENTORY)))
 			{
 				final Long oldCode=Long.valueOf(item.rawWornCode());
 				item.unWear();

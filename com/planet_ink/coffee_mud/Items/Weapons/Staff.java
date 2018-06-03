@@ -154,7 +154,8 @@ public class Staff extends StdWeapon implements Wand
 				waveIfAble(mob,(Physical)msg.tool(),msg.targetMessage());
 			break;
 		case CMMsg.TYP_SPEAK:
-			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)&&(!amWearingAt(Wearable.IN_INVENTORY)))
+			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			&&(amBeingWornProperly()))
 			{
 				boolean alreadyWanding=false;
 				final List<CMMsg> trailers =msg.trailerMsgs();

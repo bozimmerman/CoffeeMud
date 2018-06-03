@@ -119,7 +119,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 		{
 			if(parms.contains(element))
 			{
-				return (mob.isMine(this)) && (!amWearingAt(Wearable.IN_INVENTORY));
+				return (mob.isMine(this)) && (amBeingWornProperly());
 			}
 		}
 		return super.checkWave(mob, message);
@@ -129,7 +129,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 	public void waveIfAble(MOB mob, Physical afftarget, String message)
 	{
 		if((mob.isMine(this))
-		&&(!this.amWearingAt(Wearable.IN_INVENTORY)))
+		&&(amBeingWornProperly()))
 		{
 			if((mob.location()!=null)&&(afftarget!=null)&&(afftarget instanceof MOB))
 			{
@@ -384,7 +384,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 	public void affectCharState(MOB mob, CharState affectableState)
 	{
 		super.affectCharState(mob,affectableState);
-		if(!amWearingAt(Wearable.IN_INVENTORY))
+		if(amBeingWornProperly())
 		{
 			affectableState.setHunger(99999999);
 			affectableState.setThirst(99999999);

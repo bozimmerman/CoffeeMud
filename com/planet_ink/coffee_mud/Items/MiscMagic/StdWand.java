@@ -167,7 +167,7 @@ public class StdWand extends StdItem implements Wand
 	{
 		return (mob.isMine(me)) 
 				&& (message!=null) 
-				&& (!me.amWearingAt(Wearable.IN_INVENTORY)) 
+				&& (me.amBeingWornProperly()) 
 				&& (message.toUpperCase().indexOf(me.magicWord().toUpperCase()) >= 0);
 	}
 

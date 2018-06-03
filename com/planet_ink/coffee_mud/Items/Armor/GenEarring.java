@@ -183,7 +183,7 @@ public class GenEarring extends GenThinArmor
 							final Item I=i.nextElement();
 							if((I instanceof GenEarring)
 							&& (I!=this)
-							&& (!I.amWearingAt(Item.IN_INVENTORY))
+							&& (I.amBeingWornProperly())
 							&& ((I.rawWornCode() & this.rawWornCode()) != 0))
 								wornStuff.add((GenEarring)I);
 						}

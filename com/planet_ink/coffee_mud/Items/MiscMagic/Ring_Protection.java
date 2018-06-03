@@ -52,7 +52,8 @@ public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if((!this.amWearingAt(Wearable.IN_INVENTORY))&&(!this.amWearingAt(Wearable.WORN_HELD)))
+		if((amBeingWornProperly())
+		&&(!this.amWearingAt(Wearable.WORN_HELD)))
 			affectableStats.setArmor(affectableStats.armor()-phyStats().armor()-phyStats().ability());
 	}
 
