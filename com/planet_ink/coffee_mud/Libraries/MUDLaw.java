@@ -794,6 +794,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		if(item==null)
 			return null;
+		if(item instanceof PrivateProperty)
+			return (PrivateProperty)item;
 		if(item.numEffects()==0)
 			return null;
 		for(final Enumeration<Ability> a=item.effects();a.hasMoreElements();)
