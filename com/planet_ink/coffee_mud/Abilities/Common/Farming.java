@@ -236,6 +236,8 @@ public class Farming extends GatheringSkill
 			if(R.resourceChoices().get(i).intValue()==code)
 				return true;
 		}
+		if(R.myResource()==RawMaterial.RESOURCE_DIRT)
+			return true;
 		return false;
 	}
 
@@ -257,6 +259,9 @@ public class Farming extends GatheringSkill
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
+		final Room R=mob.location();
+		if(R==null)
+			return false;
 		if(super.checkStop(mob, commands))
 			return true;
 		bundling=false;
@@ -271,27 +276,28 @@ public class Farming extends GatheringSkill
 		}
 
 		verb=L("planting");
-		if((!auto)&&((mob.location().domainType()&Room.INDOORS)>0))
+		if((!auto)&&((R.domainType()&Room.INDOORS)>0))
 		{
 			commonTell(mob,L("You can't plant anything indoors!"));
 			return false;
 		}
 		if((!auto)
-		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_HILLS)
-		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_PLAINS)
-		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
-		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE)
-		&&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_SWAMP))
+		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_HILLS)
+		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_PLAINS)
+		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
+		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE)
+		&&(R.domainType()!=Room.DOMAIN_OUTDOORS_SWAMP)
+		&&(R.myResource()!=RawMaterial.RESOURCE_DIRT))
 		{
 			commonTell(mob,L("The land is not suitable for farming here."));
 			return false;
 		}
-		if((!auto)&&(mob.location().getArea().getClimateObj().weatherType(mob.location())==Climate.WEATHER_DROUGHT))
+		if((!auto)&&(R.getArea().getClimateObj().weatherType(R)==Climate.WEATHER_DROUGHT))
 		{
 			commonTell(mob,L("The current drought conditions make planting useless."));
 			return false;
 		}
-		if(mob.location().fetchEffect(ID())!=null)
+		if(R.fetchEffect(ID())!=null)
 		{
 			commonTell(mob,L("It looks like a crop is already growing here."));
 			return false;
@@ -302,9 +308,9 @@ public class Farming extends GatheringSkill
 		&&(commands.size()==0))
 		{
 			Item mine=null;
-			for(int i=0;i<mob.location().numItems();i++)
+			for(int i=0;i<R.numItems();i++)
 			{
-				final Item I2=mob.location().getItem(i);
+				final Item I2=R.getItem(i);
 				if(plantable(mob,I2))
 				{
 					mine=I2;
@@ -321,8 +327,8 @@ public class Farming extends GatheringSkill
 					{
 						commands.add(RawMaterial.CODES.NAME(I2.material()));
 						mine=(Item)I2.copyOf();
-						if(mob.location().findItem(null,mob.location().getContextName(I2))==null)
-							mob.location().addItem(mine,ItemPossessor.Expire.Resource);
+						if(R.findItem(null,R.getContextName(I2))==null)
+							R.addItem(mine,ItemPossessor.Expire.Resource);
 						break;
 					}
 				}
@@ -380,9 +386,9 @@ public class Farming extends GatheringSkill
 		}
 
 		Item mine=null;
-		for(int i=0;i<mob.location().numItems();i++)
+		for(int i=0;i<R.numItems();i++)
 		{
-			final Item I=mob.location().getItem(i);
+			final Item I=R.getItem(i);
 			if(plantable(mob,I)
 			&&(I.material()==code))
 			{
@@ -402,7 +408,7 @@ public class Farming extends GatheringSkill
 			commonTell(mob,L("'@x1' is not suitable for use as a seed crop.",mineName));
 			return false;
 		}
-		if(!(isPotentialCrop(mob.location(),code)))
+		if(!(isPotentialCrop(R,code)))
 		{
 			commonTell(mob,L("'@x1' does not seem to be taking root here.",mineName));
 			return false;
@@ -413,9 +419,9 @@ public class Farming extends GatheringSkill
 			return false;
 
 		if((proficiencyCheck(mob,0,auto))
-		&&(isPotentialCrop(mob.location(),code)))
+		&&(isPotentialCrop(R,code)))
 		{
-			found=(Item)CMLib.materials().makeResource(code,Integer.toString(mob.location().domainType()),false,null);
+			found=(Item)CMLib.materials().makeResource(code,Integer.toString(R.domainType()),false,null);
 			if((found!=null)
 			&&(found.material()==RawMaterial.RESOURCE_HERBS)
 			&&(mine.material()==found.material()))
@@ -432,10 +438,10 @@ public class Farming extends GatheringSkill
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) planting @x1.",foundShortName));
 		verb=L("planting @x1",foundShortName);
 		displayText=L("You are planting @x1",foundShortName);
-		room=mob.location();
-		if(mob.location().okMessage(mob,msg))
+		room=R;
+		if(R.okMessage(mob,msg))
 		{
-			mob.location().send(mob,msg);
+			R.send(mob,msg);
 			found=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
