@@ -4241,6 +4241,27 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
+			new AbilityParmEditorImpl("FLOWER_NAME","Flower Final Name",ParmType.STRING)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "Flower Name";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(I.material()==RawMaterial.RESOURCE_FLOWERS)
+						return CMStrings.lastWordIn(I.Name());
+					return "";
+				}
+			},
 			new AbilityParmEditorImpl("RIDE_CAPACITY","Ridrs",ParmType.NUMBER)
 			{
 				@Override

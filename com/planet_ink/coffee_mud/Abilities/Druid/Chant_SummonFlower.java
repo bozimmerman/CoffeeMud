@@ -110,7 +110,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 	public Item buildFlower(MOB mob, Room room)
 	{
 		final Item newItem=CMClass.getItem("GenItem");
-		newItem.setMaterial(RawMaterial.RESOURCE_GREENS);
+		newItem.setMaterial(RawMaterial.RESOURCE_FLOWERS);
 		switch(CMLib.dice().roll(1,5,0))
 		{
 		case 1:

@@ -40,6 +40,7 @@
 1 Gnomish 
 1 Goblinese 
 1 Herbology 
+1 Floristry 
 1 Hunting MASK=+WIS 8 
 1 Ignan 
 1 Orcish 

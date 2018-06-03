@@ -19,7 +19,7 @@
   18. New Spells: Conjure Ammunition, Harden Bullets, Light Blindness
   19. ZapperMask now supports +-ACCOUNTS and +-LOCATION
   20. New Prayer: Mass Forgive
-  21. New common skills: Legendary Weaponsmithing
+  21. New common skills: Legendary Weaponsmithing, Floristry
   22. Prop_LocationBound is more flexible with ABSOLUTE, PLAYEROK, and TIMEOUT arguments
   23. Scriptable commands QUESTMOB, QUESTOBJ, and QUESTSCRIPTED can now scan ALL quests
   24. ShapeShift forms 6-11 added, and shapeshift now governed by skills/shapeshift.txt
