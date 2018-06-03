@@ -114,7 +114,7 @@ public class Chopping extends GatheringSkill
 				else
 				{
 					final StringBuffer str=new StringBuffer(L("You can't seem to find any trees worth cutting around here.\n\r"));
-					final int d=lookingFor(RawMaterial.MATERIAL_WOODEN,mob.location());
+					final int d=lookingForMat(RawMaterial.MATERIAL_WOODEN,mob.location());
 					if(d<0)
 						str.append(L("You might try elsewhere."));
 					else

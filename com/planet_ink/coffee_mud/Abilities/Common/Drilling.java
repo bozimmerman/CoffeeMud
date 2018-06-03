@@ -115,7 +115,7 @@ public class Drilling extends GatheringSkill
 				else
 				{
 					final StringBuffer str=new StringBuffer(L("You can't seem to find anything worth drilling around here.\n\r"));
-					final int d=lookingFor(RawMaterial.MATERIAL_LIQUID,mob.location());
+					final int d=lookingForMat(RawMaterial.MATERIAL_LIQUID,mob.location());
 					if(d<0)
 						str.append(L("You might try elsewhere."));
 					else

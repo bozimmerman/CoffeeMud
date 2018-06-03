@@ -373,13 +373,6 @@ public class CommonSkill extends StdAbility
 			mob.tell(mob,null,null,str);
 	}
 
-	protected int lookingFor(int material, Room fromHere)
-	{
-		final Vector<Integer> V=new Vector<Integer>();
-		V.addElement(Integer.valueOf(material));
-		return lookingFor(V,fromHere);
-	}
-
 	protected boolean dropAWinner(MOB mob, Item buildingI)
 	{
 		return dropAWinner(mob,mob.location(),buildingI);
@@ -440,9 +433,9 @@ public class CommonSkill extends StdAbility
 		return false;
 	}
 	
-	protected int lookingFor(Vector<Integer> materials, Room fromHere)
+	protected int lookingForMat(List<Integer> materials, Room fromHere)
 	{
-		final Vector<Integer> possibilities=new Vector<Integer>();
+		final List<Integer> possibilities=new ArrayList<Integer>();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			final Room room=fromHere.getRoomInDir(d);
@@ -451,14 +444,45 @@ public class CommonSkill extends StdAbility
 			{
 				final int material=room.myResource();
 				if(materials.contains(Integer.valueOf(material&RawMaterial.MATERIAL_MASK)))
-				{
-					possibilities.addElement(Integer.valueOf(d));
-				}
+					possibilities.add(Integer.valueOf(d));
 			}
 		}
 		if(possibilities.size()==0)
 			return -1;
-		return (possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
+		return (possibilities.get(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
+	}
+
+	protected int lookingForMat(int material, Room fromHere)
+	{
+		final List<Integer> V=new ArrayList<Integer>(1);
+		V.add(Integer.valueOf(material));
+		return lookingForMat(V,fromHere);
+	}
+
+	protected int lookingForRsc(List<Integer> materials, Room fromHere)
+	{
+		final List<Integer> possibilities=new ArrayList<Integer>();
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+		{
+			final Room room=fromHere.getRoomInDir(d);
+			final Exit exit=fromHere.getExitInDir(d);
+			if((room!=null)&&(exit!=null)&&(exit.isOpen()))
+			{
+				final int material=room.myResource();
+				if(materials.contains(Integer.valueOf(material)))
+					possibilities.add(Integer.valueOf(d));
+			}
+		}
+		if(possibilities.size()==0)
+			return -1;
+		return (possibilities.get(CMLib.dice().roll(1,possibilities.size(),-1))).intValue();
+	}
+
+	protected int lookingForRsc(int material, Room fromHere)
+	{
+		final List<Integer> V=new ArrayList<Integer>(1);
+		V.add(Integer.valueOf(material));
+		return lookingForRsc(V,fromHere);
 	}
 
 	public Item getRequiredFire(MOB mob,int autoGenerate)
