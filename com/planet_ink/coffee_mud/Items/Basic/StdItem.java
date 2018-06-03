@@ -364,6 +364,8 @@ public class StdItem implements Item
 	{
 		if(this.myWornCode==0)
 			return false;
+		if(this.properWornBitmap==0)
+			return false;
 		if(this.wornLogicalAnd)
 			return this.myWornCode==this.properWornBitmap;
 		else
