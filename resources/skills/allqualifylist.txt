@@ -99,6 +99,8 @@
 
 12 Skill_FindShip MASK=+WIS 8
 
+12 Gardening
+
 15 Excavation MASK=+CON 15 REQUIRES=Sculpting 
 15 Irrigation MASK=+CON 15 REQUIRES=Drilling 
 15 Landscaping MASK=+CON 15 REQUIRES=Farming 

@@ -189,6 +189,7 @@ public class Artisan extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Speculate",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Painting",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Gardening",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"LockSmith",0,"",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Composting",false,CMParms.parseSemicolons("Farming",true));
@@ -209,7 +210,7 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Appraise",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"InstrumentMaking",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"FoodPresreving",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"FoodPreserving",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"MeatCuring",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_Haggle",false);
@@ -233,6 +234,7 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"MasterFarming",false,CMParms.parseSemicolons("Farming(100)",true),"+WIS 16");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),26,"MasterForaging",false,CMParms.parseSemicolons("Foraging(100)",true),"+CHA 16");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),26,"MasterGardening",false,CMParms.parseSemicolons("Gardening(100)",true),"+CHA 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),26,"MasterDistilling",false,CMParms.parseSemicolons("Distilling(100)",true),"+CHA 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),27,"MasterChopping",false,CMParms.parseSemicolons("Chopping(100)",true),"+STR 16");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),27,"MasterFoodPrep",false,CMParms.parseSemicolons("FoodPrep(100)",true),"+DEX 16");
