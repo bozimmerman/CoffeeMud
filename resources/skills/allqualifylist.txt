@@ -81,7 +81,7 @@
 5 ScrimShaw REQUIRES=Sculpting 
 5 Weaponsmithing MASK=+STR 12 REQUIRES=Blacksmithing(75) Specialization_* 
 
-6 Skill_FindHome
+6 Skill_FindHome MASK=+WIS 8
 
 7 MeatCuring 
 
@@ -96,6 +96,8 @@
 10 Speculate MASK=+WIS 10 
 10 Taxidermy MASK=+INT 12 
 10 Wainwrighting MASK=+INT 12 REQUIRES=Carpentry 
+
+12 Skill_FindShip MASK=+WIS 8
 
 15 Excavation MASK=+CON 15 REQUIRES=Sculpting 
 15 Irrigation MASK=+CON 15 REQUIRES=Drilling 

@@ -130,6 +130,7 @@ public class Pirate extends Thief
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Thief_Wenching",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_FindShip",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_TreasureMap",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Peek",false);

@@ -150,6 +150,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Shipwright",0,"",true,false,CMParms.parseSemicolons("Carpentry",true),"");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_MorseCode",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_FindShip",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_CrowsNest",0,"",true,false,CMParms.parseSemicolons("Skill_Climb(74)", true),"");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_AvoidCurrents",true);
