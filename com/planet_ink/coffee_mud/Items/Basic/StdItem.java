@@ -933,11 +933,14 @@ public class StdItem implements Item
 			{
 				if((cantWearAt!=Wearable.WORN_HELD)&&(cantWearAt!=Wearable.WORN_WIELD))
 				{
+					final boolean amWearingOther = !alreadyWearing.amWearingAt(Item.IN_INVENTORY);
 					if(!CMLib.commands().postRemove(mob,alreadyWearing,false))
 					{
 						mob.tell(L("You are already wearing @x1 on your @x2.",alreadyWearing.name(),codes.name(cantWearAt)));
 						return false;
 					}
+					if(amWearingOther && alreadyWearing.amWearingAt(Item.IN_INVENTORY) && (!canWear(mob,wearWhere)))
+						return canWearComplete(mob, wearWhere);
 					alreadyWearing=mob.fetchFirstWornItem(cantWearAt);
 					if((alreadyWearing!=null)&&(!canWear(mob,0)))
 					{
