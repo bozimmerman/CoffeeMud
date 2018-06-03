@@ -354,7 +354,7 @@ public class DefaultSocial implements Social
 					&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
 						final Ability A = CMClass.getAbility("Disease_Smiles");
-						if ((A != null) && (target.fetchEffect(A.ID()) == null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+						if ((A != null) && (targetE.fetchEffect(A.ID()) == null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 							A.invoke(tmob, tmob, true, 0);
 					}
 				}
