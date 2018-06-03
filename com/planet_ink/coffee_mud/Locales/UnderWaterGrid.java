@@ -115,13 +115,18 @@ public class UnderWaterGrid extends StdGrid
 	@Override
 	protected Room findCenterRoom(int dirCode)
 	{
-		if(dirCode==Directions.UP)
-			return subMap[0][0];
-		else
-		if(dirCode!=Directions.DOWN)
-			return super.findCenterRoom(dirCode);
-		else
-			return subMap[subMap.length-1][subMap[0].length-1];
+		final Room[][] subMap=this.subMap;
+		if(subMap != null)
+		{
+			if(dirCode==Directions.UP)
+				return subMap[0][0];
+			else
+			if(dirCode!=Directions.DOWN)
+				return super.findCenterRoom(dirCode);
+			else
+				return subMap[subMap.length-1][subMap[0].length-1];
+		}
+		return super.findCenterRoom(dirCode);
 	}
 
 	@Override

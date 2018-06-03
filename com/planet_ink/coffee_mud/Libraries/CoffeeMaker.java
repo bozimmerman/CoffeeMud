@@ -697,8 +697,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				text.append(CMLib.xml().convertXMLtoTag("MBREAL",""+((DeadBody)E).isDestroyedAfterLooting()));
 				text.append(CMLib.xml().convertXMLtoTag("MPLAYR",""+((DeadBody)E).isPlayerCorpse()));
 				text.append(CMLib.xml().convertXMLtoTag("MPKILL",""+((DeadBody)E).getMobPKFlag()));
-				if(((DeadBody)E).getSavedMOB()!=null)
-					text.append("<MOBS>"+getMobXML(((DeadBody)E).getSavedMOB())+"</MOBS>");
+				final MOB savedDeadBodyM=((DeadBody)E).getSavedMOB();
+				if(savedDeadBodyM!=null)
+				{
+					// prevent recursion!
+					savedDeadBodyM.delItem((DeadBody)E);
+					text.append("<MOBS>"+getMobXML(savedDeadBodyM)+"</MOBS>");
+					savedDeadBodyM.addItem((DeadBody)E);
+				}
 				if(((DeadBody)E).getKillerTool()==null) 
 					text.append("<KLTOOL />");
 				else

@@ -585,7 +585,7 @@ public class GrinderItems
 							thisFieldname = CMStrings.replaceAll(recipeFieldName,"###", ""+(++x));
 						}
 						final String rAstr=httpReq.getUrlParameter("RECIPESKILL");
-						final ItemCraftor rA=(ItemCraftor)CMClass.getAbility(rAstr);
+						final CraftorAbility rA=(CraftorAbility)CMClass.getAbility(rAstr);
 						if(rA==null)
 							return CMLib.lang().L("Skill @x1 is not a crafting skill!",rAstr);
 						else
