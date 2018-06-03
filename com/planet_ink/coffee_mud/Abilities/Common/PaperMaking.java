@@ -296,6 +296,9 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		{
 			final Ability me=this;
 			final Physical target=givenTarget;
+			if(autoGenerate>0)
+				statue=mob.Name();
+			else
 			session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
 			{
 				@Override

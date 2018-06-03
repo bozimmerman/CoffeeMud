@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -79,12 +80,17 @@ public class Whisper extends StdCommand
 			if(s.indexOf(' ')>=0)
 				commands.set(i,"\""+s+"\"");
 		}
-		final String combinedCommands=CMParms.combine(commands,1);
+		String combinedCommands=CMParms.combine(commands,1);
 		if(combinedCommands.equals(""))
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("Whisper what?"));
 			return false;
 		}
+		combinedCommands=CMProps.applyINIFilter(combinedCommands, Str.SAYFILTER);
+		if(mob.isPlayer() 
+		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED) 
+		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER))
+			combinedCommands=CMStrings.replaceAlls(combinedCommands, new String[][]{{"<S-","[S-"},{"<T-","[T-"}});
 
 		CMMsg msg=null;
 		if(target==null)
