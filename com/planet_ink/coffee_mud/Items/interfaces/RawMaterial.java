@@ -647,7 +647,7 @@ public interface RawMaterial extends Item
 		GARNET(RESOURCE_GARNET, 70, 2, 5, 3870, "", "", null),
 		AMBER(RESOURCE_AMBER, 80, 5, 5, 2500, "", "", null),
 		AQUAMARINE(RESOURCE_AQUAMARINE, 50, 2, 5, 2800, "", "", null),
-		CRYSOBERYL(RESOURCE_CHRYSOBERYL, 50, 2, 5, 2800, "", "", null),
+		CHRYSOBERYL(RESOURCE_CHRYSOBERYL, 50, 2, 5, 2800, "", "", null),
 		IRONWOOD(RESOURCE_IRONWOOD, 25, 5, 4, 990, "", "", null),
 		SILK(RESOURCE_SILK, 200, 5, 1, 1100, "", "", null),
 		COCOA(RESOURCE_COCOA, 4, 5, 0, 590, "", "", ResourceFlag.WOODY),
