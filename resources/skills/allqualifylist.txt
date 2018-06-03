@@ -83,7 +83,7 @@
 
 6 Skill_FindHome MASK=+WIS 8
 
-7 MeatCuring 
+7 MeatCuring MASK=+INT 8
 
 10 Construction MASK=+CON 12 REQUIRES=Carpentry 
 10 Farming 
@@ -104,3 +104,4 @@
 15 Landscaping MASK=+CON 15 REQUIRES=Farming 
 15 Composting MASK=+WIS 12 REQUIRES=Farming
 
+18 FoodPreserving MASK=+INT 12
