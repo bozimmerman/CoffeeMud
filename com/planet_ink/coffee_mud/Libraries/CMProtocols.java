@@ -2242,7 +2242,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								domType=Room.DOMAIN_OUTDOOR_DESCS[room.domainType()];
 							else
 								domType=Room.DOMAIN_INDOORS_DESCS[CMath.unsetb(room.domainType(),Room.INDOORS)];
-							doc.append("\"num\":").append(roomID.hashCode()).append(",")
+							doc.append("\"num\":").append(CMath.abs(roomID.hashCode())).append(",")
 								.append("\"id\":\"").append(roomID).append("\",")
 								.append("\"name\":\"").append(MiniJSON.toJSONString(room.displayText(mob))).append("\",")
 								.append("\"zone\":\"").append(MiniJSON.toJSONString(room.getArea().name())).append("\",")
