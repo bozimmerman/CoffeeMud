@@ -1359,8 +1359,8 @@ public class CMStrings
 		if((numValues==0)||(firstIndex<0))
 			return;
 		final int valueLen=(numValues<=10)?1:Integer.toString(numValues).length();
-		int safety=100;
-		for(int i=firstIndex;i<str.length()-(1+valueLen) && ((--safety)>0);i++)
+		long safety=str.length()*100;
+		for(int i=firstIndex;(i<str.length()-(1+valueLen)) && ((--safety)>0);i++)
 		{
 			if((str.charAt(i)=='@') && (str.charAt(i+1)=='x') && (Character.isDigit(str.charAt(i+2))))
 			{
