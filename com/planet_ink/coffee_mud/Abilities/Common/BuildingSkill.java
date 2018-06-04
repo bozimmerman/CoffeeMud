@@ -600,7 +600,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					final Ability capacityA = R.fetchEffect("Prop_ReqCapacity");
 					if(capacityA != null)
 					{
-						final LandTitle A2=(LandTitle)capacityA.copyOf();
+						final Ability A2=(Ability)capacityA.copyOf();
 						R2.addNonUninvokableEffect((Ability)A2);
 					}
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
