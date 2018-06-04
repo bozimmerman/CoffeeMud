@@ -154,6 +154,7 @@ public class Thief_KillLog extends ThiefSkill
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
+		final MOB mark=this.mark;
 		if((mark!=null)
 		&&msg.amISource(mark)
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
@@ -175,7 +176,7 @@ public class Thief_KillLog extends ThiefSkill
 			}
 			set[1]=""+mark.phyStats().level();
 			set[3]=Integer.toString(CMath.s_int(set[3])+1);
-			mark=null;
+			this.mark=null;
 			if(affected instanceof MOB)
 			{
 				final Ability A=((MOB)affected).fetchAbility(ID());
