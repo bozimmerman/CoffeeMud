@@ -158,6 +158,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_SeaMapping",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Diving",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_ShipLore",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_SeaCharting",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Baiting",false);
