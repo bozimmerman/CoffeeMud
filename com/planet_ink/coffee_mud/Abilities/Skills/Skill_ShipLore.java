@@ -290,6 +290,14 @@ public class Skill_ShipLore extends StdSkill
 				{
 					int itemLimit=0;
 					int weightLimit=0;
+					Ability A1=R.fetchEffect("Prop_ReqCapacity");
+					if(A1==null)
+						A1=A.fetchEffect("Prop_ReqCapacity");
+					if(A1!=null)
+					{
+						itemLimit=CMParms.getParmInt(A1.text(),"items",itemLimit);
+						weightLimit=CMParms.getParmInt(A1.text(),"weight",weightLimit);
+					}
 					if((itemLimit == 0)&&(weightLimit == 0))
 						tidbits.add(L("this room can hold infinite items"));
 					else

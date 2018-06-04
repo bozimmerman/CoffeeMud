@@ -601,7 +601,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					if(capacityA != null)
 					{
 						final Ability A2=(Ability)capacityA.copyOf();
-						R2.addNonUninvokableEffect((Ability)A2);
+						R2.addNonUninvokableEffect(A2);
 					}
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.PROPERTY))
 						Log.debugOut(ID(),R2.roomID()+" created for water.");
