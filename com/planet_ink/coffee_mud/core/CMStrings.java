@@ -1359,7 +1359,7 @@ public class CMStrings
 		if((numValues==0)||(firstIndex<0))
 			return;
 		final int valueLen=(numValues<=10)?1:Integer.toString(numValues).length();
-		long safety=100;
+		short safety=100;
 		for(int i=firstIndex;(i<str.length()-(1+valueLen));i++)
 		{
 			if((str.charAt(i)=='@') 
