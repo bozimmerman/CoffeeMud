@@ -927,11 +927,10 @@ public class StdMOB implements MOB
 		if (affected instanceof Room)
 		{
 			if (CMLib.flags().isLightSource(this))
-			{
-				if (CMLib.flags().isInDark(affected))
-					affectableStats.setDisposition(affectableStats.disposition() - PhyStats.IS_DARK);
-				affectableStats.setDisposition(affectableStats.disposition() | PhyStats.IS_LIGHTSOURCE);
-			}
+				affectableStats.setDisposition((affectableStats.disposition()& ~PhyStats.IS_DARK) | PhyStats.IS_LIGHTSOURCE);
+			else
+			if(CMLib.flags().isInDark(this))
+				affectableStats.setDisposition((affectableStats.disposition()& ~PhyStats.IS_LIGHTSOURCE) | PhyStats.IS_DARK);
 		}
 	}
 

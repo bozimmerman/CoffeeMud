@@ -98,20 +98,25 @@ public class Spell_DarknessGlobe extends Spell
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
+		affectableStats.setDisposition((affectableStats.disposition()&~PhyStats.IS_LIGHTSOURCE)|PhyStats.IS_DARK);
 		final Room R=CMLib.map().roomLocation(affected);
 		if((R!=null) && (!norecurse))
 		{
-			if(!CMath.bset(R.phyStats().disposition(),PhyStats.IS_DARK))
-				R.phyStats().setDisposition(R.phyStats().disposition()|PhyStats.IS_DARK);
-			if(CMath.bset(R.phyStats().disposition(),PhyStats.IS_LIGHTSOURCE))
-				R.phyStats().setDisposition(R.phyStats().disposition()-PhyStats.IS_LIGHTSOURCE);
+			R.phyStats().setDisposition((R.phyStats().disposition()&~PhyStats.IS_LIGHTSOURCE)|PhyStats.IS_DARK);
 			synchronized(this)
 			{
 				norecurse = true;
 				try
 				{
 					for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
-						m.nextElement().recoverPhyStats();
+					{
+						final MOB M=m.nextElement();
+						if(M!=null)
+						{
+							M.recoverPhyStats();
+							M.phyStats().setDisposition((M.phyStats().disposition()&~PhyStats.IS_LIGHTSOURCE)|PhyStats.IS_DARK);
+						}
+					}
 				}
 				finally
 				{
@@ -121,6 +126,55 @@ public class Spell_DarknessGlobe extends Spell
 		}
 	}
 
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(tickID==Tickable.TICKID_MOB)
+		{
+			final Physical aff=this.affected;
+			if(aff != null)
+				aff.recoverPhyStats();
+		}
+		return true;
+	}
+	
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost, msg);
+		if((msg.source()==affected)
+		&&(msg.target() instanceof Room)
+		&&(msg.targetMinor()==CMMsg.TYP_LEAVE))
+		{
+			msg.addTrailerRunnable(new Runnable(){
+				final Room R=(Room)msg.target();
+				final MOB M=msg.source();
+				@Override
+				public void run()
+				{
+					if(!R.isInhabitant(M))
+						R.recoverRoomStats();
+				}
+			});
+		}
+		else
+		if((msg.targetMinor()==CMMsg.TYP_ENTER)
+		&&(msg.source() != affected))
+		{
+			msg.addTrailerRunnable(new Runnable(){
+				final Physical aff=affected;
+				@Override
+				public void run()
+				{
+					if(aff != null)
+						aff.recoverPhyStats();
+				}
+			});
+		}
+	}
+	
 	@Override
 	public void unInvoke()
 	{

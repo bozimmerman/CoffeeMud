@@ -201,13 +201,16 @@ public class Drow extends Elf
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		if((affected instanceof MOB)&&(((MOB)affected).location()!=null))
+		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;
 			final Room room=mob.location();
-			if(room.getArea().getClimateObj().canSeeTheSun(room)
-			&&(affectableStats.armor()<0))
-				affectableStats.setArmor(0);
+			if(room!=null)
+			{
+				if(room.getArea().getClimateObj().canSeeTheSun(room)
+				&&(affectableStats.armor()<0))
+					affectableStats.setArmor(0);
+			}
 		}
 
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_INFRARED|PhyStats.CAN_SEE_DARK);
@@ -227,14 +230,12 @@ public class Drow extends Elf
 		affectableStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)-3);
 		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+20);
 
-		if(affectedMOB.location()!=null)
+		final MOB mob=affectedMOB;
+		final Room room=mob.location();
+		if(room!=null)
 		{
-			final MOB mob=affectedMOB;
-			final Room room=mob.location();
 			if(room.getArea().getClimateObj().canSeeTheSun(room))
-			{
 				affectableStats.setStat(CharStats.STAT_DEXTERITY, affectableStats.getStat(CharStats.STAT_DEXTERITY) /2);
-			}
 		}
 	}
 
