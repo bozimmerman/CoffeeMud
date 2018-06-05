@@ -455,6 +455,9 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			if((dimension == 0)&&(room instanceof GridLocale))
 				dimension = ((GridLocale)room).xGridSize();
 			room=CMLib.map().getRoom(room);
+			if(newLocale.equalsIgnoreCase("IndoorWaterSurface")
+			&&((room.domainType()&Room.INDOORS)==0))
+				newLocale="WaterSurface";
 			R=CMClass.getLocale(newLocale);
 			R.setRoomID(room.roomID());
 			R.setDisplayText(room.displayText());
