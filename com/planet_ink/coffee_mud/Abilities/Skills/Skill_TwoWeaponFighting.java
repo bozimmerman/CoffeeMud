@@ -174,7 +174,8 @@ public class Skill_TwoWeaponFighting extends StdSkill
 						&&(A.abilityCode()==1))
 							usedA=A;
 					}
-					if(usedA.proficiencyCheck(mob,0,false))
+					if(usedA.proficiencyCheck(mob,0,false)
+					||((usedA!=this)&&(proficiencyCheck(mob,0,false))))
 					{
 						primaryWeapon.setRawWornCode(Wearable.WORN_HELD);
 						weapon.setRawWornCode(Wearable.WORN_WIELD);
@@ -185,6 +186,8 @@ public class Skill_TwoWeaponFighting extends StdSkill
 						mob.recoverPhyStats();
 						if(CMLib.dice().rollPercentage()==1)
 							usedA.helpProficiency(mob, 0);
+						if((usedA!=this)&&(CMLib.dice().rollPercentage()==1))
+							helpProficiency(mob, 0);
 					}
 				}
 			}
