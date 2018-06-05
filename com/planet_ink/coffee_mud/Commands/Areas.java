@@ -228,6 +228,9 @@ public class Areas extends StdCommand
 			}
 		}
 		int col=0;
+		if(areasVec.size()==0)
+			msg.append(L("There appear to be no other areas on this world.\n\r"));
+		else
 		for(int i=0;i<areasVec.size();i++)
 		{
 			if((++col)>numCols)
