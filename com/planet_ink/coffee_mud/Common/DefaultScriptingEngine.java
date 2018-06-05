@@ -2231,48 +2231,60 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if(val.startsWith("+"))
 			{
 				// add via +number form
-				val=val.substring(1);
-				final int amount=CMath.s_int(val.trim());
-				String num=H.get(key);
-				if(num==null)
-					num="0";
-				val=Integer.toString(CMath.s_int(num.trim())+amount);
+				if(CMath.isNumber(val.substring(1).trim()))
+				{
+					val=val.substring(1);
+					final int amount=CMath.s_int(val.trim());
+					String num=H.get(key);
+					if(num==null)
+						num="0";
+					val=Integer.toString(CMath.s_int(num.trim())+amount);
+				}
 			}
 			else
 			if(val.startsWith("-"))
 			{
 				// subtract -number form
-				val=val.substring(1);
-				final int amount=CMath.s_int(val.trim());
-				String num=H.get(key);
-				if(num==null)
-					num="0";
-				val=Integer.toString(CMath.s_int(num.trim())-amount);
+				if(CMath.isNumber(val.substring(1).trim()))
+				{
+					val=val.substring(1);
+					final int amount=CMath.s_int(val.trim());
+					String num=H.get(key);
+					if(num==null)
+						num="0";
+					val=Integer.toString(CMath.s_int(num.trim())-amount);
+				}
 			}
 			else
 			if(val.startsWith("*"))
 			{
 				// multiply via *number form
-				val=val.substring(1);
-				final int amount=CMath.s_int(val.trim());
-				String num=H.get(key);
-				if(num==null)
-					num="0";
-				val=Integer.toString(CMath.s_int(num.trim())*amount);
+				if(CMath.isNumber(val.substring(1).trim()))
+				{
+					val=val.substring(1);
+					final int amount=CMath.s_int(val.trim());
+					String num=H.get(key);
+					if(num==null)
+						num="0";
+					val=Integer.toString(CMath.s_int(num.trim())*amount);
+				}
 			}
 			else
 			if(val.startsWith("/"))
 			{
 				// divide /number form
-				val=val.substring(1);
-				final int amount=CMath.s_int(val.trim());
-				String num=H.get(key);
-				if(num==null)
-					num="0";
-				if(amount==0)
-					Log.errOut("Scripting","Scripting SetVar error: Division by 0: "+name+"/"+key+"="+val);
-				else
-					val=Integer.toString(CMath.s_int(num.trim())/amount);
+				if(CMath.isNumber(val.substring(1).trim()))
+				{
+					val=val.substring(1);
+					final int amount=CMath.s_int(val.trim());
+					String num=H.get(key);
+					if(num==null)
+						num="0";
+					if(amount==0)
+						Log.errOut("Scripting","Scripting SetVar error: Division by 0: "+name+"/"+key+"="+val);
+					else
+						val=Integer.toString(CMath.s_int(num.trim())/amount);
+				}
 			}
 			if(H.containsKey(key))
 				H.remove(key);
