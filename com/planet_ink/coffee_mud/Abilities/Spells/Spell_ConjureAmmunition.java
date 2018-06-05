@@ -94,7 +94,7 @@ public class Spell_ConjureAmmunition extends Spell
 			&&(((AmmunitionWeapon)wieldI).ammunitionCapacity()>0))
 				choices.add(wieldI);
 			else
-			for(Enumeration<Item> e=((MOB)target).items();e.hasMoreElements();)
+			for(final Enumeration<Item> e=((MOB)target).items();e.hasMoreElements();)
 			{
 				Item I = e.nextElement();
 				if((I instanceof AmmunitionWeapon)

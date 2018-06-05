@@ -3090,7 +3090,7 @@ public class DefaultSession implements Session
 						ALL_CMDS.add(CMDS);
 					final double curActions = mob.actions();
 					mob.setActions(0.0);
-					for(Iterator<List<String>> i=ALL_CMDS.iterator();i.hasNext();)
+					for(final Iterator<List<String>> i=ALL_CMDS.iterator();i.hasNext();)
 					{
 						CMDS=i.next();
 						setPreviousCmd(CMDS);

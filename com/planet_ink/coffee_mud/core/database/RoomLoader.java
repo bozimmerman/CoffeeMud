@@ -117,7 +117,7 @@ public class RoomLoader
 		if(A==null)
 			return false;
 		final RoomnumberSet unloadedRooms=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
-		for(Enumeration<String> ids = CMLib.map().roomIDs();ids.hasMoreElements();)
+		for(final Enumeration<String> ids = CMLib.map().roomIDs();ids.hasMoreElements();)
 			unloadedRooms.add(ids.nextElement());
 
 		RoomnumberSet set = CMLib.database().DBReadAreaRoomList(areaName, false);
@@ -1728,7 +1728,7 @@ public class RoomLoader
 		final List<String> statements = new Vector<String>(4 + A.numberOfProperIDedRooms());
 		statements.addAll(getAreaDeleteStrings(A.Name()));
 		statements.add("DELETE FROM CMROOM WHERE CMAREA='"+A.Name()+"'");
-		for(Enumeration<String> ids=A.getProperRoomnumbers().getRoomIDs();ids.hasMoreElements();)
+		for(final Enumeration<String> ids=A.getProperRoomnumbers().getRoomIDs();ids.hasMoreElements();)
 			statements.addAll(getRoomDeleteStrings(ids.nextElement()));
 		statements.add("DELETE FROM CMROOM WHERE CMAREA='"+A.Name()+"'");
 		final String[] statementsBlock = statements.toArray(new String[statements.size()]);

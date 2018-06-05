@@ -90,7 +90,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 				return " @break@";
 			domain = domain << 5;
 			int ct=0;
-			for(Enumeration<Ability> a= CMClass.abilities();a.hasMoreElements();)
+			for(final Enumeration<Ability> a= CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=a.nextElement();
 				if(((A.classificationCode()&Ability.ALL_DOMAINS)==domain)

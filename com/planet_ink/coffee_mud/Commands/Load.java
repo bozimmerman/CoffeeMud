@@ -213,7 +213,7 @@ public class Load extends StdCommand
 					if(CMLib.database().DBReadAreaFull(areaName))
 					{
 						final Area newAreaA=CMLib.map().getArea(areaName);
-						for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+						for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 						{
 							final Room R=r.nextElement();
 							final Area randomRoomArea = R.getArea();

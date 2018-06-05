@@ -272,7 +272,7 @@ public class Age extends StdAbility
 					{
 						MOB leigeM=following;
 						Set<MOB> parents=new HashSet<MOB>();
-						for(Enumeration<Tattoo> t= babe.tattoos();t.hasMoreElements();)
+						for(final Enumeration<Tattoo> t= babe.tattoos();t.hasMoreElements();)
 						{
 							final Tattoo T=t.nextElement();
 							if(T.name().startsWith("PARENT:"))

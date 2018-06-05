@@ -123,7 +123,7 @@ public class Chant_SiftWrecks extends Chant
 					if((R.numItems()>0)&&(R.getRoomInDir(Directions.DOWN)==null))
 					{
 						List<Integer> trailToThisRoom = null;
-						for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+						for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 						{
 							final Item I=i.nextElement();
 							if((I!=null)&&(I.container()==null))

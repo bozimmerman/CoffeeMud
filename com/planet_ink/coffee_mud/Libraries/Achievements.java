@@ -1348,7 +1348,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					this.abelo = aboveBelow.equals("ABOVE")? 1 : -1;
 					final String factionIDMask=CMParms.getParmStr(parms, "IDMASK", "").toUpperCase().trim();
 					this.factions.clear();
-					for(Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+					for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
 					{
 						final Faction F=f.nextElement();
 						if(CMStrings.filenameMatcher(F.factionID(), factionIDMask))
@@ -2626,7 +2626,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								{
 									int count = 0;
 									final boolean noMask=(itemMask==null);
-									for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
+									for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
 									{
 										final Item I=i.nextElement();
 										if(noMask || (CMLib.masking().maskCheck(itemMask, I, true)))
@@ -4008,7 +4008,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	@Override
 	public Achievement getAchievement(String tattoo)
 	{
-		for(Enumeration<Achievement> a = achievements(null); a.hasMoreElements();)
+		for(final Enumeration<Achievement> a = achievements(null); a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
 			if(A.getTattoo().equalsIgnoreCase(tattoo))
@@ -4334,7 +4334,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				this.deleteAchievement(A.getTattoo());
 			}
 			this.evaluateAchievement(agent, buildRow(E,parmTree), true);
-			for(Enumeration<MOB> m = CMLib.players().players();m.hasMoreElements();)
+			for(final Enumeration<MOB> m = CMLib.players().players();m.hasMoreElements();)
 			{
 				final MOB M=m.nextElement();
 				if(M.playerStats()!=null)
@@ -4494,7 +4494,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final PlayerAccount C=P.getAccount() != null ? P.getAccount() : null;
 		
 		boolean somethingDone = false;
-		for(Enumeration<Achievement> a=achievements(null);a.hasMoreElements();)
+		for(final Enumeration<Achievement> a=achievements(null);a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
 			if(evaluateAchievement(A,P,C,mob))
@@ -4668,7 +4668,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if((mob!=null) && (account != null))
 		{
 			boolean somethingDone = false;
-			for(Enumeration<Tattoo> t=account.tattoos();t.hasMoreElements();)
+			for(final Enumeration<Tattoo> t=account.tattoos();t.hasMoreElements();)
 			{
 				final Tattoo T = t.nextElement();
 				final Achievement A=getAchievement(T.getTattooName());

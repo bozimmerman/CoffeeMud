@@ -136,7 +136,7 @@ public class AccountCreate extends StdWebMacro
 					login=acct.getAccountName();
 					password=acct.getPasswordStr();
 					int highestLevel=0;
-					for(Enumeration<ThinPlayer> tp=acct.getThinPlayers();tp.hasMoreElements();)
+					for(final Enumeration<ThinPlayer> tp=acct.getThinPlayers();tp.hasMoreElements();)
 					{
 						final ThinPlayer TP=tp.nextElement();
 						if(TP.level()>highestLevel)

@@ -596,7 +596,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 
 		if(affected != null)
 		{
-			for(Enumeration<Ability> a=affected.effects();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=affected.effects();a.hasMoreElements();)
 			{
 				final Ability oA=a.nextElement();
 				if((oA instanceof LimbDamage)&&(!oA.ID().equals(ID())))

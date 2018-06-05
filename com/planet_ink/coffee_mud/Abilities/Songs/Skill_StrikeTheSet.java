@@ -132,7 +132,7 @@ public class Skill_StrikeTheSet extends BardSkill
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+				for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 				{
 					final Item I=i.nextElement();
 					msg.setTarget(I);

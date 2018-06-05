@@ -139,7 +139,7 @@ public class Spell_InsectPlague extends Spell
 				}
 				else
 				{
-					for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+					for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 					{
 						final MOB M=m.nextElement();
 						final Ability fA=M.fetchEffect("Foraging");

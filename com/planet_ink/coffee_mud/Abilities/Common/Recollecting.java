@@ -102,7 +102,7 @@ public class Recollecting extends CommonSkill
 		final Room R=mob.location();
 		if(R==null)
 			return list;
-		for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
+		for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
 			if((I != null)
@@ -112,7 +112,7 @@ public class Recollecting extends CommonSkill
 				list.add(I);
 		}
 		boolean isMyProperty = CMLib.law().doesHavePriviledgesHere(mob, R);
-		for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+		for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
 			if((I != null)

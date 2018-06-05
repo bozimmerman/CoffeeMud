@@ -97,9 +97,9 @@ public class Spell_InvisibilitySphere extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> outside the invisibility sphere."));
 			if(centerR!=null)
 			{
-				for(Enumeration<MOB> m=centerR.inhabitants();m.hasMoreElements();)
+				for(final Enumeration<MOB> m=centerR.inhabitants();m.hasMoreElements();)
 					removeFromSphere(m.nextElement());
-				for(Enumeration<Item> i=centerR.items();i.hasMoreElements();)
+				for(final Enumeration<Item> i=centerR.items();i.hasMoreElements();)
 					removeFromSphere(i.nextElement());
 			}
 		}
@@ -193,9 +193,9 @@ public class Spell_InvisibilitySphere extends Spell
 			case CMMsg.TYP_ENTER:
 			{
 				final Room invokerRoom=CMLib.map().roomLocation(invoker);
-				for(Enumeration<MOB> m=invokerRoom.inhabitants();m.hasMoreElements();)
+				for(final Enumeration<MOB> m=invokerRoom.inhabitants();m.hasMoreElements();)
 					addToSphere(m.nextElement());
-				for(Enumeration<Item> i=invokerRoom.items();i.hasMoreElements();)
+				for(final Enumeration<Item> i=invokerRoom.items();i.hasMoreElements();)
 				{
 					Item I=i.nextElement();
 					if((I!=null)&&(I.container()==null))
@@ -208,7 +208,7 @@ public class Spell_InvisibilitySphere extends Spell
 				final Room invokerRoom=CMLib.map().roomLocation(invoker);
 				if((msg.target() instanceof Room)&&(msg.target() != invokerRoom))
 				{
-					for(Enumeration<Item> i=((Room)msg.target()).items();i.hasMoreElements();)
+					for(final Enumeration<Item> i=((Room)msg.target()).items();i.hasMoreElements();)
 						removeFromSphere(i.nextElement());
 				}
 				break;
@@ -230,9 +230,9 @@ public class Spell_InvisibilitySphere extends Spell
 			return false;
 		}
 		long newHash = 0;
-		for(Enumeration<MOB> m=invokerRoom.inhabitants();m.hasMoreElements();)
+		for(final Enumeration<MOB> m=invokerRoom.inhabitants();m.hasMoreElements();)
 			newHash = newHash ^ m.nextElement().hashCode();
-		for(Enumeration<Item> i=invokerRoom.items();i.hasMoreElements();)
+		for(final Enumeration<Item> i=invokerRoom.items();i.hasMoreElements();)
 			newHash = newHash ^ i.nextElement().hashCode();
 		if(invokerRoom == lastRoom.get())
 		{
@@ -242,9 +242,9 @@ public class Spell_InvisibilitySphere extends Spell
 		else
 			lastRoom = new WeakReference<Room>(invokerRoom);
 		this.lastRoomHash = newHash;
-		for(Enumeration<MOB> m=invokerRoom.inhabitants();m.hasMoreElements();)
+		for(final Enumeration<MOB> m=invokerRoom.inhabitants();m.hasMoreElements();)
 			addToSphere(m.nextElement());
-		for(Enumeration<Item> i=invokerRoom.items();i.hasMoreElements();)
+		for(final Enumeration<Item> i=invokerRoom.items();i.hasMoreElements();)
 		{
 			Item I=i.nextElement();
 			if((I!=null)&&(I.container()==null))

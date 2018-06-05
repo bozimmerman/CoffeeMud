@@ -952,7 +952,7 @@ public class StdRideable extends StdContainer implements Rideable
 						final Room R=CMLib.map().roomLocation(this);
 						if((R!=null)&&((R.domainType()&Room.INDOORS)==0))
 						{
-							for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+							for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 							{
 								final MOB M=m.nextElement();
 								if((M!=null)&&(M.riding()==this))

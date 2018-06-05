@@ -261,7 +261,7 @@ public class Prayer_Bloatbomb extends Prayer implements Trap
 				mob.location().send(mob,msg);
 				CMLib.combat().postDeath(target, target, null);
 				DeadBody body=null;
-				for(Enumeration<Item> i=mob.location().items();i.hasMoreElements();)
+				for(final Enumeration<Item> i=mob.location().items();i.hasMoreElements();)
 				{
 					final Item I=i.nextElement();
 					if((I instanceof DeadBody)&&(((DeadBody)I).getMobName().equals(target.Name())))

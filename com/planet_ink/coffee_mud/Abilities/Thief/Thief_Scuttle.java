@@ -143,7 +143,7 @@ public class Thief_Scuttle extends ThiefSkill
 		int numRiders=0;
 		if(R.getArea() instanceof BoardableShip)
 		{
-			for(Enumeration<Room> r=R.getArea().getProperMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=R.getArea().getProperMap();r.hasMoreElements();)
 			{
 				final Room R2=r.nextElement();
 				if(R2!=null)

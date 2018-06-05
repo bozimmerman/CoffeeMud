@@ -97,7 +97,7 @@ public class MoneyChanger extends StdBehavior
 			}
 			return rates;
 		}
-		for(Enumeration<Area> a=CMLib.map().spaceAreas();a.hasMoreElements();)
+		for(final Enumeration<Area> a=CMLib.map().spaceAreas();a.hasMoreElements();)
 		{
 			Area A=a.nextElement();
 			if((A!=null)&&(A!=homeO))

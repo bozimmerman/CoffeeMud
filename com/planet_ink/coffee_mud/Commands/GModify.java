@@ -885,7 +885,7 @@ public class GModify extends StdCommand
 					CMLib.database().DBUpdateItems(R);
 				if(savemobs)
 				{
-					for(Enumeration<MOB> r1=R.inhabitants();r1.hasMoreElements();)
+					for(final Enumeration<MOB> r1=R.inhabitants();r1.hasMoreElements();)
 						System.out.println(r1.nextElement().fetchBehavior("VeryAggressive"));
 					CMLib.database().DBUpdateMOBs(R);
 				}

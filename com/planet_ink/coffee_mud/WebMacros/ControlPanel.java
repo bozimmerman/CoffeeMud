@@ -208,7 +208,7 @@ public class ControlPanel extends StdWebMacro
 			final String value=parms.get("VALUE");
 			if(field.equalsIgnoreCase("MISC") && (value != null))
 			{
-				for(Enumeration<String> s=CMSecurity.getDisabledSpecialsEnum(true);s.hasMoreElements();)
+				for(final Enumeration<String> s=CMSecurity.getDisabledSpecialsEnum(true);s.hasMoreElements();)
 					CMSecurity.removeAnyDisableVar(s.nextElement());
 				for(String s : CMParms.parseCommas(value,true))
 					CMSecurity.setAnyDisableVar(s);
@@ -231,7 +231,7 @@ public class ControlPanel extends StdWebMacro
 			final String value=parms.get("VALUE");
 			if(field.equalsIgnoreCase("MISC") && (value != null))
 			{
-				for(Enumeration<String> s=CMSecurity.getEnabledSpecialsEnum(true);s.hasMoreElements();)
+				for(final Enumeration<String> s=CMSecurity.getEnabledSpecialsEnum(true);s.hasMoreElements();)
 					CMSecurity.removeAnyEnableVar(s.nextElement());
 				for(String s : CMParms.parseCommas(value,true))
 					CMSecurity.setAnyEnableVar(s);

@@ -130,7 +130,7 @@ public class Skill_CombatRepairs extends StdSkill
 						Area A=I.getShipArea();
 						if(A!=null)
 						{
-							for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+							for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 							{
 								final Room R=r.nextElement();
 								if((R!=null)&&(R.numInhabitants()>0))

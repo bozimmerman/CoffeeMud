@@ -286,7 +286,7 @@ public class Remort extends StdCommand
 				}
 				case SKILL:
 				{
-					for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+					for(final Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
 					{
 						Ability A=a.nextElement();
 						abilities.add(new Triad<String,String,Integer>(A.ID(),A.text(),new Integer(A.proficiency())));
@@ -301,7 +301,7 @@ public class Remort extends StdCommand
 				}
 				case SKILLSAT100:
 				{
-					for(Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
+					for(final Enumeration<Ability> a=mob.abilities();a.hasMoreElements();)
 					{
 						Ability A=a.nextElement();
 						if(A.proficiency() >= 100)
@@ -317,7 +317,7 @@ public class Remort extends StdCommand
 				}
 				case FACTION:
 				{
-					for(Enumeration<String> f = mob.factions();f.hasMoreElements();)
+					for(final Enumeration<String> f = mob.factions();f.hasMoreElements();)
 					{
 						String facID = f.nextElement();
 						factions.add(new Pair<String,Integer>(facID,new Integer(mob.fetchFaction(facID))));
@@ -332,7 +332,7 @@ public class Remort extends StdCommand
 				}
 				case EXPERTISE:
 				{
-					for(Enumeration<String> f = mob.expertises();f.hasMoreElements();)
+					for(final Enumeration<String> f = mob.expertises();f.hasMoreElements();)
 					{
 						String expID = f.nextElement();
 						expertises.add(expID);
@@ -461,7 +461,7 @@ public class Remort extends StdCommand
 					}
 					List<Achievement> reAwardTattoos = new LinkedList<Achievement>();
 					List<Tattoo> delTattoo =  new LinkedList<Tattoo>();
-					for(Enumeration<Tattoo> t=mob.tattoos();t.hasMoreElements();)
+					for(final Enumeration<Tattoo> t=mob.tattoos();t.hasMoreElements();)
 					{
 						Tattoo T=t.nextElement();
 						if(T != null)
@@ -475,7 +475,7 @@ public class Remort extends StdCommand
 						else
 							delTattoo.add(T);
 					}
-					for(Iterator<Tattoo> t=delTattoo.iterator();t.hasNext();)
+					for(final Iterator<Tattoo> t=delTattoo.iterator();t.hasNext();)
 						mob.delTattoo(t.next());
 					mob.setStartRoom(CMLib.login().getDefaultStartRoom(mob));
 					mob.getStartRoom().bringMobHere(mob, true);
@@ -623,7 +623,7 @@ public class Remort extends StdCommand
 												}
 												recoverEverything(mob);
 											}
-											for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+											for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 												mob.playerStats().unVisit(a.nextElement());
 											mob.baseCharStats().getCurrentClass().startCharacter(mob, false, false);
 											mob.baseCharStats().getCurrentClass().grantAbilities(mob, false);

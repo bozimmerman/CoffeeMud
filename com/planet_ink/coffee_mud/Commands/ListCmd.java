@@ -2054,7 +2054,7 @@ public class ListCmd extends StdCommand
 					}
 				}
 				StringBuilder raceStr=new StringBuilder("");
-				for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+				for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
 					final Race R=r.nextElement();
 					if(CMLib.login().isAvailableRace(R)
@@ -2062,7 +2062,7 @@ public class ListCmd extends StdCommand
 						raceStr.append("[["+R.name()+"|"+R.name()+"]] ");
 				}
 				StringBuilder langStr=new StringBuilder("");
-				for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+				for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();
 					if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
@@ -2850,7 +2850,7 @@ public class ListCmd extends StdCommand
 			return str.toString();
 		}
 		final List<SpaceObject> objs=new ArrayList<SpaceObject>();
-		for(Enumeration<SpaceObject> objEnum=CMLib.map().getSpaceObjects();objEnum.hasMoreElements();)
+		for(final Enumeration<SpaceObject> objEnum=CMLib.map().getSpaceObjects();objEnum.hasMoreElements();)
 		{
 			final SpaceObject obj=objEnum.nextElement();
 			if(!filter.passesFilter(obj))
@@ -3699,7 +3699,7 @@ public class ListCmd extends StdCommand
 		
 		fileName = fileName.toLowerCase();
 		Map<String,Set<Environmental>> found=new TreeMap<String,Set<Environmental>>();
-		for(Enumeration<Room> a=CMLib.map().rooms();a.hasMoreElements();)
+		for(final Enumeration<Room> a=CMLib.map().rooms();a.hasMoreElements();)
 		{
 			final Room R=a.nextElement();
 			if(R!=null)
@@ -4370,7 +4370,7 @@ public class ListCmd extends StdCommand
 					availStr.append("[["+C.name()+"("+C.baseClass()+")|"+C.name(I.intValue())+"("+I.intValue()+")]] ");
 				}
 				StringBuilder allowsStr=new StringBuilder("");
-				for(Iterator<String> i=CMLib.expertises().filterUniqueExpertiseIDList(CMLib.ableMapper().getAbilityAllowsList(A.ID()));i.hasNext();)
+				for(final Iterator<String> i=CMLib.expertises().filterUniqueExpertiseIDList(CMLib.ableMapper().getAbilityAllowsList(A.ID()));i.hasNext();)
 				{
 					final String ID=i.next();
 					ExpertiseDefinition def=CMLib.expertises().getDefinition(ID);
@@ -4590,12 +4590,12 @@ public class ListCmd extends StdCommand
 			final Area A=as.nextElement();
 			if((filter!=null)&&(!filter.passesFilter(A)))
 				continue;
-			for(Enumeration<Area> pa=A.getParents();pa.hasMoreElements();)
+			for(final Enumeration<Area> pa=A.getParents();pa.hasMoreElements();)
 				parentStack.add(pa.nextElement());
 			while(parentStack.size()>0)
 			{
 				Area pA=parentStack.pop();
-				for(Enumeration<Area> pa=pA.getParents();pa.hasMoreElements();)
+				for(final Enumeration<Area> pa=pA.getParents();pa.hasMoreElements();)
 					parentStack.add(pa.nextElement());
 				parentageCounts.get(pA)[0]++;
 			}
@@ -4821,7 +4821,7 @@ public class ListCmd extends StdCommand
 						+ "|MedianLevel="+A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()]
 						+ "|AvgAlign="+((theFaction!=null)?theFaction.fetchRangeName(A.getAreaIStats()[Area.Stats.AVG_ALIGNMENT.ordinal()]):"")
 						+ "|MedAlignment="+((theFaction!=null)?theFaction.fetchRangeName(A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()]):""));
-				for(Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
+				for(final Enumeration<String> f=A.areaBlurbFlags();f.hasMoreElements();)
 				{
 					String flag=f.nextElement();
 					str.append("|"+flag+"="+A.getBlurbFlag(flag));

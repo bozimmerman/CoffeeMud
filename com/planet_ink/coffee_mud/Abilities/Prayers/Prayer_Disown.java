@@ -88,7 +88,7 @@ public class Prayer_Disown extends Prayer
 	public List<Tattoo> getParentTattoos(final MOB mob)
 	{
 		final LinkedList<Tattoo> list=new LinkedList<Tattoo>();
-		for(Enumeration<Tattoo> t= mob.tattoos();t.hasMoreElements();)
+		for(final Enumeration<Tattoo> t= mob.tattoos();t.hasMoreElements();)
 		{
 			final Tattoo T=t.nextElement();
 			if(T.getTattooName().startsWith("PARENT:"))

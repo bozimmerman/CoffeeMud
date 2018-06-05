@@ -143,7 +143,7 @@ public class Unload extends StdCommand
 					else
 					{
 						LinkedList<Room> rooms=new LinkedList<Room>();
-						for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+						for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 						{
 							try 
 							{
@@ -158,7 +158,7 @@ public class Unload extends StdCommand
 							{
 							}
 						}
-						for(Iterator<Room> r=rooms.iterator();r.hasNext();)
+						for(final Iterator<Room> r=rooms.iterator();r.hasNext();)
 						{
 							try 
 							{

@@ -713,7 +713,7 @@ public class DefaultPlayerStats implements PlayerStats
 		rest.append("</PRIDESTATS>");
 		
 		rest.append("<ACHIEVEMENTS");
-		for(Iterator<Tracker> i=achievementers.values().iterator();i.hasNext();)
+		for(final Iterator<Tracker> i=achievementers.values().iterator();i.hasNext();)
 		{
 			final Tracker T = i.next();
 			if(T.getAchievement().isSavableTracker() && (T.getCount(null) != 0))
@@ -990,7 +990,7 @@ public class DefaultPlayerStats implements PlayerStats
 			roomSet().parseXML("<AREAS />");
 		final XMLTag achievePiece = xmlLib.getPieceFromPieces(xml, "ACHIEVEMENTS");
 		achievementers.clear();
-		for(Enumeration<Achievement> a=CMLib.achievements().achievements(Agent.PLAYER);a.hasMoreElements();)
+		for(final Enumeration<Achievement> a=CMLib.achievements().achievements(Agent.PLAYER);a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
 			if((achievePiece != null) && achievePiece.parms().containsKey(A.getTattoo()))

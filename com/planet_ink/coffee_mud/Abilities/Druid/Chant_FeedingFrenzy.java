@@ -176,7 +176,7 @@ public class Chant_FeedingFrenzy extends Chant
 				{
 					if((room != null)&&(room.numInhabitants()>0))
 					{
-						for(Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
+						for(final Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
 						{
 							final MOB M=m.nextElement();
 							if(M.isMonster()

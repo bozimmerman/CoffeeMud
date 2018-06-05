@@ -1541,7 +1541,7 @@ public class ServiceEngine implements ThreadEngine
 					{
 						if(this.schedTicks.size() > 0)
 						{
-							for(Iterator<CMRunnable> r=this.schedTicks.iterator(); r.hasNext();) 
+							for(final Iterator<CMRunnable> r=this.schedTicks.iterator(); r.hasNext();) 
 							{
 								final CMRunnable R=r.next();
 								if(now >= R.getStartTime())

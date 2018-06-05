@@ -118,7 +118,7 @@ public class RoomData extends StdWebMacro
 		{
 			final ShopKeeper shopK=(ShopKeeper)M;
 			final CoffeeShop shop=shopK.getShop();
-			for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 			{
 				Environmental E=i.next();
 				if(E==I)
@@ -183,7 +183,7 @@ public class RoomData extends StdWebMacro
 		{
 			CoffeeShop shop=((ShopKeeper)M).getShop();
 			code=origCode;
-			for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 			{
 				Environmental E=i.next();
 				if(E instanceof Item)
@@ -194,7 +194,7 @@ public class RoomData extends StdWebMacro
 			}
 			if(code.length()>2)
 				code=code.substring(0,code.length()-2);
-			for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+			for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 			{
 				Environmental E=i.next();
 				if(E instanceof Item)

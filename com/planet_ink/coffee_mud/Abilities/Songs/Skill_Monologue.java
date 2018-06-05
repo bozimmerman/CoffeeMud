@@ -192,7 +192,7 @@ public class Skill_Monologue extends BardSkill
 			return false;
 
 		final Set<MOB> h=new HashSet<MOB>();
-		for(Enumeration<MOB> m=mob.location().inhabitants();m.hasMoreElements();)
+		for(final Enumeration<MOB> m=mob.location().inhabitants();m.hasMoreElements();)
 			h.add(m.nextElement());
 		if(h.size()==1)
 		{

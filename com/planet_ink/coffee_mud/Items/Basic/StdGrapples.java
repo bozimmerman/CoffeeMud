@@ -188,7 +188,7 @@ public class StdGrapples extends StdPortal
 					if((msg.source().riding()==sourceS.getShipItem())
 					&&(sourceS.getShipArea()!=null))
 					{
-						for(Enumeration<Room> r=sourceS.getShipArea().getProperMap();r.hasMoreElements();)
+						for(final Enumeration<Room> r=sourceS.getShipArea().getProperMap();r.hasMoreElements();)
 						{
 							final Room R=r.nextElement();
 							if((R!=null) && ((R.domainType()&Room.INDOORS)==0))
@@ -199,7 +199,7 @@ public class StdGrapples extends StdPortal
 					if((msg.source().riding()==targetS.getShipItem())
 					&&(targetS.getShipArea()!=null))
 					{
-						for(Enumeration<Room> r=targetS.getShipArea().getProperMap();r.hasMoreElements();)
+						for(final Enumeration<Room> r=targetS.getShipArea().getProperMap();r.hasMoreElements();)
 						{
 							final Room R=r.nextElement();
 							if((R!=null) && ((R.domainType()&Room.INDOORS)==0))

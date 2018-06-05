@@ -981,7 +981,7 @@ public class ItemData extends StdWebMacro
 							A=CMClass.getAbility(((Recipe)I).getCommonSkillID());
 							if(A==null)
 							{
-								for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+								for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 								{
 									Ability A2=a.nextElement();
 									if(A2 instanceof CraftorAbility)
@@ -1215,7 +1215,7 @@ public class ItemData extends StdWebMacro
 								str.append("\" SELECTED>Random");
 							else
 								str.append("\">Random");
-							for(Iterator<Manufacturer> m = CMLib.tech().manufacterers(); m.hasNext(); )
+							for(final Iterator<Manufacturer> m = CMLib.tech().manufacterers(); m.hasNext(); )
 							{
 								Manufacturer M1=m.next();
 								if(M1.isManufactureredType((Technical)I) || (old.equalsIgnoreCase(M1.name())))

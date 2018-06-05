@@ -308,7 +308,7 @@ public class Skill_HireCrewmember extends StdSkill
 						int numCrew=0;
 						int numDecks=0;
 						int[] numTypes=new int[CrewType.values().length];
-						for(Enumeration<Room> r=shipArea.getProperMap();r.hasMoreElements();)
+						for(final Enumeration<Room> r=shipArea.getProperMap();r.hasMoreElements();)
 						{
 							final Room R2=r.nextElement();
 							switch(R2.domainType())
@@ -322,7 +322,7 @@ public class Skill_HireCrewmember extends StdSkill
 								numRooms++;
 								break;
 							}
-							for(Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
+							for(final Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
 							{
 								final MOB M=m.nextElement();
 								if((M!=null)

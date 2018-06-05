@@ -77,6 +77,7 @@ public class Farming extends GatheringSkill
 	protected Item		found			= null;
 	protected Room		room			= null;
 	protected String	foundShortName	= "";
+	protected int		goodticks		= 0;
 
 	public Farming()
 	{
@@ -101,18 +102,33 @@ public class Farming extends GatheringSkill
 	{
 		if((affected!=null)&&(affected instanceof Room))
 		{
-			final MOB mob=invoker();
-			if(tickUp==6)
+			final Room R=(Room)affected;
+			if(R!=null)
 			{
-				if((found==null)
-				||(mob==null)
-				||(mob.location()==null))
+				if(R.getArea().getClimateObj().canSeeTheSun(R))
+					goodticks++;
+				final MOB mob=invoker();
+				if(tickUp==6)
 				{
-					commonTell(mob,L("Your @x1 crop has failed.\n\r",foundShortName));
+					if((found==null)
+					||(mob==null)
+					||(mob.location()==null))
+					{
+						commonTell(mob,L("Your @x1 crop has failed.\n\r",foundShortName));
+						unInvoke();
+					}
+				}
+				else
+				if((tickUp > 10)&&(goodticks < (tickUp/2)))
+				{
+					found=null;
+					commonTell(mob,L("Your @x1 crop has failed due to lack of sunlight.\n\r",foundShortName));
 					unInvoke();
 				}
 			}
 		}
+		else
+			goodticks=0;
 		return super.tick(ticking,tickID);
 	}
 
@@ -156,7 +172,7 @@ public class Farming extends GatheringSkill
 					int amount=CMLib.dice().roll(1,7,0)*(baseYield()+abilityCode());
 					int origAmount = amount; 
 					int doubleRemain = amount * 10;
-					for(Enumeration<Item> i=room.items();i.hasMoreElements();)
+					for(final Enumeration<Item> i=room.items();i.hasMoreElements();)
 					{
 						final Item I=i.nextElement();
 						if((I instanceof PackagedItems)
@@ -276,9 +292,9 @@ public class Farming extends GatheringSkill
 		}
 
 		verb=L("planting");
-		if((!auto)&&((R.domainType()&Room.INDOORS)>0))
+		if((!auto)&&(!R.getArea().getClimateObj().canSeeTheSun(R)))
 		{
-			commonTell(mob,L("You can't plant anything indoors!"));
+			commonTell(mob,L("You need clear sunlight to do your farming"));
 			return false;
 		}
 		if((!auto)

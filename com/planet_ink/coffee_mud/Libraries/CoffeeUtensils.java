@@ -1763,7 +1763,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					if((lastStart==0)&&(c==raceID.length())&&(!raceID.endsWith("ling"))&&(!raceID.startsWith("Half")))
 						break;
 					final String remainder = raceID.substring(lastStart);
-					for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+					for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 					{
 						Race R3=r.nextElement();
 						if((!R3.ID().equals(raceID))

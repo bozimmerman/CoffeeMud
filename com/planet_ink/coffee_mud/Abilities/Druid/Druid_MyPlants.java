@@ -196,7 +196,7 @@ public class Druid_MyPlants extends StdAbility
 					Area A=((BoardableShip)I).getShipArea();
 					if(A!=null)
 					{
-						for(Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
+						for(final Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
 						{
 							try
 							{

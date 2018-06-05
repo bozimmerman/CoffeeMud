@@ -991,7 +991,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if(CAST instanceof AbilityContainer)
 		{
 			final boolean haver = (CAST instanceof TriggeredAffect) ? CMath.bset(((TriggeredAffect)CAST).triggerMask(),TriggeredAffect.TRIGGER_GET) : false;
-			for(Enumeration<Ability> a=((AbilityContainer)CAST).abilities();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=((AbilityContainer)CAST).abilities();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
 				int mul=1;

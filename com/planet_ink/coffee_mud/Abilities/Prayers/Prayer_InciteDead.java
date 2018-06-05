@@ -89,7 +89,7 @@ public class Prayer_InciteDead extends Prayer
 			return false;
 		
 		final Set<MOB> h = new HashSet<MOB>();
-		for(Iterator<MOB> i=possibleTargets.iterator();i.hasNext();)
+		for(final Iterator<MOB> i=possibleTargets.iterator();i.hasNext();)
 		{
 			final MOB M=i.next();
 			if(CMLib.flags().isUndead(M))

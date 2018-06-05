@@ -1714,7 +1714,7 @@ public class StdRace implements Race
 		final List<AbilityMapping> rable1=new ConvertingList<String,AbilityMapping>(CMParms.toIDList(race1.racialAbilities(null)),race1conv);
 		final List<AbilityMapping> rable2=new ConvertingList<String,AbilityMapping>(CMParms.toIDList(race2.racialAbilities(null)),race2conv);
 		final PairList<String,AbilityMapping> dvataf = new PairVector<String,AbilityMapping>();
-		for(Iterator<AbilityMapping> i1=rable1.iterator(), i2=rable2.iterator(); i1.hasNext() || i2.hasNext(); )
+		for(final Iterator<AbilityMapping> i1=rable1.iterator(), i2=rable2.iterator(); i1.hasNext() || i2.hasNext(); )
 		{
 			final Pair<String,AbilityMapping> p1 = mapFix.convert(i1);
 			if((p1 != null) && (!dvataf.containsFirst(p1.first)))
@@ -1741,7 +1741,7 @@ public class StdRace implements Race
 		final PairList<String,AbilityMapping> cvataf = new PairVector<String,AbilityMapping>();
 		final List<AbilityMapping> cable1=new ConvertingList<String,AbilityMapping>(new XVector<String>(race1.culturalAbilities().firstIterator()),race1conv);
 		final List<AbilityMapping> cable2=new ConvertingList<String,AbilityMapping>(new XVector<String>(race2.culturalAbilities().firstIterator()),race2conv);
-		for(Iterator<AbilityMapping> i1=cable1.iterator(), i2=cable2.iterator(); i1.hasNext() || i2.hasNext(); )
+		for(final Iterator<AbilityMapping> i1=cable1.iterator(), i2=cable2.iterator(); i1.hasNext() || i2.hasNext(); )
 		{
 			final Pair<String,AbilityMapping> p1 = mapFix.convert(i1);
 			if((p1 != null) && (!cvataf.containsFirst(p1.first)))

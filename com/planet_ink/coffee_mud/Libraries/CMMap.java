@@ -2554,7 +2554,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		List<Room> allRooms=new LinkedList<Room>();
 		for(int i=0;i<2;i++)
 		{
-			for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+			for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 			{
 				final Room R=e.nextElement();
 				if(R!=null)
@@ -3470,7 +3470,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public boolean shutdown()
 	{
 		final boolean debugMem = CMSecurity.isDebugging(CMSecurity.DbgFlag.SHUTDOWN);
-		for(Enumeration<Area> a=areasList.elements();a.hasMoreElements();)
+		for(final Enumeration<Area> a=areasList.elements();a.hasMoreElements();)
 		{
 			try 
 			{
@@ -3479,7 +3479,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				{
 					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down Map area '"+A.Name()+"'...");
 					LinkedList<Room> rooms=new LinkedList<Room>();
-					for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+					for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 					{
 						try 
 						{
@@ -3491,7 +3491,7 @@ public class CMMap extends StdLibrary implements WorldMap
 						{
 						}
 					}
-					for(Iterator<Room> r=rooms.iterator();r.hasNext();)
+					for(final Iterator<Room> r=rooms.iterator();r.hasNext();)
 					{
 						try 
 						{

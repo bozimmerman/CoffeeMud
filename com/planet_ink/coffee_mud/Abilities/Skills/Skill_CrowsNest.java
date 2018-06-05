@@ -224,13 +224,13 @@ public class Skill_CrowsNest extends StdSkill
 									if((R2.numInhabitants()>0)||(R2.numItems()>0)||(landHo>=0))
 									{
 										List<String> listOfStuff=new ArrayList<String>(1);
-										for(Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
+										for(final Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
 										{
 											final MOB M=m.nextElement();
 											if((M!=null)&&(CMLib.flags().canBeSeenBy(M, mob)))
 												listOfStuff.add(M.name(mob));
 										}
-										for(Enumeration<Item> i=R2.items();i.hasMoreElements();)
+										for(final Enumeration<Item> i=R2.items();i.hasMoreElements();)
 										{
 											final Item I=i.nextElement();
 											if((I!=null)
@@ -344,7 +344,7 @@ public class Skill_CrowsNest extends StdSkill
 			return false;
 		}
 		
-		for(Enumeration<Room> r=R.getArea().getProperMap();r.hasMoreElements();)
+		for(final Enumeration<Room> r=R.getArea().getProperMap();r.hasMoreElements();)
 		{
 			final Room R2=r.nextElement();
 			if((R2!=null)&&((R2.domainType()&Room.INDOORS)==0)&&(R.numItems()==0))

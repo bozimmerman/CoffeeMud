@@ -142,14 +142,14 @@ public class Thief_WalkThePlank extends ThiefSkill
 		if(!allowedToWalkThem)
 		{
 			Set<MOB> mobsConnectedToThisShip=new HashSet<MOB>();
-			for(Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
 			{
 				final Room R2=r.nextElement();
 				if(R2!=null)
 				{
 					String owner = CMLib.law().getPropertyOwnerName(R2);
 					Clan C=CMLib.clans().getClan(owner);
-					for(Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
+					for(final Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
 					{
 						final MOB M=m.nextElement();
 						if(M==null)
@@ -169,12 +169,12 @@ public class Thief_WalkThePlank extends ThiefSkill
 					}
 				}
 			}
-			for(Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
 			{
 				final Room R2=r.nextElement();
 				if(R2!=null)
 				{
-					for(Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
+					for(final Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
 					{
 						final MOB M=m.nextElement();
 						if(M==null)
@@ -195,12 +195,12 @@ public class Thief_WalkThePlank extends ThiefSkill
 				}
 			}
 			Set<MOB> mobsNotConnectedToThisShip=new HashSet<MOB>();
-			for(Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
 			{
 				final Room R2=r.nextElement();
 				if(R2!=null)
 				{
-					for(Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
+					for(final Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
 					{
 						final MOB M=m.nextElement();
 						if(M==null)

@@ -179,7 +179,7 @@ public class Thief_MerchantFlag extends ThiefSkill
 						final Room R=r.nextElement();
 						if((R!=null)&&(R.numPCInhabitants()>0))
 						{
-							for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+							for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 							{
 								final MOB M=m.nextElement();
 								if((M!=null)

@@ -131,7 +131,7 @@ public class Thief_RideTheRigging extends ThiefSkill
 		
 		Area targetArea=((BoardableShip)targetShipItem).getShipArea();
 		List<Room> choices=new ArrayList<Room>();
-		for(Enumeration<Room> r=targetArea.getProperMap();r.hasMoreElements();)
+		for(final Enumeration<Room> r=targetArea.getProperMap();r.hasMoreElements();)
 		{
 			final Room R2=r.nextElement();
 			if((R2!=null)

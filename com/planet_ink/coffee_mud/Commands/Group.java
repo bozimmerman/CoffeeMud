@@ -106,7 +106,7 @@ public class Group extends StdCommand
 		final Set<MOB> group=mob.getGroupMembers(new HashSet<MOB>());
 		final List<MOB> orderedGroup = new LinkedList<MOB>();
 		final Room R=mob.location();
-		for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 		{
 			final MOB M=m.nextElement();
 			if(group.contains(M))

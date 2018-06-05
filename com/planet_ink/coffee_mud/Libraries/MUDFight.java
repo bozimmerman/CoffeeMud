@@ -555,12 +555,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			final Area otherArea = ((BoardableShip)defender).getShipArea();
 			if(otherArea != null)
 			{
-				for(Enumeration<Room> r=otherArea.getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=otherArea.getProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
 					if(R!=null)
 					{
-						for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+						for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 						{
 							final MOB M=m.nextElement();
 							if((M!=null)
@@ -696,7 +696,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final Room R=mob.location();
 		if(R==null)
 			return;
-		for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 		{
 			final MOB M=m.nextElement();
 			if((M!=null)
@@ -715,7 +715,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final Room R=mob.location();
 		if(R==null)
 			return set;
-		for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 		{
 			final MOB M=m.nextElement();
 			if((M!=null)&&(M.getVictim()==mob)&&(M!=mob))

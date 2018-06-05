@@ -375,7 +375,7 @@ public class Stat  extends Skills
 					V.remove(v);
 				}
 			}
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=a.nextElement();
 				if(CMLib.flags().canAccess(mob,A)&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))&&(!(A instanceof SpaceObject)))
@@ -647,7 +647,7 @@ public class Stat  extends Skills
 			for(String stat : mob.phyStats().getStatCodes())
 				msg.append(stat).append(", ");
 			msg.append("STINK, XP, XPTNL, XPFNL, QUESTPOINTS, TRAINS, PRACTICES, HEALTH, RESISTS, ATTRIBUTES");
-			for(Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+			for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
 			{
 				final Faction F=f.nextElement();
 				if((F!=null)&&(F.showInScore()))
@@ -1115,7 +1115,7 @@ public class Stat  extends Skills
 					if((target.playerStats()!=null)&&(CMProps.isUsingAccountSystem()))
 						str.append(L("\n\r^xMember of Account:^.^N ^w@x1^?",(target.playerStats().getAccount()!=null)?target.playerStats().getAccount().getAccountName():L("None"))).append("\n\r");
 					str.append(CMLib.commands().getScore(target));
-					for(Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
+					for(final Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
 					{
 						final Quest Q=q.nextElement();
 						if((Q!=null)
@@ -1166,7 +1166,7 @@ public class Stat  extends Skills
 					Environmental itarget=getItemTarget(mob, restWords);
 					if(itarget!=null)
 					{
-						for(Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
+						for(final Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
 						{
 							final Quest Q=q.nextElement();
 							if((Q!=null)
@@ -1251,7 +1251,7 @@ public class Stat  extends Skills
 							itarget=mob.location().fetchExit(MOBname);
 						if(itarget!=null)
 						{
-							for(Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
+							for(final Enumeration<Quest> q= CMLib.quests().enumQuests();q.hasMoreElements();)
 							{
 								final Quest Q=q.nextElement();
 								if((Q!=null)
@@ -1465,7 +1465,7 @@ public class Stat  extends Skills
 				}
 				if(!found)
 				{
-					for(Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+					for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
 					{
 						final Faction F=f.nextElement();
 						if((F!=null)
@@ -1536,7 +1536,7 @@ public class Stat  extends Skills
 				}
 				if(!found)
 				{
-					for(Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+					for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
 					{
 						final Faction F=f.nextElement();
 						if((F!=null)

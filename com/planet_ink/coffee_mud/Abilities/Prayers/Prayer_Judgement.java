@@ -154,7 +154,7 @@ public class Prayer_Judgement extends Prayer
 			if(R!=null)
 			{
 				MOB doMOB=null;
-				for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+				for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 				{
 					final MOB M=m.nextElement();
 					if((!doneMobs.contains(M)) && (M!=mob) && CMLib.flags().canBeSeenBy(M,mob))

@@ -97,12 +97,12 @@ public class Chant_Capsize extends Chant
 			Area A=((BoardableShip)I).getShipArea();
 			if(A!=null)
 			{
-				for(Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
 					if(R!=null && (R.numItems() >0) && (R.domainType()&Room.INDOORS)==0)
 					{
-						for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+						for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 						{
 							Item I2=i.nextElement();
 							if((I2!=null)
@@ -132,7 +132,7 @@ public class Chant_Capsize extends Chant
 		Set<MOB> grp = casterM.getGroupMembers(new HashSet<MOB>());
 		if(I instanceof Rideable)
 		{
-			for(Enumeration<Rider> r=((Rideable)I).riders();r.hasMoreElements();)
+			for(final Enumeration<Rider> r=((Rideable)I).riders();r.hasMoreElements();)
 			{
 				Rider R=r.nextElement();
 				if((R instanceof MOB)&&(!grp.contains(R)))
@@ -160,12 +160,12 @@ public class Chant_Capsize extends Chant
 			Area A=((BoardableShip)I).getShipArea();
 			if(A!=null)
 			{
-				for(Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=A.getFilledProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
 					if(R!=null && (R.numInhabitants() >0))
 					{
-						for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+						for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 						{
 							MOB M=m.nextElement();
 							if(!grp.contains(M))

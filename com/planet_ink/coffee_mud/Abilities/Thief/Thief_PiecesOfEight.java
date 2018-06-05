@@ -123,7 +123,7 @@ public class Thief_PiecesOfEight extends ThiefSkill
 		List<Coins> coins = new LinkedList<Coins>();
 		double totalCoinValue = 0.0;
 		HashSet<Double> otherDenoms=new HashSet<Double>();
-		for(Enumeration<Item> i=coll.items();i.hasMoreElements();)
+		for(final Enumeration<Item> i=coll.items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
 			if(I instanceof Container)

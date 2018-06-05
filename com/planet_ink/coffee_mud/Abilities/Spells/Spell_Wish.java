@@ -361,7 +361,7 @@ public class Spell_Wish extends Spell
 				||objectWish.equals("SOME LAND"))
 				{
 					final LegalLibrary law=CMLib.law();
-					for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+					for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						final Room R=r.nextElement();
 						if((R!=null)&&(!(R.getArea() instanceof BoardableShip)))

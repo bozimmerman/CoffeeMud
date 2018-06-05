@@ -4283,7 +4283,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						CoffeeShop shop = shopHere.getShop();
 						if(shop != null)
 						{
-							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
+							for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
 							{
 								ct++;
 							}
@@ -4328,7 +4328,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						CoffeeShop shop = shopHere.getShop();
 						if(shop != null)
 						{
-							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
+							for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 							{
 								Environmental E=i.next();
 								if(ct==CMath.s_int(arg2.trim()))
@@ -6346,7 +6346,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB))
 				{
-					for(Enumeration<Tattoo> t = ((MOB)E).tattoos();t.hasMoreElements();)
+					for(final Enumeration<Tattoo> t = ((MOB)E).tattoos();t.hasMoreElements();)
 						results.append(t.nextElement().ID()).append(" ");
 				}
 				break;
@@ -6357,7 +6357,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				final Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB)&&(((MOB)E).playerStats()!=null)&&(((MOB)E).playerStats().getAccount()!=null))
 				{
-					for(Enumeration<Tattoo> t = ((MOB)E).playerStats().getAccount().tattoos();t.hasMoreElements();)
+					for(final Enumeration<Tattoo> t = ((MOB)E).playerStats().getAccount().tattoos();t.hasMoreElements();)
 						results.append(t.nextElement().ID()).append(" ");
 				}
 				break;
@@ -6759,7 +6759,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						CoffeeShop shop = shopHere.getShop();
 						if(shop != null)
 						{
-							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();ct++)
+							for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();ct++)
 							{
 								Environmental E=i.next();
 								if(ct==CMath.s_int(arg2.trim()))
@@ -6807,7 +6807,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						CoffeeShop shop = shopHere.getShop();
 						if(shop != null)
 						{
-							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
+							for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
 							{
 								ct++;
 							}
@@ -6848,11 +6848,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						if(shop != null)
 						{
 							int ct=0;
-							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
+							for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
 								ct++;
 							int which=CMLib.dice().roll(1, ct, -1);
 							ct=0;
-							for(Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();ct++)
+							for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();ct++)
 							{
 								final Environmental E=i.next();
 								if(which == ct)

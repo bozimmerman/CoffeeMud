@@ -1073,7 +1073,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					decayTime=L("/  Decay on @x1",CMLib.time().date2String(((Decayable)item).decayTime()));
 			}
 			StringBuilder spells=new StringBuilder("");
-			for(Enumeration<Ability> a=item.effects();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=item.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
 				if((!A.isSavable())||(A.canBeUninvoked()))

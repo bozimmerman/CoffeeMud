@@ -1156,7 +1156,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					final Room R=r.nextElement();
 					if(R!=null)
 					{
-						for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+						for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 						{
 							final MOB M=m.nextElement();
 							posted = CMLib.leveler().postExperience(M, null, null, amount, false) && posted;

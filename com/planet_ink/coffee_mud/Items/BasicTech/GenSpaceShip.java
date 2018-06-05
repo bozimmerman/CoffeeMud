@@ -294,7 +294,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 						if(hullDamage < usesRemaining())
 						{
 							List<Electronics> list = CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(getShipArea()));
-							for(Iterator<Electronics> i=list.iterator();i.hasNext();)
+							for(final Iterator<Electronics> i=list.iterator();i.hasNext();)
 							{
 								Electronics E=i.next();
 								if((E.amDestroyed())

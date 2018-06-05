@@ -283,7 +283,7 @@ public class Chant_TidalWave extends Chant
 						return false;
 					}
 				}
-				for(Enumeration<Room> r=((BoardableShip)target).getShipArea().getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=((BoardableShip)target).getShipArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R2=r.nextElement();
 					if((R2!=null)&&((R2.domainType()&Room.INDOORS)==0))
@@ -325,7 +325,7 @@ public class Chant_TidalWave extends Chant
 					}
 				}
 				target=((BoardableShip)R.getArea()).getShipItem();
-				for(Enumeration<Room> r=((BoardableShip)target).getShipArea().getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=((BoardableShip)target).getShipArea().getProperMap();r.hasMoreElements();)
 				{
 					final Room R2=r.nextElement();
 					if((R2!=null)&&((R2.domainType()&Room.INDOORS)==0))

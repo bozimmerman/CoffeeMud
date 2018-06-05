@@ -403,7 +403,7 @@ public class Skill_CombatLog extends StdSkill
 				if(R!=null)
 				{
 					int numCounted=0;
-					for(Enumeration<MOB> r=R.inhabitants();r.hasMoreElements();)
+					for(final Enumeration<MOB> r=R.inhabitants();r.hasMoreElements();)
 					{
 						final MOB M=r.nextElement();
 						if((M!=mob)

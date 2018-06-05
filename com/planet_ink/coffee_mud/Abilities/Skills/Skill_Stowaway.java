@@ -297,7 +297,7 @@ public class Skill_Stowaway extends StdSkill
 		boolean success=proficiencyCheck(mob,0,auto);
 		if((destR==null)||(!rooms.contains(destR))||(!success))
 		{
-			for(Iterator<Room> i=rooms.iterator();i.hasNext();)
+			for(final Iterator<Room> i=rooms.iterator();i.hasNext();)
 			{
 				final Room R2=i.next();
 				if((R2 == R)

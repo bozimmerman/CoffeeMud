@@ -262,7 +262,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					{
 						final CharClass C=target.charStats().getCurrentClass();
 						boolean didSomething = false;
-						for(Enumeration<AbilityMapping> amap = CMLib.ableMapper().getClassAbles(C.ID(), true);amap.hasMoreElements();)
+						for(final Enumeration<AbilityMapping> amap = CMLib.ableMapper().getClassAbles(C.ID(), true);amap.hasMoreElements();)
 						{
 							AbilityMapping map = amap.nextElement();
 							if(target.fetchAbility(map.abilityID()) != null)

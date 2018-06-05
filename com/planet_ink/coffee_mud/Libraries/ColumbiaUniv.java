@@ -859,7 +859,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			teacher.charStats().setStat(CharStats.STAT_WISDOM, teacher.charStats().getStat(CharStats.STAT_WISDOM)+5);
 			teacher.charStats().setStat(CharStats.STAT_INTELLIGENCE, teacher.charStats().getStat(CharStats.STAT_INTELLIGENCE)+5);
 			final Set<String> oldSkillSet = new HashSet<String>();
-			for(Enumeration<Ability> a=student.abilities();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=student.abilities();a.hasMoreElements();)
 				oldSkillSet.add(a.nextElement().ID());
 			theA.teach(teacher,student);
 			teacher.recoverCharStats();

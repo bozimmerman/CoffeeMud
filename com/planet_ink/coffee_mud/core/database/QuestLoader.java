@@ -151,7 +151,7 @@ public class QuestLoader
 					final String questName=DBConnections.getRes(R,"CMQUESID");
 					final String questType=DBConnections.getRes(R,"CMQUTYPE");
 					boolean found=false;
-					for(Iterator<Quest> i=addThese.iterator();i.hasNext();)
+					for(final Iterator<Quest> i=addThese.iterator();i.hasNext();)
 					{
 						Quest Q=i.next();
 						if((Q.name().equals(questName))

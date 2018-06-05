@@ -48,7 +48,7 @@ public class AchievementData extends StdWebMacro
 
 	public void rebuildTrackers(String tattoo)
 	{
-		for(Enumeration<MOB> m = CMLib.players().players();m.hasMoreElements();)
+		for(final Enumeration<MOB> m = CMLib.players().players();m.hasMoreElements();)
 		{
 			final MOB M=m.nextElement();
 			if(M.playerStats()!=null)

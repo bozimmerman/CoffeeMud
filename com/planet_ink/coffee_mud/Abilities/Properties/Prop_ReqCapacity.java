@@ -153,7 +153,7 @@ public class Prop_ReqCapacity extends Property implements TriggeredAffect
 				doRooms.addAll(Collections.list(((Area)affected).getProperMap()));
 			else
 				doRooms.add(CMLib.map().roomLocation(affected));
-			for(Iterator<Room> r=doRooms.iterator();r.hasNext();)
+			for(final Iterator<Room> r=doRooms.iterator();r.hasNext();)
 			{
 				try
 				{

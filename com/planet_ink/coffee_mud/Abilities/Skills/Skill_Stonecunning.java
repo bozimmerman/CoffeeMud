@@ -129,7 +129,7 @@ public class Skill_Stonecunning extends StdSkill
 				msg.append(trapCheck(R2));
 			}
 		}
-		for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+		for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
 			if((I!=null)

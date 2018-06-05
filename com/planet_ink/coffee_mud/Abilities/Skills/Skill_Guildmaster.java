@@ -115,7 +115,7 @@ public class Skill_Guildmaster extends StdSkill
 		final String title = meM.playerStats().getActiveTitle();
 		if((title==null)||(title.length()==0))
 			return false;
-		for(Enumeration<CharClass> chkc = CMClass.charClasses(); chkc.hasMoreElements();)
+		for(final Enumeration<CharClass> chkc = CMClass.charClasses(); chkc.hasMoreElements();)
 		{
 			final CharClass chkC = chkc.nextElement();
 			if(((chkC.baseClass().equals(C.baseClass())))

@@ -998,7 +998,7 @@ public class StdAbility implements Ability
 		List<Item> containers=new ArrayList<Item>();
 		if(location!=null)
 		{
-			for(Enumeration<Item> i=location.items();i.hasMoreElements();)
+			for(final Enumeration<Item> i=location.items();i.hasMoreElements();)
 			{
 				Item C=i.nextElement();
 				if((C instanceof Container)
@@ -1008,7 +1008,7 @@ public class StdAbility implements Ability
 		}
 		else
 		{
-			for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
+			for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
 			{
 				Item C=i.nextElement();
 				if((C instanceof Container)

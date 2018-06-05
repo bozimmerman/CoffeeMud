@@ -337,7 +337,7 @@ public class GenAbility extends StdAbility
 		final Set<Ability> effects = new HashSet<Ability>();
 		if(mob != null)
 		{
-			for(Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 			{
 				final Ability A=a.nextElement();
 				if(A!=null)
@@ -353,7 +353,7 @@ public class GenAbility extends StdAbility
 		if(mob != null)
 		{
 			final Set<Ability> currentEffects=getEffectsList(mob);
-			for(Iterator<Ability> a=currentEffects.iterator();a.hasNext();)
+			for(final Iterator<Ability> a=currentEffects.iterator();a.hasNext();)
 			{
 				final Ability A=a.next();
 				if((A!=null)&&(!oldEffects.contains(A)))
@@ -590,7 +590,7 @@ public class GenAbility extends StdAbility
 							if(target!=null)
 							{
 								final Set<Ability> oldEffects = getEffectsList(target);
-								for(Enumeration<Ability> a2= ((AbilityContainer)P).abilities();a2.hasMoreElements();)
+								for(final Enumeration<Ability> a2= ((AbilityContainer)P).abilities();a2.hasMoreElements();)
 								{
 									A=a2.nextElement();
 									if(target.fetchEffect(A.ID())==null)

@@ -98,12 +98,12 @@ public class Thief_WarningShot extends ThiefSkill
 		if(P instanceof BoardableShip)
 		{
 			BoardableShip myShip=(BoardableShip)P;
-			for(Enumeration<Room> r=myShip.getShipArea().getProperMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=myShip.getShipArea().getProperMap();r.hasMoreElements();)
 			{
 				final Room R2=r.nextElement();
 				if((R2!=null)&&(R2.numItems()>0)&&(((R2.domainType()&Room.INDOORS)==0)))
 				{
-					for(Enumeration<Item> i=R2.items();i.hasMoreElements();)
+					for(final Enumeration<Item> i=R2.items();i.hasMoreElements();)
 					{
 						final Item I2=i.nextElement();
 						if((I2.container()==null)
@@ -139,7 +139,7 @@ public class Thief_WarningShot extends ThiefSkill
 				final Room R=r.nextElement();
 				if((R!=null)&&((R.domainType()&Room.INDOORS)==0)&&(R.numPCInhabitants()>0))
 				{
-					for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+					for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 					{
 						final MOB mob=m.nextElement();
 						if((mob!=null)&&(mob.isPlayer())&&(mob!=M))
@@ -151,7 +151,7 @@ public class Thief_WarningShot extends ThiefSkill
 		else
 		if(ship instanceof Rideable)
 		{
-			for(Enumeration<Rider> r= ((Rideable)ship).riders();r.hasMoreElements();)
+			for(final Enumeration<Rider> r= ((Rideable)ship).riders();r.hasMoreElements();)
 			{
 				final Rider R=r.nextElement();
 				if(R instanceof MOB)

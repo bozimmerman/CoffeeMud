@@ -87,7 +87,7 @@ public class Song_PirateShanty extends Song
 		int ct=0;
 		synchronized(singers)
 		{
-			for(Iterator<MOB> i=singers.iterator();i.hasNext();)
+			for(final Iterator<MOB> i=singers.iterator();i.hasNext();)
 			{
 				if(i.next().location()!=R)
 					i.remove();

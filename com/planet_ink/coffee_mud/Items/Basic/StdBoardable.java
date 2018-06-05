@@ -280,7 +280,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		final int len=((num.length()-x)/2)+1;
 		String oldName=A.Name();
 		A.setName(L("UNNAMED_@x1",num.substring(x,x+len)));
-		for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+		for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();
 			if((R!=null)&&(R.roomID().startsWith(oldName)))

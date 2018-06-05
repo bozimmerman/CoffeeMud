@@ -79,7 +79,7 @@ public class Prayer_CallUndead extends Prayer
 		Room oldRoom=null;
 		MOB target=null;
 		final Set<MOB> H=mob.getGroupMembers(new HashSet<MOB>());
-		for(Iterator<MOB> m=H.iterator();m.hasNext();)
+		for(final Iterator<MOB> m=H.iterator();m.hasNext();)
 		{
 			final MOB M=m.next();
 			if(!CMLib.flags().isUndead(M))

@@ -138,7 +138,7 @@ public class Spell_SummonEnemy extends Spell
 			{
 				final List<Item> destroyMe = new LinkedList<Item>();
 				final List<Item> addMe = new LinkedList<Item>();
-				for(Enumeration<Item> i=msg.source().items();i.hasMoreElements();)
+				for(final Enumeration<Item> i=msg.source().items();i.hasMoreElements();)
 				{
 					Item I=i.nextElement();
 					if(I!=null)

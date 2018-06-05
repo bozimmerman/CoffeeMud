@@ -113,7 +113,7 @@ public class Chant_Whirlpool extends Chant
 	
 	public boolean canEnterTheWhirlpool(Rideable R)
 	{
-		for(Enumeration<Rider> r2 = R.riders();r2.hasMoreElements();)
+		for(final Enumeration<Rider> r2 = R.riders();r2.hasMoreElements();)
 		{
 			Rider R2=r2.nextElement();
 			if((R2 instanceof MOB)&&(!canEnterTheWhirlpool((MOB)R2)))
@@ -175,7 +175,7 @@ public class Chant_Whirlpool extends Chant
 		if(affected instanceof Room)
 		{
 			final Room R=(Room)affected;
-			for(Enumeration<Item> r=R.items();r.hasMoreElements();)
+			for(final Enumeration<Item> r=R.items();r.hasMoreElements();)
 			{
 				final Item I=r.nextElement();
 				if((I!=null)&&(canEverEnterThePool(I)))
@@ -185,7 +185,7 @@ public class Chant_Whirlpool extends Chant
 						final Area A=((BoardableShip)I).getShipArea();
 						if(A!=null)
 						{
-							for(Enumeration<Room> r2=A.getProperMap();r2.hasMoreElements();)
+							for(final Enumeration<Room> r2=A.getProperMap();r2.hasMoreElements();)
 							{
 								Room R2=r2.nextElement();
 								if((R2!=null)&&((R2.domainType()&Room.INDOORS)==0))
@@ -199,7 +199,7 @@ public class Chant_Whirlpool extends Chant
 					targetRoom.moveItemTo(I);
 				}
 			}
-			for(Enumeration<MOB> r=R.inhabitants();r.hasMoreElements();)
+			for(final Enumeration<MOB> r=R.inhabitants();r.hasMoreElements();)
 			{
 				final MOB M=r.nextElement();
 				if((M!=null)&&(canEverEnterThePool(M)))

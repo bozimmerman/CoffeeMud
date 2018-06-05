@@ -181,7 +181,7 @@ public class MOBEater extends ActiveTicker
 				these.addElement(tastyMorselM);
 		}
 		
-		for(Enumeration<MOB> p=CMLib.players().players();p.hasMoreElements();)
+		for(final Enumeration<MOB> p=CMLib.players().players();p.hasMoreElements();)
 		{
 			final MOB M=p.nextElement();
 			if((M!=null)&&(M.location()==stomachR)&&(!CMLib.flags().isInTheGame(M,true))&&(!these.contains(M)))

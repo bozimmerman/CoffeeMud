@@ -428,7 +428,7 @@ public class Pirate extends Thief
 				Room R=CMLib.map().roomLocation(shipArea.getShipItem());
 				if(R!=null)
 				{
-					for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+					for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 					{
 						Item I=i.nextElement();
 						if((I instanceof BoardableShip)
@@ -466,7 +466,7 @@ public class Pirate extends Thief
 		if(affected instanceof MOB)
 		{
 			int numLimbs = 0;
-			for(Enumeration<Item> i=((MOB)affected).items();i.hasMoreElements();)
+			for(final Enumeration<Item> i=((MOB)affected).items();i.hasMoreElements();)
 			{
 				final Item I=i.nextElement();
 				if((I instanceof FalseLimb)

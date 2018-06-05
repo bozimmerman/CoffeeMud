@@ -169,7 +169,7 @@ public class Prop_PrivateProperty extends Property implements PrivateProperty
 						else
 						{
 							boolean expire=true;
-							for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+							for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 							{
 								final MOB M=m.nextElement();
 								if((M!=null)&&(CMLib.law().doesHaveWeakPrivilegesWith(M, this)))

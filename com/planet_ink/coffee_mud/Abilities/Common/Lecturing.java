@@ -156,7 +156,7 @@ public class Lecturing extends CommonSkill
 		||(this.lectureID.length()==0)
 		||(this.lectureName.length()==0))
 			return list;
-		for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 		{
 			final MOB M=m.nextElement();
 			if((M!=null)

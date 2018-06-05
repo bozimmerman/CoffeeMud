@@ -97,7 +97,7 @@ public class Sailor extends StdBehavior
 				final Room shipR=CMLib.map().roomLocation(shipI);
 				if(shipR!=null)
 				{
-					for(Enumeration<Item> i=shipR.items();i.hasMoreElements();)
+					for(final Enumeration<Item> i=shipR.items();i.hasMoreElements();)
 					{
 						Item I=i.nextElement();
 						if((I instanceof BoardableShip)&&(I!=shipI))
@@ -436,7 +436,7 @@ public class Sailor extends StdBehavior
 					{
 						if(mobRoom.numInhabitants()>1)
 						{
-							for(Enumeration<MOB> m=mobRoom.inhabitants();m.hasMoreElements();)
+							for(final Enumeration<MOB> m=mobRoom.inhabitants();m.hasMoreElements();)
 							{
 								final MOB M=m.nextElement();
 								if((M!=null)
@@ -510,7 +510,7 @@ public class Sailor extends StdBehavior
 					if(combatTech)
 					{
 						boolean roomHasWeapons = false;
-						for(Enumeration<Item> i=mobRoom.items();i.hasMoreElements();)
+						for(final Enumeration<Item> i=mobRoom.items();i.hasMoreElements();)
 						{
 							Item I=i.nextElement();
 							if(CMLib.combat().isAShipSiegeWeapon(I)
@@ -519,7 +519,7 @@ public class Sailor extends StdBehavior
 							&&(((AmmunitionWeapon)I).ammunitionRemaining() < ((AmmunitionWeapon)I).ammunitionCapacity()))
 							{
 								// found one to load!
-								for(Enumeration<Item> i2=mob.items();i2.hasMoreElements();)
+								for(final Enumeration<Item> i2=mob.items();i2.hasMoreElements();)
 								{
 									Item I2=i2.nextElement();
 									if((I2 instanceof Ammunition)
@@ -530,7 +530,7 @@ public class Sailor extends StdBehavior
 										return true;
 									}
 								}
-								for(Enumeration<Item> i2=mobRoom.items();i2.hasMoreElements();)
+								for(final Enumeration<Item> i2=mobRoom.items();i2.hasMoreElements();)
 								{
 									Item I2=i2.nextElement();
 									if((I2 instanceof Ammunition)
@@ -548,7 +548,7 @@ public class Sailor extends StdBehavior
 						if(targetSpeed == 0)
 							targetSpeed = 1;
 						final PairList<Weapon,int[]> aimings = sailShip.getSiegeWeaponAimings();
-						for(Enumeration<Item> i=mobRoom.items();i.hasMoreElements();)
+						for(final Enumeration<Item> i=mobRoom.items();i.hasMoreElements();)
 						{
 							Item I=i.nextElement();
 							if(CMLib.combat().isAShipSiegeWeapon(I))
@@ -570,7 +570,7 @@ public class Sailor extends StdBehavior
 						boolean isSecondFiddle=false;
 						if(roomHasWeapons)
 						{
-							for(Enumeration<MOB> m=mobRoom.inhabitants();m.hasMoreElements();)
+							for(final Enumeration<MOB> m=mobRoom.inhabitants();m.hasMoreElements();)
 							{
 								final MOB M=m.nextElement();
 								if(M==mob)
@@ -595,7 +595,7 @@ public class Sailor extends StdBehavior
 								final Exit nextE=mobRoom.getExitInDir(d);
 								if((nextR!=null)&&(nextE!=null)&&(nextE.isOpen()))
 								{
-									for(Enumeration<Item> i=nextR.items();i.hasMoreElements();)
+									for(final Enumeration<Item> i=nextR.items();i.hasMoreElements();)
 									{
 										Item I=i.nextElement();
 										if(CMLib.combat().isAShipSiegeWeapon(I))
@@ -623,7 +623,7 @@ public class Sailor extends StdBehavior
 					{
 						if (distanceToTarget==0)
 						{
-							for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
+							for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
 							{
 								Item I=i.nextElement();
 								if((I!=null)
@@ -634,7 +634,7 @@ public class Sailor extends StdBehavior
 							final Item heldI=mob.fetchHeldItem();
 							if((heldI != null)&&(heldI.ID().endsWith("Grapples")))
 								mob.enqueCommand(new XVector<String>("THROW",heldI.Name(),this.targetShipItem.Name()), 0, 0);
-							for(Enumeration<Item> i=mobRoom.items();i.hasMoreElements();)
+							for(final Enumeration<Item> i=mobRoom.items();i.hasMoreElements();)
 							{
 								Item I=i.nextElement();
 								if((I!=null)
@@ -715,7 +715,7 @@ public class Sailor extends StdBehavior
 							mob.enqueCommand(new XVector<String>("COURSE"), 0, 0);
 							mob.enqueCommand(new XVector<String>("LOWER","ANCHOR"), 0, 0);
 						}
-						for(Enumeration<Item> i=mobRoom.items();i.hasMoreElements();)
+						for(final Enumeration<Item> i=mobRoom.items();i.hasMoreElements();)
 						{
 							Item I=i.nextElement();
 							if((I!=null)&&(I.ID().endsWith("Grapples")))
@@ -725,7 +725,7 @@ public class Sailor extends StdBehavior
 					final Room shipRoom=CMLib.map().roomLocation(loyalShipItem);
 					if((aggressive)&&(shipRoom!=null))
 					{
-						for(Enumeration<Item> i=shipRoom.items();i.hasMoreElements();)
+						for(final Enumeration<Item> i=shipRoom.items();i.hasMoreElements();)
 						{
 							Item I=i.nextElement();
 							if((I!=null)
@@ -738,7 +738,7 @@ public class Sailor extends StdBehavior
 								final LinkedList<MOB> elligible=new LinkedList<MOB>();
 								if(I instanceof Rideable)
 								{
-									for(Enumeration<Rider> r=((Rideable)I).riders();r.hasMoreElements();)
+									for(final Enumeration<Rider> r=((Rideable)I).riders();r.hasMoreElements();)
 									{
 										Rider R=r.nextElement();
 										if((R instanceof MOB)
@@ -751,12 +751,12 @@ public class Sailor extends StdBehavior
 									Area shipArea=((BoardableShip)I).getShipArea();
 									if(shipArea!=null)
 									{
-										for(Enumeration<Room> r=shipArea.getProperMap();r.hasMoreElements();)
+										for(final Enumeration<Room> r=shipArea.getProperMap();r.hasMoreElements();)
 										{
 											Room R=r.nextElement();
 											if(R!=null)
 											{
-												for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+												for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 												{
 													final MOB M=m.nextElement();
 													if((M!=null)

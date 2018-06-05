@@ -92,7 +92,7 @@ public class Prop_ItemSlotFiller extends Property
 		if((affects.length==0)&&(this.affecting()!=null)&&(this.affecting().numEffects()>1))
 		{
 			final List<Ability> newAffects=new LinkedList<Ability>();
-			for(Enumeration<Ability> a=this.affecting().effects();a.hasMoreElements();)
+			for(final Enumeration<Ability> a=this.affecting().effects();a.hasMoreElements();)
 			{
 				Ability A=a.nextElement();
 				if((A!=this)&&(!skips.contains(A.ID().toUpperCase())))

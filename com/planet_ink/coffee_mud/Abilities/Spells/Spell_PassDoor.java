@@ -113,7 +113,7 @@ public class Spell_PassDoor extends Spell
 
 	protected int highestLevelHere(final MOB mob, final Room R, int highestLevel)
 	{
-		for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+		for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 		{
 			final MOB M=m.nextElement();
 			if((M!=null)
@@ -122,7 +122,7 @@ public class Spell_PassDoor extends Spell
 			&&(M.phyStats().level()>highestLevel))
 				highestLevel=M.phyStats().level();
 		}
-		for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+		for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
 			if((I!=null)

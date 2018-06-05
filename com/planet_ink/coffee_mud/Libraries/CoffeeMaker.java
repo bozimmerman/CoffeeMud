@@ -490,7 +490,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(newOne instanceof Container)
 				IIDmap.put(CMLib.xml().getValFromPieces(iblk.contents(),"IID"),(Container)newOne);
 		}
-		for(Enumeration<Item> i=coll.items();i.hasMoreElements();)
+		for(final Enumeration<Item> i=coll.items();i.hasMoreElements();)
 		{
 			final Item item=i.nextElement();
 			if(item!=null)
@@ -2046,14 +2046,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(xml==null)
 			return unpackErr("CataDats","null 'xml'");
 		final List<Map<String,CataData>> sets = new ArrayList<Map<String,CataData>>();
-		for(Iterator<XMLLibrary.XMLTag> t= xml.iterator();t.hasNext();)
+		for(final Iterator<XMLLibrary.XMLTag> t= xml.iterator();t.hasNext();)
 		{
 			XMLLibrary.XMLTag tag = t.next();
 			if(tag.tag().equalsIgnoreCase("CATADATAS"))
 			{
 				final Map<String,CataData> set = new TreeMap<String,CataData>();
 				sets.add(set);
-				for(Iterator<XMLLibrary.XMLTag> t2= tag.contents().iterator();t2.hasNext();)
+				for(final Iterator<XMLLibrary.XMLTag> t2= tag.contents().iterator();t2.hasNext();)
 				{
 					XMLLibrary.XMLTag cataDataTag = t2.next();
 					if(cataDataTag.tag().equalsIgnoreCase("CATALOGDATA"))

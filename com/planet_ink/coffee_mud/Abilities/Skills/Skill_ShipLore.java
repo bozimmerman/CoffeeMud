@@ -191,7 +191,7 @@ public class Skill_ShipLore extends StdSkill
 					final Room R1=r.nextElement();
 					if(R1 != null)
 					{
-						for(Enumeration<Item> i=R1.items();i.hasMoreElements();)
+						for(final Enumeration<Item> i=R1.items();i.hasMoreElements();)
 						{
 							final Item I=i.nextElement();
 							if((I instanceof AmmunitionWeapon)
@@ -317,7 +317,7 @@ public class Skill_ShipLore extends StdSkill
 			if(expertise >= 7)
 			{
 				final List<String> affects=new ArrayList<String>();
-				for(Enumeration<Ability> a=shipI.effects();a.hasMoreElements();)
+				for(final Enumeration<Ability> a=shipI.effects();a.hasMoreElements();)
 					affects.add(a.nextElement().Name());
 				if(affects.size()==0)
 					tidbits.add(L("it is under no special effects"));

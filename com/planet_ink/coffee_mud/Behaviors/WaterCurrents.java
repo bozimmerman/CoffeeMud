@@ -182,7 +182,7 @@ public class WaterCurrents extends ActiveTicker
 						{
 							if(I instanceof BoardableShip)
 							{
-								for(Enumeration<Room> r = ((BoardableShip)I).getShipArea().getProperMap();r.hasMoreElements();)
+								for(final Enumeration<Room> r = ((BoardableShip)I).getShipArea().getProperMap();r.hasMoreElements();)
 								{
 									final Room R3=r.nextElement();
 									if((R3!=null)&&((R3.domainType()&Room.INDOORS)==0))

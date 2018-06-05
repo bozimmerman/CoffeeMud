@@ -358,7 +358,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 			rest.append(CMParms.toTightListString(prideStats[period.ordinal()])).append(";");
 		rest.append("</PRIDESTATS>");
 		rest.append("<ACHIEVEMENTS");
-		for(Iterator<Tracker> i=achievementers.values().iterator();i.hasNext();)
+		for(final Iterator<Tracker> i=achievementers.values().iterator();i.hasNext();)
 		{
 			final Tracker T = i.next();
 			if(T.getAchievement().isSavableTracker() && (T.getCount(null) != 0))
@@ -405,7 +405,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		}
 		final XMLTag achievePiece = xmlLib.getPieceFromPieces(xml, "ACHIEVEMENTS");
 		achievementers.clear();
-		for(Enumeration<Achievement> a=CMLib.achievements().achievements(Agent.ACCOUNT);a.hasMoreElements();)
+		for(final Enumeration<Achievement> a=CMLib.achievements().achievements(Agent.ACCOUNT);a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
 			if((achievePiece != null) && achievePiece.parms().containsKey(A.getTattoo()))
@@ -543,7 +543,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 		{
 			if(thinPlayers.size() != players.size())
 			{
-				for(Enumeration<String> e=getPlayers();e.hasMoreElements();)
+				for(final Enumeration<String> e=getPlayers();e.hasMoreElements();)
 				{
 					final String name = e.nextElement();
 					PlayerLibrary.ThinPlayer tP = CMLib.database().getThinUser(name);

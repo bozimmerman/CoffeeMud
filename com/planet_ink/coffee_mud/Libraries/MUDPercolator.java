@@ -3154,7 +3154,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			CMLib.threads().suspendResumeRecurse(room, false, true);
 			if(CMLib.law().getLandTitle(room)!=null)
 				return false;
-			for(Enumeration<Item> i=room.items();i.hasMoreElements();)
+			for(final Enumeration<Item> i=room.items();i.hasMoreElements();)
 			{
 				final Item I=i.nextElement();
 				if(I==null)
@@ -3178,7 +3178,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					}
 				}
 			}
-			for(Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
+			for(final Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
 			{
 				final MOB M=m.nextElement();
 				if((M!=null)
@@ -3203,7 +3203,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						M.basePhyStats().setDamage(M.basePhyStats().damage()+dmgDif);
 						M.basePhyStats().setAttackAdjustment(M.basePhyStats().attackAdjustment()+attDif);
 					}
-					for(Enumeration<Item> mi=M.items();mi.hasMoreElements();)
+					for(final Enumeration<Item> mi=M.items();mi.hasMoreElements();)
 					{
 						Item mI=mi.nextElement();
 						if(mI!=null)

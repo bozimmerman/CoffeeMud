@@ -95,7 +95,7 @@ public class Achievements extends StdCommand
 	{
 		List<Achievement> useList = new LinkedList<Achievement>();
 		HashSet<String> ignoredStarters = new HashSet<String>();
-		for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+		for(final Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
 		{
 			final Achievement A=a.nextElement();
 			final String tattooName = A.getTattoo();
@@ -126,7 +126,7 @@ public class Achievements extends StdCommand
 		if(account != null)
 		{
 			List<Achievement> awards=new Vector<Achievement>(1);
-			for(Enumeration<Tattoo> t=account.tattoos();t.hasMoreElements();)
+			for(final Enumeration<Tattoo> t=account.tattoos();t.hasMoreElements();)
 			{
 				final Tattoo T = t.nextElement();
 				final Achievement A=CMLib.achievements().getAchievement(T.getTattooName());
@@ -338,7 +338,7 @@ public class Achievements extends StdCommand
 			final Tattooable T = getTattooable(agent, whoM);
 			if(T!=null)
 			{
-				for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+				for(final Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
 				{
 					final Achievement A=a.nextElement();
 					if(T.findTattoo(A.getTattoo())!=null)
@@ -372,7 +372,7 @@ public class Achievements extends StdCommand
 				{
 					final List<Achievement> useList = getLowestNumberedTattoos(agent,WonList);
 					int padding=done.length()+1;
-					for(Iterator<Achievement> a=useList.iterator();a.hasNext();)
+					for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
 						final Achievement A=a.next();
 						if(!WonList.contains(A.getTattoo()))
@@ -388,7 +388,7 @@ public class Achievements extends StdCommand
 							}
 						}
 					}
-					for(Iterator<Achievement> a=useList.iterator();a.hasNext();)
+					for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
 						final Achievement A=a.next();
 						if(WonList.contains(A.getTattoo()))
@@ -410,7 +410,7 @@ public class Achievements extends StdCommand
 				{
 					int padding=done.length()+1;
 					final List<Achievement> useList = getLowestNumberedTattoos(agent,WonList);
-					for(Iterator<Achievement> a=useList.iterator();a.hasNext();)
+					for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
 						final Achievement A=a.next();
 						if(!WonList.contains(A.getTattoo()))
@@ -429,7 +429,7 @@ public class Achievements extends StdCommand
 							}
 						}
 					}
-					for(Iterator<Achievement> a=useList.iterator();a.hasNext();)
+					for(final Iterator<Achievement> a=useList.iterator();a.hasNext();)
 					{
 						final Achievement A=a.next();
 						if(WonList.contains(A.getTattoo()))
@@ -452,7 +452,7 @@ public class Achievements extends StdCommand
 				}
 				case WON:
 				{
-					for(Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
+					for(final Enumeration<Achievement> a=CMLib.achievements().achievements(agent);a.hasMoreElements();)
 					{
 						final Achievement A=a.nextElement();
 						if(WonList.contains(A.getTattoo()))

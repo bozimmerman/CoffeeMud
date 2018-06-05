@@ -307,7 +307,7 @@ public class CoffeeTableRows extends StdWebMacro
 					V.remove(v);
 				}
 			}
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=a.nextElement();
 				if((!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD))&&(!(A instanceof SpaceObject)))

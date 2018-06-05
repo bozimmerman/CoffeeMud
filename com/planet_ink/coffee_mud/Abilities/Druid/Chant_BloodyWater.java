@@ -175,7 +175,7 @@ public class Chant_BloodyWater extends Chant
 				{
 					if((R!=null)&&(R!=room))
 					{
-						for(Enumeration<MOB> m= R.inhabitants();m.hasMoreElements();)
+						for(final Enumeration<MOB> m= R.inhabitants();m.hasMoreElements();)
 						{
 							final MOB M = m.nextElement();
 							if(CMLib.flags().isAnimalIntelligence(M)
@@ -203,7 +203,7 @@ public class Chant_BloodyWater extends Chant
 			}
 			if(bloodyMobs.size()>0)
 			{
-				for(Iterator<MOB> m=bloodyMobs.iterator();m.hasNext();)
+				for(final Iterator<MOB> m=bloodyMobs.iterator();m.hasNext();)
 				{
 					MOB M=m.next();
 					if(M.location()==room)

@@ -219,7 +219,7 @@ public class PlanarAbility extends StdAbility
 				List<Pair<String,String>> enableAs=CMParms.parseSpaceParenList(enables);
 				Integer perLevel=new Integer(CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL));
 				Integer numSkills=Integer.valueOf(Integer.MAX_VALUE);
-				for(Iterator<Pair<String,String>> p=enableAs.iterator();p.hasNext();)
+				for(final Iterator<Pair<String,String>> p=enableAs.iterator();p.hasNext();)
 				{
 					Pair<String,String> P=p.next();
 					if(P.first.toLowerCase().equals("number"))
@@ -239,7 +239,7 @@ public class PlanarAbility extends StdAbility
 				if(enableAs.size()>0)
 				{
 					PairList<String,String> addThese = new PairVector<String,String>();
-					for(Iterator<Pair<String,String>> p = enableAs.iterator();p.hasNext();)
+					for(final Iterator<Pair<String,String>> p = enableAs.iterator();p.hasNext();)
 					{
 						Pair<String,String> P=p.next();
 						Ability A=CMClass.getAbility(P.first);
@@ -254,7 +254,7 @@ public class PlanarAbility extends StdAbility
 							if(domain > 0)
 								domain = domain << 5;
 							int acode=CMParms.indexOf(Ability.ACODE_DESCS, P.first);
-							for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+							for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 							{
 								A=a.nextElement();
 								if((A.Name().toUpperCase().equals(P.first))
@@ -465,7 +465,7 @@ public class PlanarAbility extends StdAbility
 			{
 				List<Physical> destroyMe=new ArrayList<Physical>();
 				Set<Rider> protSet = new HashSet<Rider>();
-				for(Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
+				for(final Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
 				{
 					final MOB M=m.nextElement();
 					if((M!=null)&&(M.isPlayer()))
@@ -474,13 +474,13 @@ public class PlanarAbility extends StdAbility
 						M.getGroupMembersAndRideables(protSet);
 					}
 				}
-				for(Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
+				for(final Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
 				{
 					final MOB M=m.nextElement();
 					if((M!=null) && (!M.isPlayer()) && (!protSet.contains(M)))
 						destroyMe.add(M);
 				}
-				for(Enumeration<Item> i=room.items();i.hasMoreElements();)
+				for(final Enumeration<Item> i=room.items();i.hasMoreElements();)
 				{
 					final Item I=i.nextElement();
 					if((I!=null)&&(!protSet.contains(I)))
@@ -491,7 +491,7 @@ public class PlanarAbility extends StdAbility
 			}
 			int allLevelAdj=CMath.s_int(planeVars.get(PlanarVar.LEVELADJ.toString()));
 			List<Item> delItems=new ArrayList<Item>(0);
-			for(Enumeration<Item> i=room.items();i.hasMoreElements();)
+			for(final Enumeration<Item> i=room.items();i.hasMoreElements();)
 			{
 				final Item I=i.nextElement();
 				if(I==null)
@@ -534,7 +534,7 @@ public class PlanarAbility extends StdAbility
 			}
 			for(Item I : delItems)
 				I.destroy();
-			for(Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
+			for(final Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
 			{
 				final MOB M=m.nextElement();
 				if((M!=null)
@@ -610,7 +610,7 @@ public class PlanarAbility extends StdAbility
 						M.removeFaction(CMLib.factions().AlignID());
 						M.addFaction(CMLib.factions().AlignID(), CMath.s_int(align));
 					}
-					for(Enumeration<Item> mi=M.items();mi.hasMoreElements();)
+					for(final Enumeration<Item> mi=M.items();mi.hasMoreElements();)
 					{
 						Item mI=mi.nextElement();
 						if((mI!=null)&&(invoker!=null))
@@ -642,7 +642,7 @@ public class PlanarAbility extends StdAbility
 					if(behavaffid!=null)
 					{
 						String changeToID;
-						for(Enumeration<Behavior> b=M.behaviors();b.hasMoreElements();)
+						for(final Enumeration<Behavior> b=M.behaviors();b.hasMoreElements();)
 						{
 							Behavior B=b.nextElement();
 							if((B!=null)&&((changeToID=CMParms.getParmStr(behavaffid, B.ID(), "")).length()>0))
@@ -757,7 +757,7 @@ public class PlanarAbility extends StdAbility
 			if(mobCopy>0)
 			{
 				final List<MOB> list=new ArrayList<MOB>(room.numInhabitants());
-				for(Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
+				for(final Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
 				{
 					final MOB M=m.nextElement();
 					if((M!=null)
@@ -823,7 +823,7 @@ public class PlanarAbility extends StdAbility
 				{
 					final MOB M=(MOB)affected;
 					int neg=0;
-					for(Enumeration<Item> i=M.items();i.hasMoreElements();)
+					for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
 					{
 						Item I=i.nextElement();
 						if((I instanceof Armor)
@@ -852,12 +852,12 @@ public class PlanarAbility extends StdAbility
 			if(((this.recoverRate>0)||(this.fatigueRate>0)) &&(--this.recoverTick <= 0) && (this.planeArea!=null))
 			{
 				this.recoverTick = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
-				for(Enumeration<Room> r=planeArea.getFilledProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=planeArea.getFilledProperMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
 					if((R!=null)&&(R.numPCInhabitants()>0))
 					{
-						for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+						for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 						{
 							final MOB M=m.nextElement();
 							for(int i=0;i<this.recoverRate;i++)
@@ -1053,14 +1053,14 @@ public class PlanarAbility extends StdAbility
 	{
 		if(planeA != null)
 		{
-			for(Enumeration<Room> r=planeA.getProperMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=planeA.getProperMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
 				if(R!=null)
 				{
 					if(R.numInhabitants()>0)
 						R.showHappens(CMMsg.MSG_OK_ACTION, L("This plane is fading away..."));
-					for(Enumeration<MOB> i=R.inhabitants();i.hasMoreElements();)
+					for(final Enumeration<MOB> i=R.inhabitants();i.hasMoreElements();)
 					{
 						MOB M=i.nextElement();
 						if((M!=null)&&(M.isPlayer()))
@@ -1138,7 +1138,7 @@ public class PlanarAbility extends StdAbility
 
 	protected PlanarAbility getPlanarAbility(Physical P)
 	{
-		for(Enumeration<Ability> a=P.effects();a.hasMoreElements();)
+		for(final Enumeration<Ability> a=P.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
 			if(A instanceof PlanarAbility)

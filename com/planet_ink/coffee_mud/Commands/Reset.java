@@ -708,7 +708,7 @@ public class Reset extends StdCommand
 					}
 				}
 				PairList<String,StringBuilder> skills=new PairVector<String,StringBuilder>();
-				for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+				for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
 					final Ability A=e.nextElement();
 					if(help.filter.passesFilter(A))
@@ -1716,7 +1716,7 @@ public class Reset extends StdCommand
 		if(s.equalsIgnoreCase("mixedraces")&&(CMSecurity.isASysOp(mob)))
 		{
 			List<List<Race>> raceSets=new ArrayList<List<Race>>();
-			for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+			for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 			{
 				Race R=r.nextElement();
 				if(R.isGeneric())

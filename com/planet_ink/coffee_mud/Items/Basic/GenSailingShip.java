@@ -1349,7 +1349,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						final Room R=CMLib.map().roomLocation(msg.source());
 						if((R!=null)&&(R.show(msg.source(), this, CMMsg.TYP_ADVANCE, L("<S-NAME> tender(s) @x1 alonside <T-NAME>, wating to be raised on board.",msg.source().riding().name()))))
 						{
-							for(Iterator<Item> i=smallTenderRequests.iterator();i.hasNext();)
+							for(final Iterator<Item> i=smallTenderRequests.iterator();i.hasNext();)
 							{
 								final Item I=i.next();
 								if(!R.isContent(I))
@@ -1500,7 +1500,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			clearTacticalModeHelper();
 			if(coords != null)
 			{
-				for(Iterator<Item> s = coords.firstIterator();s.hasNext();)
+				for(final Iterator<Item> s = coords.firstIterator();s.hasNext();)
 				{
 					Item I=s.next();
 					if((I instanceof GenSailingShip)
@@ -1683,7 +1683,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					PairList<Item,int[]> coords = this.coordinates;
 					if(coords != null)
 					{
-						for(Iterator<Item> i= coords.firstIterator(); i.hasNext();)
+						for(final Iterator<Item> i= coords.firstIterator(); i.hasNext();)
 						{
 							Item I=i.next();
 							if((I instanceof GenSailingShip)
@@ -1700,14 +1700,14 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			if(this.amInTacticalMode())
 			{
 				final List<Weapon> weapons = new LinkedList<Weapon>();
-				for(Enumeration<Room> r=this.getShipArea().getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=this.getShipArea().getProperMap();r.hasMoreElements();)
 				{
 					try
 					{
 						final Room R=r.nextElement();
 						if(R!=null)
 						{
-							for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+							for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 							{
 								try
 								{
@@ -2026,12 +2026,12 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 							ArrayList<Pair<MOB,Room>> targets = new ArrayList<Pair<MOB,Room>>(5);
 							if(A!=null)
 							{
-								for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+								for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 								{
 									final Room R=r.nextElement();
 									if((R!=null)&&((R.domainType()&Room.INDOORS)==0))
 									{
-										for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+										for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 											targets.add(new Pair<MOB,Room>(m.nextElement(),R));
 									}
 								}
@@ -2631,7 +2631,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 				R2=findOceanRoom(R.getArea());
 			if(R2==null)
 			{
-				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
 					R2=findOceanRoom(a.nextElement());
 					if(R2!=null)
@@ -2695,12 +2695,12 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		{
 			final LegalLibrary law=CMLib.law();
 			int legalLevel=0;
-			for(Enumeration<Room> r=myArea.getProperMap();r.hasMoreElements() && (legalLevel<2);)
+			for(final Enumeration<Room> r=myArea.getProperMap();r.hasMoreElements() && (legalLevel<2);)
 			{
 				final Room R=r.nextElement();
 				if((R!=null)&&(R.numInhabitants()>0))
 				{
-					for(Enumeration<MOB> i=R.inhabitants();i.hasMoreElements();)
+					for(final Enumeration<MOB> i=R.inhabitants();i.hasMoreElements();)
 					{
 						final MOB M=i.nextElement();
 						if(M != null)

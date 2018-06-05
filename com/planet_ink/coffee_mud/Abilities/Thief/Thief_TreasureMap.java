@@ -505,7 +505,7 @@ public class Thief_TreasureMap extends ThiefSkill
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 		final List<Room> rooms=CMLib.tracking().getRadiantRooms(mob.location(), flags, range);
 		final Set<String> mapsDone=new TreeSet<String>();
-		for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
+		for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
 			if(I!=null)

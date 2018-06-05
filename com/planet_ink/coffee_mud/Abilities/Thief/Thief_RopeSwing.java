@@ -256,7 +256,7 @@ public class Thief_RopeSwing extends ThiefSkill
 					swing.newDistance = newDistance;
 					swing.newTarget = newTarget;
 				}
-				for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+				for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 				{
 					MOB M=m.nextElement();
 					if((M!=null)

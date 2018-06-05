@@ -870,7 +870,7 @@ public class Destroy extends StdCommand
 		tattoo = A.getTattoo();
 		if(CMLib.achievements().deleteAchievement(tattoo)!=null)
 		{
-			for(Enumeration<MOB> m = CMLib.players().players();m.hasMoreElements();)
+			for(final Enumeration<MOB> m = CMLib.players().players();m.hasMoreElements();)
 			{
 				final MOB M=m.nextElement();
 				if(M.playerStats()!=null)

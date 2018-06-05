@@ -572,7 +572,7 @@ public class StdCharClass implements CharClass
 		final CharCreationLibrary loginLib = CMLib.login();
 		if((!CMClass.races().hasMoreElements())||(CMLib.login()==null))
 			return "None";
-		for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+		for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 		{
 			final Race R=r.nextElement();
 			if(loginLib.isAvailableRace(R))

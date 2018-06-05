@@ -281,7 +281,7 @@ public class WeatherAffects extends PuddleMaker
 								final Area shipArea=((BoardableShip)riding).getShipArea();
 								if(shipArea != null)
 								{
-									for(Enumeration<Room> sr=shipArea.getProperMap();sr.hasMoreElements();)
+									for(final Enumeration<Room> sr=shipArea.getProperMap();sr.hasMoreElements();)
 									{
 										final Room sR=sr.nextElement();
 										if((sR!=null)&&((sR.domainType()&Room.INDOORS)==0))

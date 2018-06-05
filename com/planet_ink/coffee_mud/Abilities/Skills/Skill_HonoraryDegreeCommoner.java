@@ -105,7 +105,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 		if(degrees == null)
 		{
 			final List<CharClass> classes=new ArrayList<CharClass>();
-			for(Enumeration<CharClass> c = CMClass.charClasses();c.hasMoreElements();)
+			for(final Enumeration<CharClass> c = CMClass.charClasses();c.hasMoreElements();)
 			{
 				final CharClass C=c.nextElement();
 				if(C.baseClass().equals(getBaseClassID())
@@ -153,7 +153,7 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 						fail=false;
 						try
 						{
-							for(Enumeration<Ability> a=collection.abilities();a.hasMoreElements();)
+							for(final Enumeration<Ability> a=collection.abilities();a.hasMoreElements();)
 							{
 								final Ability A=a.nextElement();
 								for(int ci=0;ci<allDegrees.length;ci++)

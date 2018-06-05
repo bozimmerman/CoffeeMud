@@ -129,7 +129,7 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 						if(A!=null)
 						{
 							List<Physical> stuff = new ArrayList<Physical>();
-							for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+							for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 							{
 								Room R=r.nextElement();
 								if((R!=null)&&((R.domainType()&Room.INDOORS)==0))

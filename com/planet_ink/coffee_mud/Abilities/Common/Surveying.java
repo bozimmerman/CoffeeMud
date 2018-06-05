@@ -107,7 +107,7 @@ public class Surveying extends CommonSkill
 						msgBuilder.append(L("^HLinks to   : ^N"));
 						List<String> lAreasV=new ArrayList<String>();
 						Map<String,int[]> rTypesV=new TreeMap<String,int[]>();
-						for(Enumeration<Room> r= A.getFilledProperMap();r.hasMoreElements();)
+						for(final Enumeration<Room> r= A.getFilledProperMap();r.hasMoreElements();)
 						{
 							final Room R=r.nextElement();
 							if((R==null)
@@ -394,7 +394,7 @@ public class Surveying extends CommonSkill
 	public Item findCatalogBook(final MOB mob, final Physical itemI)
 	{
 		Item catalogI=null;
-		for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
+		for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
 		{
 			final Item I=i.nextElement();
 			if((I.container()==null)
@@ -404,7 +404,7 @@ public class Surveying extends CommonSkill
 		}
 		if(catalogI==null)
 		{
-			for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
+			for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
 			{
 				final Item I=i.nextElement();
 				if((I.container()==null)
@@ -414,7 +414,7 @@ public class Surveying extends CommonSkill
 		}
 		if(catalogI==null)
 		{
-			for(Enumeration<Item> i=mob.items();i.hasMoreElements();)
+			for(final Enumeration<Item> i=mob.items();i.hasMoreElements();)
 			{
 				final Item I=i.nextElement();
 				if(isPossibleCatalog(mob, I, itemI, true))

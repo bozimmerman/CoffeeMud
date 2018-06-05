@@ -108,7 +108,7 @@ public class Tell extends StdCommand
 			final PlayerAccount P=CMLib.players().getAccount(targetName);
 			if(P!=null)
 			{
-				for(Enumeration<String> p = P.getPlayers(); p.hasMoreElements(); )
+				for(final Enumeration<String> p = P.getPlayers(); p.hasMoreElements(); )
 				{
 					String playerName=p.nextElement();
 					targetM=CMLib.sessions().findPlayerOnline(playerName,true);

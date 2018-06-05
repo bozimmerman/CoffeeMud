@@ -2090,7 +2090,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				return true;
 			if(A instanceof AbilityContainer)
 			{
-				for(Enumeration<Ability> a2=((AbilityContainer)A).allAbilities();a2.hasMoreElements();)
+				for(final Enumeration<Ability> a2=((AbilityContainer)A).allAbilities();a2.hasMoreElements();)
 				{
 					final Ability A2=a2.nextElement();
 					if((A2!=null)&&(CMath.bset(A2.flags(),Ability.FLAG_INTOXICATING)))

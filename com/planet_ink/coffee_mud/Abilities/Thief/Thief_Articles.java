@@ -310,7 +310,7 @@ public class Thief_Articles extends ThiefSkill
 		int numCrew=0;
 		int numDecks=0;
 		int[] numTypes=new int[CrewType.values().length];
-		for(Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
+		for(final Enumeration<Room> r=myShipArea.getProperMap();r.hasMoreElements();)
 		{
 			final Room R2=r.nextElement();
 			switch(R2.domainType())
@@ -324,7 +324,7 @@ public class Thief_Articles extends ThiefSkill
 				numRooms++;
 				break;
 			}
-			for(Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
+			for(final Enumeration<MOB> m=R2.inhabitants();m.hasMoreElements();)
 			{
 				final MOB M=m.nextElement();
 				if((M!=null)

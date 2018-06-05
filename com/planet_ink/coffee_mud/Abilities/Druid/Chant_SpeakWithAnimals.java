@@ -224,7 +224,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 			final Room room=mob.location();
 			if(room != null)
 			{
-				for(Enumeration<MOB> m = room.inhabitants(); m.hasMoreElements(); )
+				for(final Enumeration<MOB> m = room.inhabitants(); m.hasMoreElements(); )
 				{
 					final MOB M=m.nextElement();
 					if((M!=null)
@@ -303,7 +303,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 			final Room room=mob.location();
 			if(room != null)
 			{
-				for(Enumeration<MOB> m = room.inhabitants(); m.hasMoreElements(); )
+				for(final Enumeration<MOB> m = room.inhabitants(); m.hasMoreElements(); )
 				{
 					final MOB M=m.nextElement();
 					if((M!=null)
@@ -350,7 +350,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 							lA.okMessage(mob, msg);
 					}
 				}
-				for(Enumeration<MOB> m = room.inhabitants(); m.hasMoreElements(); )
+				for(final Enumeration<MOB> m = room.inhabitants(); m.hasMoreElements(); )
 				{
 					final MOB M=m.nextElement();
 					if((M!=null)

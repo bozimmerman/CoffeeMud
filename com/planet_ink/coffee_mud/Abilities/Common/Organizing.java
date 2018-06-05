@@ -126,7 +126,7 @@ public class Organizing extends CommonSkill
 						else
 						if(building instanceof ItemPossessor)
 						{
-							for(Enumeration<Item> i=((ItemPossessor)building).items();i.hasMoreElements();)
+							for(final Enumeration<Item> i=((ItemPossessor)building).items();i.hasMoreElements();)
 							{
 								final Item I=i.nextElement();
 								if((I!=null)&&(I.container()==null))

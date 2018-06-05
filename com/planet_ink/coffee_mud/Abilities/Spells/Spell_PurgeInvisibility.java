@@ -157,7 +157,7 @@ public class Spell_PurgeInvisibility extends Spell
 			if((R!=null)&&(R.okMessage(mob,msg)))
 			{
 				R.send(mob,msg);
-				for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+				for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 				{
 					final MOB M=m.nextElement();
 					if(M!=null)
@@ -170,7 +170,7 @@ public class Spell_PurgeInvisibility extends Spell
 							else
 								beneficialAffect(mob,M,asLevel,0);
 						}
-						for(Enumeration<Item> i=M.items();i.hasMoreElements();)
+						for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
 						{
 							final Item I=i.nextElement();
 							if(I!=null)
@@ -188,7 +188,7 @@ public class Spell_PurgeInvisibility extends Spell
 						}
 					}
 				}
-				for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+				for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 				{
 					final Item I=i.nextElement();
 					if(I!=null)

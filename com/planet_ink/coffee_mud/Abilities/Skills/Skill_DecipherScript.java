@@ -248,7 +248,7 @@ public class Skill_DecipherScript extends StdSkill
 		if(encryptA==null)
 		{
 			Language L=null;
-			for(Enumeration<Ability> a= item.effects();a.hasMoreElements();)
+			for(final Enumeration<Ability> a= item.effects();a.hasMoreElements();)
 			{
 				Ability A=a.nextElement();
 				if(A instanceof Language)

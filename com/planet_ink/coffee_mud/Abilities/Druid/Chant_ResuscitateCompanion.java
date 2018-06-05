@@ -206,7 +206,7 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 				else
 				{
 					final MOB rejuvedMOB=((DeadBody)body).getSavedMOB();
-					for(Iterator<WeakReference<DeadBody>> m=companionMobs.iterator();m.hasNext();)
+					for(final Iterator<WeakReference<DeadBody>> m=companionMobs.iterator();m.hasNext();)
 					{
 						WeakReference<DeadBody> wM=m.next();
 						if(wM.get()==body)

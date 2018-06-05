@@ -338,7 +338,7 @@ public class Sailor extends StdCharClass
 				Room R=CMLib.map().roomLocation(shipArea.getShipItem());
 				if(R!=null)
 				{
-					for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+					for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 					{
 						Item I=i.nextElement();
 						if((I instanceof BoardableShip)

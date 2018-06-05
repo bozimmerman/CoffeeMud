@@ -148,7 +148,7 @@ public class Chant_AnimalCompanion extends Chant
 			{
 				mob.location().send(mob,msg);
 				final List<Ability> affects = new LinkedList<Ability>();
-				for(Enumeration<Ability> a=target.personalEffects();a.hasMoreElements();)
+				for(final Enumeration<Ability> a=target.personalEffects();a.hasMoreElements();)
 				{
 					final Ability A=a.nextElement();
 					affects.add(A);
@@ -157,7 +157,7 @@ public class Chant_AnimalCompanion extends Chant
 				final MOB targetCopy = (MOB)target.copyOf();
 				for(final Ability A : affects)
 					target.addEffect(A);
-				for(Enumeration<Ability> a=target.personalEffects();a.hasMoreElements();)
+				for(final Enumeration<Ability> a=target.personalEffects();a.hasMoreElements();)
 				{
 					Ability A=a.nextElement();
 					if((A!=null)&&((A.flags()&Ability.FLAG_CHARMING)!=0)&&(A.canBeUninvoked()))

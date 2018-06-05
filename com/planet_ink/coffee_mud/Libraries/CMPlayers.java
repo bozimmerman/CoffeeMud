@@ -293,7 +293,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(playerExists(name))
 			return true;
 		final WorldMap map=CMLib.map();
-		for(Enumeration<CMLibrary> pl = CMLib.libraries(CMLib.Library.PLAYERS);pl.hasMoreElements();)
+		for(final Enumeration<CMLibrary> pl = CMLib.libraries(CMLib.Library.PLAYERS);pl.hasMoreElements();)
 		{
 			final PlayerLibrary pLib2 = (PlayerLibrary)pl.nextElement();
 			if((pLib2 != null)
@@ -896,7 +896,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	public MOB findPlayerOnline(final String srchStr, final boolean exactOnly)
 	{
 		final MOB[] srch=new MOB[3];
-		for(Enumeration<MOB> p=players();p.hasMoreElements();)
+		for(final Enumeration<MOB> p=players();p.hasMoreElements();)
 		{
 			final MOB M=p.nextElement();
 			if((M!=null)

@@ -223,7 +223,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		{
 			if(R.getArea() instanceof SpaceShip)
 			{
-				for(Enumeration<Room> r=R.getArea().getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=R.getArea().getProperMap();r.hasMoreElements();)
 					r.nextElement().show(mob, null, msgCode, message);
 			}
 			else

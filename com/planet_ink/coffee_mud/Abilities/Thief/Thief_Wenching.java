@@ -128,7 +128,7 @@ public class Thief_Wenching extends ThiefSkill
 			CoffeeShop shop = SK.getShop();
 			if(shop != null)
 			{
-				for(Iterator<Environmental> e=shop.getStoreInventory();e.hasNext();)
+				for(final Iterator<Environmental> e=shop.getStoreInventory();e.hasNext();)
 				{
 					Environmental E=e.next();
 					if((E instanceof Physical)

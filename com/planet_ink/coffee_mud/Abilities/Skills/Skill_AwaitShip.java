@@ -142,7 +142,7 @@ public class Skill_AwaitShip extends StdSkill
 						return true;
 					default:
 					{
-						for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+						for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 						{
 							final Item I=i.nextElement();
 							if((I instanceof SailingShip)

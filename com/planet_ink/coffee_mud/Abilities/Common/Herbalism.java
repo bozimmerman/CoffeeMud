@@ -328,7 +328,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 			}
 			commonTell(mob,buf.toString());
 			/*
-			for(Enumeration e=usage.keys();e.hasMoreElements();)
+			for(final Enumeration e=usage.keys();e.hasMoreElements();)
 			{
 				String key=(String)e.nextElement();
 				Integer I=(Integer)usage.get(key);

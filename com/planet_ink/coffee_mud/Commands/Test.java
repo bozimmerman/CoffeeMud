@@ -1633,7 +1633,7 @@ public class Test extends StdCommand
 			}
 			if(what.equalsIgnoreCase("racelangs"))
 			{
-				for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+				for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
 					final Race R1=r.nextElement();
 					if(R1!=null)

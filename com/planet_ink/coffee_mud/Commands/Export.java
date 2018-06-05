@@ -145,7 +145,7 @@ public class Export extends StdCommand
 			{
 				String clanName = commands.remove(0);
 				List<Room> rooms=new ArrayList<Room>();
-				for(Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
+				for(final Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
 				{
 					final Room R=CMLib.map().getRoom(r.nextElement());
 					if((R!=null)&&(R.roomID().length()>0))

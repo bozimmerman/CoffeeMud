@@ -413,7 +413,7 @@ public interface RawMaterial extends Item
 	public final static int	RESOURCE_GARNET			= MATERIAL_PRECIOUS | 80;
 	public final static int	RESOURCE_AMBER			= MATERIAL_PRECIOUS | 81;
 	public final static int	RESOURCE_AQUAMARINE		= MATERIAL_PRECIOUS | 82;
-	public final static int	RESOURCE_CHRYSOBERYL		= MATERIAL_PRECIOUS | 83;
+	public final static int	RESOURCE_CHRYSOBERYL	= MATERIAL_PRECIOUS | 83;
 	public final static int	RESOURCE_IRONWOOD		= MATERIAL_WOODEN | 84;
 	public final static int	RESOURCE_SILK			= MATERIAL_CLOTH | 85;
 	public final static int	RESOURCE_COCOA			= MATERIAL_VEGETATION | 86;

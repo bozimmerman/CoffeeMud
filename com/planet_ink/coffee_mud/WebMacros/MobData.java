@@ -84,7 +84,7 @@ public class MobData extends StdWebMacro
 				return ((Vector<Race>)httpReq.getRequestObjects().get("SYSTEM_SORTED_RACES")).elements();
 		}
 		final TreeMap<String,Race> map=new TreeMap<String,Race>();
-		for(Enumeration<Race> r = CMClass.races();r.hasMoreElements();)
+		for(final Enumeration<Race> r = CMClass.races();r.hasMoreElements();)
 		{
 			final Race R=r.nextElement();
 			map.put(R.name(), R);
@@ -478,7 +478,7 @@ public class MobData extends StdWebMacro
 			}
 			else
 			{
-				for(Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
+				for(final Enumeration<Faction> f=CMLib.factions().factions();f.hasMoreElements();)
 				{
 					final Faction F=f.nextElement();
 					if(F.showInEditor() && (!E.hasFaction(F.factionID())))

@@ -4362,7 +4362,7 @@ public class StdMOB implements MOB
 					riders.add(Pr);
 				if(P instanceof Rideable)
 				{
-					for(Enumeration<Rider> r=((Rideable)P).riders();r.hasMoreElements();)
+					for(final Enumeration<Rider> r=((Rideable)P).riders();r.hasMoreElements();)
 					{
 						final Rider R2=r.nextElement();
 						if(!riders.contains(R2))

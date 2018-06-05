@@ -219,7 +219,7 @@ public class Salvaging extends CommonSkill
 		
 		int totalWeight=I.phyStats().weight();
 		final Vector<Item> itemsToMove=new Vector<Item>();
-		for(Enumeration<Room> r=shipArea.getProperMap();r.hasMoreElements();)
+		for(final Enumeration<Room> r=shipArea.getProperMap();r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();
 			if(R!=null)
@@ -229,7 +229,7 @@ public class Salvaging extends CommonSkill
 					mob.tell(L("There are still people aboard!"));
 					return false;
 				}
-				for(Enumeration<Item> i=R.items();i.hasMoreElements();)
+				for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
 				{
 					final Item I2=i.nextElement();
 					if((I2!=null)&&(CMLib.flags().isGettable(I2))&&(I2.container()==null))

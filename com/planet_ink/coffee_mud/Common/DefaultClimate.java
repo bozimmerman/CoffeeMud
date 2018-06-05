@@ -249,10 +249,15 @@ public class DefaultClimate implements Climate
 	}
 
 	@Override
-	public boolean canSeeTheSun(Room room)
+	public boolean canSeeTheSun(final Room room)
 	{
-		if((room==null)
-		||((room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY)
+		if(room==null)
+			return false;
+
+		if(CMLib.flags().flaggedAffects(room,Ability.FLAG_SUNSUMMONING).size()>0)
+			return true;
+
+		if(((room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY)
 			&&(room.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN))
 		||(!CMLib.map().hasASky(room))
 		||(CMLib.flags().isInDark(room)))
@@ -272,7 +277,6 @@ public class DefaultClimate implements Climate
 		default:
 			return true;
 		}
-
 	}
 
 	protected String getWeatherStop(int weatherCode)
@@ -316,7 +320,7 @@ public class DefaultClimate implements Climate
 				}
 			}
 		}
-		for(Enumeration<BoardableShip> s =CMLib.map().ships();s.hasMoreElements();)
+		for(final Enumeration<BoardableShip> s =CMLib.map().ships();s.hasMoreElements();)
 		{
 			final BoardableShip ship = s.nextElement();
 			if((ship != null) && (A == CMLib.map().areaLocation(ship.getShipItem())))

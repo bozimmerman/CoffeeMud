@@ -196,7 +196,7 @@ public class Prop_OutfitContainer extends Property
 						}
 						
 						boolean done=false;
-						for(Enumeration<Item> i=msg.source().items();i.hasMoreElements();)
+						for(final Enumeration<Item> i=msg.source().items();i.hasMoreElements();)
 						{
 							final Item chkI=i.nextElement();
 							if(chkI==null)

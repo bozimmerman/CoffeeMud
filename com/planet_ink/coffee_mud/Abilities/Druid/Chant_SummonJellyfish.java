@@ -106,7 +106,7 @@ public class Chant_SummonJellyfish extends Chant
 			else
 			{
 				Set<MOB> followers = invoker.getGroupMembers(new HashSet<MOB>());
-				for(Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+				for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
 				{
 					MOB M=m.nextElement();
 					if((!followers.contains(M))

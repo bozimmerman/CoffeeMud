@@ -963,7 +963,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final TimeClock TC=A.getTimeObj();
 		StringBuffer report=new StringBuffer("");
 		boolean usingParent = false;
-		for(Enumeration<Area> a=A.getParents();a.hasMoreElements();)
+		for(final Enumeration<Area> a=A.getParents();a.hasMoreElements();)
 		{
 			if(a.nextElement().getTimeObj() == A.getTimeObj())
 				usingParent=true;

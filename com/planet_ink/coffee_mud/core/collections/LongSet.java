@@ -1059,7 +1059,7 @@ public class LongSet implements Set<Long>
 	{
 		final Long[] all = new Long[size()];
 		int index=0;
-		for(Iterator<Long> i=iterator();i.hasNext();)
+		for(final Iterator<Long> i=iterator();i.hasNext();)
 		{
 			all[index++] = i.next();
 		}
