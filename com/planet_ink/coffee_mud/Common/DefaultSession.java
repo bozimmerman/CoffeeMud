@@ -539,6 +539,7 @@ public class DefaultSession implements Session
 	public void setGroupName(String group)
 	{
 		groupName=group;
+		threadGroupChar=groupName.charAt(0);
 	}
 
 	@Override

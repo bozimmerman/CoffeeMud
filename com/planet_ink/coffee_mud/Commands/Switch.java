@@ -132,7 +132,6 @@ public class Switch extends StdCommand
 					CMLib.commands().monitorGlobalMessage(room, msg);
 					s1.setMob(null);
 					s1.setAccount(null);
-					
 					s1.autoLogin(null, null);
 				}
 			}
