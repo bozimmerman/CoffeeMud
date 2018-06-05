@@ -77,10 +77,11 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 						C.set(Calendar.MINUTE,59);
 						C.set(Calendar.SECOND,59);
 						C.set(Calendar.MILLISECOND,999);
-						todays=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
+						final CoffeeTableRow todays=(CoffeeTableRow)CMClass.getCommon("DefaultCoffeeTableRow");
 						todays.setStartTime(S.getTimeInMillis());
 						todays.setEndTime(C.getTimeInMillis());
 						CMLib.database().DBCreateStat(todays.startTime(),todays.endTime(),todays.data());
+						this.todays=todays;
 					}
 				}
 			}
