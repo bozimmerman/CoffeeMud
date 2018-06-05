@@ -68,7 +68,7 @@ public class Skill_TwoDaggerFighting extends Skill_TwoWeaponFighting
 					final int xlvl=super.getXLEVELLevel(invoker());
 					final boolean adjustOnly = mob.fetchEffect("Skill_TwoWeaponFighting")!=null;
 					if(!adjustOnly)
-						affectableStats.setSpeed(affectableStats.speed()+1.0+(0.1*xlvl));
+						affectableStats.setSpeed(affectableStats.speed()+(0.1*xlvl));
 					else
 					{
 						affectableStats.setSpeed(affectableStats.speed()+(0.1*xlvl));
