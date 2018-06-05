@@ -356,6 +356,12 @@ public class Thief_Assassinate extends ThiefSkill
 			}
 		}
 
+		final Room myR=mob.location();
+		if((myR!=null)&&(myR.isInhabitant(tracking))&&(CMLib.flags().canBeSeenBy(tracking, mob)))
+		{
+			CMLib.combat().postAttack(mob,tracking,mob.fetchWieldedItem());
+			return false;
+		}
 		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 		flags.plus(TrackingLibrary.TrackingFlag.OPENONLY)
 			 .plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
