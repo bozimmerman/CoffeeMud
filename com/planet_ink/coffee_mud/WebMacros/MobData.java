@@ -1829,6 +1829,32 @@ public class MobData extends StdWebMacro
 						old=((Rideable)M).rideString(CMClass.sampleMOB());
 					str.append(old+", ");
 					break;
+				case ISDRINK: // is drink
+					if(M instanceof Drink)
+						return "true";
+					return "false";
+				case LIQUIDHELD: // liquid held
+					if((firstTime)&&(M instanceof Drink))
+						old=""+((Drink)M).liquidHeld();
+					str.append(old);
+					break;
+				case QUENCHED: // quenched
+					if((firstTime)&&(M instanceof Drink))
+						old=""+((Drink)M).thirstQuenched();
+					str.append(old);
+					break;
+				case LIQUIDTYPES: // liquid types
+					if((firstTime)&&(M instanceof Drink))
+						old=""+((Drink)M).liquidType();
+					final List<Integer> liquids=RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_LIQUID);
+					for(final Integer liquid : liquids)
+					{
+						str.append("<OPTION VALUE=\""+liquid.intValue()+"\"");
+						if(liquid.intValue()==CMath.s_int(old))
+							str.append(" SELECTED");
+						str.append(">"+RawMaterial.CODES.NAME(liquid.intValue()));
+					}
+					break;
 				}
 				if(firstTime)
 					httpReq.addFakeUrlParameter(parmName,old.equals("checked")?"on":old);

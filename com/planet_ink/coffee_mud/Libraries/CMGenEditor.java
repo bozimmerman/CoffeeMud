@@ -1831,6 +1831,38 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 			CMLib.flags().setReadable(E,genGenericPrompt(mob,showNumber+". Is this item readable",E.isReadable()));
 	}
+	
+	protected void genDrinkType(MOB mob, Drink E, int showNumber, int showFlag) throws IOException
+	{
+		mob.session().println(L("@x1. Current liquid type: @x2",""+showNumber,RawMaterial.CODES.NAME(E.liquidType())));
+		if((showFlag!=showNumber)&&(showFlag>-999))
+			return;
+		boolean q=false;
+		while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
+		{
+			final String newType=mob.session().prompt(L("Enter a new type (?)\n\r:"),RawMaterial.CODES.NAME(E.liquidType()));
+			if(newType.equals("?"))
+			{
+				final StringBuffer say=new StringBuffer("");
+				final List<Integer> liquids = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_LIQUID);
+				for(final Integer code : liquids)
+					say.append(RawMaterial.CODES.NAME(code.intValue())+", ");
+				mob.tell(say.toString().substring(0,say.length()-2));
+				q=false;
+			}
+			else
+			{
+				q=true;
+				int newValue=RawMaterial.CODES.FIND_IgnoreCase(newType);
+				if((newValue&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
+					newValue=-1;
+				if(newValue>=0)
+					E.setLiquidType(newValue);
+				else
+					mob.tell(L("(no change)"));
+			}
+		}
+	}
 
 	protected void genReadable2(MOB mob, Item E, int showNumber, int showFlag)
 		throws IOException
@@ -1982,34 +2014,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		else
 		if(E instanceof Drink)
 		{
-			mob.session().println(L("@x1. Current liquid type: @x2",""+showNumber,RawMaterial.CODES.NAME(((Drink)E).liquidType())));
-			if((showFlag!=showNumber)&&(showFlag>-999))
-				return;
-			boolean q=false;
-			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!q))
-			{
-				final String newType=mob.session().prompt(L("Enter a new type (?)\n\r:"),RawMaterial.CODES.NAME(((Drink)E).liquidType()));
-				if(newType.equals("?"))
-				{
-					final StringBuffer say=new StringBuffer("");
-					final List<Integer> liquids = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_LIQUID);
-					for(final Integer code : liquids)
-						say.append(RawMaterial.CODES.NAME(code.intValue())+", ");
-					mob.tell(say.toString().substring(0,say.length()-2));
-					q=false;
-				}
-				else
-				{
-					q=true;
-					int newValue=RawMaterial.CODES.FIND_IgnoreCase(newType);
-					if((newValue&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
-						newValue=-1;
-					if(newValue>=0)
-						((Drink)E).setLiquidType(newValue);
-					else
-						mob.tell(L("(no change)"));
-				}
-			}
+			genDrinkType(mob,(Drink)E,showNumber,showFlag);
 		}
 	}
 
@@ -9722,6 +9727,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				genRideable2(mob,(Rideable)me,++showNumber,showFlag);
 				genMountText(mob,(Rideable)me,++showNumber,showFlag);
 				genMountText2(mob,(Rideable)me,++showNumber,showFlag);
+			}
+			if(me instanceof Drink)
+			{
+				genThirstQuenched(mob,(Drink)me,++showNumber,showFlag);
+				genDrinkHeld(mob,(Drink)me,++showNumber,showFlag);
+				genDrinkType(mob, (Drink)me, ++showNumber, showFlag);
 			}
 			if(me instanceof Deity)
 			{

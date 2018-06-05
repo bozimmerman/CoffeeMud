@@ -58,7 +58,8 @@ public class GrinderMobs
 		CATACAT,SELLIMASK,LIBRCHAIN,LIBROVERCHG,
 		LIBRDAYCHG,LIBROVERPCT,LIBDAYPCT,LIBMINDAYS,
 		LIBMAXDAYS,LIBMAXBORROW,ISLIBRARIAN,LIBCMASK,
-		STATESTR,STATESUBJSTR,RIDERSTR,MOUNTSTR,DISMOUNTSTR
+		STATESTR,STATESUBJSTR,RIDERSTR,MOUNTSTR,DISMOUNTSTR,
+		ISDRINK, LIQUIDHELD, QUENCHED, LIQUIDTYPES
 		;
 		
 		public boolean isGenField;
@@ -840,6 +841,23 @@ public class GrinderMobs
 				case RIDERSTR: // riderstr
 					if(M instanceof Rideable)
 						((Rideable) M).setRideString(old);
+					break;
+				case LIQUIDTYPES: // liquid types
+					if((M instanceof Drink)&&(!(M instanceof Potion)))
+						((Drink)M).setLiquidType(CMath.s_int(old));
+					break;
+				case ISDRINK: // is drink
+					break;
+				case LIQUIDHELD: // liquid held
+					if(M instanceof Drink)
+					{
+						((Drink)M).setLiquidHeld(CMath.s_int(old));
+						((Drink)M).setLiquidRemaining(CMath.s_int(old));
+					}
+					break;
+				case QUENCHED: // quenched
+					if(M instanceof Drink)
+						((Drink)M).setThirstQuenched(CMath.s_int(old));
 					break;
 				}
 			}

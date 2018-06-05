@@ -273,7 +273,10 @@ public class Pregnancy extends StdAbility implements HealthCondition
 							final String race1 = mob.baseCharStats().getMyRace().ID();
 							char gender = 'F';
 							String sondat = "daughter";
-							final MOB babe = CMClass.getMOB("GenMOB");
+							String classID="GenMOB";
+							if(mob.isGeneric() && (!mob.ID().equalsIgnoreCase(classID)))
+								classID=mob.ID();
+							final MOB babe = CMClass.getMOB(classID);
 							if (CMLib.dice().rollPercentage() > 50)
 							{
 								gender = 'M';
