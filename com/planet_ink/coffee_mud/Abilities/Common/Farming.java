@@ -247,7 +247,7 @@ public class Farming extends GatheringSkill
 		&&(I2 instanceof RawMaterial)
 		&&(CMLib.flags().canBeSeenBy(I2,mob))
 		&&(I2.container()==null)
-		&&(I2 instanceof Food)
+		&&((I2 instanceof Food)||(I2.name().endsWith("seed")))
 		&&(((I2.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 			||(I2.material()==RawMaterial.RESOURCE_COTTON)
 			||(I2.material()==RawMaterial.RESOURCE_HEMP)
