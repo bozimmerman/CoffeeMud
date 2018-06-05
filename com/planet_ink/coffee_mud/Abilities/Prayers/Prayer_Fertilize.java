@@ -79,6 +79,20 @@ public class Prayer_Fertilize extends Prayer
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
+	private volatile int oldResource = -1;
+	
+	@Override
+	public void unInvoke()
+	{
+		if(this.canBeUninvoked() && (affected instanceof Room))
+		{
+			final Room R=(Room)affected;
+			if((R!=null)&&(oldResource>0))
+				R.setResource(oldResource);
+		}
+		super.unInvoke();
+	}
+
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -87,6 +101,7 @@ public class Prayer_Fertilize extends Prayer
 			final Room R=(Room)affected;
 			if((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 			{
+				oldResource=R.myResource();
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					final MOB M=R.fetchInhabitant(m);
@@ -99,6 +114,10 @@ public class Prayer_Fertilize extends Prayer
 							A=M.fetchEffect("MasterFarming");
 						if(A==null)
 							A=M.fetchEffect("MasterForaging");
+						if(A==null)
+							A=M.fetchEffect("MasterGardening");
+						if(A==null)
+							A=M.fetchEffect("Gardening");
 						if(A!=null)
 							A.setAbilityCode(1);
 					}
@@ -135,13 +154,19 @@ public class Prayer_Fertilize extends Prayer
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect( mob,
+				this.oldResource=mob.location().myResource();
+				if(beneficialAffect( mob,
 								  mob.location(),
 								  asLevel,
 								  CMLib.ableMapper().qualifyingClassLevel( mob, this ) *
 									  (int)( ( CMProps.getMillisPerMudHour() *
 											  (mob.location().getArea().getTimeObj().getHoursInDay()) ) /
-											  CMProps.getTickMillis() ) );
+											  CMProps.getTickMillis() ) )!=null)
+				{
+					// the chant should be better than the prayer, so leave this part out -- 
+					// but keep the functionality around just in case we want it.
+					//mob.location().setResource(RawMaterial.RESOURCE_DIRT);
+				}
 			}
 
 		}

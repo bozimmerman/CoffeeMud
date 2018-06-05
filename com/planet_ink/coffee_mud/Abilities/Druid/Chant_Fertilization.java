@@ -72,6 +72,20 @@ public class Chant_Fertilization extends Chant
 	{
 		return Ability.QUALITY_INDIFFERENT;
 	}
+	
+	private volatile int oldResource = -1;
+	
+	@Override
+	public void unInvoke()
+	{
+		if(this.canBeUninvoked() && (affected instanceof Room))
+		{
+			final Room R=(Room)affected;
+			if((R!=null)&&(oldResource>0))
+				R.setResource(oldResource);
+		}
+		super.unInvoke();
+	}
 
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
@@ -81,6 +95,7 @@ public class Chant_Fertilization extends Chant
 			final Room R=(Room)affected;
 			if((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION)
 			{
+				oldResource=R.myResource();
 				for(int m=0;m<R.numInhabitants();m++)
 				{
 					final MOB M=R.fetchInhabitant(m);
@@ -93,6 +108,10 @@ public class Chant_Fertilization extends Chant
 							A=M.fetchEffect("MasterFarming");
 						if(A==null)
 							A=M.fetchEffect("MasterForaging");
+						if(A==null)
+							A=M.fetchEffect("MasterGardening");
+						if(A==null)
+							A=M.fetchEffect("Gardening");
 						if(A!=null)
 							A.setAbilityCode(3);
 					}
@@ -129,11 +148,15 @@ public class Chant_Fertilization extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect( mob,
+				this.oldResource=mob.location().myResource();
+				if(beneficialAffect( mob,
 								  mob.location(),
 								  asLevel,
 								  (int)( CMLib.ableMapper().qualifyingClassLevel( mob, this ) *
-									  ( ( ( CMProps.getMillisPerMudHour() * mob.location().getArea().getTimeObj().getHoursInDay() ) / CMProps.getTickMillis() ) ) ) );
+									  ( ( ( CMProps.getMillisPerMudHour() * mob.location().getArea().getTimeObj().getHoursInDay() ) / CMProps.getTickMillis() ) ) ) )!=null)
+				{
+					mob.location().setResource(RawMaterial.RESOURCE_DIRT);
+				}
 			}
 
 		}

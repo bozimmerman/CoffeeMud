@@ -1,0 +1,197 @@
+package com.planet_ink.coffee_mud.Abilities.Druid;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
+import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.util.*;
+
+/*
+   Copyright 2018-2018 Bo Zimmerman
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+	   http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+public class Chant_SummonSun extends Chant
+{
+	@Override
+	public String ID()
+	{
+		return "Chant_SummonSun";
+	}
+
+	private final static String localizedName = CMLib.lang().L("Summon Sun");
+
+	@Override
+	public String name()
+	{
+		return localizedName;
+	}
+
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Summon Sun)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedStaticDisplay;
+	}
+
+	@Override
+	public int abstractQuality()
+	{
+		return Ability.QUALITY_INDIFFERENT;
+	}
+
+	@Override
+	protected int canAffectCode()
+	{
+		return CAN_ROOMS;
+	}
+
+	@Override
+	protected int canTargetCode()
+	{
+		return 0;
+	}
+
+	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;
+	}
+
+	@Override
+	public long flags()
+	{
+		return FLAG_WEATHERAFFECTING|FLAG_SUNSUMMONING;
+	}
+
+	@Override
+	public void unInvoke()
+	{
+		// undo the affects of this spell
+		if(affected==null)
+			return;
+		if(canBeUninvoked())
+		{
+			final Room R=CMLib.map().roomLocation(affected);
+			if((R!=null)&&(CMLib.flags().isInTheGame(affected,true)))
+				R.showHappens(CMMsg.MSG_OK_VISUAL,L("The summoned sun sets."));
+		}
+		super.unInvoke();
+
+	}
+
+	@Override
+	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	{
+		affectableStats.setDisposition((affectableStats.disposition()&~PhyStats.IS_DARK)|PhyStats.IS_LIGHTSOURCE);
+	}
+
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking,tickID))
+			return false;
+		if(affected==null)
+			return false;
+		if(affected instanceof Room)
+		{
+			final Room R=(Room)affected;
+			if((R.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN)
+			&&(R.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY))
+				unInvoke();
+		}
+		return true;
+	}
+
+	@Override
+	public int castingQuality(MOB mob, Physical target)
+	{
+		if(mob!=null)
+		{
+			final Room R=mob.location();
+			if((R!=null)&&(!R.getArea().getClimateObj().canSeeTheSun(R)))
+			{
+				if((R.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN)
+				&&(R.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY))
+					return Ability.QUALITY_INDIFFERENT;
+				if((R.domainType()&Room.INDOORS)==0)
+					return Ability.QUALITY_INDIFFERENT;
+				if(R.fetchEffect(ID())!=null)
+					return Ability.QUALITY_INDIFFERENT;
+				return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
+			}
+		}
+		return super.castingQuality(mob,target);
+	}
+
+	@Override
+	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		final Room target=mob.location();
+		if(target==null)
+			return false;
+		if((target.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAWN)
+		&&(target.getArea().getTimeObj().getTODCode()!=TimeClock.TimeOfDay.DAY))
+		{
+			mob.tell(L("You can only start this chant during the day."));
+			return false;
+		}
+		if(target.getArea().getClimateObj().canSeeTheSun(target))
+		{
+			mob.tell(L("You can already see the sun."));
+			return false;
+		}
+
+		if(target.fetchEffect(ID())!=null)
+		{
+			mob.tell(L("This place is already under the summoned sun."));
+			return false;
+		}
+
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+		final boolean success=proficiencyCheck(mob,0,auto);
+
+		if(success)
+		{
+			invoker=mob;
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> chant(s) to the sky.^?"));
+			if(mob.location().okMessage(mob,msg))
+			{
+				mob.location().send(mob,msg);
+				if(msg.value()<=0)
+				{
+					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,L("The Sun pierces into the room!"));
+					beneficialAffect(mob,target,asLevel,0);
+				}
+			}
+		}
+		else
+			return maliciousFizzle(mob,target,L("<S-NAME> chant(s) to the sky, but the magic fades."));
+		// return whether it worked
+		return success;
+	}
+}

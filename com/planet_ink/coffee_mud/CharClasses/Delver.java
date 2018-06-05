@@ -194,6 +194,7 @@ public class Delver extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Chant_SenseOres",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_MagneticEarth",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_FertileCavern",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Chant_Earthquake",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Chant_Labyrinth",false);
@@ -271,7 +272,8 @@ public class Delver extends StdCharClass
 		return false;
 	}
 
-	private final String[] raceRequiredList=new String[]{
+	private final String[] raceRequiredList=new String[]
+	{
 		"Human","Humanoid","Dwarf","Goblinoid","Giant-kin",
 		"HalfElf","Gnoll","LizardMan","Merfolk","Drow"
 	};

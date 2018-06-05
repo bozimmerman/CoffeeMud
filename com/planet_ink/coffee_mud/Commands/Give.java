@@ -104,6 +104,13 @@ public class Give extends StdCommand
 		Item giveThis=CMLib.english().bestPossibleGold(mob,null,thingToGive);
 		if(giveThis!=null)
 		{
+			if(CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER)
+			&&(CMLib.law().getPropertyRecord(giveThis)!=null)
+			&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.ORDER)))
+			{
+				mob.tell(L("Yea, you don't want to do that."));
+				return false;
+			}
 			if(((Coins)giveThis).getNumberOfCoins()<CMLib.english().numPossibleGold(mob,thingToGive))
 				return false;
 			if(CMLib.flags().canBeSeenBy(giveThis,mob))
@@ -111,43 +118,55 @@ public class Give extends StdCommand
 		}
 		boolean doBugFix = true;
 		if(V.size()==0)
-		while(doBugFix || ((allFlag)&&(addendum<=maxToGive)))
 		{
-			doBugFix=false;
-			giveThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToGive+addendumStr);
-			if((giveThis==null)
-			&&(V.size()==0)
-			&&(addendumStr.length()==0)
-			&&(!allFlag))
+			while(doBugFix || ((allFlag)&&(addendum<=maxToGive)))
 			{
-				giveThis=mob.fetchItem(null,Wearable.FILTER_WORNONLY,thingToGive);
-				if(giveThis!=null)
+				doBugFix=false;
+				giveThis=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,thingToGive+addendumStr);
+				if((giveThis==null)
+				&&(V.size()==0)
+				&&(addendumStr.length()==0)
+				&&(!allFlag))
 				{
-					if((!(giveThis).amWearingAt(Wearable.WORN_HELD))&&(!(giveThis).amWearingAt(Wearable.WORN_WIELD)))
+					giveThis=mob.fetchItem(null,Wearable.FILTER_WORNONLY,thingToGive);
+					if(giveThis!=null)
 					{
-						CMLib.commands().postCommandFail(mob,origCmds,L("You must remove that first."));
-						return false;
+						if((!(giveThis).amWearingAt(Wearable.WORN_HELD))&&(!(giveThis).amWearingAt(Wearable.WORN_WIELD)))
+						{
+							CMLib.commands().postCommandFail(mob,origCmds,L("You must remove that first."));
+							return false;
+						}
+						final CMMsg newMsg=CMClass.getMsg(mob,giveThis,null,CMMsg.MSG_REMOVE,null);
+						if(mob.location().okMessage(mob,newMsg))
+							mob.location().send(mob,newMsg);
+						else
+							return false;
 					}
-					final CMMsg newMsg=CMClass.getMsg(mob,giveThis,null,CMMsg.MSG_REMOVE,null);
-					if(mob.location().okMessage(mob,newMsg))
-						mob.location().send(mob,newMsg);
-					else
-						return false;
 				}
+				if((allFlag)
+				&&(!onlyGoldFlag)
+				&&(giveThis instanceof Coins)
+				&&(thingToGive.equalsIgnoreCase("all")))
+					giveThis=null;
+				else
+				{
+					if(giveThis==null)
+						break;
+					if(CMLib.flags().canBeSeenBy(giveThis,mob))
+					{
+						if(CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER)
+						&&(CMLib.law().getPropertyRecord(giveThis)!=null)
+						&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.ORDER)))
+						{
+							mob.tell(L("Yea, you don't want to give over @x1.",giveThis.Name()));
+							giveThis=null;
+						}
+						else
+							V.add(giveThis);
+					}
+				}
+				addendumStr="."+(++addendum);
 			}
-			if((allFlag)
-			&&(!onlyGoldFlag)
-			&&(giveThis instanceof Coins)
-			&&(thingToGive.equalsIgnoreCase("all")))
-				giveThis=null;
-			else
-			{
-				if(giveThis==null)
-					break;
-				if(CMLib.flags().canBeSeenBy(giveThis,mob))
-					V.add(giveThis);
-			}
-			addendumStr="."+(++addendum);
 		}
 
 		if(V.size()==0)

@@ -85,6 +85,7 @@
   39. New Property: Prop_OutfitContainer, for making gear sets you can swap in/out.
   40. List <journal>, <journal> review, and <journal> transfer now support to-name filters.
   41. Drow is no longer, by default, a selectable player race. It can still be enabled in the coffeemud.ini file.
+  42. New chants: Summon Sun, Fertile Cavern, Sunbeam
 # Build 5.9.5 Release 04/10/2017
    *. Database Schema Updated for CMGRAC.  See the Installation Guide about running DBUpgrade.
    1. New chants: Phosphorescence, Land Legs, BurrowSpeak, Call Companions, Animal Companion
