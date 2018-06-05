@@ -1740,6 +1740,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						mob.phyStats().setDisposition(mob.phyStats().disposition()|PhyStats.IS_SWIMMING);
 						int notLoaded = 0;
 						int notAimed = 0;
+						final PairList<Weapon,int[]> aimings=this.aimings;
 						for(Weapon w : weapons)
 						{
 							final Room R=CMLib.map().roomLocation(w);
@@ -1751,6 +1752,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 								&&(((AmmunitionWeapon)w).ammunitionRemaining() <=0))
 									notLoaded++;
 								else
+								if(aimings!=null)
 								{
 									//mob.setRangeToTarget(0);
 									int index = aimings.indexOfFirst(w);
