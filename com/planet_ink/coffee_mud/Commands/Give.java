@@ -104,7 +104,7 @@ public class Give extends StdCommand
 		Item giveThis=CMLib.english().bestPossibleGold(mob,null,thingToGive);
 		if(giveThis!=null)
 		{
-			if(CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER)
+			if((CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER)||CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED))
 			&&(CMLib.law().getPropertyRecord(giveThis)!=null)
 			&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.ORDER)))
 			{
@@ -154,7 +154,7 @@ public class Give extends StdCommand
 						break;
 					if(CMLib.flags().canBeSeenBy(giveThis,mob))
 					{
-						if(CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER)
+						if((CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER)||CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED))
 						&&(CMLib.law().getPropertyRecord(giveThis)!=null)
 						&&(!CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.ORDER)))
 						{
