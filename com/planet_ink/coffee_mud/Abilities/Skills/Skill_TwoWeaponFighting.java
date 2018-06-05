@@ -136,6 +136,12 @@ public class Skill_TwoWeaponFighting extends StdSkill
 	}
 
 	@Override
+	public int abilityCode()
+	{
+		return 0;
+	}
+	
+	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)&&(affected instanceof MOB))
@@ -158,18 +164,28 @@ public class Skill_TwoWeaponFighting extends StdSkill
 				&&(!mob.amDead())
 				&&(mob.curState().getHitPoints()>0)
 				&&(CMLib.flags().isStanding(mob))
-				&&(proficiencyCheck(mob,0,false))
 				&&(!mob.getVictim().amDead()))
 				{
-					primaryWeapon.setRawWornCode(Wearable.WORN_HELD);
-					weapon.setRawWornCode(Wearable.WORN_WIELD);
-					mob.recoverPhyStats();
-					CMLib.combat().postAttack(mob,mob.getVictim(),weapon);
-					weapon.setRawWornCode(Wearable.WORN_HELD);
-					primaryWeapon.setRawWornCode(Wearable.WORN_WIELD);
-					mob.recoverPhyStats();
-					if(CMLib.dice().rollPercentage()==1)
-						helpProficiency(mob, 0);
+					Ability usedA=this;
+					for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
+					{
+						final Ability A=a.nextElement();
+						if((A instanceof Skill_TwoWeaponFighting)
+						&&(A.abilityCode()==1))
+							usedA=A;
+					}
+					if(usedA.proficiencyCheck(mob,0,false))
+					{
+						primaryWeapon.setRawWornCode(Wearable.WORN_HELD);
+						weapon.setRawWornCode(Wearable.WORN_WIELD);
+						mob.recoverPhyStats();
+						CMLib.combat().postAttack(mob,mob.getVictim(),weapon);
+						weapon.setRawWornCode(Wearable.WORN_HELD);
+						primaryWeapon.setRawWornCode(Wearable.WORN_WIELD);
+						mob.recoverPhyStats();
+						if(CMLib.dice().rollPercentage()==1)
+							usedA.helpProficiency(mob, 0);
+					}
 				}
 			}
 			attackedSinceLastTick=false;

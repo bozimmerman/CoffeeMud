@@ -48,6 +48,8 @@ public class Skill_TwoDaggerFighting extends Skill_TwoWeaponFighting
 		return localizedName;
 	}
 
+	private volatile boolean active = false;
+	
 	@Override
 	public void affectPhyStats(Physical affected, PhyStats affectableStats)
 	{
@@ -62,6 +64,7 @@ public class Skill_TwoDaggerFighting extends Skill_TwoWeaponFighting
 				&&(W1.weaponClassification()==Weapon.CLASS_DAGGER)
 				&&(W2.weaponClassification()==Weapon.CLASS_DAGGER))
 				{
+					active=true;
 					final int xlvl=super.getXLEVELLevel(invoker());
 					final boolean adjustOnly = mob.fetchEffect("Skill_TwoWeaponFighting")!=null;
 					if(!adjustOnly)
@@ -73,10 +76,20 @@ public class Skill_TwoDaggerFighting extends Skill_TwoWeaponFighting
 						affectableStats.setDamage(affectableStats.damage()+(affectableStats.damage()/(20+xlvl)));
 					}
 				}
+				else
+					active=false;
 			}
+			else
+				active=false;
 		}
 	}
 
+	@Override
+	public int abilityCode()
+	{
+		return active?1:0;
+	}
+	
 	@Override
 	public boolean tick(Tickable ticking, int tickID)
 	{
