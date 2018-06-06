@@ -205,9 +205,7 @@ public class Chopping extends GatheringSkill
 				found=(Item)CMLib.materials().makeResource(RawMaterial.RESOURCE_WOOD,Integer.toString(mob.location().domainType()),false,null);
 				foundShortName="nothing";
 				if(found!=null)
-				{
-					foundShortName=L("@x1 tree wood",RawMaterial.CODES.NAME(resourceType).toLowerCase());
-				}
+					foundShortName=L("@x1 tree wood",CMLib.english().makeSingular(RawMaterial.CODES.NAME(resourceType).toLowerCase()));
 			}
 		}
 		final int duration=getDuration(mob,1);
