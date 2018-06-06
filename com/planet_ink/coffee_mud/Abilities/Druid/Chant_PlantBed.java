@@ -76,6 +76,27 @@ public class Chant_PlantBed extends Chant
 	protected Item peaPod=null;
 
 	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(affected instanceof Rideable)
+		{
+			final Rideable R=(Rideable)affected;
+			if(R!=null)
+			{
+				for(int r=R.numRiders()-1;r>=0;r--)
+				{
+					final Rider R1=R.fetchRider(r);
+					if(R1 instanceof MOB)
+						CMLib.combat().recoverTick((MOB)R1);
+				}
+			}
+		}
+		return true;
+	}
+	
+	@Override
 	public void unInvoke()
 	{
 		super.unInvoke();
