@@ -48,6 +48,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public static boolean[]					PUNCTUATION_TABLE	= null;
 	public final static char[]				ALL_CHRS			= "ALL".toCharArray();
 	public final static String[]			fwords				= { "calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf" };
+	public final static String[]			frwords				= { "calves", "halves", "knives", "lives", "wives", "elves", "selves", "shelves", "leaves", "sheaves", "thieves", "loaves", "wolves" };
 	public final static List<Environmental>	empty				= new ReadOnlyVector<Environmental>(1);
 
 	@Override
@@ -148,6 +149,29 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(CMStrings.contains(fwords, lowerStr))
 			return str.substring(0,str.length()-1)+(uppercase?"VES":"ves");
 		return str+(uppercase?"S":"s");
+	}
+	
+	@Override
+	public String makeSingular(String str)
+	{
+		if((str==null)||(str.length()==0))
+			return str;
+		final boolean uppercase=Character.isUpperCase(str.charAt(str.length()-1));
+		final String lowerStr=str.toLowerCase();
+		if(lowerStr.endsWith("ses")||lowerStr.endsWith("zes")||lowerStr.endsWith("xes")||lowerStr.endsWith("ches")||lowerStr.endsWith("shes"))
+			return str.substring(0,str.length()-2);
+		//if(lowerStr.endsWith("is"))
+		//	return str.substring(0,str.length()-2)+(uppercase?"ES":"es");
+		if(lowerStr.endsWith("ays")||lowerStr.endsWith("eys")||lowerStr.endsWith("iys")||lowerStr.endsWith("oys")||lowerStr.endsWith("uys"))
+			return str.substring(0,str.length()-1);
+		if(lowerStr.endsWith("ies"))
+			return str.substring(0,str.length()-3)+(uppercase?"Y":"y");
+		int x=CMParms.indexOf(frwords, lowerStr);
+		if(x>=0)
+			return uppercase?fwords[x].toUpperCase():fwords[x];
+		if(str.endsWith("s"))
+			return str.substring(0,str.length()-1);
+		return str;
 	}
 	
 	@Override
