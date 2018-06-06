@@ -367,7 +367,10 @@ public class CMSecurity
 	 */
 	public static final boolean isASysOp(final MOB mob)
 	{
-		return CMLib.masking().maskCheck(i().compiledSysop,mob,true)
+		final MaskingLibrary.CompiledZMask mask=i().compiledSysop;
+		if(mask == null)
+			return false;
+		return CMLib.masking().maskCheck(mask,mob,true)
 				||((mob!=null)
 					&&(mob.soulMate()!=null)
 					&&(mob.soulMate().isAttributeSet(MOB.Attrib.SYSOPMSGS))
@@ -382,7 +385,10 @@ public class CMSecurity
 	 */
 	public static final boolean isASysOp(final PlayerLibrary.ThinPlayer mob)
 	{
-		return CMLib.masking().maskCheck(i().compiledSysop,mob);
+		final MaskingLibrary.CompiledZMask mask=i().compiledSysop;
+		if(mask == null)
+			return false;
+		return CMLib.masking().maskCheck(mask,mob);
 	}
 
 	/**
