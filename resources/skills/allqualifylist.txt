@@ -85,7 +85,7 @@
 
 7 MeatCuring MASK=+INT 8
 
-8 Skill_Autoswim +CON 8
+8 Skill_Autoswim +CON 8 REQUIRES=Skill_Swim
 
 10 Construction MASK=+CON 12 REQUIRES=Carpentry 
 10 Farming 
