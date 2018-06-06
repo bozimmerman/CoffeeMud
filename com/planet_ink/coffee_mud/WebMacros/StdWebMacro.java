@@ -218,17 +218,18 @@ public class StdWebMacro implements WebMacro
 		return helpHelp(s, 70);
 	}
 
+	protected StringBuilder helpHelp(String s)
+	{
+		return helpHelp(new StringBuilder(s), 70);
+	}
+
 	protected StringBuilder helpHelp(StringBuilder s, int limit)
 	{
 		if(s!=null)
 		{
 			final String[] lookup=CMLib.color().standardHTMLlookups();
 			s=new StringBuilder(s.toString());
-			int x=s.toString().indexOf("\n\r");
-			while(x>=0){	s.replace(x,x+2,"<BR>"); x=s.toString().indexOf("\n\r");}
-			x=s.toString().indexOf("\r\n");
-			while(x>=0){	s.replace(x,x+2,"<BR>"); x=s.toString().indexOf("\r\n");}
-
+			int x=0;
 			int count=0;
 			x=0;
 			int lastSpace=0;
@@ -238,6 +239,49 @@ public class StdWebMacro implements WebMacro
 				count++;
 				switch(s.charAt(x))
 				{
+				case '\\':
+					if(x<s.length()-1)
+					{
+						if(s.charAt(x+1)=='n')
+						{
+							s.delete(x, x+2);
+							s.insert(x, " <BR>");
+							lastSpace=x;
+						}
+					}
+					break;
+				case '\n':
+					if(x<s.length()-1)
+					{
+						if(s.charAt(x+1)=='\r')
+						{
+							s.delete(x, x+2);
+							s.insert(x, " <BR>");
+						}
+						else
+						{
+							s.delete(x, x+1);
+							s.insert(x, " <BR>");
+						}
+						lastSpace=x;
+					}
+					break;
+				case '\r':
+					if(x<s.length()-1)
+					{
+						if(s.charAt(x+1)=='\n')
+						{
+							s.delete(x, x+2);
+							s.insert(x, " <BR>");
+						}
+						else
+						{
+							s.delete(x, x+1);
+							s.insert(x, " <BR>");
+						}
+						lastSpace=x;
+					}
+					break;
 				case ' ':
 					lastSpace=x;
 					break;
@@ -275,11 +319,27 @@ public class StdWebMacro implements WebMacro
 						count=0;
 						lastSpace=x;
 					}
+					else
+					if((x<s.length()-10) // remove music
+					&&(s.charAt(x+1)=='!')
+					&&((s.substring(x+2,x+7).equalsIgnoreCase("sound"))
+					   ||(s.substring(x+2,x+7).equalsIgnoreCase("music"))))
+					{
+						final int x1=s.indexOf("(",x+7);
+						final int y1=s.indexOf(")",x+7);
+						if((x1>=0)&&(y1>=x1))
+						{
+							s.delete(x,y1+1);
+							x--;
+						}
+					}
 					break;
 				case '^':
 					if(x<(s.length()-1))
 					{
-						final char c=s.charAt(x+1);
+						char c=s.charAt(x+1);
+						if(c=='?')
+							c='w';
 						final String code=lookup[c];
 						if(code!=null)
 						{
