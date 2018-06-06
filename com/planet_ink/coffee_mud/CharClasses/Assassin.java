@@ -54,6 +54,12 @@ public class Assassin extends Thief
 	}
 
 	@Override
+	public int allowedWeaponLevel()
+	{
+		return CharClass.WEAPONS_ANY;
+	}
+
+	@Override
 	public String[] getRequiredRaceList()
 	{
 		return super.getRequiredRaceList();
