@@ -437,7 +437,7 @@ public interface Wearable extends Environmental
 	//WORN_HEAD|WORN_NECK|WORN_TORSO|WORN_ARMS|WORN_LEFT_WRIST|WORN_RIGHT_WRIST|WORN_LEFT_FINGER|WORN_RIGHT_FINGER|WORN_FEET|WORN_HELD|WORN_WIELD|WORN_HANDS|WORN_WAIST|WORN_LEGS|WORN_EYES|WORN_EARS|WORN_MOUTH|WORN_BACK
 	/**
 	 * Global location stat code data collector
-	 * @author Bo Zimmermanimmerman
+	 * @author Bo Zimmerman
 	 */
 	public class CODES
 	{

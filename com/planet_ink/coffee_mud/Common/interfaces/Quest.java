@@ -747,7 +747,7 @@ public interface Quest extends Tickable, CMCommon, Modifiable
 	/**
 	 * A Quest script contains strings, and options, which
 	 * are mini-quest scripts of strings.
-	 * @author Bo Zimmermanimmerman
+	 * @author Bo Zimmerman
 	 */
 	public static class QuestScript extends SVector<String>
 	{

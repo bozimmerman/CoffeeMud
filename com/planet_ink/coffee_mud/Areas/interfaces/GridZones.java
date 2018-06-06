@@ -129,7 +129,7 @@ public interface GridZones extends Environmental
 	 * A class for holding x/y coordinates. Used by GridZones
 	 * as a way to hold such coordinates in a single place,
 	 * and easily compare them to each other.
-	 * @author Bo Zimmermanimmerman
+	 * @author Bo Zimmerman
 	 */
 	public static class XYVector
 	{

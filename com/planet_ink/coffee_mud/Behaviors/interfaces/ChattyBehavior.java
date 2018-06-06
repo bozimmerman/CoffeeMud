@@ -55,7 +55,7 @@ public interface ChattyBehavior extends Behavior
 	/**
 	 * A response object representing something the chatty-one will
 	 * definitely be saying soon.
-	 * @author Bo Zimmermanimmerman
+	 * @author Bo Zimmerman
 	 */
 	public static class ChattyResponse
 	{
@@ -73,7 +73,7 @@ public interface ChattyBehavior extends Behavior
 	 * A test response is a possible response to an environmental event, such as
 	 * someone speaking or acting.  It is only one possible response to one possible
 	 * event, and is weighed against its neighbors for whether it is chosen.
-	 * @author Bo Zimmermanimmerman
+	 * @author Bo Zimmerman
 	 */
 	public static class ChattyTestResponse
 	{
@@ -89,7 +89,7 @@ public interface ChattyBehavior extends Behavior
 	/**
 	 * A chatty entry embodies a test for a particular environmental event, such as
 	 * someone speaking or acting, and all possible responses to that event.
-	 * @author Bo Zimmermanimmerman
+	 * @author Bo Zimmerman
 	 */
 	public static class ChattyEntry
 	{
@@ -112,7 +112,7 @@ public interface ChattyBehavior extends Behavior
 	 * A chatty group is a collection of particular environmental event tests, and
 	 * their possible responses.  It completely embodies a particular "chat behavior"
 	 * for a particular kind of chatty mob.
-	 * @author Bo Zimmermanimmerman
+	 * @author Bo Zimmerman
 	 */
 	public static class ChattyGroup implements Cloneable
 	{

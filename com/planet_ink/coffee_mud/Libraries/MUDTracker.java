@@ -1413,7 +1413,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				for(int i=0;i<expense;i++)
 					CMLib.combat().expendEnergy(mob,true);
 			}
-			if((!flee)&&(mob.curState().getMovement()<=0)&&(!gotoAllowed))
+			if((!flee)&&(!always)&&(mob.curState().getMovement()<=0)&&(!gotoAllowed))
 			{
 				mob.tell(L("You are too tired."));
 				return false;

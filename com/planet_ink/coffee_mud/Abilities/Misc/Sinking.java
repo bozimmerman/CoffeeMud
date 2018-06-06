@@ -211,6 +211,8 @@ public class Sinking extends StdAbility
 			isTreading=false;
 			mob.recoverPhyStats();
 			mob.tell(L("\n\r\n\rYOU ARE SINKING @x1!!\n\r\n\r",addStr.toUpperCase()));
+			if(mob.curState().getMovement()<=0)
+				mob.curState().setMovement(1);
 			CMLib.tracking().walk(mob,direction,false,false);
 			R=mob.location();
 			if((R!=null)&&(!canSinkFrom(R,direction)))

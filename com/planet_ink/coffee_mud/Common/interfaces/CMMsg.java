@@ -1229,7 +1229,7 @@ public interface CMMsg extends CMCommon
 	/**
 	 * An accessor for safely converting raw message codes into friendlier
 	 * description codes, and back again.
-	 * @author Bo Zimmermanimmerman
+	 * @author Bo Zimmerman
 	 */
 	public static final class Desc
 	{

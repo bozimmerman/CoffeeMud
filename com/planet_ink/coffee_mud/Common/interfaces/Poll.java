@@ -259,7 +259,7 @@ public interface Poll extends CMCommon
 	/**
 	 * A class to represent a single choosable option for this poll.
 	 *
-	 * @author Bo Zimmermanimmerman
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public static class PollOption
@@ -276,7 +276,7 @@ public interface Poll extends CMCommon
 	/**
 	 * A class to represent a single vote by a single user in this poll.
 	 *
-	 * @author Bo Zimmermanimmerman
+	 * @author Bo Zimmerman
 	 *
 	 */
 	public static class PollResult

@@ -108,7 +108,9 @@ public class Skill_Autoswim extends StdSkill
 			final Room R=mob.location();
 			if((dir >=0) 
 			&& (R.getRoomInDir(dir)!=null)
-			&&(CMLib.flags().isWateryRoom(R)||CMLib.flags().isWateryRoom(R.getRoomInDir(dir))))
+			&&(CMLib.flags().isWateryRoom(R)||CMLib.flags().isWateryRoom(R.getRoomInDir(dir)))
+			&&(mob.curState().getMovement()>0)
+			&&(!CMLib.flags().isFalling(mob)))
 			{
 				final Ability A=mob.fetchAbility("Skill_Swim");
 				if((A!=null)

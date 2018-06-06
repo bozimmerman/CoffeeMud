@@ -36,7 +36,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * A class for the characteristics of a position within a
  * clan government.
  *
- * @author Bo Zimmermanimmerman
+ * @author Bo Zimmerman
  */
 public interface ClanPosition extends Modifiable, CMCommon
 {

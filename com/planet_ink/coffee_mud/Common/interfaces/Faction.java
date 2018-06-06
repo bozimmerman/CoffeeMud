@@ -1338,7 +1338,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 	 * event listeners or tickers, and a method to determine when it is
 	 * time to refresh the object.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#makeFactionData(MOB)
-	 * @author Bo Zimmermanimmerman
+	 * @author Bo Zimmerman
 	 */
 	public static interface FData extends MsgListener, StatsAffecting
 	{

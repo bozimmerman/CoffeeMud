@@ -803,7 +803,7 @@ public interface RawMaterial extends Item
 	/**
 	 * Global resource/raw material code data collector
 	 * 
-	 * @author Bo Zimmermanimmerman
+	 * @author Bo Zimmerman
 	 */
 	public class CODES
 	{

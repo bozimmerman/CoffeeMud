@@ -301,7 +301,7 @@ public interface CoffeeShop extends CMCommon
 	 * an item prototype, the number in stock, and the
 	 * price.  A price of -1 means to use the items
 	 * calculated value (common).
-	 * @author Bo Zimmermanimmerman
+	 * @author Bo Zimmerman
 	 */
 	public static class ShelfProduct
 	{
