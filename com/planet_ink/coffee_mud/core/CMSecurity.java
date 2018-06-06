@@ -369,7 +369,11 @@ public class CMSecurity
 	{
 		final MaskingLibrary.CompiledZMask mask=i().compiledSysop;
 		if(mask == null)
-			return false;
+		{
+			Log.errOut("Compiled Archon Mask was not set! Setting default.");
+			instance().compiledSysop=CMLib.masking().maskCompile("-ANYCLASS +Archon");
+			return isASysOp(mob);
+		}
 		return CMLib.masking().maskCheck(mask,mob,true)
 				||((mob!=null)
 					&&(mob.soulMate()!=null)
@@ -387,7 +391,11 @@ public class CMSecurity
 	{
 		final MaskingLibrary.CompiledZMask mask=i().compiledSysop;
 		if(mask == null)
-			return false;
+		{
+			Log.errOut("Compiled Archon Mask was not set! Setting default.");
+			instance().compiledSysop=CMLib.masking().maskCompile("-ANYCLASS +Archon");
+			return isASysOp(mob);
+		}
 		return CMLib.masking().maskCheck(mask,mob);
 	}
 
