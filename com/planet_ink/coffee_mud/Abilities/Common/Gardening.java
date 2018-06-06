@@ -291,7 +291,7 @@ public class Gardening extends GatheringSkill
 		verb=L("planting");
 		if((!auto)&&(!R.getArea().getClimateObj().canSeeTheSun(R)))
 		{
-			commonTell(mob,L("You need clear sunlight to do your gardening"));
+			commonTell(mob,L("You need clear sunlight to do your gardening.  Check the time and weather."));
 			return false;
 		}
 		
