@@ -1994,7 +1994,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			if(parms.length<2)
 			{
-				session.promptPrint(L("\n\rPlease the name of the character: "));
+				session.promptPrint(L("\n\rEnter the name of the character: "));
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -2043,7 +2043,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			if(parms.length<2)
 			{
-				session.promptPrint(L("\n\rPlease the name of the character: "));
+				session.promptPrint(L("\n\rEnter the name of the character: "));
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
@@ -2107,7 +2107,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		{
 			if(parms.length<2)
 			{
-				session.promptPrint(L("\n\rPlease the name of the character: "));
+				session.promptPrint(L("\n\rEnter the name of the character: "));
 				loginObj.state=LoginState.ACCTMENU_ADDTOCOMMAND;
 				return LoginResult.INPUT_REQUIRED;
 			}
