@@ -657,7 +657,7 @@ public class RoomLoader
 		DBReadContent(null,null,rooms,unloadedRooms,set==null,true);
 
 		if(set==null)
-			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Finalizing room data)");
+			CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Finalizing room data");
 
 		for(final Map.Entry<String,Room> entry : rooms.entrySet())
 		{
