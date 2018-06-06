@@ -248,7 +248,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"@x1 list\" for a list, \"@x1 scan\", \"@x2 info <item>\", \"@x1 learn <item>\","
+			commonTell(mob,L("Make what? Enter \"@x1 list\" for a list, \"@x1 scan\", \"@x1 info <item>\", \"@x1 learn <item>\","
 							+ " \"@x1 mend <item>\", or \"@x1 stop\" to cancel.",commandWord()));
 			return false;
 		}
