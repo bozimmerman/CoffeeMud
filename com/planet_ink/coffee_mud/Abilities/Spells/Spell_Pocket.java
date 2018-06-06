@@ -112,7 +112,7 @@ public class Spell_Pocket extends Spell
 			}
 		}
 		
-		if((target instanceof Item) && (!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,true)))
+		if((target instanceof Item) && (!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,true, false)))
 		{
 			mob.tell(L("You can't pocket @x1.",target.name(mob)));
 			return false;

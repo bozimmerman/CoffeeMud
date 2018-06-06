@@ -789,7 +789,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 	
 	@Override
-	public boolean canBePlayerDestroyed(final MOB mob, final Item I, final boolean ignoreBodies)
+	public boolean canBePlayerDestroyed(final MOB mob, final Item I, final boolean ignoreBodies, boolean ignoreWeight)
 	{
 		if((!ignoreBodies)
 		&&(I instanceof DeadBody)
@@ -801,17 +801,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			return false;
 		if((!CMLib.flags().isGettable(I))
 		||((I instanceof ClanItem)&&(mob.getClanRole(((ClanItem)I).clanID())==null))
-		||(I.basePhyStats().weight() > mob.maxCarry())
+		||((!ignoreWeight)&&(I.basePhyStats().weight() > mob.maxCarry()))
 		||(CMath.bset(I.phyStats().sensesMask(), PhyStats.SENSE_ITEMNOWISH)))
-		{
-			mob.tell(L("@x1 can not be reabsorbed.",I.name(mob)));
 			return false;
-		}
 		if(I instanceof Container)
 		{
 			for (final Item I2 : ((Container)I).getContents())
 			{
-				if(!canBePlayerDestroyed(mob, I2,ignoreBodies))
+				if(!canBePlayerDestroyed(mob, I2,ignoreBodies, ignoreWeight))
 					return false;
 			}
 		}

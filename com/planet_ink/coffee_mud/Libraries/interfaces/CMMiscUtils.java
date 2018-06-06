@@ -316,9 +316,10 @@ public interface CMMiscUtils extends CMLibrary
 	 * @param mob the mob who wants to destroy the item
 	 * @param I the item to destroy
 	 * @param ignoreBodies true to ignore corpse checks, false otherwise
+	 * @param ignoreWeight TODO
 	 * @return true if the item can be destroyed, false otherwise
 	 */
-	public boolean canBePlayerDestroyed(final MOB mob, final Item I, final boolean ignoreBodies);
+	public boolean canBePlayerDestroyed(final MOB mob, final Item I, final boolean ignoreBodies, boolean ignoreWeight);
 
 	/**
 	 * Calls unInvoke on all effects on the given environmental.  

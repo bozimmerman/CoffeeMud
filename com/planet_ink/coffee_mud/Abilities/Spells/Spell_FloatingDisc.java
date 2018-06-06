@@ -128,7 +128,7 @@ public class Spell_FloatingDisc extends Spell
 		if(target==null)
 			return false;
 		if((!(target instanceof Item))
-		||(!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,false)))
+		||(!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,false,true)))
 		{
 			mob.tell(L("You cannot float @x1!",target.name(mob)));
 			return false;

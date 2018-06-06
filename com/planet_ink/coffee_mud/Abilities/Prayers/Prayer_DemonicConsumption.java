@@ -82,7 +82,7 @@ public class Prayer_DemonicConsumption extends Prayer
 
 		if(target instanceof Item)
 		{
-			if(!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,false))
+			if(!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,false, false))
 			{
 				mob.tell(L("You can't have @x1 consumed.",target.name(mob)));
 				return false;

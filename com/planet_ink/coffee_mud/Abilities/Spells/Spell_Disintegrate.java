@@ -92,7 +92,7 @@ public class Spell_Disintegrate extends Spell
 			}
 		}
 
-		if((target instanceof Item) && (!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,true)))
+		if((target instanceof Item) && (!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,true, false)))
 		{
 			mob.tell(L("You are not powerful enough to disintegrate @x1.",target.name(mob)));
 			return false;

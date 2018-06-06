@@ -187,7 +187,7 @@ public class Spell_Fabricate extends Spell
 		}
 		
 		if((intoI instanceof ArchonOnly)
-		||(!CMLib.utensils().canBePlayerDestroyed(mob,intoI,false)))
+		||(!CMLib.utensils().canBePlayerDestroyed(mob,intoI,false, false)))
 		{
 			mob.tell(L("You can't fabricate @x1!",intoI.Name()));
 			return false;

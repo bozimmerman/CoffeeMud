@@ -168,7 +168,7 @@ public class Spell_PolymorphObject extends Spell
 			return false;
 		}
 		if((targetI instanceof DeadBody)
-		||(!CMLib.utensils().canBePlayerDestroyed(mob,targetI,false)))
+		||(!CMLib.utensils().canBePlayerDestroyed(mob,targetI,false, false)))
 		{
 			mob.tell(L("You can't polymorph that."));
 			return false;

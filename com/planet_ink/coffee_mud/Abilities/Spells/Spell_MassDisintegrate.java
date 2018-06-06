@@ -145,7 +145,7 @@ public class Spell_MassDisintegrate extends Spell
 				final Item I=mob.location().getItem(i);
 				if((I!=null)
 				&&(I.container()==null)
-				&&(CMLib.utensils().canBePlayerDestroyed(mob, I, false)))
+				&&(CMLib.utensils().canBePlayerDestroyed(mob, I, false, false)))
 				{
 					final List<DeadBody> DBs=CMLib.utensils().getDeadBodies(I);
 					boolean ok=true;

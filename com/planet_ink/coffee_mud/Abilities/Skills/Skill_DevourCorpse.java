@@ -110,7 +110,7 @@ public class Skill_DevourCorpse extends StdSkill
 					else
 					if((!CMLib.flags().isGettable((Item)msg.target()))
 					||(msg.target().displayText().length()==0)
-					||(!CMLib.utensils().canBePlayerDestroyed(mob, (Item)msg.target(), false)))
+					||(!CMLib.utensils().canBePlayerDestroyed(mob, (Item)msg.target(), false, false)))
 					{
 						mob.tell(L("You can not eat @x1.",((Item)msg.target()).name(mob)));
 						return false;

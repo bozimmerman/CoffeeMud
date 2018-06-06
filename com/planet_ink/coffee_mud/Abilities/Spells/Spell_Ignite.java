@@ -123,7 +123,7 @@ public class Spell_Ignite extends Spell
 			return false;
 		}
 
-		if((target instanceof Item) && (!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,false)))
+		if((target instanceof Item) && (!CMLib.utensils().canBePlayerDestroyed(mob,(Item)target,false, false)))
 		{
 			mob.tell(L("You can't ignite '@x1'!",target.name(mob)));
 			return false;

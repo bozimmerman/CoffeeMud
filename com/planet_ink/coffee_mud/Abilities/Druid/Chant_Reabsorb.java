@@ -124,7 +124,7 @@ public class Chant_Reabsorb extends Chant
 			mob.tell(L("You need to put @x1 on the ground first.",target.name(mob)));
 			return false;
 		}
-		if(!CMLib.utensils().canBePlayerDestroyed(mob,target,true))
+		if(!CMLib.utensils().canBePlayerDestroyed(mob,target,true, false))
 		{
 			mob.tell(L("@x1 can not be reabsorbed.",target.name(mob)));
 			return false;

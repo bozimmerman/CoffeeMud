@@ -87,7 +87,7 @@ public class Spell_DestroyObject extends Spell
 			}
 		}
 
-		if(!CMLib.utensils().canBePlayerDestroyed(mob,target,true))
+		if(!CMLib.utensils().canBePlayerDestroyed(mob,target,true, false))
 		{
 			mob.tell(L("You are not powerful enough to destroy @x1.",target.name(mob)));
 			return false;
