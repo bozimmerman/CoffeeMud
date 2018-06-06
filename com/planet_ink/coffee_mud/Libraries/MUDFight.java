@@ -975,9 +975,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				&&(((Combatant)((BoardableShip)A).getShipItem()).isInCombat()))
 					return;
 				
-				final boolean isSleeping=(CMLib.flags().isSleeping(mob));
-				final boolean isSittingOrRiding=(!isSleeping) && ((CMLib.flags().isSitting(mob))||(mob.riding()!=null));
-				final boolean isFlying=(!isSleeping) && (!isSittingOrRiding) && CMLib.flags().isFlying(mob);
+				final Rideable riding=mob.riding();
+				final boolean isSleeping=CMLib.flags().isSleeping(mob);
+				final boolean bedBonus=isSleeping && (riding!=null) && (riding.rideBasis()==Rideable.RIDEABLE_SLEEP);
+				final boolean isSittingOrRiding=((!isSleeping) && ((CMLib.flags().isSitting(mob))||(mob.riding()!=null))) || bedBonus;
+				final boolean isFlying=((!isSleeping) && (!isSittingOrRiding) && CMLib.flags().isFlying(mob)) || bedBonus;
 				final boolean isSwimming=(!isSleeping) && (!isSittingOrRiding) && (!isFlying) && CMLib.flags().isSwimming(mob);
 				final double[] vals=new double[]{
 					charStats.getStat(CharStats.STAT_CONSTITUTION),
