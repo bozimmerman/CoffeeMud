@@ -652,6 +652,8 @@ public class StdContainer extends StdItem implements Container
 	@Override
 	public boolean isInside(final Item I)
 	{
+		if(I==null)
+			return false;
 		if((I.container()==null)
 		||(I.container()==I))
 			return false;

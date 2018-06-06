@@ -1143,6 +1143,8 @@ public class RoomData extends StdWebMacro
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
+			if(R==null)
+				return "@break@";
 			final int theme = R.getArea().getTheme();
 
 			final StringBuffer str=new StringBuffer("");
