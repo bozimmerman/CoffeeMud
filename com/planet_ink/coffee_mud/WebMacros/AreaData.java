@@ -699,7 +699,7 @@ public class AreaData extends StdWebMacro
 				if(parms.containsKey("TODCODE"))
 					str.append(CMStrings.removeColors(A.getTimeObj().getTODCode().getDesc())+", ");
 				if(parms.containsKey("WEATHER"))
-					str.append(CMStrings.removeColors(A.getClimateObj().getWeatherDescription(A))+", ");
+					str.append(CMLib.coffeeFilter().wrapOnlyFilter(CMStrings.removeColors(A.getClimateObj().getWeatherDescription(A)),80)+", ");
 				if(parms.containsKey("MOON"))
 					str.append(CMStrings.removeColors(A.getTimeObj().getMoonPhase(A.getRandomProperRoom()).getDesc())+", ");
 				if(parms.containsKey("STATS"))
