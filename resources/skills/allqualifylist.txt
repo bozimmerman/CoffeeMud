@@ -85,6 +85,8 @@
 
 7 MeatCuring MASK=+INT 8
 
+8 Skill_Autoswim +CON 8
+
 10 Construction MASK=+CON 12 REQUIRES=Carpentry 
 10 Farming 
 10 JewelMaking MASK=+WIS 16 REQUIRES=Blacksmithing Pottery 
@@ -98,7 +100,6 @@
 10 Wainwrighting MASK=+INT 12 REQUIRES=Carpentry 
 
 12 Skill_FindShip MASK=+WIS 8
-
 12 Gardening
 
 15 Excavation MASK=+CON 15 REQUIRES=Sculpting 

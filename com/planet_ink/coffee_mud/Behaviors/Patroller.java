@@ -499,6 +499,8 @@ public class Patroller extends ActiveTicker
 	
 								final CMMsg enterMsg=CMClass.getMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 								final CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
+								leaveMsg.setValue(direction+1);
+								enterMsg.setValue(Directions.getOpDirectionCode(direction)+1);
 								try
 								{
 									rideCheckCt++;

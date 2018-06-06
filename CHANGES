@@ -10,7 +10,7 @@
    9. ROMGangMember behavior messages now customizable.
   10. Scavenger behavior now allows an item zappermask to limit types of items picked up.
   11. New Disease: Writers Block.  Caused by frequently writing garbage.
-  12. New Skills: Hammering, Find Home, Find Ship, Food Preserving
+  12. New Skills: Hammering, Find Home, Find Ship, Food Preserving, Autoswim
   13. Lassos are more farmer friendly now -- can be untied after throwing, no combat starting, etc.
   14. Wands and Staffs now have their max charges settable from common skill recipes.
   15. New LIST COMMANDJOURNALS

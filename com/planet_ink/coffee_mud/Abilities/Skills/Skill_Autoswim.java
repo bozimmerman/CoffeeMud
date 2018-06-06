@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Abilities.Thief;
+package com.planet_ink.coffee_mud.Abilities.Skills;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2004-2018 Bo Zimmerman
+   Copyright 2018-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -33,21 +33,21 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Thief_Autosneak extends ThiefSkill
+public class Skill_Autoswim extends StdSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Thief_Autosneak";
+		return "Skill_Autoswim";
 	}
 
 	@Override
 	public String displayText()
 	{
-		return L("(AutoSneak)");
+		return L("(AutoSwim)");
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("AutoSneak");
+	private final static String	localizedName	= CMLib.lang().L("AutoSwim");
 
 	@Override
 	public String name()
@@ -73,7 +73,7 @@ public class Thief_Autosneak extends ThiefSkill
 		return Ability.QUALITY_OK_SELF;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "AUTOSNEAK" });
+	private static final String[]	triggerStrings	= I(new String[] { "AUTOSWIM" });
 
 	@Override
 	public String[] triggerStrings()
@@ -84,7 +84,7 @@ public class Thief_Autosneak extends ThiefSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_THIEF_SKILL | Ability.DOMAIN_STEALTHY;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_FITNESS;
 	}
 
 	protected volatile boolean	noRepeat	= false;
@@ -103,27 +103,16 @@ public class Thief_Autosneak extends ThiefSkill
 		&&(msg.tool() instanceof Exit)
 		&&(((MOB)affected).location()!=null))
 		{
+			final int dir=msg.value()-1;
 			final MOB mob=(MOB)affected;
-			int dir=msg.value()-1;
-			if(dir < 0)
+			final Room R=mob.location();
+			if((dir >=0) 
+			&& (R.getRoomInDir(dir)!=null)
+			&&(CMLib.flags().isWateryRoom(R)||CMLib.flags().isWateryRoom(R.getRoomInDir(dir))))
 			{
-				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
-				{
-					if((mob.location().getRoomInDir(d)==msg.target())
-					||(mob.location().getReverseExit(d)==msg.tool())
-					||(mob.location().getExitInDir(d)==msg.tool()))
-					{
-						dir = d;
-						break;
-					}
-				}
-			}
-			if(dir>=0)
-			{
-				Ability A=mob.fetchAbility("Thief_Sneak");
-				if(A==null)
-					A=mob.fetchAbility("Ranger_Sneak");
-				if(A!=null)
+				final Ability A=mob.fetchAbility("Skill_Swim");
+				if((A!=null)
+				&&(proficiencyCheck(mob, 0, false)))
 				{
 					noRepeat=true;
 					if(A.invoke(mob,CMParms.parse(CMLib.directions().getDirectionName(dir)),null,false,0))
@@ -140,6 +129,11 @@ public class Thief_Autosneak extends ThiefSkill
 						helpProficiency(mob, 0);
 					noRepeat=false;
 				}
+				else
+				if(A==null)
+					msg.source().tell(L("You don't seem to know how to swim?!"));
+				else
+					msg.source().tell(L("You forgot to automatically swim."));
 				return false;
 			}
 		}
@@ -151,7 +145,7 @@ public class Thief_Autosneak extends ThiefSkill
 	{
 		if((mob.fetchEffect(ID())!=null))
 		{
-			mob.tell(L("You are no longer automatically sneaking around."));
+			mob.tell(L("You are no longer automatically swimming around."));
 			mob.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
@@ -162,14 +156,14 @@ public class Thief_Autosneak extends ThiefSkill
 
 		if(success)
 		{
-			mob.tell(L("You will now automatically sneak around while you move."));
+			mob.tell(L("You will now automatically swim around while you move."));
 			beneficialAffect(mob,mob,asLevel,adjustedLevel(mob,asLevel));
 			final Ability A=mob.fetchEffect(ID());
 			if(A!=null)
 				A.makeLongLasting();
 		}
 		else
-			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to get into <S-HIS-HER> sneaking stance, but fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to get into <S-HIS-HER> swimming position, but fail(s)."));
 		return success;
 	}
 }
