@@ -524,7 +524,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		CMLib.players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
 		
 		final PlayerStats pStats=mob.playerStats();
-		if((pStats!=null)&&(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
+		if((pStats!=null)
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
+		&&(!mob.charStats().getCurrentClass().expless())
+		&&(!mob.charStats().getMyRace().expless())
+		&&(mob.getExpNeededLevel()!=Integer.MAX_VALUE)
+		&&(CMProps.getIntVar(CMProps.Int.EXPDEFER_PCT)>0))
 		{
 			final long lastTime = pStats.getLastXPAwardMillis();
 			final long nextTime = lastTime + (CMProps.getIntVar(CMProps.Int.EXPDEFER_SECS) * 1000L);
@@ -557,7 +562,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				}
 				else
 				if(!quiet)
-					mob.tell(L("^N^!You can not defer any more experience for later.^N",""+amount));
+					mob.tell(L("^N^!You cannot defer any more experience for later.^N",""+amount));
 				return;
 			}
 		}
@@ -590,7 +595,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		CMLib.players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
 		final PlayerStats pStats=mob.playerStats();
-		if((pStats!=null)&&(CMProps.getIntVar(CMProps.Int.RP_AWARD_PCT)>0))
+		if((pStats!=null)
+		&&(CMProps.getIntVar(CMProps.Int.RP_AWARD_PCT)>0)
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
+		&&(!mob.charStats().getCurrentClass().expless())
+		&&(!mob.charStats().getMyRace().expless())
+		&&(mob.getExpNeededLevel()!=Integer.MAX_VALUE))
 		{
 			if(pStats.getMaxRolePlayXP()==0)
 				ensureMaxRPXP(mob, pStats);
