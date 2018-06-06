@@ -355,7 +355,8 @@ public class CMProps extends Properties
 			DAMAGE_ADV(1024),
 			DAMAGE_ADJ(2048),
 			DAMAGE_NUMBER(4096),
-			SKILL_PROFICIENCY(8192)
+			SKILL_PROFICIENCY(8192),
+			STAT_PROFICIENCY(16384)
 			;
 			public int value;
 			private Prowesses(int val)
@@ -444,6 +445,7 @@ public class CMProps extends Properties
 		EXTREME_ADVS,
 		COMBAT_ADJS,
 		COMBAT_NOUNS,
+		CHARSTAT_CHART,
 		EXP_CHART,
 		ARMOR_MISFITS,
 		MAGIC_WORDS,

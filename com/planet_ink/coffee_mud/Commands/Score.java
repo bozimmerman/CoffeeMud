@@ -52,6 +52,39 @@ public class Score extends Affect
 		return getScore(mob, "");
 	}
 
+	protected String getExtremeValue(int extreme)
+	{
+		final StringBuilder str=new StringBuilder("");
+		for(char c : CMath.convertToRoman(extreme).toCharArray())
+		{
+			switch(c)
+			{
+			case 'I': 
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,0)).append(" ");
+				break;
+			case 'V': 
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,1)).append(" ");
+				break;
+			case 'X': 
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,2)).append(" ");
+				break;
+			case 'L': 
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,3)).append(" ");
+				break;
+			case 'C': 
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,4)).append(" ");
+				break;
+			case 'D': 
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,5)).append(" ");
+				break;
+			case 'M': 
+				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,6)).append(" ");
+				break;
+			}
+		}
+		return str.toString();
+	}
+	
 	public StringBuilder getScore(MOB mob, String parm)
 	{
 		final StringBuilder msg=new StringBuilder("^N");
@@ -163,13 +196,27 @@ public class Score extends Affect
 				CT=mob.baseCharStats();
 			msg.append("^N^!");
 			final int longest=CharStats.CODES.LONNGEST_BASECODE_NAME();
+			final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
+			final boolean useWords=CMProps.Int.Prowesses.STAT_PROFICIENCY.is(prowessCode);
+			final String[] charStatList = CMProps.getListFileStringList(CMProps.ListFile.CHARSTAT_CHART);
 			for(final int i : CharStats.CODES.BASECODES())
 			{
+				final String statDesc;
+				if(useWords)
+				{
+					final int val=CT.getStat(i);
+					if(val < 0)
+						statDesc=CMStrings.capitalizeAndLower(charStatList[0]);
+					else
+					if(val < charStatList.length)
+						statDesc=CMStrings.capitalizeAndLower(charStatList[val]);
+					else
+						statDesc=CMStrings.capitalizeAndLower(getExtremeValue(val-charStatList.length+1))+" "+CMStrings.capitalizeAndLower(charStatList[charStatList.length-1]);
+				}
+				else
+					statDesc=CMStrings.padRight(Integer.toString(CT.getStat(i)),2)+"/"+(CT.getMaxStat(i));
 				msg.append(CMStrings.padRight("^<HELP^>" + CMStrings.capitalizeAndLower(CharStats.CODES.NAME(i))+"^</HELP^>",longest)
-						+": ^H"
-						+CMStrings.padRight(Integer.toString(CT.getStat(i)),2)
-						+"/"
-						+(CT.getMaxStat(i))+"^?\n\r");
+						+": ^H"+statDesc+"^?\n\r");
 			}
 			msg.append("^N\n\r");
 		}
