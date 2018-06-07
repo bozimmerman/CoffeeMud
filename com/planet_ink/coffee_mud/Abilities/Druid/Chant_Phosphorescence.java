@@ -124,7 +124,7 @@ public class Chant_Phosphorescence extends Chant
 			return beneficialWordsFizzle(mob,mob.location(),L("<S-NAME> chant(s) for phosphorescence, but fail(s)."));
 		}
 
-		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> begin(s) to glow!"):L("^S<S-NAME> chant(s), causing <S-HIM-HER> skin to become phosphorescent!^?"));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?L("<T-NAME> begin(s) to glow!"):L("^S<S-NAME> chant(s), causing <S-HIS-HER> skin to become phosphorescent!^?"));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
