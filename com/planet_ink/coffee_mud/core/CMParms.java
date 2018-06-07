@@ -3689,7 +3689,7 @@ public class CMParms
 			return -1;
 		for(int i=0;i<theList.length;i++)
 		{
-			if(theList[i].equals(obj))
+			if(obj.equals(theList[i]))
 				return i;
 		}
 		return -1;
@@ -3710,7 +3710,7 @@ public class CMParms
 			return -1;
 		for(int i=startIndex;i<theList.length;i++)
 		{
-			if(theList[i].equals(obj))
+			if(obj.equals(theList[i]))
 				return i;
 		}
 		return -1;
