@@ -1931,11 +1931,15 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							final StringBuilder doc=new StringBuilder("room.items.list {");
 							doc.append("\"location\":\"room\",");
 							doc.append("\"items\":[");
+							boolean comma=false;
 							for(int i=0;i<R.numItems();i++)
 							{
 								final Item I=R.getItem(i);
 								if((I!=null)&&(I.container()==null))
 								{
+									if(comma)
+										doc.append(",");
+									comma=true;
 									doc.append("{");
 									doc.append("\"id\":").append(I.hashCode()).append(",");
 									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\"");
@@ -1963,6 +1967,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							final StringBuilder doc=new StringBuilder("room.items.list {");
 							doc.append("\"location\":\""+hashCode+"\",");
 							doc.append("\"items\":[");
+							boolean comma=false;
 							for(int i=0;i<R.numItems();i++)
 							{
 								final Item I=R.getItem(i);
@@ -1970,6 +1975,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								&&(I.container()!=null)
 								&&(I.container().hashCode()==hashCode))
 								{
+									if(comma)
+										doc.append(",");
+									comma=true;
 									doc.append("{");
 									doc.append("\"id\":").append(I.hashCode()).append(",");
 									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\"");
@@ -1994,13 +2002,17 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if(R!=null)
 						{
 							final StringBuilder doc=new StringBuilder("room.mobiles {");
+							boolean comma=false;
 							for(int r=0;r<R.numInhabitants();r++)
 							{
 								final MOB M=R.fetchInhabitant(r);
 								if((M!=null)&&(!M.isPlayer()))
 								{
+									if(comma)
+										doc.append(",");
+									comma=true;
 									final String lname=(M.Name().equals(M.name())?M.titledName():M.name(mob));
-									doc.append("\""+M.Name()+"\":\"").append(MiniJSON.toJSONString(lname)).append("\",");
+									doc.append("\""+M.Name()+"\":\"").append(MiniJSON.toJSONString(lname)).append("\"");
 								}
 							}
 							doc.append("}");
@@ -2017,13 +2029,17 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						if(R!=null)
 						{
 							final StringBuilder doc=new StringBuilder("room.players {");
+							boolean comma=false;
 							for(int r=0;r<R.numInhabitants();r++)
 							{
 								final MOB M=R.fetchInhabitant(r);
 								if((M!=null)&&(M.isPlayer()))
 								{
+									if(comma)
+										doc.append(",");
+									comma=true;
 									final String lname=(M.Name().equals(M.name())?M.titledName():M.name(mob));
-									doc.append("\""+M.Name()+"\":\"").append(MiniJSON.toJSONString(lname)).append("\",");
+									doc.append("\""+M.Name()+"\":\"").append(MiniJSON.toJSONString(lname)).append("\"");
 								}
 							}
 							doc.append("}");
@@ -2039,11 +2055,15 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						final StringBuilder doc=new StringBuilder("char.items.list {");
 						doc.append("\"location\":\"inv\",");
 						doc.append("\"items\":[");
+						boolean comma=false;
 						for(int i=0;i<mob.numItems();i++)
 						{
 							final Item I=mob.getItem(i);
 							if((I!=null)&&(I.container()==null))
 							{
+								if(comma)
+									doc.append(",");
+								comma=true;
 								doc.append("{");
 								doc.append("\"id\":").append(I.hashCode()).append(",");
 								doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\"");
@@ -2069,6 +2089,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							final StringBuilder doc=new StringBuilder("char.items.list {");
 							doc.append("\"location\":\""+hashCode+"\",");
 							doc.append("\"items\":[");
+							boolean comma=false;
 							for(int i=0;i<mob.numItems();i++)
 							{
 								final Item I=mob.getItem(i);
@@ -2076,6 +2097,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								&&(I.container()!=null)
 								&&(I.container().hashCode()==hashCode))
 								{
+									if(comma)
+										doc.append(",");
+									comma=true;
 									doc.append("{");
 									doc.append("\"id\":").append(I.hashCode()).append(",");
 									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\"");
@@ -2266,7 +2290,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									if(room2ID.length()>0)
 									{
 										if(comma)
-											doc.append(","); comma=true;
+											doc.append(","); 
+										comma=true;
 										doc.append("\""+CMLib.directions().getDirectionChar(d)+"\":").append(room2ID.hashCode());
 									}
 								}
@@ -2404,7 +2429,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								{
 									doc.append("\"group\":\""+MiniJSON.toJSONString(getAbilityGroupName(A.abilityCode()))+"\",");
 									doc.append("\"skill\":\""+MiniJSON.toJSONString(name)+"\",");
-									doc.append("\"info\":\""+MiniJSON.toJSONString(CMLib.help().getHelpText(A.Name().toUpperCase(), mob, false).toString())+"\",");
+									doc.append("\"info\":\""+MiniJSON.toJSONString(CMLib.help().getHelpText(A.Name().toUpperCase(), mob, false).toString())+"\"");
+									break;
 								}
 							}
 							doc.append("}");
