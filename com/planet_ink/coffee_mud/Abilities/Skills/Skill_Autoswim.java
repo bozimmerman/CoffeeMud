@@ -101,6 +101,7 @@ public class Skill_Autoswim extends StdSkill
 		&&(msg.source()==affected)
 		&&(msg.target() instanceof Room)
 		&&(msg.tool() instanceof Exit)
+		&&(msg.source().riding()==null)
 		&&(((MOB)affected).location()!=null))
 		{
 			final int dir=msg.value()-1;
