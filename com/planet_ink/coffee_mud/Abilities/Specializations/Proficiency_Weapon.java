@@ -158,10 +158,10 @@ public class Proficiency_Weapon extends StdAbility
 		if((myFilter!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
-		&&(CMLib.dice().rollPercentage()<5)
 		&&((msg.sourceMinor()==CMMsg.TYP_THROW)||(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK))
 		&&(msg.tool() instanceof Weapon)
 		&&(msg.target() instanceof MOB)
+		&&(CMLib.dice().rollPercentage()<5)
 		&&(myFilter.getFilterResult((Weapon)msg.tool())==DoubleFilterer.Result.ALLOWED)
 		)
 			helpProficiency((MOB)affected, 0);
