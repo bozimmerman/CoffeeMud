@@ -1368,22 +1368,28 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				else
 					domType=Room.DOMAIN_INDOORS_DESCS[CMath.unsetb(R.domainType(),Room.INDOORS)];
 				buf=new ByteArrayOutputStream();
-				buf.write(Session.MSDP_VAR);buf.write(type.toString().getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAR);
+				buf.write(type.toString().getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
 				buf.write(Session.MSDP_TABLE_OPEN);
-				buf.write(Session.MSDP_VAR);buf.write("VNUM".getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAR);
+				buf.write("VNUM".getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
 				buf.write(Integer.toString(CMLib.map().getExtendedRoomID(R).hashCode()).getBytes(Session.MSDP_CHARSET));
-				buf.write(Session.MSDP_VAR);buf.write("NAME".getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAR);
+				buf.write("NAME".getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
 				buf.write(R.displayText(M).getBytes(Session.MSDP_CHARSET));
-				buf.write(Session.MSDP_VAR);buf.write("AREA".getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAR);
+				buf.write("AREA".getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
 				buf.write(R.getArea().Name().getBytes(Session.MSDP_CHARSET));
-				buf.write(Session.MSDP_VAR);buf.write("TERRAIN".getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAR);
+				buf.write("TERRAIN".getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
 				buf.write(domType.getBytes(Session.MSDP_CHARSET));
-				buf.write(Session.MSDP_VAR);buf.write("EXITS".getBytes(Session.MSDP_CHARSET));
+				buf.write(Session.MSDP_VAR);
+				buf.write("EXITS".getBytes(Session.MSDP_CHARSET));
 				buf.write(Session.MSDP_VAL);
 				buf.write(Session.MSDP_TABLE_OPEN);
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
@@ -1932,10 +1938,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								{
 									doc.append("{");
 									doc.append("\"id\":").append(I.hashCode()).append(",");
-									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\",");
+									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\"");
 									final String attribs = makeGMCPAttribs(I);
 									if(attribs.length()>0)
-										doc.append("\"attrib\":\"").append(attribs.toString()).append("\",");
+										doc.append(",\"attrib\":\"").append(attribs.toString()).append("\"");
 									doc.append("}");
 								}
 							}
@@ -1966,10 +1972,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								{
 									doc.append("{");
 									doc.append("\"id\":").append(I.hashCode()).append(",");
-									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\",");
+									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\"");
 									final String attribs = makeGMCPAttribs(I);
 									if(attribs.length()>0)
-										doc.append("\"attrib\":\"").append(attribs.toString()).append("\",");
+										doc.append(",\"attrib\":\"").append(attribs.toString()).append("\"");
 									doc.append("}");
 								}
 							}
@@ -2040,10 +2046,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							{
 								doc.append("{");
 								doc.append("\"id\":").append(I.hashCode()).append(",");
-								doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\",");
+								doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\"");
 								final String attribs = makeGMCPAttribs(I);
 								if(attribs.length()>0)
-									doc.append("\"attrib\":\"").append(attribs.toString()).append("\",");
+									doc.append(",\"attrib\":\"").append(attribs.toString()).append("\"");
 								doc.append("}");
 							}
 						}
@@ -2072,10 +2078,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 								{
 									doc.append("{");
 									doc.append("\"id\":").append(I.hashCode()).append(",");
-									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\",");
+									doc.append("\"name\":\"").append(MiniJSON.toJSONString(I.Name())).append("\"");
 									final String attribs = makeGMCPAttribs(I);
 									if(attribs.length()>0)
-										doc.append("\"attrib\":\"").append(attribs.toString()).append("\",");
+										doc.append(",\"attrib\":\"").append(attribs.toString()).append("\"");
 									doc.append("}");
 								}
 							}
