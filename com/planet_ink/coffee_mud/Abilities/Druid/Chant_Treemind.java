@@ -93,19 +93,24 @@ public class Chant_Treemind extends Chant
 		final MOB mob=(MOB)affected;
 		if((msg.amITarget(mob))
 		&&(!mob.amDead())
-		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
+		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 		{
 			boolean yep=(msg.targetMinor()==CMMsg.TYP_MIND);
 			if((!yep)
-			&&(msg.tool() instanceof Ability)
-			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
+			&&(msg.tool() instanceof Ability))
 			{
 				final Ability A=(Ability)msg.tool();
 				if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ILLUSION)
 				||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_ENCHANTMENT))
-				   yep=true;
+					yep=true;
 			}
-			return !yep;
+			if(yep)
+			{
+				if((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false))
+					return false;
+				else
+					msg.source().tell(L("Your tree mind focus fails."));
+			}
 		}
 		return true;
 	}
