@@ -168,7 +168,7 @@ public class GrinderClans
 				if(str!=null)
 					C.setRivalrous(str.equalsIgnoreCase("on"));
 				str=httpReq.getUrlParameter("STATUSID");
-				if(str!=null)
+				if((str!=null)&&(CMath.s_int(str)!=C.getStatus()))
 					C.setStatus(CMath.s_int(str));
 				str=httpReq.getUrlParameter("ACCEPTANCEID");
 				if(str!=null)

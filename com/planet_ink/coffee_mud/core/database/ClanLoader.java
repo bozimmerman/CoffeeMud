@@ -145,10 +145,10 @@ public class ClanLoader
 				C.setName(name);
 				C.setPremise(DBConnections.getRes(R,"CMDESC"));
 				C.setAcceptanceSettings(DBConnections.getRes(R,"CMACPT"));
+				C.setStatus(CMath.s_int(DBConnections.getRes(R, "CMSTAT"))); // this will mangle laststatuschangetime, so must be before politics
 				C.setPolitics(DBConnections.getRes(R,"CMPOLI"));
 				C.setRecall(DBConnections.getRes(R,"CMRCLL"));
 				C.setDonation(DBConnections.getRes(R,"CMDNAT"));
-				C.setStatus(CMath.s_int(DBConnections.getRes(R, "CMSTAT")));
 				C.setMorgue(DBConnections.getRes(R,"CMMORG"));
 				C.setTrophies(CMath.s_int(DBConnections.getRes(R, "CMTROP")));
 				//CMLib.clans().addClan(C);
