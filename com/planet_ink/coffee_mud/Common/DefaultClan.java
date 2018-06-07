@@ -1551,7 +1551,8 @@ public class DefaultClan implements Clan
 			{
 				if(!isSafeFromPurge())
 				{
-					if((System.currentTimeMillis() - this.lastStatusChange)>(3L * 24L * 60L * 60L * 1000L))
+					final long duration=(3L * 24L * 60L * 60L * 1000L);
+					if((System.currentTimeMillis() - this.lastStatusChange)>duration)
 					{
 						if(getStatus()==CLANSTATUS_FADING)
 						{
@@ -1582,7 +1583,7 @@ public class DefaultClan implements Clan
 							}
 						}
 	
-						Log.sysOut("Clans","Clan '"+getName()+" fading with only "+activeMembers+" having logged on lately.");
+						Log.sysOut("Clans","Clan '"+getName()+"' fading with only "+activeMembers+" having logged on lately.  Will purge on "+CMLib.time().date2String(this.lastStatusChange)+duration);
 						clanAnnounce(""+getGovernmentName()+" "+name()+" is in danger of being deleted if more members do not log on within 24 hours.");
 						update();
 					}
