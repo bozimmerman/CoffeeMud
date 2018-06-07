@@ -3988,9 +3988,12 @@ public class StdMOB implements MOB
 	{
 		if (destroy)
 		{
-			for (int i = numItems() - 1; i >= 0; i--)
+			final LinkedList<Item> items=new LinkedList<Item>();
+			items.addAll(inventory);
+			inventory.clear();
+			for (final Iterator<Item> i=items.descendingIterator();i.hasNext();)
 			{
-				final Item I = getItem(i);
+				final Item I = i.next();;
 				if (I != null)
 				{
 					// since were deleting you AND all your peers, no need for
