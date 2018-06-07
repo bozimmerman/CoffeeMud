@@ -673,9 +673,9 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 				if(room!=null)
 				{
 					if(room.getArea()==this)
-						room.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic doesn't seem to work here."));
+						room.showHappens(CMMsg.MSG_OK_ACTION,L("Magic doesn't seem to work here."));
 					else
-						room.showHappens(CMMsg.MSG_OK_VISUAL,L("Magic doesn't seem to work there."));
+						room.showHappens(CMMsg.MSG_OK_ACTION,L("Magic doesn't seem to work there."));
 				}
 				return false;
 			}
