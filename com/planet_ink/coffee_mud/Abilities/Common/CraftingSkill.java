@@ -265,7 +265,7 @@ public class CraftingSkill extends GatheringSkill
 							recipes.add(V2);
 						else
 						{
-							Log.errOut(ID(),"Not enough parms ("+lastRecipeV.size()+"<="+V2.size()+"): "+CMParms.combine(V2));
+							//Log.errOut(ID(),"Not enough parms ("+lastRecipeV.size()+"<="+V2.size()+"): "+CMParms.combine(V2));
 							while(V2.size()<lastRecipeV.size())
 								V2.add("");
 							while(V2.size()>lastRecipeV.size())
