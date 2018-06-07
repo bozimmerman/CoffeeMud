@@ -540,43 +540,48 @@ public class Where extends StdCommand
 					}
 				}
 			}
-			msg.append(L("\n\r^HThe best areas for you to try appear to be: ^?\n\r\n\r"));
-			msg.append("^x"+CMStrings.padRight(L("Area Name"),35)+CMStrings.padRight(L("Level"),6)+CMStrings.padRight(L("Alignment"),20)+CMStrings.padRight(L("Pop"),10)+"^.^?\n\r");
-			final List<Area> finalScoreList = new ArrayList<Area>();
-			for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-15)));i--)
-				finalScoreList.add((Area)scores.get(i,1));
-			final int mobLevel=mob.phyStats().level();
-			Collections.sort(finalScoreList,new Comparator<Area>()
+			if(scores.size()==0)
+				msg.append(L("There appear to be no other areas on this world.\n\r"));
+			else
 			{
-				@Override
-				public int compare(Area o1, Area o2)
+				msg.append(L("\n\r^HThe best areas for you to try appear to be: ^?\n\r\n\r"));
+				msg.append("^x"+CMStrings.padRight(L("Area Name"),35)+CMStrings.padRight(L("Level"),6)+CMStrings.padRight(L("Alignment"),20)+CMStrings.padRight(L("Pop"),10)+"^.^?\n\r");
+				final List<Area> finalScoreList = new ArrayList<Area>();
+				for(int i=scores.size()-1;((i>=0)&&(i>=(scores.size()-15)));i--)
+					finalScoreList.add((Area)scores.get(i,1));
+				final int mobLevel=mob.phyStats().level();
+				Collections.sort(finalScoreList,new Comparator<Area>()
 				{
-					int median1=o1.getPlayerLevel();
-					if(median1==0)
-						median1=o1.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
-					int median2=o2.getPlayerLevel();
-					if(median2==0)
-						median2=o2.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
-					final int lvlDiff1=Math.abs(mobLevel - median1);
-					final int lvlDiff2=Math.abs(mobLevel - median2);
-					return lvlDiff1==lvlDiff2?0:(lvlDiff1>lvlDiff2)?1:-1;
+					@Override
+					public int compare(Area o1, Area o2)
+					{
+						int median1=o1.getPlayerLevel();
+						if(median1==0)
+							median1=o1.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+						int median2=o2.getPlayerLevel();
+						if(median2==0)
+							median2=o2.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+						final int lvlDiff1=Math.abs(mobLevel - median1);
+						final int lvlDiff2=Math.abs(mobLevel - median2);
+						return lvlDiff1==lvlDiff2?0:(lvlDiff1>lvlDiff2)?1:-1;
+					}
+					
+				});
+				for(Area A : finalScoreList)
+				{
+					int lvl=A.getPlayerLevel();
+					if(lvl==0)
+						lvl=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
+					final int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
+	
+					msg.append(CMStrings.padRight(A.name(),35))
+					   .append(CMStrings.padRight(Integer.toString(lvl),6))
+					   .append(CMStrings.padRight(CMLib.factions().getRange(CMLib.factions().AlignID(), align).name(),20))
+					   .append(CMStrings.padRight(Integer.toString(A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]),10))
+					   .append("\n\r");
 				}
-				
-			});
-			for(Area A : finalScoreList)
-			{
-				int lvl=A.getPlayerLevel();
-				if(lvl==0)
-					lvl=A.getAreaIStats()[Area.Stats.MED_LEVEL.ordinal()];
-				final int align=A.getAreaIStats()[Area.Stats.MED_ALIGNMENT.ordinal()];
-
-				msg.append(CMStrings.padRight(A.name(),35))
-				   .append(CMStrings.padRight(Integer.toString(lvl),6))
-				   .append(CMStrings.padRight(CMLib.factions().getRange(CMLib.factions().AlignID(), align).name(),20))
-				   .append(CMStrings.padRight(Integer.toString(A.getAreaIStats()[Area.Stats.POPULATION.ordinal()]),10))
-				   .append("\n\r");
+				msg.append(L("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?"));
 			}
-			msg.append(L("\n\r\n\r^HEnter 'HELP (AREA NAME) for more information.^?"));
 			if(!mob.isMonster())
 				mob.session().colorOnlyPrintln(msg.toString()+"\n\r");
 		}
