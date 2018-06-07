@@ -81,19 +81,19 @@ RACES=Calf,Cow,Buffalo,Bull,Minotaur
 
 [FISH FORM]
 NAME=Fish form
-ATTADJ=1.0
-DMGADJ=0.8
-ARMADJ=0.4
-SPEEDADJ=0.0
+ATTADJ=0.3
+DMGADJ=0.4
+ARMADJ=0.5
+SPEEDADJ=1.0
 SHAPES=Clown Fish,Angelfish,Swordfish,Shark,Merfolk
 RACES=ClownFish,AngelFish,Swordfish,Shark,Merfolk
 
 [SEA MAMMAL FORM]
 NAME=Sea Mammal form
 ATTADJ=1.0
-DMGADJ=0.8
-ARMADJ=0.4
-SPEEDADJ=0.0
+DMGADJ=0.5
+ARMADJ=0.3
+SPEEDADJ=0.2
 SHAPES=Seal,Walrus,Dolphin,Whale,Selkie
 RACES=Seal,Walrus,Dolphin,Whale,Selkie
 
