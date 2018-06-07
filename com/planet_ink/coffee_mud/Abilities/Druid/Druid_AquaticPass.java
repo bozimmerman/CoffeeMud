@@ -119,7 +119,7 @@ public class Druid_AquaticPass extends StdAbility
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 
-		if(!canPassHere(affected))
+		if(!canPassHere(mob))
 		{
 			mob.tell(L("You must be in the water to perform the Aquatic Pass."));
 			return false;
