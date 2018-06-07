@@ -602,7 +602,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				final String[] clookup = (S==null)?CMLib.color().standardColorLookups():S.getColorCodes();
 				String escapeSequence=clookup[c];
 				if(escapeSequence==null)
-					return index;;
+					return index;
 				if((S!=null)&&(escapeSequence.length()>0)&&(escapeSequence.charAt(0)=='\033'))
 				{
 					final ColorState state=S.getCurrentColor();
