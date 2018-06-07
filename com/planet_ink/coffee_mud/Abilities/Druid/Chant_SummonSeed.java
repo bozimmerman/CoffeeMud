@@ -148,6 +148,7 @@ public class Chant_SummonSeed extends Chant
 					newItem.setDisplayText(L("@x1 is here.",newItem.name()));
 					newItem.setDescription("");
 					newItem.setMaterial(material);
+					((RawMaterial)newItem).setSubType(RawMaterial.ResourceSubType.SEED.name());
 					newItem.basePhyStats().setWeight(0);
 					newItem.recoverPhyStats();
 					newItem.setMiscText(newItem.text());

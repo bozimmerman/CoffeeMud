@@ -95,6 +95,37 @@ public interface RawMaterial extends Item
 	public void quickDestroy();
 
 	/**
+	 * Sets the resource subtype of this rawmaterial.
+	 * @see RawMaterial.ResourceSubType
+	 * @see RawMaterial#getSubType()
+	 * @param subType the resource subtype
+	 */
+	public void setSubType(String subType);
+
+	/**
+	 * Returns the resource subtype of this rawmaterial.
+	 * @see RawMaterial.ResourceSubType
+	 * @see RawMaterial#setSubType(String)
+	 * @return the resource subtype
+	 */
+	public String getSubType();
+
+	/** 
+	 * A subset of the allowed strings to denote
+	 * the subtype of a specific resource, such 
+	 * as a resource that is still of its type,
+	 * but in an unusual form.  Such as a bolt
+	 * of cotton, or an apple seed.
+	 * @author Bo Zimmerman
+	 *
+	 */
+	public static enum ResourceSubType
+	{
+		BOLT,
+		SEED
+	}
+
+	/**
 	 * Item basic material type denoting that this material is of unknown
 	 * material type
 	 */
@@ -329,7 +360,7 @@ public interface RawMaterial extends Item
 			return startsWith(name.toUpperCase().trim());
 		}
 	}
-
+	
 	public final static int	RESOURCE_NOTHING		= MATERIAL_UNKNOWN | 0;
 	public final static int	RESOURCE_MEAT			= MATERIAL_FLESH | 1;
 	public final static int	RESOURCE_BEEF			= MATERIAL_FLESH | 2;

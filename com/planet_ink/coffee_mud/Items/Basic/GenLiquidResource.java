@@ -54,6 +54,19 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 	}
 
 	protected static Ability rot=null;
+	protected String	resourceSubType	= "";
+
+	@Override
+	public void setSubType(String subType)
+	{
+		resourceSubType = subType;
+	}
+
+	@Override
+	public String getSubType()
+	{
+		return resourceSubType;
+	}
 
 	@Override
 	public void setMaterial(int newValue)
@@ -119,5 +132,88 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 	public void quickDestroy()
 	{
 		CMLib.materials().quickDestroy(this);
+	}
+	
+	
+	private final static String[] MYCODES={"DOMAINSRC","RSUBTYPE"};
+
+	@Override
+	public String getStat(String code)
+	{
+		if(super.isStat(code))
+			return super.getStat(code);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0:
+			return this.domainSource();
+		case 1:
+			return this.getSubType();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
+	}
+
+	@Override
+	public void setStat(String code, String val)
+	{
+		if(super.isStat(code))
+			super.setStat(code, val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0:
+			setDomainSource(val);
+			break;
+		case 1:
+			this.setSubType(val);
+			break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
+		}
+	}
+
+	@Override
+	protected int getCodeNum(final String code)
+	{
+		for(int i=0;i<MYCODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
+		}
+		return -1;
+	}
+
+	private static String[]	codes	= null;
+
+	@Override
+	public String[] getStatCodes()
+	{
+		if(codes!=null)
+			return codes;
+		final String[] MYCODES=CMProps.getStatCodesList(GenLiquidResource.MYCODES,this);
+		final String[] superCodes=CMParms.toStringArray(super.getStatCodes());
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
+	}
+
+	@Override
+	public boolean sameAs(final Environmental E)
+	{
+		if(!(E instanceof GenLiquidResource))
+			return false;
+		final String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
+		{
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+				return false;
+		}
+		return true;
 	}
 }

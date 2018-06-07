@@ -639,7 +639,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 
 		if(E instanceof RawMaterial)
+		{
 			text.append(CMLib.xml().convertXMLtoTag("DOMN",((RawMaterial)E).domainSource()+""));
+			text.append(CMLib.xml().convertXMLtoTag("RSUBT",((RawMaterial)E).getSubType()+""));
+		}
 
 		if(E instanceof Food)
 		{
@@ -3339,7 +3342,10 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 
 		if(E instanceof RawMaterial)
+		{
 			((RawMaterial)E).setDomainSource(CMLib.xml().getValFromPieces(buf,"DOMN"));
+			((RawMaterial)E).setSubType(CMLib.xml().getValFromPieces(buf,"RSUBT"));
+		}
 
 		if(E instanceof Drink)
 		{

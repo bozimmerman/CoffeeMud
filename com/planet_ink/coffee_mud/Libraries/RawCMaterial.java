@@ -90,6 +90,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		Item I=null;
 		final Environmental owner=item.owner();
 		long lowestNonZeroFoodNumber=Long.MAX_VALUE;
+		final String subType=(item instanceof RawMaterial)?((RawMaterial)item).getSubType():"";
 		if(owner instanceof Room)
 		{
 			final Room R=(Room)owner;
@@ -102,6 +103,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				&&(!CMLib.flags().isOnFire(I))
 				&&(!CMLib.flags().isEnchanted(I))
 				&&(I.container()==item.container())
+				&&(((RawMaterial)I).getSubType().equals(subType))
 				&&(I.rawSecretIdentity().equals(item.rawSecretIdentity())))
 					found.addElement(I);
 			}
@@ -119,6 +121,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				&&(!CMLib.flags().isOnFire(I))
 				&&(!CMLib.flags().isEnchanted(I))
 				&&(I.container()==item.container())
+				&&(((RawMaterial)I).getSubType().equals(subType))
 				&&(I.rawSecretIdentity().equals(item.rawSecretIdentity())))
 					found.addElement(I);
 			}
