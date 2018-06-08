@@ -1726,7 +1726,8 @@ public class StdMOB implements MOB
 		&& (playerStats() != null) 
 		&& (viewer != null)
 		&& (viewer.playerStats() != null) 
-		&& (!viewer.playerStats().isIntroducedTo(Name())))
+		&& (!viewer.playerStats().isIntroducedTo(Name()))
+		&& (!CMSecurity.isASysOp(viewer)))
 			return CMLib.english().startWithAorAn(genericName()).toLowerCase();
 		return name();
 	}
