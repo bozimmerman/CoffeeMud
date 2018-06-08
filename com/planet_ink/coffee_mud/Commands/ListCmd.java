@@ -4856,30 +4856,34 @@ public class ListCmd extends StdCommand
 		final StringBuffer lines=new StringBuffer("\n\r^x");
 		lines.append(CMStrings.padRight("#",3)+"| ");
 		lines.append(CMStrings.padRight(L("Status"),9)+"| ");
-		lines.append(CMStrings.padRight(L("Valid"),5)+"| ");
+		lines.append(CMStrings.padRight(L("Host"),5)+"| ");
 		lines.append(CMStrings.padRight(L("Name"),17)+"| ");
 		lines.append(CMStrings.padRight(L("IP"),17)+"| ");
 		lines.append(CMStrings.padRight(L("Idle"),17)+"^.^N\n\r");
 		final Vector<String[]> broken=new Vector<String[]>();
 		final boolean skipUnnamed = (sort.length()>0)&&("NAME".startsWith(sort)||"PLAYER".startsWith(sort));
-		for(final Session S : CMLib.sessions().allIterable())
+		MultiIterable<Session> allIterable=new MultiIterable<Session>();
+		for(final Enumeration<CMLibrary> pl=CMLib.libraries(CMLib.Library.SESSIONS); pl.hasMoreElements(); )
+		{
+			final SessionsList list=(SessionsList)pl.nextElement();
+			allIterable.add(list.allIterable(),list.getCountAll());
+		}
+		for(final Session S : allIterable)
 		{
 			final String[] set=new String[6];
 			set[0]=CMStrings.padRight(""+broken.size(),3)+"| ";
 			set[1]=(S.isStopped()?"^H":"")+CMStrings.padRight(S.getStatus().toString(),9)+(S.isStopped()?"^?":"")+"| ";
+			set[2]=CMStrings.padRight(S.getGroupName(),5)+"| ";
 			if (S.mob() != null)
 			{
-				set[2]=CMStrings.padRight(((S.mob().session()==S)?"Yes":"^HNO!^?"),5)+"| ";
-				set[3]="^!"+CMStrings.padRight("^<LSTUSER^>"+S.mob().Name()+"^</LSTUSER^>",17)+"^?| ";
+				final String color=(S.mob().session()==S)?"":"^N";
+				set[3]="^!"+CMStrings.padRight("^<LSTUSER^>"+color+S.mob().Name()+"^</LSTUSER^>",17)+"^?| ";
 			}
 			else
 			if(skipUnnamed)
 				continue;
 			else
-			{
-				set[2]=CMStrings.padRight(L("N/A"),5)+"| ";
 				set[3]=CMStrings.padRight(L("NAMELESS"),17)+"| ";
-			}
 			set[4]=CMStrings.padRight(S.getAddress(),17)+"| ";
 			set[5]=CMStrings.padRight(CMLib.english().returnTime(S.getIdleMillis(),0)+"",17);
 			broken.add(set);
