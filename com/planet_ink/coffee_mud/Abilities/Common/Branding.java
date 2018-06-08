@@ -181,7 +181,7 @@ public class Branding extends CommonSkill implements PrivateProperty
 					{
 						final Room room=animal.location();
 						String ownerName=CMLib.law().getLandOwnerName(room);
-						if((messedUp)||(animal==null)||(room==null)||(ownerName.length()==0))
+						if((messedUp)||(room==null)||(ownerName.length()==0))
 							commonTell(mob,L("You've messed up branding @x1!",branding.name()));
 						else
 						{
