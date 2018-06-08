@@ -109,5 +109,7 @@
 
 18 FoodPreserving MASK=+INT 12
 
+20 Branding
+
 29 MasterHerbology MASK=+INT 12 REQUIRES=Herbology(100) 
 29 MasterFloristry MASK=+INT 12 REQUIRES=Floristry(100) 

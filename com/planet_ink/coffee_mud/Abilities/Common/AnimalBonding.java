@@ -63,8 +63,9 @@ public class AnimalBonding extends CommonSkill
 		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ANIMALAFFINITY;
 	}
 
-	protected MOB		 bonding	= null;
-	protected boolean	 messedUp	= false;
+	protected MOB		bonding		= null;
+	protected boolean	messedUp	= false;
+	protected boolean	prioritied	= false;
 
 	public AnimalBonding()
 	{
@@ -140,9 +141,11 @@ public class AnimalBonding extends CommonSkill
 		if((!super.canBeUninvoked) && (affected != null))
 		{
 			if((affected.fetchEffect(0)!=this)
-			&&(affected instanceof MOB))
+			&&(affected instanceof MOB)
+			&&(prioritied==false))
 			{
 				final MOB M=(MOB)affected;
+				this.prioritied=true;
 				M.delEffect(this);
 				M.addPriorityEffect(this);
 				affected=M;
@@ -178,8 +181,8 @@ public class AnimalBonding extends CommonSkill
 			return false;
 		}
 		if((!M.isMonster())
-		   ||(!M.isMonster())
-		   ||(!CMLib.flags().isAnimalIntelligence(M)))
+		||(!M.isMonster())
+		||(!CMLib.flags().isAnimalIntelligence(M)))
 		{
 			commonTell(mob,L("You can't bond with @x1.",M.name(mob)));
 			return false;
