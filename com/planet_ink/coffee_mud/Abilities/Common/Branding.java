@@ -184,10 +184,8 @@ public class Branding extends CommonSkill implements PrivateProperty
 						if((messedUp)||(animal==null)||(room==null)||(ownerName.length()==0))
 							commonTell(mob,L("You've messed up branding @x1!",branding.name()));
 						else
-						if(animal.fetchEffect("Branding")!=null)
-							commonTell(mob,L("@x1 is already branded.",branding.name()));
-						else
 						{
+							animal.delEffect(animal.fetchEffect("Branding"));
 							Branding bonding=(Branding)this.copyOf();
 							bonding.setMiscText("OWNER=\""+ownerName+"\"");
 							bonding.canBeUninvoked = false;
@@ -299,7 +297,7 @@ public class Branding extends CommonSkill implements PrivateProperty
 		verb=L("branding");
 		branding=null;
 		final String str=CMParms.combine(commands,0);
-		MOB M=super.getTarget(mob, commands, givenTarget);
+		MOB M=super.getTarget(mob, commands, givenTarget, false, true);
 		if(M==null)
 			return false;
 		branding=null;
@@ -317,11 +315,6 @@ public class Branding extends CommonSkill implements PrivateProperty
 		if(!CMLib.law().doesOwnThisLand(mob, mob.location()))
 		{
 			commonTell(mob,L("You can't brand @x1 here.",M.name(mob)));
-			return false;
-		}
-		if(M.fetchEffect("Branding")!=null)
-		{
-			commonTell(mob,L("@x1 is already branded.",branding.name()));
 			return false;
 		}
 		branding=M;
