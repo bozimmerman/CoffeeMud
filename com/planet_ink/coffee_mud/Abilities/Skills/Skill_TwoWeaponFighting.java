@@ -109,7 +109,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if(affected instanceof MOB)
 		{

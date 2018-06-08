@@ -71,7 +71,7 @@ public class Prop_FightSpellCast extends Prop_SpellAdder
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 	}
 

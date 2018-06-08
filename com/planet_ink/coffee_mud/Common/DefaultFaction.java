@@ -2276,7 +2276,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 
 		@Override
-		public void affectPhyStats(Physical affected, PhyStats affectableStats)
+		public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 		{
 			if(!noStatAffectors)
 				for(final Ability A : myEffects) A.affectPhyStats(affected, affectableStats);

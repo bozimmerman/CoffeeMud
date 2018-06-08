@@ -94,7 +94,7 @@ public class Fighter_ImprovedShieldDefence extends FighterSkill
 	protected volatile int amountOfShieldArmor=-1;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if((!(affected instanceof MOB))||(amountOfShieldArmor<=0))
 			return;

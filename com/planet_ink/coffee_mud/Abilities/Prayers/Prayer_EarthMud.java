@@ -88,7 +88,7 @@ public class Prayer_EarthMud extends Prayer
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if((affected!=null)&&(affected instanceof Room))
 			affectableStats.setWeight((affectableStats.weight()*2)+1);

@@ -93,7 +93,7 @@ public class Duergar extends Dwarf
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		final int senses=affectableStats.sensesMask();
 		super.affectPhyStats(affected,affectableStats);

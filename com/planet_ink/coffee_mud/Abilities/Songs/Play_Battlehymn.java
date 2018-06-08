@@ -63,7 +63,7 @@ public class Play_Battlehymn extends Play
 	protected int timesTicking=0;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null)

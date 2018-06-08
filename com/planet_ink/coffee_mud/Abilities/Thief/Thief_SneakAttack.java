@@ -94,7 +94,7 @@ public class Thief_SneakAttack extends ThiefSkill
 	protected boolean oncePerRound=false;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(activated)

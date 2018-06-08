@@ -109,7 +109,7 @@ public class Thief_Distract extends ThiefSkill
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		final float f=(float)0.05*getXLEVELLevel(invoker());

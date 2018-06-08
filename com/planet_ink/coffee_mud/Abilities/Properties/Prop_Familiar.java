@@ -187,7 +187,7 @@ public class Prop_Familiar extends Property
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		final MOB familiarWith=this.familiarWith;
 		final MOB familiarTo=this.familiarTo;

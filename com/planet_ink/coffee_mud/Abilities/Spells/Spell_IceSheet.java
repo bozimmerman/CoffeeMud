@@ -173,7 +173,7 @@ public class Spell_IceSheet extends Spell
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		// sleeping for a room disables any special characteristic (as of water)

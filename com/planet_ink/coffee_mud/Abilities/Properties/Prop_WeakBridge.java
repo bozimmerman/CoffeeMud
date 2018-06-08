@@ -152,7 +152,7 @@ public class Prop_WeakBridge extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		// get rid of flying restrictions when bridge is up
 		if((affected!=null)

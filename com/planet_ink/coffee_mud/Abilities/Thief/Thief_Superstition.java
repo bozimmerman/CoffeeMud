@@ -262,7 +262,7 @@ public class Thief_Superstition extends ThiefSkill
 	}
 	
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
 		if((sayMsg!=null)&&(sayMsg.length()>0)

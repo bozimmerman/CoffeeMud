@@ -128,7 +128,7 @@ public class Thief_Nondetection extends ThiefSkill
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(active&&((affected.basePhyStats().disposition()&PhyStats.IS_HIDDEN)==0))

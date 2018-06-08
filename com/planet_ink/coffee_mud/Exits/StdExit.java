@@ -880,7 +880,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 	}// exits will never be asked this, so this method should always do NOTHING
 

@@ -444,7 +444,7 @@ public class GenCharClass extends StdCharClass
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if(adjPStats!=null)
 		{

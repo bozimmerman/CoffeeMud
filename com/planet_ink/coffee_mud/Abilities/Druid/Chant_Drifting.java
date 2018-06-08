@@ -140,7 +140,7 @@ public class Chant_Drifting extends Chant
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if((affected.fetchEffect("Falling")==null)&&(!CMLib.flags().isFalling(affected)))

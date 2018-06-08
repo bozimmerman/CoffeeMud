@@ -170,7 +170,7 @@ public class Disease_Lockjaw extends Disease
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if(affected==null)
 			return;

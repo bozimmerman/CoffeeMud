@@ -63,7 +63,7 @@ public class Play_Lullabies extends Play
 	boolean asleep=false;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(invoker==null)

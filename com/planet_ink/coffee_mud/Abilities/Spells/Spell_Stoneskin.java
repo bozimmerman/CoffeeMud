@@ -80,7 +80,7 @@ public class Spell_Stoneskin extends Spell
 	int oldHP=-1;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setArmor(affectableStats.armor()-1-getXLEVELLevel(invoker()));

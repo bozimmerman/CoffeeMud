@@ -164,7 +164,7 @@ public class Chant_Drown extends Chant
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if((lastSet == newSet)&&(affected instanceof MOB))
 		{

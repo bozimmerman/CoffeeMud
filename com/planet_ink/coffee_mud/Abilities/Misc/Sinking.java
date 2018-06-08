@@ -291,7 +291,7 @@ public class Sinking extends StdAbility
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if((!CMLib.flags().isWaterWorthy(affected))

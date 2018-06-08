@@ -96,7 +96,7 @@ public class Spell_DarknessGlobe extends Spell
 	protected volatile boolean norecurse = false;
 	
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		affectableStats.setDisposition((affectableStats.disposition()&~PhyStats.IS_LIGHTSOURCE)|PhyStats.IS_DARK);
 		final Room R=CMLib.map().roomLocation(affected);

@@ -87,7 +87,7 @@ public class Fighter_Sweep extends FighterSkill
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 
 		final float f=(float)CMath.mul(0.1,(float)getXLEVELLevel(invoker()));

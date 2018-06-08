@@ -77,7 +77,7 @@ public class Spell_Slow extends Spell
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSpeed(CMath.div(affectableStats.speed(),2.0));

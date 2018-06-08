@@ -79,7 +79,7 @@ public class Spell_Polymorph extends Spell
 	private Race newRace=null;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if((newRace!=null)&&(affected instanceof MOB))

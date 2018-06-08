@@ -97,7 +97,7 @@ public class Fighter_CalledStrike extends FighterSkill
 	protected int hpReq=9;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-100);
 	}

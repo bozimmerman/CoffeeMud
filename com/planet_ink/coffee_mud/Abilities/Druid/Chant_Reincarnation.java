@@ -78,7 +78,7 @@ public class Chant_Reincarnation extends Chant
 	Race newRace=null;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(newRace!=null)

@@ -150,7 +150,7 @@ public class Disease_Tinnitus extends Disease
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if((affected==null)||(!ringing))
 			return;

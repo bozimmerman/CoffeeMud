@@ -50,7 +50,7 @@ public interface StatsAffecting
 	 * @param affected the host of the PhyStats object being affected
 	 * @param affectableStats the particular PhyStats object being affected
 	 */
-	public void affectPhyStats(Physical affected, PhyStats affectableStats);
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats);
 	/**
 	 * This method is called by the recoverCharStats() method on other MOB objects.  It is used
 	 * to transform the MOB baseCharStats() object into a finished charStats() object,  both of

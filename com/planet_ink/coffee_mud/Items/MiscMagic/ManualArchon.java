@@ -57,7 +57,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE);
 		if(CMLib.flags().isInDark(affected))

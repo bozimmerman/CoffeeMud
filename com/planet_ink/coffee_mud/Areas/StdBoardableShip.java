@@ -959,7 +959,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if(phyStats().sensesMask()>0)
 			affectableStats.setSensesMask(affectableStats.sensesMask()|phyStats().sensesMask());

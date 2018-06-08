@@ -69,7 +69,7 @@ public class Shadow extends Spirit
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if((CMLib.flags().isInDark(affected))
 		||((affected instanceof MOB)&&(((MOB)affected).location()!=null)&&(CMLib.flags().isInDark((((MOB)affected).location())))))

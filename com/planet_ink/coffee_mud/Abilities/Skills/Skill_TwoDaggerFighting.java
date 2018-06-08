@@ -51,7 +51,7 @@ public class Skill_TwoDaggerFighting extends Skill_TwoWeaponFighting
 	private volatile boolean active = false;
 	
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if(affected instanceof MOB)
 		{

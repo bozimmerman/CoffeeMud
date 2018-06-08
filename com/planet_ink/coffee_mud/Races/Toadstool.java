@@ -124,7 +124,7 @@ public class Toadstool extends StdRace
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setWeight(1);

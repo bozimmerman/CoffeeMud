@@ -143,7 +143,7 @@ public class Ranger_Enemy1 extends StdAbility
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(!(affected instanceof MOB))

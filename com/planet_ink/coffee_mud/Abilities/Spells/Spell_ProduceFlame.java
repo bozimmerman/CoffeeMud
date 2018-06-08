@@ -83,7 +83,7 @@ public class Spell_ProduceFlame extends Spell
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_LIGHTSOURCE|PhyStats.IS_GLOWING);
 		affectableStats.setDisposition(affectableStats.disposition() & ~PhyStats.IS_DARK);

@@ -372,7 +372,7 @@ public class GenRace extends StdRace
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if(adjPStats!=null)
 		{

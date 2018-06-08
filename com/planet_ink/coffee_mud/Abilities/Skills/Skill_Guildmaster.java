@@ -95,7 +95,7 @@ public class Skill_Guildmaster extends StdSkill
 	protected boolean disabled=false;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
 		//affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_UNATTACKABLE);

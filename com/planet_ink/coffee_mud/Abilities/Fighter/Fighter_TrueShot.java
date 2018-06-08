@@ -94,7 +94,7 @@ public class Fighter_TrueShot extends FighterSkill
 	protected boolean gettingBonus=false;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		if(!(affected instanceof MOB))
 			return;

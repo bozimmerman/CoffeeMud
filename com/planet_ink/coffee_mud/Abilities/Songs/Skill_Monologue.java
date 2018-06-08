@@ -95,7 +95,7 @@ public class Skill_Monologue extends BardSkill
 	private volatile long lastTimeHeard = 0;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if((affected instanceof MOB)&&(affected != invoker()))

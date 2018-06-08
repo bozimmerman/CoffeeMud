@@ -97,7 +97,7 @@ public class Thief_Flank extends ThiefSkill
 	protected MOB target=null;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		final int xlvl=super.getXLEVELLevel(invoker());

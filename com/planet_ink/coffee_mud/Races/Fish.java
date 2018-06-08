@@ -215,7 +215,7 @@ public class Fish extends StdRace
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		final MOB mob=(MOB)affected;
 		final Room R=mob.location();

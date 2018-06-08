@@ -107,9 +107,9 @@ public class Poison_Slumberall extends Poison
 	protected boolean fallenYet=false;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		if(affected instanceof MOB)
+		if((affected instanceof MOB)&&(fallenYet))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SLEEPING);
 	}
 
@@ -139,6 +139,7 @@ public class Poison_Slumberall extends Poison
 			unInvoke();
 		else
 		if((msg.amISource(mob))
+		&&(fallenYet)
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 		&&(msg.sourceMajor()>0)
 		&&(msg.sourceMinor()!=CMMsg.TYP_SLEEP))

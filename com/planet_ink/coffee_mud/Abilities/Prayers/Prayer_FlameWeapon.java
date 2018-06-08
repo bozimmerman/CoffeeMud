@@ -90,7 +90,7 @@ public class Prayer_FlameWeapon extends Prayer
 	protected boolean notAgain=false;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		if(affected==null)

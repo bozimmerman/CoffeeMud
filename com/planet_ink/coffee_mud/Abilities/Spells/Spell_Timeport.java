@@ -101,7 +101,7 @@ public class Spell_Timeport extends Spell
 			-PhyStats.CAN_SEE_VICTIM;
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setSensesMask(mask&mask2);

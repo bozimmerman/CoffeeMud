@@ -74,7 +74,7 @@ public class Chant_FilterWater extends Chant
 	}
 	
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		int x=super.miscText.indexOf(';');
 		if(x>0)

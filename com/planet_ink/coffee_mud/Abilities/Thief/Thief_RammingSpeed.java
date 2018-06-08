@@ -102,7 +102,7 @@ public class Thief_RammingSpeed extends ThiefSkill
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected, affectableStats);
 		affectableStats.setAbility(affectableStats.ability() + 1 + abilityCode());

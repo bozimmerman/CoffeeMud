@@ -104,7 +104,7 @@ public class Chant_SummonSun extends Chant
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		affectableStats.setDisposition((affectableStats.disposition()&~PhyStats.IS_DARK)|PhyStats.IS_LIGHTSOURCE);
 	}
