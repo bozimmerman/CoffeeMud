@@ -171,11 +171,11 @@ public class Undead extends StdRace
 	}
 
 	@Override 
-	public boolean tick(Tickable myChar, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if(myChar instanceof MOB)
+		if(ticking instanceof MOB)
 		{
-			final MOB myM=(MOB)myChar;
+			final MOB myM=(MOB)ticking;
 			myM.curState().setHunger(myM.maxState().getHunger());
 			myM.curState().setThirst(myM.maxState().getThirst());
 		}

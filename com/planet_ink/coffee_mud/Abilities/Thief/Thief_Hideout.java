@@ -152,7 +152,7 @@ public class Thief_Hideout extends ThiefSkill
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if(((msg.sourceMinor()==CMMsg.TYP_QUIT)
 			||(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)

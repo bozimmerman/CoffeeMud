@@ -350,7 +350,7 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public boolean tick(Tickable myChar, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		return true;
 	}

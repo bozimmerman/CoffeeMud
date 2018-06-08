@@ -130,7 +130,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats stats)
+	public void affectPhyStats(final Physical affected, final PhyStats stats)
 	{
 		if((affected instanceof Item)&&(armorBonus>0)&&(((Item)affected).owner() instanceof MOB))
 		{

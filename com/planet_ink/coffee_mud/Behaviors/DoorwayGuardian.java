@@ -140,20 +140,20 @@ public class DoorwayGuardian extends StdBehavior
 	}
 
 	@Override
-	public boolean okMessage(Environmental oking, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if(!super.okMessage(oking,msg)) 
+		if(!super.okMessage(host,msg)) 
 			return false;
 		final MOB mob=msg.source();
 		if(always)
 		{
-			if(!canActAtAll(oking)) 
+			if(!canActAtAll(host)) 
 				return true;
 		}
 		else
-		if(!canFreelyBehaveNormal(oking))
+		if(!canFreelyBehaveNormal(host))
 			return true;
-		final MOB monster=(MOB)oking;
+		final MOB monster=(MOB)host;
 		if((mob.location()==monster.location())
 		&&(mob!=monster)
 		&&(msg.target()!=null)

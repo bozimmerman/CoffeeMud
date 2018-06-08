@@ -214,7 +214,7 @@ public class Follower extends ActiveTicker
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if(!super.okMessage(host,msg))
 			return false;

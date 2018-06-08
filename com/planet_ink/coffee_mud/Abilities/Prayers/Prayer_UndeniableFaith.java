@@ -133,7 +133,7 @@ public class Prayer_UndeniableFaith extends Prayer
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))

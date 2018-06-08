@@ -201,14 +201,14 @@ public class MoneyChanger extends StdBehavior
 	}
 
 	@Override
-	public boolean okMessage(Environmental affecting, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if(!super.okMessage(affecting,msg))
+		if(!super.okMessage(host,msg))
 			return false;
 		final MOB source=msg.source();
-		if(!canFreelyBehaveNormal(affecting))
+		if(!canFreelyBehaveNormal(host))
 			return true;
-		final MOB observer=(MOB)affecting;
+		final MOB observer=(MOB)host;
 		if((source!=observer)
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)
@@ -221,14 +221,14 @@ public class MoneyChanger extends StdBehavior
 				return false;
 			}
 			else
-			if(!doIExchangeThisCurrency(affecting,((Coins)msg.tool()).getCurrency()))
+			if(!doIExchangeThisCurrency(host,((Coins)msg.tool()).getCurrency()))
 			{
 				CMLib.commands().postSay(observer,source,L("I'm sorry, I don't accept that kind of currency."),true,false);
 				return false;
 			}
 			double value=((Coins)msg.tool()).getTotalValue();
 			final String currency=((Coins)msg.tool()).getCurrency().toUpperCase();
-			double takeCut=getMyCut(affecting,currency);
+			double takeCut=getMyCut(host,currency);
 			double amountToTake=CMLib.beanCounter().abbreviatedRePrice(observer,value*takeCut);
 			if((amountToTake>0.0)&&(amountToTake<CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer))))
 				amountToTake=CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(observer));

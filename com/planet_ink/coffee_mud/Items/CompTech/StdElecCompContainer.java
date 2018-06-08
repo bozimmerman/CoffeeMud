@@ -186,7 +186,7 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
 		{

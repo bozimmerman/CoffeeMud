@@ -121,9 +121,9 @@ public class Skill_CrowsNest extends StdSkill
 	}
 	
 	@Override
-	public boolean okMessage(Environmental myHost, final CMMsg msg)
+	public boolean okMessage(Environmental host, final CMMsg msg)
 	{
-		if(!super.okMessage(myHost, msg))
+		if(!super.okMessage(host, msg))
 			return false;
 		if(((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
 		&&(affected instanceof Room))

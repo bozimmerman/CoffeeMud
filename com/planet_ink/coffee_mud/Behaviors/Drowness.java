@@ -339,15 +339,15 @@ public class Drowness extends StdBehavior
 	}
 
 	@Override
-	public boolean okMessage(Environmental oking, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if(oking==null)
-			return super.okMessage(oking,msg);
-		if(!(oking instanceof MOB))
-			return super.okMessage(oking,msg);
+		if(host==null)
+			return super.okMessage(host,msg);
+		if(!(host instanceof MOB))
+			return super.okMessage(host,msg);
 
-		final boolean retval = super.okMessage(oking, msg);
-		final MOB mob=(MOB)oking;
+		final boolean retval = super.okMessage(host, msg);
+		final MOB mob=(MOB)host;
 		if((msg.amITarget(mob))
 		&&(CMath.bset(msg.targetMajor(),CMMsg.MASK_MALICIOUS))
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))

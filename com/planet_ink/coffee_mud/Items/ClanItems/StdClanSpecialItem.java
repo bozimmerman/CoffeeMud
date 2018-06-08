@@ -85,9 +85,9 @@ public class StdClanSpecialItem extends StdClanItem
 	}
 
 	@Override
-	public boolean okMessage(Environmental affecting, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if (!super.okMessage(affecting, msg))
+		if (!super.okMessage(host, msg))
 			return false;
 		if ((getClanItemType() == ClanItem.ClanItemType.SPECIALTAXER) && (B != null) && (owner() instanceof MOB))
 			return B.okMessage(owner(), msg);

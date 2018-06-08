@@ -113,7 +113,7 @@ public class BadReputation extends StdAbility
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if(affected instanceof MOB)
 		{

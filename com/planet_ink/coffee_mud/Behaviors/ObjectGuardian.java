@@ -57,12 +57,12 @@ public class ObjectGuardian extends StdBehavior
 	}
 
 	@Override
-	public boolean okMessage(Environmental oking, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if(!super.okMessage(oking,msg))
+		if(!super.okMessage(host,msg))
 			return false;
 		final MOB mob=msg.source();
-		final MOB monster=(MOB)oking;
+		final MOB monster=(MOB)host;
 		if(sentinal)
 		{
 			if(!canActAtAll(monster))
@@ -73,7 +73,7 @@ public class ObjectGuardian extends StdBehavior
 				return true;
 		}
 		else
-		if(!canFreelyBehaveNormal(oking))
+		if(!canFreelyBehaveNormal(host))
 			return true;
 
 		if((mob!=monster)

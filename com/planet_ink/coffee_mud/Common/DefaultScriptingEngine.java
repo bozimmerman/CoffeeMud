@@ -11423,7 +11423,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if((!(host instanceof PhysicalAgent))||(msg.source()==null)||(recurseCounter.get()>2))
 			return true;

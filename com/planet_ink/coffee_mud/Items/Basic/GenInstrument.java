@@ -112,9 +112,9 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	}
 	
 	@Override
-	public boolean okMessage(Environmental E, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if (!super.okMessage(E, msg))
+		if (!super.okMessage(host, msg))
 			return false;
 		if(amWearingAt(Wearable.WORN_WIELD)
 		&&(msg.source()==owner())

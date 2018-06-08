@@ -307,7 +307,7 @@ public class MOBTeacher extends CombatAbilities
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if(host instanceof MOB)
 		{

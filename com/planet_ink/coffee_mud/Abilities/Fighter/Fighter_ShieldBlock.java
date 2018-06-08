@@ -159,7 +159,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats stats)
+	public void affectPhyStats(final Physical affected, final PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
 		if((affected instanceof MOB)&&(amountOfShieldArmor>0))

@@ -78,7 +78,7 @@ public class Spell_Brainwash extends Spell
 	public Vector<String> limbsToRemove = new Vector<String>();
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if((msg.amISource((MOB)affected))
 		&&(msg.sourceMessage()!=null)

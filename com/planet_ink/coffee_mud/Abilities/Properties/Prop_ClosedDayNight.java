@@ -170,9 +170,9 @@ public class Prop_ClosedDayNight extends Property
 	}
 
 	@Override
-	public boolean okMessage(Environmental E, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if(!super.okMessage(E,msg))
+		if(!super.okMessage(host,msg))
 			return false;
 
 		if((affected!=null)

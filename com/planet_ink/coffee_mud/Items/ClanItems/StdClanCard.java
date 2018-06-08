@@ -56,7 +56,7 @@ public class StdClanCard extends StdClanItem
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if((msg.target()==owner())
 		&&(msg.tool() instanceof ClanItem)

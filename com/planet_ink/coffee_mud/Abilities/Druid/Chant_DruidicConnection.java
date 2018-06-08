@@ -121,7 +121,7 @@ public class Chant_DruidicConnection extends Chant
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats stats)
+	public void affectPhyStats(final Physical affected, final PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
 		if(affected instanceof MOB)

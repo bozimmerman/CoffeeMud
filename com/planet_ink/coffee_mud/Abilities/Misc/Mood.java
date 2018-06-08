@@ -190,7 +190,7 @@ public class Mood extends StdAbility
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats stats)
+	public void affectPhyStats(final Physical affected, final PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
 		if(moodCode>=0)

@@ -93,7 +93,7 @@ public class Chant_Flippers extends Chant
 	private final AtomicBoolean noRecurse = new AtomicBoolean(false);
 	
 	@Override
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;

@@ -193,7 +193,7 @@ public class Purist extends Cleric
 	}
 
 	@Override
-	public boolean tick(Tickable myChar, int tickID)
+	public boolean tick(final Tickable ticking, int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
 		{

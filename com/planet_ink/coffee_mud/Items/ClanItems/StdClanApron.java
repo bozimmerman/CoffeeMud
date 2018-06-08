@@ -58,7 +58,7 @@ public class StdClanApron extends StdClanItem
 	}
 
 	@Override
-	public boolean okMessage(Environmental affecting, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if(owner() instanceof MOB)
 		if(msg.amITarget(owner()))
@@ -95,7 +95,7 @@ public class StdClanApron extends StdClanItem
 				break;
 			}
 		}
-		return super.okMessage(affecting,msg);
+		return super.okMessage(host,msg);
 	}
 
 	@Override

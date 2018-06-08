@@ -182,7 +182,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats stats)
+	public void affectPhyStats(final Physical affected, final PhyStats stats)
 	{
 		if((affected instanceof Item)&&(damageBonus>0)&&(((Item)affected).owner() instanceof MOB))
 		{

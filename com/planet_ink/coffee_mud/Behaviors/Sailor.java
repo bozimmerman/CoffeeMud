@@ -199,9 +199,9 @@ public class Sailor extends StdBehavior
 	}
 
 	@Override
-	public boolean okMessage(Environmental affecting, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if(!super.okMessage(affecting, msg))
+		if(!super.okMessage(host, msg))
 			return false;
 		switch(msg.sourceMinor())
 		{

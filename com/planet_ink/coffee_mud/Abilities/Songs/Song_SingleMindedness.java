@@ -76,7 +76,7 @@ public class Song_SingleMindedness extends Song
 	}
 
 	@Override
-	public boolean okMessage(Environmental ticking, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if((themsg!=null)
 		&&(msg.source()!=invoker())
@@ -87,6 +87,6 @@ public class Song_SingleMindedness extends Song
 			msg.source().tell(msg.source(),null,null,L("The only thing you have a mind to do is '@x1'.",themsg.sourceMessage()));
 			return false;
 		}
-		return super.okMessage(ticking,msg);
+		return super.okMessage(host,msg);
 	}
 }

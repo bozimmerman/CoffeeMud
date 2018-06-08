@@ -110,7 +110,7 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if(rot==null)
 		{

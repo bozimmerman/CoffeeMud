@@ -541,7 +541,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if((msg.target()==affected)
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)

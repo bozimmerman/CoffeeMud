@@ -61,7 +61,7 @@ public class Play_March extends Play
 	}
 
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats stats)
+	public void affectPhyStats(final Physical affected, final PhyStats stats)
 	{
 		super.affectPhyStats(affected,stats);
 		if((affected instanceof MOB)&&(!((MOB)affected).isMonster()))

@@ -464,14 +464,14 @@ public class GenCharClass extends StdCharClass
 	}
 
 	@Override
-	public boolean tick(Tickable myChar, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(eventBuddy!=null)
 		{
-			if(!eventBuddy.tick(myChar,tickID))
+			if(!eventBuddy.tick(ticking,tickID))
 				return false;
 		}
-		return super.tick(myChar, tickID);
+		return super.tick(ticking, tickID);
 	}
 
 	@Override

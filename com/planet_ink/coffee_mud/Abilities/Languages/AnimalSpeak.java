@@ -93,7 +93,7 @@ public class AnimalSpeak extends StdLanguage
 	}
 	
 	@Override
-	public void affectPhyStats(Physical affected, PhyStats stats)
+	public void affectPhyStats(final Physical affected, final PhyStats stats)
 	{
 		super.affectPhyStats(affected, stats);
 		if(this.beingSpoken(ID()))

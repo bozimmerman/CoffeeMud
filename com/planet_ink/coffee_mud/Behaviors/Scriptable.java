@@ -233,11 +233,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public boolean okMessage(Environmental affecting, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if(!super.okMessage(affecting, msg))
+		if(!super.okMessage(host, msg))
 			return false;
-		return engine().okMessage(affecting, msg);
+		return engine().okMessage(host, msg);
 	}
 
 	@Override

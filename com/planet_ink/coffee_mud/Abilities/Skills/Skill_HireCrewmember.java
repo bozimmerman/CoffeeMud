@@ -258,9 +258,9 @@ public class Skill_HireCrewmember extends StdSkill
 	}
 	
 	@Override
-	public boolean okMessage(Environmental affecting, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if(!super.okMessage(affecting, msg))
+		if(!super.okMessage(host, msg))
 			return false;
 		return true;
 	}

@@ -229,7 +229,7 @@ public class Prayer_Rot extends Prayer
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if((affecting()==null)||(System.currentTimeMillis()>nextTry))
 		{

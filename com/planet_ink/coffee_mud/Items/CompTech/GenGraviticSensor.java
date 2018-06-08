@@ -249,7 +249,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 					}
 	
 					@Override
-					public boolean okMessage(Environmental myHost, CMMsg msg)
+					public boolean okMessage(final Environmental myHost, final CMMsg msg)
 					{
 						return true;
 					}

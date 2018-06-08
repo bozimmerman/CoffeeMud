@@ -492,7 +492,7 @@ public class Druid extends StdCharClass
 					{
 					}
 					@Override
-					public boolean okMessage(Environmental myHost, CMMsg msg)
+					public boolean okMessage(final Environmental myHost, final CMMsg msg)
 					{
 						if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
 						&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))

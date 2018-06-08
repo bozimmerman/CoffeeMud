@@ -56,11 +56,11 @@ public class Vagrant extends StdBehavior
 	}
 
 	@Override
-	public boolean okMessage(Environmental oking, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if((oking==null)||(!(oking instanceof MOB)))
-			return super.okMessage(oking,msg);
-		final MOB mob=(MOB)oking;
+		if((host==null)||(!(host instanceof MOB)))
+			return super.okMessage(host,msg);
+		final MOB mob=(MOB)host;
 		if(msg.amITarget(mob)
 		   &&(((msg.sourceMajor()&CMMsg.MASK_MOVE)>0)||((msg.sourceMajor()&CMMsg.MASK_HANDS)>0)))
 		{

@@ -167,7 +167,7 @@ public class Skill_Befriend extends BardSkill
 								}
 
 								@Override
-								public boolean okMessage(Environmental myHost, CMMsg msg)
+								public boolean okMessage(final Environmental myHost, final CMMsg msg)
 								{
 									if((msg != msg2)&&(myHost instanceof MOB))
 									{

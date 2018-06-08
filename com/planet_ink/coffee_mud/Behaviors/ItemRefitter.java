@@ -84,14 +84,14 @@ public class ItemRefitter extends StdBehavior
 	}
 
 	@Override
-	public boolean okMessage(Environmental affecting, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if(!super.okMessage(affecting,msg))
+		if(!super.okMessage(host,msg))
 			return false;
 		final MOB source=msg.source();
-		if(!canFreelyBehaveNormal(affecting))
+		if(!canFreelyBehaveNormal(host))
 			return true;
-		final MOB observer=(MOB)affecting;
+		final MOB observer=(MOB)host;
 		if((source!=observer)
 		&&(msg.amITarget(observer))
 		&&(msg.targetMinor()==CMMsg.TYP_GIVE)

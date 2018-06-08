@@ -65,7 +65,7 @@ public class Paladin_AbidingAura extends PaladinSkill
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&(invoker!=null)

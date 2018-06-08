@@ -193,7 +193,7 @@ public class Shaman extends Cleric
 	}
 
 	@Override
-	public boolean tick(Tickable myChar, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
 		{

@@ -104,7 +104,7 @@ public class Prayer_DivineFavor extends Prayer
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if((msg.source()==affected)
 		&&(msg.sourceMinor()==CMMsg.TYP_DEATH))

@@ -84,7 +84,7 @@ public class Thief_FenceLoot extends ThiefSkill
 	protected Map<Item,Ability> addBackMap=new HashMap<Item,Ability>();
 	
 	@Override
-	public boolean okMessage(Environmental myHost, CMMsg msg)
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.source()==affected)
 		&&(msg.targetMinor()==CMMsg.TYP_SELL)

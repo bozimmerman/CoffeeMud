@@ -328,9 +328,9 @@ public class BribeGateGuard extends StdBehavior
 	}
 
 	@Override
-	public boolean okMessage(Environmental oking, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if (!super.okMessage(oking, msg))
+		if (!super.okMessage(host, msg))
 		{
 			if (debug)
 			{
@@ -339,11 +339,11 @@ public class BribeGateGuard extends StdBehavior
 			return false;
 		}
 		final MOB mob = msg.source();
-		if (!canFreelyBehaveNormal(oking))
+		if (!canFreelyBehaveNormal(host))
 		{
 			return true;
 		}
-		final MOB monster = (MOB) oking;
+		final MOB monster = (MOB) host;
 		final String currency=CMLib.beanCounter().getCurrency(monster);
 		if (msg.amITarget(monster)
 		&& (!msg.amISource(monster))
@@ -367,7 +367,7 @@ public class BribeGateGuard extends StdBehavior
 		{
 			if (debug)
 			{
-				CMLib.commands().postSay( (MOB) oking, msg.source(), L("can't be seen"), true, true);
+				CMLib.commands().postSay( (MOB) host, msg.source(), L("can't be seen"), true, true);
 			}
 			return true;
 		}
@@ -377,7 +377,7 @@ public class BribeGateGuard extends StdBehavior
 			{
 				if (debug)
 				{
-					CMLib.commands().postSay( (MOB) oking, msg.source(),
+					CMLib.commands().postSay( (MOB) host, msg.source(),
 										L("okAffect triggered.	Not Charging @x1 from balance @x2.",""+price(),""+getBalance(msg.source())), true, true);
 				}
 				if (!msg.source().isMonster())
@@ -387,7 +387,7 @@ public class BribeGateGuard extends StdBehavior
 						//|| (msg.target() instanceof Room) )
 						if (debug)
 						{
-							CMLib.commands().postSay( (MOB) oking, msg.source(),
+							CMLib.commands().postSay( (MOB) host, msg.source(),
 												L("Close or Leave"), true, true);
 						}
 						if (checkBalance(price(), mob))
@@ -417,9 +417,9 @@ public class BribeGateGuard extends StdBehavior
 					}
 					if (debug)
 					{
-						CMLib.commands().postSay( (MOB) oking, msg.source(),L("tarMin @x1 ? @x2",""+msg.targetMinor(),""+CMMsg.TYP_CLOSE), true, true);
-						CMLib.commands().postSay( (MOB) oking, msg.source(),L("srcMin @x1 ? @x2",""+msg.sourceMinor(),""+CMMsg.TYP_LEAVE), true, true);
-						CMLib.commands().postSay( (MOB) oking, msg.source(),L("source Monster? @x1",""+msg.source().isMonster()), true, true);
+						CMLib.commands().postSay( (MOB) host, msg.source(),L("tarMin @x1 ? @x2",""+msg.targetMinor(),""+CMMsg.TYP_CLOSE), true, true);
+						CMLib.commands().postSay( (MOB) host, msg.source(),L("srcMin @x1 ? @x2",""+msg.sourceMinor(),""+CMMsg.TYP_LEAVE), true, true);
+						CMLib.commands().postSay( (MOB) host, msg.source(),L("source Monster? @x1",""+msg.source().isMonster()), true, true);
 					}
 					return true;
 				}

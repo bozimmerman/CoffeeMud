@@ -158,11 +158,11 @@ public class Thief_Mark extends ThiefSkill
 	}
 
 	@Override
-	public boolean tick(Tickable me, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((text().length()==0)
 		||((affected==null)||(!(affected instanceof MOB))))
-		   return super.tick(me,tickID);
+		   return super.tick(ticking,tickID);
 		final MOB mob=(MOB)affected;
 		if(mob.location()!=null)
 		{
@@ -170,7 +170,7 @@ public class Thief_Mark extends ThiefSkill
 			{
 				final int x=text().indexOf('/');
 				if(x<0)
-					return super.tick(me,tickID);
+					return super.tick(ticking,tickID);
 				final MOB M=mob.location().fetchInhabitant(text().substring(0,x));
 				if(M!=null)
 				{

@@ -232,13 +232,13 @@ public class StdBehavior implements Behavior
 	}
 
 	@Override
-	public void executeMsg(Environmental affecting, CMMsg msg)
+	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		return;
 	}
 
 	@Override
-	public boolean okMessage(Environmental oking, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		return true;
 	}

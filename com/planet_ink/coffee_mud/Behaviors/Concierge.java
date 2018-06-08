@@ -458,16 +458,16 @@ public class Concierge extends StdBehavior
 	}
 	
 	@Override
-	public boolean okMessage(Environmental affecting, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
-		if(!super.okMessage(affecting,msg))
+		if(!super.okMessage(host,msg))
 			return false;
 		final MOB source=msg.source();
 		if(startRoom==null)
 			startRoom=source.location();
-		if((!canFreelyBehaveNormal(affecting))&&(affecting instanceof MOB))
+		if((!canFreelyBehaveNormal(host))&&(host instanceof MOB))
 			return true;
-		final Environmental observer=affecting;
+		final Environmental observer=host;
 		final Room room=source.location();
 		if(source != observer)
 		{

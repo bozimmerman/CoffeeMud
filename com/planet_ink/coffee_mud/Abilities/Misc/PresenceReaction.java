@@ -133,17 +133,17 @@ public class PresenceReaction extends StdAbility
 	}
 
 	@Override
-	public boolean okMessage(Environmental affecting, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		for(final CMObject O : managed)
 		{
 			if(O instanceof MsgListener)
 			{
-				if(!((MsgListener)O).okMessage(affecting, msg))
+				if(!((MsgListener)O).okMessage(host, msg))
 					return false;
 			}
 		}
-		return super.okMessage(affecting,msg);
+		return super.okMessage(host,msg);
 	}
 
 	@Override

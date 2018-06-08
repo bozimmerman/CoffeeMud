@@ -88,7 +88,7 @@ public class Prayer_DeathsDoor extends Prayer
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if(affected instanceof MOB)
 		{

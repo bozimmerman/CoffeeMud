@@ -98,7 +98,7 @@ public class Chant_Earthpocket extends Chant
 	}
 
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if((msg.source()!=affected)
 		&&((msg.target()==pocket)||(msg.tool()==pocket))

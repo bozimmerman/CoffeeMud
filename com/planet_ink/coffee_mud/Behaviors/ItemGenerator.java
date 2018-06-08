@@ -238,7 +238,7 @@ public class ItemGenerator extends ActiveTicker
 		}
 
 		@Override
-		public boolean tick(Tickable host, int tickID)
+		public boolean tick(final Tickable ticking, final int tickID)
 		{
 			@SuppressWarnings("unchecked")
 			List<Item> allItems=(List<Item>)Resources.getResource("ITEMGENERATOR-ALLITEMS");

@@ -92,7 +92,7 @@ public class Prop_WearOverride extends Property
 	}
 	
 	@Override
-	public boolean okMessage(Environmental host, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if((msg.target() == affected)
 		&&(msg.sourceMinor()==CMMsg.TYP_WEAR)

@@ -209,12 +209,12 @@ public class Hireling extends StdBehavior
 	}
 
 	@Override
-	public boolean okMessage(Environmental affecting, CMMsg msg)
+	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		final MOB source=msg.source();
-		if(affecting instanceof MOB)
+		if(host instanceof MOB)
 		{
-			final MOB observer=(MOB)affecting;
+			final MOB observer=(MOB)host;
 
 			if(msg.amITarget(observer)
 			&&(!msg.amISource(observer))
