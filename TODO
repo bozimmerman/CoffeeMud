@@ -40,7 +40,6 @@ NON-TECH
    *. Port Siplet to C++ and shove it inside a Chromium window.
    *. Start on Spell Research?
    *. RandomQuests based off the Percolator engine -- a way to randomly generate different quests.
-   *. retest private libs, private dbtables, private classes, private area objects, private players
    *. OLC for players?  Play with PennMush more. Port 4201
    *. Finish Player Simulator -- the Perpetual Project
    *. MudFTP/DawnFTP support - lets you edit room descriptions etc. in your favourite text editor, or just for fun
