@@ -36,12 +36,14 @@ public interface PlayerLibrary extends CMLibrary
 	public void addPlayer(MOB newOne);
 	public void delPlayer(MOB oneToDel);
 	public MOB getPlayer(String calledThis);
+	public MOB getPlayerAllHosts(String calledThis);
 	public MOB getLoadPlayer(String last);
 	public MOB getLoadPlayerByEmail(String email);
 	public MOB findPlayerOnline(final String srchStr, final boolean exactOnly);
 	public PlayerAccount getLoadAccount(String calledThis);
 	public PlayerAccount getLoadAccountByEmail(String email);
 	public PlayerAccount getAccount(String calledThis);
+	public PlayerAccount getAccountAllHosts(String calledThis);
 	public void addAccount(PlayerAccount acct);
 	public boolean accountExists(String name);
 	public boolean accountExistsAllHosts(String name);

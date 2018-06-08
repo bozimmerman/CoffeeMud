@@ -65,7 +65,7 @@ public class Reply extends StdCommand
 			return false;
 		}
 		if((pstats.getReplyToMOB().Name().indexOf('@')<0)
-		&&((CMLib.players().getPlayer(pstats.getReplyToMOB().Name())==null)
+		&&((CMLib.players().getPlayerAllHosts(pstats.getReplyToMOB().Name())==null)
 			||(pstats.getReplyToMOB().isMonster())
 			||(!CMLib.flags().isInTheGame(pstats.getReplyToMOB(),true))))
 		{

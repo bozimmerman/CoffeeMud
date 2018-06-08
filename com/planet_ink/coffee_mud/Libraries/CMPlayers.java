@@ -200,6 +200,36 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return null;
 	}
 
+	protected List<PlayerLibrary> getOtherPlayerLibAllHosts()
+	{
+		final List<PlayerLibrary> list=new LinkedList<PlayerLibrary>();
+		final WorldMap map=CMLib.map();
+		for(final Enumeration<CMLibrary> pl=CMLib.libraries(CMLib.Library.PLAYERS); pl.hasMoreElements(); )
+		{
+			final PlayerLibrary pLib2 = (PlayerLibrary)pl.nextElement();
+			if((pLib2 != null)
+			&&(this!=pLib2)
+			&&(map == CMLib.library(CMLib.getLibraryThreadID(Library.PLAYERS, pLib2), Library.MAP)))
+				list.add(pLib2);
+		}
+		return list;
+	}
+	
+	@Override
+	public PlayerAccount getAccountAllHosts(String calledThis)
+	{
+		PlayerAccount pA=getAccount(calledThis);
+		if(pA!=null)
+			return pA;
+		for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
+		{
+			final PlayerAccount pA2=pLib2.getAccount(calledThis);
+			if(pA2!=null)
+				return pA2;
+		}
+		return null;
+	}
+
 	@Override
 	public MOB getPlayer(String calledThis)
 	{
@@ -208,6 +238,21 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		{
 			if (M.Name().equals(calledThis))
 				return M;
+		}
+		return null;
+	}
+
+	@Override
+	public MOB getPlayerAllHosts(String calledThis)
+	{
+		final MOB M=getPlayer(calledThis);
+		if(M!=null)
+			return M;
+		for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
+		{
+			final MOB M2=pLib2.getPlayer(calledThis);
+			if(M2!=null)
+				return M2;
 		}
 		return null;
 	}
@@ -253,17 +298,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		if(name==null)
 			return false;
-		name=CMStrings.capitalizeAndLower(name);
 		if(accountExists(name))
 			return true;
-		final WorldMap map=CMLib.map();
-		for(final Enumeration<CMLibrary> pl=CMLib.libraries(CMLib.Library.PLAYERS); pl.hasMoreElements(); )
+		for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
 		{
-			final PlayerLibrary pLib2 = (PlayerLibrary)pl.nextElement();
-			if((pLib2 != null)
-			&&(this!=pLib2)
-			&&(map == CMLib.library(CMLib.getLibraryThreadID(Library.PLAYERS, pLib2), Library.MAP))
-			&&(pLib2.accountExists(name)))
+			if(pLib2.accountExists(name))
 				return true;
 		}
 		return false;
@@ -289,17 +328,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		if(name==null)
 			return false;
-		name=CMStrings.capitalizeAndLower(name);
 		if(playerExists(name))
 			return true;
-		final WorldMap map=CMLib.map();
-		for(final Enumeration<CMLibrary> pl = CMLib.libraries(CMLib.Library.PLAYERS);pl.hasMoreElements();)
+		for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
 		{
-			final PlayerLibrary pLib2 = (PlayerLibrary)pl.nextElement();
-			if((pLib2 != null)
-			&&(this!=pLib2)
-			&&(map == CMLib.library(CMLib.getLibraryThreadID(Library.PLAYERS, pLib2), Library.MAP))
-			&&(pLib2.playerExists(name)))
+			if(pLib2.playerExists(name))
 				return true;
 		}
 		return false;
