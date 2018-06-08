@@ -272,7 +272,6 @@ public class Branding extends CommonSkill implements PrivateProperty
 		&& (affected instanceof MOB))
 		{
 			if((msg.source()==affected)
-			&&(msg.source().amFollowing()!=null)
 			&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW)
 			&&(CMLib.law().doesOwnThisLand(this.owner, msg.source().location())))
 				((MOB)affected).setStartRoom(((MOB)affected).location());
