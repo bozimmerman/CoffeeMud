@@ -798,14 +798,13 @@ public class MUD extends Thread implements MudHost
 				else
 				{
 					shutdownStateTime.set(System.currentTimeMillis());
-					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...Stopping session "+S2.getAddress());
 					S2.stopSession(true,true,false);
-					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...Done stopping session "+S2.getAddress());
 				}
 				if(S!=null)
 					S.print(".");
 			}
 		}
+		CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down...Done stopping sessions");
 		shutdownStateTime.set(System.currentTimeMillis());
 		if(S!=null)
 			S.println(CMLib.lang().L("All users logged off"));
