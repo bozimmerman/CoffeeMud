@@ -4863,11 +4863,15 @@ public class ListCmd extends StdCommand
 		final Vector<String[]> broken=new Vector<String[]>();
 		final boolean skipUnnamed = (sort.length()>0)&&("NAME".startsWith(sort)||"PLAYER".startsWith(sort));
 		MultiIterable<Session> allIterable=new MultiIterable<Session>();
+		allIterable.add(CMLib.sessions().allIterable(), CMLib.sessions().getCountAll());
+		/*
+		 *  // argh -- those stupid arbitrary numbers would screw up kill session
 		for(final Enumeration<CMLibrary> pl=CMLib.libraries(CMLib.Library.SESSIONS); pl.hasMoreElements(); )
 		{
 			final SessionsList list=(SessionsList)pl.nextElement();
 			allIterable.add(list.allIterable(),list.getCountAll());
 		}
+		*/
 		for(final Session S : allIterable)
 		{
 			final String[] set=new String[6];
