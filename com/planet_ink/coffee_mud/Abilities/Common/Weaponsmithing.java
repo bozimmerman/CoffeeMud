@@ -200,6 +200,12 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return -1;
 	}
 
+	/* This was never a terribly great idea, as it hardens class design
+	 * as well as being a magic string problem. Thankfully, none of us
+	 * seem to care if it stays.  Still, it may be useful to know it was here
+	 * and how it worked, for answering future questions, so leaving the
+	 * prototype and just not calling it
+	 */
 	protected boolean canDo(String weaponClass, MOB mob)
 	{
 		if((mob.isMonster())&&(!CMLib.flags().isAnimalIntelligence(mob)))
@@ -371,8 +377,11 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 						toggler=toggleTop;
 					}
 					if(((autoGenerate>0)
-						||(((level<=xlevel(mob))||(allFlag))&&((canDo(V.get(RCP_WEAPONCLASS),mob)))))
-					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
+						||(level<=xlevel(mob))
+						||(allFlag))
+					&&((mask.length()==0)
+						||mask.equalsIgnoreCase("all")
+						||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight(item,itemWidth)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop)
