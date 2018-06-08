@@ -277,7 +277,9 @@ public class MOTD extends StdCommand
 								{
 									final CMMsg msg2=CMClass.getMsg(mob,journalItem,null,CMMsg.MSG_READ,null,CMMsg.MSG_READ,""+count,CMMsg.MSG_READ,null);
 									msg2.setValue(1);
+									mob.phyStats().setSensesMask(mob.phyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 									journalItem.executeMsg(mob,msg2);
+									mob.recoverPhyStats();
 									if(msg2.value()==0)
 										break;
 									else
