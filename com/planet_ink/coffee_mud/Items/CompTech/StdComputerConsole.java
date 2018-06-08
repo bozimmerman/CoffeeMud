@@ -399,7 +399,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
 		{

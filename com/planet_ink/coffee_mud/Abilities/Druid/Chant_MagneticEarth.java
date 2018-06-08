@@ -126,7 +126,7 @@ public class Chant_MagneticEarth extends Chant
 	protected boolean checked=false;
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((!checked)
 		&&(msg.targetMinor()==CMMsg.TYP_ENTER)

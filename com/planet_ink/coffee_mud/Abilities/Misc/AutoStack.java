@@ -224,7 +224,7 @@ public class AutoStack extends StdAbility
 	}
 
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected instanceof Room) // because areas can rely on ticks
 		{

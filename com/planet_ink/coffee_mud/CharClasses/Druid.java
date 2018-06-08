@@ -488,7 +488,7 @@ public class Druid extends StdCharClass
 					final MOB druidM=(MOB)host;
 					final MOB animalM=msgSrc;
 					@Override
-					public void executeMsg(Environmental myHost, CMMsg msg)
+					public void executeMsg(final Environmental myHost, final CMMsg msg)
 					{
 					}
 					@Override
@@ -530,7 +530,7 @@ public class Druid extends StdCharClass
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);
 		Druid.doAnimalFollowerLevelingCheck(this,host,msg);

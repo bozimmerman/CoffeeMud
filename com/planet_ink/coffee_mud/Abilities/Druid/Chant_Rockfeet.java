@@ -111,7 +111,7 @@ public class Chant_Rockfeet extends Chant
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);
 		if((msg.source()==affected)

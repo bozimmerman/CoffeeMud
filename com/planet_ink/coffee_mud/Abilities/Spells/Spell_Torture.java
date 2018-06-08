@@ -256,7 +256,7 @@ public class Spell_Torture extends Spell
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((msg.amITarget(affected))
 		&&(text().equalsIgnoreCase("HITONLY"))

@@ -85,7 +85,7 @@ public class Chant_PlantMaze extends Chant
 	protected Item	thePlants	= null;
 
 	@Override
-	public boolean tick(Tickable ticking,int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((thePlants==null)||(thePlants.owner()==null)||(!(thePlants.owner() instanceof Room)))
 		{

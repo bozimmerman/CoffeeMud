@@ -106,7 +106,7 @@ public class Prop_HereSpellCast extends Prop_HaveSpellCast
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if(processing)
 			return;

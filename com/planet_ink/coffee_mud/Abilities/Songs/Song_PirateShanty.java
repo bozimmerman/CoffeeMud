@@ -57,7 +57,7 @@ public class Song_PirateShanty extends Song
 	public Set<MOB> singers=new HashSet<MOB>();
 	
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)

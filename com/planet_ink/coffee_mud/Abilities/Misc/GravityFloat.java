@@ -296,7 +296,7 @@ public class GravityFloat extends StdAbility
 	}
 	
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		// IDEA: gravity legs should develop over time...this turns into a saved ability with a score?
 		if((affected instanceof Item)

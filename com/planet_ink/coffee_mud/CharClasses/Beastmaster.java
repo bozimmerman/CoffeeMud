@@ -298,7 +298,7 @@ public class Beastmaster extends StdCharClass
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);
 		Druid.doAnimalFollowerLevelingCheck(this,host,msg);

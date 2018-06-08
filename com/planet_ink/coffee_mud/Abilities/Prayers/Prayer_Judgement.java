@@ -186,7 +186,7 @@ public class Prayer_Judgement extends Prayer
 	}
 	
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
 		if((msg.source()==affected) 

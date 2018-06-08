@@ -153,7 +153,7 @@ public class Disease_Scurvy extends Disease
 	}
 
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((msg.source()==affected)
 		&&(msg.target() instanceof Item)

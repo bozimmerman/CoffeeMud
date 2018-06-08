@@ -544,7 +544,7 @@ public class PokerDealer extends StdBehavior
 	// object that is hosting this behavior.  The "msg" will
 	// be the details of the event which has occurred.
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		// if someone enters the same room where this
 		// behavior is operating, and a game is NOT

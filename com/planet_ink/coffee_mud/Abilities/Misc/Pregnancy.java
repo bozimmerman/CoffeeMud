@@ -216,7 +216,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	protected int	ticksInLabor	= 0;
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if ((msg.target() == affected) 
 		&& ((msg.targetMinor() == CMMsg.TYP_LOOK) || (msg.targetMinor() == CMMsg.TYP_EXAMINE)) 

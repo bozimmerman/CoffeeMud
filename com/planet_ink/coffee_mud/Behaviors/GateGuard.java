@@ -134,7 +134,7 @@ public class GateGuard extends StdBehavior
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if(host instanceof MOB)
 		{

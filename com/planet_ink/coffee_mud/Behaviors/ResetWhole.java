@@ -71,19 +71,19 @@ public class ResetWhole extends StdBehavior
 	}
 	
 	@Override
-	public void executeMsg(Environmental E, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		super.executeMsg(E,msg);
+		super.executeMsg(host,msg);
 		if(!msg.source().isMonster())
 		{
 			final Room R=msg.source().location();
 			if(R!=null)
 			{
-				if((E instanceof Area)
-				&&(((Area)E).inMyMetroArea(R.getArea())))
+				if((host instanceof Area)
+				&&(((Area)host).inMyMetroArea(R.getArea())))
 					lastAccess=System.currentTimeMillis();
 				else
-				if((E instanceof Room) &&(R==E))
+				if((host instanceof Room) &&(R==host))
 					lastAccess=System.currentTimeMillis();
 			}
 		}

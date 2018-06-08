@@ -240,7 +240,7 @@ public class Gaoler extends StdCharClass
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((msg.source()==host)
 		&&(msg.target() instanceof MOB)

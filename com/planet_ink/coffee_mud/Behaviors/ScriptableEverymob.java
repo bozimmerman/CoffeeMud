@@ -130,7 +130,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((msg.target() instanceof Room)
 		&&(msg.targetMinor()==CMMsg.TYP_LOOK))

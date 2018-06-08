@@ -125,7 +125,7 @@ public class AntiVagrant extends ActiveTicker
 	}
 
 	@Override
-	public void executeMsg(Environmental affecting, CMMsg msg)
+	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		// believe it or not, this is for arrest behavior.
 		super.executeMsg(affecting,msg);

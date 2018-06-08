@@ -389,7 +389,7 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((affected instanceof Room)||(affected instanceof Area))
 		{

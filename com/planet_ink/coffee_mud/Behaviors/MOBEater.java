@@ -101,7 +101,7 @@ public class MOBEater extends ActiveTicker
 			final WeakReference<MOB> eater=new WeakReference<MOB>(lastKnownEaterM);
 			stomachR.addNonUninvokableEffect(A.setAbilityID("MOBEaterStomachWatcher").setMsgListener(new MsgListener(){
 				@Override
-				public void executeMsg(Environmental myHost, CMMsg msg) 
+				public void executeMsg(final Environmental myHost, final CMMsg msg) 
 				{
 					if(A.affecting() instanceof Room)
 					{
@@ -247,7 +247,7 @@ public class MOBEater extends ActiveTicker
 	}
 
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(this.lastKnownEaterM != null)
 		{

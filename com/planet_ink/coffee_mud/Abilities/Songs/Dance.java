@@ -338,7 +338,7 @@ public class Dance extends StdAbility
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((invoker()!=null)
 		&&(!unInvoked)

@@ -157,7 +157,7 @@ public class Skill_Befriend extends BardSkill
 								final CMMsg msg2=thisMsg;
 								final Ability extA = A;
 								@Override
-								public void executeMsg(Environmental myHost, CMMsg msg)
+								public void executeMsg(final Environmental myHost, final CMMsg msg)
 								{
 									if((msg != msg2)&&(myHost instanceof MOB))
 									{

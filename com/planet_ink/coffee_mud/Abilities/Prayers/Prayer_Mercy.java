@@ -116,7 +116,7 @@ public class Prayer_Mercy extends Prayer
 	}
 	
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)

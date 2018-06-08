@@ -226,7 +226,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public void executeMsg(Environmental affecting, CMMsg msg)
+	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
 		engine().executeMsg(affecting, msg);

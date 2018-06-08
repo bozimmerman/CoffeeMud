@@ -182,7 +182,7 @@ public class Spell_InvisibilitySphere extends Spell
 	}
 
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
 		final Physical invoker = (invoker() != null) ? invoker() : affecting();

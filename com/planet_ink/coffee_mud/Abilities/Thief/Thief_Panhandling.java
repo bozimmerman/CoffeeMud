@@ -98,9 +98,9 @@ public class Thief_Panhandling extends ThiefSkill
 	int tickTock=0;
 
 	@Override
-	public void executeMsg(Environmental oking, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		super.executeMsg(oking,msg);
+		super.executeMsg(host,msg);
 		if(affected instanceof MOB)
 		{
 			final MOB mob=(MOB)affected;

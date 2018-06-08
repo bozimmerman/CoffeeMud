@@ -164,7 +164,7 @@ public class StdElecPanel extends StdElecContainer implements ElecPanel
 	}
 
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.amITarget(this))
 		{

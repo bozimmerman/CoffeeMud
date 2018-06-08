@@ -1907,7 +1907,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	}
 
 	@Override
-	public void executeMsg(Environmental affecting, CMMsg msg)
+	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting, msg);
 		if(!(affecting instanceof Area))

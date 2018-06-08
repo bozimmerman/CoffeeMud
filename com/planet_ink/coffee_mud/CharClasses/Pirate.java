@@ -410,7 +410,7 @@ public class Pirate extends Thief
 	}
 	
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)

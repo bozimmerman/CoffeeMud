@@ -144,7 +144,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 												 };
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if(affected instanceof MOB)
 		{

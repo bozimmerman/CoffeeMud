@@ -335,7 +335,7 @@ public class Prop_Familiar extends Property
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&((msg.source()==familiarWith)||(msg.source()==familiarTo)))

@@ -98,7 +98,7 @@ public class MobileAggressive extends Mobile
 	}
 
 	@Override
-	public void executeMsg(Environmental affecting, CMMsg msg)
+	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting, msg);
 		veryA.executeMsg(affecting, msg);

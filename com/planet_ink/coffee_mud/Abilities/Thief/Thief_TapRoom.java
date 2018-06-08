@@ -205,7 +205,7 @@ public class Thief_TapRoom extends ThiefSkill
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		synchronized(this)
 		{

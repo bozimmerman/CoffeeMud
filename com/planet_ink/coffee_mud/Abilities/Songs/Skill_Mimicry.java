@@ -90,7 +90,7 @@ public class Skill_Mimicry extends BardSkill
 	protected boolean disabled=false;
 
 	@Override
-	public void executeMsg(Environmental affecting, CMMsg msg)
+	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
 		if((affecting instanceof MOB)&&(!CMLib.flags().isAliveAwakeMobileUnbound((MOB)affecting,true)))

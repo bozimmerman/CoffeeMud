@@ -138,7 +138,7 @@ public class Fighter_HammerRing extends FighterSkill implements HealthCondition
 	}
 	
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
 		if(affected instanceof MOB)

@@ -109,7 +109,7 @@ public class Thief_RammingSpeed extends ThiefSkill
 	}
 	
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
 		if((msg.source().riding()==affected)

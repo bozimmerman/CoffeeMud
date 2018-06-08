@@ -161,7 +161,7 @@ public class Spell_Spellbinding extends Spell
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((msg.source()==affected)
 		&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)

@@ -104,7 +104,7 @@ public class Prop_WearAdjuster extends Prop_HaveAdjuster
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((affected instanceof Armor)&&(msg.source()==((Armor)affected).owner()))
 		{

@@ -80,7 +80,7 @@ public class Spell_Blademouth extends Spell
 	protected boolean noRecurse=false;
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 		&&(!noRecurse)

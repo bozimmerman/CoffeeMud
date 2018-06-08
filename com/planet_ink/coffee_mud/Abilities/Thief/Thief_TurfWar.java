@@ -158,7 +158,7 @@ public class Thief_TurfWar extends ThiefSkill
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		final Ability A=getSparringRoom();
 		if(A!=null)

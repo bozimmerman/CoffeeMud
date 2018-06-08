@@ -113,7 +113,7 @@ public class Prop_WearSpellCast extends Prop_HaveSpellCast
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((affected instanceof Armor)&&(msg.source()==((Armor)affected).owner()))
 		{

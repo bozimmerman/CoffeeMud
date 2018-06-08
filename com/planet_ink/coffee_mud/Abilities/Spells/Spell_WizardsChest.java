@@ -121,7 +121,7 @@ public class Spell_WizardsChest extends Spell
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((msg.target()==affected)
 		&&((msg.source()==invoker())||(msg.source().Name().equals(text())))

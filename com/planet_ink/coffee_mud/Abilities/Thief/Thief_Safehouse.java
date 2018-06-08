@@ -148,7 +148,7 @@ public class Thief_Safehouse extends ThiefSkill
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);
 		if((canBeUninvoked())&&(invoker()!=null)&&(invoker().location()!=affected))

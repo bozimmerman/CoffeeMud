@@ -207,7 +207,7 @@ public class Prop_InstantDeath extends Property
 	}
 
 	@Override
-	public void executeMsg(Environmental affecting, CMMsg msg)
+	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
 		if(msg.amITarget(affecting))

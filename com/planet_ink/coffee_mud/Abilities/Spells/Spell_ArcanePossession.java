@@ -104,7 +104,7 @@ public class Spell_ArcanePossession extends Spell
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);
 		if((affected instanceof Item)&&(text().length()>0))

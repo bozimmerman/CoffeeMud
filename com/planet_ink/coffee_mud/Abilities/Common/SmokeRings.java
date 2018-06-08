@@ -114,23 +114,23 @@ public class SmokeRings extends CommonSkill
 	}
 	
 	@Override
-	public void executeMsg(Environmental affected, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		if(((affected instanceof MOB)
-		&&(msg.amISource((MOB)affected)))
+		if(((host instanceof MOB)
+		&&(msg.amISource((MOB)host)))
 		&&(msg.targetMinor()==CMMsg.TYP_HANDS)
 		&&(msg.target() instanceof Light)
 		&&(msg.tool() instanceof Light)
 		&&(msg.target()==msg.tool())
 		&&(((Light)msg.target()).amWearingAt(Wearable.WORN_MOUTH))
 		&&(((Light)msg.target()).isLit())
-		&&(proficiencyCheck(null,(10*getXLEVELLevel((MOB)affected)),false)))
+		&&(proficiencyCheck(null,(10*getXLEVELLevel((MOB)host)),false)))
 		{
 			if(CMLib.dice().rollPercentage()==1)
-				helpProficiency((MOB)affected,0);
+				helpProficiency((MOB)host,0);
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,msg.tool(),CMMsg.MSG_OK_VISUAL,getSmokeStr()));
 		}
-		super.executeMsg(affected,msg);
+		super.executeMsg(host,msg);
 	}
 	
 	@Override

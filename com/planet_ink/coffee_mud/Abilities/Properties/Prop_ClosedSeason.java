@@ -77,9 +77,9 @@ public class Prop_ClosedSeason extends Property
 	}
 
 	@Override
-	public void executeMsg(Environmental E, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		super.executeMsg(E,msg);
+		super.executeMsg(host,msg);
 		if(exitArea!=null)
 			return;
 		if(!(affected instanceof Exit))

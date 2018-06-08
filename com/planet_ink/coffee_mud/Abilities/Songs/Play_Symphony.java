@@ -605,7 +605,7 @@ public class Play_Symphony extends Play
 	}
 
 	@Override
-	public void executeMsg(Environmental E, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		switch(toDoCode)

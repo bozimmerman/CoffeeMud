@@ -127,7 +127,7 @@ public class Spell_Boomerang extends Spell
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);
 		if((msg.targetMinor()==CMMsg.TYP_GET)

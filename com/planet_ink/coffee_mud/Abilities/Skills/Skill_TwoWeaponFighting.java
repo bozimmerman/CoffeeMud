@@ -126,7 +126,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((msg.source()==affected)
 		&&(msg.target() instanceof MOB)

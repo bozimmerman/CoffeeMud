@@ -69,7 +69,7 @@ public class Mime extends ActiveTicker
 										  |Behavior.CAN_ROOMS;}
 
 	@Override
-	public void executeMsg(Environmental affecting, CMMsg msg)
+	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
 		if((affecting instanceof MOB)&&(!canFreelyBehaveNormal(affecting)))

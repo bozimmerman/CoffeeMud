@@ -126,9 +126,9 @@ public class Prop_ClosedDayNight extends Property
 	}
 
 	@Override
-	public void executeMsg(Environmental E, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		super.executeMsg(E,msg);
+		super.executeMsg(host,msg);
 		if(exitRoom!=null)
 			return;
 		if(msg.source().location()!=null)

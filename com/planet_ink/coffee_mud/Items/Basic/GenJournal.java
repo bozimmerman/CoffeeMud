@@ -64,7 +64,7 @@ public class GenJournal extends StdJournal
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if(((msg.target()==this)||(msg.tool()==this))
 		&&(name().trim().equalsIgnoreCase("THE ARCHON JOURNAL")))

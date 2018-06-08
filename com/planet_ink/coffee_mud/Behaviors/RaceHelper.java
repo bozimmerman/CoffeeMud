@@ -47,7 +47,7 @@ public class RaceHelper extends StdBehavior
 	}
 
 	@Override
-	public void executeMsg(Environmental affecting, CMMsg msg)
+	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting,msg);
 		if((msg.target()==null)||(!(msg.target() instanceof MOB)))

@@ -147,7 +147,7 @@ public class PresenceReaction extends StdAbility
 	}
 
 	@Override
-	public void executeMsg(Environmental affecting, CMMsg msg)
+	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		for(final CMObject O : managed)
 		{

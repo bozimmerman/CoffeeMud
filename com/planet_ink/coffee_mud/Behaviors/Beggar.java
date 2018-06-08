@@ -59,12 +59,12 @@ public class Beggar extends StdBehavior
 	}
 
 	@Override
-	public void executeMsg(Environmental oking, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		super.executeMsg(oking,msg);
-		if((oking==null)||(!(oking instanceof MOB)))
+		super.executeMsg(host,msg);
+		if((host==null)||(!(host instanceof MOB)))
 			return;
-		final MOB mob=(MOB)oking;
+		final MOB mob=(MOB)host;
 		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_GIVE))
 			msg.addTrailerMsg(CMClass.getMsg(mob,msg.source(),CMMsg.MSG_SPEAK,L("^T<S-NAME> say(s) 'Thank you gov'ner!' to <T-NAME> ^?")));
 	}

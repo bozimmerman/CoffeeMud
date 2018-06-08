@@ -63,9 +63,9 @@ public class Song_SingleMindedness extends Song
 	}
 
 	@Override
-	public void executeMsg(Environmental ticking, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		super.executeMsg(ticking,msg);
+		super.executeMsg(host,msg);
 		if((themsg==null)
 		&&(msg.source()!=invoker())
 		&&(msg.source()==affected)

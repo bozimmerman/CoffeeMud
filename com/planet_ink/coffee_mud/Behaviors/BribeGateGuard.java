@@ -448,7 +448,7 @@ public class BribeGateGuard extends StdBehavior
 	}
 
 	@Override
-	public void executeMsg(Environmental affecting, CMMsg msg)
+	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting, msg);
 		final MOB source = msg.source();

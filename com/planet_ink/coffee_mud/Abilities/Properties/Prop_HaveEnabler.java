@@ -183,7 +183,7 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 	}
 

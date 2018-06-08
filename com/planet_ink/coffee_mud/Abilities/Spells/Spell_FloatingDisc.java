@@ -107,7 +107,7 @@ public class Spell_FloatingDisc extends Spell
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		if((msg.target()==affected)
 		&&(msg.targetMinor()==CMMsg.TYP_REMOVE))

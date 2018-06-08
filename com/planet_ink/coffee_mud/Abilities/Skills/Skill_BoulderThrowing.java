@@ -307,7 +307,7 @@ public class Skill_BoulderThrowing extends StdSkill
 	}
 	
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((this.boulderThrower!=null)
 		&&(msg.tool()==this.boulderThrower))

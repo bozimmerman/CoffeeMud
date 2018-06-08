@@ -223,7 +223,7 @@ public class Prancer extends StdCharClass
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host,msg);
 		Bard.visitationBonusMessage(host,msg);

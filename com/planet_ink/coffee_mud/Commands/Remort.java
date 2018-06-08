@@ -485,7 +485,7 @@ public class Remort extends StdCommand
 						final MsgListener me=this;
 						
 						@Override
-						public void executeMsg(Environmental myHost, CMMsg msg)
+						public void executeMsg(final Environmental myHost, final CMMsg msg)
 						{
 							if((msg.source() == myHost)
 							&&(myHost instanceof MOB)

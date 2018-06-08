@@ -130,12 +130,12 @@ public class TaxCollector extends StdBehavior
 	}
 
 	@Override
-	public void executeMsg(Environmental oking, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		super.executeMsg(oking,msg);
-		if((oking!=null)&&(oking instanceof MOB))
+		super.executeMsg(host,msg);
+		if((host!=null)&&(host instanceof MOB))
 		{
-			final MOB mob=(MOB)oking;
+			final MOB mob=(MOB)host;
 			if(msg.amITarget(mob)
 			&&(msg.targetMinor()==CMMsg.TYP_GIVE)
 			&&(msg.tool() instanceof Coins))

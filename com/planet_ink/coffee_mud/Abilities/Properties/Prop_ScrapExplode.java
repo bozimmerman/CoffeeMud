@@ -58,9 +58,9 @@ public class Prop_ScrapExplode extends Property {
 	}
 
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg affect)
+	public void executeMsg(final Environmental host, final CMMsg affect)
 	{
-		super.executeMsg(myHost, affect);
+		super.executeMsg(host, affect);
 		if((affect.target()!=null)&&(affect.target().equals(affected))
 		   &&(affect.tool()!=null)&&(affect.tool().ID().equals("Scrapping")))
 		{

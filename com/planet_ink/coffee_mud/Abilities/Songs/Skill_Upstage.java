@@ -102,7 +102,7 @@ public class Skill_Upstage extends BardSkill
 	protected MOB previousVictim = null;
 	
 	@Override
-	public void executeMsg(Environmental myHost, CMMsg msg)
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
 		if((invoker()!=null)

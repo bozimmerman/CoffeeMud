@@ -318,7 +318,7 @@ public class MOBTeacher extends CombatAbilities
 	}
 
 	@Override
-	public void executeMsg(Environmental affecting, CMMsg msg)
+	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		if(myMOB==null)
 			return;

@@ -434,7 +434,7 @@ public class Sounder extends StdBehavior
 	}
 
 	@Override
-	public void executeMsg(Environmental E, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		// this will work because, for items, behaviors
 		// get the first tick.
@@ -444,8 +444,8 @@ public class Sounder extends StdBehavior
 		{
 		case CMMsg.TYP_OPEN:
 		case CMMsg.TYP_CLOSE:
-			if((msg.target()==E)
-			||((!(E instanceof Item))&&(!(E instanceof Exit))))
+			if((msg.target()==host)
+			||((!(host instanceof Item))&&(!(host instanceof Exit))))
 				lookFor=msg.targetMinor();
 			break;
 		case CMMsg.TYP_GET:
@@ -460,35 +460,35 @@ public class Sounder extends StdBehavior
 		case CMMsg.TYP_SIT:
 		case CMMsg.TYP_SLEEP:
 		case CMMsg.TYP_MOUNT:
-			if((msg.target()==E)||(!(E instanceof Item)))
+			if((msg.target()==host)||(!(host instanceof Item)))
 				lookFor=msg.targetMinor();
 			break;
 		case CMMsg.TYP_DROP:
-			if(((!(E instanceof Item))||(msg.target()==E))
+			if(((!(host instanceof Item))||(msg.target()==host))
 			&&(msg.target() instanceof Item))
 				lookFor=CMMsg.TYP_DROP;
 			break;
 		case CMMsg.TYP_ENTER:
 			if((msg.target()!=null)
-			&&(msg.target()==getBehaversRoom(E)))
+			&&(msg.target()==getBehaversRoom(host)))
 				lookFor=CMMsg.TYP_ENTER;
 			break;
 		case CMMsg.TYP_LEAVE:
 			if((msg.target()!=null)
-			&&(msg.target()==getBehaversRoom(E)))
+			&&(msg.target()==getBehaversRoom(host)))
 				lookFor=CMMsg.TYP_LEAVE;
 			break;
 		case CMMsg.TYP_WEAPONATTACK:
 			if((msg.target()!=null)
-			&&(msg.target()!=E)
-			&&((msg.source()==E)||(msg.tool()==E)||(E instanceof Room)||(E instanceof Exit))
+			&&(msg.target()!=host)
+			&&((msg.source()==host)||(msg.tool()==host)||(host instanceof Room)||(host instanceof Exit))
 			&&(!oncePerRound1))
 				lookFor=CMMsg.TYP_WEAPONATTACK;
 			break;
 		case CMMsg.TYP_DAMAGE:
 			if((msg.target()!=null)
-			&&(msg.source()!=E)
-			&&((msg.target()==E)||(msg.tool()==E)||(E instanceof Room)||(E instanceof Exit)))
+			&&(msg.source()!=host)
+			&&((msg.target()==host)||(msg.tool()==host)||(host instanceof Room)||(host instanceof Exit)))
 				lookFor=CMMsg.TYP_DAMAGE;
 			break;
 		}
@@ -496,24 +496,24 @@ public class Sounder extends StdBehavior
 		final Room room=msg.source().location();
 		if((lookFor>=0)
 		&&(room!=null)
-		&&((!(E instanceof MOB))||(lookFor==CMMsg.TYP_WEAPONATTACK)
+		&&((!(host instanceof MOB))||(lookFor==CMMsg.TYP_WEAPONATTACK)
 								||(lookFor==CMMsg.TYP_DAMAGE)
-								||(canFreelyBehaveNormal(E))))
+								||(canFreelyBehaveNormal(host))))
 		for(int v=0;v<triggers.length;v++)
 			if(((triggers[v]&UNDER_MASK)==lookFor)
 			&&(!CMath.bset(triggers[v],TICK_MASK)))
 			{
 				if(CMath.bset(triggers[v],ROOM_MASK))
 				{
-					final CMMsg msg2=CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,CMMsg.MSG_EMOTE,CMStrings.replaceAll(strings[v],"$p",E.name()));
+					final CMMsg msg2=CMClass.getMsg(msg.source(),null,null,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,CMMsg.MSG_EMOTE,CMStrings.replaceAll(strings[v],"$p",host.name()));
 					msg.addTrailerMsg(msg2);
 				}
 				else
 				{
-					final CMMsg msg2=CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_EMOTE,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,CMStrings.replaceAll(strings[v],"$p",E.name()));
+					final CMMsg msg2=CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_EMOTE,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,CMStrings.replaceAll(strings[v],"$p",host.name()));
 					msg.addTrailerMsg(msg2);
 				}
 			}
-		super.executeMsg(E,msg);
+		super.executeMsg(host,msg);
 	}
 }

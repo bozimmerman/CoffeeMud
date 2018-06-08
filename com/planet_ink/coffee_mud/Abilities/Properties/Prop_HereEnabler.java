@@ -70,7 +70,7 @@ public class Prop_HereEnabler extends Prop_HaveEnabler
 	}
 
 	@Override
-	public void executeMsg(Environmental host, CMMsg msg)
+	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		super.executeMsg(host, msg);
 		if((msg.sourceMinor()==CMMsg.TYP_ENTER)||(msg.sourceMinor()==CMMsg.TYP_LEAVE))
@@ -84,7 +84,7 @@ public class Prop_HereEnabler extends Prop_HaveEnabler
 					final Prop_HereEnabler here = new Prop_HereEnabler()
 					{
 						@Override
-						public void executeMsg(Environmental host, CMMsg msg)
+						public void executeMsg(final Environmental host, final CMMsg msg)
 						{
 							if((this.affected==msg.source())
 							&&((msg.sourceMinor()==CMMsg.TYP_ENTER)||(msg.sourceMinor()==CMMsg.TYP_LEAVE)))
