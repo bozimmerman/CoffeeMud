@@ -1944,7 +1944,7 @@ public class StdAbility implements Ability
 				{
 					if(teacher != null)
 						teacher.tell(L("@x1 is not smart enough to learn level @x2 skills.",student.name(),qLevel+""));
-					student.tell(L("You are not of high enough intelligence to learn level @x2 skills.",qLevel+""));
+					student.tell(L("You are not of high enough intelligence to learn level @x1 skills.",qLevel+""));
 					return false;
 				}
 			}
