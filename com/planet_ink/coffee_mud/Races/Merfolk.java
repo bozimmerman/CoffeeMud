@@ -115,11 +115,11 @@ public class Merfolk extends StdRace
 		return culturalAbilityProficiencies;
 	}
 
-	private final String[]					racialAbilityNames			= { "Skill_Swim","Chant_LandLegs" };
-	private final int[]						racialAbilityLevels			= { 1,1 };
-	private final int[]						racialAbilityProficiencies	= { 100,25 };
-	private final boolean[]					racialAbilityQuals			= { false,false };
-	private final String[]					racialAbilityParms			= { "","" };
+	private final String[]					racialAbilityNames			= { "Skill_Swim", "Skill_Autoswim", "Chant_LandLegs" };
+	private final int[]						racialAbilityLevels			= { 1, 1, 1 };
+	private final int[]						racialAbilityProficiencies	= { 100, 100, 25 };
+	private final boolean[]					racialAbilityQuals			= { false,false,false };
+	private final String[]					racialAbilityParms			= { "", "", ""};
 
 	@Override
 	protected String[] racialAbilityNames()
