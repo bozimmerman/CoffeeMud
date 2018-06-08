@@ -228,9 +228,10 @@ public class Thief_Embezzle extends ThiefSkill
 			}
 		}
 		final int classLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
+		final int maxAmount = 1000*(classLevel);
 		if((classLevel>0)
-		&&(Math.round(hisAmount)>(1000*(classLevel)+(2*getXLEVELLevel(mob)))))
-		   hisAmount=1000l*(classLevel+(2l*getXLEVELLevel(mob)));
+		&&(Math.round(hisAmount)>maxAmount))
+			hisAmount=maxAmount;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
