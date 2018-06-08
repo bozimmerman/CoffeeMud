@@ -137,7 +137,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((tickID==Tickable.TICKID_TRAP_RESET)&&(getReset()>0))
 		{

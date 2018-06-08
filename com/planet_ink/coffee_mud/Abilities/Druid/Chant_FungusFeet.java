@@ -102,7 +102,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
@@ -143,7 +143,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 	}
 
 	@Override
-	public void affectCharState(MOB affected, CharState affectableState)
+	public void affectCharState(final MOB affected, final CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
 		if(affected==null)

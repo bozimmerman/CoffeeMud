@@ -63,7 +63,7 @@ public interface StatsAffecting
 	 * @param affectedMob the host of the CharStats object being affected
 	 * @param affectableStats the particular CharStats object being affected
 	 */
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats);
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats);
 	/**
 	 * This method is called by the recoverCharState() method on other MOB objects.  It is used
 	 * to transform the MOB baseCharState() object into a finished charState() object,  both of

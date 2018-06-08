@@ -136,7 +136,7 @@ public class WingFlying extends StdAbility implements HealthCondition
 	}
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)&&(ticking instanceof MOB)&&(((MOB)ticking).charStats().getBodyPart(Race.BODY_WING)<=0))
 			unInvoke();

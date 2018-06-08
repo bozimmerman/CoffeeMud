@@ -157,7 +157,7 @@ public class Poison_Alcohol extends Poison
 	}
 	
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,(affectableStats.getStat(CharStats.STAT_DEXTERITY)-drunkness));
 		if(affectableStats.getStat(CharStats.STAT_DEXTERITY)<=0)
@@ -204,7 +204,7 @@ public class Poison_Alcohol extends Poison
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;

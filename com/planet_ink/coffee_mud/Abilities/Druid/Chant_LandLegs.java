@@ -80,7 +80,7 @@ public class Chant_LandLegs extends Chant
 	protected int[] newSet=null;
 	
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affectableStats.getBodyPart(Race.BODY_LEG)==0)

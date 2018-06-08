@@ -92,7 +92,7 @@ public class Fighter_ViciousBlow extends FighterSkill
 	}
 	
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob, affectableStats);
 		affectableStats.setStat(CharStats.STAT_CRIT_DAMAGE_PCT_WEAPON, affectableStats.getStat(CharStats.STAT_CRIT_DAMAGE_PCT_WEAPON)+50+(5*super.getXLEVELLevel(affectedMob)));

@@ -97,7 +97,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 	protected int diseaseTick=5;
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_STRENGTH,(int)Math.round(CMath.div(affectableStats.getStat(CharStats.STAT_STRENGTH),2.0)));
@@ -116,7 +116,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;

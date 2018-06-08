@@ -493,7 +493,7 @@ public class GenCharClass extends StdCharClass
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		if(adjStats!=null)
 		{

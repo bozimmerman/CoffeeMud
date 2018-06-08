@@ -190,7 +190,7 @@ public class Shutdown extends StdCommand implements Tickable
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		final MOB mob=shuttingDownMob;
 		if(mob==null)

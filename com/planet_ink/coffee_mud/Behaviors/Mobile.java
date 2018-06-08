@@ -276,7 +276,7 @@ public class Mobile extends ActiveTicker implements MobileBehavior
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		tickStatus=Tickable.STATUS_MISC2+0;
 		super.tick(ticking,tickID);

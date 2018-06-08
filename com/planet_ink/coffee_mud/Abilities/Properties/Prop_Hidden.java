@@ -101,14 +101,14 @@ public class Prop_Hidden extends Property
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_DETECTION,100+affectableStats.getStat(CharStats.STAT_SAVE_DETECTION));
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(ticksSinceLoss<999999)
 			ticksSinceLoss++;

@@ -88,7 +88,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int	RCP_SPELL		= 11;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{

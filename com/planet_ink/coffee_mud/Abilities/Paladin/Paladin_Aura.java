@@ -65,7 +65,7 @@ public class Paladin_Aura extends PaladinSkill
 	protected boolean pass=false;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;

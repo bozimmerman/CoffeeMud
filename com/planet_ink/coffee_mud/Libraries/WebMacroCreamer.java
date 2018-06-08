@@ -1094,7 +1094,7 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 	protected YahooGroupSession	yahooSession	= null;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		try
 		{

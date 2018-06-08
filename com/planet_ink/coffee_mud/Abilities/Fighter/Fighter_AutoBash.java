@@ -90,7 +90,7 @@ public class Fighter_AutoBash extends FighterSkill
 	protected volatile int numberOfShields=-1;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);

@@ -404,7 +404,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 	}
 
@@ -456,7 +456,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if (destroyed)
 			return false;

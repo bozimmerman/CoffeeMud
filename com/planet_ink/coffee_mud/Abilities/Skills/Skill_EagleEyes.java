@@ -91,7 +91,7 @@ public class Skill_EagleEyes extends StdSkill
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affected.phyStats().level()+(2*getXLEVELLevel(invoker()))+proficiency()+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));

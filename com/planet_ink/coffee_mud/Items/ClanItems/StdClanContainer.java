@@ -143,7 +143,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if (!StdClanItem.standardTick(this, tickID))
 			return false;

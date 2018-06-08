@@ -72,7 +72,7 @@ public class Chant_Shamblermorph extends Chant
 	protected static Race treeForm=null;
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(treeForm==null)

@@ -130,7 +130,7 @@ public class Skill_NavalTactics extends StdSkill
 	}
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;

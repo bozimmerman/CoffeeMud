@@ -172,7 +172,7 @@ public class After extends StdCommand implements Tickable
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(afterCmds.size()==0)
 			return false;

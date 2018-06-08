@@ -168,7 +168,7 @@ public class PresenceReaction extends StdAbility
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		for(final CMObject O : managed)
 		{
@@ -302,7 +302,7 @@ public class PresenceReaction extends StdAbility
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		super.tick(ticking,tickID);
 		if(tickID!=Tickable.TICKID_MOB)

@@ -106,7 +106,7 @@ public class Spell_Spellbinding extends Spell
 	protected final static int COST_STATIC=50;
 
 	@Override
-	public void affectCharState(MOB affected, CharState affectableState)
+	public void affectCharState(final MOB affected, final CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
 		int total=0;

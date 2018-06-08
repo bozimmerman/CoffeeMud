@@ -75,7 +75,7 @@ public class Spell_AnimateWeapon extends Spell
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected instanceof Item)
 		&&(((Item)affected).owner()!=null)

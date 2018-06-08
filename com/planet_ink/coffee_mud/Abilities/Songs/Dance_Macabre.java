@@ -83,7 +83,7 @@ public class Dance_Macabre extends Dance
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(CMLib.flags().isHidden(affected))
 		{

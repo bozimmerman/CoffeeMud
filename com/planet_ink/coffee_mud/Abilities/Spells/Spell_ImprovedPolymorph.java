@@ -108,7 +108,7 @@ public class Spell_ImprovedPolymorph extends Spell
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)

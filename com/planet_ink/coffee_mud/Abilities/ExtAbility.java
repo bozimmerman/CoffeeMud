@@ -92,7 +92,7 @@ public class ExtAbility extends StdAbility implements ExtendableAbility
 	}
 	
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob, affectableStats);
 		if(this.statsAffector != null)
@@ -138,7 +138,7 @@ public class ExtAbility extends StdAbility implements ExtendableAbility
 	}
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;

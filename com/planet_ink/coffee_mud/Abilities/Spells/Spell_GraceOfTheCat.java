@@ -78,7 +78,7 @@ public class Spell_GraceOfTheCat extends Spell
 	int increase = -1;
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(increase <= 0)

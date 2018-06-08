@@ -675,7 +675,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 	}
 
@@ -696,7 +696,7 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		return true;
 	}

@@ -75,7 +75,7 @@ public class Recollecting extends CommonSkill
 	protected final static int charLimit = 100000;
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{

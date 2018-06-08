@@ -87,7 +87,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 	protected static final int	RCP_SPELL		= 8;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{

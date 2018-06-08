@@ -92,7 +92,7 @@ public class Prayer_Gills extends Prayer
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		if(affectableStats.getBodyPart(Race.BODY_GILL)==0)
 			affectableStats.alterBodypart(Race.BODY_GILL,2);

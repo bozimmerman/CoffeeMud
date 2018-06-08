@@ -117,7 +117,7 @@ public class Skill_Convert extends StdSkill
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((text().length()>0)&&(affected instanceof MOB)&&(!text().equals(((MOB)affected).getWorshipCharID())))
 			((MOB)affected).setWorshipCharID(text());

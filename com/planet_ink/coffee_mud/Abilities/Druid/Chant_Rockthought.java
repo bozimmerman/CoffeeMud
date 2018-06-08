@@ -111,7 +111,7 @@ public class Chant_Rockthought extends Chant
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected instanceof MOB)
 		&&(stubb!=null)

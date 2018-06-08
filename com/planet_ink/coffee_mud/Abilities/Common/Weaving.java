@@ -100,7 +100,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{

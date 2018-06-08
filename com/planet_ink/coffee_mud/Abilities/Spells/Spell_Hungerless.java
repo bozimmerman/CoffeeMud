@@ -85,7 +85,7 @@ public class Spell_Hungerless extends Spell
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(affected instanceof MOB)
 			((MOB)affected).curState().setHunger(((MOB)affected).maxState().maxHunger(((MOB)affected).baseWeight()));

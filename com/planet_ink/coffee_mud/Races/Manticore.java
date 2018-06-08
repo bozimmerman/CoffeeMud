@@ -154,7 +154,7 @@ public class Manticore extends GreatCat
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 	}
 

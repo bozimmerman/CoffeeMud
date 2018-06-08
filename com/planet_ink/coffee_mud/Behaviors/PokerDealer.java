@@ -1416,7 +1416,7 @@ public class PokerDealer extends StdBehavior
 	// this behavior, and tickID is seldom important
 	// but refers to the reason for the timed event.
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;

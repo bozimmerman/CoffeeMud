@@ -96,7 +96,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	protected Item key=null;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{

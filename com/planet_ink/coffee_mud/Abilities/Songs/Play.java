@@ -188,7 +188,7 @@ public class Play extends StdAbility
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((!super.tick(ticking,tickID))||(!(affected instanceof MOB)))
 			return false;

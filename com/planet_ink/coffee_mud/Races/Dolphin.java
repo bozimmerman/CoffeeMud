@@ -93,7 +93,7 @@ public class Dolphin extends Seal
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		//super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);

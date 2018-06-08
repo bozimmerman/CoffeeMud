@@ -55,7 +55,7 @@ public class Song_Charm extends Song
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob,affectableStats);
 		if(invoker==null)

@@ -149,7 +149,7 @@ public class Skill_Mimicry extends BardSkill
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		super.tick(ticking,tickID);
 		CMMsg msg=lastMsg;

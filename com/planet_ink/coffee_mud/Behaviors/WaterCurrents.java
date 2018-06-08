@@ -201,7 +201,7 @@ public class WaterCurrents extends ActiveTicker
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		super.tick(ticking,tickID);
 		if(canAct(ticking,tickID))
@@ -812,7 +812,7 @@ public class WaterCurrents extends ActiveTicker
 		}
 
 		@Override
-		public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+		public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 		{
 		}
 
@@ -834,7 +834,7 @@ public class WaterCurrents extends ActiveTicker
 		}
 
 		@Override
-		public boolean tick(Tickable ticking, int tickID)
+		public boolean tick(final Tickable ticking, final int tickID)
 		{
 			return true;
 		}

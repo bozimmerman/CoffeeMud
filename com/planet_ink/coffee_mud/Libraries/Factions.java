@@ -651,7 +651,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!CMLib.sessions().all().hasNext())
 			return true;

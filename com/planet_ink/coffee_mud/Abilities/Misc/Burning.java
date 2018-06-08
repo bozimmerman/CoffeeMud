@@ -134,7 +134,7 @@ public class Burning extends StdAbility
 	}
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		Physical affected=this.affected;
 		if((affected instanceof Item)

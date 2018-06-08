@@ -98,7 +98,7 @@ public class Fighter_FieldTactics extends FighterSkill
 	protected long sitTime=0;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;

@@ -288,7 +288,7 @@ public class Prop_Artifact extends Property
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((waitToReload>0)&&(tickID==Tickable.TICKID_ITEM_BOUNCEBACK))
 		{

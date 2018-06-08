@@ -94,7 +94,7 @@ public class Skill_BoulderThrowing extends StdSkill
 	protected volatile int	tickDownThisShipCombatRound	= CombatLibrary.TICKS_PER_SHIP_COMBAT;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
 		{

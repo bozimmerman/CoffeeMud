@@ -346,7 +346,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked())) // override all normal common skill behavior!!
 			return false;

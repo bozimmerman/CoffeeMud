@@ -368,7 +368,7 @@ public class WeatherAffects extends PuddleMaker
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		final int realLastWeather=super.lastWeather;
 		if(!super.tick(ticking,tickID))

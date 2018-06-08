@@ -50,7 +50,7 @@ public class Lich extends Skeleton
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-4);
@@ -68,7 +68,7 @@ public class Lich extends Skeleton
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!(ticking instanceof MOB))
 			return super.tick(ticking,tickID);

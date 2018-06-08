@@ -88,7 +88,7 @@ public class Prop_StatAdjuster extends Property
 	protected boolean doAllCodes=false;
 	
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		for(final int i: CharStats.CODES.BASECODES())
 		{

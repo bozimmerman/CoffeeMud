@@ -145,7 +145,7 @@ public class Mold extends StdRace
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMOB, CharState affectableState)
+	public void affectCharState(final MOB affectedMOB, final CharState affectableState)
 	{
 		affectableState.setHitPoints(affectableState.getHitPoints()*4);
 		affectableState.setHunger((Integer.MAX_VALUE/2)+10);
@@ -154,7 +154,7 @@ public class Mold extends StdRace
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_GENDER,'N');
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
@@ -269,7 +269,7 @@ public class Mold extends StdRace
 	}
 	
 	@Override
-	public String healthText(MOB viewer, MOB mob)
+	public String healthText(final MOB viewer, final MOB mob)
 	{
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 

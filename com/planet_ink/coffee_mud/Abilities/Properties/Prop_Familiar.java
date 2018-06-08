@@ -140,7 +140,7 @@ public class Prop_Familiar extends Property
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
 		{
@@ -417,7 +417,7 @@ public class Prop_Familiar extends Property
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		if((familiarWith!=null)
 		&&(familiarTo!=null)

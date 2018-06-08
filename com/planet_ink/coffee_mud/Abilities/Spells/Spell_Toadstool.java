@@ -97,7 +97,7 @@ public class Spell_Toadstool extends Spell
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
@@ -113,7 +113,7 @@ public class Spell_Toadstool extends Spell
 	}
 
 	@Override
-	public void affectCharState(MOB affected, CharState affectableState)
+	public void affectCharState(final MOB affected, final CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
 		affectableState.setHitPoints(20);

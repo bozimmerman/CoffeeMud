@@ -141,7 +141,7 @@ public class Skill_Befriend extends BardSkill
 								}
 
 								@Override
-								public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+								public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 								{
 									affectableStats.setStat(CharStats.STAT_CHARISMA, affectableStats.getStat(CharStats.STAT_CHARISMA)+amt);
 								}
@@ -211,7 +211,7 @@ public class Skill_Befriend extends BardSkill
 	}
 	
 	@Override 
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;

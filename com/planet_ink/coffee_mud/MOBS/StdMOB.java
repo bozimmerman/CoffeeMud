@@ -3550,7 +3550,7 @@ public class StdMOB implements MOB
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 	}
 

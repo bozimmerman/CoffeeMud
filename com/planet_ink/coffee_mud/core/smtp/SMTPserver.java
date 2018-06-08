@@ -483,7 +483,7 @@ public class SMTPserver extends Thread implements Tickable
 	public void shutdown()	{shutdown(null);}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(tickStatus!=STATUS_NOT)
 			return true;

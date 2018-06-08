@@ -72,7 +72,7 @@ public class Chant_Treemorph extends Chant
 	Race treeForm=null;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
 		&&(tree!=null)
@@ -95,7 +95,7 @@ public class Chant_Treemorph extends Chant
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(treeForm!=null)

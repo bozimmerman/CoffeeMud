@@ -113,7 +113,7 @@ public class Fighter_WeaponSharpening extends FighterSkill
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(affected instanceof MOB)
 		{

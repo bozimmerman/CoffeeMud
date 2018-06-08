@@ -119,7 +119,7 @@ public class Spell_Shrink extends Spell
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		final int str=affectableStats.getStat(CharStats.STAT_STRENGTH);

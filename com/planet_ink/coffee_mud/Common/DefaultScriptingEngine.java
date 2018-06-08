@@ -12687,7 +12687,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		final Item defaultItem=(ticking instanceof Item)?(Item)ticking:null;
 		final MOB mob=getMakeMOB(ticking);

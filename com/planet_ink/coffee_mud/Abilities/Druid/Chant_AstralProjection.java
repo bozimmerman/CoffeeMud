@@ -102,7 +102,7 @@ public class Chant_AstralProjection extends Chant
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))
 			return super.tick(ticking,tickID);

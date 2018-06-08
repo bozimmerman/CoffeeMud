@@ -142,7 +142,7 @@ public class PlayerRace extends Human
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,affectableStats.getStat(CharStats.STAT_SAVE_JUSTICE)+10);
@@ -194,7 +194,7 @@ public class PlayerRace extends Human
 	}
 
 	@Override
-	public String healthText(MOB viewer, MOB mob)
+	public String healthText(final MOB viewer, final MOB mob)
 	{
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 

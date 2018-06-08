@@ -364,7 +364,7 @@ public class GenRace extends StdRace
 	}
 
 	@Override
-	public String healthText(MOB viewer, MOB mob)
+	public String healthText(final MOB viewer, final MOB mob)
 	{
 		if((healthBuddy!=null)&&(healthBuddy!=this))
 			return healthBuddy.healthText(viewer,mob);
@@ -390,7 +390,7 @@ public class GenRace extends StdRace
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		if(adjStats!=null)
 		{

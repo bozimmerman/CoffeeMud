@@ -75,7 +75,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 	protected boolean otherSide=false;
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(super.canBeUninvoked())
@@ -88,7 +88,7 @@ public class Prayer_ReligiousDoubt extends Prayer
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
 		&&(super.canBeUninvoked()))

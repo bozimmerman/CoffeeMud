@@ -114,7 +114,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;

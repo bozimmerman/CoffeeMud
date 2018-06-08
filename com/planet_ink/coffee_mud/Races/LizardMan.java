@@ -192,7 +192,7 @@ public class LizardMan extends StdRace
 	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setStat(CharStats.STAT_INTELLIGENCE,affectableStats.getStat(CharStats.STAT_INTELLIGENCE)-1);
@@ -250,7 +250,7 @@ public class LizardMan extends StdRace
 	}
 
 	@Override
-	public String healthText(MOB viewer, MOB mob)
+	public String healthText(final MOB viewer, final MOB mob)
 	{
 		final double pct=(CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()));
 

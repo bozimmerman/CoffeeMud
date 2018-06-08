@@ -592,7 +592,7 @@ public class QuestBound implements Ability
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 	}
 
@@ -665,7 +665,7 @@ public class QuestBound implements Ability
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((keyPlayer)
 		&&(ticking instanceof MOB)

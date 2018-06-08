@@ -82,7 +82,7 @@ public class Thief_PetSpy extends ThiefSkill
 	protected List<Integer>	path	= new ArrayList<Integer>(1);
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;

@@ -272,7 +272,7 @@ public class MovingRoom extends ActiveTicker
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		final Vector<String> normalVec = messageInfo.elementAt(CODE_NORMALBLOCK);
 		final Vector<String> reverseVec = messageInfo.elementAt(CODE_REVERSEBLOCK);

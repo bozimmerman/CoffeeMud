@@ -103,7 +103,7 @@ public class Fighter_Heroism extends FighterSkill
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
@@ -125,7 +125,7 @@ public class Fighter_Heroism extends FighterSkill
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,

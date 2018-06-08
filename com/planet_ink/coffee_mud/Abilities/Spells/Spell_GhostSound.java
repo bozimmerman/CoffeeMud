@@ -83,7 +83,7 @@ public class Spell_GhostSound extends Spell
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
 		&&(CMLib.dice().rollPercentage()<10)

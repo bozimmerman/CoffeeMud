@@ -816,7 +816,7 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public String healthText(MOB viewer, MOB mob)
+	public String healthText(final MOB viewer, final MOB mob)
 	{
 		return CMLib.combat().standardMobCondition(viewer,mob);
 	}

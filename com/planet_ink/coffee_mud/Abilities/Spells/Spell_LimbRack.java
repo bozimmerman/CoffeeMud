@@ -79,7 +79,7 @@ public class Spell_LimbRack extends Spell
 	public List<String> limbsToRemove=new Vector<String>();
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;

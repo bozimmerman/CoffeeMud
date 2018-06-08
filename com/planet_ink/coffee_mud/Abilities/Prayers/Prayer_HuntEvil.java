@@ -80,7 +80,7 @@ public class Prayer_HuntEvil extends Prayer
 	public int nextDirection=-2;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;

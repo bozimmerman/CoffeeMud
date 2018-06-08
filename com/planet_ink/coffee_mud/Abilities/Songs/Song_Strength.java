@@ -65,7 +65,7 @@ public class Song_Strength extends Song
 	protected int amount=0;
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null)

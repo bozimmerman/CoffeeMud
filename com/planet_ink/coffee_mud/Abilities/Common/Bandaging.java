@@ -94,7 +94,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected!=null)
 		&&(affected instanceof MOB)

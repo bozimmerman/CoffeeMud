@@ -120,7 +120,7 @@ public class Proficiency_Weapon extends StdAbility
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(myFilter == null)

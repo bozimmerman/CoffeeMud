@@ -196,7 +196,7 @@ public class Prop_Smell extends Property
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected instanceof MOB)&&(CMLib.dice().rollPercentage()<=20))
 		{

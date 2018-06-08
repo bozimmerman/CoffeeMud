@@ -895,7 +895,7 @@ public class Age extends StdAbility
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		final long l=CMath.s_long(text());

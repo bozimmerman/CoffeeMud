@@ -90,7 +90,7 @@ public class Chant_Earthquake extends Chant
 	protected boolean oncePerRd=false;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		oncePerRd=false;
 		return super.tick(ticking,tickID);

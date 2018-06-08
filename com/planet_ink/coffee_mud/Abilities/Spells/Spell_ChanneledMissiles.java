@@ -113,7 +113,7 @@ public class Spell_ChanneledMissiles extends Spell
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affecting()==null)||(!(affecting() instanceof MOB))||(this.channelingClass==null))
 			return false;

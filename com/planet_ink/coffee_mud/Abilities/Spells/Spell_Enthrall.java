@@ -163,7 +163,7 @@ public class Spell_Enthrall extends Spell
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
 			return false;

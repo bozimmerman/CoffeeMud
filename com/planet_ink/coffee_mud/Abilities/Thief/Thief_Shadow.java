@@ -196,7 +196,7 @@ public class Thief_Shadow extends ThiefSkill
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
@@ -218,7 +218,7 @@ public class Thief_Shadow extends ThiefSkill
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if((shadowing!=null)&&(shadowing.location()==affected.location()))

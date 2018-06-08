@@ -85,7 +85,7 @@ public class Spell_RogueLimb extends Spell
 	public MOB rogueLimb=null;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((rogueLimb!=null)
 		&&(affected instanceof MOB))

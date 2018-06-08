@@ -3444,7 +3444,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override 
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		try
 		{

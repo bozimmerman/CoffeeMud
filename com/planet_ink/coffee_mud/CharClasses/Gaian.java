@@ -308,7 +308,7 @@ public class Gaian extends StdCharClass
 	}
 
 	@Override
-	public void affectCharState(MOB affected, CharState affectableState)
+	public void affectCharState(final MOB affected, final CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
 		final Room room=affected.location();

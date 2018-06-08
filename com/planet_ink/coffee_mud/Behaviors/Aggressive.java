@@ -176,7 +176,7 @@ public class Aggressive extends StdBehavior
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		super.tick(ticking,tickID);
 		if(tickID!=Tickable.TICKID_MOB)

@@ -125,7 +125,7 @@ public class Thief_SneakAttack extends ThiefSkill
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(CMLib.flags().isHidden(affected))
 		{

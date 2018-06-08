@@ -99,7 +99,7 @@ public class Prayer_Earthshield extends Prayer
 	}
 
 	@Override
-	public void affectCharState(MOB affected, CharState affectableState)
+	public void affectCharState(final MOB affected, final CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
 		affectableState.setMovement(affectableState.getMovement()/2);

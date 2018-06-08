@@ -126,7 +126,7 @@ public class Skill_MindSuck extends StdSkill
 	}
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affecting()==null)||(!(affecting() instanceof MOB)))
 			return false;

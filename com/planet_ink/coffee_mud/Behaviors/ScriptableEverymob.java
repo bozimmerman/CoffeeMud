@@ -116,7 +116,7 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((!started)&&(ticking instanceof Environmental))
 			giveEveryoneTheScript((Environmental)ticking);

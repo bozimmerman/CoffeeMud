@@ -88,7 +88,7 @@ public class Prayer_DivineLuck extends Prayer
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB,affectableStats);
 		for(final int i : CharStats.CODES.SAVING_THROWS())

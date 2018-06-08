@@ -91,7 +91,7 @@ public class Prayer_DivineResistance extends Prayer
 	protected int prots=4;
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null)

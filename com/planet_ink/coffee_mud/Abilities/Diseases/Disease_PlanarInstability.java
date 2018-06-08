@@ -155,7 +155,7 @@ public class Disease_PlanarInstability extends Disease
 	};
 	
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob, affectableStats);
 		for(int code : CharStats.CODES.SAVING_THROWS())
@@ -177,13 +177,13 @@ public class Disease_PlanarInstability extends Disease
 	}
 
 	@Override
-	public void affectCharState(MOB affected, CharState affectableState)
+	public void affectCharState(final MOB affected, final CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((ticking==affected)
 		&&(tickID==Tickable.TICKID_MOB)

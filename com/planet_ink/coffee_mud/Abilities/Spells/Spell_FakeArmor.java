@@ -78,7 +78,7 @@ public class Spell_FakeArmor extends Spell
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(notAgainThisRound)
 			notAgainThisRound=false;

@@ -195,7 +195,7 @@ public class Thief_Superstition extends ThiefSkill
 	}
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;
@@ -249,7 +249,7 @@ public class Thief_Superstition extends ThiefSkill
 	}
 	
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob, affectableStats);
 		if((sayMsg!=null)&&(sayMsg.length()>0)&&(this.affected == affectedMob))

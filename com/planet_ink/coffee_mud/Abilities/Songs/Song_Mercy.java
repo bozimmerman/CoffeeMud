@@ -65,7 +65,7 @@ public class Song_Mercy extends Song
 	protected int count=3;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;

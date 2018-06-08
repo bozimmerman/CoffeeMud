@@ -490,7 +490,7 @@ public class Concierge extends StdBehavior
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((ticking instanceof Environmental)
 		&&(tickID==Tickable.TICKID_MOB)

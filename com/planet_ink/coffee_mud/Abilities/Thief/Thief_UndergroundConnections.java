@@ -101,7 +101,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	protected String lastDesc=null;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((pathOut!=null)&&(tickID==Tickable.TICKID_MOB))
 		{

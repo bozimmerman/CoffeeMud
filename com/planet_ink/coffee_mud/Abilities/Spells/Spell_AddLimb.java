@@ -113,7 +113,7 @@ public class Spell_AddLimb extends Spell
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.alterBodypart(Race.BODY_ARM,1);

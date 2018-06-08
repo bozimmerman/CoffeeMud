@@ -78,7 +78,7 @@ public class Prayer_CurseMinds extends Prayer
 	boolean notAgain=false;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
@@ -110,7 +110,7 @@ public class Prayer_CurseMinds extends Prayer
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)-50);

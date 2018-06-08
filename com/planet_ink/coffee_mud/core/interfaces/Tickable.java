@@ -68,7 +68,7 @@ public interface Tickable extends CMObject
 	 * @param tickID the TICKID_ constant describing this periodic call, as defined in Tickable
 	 * @return true always, unless this object no longer wishes to ever tick again, in which case false
 	 */
-	public boolean tick(Tickable ticking, int tickID);
+	public boolean tick(final Tickable ticking, final int tickID);
 
 	/** modifies a tickID to designate a longer wait before declaring dead.*/
 	public final static int TICKID_LONGERMASK=256;

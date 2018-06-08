@@ -96,7 +96,7 @@ public class Prayer_Tremor extends Prayer
 	protected boolean oncePerRd=false;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		oncePerRd=false;
 		return super.tick(ticking,tickID);

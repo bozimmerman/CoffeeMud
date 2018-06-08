@@ -735,7 +735,7 @@ public class DefaultTimeClock implements TimeClock
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		tickStatus=Tickable.STATUS_NOT;
 		if(((loadName==null)||(loaded))

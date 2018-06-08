@@ -82,7 +82,7 @@ public class Spell_GroupStatus extends Spell
 	protected HashSet<String> affects=new HashSet<String>();
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;

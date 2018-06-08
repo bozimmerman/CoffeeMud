@@ -104,7 +104,7 @@ public class Skill_AllBreathing extends StdSkill
 	private static final int[] allBreathe=new int[0];
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob, affectableStats);
 		affectableStats.setBreathables(allBreathe);

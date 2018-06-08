@@ -442,7 +442,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	}
 
 	@Override 
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		try
 		{

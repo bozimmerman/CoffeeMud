@@ -80,7 +80,7 @@ public class Prop_Trainer extends Prop_StatTrainer
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((!built)&&(affected instanceof MOB))
 		{

@@ -311,7 +311,7 @@ public class DefaultSession implements Session
 					}
 
 					@Override
-					public boolean tick(Tickable ticking, int tickID)
+					public boolean tick(final Tickable ticking, final int tickID)
 					{
 						if(debugBinInputBuf.length()>0)
 						{
@@ -3230,7 +3230,7 @@ public class DefaultSession implements Session
 		}
 
 		@Override
-		public boolean tick(Tickable ticking, int tickID)
+		public boolean tick(final Tickable ticking, final int tickID)
 		{
 			return false;
 		}

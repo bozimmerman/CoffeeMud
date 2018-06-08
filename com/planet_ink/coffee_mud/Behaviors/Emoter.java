@@ -309,7 +309,7 @@ public class Emoter extends ActiveTicker
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		super.tick(ticking,tickID);
 		parseEmotes();

@@ -111,7 +111,7 @@ public class Paladin_SummonMount extends StdAbility
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
 		{

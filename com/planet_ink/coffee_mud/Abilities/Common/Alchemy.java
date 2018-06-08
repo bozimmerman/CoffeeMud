@@ -81,7 +81,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	protected Ability theSpell=null;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{

@@ -203,7 +203,7 @@ public class Thief_SmugglersHold extends ThiefSkill
 	private static final int totalTicks=20;
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;

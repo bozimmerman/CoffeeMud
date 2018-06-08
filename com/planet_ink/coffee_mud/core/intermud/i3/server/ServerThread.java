@@ -220,7 +220,7 @@ public class ServerThread implements Tickable
 	}
 
 	@Override 
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(CMSecurity.isDisabled(DisFlag.I3))
 			return running;

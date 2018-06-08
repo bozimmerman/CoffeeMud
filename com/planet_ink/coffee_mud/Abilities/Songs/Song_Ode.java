@@ -201,7 +201,7 @@ public class Song_Ode extends Song
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		if((whom!=null)&&(song!=null))
 		{
@@ -305,7 +305,7 @@ public class Song_Ode extends Song
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		final MOB mob=(MOB)affected;
 		if(mob==null)

@@ -96,7 +96,7 @@ public class Thief_UnderwaterSounds extends ThiefSkill
 	protected Thief_Listen myListen = null;
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking, tickID))
 			return false;

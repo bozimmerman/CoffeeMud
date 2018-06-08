@@ -88,7 +88,7 @@ public class Prop_StatTrainer extends Property
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		if((!noteach)&&(affectedMOB.isAttributeSet(MOB.Attrib.NOTEACH)))
 			affectedMOB.setAttribute(MOB.Attrib.NOTEACH,false);

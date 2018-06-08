@@ -1519,7 +1519,7 @@ public class DefaultClan implements Clan
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(tickID!=Tickable.TICKID_CLAN)
 			return true;

@@ -92,7 +92,7 @@ public class Prayer_PeaceRitual extends Prayer
 	public Iterable<Pair<Clan,Integer>> clan2Set=null;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!(affected instanceof MOB))
 			return false;

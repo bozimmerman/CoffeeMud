@@ -98,7 +98,7 @@ public class Thief_Wenching extends ThiefSkill
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob, affectableStats);
 		final int[] CMMSGMAP=CharStats.CODES.CMMSGMAP();

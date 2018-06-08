@@ -88,7 +88,7 @@ public class Power_OctoArms extends SuperPower
 	protected Weapon naturalWeapon=null;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
@@ -140,7 +140,7 @@ public class Power_OctoArms extends SuperPower
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==invoker)

@@ -103,7 +103,7 @@ public class Spell_DemonGate extends Spell
 	protected MOB myTarget=null;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(tickID==Tickable.TICKID_MOB)
 		{

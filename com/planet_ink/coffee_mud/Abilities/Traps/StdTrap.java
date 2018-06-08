@@ -583,7 +583,7 @@ public class StdTrap extends StdAbility implements Trap
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;

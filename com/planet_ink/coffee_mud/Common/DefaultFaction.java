@@ -2283,7 +2283,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 		
 		@Override
-		public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+		public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 		{
 			if(!noStatAffectors)
 				for(final Ability A : myEffects) A.affectCharStats(affectedMob, affectableStats);
@@ -2485,7 +2485,7 @@ public class DefaultFaction implements Faction, MsgListener
 		}
 		
 		@Override
-		public boolean tick(Tickable ticking, int tickID)
+		public boolean tick(final Tickable ticking, final int tickID)
 		{
 			if(noTickers)
 				return true;

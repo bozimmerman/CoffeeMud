@@ -126,7 +126,7 @@ public class Disease_Narcolepsy extends Disease
 	protected int attDown=1;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 
 		if(!super.tick(ticking,tickID))
@@ -160,7 +160,7 @@ public class Disease_Narcolepsy extends Disease
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)/2);
 		if(affectableStats.getStat(CharStats.STAT_STRENGTH)<1)

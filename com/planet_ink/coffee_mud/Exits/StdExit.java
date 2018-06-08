@@ -885,7 +885,7 @@ public class StdExit implements Exit
 	}// exits will never be asked this, so this method should always do NOTHING
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{// exits will never be asked this, so this method should always do NOTHING
 	}
 

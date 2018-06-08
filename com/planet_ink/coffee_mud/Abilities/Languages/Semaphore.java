@@ -279,7 +279,7 @@ public class Semaphore extends StdLanguage
 	}
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		final Physical affected = this.affected;
 		if((affected instanceof MOB)&&(this.beingSpoken(ID())))

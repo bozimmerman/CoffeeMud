@@ -127,7 +127,7 @@ public class Skill_Puppeteer extends BardSkill
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		final MOB M=invoker();
 		if((affected!=null)

@@ -779,7 +779,7 @@ public class GenAbility extends StdAbility
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		final Ability A=(Ability)V(ID,V_HERE);
 		if(A!=null)
@@ -840,7 +840,7 @@ public class GenAbility extends StdAbility
 	}
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;

@@ -91,7 +91,7 @@ public class Skill_TwoDaggerFighting extends Skill_TwoWeaponFighting
 	}
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)&&(affected instanceof MOB))
 		{

@@ -105,7 +105,7 @@ public class Poison_Sting extends Poison
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-1);
 		if(affectableStats.getStat(CharStats.STAT_CONSTITUTION)<=0)

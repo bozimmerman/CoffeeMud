@@ -93,7 +93,7 @@ public class Spell_ManaBurn extends Spell
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		adjustMana();
 		return super.tick(ticking,tickID);

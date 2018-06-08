@@ -77,7 +77,7 @@ public class Prop_Invisibility extends Property
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(ticksSinceLoss<9999)
 			ticksSinceLoss++;

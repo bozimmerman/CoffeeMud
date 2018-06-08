@@ -163,7 +163,7 @@ public class FasterRecovery extends StdBehavior
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(ticking instanceof Room)
 			doBe((Room)ticking,burst,health,hits,mana,move);

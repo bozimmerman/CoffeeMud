@@ -82,7 +82,7 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 	protected int amountMaking=0;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{

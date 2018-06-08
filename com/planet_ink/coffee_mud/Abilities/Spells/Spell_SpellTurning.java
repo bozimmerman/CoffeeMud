@@ -138,7 +138,7 @@ public class Spell_SpellTurning extends Spell
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		oncePerRound=false;
 		return super.tick(ticking,tickID);

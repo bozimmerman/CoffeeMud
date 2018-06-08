@@ -76,7 +76,7 @@ public class Chant_UnicornsHealth extends Chant
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)+((affected.phyStats().level()+(2*getXLEVELLevel(invoker())))/6));

@@ -112,7 +112,7 @@ public class Prayer_AnimateGhast extends Prayer
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		int tickSet = super.tickDown;
 		if(!super.tick(ticking, tickID))

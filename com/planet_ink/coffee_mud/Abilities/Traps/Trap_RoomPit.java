@@ -142,7 +142,7 @@ public class Trap_RoomPit extends StdTrap
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))
 			return false;

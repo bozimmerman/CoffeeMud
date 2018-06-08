@@ -448,7 +448,7 @@ public class Conquerable extends Arrest
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 		||(CMSecurity.isDisabled(CMSecurity.DisFlag.CONQUEST)))

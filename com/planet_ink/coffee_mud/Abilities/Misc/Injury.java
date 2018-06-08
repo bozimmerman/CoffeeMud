@@ -416,7 +416,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	}
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{

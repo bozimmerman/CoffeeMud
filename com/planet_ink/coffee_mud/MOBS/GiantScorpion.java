@@ -81,7 +81,7 @@ public class GiantScorpion extends StdMOB
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		// ===== are we in combat?
 		if((!amDead())&&(tickID==Tickable.TICKID_MOB))

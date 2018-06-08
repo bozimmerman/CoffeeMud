@@ -55,7 +55,7 @@ public class StdCage extends StdContainer
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((tickID==Tickable.TICKID_EXIT_REOPEN)&&(isOpen()))
 		{

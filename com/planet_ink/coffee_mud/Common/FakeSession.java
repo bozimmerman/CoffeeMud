@@ -45,7 +45,7 @@ public class FakeSession implements Session
 	protected MOB mob = null;
 	protected Vector<String> inputV = new Vector<String>();
 
-	public boolean tick(Tickable ticking, int tickID){return false;}
+	public boolean tick(final Tickable ticking, final int tickID){return false;}
 
 	@Override
 	public String ID()

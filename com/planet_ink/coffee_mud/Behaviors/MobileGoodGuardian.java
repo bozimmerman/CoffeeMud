@@ -47,7 +47,7 @@ public class MobileGoodGuardian extends Mobile
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		tickStatus=Tickable.STATUS_MISC+0;
 		super.tick(ticking,tickID);

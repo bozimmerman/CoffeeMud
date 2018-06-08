@@ -50,7 +50,7 @@ public class CorpseLooter extends StdBehavior
 	int tickTock=0;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		super.tick(ticking,tickID);
 

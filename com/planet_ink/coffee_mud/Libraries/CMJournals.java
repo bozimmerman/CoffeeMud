@@ -706,7 +706,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	}
 
 	@Override 
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		tickStatus=Tickable.STATUS_ALIVE;
 		try

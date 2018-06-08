@@ -64,7 +64,7 @@ public class TargetPlayer extends ActiveTicker
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(canAct(ticking,tickID))
 		{

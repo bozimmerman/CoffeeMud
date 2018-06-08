@@ -186,7 +186,7 @@ public class Prop_InstantDeath extends Property
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(tickID!=Tickable.TICKID_MISCELLANEOUS)
 			return super.tick(ticking, tickID);

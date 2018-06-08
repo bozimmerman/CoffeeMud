@@ -122,7 +122,7 @@ public class Disease_Aids extends Disease
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		if(affected==null)
 			return;

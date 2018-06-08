@@ -99,7 +99,7 @@ public class Prayer_CurseLuck extends Prayer
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		final int amt=100+(10*getXLEVELLevel(invoker()));
 		for(final int i : CharStats.CODES.SAVING_THROWS())

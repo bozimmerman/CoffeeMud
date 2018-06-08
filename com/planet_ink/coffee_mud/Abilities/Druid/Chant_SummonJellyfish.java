@@ -91,7 +91,7 @@ public class Chant_SummonJellyfish extends Chant
 	protected MOB[] stingList = new MOB[3];
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
 		&&(affected instanceof Room))

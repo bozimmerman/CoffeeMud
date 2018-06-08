@@ -126,7 +126,7 @@ public class Dance_Swords extends Dance
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected instanceof MOB)&&(!super.tick(ticking,tickID)))
 			return false;

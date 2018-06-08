@@ -630,7 +630,7 @@ public class StdArmor extends StdContainer implements Armor
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(!amWearingAt(Wearable.IN_INVENTORY))

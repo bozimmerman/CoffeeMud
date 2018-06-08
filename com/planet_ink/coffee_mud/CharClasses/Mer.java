@@ -362,7 +362,7 @@ public class Mer extends StdCharClass
 	}
 
 	@Override
-	public void affectCharState(MOB affected, CharState affectableState)
+	public void affectCharState(final MOB affected, final CharState affectableState)
 	{
 		super.affectCharState(affected,affectableState);
 		if(affected.location()!=null)

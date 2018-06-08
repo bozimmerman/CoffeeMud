@@ -134,7 +134,7 @@ public class SmokeRings extends CommonSkill
 	}
 	
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		return true;
 	}

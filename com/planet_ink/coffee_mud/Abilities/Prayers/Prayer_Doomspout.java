@@ -115,7 +115,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!(affected instanceof MOB))
 			return super.tick(ticking,tickID);
@@ -175,7 +175,7 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 	}
 
 	@Override
-	public void affectCharStats(MOB affected, CharStats affectableStats)
+	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null)

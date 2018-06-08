@@ -85,7 +85,7 @@ public class Spell_CauseStink extends Spell
 	public int	cycle	= 1;
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMob, affectableStats);
 		final int amount=affectableStats.getStat(CharStats.STAT_CHARISMA)/2;
@@ -94,7 +94,7 @@ public class Spell_CauseStink extends Spell
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;

@@ -1362,7 +1362,7 @@ public interface Faction extends CMCommon, MsgListener, Contingent
 		 * @param tickID the id code of the tick being done
 		 * @return true to keep ticking, false to stop ticking
 		 */
-		public boolean tick(Tickable ticking, int tickID);
+		public boolean tick(final Tickable ticking, final int tickID);
 
 		/**
 		 * Return the parent faction for which this data stands.

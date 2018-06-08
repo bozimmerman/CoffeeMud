@@ -75,7 +75,7 @@ public class Spell_FleshStone extends Spell
 	protected CharState		prevState	= null;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
 		&&(statue!=null)

@@ -962,7 +962,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 	}
 
 	@Override 
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		try
 		{

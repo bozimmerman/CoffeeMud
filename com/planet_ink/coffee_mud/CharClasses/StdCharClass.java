@@ -1260,7 +1260,7 @@ public class StdCharClass implements CharClass
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		if(affectableStats.getCurrentClass().ID().equals(ID()))
 		for(final int i: CharStats.CODES.MAXCODES())

@@ -116,7 +116,7 @@ public class Skill_ExitStageLeft extends BardSkill
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if(affected instanceof MOB)
 		{

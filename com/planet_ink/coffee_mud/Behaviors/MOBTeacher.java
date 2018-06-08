@@ -118,7 +118,7 @@ public class MOBTeacher extends CombatAbilities
 	}
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MOBTEACHER))

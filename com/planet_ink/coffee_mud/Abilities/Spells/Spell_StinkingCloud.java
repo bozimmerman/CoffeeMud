@@ -91,7 +91,7 @@ public class Spell_StinkingCloud extends Spell
 	Room	castingRoom	= null;
 
 	@Override
-	public boolean tick(Tickable ticking, int tickID)
+	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((tickID==Tickable.TICKID_MOB)
 		&&(affected instanceof MOB))

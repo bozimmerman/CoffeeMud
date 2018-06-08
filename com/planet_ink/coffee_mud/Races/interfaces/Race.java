@@ -193,7 +193,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @param mob the mob whose health to check
 	 * @return a string describing his health
 	 */
-	public String healthText(MOB viewer, MOB mob);
+	public String healthText(final MOB viewer, final MOB mob);
 
 	/**
 	 * Returns the list of ability IDs of skills that this
