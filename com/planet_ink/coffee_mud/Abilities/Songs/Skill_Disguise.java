@@ -318,7 +318,11 @@ public class Skill_Disguise extends BardSkill
 			break;
 		case 3: // race
 			{
-				if(CMClass.getRace(how)==null)
+				final Race R=CMClass.getRace(how);
+				if((R==null)
+				||R.ID().startsWith("Std")
+				||R.ID().startsWith("Gen")
+				||R.ID().equals("Player"))
 				{
 					mob.tell(L("'@x1' is an unknown race!",how));
 					return false;
