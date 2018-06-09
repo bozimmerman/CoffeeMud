@@ -341,25 +341,27 @@ public class Skill_Disguise extends BardSkill
 		}
 		case 5: // name
 		{
-			if((how.indexOf(' ')>=0)||(how.indexOf('<')>=0))
+			if((how.indexOf(' ')>=0)||(how.indexOf('<')>=0)||(how.indexOf('@')>=0))
 			{
 				mob.tell(L("Your disguise name may not have a space in it, or illegal characters."));
 				return false;
 			}
 			else
-			if(CMLib.players().playerExists(how))
 			{
-				mob.tell(L("You cannot disguise yourself as a player except through Mark Disguise."));
-				return false;
+				if(CMLib.players().playerExistsAllHosts(CMStrings.removeColors(how)))
+				{
+					mob.tell(L("You cannot disguise yourself as a player except through Mark Disguise."));
+					return false;
+				}
+				else
+				if(CMLib.login().isBadName(CMStrings.removeColors(how)))
+				{
+					mob.tell(L("You cannot disguise yourself as that."));
+					return false;
+				}
+				else
+					how=CMStrings.capitalizeAndLower(how);
 			}
-			else
-			if(CMLib.login().isBadName(how))
-			{
-				mob.tell(L("You cannot disguise yourself as that."));
-				return false;
-			}
-			else
-				how=CMStrings.capitalizeAndLower(how);
 			break;
 		}
 		case 6: // class
