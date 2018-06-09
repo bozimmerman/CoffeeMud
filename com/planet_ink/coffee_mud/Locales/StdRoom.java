@@ -1481,27 +1481,28 @@ public class StdRoom implements Room
 	{
 		if(item==null)
 			return;
-
-		if(item.owner()==null)
+		final ItemPossessor o;
+		synchronized(item)
+		{
+			o=item.owner();
+		}
+		if(o==null)
 			return;
-		final Environmental o=item.owner();
 
 		List<Item> V=new ArrayList<Item>();
 		if(item instanceof Container)
 			V=((Container)item).getDeepContents();
-		if(o instanceof MOB)
-			((MOB)o).delItem(item);
-		if(o instanceof Room)
-			((Room)o).delItem(item);
+		o.delItem(item);
+		if(o.isContent(item))
+			o.delItem(item);
 
 		addItem(item, expire);
 		for(int v=0;v<V.size();v++)
 		{
 			final Item i2=V.get(v);
-			if(o instanceof MOB) 
-				((MOB)o).delItem(i2);
-			if(o instanceof Room) 
-				((Room)o).delItem(i2);
+			o.delItem(i2);
+			if(o.isContent(i2))
+				o.delItem(i2);
 			addItem(i2);
 		}
 		item.setContainer(null);
