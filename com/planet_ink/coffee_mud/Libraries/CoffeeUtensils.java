@@ -1472,6 +1472,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					final Item I = mob.fetchWieldedItem();
 					if ((I instanceof AmmunitionWeapon) && (((AmmunitionWeapon) I).requiresAmmunition()))
 						buf.append("" + ((AmmunitionWeapon) I).ammunitionRemaining());
+					c++;
 					break;
 				}
 				case 'e':
