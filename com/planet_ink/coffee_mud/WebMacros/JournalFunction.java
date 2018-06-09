@@ -296,10 +296,12 @@ public class JournalFunction extends StdWebMacro
 					{
 						final String toName=entry.from();
 						final MOB toM=CMLib.players().getLoadPlayer(toName);
-						if((toM==null)||(toM.playerStats()==null)||(toM.playerStats().getEmail().indexOf('@')<0))
-							messages.append("Player '"+toName+"' does not exist, or has no email address.<BR>");
+						if((toM==null)||(toM.playerStats()==null))
+							messages.append("Player '"+toName+"' does not exist.<BR>");
 						else
 						{
+							if(toM.playerStats().getEmail().indexOf('@')<0)
+								messages.append("Warning: Player '"+toName+"' has no email address..<BR>");
 							CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
 															M.Name(),
 															toM.Name(),
