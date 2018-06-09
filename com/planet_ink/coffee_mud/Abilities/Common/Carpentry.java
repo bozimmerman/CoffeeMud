@@ -474,6 +474,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
 				+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+			final Item buildingI=this.buildingI;
 			if(buildingI==null)
 			{
 				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
