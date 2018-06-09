@@ -207,7 +207,7 @@ public class Skill_Trip extends StdSkill
 			mob.tell(L("You are too far away to trip!"));
 			return false;
 		}
-		if((mob.charStats().getBodyPart(Race.BODY_LEG)<=0)&&(mob.charStats().getBodyPart(Race.BODY_TAIL)<=0))
+		if((mob.charStats().getBodyPart(Race.BODY_LEG)<=1)&&(mob.charStats().getBodyPart(Race.BODY_TAIL)<=0))
 		{
 			mob.tell(L("You need legs or a tail to trip someone."));
 			return false;
