@@ -298,7 +298,7 @@ public class Thief_DeepCut extends ThiefSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,null,L("<S-NAME> lunge(s) at <T-YOUPOSS> @x1, but fail(s) <S-HIS-HER> attack.",gone));
+			return maliciousFizzle(mob,target,L("<S-NAME> lunge(s) at <T-YOUPOSS> @x1, but fail(s) <S-HIS-HER> attack.",gone));
 
 		// return whether it worked
 		return success;
