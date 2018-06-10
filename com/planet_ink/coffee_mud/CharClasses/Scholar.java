@@ -285,7 +285,7 @@ public class Scholar extends StdCharClass
 					if((M instanceof ShopKeeper)
 					&&(M.getStartRoom()==R))
 					{
-						if((((ShopKeeper)M).getWhatIsSoldMask() & ShopKeeper.DEAL_BOOKS)!=0)
+						if((((ShopKeeper)M).isSold(ShopKeeper.DEAL_BOOKS)))
 						{
 							bookDealer=true;
 						}
