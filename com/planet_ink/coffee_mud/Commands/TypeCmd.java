@@ -94,10 +94,15 @@ public class TypeCmd extends Go
 				}
 			}
 		}
-
+		
 		final String enterWhat=CMParms.combine(commands,1);
 		if(typeIntoThis!=null)
 		{
+			if(!(typeIntoThis instanceof Technical))
+			{
+				CMLib.commands().postCommandFail(mob,origCmds,L("You can't type on '@x1'.",typeIntoThis.name()));
+				return false;
+			}
 			final String enterStr=L("^W<S-NAME> enter(s) '@x1' into <T-NAME>.^?",enterWhat);
 			final CMMsg msg=CMClass.getMsg(mob,typeIntoThis,null,CMMsg.MSG_WRITE,enterStr,CMMsg.MSG_WRITE,enterWhat,CMMsg.MSG_WRITE,null);
 			if(mob.location().okMessage(mob,msg))
