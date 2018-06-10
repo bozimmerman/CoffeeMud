@@ -350,10 +350,15 @@ public class Dissertating extends CraftingSkill
 				if(A==null)
 					A=(Ability)CMLib.english().fetchEnvironmental(mob.abilities(), recipeName, false);
 				if((A!=null)
-				&&(xlevel(mob)>=spellLevel(mob,A))
 				&&(A.name().equalsIgnoreCase(recipeName)))
 				{
-					theSpell=A;
+					if(xlevel(mob)>=spellLevel(mob,A))
+						theSpell=A;
+					else
+					{
+						commonTell(mob,L("You aren't ready to write a dissertation on '@x1' yet.",recipeName));
+						return false;
+					}
 				}
 			}
 			int manaToLose=10;
