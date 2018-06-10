@@ -2924,8 +2924,14 @@ public class StdMOB implements MOB
 				srcM.tell(srcM, this, null, L("You can't do that to <T-NAMESELF>."));
 				return false;
 			case CMMsg.TYP_TEACH:
-				if(((playerStats()==null)||(playerStats().getIgnored().contains(msg.source().Name())))
-				||(!CMLib.expertises().canBeTaught(msg.source(), (MOB)msg.target(), msg.tool(), msg.targetMessage())))
+				if(playerStats()==null)
+				{
+					srcM.tell(srcM, this, null, L("<T-NAME> isn't interested."));
+					return false;
+				}
+				if(playerStats().getIgnored().contains(msg.source().Name()))
+					return false;
+				if(!CMLib.expertises().canBeTaught(msg.source(), (MOB)msg.target(), msg.tool(), msg.targetMessage()))
 					return false;
 				break;
 			case CMMsg.TYP_DAMAGE:
