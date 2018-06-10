@@ -121,7 +121,8 @@ public class Skill_Write extends StdSkill
 		   &&(item.material()!=RawMaterial.RESOURCE_SILK)
 		   &&(item.material()!=RawMaterial.RESOURCE_HIDE)
 		   &&(item.material()!=RawMaterial.RESOURCE_HEMP))
-		||(!item.isReadable()))
+		||(!item.isReadable())
+		||(item instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap))
 		{
 			mob.tell(L("You can't write on that."));
 			return false;
