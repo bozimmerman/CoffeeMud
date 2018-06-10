@@ -307,7 +307,7 @@ public class AutoInvoke extends StdCommand
 	@Override
 	public boolean canBeOrdered()
 	{
-		return true;
+		return false;
 	}
 
 }

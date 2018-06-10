@@ -58,7 +58,7 @@ public class PreviousCmd extends StdCommand
 	@Override
 	public boolean canBeOrdered()
 	{
-		return true;
+		return false;
 	}
 
 }

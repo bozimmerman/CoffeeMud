@@ -77,7 +77,7 @@ public class NOMXP extends StdCommand
 	@Override
 	public boolean canBeOrdered()
 	{
-		return true;
+		return false;
 	}
 
 	@Override

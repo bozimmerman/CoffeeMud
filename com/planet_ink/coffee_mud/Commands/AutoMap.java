@@ -74,7 +74,7 @@ public class AutoMap extends StdCommand
 	@Override
 	public boolean canBeOrdered()
 	{
-		return true;
+		return false;
 	}
 
 	@Override

@@ -113,6 +113,6 @@ public class Title extends StdCommand
 	@Override
 	public boolean canBeOrdered()
 	{
-		return true;
+		return false;
 	}
 }

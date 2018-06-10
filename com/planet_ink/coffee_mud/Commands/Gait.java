@@ -73,6 +73,6 @@ public class Gait extends StdCommand
 	@Override
 	public boolean canBeOrdered()
 	{
-		return true;
+		return false;
 	}
 }

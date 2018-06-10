@@ -106,7 +106,7 @@ public class Pose extends StdCommand
 	@Override
 	public boolean canBeOrdered()
 	{
-		return true;
+		return false;
 	}
 
 }

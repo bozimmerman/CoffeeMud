@@ -464,7 +464,7 @@ public class Auction extends Channel implements Tickable
 	@Override
 	public boolean canBeOrdered()
 	{
-		return true;
+		return false;
 	}
 
 

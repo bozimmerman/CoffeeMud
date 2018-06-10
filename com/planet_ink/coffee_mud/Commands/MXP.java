@@ -107,7 +107,7 @@ public class MXP extends StdCommand
 	@Override
 	public boolean canBeOrdered()
 	{
-		return true;
+		return false;
 	}
 
 	@Override

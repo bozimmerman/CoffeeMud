@@ -71,7 +71,7 @@ public class AutoExits extends StdCommand
 	@Override
 	public boolean canBeOrdered()
 	{
-		return true;
+		return false;
 	}
 
 }

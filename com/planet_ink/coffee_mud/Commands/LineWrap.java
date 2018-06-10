@@ -78,7 +78,7 @@ public class LineWrap extends StdCommand
 	@Override
 	public boolean canBeOrdered()
 	{
-		return true;
+		return false;
 	}
 
 }
