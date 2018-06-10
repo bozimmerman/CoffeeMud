@@ -653,7 +653,7 @@ public class Factions extends StdLibrary implements FactionManager
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if(!CMLib.sessions().all().hasNext())
+		if(!CMLib.sessions().sessions().hasNext())
 			return true;
 		try
 		{

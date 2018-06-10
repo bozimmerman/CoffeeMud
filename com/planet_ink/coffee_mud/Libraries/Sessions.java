@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary.CataData;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
@@ -53,7 +54,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	};
 
 	@Override
-	public Iterator<Session> all()
+	public Iterator<Session> sessions()
 	{
 		return all.iterator();
 	}
@@ -77,11 +78,26 @@ public class Sessions extends StdLibrary implements SessionsList
 	}
 
 	@Override
-	public int getCountAll()
+	public int numSessions()
 	{
-		return getCount(all());
+		return all.size();
 	}
 
+	@Override
+	public Iterable<Session> allIterableAllHosts()
+	{
+		final MultiIterable<Session> allIterable=new MultiIterable<Session>();
+		final WorldMap map=CMLib.map();
+		//allIterable.add(CMLib.sessions().allIterable(), CMLib.sessions().numSessions());
+		for(final Enumeration<CMLibrary> pl=CMLib.libraries(CMLib.Library.SESSIONS); pl.hasMoreElements(); )
+		{
+			final SessionsList list=(SessionsList)pl.nextElement();
+			if(map == CMLib.library(CMLib.getLibraryThreadID(Library.SESSIONS, list), Library.MAP))
+				allIterable.add(list.allIterable(),list.numSessions());
+		}
+		return allIterable;
+	}
+	
 	@Override
 	public int getCountLocalOnline()
 	{
@@ -97,12 +113,6 @@ public class Sessions extends StdLibrary implements SessionsList
 			xt++;
 		}
 		return xt;
-	}
-
-	@Override
-	public Session getAllSessionAt(int index)
-	{
-		return getAllSessionAt(all(),index);
 	}
 
 	protected Session getAllSessionAt(Iterator<Session> i, int index)

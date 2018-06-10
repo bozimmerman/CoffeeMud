@@ -249,6 +249,7 @@ public class Thief_Mark extends ThiefSkill
 				A.makeNonUninvokable();
 			}
 			((Thief_Mark)A).mark=target;
+			((Thief_Mark)A).invoker=mob;
 			((Thief_Mark)A).ticks=0;
 			A.setMiscText(target.Name()+"/0");
 			mob.tell(L("You may use the mark skill again to unmark them."));

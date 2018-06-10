@@ -2508,7 +2508,7 @@ public class DefaultSession implements Session
 				if(inTheGame 
 				&& (M.location()!=null)
 				&&((!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
-					||(CMLib.sessions().getCountAll()>1)))
+					||(CMLib.sessions().numSessions()>1)))
 				{
 					List<Room> rooms=new ArrayList<Room>(1);
 					rooms.add(M.location());

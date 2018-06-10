@@ -1533,9 +1533,18 @@ public class Destroy extends StdCommand
 			int which=-1;
 			if(commands.size()>2)
 				which=CMath.s_int(commands.get(2));
-			final Session S=CMLib.sessions().getAllSessionAt(which);
+			Session S=null;
+			int x=1;
+			for(Session s : CMLib.sessions().allIterableAllHosts())
+			{
+				if(x++ == which)
+				{
+					S=s;
+					break;
+				}
+			}
 			if(S==null)
-				mob.tell(L("Please enter a valid session number to delete.  Use SESSIONS for more information."));
+				mob.tell(L("Please enter a valid session number to delete.  Use LIST SESSIONS for more information."));
 			else
 			{
 				CMLib.sessions().stopSessionAtAllCosts(S);

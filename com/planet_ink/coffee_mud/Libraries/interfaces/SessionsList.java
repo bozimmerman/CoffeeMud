@@ -27,13 +27,13 @@ public interface SessionsList extends CMLibrary
 	public void stopSessionAtAllCosts(Session S);
 	public Session findPlayerSessionOnline(String srchStr, boolean exactOnly);
 	public MOB findPlayerOnline(String srchStr, boolean exactOnly);
-	public Iterator<Session> all();
+	public Iterator<Session> sessions();
 	public Iterable<Session> allIterable();
+	public Iterable<Session> allIterableAllHosts();
 	public Iterator<Session> localOnline();
 	public Iterable<Session> localOnlineIterable();
 	public int getCountLocalOnline();
-	public int getCountAll();
-	public Session getAllSessionAt(int index);
+	public int numSessions();
 	public void add(Session s);
 	public void remove(Session s);
 	public boolean isSession(Session s);

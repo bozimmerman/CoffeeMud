@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -647,6 +648,14 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		final MOB M=ses.mob();
 		if(M==null)
 			return false;
+		final ChannelsLibrary libChk=(ChannelsLibrary)CMLib.library((char)ses.getGroupID(),Library.CHANNELS);
+		final CMChannel channel=this.getChannel(channelInt);
+		if((libChk != null)&&(libChk != this)&&(channel!=null))
+		{
+			final int newDex=libChk.getChannelIndex(channel.name());
+			if(newDex < 0)
+				return false;
+		}
 		final Room R=M.location();
 		boolean didIt=false;
 		if(mayReadThisChannel(sender,areareq,ses,channelInt)
@@ -655,7 +664,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		{
 			if(ses.getClientTelnetMode(Session.TELNET_GMCP))
 			{
-				ses.sendGMCPEvent("comm.channel", "{\"chan\":\""+getChannel(channelInt).name()+"\",\"msg\":\""+
+				ses.sendGMCPEvent("comm.channel", "{\"chan\":\""+channel.name()+"\",\"msg\":\""+
 						MiniJSON.toJSONString(CMLib.coffeeFilter().fullOutFilter(null, M, msg.source(), msg.target(), msg.tool(), CMStrings.removeColors((M==msg.source())?msg.sourceMessage():msg.othersMessage()), false))
 						+"\",\"player\":\""+msg.source().name()+"\"}");
 			}

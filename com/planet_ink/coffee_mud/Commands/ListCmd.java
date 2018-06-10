@@ -185,9 +185,9 @@ public class ListCmd extends StdCommand
 		return str;
 	}
 
-	public StringBuilder roomDetails(Session viewerS, Vector<Room> these, Room likeRoom)
+	public StringBuilder roomDetails(Session viewerS, List<Room> these, Room likeRoom)
 	{
-		return roomDetails(viewerS, these.elements(), likeRoom);
+		return roomDetails(viewerS, new IteratorEnumeration<Room>(these.iterator()), likeRoom);
 	}
 
 	public StringBuilder roomDetails(Session viewerS, Enumeration<Room> these, Room likeRoom)
@@ -1198,7 +1198,7 @@ public class ListCmd extends StdCommand
 	public StringBuilder listLinkages(Session viewerS, MOB mob, String rest)
 	{
 		final StringBuilder buf=new StringBuilder("Links: \n\r");
-		final List<List<Area>> areaLinkGroups=new Vector<List<Area>>();
+		final List<List<Area>> areaLinkGroups=new ArrayList<List<Area>>();
 		Vector<String> parms=CMParms.parse(rest.toUpperCase());
 		boolean showSubStats = parms.contains("SUBSTATS");
 		Enumeration<Area> a;
@@ -1215,7 +1215,7 @@ public class ListCmd extends StdCommand
 				buf.append("\n\r");
 				continue;
 			}
-			final List<List<Room>> linkedGroups=new Vector<List<Room>>();
+			final List<List<Room>> linkedGroups=new ArrayList<List<Room>>();
 			for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
@@ -1260,7 +1260,7 @@ public class ListCmd extends StdCommand
 							clearVec.add(R);
 						else
 						{
-							clearVec=new Vector<Room>();
+							clearVec=new ArrayList<Room>();
 							clearVec.add(R);
 							linkedGroups.add(clearVec);
 						}
@@ -1331,7 +1331,7 @@ public class ListCmd extends StdCommand
 					clearVec.add(A);
 				else
 				{
-					clearVec=new Vector<Area>();
+					clearVec=new ArrayList<Area>();
 					clearVec.add(A);
 					areaLinkGroups.add(clearVec);
 				}
@@ -1560,7 +1560,7 @@ public class ListCmd extends StdCommand
 		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=7))
 		{
 			if(oldSet==allUsers)
-				allUsers=new Vector<PlayerLibrary.ThinPlayer>();
+				allUsers=new ArrayList<PlayerLibrary.ThinPlayer>();
 			if((sortBy<3)||(sortBy>4))
 			{
 				PlayerLibrary.ThinPlayer selected=oldSet.get(0);
@@ -1731,7 +1731,7 @@ public class ListCmd extends StdCommand
 		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=7))
 		{
 			if(oldSet==allAccounts)
-				allAccounts=new Vector<PlayerAccount>();
+				allAccounts=new ArrayList<PlayerAccount>();
 			if((sortBy<3)||(sortBy>4))
 			{
 				PlayerAccount selected = oldSet.get(0);
@@ -1782,7 +1782,7 @@ public class ListCmd extends StdCommand
 			line.append(CMStrings.padRight(U.getAccountName(),COL_LEN1)+" ");
 			line.append(CMStrings.padRight(CMLib.time().date2String(U.getLastDateTime()),COL_LEN2)+" ");
 			String players = CMParms.toListString(U.getPlayers());
-			final Vector<String> pListsV = new Vector<String>();
+			final List<String> pListsV = new ArrayList<String>();
 			while(players.length()>0)
 			{
 				int x=players.length();
@@ -1840,7 +1840,7 @@ public class ListCmd extends StdCommand
 		final int COL_LEN=CMLib.lister().fixColWidth(25.0,viewerS);
 		if(shortList)
 		{
-			final Vector<String> raceNames=new Vector<String>();
+			final List<String> raceNames=new ArrayList<String>();
 			for(final Enumeration<Race> e=these;e.hasMoreElements();)
 			{
 				final Race R=e.nextElement();
@@ -2009,7 +2009,7 @@ public class ListCmd extends StdCommand
 		final int COL_LEN=CMLib.lister().fixColWidth(25.0,viewerS);
 		if(shortList)
 		{
-			final Vector<String> classNames=new Vector<String>();
+			final List<String> classNames=new ArrayList<String>();
 			for(final Enumeration<CharClass> e=these;e.hasMoreElements();)
 				classNames.add(e.nextElement().ID());
 			lines.append(CMParms.toListString(classNames));
@@ -2150,7 +2150,7 @@ public class ListCmd extends StdCommand
 		}
 		WikiFlag wiki=this.getWikiFlagRemoved(commands);
 		int column=0;
-		final Vector<String> raceCats=new Vector<String>();
+		final List<String> raceCats=new ArrayList<String>();
 		Race R=null;
 		final int COL_LEN=CMLib.lister().fixColWidth(25.0,viewerS);
 		for(final Enumeration<Race> e=these;e.hasMoreElements();)
@@ -4074,7 +4074,7 @@ public class ListCmd extends StdCommand
 		}
 		
 		final StringBuffer commandList=new StringBuffer("");
-		final Vector<String> commandSet=new Vector<String>();
+		final List<String> commandSet=new ArrayList<String>();
 		int col=0;
 		final HashSet<String> done=new HashSet<String>();
 		for(final Enumeration<Command> e=CMClass.commands();e.hasMoreElements();)
@@ -4661,14 +4661,14 @@ public class ListCmd extends StdCommand
 				if(commands.get(0).toString().equalsIgnoreCase("sortby"))
 				{
 					commands.remove(0);
-					sortBys=new Vector<String>();
+					sortBys=new ArrayList<String>();
 					addTos=sortBys;
 				}
 				else
 				if(commands.get(0).toString().equalsIgnoreCase("cols")||commands.get(0).toString().equalsIgnoreCase("columns"))
 				{
 					commands.remove(0);
-					colNames=new Vector<String>();
+					colNames=new ArrayList<String>();
 					addTos=colNames;
 				}
 				else
@@ -4692,7 +4692,7 @@ public class ListCmd extends StdCommand
 				}
 			}
 		}
-		final Vector<Triad<String,String,Integer>> columns=new Vector<Triad<String,String,Integer>>();
+		final List<Triad<String,String,Integer>> columns=new ArrayList<Triad<String,String,Integer>>();
 		if((colNames!=null)&&(colNames.size()>0))
 		{
 			for(final String newCol : colNames)
@@ -4860,19 +4860,9 @@ public class ListCmd extends StdCommand
 		lines.append(CMStrings.padRight(L("Name"),17)+"| ");
 		lines.append(CMStrings.padRight(L("IP"),17)+"| ");
 		lines.append(CMStrings.padRight(L("Idle"),17)+"^.^N\n\r");
-		final Vector<String[]> broken=new Vector<String[]>();
+		final List<String[]> broken=new ArrayList<String[]>();
 		final boolean skipUnnamed = (sort.length()>0)&&("NAME".startsWith(sort)||"PLAYER".startsWith(sort));
-		MultiIterable<Session> allIterable=new MultiIterable<Session>();
-		allIterable.add(CMLib.sessions().allIterable(), CMLib.sessions().getCountAll());
-		/*
-		 *  // argh -- those stupid arbitrary numbers would screw up kill session
-		for(final Enumeration<CMLibrary> pl=CMLib.libraries(CMLib.Library.SESSIONS); pl.hasMoreElements(); )
-		{
-			final SessionsList list=(SessionsList)pl.nextElement();
-			allIterable.add(list.allIterable(),list.getCountAll());
-		}
-		*/
-		for(final Session S : allIterable)
+		for(final Session S : CMLib.sessions().allIterableAllHosts())
 		{
 			final String[] set=new String[6];
 			set[0]=CMStrings.padRight(""+broken.size(),3)+"| ";
@@ -4892,7 +4882,7 @@ public class ListCmd extends StdCommand
 			set[5]=CMStrings.padRight(CMLib.english().returnTime(S.getIdleMillis(),0)+"",17);
 			broken.add(set);
 		}
-		Vector<String[]> sorted=null;
+		List<String[]> sorted=null;
 		int sortNum=-1;
 		if(sort.length()>0)
 		{
@@ -4915,7 +4905,7 @@ public class ListCmd extends StdCommand
 			sorted=broken;
 		else
 		{
-			sorted=new Vector<String[]>();
+			sorted=new ArrayList<String[]>();
 			while(broken.size()>0)
 			{
 				int selected=0;
@@ -5329,7 +5319,7 @@ public class ListCmd extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		List<Environmental> V=new Vector<Environmental>();
+		List<Environmental> V=new ArrayList<Environmental>();
 		commands.remove(0);
 		String forWhat=null;
 		if(commands.size()==0)
@@ -5343,7 +5333,7 @@ public class ListCmd extends StdCommand
 		}
 		else
 		{
-			final Vector<String> origCommands=new XVector<String>(commands);
+			final List<String> origCommands=new XVector<String>(commands);
 			for(int c=commands.size()-2;c>=0;c--)
 			{
 				if(commands.get(c).equalsIgnoreCase("for"))
