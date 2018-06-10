@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
-import com.planet_ink.coffee_mud.core.*;
-import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.CMath;
+import com.planet_ink.coffee_mud.core.CMProps;
 
 import java.util.*;
 
@@ -60,13 +60,13 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 
 	@Override
-	public boolean normalizeAndRollLess(int score)
+	public boolean normalizeAndRollLess(final int score)
 	{
 		return (rollPercentage()<normalizeBy5(score));
 	}
 
 	@Override
-	public int normalizeBy5(int score)
+	public int normalizeBy5(final int score)
 	{
 		if(score>95)
 			return 95;
@@ -77,7 +77,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 
 	@Override
-	public int rollHP(int level, int code)
+	public int rollHP(final int level, int code)
 	{
 		if(code<0)
 			code=0;
@@ -96,13 +96,13 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 
 	@Override
-	public void scramble(List<?> objs)
+	public void scramble(final List<?> objs)
 	{
 		Collections.shuffle(objs, randomizer);
 	}
 	
 	@Override
-	public void scramble(int[] objs)
+	public void scramble(final int[] objs)
 	{
 		if(objs.length<2)
 			return;
@@ -131,7 +131,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 	
 	@Override
-	public int inRange(final int min, final int max)
+	public int rollInRange(final int min, final int max)
 	{
 		if(max<=min) 
 			return min;
@@ -143,7 +143,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 	
 	@Override
-	public long inRange(final long min, final long max)
+	public long rollInRange(final long min, final long max)
 	{
 		if(max<=min) 
 			return min;
@@ -155,7 +155,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 	
 	@Override
-	public Object doublePick(Object[][] set)
+	public Object doublePick(final Object[][] set)
 	{
 		if(set.length==0)
 			return null;
@@ -166,7 +166,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 
 	@Override
-	public Object pick(Object[] set, Object not)
+	public Object pick(final Object[] set, final Object not)
 	{
 		if(set.length==1)
 		{
@@ -181,13 +181,15 @@ public class Dice extends StdLibrary implements DiceLibrary
 			if(set[1].equals( not ))
 				return set[0];
 		}
-		final XVector<Object> newList = new XVector<Object>(set);
+		final List<Object> newList = new ArrayList<Object>(set.length);
+		for(Object O : set)
+			newList.add(O);
 		newList.remove( not );
 		return pick(newList.toArray(new Object[0]));
 	}
 
 	@Override
-	public Object pick(Object[] set)
+	public Object pick(final Object[] set)
 	{
 		if(set.length==0)
 			return null;
@@ -195,9 +197,19 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 
 	@Override
-	public int pick(int[] set, int not)
+	public int pick(final int[] set, final int not)
 	{
-		if(CMParms.indexOf( set, not ) >=0)
+		
+		boolean found=false;
+		for(int i=0;i<set.length;i++)
+		{
+			if(set[i]==not)
+			{
+				found=true;
+				break;
+			}
+		}
+		if(found)
 		{
 			final int[] newSet = new int[set.length];
 			int numGood = 0;
@@ -212,7 +224,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 
 	@Override
-	public int rollNormalDistribution(int number, int die, int modifier)
+	public int rollNormalDistribution(final int number, final int die, final int modifier)
 	{
 		if(number<=0)
 			return modifier;
@@ -229,7 +241,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 
 	@Override
-	public int rollLow(int number, int die, int modifier)
+	public int rollLowBiased(final int number, final int die, final int modifier)
 	{
 		if(number<=0)
 			return modifier;
@@ -246,7 +258,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 
 	@Override
-	public int pick(int[] set)
+	public int pick(final int[] set)
 	{
 		if(set.length==0)
 			return -1;
@@ -254,7 +266,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 
 	@Override
-	public Object pick(List<? extends Object> set)
+	public Object pick(final List<? extends Object> set)
 	{
 		if(set.size()==0)
 			return null;
@@ -324,7 +336,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 
 	@Override
-	public int[] getHPBreakup(int level, int code)
+	public int[] getHPBreakup(final int level, int code)
 	{
 		int mul=1;
 		if(code<0)
@@ -354,7 +366,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	}
 
 	@Override
-	public int roll(int number, int die, int modifier)
+	public int roll(final int number, final int die, final int modifier)
 	{
 		if(die<=0)
 			return modifier;

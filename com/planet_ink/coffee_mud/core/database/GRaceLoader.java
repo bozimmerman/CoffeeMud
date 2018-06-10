@@ -91,7 +91,7 @@ public class GRaceLoader
 			}
 			else
 			{
-				final long cDate = CMLib.dice().inRange(oldestDate, oldestHour);
+				final long cDate = CMLib.dice().rollInRange(oldestDate, oldestHour);
 				updates.add("UPDATE CMGRAC SET CMRCDT="+cDate+" WHERE CMRCID='"+stat.ID()+"';");
 			}
 		}

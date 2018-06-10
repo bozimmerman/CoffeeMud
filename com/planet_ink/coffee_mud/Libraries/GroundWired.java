@@ -84,7 +84,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	@Override
 	public int getRandomGlobalTechLevel()
 	{
-		return  CMLib.dice().rollLow(1, 10, globalTechLevel-1);
+		return  CMLib.dice().rollLowBiased(1, 10, globalTechLevel-1);
 	}
 
 	protected void bumpTechLevel()
