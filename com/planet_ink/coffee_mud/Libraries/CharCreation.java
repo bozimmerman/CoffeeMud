@@ -853,7 +853,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 	{
 		final StringBuffer rpt = new StringBuffer("\r\nMSSP-REPLY-START");
 		rpt.append("\r\n").append("PLAYERS");
-		rpt.append("\t").append(Integer.toString(CMLib.sessions().getCountLocalOnline()));
+		rpt.append("\t").append(Integer.toString(CMLib.sessions().numLocalOnline()));
 		rpt.append("\r\n").append("STATUS");
 		rpt.append("\t");
 		switch(CMProps.getIntVar(CMProps.Int.MUDSTATE))

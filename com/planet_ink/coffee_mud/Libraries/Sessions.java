@@ -99,7 +99,7 @@ public class Sessions extends StdLibrary implements SessionsList
 	}
 	
 	@Override
-	public int getCountLocalOnline()
+	public int numLocalOnline()
 	{
 		return getCount(localOnline());
 	}

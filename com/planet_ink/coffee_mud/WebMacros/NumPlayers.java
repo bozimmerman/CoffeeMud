@@ -47,7 +47,7 @@ public class NumPlayers extends StdWebMacro
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		if(parms.containsKey("ALL"))
-			return ""+CMLib.sessions().getCountLocalOnline();
+			return ""+CMLib.sessions().numLocalOnline();
 		if(parms.containsKey("TOTALCACHED"))
 			return ""+CMLib.players().numPlayers();
 		if(parms.containsKey("TOTAL"))

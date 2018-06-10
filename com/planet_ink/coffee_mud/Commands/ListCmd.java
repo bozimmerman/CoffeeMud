@@ -1501,7 +1501,7 @@ public class ListCmd extends StdCommand
 		buf.append(L("^xSession report:^.^N\n\r"));
 		final long totalMOBMillis=CMath.s_long(CMLib.threads().systemReport("totalMOBMillis"));
 		final long totalMOBTicks=CMath.s_long(CMLib.threads().systemReport("totalMOBTicks"));
-		buf.append(L("There are ^H@x1^? ticking players logged on.\n\r",""+CMLib.sessions().getCountLocalOnline()));
+		buf.append(L("There are ^H@x1^? ticking players logged on.\n\r",""+CMLib.sessions().numLocalOnline()));
 		buf.append(L("The ticking players have consumed: ^H@x1^?.\n\r",""+CMLib.english().returnTime(totalMOBMillis,totalMOBTicks)));
 		/*
 		long topMOBMillis=CMath.s_long(CMLib.threads().systemReport("topMOBMillis"));
