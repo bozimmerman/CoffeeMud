@@ -453,11 +453,13 @@ public class Prop_SpellAdder extends Property implements AbilityContainer, Trigg
 	@Override
 	public void addAbility(Ability to)
 	{
+		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
 	public void delAbility(Ability to)
 	{
+		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override

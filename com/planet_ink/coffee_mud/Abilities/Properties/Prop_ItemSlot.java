@@ -143,16 +143,19 @@ public class Prop_ItemSlot extends Property
 	@Override
 	public String accountForYourself()
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		for(int slotNum=0;slotNum<slots.length;slotNum++)
 		{
-			Item I=slots[slotNum];
-			Ability A=slotProps[slotNum];
+			final Item I=slots[slotNum];
+			final Ability A=slotProps[slotNum];
 			if((I!=null)&&(A instanceof Prop_ItemSlotFiller))
 			{
-				Prop_ItemSlotFiller P=(Prop_ItemSlotFiller)A;
-				for(Ability A2 : P.affects)
-					str.append(A2.accountForYourself());
+				final Prop_ItemSlotFiller P=(Prop_ItemSlotFiller)A;
+				if(P.getAffects() != null)
+				{
+					for(Ability A2 : P.getAffects())
+						str.append(A2.accountForYourself());
+				}
 				str.append(".  ");
 			}
 		}

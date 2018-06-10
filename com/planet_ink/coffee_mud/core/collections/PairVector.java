@@ -36,6 +36,11 @@ public class PairVector<T, K> extends Vector<Pair<T, K>> implements PairList<T, 
 		super();
 	}
 	
+	public PairVector(int x)
+	{
+		super(x);
+	}
+	
 	@Override
 	public Pair.FirstConverter<T, K> getFirstConverter()
 	{
