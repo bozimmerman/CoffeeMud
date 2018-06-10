@@ -5044,7 +5044,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						if(index<0)
 						{
 							index=members.size();
-							members.add(new MemberRecord(M.name(),E.getGovernment().getAcceptPos(),0,0));
+							members.add(new MemberRecord(M.name(),E.getGovernment().getAcceptPos()));
 						}
 
 						int newRole=-1;

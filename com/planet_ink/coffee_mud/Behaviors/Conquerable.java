@@ -912,7 +912,7 @@ public class Conquerable extends Arrest
 					if(lossAmt>0)
 					{
 						msg.setValue(msg.value()-lossAmt);
-						holdingC.adjExp(clanAmt);
+						holdingC.adjExp(msg.source(), clanAmt);
 						holdingC.update();
 					}
 				}

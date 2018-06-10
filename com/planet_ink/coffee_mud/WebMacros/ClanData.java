@@ -519,6 +519,30 @@ public class ClanData extends StdWebMacro
 							});
 						}
 						else
+						if(sort.equalsIgnoreCase("DONATEDGOLD"))
+						{
+							Collections.sort(members, new Comparator<MemberRecord>()
+							{
+								@Override 
+								public int compare(MemberRecord o1, MemberRecord o2)
+								{
+									return new Double(o2.donatedGold).compareTo(new Double(o1.donatedXP));
+								}
+							});
+						}
+						else
+						if(sort.equalsIgnoreCase("DONATEDXP"))
+						{
+							Collections.sort(members, new Comparator<MemberRecord>()
+							{
+								@Override 
+								public int compare(MemberRecord o1, MemberRecord o2)
+								{
+									return new Long(o2.donatedXP).compareTo(new Long(o1.donatedXP));
+								}
+							});
+						}
+						else
 							return "[Unknown sort field: "+sort+"]";
 					}
 					return "";

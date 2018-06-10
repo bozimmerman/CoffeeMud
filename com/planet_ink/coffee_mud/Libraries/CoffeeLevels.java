@@ -425,7 +425,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 					if(clanshare>0)
 					{
 						amount-=clanshare;
-						C.adjExp(clanshare*-1);
+						C.adjExp(mob, clanshare*-1);
 						C.update();
 					}
 				}
@@ -470,7 +470,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 			for(final Pair<Clan,Integer> p : mob.clans())
 			{
 				if(amount>2)
-					amount=p.first.applyExpMods(amount);
+					amount=p.first.applyExpMods(mob, amount);
 			}
 		}
 		return amount;

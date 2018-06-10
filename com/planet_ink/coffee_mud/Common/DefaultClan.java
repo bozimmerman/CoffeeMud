@@ -270,6 +270,35 @@ public class DefaultClan implements Clan
 		}
 	}
 
+
+	@Override
+	public double getCurrentClanGoldDonations(MOB killer)
+	{
+		if(killer==null)
+		{
+			return 0;
+		}
+		else
+		{
+			final MemberRecord M = CMLib.database().DBGetClanMember(this.clanID(), killer.Name());
+			return M.donatedGold;
+		}
+	}
+
+	@Override
+	public long getCurrentClanXPDonations(MOB killer)
+	{
+		if(killer==null)
+		{
+			return this.exp;
+		}
+		else
+		{
+			final MemberRecord M = CMLib.database().DBGetClanMember(this.clanID(), killer.Name());
+			return M.donatedXP;
+		}
+	}
+
 	@Override
 	public boolean isOnlyFamilyApplicants()
 	{
@@ -431,11 +460,23 @@ public class DefaultClan implements Clan
 	}
 
 	@Override
-	public void adjExp(int howMuch)
+	public void adjExp(MOB memberM, int howMuch)
 	{
 		if (howMuch != 0)
+		{
 			setExp(getExp() + howMuch);
+			if(memberM != null)
+				CMLib.database().DBUpdateClanDonates(this.clanID(), memberM.Name(), 0, howMuch);
+		}
 	}
+	
+	@Override
+	public void adjDeposit(MOB memberM, double howMuch)
+	{
+		if(memberM != null)
+			CMLib.database().DBUpdateClanDonates(this.clanID(), memberM.Name(), howMuch, 0);
+	}
+
 
 	@Override
 	public long getExp()
@@ -1330,9 +1371,9 @@ public class DefaultClan implements Clan
 				{
 					final boolean isAdmin=CMSecurity.isASysOp(M) || M.phyStats().level() > CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
 					if(M.lastTickedDateTime()>0)
-						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.lastTickedDateTime(),member.mobpvps,member.playerpvps,isAdmin));
+						members.add(new FullMemberRecord(member,M.basePhyStats().level(),M.lastTickedDateTime(),isAdmin));
 					else
-						members.add(new FullMemberRecord(member.name,M.basePhyStats().level(),member.role,M.playerStats().getLastDateTime(),member.mobpvps,member.playerpvps,isAdmin));
+						members.add(new FullMemberRecord(member,M.basePhyStats().level(),M.playerStats().getLastDateTime(),isAdmin));
 				}
 				else
 				{
@@ -1340,7 +1381,7 @@ public class DefaultClan implements Clan
 					if(tP != null)
 					{
 						final boolean isAdmin=CMSecurity.isASysOp(tP) || tP.level() > CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL);
-						members.add(new FullMemberRecord(member.name,tP.level(),member.role,tP.last(),member.mobpvps,member.playerpvps,isAdmin));
+						members.add(new FullMemberRecord(member,tP.level(),tP.last(),isAdmin));
 					}
 					else
 					{
@@ -1921,7 +1962,7 @@ public class DefaultClan implements Clan
 	}
 
 	@Override
-	public int applyExpMods(int exp)
+	public int applyExpMods(final MOB memberM, int exp)
 	{
 		boolean changed=false;
 		if((getTaxes()>0.0)&&(exp>1))
@@ -1930,7 +1971,7 @@ public class DefaultClan implements Clan
 			if(clanshare>0)
 			{
 				exp-=clanshare;
-				adjExp(clanshare);
+				adjExp(memberM, clanshare);
 				changed=true;
 			}
 		}

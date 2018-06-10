@@ -215,6 +215,12 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
+	public void DBUpdateClanDonates(String clan, String name, double adjGold, int adjXP)
+	{
+		MOBloader.DBUpdateClanDonates(clan, name, adjGold, adjXP);
+	}
+
+	@Override
 	public MemberRecord DBGetClanMember(String clan, String name)
 	{
 		return MOBloader.DBGetClanMember(clan, name);

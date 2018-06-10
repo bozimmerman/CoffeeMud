@@ -801,6 +801,8 @@ public class MOBloader
 		final int clanRole = BuildClanMemberRole(R);
 		int mobpvps=0;
 		int playerpvps=0;
+		long donatedXP=0;
+		double donatedGold=0;
 		final String stats=DB.getRes(R,"CMCLSTS");
 		if(stats!=null)
 		{
@@ -809,8 +811,17 @@ public class MOBloader
 				mobpvps=CMath.s_int(splitstats[0]);
 			if(splitstats.length>1)
 				playerpvps=CMath.s_int(splitstats[1]);
+			if(splitstats.length>2)
+				donatedGold=CMath.s_double(splitstats[2]);
+			if(splitstats.length>3)
+				donatedXP=CMath.s_long(splitstats[3]);
 		}
-		return new Clan.MemberRecord(username,clanRole,mobpvps,playerpvps);
+		final Clan.MemberRecord mR=new Clan.MemberRecord(username,clanRole);
+		mR.mobpvps=mobpvps;
+		mR.playerpvps=playerpvps;
+		mR.donatedGold=donatedGold;
+		mR.donatedXP=donatedXP;
+		return mR;
 	}
 
 	public MemberRecord DBGetClanMember(String clan, String name)
@@ -936,7 +947,45 @@ public class MOBloader
 					R.close();
 					M.mobpvps+=adjMobKills;
 					M.playerpvps+=adjPlayerKills;
-					final String newStats=M.mobpvps+";"+M.playerpvps;
+					final String newStats=M.mobpvps+";"+M.playerpvps+";"+M.donatedGold+";"+M.donatedXP;
+					D.update("UPDATE CMCHCL SET CMCLSTS='"+newStats+"' where CMCLAN='"+clan+"' and CMUSERID='"+name+"'", 0);
+				}
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("MOB",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+	}
+
+	public void DBUpdateClanDonates(String clan, String name, double adjGold, int adjXP)
+	{
+		if(((adjGold==0)&&(adjXP==0))
+		||(clan==null)
+		||(name==null))
+			return;
+
+		name=DB.injectionClean(name);
+		clan=DB.injectionClean(clan);
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			final ResultSet R=D.query("SELECT * FROM CMCHCL where CMCLAN='"+clan+"' and CMUSERID='"+name+"'");
+			MemberRecord M=null;
+			if(R!=null)
+			{
+				if(R.next())
+				{
+					M=BuildClanMemberRecord(R);
+					R.close();
+					M.donatedGold+=adjGold;
+					M.donatedXP+=adjXP;
+					final String newStats=M.mobpvps+";"+M.playerpvps+";"+M.donatedGold+";"+M.donatedXP;
 					D.update("UPDATE CMCHCL SET CMCLSTS='"+newStats+"' where CMCLAN='"+clan+"' and CMUSERID='"+name+"'", 0);
 				}
 			}

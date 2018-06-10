@@ -434,18 +434,28 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 
 	/**
 	 * Adjusts the amount of experience earned by this
+	 * @param MOB member the person contributing the xp
 	 * @param howMuch the experience adjustment, + or -
 	 */
-	public void adjExp(int howMuch);
+	public void adjExp(MOB memberM, int howMuch);
+
+	/**
+	 * Adjusts the amount of base gold value deposited by this
+	 * member.
+	 * @param MOB member the person contributing
+	 * @param newValue the value adjustment, + or -
+	 */
+	public void adjDeposit(MOB memberM, double newValue);
 
 	/**
 	 * Adjusts the amount of experience earned by a player based
 	 * on the tax rate.  Will automatically adjust the exp of
 	 * the clan and save it.
+	 * @param MOB member the person contributing the xp
 	 * @param exp the old experience
 	 * @return the exp adjusted by the clan, if at all.
 	 */
-	public int applyExpMods(int exp);
+	public int applyExpMods(MOB memberM, int exp);
 
 	/**
 	 * Called when a member of this clan kills a member of another
@@ -461,6 +471,20 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return the number of kills.
 	 */
 	public int getCurrentClanKills(MOB killer);
+
+	/**
+	 * Returns the amount of base gold value this clan has received.
+	 * @param killer the member of this clan that did the killing or NULL for all
+	 * @return the amount of deposits.
+	 */
+	public double getCurrentClanGoldDonations(MOB killer);
+
+	/**
+	 * Returns the amount of xp this clan has earned.
+	 * @param killer the member of this clan that did the killing or NULL for all
+	 * @return the number of xp contributed.
+	 */
+	public long getCurrentClanXPDonations(MOB killer);
 
 	/**
 	 * Returns the total control points represented by the list of
@@ -798,16 +822,17 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 */
 	public class MemberRecord
 	{
-		public String name;
-		public int role;
-		public int mobpvps = 0;
-		public int playerpvps=0;
-		public MemberRecord(String name, int role, int mobpvps, int playerpvps)
+		public String	name;
+		public int		role;
+		public int		mobpvps		= 0;
+		public int		playerpvps	= 0;
+		public long		donatedXP	= 0;
+		public double	donatedGold	= 0;
+
+		public MemberRecord(String name, int role)
 		{
 			this.name = name;
 			this.role = role;
-			this.mobpvps = mobpvps;
-			this.playerpvps = playerpvps;
 		}
 
 		@Override
@@ -826,9 +851,13 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		public int level;
 		public long timestamp;
 		public boolean isAdmin;
-		public FullMemberRecord(String name, int level, int role, long timestamp, int mobpvps, int playerpvps, boolean isAdmin)
+		public FullMemberRecord(MemberRecord M, int level, long timestamp, boolean isAdmin)
 		{
-			super(name,role,mobpvps,playerpvps); 
+			super(M.name,M.role); 
+			this.mobpvps=M.mobpvps;
+			this.playerpvps=M.playerpvps;
+			this.donatedGold=M.donatedGold;
+			this.donatedXP=M.donatedXP;
 			this.level=level; 
 			this.timestamp=timestamp;
 			this.isAdmin=isAdmin;

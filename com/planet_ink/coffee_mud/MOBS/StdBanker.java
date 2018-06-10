@@ -42,10 +42,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 		return "StdBanker";
 	}
 
-	protected double coinInterest=-0.000;
-	protected double itemInterest=-0.0001;
-	protected double loanInterest=0.01;
-	protected static Hashtable<String,Long> bankTimes=new Hashtable<String,Long>();
+	protected double					coinInterest	= -0.000;
+	protected double					itemInterest	= -0.0001;
+	protected double					loanInterest	= 0.01;
+	protected static Map<String, Long>	bankTimes		= new Hashtable<String, Long>();
 
 	public StdBanker()
 	{
@@ -711,6 +711,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 						else
 							CMLib.commands().postSay(this,mob,L("Ok, your new balance is @x1.",CMLib.beanCounter().nameCurrencyLong(this,getBalance(depositorName))),true,false);
 						recoverPhyStats();
+						if((!msg.source().isMonster())
+						&&(isSold(ShopKeeper.DEAL_CLANBANKER)))
+						{
+							final Clan C=CMLib.clans().getClan(depositorName);
+							if(C!=null)
+								C.adjDeposit(msg.source(), newValue);
+						}
 
 						if(msg.sourceMessage()!=null)
 							msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(),"<O-NAME>",msg.tool().name()));
@@ -814,6 +821,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 							}
 							else
 								CMLib.commands().postDrop(this,old,true,false,false);
+							if((!msg.source().isMonster())
+							&&(isSold(ShopKeeper.DEAL_CLANBANKER)))
+							{
+								final Clan C=CMLib.clans().getClan(withdrawerName);
+								if(C!=null)
+									C.adjDeposit(msg.source(), -((Coins)msg.tool()).getTotalValue());
+							}
 							if((coins==null)||(coins.getNumberOfCoins()<=0))
 							{
 								if(isSold(ShopKeeper.DEAL_CLANBANKER))

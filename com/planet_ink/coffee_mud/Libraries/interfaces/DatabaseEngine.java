@@ -933,6 +933,17 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBCLANS
+	 * Updates the clan-donation counts for the clan member of the given 
+	 * exact name for the given exact clan
+	 * @param clan the name of the clan to update a member for
+	 * @param name the name of the member to update
+	 * @param adjGold the number of ADDITIONAL (plus or minus) clan gold donations
+	 * @param adjXP the number of ADDITIONAL (plus or minus) clan xp adjustments
+	 */
+	public void DBUpdateClanDonates(String clan, String name, double adjGold, int adjXP);
+	
+	/**
+	 * Table category: DBCLANS
 	 * Reads the entire list of clans, not including their stored items.
 	 * The list of clans is then returned for adding to the official 
 	 * list, or whatever.
