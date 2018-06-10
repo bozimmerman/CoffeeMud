@@ -109,7 +109,11 @@ public class Skill_RacialLore extends StdSkill
 		{
 			List<String> names=new ArrayList<String>();
 			for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
-				names.add(CMStrings.capitalizeAllFirstLettersAndLower(r.nextElement().name()));
+			{
+				final Race R1=r.nextElement();
+				if((!R1.ID().startsWith("Std"))&&(!R1.ID().startsWith("Gen"))&&(!R1.ID().startsWith("Player")))
+					names.add(CMStrings.capitalizeAllFirstLettersAndLower(R1.name()));
+			}
 			mob.tell(L("Recall information about which race?  These include: @x1",CMLib.english().toEnglishStringList(names)));
 			return false;
 		}
@@ -131,7 +135,11 @@ public class Skill_RacialLore extends StdSkill
 		{
 			List<String> names=new ArrayList<String>();
 			for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
-				names.add(CMStrings.capitalizeAllFirstLettersAndLower(r.nextElement().name()));
+			{
+				final Race R1=r.nextElement();
+				if((!R1.ID().startsWith("Std"))&&(!R1.ID().startsWith("Gen"))&&(!R1.ID().startsWith("Player")))
+					names.add(CMStrings.capitalizeAllFirstLettersAndLower(R1.name()));
+			}
 			mob.tell(L("You have never heard of a race called @x1.  You might try one of these: @x2",
 					CMParms.combine(commands),CMLib.english().toEnglishStringList(names)));
 			return false;
