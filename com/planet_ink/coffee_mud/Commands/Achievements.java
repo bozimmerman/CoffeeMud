@@ -379,7 +379,9 @@ public class Achievements extends StdCommand
 						{
 							AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
 							final int score = (T==null) ? 0 : T.getCount(whoM);
-							final int targetScore = A.getTargetCount();
+							int targetScore = A.getTargetCount();
+							if(A.getEvent()==Event.STATVALUE)
+								targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
 							if(targetScore != Integer.MIN_VALUE)
 							{
 								final int len = (""+score+"/"+targetScore).length(); 
@@ -398,6 +400,8 @@ public class Achievements extends StdCommand
 							AchievementLibrary.Tracker T=stat.getAchievementTracker(A, whoM);
 							int score = (T==null) ? 0 : T.getCount(whoM);
 							int targetScore = A.getTargetCount();
+							if(A.getEvent()==Event.STATVALUE)
+								targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
 							if(targetScore == Integer.MIN_VALUE)
 								AchievedList.add(CMStrings.padRight("^w", padding)+"^?: "+A.getDisplayStr());
 							else
@@ -419,7 +423,9 @@ public class Achievements extends StdCommand
 							final int score = (T==null) ? 0 : T.getCount(whoM);
 							if(score != 0)
 							{
-								final int targetScore = A.getTargetCount();
+								int targetScore = A.getTargetCount();
+								if(A.getEvent()==Event.STATVALUE)
+									targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
 								if(targetScore != Integer.MIN_VALUE)
 								{
 									final int len = (""+score+"/"+targetScore).length(); 
@@ -441,6 +447,8 @@ public class Achievements extends StdCommand
 							if(score != 0)
 							{
 								int targetScore = A.getTargetCount();
+								if(A.getEvent()==Event.STATVALUE)
+									targetScore=A.isTargetFloor()?targetScore+1:targetScore-1;
 								if(targetScore != Integer.MIN_VALUE)
 									AchievedList.add(CMStrings.padRight("^w"+score+"/"+targetScore, padding)+"^?: "+A.getDisplayStr());
 								else
