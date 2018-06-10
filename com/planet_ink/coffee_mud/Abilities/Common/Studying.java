@@ -273,7 +273,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 		&&(msg.source()==affected)
 		&&(msg.targetMinor()==CMMsg.TYP_WROTE)
 		&&(msg.targetMessage().length()>0)
-		&&(msg.tool().ID().equals("Skill_Dissertation")))
+		&&(msg.tool().ID().equals("Dissertating")))
 		{
 			forget(msg.source(),msg.targetMessage());
 		}

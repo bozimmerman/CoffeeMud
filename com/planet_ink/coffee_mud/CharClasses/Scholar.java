@@ -326,7 +326,7 @@ public class Scholar extends StdCharClass
 				else
 				if((msg.tool() instanceof Ability)
 				&&(msg.targetMinor()==CMMsg.TYP_WROTE)
-				&&(msg.tool().ID().equals("Skill_Dissertation")))
+				&&(msg.tool().ID().equals("Dissertating")))
 					CMLib.leveler().postExperience(msg.source(), null, null, 25, false);
 				else
 				{
