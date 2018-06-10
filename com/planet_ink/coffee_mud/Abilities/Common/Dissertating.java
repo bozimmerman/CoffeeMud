@@ -394,9 +394,16 @@ public class Dissertating extends CraftingSkill
 					for(Ability A : ((Scroll)scrollFromI).getSpells())
 					{
 						if((A!=null)
-						&&(xlevel(mob)>=spellLevel(mob,A))
 						&&(A.name().equalsIgnoreCase(recipeName)))
-							theSpell=A;
+						{
+							if(xlevel(mob)>=spellLevel(mob,A))
+								theSpell=A;
+							else
+							{
+								commonTell(mob,L("You aren't ready to write a dissertation on '@x1' yet.",recipeName));
+								return false;
+							}
+						}
 					}
 					if(theSpell==null)
 					{
