@@ -32,7 +32,7 @@ public interface SessionsList extends CMLibrary
 	public Iterable<Session> allIterableAllHosts();
 	public Iterator<Session> localOnline();
 	public Iterable<Session> localOnlineIterable();
-	public int getCountLocalOnline();
+	public int numLocalOnline();
 	public int numSessions();
 	public void add(Session s);
 	public void remove(Session s);
