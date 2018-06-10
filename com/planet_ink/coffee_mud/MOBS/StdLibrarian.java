@@ -67,6 +67,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		CMLib.factions().setAlignment(this, Faction.Align.GOOD);
 		setMoney(0);
 		whatIsSoldMask = ShopKeeper.DEAL_READABLES;
+		addSoldType(ShopKeeper.DEAL_BOOKS);
 		basePhyStats.setWeight(150);
 		setWimpHitPoint(0);
 
