@@ -216,9 +216,9 @@ public class Skill_Buffoonery extends BardSkill
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(levelDiff>0)
-			levelDiff=-(levelDiff*((CMLib.flags().canBeSeenBy(mob,target))?5:15));
+			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
-			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
+			levelDiff=-(levelDiff*((CMLib.flags().canBeSeenBy(mob,target))?1:2));
 
 		if(success)
 		{

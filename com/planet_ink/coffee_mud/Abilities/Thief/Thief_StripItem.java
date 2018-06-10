@@ -161,9 +161,9 @@ public class Thief_StripItem extends ThiefSkill
 		}
 
 		if(levelDiff>0)
-			levelDiff=-(levelDiff*((CMLib.flags().canBeSeenBy(mob,target))?5:15));
+			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
-			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?1:2));
+			levelDiff=-(levelDiff*((CMLib.flags().canBeSeenBy(mob,target))?1:2));
 		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 
 		if(!success)
