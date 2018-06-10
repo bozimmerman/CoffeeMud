@@ -1490,6 +1490,11 @@ public class StdItem implements Item
 						mob.tell(L("Write what on @x1?",name()));
 					return false;
 				}
+				if(readableText().startsWith("FILE="))
+				{
+					mob.tell(L("There's no more room to write on @x1.",name()));
+					return false;
+				}
 				return true;
 			}
 			return false;
@@ -1504,6 +1509,11 @@ public class StdItem implements Item
 						mob.tell(L("Enter what into @x1?",name()));
 					else
 						mob.tell(L("Write what on @x1?",name()));
+					return false;
+				}
+				if(readableText().startsWith("FILE="))
+				{
+					mob.tell(L("There's no more room to write on @x1.",name()));
 					return false;
 				}
 				return true;
