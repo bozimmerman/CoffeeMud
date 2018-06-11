@@ -156,6 +156,8 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 							for(final Enumeration<Ability> a=collection.abilities();a.hasMoreElements();)
 							{
 								final Ability A=a.nextElement();
+								if(CMLib.ableMapper().getAbleMap("EACH", A.ID())!=null)
+									continue;
 								for(int ci=0;ci<allDegrees.length;ci++)
 								{
 									if(CMLib.ableMapper().getAbleMap(allDegrees[ci][0], A.ID()) != null)

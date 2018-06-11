@@ -48,6 +48,7 @@ public class Skill_HonoraryDegreeCleric extends Skill_HonoraryDegreeCommoner
 		return localizedName;
 	}
 
+	@Override
 	protected String getBaseClassID()
 	{
 		return "Cleric";

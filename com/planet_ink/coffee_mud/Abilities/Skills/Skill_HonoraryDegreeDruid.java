@@ -48,6 +48,7 @@ public class Skill_HonoraryDegreeDruid extends Skill_HonoraryDegreeCommoner
 		return localizedName;
 	}
 
+	@Override
 	protected String getBaseClassID()
 	{
 		return "Druid";
