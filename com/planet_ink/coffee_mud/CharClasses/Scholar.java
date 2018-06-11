@@ -228,6 +228,7 @@ public class Scholar extends StdCharClass
 		// no xp from combat
 		if((msg.sourceMinor()==CMMsg.TYP_EXPCHANGE)
 		&&(msg.source()==myHost)
+		&&(msg.source().charStats().getCurrentClass()==this)
 		&&(msg.target() instanceof MOB)
 		&&(((MOB)msg.target()).amDead()||(((MOB)msg.target()).curState().getHitPoints()<=0))
 		&&(msg.value()>0))
@@ -305,6 +306,13 @@ public class Scholar extends StdCharClass
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
+		if((!(myHost instanceof MOB))
+		||(((MOB)myHost).charStats().getCurrentClass()!=this))
+		{
+			super.executeMsg(myHost, msg);
+			return;
+		}
+
 		if(msg.source()==myHost)
 		{
 			Scholar.visitationBonusMessage(myHost,msg);
