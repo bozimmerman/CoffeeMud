@@ -322,13 +322,51 @@ public class Scholar extends StdCharClass
 			{
 				if((msg.tool() instanceof Ability)
 				&&(msg.targetMinor()==CMMsg.TYP_WROTE)
-				&&(msg.tool().ID().equals("Skill_Map")||msg.tool().ID().equals("Thief_TreasureMap")||msg.tool().ID().equals("Skill_SeaMapping")))
+				&&(msg.tool().ID().equals("Skill_Map")
+					||msg.tool().ID().equals("Thief_TreasureMap")
+					||msg.tool().ID().equals("Skill_SeaMapping")))
+				{
+					final Map<String,Object> persMap = Resources.getPersonalMap(msg.source(), true);
+					if(persMap != null)
+					{
+						int xp = 10;
+						long[] xpTrap = (long[])persMap.get("SCHOLAR_MAPXP");
+						if(xpTrap == null)
+						{
+							xpTrap = new long[2];
+							persMap.put("SCHOLAR_MAPXP", xpTrap);
+						}
+						if(System.currentTimeMillis() > xpTrap[1])
+						{
+							xpTrap[0]=0;
+							final Room R=msg.source().getStartRoom();
+							if(R!=null)
+							{
+								final Area A=R.getArea();
+								if((A!=null)&&(A.getTimeObj()!=null))
+									xpTrap[1]=System.currentTimeMillis() + (CMProps.getMillisPerMudHour() * A.getTimeObj().getHoursInDay());
+								else
+									xpTrap[1]=System.currentTimeMillis() + (TimeManager.MILI_MINUTE * 10);
+							}
+							else
+								xpTrap[1]=System.currentTimeMillis() + (TimeManager.MILI_MINUTE * 10);
+						}
+						final long maxLevel = msg.source().getExpNeededLevel() / 10;
+						if(xpTrap[0] < maxLevel)
+						{
+							xpTrap[0]+=xp;
+							CMLib.leveler().postExperience(msg.source(), null, null, xp, false);
+						}
+					}
 					CMLib.leveler().postExperience(msg.source(), null, null, 10, false);
+				}
 				else
 				if((msg.tool() instanceof Ability)
 				&&(msg.targetMinor()==CMMsg.TYP_WROTE)
 				&&(msg.tool().ID().equals("Dissertating")))
+				{
 					CMLib.leveler().postExperience(msg.source(), null, null, 25, false);
+				}
 				else
 				{
 					final String msgStr =msg.targetMessage().trim();
