@@ -201,7 +201,7 @@ public class Surveying extends CommonSkill
 						if(roomNumber.startsWith(area.Name()+"#"))
 							roomNumber=roomNumber.substring(area.Name().length());
 						subject=room.displayText()+" ("+roomNumber+")";
-						final StringBuilder msgBuilder=new StringBuilder("");
+						final StringBuilder msgBuilder=new StringBuilder("\n\r");
 						msgBuilder.append(L("^HRoom name  : ^N@x1",room.displayText())).append("\n\r");
 						msgBuilder.append(L("^HRoom area  : ^N@x1",area.Name())).append("\n\r");
 						msgBuilder.append(L("^HRoom number: ^N@x1",roomNumber)).append("\n\r");
@@ -223,7 +223,6 @@ public class Surveying extends CommonSkill
 										.append(": ^N").append(nextR.displayText());
 								if(expertise > 0)
 									msgBuilder.append(" (").append(nextRoomNumber).append(")");
-								msgBuilder.append(")");
 								if(expertise > 6)
 								{
 									Trap theTrap=CMLib.utensils().fetchMyTrap(room);
