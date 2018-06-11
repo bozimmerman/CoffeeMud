@@ -156,13 +156,18 @@ public class Skill_Map extends StdSkill
 				&&(!roomsMappedAlready.contains(msg.target()))
 				&&(!CMath.bset(((Room)msg.target()).phyStats().sensesMask(),PhyStats.SENSE_ROOMUNMAPPABLE)))
 				{
-					roomsMappedAlready.add((Room)msg.target());
-					final Room R=mob.location();
-					if(R!=null)
-						R.send(mob, CMClass.getMsg(mob,map,this,CMMsg.MSG_WROTE, null, CMMsg.MSG_WROTE, CMLib.map().getExtendedRoomID((Room)msg.target()),-1,null));
-					map.setReadableText(map.readableText()+";"+CMLib.map().getExtendedRoomID((Room)msg.target()));
-					if(map instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
-						((com.planet_ink.coffee_mud.Items.interfaces.RoomMap)map).doMapArea();
+					if(map.readableText().length()>4096)
+						msg.source().tell(L("@x1 is full."));
+					else
+					{
+						roomsMappedAlready.add((Room)msg.target());
+						final Room R=mob.location();
+						if(R!=null)
+							R.send(mob, CMClass.getMsg(mob,map,this,CMMsg.MSG_WROTE, null, CMMsg.MSG_WROTE, CMLib.map().getExtendedRoomID((Room)msg.target()),-1,null));
+						map.setReadableText(map.readableText()+";"+CMLib.map().getExtendedRoomID((Room)msg.target()));
+						if(map instanceof com.planet_ink.coffee_mud.Items.interfaces.RoomMap)
+							((com.planet_ink.coffee_mud.Items.interfaces.RoomMap)map).doMapArea();
+					}
 				}
 			}
 		}
