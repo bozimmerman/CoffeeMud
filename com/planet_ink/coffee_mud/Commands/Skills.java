@@ -197,6 +197,19 @@ public class Skills extends StdCommand
 		return getAbilities(viewerM,ableM,V,mask,addQualLine,maxLevel);
 	}
 
+	protected final static Comparator<Ability> nameComparator=new Comparator<Ability>()
+	{
+		@Override
+		public int compare(Ability o1, Ability o2)
+		{
+			if(o1==null)
+				return o2==null?0:-1;
+			if(o2==null)
+				return 1;
+			return o1.Name().compareTo(o2.Name());
+		}
+	};
+	
 	protected StringBuilder getAbilities(MOB viewerM, MOB ableM, List<Integer> ofTypes, int mask, boolean addQualLine, int maxLevel)
 	{
 		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerM);
@@ -223,13 +236,15 @@ public class Skills extends StdCommand
 		final boolean useWords=CMProps.Int.Prowesses.SKILL_PROFICIENCY.is(prowessCode);
 		final int[] proficiencyRanges=new int[]{5,10,20,30,40,50,60,70,75,80,85,90,95,100};
 		int MAX_COLS=useWords?2:3;
+		final List<Ability> sortedAllAbilities = new XVector<Ability>(ableM.allAbilities());
+		Collections.sort(sortedAllAbilities,nameComparator);
 		for(int l=0;l<=highestLevel;l++)
 		{
 			final StringBuilder thisLine=new StringBuilder("");
 			int col=0;
-			for(final Enumeration<Ability> a=ableM.allAbilities();a.hasMoreElements();)
+			
+			for(final Ability A : sortedAllAbilities)
 			{
-				final Ability A=a.nextElement();
 				int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
 				if(level<0)
 					level=0;
