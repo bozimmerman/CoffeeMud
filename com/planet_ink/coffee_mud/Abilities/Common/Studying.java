@@ -598,6 +598,8 @@ public class Studying extends CommonSkill implements AbilityContainer
 					else
 						mob.tell(L("You haven't studied @x1.",A.name()));
 				}
+				else
+					mob.tell(L("You haven't studied @x1.",name));
 			}
 			return true;
 		}
