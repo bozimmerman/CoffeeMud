@@ -64,16 +64,21 @@ public class AutoInvoke extends StdCommand
 		{
 			if((cmd == AutoInvokeCommand.UNINVOKE) || (cmd == AutoInvokeCommand.TOGGLE))
 			{
-				if(pStats != null)
-					pStats.addAutoInvokeList(foundA.ID());
-				foundA=mob.fetchEffect(foundA.ID());
-				if(foundA!=null)
+				if(CMath.bset(foundA.flags(), Ability.FLAG_NOUNINVOKING))
+					mob.tell(L("@x1 cannot be deactivated.",foundA.name()));
+				else
 				{
-					mob.delEffect(foundA);
-					if(mob.fetchEffect(foundA.ID())!=null)
-						mob.tell(L("@x1 failed to successfully deactivate.",foundA.name()));
-					else
-						mob.tell(L("@x1 successfully deactivated.",foundA.name()));
+					if(pStats != null)
+						pStats.addAutoInvokeList(foundA.ID());
+					foundA=mob.fetchEffect(foundA.ID());
+					if(foundA!=null)
+					{
+						mob.delEffect(foundA);
+						if(mob.fetchEffect(foundA.ID())!=null)
+							mob.tell(L("@x1 failed to successfully deactivate.",foundA.name()));
+						else
+							mob.tell(L("@x1 successfully deactivated.",foundA.name()));
+					}
 				}
 			}
 		}
@@ -136,7 +141,7 @@ public class AutoInvoke extends StdCommand
 		}
 		abilityids.clear();
 
-		Collections.sort(abilities,new Comparator<Ability>()
+		Collections.sort(abilities, new Comparator<Ability>()
 		{
 			@Override
 			public int compare(Ability o1, Ability o2)

@@ -60,6 +60,12 @@ public class Studying extends CommonSkill implements AbilityContainer
 		return triggerStrings;
 	}
 	
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_NOUNINVOKING;
+	}
+	
 	protected static enum perLevelLimits 
 	{
 		COMMON(1, 6, 1, ACODE_COMMON_SKILL, ACODE_LANGUAGE),
