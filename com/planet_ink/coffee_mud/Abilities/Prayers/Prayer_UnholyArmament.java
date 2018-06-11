@@ -103,9 +103,6 @@ public class Prayer_UnholyArmament extends Prayer
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
-
 		if(mob.isInCombat())
 		{
 			mob.tell(L("Not during combat!"));
@@ -256,9 +253,24 @@ public class Prayer_UnholyArmament extends Prayer
 			break;
 		}
 
+		if(I==null)
+		{
+			if(mob.getWorshipCharID().length()>0)
+				mob.tell(L("@x1 can see that you are already completely armed.",mob.getWorshipCharID()));
+			else
+				mob.tell(L("The gods can see that you are already armed."));
+			return false;
+		}
+		
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+		{
+			I.destroy();
+			return false;
+		}
+
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		if((success)&&(I!=null))
+		if(success)
 		{
 			final CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":L("^S<S-NAME> @x1 to be provided armament!^?",prayWord(mob)));
 			if(mob.location().okMessage(mob,msg))
