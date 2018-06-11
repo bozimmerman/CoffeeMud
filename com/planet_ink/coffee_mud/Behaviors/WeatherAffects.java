@@ -580,7 +580,8 @@ public class WeatherAffects extends PuddleMaker
 								unfrostedPlaces=unfrostedPlaces|element;
 						}
 					}
-					if((unfrostedPlaces!=ALL_FROST_CODE)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
+					if((unfrostedPlaces!=ALL_FROST_CODE)
+					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 					{
 						final Ability COLD=CMClass.getAbility("Disease_FrostBite");
 						if((COLD!=null)&&(M.fetchEffect(COLD.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))

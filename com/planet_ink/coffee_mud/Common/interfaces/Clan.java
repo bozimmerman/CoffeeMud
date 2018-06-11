@@ -996,8 +996,12 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		NONE,
 		LEVEL,
 		RANK,
+		GOLD,
+		XP,
 		LEVEL_OVERWRITE,
-		RANK_OVERWRITE
+		RANK_OVERWRITE,
+		XP_OVERWRITE,
+		GOLD_OVERWRITE,
 	}
 
 	/**

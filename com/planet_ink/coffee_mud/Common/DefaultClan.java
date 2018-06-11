@@ -1668,18 +1668,27 @@ public class DefaultClan implements Clan
 
 				AutoPromoteFlag basePromoteBy = govt().getAutoPromoteBy();
 				boolean overWrite = false;
-				if(basePromoteBy==AutoPromoteFlag.LEVEL_OVERWRITE)
+				switch(basePromoteBy)
 				{
+				case LEVEL_OVERWRITE:
 					overWrite=true;
 					basePromoteBy=AutoPromoteFlag.LEVEL;
-				}
-				else
-				if(basePromoteBy==AutoPromoteFlag.RANK_OVERWRITE)
-				{
+					break;
+				case RANK_OVERWRITE:
 					overWrite=true;
 					basePromoteBy=AutoPromoteFlag.RANK;
+					break;
+				case GOLD_OVERWRITE:
+					overWrite=true;
+					basePromoteBy=AutoPromoteFlag.GOLD;
+					break;
+				case XP_OVERWRITE:
+					overWrite=true;
+					basePromoteBy=AutoPromoteFlag.XP;
+					break;
+				default:
+					break;
 				}
-
 				if(overWrite || (highMembers.size()==0))
 				{
 					final List<MemberRecord> highestQualifiedMembers = new LinkedList<MemberRecord>();
@@ -1734,6 +1743,26 @@ public class DefaultClan implements Clan
 							if(M.basePhyStats().level()!=highestLevel)
 								i.remove();
 						}
+					}
+					if(basePromoteBy==AutoPromoteFlag.GOLD)
+					{
+						Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>(){
+							@Override
+							public int compare(MemberRecord o1, MemberRecord o2)
+							{
+								return new Double(o1.donatedGold).compareTo(new Double(o2.donatedGold));
+							}
+						});
+					}
+					if(basePromoteBy==AutoPromoteFlag.XP)
+					{
+						Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>(){
+							@Override
+							public int compare(MemberRecord o1, MemberRecord o2)
+							{
+								return new Long(o1.donatedXP).compareTo(new Long(o2.donatedXP));
+							}
+						});
 					}
 					if(highestQualifiedMembers.size()>0)
 					{
