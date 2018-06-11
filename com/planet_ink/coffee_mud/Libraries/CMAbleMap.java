@@ -789,8 +789,10 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		if(CMSecurity.isAbilityDisabled(able.abilityID().toUpperCase()))
 			return;
 		ableMap.put(abilityID,able);
+		final CharClass ableC=CMClass.getCharClass(able.ID());
 		
-		final boolean isACharacterClass = CMClass.getCharClass(able.ID()) != null || (able.ID().equalsIgnoreCase("All"));
+		final boolean isACharacterClass = ((ableC != null) && (!(ableC instanceof ArchonOnly)) && (CMProps.isTheme(ableC.availabilityCode()))) 
+										|| (able.ID().equalsIgnoreCase("All"));
 
 		final int qualLevel = able.qualLevel();
 		final int maxProficiency = able.maxProficiency();
@@ -811,6 +813,22 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 			if((maxProf==null)
 			||(maxProficiency>maxProf.intValue()))
 				maxProficiencyMap.put(abilityID,Integer.valueOf(maxProficiency));
+			
+			// archons qualify for everything at an appropriate level
+			for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+			{
+				final CharClass C=c.nextElement();
+				if(C instanceof ArchonOnly)
+				{
+					final int arc_level=getQualifyingLevel(C.ID(),true,abilityID);
+					if(((arc_level<0)||((qualLevel>=0)&&(qualLevel<arc_level)))
+					&&(!able.ID().equalsIgnoreCase(C.ID()))
+					&&(!able.ID().equalsIgnoreCase("All")))
+					{
+						addCharAbilityMapping(C.ID(),qualLevel,abilityID,true);
+					}		
+				}
+			}
 		}
 
 		// and the reverse lookup map
@@ -822,18 +840,6 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 		}
 		if(!revT.containsKey(able.ID()))
 			revT.put(able.ID(), able);
-
-		// archons get everything
-		if(isACharacterClass)
-		{
-			final int arc_level=getQualifyingLevel("Archon",true,abilityID);
-			if(((arc_level<0)||((qualLevel>=0)&&(qualLevel<arc_level)))
-			&&(!able.ID().equalsIgnoreCase("Archon"))
-			&&(!able.ID().equalsIgnoreCase("All")))
-			{
-				addCharAbilityMapping("Archon",qualLevel,abilityID,true);
-			}
-		}
 	}
 
 	public synchronized void handleEachAndClassAbility(Map<String, AbilityMapping> ableMap, Map<String,Map<String,AbilityMapping>> allQualMap, String ID)

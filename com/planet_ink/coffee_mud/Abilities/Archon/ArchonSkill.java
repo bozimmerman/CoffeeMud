@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class ArchonSkill extends StdAbility
+public class ArchonSkill extends StdAbility implements ArchonOnly
 {
 	@Override
 	public String ID()

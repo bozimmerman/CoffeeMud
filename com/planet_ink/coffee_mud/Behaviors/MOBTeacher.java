@@ -99,7 +99,7 @@ public class MOBTeacher extends CombatAbilities
 		{
 			A=a.nextElement();
 			if((A!=null)
-			&&(((stdCharClass&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)))
+			&&((stdCharClass&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)&&(!(A instanceof ArchonOnly)))
 				||(CMLib.ableMapper().qualifiesByLevel(mob,A)&&(!CMLib.ableMapper().getSecretSkill(className,true,A.ID()))))
 			&&((!noCommon)||((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL))
 			&&((!stdCharClass)||(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))))

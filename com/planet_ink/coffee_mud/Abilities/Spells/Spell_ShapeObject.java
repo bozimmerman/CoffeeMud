@@ -113,6 +113,8 @@ public class Spell_ShapeObject extends Spell
 			return false;
 		}
 		String likeWhat=CMParms.combineQuoted(commands, 1);
+		if(mob.isPlayer())
+			likeWhat=CMLib.coffeeFilter().secondaryUserInputFilter(likeWhat);
 		
 		if(CMLib.login().isBadName(likeWhat) || CMProps.isAnyINIFiltered(likeWhat))
 		{
