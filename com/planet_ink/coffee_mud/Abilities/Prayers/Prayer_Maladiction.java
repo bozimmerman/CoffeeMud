@@ -41,7 +41,7 @@ public class Prayer_Maladiction extends Prayer
 		return "Prayer_Maladiction";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Maladiction");
+	private final static String localizedName = CMLib.lang().L("Malediction");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Prayer_Maladiction extends Prayer
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Maladiction)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Malediction)");
 
 	@Override
 	public String displayText()
