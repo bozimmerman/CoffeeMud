@@ -100,7 +100,7 @@ public class Skill_Autoclimb extends StdSkill
 	protected int fixPts(final MOB mob, final int pts)
 	{
 		int halfPts=pts/2;
-		halfPts+=(super.getXLOWCOSTLevel(mob)+super.getXLEVELLevel(mob))/2;
+		halfPts+=super.getXLOWCOSTLevel(mob)+(super.getXLEVELLevel(mob)/2);
 		if(halfPts > pts)
 			return pts;
 		return halfPts;
