@@ -1389,6 +1389,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final Room deathRoom=target.location();
 		if(deathRoom == null)
 			return null;
+		final Session srcSession=(source==null)?null:source.session();
+		final Session tgtSession=target.session();
 
 		//TODO: this creates too many loops.  The right thing is to loop once
 		// and call  a boolean function to populate all these lists.
@@ -1405,9 +1407,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		final Set<MOB> dividers=getCombatDividers(source,target,combatCharClass);
 
 		if(source != null)
-			CMLib.get(source.session())._combat().dispenseExperience(beneficiaries,dividers,target);
+			CMLib.get(srcSession)._combat().dispenseExperience(beneficiaries,dividers,target);
 		else
-			dispenseExperience(beneficiaries,dividers,target);
+			CMLib.get(tgtSession)._combat().dispenseExperience(beneficiaries,dividers,target);
 
 		final String currency=CMLib.beanCounter().getCurrency(target);
 		final double deadMoney=CMLib.beanCounter().getTotalAbsoluteValue(target,currency);
