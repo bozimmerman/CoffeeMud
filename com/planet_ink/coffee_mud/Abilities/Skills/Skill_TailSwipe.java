@@ -149,7 +149,7 @@ public class Skill_TailSwipe extends StdSkill
 				if(R.okMessage(mob,msg)&&(!mob.amDead()))
 				{
 					R.send(mob,msg);
-					CMLib.commands().postStand(mob,true);
+					CMLib.commands().postStand(mob,true, false);
 				}
 			}
 			else

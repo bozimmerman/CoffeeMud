@@ -145,7 +145,7 @@ public class Chant_Earthquake extends Chant
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					CMLib.commands().postStand(mob,true);
+					CMLib.commands().postStand(mob,true, false);
 				}
 			}
 			else

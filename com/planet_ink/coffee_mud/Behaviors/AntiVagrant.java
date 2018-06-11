@@ -87,7 +87,7 @@ public class AntiVagrant extends ActiveTicker
 				{
 					observer.location().send(observer,msg);
 					target.tell(L("@x1 shakes you awake.",observer.name()));
-					CMLib.commands().postStand(target,true);
+					CMLib.commands().postStand(target,true, false);
 					if((kickout)&&(CMLib.flags().isStanding(target)))
 					{
 						CMLib.commands().postSay(observer,target,L("Go home @x1!",target.name(observer)),false,false);
@@ -103,7 +103,7 @@ public class AntiVagrant extends ActiveTicker
 				if(observer.location().okMessage(observer,msg))
 				{
 					observer.location().send(observer,msg);
-					CMLib.commands().postStand(target,true);
+					CMLib.commands().postStand(target,true, false);
 					if((kickout)&&(CMLib.flags().isStanding(target)))
 						CMLib.tracking().beMobile(target,true,false,false,false,null,null);
 				}

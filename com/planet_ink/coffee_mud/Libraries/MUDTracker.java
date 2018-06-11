@@ -1525,7 +1525,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 								}
 								if(move(follower,directionCode,false,false,false,false, running)
 								&&(tryStand))
-									CMLib.commands().postStand(follower, true);
+									CMLib.commands().postStand(follower, true, false);
 							}
 						}
 					}

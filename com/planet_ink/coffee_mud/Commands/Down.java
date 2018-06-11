@@ -50,7 +50,7 @@ public class Down extends Go
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		if(!standIfNecessary(mob,metaFlags, true))
+		if(!standIfNecessary(mob,commands, metaFlags, true))
 			return false;
 		if(mob.isAttributeSet(MOB.Attrib.AUTORUN))
 			CMLib.tracking().run(mob, Directions.DOWN, false,false,false);

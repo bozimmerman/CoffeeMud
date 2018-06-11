@@ -125,7 +125,7 @@ public class Prayer_Judgement extends Prayer
 			}
 			if(mob.isMonster() && (!mob.amDead()))
 			{
-				CMLib.commands().postStand(mob,true);
+				CMLib.commands().postStand(mob,true, false);
 				CMLib.tracking().wanderAway(mob,false,true);
 				if((invoker!=null)&&(invoker!=mob)&&(invoker.location()==mob.location()))
 					CMLib.combat().postAttack(mob, invoker, mob.fetchWieldedItem());
@@ -167,7 +167,7 @@ public class Prayer_Judgement extends Prayer
 				{
 					if(!botheredRooms.contains(R))
 						botheredRooms.add(R);
-					CMLib.commands().postStand(mob,true);
+					CMLib.commands().postStand(mob,true, false);
 					if(!CMLib.tracking().beMobile(mob,true,true,false,true,null,botheredRooms))
 						CMLib.tracking().beMobile(mob,true,true,false,false,null,null);
 				}

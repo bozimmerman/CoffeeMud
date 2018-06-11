@@ -166,7 +166,7 @@ public class Song_Friendship extends Song
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> free-will returns."));
 					mob.setFollowing(null);
-					CMLib.commands().postStand(mob,true);
+					CMLib.commands().postStand(mob,true, false);
 					if(mob.isMonster())
 					{
 						if((CMLib.dice().rollPercentage()>50)

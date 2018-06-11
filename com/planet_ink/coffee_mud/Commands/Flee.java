@@ -130,7 +130,8 @@ public class Flee extends Go
 				directionCode = fallDir;
 		}
 		
-		if((direction.equals("NOWHERE"))||((directionCode>=0)&&(CMLib.tracking().walk(mob,directionCode,true,false,false))))
+		if((direction.equals("NOWHERE"))
+		||((directionCode>=0)&&(CMLib.tracking().walk(mob,directionCode,true,false,false))))
 		{
 			mob.makePeace(false);
 			if(XPloss&&(fighting!=null))

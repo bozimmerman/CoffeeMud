@@ -152,7 +152,7 @@ public class Thief_Sap extends ThiefSkill implements HealthCondition
 			if((mob.location()!=null)&&(!mob.amDead()))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> regain(s) consciousness."));
-				CMLib.commands().postStand(mob,true);
+				CMLib.commands().postStand(mob,true, false);
 			}
 			else
 				mob.tell(L("You regain consciousness."));

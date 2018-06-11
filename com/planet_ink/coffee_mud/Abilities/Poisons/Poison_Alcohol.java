@@ -176,7 +176,7 @@ public class Poison_Alcohol extends Poison
 				if((A!=null)&&(mob.fetchEffect(A.ID())==null))
 					A.invoke(mob,mob,true,0);
 			}
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 		}
 		super.unInvoke();
 	}

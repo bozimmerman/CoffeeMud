@@ -131,7 +131,7 @@ public class Druid_Rend extends StdAbility
 			mob.tell(L("You rend your way out of the pin!"));
 			A.unInvoke();
 			mob.delEffect(A);
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 			return true;
 		}
 

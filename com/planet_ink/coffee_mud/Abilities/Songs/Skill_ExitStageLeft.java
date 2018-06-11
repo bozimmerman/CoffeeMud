@@ -103,7 +103,7 @@ public class Skill_ExitStageLeft extends BardSkill
 		if((M!=null)&&(super.canBeUninvoked()))
 		{
 			if(!M.isMonster())
-				CMLib.commands().postStand(M,true);
+				CMLib.commands().postStand(M,true, false);
 			M.tell(L("You are no longer off stage."));
 			if(M.isMonster())
 				CMLib.tracking().wanderAway(M, false, true);
@@ -141,7 +141,7 @@ public class Skill_ExitStageLeft extends BardSkill
 				return false;
 			}
 			if(!mob.isMonster())
-				CMLib.commands().postStand(mob,true);
+				CMLib.commands().postStand(mob,true, false);
 			CMLib.tracking().walk(mob, Directions.WEST, mob.isInCombat(), false);
 		}
 		return super.tick(ticking,tickID);

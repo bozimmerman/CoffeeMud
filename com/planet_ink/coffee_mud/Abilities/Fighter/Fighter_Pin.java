@@ -187,7 +187,7 @@ public class Fighter_Pin extends FighterSkill
 					else
 						mob.tell(L("You are released from the pin."));
 				}
-				CMLib.commands().postStand(mob,true);
+				CMLib.commands().postStand(mob,true, false);
 			}
 		}
 	}

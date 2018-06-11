@@ -55,6 +55,7 @@
 2 Embroidering MASK=+CHA 10 REQUIRES=Skill_Write 
 2 Engraving MASK=+CHA 10 REQUIRES=Skill_Write 
 2 Lacquerring MASK=+CHA 8 
+8 Skill_Autocrawl +WIS 5
 
 3 Blacksmithing MASK=+STR 10 
 3 Carpentry MASK=+CON 10 

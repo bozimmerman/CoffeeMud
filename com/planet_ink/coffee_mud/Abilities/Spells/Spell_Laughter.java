@@ -114,7 +114,7 @@ public class Spell_Laughter extends Spell
 		{
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> stop(s) laughing."));
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 		}
 	}
 

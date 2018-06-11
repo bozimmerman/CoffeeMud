@@ -166,7 +166,7 @@ public class Disease_Alzheimers extends Disease
 			if(CMLib.flags().isAliveAwakeMobileUnbound(mob,true))
 			{
 				if(!CMLib.flags().isStanding(mob))
-					CMLib.commands().postStand(mob,true);
+					CMLib.commands().postStand(mob,true, false);
 				final Room R=mob.location();
 				if((CMLib.flags().isStanding(mob))&&(R!=null)&&(CMLib.flags().isInTheGame(mob,true)))
 				{

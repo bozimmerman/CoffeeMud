@@ -147,8 +147,8 @@ public class Spell_KnowFate extends Spell
 						{
 							newMOB.setVictim(newVictiM);
 							newVictiM.setVictim(newMOB);
-							CMLib.commands().postStand(newMOB,true);
-							CMLib.commands().postStand(newVictiM,true);
+							CMLib.commands().postStand(newMOB,true, false);
+							CMLib.commands().postStand(newVictiM,true, false);
 							newMOB.tick(newMOB,Tickable.TICKID_MOB);
 							newVictiM.tick(newVictiM,Tickable.TICKID_MOB);
 						}

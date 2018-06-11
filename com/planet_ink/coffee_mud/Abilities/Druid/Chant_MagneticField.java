@@ -152,7 +152,7 @@ public class Chant_MagneticField extends Chant
 		if(canBeUninvoked())
 		{
 			mob.tell(L("The magnetic field fades!"));
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 		}
 	}
 

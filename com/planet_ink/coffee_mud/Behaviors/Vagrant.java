@@ -88,7 +88,7 @@ public class Vagrant extends StdBehavior
 		{
 			if((CMLib.dice().rollPercentage()>50)||(mob.isInCombat()))
 			{
-				CMLib.commands().postStand(mob,true);
+				CMLib.commands().postStand(mob,true, false);
 				wakeForTicks=CMLib.dice().roll(1,30,0);
 			}
 			else

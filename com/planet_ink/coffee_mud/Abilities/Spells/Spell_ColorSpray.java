@@ -106,7 +106,7 @@ public class Spell_ColorSpray extends Spell
 			if(text().equalsIgnoreCase("UNCONSCIOUS"))
 			{
 				mob.tell(L("You regain consciousness."));
-				CMLib.commands().postStand(mob, true);
+				CMLib.commands().postStand(mob, true, false);
 			}
 			else
 			if(text().equalsIgnoreCase("STUNNED"))

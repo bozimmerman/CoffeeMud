@@ -361,12 +361,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	}
 
 	@Override
-	public void postStand(MOB mob, boolean ifNecessary)
+	public void postStand(MOB mob, boolean ifNecessary, boolean quietly)
 	{
+		final List<String> cmds=new XVector<String>("STAND");
 		if(ifNecessary)
-			forceStandardCommand(mob,"Stand",new XVector<String>("STAND","IFNECESSARY"));
-		else
-			forceStandardCommand(mob,"Stand",new XVector<String>("STAND"));
+			cmds.add("IFNECESSARY");
+		if(quietly)
+			cmds.add("QUIETLY");
+		forceStandardCommand(mob,"Stand",cmds);
 	}
 
 	@Override

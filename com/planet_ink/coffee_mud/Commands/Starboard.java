@@ -60,7 +60,7 @@ public class Starboard extends Go
 			if(nextDir == Directions.SOUTH)
 				direction=Directions.SOUTHEAST;
 		}
-		if(!standIfNecessary(mob,metaFlags, true))
+		if(!standIfNecessary(mob,commands, metaFlags, true))
 			return false;
 		if(mob.isAttributeSet(MOB.Attrib.AUTORUN))
 			CMLib.tracking().run(mob, direction, false,false,false);

@@ -172,7 +172,7 @@ public class Fighter_HammerRing extends FighterSkill implements HealthCondition
 					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> seem(s) less dazed."));
 				else
 					mob.tell(L("You feel less dazed."));
-				CMLib.commands().postStand(mob,true);
+				CMLib.commands().postStand(mob,true, false);
 				if((invokerM!=null)
 				&&(invokerM.location()==mob.location()))
 					CMLib.combat().postAttack(mob, invokerM, mob.fetchWieldedItem());

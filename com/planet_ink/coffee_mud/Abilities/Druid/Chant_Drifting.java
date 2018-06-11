@@ -165,7 +165,7 @@ public class Chant_Drifting extends Chant
 			if(A!=null)
 				A.unInvoke();
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) back down."));
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 		}
 	}
 

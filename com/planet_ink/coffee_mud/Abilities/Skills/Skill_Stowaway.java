@@ -159,7 +159,7 @@ public class Skill_Stowaway extends StdSkill
 					R.send(mob,leaveMsg);
 				if(!R.isInhabitant(mob))
 					R.bringMobHere(mob, false);
-				CMLib.commands().postStand(mob, true);
+				CMLib.commands().postStand(mob, true, false);
 			}
 		}
 		if(boxR!=null)

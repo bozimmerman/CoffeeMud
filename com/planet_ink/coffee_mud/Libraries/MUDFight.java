@@ -2464,7 +2464,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				postWeaponAttackResult(attacker,target,(Item)msg.tool(),true);
 		}
 		if(CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target))
-			CMLib.commands().postStand(target,true);
+			CMLib.commands().postStand(target,true, false);
 	}
 
 	@Override

@@ -50,7 +50,7 @@ public class Go extends StdCommand
 	protected Command		stander		= null;
 	protected List<String>	ifneccvec	= null;
 
-	public boolean standIfNecessary(MOB mob, int metaFlags, boolean giveMsg)
+	public boolean standIfNecessary(MOB mob, List<String> commands, int metaFlags, boolean giveMsg)
 		throws java.io.IOException
 	{
 		if(CMLib.flags().isFlying(mob))
@@ -70,12 +70,12 @@ public class Go extends StdCommand
 		if(giveMsg && (!isStanding))
 		{
 			if(CMLib.flags().isSleeping(mob))
-				mob.tell(L("You need to wake up first."));
+				CMLib.commands().postCommandFail(mob, commands, L("You need to wake up first."));
 			else
 			if(!wasStanding)
-				mob.tell(L("You failed to stand up. You might try crawling."));
+				CMLib.commands().postCommandFail(mob, commands, L("You failed to stand up. You might try crawling."));
 			else
-				mob.tell(L("You need to stand up."));
+				CMLib.commands().postCommandFail(mob, commands, L("You need to stand up."));
 		}
 		return isStanding;
 	}
@@ -85,7 +85,7 @@ public class Go extends StdCommand
 		throws java.io.IOException
 	{
 		Vector<String> origCmds=new XVector<String>(commands);
-		if(!standIfNecessary(mob,metaFlags, true))
+		if(!standIfNecessary(mob,commands, metaFlags, true))
 			return false;
 
 		final String whereStr=CMParms.combine(commands,1);

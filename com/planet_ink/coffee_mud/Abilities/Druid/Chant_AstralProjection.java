@@ -97,7 +97,7 @@ public class Chant_AstralProjection extends Chant
 			mob.recoverCharStats();
 			mob.recoverMaxState();
 			mob.recoverPhyStats();
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 		}
 	}
 

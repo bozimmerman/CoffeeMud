@@ -112,7 +112,7 @@ public class Spell_Cloudkill extends Spell
 		if(canBeUninvoked())
 		{
 			mob.tell(L("You feel less intoxicated."));
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 			if((invoker!=null)
 			&&(!mob.isInCombat())
 			&&(mob.location()!=null)

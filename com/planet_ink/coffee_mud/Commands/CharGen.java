@@ -774,8 +774,8 @@ public class CharGen extends StdCommand
 									ishits++;
 								try
 								{
-									CMLib.commands().postStand(M1,true);
-									CMLib.commands().postStand(M2,true);
+									CMLib.commands().postStand(M1,true, false);
+									CMLib.commands().postStand(M2,true, false);
 									M1.tick(M1,Tickable.TICKID_MOB);
 									M2.tick(M2,Tickable.TICKID_MOB);
 								}

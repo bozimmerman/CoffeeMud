@@ -156,7 +156,7 @@ public class Skill_Slip extends StdSkill
 				if(mob.location().okMessage(mob,msg)&&(!mob.amDead()))
 				{
 					mob.location().send(mob,msg);
-					CMLib.commands().postStand(mob,true);
+					CMLib.commands().postStand(mob,true, false);
 				}
 			}
 			else

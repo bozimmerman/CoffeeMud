@@ -151,7 +151,7 @@ public class Prayer_Tremor extends Prayer
 				if(mob.location().okMessage(mob,msg))
 				{
 					mob.location().send(mob,msg);
-					CMLib.commands().postStand(mob,true);
+					CMLib.commands().postStand(mob,true, false);
 				}
 			}
 			else

@@ -190,7 +190,7 @@ public class Spell_FleshStone extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> flesh returns to normal."));
 			if(prevState!=null)
 				prevState.copyInto(mob.curState());
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 			CMLib.utensils().confirmWearability(mob);
 		}
 		recurse=false;
@@ -238,7 +238,7 @@ public class Spell_FleshStone extends Spell
 						if(target.numEffects()==s)
 							a++;
 					}
-					CMLib.commands().postStand(target,true);
+					CMLib.commands().postStand(target,true, false);
 					statue=CMClass.getItem("GenItem");
 					String name=target.name();
 					if(name.startsWith("A "))

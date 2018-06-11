@@ -238,7 +238,7 @@ public class Train extends StdCommand
 		if(CMLib.flags().isSleeping(teacher)||CMLib.flags().isSitting(teacher))
 		{
 			if(teacher.isMonster())
-				CMLib.commands().postStand(teacher,true);
+				CMLib.commands().postStand(teacher,true, false);
 			if(CMLib.flags().isSleeping(teacher)||CMLib.flags().isSitting(teacher))
 			{
 				CMLib.commands().postCommandFail(mob,origCmds,L("@x1 looks a bit too relaxed to train with you.",teacher.name()));

@@ -152,7 +152,7 @@ public class Prayer_Awaken extends Prayer implements MendingSkill
 						if((!CMLib.flags().isStillAffectedBy(target,offensiveAffects,false))&&(target.location()!=null))
 							target.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> seem(s) more awake."));
 					}
-					CMLib.commands().postStand(target, true);
+					CMLib.commands().postStand(target, true, false);
 				}
 			}
 		}

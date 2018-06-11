@@ -159,7 +159,7 @@ public class Hireling extends StdBehavior
 		{
 			final Double D=partials.get(workingFor);
 			partials.remove(workingFor);
-			CMLib.commands().postStand(observer,true);
+			CMLib.commands().postStand(observer,true, false);
 			if(!canActAtAll(observer))
 			{
 				workingFor="";

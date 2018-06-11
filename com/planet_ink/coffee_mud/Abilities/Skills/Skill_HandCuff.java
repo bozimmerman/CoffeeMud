@@ -212,7 +212,7 @@ public class Skill_HandCuff extends StdSkill
 				mob.setAttribute(MOB.Attrib.AUTOASSIST,false);
 			if(oldGuard)
 				mob.setAttribute(MOB.Attrib.AUTOGUARD,false);
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 		}
 	}
 

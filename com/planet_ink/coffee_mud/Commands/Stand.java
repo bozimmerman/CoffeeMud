@@ -50,7 +50,14 @@ public class Stand extends StdCommand
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)
 		throws java.io.IOException
 	{
-		final boolean ifnecessary=((commands.size()>1)&&(commands.get(commands.size()-1).equalsIgnoreCase("IFNECESSARY")));
+		boolean ifnecessary=false;
+		boolean quietly=false;
+		for(int i=1;i<commands.size();i++)
+		{
+			final String s=commands.get(i).toUpperCase();
+			ifnecessary = ifnecessary || s.equals("IFNECESSARY");
+			quietly = quietly || s.equals("QUIETLY");
+		}
 		final Room room = CMLib.map().roomLocation(mob);
 		if(CMLib.flags().isStanding(mob))
 		{
@@ -63,7 +70,7 @@ public class Stand extends StdCommand
 		else
 		if(room!=null)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,mob.amDead()?null:L("<S-NAME> stand(s) up."));
+			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_STAND,(quietly || mob.amDead())?null:L("<S-NAME> stand(s) up."));
 			if(room.okMessage(mob,msg))
 				room.send(mob,msg);
 		}

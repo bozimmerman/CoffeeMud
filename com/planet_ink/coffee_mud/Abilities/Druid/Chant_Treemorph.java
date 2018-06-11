@@ -215,7 +215,7 @@ public class Chant_Treemorph extends Chant
 			mob.curState().setMovement(0);
 			mob.curState().setHunger(0);
 			mob.curState().setThirst(0);
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 		}
 	}
 
@@ -254,7 +254,7 @@ public class Chant_Treemorph extends Chant
 							a++;
 					}
 					target.makePeace(true);
-					CMLib.commands().postStand(target,true);
+					CMLib.commands().postStand(target,true, false);
 					tree=CMClass.getItem("GenItem");
 					tree.setName(L("a oak tree"));
 					tree.setDisplayText(L("an oak tree that reminds you of @x1 is growing here.",target.name()));

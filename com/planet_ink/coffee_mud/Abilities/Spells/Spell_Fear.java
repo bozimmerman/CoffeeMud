@@ -87,7 +87,7 @@ public class Spell_Fear extends Spell
 		if((M!=null)&&(super.canBeUninvoked()))
 		{
 			if(!M.isMonster())
-				CMLib.commands().postStand(M,true);
+				CMLib.commands().postStand(M,true, false);
 			if((oldI!=M)&&(oldI!=null))
 				M.tell(M,oldI,null,L("You are no longer afraid of <T-NAMESELF>."));
 			else

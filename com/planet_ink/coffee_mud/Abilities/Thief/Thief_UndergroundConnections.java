@@ -170,7 +170,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				final MOB M=theGroup.elementAt(g);
 				M.tell(L("You are told that it's safe and released."));
 				currRoom.bringMobHere(M,false);
-				CMLib.commands().postStand(M,true);
+				CMLib.commands().postStand(M,true, false);
 				CMLib.commands().postLook(M,true);
 			}
 			if(storage!=null)

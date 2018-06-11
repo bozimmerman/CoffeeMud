@@ -60,7 +60,7 @@ public class Foreward extends Go
 			if(nextDir == Directions.WEST)
 				direction=Directions.NORTHWEST;
 		}
-		if(!standIfNecessary(mob,metaFlags, true))
+		if(!standIfNecessary(mob,commands, metaFlags, true))
 			return false;
 		if(mob.isAttributeSet(MOB.Attrib.AUTORUN))
 			CMLib.tracking().run(mob, direction, false,false,false);

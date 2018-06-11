@@ -113,7 +113,7 @@ public class Spell_Confusion extends Spell
 		super.unInvoke();
 		if(canBeUninvoked())
 			mob.tell(L("You feel less confused."));
-		CMLib.commands().postStand(mob,true);
+		CMLib.commands().postStand(mob,true, false);
 	}
 
 	@Override

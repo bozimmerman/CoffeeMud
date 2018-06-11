@@ -121,7 +121,7 @@ public class Spell_Sleep extends Spell
 		{
 			if((!mob.amDead())&&(mob.location()!=null))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> do(es)n't seem so drowsy any more."));
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 		}
 	}
 

@@ -200,7 +200,7 @@ public class Chant_CharmAnimal extends Chant
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> natural-will returns."));
 			if(mob.amFollowing()!=null)
 				CMLib.commands().postFollow(mob,null,false);
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 			if(mob.isMonster())
 			{
 				if((CMLib.dice().rollPercentage()>50)

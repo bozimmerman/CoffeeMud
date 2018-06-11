@@ -2589,7 +2589,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(A!=null)
 							A.unInvoke();
 						makePeace(officer.location());
-						CMLib.commands().postStand(W.criminal(),true);
+						CMLib.commands().postStand(W.criminal(),true, false);
 						W.setTravelAttemptTime(System.currentTimeMillis());
 						if(trackTheJudge(officer,myArea,laws))
 							makePeace(officer.location());
@@ -2892,7 +2892,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							A.invoke(officer,W.criminal(),true,0);
 						W.criminal().makePeace(true);
 						makePeace(officer.location());
-						CMLib.commands().postStand(W.criminal(),true);
+						CMLib.commands().postStand(W.criminal(),true, false);
 						CMLib.tracking().stopTracking(officer);
 						A=CMClass.getAbility("Skill_Track");
 						if(A!=null)
@@ -2970,7 +2970,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 							A.invoke(officer,W.criminal(),true,0);
 						W.criminal().makePeace(true);
 						makePeace(officer.location());
-						CMLib.commands().postStand(W.criminal(),true);
+						CMLib.commands().postStand(W.criminal(),true, false);
 						CMLib.tracking().stopTracking(officer);
 						A=CMClass.getAbility("Skill_Track");
 						if(A!=null)

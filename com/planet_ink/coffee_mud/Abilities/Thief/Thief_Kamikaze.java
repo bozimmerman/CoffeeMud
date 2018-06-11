@@ -139,7 +139,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		{
 			if(mob.amFollowing()!=null)
 				CMLib.commands().postFollow(mob,null,false);
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 			if((mob.isMonster())&&(!CMLib.flags().isMobile(mob)))
 				CMLib.tracking().wanderAway(mob,true,true);
 		}

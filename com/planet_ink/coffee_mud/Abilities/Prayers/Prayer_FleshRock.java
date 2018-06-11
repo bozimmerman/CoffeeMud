@@ -194,7 +194,7 @@ public class Prayer_FleshRock extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> flesh is no longer made of rock."));
 			if(prevState!=null)
 				prevState.copyInto(mob.curState());
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 		}
 	}
 
@@ -232,7 +232,7 @@ public class Prayer_FleshRock extends Prayer
 						if(target.numEffects()==s)
 							a++;
 					}
-					CMLib.commands().postStand(target,true);
+					CMLib.commands().postStand(target,true, false);
 					statue=CMClass.getItem("GenItem");
 					String name=target.name();
 					if(name.startsWith("A "))

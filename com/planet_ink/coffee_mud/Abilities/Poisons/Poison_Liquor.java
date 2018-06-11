@@ -89,7 +89,7 @@ public class Poison_Liquor extends Poison_Alcohol
 				if(A!=null)
 					A.invoke(mob,mob,true,0);
 			}
-			CMLib.commands().postStand(mob,true);
+			CMLib.commands().postStand(mob,true, false);
 		}
 		super.unInvoke();
 		if((mob!=null)&&(!mob.isInCombat())&&(drunkness>0)&&(super.canBeUninvoked()))

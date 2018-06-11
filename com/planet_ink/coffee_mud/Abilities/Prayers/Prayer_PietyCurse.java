@@ -111,7 +111,7 @@ public class Prayer_PietyCurse extends Prayer
 			mob.tell(L("Your piety curse has been lifted"));
 			if(mob.isMonster() && (!mob.amDead()))
 			{
-				CMLib.commands().postStand(mob,true);
+				CMLib.commands().postStand(mob,true, false);
 				CMLib.tracking().wanderAway(mob,false,true);
 				if((invoker!=null)&&(invoker!=mob)&&(invoker.location()==mob.location()))
 					CMLib.combat().postAttack(mob, invoker, mob.fetchWieldedItem());
