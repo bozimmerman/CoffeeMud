@@ -34,21 +34,21 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Skill_Autocrawl extends StdSkill
+public class Skill_Autoclimb extends StdSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Skill_Autocrawl";
+		return "Skill_Autoclimb";
 	}
 
 	@Override
 	public String displayText()
 	{
-		return L("(Autocrawl)");
+		return L("(Autoclimb)");
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("AutoCrawl");
+	private final static String	localizedName	= CMLib.lang().L("AutoClimb");
 
 	@Override
 	public String name()
@@ -80,7 +80,7 @@ public class Skill_Autocrawl extends StdSkill
 		return Ability.QUALITY_OK_SELF;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "AUTOCRAWL" });
+	private static final String[]	triggerStrings	= I(new String[] { "AUTOCLIMB" });
 
 	@Override
 	public String[] triggerStrings()
@@ -96,7 +96,17 @@ public class Skill_Autocrawl extends StdSkill
 
 	protected volatile boolean	noRepeat	= false;
 
-	protected boolean doAutoCrawl(final MOB mob, final int dir)
+
+	protected int fixPts(final MOB mob, final int pts)
+	{
+		int halfPts=pts/2;
+		halfPts+=(super.getXLOWCOSTLevel(mob)+super.getXLEVELLevel(mob))/2;
+		if(halfPts > pts)
+			return pts;
+		return halfPts;
+	}
+
+	protected boolean doAutoClimb(final MOB mob, final int dir, boolean flee)
 	{
 		final Room R=mob.location();
 		if((dir >=0)
@@ -104,37 +114,32 @@ public class Skill_Autocrawl extends StdSkill
 		&&(mob.curState().getMovement()>0)
 		&&(!CMLib.flags().isFalling(mob)))
 		{
-			final Command C=CMClass.getCommand("Crawl");
-			if((C!=null)
+			final Ability A=mob.fetchAbility("Skill_Climb");
+			if((A!=null)
 			&&(proficiencyCheck(mob, 0, false)))
 			{
 				noRepeat=true;
-				try
+				if(flee)
+					CMLib.commands().postFlee((MOB)affected, "NOWHERE");
+				if(A.invoke(mob,CMParms.parse(CMLib.directions().getDirectionName(dir)),null,false,0))
 				{
-					final int oldMovement=mob.curState().getMovement();
-					C.execute(mob, new XVector<String>("CRAWL",CMLib.directions().getDirectionName(dir)), 0);
-					final int usedMovement = oldMovement-mob.curState().getMovement();
-					if(usedMovement > 0)
-					{
-						int giveBack=(usedMovement/2)+(super.getXLOWCOSTLevel(mob)+super.getXLEVELLevel(mob)/2);
-						if(giveBack > usedMovement)
-							giveBack=usedMovement;
-						mob.curState().adjMovement(giveBack, mob.maxState());
-					}
+					final int[] usage=A.usageCost(mob,false);
+					if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS)&&(usage[USAGEINDEX_HITPOINTS]>0))
+						mob.curState().adjHitPoints(fixPts(mob,usage[USAGEINDEX_HITPOINTS]),mob.maxState());
+					if(CMath.bset(A.usageType(),Ability.USAGE_MANA)&&(usage[USAGEINDEX_MANA]>0))
+						mob.curState().adjMana(fixPts(mob,usage[USAGEINDEX_MANA]),mob.maxState());
+					if(CMath.bset(A.usageType(),Ability.USAGE_MOVEMENT)&&(usage[USAGEINDEX_MOVEMENT]>0))
+						mob.curState().adjMovement(fixPts(mob,usage[USAGEINDEX_MOVEMENT]),mob.maxState());
 				}
-				catch (IOException e)
-				{
-				}
-				CMLib.commands().postStand(mob, true, true);
 				if(CMLib.dice().rollPercentage()<10)
 					helpProficiency(mob, 0);
 				noRepeat=false;
 			}
 			else
-			if(C==null)
-				mob.tell(L("You don't seem to know how to crawl?!"));
+			if(A==null)
+				mob.tell(L("You don't seem to know how to climb?!"));
 			else
-				mob.tell(L("You forgot to automatically crawl."));
+				mob.tell(L("You forgot to automatically climb."));
 			return false;
 		}
 		return true;
@@ -160,7 +165,7 @@ public class Skill_Autocrawl extends StdSkill
 					cmd=msg.targetMessage().toUpperCase().trim();
 				final int dir=CMLib.directions().getGoodDirectionCode(cmd);
 				if(dir >= 0)
-					return doAutoCrawl(msg.source(),dir);
+					return doAutoClimb(msg.source(),dir, false);
 			}
 			if(((msg.targetMinor()==CMMsg.TYP_LEAVE)||(msg.targetMinor()==CMMsg.TYP_FLEE))
 			&&(msg.target() instanceof Room)
@@ -168,10 +173,8 @@ public class Skill_Autocrawl extends StdSkill
 			&&(msg.source().riding()==null)
 			&&(((MOB)affected).location()!=null))
 			{
-				if(msg.targetMinor()==CMMsg.TYP_FLEE)
-					CMLib.commands().postFlee((MOB)affected, "NOWHERE");
 				final int dir=msg.value()-1;
-				return doAutoCrawl((MOB)affected,dir);
+				return doAutoClimb((MOB)affected,dir,(msg.targetMinor()==CMMsg.TYP_FLEE));
 			}
 		}
 		return true;
@@ -182,7 +185,7 @@ public class Skill_Autocrawl extends StdSkill
 	{
 		if((mob.fetchEffect(ID())!=null))
 		{
-			mob.tell(L("You are no longer automatically crawling around."));
+			mob.tell(L("You are no longer automatically climbing around."));
 			mob.delEffect(mob.fetchEffect(ID()));
 			return false;
 		}
@@ -193,14 +196,14 @@ public class Skill_Autocrawl extends StdSkill
 
 		if(success)
 		{
-			mob.tell(L("You will now automatically crawl around while you move."));
+			mob.tell(L("You will now automatically climb around while you move."));
 			beneficialAffect(mob,mob,asLevel,adjustedLevel(mob,asLevel));
 			final Ability A=mob.fetchEffect(ID());
 			if(A!=null)
 				A.makeLongLasting();
 		}
 		else
-			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to get into <S-HIS-HER> crawling position, but fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to get into <S-HIS-HER> climbing position, but fail(s)."));
 		return success;
 	}
 }

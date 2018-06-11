@@ -98,12 +98,12 @@ public class Skill_Autoswim extends StdSkill
 	protected int fixPts(final MOB mob, final int pts)
 	{
 		int halfPts=pts/2;
-		halfPts+=super.getXLEVELLevel(mob);
+		halfPts+=(super.getXLOWCOSTLevel(mob)+super.getXLEVELLevel(mob))/2;
 		if(halfPts > pts)
 			return pts;
 		return halfPts;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

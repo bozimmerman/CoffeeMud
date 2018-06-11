@@ -86,7 +86,7 @@
 
 7 MeatCuring MASK=+INT 8
 
-8 Skill_Autoswim +CON 8 REQUIRES=Skill_Swim
+8 Skill_Autoswim MASK=+CON 8 REQUIRES=Skill_Swim
 
 10 Construction MASK=+CON 12 REQUIRES=Carpentry 
 10 Farming 
@@ -109,6 +109,8 @@
 15 Composting MASK=+WIS 12 REQUIRES=Farming
 
 18 FoodPreserving MASK=+INT 12
+8 Skill_Autoswim MASK=+STR 12 REQUIRES=Skill_Climb
+
 
 20 Branding
 
