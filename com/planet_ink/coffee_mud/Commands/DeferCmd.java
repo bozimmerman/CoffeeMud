@@ -35,7 +35,9 @@ import java.util.*;
 
 public class DeferCmd extends StdCommand
 {
-	public DeferCmd(){}
+	public DeferCmd()
+	{
+	}
 
 	private static final String[] access=new String[]{};
 	@Override

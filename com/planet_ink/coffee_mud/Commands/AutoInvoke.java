@@ -36,7 +36,9 @@ import java.util.*;
 
 public class AutoInvoke extends StdCommand
 {
-	public AutoInvoke(){}
+	public AutoInvoke()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AUTOINVOKE"});
 	@Override

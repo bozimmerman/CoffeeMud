@@ -35,7 +35,9 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Deities extends StdCommand
 {
-	public Deities(){}
+	public Deities()
+	{
+	}
 
 	private final String[] access=I(new String[]{"DEITIES","GODS","DEITY"});
 	@Override

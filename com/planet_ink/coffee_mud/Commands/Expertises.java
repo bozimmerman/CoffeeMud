@@ -36,7 +36,9 @@ import java.util.*;
 
 public class Expertises extends StdCommand
 {
-	public Expertises(){}
+	public Expertises()
+	{
+	}
 
 	private final String[] access=I(new String[]{"EXPERTISES","EXPS"});
 	@Override

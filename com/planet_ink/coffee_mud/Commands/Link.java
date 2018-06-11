@@ -36,7 +36,9 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 public class Link extends At
 {
-	public Link(){}
+	public Link()
+	{
+	}
 
 	private final String[] access=I(new String[]{"LINK"});
 	@Override

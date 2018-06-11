@@ -35,7 +35,9 @@ import java.util.*;
 
 public class NOMXP extends StdCommand
 {
-	public NOMXP(){}
+	public NOMXP()
+	{
+	}
 
 	private final String[] access=I(new String[]{"NOMXP"});
 	@Override

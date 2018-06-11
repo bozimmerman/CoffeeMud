@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Hold extends StdCommand
 {
-	public Hold(){}
+	public Hold()
+	{
+	}
 
 	private final String[] access=I(new String[]{"HOLD","HOL","HO","H"});
 	@Override

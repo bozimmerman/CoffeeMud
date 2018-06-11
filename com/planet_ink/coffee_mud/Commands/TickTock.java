@@ -35,7 +35,9 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class TickTock extends StdCommand
 {
-	public TickTock(){}
+	public TickTock()
+	{
+	}
 
 	private final String[] access=I(new String[]{"TICKTOCK"});
 	@Override

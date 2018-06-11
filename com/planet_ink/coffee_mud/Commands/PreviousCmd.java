@@ -35,7 +35,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class PreviousCmd extends StdCommand
 {
-	public PreviousCmd(){}
+	public PreviousCmd()
+	{
+	}
 
 	private final String[] access=I(new String[]{"!"});
 	@Override

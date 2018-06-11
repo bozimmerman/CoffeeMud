@@ -36,7 +36,9 @@ import java.util.*;
 
 public class Quit extends StdCommand
 {
-	public Quit(){}
+	public Quit()
+	{
+	}
 
 	private final String[] access=I(new String[]{"QUIT","QUI","Q"});
 	@Override

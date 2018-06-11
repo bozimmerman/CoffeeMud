@@ -35,7 +35,9 @@ import java.util.*;
 
 public class AutoImprovement extends StdCommand
 {
-	public AutoImprovement(){}
+	public AutoImprovement()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AUTOIMPROVEMENT"});
 	@Override

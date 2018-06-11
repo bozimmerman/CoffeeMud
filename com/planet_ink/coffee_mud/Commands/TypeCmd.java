@@ -35,7 +35,9 @@ import java.util.*;
 
 public class TypeCmd extends Go
 {
-	public TypeCmd(){}
+	public TypeCmd()
+	{
+	}
 
 	private final String[] access=I(new String[]{"TYPE","="});
 	@Override

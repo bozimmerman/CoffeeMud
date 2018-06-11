@@ -36,7 +36,9 @@ import java.util.*;
 
 public class Learn extends StdCommand
 {
-	public Learn(){}
+	public Learn()
+	{
+	}
 
 	private final String[]	access	= I(new String[] { "LEARN" });
 

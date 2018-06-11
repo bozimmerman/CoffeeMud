@@ -36,7 +36,9 @@ import java.io.IOException;
 
 public class Restring extends StdCommand
 {
-	public Restring(){}
+	public Restring()
+	{
+	}
 
 	private final String[] access=I(new String[]{"RESTRING"});
 	@Override

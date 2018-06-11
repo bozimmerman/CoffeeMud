@@ -35,7 +35,9 @@ import java.util.*;
 
 public class AutoExits extends StdCommand
 {
-	public AutoExits(){}
+	public AutoExits()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AUTOEXITS"});
 	@Override

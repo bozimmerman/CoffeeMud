@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Crawl extends Go
 {
-	public Crawl(){}
+	public Crawl()
+	{
+	}
 
 	private final String[] access=I(new String[]{"CRAWL","CR"});
 	@Override

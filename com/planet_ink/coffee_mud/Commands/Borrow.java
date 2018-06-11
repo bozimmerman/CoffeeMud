@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Borrow extends StdCommand
 {
-	public Borrow(){}
+	public Borrow()
+	{
+	}
 
 	private final String[] access=I(new String[]{"BORROW"});
 	@Override

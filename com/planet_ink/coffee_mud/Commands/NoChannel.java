@@ -35,7 +35,9 @@ import java.util.*;
 
 public class NoChannel extends StdCommand
 {
-	public NoChannel(){}
+	public NoChannel()
+	{
+	}
 
 	private final String[] access=null;
 

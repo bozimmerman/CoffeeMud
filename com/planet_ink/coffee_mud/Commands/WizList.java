@@ -35,7 +35,9 @@ import java.util.*;
 
 public class WizList extends StdCommand
 {
-	public WizList(){}
+	public WizList()
+	{
+	}
 
 	private final String[] access=I(new String[]{"WIZLIST"});
 	@Override

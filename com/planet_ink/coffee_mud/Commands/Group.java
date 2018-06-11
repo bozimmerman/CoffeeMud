@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Group extends StdCommand
 {
-	public Group(){}
+	public Group()
+	{
+	}
 
 	private final String[] access=I(new String[]{"GROUP","GR"});
 	@Override

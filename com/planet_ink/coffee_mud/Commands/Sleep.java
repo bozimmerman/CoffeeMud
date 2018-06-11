@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Sleep extends StdCommand
 {
-	public Sleep(){}
+	public Sleep()
+	{
+	}
 
 	private final String[] access=I(new String[]{"SLEEP","SL"});
 	@Override

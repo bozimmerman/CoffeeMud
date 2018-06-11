@@ -35,7 +35,9 @@ import java.util.*;
 
 public class DumpFile extends StdCommand
 {
-	public DumpFile(){}
+	public DumpFile()
+	{
+	}
 
 	private final String[] access=I(new String[]{"DUMPFILE"});
 	@Override

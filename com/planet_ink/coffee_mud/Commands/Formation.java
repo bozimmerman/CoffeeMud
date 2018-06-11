@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Formation extends StdCommand
 {
-	public Formation(){}
+	public Formation()
+	{
+	}
 
 	private final String[] access=I(new String[]{"FORMATION"});
 	@Override

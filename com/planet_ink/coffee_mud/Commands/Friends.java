@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Friends extends StdCommand
 {
-	public Friends(){}
+	public Friends()
+	{
+	}
 
 	private final String[] access=I(new String[]{"FRIENDS"});
 	@Override

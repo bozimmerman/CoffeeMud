@@ -35,7 +35,9 @@ import java.util.*;
 
 public class ChanWho extends StdCommand
 {
-	public ChanWho(){}
+	public ChanWho()
+	{
+	}
 
 	private final String[] access=I(new String[]{"CHANWHO"});
 	@Override

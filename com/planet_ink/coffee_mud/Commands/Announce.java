@@ -35,7 +35,9 @@ import java.util.*;
 */
 public class Announce extends StdCommand
 {
-	public Announce(){}
+	public Announce()
+	{
+	}
 
 	private final String[] access=I(new String[]{"ANNOUNCE","ANNOUNCETO","ANNOUNCEMSG"});
 	@Override

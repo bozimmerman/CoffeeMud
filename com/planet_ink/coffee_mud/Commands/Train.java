@@ -34,7 +34,9 @@ import java.util.*;
 */
 public class Train extends StdCommand
 {
-	public Train(){}
+	public Train()
+	{
+	}
 
 	private final String[] access=I(new String[]{"TRAIN","TR","TRA"});
 	@Override

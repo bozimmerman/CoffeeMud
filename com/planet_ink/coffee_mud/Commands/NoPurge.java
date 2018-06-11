@@ -35,7 +35,9 @@ import java.util.*;
 
 public class NoPurge extends StdCommand
 {
-	public NoPurge(){}
+	public NoPurge()
+	{
+	}
 
 	private final String[] access=I(new String[]{"NOPURGE"});
 	@Override

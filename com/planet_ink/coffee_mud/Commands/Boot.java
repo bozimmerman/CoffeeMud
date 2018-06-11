@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Boot extends StdCommand
 {
-	public Boot(){}
+	public Boot()
+	{
+	}
 
 	private final String[] access=I(new String[]{"BOOT"});
 	@Override

@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Every extends StdCommand
 {
-	public Every(){}
+	public Every()
+	{
+	}
 
 	private final String[] access=I(new String[]{"EVERY"});
 	@Override

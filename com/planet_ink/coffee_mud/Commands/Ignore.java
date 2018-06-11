@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Ignore extends StdCommand
 {
-	public Ignore(){}
+	public Ignore()
+	{
+	}
 
 	private final String[] access=I(new String[]{"IGNORE"});
 	@Override

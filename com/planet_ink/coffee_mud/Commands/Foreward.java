@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Foreward extends Go
 {
-	public Foreward(){}
+	public Foreward()
+	{
+	}
 
 	private final String[] access=I(new String[]{"FOREWARD","FORE"});
 	@Override

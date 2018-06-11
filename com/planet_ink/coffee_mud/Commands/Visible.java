@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Visible extends StdCommand
 {
-	public Visible(){}
+	public Visible()
+	{
+	}
 
 	private final String[] access=I(new String[]{"VISIBLE","VIS"});
 	@Override

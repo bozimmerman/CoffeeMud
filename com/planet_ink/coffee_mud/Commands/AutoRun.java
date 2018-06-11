@@ -35,7 +35,9 @@ import java.util.*;
 
 public class AutoRun extends StdCommand
 {
-	public AutoRun(){}
+	public AutoRun()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AUTORUN"});
 	@Override

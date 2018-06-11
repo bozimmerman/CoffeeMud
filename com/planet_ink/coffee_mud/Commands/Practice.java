@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Practice extends StdCommand
 {
-	public Practice(){}
+	public Practice()
+	{
+	}
 
 	private final String[] access=I(new String[]{"PRACTICE","PRAC"});
 	@Override

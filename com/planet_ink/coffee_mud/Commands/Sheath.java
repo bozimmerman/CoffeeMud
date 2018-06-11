@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Sheath extends StdCommand
 {
-	public Sheath(){}
+	public Sheath()
+	{
+	}
 
 	private final String[] access=I(new String[]{"SHEATH"});
 	@Override

@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Unlock extends StdCommand
 {
-	public Unlock(){}
+	public Unlock()
+	{
+	}
 
 	private final String[] access=I(new String[]{"UNLOCK","UNL","UN"});
 	@Override

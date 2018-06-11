@@ -35,7 +35,9 @@ import java.util.*;
 
 public class PollCmd extends StdCommand
 {
-	public PollCmd(){}
+	public PollCmd()
+	{
+	}
 
 	private final String[] access=I(new String[]{"POLL"});
 	@Override

@@ -34,7 +34,9 @@ import java.util.*;
 
 public class FactionList extends StdCommand
 {
-	public FactionList(){}
+	public FactionList()
+	{
+	}
 
 	private final String[] access=I(new String[]{"FACTIONS","FAC"});
 	@Override

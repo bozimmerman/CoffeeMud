@@ -34,7 +34,9 @@ import java.util.*;
 */
 public class Aft extends Go
 {
-	public Aft(){}
+	public Aft()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AFT"});
 	@Override

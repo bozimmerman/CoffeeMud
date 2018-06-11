@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Pull extends Go
 {
-	public Pull(){}
+	public Pull()
+	{
+	}
 
 	private final String[]	access	= I(new String[] { "PULL", "DRAG" });
 

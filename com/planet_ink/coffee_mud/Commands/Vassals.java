@@ -36,7 +36,9 @@ import java.util.*;
 
 public class Vassals extends StdCommand
 {
-	public Vassals(){}
+	public Vassals()
+	{
+	}
 
 	private final String[] access=I(new String[]{"VASSALS"});
 	@Override

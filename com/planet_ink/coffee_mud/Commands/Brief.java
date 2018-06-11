@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Brief extends StdCommand
 {
-	public Brief(){}
+	public Brief()
+	{
+	}
 
 	private final String[] access=I(new String[]{"BRIEF"});
 	@Override

@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Look extends StdCommand
 {
-	public Look(){}
+	public Look()
+	{
+	}
 
 	private final String[]	access	= I(new String[] { "LOOK", "LOO", "LO", "L" });
 

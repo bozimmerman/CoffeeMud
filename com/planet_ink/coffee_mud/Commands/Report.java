@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Report extends Skills
 {
-	public Report(){}
+	public Report()
+	{
+	}
 
 	private final String[] access=I(new String[]{"REPORT"});
 	@Override

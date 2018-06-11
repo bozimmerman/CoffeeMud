@@ -35,7 +35,9 @@ import java.util.*;
 
 public class West extends Go
 {
-	public West(){}
+	public West()
+	{
+	}
 
 	private final String[] access=I(new String[]{"WEST","W"});
 	@Override

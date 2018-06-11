@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Lock extends StdCommand
 {
-	public Lock(){}
+	public Lock()
+	{
+	}
 
 	private final String[] access=I(new String[]{"LOCK","LOC"});
 	@Override

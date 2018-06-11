@@ -41,7 +41,9 @@ import org.mozilla.javascript.ScriptableObject;
 
 public class JConsole extends StdCommand
 {
-	public JConsole(){}
+	public JConsole()
+	{
+	}
 
 	private final String[] access=I(new String[]{"JCONSOLE"});
 	@Override

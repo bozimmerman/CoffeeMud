@@ -35,7 +35,9 @@ import java.util.*;
 
 public class AutoGold extends StdCommand
 {
-	public AutoGold(){}
+	public AutoGold()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AUTOGOLD"});
 	@Override

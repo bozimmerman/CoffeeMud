@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Commands extends StdCommand
 {
-	public Commands(){}
+	public Commands()
+	{
+	}
 
 	private final String[] access=I(new String[]{"COMMANDS"});
 	@Override

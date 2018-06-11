@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Below extends Go
 {
-	public Below(){}
+	public Below()
+	{
+	}
 
 	private final String[] access=I(new String[]{"BELOW"});
 	@Override

@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Autoforward extends StdCommand
 {
-	public Autoforward(){}
+	public Autoforward()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AUTOFORWARD"});
 	@Override

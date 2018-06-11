@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Channels extends StdCommand
 {
-	public Channels(){}
+	public Channels()
+	{
+	}
 
 	private final String[] access=I(new String[]{"CHANNELS"});
 	@Override

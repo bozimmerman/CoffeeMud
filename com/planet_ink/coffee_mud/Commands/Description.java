@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Description extends StdCommand
 {
-	public Description(){}
+	public Description()
+	{
+	}
 
 	private final String[] access=I(new String[]{"DESCRIPTION"});
 	

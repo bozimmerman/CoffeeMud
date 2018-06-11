@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Starboard extends Go
 {
-	public Starboard(){}
+	public Starboard()
+	{
+	}
 
 	private final String[] access=I(new String[]{"STARBOARD","STB"});
 	@Override

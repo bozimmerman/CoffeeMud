@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Credits extends StdCommand
 {
-	public Credits(){}
+	public Credits()
+	{
+	}
 
 	private final String[] access=I(new String[]{"CREDITS"});
 	@Override

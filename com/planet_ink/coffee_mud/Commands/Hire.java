@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Hire extends StdCommand
 {
-	public Hire(){}
+	public Hire()
+	{
+	}
 
 	private final String[] access=I(new String[]{"HIRE"});
 	@Override

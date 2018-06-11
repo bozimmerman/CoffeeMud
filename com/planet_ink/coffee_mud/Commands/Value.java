@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Value extends StdCommand
 {
-	public Value(){}
+	public Value()
+	{
+	}
 
 	private final String[] access=I(new String[]{"VALUE","VAL","V"});
 	@Override

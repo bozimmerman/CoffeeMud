@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Mount extends StdCommand
 {
-	public Mount(){}
+	public Mount()
+	{
+	}
 
 	private final String[]	access	= I(new String[] { "MOUNT", "BOARD", "RIDE", "M" });
 

@@ -36,7 +36,9 @@ import java.util.*;
 
 public class WhoIs extends Who
 {
-	public WhoIs(){}
+	public WhoIs()
+	{
+	}
 
 	private final String[] access=I(new String[]{"WHOIS"});
 	@Override

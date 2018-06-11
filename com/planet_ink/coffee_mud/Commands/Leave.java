@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Leave extends StdCommand
 {
-	public Leave(){}
+	public Leave()
+	{
+	}
 
 	private final String[] access=I(new String[]{"LEAVE"});
 	@Override

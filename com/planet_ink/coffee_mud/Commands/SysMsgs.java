@@ -35,7 +35,9 @@ import java.util.*;
 
 public class SysMsgs extends StdCommand
 {
-	public SysMsgs(){}
+	public SysMsgs()
+	{
+	}
 
 	private final String[]	access	= I(new String[] { "SYSMSGS" });
 

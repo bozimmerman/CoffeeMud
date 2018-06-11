@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Pose extends StdCommand
 {
-	public Pose(){}
+	public Pose()
+	{
+	}
 
 	private final String[] access=I(new String[]{"POSE","NOPOSE"});
 	@Override

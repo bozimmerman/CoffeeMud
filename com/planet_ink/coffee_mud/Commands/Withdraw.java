@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Withdraw extends StdCommand
 {
-	public Withdraw(){}
+	public Withdraw()
+	{
+	}
 
 	private final String[] access=I(new String[]{"WITHDRAW"});
 	@Override

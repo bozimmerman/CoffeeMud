@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Split extends StdCommand
 {
-	public Split(){}
+	public Split()
+	{
+	}
 
 	private final String[] access=I(new String[]{"SPLIT"});
 	@Override

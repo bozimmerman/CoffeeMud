@@ -35,7 +35,9 @@ import java.util.*;
 
 public class ATopics extends StdCommand
 {
-	public ATopics(){}
+	public ATopics()
+	{
+	}
 
 	private final String[] access=I(new String[]{"ARCTOPICS","ATOPICS"});
 	@Override

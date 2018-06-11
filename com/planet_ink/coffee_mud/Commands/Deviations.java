@@ -36,7 +36,9 @@ import java.util.*;
 
 public class Deviations extends StdCommand
 {
-	public Deviations(){}
+	public Deviations()
+	{
+	}
 
 	private final String[]	access	= I(new String[] { "DEVIATIONS" });
 

@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Prompt extends StdCommand
 {
-	public Prompt(){}
+	public Prompt()
+	{
+	}
 
 	private final String[] access=I(new String[]{"PROMPT"});
 	@Override

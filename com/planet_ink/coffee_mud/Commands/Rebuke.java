@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Rebuke extends StdCommand
 {
-	public Rebuke(){}
+	public Rebuke()
+	{
+	}
 
 	private final String[] access=I(new String[]{"REBUKE"});
 	@Override

@@ -36,7 +36,9 @@ import java.util.*;
 
 public class NoFollow extends Follow
 {
-	public NoFollow(){}
+	public NoFollow()
+	{
+	}
 
 	private final String[] access=I(new String[]{"NOFOLLOW","NOFOL"});
 	@Override

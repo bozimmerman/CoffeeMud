@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Up extends Go
 {
-	public Up(){}
+	public Up()
+	{
+	}
 
 	private final String[] access=I(new String[]{"UP","U"});
 	@Override

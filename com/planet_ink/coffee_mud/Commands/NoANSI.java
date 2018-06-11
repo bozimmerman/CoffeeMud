@@ -35,7 +35,9 @@ import java.util.*;
 
 public class NoANSI extends StdCommand
 {
-	public NoANSI(){}
+	public NoANSI()
+	{
+	}
 
 	private final String[] access=I(new String[]{"NOANSI","NOCOLOR","NOCOLOUR"});
 	@Override

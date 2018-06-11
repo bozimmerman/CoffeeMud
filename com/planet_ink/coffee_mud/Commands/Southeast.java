@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Southeast extends Go
 {
-	public Southeast(){}
+	public Southeast()
+	{
+	}
 
 	private final String[] access=I(new String[]{"SOUTHEAST","SE"});
 	@Override

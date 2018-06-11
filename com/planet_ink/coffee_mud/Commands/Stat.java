@@ -36,7 +36,9 @@ import java.util.concurrent.TimeUnit;
 
 public class Stat  extends Skills
 {
-	public Stat(){}
+	public Stat()
+	{
+	}
 
 	private final String[] access=I(new String[]{"STAT"});
 	@Override

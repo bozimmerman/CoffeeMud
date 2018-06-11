@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Wimpy extends StdCommand
 {
-	public Wimpy(){}
+	public Wimpy()
+	{
+	}
 
 	private final String[] access=I(new String[]{"WIMPY"});
 	@Override

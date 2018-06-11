@@ -36,7 +36,9 @@ import java.io.IOException;
 
 public class Poof extends StdCommand
 {
-	public Poof(){}
+	public Poof()
+	{
+	}
 
 	private final String[] access=I(new String[]{"POOF"});
 	@Override

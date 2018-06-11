@@ -35,7 +35,9 @@ import java.util.*;
 
 public class WizEmote extends StdCommand
 {
-	public WizEmote(){}
+	public WizEmote()
+	{
+	}
 
 	private final String[] access=I(new String[]{"WIZEMOTE"});
 	@Override

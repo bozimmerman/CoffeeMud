@@ -40,7 +40,9 @@ import java.io.InputStream;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Import extends StdCommand
 {
-	public Import(){}
+	public Import()
+	{
+	}
 
 	private final String[] access=I(new String[]{"IMPORT"});
 	@Override

@@ -34,7 +34,9 @@ import java.util.*;
 */
 public class ANSI extends StdCommand
 {
-	public ANSI(){}
+	public ANSI()
+	{
+	}
 
 	private final String[] access=I(new String[]{"ANSI","COLOR","COLOUR"});
 	@Override

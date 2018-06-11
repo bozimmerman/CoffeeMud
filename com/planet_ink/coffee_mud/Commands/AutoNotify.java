@@ -36,7 +36,9 @@ import java.util.*;
 public class AutoNotify extends StdCommand
 {
 
-	public AutoNotify(){}
+	public AutoNotify()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AUTONOTIFY"});
 	@Override

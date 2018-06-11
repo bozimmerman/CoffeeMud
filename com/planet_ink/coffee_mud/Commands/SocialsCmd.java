@@ -35,7 +35,9 @@ import java.util.*;
 
 public class SocialsCmd extends StdCommand
 {
-	public SocialsCmd(){}
+	public SocialsCmd()
+	{
+	}
 
 	private final String[] access=I(new String[]{"SOCIALS"});
 	@Override

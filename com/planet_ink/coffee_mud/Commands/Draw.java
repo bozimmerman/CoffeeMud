@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Draw extends Get
 {
-	public Draw(){}
+	public Draw()
+	{
+	}
 
 	private final String[] access=I(new String[]{"DRAW"});
 	@Override

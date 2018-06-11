@@ -35,7 +35,9 @@ import java.util.*;
 
 public class PageBreak extends StdCommand
 {
-	public PageBreak(){}
+	public PageBreak()
+	{
+	}
 
 	private final String[] access=I(new String[]{"PAGEBREAK"});
 	@Override

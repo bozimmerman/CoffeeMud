@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Fill extends StdCommand
 {
-	public Fill(){}
+	public Fill()
+	{
+	}
 
 	private final String[] access=I(new String[]{"FILL"});
 	@Override

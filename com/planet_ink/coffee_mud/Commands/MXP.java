@@ -35,7 +35,9 @@ import java.util.*;
 
 public class MXP extends StdCommand
 {
-	public MXP(){}
+	public MXP()
+	{
+	}
 
 	private final String[] access=I(new String[]{"MXP"});
 	@Override

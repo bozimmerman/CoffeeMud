@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Portside extends Go
 {
-	public Portside(){}
+	public Portside()
+	{
+	}
 
 	private final String[] access=I(new String[]{"PORTSIDE","PORT"});
 	@Override

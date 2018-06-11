@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Ban extends StdCommand
 {
-	public Ban(){}
+	public Ban()
+	{
+	}
 
 	private final String[] access=I(new String[]{"BAN"});
 	@Override

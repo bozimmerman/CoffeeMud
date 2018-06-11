@@ -35,7 +35,9 @@ import java.util.*;
 
 public class NoTeach extends StdCommand
 {
-	public NoTeach(){}
+	public NoTeach()
+	{
+	}
 
 	private final String[] access=I(new String[]{"NOTEACH"});
 	@Override

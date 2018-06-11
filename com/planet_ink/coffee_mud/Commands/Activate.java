@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Activate extends StdCommand
 {
-	public Activate(){}
+	public Activate()
+	{
+	}
 
 	private final String[] access=I(new String[]{"ACTIVATE","ACT","A",">"});
 	@Override

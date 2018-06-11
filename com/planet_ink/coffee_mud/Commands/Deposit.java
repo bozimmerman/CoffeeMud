@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Deposit extends StdCommand
 {
-	public Deposit(){}
+	public Deposit()
+	{
+	}
 
 	private final String[] access=I(new String[]{"DEPOSIT"});
 	@Override

@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Expire extends StdCommand
 {
-	public Expire(){}
+	public Expire()
+	{
+	}
 
 	private void unprotect(AccountStats stats)
 	{

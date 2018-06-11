@@ -34,7 +34,9 @@ import java.util.*;
 */
 public class AFK extends StdCommand
 {
-	public AFK(){}
+	public AFK()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AFK"});
 	@Override

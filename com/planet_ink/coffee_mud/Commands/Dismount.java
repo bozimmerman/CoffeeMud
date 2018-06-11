@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Dismount extends StdCommand
 {
-	public Dismount(){}
+	public Dismount()
+	{
+	}
 
 	private final String[] access=I(new String[]{"DISMOUNT"});
 	@Override

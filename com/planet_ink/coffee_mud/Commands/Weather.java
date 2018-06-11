@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Weather extends StdCommand
 {
-	public Weather(){}
+	public Weather()
+	{
+	}
 
 	private final String[] access=I(new String[]{"WEATHER"});
 	@Override

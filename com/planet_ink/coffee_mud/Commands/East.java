@@ -35,7 +35,9 @@ import java.util.*;
 
 public class East extends Go
 {
-	public East(){}
+	public East()
+	{
+	}
 
 	private final String[] access=I(new String[]{"EAST","E"});
 	@Override

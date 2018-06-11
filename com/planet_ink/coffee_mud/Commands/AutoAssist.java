@@ -35,7 +35,9 @@ import java.util.*;
 
 public class AutoAssist extends StdCommand
 {
-	public AutoAssist(){}
+	public AutoAssist()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AUTOASSIST"});
 	@Override

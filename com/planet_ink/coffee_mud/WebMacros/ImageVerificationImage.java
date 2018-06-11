@@ -75,7 +75,9 @@ public class ImageVerificationImage extends StdWebMacro
 		return true;
 	}
 	
-	public ImageVerificationImage (){}
+	public ImageVerificationImage ()
+	{
+	}
 
 	public static class ImgCacheEntry
 	{

@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Languages extends Skills
 {
-	public Languages(){}
+	public Languages()
+	{
+	}
 
 	private final String[] access=I(new String[]{"LANGUAGES","LANGS"});
 	@Override

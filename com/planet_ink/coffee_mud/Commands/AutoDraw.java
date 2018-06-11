@@ -35,7 +35,9 @@ import java.util.*;
 
 public class AutoDraw extends StdCommand
 {
-	public AutoDraw(){}
+	public AutoDraw()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AUTODRAW"});
 	@Override

@@ -35,7 +35,9 @@ import java.util.*;
 
 public class IMC2 extends StdCommand
 {
-	public IMC2(){}
+	public IMC2()
+	{
+	}
 
 	private final String[] access=I(new String[]{"IMC2"});
 	@Override

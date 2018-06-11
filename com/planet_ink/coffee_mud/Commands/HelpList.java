@@ -35,7 +35,9 @@ import java.util.*;
 
 public class HelpList extends StdCommand
 {
-	public HelpList(){}
+	public HelpList()
+	{
+	}
 
 	private final String[] access=I(new String[]{"HELPLIST","HLIST"});
 	@Override

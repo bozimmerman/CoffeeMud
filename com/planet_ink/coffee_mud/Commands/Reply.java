@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Reply extends StdCommand
 {
-	public Reply(){}
+	public Reply()
+	{
+	}
 
 	private final String[] access=I(new String[]{"REPLY","REP","RE"});
 	@Override

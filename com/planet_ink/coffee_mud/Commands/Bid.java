@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Bid extends StdCommand
 {
-	public Bid(){}
+	public Bid()
+	{
+	}
 
 	private final String[] access=I(new String[]{"BID"});
 	@Override

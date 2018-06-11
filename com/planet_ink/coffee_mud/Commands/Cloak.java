@@ -34,7 +34,9 @@ import java.util.*;
 */
 public class Cloak extends StdCommand
 {
-	public Cloak(){}
+	public Cloak()
+	{
+	}
 
 	private final String[] access=I(new String[]{"CLOAK"});
 	@Override

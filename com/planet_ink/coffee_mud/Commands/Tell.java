@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Tell extends StdCommand
 {
-	public Tell(){}
+	public Tell()
+	{
+	}
 
 	private final String[]	access	= I(new String[] { "TELL", "T" });
 

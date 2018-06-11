@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Deactivate extends StdCommand
 {
-	public Deactivate(){}
+	public Deactivate()
+	{
+	}
 
 	private final String[] access=I(new String[]{"DEACTIVATE","DEACT","DEA","<"});
 	@Override

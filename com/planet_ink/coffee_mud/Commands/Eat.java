@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Eat extends StdCommand
 {
-	public Eat(){}
+	public Eat()
+	{
+	}
 
 	private final String[] access=I(new String[]{"EAT"});
 	@Override

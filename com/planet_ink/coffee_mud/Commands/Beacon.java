@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Beacon extends StdCommand
 {
-	public Beacon(){}
+	public Beacon()
+	{
+	}
 
 	private final String[] access=I(new String[]{"BEACON"});
 	@Override

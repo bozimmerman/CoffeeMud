@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Sounds extends StdCommand
 {
-	public Sounds(){}
+	public Sounds()
+	{
+	}
 
 	private final String[] access=I(new String[]{"SOUNDS","MSP"});
 	@Override

@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Pour extends StdCommand
 {
-	public Pour(){}
+	public Pour()
+	{
+	}
 
 	private final String[] access=I(new String[]{"POUR"});
 	@Override

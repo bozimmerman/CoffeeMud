@@ -36,7 +36,9 @@ import java.util.*;
 
 public class Logoff extends StdCommand
 {
-	public Logoff(){}
+	public Logoff()
+	{
+	}
 
 	private final String[] access=I(new String[]{"LOGOFF","LOGOUT"});
 	@Override

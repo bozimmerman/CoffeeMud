@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Dress extends StdCommand
 {
-	public Dress(){}
+	public Dress()
+	{
+	}
 
 	private final String[] access=I(new String[]{"DRESS"});
 	@Override

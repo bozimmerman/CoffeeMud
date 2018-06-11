@@ -35,7 +35,9 @@ import java.util.*;
 
 public class NoBattleSpam extends StdCommand
 {
-	public NoBattleSpam(){}
+	public NoBattleSpam()
+	{
+	}
 
 	private final String[] access = I(new String[] { "NOBATTLESPAM" });
 

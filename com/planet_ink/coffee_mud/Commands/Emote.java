@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Emote extends StdCommand
 {
-	public Emote(){}
+	public Emote()
+	{
+	}
 
 	private final String[] access=I(new String[]{"EMOTE",",",";",":"});
 	@Override

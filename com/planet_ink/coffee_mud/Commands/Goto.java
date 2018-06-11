@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Goto extends At
 {
-	public Goto(){}
+	public Goto()
+	{
+	}
 
 	private final String[] access=I(new String[]{"GOTO"});
 	@Override

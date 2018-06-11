@@ -36,7 +36,9 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Channel extends StdCommand
 {
-	public Channel(){}
+	public Channel()
+	{
+	}
 	@Override
 	public String[] getAccessWords()
 	{

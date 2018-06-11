@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Fire extends StdCommand
 {
-	public Fire(){}
+	public Fire()
+	{
+	}
 
 	private final String[] access=I(new String[]{"FIRE"});
 	@Override

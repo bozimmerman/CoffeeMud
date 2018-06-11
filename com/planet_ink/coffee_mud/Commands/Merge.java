@@ -39,7 +39,9 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class Merge extends StdCommand
 {
-	public Merge(){}
+	public Merge()
+	{
+	}
 
 	private final String[] access=I(new String[]{"MERGE"});
 	@Override

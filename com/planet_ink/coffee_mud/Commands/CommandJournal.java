@@ -37,7 +37,9 @@ import java.util.*;
 
 public class CommandJournal extends StdCommand
 {
-	public CommandJournal(){}
+	public CommandJournal()
+	{
+	}
 
 	public static String[] access=null;
 

@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Quiet extends StdCommand
 {
-	public Quiet(){}
+	public Quiet()
+	{
+	}
 
 	private final String[] access=I(new String[]{"QUIET"});
 	@Override

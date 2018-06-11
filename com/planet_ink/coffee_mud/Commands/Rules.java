@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Rules extends StdCommand
 {
-	public Rules(){}
+	public Rules()
+	{
+	}
 
 	private final String[] access=I(new String[]{"RULES"});
 	@Override

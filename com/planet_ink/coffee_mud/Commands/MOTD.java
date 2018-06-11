@@ -40,7 +40,9 @@ import java.util.*;
 
 public class MOTD extends StdCommand
 {
-	public MOTD(){}
+	public MOTD()
+	{
+	}
 
 	private final String[] access=I(new String[]{"MOTD","NEWS"});
 	@Override

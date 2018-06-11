@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Config extends StdCommand
 {
-	public Config(){}
+	public Config()
+	{
+	}
 
 	private final String[] access=I(new String[]{"CONFIG","AUTO"});
 	@Override

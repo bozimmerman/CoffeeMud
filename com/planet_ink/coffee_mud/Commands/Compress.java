@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Compress extends StdCommand
 {
-	public Compress(){}
+	public Compress()
+	{
+	}
 
 	private final String[] access=I(new String[]{"COMPRESS"});
 	@Override

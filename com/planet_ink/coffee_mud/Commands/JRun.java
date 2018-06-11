@@ -37,7 +37,9 @@ import org.mozilla.javascript.*;
 
 public class JRun extends StdCommand
 {
-	public JRun(){}
+	public JRun()
+	{
+	}
 
 	private final String[] access=I(new String[]{"JRUN"});
 	@Override

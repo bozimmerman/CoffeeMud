@@ -45,7 +45,9 @@ package com.planet_ink.coffee_mud.core;
  */
 public class B64Encoder
 {
-	private B64Encoder(){}
+	private B64Encoder()
+	{
+	}
 	/* Base 64 Encoding stuff */
 	private static byte[] ALPHABET;
 

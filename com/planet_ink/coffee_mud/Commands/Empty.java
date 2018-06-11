@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Empty extends Drop
 {
-	public Empty(){}
+	public Empty()
+	{
+	}
 
 	private final String[] access=I(new String[]{"EMPTY","EMP"});
 	@Override

@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Compare extends StdCommand
 {
-	public Compare(){}
+	public Compare()
+	{
+	}
 
 	private final String[] access=I(new String[]{"COMPARE","COMP"});
 	@Override

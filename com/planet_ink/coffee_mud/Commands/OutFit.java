@@ -35,7 +35,9 @@ import java.util.*;
 
 public class OutFit extends StdCommand
 {
-	public OutFit(){}
+	public OutFit()
+	{
+	}
 
 	private final String[] access=I(new String[]{"OUTFIT"});
 	@Override

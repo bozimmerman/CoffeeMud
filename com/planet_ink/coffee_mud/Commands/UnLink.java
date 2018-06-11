@@ -34,7 +34,9 @@ import java.util.*;
 */
 public class UnLink extends StdCommand
 {
-	public UnLink(){}
+	public UnLink()
+	{
+	}
 
 	private final String[] access=I(new String[]{"UNLINK"});
 	@Override

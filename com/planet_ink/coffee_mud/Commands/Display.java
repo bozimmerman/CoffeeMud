@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Display extends StdCommand
 {
-	public Display(){}
+	public Display()
+	{
+	}
 
 	private final String[] access=I(new String[]{"DISPLAY","SHOW"});
 	@Override

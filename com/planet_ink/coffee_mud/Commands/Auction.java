@@ -34,7 +34,9 @@ import java.util.*;
 */
 public class Auction extends Channel implements Tickable
 {
-	public Auction(){}
+	public Auction()
+	{
+	}
 
 	private final String[]	access	= I(new String[] { "AUCTION" });
 

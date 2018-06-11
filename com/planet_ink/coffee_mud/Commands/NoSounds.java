@@ -35,7 +35,9 @@ import java.util.*;
 
 public class NoSounds extends StdCommand
 {
-	public NoSounds(){}
+	public NoSounds()
+	{
+	}
 
 	private final String[] access=I(new String[]{"NOSOUNDS","NOMSP"});
 	@Override

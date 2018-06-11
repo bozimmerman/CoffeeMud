@@ -35,7 +35,9 @@ import java.util.*;
 
 public class AutoGuard extends StdCommand
 {
-	public AutoGuard(){}
+	public AutoGuard()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AUTOGUARD","GUARD"});
 	@Override

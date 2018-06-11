@@ -35,7 +35,9 @@ import java.util.*;
 
 public class LineWrap extends StdCommand
 {
-	public LineWrap(){}
+	public LineWrap()
+	{
+	}
 
 	private final String[] access=I(new String[]{"LINEWRAP"});
 	@Override

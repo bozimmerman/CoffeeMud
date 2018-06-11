@@ -36,7 +36,9 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Save extends StdCommand
 {
-	public Save(){}
+	public Save()
+	{
+	}
 
 	private final String[] access=I(new String[]{"SAVE"});
 	@Override

@@ -35,7 +35,9 @@ import java.util.*;
 
 public class AutoMelee extends StdCommand
 {
-	public AutoMelee(){}
+	public AutoMelee()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AUTOMELEE"});
 	@Override

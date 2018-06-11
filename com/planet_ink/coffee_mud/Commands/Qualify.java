@@ -36,7 +36,9 @@ import java.util.*;
 @SuppressWarnings("rawtypes")
 public class Qualify  extends Skills
 {
-	public Qualify(){}
+	public Qualify()
+	{
+	}
 
 	private final String[] access=I(new String[]{"QUALIFY","QUAL"});
 	@Override

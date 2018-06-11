@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Xml extends StdCommand
 {
-	public Xml(){}
+	public Xml()
+	{
+	}
 
 	private final String[] access=I(new String[]{"XML"});
 	@Override

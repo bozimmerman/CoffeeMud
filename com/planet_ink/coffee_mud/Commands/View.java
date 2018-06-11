@@ -35,7 +35,9 @@ import java.util.*;
 
 public class View extends StdCommand
 {
-	public View(){}
+	public View()
+	{
+	}
 
 	private final String[] access=I(new String[]{"VIEW"});
 	@Override

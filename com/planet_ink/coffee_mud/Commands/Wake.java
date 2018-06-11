@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Wake extends StdCommand
 {
-	public Wake(){}
+	public Wake()
+	{
+	}
 
 	private final String[] access=I(new String[]{"WAKE"});
 	@Override

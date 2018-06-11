@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Exits extends StdCommand
 {
-	public Exits(){}
+	public Exits()
+	{
+	}
 
 	private final String[] access = I(new String[] { "EXITS", "EX" });
 

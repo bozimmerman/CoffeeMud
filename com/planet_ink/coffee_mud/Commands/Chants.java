@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Chants extends Skills
 {
-	public Chants(){}
+	public Chants()
+	{
+	}
 
 	private final String[] access=I(new String[]{"CHANTS"});
 	@Override

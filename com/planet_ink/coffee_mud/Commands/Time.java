@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Time extends StdCommand
 {
-	public Time(){}
+	public Time()
+	{
+	}
 
 	private final String[] access=I(new String[]{"TIME","DATE"});
 	@Override

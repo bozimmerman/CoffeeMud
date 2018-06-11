@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Serve extends StdCommand
 {
-	public Serve(){}
+	public Serve()
+	{
+	}
 
 	private final String[] access=I(new String[]{"SERVE"});
 	@Override

@@ -35,7 +35,9 @@ import java.util.*;
 
 public class GConsider extends StdCommand
 {
-	public GConsider(){}
+	public GConsider()
+	{
+	}
 
 	private final String[] access=I(new String[]{"GCONSIDER","GCOS","GCO"});
 	@Override

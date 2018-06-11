@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Yell extends StdCommand
 {
-	public Yell(){}
+	public Yell()
+	{
+	}
 
 	private final String[] access=I(new String[]{"YELL","Y"});
 	@Override

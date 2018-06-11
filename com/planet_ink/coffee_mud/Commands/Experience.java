@@ -27,7 +27,9 @@ import java.util.*;
 */
 public class Experience extends StdCommand
 {
-	public Experience(){}
+	public Experience()
+	{
+	}
 
 	private final String[] access=I(new String[]{"EXPERIENCE","EXPER","XP","EXP"});
 	@Override

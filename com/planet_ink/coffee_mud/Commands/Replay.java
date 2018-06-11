@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Replay extends StdCommand
 {
-	public Replay(){}
+	public Replay()
+	{
+	}
 
 	private final String[] access=I(new String[]{"REPLAY"});
 	@Override

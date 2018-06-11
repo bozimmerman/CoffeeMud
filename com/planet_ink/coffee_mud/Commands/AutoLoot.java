@@ -35,7 +35,9 @@ import java.util.*;
 
 public class AutoLoot extends StdCommand
 {
-	public AutoLoot(){}
+	public AutoLoot()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AUTOLOOT"});
 	@Override

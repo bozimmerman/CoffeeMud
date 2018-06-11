@@ -35,7 +35,9 @@ import java.io.IOException;
 */
 public class Purge extends StdCommand
 {
-	public Purge(){}
+	public Purge()
+	{
+	}
 
 	private final String[] access=I(new String[]{"PURGE"});
 	@Override

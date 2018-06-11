@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Package extends StdCommand
 {
-	public Package(){}
+	public Package()
+	{
+	}
 
 	private final String[] access=I(new String[]{"PACKAGE"});
 	@Override

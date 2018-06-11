@@ -36,7 +36,9 @@ import java.util.*;
 */
 public class Email extends StdCommand
 {
-	public Email(){}
+	public Email()
+	{
+	}
 
 	private final String[] access=I(new String[]{"EMAIL"});
 	@Override

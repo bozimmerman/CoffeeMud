@@ -35,7 +35,9 @@ import java.util.*;
 
 public class PlayerKill extends StdCommand
 {
-	public PlayerKill(){}
+	public PlayerKill()
+	{
+	}
 
 	private final String[] access=I(new String[]{"PLAYERKILL","PKILL","PVP"});
 	@Override

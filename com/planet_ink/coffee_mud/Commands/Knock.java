@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Knock extends StdCommand
 {
-	public Knock(){}
+	public Knock()
+	{
+	}
 
 	private final String[] access=I(new String[]{"KNOCK"});
 	@Override

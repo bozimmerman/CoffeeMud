@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Say extends StdCommand
 {
-	public Say(){}
+	public Say()
+	{
+	}
 
 	private final String[] access=I(new String[]{"SAY",
 												 "ASK",

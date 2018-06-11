@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Snoop extends StdCommand
 {
-	public Snoop(){}
+	public Snoop()
+	{
+	}
 
 	private final String[] access=I(new String[]{"SNOOP"});
 	@Override

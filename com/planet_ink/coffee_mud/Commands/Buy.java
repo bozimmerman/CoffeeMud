@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Buy extends StdCommand
 {
-	public Buy(){}
+	public Buy()
+	{
+	}
 
 	private final String[] access=I(new String[]{"BUY"});
 	@Override

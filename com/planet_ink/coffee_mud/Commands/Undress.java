@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Undress extends StdCommand
 {
-	public Undress(){}
+	public Undress()
+	{
+	}
 
 	private final String[] access=I(new String[]{"UNDRESS"});
 	@Override

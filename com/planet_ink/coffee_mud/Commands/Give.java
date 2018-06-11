@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Give extends StdCommand
 {
-	public Give(){}
+	public Give()
+	{
+	}
 
 	private final String[]	access	= I(new String[] { "GIVE", "GI" });
 

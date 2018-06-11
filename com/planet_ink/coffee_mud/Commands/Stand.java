@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Stand extends StdCommand
 {
-	public Stand(){}
+	public Stand()
+	{
+	}
 
 	private final String[] access=I(new String[]{"STAND","ST","STA","STAN"});
 	@Override

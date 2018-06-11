@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Topics extends ATopics
 {
-	public Topics(){}
+	public Topics()
+	{
+	}
 
 	private final String[] access=I(new String[]{"TOPICS"});
 	@Override

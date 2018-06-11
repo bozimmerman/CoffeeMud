@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Help extends StdCommand
 {
-	public Help(){}
+	public Help()
+	{
+	}
 
 	private final String[] access=I(new String[]{"HELP"});
 	@Override

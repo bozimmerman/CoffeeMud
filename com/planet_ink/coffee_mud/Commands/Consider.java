@@ -35,7 +35,9 @@ import java.util.*;
 
 public class Consider extends StdCommand
 {
-	public Consider(){}
+	public Consider()
+	{
+	}
 
 	private final String[] access=I(new String[]{"CONSIDER","COS","CO"});
 	@Override

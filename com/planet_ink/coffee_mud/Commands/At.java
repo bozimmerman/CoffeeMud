@@ -34,7 +34,9 @@ import java.util.*;
 */
 public class At extends StdCommand
 {
-	public At(){}
+	public At()
+	{
+	}
 
 	private final String[] access=I(new String[]{"AT"});
 	@Override

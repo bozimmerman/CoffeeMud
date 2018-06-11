@@ -35,7 +35,9 @@ import java.util.*;
 
 public class I3Cmd extends StdCommand
 {
-	public I3Cmd(){}
+	public I3Cmd()
+	{
+	}
 
 	private final String[] access=I(new String[]{"I3"});
 	@Override
