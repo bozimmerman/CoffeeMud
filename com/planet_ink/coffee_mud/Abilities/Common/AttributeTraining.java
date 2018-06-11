@@ -198,11 +198,12 @@ public class AttributeTraining extends CommonSkill
 
 		verb=L("training");
 		trained=null;
-		String valid="Attributes include:";
+		String valid="Attributes include:  ";
 		final StringBuffer thingsToTrainFor=new StringBuffer("");
 		for(final int i: CharStats.CODES.BASECODES())
 			thingsToTrainFor.append(CharStats.CODES.DESC(i)+", ");
-		valid+=thingsToTrainFor.toString()+".";
+		if(thingsToTrainFor.length()>2)
+			valid+=thingsToTrainFor.toString().substring(0,thingsToTrainFor.length()-2)+".";
 		if(commands.size()<2)
 		{
 			commonTell(mob,L("Train whom in what attribute? @x1",valid));
