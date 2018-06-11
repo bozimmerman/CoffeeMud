@@ -144,8 +144,7 @@ public class Spell_DarknessGlobe extends Spell
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		if((msg.source()==affected)
-		&&(msg.target() instanceof Room)
+		if((msg.target() instanceof Room)
 		&&(msg.targetMinor()==CMMsg.TYP_LEAVE))
 		{
 			msg.addTrailerRunnable(new Runnable(){
@@ -156,6 +155,7 @@ public class Spell_DarknessGlobe extends Spell
 				{
 					if(!R.isInhabitant(M))
 						R.recoverRoomStats();
+					M.recoverPhyStats();
 				}
 			});
 		}
