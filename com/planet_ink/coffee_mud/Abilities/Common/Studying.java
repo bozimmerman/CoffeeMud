@@ -211,7 +211,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 				forget(mob,A.ID());
 		}
 	}
-	
+
 	protected boolean forget(final MOB mob, final String abilityID)
 	{
 		if(mob == null)
@@ -246,7 +246,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean autoInvocation(MOB mob, boolean force)
 	{
@@ -286,7 +286,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 			
 		return super.okMessage(myHost,msg);
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -415,7 +415,7 @@ public class Studying extends CommonSkill implements AbilityContainer
 			helpingAbility=null;
 		}
 	}
-	
+
 	public void distributeSkills(final MOB mob)
 	{
 		if(skillList.size() > 0)
@@ -473,63 +473,70 @@ public class Studying extends CommonSkill implements AbilityContainer
 	@Override
 	public boolean invoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
+		boolean quiet=false;
+		if((commands.size()==1)&&(commands.get(0).equalsIgnoreCase("quiet")))
+			quiet=commands.remove(0).equalsIgnoreCase("quiet");
+
 		if(commands.size()==0)
 		{
 			confirmSkills(mob);
-			mob.tell(L("You've been taught: "));
-			final List<List<String>> taughts = CMParms.parseDoubleDelimited(text(), ';', ',');
-			StringBuilder str=new StringBuilder("");
-			for(final List<String> l : taughts)
+			if(!quiet)
 			{
-				if(l.size()>1)
-				{
-					final Ability A=mob.fetchAbility(l.get(0));
-					final Ability eA=mob.fetchEffect(l.get(0));
-					final int prof=CMath.s_int(l.get(1));
-					if((A!=null)&&(!A.isSavable()))
-					{
-						A.setProficiency(prof);
-						if(eA!=null)
-						{
-							eA.unInvoke();
-							mob.delEffect(eA);
-						}
-						str.append(CMStrings.padRight(L(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]), 12)+": "+A.Name()+"\n\r");
-					}
-				}
-			}
-			str.append("\n\rYou may learn ");
-			for(int i=0;i<Ability.ACODE_DESCS.length;i++)
-			{
-				perLevelLimits limitObj = null;
-				for(perLevelLimits l : perLevelLimits.values())
-				{
-					if(l.doesRuleApplyTo(i))
-						limitObj = l;
-				}
-				if(limitObj == null)
-					continue;
-				if((getSupportedSkillType()!=null) && (getSupportedSkillType()!=limitObj))
-					continue;
-				final int classLevel = CMLib.ableMapper().qualifyingClassLevel(mob, this);
-				int numAllowed = limitObj.numAllowed(classLevel);
-				int numHas = 0;
+				mob.tell(L("You've been taught: "));
+				final List<List<String>> taughts = CMParms.parseDoubleDelimited(text(), ';', ',');
+				StringBuilder str=new StringBuilder("");
 				for(final List<String> l : taughts)
 				{
-					if(l.size()>0)
+					if(l.size()>1)
 					{
-						final Ability A1=CMClass.getAbility(l.get(0));
-						if(limitObj.doesRuleApplyTo(A1))
-							numHas++;
+						final Ability A=mob.fetchAbility(l.get(0));
+						final Ability eA=mob.fetchEffect(l.get(0));
+						final int prof=CMath.s_int(l.get(1));
+						if((A!=null)&&(!A.isSavable()))
+						{
+							A.setProficiency(prof);
+							if(eA!=null)
+							{
+								eA.unInvoke();
+								mob.delEffect(eA);
+							}
+							str.append(CMStrings.padRight(L(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]), 12)+": "+A.Name()+"\n\r");
+						}
 					}
 				}
-				str.append(numAllowed-numHas).append(" more ").append(CMLib.english().makePlural(Ability.ACODE_DESCS[i].toLowerCase())).append(", ");
+				str.append("\n\rYou may learn ");
+				for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+				{
+					perLevelLimits limitObj = null;
+					for(perLevelLimits l : perLevelLimits.values())
+					{
+						if(l.doesRuleApplyTo(i))
+							limitObj = l;
+					}
+					if(limitObj == null)
+						continue;
+					if((getSupportedSkillType()!=null) && (getSupportedSkillType()!=limitObj))
+						continue;
+					final int classLevel = CMLib.ableMapper().qualifyingClassLevel(mob, this);
+					int numAllowed = limitObj.numAllowed(classLevel);
+					int numHas = 0;
+					for(final List<String> l : taughts)
+					{
+						if(l.size()>0)
+						{
+							final Ability A1=CMClass.getAbility(l.get(0));
+							if(limitObj.doesRuleApplyTo(A1))
+								numHas++;
+						}
+					}
+					str.append(numAllowed-numHas).append(" more ").append(CMLib.english().makePlural(Ability.ACODE_DESCS[i].toLowerCase())).append(", ");
+				}
+				final String fstr=str.toString();
+				if(fstr.endsWith(", "))
+					mob.tell(fstr.substring(0,fstr.length()-2)+".");
+				else
+					mob.tell(fstr);
 			}
-			final String fstr=str.toString();
-			if(fstr.endsWith(", "))
-				mob.tell(fstr.substring(0,fstr.length()-2)+".");
-			else
-				mob.tell(fstr);
 			return true;
 		}
 		if((commands.size()>0)&&(commands.size()<3))

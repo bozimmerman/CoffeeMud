@@ -203,10 +203,11 @@ public class Skill_HonoraryDegreeCommoner extends StdSkill
 							final String[] degree = allDegrees[ci];
 							if(pStats.getTitles().contains(degree[DEG_TITLE]))
 							{
-								while(CMParms.numContains(pStats.getTitles(), degree[DEG_TITLE]) > 1)
-									pStats.getTitles().remove(degree[DEG_TITLE]);
 								if(!this.myClasses.contains(degree))
-									pStats.getTitles().remove(degree[DEG_TITLE]);
+								{
+									while(CMParms.numContains(pStats.getTitles(), degree[DEG_TITLE]) > 1)
+										pStats.getTitles().remove(degree[DEG_TITLE]);
+								}
 							}
 							else
 							if(this.myClasses.contains(degree))

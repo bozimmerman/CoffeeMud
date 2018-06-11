@@ -1465,7 +1465,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			&&(stillExists))
 			{
 				final Ability A=CMClass.getAbility("Disease_Amnesia");
-				if((A!=null)&&(target.fetchEffect(A.ID())==null)&&(!CMSecurity.isAbilityDisabled(A.ID())))
+				if((A!=null)
+				&&(target.fetchEffect(A.ID())==null)
+				&&(!CMSecurity.isAbilityDisabled(A.ID())))
 					A.invoke(target,target,true,0);
 			}
 
@@ -1540,7 +1542,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				for(int i=bodyRoom.numItems()-1;i>=0;i--)
 				{
 					final Item item=bodyRoom.getItem(i);
-					if((item!=null)&&(item.container()==body))
+					if((item!=null)
+					&&(item.container()==body))
 						item.setContainer(null);
 				}
 				body.destroy();
