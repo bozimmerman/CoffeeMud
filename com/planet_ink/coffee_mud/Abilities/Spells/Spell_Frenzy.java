@@ -90,7 +90,7 @@ public class Spell_Frenzy extends Spell
 			f=5.0f;
 		affectableStats.setDamage(affectableStats.damage()+(int)Math.round(CMath.div(affectableStats.damage(),6.0-f)));
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(CMath.div(affectableStats.attackAdjustment(),6.0-f)));
-		affectableStats.setArmor(affected.basePhyStats().armor()+30+(3*xlvl));
+		affectableStats.setArmor(affectableStats.armor()+30+(3*xlvl));
 	}
 
 	@Override
