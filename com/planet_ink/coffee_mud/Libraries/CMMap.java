@@ -3959,6 +3959,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		final long curDistance = getDistanceFrom(FROM.coordinates(), TO.coordinates());
 		final double baseDistance=FROM.speed();
+		if(baseDistance==0)
+			return curDistance;
 		final double cd2=(curDistance * curDistance);
 		final double pd2=(prevDistance * prevDistance);
 		final double sp2=(baseDistance * baseDistance);
@@ -3973,7 +3975,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		else
 		{
 			final double s=(prevDistance + curDistance + baseDistance)/2.0;
-			final double area = Math.pow((s*(s-prevDistance)*(s-curDistance)*(s-baseDistance)),0.5);
+			final double area = Math.sqrt((s*(s-prevDistance)*(s-curDistance)*(s-baseDistance)));
 			final double height=2.0 * (area/baseDistance);
 			minDistance=Math.round(height);
 		}
