@@ -247,7 +247,7 @@ public interface Technical extends Item
 				else 
 				if (Double.class.isAssignableFrom(parms[i]) || Float.class.isAssignableFrom(parms[i]))
 				{
-					if (!CMath.isDouble(parts[i + 1]))
+					if (!CMath.isNumber(parts[i + 1]))
 						return null;
 					if (Float.class.isAssignableFrom(parms[i]))
 						resp[i] = Float.valueOf(parts[i + 1]);
