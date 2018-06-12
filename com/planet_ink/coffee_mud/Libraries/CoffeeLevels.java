@@ -521,7 +521,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		
 		amount=gainLeigeExperience(mob, amount, quiet);
 
-		CMLib.players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
+		CMLib.get(mob.session())._players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
 		if(homageMessage==null)
 			homageMessage="";
 		
@@ -593,7 +593,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		amount=gainLeigeExperience(mob, amount, quiet);
 		amount=gainClanExperience(mob, amount);
 
-		CMLib.players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
+		CMLib.get(mob.session())._players().bumpPrideStat(mob,PrideStat.EXPERIENCE_GAINED, amount);
 		final PlayerStats pStats=mob.playerStats();
 		if((pStats!=null)
 		&&(CMProps.getIntVar(CMProps.Int.RP_AWARD_PCT)>0)

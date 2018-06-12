@@ -50,8 +50,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public final static String[]			fwords				= { "calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf" };
 	public final static String[]			frwords				= { "calves", "halves", "knives", "lives", "wives", "elves", "selves", "shelves", "leaves", "sheaves", "thieves", "loaves", "wolves" };
 	public final static String[]			fnouns				= { "bison", "buffalo", "carpcod", "deer", "fish", "moose", "pike", "salmon", "sheep", "shrimp", "squid", "trout" };
-	public final static String[]			feewords1			= { "foot", "goose", "louse", "dormouse", "man", "mouse", "tooth", "woman" };
-	public final static String[]			feewords2			= { "feet", "geese", "lice", "dormice", "men", "mice", "teeth", "women" };
+	public final static String[]			feewords1			= { "foot", "goose", "louse", "dormouse", "man", "mouse", "tooth", "woman", "ox", "child", "brother" };
+	public final static String[]			feewords2			= { "feet", "geese", "lice", "dormice", "men", "mice", "teeth", "women", "oxen", "children", "brethren" };
 	
 	public final static List<Environmental>	empty				= new ReadOnlyVector<Environmental>(1);
 

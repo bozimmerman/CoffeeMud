@@ -161,7 +161,7 @@ public class Skill_RacialLore extends StdSkill
 		if(room.okMessage(mob,msg))
 		{
 			room.send(mob,msg);
-			List<String> tidbits = new ArrayList<String>();
+			final List<String> tidbits = new ArrayList<String>();
 			final int expertise = super.getXLEVELLevel(mob);
 			tidbits.add(L("they are part of the genus @x1",targetR.racialCategory()));
 			String s=targetR.getStatAdjDesc();
