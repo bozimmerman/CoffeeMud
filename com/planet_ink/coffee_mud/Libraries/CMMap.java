@@ -503,7 +503,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		sectorName.append(zsecs[(secDeZ < 0)?(zsecs.length+secDeZ):secDeZ]);
 		return sectorName.toString();
 	}
-	
+
 	@Override
 	public long[] getInSectorCoords(long[] coordinates)
 	{
@@ -530,7 +530,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		sectorCoords[2] -= (secDeZ * dmsPerZSector) / 1000;
 		return sectorCoords;
 	}
-	
+
 	@Override
 	public void moveSpaceObject(final SpaceObject O, final double[] accelDirection, final long newAccelleration)
 	{
@@ -558,26 +558,26 @@ public class CMMap extends StdLibrary implements WorldMap
 			finalDelta = Math.abs(PI_TIMES_2-finalDelta);
 		return finalDelta;
 	}
-	
+
 	@Override
 	public double moveSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final long newAccelleration)
 	{
-		final double directionYaw = curDirection[0];
-		final double directionPitch = (curDirection[1] > Math.PI) ? Math.abs(Math.PI-curDirection[1]) : curDirection[1];
+		final double curDirectionYaw = curDirection[0];
+		final double curDirectionPitch = (curDirection[1] > Math.PI) ? Math.abs(Math.PI-curDirection[1]) : curDirection[1];
 
-		final double facingYaw = accelDirection[0];
-		final double facingPitch = (accelDirection[1] > Math.PI) ? Math.abs(Math.PI-accelDirection[1]) : accelDirection[1];
+		final double accelDirectionYaw = accelDirection[0];
+		final double accelDirectionPitch = (accelDirection[1] > Math.PI) ? Math.abs(Math.PI-accelDirection[1]) : accelDirection[1];
 
 		final double currentSpeed = curSpeed;
 		final double acceleration = newAccelleration;
 
-		double yawDelta = (directionYaw >  facingYaw) ? (directionYaw - facingYaw) : (facingYaw - directionYaw);
-		if(yawDelta > Math.PI)
+		double yawDelta = (curDirectionYaw >  accelDirectionYaw) ? (curDirectionYaw - accelDirectionYaw) : (accelDirectionYaw - curDirectionYaw);
+		if(yawDelta > PI_TIMES_2)
 			yawDelta=PI_TIMES_2-yawDelta;
-		double pitchDelta = (directionPitch >  facingPitch) ? (directionPitch - facingPitch) : (facingPitch - directionPitch);
-		if(pitchDelta > PI_BY_2)
+		double pitchDelta = (curDirectionPitch >  accelDirectionPitch) ? (curDirectionPitch - accelDirectionPitch) : (accelDirectionPitch - curDirectionPitch);
+		if(pitchDelta > Math.PI)
 			pitchDelta=Math.PI-pitchDelta;
-		
+
 		double anglesDelta =  yawDelta + pitchDelta;
 		if(anglesDelta > Math.PI)
 			anglesDelta = Math.abs(PI_TIMES_2-anglesDelta);
@@ -585,16 +585,16 @@ public class CMMap extends StdLibrary implements WorldMap
 
 		double newDirectionYaw;
 		if(yawDelta < 0.1)
-			newDirectionYaw = facingYaw;
+			newDirectionYaw = accelDirectionYaw;
 		else
-			newDirectionYaw = directionYaw + ((directionYaw > facingYaw) ? -(accelerationMultiplier * Math.sin(yawDelta)) : (accelerationMultiplier * Math.sin(yawDelta)));
+			newDirectionYaw = curDirectionYaw + ((curDirectionYaw > accelDirectionYaw) ? -(accelerationMultiplier * Math.sin(yawDelta)) : (accelerationMultiplier * Math.sin(yawDelta)));
 		if (newDirectionYaw < 0.0)
 			newDirectionYaw = PI_TIMES_2 + newDirectionYaw;
 		double newDirectionPitch;
 		if(pitchDelta < 0.1)
-			newDirectionPitch = facingPitch;
+			newDirectionPitch = accelDirectionPitch;
 		else
-			newDirectionPitch = directionPitch + ((directionPitch > facingPitch) ? -(accelerationMultiplier * Math.sin(pitchDelta)) : (accelerationMultiplier * Math.sin(pitchDelta)));
+			newDirectionPitch = curDirectionPitch + ((curDirectionPitch > accelDirectionPitch) ? -(accelerationMultiplier * Math.sin(pitchDelta)) : (accelerationMultiplier * Math.sin(pitchDelta)));
 		if (newDirectionPitch < 0.0)
 			newDirectionPitch = PI_TIMES_2 + newDirectionPitch;
 
@@ -602,18 +602,23 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(newSpeed < 0)
 		{
 			newSpeed = -newSpeed;
-			newDirectionYaw = facingYaw;
-			newDirectionPitch = facingPitch;
+			newDirectionYaw = accelDirectionYaw;
+			newDirectionPitch = accelDirectionPitch;
 		}
 
 		//if((curDirection[0]>Math.PI)&&(curDirection[1]<=Math.PI))
 		//	newDirectionPitch=Math.PI+newDirectionPitch;
-
+		/*
+		System.out.println(CMLib.english().directionDescShort(curDirection)+"@"+curSpeed
+				+" -> "+CMLib.english().directionDescShort(accelDirection)+"@"+newAccelleration
+				+" = "+CMLib.english().directionDescShort(new double[]{newDirectionYaw,newDirectionPitch})+"@"+newSpeed
+				+"    ____ "+anglesDelta); //UBER-DEBUG
+		*/
 		curDirection[0]=newDirectionYaw;
 		curDirection[1]=newDirectionPitch;
 		return newSpeed;
 	}
-	
+
 	@Override
 	public TechComponent.ShipDir getDirectionFromDir(double[] facing, double roll, double[] direction)
 	{
@@ -644,7 +649,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return ShipDir.PORT;
 		return ShipDir.AFT;
 	}
-	
+
 	@Override
 	public double[] getDirection(SpaceObject FROM, SpaceObject TO)
 	{

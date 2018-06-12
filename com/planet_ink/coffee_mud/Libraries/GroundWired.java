@@ -400,7 +400,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					{
 						final long prevDistance=map.getDistanceFrom(startCoords, cO.coordinates());
 						final double minDistance=map.getMinDistanceFrom(O, prevDistance, cO);
-						final double[] directionTo=map.getDirection(cO, O);
+						final double[] directionTo=map.getDirection(O, cO);
 						if(((cO instanceof Area)||(cO.getMass() >= asteroidMass))
 						&&(prevDistance > (O.radius()+cO.radius()))
 						&&(oMass < moonletMass))
