@@ -400,19 +400,21 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					{
 						final long prevDistance=map.getDistanceFrom(startCoords, cO.coordinates());
 						final double minDistance=map.getMinDistanceFrom(O, prevDistance, cO);
-						final double[] directionTo=map.getDirection(O, cO);
+						final double[] directionTo=map.getDirection(cO, O);
 						if(((cO instanceof Area)||(cO.getMass() >= asteroidMass))
 						&&(prevDistance > (O.radius()+cO.radius()))
 						&&(oMass < moonletMass))
 						{
-							if(minDistance<(cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
+							final double graviRadiusMax=cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS;
+							if(minDistance<graviRadiusMax)
 							{
+								final double graviFactor=1.0-(minDistance/graviRadiusMax);
 								// can this cause slip-through?
 								final long mass = Math.max(1,oMass / 1000);
 								if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 									Log.debugOut("SpaceShip "+O.name()+" is gravitating "+(SpaceObject.ACCELLERATION_G * mass)+" towards " +cO.Name());
-								long amountToMove = SpaceObject.ACCELLERATION_G * mass;
-								final long minMove=Math.round(prevDistance - (O.radius()+cO.radius()));
+								long amountToMove = Math.round(CMath.mul(SpaceObject.ACCELLERATION_G,mass)*graviFactor);
+								final long minMove=Math.round(prevDistance - (O.radius()+cO.radius())*graviFactor);
 								if(amountToMove > minMove)
 									amountToMove = minMove;
 								map.moveSpaceObject(O, directionTo, amountToMove); 

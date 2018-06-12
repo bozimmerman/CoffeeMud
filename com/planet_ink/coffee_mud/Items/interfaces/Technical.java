@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /*
@@ -197,6 +198,13 @@ public interface Technical extends Item
 				else 
 				if (!parms[i].isAssignableFrom(parts[i].getClass()))
 					return "";
+				else
+				if(parts[i] instanceof Double)
+				{
+					final DecimalFormat df = new DecimalFormat("#");
+					df.setMaximumFractionDigits(8);
+					str.append(" ").append(df.format(((Double)parts[i]).doubleValue()));
+				}
 				else
 					str.append(" ").append(parts[i].toString());
 			}

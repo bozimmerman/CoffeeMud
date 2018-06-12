@@ -125,7 +125,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	public Room unDock(boolean moveToOutside)
 	{
 		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-			Log.debugOut("SpaceShip "+name()+" is undocking"+(moveToOutside?"into space":""));
+			Log.debugOut("SpaceShip "+name()+" is undocking"+(moveToOutside?" into space":""));
 		final Room R=getIsDocked();
 		Room exitRoom = super.unDock(moveToOutside);
 		if(R instanceof LocationRoom)

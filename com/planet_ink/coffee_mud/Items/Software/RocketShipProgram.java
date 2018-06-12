@@ -464,7 +464,7 @@ public class RocketShipProgram extends GenShipProgram
 						||(distance > orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MAX))
 						{
 							//TODO: only if it is the proper direction away .. is this what I actually launched from?
-							System.out.println("*****LAUNCH COMPLETE++++");
+							System.out.println("*****LAUNCH COMPLETE++++");//BZ;DELME
 							this.launchEngines=null;
 							//this.lastSpeed=0.0;
 							//this.lastThrust=0;
@@ -572,14 +572,24 @@ public class RocketShipProgram extends GenShipProgram
 				try
 				{
 					final double accellerationTarget = SpaceObject.ACCELLERATION_TYPICALROCKET-1.0;
-					for(ShipEngine engineE : engines)
+					ShipEngine finalE = null;
+					double finalThrust = 0.0;
+					/**
+					 * OK, the problem with all this is about gravity, which is weight * 1dm/sec accel.
+					 * The ship technically 'launches' as soon as thrust achieves 1dm/sec, but then gravity
+					 * >>might<< pull it back down, so we should be waiting a second to see the 'net' speed change
+					 * in order to really know what's going on.
+					 * 
+					 * Also, gravity is pulling in the right direction, but not slowing me down. :(
+					 */
+					for(final ShipEngine engineE : engines)
 					{
 						if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.AFT))
 						&&(engineE.getMaxThrust()>SpaceObject.ACCELLERATION_G)
 						&&(engineE.getMinThrust()<SpaceObject.ACCELLERATION_PASSOUT))
 						{
 							int tries=10000;
-							double lastTryAmt=0.001;
+							double lastTryAmt=0.000001;
 							final CMMsg deactMsg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
 							msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 							while((readyEngines.size()==0)&&(--tries>0))
@@ -588,10 +598,14 @@ public class RocketShipProgram extends GenShipProgram
 								final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(lastTryAmt));
 								msg.setTargetMessage(code);
 								this.trySendMsgToItem(mob, engineE, msg);
-								if((this.lastThrust!=null)&&(this.lastThrust.doubleValue()>0.0))
+								if((this.lastThrust!=null)&&(this.lastThrust.doubleValue()>0.0)&&(ship.getIsDocked()==null))
 								{
 									if(this.lastThrust.doubleValue() >= (accellerationTarget *0.9))
+									{
 										readyEngines.add(engineE);
+										finalE=engineE;
+										finalThrust=lastTryAmt;
+									}
 									else
 									{
 										this.trySendMsgToItem(mob, engineE, deactMsg);
@@ -602,10 +616,19 @@ public class RocketShipProgram extends GenShipProgram
 								else
 								{
 									this.trySendMsgToItem(mob, engineE, deactMsg);
-									lastTryAmt += 0.001;
+									lastTryAmt *= 1.1;
 								}
 							}
+							if(finalE!=null)
+								break;
 						}
+					}
+					if(finalE!=null)
+					{
+						msg=CMClass.getMsg(mob, finalE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+						final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(0.0));
+						msg.setTargetMessage(code);
+						this.trySendMsgToItem(mob, finalE, msg);
 					}
 				}
 				finally
