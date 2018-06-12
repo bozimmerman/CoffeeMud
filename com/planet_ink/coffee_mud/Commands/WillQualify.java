@@ -120,9 +120,9 @@ public class WillQualify  extends Skills
 							thisLine.append("\n\r");
 							col = 1;
 						}
-						thisLine.append("^N[^H" + CMStrings.padRight("" + l, 3) + "^?] "
-								+ CMStrings.padRight("^<HELP^>"+E.name()+"^</HELP^>", 19) + " "
-								+ CMStrings.padRight(E.costDescription(), (col == 2) ? 12 : 13));
+						thisLine.append("^N[^H" + CMStrings.padRight("" + l, COL_LEN1) + "^?] "
+								+ CMStrings.padRight("^<HELP^>"+E.name()+"^</HELP^>", COL_LEN2) + " "
+								+ CMStrings.padRight(E.costDescription(), (col == 2) ? COL_LEN3 : COL_LEN4));
 					}
 				}
 			}
