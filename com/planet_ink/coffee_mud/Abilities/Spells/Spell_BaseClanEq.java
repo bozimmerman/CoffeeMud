@@ -166,6 +166,12 @@ public class Spell_BaseClanEq extends Spell
 			return false;
 		}
 
+		if(points > C.getClanLevel())
+		{
+			mob.tell(L("Your can not enchant above your clans level, which is @x1.",""+C.getClanLevel()));
+			return false;
+		}
+		
 		// Add clan power check end
 		if(target.fetchEffect("Prop_ClanEquipment")!=null)
 		{

@@ -135,7 +135,14 @@ public class Spell_ClanExperience extends Spell
 			mob.tell(L("Donate how much of your experience?"));
 			return false;
 		}
-		
+
+
+		if(amt > mob.getExperience())
+		{
+			mob.tell(L("You don't have enough experience to donate that much."));
+			return false;
+		}
+
 		if(C==null)
 		{
 			final Pair<Clan,Integer> clanPair=CMLib.clans().findPrivilegedClan(mob, Clan.Function.CLAN_BENEFITS);
