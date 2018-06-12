@@ -171,7 +171,10 @@ public class Thief_Swipe extends ThiefSkill
 			return false;
 
 		final String currency=CMLib.beanCounter().getCurrency(target);
-		int discoverChance=(target.charStats().getStat(CharStats.STAT_WISDOM)*5)
+		// higher is good for the player, lower is good for the npc
+		// leveldiff is + when npc has advantage, and - when player does.
+		int discoverChance=(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*3)
+							-(target.charStats().getStat(CharStats.STAT_WISDOM)*5)
 							-(levelDiff*3)
 							+(getX1Level(mob)*5);
 		final int times=timesPicked(target);
@@ -191,7 +194,7 @@ public class Thief_Swipe extends ThiefSkill
 		if(!CMLib.flags().isAliveAwakeMobile(target,true))
 		{
 			levelDiff=100;
-			discoverChance=0;
+			discoverChance=100;
 		}
 		final boolean success=proficiencyCheck(mob,levelDiff,auto);
 

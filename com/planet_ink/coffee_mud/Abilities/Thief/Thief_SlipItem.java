@@ -170,7 +170,10 @@ public class Thief_SlipItem extends ThiefSkill
 			return false;
 		}
 
-		int discoverChance=(target.charStats().getStat(CharStats.STAT_WISDOM)*5)
+		// higher is good for the player, lower is good for the npc
+		// leveldiff is + when npc has advantage, and - when player does.
+		int discoverChance=(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*3)
+							-(target.charStats().getStat(CharStats.STAT_WISDOM)*5)
 							-(levelDiff*5)
 							+(getX1Level(mob)*5);
 		if(!CMLib.flags().canBeSeenBy(mob,target))

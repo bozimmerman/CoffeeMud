@@ -212,6 +212,7 @@ public class Thief_Robbery extends ThiefSkill
 				stolen=null;
 		}
 
+		// higher is good for the player, lower is good for the npc
 		int discoverChance=(mob.charStats().getStat(CharStats.STAT_CHARISMA)-(target.charStats().getStat(CharStats.STAT_WISDOM))*5)
 						+(getX1Level(mob)*5);
 		final int times=timesPicked(target);
