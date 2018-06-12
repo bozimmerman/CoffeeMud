@@ -3978,7 +3978,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			final double s1=(s-prevDistance);
 			final double s2=(s-curDistance);
 			final double s3=(s-baseDistance);
-			final double aa=s1*s2*s3;
+			final double aa=s*s1*s2*s3;
 			final double area = Math.sqrt(aa);
 			final double height=2.0 * (area/baseDistance);
 			minDistance=Math.round(height);
