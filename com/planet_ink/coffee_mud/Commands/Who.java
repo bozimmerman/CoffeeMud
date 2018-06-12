@@ -111,25 +111,25 @@ public class Who extends StdCommand
 
 	public String getWhoName(MOB seenM)
 	{
-		String name=null;
+		String name="^N";
 		if(CMLib.flags().isCloaked(seenM))
-			name="("+(seenM.Name().equals(seenM.name())?seenM.titledName():seenM.name())+")";
+			name+="("+(seenM.Name().equals(seenM.name())?seenM.titledName():seenM.name())+")";
 		else
-			name=(seenM.Name().equals(seenM.name())?seenM.titledName():seenM.name());
+			name+=(seenM.Name().equals(seenM.name())?seenM.titledName():seenM.name());
 		if((seenM.session()!=null)&&(seenM.session().isAfk()))
-			name=name+(" (idle: "+CMLib.time().date2BestShortEllapsedTime(seenM.session().getIdleMillis())+")");
+			name=name+("^N (idle: "+CMLib.time().date2BestShortEllapsedTime(seenM.session().getIdleMillis())+")");
 		return name;
 	}
 
 	public String getPlainWhoName(MOB seenM)
 	{
-		String name=null;
+		String name="^N";
 		if(CMLib.flags().isCloaked(seenM))
-			name="("+seenM.Name()+")";
+			name+="("+seenM.Name()+")";
 		else
-			name=seenM.Name();
+			name+=seenM.Name();
 		if((seenM.session()!=null)&&(seenM.session().isAfk()))
-			name=name+(" (idle: "+CMLib.time().date2BestShortEllapsedTime(seenM.session().getIdleMillis())+")");
+			name+=("^N (idle: "+CMLib.time().date2BestShortEllapsedTime(seenM.session().getIdleMillis())+")");
 		return name;
 	}
 
