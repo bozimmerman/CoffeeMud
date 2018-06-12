@@ -49,6 +49,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public final static char[]				ALL_CHRS			= "ALL".toCharArray();
 	public final static String[]			fwords				= { "calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf" };
 	public final static String[]			frwords				= { "calves", "halves", "knives", "lives", "wives", "elves", "selves", "shelves", "leaves", "sheaves", "thieves", "loaves", "wolves" };
+	public final static String[]			fnouns				= { "bison", "buffalo", "carpcod", "deer", "fish", "moose", "pike", "salmon", "sheep", "shrimp", "squid", "trout" };
+	public final static String[]			feewords1			= { "foot", "goose", "louse", "dormouse", "man", "mouse", "tooth", "woman" };
+	public final static String[]			feewords2			= { "feet", "geese", "lice", "dormice", "men", "mice", "teeth", "women" };
+	
 	public final static List<Environmental>	empty				= new ReadOnlyVector<Environmental>(1);
 
 	@Override
@@ -138,6 +142,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return str;
 		final boolean uppercase=Character.isUpperCase(str.charAt(str.length()-1));
 		final String lowerStr=str.toLowerCase();
+		if(CMStrings.contains(fnouns, lowerStr))
+			return str;
+		final int x=CMParms.indexOf(feewords1, lowerStr);
+		if(x >= 0)
+			return uppercase ? feewords2[x].toUpperCase() : feewords2[x];
 		if(lowerStr.endsWith("is"))
 			return str.substring(0,str.length()-2)+(uppercase?"ES":"es");
 		if(lowerStr.endsWith("s")||lowerStr.endsWith("z")||lowerStr.endsWith("x")||lowerStr.endsWith("ch")||lowerStr.endsWith("sh"))
