@@ -26,7 +26,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.MathContext;
 import java.util.*;
 import java.util.Map.Entry;
 /*
@@ -52,6 +54,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		return "CMMap";
 	}
 
+	public static final BigDecimal TWO 					= BigDecimal.valueOf(2L);
+	
 	public final double			PI_TIMES_2				= Math.PI*2.0;
 	public final double			PI_BY_2					= Math.PI/2.0;
 	public final int			QUADRANT_WIDTH  		= 10;
@@ -3967,6 +3971,12 @@ public class CMMap extends StdLibrary implements WorldMap
 		final double angleCurDistance=Math.acos((pd2+sp2-cd2) / (2.0 * baseDistance * prevDistance));
 		final double anglePrevDistance=Math.acos((cd2+sp2-pd2) / (2.0 * baseDistance * curDistance));
 		final long minDistance;
+		if(baseDistance < curDistance/1000.0)
+			return curDistance;
+		else
+		if(baseDistance < prevDistance/1000.0)
+			return prevDistance;
+		else
 		if(angleCurDistance > 1.5708)
 			minDistance=curDistance;
 		else
@@ -3974,13 +3984,24 @@ public class CMMap extends StdLibrary implements WorldMap
 			minDistance=prevDistance;
 		else
 		{
-			final double s=(prevDistance/2.0) + (curDistance/2.0) + (baseDistance/2.0);
-			final double s1=(s-prevDistance);
-			final double s2=(s-curDistance);
-			final double s3=(s-baseDistance);
-			final double aa=s*s1*s2*s3;
-			final double area = Math.sqrt(aa);
-			final double height=2.0 * (area/baseDistance);
+			final BigDecimal s=new BigDecimal((prevDistance/2.0) + (curDistance/2.0) + (baseDistance/2.0));
+			final BigDecimal s1=s.subtract(new BigDecimal(prevDistance));
+			final BigDecimal s2=s.subtract(new BigDecimal(curDistance));
+			final BigDecimal s3=s.subtract(new BigDecimal(baseDistance));
+			final BigDecimal aa=s.multiply(s1).multiply(s2).multiply(s3);
+			final MathContext mc= MathContext.DECIMAL64;
+			BigDecimal area = aa.divide(TWO, mc);
+			boolean done = false;
+			final int maxIterations = mc.getPrecision() + 1;
+			for (int i = 0; !done && i < maxIterations; i++) 
+			{
+				BigDecimal r = aa.divide(area, mc);
+				r = r.add(area);
+				r = r.divide(TWO, mc);
+				done = r.equals(area);
+				area = r;
+			}
+			final double height=2.0 * (area.doubleValue()/baseDistance);
 			minDistance=Math.round(height);
 		}
 		return minDistance;
