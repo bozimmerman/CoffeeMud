@@ -368,10 +368,30 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		return true;
 	}
 
+	@Override
+	public long getGravityForce(SpaceObject S, SpaceObject cO)
+	{
+		final WorldMap map=CMLib.map();
+		final long distance=map.getDistanceFrom(S.coordinates(), cO.coordinates());
+		final long oMass = S.getMass();
+		if(((cO instanceof Area)||(cO.getMass() >= SpaceObject.ASTEROID_MASS))
+		&&(distance > (S.radius()+cO.radius()))
+		&&(oMass < SpaceObject.MOONLET_MASS))
+		{
+			final double graviRadiusMax=cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS;
+			if(distance<graviRadiusMax)
+			{
+				final double graviFactor=1.0-(distance/graviRadiusMax);
+				// can this cause slip-through?
+				final long mass = Math.max(1,oMass / 1000);
+				return Math.round(CMath.mul(SpaceObject.ACCELLERATION_G,mass)*graviFactor);
+			}
+		}
+		return 0;
+	}
+	
 	public void runSpace()
 	{
-		final long moonletMass = SpaceObject.MULTIPLIER_PLANET_MASS* SpaceObject.Distance.MoonRadius.dm / 10;
-		final long asteroidMass = moonletMass / 5;
 		final WorldMap map = CMLib.map();
 		for(final Enumeration<SpaceObject> o = map.getSpaceObjects(); o.hasMoreElements(); )
 		{
@@ -392,7 +412,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					cube=cube.expand(O.direction(),(long)speed);
 				}
 				boolean inAirFlag = false;
-				final List<SpaceObject> cOs=map.getSpaceObjectsWithin(O, 0, SpaceObject.Distance.LightMinute.dm);
+				final List<SpaceObject> cOs=map.getSpaceObjectsWithin(O, 0, 4*SpaceObject.Distance.LightSecond.dm);
 				final long oMass = O.getMass();
 				for(final SpaceObject cO : cOs)
 				{
@@ -400,30 +420,18 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					{
 						final long prevDistance=map.getDistanceFrom(startCoords, cO.coordinates());
 						final double minDistance=map.getMinDistanceFrom(O, prevDistance, cO);
-						final double[] directionTo=map.getDirection(O, cO);
-						if(((cO instanceof Area)||(cO.getMass() >= asteroidMass))
-						&&(prevDistance > (O.radius()+cO.radius()))
-						&&(oMass < moonletMass))
+						final long gravitationalMove=this.getGravityForce(O, cO);
+						if(gravitationalMove > 0)
 						{
-							final double graviRadiusMax=cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS;
-							if(minDistance<graviRadiusMax)
-							{
-								final double graviFactor=1.0-(minDistance/graviRadiusMax);
-								// can this cause slip-through?
-								final long mass = Math.max(1,oMass / 1000);
-								if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-									Log.debugOut("SpaceShip "+O.name()+" is gravitating "+(SpaceObject.ACCELLERATION_G * mass)+" towards " +cO.Name());
-								long amountToMove = Math.round(CMath.mul(SpaceObject.ACCELLERATION_G,mass)*graviFactor);
-								final long minMove=Math.round(prevDistance - (O.radius()+cO.radius())*graviFactor);
-								if(amountToMove > minMove)
-									amountToMove = minMove;
-								map.moveSpaceObject(O, directionTo, amountToMove); 
-								inAirFlag = true;
-							}
+							if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+								Log.debugOut("SpaceShip "+O.name()+" is gravitating "+gravitationalMove+" towards " +cO.Name());
+							final double[] directionTo=map.getDirection(O, cO);
+							map.moveSpaceObject(O, directionTo, gravitationalMove); 
+							inAirFlag = true;
 						}
 						if ((minDistance<(O.radius()+cO.radius()))
 						&&((speed>0)||(cO.speed()>0))
-						&&((oMass < moonletMass)||(cO.getMass() < moonletMass)))
+						&&((oMass < SpaceObject.MOONLET_MASS)||(cO.getMass() < SpaceObject.MOONLET_MASS)))
 						{
 							final MOB host=map.deity();
 							CMMsg msg=CMClass.getMsg(host, O, cO, CMMsg.MSG_COLLISION,null);

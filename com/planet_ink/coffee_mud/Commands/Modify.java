@@ -2331,7 +2331,7 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
-				mob.tell(L("\n\rYou cannot modify a '@x1'. However, you might try an "+listOfThings()+"."));
+				mob.tell(L("\n\rYou cannot modify a '@x1'. However, you might try an "+listOfThings()+".",allWord));
 		}
 		return false;
 	}

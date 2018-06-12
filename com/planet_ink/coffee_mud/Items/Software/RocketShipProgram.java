@@ -600,7 +600,7 @@ public class RocketShipProgram extends GenShipProgram
 								this.trySendMsgToItem(mob, engineE, msg);
 								if((this.lastThrust!=null)&&(this.lastThrust.doubleValue()>0.0)&&(ship.getIsDocked()==null))
 								{
-									if(this.lastThrust.doubleValue() >= (accellerationTarget *0.9))
+									if(this.lastThrust.doubleValue() >= (accellerationTarget *1.1))
 									{
 										readyEngines.add(engineE);
 										finalE=engineE;
@@ -622,13 +622,6 @@ public class RocketShipProgram extends GenShipProgram
 							if(finalE!=null)
 								break;
 						}
-					}
-					if(finalE!=null)
-					{
-						msg=CMClass.getMsg(mob, finalE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-						final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(0.0));
-						msg.setTargetMessage(code);
-						this.trySendMsgToItem(mob, finalE, msg);
 					}
 				}
 				finally

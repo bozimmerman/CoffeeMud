@@ -3974,8 +3974,12 @@ public class CMMap extends StdLibrary implements WorldMap
 			minDistance=prevDistance;
 		else
 		{
-			final double s=(prevDistance + curDistance + baseDistance)/2.0;
-			final double area = Math.sqrt((s*(s-prevDistance)*(s-curDistance)*(s-baseDistance)));
+			final double s=(prevDistance/2.0) + (curDistance/2.0) + (baseDistance/2.0);
+			final double s1=(s-prevDistance);
+			final double s2=(s-curDistance);
+			final double s3=(s-baseDistance);
+			final double aa=s1*s2*s3;
+			final double area = Math.sqrt(aa);
 			final double height=2.0 * (area/baseDistance);
 			minDistance=Math.round(height);
 		}

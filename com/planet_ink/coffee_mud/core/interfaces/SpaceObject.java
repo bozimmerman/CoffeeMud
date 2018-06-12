@@ -210,6 +210,11 @@ public interface SpaceObject extends Environmental, BoundedObject
 	public static final long MULTIPLIER_PLANET_MASS=933L;
 	/** multiplier by radius to get stars mass -- only off by 15 zeroes or so 19890000000000000000000000 is the actual number*/
 	public static final long MULTIPLIER_STAR_MASS=1989000L;
+	
+	/** normal total mass of a normal total moonlet of a normal total radius */
+	public static final long MOONLET_MASS = SpaceObject.MULTIPLIER_PLANET_MASS* SpaceObject.Distance.MoonRadius.dm / 10;
+	/** normal total mass of a normal total asteroid of a normal total radius */
+	public static final long ASTEROID_MASS = MOONLET_MASS / 5;
 
 	/** accelleration at which you are happy, in decameters/s */
 	public static final long ACCELLERATION_G=1;

@@ -115,7 +115,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		if((CMSecurity.isDebugging(DbgFlag.SPACESHIP))&&(getIsDocked()==null))
 			Log.debugOut("SpaceShip "+name()+" is docking at '"+R.displayText()+"' ("+R.roomID()+")");
 		if(R instanceof LocationRoom)
-			setCoords(((LocationRoom)R).coordinates());
+			setCoords(CMLib.map().moveSpaceObject(((LocationRoom)R).coordinates(), ((LocationRoom)R).getDirectionFromCore(), radius()));
 		CMLib.map().delObjectInSpace(getShipSpaceObject());
 		setSpeed(0);
 		super.dockHere(R);
@@ -136,7 +136,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		if(moveToOutside)
 		{
 			final SpaceObject o = getShipSpaceObject();
-			long[] newCoordinates = CMLib.map().moveSpaceObject(((LocationRoom)R).coordinates(), direction(), radius());
+			long[] newCoordinates = CMLib.map().moveSpaceObject(((LocationRoom)R).coordinates(), direction(), radius()+radius());
 			if((o != null)&&(R instanceof LocationRoom))
 				CMLib.map().addObjectToSpace(o,newCoordinates);
 		}
@@ -227,8 +227,25 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										break;
 									case AFT:
 									{
-										if((getIsDocked()!=null) && (amount > SpaceObject.ACCELLERATION_G))
-											unDock(true);
+										Room R=getIsDocked();
+										if(R!=null)
+										{
+											final SpaceObject rO=CMLib.map().getSpaceObject(R, true);
+											if(rO!=null)
+											{
+												if(amount > CMLib.tech().getGravityForce(this,rO))
+												{
+													unDock(true);
+													R=null;
+												}
+											}
+											else
+											if(amount > SpaceObject.ACCELLERATION_G)
+											{
+												unDock(true);
+												R=null;
+											}
+										}
 										// this will move it, but will also update speed and direction -- all good!
 										final double inAirFactor=(shipFlags.contains(ShipFlag.IN_THE_AIR))?(1.0-getOMLCoeff()):1.0;
 										//TODO: calculate inertia gforce damage here, and send the message
@@ -240,7 +257,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 											this.setSpeed(0);
 										}
 										final double finalRawThrust = (amount-1.0)*inAirFactor;
-										final long finalThrust = Math.round(finalRawThrust);
+										final long finalThrust = (R==null)?Math.round(finalRawThrust):0;
 										CMLib.map().moveSpaceObject(this,facing(),finalThrust);
 										final String code=Technical.TechCommand.THRUSTED.makeCommand(dir,Double.valueOf(finalRawThrust));
 										final MOB mob=CMClass.getFactoryMOB();

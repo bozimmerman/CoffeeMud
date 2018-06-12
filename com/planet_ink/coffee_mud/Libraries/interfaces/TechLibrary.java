@@ -188,4 +188,16 @@ public interface TechLibrary extends CMLibrary
 	 * @param newTechLevel the new tech level
 	 */
 	public void fixItemTechLevel(Electronics I, int newTechLevel);
+	
+	/**
+	 * If the two given objects are within an appropriate distance
+	 * from each other, this will return the correct amount of
+	 * accelleration force applied by the second object to the 
+	 * first.
+	 * 
+	 * @param S the object being pulled
+	 * @param cO the object pulling
+	 * @return the amount of gravity force, or 0
+	 */
+	public long getGravityForce(SpaceObject S, SpaceObject cO);
 }
