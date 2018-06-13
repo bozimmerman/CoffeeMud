@@ -4001,7 +4001,7 @@ public class StdMOB implements MOB
 			inventory.clear();
 			for (final Iterator<Item> i=items.descendingIterator();i.hasNext();)
 			{
-				final Item I = i.next();;
+				final Item I = i.next();
 				if (I != null)
 				{
 					// since were deleting you AND all your peers, no need for

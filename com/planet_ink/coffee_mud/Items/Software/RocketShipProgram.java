@@ -54,9 +54,19 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile List<TechComponent>	sensors		= null;
 	protected volatile List<TechComponent>	components	= null;
 	
-	protected volatile Double			lastThrust		= null;
-	protected volatile List<ShipEngine> launchEngines	= null;
-	protected final List<CMObject>		sensorReport	= new LinkedList<CMObject>();
+	protected volatile Double				lastThrust			= null;
+	protected volatile Double				lastInject			= null;
+	protected volatile RocketStateMachine	rocketState			= null;
+	protected volatile SpaceObject			programPlanet		= null;
+	protected volatile List<ShipEngine>		programEngines		= null;
+	protected final List<CMObject>			sensorReport		= new LinkedList<CMObject>();
+	
+	protected enum RocketStateMachine
+	{
+		LAUNCHSEARCH,
+		LAUNCHCHECK,
+		LAUNCHCRUISE
+	}
 
 	public RocketShipProgram()
 	{
@@ -446,47 +456,124 @@ public class RocketShipProgram extends GenShipProgram
 	}
 	
 	@Override
-	public boolean checkPowerCurrent(int value)
+	public boolean checkPowerCurrent(final int value)
 	{
-		final List<ShipEngine> engines = launchEngines;
-		if((engines != null) && (engines.size() > 0))
+		final RocketShipProgram.RocketStateMachine state=this.rocketState;
+		if(state == null)
+			return super.checkPowerCurrent(value);
+		final SpaceObject myShip=CMLib.map().getSpaceObject(this,true);
+		final List<ShipEngine> programEngines=this.programEngines;
+		final SpaceObject programPlanet=this.programPlanet;
+		final Double lastInject=this.lastInject;
+		if((myShip==null)||(this.programEngines==null))
 		{
-			final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
-			final List<SpaceObject> orbs=CMLib.map().getSpaceObjectsWithin(spaceObject,0,SpaceObject.Distance.LightMinute.dm);
-			if(spaceObject.speed()>0)
+			this.rocketState=null;
+			this.programEngines=null;
+			this.lastInject=null;
+			return super.checkPowerCurrent(value);
+ 		}
+		switch(state)
+		{
+		case LAUNCHCHECK:
+		case LAUNCHCRUISE:
+		case LAUNCHSEARCH:
+		{
+			if((programPlanet==null)||(programEngines.size()==0)||(lastInject==null))
 			{
-				for(final SpaceObject orb : orbs)
+				this.rocketState=null;
+				this.programEngines=null;
+				this.lastInject=null;
+				super.addScreenMessage(L("Launch program aborted with error."));
+				return super.checkPowerCurrent(value);
+			}
+			else
+			{
+				final long distance=CMLib.map().getDistanceFrom(myShip, programPlanet);
+				if(distance > (programPlanet.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
 				{
-					if(orb instanceof Area)
+					this.rocketState=null;
+					this.lastInject=null;
+					super.addScreenMessage(L("Launch program completed. Shutting down thrust."));
+					final MOB mob=CMClass.getFactoryMOB();
+					try
 					{
-						final long distance=CMLib.map().getDistanceFrom(spaceObject, orb);
-						if((distance > (orb.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
-						||(distance > orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MAX))
+						for(final ShipEngine engineE : programEngines)
 						{
-							//TODO: only if it is the proper direction away .. is this what I actually launched from?
-							System.out.println("*****LAUNCH COMPLETE++++");//BZ;DELME
-							this.launchEngines=null;
-							//this.lastSpeed=0.0;
-							//this.lastThrust=0;
-							//bestGuessThrusts.clear();
-						}
-						if(((distance > orb.radius())&&(distance < (orb.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
-						||((distance > orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MIN)&&(distance<orb.radius()*SpaceObject.MULTIPLIER_ORBITING_RADIUS_MAX)))
-						{
-							final double[] directionFromMeToOrb = CMLib.map().getDirection(spaceObject, orb);
-							final double[] myDirection=Arrays.copyOf(spaceObject.direction(),2);
-							myDirection[0]=directionFromMeToOrb[0]+Math.PI;
-							if(myDirection[0] > (2*Math.PI))
-								myDirection[0] = Math.abs(myDirection[0]-(2*Math.PI));
-							myDirection[1]=directionFromMeToOrb[1]+(Math.PI/2.0);
-							if(myDirection[1] > Math.PI)
-								myDirection[1] = Math.abs(myDirection[1]-Math.PI);
-							//TODO: this would be better
+							CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+							final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(0.0));
+							msg.setTargetMessage(code);
+							this.trySendMsgToItem(mob, engineE, msg);
 						}
 					}
+					finally
+					{
+						mob.destroy();
+					}
+					this.programEngines=null;
+				}
+			}
+			break;
+		}
+		default:
+			break;
+		}
+		Double newInject=this.lastInject;
+		switch(state)
+		{
+		case LAUNCHCHECK:
+		case LAUNCHSEARCH:
+		{
+			final double targetThrust = CMLib.tech().getGravityForce(myShip, programPlanet) + SpaceObject.ACCELLERATION_TYPICALROCKET; // 
+			if((this.lastThrust!=null) 
+			&& (targetThrust!= 0.0))
+			{
+				if((this.lastThrust.doubleValue() < (targetThrust * 0.9))
+				|| (this.lastThrust.doubleValue() > (targetThrust * 1.1)))
+				{
+					double factor = (targetThrust / this.lastThrust.doubleValue());
+					if(factor > 2.0)
+						factor=Math.sqrt(Math.sqrt(factor));
+					else
+					if(factor < 0.1)
+						factor*=5;
+					else
+					if(this.lastThrust.doubleValue()<targetThrust)
+						factor=1.1;
+					else
+						factor=0.9;
+					newInject = new Double(factor * newInject.doubleValue());
 				}
 			}
 		}
+		//$FALL-THROUGH$
+		case LAUNCHCRUISE:
+		{
+			final MOB mob=CMClass.getFactoryMOB();
+			try
+			{
+				for(final ShipEngine engineE : programEngines)
+				{
+					if((newInject != this.lastInject)||(!engineE.isConstantThruster()))
+					{
+						this.lastThrust=null;
+						CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+						final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(newInject.doubleValue()));
+						msg.setTargetMessage(code);
+						this.trySendMsgToItem(mob, engineE, msg);
+						this.lastInject=newInject;
+					}
+				}
+			}
+			finally
+			{
+				mob.destroy();
+			}
+			break;
+		}
+		default:
+			break;
+		}
+		
 		return true;
 	}
 
@@ -508,6 +595,7 @@ public class RocketShipProgram extends GenShipProgram
 					+ "sensor, or other system in your ship.  The DEACTIVATE command will turn off any system specified. "
 					+ "LAUNCH will take your ship off away from the planet. "
 					+ "STOP will attempt to negate all velocity. "
+					+ "LAND will land your ship on the nearest planet. "
 					+ "Otherwise, see ENGINE help for engine commands."));
 				return;
 			}
@@ -566,22 +654,18 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: Ship is already launched."));
 					return;
 				}
+				if(this.rocketState!=null)
+				{
+					super.addScreenMessage(L("Warning. Previous program cancelled."));
+					this.rocketState=null;
+					this.programEngines=null;
+				}
+				this.programPlanet=CMLib.map().getSpaceObject(ship.getIsDocked(), true);
 				final List<ShipEngine> readyEngines = new ArrayList<ShipEngine>(1);
 				final List<ShipEngine> engines = getEngines();
 				final MOB M=CMClass.getFactoryMOB();
 				try
 				{
-					final double accellerationTarget = SpaceObject.ACCELLERATION_TYPICALROCKET-1.0;
-					ShipEngine finalE = null;
-					double finalThrust = 0.0;
-					/**
-					 * OK, the problem with all this is about gravity, which is weight * 1dm/sec accel.
-					 * The ship technically 'launches' as soon as thrust achieves 1dm/sec, but then gravity
-					 * >>might<< pull it back down, so we should be waiting a second to see the 'net' speed change
-					 * in order to really know what's going on.
-					 * 
-					 * Also, gravity is pulling in the right direction, but not slowing me down. :(
-					 */
 					for(final ShipEngine engineE : engines)
 					{
 						if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.AFT))
@@ -598,20 +682,13 @@ public class RocketShipProgram extends GenShipProgram
 								final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(lastTryAmt));
 								msg.setTargetMessage(code);
 								this.trySendMsgToItem(mob, engineE, msg);
-								if((this.lastThrust!=null)&&(this.lastThrust.doubleValue()>0.0)&&(ship.getIsDocked()==null))
+								final Double thisLastThrust=this.lastThrust;
+								if((thisLastThrust!=null)
+								&&(thisLastThrust.doubleValue()>0.0)
+								&&(ship.getIsDocked()==null))
 								{
-									if(this.lastThrust.doubleValue() >= (accellerationTarget *1.1))
-									{
-										readyEngines.add(engineE);
-										finalE=engineE;
-										finalThrust=lastTryAmt;
-									}
-									else
-									{
-										this.trySendMsgToItem(mob, engineE, deactMsg);
-										double newDivider=this.lastThrust.doubleValue() / lastTryAmt;
-										lastTryAmt = accellerationTarget / newDivider;
-									}
+									readyEngines.add(engineE);
+									this.lastInject=new Double(lastTryAmt);
 								}
 								else
 								{
@@ -619,8 +696,6 @@ public class RocketShipProgram extends GenShipProgram
 									lastTryAmt *= 1.1;
 								}
 							}
-							if(finalE!=null)
-								break;
 						}
 					}
 				}
@@ -630,18 +705,22 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				if(readyEngines.size()==0)
 				{
-					this.launchEngines = null;
+					this.programEngines = null;
 					super.addScreenMessage(L("Error: Malfunctioning launch thrusters interface."));
 					return;
 				}
-				//this.lastSpeed=0.0;
-				//this.lastThrust=0;
-				this.launchEngines=readyEngines;
+				this.programEngines=readyEngines;
+				this.rocketState = RocketShipProgram.RocketStateMachine.LAUNCHSEARCH;
 				super.addScreenMessage(L("Launch procedure initialized."));
 				return;
 			}
 			else
 			if(uword.equalsIgnoreCase("STOP"))
+			{
+				//TODO:
+			}
+			else
+			if(uword.equalsIgnoreCase("LAND"))
 			{
 				//TODO:
 			}

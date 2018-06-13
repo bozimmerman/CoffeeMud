@@ -396,7 +396,9 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 				final int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/getFuelDivisor()));
 				if(me.consumeFuel(fuelToConsume))
 				{
-					if((me.getThrust() > 0) && (me.isConstantThruster()) && (CMParms.contains(me.getAvailPorts(),TechComponent.ShipDir.AFT)))
+					if((me.getThrust() > 0) 
+					&& (me.isConstantThruster()) 
+					&& (CMParms.contains(me.getAvailPorts(),TechComponent.ShipDir.AFT)))
 					{
 						final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
 						if(obj instanceof SpaceShip)

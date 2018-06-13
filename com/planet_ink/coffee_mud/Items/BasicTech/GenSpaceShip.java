@@ -205,8 +205,6 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 								final TechComponent.ShipDir dir=(TechComponent.ShipDir)parms[0];
 								final double amount=((Double)parms[1]).doubleValue();
 								final boolean isConst = ((Boolean)parms[2]).booleanValue();
-								if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-									Log.debugOut("SpaceShip "+name()+" accellerates "+amount+" to the "+dir.toString());
 								if(amount != 0)
 								{
 									switch(dir)
@@ -259,6 +257,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										final double finalRawThrust = (amount-1.0)*inAirFactor;
 										final long finalThrust = (R==null)?Math.round(finalRawThrust):0;
 										CMLib.map().moveSpaceObject(this,facing(),finalThrust);
+										if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+											Log.debugOut("SpaceShip "+name()+" accellerates "+finalThrust+" to the "+dir.toString());
 										final String code=Technical.TechCommand.THRUSTED.makeCommand(dir,Double.valueOf(finalRawThrust));
 										final MOB mob=CMClass.getFactoryMOB();
 										try
