@@ -321,13 +321,14 @@ public class WeatherAffects extends PuddleMaker
 				}
 				if((what!=null)
 				&&(!CMLib.flags().isInFlight(msg.source()))
+				&&(CMLib.flags().isStanding(msg.source()))
+				&&(msg.source().riding()==null)
 				&&(CMLib.dice().rollPercentage()>((msg.source().charStats().getStat(CharStats.STAT_DEXTERITY)*3)+25)))
 				{
 					if(R.show(msg.source(),null,CMMsg.MSG_WEATHER,L("^W<S-NAME> slip(s) on the "+what+" ground.^?")))
 					{
-						int oldDisposition=msg.source().basePhyStats().disposition();
-						oldDisposition=oldDisposition&(~(PhyStats.IS_SLEEPING|PhyStats.IS_SNEAKING|PhyStats.IS_SITTING|PhyStats.IS_CUSTOM));
-						msg.source().basePhyStats().setDisposition(oldDisposition|PhyStats.IS_SITTING);
+						Ability A=CMClass.getAbility("Skill_Trip");
+						A.startTickDown(msg.source(), msg.source(), 3);
 						msg.source().recoverPhyStats();
 						return false;
 					}
