@@ -4019,8 +4019,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-				if(lastKnownLocation!=null)
-					returnable=simpleEval(scripted,""+lastKnownLocation.numPCInhabitants(),arg2,arg1,"NUMPCSROOM");
+				final Room R=lastKnownLocation;
+				if(R!=null)
+				{
+					int num=0;
+					for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+					{
+						final MOB M=m.nextElement();
+						if((M!=null)&&(!M.isMonster()))
+							num++;
+					}
+					returnable=simpleEval(scripted,""+num,arg2,arg1,"NUMPCSROOM");
+				}
 				break;
 			}
 			case 79: // numpcsarea
@@ -6613,8 +6623,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 63: // numpcsroom
 			{
-				if(lastKnownLocation!=null)
-					results.append(""+lastKnownLocation.numPCInhabitants());
+				final Room R=lastKnownLocation;
+				if(R!=null)
+				{
+					int num=0;
+					for(final Enumeration<MOB> m=R.inhabitants();m.hasMoreElements();)
+					{
+						final MOB M=m.nextElement();
+						if((M!=null)&&(!M.isMonster()))
+							num++;
+					}
+					results.append(""+num);
+				}
 				break;
 			}
 			case 79: // numpcsarea
