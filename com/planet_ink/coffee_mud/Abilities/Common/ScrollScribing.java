@@ -482,7 +482,12 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 					}
 				}
 			}
-			
+			if((CMath.bset(theSpell.flags(), Ability.FLAG_CLANMAGIC)))
+			{
+				mob.tell(L("That spell cannot be scribed onto a scroll."));
+				return false;
+			}
+
 			final int resourceType=(ingredient.length()==0) ? -1 : RawMaterial.CODES.FIND_IgnoreCase(ingredient);
 
 			int[][] data = null;
