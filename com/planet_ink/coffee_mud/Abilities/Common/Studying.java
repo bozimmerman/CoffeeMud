@@ -234,13 +234,21 @@ public class Studying extends CommonSkill implements AbilityContainer
 			if(removed)
 			{
 				final String text=CMParms.combineWith(strList,';');
+				effA.setMiscText(text);
+				studA.setMiscText(text);
 				for(final Ability A : effA.skillList)
 				{
 					if(A.ID().equalsIgnoreCase(abilityID))
 						mob.delAbility(A);
 				}
-				effA.setMiscText(text);
-				studA.setMiscText(text);
+				if(studA.skillList!=null)
+				{
+					for(final Ability A : studA.skillList)
+					{
+						if(A.ID().equalsIgnoreCase(abilityID))
+							mob.delAbility(A);
+					}
+				}
 				return true;
 			}
 		}
