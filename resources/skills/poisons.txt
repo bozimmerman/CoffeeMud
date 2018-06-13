@@ -6,7 +6,7 @@ venom	DRINK	Poison_Venom	10	SOME SNAKE BLOOD	1
 mindsap	DRINK	Poison_Mindsap	12	LEAD	1	WATER	1	LAMP OIL	1								
 heartstopper	DRINK	Poison_Heartstopper	15	LAMP OIL	1	SEAWEED	1	POTATOES	1								
 goblindrip	DRINK	Poison_GoblinDrip	16	SOME GOBLIN BLOOD	1	COPPER	1										
-decreptifier	DRINK	Poison_Decreptifier	20	ESSENCE OF GOLEM	1	TOMATOES	1	WATER	1								
+decrepifier	DRINK	Poison_Decreptifier	20	ESSENCE OF GOLEM	1	TOMATOES	1	WATER	1								
 XXX	DRINK	Poison_XXX	18	SOME SNAKE BLOOD	1	LEAD	1	SOME TROLL BLOOD	1								
 slumberall	DRINK	Poison_Slumberall	9	POULTRY	1	MILK	1	SEAWEED	1								
 glowgell	DRINK	Poison_Glowgell	1	SOME INSECT GUTS	1	WATER	1										

@@ -41,7 +41,7 @@ public class Poison_Decreptifier extends Poison
 		return "Poison_Decreptifier";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Decreptifier");
+	private final static String localizedName = CMLib.lang().L("Decrepifier");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Poison_Decreptifier extends Poison
 		return localizedName;
 	}
 
-	private static final String[] triggerStrings =I(new String[] {"POISONDECREPT"});
+	private static final String[] triggerStrings =I(new String[] {"POISONDECREP"});
 	@Override
 	public String[] triggerStrings()
 	{
