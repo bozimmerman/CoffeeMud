@@ -215,7 +215,10 @@ public class Thief_SlipItem extends ThiefSkill
 			if(CMLib.dice().rollPercentage()<discoverChance)
 				hisStr=null;
 			else
+			{
+				str+=" ^Z<T-NAME> spots you!^.^N";
 				hisCode=hisCode|((target.mayIFight(mob))?CMMsg.MASK_MALICIOUS:0);
+			}
 
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_THIEF_ACT,str,hisCode,hisStr,CMMsg.NO_EFFECT,null);
 			if(mob.location().okMessage(mob,msg))
