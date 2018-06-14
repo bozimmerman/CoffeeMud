@@ -30,7 +30,7 @@ public class XVector<T> extends Vector<T>
 
 	public XVector(List<? extends T> V)
 	{
-		super();
+		super((V==null)?0:V.size());
 		if (V != null)
 			addAll(V);
 	}
@@ -47,7 +47,7 @@ public class XVector<T> extends Vector<T>
 
 	public XVector(T[] E)
 	{
-		super();
+		super((E==null)?0:E.length);
 		if (E != null)
 			for (final T o : E)
 				add(o);
@@ -90,7 +90,7 @@ public class XVector<T> extends Vector<T>
 
 	public XVector(Set<T> E)
 	{
-		super();
+		super((E==null)?0:E.size());
 		if (E != null)
 		{
 			for (final T o : E)
