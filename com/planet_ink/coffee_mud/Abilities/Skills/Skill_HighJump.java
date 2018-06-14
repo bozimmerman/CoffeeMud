@@ -84,7 +84,7 @@ public class Skill_HighJump extends StdSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_FITNESS;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_ACROBATIC;
 	}
 
 	@Override
@@ -97,7 +97,7 @@ public class Skill_HighJump extends StdSkill
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final Room R=mob.location();
+		Room R=mob.location();
 		if(R==null)
 			return false;
 		int dirCode=-1;
@@ -186,42 +186,60 @@ public class Skill_HighJump extends StdSkill
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-		final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> jump(s) @x1!",targetName));
-		if(R.okMessage(mob,msg))
+		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> jump(s) @x1!",targetName));
+		int jumps=1;
+		if((target==null)&&(dirCode>=0))
+			jumps+=(int)Math.round(super.getXLEVELLevel(mob)/2.5);
+		
+		for(int j=0;j<jumps;j++)
 		{
-			R.send(mob,msg);
-			success=proficiencyCheck(mob,0,auto);
-
-			if(mob.fetchEffect(ID())==null)
+			if(R.okMessage(mob,msg))
 			{
-				final Ability A=(Ability)this.copyOf();
-				A.setSavable(false);
-				try
+				R.send(mob,msg);
+				success=proficiencyCheck(mob,0,auto);
+	
+				if(mob.fetchEffect(ID())==null)
 				{
-					mob.addEffect(A);
-					mob.recoverPhyStats();
+					final Ability A=(Ability)this.copyOf();
+					A.setSavable(false);
+					try
+					{
+						mob.addEffect(A);
+						mob.recoverPhyStats();
+						if(dirCode>=0)
+							CMLib.tracking().walk(mob,dirCode,false,false);
+						else
+						if(target instanceof Rideable)
+							CMLib.commands().forceStandardCommand(mob, "Enter", new XVector<String>("ENTER",R.getContextName(target)));
+					}
+					finally
+					{
+						mob.delEffect(A);
+					}
+				}
+				else
+				{
 					if(dirCode>=0)
 						CMLib.tracking().walk(mob,dirCode,false,false);
 					else
 					if(target instanceof Rideable)
 						CMLib.commands().forceStandardCommand(mob, "Enter", new XVector<String>("ENTER",R.getContextName(target)));
 				}
-				finally
-				{
-					mob.delEffect(A);
-				}
 			}
-			else
+			if((j<jumps-1)&&(dirCode>=0))
 			{
-				if(dirCode>=0)
-					CMLib.tracking().walk(mob,dirCode,false,false);
-				else
-				if(target instanceof Rideable)
-					CMLib.commands().forceStandardCommand(mob, "Enter", new XVector<String>("ENTER",R.getContextName(target)));
+				if((mob.location()==R)
+				||(!CMLib.flags().isAiryRoom(mob.location())))
+					break;
+				R=mob.location();
+				if((R.getRoomInDir(dirCode)==null)
+				||(R.getExitInDir(dirCode)==null))
+					break;
+				msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> fly(s) @x1!",targetName));
 			}
-			mob.recoverPhyStats();
-			mob.location().executeMsg(mob,CMClass.getMsg(mob,mob.location(),CMMsg.MASK_MOVE|CMMsg.TYP_GENERAL,null));
 		}
+		mob.recoverPhyStats();
+		mob.location().executeMsg(mob,CMClass.getMsg(mob,mob.location(),CMMsg.MASK_MOVE|CMMsg.TYP_GENERAL,null));
 		return success;
 	}
 
