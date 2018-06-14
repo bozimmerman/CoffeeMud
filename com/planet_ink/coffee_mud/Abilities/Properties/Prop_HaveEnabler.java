@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.SuperPowers.SuperPower;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -159,6 +160,8 @@ public class Prop_HaveEnabler extends Prop_SpellAdder
 		{
 			if(removedAbles.size()>0)
 			{
+				final Physical lastMOB=this.lastMOB;
+				final List<String> lastMOBeffects = new XVector<String>(this.lastMOBeffects);
 				for(final Iterator<String> e=lastMOBeffects.iterator();e.hasNext();)
 				{
 					final String AID=e.next();
