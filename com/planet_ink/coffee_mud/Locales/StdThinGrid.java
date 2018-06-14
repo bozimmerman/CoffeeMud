@@ -673,9 +673,12 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			y=yGridSize()-1;
 			break;
 		case Directions.UP:
-		case Directions.DOWN:
 			x=xGridSize()/2;
 			y=yGridSize()/2;
+			break;
+		case Directions.DOWN:
+			x=xGridSize()/2;
+			y=yGridSize()-1;
 			break;
 		}
 		return getMakeGridRoom(x,y);
@@ -859,8 +862,6 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	@Override
 	public String getGridChildCode(final Room loc)
 	{
-		if(roomID().length()==0)
-			return "";
 		try
 		{
 			for(final ThinGridEntry entry : rooms)

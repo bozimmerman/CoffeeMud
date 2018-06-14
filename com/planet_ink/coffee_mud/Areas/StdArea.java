@@ -2004,7 +2004,8 @@ public class StdArea implements Area
 		{
 			if(R.roomID().length()==0)
 			{
-				if((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0))
+				if((R.getGridParent()!=null)
+				&&(R.getGridParent().roomID().length()>0))
 				{
 					final String id=R.getGridParent().getGridChildCode(R);
 					delProperRoomnumber(id);

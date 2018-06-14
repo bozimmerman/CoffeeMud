@@ -1365,8 +1365,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				domCond.append(" dry");
 			if(CMath.bset(climateType, Places.CLIMASK_WINDY))
 				domCond.append(" windy");
-			finalLookStr.append("^!RoomID:^N "+CMLib.map().getExtendedRoomID(room)+"\n\r"
-								+ "^!"+room.ID()+"^N: "+domType+" "+domCond.toString()+" <"+rscName+"> "+room.basePhyStats().weight()+"mv \n\r");
+			finalLookStr.append("^!RoomID:^N "+CMLib.map().getExtendedRoomID(room));
+			final GridLocale parent= room.getGridParent();
+			if((parent != null)&&(parent.roomID().length()==0))
+				finalLookStr.append(parent.getGridChildCode(room));
+			finalLookStr.append("\n\r");
+			finalLookStr.append("^!"+room.ID()+"^N: "+domType+" "+domCond.toString()+" <"+rscName+"> "+room.basePhyStats().weight()+"mv");
+			finalLookStr.append("\n\r");
 		}
 		if(CMLib.flags().canBeSeenBy(room,mob))
 		{

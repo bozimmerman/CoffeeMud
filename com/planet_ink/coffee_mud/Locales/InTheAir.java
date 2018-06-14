@@ -68,8 +68,8 @@ public class InTheAir extends StdRoom
 			return;
 		boolean foundReversed=false;
 		boolean foundNormal=false;
-		final Vector<Physical> needToFall=new Vector<Physical>();
-		final Vector<Physical> mightNeedAdjusting=new Vector<Physical>();
+		final List<Physical> needToFall=new LinkedList<Physical>();
+		final List<Physical> mightNeedAdjusting=new LinkedList<Physical>();
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			final MOB mob=room.fetchInhabitant(i);
@@ -82,12 +82,12 @@ public class InTheAir extends StdRoom
 					if(CMath.s_bool(A.getStat("REVERSED")))
 					{
 						foundReversed=true;
-						mightNeedAdjusting.addElement(mob);
+						mightNeedAdjusting.add(mob);
 					}
 					foundNormal=foundNormal||(A.proficiency()<=0);
 				}
 				else
-					needToFall.addElement(mob);
+					needToFall.add(mob);
 			}
 		}
 		for(int i=0;i<room.numItems();i++)
@@ -101,13 +101,13 @@ public class InTheAir extends StdRoom
 					if(CMath.s_bool(A.getStat("REVERSED")))
 					{
 						foundReversed=true;
-						mightNeedAdjusting.addElement(item);
+						mightNeedAdjusting.add(item);
 					}
 					foundNormal=foundNormal||(A.proficiency()<=0);
 				}
 				else
 				if(item.container()==null)
-					needToFall.addElement(item);
+					needToFall.add(item);
 			}
 		}
 		final boolean reversed=((foundReversed)&&(!foundNormal));

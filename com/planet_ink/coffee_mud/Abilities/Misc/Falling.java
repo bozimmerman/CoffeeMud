@@ -149,7 +149,7 @@ public class Falling extends StdAbility
 			else
 			{
 				R.show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> hit(s) the ground.@x1",CMLib.protocol().msp("splat.wav",50)));
-				if(CMath.div(damageToTake, mob.maxState().getHitPoints())>0.05)
+				if(CMath.div(damageToTake, mob.maxState().getHitPoints())>0.1)
 				{
 					LimbDamage damage = (LimbDamage)mob.fetchEffect("BrokenLimbs");
 					if(damage == null)

@@ -979,7 +979,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(A==null)
 			return "";
 		final GridLocale GR=R.getGridParent();
-		if(GR!=null)
+		if((GR!=null)&&(GR.roomID().length()>0))
 			return GR.getGridChildCode(R);
 		return R.roomID();
 	}

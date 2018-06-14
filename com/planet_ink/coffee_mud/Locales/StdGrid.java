@@ -970,8 +970,6 @@ public class StdGrid extends StdRoom implements GridLocale
 	@Override
 	public String getGridChildCode(Room loc)
 	{
-		if(roomID().length()==0)
-			return "";
 		final Room[][] subMap=getBuiltGrid();
 		if(subMap!=null)
 		{
