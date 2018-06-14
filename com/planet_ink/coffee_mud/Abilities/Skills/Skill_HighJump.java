@@ -192,7 +192,7 @@ public class Skill_HighJump extends StdSkill
 			jumps+=(int)Math.round(super.getXLEVELLevel(mob)/2.5);
 		
 		for(int j=0;j<jumps;j++)
-		{
+		{ 
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
