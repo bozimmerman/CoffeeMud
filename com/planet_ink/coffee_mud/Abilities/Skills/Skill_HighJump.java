@@ -84,7 +84,7 @@ public class Skill_HighJump extends StdSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_ACROBATIC;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_RACIALABILITY;
 	}
 
 	@Override
