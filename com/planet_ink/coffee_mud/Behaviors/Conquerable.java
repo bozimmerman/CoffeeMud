@@ -144,7 +144,7 @@ public class Conquerable extends Arrest
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST))
 					Log.debugOut("Conquest",holdingClan+" has laid waste to "+myArea.name()+".");
-				endClanRule();
+				endClanRule(L(" due to losing their clan"));
 				str.append(L("This area is laid waste by @x1.\n\r",holdingClan));
 			}
 		}
@@ -279,7 +279,7 @@ public class Conquerable extends Arrest
 		return false;
 	}
 
-	protected synchronized void endClanRule()
+	protected synchronized void endClanRule(String reason)
 	{
 		if(holdingClan.length()==0)
 			return;
@@ -336,12 +336,12 @@ public class Conquerable extends Arrest
 			if(holdingClan.length()>0)
 			{
 				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST))
-					Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+".");
+					Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+reason+".");
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 				for(int i=0;i<channels.size();i++)
 					CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("@x1 has lost control of @x2.",holdingClan,myArea.name()),false);
 				if(journalName.length()>0)
-					CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" loses control of "+myArea.name()+".","See the subject line.");
+					CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" loses control of "+myArea.name()+reason+".","See the subject line.");
 			}
 			final Law laws=getLaws(myArea,false);
 			if(laws.lawIsActivated())
@@ -642,7 +642,7 @@ public class Conquerable extends Arrest
 					&&(flagFound(A,prevHoldingClan)))
 						declareWinner(prevHoldingClan);
 					else
-						endClanRule();
+						endClanRule(L(" due to a missing flag"));
 				}
 			}
 
@@ -671,7 +671,7 @@ public class Conquerable extends Arrest
 							&&(flagFound(A,prevHoldingClan)))
 								declareWinner(prevHoldingClan);
 							else
-								endClanRule();
+								endClanRule(L(" due to revolt"));
 						}
 						else
 						{
@@ -949,7 +949,7 @@ public class Conquerable extends Arrest
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST))
 			Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" are conquered by "+clanID+", vanquishing '"+holdingClan+"'.");
 		if(holdingClan.length()>0)
-			endClanRule();
+			endClanRule(L(" due to being defeated by "+clanID));
 
 		revoltDown=REVOLTFREQ;
 		holdingClan=clanID;
@@ -1207,11 +1207,12 @@ public class Conquerable extends Arrest
 		if((msg.sourceMinor()==CMMsg.TYP_CLANEVENT)
 		&&(msg.sourceMessage().startsWith("-")))
 		{
-			if((holdingClan!=null)&&(holdingClan.equalsIgnoreCase(msg.sourceMessage().substring(1))))
+			if((holdingClan!=null)
+			&&(holdingClan.equalsIgnoreCase(msg.sourceMessage().substring(1))))
 			{
 				if(debugging)
 					Log.debugOut("Conquest",holdingClan+" no longer exists.");
-				endClanRule();
+				endClanRule(L(" due to clan dissolution"));
 			}
 		}
 		else
@@ -1360,7 +1361,7 @@ public class Conquerable extends Arrest
 				{
 					if(debugging)
 						Log.debugOut("Conquest",holdingClan+" no longer exists.");
-					endClanRule();
+					endClanRule(L(" due to an unclaimed flag"));
 				}
 				else
 				if(C.getClanRelations(srcC.clanID())==Clan.REL_WAR)
@@ -1465,7 +1466,7 @@ public class Conquerable extends Arrest
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST))
 				Log.debugOut("Conquest",holdingClan+" no longer exists.");
-			endClanRule();
+			endClanRule(L(" due to a lack of legal authority"));
 			return false;
 		}
 		final Pair<Clan,Integer> clanRole=M.getClanRole(C.clanID());
@@ -1490,7 +1491,7 @@ public class Conquerable extends Arrest
 			Log.debugOut("Conquest",holdingClan+" has "+totalControlPoints+" points and flag="
 				+flagFound(null,holdingClan)+" in law check.");
 		}
-		endClanRule();
+		endClanRule(L(" due to illegal conquest"));
 		return false;
 	}
 }
