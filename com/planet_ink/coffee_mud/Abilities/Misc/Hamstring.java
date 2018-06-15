@@ -167,6 +167,12 @@ public class Hamstring extends StdAbility
 		if(target == null)
 			return false;
 		
+		if(target.charStats().getBodyPart(Race.BODY_LEG)<1)
+		{
+			mob.tell(L("@x1 has no legs to hamstring!",target.name(mob)));
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
