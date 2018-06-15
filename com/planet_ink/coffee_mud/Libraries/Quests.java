@@ -1832,11 +1832,14 @@ public class Quests extends StdLibrary implements QuestManager
 						final QMCommand inputCommand = QMCommand.values()[inputCode];
 						switch(inputCommand)
 						{
-						case $TITLE: break;
+						case $TITLE:
+							break;
 						case $HIDDEN:
 							pageDV.setElementAt(step,4,defValue==null?"":defValue);
 							break;
-						case $LABEL: lastLabel=defValue; break;
+						case $LABEL:
+							lastLabel = defValue;
+							break;
 						case $EXPRESSION:
 						case $TIMEEXPRESSION:
 						case $UNIQUE_QUEST_NAME:

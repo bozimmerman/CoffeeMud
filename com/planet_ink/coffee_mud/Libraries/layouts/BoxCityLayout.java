@@ -156,10 +156,18 @@ public class BoxCityLayout extends AbstractLayout
 		{
 			switch(dir)
 			{
-			case Directions.NORTH: n=lSet.getNode(new long[]{((diameter+plusX)/2)+tryDiff,0}); break;
-			case Directions.SOUTH: n=lSet.getNode(new long[]{((diameter+plusX)/2)+tryDiff,-diameter+1}); break;
-			case Directions.EAST: n=lSet.getNode(new long[]{0,((-diameter+1)/2)+tryDiff}); break;
-			case Directions.WEST: n=lSet.getNode(new long[]{diameter+plusX-1,((-diameter+1)/2)+tryDiff}); break;
+			case Directions.NORTH:
+				n = lSet.getNode(new long[] { ((diameter + plusX) / 2) + tryDiff, 0 });
+				break;
+			case Directions.SOUTH:
+				n = lSet.getNode(new long[] { ((diameter + plusX) / 2) + tryDiff, -diameter + 1 });
+				break;
+			case Directions.EAST:
+				n = lSet.getNode(new long[] { 0, ((-diameter + 1) / 2) + tryDiff });
+				break;
+			case Directions.WEST:
+				n = lSet.getNode(new long[] { diameter + plusX - 1, ((-diameter + 1) / 2) + tryDiff });
+				break;
 			}
 			if((n!=null)&&(n.type()==LayoutTypes.leaf))
 				n=null;

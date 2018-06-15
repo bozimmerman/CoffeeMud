@@ -132,16 +132,36 @@ public class Prayer_SeekersPrayer extends Prayer
 					String starting;
 					switch(CMLib.dice().roll(1, 10, 0))
 					{
-					case 1: starting="The visions show an image of "; break;
-					case 2: starting="You see "; break;
-					case 3: starting="You receive divine feelings of "; break;
-					case 4: starting="A voice tells you of"; break;
-					case 5: starting="Someone whispers about"; break;
-					case 6: starting="It is revealed to you that"; break;
-					case 7: starting="In your visions, you see "; break;
-					case 8: starting="In your mind you hear about"; break;
-					case 9: starting="Your spirit tells you about"; break;
-					default: starting="You know of"; break;
+					case 1:
+						starting = "The visions show an image of ";
+						break;
+					case 2:
+						starting = "You see ";
+						break;
+					case 3:
+						starting = "You receive divine feelings of ";
+						break;
+					case 4:
+						starting = "A voice tells you of";
+						break;
+					case 5:
+						starting = "Someone whispers about";
+						break;
+					case 6:
+						starting = "It is revealed to you that";
+						break;
+					case 7:
+						starting = "In your visions, you see ";
+						break;
+					case 8:
+						starting = "In your mind you hear about";
+						break;
+					case 9:
+						starting = "Your spirit tells you about";
+						break;
+					default:
+						starting = "You know of";
+						break;
 					}
 					final StringBuilder message=new StringBuilder(starting);
 					for(int p=0;p<seeks.size();p++)

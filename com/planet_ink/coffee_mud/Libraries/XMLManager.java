@@ -462,7 +462,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		if(s==null)
 			return null;
-		final StringBuffer buf=new StringBuffer(s);
+		final StringBuilder buf=new StringBuilder(s);
 		int loop=0;
 		while(loop<buf.length())
 		{
@@ -1013,11 +1013,25 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		switch(c)
 		{
-		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
-		case '/': bufDex++; break;
-		case '<': abandonTagState(State.BEFORETAG); return;
-		case '>': doneWithPiece(bufDex); changeTagState(State.START); return;
-		default: changeTagState(State.BEFOREATTRIB); return;
+		case ' ':
+		case '\t':
+		case '\r':
+		case '\n':
+			bufDex++;
+			return;
+		case '/':
+			bufDex++;
+			break;
+		case '<':
+			abandonTagState(State.BEFORETAG);
+			return;
+		case '>':
+			doneWithPiece(bufDex);
+			changeTagState(State.START);
+			return;
+		default:
+			changeTagState(State.BEFOREATTRIB);
+			return;
 		}
 	}
 
@@ -1025,9 +1039,18 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		switch(c)
 		{
-		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
-		case '<': changeTagState(State.BEFORETAG); return;
-		case '/': changeTagState(State.BEFORECLOSETAG); return;
+		case ' ':
+		case '\t':
+		case '\r':
+		case '\n':
+			bufDex++;
+			return;
+		case '<':
+			changeTagState(State.BEFORETAG);
+			return;
+		case '/':
+			changeTagState(State.BEFORECLOSETAG);
+			return;
 		default:
 			if(Character.isLetter(c))
 				changedTagState(State.INCLOSETAG);
@@ -1041,16 +1064,25 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		switch(c)
 		{
-		case ' ': case '\t': case '\r': case '\n':
+		case ' ':
+		case '\t':
+		case '\r':
+		case '\n':
 			changedTagState(State.AFTERCLOSETAG);
 			return;
-		case '<': changeTagState(State.BEFORETAG); return;
+		case '<':
+			changeTagState(State.BEFORETAG);
+			return;
 		case '>':
 			changeTagState(State.START);
-			closePiece(bufDex-1);
+			closePiece(bufDex - 1);
 			return;
-		case '/': changedTagState(State.BEFORECLOSETAG); return;
-		default: bufDex++; return;
+		case '/':
+			changedTagState(State.BEFORECLOSETAG);
+			return;
+		default:
+			bufDex++;
+			return;
 		}
 	}
 
@@ -1058,7 +1090,12 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		switch(c)
 		{
-		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
+		case ' ':
+		case '\t':
+		case '\r':
+		case '\n':
+			bufDex++;
+			return;
 		case '<':
 			closePiece(bufDex);
 			changeTagState(State.BEFORETAG);
@@ -1067,7 +1104,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			closePiece(bufDex);
 			changeTagState(State.START);
 			return;
-		default: bufDex++; return;
+		default:
+			bufDex++;
+			return;
 		}
 	}
 
@@ -1075,7 +1114,12 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		switch(c)
 		{
-		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
+		case ' ':
+		case '\t':
+		case '\r':
+		case '\n':
+			bufDex++;
+			return;
 		case '<':
 			piece.innerStart = bufDex;
 			abandonTagState(State.BEFORETAG);
@@ -1097,7 +1141,12 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		switch(c)
 		{
-		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
+		case ' ':
+		case '\t':
+		case '\r':
+		case '\n':
+			bufDex++;
+			return;
 		case '<':
 			piece.innerStart = bufDex;
 			abandonTagState(State.BEFORETAG);
@@ -1132,8 +1181,15 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		switch(c)
 		{
-		case ' ': case '\t': case '\r': case '\n':  changedTagState(State.INPOSTATTRIB); return;
-		case '=':  changeTagState(State.BEFOREATTRIBVALUE); return;
+		case ' ':
+		case '\t':
+		case '\r':
+		case '\n':
+			changedTagState(State.INPOSTATTRIB);
+			return;
+		case '=':
+			changeTagState(State.BEFOREATTRIBVALUE);
+			return;
 		case '<':
 			endEmptyAttrib(bufDex);
 			piece.innerStart = bufDex;
@@ -1148,7 +1204,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			endEmptyAttrib(bufDex);
 			changedTagState(State.BEGINTAGSELFEND);
 			return;
-		default: bufDex++; return;
+		default:
+			bufDex++;
+			return;
 		}
 	}
 
@@ -1364,7 +1422,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	@Override
 	public String getXMLList(List<String> V)
 	{
-		final StringBuffer str=new StringBuffer("");
+		final StringBuilder str=new StringBuilder("");
 		if(V!=null)
 		for(final String s : V)
 		{

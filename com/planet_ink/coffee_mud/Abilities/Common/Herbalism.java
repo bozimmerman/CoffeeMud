@@ -155,11 +155,16 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 				return false;
 			boolean chantCheck=false;
 			for(final Ability A : spells)
+			{
 				switch(A.classificationCode()&Ability.ALL_ACODES)
 				{
-				case Ability.ACODE_CHANT: chantCheck=true; break;
-				default: return false;
+				case Ability.ACODE_CHANT:
+					chantCheck = true;
+					break;
+				default:
+					return false;
 				}
+			}
 			return chantCheck;
 		}
 		else

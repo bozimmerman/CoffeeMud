@@ -905,7 +905,8 @@ public class DefaultPlayerAccount implements PlayerAccount
 	{
 		switch(getCodeNum(code))
 		{
-		case 0: break;
+		case 0:
+			break;
 		case 1:
 		{
 			friends.clear();

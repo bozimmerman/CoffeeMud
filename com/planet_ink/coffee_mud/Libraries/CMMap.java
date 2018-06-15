@@ -2853,14 +2853,30 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			switch(flag)
 			{
-				case 'E': searchWeakAreas=true;   break;
-				case 'A': searchStrictAreas=true; break;
-				case 'R': searchRooms=true; 	  break;
-				case 'P': searchPlayers=true;	 break;
-				case 'I': searchItems=true; 	  break;
-				case 'M': searchInhabs=true;	  break;
-				case 'V': searchInventories=true; break;
-				case 'K': searchStocks=true;	  break;
+			case 'E':
+				searchWeakAreas = true;
+				break;
+			case 'A':
+				searchStrictAreas = true;
+				break;
+			case 'R':
+				searchRooms = true;
+				break;
+			case 'P':
+				searchPlayers = true;
+				break;
+			case 'I':
+				searchItems = true;
+				break;
+			case 'M':
+				searchInhabs = true;
+				break;
+			case 'V':
+				searchInventories = true;
+				break;
+			case 'K':
+				searchStocks = true;
+				break;
 			}
 		}
 		final long startTime = System.currentTimeMillis();

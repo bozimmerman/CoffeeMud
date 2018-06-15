@@ -407,47 +407,81 @@ public final class IMC2Driver extends Thread {
 			if(str.charAt(i)=='~')
 			switch(str.charAt(i+1))
 			{
-				case 'R':
-				case 'r':
-				case 'y':
-				case 'Y':
-				case 'g':
-				case 'G':
-				case 'b':
-				case 'B':
-				case 'w':
-				case 'W':
-				case 'c':
-				case 'C': str.setCharAt(i,'^'); break;
-				case 'm': str.setCharAt(i,'^'); str.setCharAt(i+1,'p'); break;
-				case 'M': str.setCharAt(i,'^'); str.setCharAt(i+1,'P'); break;
-				case 'p': str.setCharAt(i,'^'); str.setCharAt(i+1,'p'); break;
-				case 'P': str.setCharAt(i,'^'); str.setCharAt(i+1,'P'); break;
-				case 'z': str.setCharAt(i,'^'); str.setCharAt(i+1,'R'); break;
-				case 'x':
-				case 'u':
-				case 'v':
-				case 'i':
-				case '$':
-				case 's':
-				case 'Z':
-				case 'X':
-				case 'D': str.setCharAt(i,'^'); str.setCharAt(i+1,'W'); break;
-				case 'd': str.setCharAt(i,'^'); str.setCharAt(i+1,'w'); break;
-				case '!': str.setCharAt(i,'^'); str.setCharAt(i+1,'.'); break;
-				case 'L': str.setCharAt(i,'^'); str.setCharAt(i+1,'!'); break;
+			case 'R':
+			case 'r':
+			case 'y':
+			case 'Y':
+			case 'g':
+			case 'G':
+			case 'b':
+			case 'B':
+			case 'w':
+			case 'W':
+			case 'c':
+			case 'C':
+				str.setCharAt(i, '^');
+				break;
+			case 'm':
+				str.setCharAt(i, '^');
+				str.setCharAt(i + 1, 'p');
+				break;
+			case 'M':
+				str.setCharAt(i, '^');
+				str.setCharAt(i + 1, 'P');
+				break;
+			case 'p':
+				str.setCharAt(i, '^');
+				str.setCharAt(i + 1, 'p');
+				break;
+			case 'P':
+				str.setCharAt(i, '^');
+				str.setCharAt(i + 1, 'P');
+				break;
+			case 'z':
+				str.setCharAt(i, '^');
+				str.setCharAt(i + 1, 'R');
+				break;
+			case 'x':
+			case 'u':
+			case 'v':
+			case 'i':
+			case '$':
+			case 's':
+			case 'Z':
+			case 'X':
+			case 'D':
+				str.setCharAt(i, '^');
+				str.setCharAt(i + 1, 'W');
+				break;
+			case 'd':
+				str.setCharAt(i, '^');
+				str.setCharAt(i + 1, 'w');
+				break;
+			case '!':
+				str.setCharAt(i, '^');
+				str.setCharAt(i + 1, '.');
+				break;
+			case 'L':
+				str.setCharAt(i, '^');
+				str.setCharAt(i + 1, '!');
+				break;
 			}
 			else
 			if(str.charAt(i)=='^')
 			switch(str.charAt(i+1))
 			{
-			case 'O': str.setCharAt(i+1,'y'); break;
+			case 'O':
+				str.setCharAt(i + 1, 'y');
+				break;
 			}
 			else
 			if(str.charAt(i)=='&')
 			switch(str.charAt(i+1))
 			{
-			case 'D': str.setCharAt(i,'^'); str.setCharAt(i+1,'!'); break;
+			case 'D':
+				str.setCharAt(i, '^');
+				str.setCharAt(i + 1, '!');
+				break;
 			}
 		}
 		return str.toString();
@@ -941,41 +975,74 @@ public final class IMC2Driver extends Thread {
 			if(str.charAt(i)=='^')
 			switch(str.charAt(i+1))
 			{
-				case ColorLibrary.COLORCODE_BACKGROUND:
-				  if(i<str.length()-2)
-					  str.delete(i,i+3);
-				  break;
-				case ColorLibrary.COLORCODE_FANSI256:
-				case ColorLibrary.COLORCODE_BANSI256:
-				  if(i<str.length()-4)
-					  str.delete(i,i+5);
-				  break;
-				case 'R':
-				case 'r':
-				case 'y':
-				case 'Y':
-				case 'g':
-				case 'G':
-				case 'b':
-				case 'B':
-				case 'w':
-				case 'W':
-				case 'c':
-				case 'C': str.setCharAt(i,'~'); break;
-				case 'm': str.setCharAt(i,'~'); str.setCharAt(i+1,'p'); break;
-				case 'M': str.setCharAt(i,'~'); str.setCharAt(i+1,'P'); break;
-				case 'p': str.setCharAt(i,'~'); str.setCharAt(i+1,'m'); break;
-				case 'P': str.setCharAt(i,'~'); str.setCharAt(i+1,'M'); break;
-				case '?':
-				case '.': str.setCharAt(i,'~'); str.setCharAt(i+1,'!'); break;
-				case '!': str.setCharAt(i,'~'); str.setCharAt(i+1,'L'); break;
-				case '*': str.setCharAt(i,'~'); str.setCharAt(i+1,'$'); break;
-				case '/': str.setCharAt(i,'~'); str.setCharAt(i+1,'s'); break;
-				case '_': str.setCharAt(i,'~'); str.setCharAt(i+1,'u'); break;
-				case '^': str.setCharAt(i,'^'); str.deleteCharAt(i+1); break;
-				default:
-					str.setCharAt(i,'~'); str.setCharAt(i+1,'c');
-					break;
+			case ColorLibrary.COLORCODE_BACKGROUND:
+				if (i < str.length() - 2)
+					str.delete(i, i + 3);
+				break;
+			case ColorLibrary.COLORCODE_FANSI256:
+			case ColorLibrary.COLORCODE_BANSI256:
+				if (i < str.length() - 4)
+					str.delete(i, i + 5);
+				break;
+			case 'R':
+			case 'r':
+			case 'y':
+			case 'Y':
+			case 'g':
+			case 'G':
+			case 'b':
+			case 'B':
+			case 'w':
+			case 'W':
+			case 'c':
+			case 'C':
+				str.setCharAt(i, '~');
+				break;
+			case 'm':
+				str.setCharAt(i, '~');
+				str.setCharAt(i + 1, 'p');
+				break;
+			case 'M':
+				str.setCharAt(i, '~');
+				str.setCharAt(i + 1, 'P');
+				break;
+			case 'p':
+				str.setCharAt(i, '~');
+				str.setCharAt(i + 1, 'm');
+				break;
+			case 'P':
+				str.setCharAt(i, '~');
+				str.setCharAt(i + 1, 'M');
+				break;
+			case '?':
+			case '.':
+				str.setCharAt(i, '~');
+				str.setCharAt(i + 1, '!');
+				break;
+			case '!':
+				str.setCharAt(i, '~');
+				str.setCharAt(i + 1, 'L');
+				break;
+			case '*':
+				str.setCharAt(i, '~');
+				str.setCharAt(i + 1, '$');
+				break;
+			case '/':
+				str.setCharAt(i, '~');
+				str.setCharAt(i + 1, 's');
+				break;
+			case '_':
+				str.setCharAt(i, '~');
+				str.setCharAt(i + 1, 'u');
+				break;
+			case '^':
+				str.setCharAt(i, '^');
+				str.deleteCharAt(i + 1);
+				break;
+			default:
+				str.setCharAt(i, '~');
+				str.setCharAt(i + 1, 'c');
+				break;
 			}
 		}
 		return str.toString();

@@ -125,16 +125,36 @@ public class Thief_UndergroundConnections extends ThiefSkill
 								M.playerStats().adjHygiene(hygieneLoss);
 							switch(CMLib.dice().roll(1,10,0))
 							{
-							case 1: M.tell(L("You think you are being taken through '@x1'.",roomDesc)); break;
-							case 2: M.tell(L("You might be going through '@x1' now.",roomDesc)); break;
-							case 3: M.tell(L("Now you are definitely going through '@x1'.",roomDesc)); break;
-							case 4: M.tell(L("You are being taken through '@x1', you think.",roomDesc)); break;
-							case 5: M.tell(L("Sounds like '@x1' now.",roomDesc)); break;
-							case 6: M.tell(L("Now this might be '@x1'.",roomDesc)); break;
-							case 7: M.tell(L("You're going through '@x1'.",roomDesc)); break;
-							case 8: M.tell(L("Sounds like this could be '@x1'.",roomDesc)); break;
-							case 9: M.tell(L("You are probably going through '@x1' now.",roomDesc)); break;
-							case 10: M.tell(L("Sounds like you are being taken through '@x1'.",roomDesc)); break;
+							case 1:
+								M.tell(L("You think you are being taken through '@x1'.", roomDesc));
+								break;
+							case 2:
+								M.tell(L("You might be going through '@x1' now.", roomDesc));
+								break;
+							case 3:
+								M.tell(L("Now you are definitely going through '@x1'.", roomDesc));
+								break;
+							case 4:
+								M.tell(L("You are being taken through '@x1', you think.", roomDesc));
+								break;
+							case 5:
+								M.tell(L("Sounds like '@x1' now.", roomDesc));
+								break;
+							case 6:
+								M.tell(L("Now this might be '@x1'.", roomDesc));
+								break;
+							case 7:
+								M.tell(L("You're going through '@x1'.", roomDesc));
+								break;
+							case 8:
+								M.tell(L("Sounds like this could be '@x1'.", roomDesc));
+								break;
+							case 9:
+								M.tell(L("You are probably going through '@x1' now.", roomDesc));
+								break;
+							case 10:
+								M.tell(L("Sounds like you are being taken through '@x1'.", roomDesc));
+								break;
 							}
 						}
 					}

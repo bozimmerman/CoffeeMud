@@ -67,15 +67,36 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 		int yChange=0;
 		switch(direction)
 		{
-		case Directions.NORTH: yChange-=1; break;
-		case Directions.SOUTH: yChange+=1; break;
-		case Directions.EAST: xChange+=1; break;
-		case Directions.WEST: xChange-=1; break;
-		case Directions.NORTHWEST: yChange-=1; xChange-=1; break;
-		case Directions.NORTHEAST: yChange-=1; xChange+=1; break;
-		case Directions.SOUTHWEST: yChange+=1; xChange-=1; break;
-		case Directions.SOUTHEAST: yChange+=1; xChange+=1; break;
-		default: break;
+		case Directions.NORTH:
+			yChange -= 1;
+			break;
+		case Directions.SOUTH:
+			yChange += 1;
+			break;
+		case Directions.EAST:
+			xChange += 1;
+			break;
+		case Directions.WEST:
+			xChange -= 1;
+			break;
+		case Directions.NORTHWEST:
+			yChange -= 1;
+			xChange -= 1;
+			break;
+		case Directions.NORTHEAST:
+			yChange -= 1;
+			xChange += 1;
+			break;
+		case Directions.SOUTHWEST:
+			yChange += 1;
+			xChange -= 1;
+			break;
+		case Directions.SOUTHEAST:
+			yChange += 1;
+			xChange += 1;
+			break;
+		default:
+			break;
 		}
 		if(isMyGridChild(startRoom))
 		{

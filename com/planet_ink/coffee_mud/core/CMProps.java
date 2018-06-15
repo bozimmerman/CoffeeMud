@@ -2372,12 +2372,23 @@ public class CMProps extends Properties
 			else
 			switch(expEnum)
 			{
-			case EXPIRE_MONSTER_EQ: setIntVar(Int.EXPIRE_MONSTER_EQ,"30"); break;
-			case EXPIRE_PLAYER_DROP: setIntVar(Int.EXPIRE_PLAYER_DROP,"1200"); break;
-			case EXPIRE_RESOURCE: setIntVar(Int.EXPIRE_RESOURCE,"60"); break;
-			case EXPIRE_MONSTER_BODY: setIntVar(Int.EXPIRE_MONSTER_BODY,"30"); break;
-			case EXPIRE_PLAYER_BODY: setIntVar(Int.EXPIRE_PLAYER_BODY,"1330"); break;
-			default: break;
+			case EXPIRE_MONSTER_EQ:
+				setIntVar(Int.EXPIRE_MONSTER_EQ, "30");
+				break;
+			case EXPIRE_PLAYER_DROP:
+				setIntVar(Int.EXPIRE_PLAYER_DROP, "1200");
+				break;
+			case EXPIRE_RESOURCE:
+				setIntVar(Int.EXPIRE_RESOURCE, "60");
+				break;
+			case EXPIRE_MONSTER_BODY:
+				setIntVar(Int.EXPIRE_MONSTER_BODY, "30");
+				break;
+			case EXPIRE_PLAYER_BODY:
+				setIntVar(Int.EXPIRE_PLAYER_BODY, "1330");
+				break;
+			default:
+				break;
 			}
 		}
 

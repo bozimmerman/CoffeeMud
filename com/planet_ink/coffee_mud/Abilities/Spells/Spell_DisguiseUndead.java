@@ -181,25 +181,56 @@ public class Spell_DisguiseUndead extends Spell
 					String genderPersonal;
 					switch(target.charStats().getStat(CharStats.STAT_GENDER))
 					{
-					case 'M': genderName="male"; genderFormal="man"; genderInformal="guy"; genderPersonal="joe"; break;
-					case 'F': genderName="female"; genderFormal="woman"; genderInformal="gal"; genderPersonal="jane"; break;
-					default: genderName="person"; genderFormal="person"; genderInformal="person"; genderPersonal="joe"; break;
+					case 'M':
+						genderName = "male";
+						genderFormal = "man";
+						genderInformal = "guy";
+						genderPersonal = "joe";
+						break;
+					case 'F':
+						genderName = "female";
+						genderFormal = "woman";
+						genderInformal = "gal";
+						genderPersonal = "jane";
+						break;
+					default:
+						genderName = "person";
+						genderFormal = "person";
+						genderInformal = "person";
+						genderPersonal = "joe";
+						break;
 					}
 					String adjective;
 					switch(CMLib.dice().roll(1, 3, -1))
 					{
-					case 0: adjective="normal"; break;
-					case 1: adjective="regular"; break;
-					default: adjective="average"; break;
+					case 0:
+						adjective = "normal";
+						break;
+					case 1:
+						adjective = "regular";
+						break;
+					default:
+						adjective = "average";
+						break;
 					}
 					String noun;
 					switch(CMLib.dice().roll(1, 5, -1))
 					{
-					case 0: noun=genderName; break;
-					case 1: noun=genderFormal; break;
-					case 2: noun=genderInformal; break;
-					case 3: noun=genderPersonal; break;
-					default: noun="person"; break;
+					case 0:
+						noun = genderName;
+						break;
+					case 1:
+						noun = genderFormal;
+						break;
+					case 2:
+						noun = genderInformal;
+						break;
+					case 3:
+						noun = genderPersonal;
+						break;
+					default:
+						noun = "person";
+						break;
 					}
 					A.setMiscText(L(CMLib.english().startWithAorAn(adjective+" "+noun).toLowerCase()));
 				}

@@ -149,7 +149,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						lastSpace=loop;
 					}
 					break;
-				case '`': break;
+				case '`':
+					break;
 				case '!':
 					if((loop<buf.length()-10)
 					&&(buf.charAt(loop+1)=='!')
@@ -165,8 +166,10 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						}
 					}
 					break;
-				case '>': break;
-				case '"': break;
+				case '>':
+					break;
+				case '"':
+					break;
 				case '&':
 					if(loop < amperStop)
 						break;
@@ -198,7 +201,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						}
 					}
 					break;
-				case '(': break;
+				case '(':
+					break;
 				case '\\':
 					if(loop<buf.length()-1)
 					{
@@ -224,7 +228,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						}
 					}
 					break;
-				case '<': break;
+				case '<':
+					break;
 				case '\033': // skip escapes
 					if((loop < buf.length()-1) && (buf.charAt(loop+1)=='['))
 					{

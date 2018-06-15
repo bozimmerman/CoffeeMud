@@ -1547,9 +1547,15 @@ public class ListCmd extends StdCommand
 		head.append(CMStrings.padRight(L("Hours"),COL_LEN4)+" ");
 		switch(sortBy)
 		{
-		case 6: head.append(CMStrings.padRight(L("E-Mail"),COL_LEN5)+" "); break;
-		case 7: head.append(CMStrings.padRight(L("IP Address"),COL_LEN5)+" "); break;
-		default: head.append(CMStrings.padRight(L("Last"),COL_LEN6)+" "); break;
+		case 6:
+			head.append(CMStrings.padRight(L("E-Mail"), COL_LEN5) + " ");
+			break;
+		case 7:
+			head.append(CMStrings.padRight(L("IP Address"), COL_LEN5) + " ");
+			break;
+		default:
+			head.append(CMStrings.padRight(L("Last"), COL_LEN6) + " ");
+			break;
 		}
 
 		head.append("] Character name\n\r");

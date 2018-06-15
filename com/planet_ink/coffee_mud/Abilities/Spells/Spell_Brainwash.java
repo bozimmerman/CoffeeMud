@@ -111,7 +111,9 @@ public class Spell_Brainwash extends Spell
 				case 5:
 					lead = L(" You might also be curious to know that ");
 					break;
-				case 6: lead=" "; break;
+				case 6:
+					lead = " ";
+					break;
 				}
 				if(smsg!=null)
 					smsg=smsg+lead+text();

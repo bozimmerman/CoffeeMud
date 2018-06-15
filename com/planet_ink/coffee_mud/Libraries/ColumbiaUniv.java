@@ -402,11 +402,21 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				final String ofWhat;
 				switch(costType)
 				{
-				case XP: ofWhat="experience points"; break;
-				case GOLD: ofWhat=CMLib.beanCounter().getDenominationName(mob, value.doubleValue()); break;
-				case PRACTICE: ofWhat="practice points"; break;
-				case QP: ofWhat="quest points"; break;
-				default: ofWhat=CMLib.english().makePlural(costType.name().toLowerCase()); break;
+				case XP:
+					ofWhat = "experience points";
+					break;
+				case GOLD:
+					ofWhat = CMLib.beanCounter().getDenominationName(mob, value.doubleValue());
+					break;
+				case PRACTICE:
+					ofWhat = "practice points";
+					break;
+				case QP:
+					ofWhat = "quest points";
+					break;
+				default:
+					ofWhat = CMLib.english().makePlural(costType.name().toLowerCase());
+					break;
 				}
 				return ofWhat;
 			}

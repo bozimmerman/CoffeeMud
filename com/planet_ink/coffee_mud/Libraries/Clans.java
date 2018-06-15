@@ -510,12 +510,24 @@ public class Clans extends StdLibrary implements ClanManager
 		String prizeStr="";
 		switch(trophy)
 		{
-			case Areas: prizeStr=CMProps.getVar(CMProps.Str.CLANTROPAREA); break;
-			case Points: prizeStr=CMProps.getVar(CMProps.Str.CLANTROPCP); break;
-			case Experience: prizeStr=CMProps.getVar(CMProps.Str.CLANTROPEXP); break;
-			case PlayerKills: prizeStr=CMProps.getVar(CMProps.Str.CLANTROPPK); break;
-			case Members: prizeStr=CMProps.getVar(CMProps.Str.CLANTROPMB); break;
-			case MemberLevel: prizeStr=CMProps.getVar(CMProps.Str.CLANTROPLVL); break;
+		case Areas:
+			prizeStr = CMProps.getVar(CMProps.Str.CLANTROPAREA);
+			break;
+		case Points:
+			prizeStr = CMProps.getVar(CMProps.Str.CLANTROPCP);
+			break;
+		case Experience:
+			prizeStr = CMProps.getVar(CMProps.Str.CLANTROPEXP);
+			break;
+		case PlayerKills:
+			prizeStr = CMProps.getVar(CMProps.Str.CLANTROPPK);
+			break;
+		case Members:
+			prizeStr = CMProps.getVar(CMProps.Str.CLANTROPMB);
+			break;
+		case MemberLevel:
+			prizeStr = CMProps.getVar(CMProps.Str.CLANTROPLVL);
+			break;
 		}
 		if(prizeStr.length()==0)
 			return "None";

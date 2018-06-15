@@ -106,10 +106,18 @@ public class Spell_Telepathy extends Spell
 					String prefix;
 					switch(CMLib.dice().roll(1, 4, 0))
 					{
-					case 1: prefix="You sense thoughts of "; break;
-					case 2: prefix="You hear thoughts of "; break;
-					case 3: prefix="You detect thoughts of "; break;
-					default: prefix="You can see thoughts of "; break;
+					case 1:
+						prefix = "You sense thoughts of ";
+						break;
+					case 2:
+						prefix = "You hear thoughts of ";
+						break;
+					case 3:
+						prefix = "You detect thoughts of ";
+						break;
+					default:
+						prefix = "You can see thoughts of ";
+						break;
 					}
 					thoughts.append(prefix).append(accounting).append(".  ");
 				}

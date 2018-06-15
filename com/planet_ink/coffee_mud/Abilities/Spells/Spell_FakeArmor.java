@@ -160,10 +160,18 @@ public class Spell_FakeArmor extends Spell
 				String materialName="cloth";
 				switch(choice)
 				{
-				case 0: materialName="platemail"; break;
-				case 1: materialName="chainmail"; break;
-				case 3: materialName="studded leather"; break;
-				case 2: materialName="leather"; break;
+				case 0:
+					materialName = "platemail";
+					break;
+				case 1:
+					materialName = "chainmail";
+					break;
+				case 3:
+					materialName = "studded leather";
+					break;
+				case 2:
+					materialName = "leather";
+					break;
 				}
 				switch(choice2)
 				{

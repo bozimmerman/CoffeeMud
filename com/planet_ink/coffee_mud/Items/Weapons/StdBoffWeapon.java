@@ -64,13 +64,27 @@ public class StdBoffWeapon extends StdWeapon
 		String word="boff(s)";
 		switch(CMLib.dice().roll(1,7,-1))
 		{
-		case 0: word= "puff(s)"; break;
-		case 1: word= "boff(s)"; break;
-		case 2: word= "poof(s)"; break;
-		case 3: word= "bambam(s)"; break;
-		case 4: word= "whack(s)"; break;
-		case 5: word= "smoosh(es)"; break;
-		case 6: word= "kabloom(s)"; break;
+		case 0:
+			word = "puff(s)";
+			break;
+		case 1:
+			word = "boff(s)";
+			break;
+		case 2:
+			word = "poof(s)";
+			break;
+		case 3:
+			word = "bambam(s)";
+			break;
+		case 4:
+			word = "whack(s)";
+			break;
+		case 5:
+			word = "smoosh(es)";
+			break;
+		case 6:
+			word = "kabloom(s)";
+			break;
 		}
 		final boolean showDamn=CMProps.getVar(CMProps.Str.SHOWDAMAGE).equalsIgnoreCase("YES");
 		switch(weaponClassification())

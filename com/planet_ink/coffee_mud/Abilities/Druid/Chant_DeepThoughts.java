@@ -155,16 +155,36 @@ public class Chant_DeepThoughts extends Chant
 					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -ratePct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
-				case 0: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> contemplate(s) the great depths.")); break;
-				case 1: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> listen(s) to the wisdom of the stones.")); break;
-				case 2: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> stare(s) at a single stone.")); break;
-				case 3: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> mentally embrace(s) the earth.")); break;
-				case 4: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> inhale(s) wisdom and dust.")); break;
-				case 5: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> watch(es) the unchanging stones and feel(s) their history.")); break;
-				case 6: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> become(s) one with the earth.")); break;
-				case 7: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> feel(s) the inner warmth of the great deep.")); break;
-				case 8: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts.")); break;
-				case 9: room.show(mob,null,this,CMMsg.MSG_CONTEMPLATE,L("<S-NAME> find(s) clarity in the stones.")); break;
+				case 0:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> contemplate(s) the great depths."));
+					break;
+				case 1:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> listen(s) to the wisdom of the stones."));
+					break;
+				case 2:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> stare(s) at a single stone."));
+					break;
+				case 3:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> mentally embrace(s) the earth."));
+					break;
+				case 4:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> inhale(s) wisdom and dust."));
+					break;
+				case 5:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> watch(es) the unchanging stones and feel(s) their history."));
+					break;
+				case 6:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> become(s) one with the earth."));
+					break;
+				case 7:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> feel(s) the inner warmth of the great deep."));
+					break;
+				case 8:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> expunge(s) <S-HIS-HER> unnatural thoughts."));
+					break;
+				case 9:
+					room.show(mob, null, this, CMMsg.MSG_CONTEMPLATE, L("<S-NAME> find(s) clarity in the stones."));
+					break;
 				}
 			}
 		}

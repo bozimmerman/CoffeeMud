@@ -133,21 +133,38 @@ public class Prayer_Doomspout extends Prayer implements DiseaseAffect
 			ispoke=false;
 			switch(CMLib.dice().roll(1,12,0))
 			{
-			case 1:	CMLib.commands().postSay(mob,null,L("Repent, or @x1 will consume your soul!",godName),false,false); break;
-			case 2:	CMLib.commands().postSay(mob,null,L("We are all damned! Hope is forgotten!"),false,false); break;
-			case 3:	CMLib.commands().postSay(mob,null,L("@x1 has damned us all!",godName),false,false); break;
-			case 4:	CMLib.commands().postSay(mob,null,L("Death is the only way out for us now!"),false,false); break;
-			case 5:	CMLib.commands().postSay(mob,null,L("The finger of @x1 will destroy all!",godName),false,false); break;
-			case 6:	CMLib.commands().postSay(mob,null,L("The waters will dry! The air will turn cold! Our bodies will fail! We are Lost!"),false,false); break;
-			case 7:	CMLib.commands().postSay(mob,null,L("Nothing can save you! Throw yourself on the mercy of @x1!",godName),false,false); break;
-			case 8:	CMLib.commands().postSay(mob,null,L("@x1 will show us no mercy!",godName),false,false); break;
-			case 9:	CMLib.commands().postSay(mob,null,L("@x1 has spoken! We will all be destroyed!",godName),false,false);
-					break;
+			case 1:
+				CMLib.commands().postSay(mob, null, L("Repent, or @x1 will consume your soul!", godName), false, false);
+				break;
+			case 2:
+				CMLib.commands().postSay(mob, null, L("We are all damned! Hope is forgotten!"), false, false);
+				break;
+			case 3:
+				CMLib.commands().postSay(mob, null, L("@x1 has damned us all!", godName), false, false);
+				break;
+			case 4:
+				CMLib.commands().postSay(mob, null, L("Death is the only way out for us now!"), false, false);
+				break;
+			case 5:
+				CMLib.commands().postSay(mob, null, L("The finger of @x1 will destroy all!", godName), false, false);
+				break;
+			case 6:
+				CMLib.commands().postSay(mob, null, L("The waters will dry! The air will turn cold! Our bodies will fail! We are Lost!"), false, false);
+				break;
+			case 7:
+				CMLib.commands().postSay(mob, null, L("Nothing can save you! Throw yourself on the mercy of @x1!", godName), false, false);
+				break;
+			case 8:
+				CMLib.commands().postSay(mob, null, L("@x1 will show us no mercy!", godName), false, false);
+				break;
+			case 9:
+				CMLib.commands().postSay(mob, null, L("@x1 has spoken! We will all be destroyed!", godName), false, false);
+				break;
 			case 10:
 			case 11:
 			case 12:
-					CMLib.commands().postSay(mob,null,L("Our doom is upon us! The end is near!"),false,false);
-					break;
+				CMLib.commands().postSay(mob, null, L("Our doom is upon us! The end is near!"), false, false);
+				break;
 			}
 			if((CMLib.flags().canSpeak(mob))&&(ispoke))
 			{

@@ -110,9 +110,15 @@ public class Chant_PoisonousVine extends Chant_SummonVine
 		final int classlevel=CMLib.ableMapper().qualifyingClassLevel(caster,this)-CMLib.ableMapper().qualifyingLevel(caster,this);
 		switch(classlevel/5)
 		{
-		case 0:	A=CMClass.getAbility("Poison_Sting"); break;
-		case 1:	A=CMClass.getAbility("Poison_Bloodboil"); break;
-		case 2:	A=CMClass.getAbility("Poison_Venom"); break;
+		case 0:
+			A = CMClass.getAbility("Poison_Sting");
+			break;
+		case 1:
+			A = CMClass.getAbility("Poison_Bloodboil");
+			break;
+		case 2:
+			A = CMClass.getAbility("Poison_Venom");
+			break;
 		default: 	A=CMClass.getAbility("Poison_Decreptifier"); break;
 		}
 		if(A!=null)

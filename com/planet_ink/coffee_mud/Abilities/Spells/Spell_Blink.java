@@ -102,11 +102,20 @@ public class Spell_Blink extends Spell
 				int move=0;
 				switch(roll)
 				{
-				case 1: move=-2; break;
-				case 2: move=-1; break;
-				case 7: move=1; break;
-				case 8: move=2; break;
-				default: move=0;
+				case 1:
+					move = -2;
+					break;
+				case 2:
+					move = -1;
+					break;
+				case 7:
+					move = 1;
+					break;
+				case 8:
+					move = 2;
+					break;
+				default:
+					move = 0;
 				}
 				if(move==0)
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> vanish(es) and reappear(s) again."));

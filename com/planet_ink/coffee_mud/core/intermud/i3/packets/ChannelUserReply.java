@@ -57,9 +57,15 @@ public class ChannelUserReply extends Packet {
 				final int gend = CMath.s_int(v.elementAt(8).toString());
 				switch(gend)
 				{
-				case 0: gender='M'; break;
-				case 1: gender='F'; break;
-				case 2: gender='N'; break;
+				case 0:
+					gender = 'M';
+					break;
+				case 1:
+					gender = 'F';
+					break;
+				case 2:
+					gender = 'N';
+					break;
 				}
 			}
 			catch(final Exception e)
@@ -87,9 +93,15 @@ public class ChannelUserReply extends Packet {
 		int genderCode = 0;
 		switch(gender)
 		{
-		case 'M': genderCode=0; break;
-		case 'F': genderCode=1; break;
-		case 'N': genderCode=2; break;
+		case 'M':
+			genderCode = 0;
+			break;
+		case 'F':
+			genderCode = 1;
+			break;
+		case 'N':
+			genderCode = 2;
+			break;
 		}
 		final String cmd="({\"chan-user-req\",5,\"" + I3Server.getMudName() +
 		"\",0,\"" + target_mud + "\",0,\"" + userRequested
