@@ -142,12 +142,18 @@ public class Fill extends StdCommand
 			if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
 			{
 				if(CMLib.commands().postGet(mob,null,(Item)fillThis,false))
+				{
 					if(mob.location().okMessage(mob,fillMsg))
 						mob.location().send(mob,fillMsg);
+					else
+						CMLib.commands().postCommandRejection(mob, fillThis, fillFromThis, origCmds);
+				}
 			}
 			else
 			if(mob.location().okMessage(mob,fillMsg))
 				mob.location().send(mob,fillMsg);
+			else
+				CMLib.commands().postCommandRejection(mob, fillThis, fillFromThis, origCmds);
 		}
 		return false;
 	}

@@ -58,6 +58,8 @@ public interface CommonCommands extends CMLibrary
 	public boolean isHygienicMessage(final CMMsg msg, final int minHygiene, final long adjHygiene);
 	public boolean postCommandFail(final MOB mob, final List<String> commands, final String msgStr);
 	public boolean postCommandFail(final MOB mob, Environmental target, Environmental tools, final List<String> command, final String msgStr);
+	public boolean postCommandRejection(final MOB mob, final List<String> commands);
+	public boolean postCommandRejection(final MOB mob, Environmental target, Environmental tools, final List<String> command);
 	public void postChannel(MOB mob, String channelName, String message, boolean systemMsg);
 	public void postChannel(String channelName, Iterable<Pair<Clan,Integer>> clanList, String message, boolean systemMsg);
 	public boolean postDrop(MOB mob, Environmental dropThis, boolean quiet, boolean optimized, boolean intermediate);

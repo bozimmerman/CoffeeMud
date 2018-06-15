@@ -123,6 +123,28 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	}
 	
 	@Override
+	public boolean postCommandRejection(final MOB mob, final List<String> commands)
+	{
+		return postCommandRejection(mob, null, null, commands);
+	}
+	
+	@Override
+	public boolean postCommandRejection(final MOB mob, Environmental target, Environmental tools, final List<String> command)
+	{
+		if(mob==null)
+			return false;
+		final Room R=mob.location();
+		if(R!=null)
+		{
+			final CMMsg msg=CMClass.getMsg(mob,target,tools,CMMsg.MSG_COMMANDREJECT,null,CMMsg.NO_EFFECT,CMParms.combineQuoted(command,0),CMMsg.NO_EFFECT,null);
+			if(!R.okMessage(mob,msg))
+				return false;
+			R.send(mob,msg);
+		}
+		return true;
+	}
+	
+	@Override
 	public Object unforcedInternalCommand(MOB mob, String command, Object... parms)
 	{
 		try

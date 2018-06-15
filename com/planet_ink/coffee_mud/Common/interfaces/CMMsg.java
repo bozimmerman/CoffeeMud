@@ -1189,6 +1189,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_STARTUP=130;
 	/** MINOR_MASK minor action code type, denoting a rp xp gain/loss action*/
 	public static final int TYP_RPXPCHANGE=131;
+	/** MINOR_MASK minor action code type, denoting a command's msg was rejected */
+	public static final int TYP_COMMANDREJECT=132;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1217,7 +1219,8 @@ public interface CMMsg extends CMCommon
 		"PREINVOKE","POSSESS","DISPOSSESS","POWERCURRENT","CONTEMPLATE","POUR","LOOKEXITS",
 		"LASER","SONIC","REPAIR","ENHANCE","INSTALL","COLLISION","AROMA","DUELLOSS",
 		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED",
-		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP", "RPXPCHANGE"
+		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP", "RPXPCHANGE",
+		"COMMANDREJECT"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1541,6 +1544,8 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_THINK=TYP_THINK;
 	/** combined MAJOR and MINOR codes for useful event message type for a mud startup */
 	public static final int MSG_STARTUP=MASK_ALWAYS|TYP_STARTUP;
+	/** combined MAJOR and MINOR codes for useful event message type for a command msgs rejection */
+	public static final int MSG_COMMANDREJECT=MASK_ALWAYS|TYP_COMMANDREJECT;
 	
 	/**
 	 * An enum to use for an external message check from inside 

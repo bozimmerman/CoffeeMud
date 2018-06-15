@@ -70,7 +70,7 @@ public class Skill_DevourCorpse extends StdSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_FITNESS;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_RACIALABILITY;
 	}
 
 	@Override

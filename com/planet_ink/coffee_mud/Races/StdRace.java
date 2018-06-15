@@ -308,7 +308,7 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public boolean canBreedWith(Race R)
+	public boolean canBreedWith(final Race R)
 	{
 		if(!fertile())
 			return false;
@@ -326,12 +326,12 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMob, CharStats charStats)
+	public void affectCharStats(final MOB affectedMob, final CharStats charStats)
 	{
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{
@@ -414,7 +414,7 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public void agingAffects(MOB mob, CharStats baseStats, CharStats charStats)
+	public void agingAffects(final MOB mob, final CharStats baseStats, final CharStats charStats)
 	{
 		if((baseStats.getStat(CharStats.STAT_AGE)>0)
 		&&(!CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.IMMORT))
@@ -493,7 +493,7 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 
 	}
@@ -620,12 +620,12 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public void level(MOB mob, List<String> gainedAbilityIDs)
+	public void level(final MOB mob, final List<String> gainedAbilityIDs)
 	{
 	}
 
 	@Override
-	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount)
+	public int adjustExperienceGain(final MOB host, final MOB mob, final MOB victim, final int amount)
 	{
 		return amount;
 	}
@@ -766,7 +766,7 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public void startRacing(MOB mob, boolean verifyOnly)
+	public void startRacing(final MOB mob, final boolean verifyOnly)
 	{
 		if(CMProps.getBoolVar(CMProps.Bool.POPULATIONSTARTED))
 			usageCount++;
@@ -891,7 +891,7 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public void setHeightWeight(PhyStats stats, char gender)
+	public void setHeightWeight(final PhyStats stats, final char gender)
 	{
 		int weightModifier=0;
 		if(weightVariance()>0)
@@ -920,7 +920,7 @@ public class StdRace implements Race
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 
-	protected RawMaterial makeResource(String name, int type)
+	protected RawMaterial makeResource(final String name, final int type)
 	{
 		final PhysicalAgent A = CMLib.materials().makeResource(type,ID(),true,name);
 		if(A instanceof RawMaterial)
@@ -1089,7 +1089,7 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public int numRacialEffects(MOB mob)
+	public int numRacialEffects(final MOB mob)
 	{
 		return racialEffectsList(mob).size();
 	}
@@ -1839,7 +1839,7 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public SearchIDList<Ability> racialAbilities(MOB mob)
+	public SearchIDList<Ability> racialAbilities(final MOB mob)
 	{
 		if((racialAbilityMap==null)
 		&&(racialAbilityNames()!=null)

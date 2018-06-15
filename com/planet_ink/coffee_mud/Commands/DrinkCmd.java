@@ -103,6 +103,8 @@ public class DrinkCmd extends StdCommand
 		final CMMsg newMsg=CMClass.getMsg(mob,thisThang,tool,CMMsg.MSG_DRINK,str+CMLib.protocol().msp("drink.wav",10));
 		if(mob.location().okMessage(mob,newMsg))
 			mob.location().send(mob,newMsg);
+		else
+			CMLib.commands().postCommandRejection(mob, thisThang, tool, origCmds);
 		return false;
 	}
 

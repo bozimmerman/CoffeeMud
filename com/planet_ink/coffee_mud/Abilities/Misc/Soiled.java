@@ -170,7 +170,7 @@ public class Soiled extends StdAbility
 				smell = L("<T-NAME> smells like poo.");
 				break;
 			case 3:
-				smell = L("<T-NAME> has soiled a diaper.");
+				smell = L("<T-NAME> has soiled <T-HIM-HERSELF>.");
 				break;
 			case 4:
 				smell = L("Whew! <T-NAME> stinks!");
@@ -222,7 +222,7 @@ public class Soiled extends StdAbility
 					smell = L("<S-NAME> smells like poo.");
 					break;
 				case 3:
-					smell = L("<S-NAME> has soiled a diaper.");
+					smell = L("<S-NAME> has soiled <T-HIM-HERSELF>.");
 					break;
 				case 4:
 					smell = L("Whew! <S-NAME> stinks!");
