@@ -238,6 +238,8 @@ public class Milkable extends StdAbility implements Drink
 					}
 					if(milkingOK
 					||((affected instanceof MOB)
+						&&(CMLib.flags().isBoundOrHeld(affected)))
+					||((affected instanceof MOB)
 						&&(((MOB)affected).isMonster())
 						&&(((MOB)affected).getStartRoom()!=null)
 						&&(CMLib.law().doesHavePriviledgesHere(mob, ((MOB)affected).getStartRoom()))))
