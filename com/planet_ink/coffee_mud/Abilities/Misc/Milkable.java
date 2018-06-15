@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -34,7 +35,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Milkable extends StdAbility
+public class Milkable extends StdAbility implements Drink
 {
 	@Override
 	public String ID()
@@ -47,6 +48,8 @@ public class Milkable extends StdAbility
 	@Override
 	public String name()
 	{
+		if(affected != null)
+			return affected.Name();
 		return localizedName;
 	}
 
@@ -82,42 +85,304 @@ public class Milkable extends StdAbility
 		return false;
 	}
 
+	protected int 		liquidType				= RawMaterial.RESOURCE_MILK;
+	protected boolean	drinkableMilkable		= false;
+	protected boolean	milkingOK				= false;
+	protected int		milkPerDay				= 1000;
+	protected int		milkRemain				= 1000;
+	protected int		amountOfThirstQuenched	= 100;
+	
+	protected volatile double refill			= 0;
+
+	@Override
+	public void setMiscText(String newMiscText)
+	{
+		super.setMiscText(newMiscText);
+		drinkableMilkable=CMParms.getParmBool(newMiscText, "DRINK", false);
+		milkingOK = CMParms.getParmBool(newMiscText, "ON", false);
+		milkPerDay = CMParms.getParmInt(newMiscText, "PERDAY", 1000);
+		final String liquidType = CMParms.getParmStr(newMiscText, "TYPE", "MILK");
+		final int resourceCode = RawMaterial.CODES.FIND_IgnoreCase(liquidType);
+		if(resourceCode > 0)
+			this.liquidType = resourceCode;
+	}
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if((liquidRemaining() < liquidHeld())
+		&&(liquidHeld()<Integer.MAX_VALUE/2)
+		&&(affected != null))
+		{
+			final Physical affected=this.affected;
+			final Room R=CMLib.map().roomLocation(affected);
+			if(R!=null)
+			{
+				final Area A=R.getArea();
+				if(A!=null)
+				{
+					final TimeClock clock=A.getTimeObj();
+					final int ticksPerMudday=(int)((clock.getHoursInDay() * CMProps.getMillisPerMudHour()) / CMProps.getTickMillis());
+					double amt=CMath.div(liquidHeld(),ticksPerMudday);
+					refill += amt;
+					int amtNow=(int)CMath.round(Math.floor(refill));
+					if(amtNow > 0)
+					{
+						setLiquidRemaining(liquidRemaining() + amtNow);
+						if(liquidRemaining() > liquidHeld())
+							setLiquidRemaining(liquidHeld());
+						refill -= amtNow;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(msg.sourceMinor())
 		{
-		case CMMsg.TYP_COMMANDFAIL:
-			System.out.println("HO!!!!!");
-			break;
 		case CMMsg.TYP_COMMANDREJECT:
-			System.out.println("HE!!!!!"); // both came this way
+			if((msg.targetMessage()!=null) 
+			&& this.drinkableMilkable
+			&& (msg.tool()==affected))
+			{
+				final MOB mob=msg.source();
+				final List<String> cmds=CMParms.parse(msg.targetMessage());
+				if(cmds.size()==0)
+					return true;
+				final String word=cmds.get(0).toUpperCase();
+				if("FILL".startsWith(word))
+				{
+					final CMMsg fillMsg=CMClass.getMsg(mob,msg.target(),this,CMMsg.MSG_FILL,L("<S-NAME> milk(s) <O-NAME>, filling <T-NAME>."));
+					if(mob.location().okMessage(mob,fillMsg))
+						mob.location().send(mob,fillMsg);
+					return false;
+				}
+			}
 			break;
 		case CMMsg.TYP_HUH:
-			System.out.println("HY!!!!!");
-			break;
-		case CMMsg.TYP_DRINK:
-		case CMMsg.TYP_FILL:
-			System.out.println("HI!!!!!"); // drink came this way
-			break;
-		}
-		switch(msg.targetMinor())
 		{
-		case CMMsg.TYP_COMMANDFAIL:
-			System.out.println("!!HO!!!!!");
-			break;
-		case CMMsg.TYP_COMMANDREJECT:
-			System.out.println("!!HE!!!!!");
-			break;
-		case CMMsg.TYP_HUH:
-			System.out.println("!!HY!!!!!");
-			break;
-		case CMMsg.TYP_DRINK:
-		case CMMsg.TYP_FILL:
-			System.out.println("!!HI!!!!!"); // drink came this way
+			if(msg.targetMessage()!=null)
+			{
+				final MOB mob=msg.source();
+				final List<String> commands=CMParms.parse(msg.targetMessage());
+				if(commands.size()==0)
+					return true;
+				final String word=commands.get(0).toUpperCase();
+				if(word.equals("MILK"))
+				{
+					if((msg.source() == affected)
+					&&(commands.size()<3))
+					{
+						boolean newMilk=!this.milkingOK;
+						if(commands.size()>1)
+						{
+							if(commands.get(1).equalsIgnoreCase("ok")
+							||commands.get(1).equalsIgnoreCase("on"))
+								newMilk=true;
+							else
+							if(commands.get(1).equalsIgnoreCase("no")
+							||commands.get(1).equalsIgnoreCase("off"))
+								newMilk=false;
+							else
+							{
+								mob.tell(L("'@x1' is an illegal argument.  Try OK/NO.",commands.get(1)));
+								return false;
+							}
+						}
+						this.milkingOK=newMilk;
+						if(this.milkingOK)
+							mob.location().show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> show(s) interest in being milked."));
+						else
+							mob.location().show(mob, null, CMMsg.MSG_NOISE, L("<S-NAME> <S-IS-ARE> not showing any interest in being milked."));
+						return false;
+					}
+					final List<String> origCmds=new XVector<String>(commands);
+					if(commands.size()<3)
+					{
+						CMLib.commands().postCommandFail(mob,commands,L("Milk whom, into what?"));
+						return false;
+					}
+					commands.remove(0);
+					int fromDex=commands.size()-1;
+					for(int i=commands.size()-2;i>=1;i--)
+					{
+						if(commands.get(i).equalsIgnoreCase("into"))
+						{
+							fromDex=i;
+							commands.remove(i);
+						}
+					}
+					final String thingToFill=CMParms.combine(commands,fromDex);
+					while(commands.size()>=(fromDex+1))
+						commands.remove(commands.size()-1);
+					String thingToFillFrom=CMParms.combine(commands,0);
+					Environmental fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Wearable.FILTER_ANY);
+					if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
+					{
+						CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",thingToFillFrom));
+						return false;
+					}
+					if(fillFromThis != affected)
+						return true;
+					final Item fillThis=mob.findItem(null,thingToFill);
+					if((fillThis==null)||(!CMLib.flags().canBeSeenBy(fillThis,mob)))
+					{
+						CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",thingToFill));
+						return false;
+					}
+					if(milkingOK
+					||((affected instanceof MOB)
+						&&(((MOB)affected).isMonster())
+						&&(((MOB)affected).getStartRoom()!=null)
+						&&(CMLib.law().doesHavePriviledgesHere(mob, ((MOB)affected).getStartRoom()))))
+					{
+						final CMMsg fillMsg=CMClass.getMsg(mob,fillThis,this,CMMsg.MSG_FILL,L("<S-NAME> milk(s) <O-NAME> into <T-NAME>."));
+						if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
+						{
+							if(CMLib.commands().postGet(mob,null,(Item)fillThis,false))
+							{
+								if(mob.location().okMessage(mob,fillMsg))
+									mob.location().send(mob,fillMsg);
+							}
+						}
+						else
+						if(mob.location().okMessage(mob,fillMsg))
+							mob.location().send(mob,fillMsg);
+					}
+					else
+					{
+						mob.tell(mob,affected,null,L("<T-NAME> won't seem to hold still for you."));
+					}
+					return false;
+				}
+			}
 			break;
 		}
-		System.out.println("---");
+		case CMMsg.TYP_DRINK:
+			if((msg.target()==affected) && this.drinkableMilkable)
+				msg.setTarget(this);
+			break;
+		}
 		return super.okMessage(myHost,msg);
+	}
+
+	@Override
+	public void executeMsg(final Environmental myHost, final CMMsg msg)
+	{
+		super.executeMsg(myHost,msg);
+		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_DRINK))
+		{
+			final MOB mob=msg.source();
+			final boolean thirsty=mob.curState().getThirst()<=0;
+			final boolean full=!mob.curState().adjThirst(thirstQuenched(),mob.maxState().maxThirst(mob.baseWeight()));
+			if(thirsty)
+				mob.tell(L("You are no longer thirsty."));
+			else
+			if(full)
+				mob.tell(L("You have drunk all you can."));
+		}
+		else
+		if((msg.tool()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_FILL)
+		&&(msg.target() instanceof Container)
+		&&(((Container)msg.target()).capacity()>0))
+		{
+			final Container container=(Container)msg.target();
+			final Item I=CMLib.materials().makeItemResource(liquidType());
+			I.setMaterial(liquidType());
+			I.setBaseValue(RawMaterial.CODES.VALUE(liquidType()));
+			I.basePhyStats().setWeight(1);
+			CMLib.materials().addEffectsToResource(I);
+			I.recoverPhyStats();
+			I.setContainer(container);
+			if(container.owner()!=null)
+				if(container.owner() instanceof MOB)
+					((MOB)container.owner()).addItem(I);
+				else
+				if(container.owner() instanceof Room)
+					((Room)container.owner()).addItem(I,ItemPossessor.Expire.Resource);
+		}
+	}
+
+	@Override
+	public int thirstQuenched()
+	{
+		return amountOfThirstQuenched;
+	}
+
+	@Override
+	public int liquidHeld()
+	{
+		return milkPerDay;
+	}
+
+	@Override
+	public int liquidRemaining()
+	{
+		return (int)Math.round(milkRemain);
+	}
+
+	@Override
+	public boolean disappearsAfterDrinking()
+	{
+		return false;
+	}
+
+	@Override
+	public int liquidType()
+	{
+		return liquidType;
+	}
+
+	@Override
+	public void setLiquidType(int newLiquidType)
+	{
+		liquidType = newLiquidType;
+	}
+
+	@Override
+	public void setThirstQuenched(int amount)
+	{
+		amountOfThirstQuenched = amount;
+	}
+
+	@Override
+	public void setLiquidHeld(int amount)
+	{
+	}
+
+	@Override
+	public void setLiquidRemaining(int amount)
+	{
+		milkRemain=amount;
+	}
+
+	@Override
+	public boolean containsDrink()
+	{
+		return this.liquidRemaining() > 0;
+	}
+
+	@Override
+	public int amountTakenToFillMe(Drink theSource)
+	{
+		return 0;
+	}
+
+	@Override
+	public long decayTime()
+	{
+		return Long.MAX_VALUE;
+	}
+
+	@Override
+	public void setDecayTime(long time)
+	{
 	}
 }

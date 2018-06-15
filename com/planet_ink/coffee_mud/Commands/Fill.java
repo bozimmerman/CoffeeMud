@@ -106,7 +106,6 @@ public class Fill extends StdCommand
 
 		String thingToFill=CMParms.combine(commands,0);
 		int addendum=1;
-		String addendumStr="";
 		final Vector<Environmental> V=new Vector<Environmental>();
 		boolean allFlag=(commands.size()>0)?commands.get(0).equalsIgnoreCase("all"):false;
 		if(thingToFill.toUpperCase().startsWith("ALL."))
@@ -120,6 +119,7 @@ public class Fill extends StdCommand
 			thingToFill="ALL "+thingToFill.substring(0,thingToFill.length()-4);
 		}
 		boolean doBugFix = true;
+		String addendumStr="";
 		while(doBugFix || ((allFlag)&&(maxToFill<addendum)))
 		{
 			doBugFix=false;

@@ -335,7 +335,8 @@ public class Poison extends StdAbility implements HealthCondition
 									||(((Drink)msg.target()).liquidRemaining()>9999)))
 									invoke(msg.source(), (Physical)msg.target(), true, 0);
 								else
-									((Drink)msg.target()).addEffect((Ability)this.copyOf());
+								if(msg.target() instanceof Physical)
+									((Physical)msg.target()).addEffect((Ability)this.copyOf());
 								if((((Drink)affected).liquidRemaining()-((Drink)msg.target()).amountTakenToFillMe((Drink)affected))<=0)
 									affected.delEffect(this);
 							}

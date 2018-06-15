@@ -9061,9 +9061,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genDescription(mob,me,++showNumber,showFlag);
 			genSecretIdentity(mob,(Item)me,++showNumber,showFlag);
 			genValue(mob,(Item)me,++showNumber,showFlag);
-			genLevel(mob,me,++showNumber,showFlag);
-			genWeight(mob,me,++showNumber,showFlag);
-			genRejuv(mob,me,++showNumber,showFlag);
+			if(me instanceof Physical)
+			{
+				genLevel(mob,(Physical)me,++showNumber,showFlag);
+				genWeight(mob,(Physical)me,++showNumber,showFlag);
+				genRejuv(mob,(Physical)me,++showNumber,showFlag);
+			}
 			genThirstQuenched(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,(Item)me,++showNumber,showFlag);
 			genDrinkHeld(mob,me,++showNumber,showFlag);
@@ -9072,9 +9075,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genReadable2(mob,(Item)me,++showNumber,showFlag);
 			if(me instanceof Light)
 				genBurnout(mob,(Light)me,++showNumber,showFlag);
-			genBehaviors(mob,me,++showNumber,showFlag);
-			genAffects(mob,me,++showNumber,showFlag);
-			genDisposition(mob,me.basePhyStats(),++showNumber,showFlag);
+			if(me instanceof PhysicalAgent)
+				genBehaviors(mob,(PhysicalAgent)me,++showNumber,showFlag);
+			if(me instanceof Physical)
+			{
+				genAffects(mob,(Physical)me,++showNumber,showFlag);
+				genDisposition(mob,((Physical)me).basePhyStats(),++showNumber,showFlag);
+			}
 			if(me instanceof Container)
 			{
 				genContainerTypes(mob,(Container)me,++showNumber,showFlag);
@@ -9106,7 +9113,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 		if(showFlag != -950)
 		{
-			me.recoverPhyStats();
+			if(me instanceof Physical)
+				((Physical)me).recoverPhyStats();
 			if(me.text().length()>=maxLength)
 				mob.tell(L("\n\rThe data entered exceeds the string limit of @x1 characters.",""+maxLength));
 		}

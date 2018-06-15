@@ -163,9 +163,9 @@ public class Apothecary extends Cooking
 			final Drink D=(Drink)I;
 			if(D.liquidType()!=RawMaterial.RESOURCE_POISON)
 				return false;
-			if(CMLib.flags().flaggedAffects(D, Ability.FLAG_INTOXICATING).size()>0)
+			if(CMLib.flags().flaggedAffects(I, Ability.FLAG_INTOXICATING).size()>0)
 				return false;
-			if(CMLib.flags().domainAffects(D, Ability.ACODE_POISON).size()>0)
+			if(CMLib.flags().domainAffects(I, Ability.ACODE_POISON).size()>0)
 				return true;
 			return true;
 		}

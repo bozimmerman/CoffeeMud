@@ -105,7 +105,8 @@ public class Spell_FakeSpring extends Spell
 		{
 			if(msg.targetMinor()==CMMsg.TYP_FILL)
 			{
-				msg.source().tell(L("@x1 is full.",((Drink)msg.target()).name(msg.source())));
+				if(msg.target() instanceof PhysicalAgent)
+					msg.source().tell(L("@x1 is full.",((PhysicalAgent)msg.target()).name(msg.source())));
 				return false;
 			}
 		}
@@ -137,23 +138,24 @@ public class Spell_FakeSpring extends Spell
 				}
 
 				final Drink W=(Drink)CMClass.getItem("GenWater");
+				final Item I=(Item)W;
 				W.setName(newItem.Name());
 				W.setDisplayText(newItem.displayText());
 				W.setDescription(newItem.description());
-				W.basePhyStats().setWeight(newItem.basePhyStats().weight());
+				I.basePhyStats().setWeight(newItem.basePhyStats().weight());
 				CMLib.flags().setGettable(((Item)W),false);
 				W.setThirstQuenched(0);
-				W.recoverPhyStats();
+				I.recoverPhyStats();
 				mob.location().addItem((Item)W);
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("Suddenly, @x1 starts flowing here.",newItem.name()));
 				if(CMLib.law().doesOwnThisLand(mob,mob.location()))
 				{
 					final Ability A=(Ability)copyOf();
 					A.setInvoker(mob);
-					W.addNonUninvokableEffect(A);
+					I.addNonUninvokableEffect(A);
 				}
 				else
-					beneficialAffect(mob,W,asLevel,0);
+					beneficialAffect(mob,I,asLevel,0);
 				mob.location().recoverPhyStats();
 			}
 		}

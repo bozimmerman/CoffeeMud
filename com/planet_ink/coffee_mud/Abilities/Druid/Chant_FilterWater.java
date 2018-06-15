@@ -155,7 +155,8 @@ public class Chant_FilterWater extends Chant
 		}
 		if(target.fetchEffect(ID())==null)
 		{
-			D.delAllEffects(true);
+			if(D instanceof Physical)
+				((Physical)D).delAllEffects(true);
 			Ability A=this.beneficialAffect(mob, target, asLevel, 0);
 			if(A!=null)
 			{
@@ -184,7 +185,7 @@ public class Chant_FilterWater extends Chant
 		Drink D=(Drink)target;
 		if((D.liquidType() == RawMaterial.RESOURCE_FRESHWATER)
 		&&(!(D instanceof SpellHolder))
-		&&(D.numEffects()==0))
+		&&(target.numEffects()==0))
 		{
 			mob.tell(L("@x1 already contains fresh water.",target.name(mob)));
 			return false;

@@ -112,7 +112,7 @@ public class Distilling extends Cooking
 			final Drink D=(Drink)I;
 			if(D.liquidType()!=RawMaterial.RESOURCE_LIQUOR)
 				return false;
-			if(CMLib.flags().flaggedAffects(D, Ability.FLAG_INTOXICATING).size()>0)
+			if(CMLib.flags().flaggedAffects(I, Ability.FLAG_INTOXICATING).size()>0)
 				return true;
 		}
 		return false;

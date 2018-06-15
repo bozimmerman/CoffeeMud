@@ -724,7 +724,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				for(int v=0;v<contents.size();v++)
 				{
 					final Item I=contents.get(v);
-					drink.basePhyStats().setWeight(drink.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
+					buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
 					if(I instanceof Food)
 						drink.setLiquidRemaining(drink.liquidRemaining()+((Food)I).nourishment());
 					if((I instanceof Drink)
@@ -745,7 +745,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				drink.setLiquidRemaining(1);
 				drink.setThirstQuenched(1);
 			}
-			drink.basePhyStats().setWeight(drink.basePhyStats().weight()/finalAmount);
+			buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()/finalAmount);
 			if(messedUp)
 				drink.setThirstQuenched(1);
 			else
@@ -758,7 +758,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			{
 				final Ability A=CMClass.getAbility("Poison_Rotten");
 				if(A!=null)
-					drink.addNonUninvokableEffect(A);
+					buildingI.addNonUninvokableEffect(A);
 			}
 			else
 			if(!messedUp)
@@ -781,7 +781,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				for(int v=0;v<contents.size();v++)
 				{
 					final Item I=contents.get(v);
-					drink.basePhyStats().setWeight(drink.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
+					buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
 					drink.setLiquidRemaining(drink.liquidRemaining()+rem);
 					if((I instanceof Drink)&&((((Drink)I).liquidType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 						liquidType=((Drink)I).liquidType();

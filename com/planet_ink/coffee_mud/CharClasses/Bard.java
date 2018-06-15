@@ -280,9 +280,10 @@ public class Bard extends StdCharClass
 										V2.get(v);
 								}
 							}
-							if(O instanceof Drink)
+							if((O instanceof Drink)
+							&&(O instanceof Item))
 							{
-								V2.addAll(CMLib.flags().domainAffects((Drink)O,Ability.ACODE_POISON));
+								V2.addAll(CMLib.flags().domainAffects((Item)O,Ability.ACODE_POISON));
 								final String name=" "+O.Name().toLowerCase();
 								if(name.endsWith(" beer")
 								||name.endsWith(" liquor")
