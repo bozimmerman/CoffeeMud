@@ -213,6 +213,16 @@ public interface ClanManager extends CMLibrary
 	public Clan getClan(String id);
 
 	/**
+	 * Returns the Clan object associated with the given clan name
+	 * from any host sharing the same map as the caller.
+	 * 
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
+	 * @param id the clan name
+	 * @return the Clan object associated with the given clan name
+	 */
+	public Clan getClanAnyHost(String id);
+	
+	/**
 	 * Returns the Clan object associated with the given clan name, or
 	 * if the name is not found, the name that most closely matches it.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan

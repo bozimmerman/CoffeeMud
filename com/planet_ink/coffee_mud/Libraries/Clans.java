@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMappi
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLTag;
 import com.planet_ink.coffee_mud.core.threads.ServiceEngine;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -319,6 +320,21 @@ public class Clans extends StdLibrary implements ClanManager
 		return false;
 	}
 
+	protected List<ClanManager> getOtherClanLibAllHosts()
+	{
+		final List<ClanManager> list=new LinkedList<ClanManager>();
+		final WorldMap map=CMLib.map();
+		for(final Enumeration<CMLibrary> c=CMLib.libraries(CMLib.Library.CLANS); c.hasMoreElements(); )
+		{
+			final ClanManager cLib2 = (ClanManager)c.nextElement();
+			if((cLib2 != null)
+			&&(this!=cLib2)
+			&&(map == CMLib.library(CMLib.getLibraryThreadID(Library.CLANS, cLib2), Library.MAP)))
+				list.add(cLib2);
+		}
+		return list;
+	}
+	
 	@Override
 	public Clan getClan(String id)
 	{
@@ -332,6 +348,24 @@ public class Clans extends StdLibrary implements ClanManager
 			C=e.nextElement();
 			if(CMLib.english().containsString(CMStrings.removeColors(C.name()),id))
 				return C;
+		}
+		return null;
+	}
+
+	@Override
+	public Clan getClanAnyHost(String id)
+	{
+		if((id==null)||(id.length()==0))
+			return null;
+		
+		Clan C=getClan(id);
+		if(C!=null)
+			return C;
+		for(final ClanManager pLib2 : getOtherClanLibAllHosts())
+		{
+			final Clan C2=pLib2.getClan(id);
+			if(C2!=null)
+				return C2;
 		}
 		return null;
 	}
