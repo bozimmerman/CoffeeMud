@@ -102,7 +102,7 @@ public class Prayer_DivineConstitution extends Prayer
 	}
 
 	@Override
-	public void affectCharState(MOB affected, CharState affectableMaxState)
+	public void affectCharState(final MOB affected, final CharState affectableMaxState)
 	{
 		super.affectCharState(affected, affectableMaxState);
 		if(affected==null)

@@ -135,7 +135,8 @@ public class ThrowFeces extends StdAbility
 		if(success)
 		{
 			this.maxRange=1+super.getXMAXRANGELevel(mob);
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),auto?"":L("^S<S-NAME> reach(es) around <S-HIM-HERSELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT|(auto?CMMsg.MASK_ALWAYS:0),CMMsg.MSG_OK_VISUAL,CMMsg.MSG_OK_VISUAL,auto?"":L("^F^<FIGHT^><S-NAME> reach(es) around <S-HIM-HERSELF>.^</FIGHT^>^N"));
+			CMLib.color().fixSourceFightColor(msg);
 			if(target.location().okMessage(target,msg))
 			{
 				target.location().send(target,msg);

@@ -77,7 +77,7 @@ public class Spell_Hungerless extends Spell
 	}
 
 	@Override
-	public void affectCharState(MOB affected, CharState affectableMaxState)
+	public void affectCharState(final MOB affected, final CharState affectableMaxState)
 	{
 		super.affectCharState(affected,affectableMaxState);
 		affectableMaxState.setHunger((Integer.MAX_VALUE/2)+10);

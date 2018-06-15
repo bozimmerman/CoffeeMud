@@ -90,6 +90,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 			return false;
 		return (item.fetchEffect("Bleeding")!=null)
 				||(item.fetchEffect("Injury")!=null)
+				||(item.fetchEffect("Hamstring")!=null)
 				||(item.fetchEffect("BrokenLimbs")!=null);
 	}
 
@@ -137,6 +138,9 @@ public class Bandaging extends CommonSkill implements MendingSkill
 						A=bandaging.fetchEffect("Injury");
 						if(A != null)
 							A.unInvoke();
+						A=bandaging.fetchEffect("Hamstring");
+						if(A != null)
+							A.unInvoke();
 						A=bandaging.fetchEffect("BrokenLimbs");
 						if(A != null)
 						{
@@ -166,6 +170,7 @@ public class Bandaging extends CommonSkill implements MendingSkill
 			return false;
 		if((target.fetchEffect("Bleeding")==null)
 		&&(target.fetchEffect("BrokenLimbs")==null)
+		&&(target.fetchEffect("Hamstring")==null)
 		&&(target.fetchEffect("Injury")==null))
 		{
 			super.commonTell(mob,target,null,L("<T-NAME> <T-IS-ARE> not bleeding, broken or injured!"));

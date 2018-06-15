@@ -184,7 +184,8 @@ public class ShootWeb extends StdAbility
 
 		if(success)
 		{
-			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,L(auto?"":"^S<S-NAME> shoot(s) a web at <T-NAME>.^?")+CMLib.protocol().msp("web.wav",40));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE,L(auto?"":"^F^<FIGHT^><S-NAME> shoot(s) a web at <T-NAME>.^</FIGHT^>^N")+CMLib.protocol().msp("web.wav",40));
+			CMLib.color().fixSourceFightColor(msg);
 			if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 			{
 				mob.location().send(mob,msg);
