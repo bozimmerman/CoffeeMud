@@ -226,6 +226,24 @@ public class Spell_Meld extends Spell
 
 				if((msg.value()>0)||(msg2.value()>0))
 					return false;
+				
+				for(int i=itemOne.numEffects()-1;i>=0;i--)
+				{
+					final Ability A=itemOne.fetchEffect(i);
+					if((A!=null)
+					&&(!A.isSavable())
+					&&(A.canBeUninvoked()))
+						A.unInvoke();
+				}
+				
+				for(int i=itemTwo.numEffects()-1;i>=0;i--)
+				{
+					final Ability A=itemTwo.fetchEffect(i);
+					if((A!=null)
+					&&(!A.isSavable())
+					&&(A.canBeUninvoked()))
+						A.unInvoke();
+				}
 
 				String itemOneName=itemOne.Name();
 				String itemTwoName=itemTwo.Name();
