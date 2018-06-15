@@ -89,6 +89,9 @@ public class Chant_SummonSeed extends Chant
 		String foundShortName=null;
 		int col=0;
 		final List<Integer> codes = RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_VEGETATION);
+		codes.add(Integer.valueOf(RawMaterial.RESOURCE_COTTON));
+		codes.add(Integer.valueOf(RawMaterial.RESOURCE_HEMP));
+		codes.addAll(RawMaterial.CODES.COMPOSE_RESOURCES(RawMaterial.MATERIAL_WOODEN));
 		for(final Integer code : codes)
 		{
 			if(!CMParms.contains(Chant_SummonSeed.NON_SEEDS,code))
