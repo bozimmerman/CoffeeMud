@@ -339,9 +339,9 @@ public class Conquerable extends Arrest
 					Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+reason+".");
 				final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 				for(int i=0;i<channels.size();i++)
-					CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("@x1 has lost control of @x2.",holdingClan,myArea.name()),false);
+					CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("@x1 has lost control of @x2@x3.",holdingClan,myArea.name(),reason),false);
 				if(journalName.length()>0)
-					CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",holdingClan+" loses control of "+myArea.name()+reason+".","See the subject line.");
+					CMLib.database().DBWriteJournal(journalName,"Conquest","ALL",L("@x1 loses control of @x2@x3.",holdingClan,myArea.name(),reason),L("See the subject line."));
 			}
 			final Law laws=getLaws(myArea,false);
 			if(laws.lawIsActivated())
