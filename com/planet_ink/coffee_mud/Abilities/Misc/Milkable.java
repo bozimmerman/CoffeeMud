@@ -243,9 +243,9 @@ public class Milkable extends StdAbility implements Drink
 						&&(CMLib.law().doesHavePriviledgesHere(mob, ((MOB)affected).getStartRoom()))))
 					{
 						final CMMsg fillMsg=CMClass.getMsg(mob,fillThis,this,CMMsg.MSG_FILL,L("<S-NAME> milk(s) <O-NAME> into <T-NAME>."));
-						if((!mob.isMine(fillThis))&&(fillThis instanceof Item))
+						if(!mob.isMine(fillThis))
 						{
-							if(CMLib.commands().postGet(mob,null,(Item)fillThis,false))
+							if(CMLib.commands().postGet(mob,null,fillThis,false))
 							{
 								if(mob.location().okMessage(mob,fillMsg))
 									mob.location().send(mob,fillMsg);
@@ -325,7 +325,7 @@ public class Milkable extends StdAbility implements Drink
 	@Override
 	public int liquidRemaining()
 	{
-		return (int)Math.round(milkRemain);
+		return milkRemain;
 	}
 
 	@Override
