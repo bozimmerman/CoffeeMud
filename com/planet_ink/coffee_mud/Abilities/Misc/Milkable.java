@@ -54,11 +54,15 @@ public class Milkable extends StdAbility implements Drink
 	}
 
 	private final static String	localizedStaticDisplay	= CMLib.lang().L("(Milkable)");
+	private final static String	localizedStaticDisplay2	= CMLib.lang().L("(Refusing Milk)");
 
 	@Override
 	public String displayText()
 	{
-		return localizedStaticDisplay;
+		if(isMilkingOK(null))
+			return localizedStaticDisplay;
+		else
+			return localizedStaticDisplay2;
 	}
 
 	@Override
@@ -141,6 +145,24 @@ public class Milkable extends StdAbility implements Drink
 		return true;
 	}
 
+	protected boolean isMilkingOK(final MOB milkingMOB)
+	{
+		final Physical affected=this.affected;
+		if(affected instanceof MOB)
+		{
+			if(milkingOK
+			||((affected instanceof MOB)
+				&&(CMLib.flags().isBoundOrHeld(affected)))
+			||((affected instanceof MOB)
+				&&(((MOB)affected).isMonster())
+				&&(((MOB)affected).getStartRoom()!=null)
+				&&(milkingMOB!=null)
+				&&(CMLib.law().doesHavePriviledgesHere(milkingMOB, ((MOB)affected).getStartRoom()))))
+					return true;
+		}
+		return false;
+	}
+	
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -156,7 +178,8 @@ public class Milkable extends StdAbility implements Drink
 				if(cmds.size()==0)
 					return true;
 				final String word=cmds.get(0).toUpperCase();
-				if("FILL".startsWith(word))
+				if("FILL".startsWith(word) 
+				&& (isMilkingOK(msg.source())))
 				{
 					final CMMsg fillMsg=CMClass.getMsg(mob,msg.target(),this,CMMsg.MSG_FILL,L("<S-NAME> milk(s) <O-NAME>, filling <T-NAME>."));
 					if(mob.location().okMessage(mob,fillMsg))
@@ -236,13 +259,7 @@ public class Milkable extends StdAbility implements Drink
 						CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",thingToFill));
 						return false;
 					}
-					if(milkingOK
-					||((affected instanceof MOB)
-						&&(CMLib.flags().isBoundOrHeld(affected)))
-					||((affected instanceof MOB)
-						&&(((MOB)affected).isMonster())
-						&&(((MOB)affected).getStartRoom()!=null)
-						&&(CMLib.law().doesHavePriviledgesHere(mob, ((MOB)affected).getStartRoom()))))
+					if(isMilkingOK(mob))
 					{
 						final CMMsg fillMsg=CMClass.getMsg(mob,fillThis,this,CMMsg.MSG_FILL,L("<S-NAME> milk(s) <O-NAME> into <T-NAME>."));
 						if(!mob.isMine(fillThis))
@@ -267,7 +284,9 @@ public class Milkable extends StdAbility implements Drink
 			break;
 		}
 		case CMMsg.TYP_DRINK:
-			if((msg.target()==affected) && this.drinkableMilkable)
+			if((msg.target()==affected) 
+			&& this.drinkableMilkable
+			&& (isMilkingOK(msg.source())))
 				msg.setTarget(this);
 			break;
 		}
