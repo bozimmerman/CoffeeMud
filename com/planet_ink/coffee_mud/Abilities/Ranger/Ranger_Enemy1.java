@@ -150,13 +150,17 @@ public class Ranger_Enemy1 extends StdAbility
 			return;
 		final MOB mob=(MOB)affected;
 		final MOB victim=mob.getVictim();
-		if((victim!=null)&&(victim.charStats().getMyRace().racialCategory().equals(text())))
+		if(victim != null)
 		{
-			final int level=1+adjustedLevel(mob,0);
-			final double damBonus=CMath.mul(CMath.div(proficiency(),100.0),level);
-			final double attBonus=CMath.mul(CMath.div(proficiency(),100.0),3*level);
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(attBonus));
-			affectableStats.setDamage(affectableStats.damage()+(int)Math.round(damBonus));
+			final Race R=victim.charStats().getMyRace();
+			if(R.racialCategory().equals(text()))
+			{
+				final int level=1+adjustedLevel(mob,0);
+				final double damBonus=CMath.mul(CMath.div(proficiency(),100.0),level);
+				final double attBonus=CMath.mul(CMath.div(proficiency(),100.0),3*level);
+				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(int)Math.round(attBonus));
+				affectableStats.setDamage(affectableStats.damage()+(int)Math.round(damBonus));
+			}
 		}
 	}
 
@@ -165,10 +169,13 @@ public class Ranger_Enemy1 extends StdAbility
 	{
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.source()==affected)
-		&&(msg.target() instanceof MOB)
-		&&(((MOB)msg.target()).charStats().getMyRace().racialCategory().equals(text()))
-		&&(CMLib.dice().roll(1, 10, 0)==1))
-			helpProficiency(msg.source(), 0);
+		&&(msg.target() instanceof MOB))
+		{
+			final Race R=((MOB)msg.target()).charStats().getMyRace();
+			if((R.racialCategory().equals(text()))
+			&&(CMLib.dice().roll(1, 10, 0)==1))
+				helpProficiency(msg.source(), 0);
+		}
 		return super.okMessage(myHost, msg);
 	}
 
