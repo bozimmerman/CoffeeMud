@@ -116,7 +116,7 @@ public class Butchering extends GatheringSkill
 						{
 							mob.location().send(mob, msg);
 							final List<RawMaterial> resources=body.charStats().getMyRace().myResources();
-							final Vector<Ability> diseases=new Vector<Ability>();
+							final ArrayList<Ability> diseases=new ArrayList<Ability>();
 							for(int i=0;i<body.numEffects();i++)
 							{
 								final Ability A=body.fetchEffect(i);
@@ -124,7 +124,7 @@ public class Butchering extends GatheringSkill
 								{
 									if((CMath.bset(((DiseaseAffect)A).spreadBitmap(),DiseaseAffect.SPREAD_CONSUMPTION))
 									||(CMath.bset(((DiseaseAffect)A).spreadBitmap(),DiseaseAffect.SPREAD_CONTACT)))
-										diseases.addElement(A);
+										diseases.add(A);
 								}
 							}
 							for(int y=0;y<msg.value();y++)
@@ -135,7 +135,7 @@ public class Butchering extends GatheringSkill
 									if((newFound instanceof Food)||(newFound instanceof Drink))
 									{
 										for(int d=0;d<diseases.size();d++)
-											newFound.addNonUninvokableEffect((Ability)diseases.elementAt(d).copyOf());
+											newFound.addNonUninvokableEffect((Ability)diseases.get(d).copyOf());
 									}
 									newFound.recoverPhyStats();
 									if(!dropAWinner(mob,newFound))
