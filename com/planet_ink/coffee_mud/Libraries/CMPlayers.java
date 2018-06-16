@@ -51,6 +51,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	protected long[] 					autoPurgeDaysLevels	= new long[1];
 	protected long[] 					prePurgeLevels		= new long[1];
 	protected int						autoPurgeHash		= 0;
+	protected PlayerLibrary[]			playerLibList		= new PlayerLibrary[0];
 
 	protected final static int			PRIDE_TOP_SIZE		= 10;
 	protected final long[]				topPrideExpiration	= new long[TimeClock.TimePeriod.values().length];
@@ -200,9 +201,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return null;
 	}
 
-	protected List<PlayerLibrary> getOtherPlayerLibAllHosts()
+	protected PlayerLibrary[] getOtherPlayerLibAllHosts()
 	{
-		final List<PlayerLibrary> list=new LinkedList<PlayerLibrary>();
+		if(this.playerLibList.length>0)
+			return this.playerLibList;
+		final List<PlayerLibrary> list=new ArrayList<PlayerLibrary>();
+		list.add(this);
 		final WorldMap map=CMLib.map();
 		for(final Enumeration<CMLibrary> pl=CMLib.libraries(CMLib.Library.PLAYERS); pl.hasMoreElements(); )
 		{
@@ -212,15 +216,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			&&(map == CMLib.library(CMLib.getLibraryThreadID(Library.PLAYERS, pLib2), Library.MAP)))
 				list.add(pLib2);
 		}
-		return list;
+		this.playerLibList = list.toArray(this.playerLibList);
+		return this.playerLibList;
 	}
 	
 	@Override
-	public PlayerAccount getAccountAllHosts(String calledThis)
+	public PlayerAccount getAccountAllHosts(final String calledThis)
 	{
-		PlayerAccount pA=getAccount(calledThis);
-		if(pA!=null)
-			return pA;
 		for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
 		{
 			final PlayerAccount pA2=pLib2.getAccount(calledThis);
@@ -243,16 +245,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public MOB getPlayerAllHosts(String calledThis)
+	public MOB getPlayerAllHosts(final String calledThis)
 	{
-		final MOB M=getPlayer(calledThis);
-		if(M!=null)
-			return M;
 		for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
 		{
-			final MOB M2=pLib2.getPlayer(calledThis);
-			if(M2!=null)
-				return M2;
+			final MOB M=pLib2.getPlayer(calledThis);
+			if(M!=null)
+				return M;
 		}
 		return null;
 	}
@@ -294,12 +293,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public boolean accountExistsAllHosts(String name)
+	public boolean accountExistsAllHosts(final String name)
 	{
 		if(name==null)
 			return false;
-		if(accountExists(name))
-			return true;
 		for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
 		{
 			if(pLib2.accountExists(name))
@@ -324,15 +321,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public boolean playerExistsAllHosts(String name)
+	public boolean playerExistsAllHosts(final String name)
 	{
 		if(name==null)
 			return false;
-		if(playerExists(name))
-			return true;
-		for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
+		for(final PlayerLibrary pLib : getOtherPlayerLibAllHosts())
 		{
-			if(pLib2.playerExists(name))
+			if(pLib.playerExists(name))
 				return true;
 		}
 		return false;

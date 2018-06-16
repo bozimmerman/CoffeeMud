@@ -375,7 +375,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 		final long distance=map.getDistanceFrom(S.coordinates(), cO.coordinates());
 		final long oMass = S.getMass();
 		if(((cO instanceof Area)||(cO.getMass() >= SpaceObject.ASTEROID_MASS))
-		&&(distance > (S.radius()+cO.radius()))
+		&&(distance >= cO.radius())
 		&&(oMass < SpaceObject.MOONLET_MASS))
 		{
 			final double graviRadiusMax=cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS;

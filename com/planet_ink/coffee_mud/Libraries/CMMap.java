@@ -538,7 +538,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public void moveSpaceObject(final SpaceObject O, final double[] accelDirection, final long newAccelleration)
 	{
-		O.setSpeed(moveSpaceObject(O.direction(),O.speed(),accelDirection,newAccelleration));
+		final double newSpeed = moveSpaceObject(O.direction(),O.speed(),accelDirection,newAccelleration);
+		O.setSpeed(newSpeed);
+		
 	}
 
 	@Override
@@ -566,6 +568,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public double moveSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final long newAccelleration)
 	{
+		if(newAccelleration == 0.0)
+			return curSpeed;
+
 		final double curDirectionYaw = curDirection[0];
 		final double curDirectionPitch = (curDirection[1] > Math.PI) ? Math.abs(Math.PI-curDirection[1]) : curDirection[1];
 
@@ -4000,7 +4005,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			minDistance=prevDistance;
 		else
 		{
-			final BigDecimal s=new BigDecimal((prevDistance/2.0) + (curDistance/2.0) + (baseDistance/2.0));
+			final BigDecimal s=new BigDecimal(prevDistance/2.0)
+								.add(new BigDecimal(curDistance/2.0))
+								.add(new BigDecimal(baseDistance/2.0));
 			final BigDecimal s1=s.subtract(new BigDecimal(prevDistance));
 			final BigDecimal s2=s.subtract(new BigDecimal(curDistance));
 			final BigDecimal s3=s.subtract(new BigDecimal(baseDistance));

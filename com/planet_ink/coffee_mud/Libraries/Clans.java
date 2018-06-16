@@ -50,6 +50,7 @@ public class Clans extends StdLibrary implements ClanManager
 	protected long	 		  		  	lastGovernmentLoad  = 0;
 	protected Map<String,Clan>  	  	webPathClanMappings = new SHashtable<String,Clan>();
 	protected Map<String,String>		clanWebPathMappings = new SHashtable<String,String>();
+	protected ClanManager[]				clanLibList			= new ClanManager[0];
 
 	@Override
 	public String ID()
@@ -320,9 +321,12 @@ public class Clans extends StdLibrary implements ClanManager
 		return false;
 	}
 
-	protected List<ClanManager> getOtherClanLibAllHosts()
+	protected ClanManager[] getOtherClanLibAllHosts()
 	{
-		final List<ClanManager> list=new LinkedList<ClanManager>();
+		if(this.clanLibList.length>0)
+			return this.clanLibList;
+		final List<ClanManager> list=new ArrayList<ClanManager>();
+		list.add(this);
 		final WorldMap map=CMLib.map();
 		for(final Enumeration<CMLibrary> c=CMLib.libraries(CMLib.Library.CLANS); c.hasMoreElements(); )
 		{
@@ -332,7 +336,8 @@ public class Clans extends StdLibrary implements ClanManager
 			&&(map == CMLib.library(CMLib.getLibraryThreadID(Library.CLANS, cLib2), Library.MAP)))
 				list.add(cLib2);
 		}
-		return list;
+		this.clanLibList = list.toArray(this.clanLibList);
+		return this.clanLibList;
 	}
 	
 	@Override
@@ -353,19 +358,15 @@ public class Clans extends StdLibrary implements ClanManager
 	}
 
 	@Override
-	public Clan getClanAnyHost(String id)
+	public Clan getClanAnyHost(final String id)
 	{
 		if((id==null)||(id.length()==0))
 			return null;
-		
-		Clan C=getClan(id);
-		if(C!=null)
-			return C;
-		for(final ClanManager pLib2 : getOtherClanLibAllHosts())
+		for(final ClanManager cLib : getOtherClanLibAllHosts())
 		{
-			final Clan C2=pLib2.getClan(id);
-			if(C2!=null)
-				return C2;
+			final Clan C=cLib.getClan(id);
+			if(C!=null)
+				return C;
 		}
 		return null;
 	}

@@ -254,11 +254,14 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 											// to eliminate all speed, do a complicated gforce calc, and re-speed
 											this.setSpeed(0);
 										}
-										final double finalRawThrust = (amount-1.0)*inAirFactor;
+										final double finalRawThrust = amount*inAirFactor;
 										final long finalThrust = (R==null)?Math.round(finalRawThrust):0;
-										CMLib.map().moveSpaceObject(this,facing(),finalThrust);
-										if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-											Log.debugOut("SpaceShip "+name()+" accellerates "+finalThrust+" to the "+dir.toString());
+										if(finalThrust > 0)
+										{
+											CMLib.map().moveSpaceObject(this,facing(),finalThrust);
+											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+												Log.debugOut("SpaceShip "+name()+" accellerates "+finalThrust+" to the "+dir.toString());
+										}
 										final String code=Technical.TechCommand.THRUSTED.makeCommand(dir,Double.valueOf(finalRawThrust));
 										final MOB mob=CMClass.getFactoryMOB();
 										try

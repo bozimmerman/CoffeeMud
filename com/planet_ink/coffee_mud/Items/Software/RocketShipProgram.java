@@ -510,6 +510,7 @@ public class RocketShipProgram extends GenShipProgram
 						mob.destroy();
 					}
 					this.programEngines=null;
+					return super.checkPowerCurrent(value);
 				}
 			}
 			break;
@@ -524,23 +525,18 @@ public class RocketShipProgram extends GenShipProgram
 		case LAUNCHSEARCH:
 		{
 			final double targetThrust = CMLib.tech().getGravityForce(myShip, programPlanet) + SpaceObject.ACCELLERATION_TYPICALROCKET; // 
-			if((this.lastThrust!=null) 
+			if((this.lastThrust!=null)
+			&&(newInject != null)
 			&& (targetThrust!= 0.0))
 			{
 				if((this.lastThrust.doubleValue() < (targetThrust * 0.9))
 				|| (this.lastThrust.doubleValue() > (targetThrust * 1.1)))
 				{
-					double factor = (targetThrust / this.lastThrust.doubleValue());
-					if(factor > 2.0)
-						factor=Math.sqrt(Math.sqrt(factor));
-					else
-					if(factor < 0.1)
-						factor*=5;
-					else
+					final double factor;
 					if(this.lastThrust.doubleValue()<targetThrust)
-						factor=1.1;
+						factor=1.05;
 					else
-						factor=0.9;
+						factor=0.95;
 					newInject = new Double(factor * newInject.doubleValue());
 				}
 			}
@@ -551,16 +547,19 @@ public class RocketShipProgram extends GenShipProgram
 			final MOB mob=CMClass.getFactoryMOB();
 			try
 			{
-				for(final ShipEngine engineE : programEngines)
+				this.lastThrust=null;
+				if(newInject != null)
 				{
-					if((newInject != this.lastInject)||(!engineE.isConstantThruster()))
+					for(final ShipEngine engineE : programEngines)
 					{
-						this.lastThrust=null;
-						CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-						final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(newInject.doubleValue()));
-						msg.setTargetMessage(code);
-						this.trySendMsgToItem(mob, engineE, msg);
-						this.lastInject=newInject;
+						if((newInject != this.lastInject)||(!engineE.isConstantThruster()))
+						{
+							CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+							final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(newInject.doubleValue()));
+							msg.setTargetMessage(code);
+							this.trySendMsgToItem(mob, engineE, msg);
+							this.lastInject=newInject;
+						}
 					}
 				}
 			}
@@ -676,6 +675,7 @@ public class RocketShipProgram extends GenShipProgram
 							double lastTryAmt=0.000001;
 							final CMMsg deactMsg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
 							msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+							final long targetThrust = CMLib.tech().getGravityForce(spaceObject, this.programPlanet);
 							while((readyEngines.size()==0)&&(--tries>0))
 							{
 								this.lastThrust=null;
@@ -684,7 +684,7 @@ public class RocketShipProgram extends GenShipProgram
 								this.trySendMsgToItem(mob, engineE, msg);
 								final Double thisLastThrust=this.lastThrust;
 								if((thisLastThrust!=null)
-								&&(thisLastThrust.doubleValue()>0.0)
+								&&(thisLastThrust.doubleValue() >= targetThrust)
 								&&(ship.getIsDocked()==null))
 								{
 									readyEngines.add(engineE);
