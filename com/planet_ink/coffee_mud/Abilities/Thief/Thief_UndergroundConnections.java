@@ -96,8 +96,8 @@ public class Thief_UndergroundConnections extends ThiefSkill
 	protected int hygieneLoss=0;
 	protected String theNoun=null;
 	protected Room currRoom=null;
-	protected Vector<MOB> theGroup=null;
-	protected Vector<Room> storage=null;
+	protected List<MOB> theGroup=null;
+	protected List<Room> storage=null;
 	protected String lastDesc=null;
 
 	@Override
@@ -120,7 +120,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 						lastDesc=roomDesc;
 						for(int g=0;g<theGroup.size();g++)
 						{
-							final MOB M=theGroup.elementAt(g);
+							final MOB M=theGroup.get(g);
 							if((M.playerStats()!=null)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.HYGIENE)))
 								M.playerStats().adjHygiene(hygieneLoss);
 							switch(CMLib.dice().roll(1,10,0))
@@ -187,7 +187,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			if(theGroup!=null)
 			for(int g=0;g<theGroup.size();g++)
 			{
-				final MOB M=theGroup.elementAt(g);
+				final MOB M=theGroup.get(g);
 				M.tell(L("You are told that it's safe and released."));
 				currRoom.bringMobHere(M,false);
 				CMLib.commands().postStand(M,true, false);
@@ -195,7 +195,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			}
 			if(storage!=null)
 			for(int s=0;s<storage.size();s++)
-				storage.elementAt(s).destroy();
+				storage.get(s).destroy();
 			pathOut=null;
 			currRoom=null;
 			if(storage!=null)
@@ -218,7 +218,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		}
 	}
 
-	public void bringMOBSLikeHere(Vector<Room> rooms, Room newRoom, Vector<MOB> group, String enterStr, String leaveStr)
+	public void bringMOBSLikeHere(List<Room> rooms, Room newRoom, Vector<MOB> group, String enterStr, String leaveStr)
 	{
 		for(int g=group.size()-1;g>=0;g--)
 		{
@@ -227,7 +227,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			if(!bringMOBHere(R,follower,enterStr,leaveStr))
 				group.removeElementAt(g);
 			else
-				rooms.addElement(R);
+				rooms.add(R);
 		}
 	}
 
@@ -384,7 +384,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				}
 				underA.theGroup=group;
 				final Area area=thisRoom.getArea();
-				final Vector<Room> rooms=new Vector<Room>();
+				final List<Room> rooms=new Vector<Room>();
 				switch(CMLib.dice().roll(1,4,0))
 				{
 				case 1:
@@ -392,7 +392,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 					underA.theNoun="a strange horse drawn cart";
 					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,L("A horse drawn wagon filled with hay pulls up.\n\rTwo large farmers jump out."));
 					final Room destR=makeNewRoom(area,"A bundle of straw","Your eyes, mouth, and ears are filled with the stuff. This trip better be short!");
-					rooms.addElement(destR);
+					rooms.add(destR);
 					bringMOBSHere(destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into the piles of hay");
 					break;
 				}
@@ -409,7 +409,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 					underA.theNoun="a pullcart full of plague victims";
 					thisRoom.showHappens(CMMsg.MSG_OK_ACTION,L("A pullcart full of the decaying bodies of plague victims pulls up."));
 					final Room destR=makeNewRoom(area,"A pile of bodies","There is a finger in your ear, and you aren't sure whose it is.");
-					rooms.addElement(destR);
+					rooms.add(destR);
 					bringMOBSHere(destR,group,"","<S-NAME> <S-IS-ARE> picked up and stuffed into the bottom of the pile");
 					break;
 				}

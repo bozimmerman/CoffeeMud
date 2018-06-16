@@ -521,13 +521,13 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 		if(data!=null)
 		{
-			final Vector<Room> rooms=new Vector<Room>();
+			final ArrayList<Room> rooms=new ArrayList<Room>();
 			for(final Enumeration<Physical> e=data.enumeration();e.hasMoreElements();)
 			{
 				final Physical P2=e.nextElement();
 				final Room R=CMLib.map().getStartRoom(P2);
 				if((R!=null)&&(!rooms.contains(R)))
-					rooms.addElement(R);
+					rooms.add(R);
 				changeCatalogUsage(P2,false);
 			}
 			for(Room R : rooms)

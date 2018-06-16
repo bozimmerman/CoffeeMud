@@ -1,8 +1,8 @@
 package com.planet_ink.coffee_mud.Abilities.Skills;
-import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.StdAbility;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -16,6 +16,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.io.IOException;
 import java.util.*;
 
 /*
@@ -34,15 +35,14 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Skill_FindHome extends StdAbility
+public class Skill_BearForaging extends StdAbility
 {
 	@Override
 	public String ID()
 	{
-		return "Skill_FindHome";
+		return "Skill_BearForaging";
 	}
-
-	private final static String	localizedName	= CMLib.lang().L("Find Home");
+	private final static String	localizedName	= CMLib.lang().L("Bear Foraging");
 
 	@Override
 	public String name()
@@ -50,12 +50,12 @@ public class Skill_FindHome extends StdAbility
 		return localizedName;
 	}
 
-	private final static String	localizedStaticDisplay	= CMLib.lang().L("(finding your home)");
+	protected String	displayText	= L("(Bear Foraging)");
 
 	@Override
 	public String displayText()
 	{
-		return localizedStaticDisplay;
+		return displayText;
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class Skill_FindHome extends StdAbility
 		return Ability.QUALITY_OK_SELF;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "FINDHOME" });
+	private static final String[]	triggerStrings	= I(new String[] { "BFORAGE","BEARFORAGE","BEARFORAGING" });
 
 	@Override
 	public String[] triggerStrings()
@@ -87,7 +87,7 @@ public class Skill_FindHome extends StdAbility
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_NATURELORE;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_RACIALABILITY;
 	}
 
 	@Override
@@ -107,6 +107,99 @@ public class Skill_FindHome extends StdAbility
 		super.unInvoke();
 	}
 
+	public void performForage(final MOB mob, final Environmental E)
+	{
+		if(E instanceof MOB)
+		{
+			final MOB M=(MOB)E;
+			final Environmental foodE=this.isFoodHere(mob, E);
+			if((foodE instanceof Item)&&(((Item)foodE).owner() == M))
+			{
+				final Item I=(Item)foodE;
+				Item dropI=I;
+				final List<Item> containerSet=this.containerSet(mob, I);
+				if((containerSet != null)&&(containerSet.size()>0))
+					dropI=containerSet.get(0);
+				CMMsg msg=CMClass.getMsg(mob,M,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,L("<S-NAME> suddenly attack(s) <T-NAME> ripping @x1 away from <T-HIM-HER>.",dropI.Name()));
+				if(mob.location().okMessage(mob,msg))
+				{
+					mob.location().send(mob,msg);
+					msg=CMClass.getMsg(M,dropI,null,CMMsg.MSG_DROP,CMMsg.MSG_DROP,CMMsg.MSG_NOISE,null);
+					if(M.location().okMessage(M,msg))
+					{
+						M.location().send(mob,msg);
+						if(M.location().isContent(dropI))
+							performForage(mob, foodE);
+					}
+				}
+			}
+		}
+		else
+		if(E instanceof Item)
+		{
+			Item I=(Item)E;
+			final List<Item> containerSet=this.containerSet(mob, I);
+			if((containerSet != null)&&(containerSet.size()>0))
+			{
+				for(final Item containerI : containerSet)
+				{
+					final CMMsg msg=CMClass.getMsg(mob,containerI,CMMsg.MASK_MALICIOUS|CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> rips through <T-NAME>."));
+					if(mob.location().okMessage(mob,msg))
+					{
+						mob.location().send(mob,msg);
+						if(containerI instanceof Container)
+							((Container)containerI).emptyPlease(false);
+						containerI.destroy();
+					}
+					else
+						return;
+				}
+			}
+			if((I.container()==null)&&(I instanceof Food))
+			{
+				CMLib.commands().postGet(mob, null, I, true);
+				final Command eatC=CMClass.getCommand("Eat");
+				if(eatC != null)
+				{
+					try
+					{
+						eatC.execute(mob, new XVector<String>("EAT",I.Name()), 0);
+					}
+					catch (IOException e)
+					{
+						Log.errOut(e);
+					}
+				}
+			}
+		}
+	}
+	
+	protected List<Item> containerSet(final MOB mob, Item I)
+	{
+		final List<Item> containers=new ArrayList<Item>();
+		int tries=99;
+		while((I.container()!=null)&&(I.container()!=I)&&(--tries>0))
+ 		{
+			I=I.container();
+			if((!CMLib.utensils().canBePlayerDestroyed(mob,I,false,true))
+			||(CMLib.flags().isABonusItems(I))
+			||(I instanceof MiscMagic))
+				return null;
+			switch(I.material() & RawMaterial.MATERIAL_MASK)
+			{
+			case RawMaterial.MATERIAL_CLOTH:
+			case RawMaterial.MATERIAL_GLASS:
+			case RawMaterial.MATERIAL_LIQUID:
+			case RawMaterial.MATERIAL_PAPER:
+				containers.add(I);
+				break;
+			default:
+				return null;
+			}
+		}
+		return containers;
+	}
+	
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -126,18 +219,28 @@ public class Skill_FindHome extends StdAbility
 
 			if(nextDirection==999)
 			{
-				if(isHome(mob,mob.location()))
-					mob.tell(L("You feel like this is home."));
+				final Environmental E=isFoodHere(mob,mob.location());
+				if(E!=null)
+				{
+					mob.tell(L("You found a meal!"));
+					performForage(mob,E);
+				}
 				else
-					mob.tell(L("The trail home dries up here."));
+					mob.tell(L("The trail dries up here."));
 				nextDirection=-2;
 				unInvoke();
 			}
 			else
 			if(nextDirection==-1)
 			{
-				if(!isHome(mob,mob.location()))
-					mob.tell(L("The trail home dries up here."));
+				final Environmental E=isFoodHere(mob,mob.location());
+				if(E==null)
+					mob.tell(L("The trail dries up here."));
+				else
+				{
+					mob.tell(L("You found a meal!"));
+					performForage(mob,E);
+				}
 				nextDirection=-999;
 				unInvoke();
 			}
@@ -188,14 +291,23 @@ public class Skill_FindHome extends StdAbility
 		{
 			if((msg.tool()!=null)&&(msg.tool().ID().equals(ID())))
 			{
-				if(isHome((MOB)affected,(Room)msg.target()))
-					((MOB)affected).tell(L("This place feels very homey."));
+				final Environmental E=isFoodHere((MOB)affected,(Room)msg.target());
+				if(E!=null)
+				{
+					((MOB)affected).tell(L("You sense a meal here."));
+					performForage(mob,E);
+					unInvoke();
+				}
 			}
 			else
-			if(isHome((MOB)affected,(Room)msg.target()))
 			{
-				final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
-				msg.addTrailerMsg(msg2);
+				final Environmental E=isFoodHere((MOB)affected,(Room)msg.target());
+				if(E!=null)
+				{
+					final CMMsg msg2=CMClass.getMsg(msg.source(),msg.target(),this,CMMsg.MSG_LOOK,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,null);
+					msg.addTrailerMsg(msg2);
+					// targets the above
+				}
 			}
 		}
 	}
@@ -207,24 +319,64 @@ public class Skill_FindHome extends StdAbility
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
-	private boolean isHome(final MOB mob, final Room room)
+	private Environmental isFoodHere(final MOB mob, final Environmental E)
 	{
-		if(CMLib.law().doesOwnThisLand(mob, room))
+		if(E==null)
+			return null;
+		if(E instanceof MOB)
 		{
-			String ownerName=CMLib.law().getLandOwnerName(room);
-			if(ownerName.equalsIgnoreCase(mob.Name()))
-				return true;
-			if(CMLib.players().playerExistsAllHosts(ownerName))
-				return true;
+			final MOB M=(MOB)E;
+			for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
+			{
+				final Item I=i.nextElement();
+				if((I!=null)
+				&&(I instanceof Food)
+				&&(containerSet(mob,I)!=null))
+					return I;
+			}
 		}
-		return false;
+		else
+		if(E instanceof Item)
+		{
+			if((E!=null)
+			&&(E instanceof Food)
+			&&(containerSet(mob,(Item)E)!=null))
+				return E;
+		}
+		else
+		if(E instanceof Room)
+		{
+			final Room room=(Room)E;
+			for(final Enumeration<Item> i=room.items();i.hasMoreElements();)
+			{
+				final Item I=i.nextElement();
+				if((I!=null)
+				&&(I instanceof Food)
+				&&(containerSet(mob,I)!=null))
+					return I;
+			}
+			for(final Enumeration<MOB> m=room.inhabitants();m.hasMoreElements();)
+			{
+				final MOB M=m.nextElement();
+				if((M!=null)
+				&&(mob.mayIFight(M))
+				&&(M!=mob))
+				{
+					final Environmental I=this.isFoodHere(mob, M);
+					if(I!=null)
+						return M;
+				}
+			}
+		}
+		return null;
 	}
 	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(final Ability A : V) A.unInvoke();
+		for(final Ability A : V) 
+			A.unInvoke();
 		if(V.size()>0)
 		{
 			mob.tell(L("You stop tracking."));
@@ -235,9 +387,11 @@ public class Skill_FindHome extends StdAbility
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if(isHome(mob, mob.location()))
+		final Environmental hereE=isFoodHere(mob, mob.location());
+		if(hereE!=null)
 		{
-			mob.tell(L("You already feel at home"));
+			mob.tell(L("You smell something RIGHT HERE!!"));
+			performForage(mob,hereE);
 			return true;
 		}
 
@@ -248,12 +402,12 @@ public class Skill_FindHome extends StdAbility
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
 				.plus(TrackingLibrary.TrackingFlag.NOAIR);
-		int range=60 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
+		int range=3 + (adjustedLevel(mob,asLevel)/15) + (super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 		for (final Room room : checkSet)
 		{
 			final Room R=CMLib.map().getRoom(room);
-			if(isHome(mob,R))
+			if(isFoodHere(mob,R)!=null)
 				rooms.add(R);
 		}
 
@@ -262,11 +416,11 @@ public class Skill_FindHome extends StdAbility
 
 		if((success)&&(theTrail!=null))
 		{
-			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,auto?L("<S-NAME> begin(s) feeling <S-HIS-HER> way home!"):L("<S-NAME> begin(s) heading home."));
+			final CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,auto?L("<S-NAME> begin(s) foraging!"):L("<S-NAME> begin(s) foraging for someone elses food."));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final Skill_FindHome newOne=(Skill_FindHome)this.copyOf();
+				final Skill_BearForaging newOne=(Skill_BearForaging)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
 				mob.recoverPhyStats();
@@ -274,7 +428,7 @@ public class Skill_FindHome extends StdAbility
 			}
 		}
 		else
-			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to find home, but fail(s)."));
+			beneficialVisualFizzle(mob,null,L("<S-NAME> attempt(s) to forage for someone elses food, but fail(s)."));
 
 		return success;
 	}

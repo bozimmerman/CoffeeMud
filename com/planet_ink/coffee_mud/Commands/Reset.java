@@ -1328,7 +1328,7 @@ public class Reset extends StdCommand
 						break;
 					}
 				}
-				final Vector<Room> rooms=new Vector<Room>();
+				final ArrayList<Room> rooms=new ArrayList<Room>();
 				if(s.toUpperCase().startsWith("ROOM"))
 					rooms.add(mob.location());
 				else
@@ -1396,9 +1396,9 @@ public class Reset extends StdCommand
 				}
 				if(recordedChanges!=null)
 					mob.session().println(".");
-				for(final Enumeration r=rooms.elements();r.hasMoreElements();)
+				for(final Iterator<Room> r=rooms.iterator();r.hasNext();)
 				{
-					Room R=CMLib.map().getRoom((Room)r.nextElement());
+					Room R=CMLib.map().getRoom((Room)r.next());
 					if(R!=null)
 					synchronized(("SYNC"+R.roomID()).intern())
 					{
@@ -1850,7 +1850,7 @@ public class Reset extends StdCommand
 					}
 				}
 	
-				final Vector<Room> rooms=new Vector<Room>();
+				final ArrayList<Room> rooms=new ArrayList<Room>();
 				if(s.toUpperCase().startsWith("ROOM"))
 					rooms.add(mob.location());
 				else
@@ -1919,9 +1919,9 @@ public class Reset extends StdCommand
 				}
 				if(recordedChanges!=null)
 					mob.session().println(".");
-				for(final Enumeration r=rooms.elements();r.hasMoreElements();)
+				for(final Iterator<Room> r=rooms.iterator();r.hasNext();)
 				{
-					Room R=CMLib.map().getRoom((Room)r.nextElement());
+					Room R=CMLib.map().getRoom((Room)r.next());
 					if((R==null)||(R.getArea()==null)||(R.roomID().length()==0))
 						continue;
 					final Area A=R.getArea();

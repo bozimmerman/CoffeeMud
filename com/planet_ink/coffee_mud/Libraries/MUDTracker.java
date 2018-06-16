@@ -355,10 +355,10 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	@Override
-	public List<Room> findTrailToAnyRoom(Room location,
-											List<Room> destRooms,
-											TrackingFlags flags,
-											int maxRadius)
+	public List<Room> findTrailToAnyRoom(final Room location,
+										 final List<Room> destRooms,
+										 final TrackingFlags flags,
+										 final int maxRadius)
 	{
 
 		List<Room> finalTrail=null;

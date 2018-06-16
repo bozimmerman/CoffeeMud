@@ -226,14 +226,14 @@ public class Chant_FindPlant extends Chant
 
 	protected List<Room> makeTheTrail(MOB mob, MOB target, Room mobRoom)
 	{
-		final Vector<Room> rooms=new Vector<Room>();
+		final ArrayList<Room> rooms=new ArrayList<Room>();
 		TrackingLibrary.TrackingFlags flags = getTrackingFlags();
 		int range = 50+(2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mobRoom,flags,range);
 		for (final Room R : checkSet)
 		{
 			if(itsHere(target,R).length()>0)
-				rooms.addElement(R);
+				rooms.add(R);
 		}
 
 		flags = getTrackingFlags();

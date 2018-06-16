@@ -181,14 +181,14 @@ public class Prayer_HuntEvil extends Prayer
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final Vector<Room> rooms=new Vector<Room>();
+		final ArrayList<Room> rooms=new ArrayList<Room>();
 		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 		int range=50 + super.getXLEVELLevel(mob)+(2*super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 		for (final Room R : checkSet)
 		{
 			if(gameHere(R)!=null)
-				rooms.addElement(R);
+				rooms.add(R);
 		}
 
 		if(rooms.size()>0)

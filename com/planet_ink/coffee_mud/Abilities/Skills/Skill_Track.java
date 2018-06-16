@@ -371,21 +371,21 @@ public class Skill_Track extends StdSkill
 			return false;
 		}
 
-		final Vector<Room> rooms=new Vector<Room>();
+		final ArrayList<Room> rooms=new ArrayList<Room>();
 		if(givenTarget instanceof Area)
-			rooms.addElement(((Area)givenTarget).getRandomMetroRoom());
+			rooms.add(((Area)givenTarget).getRandomMetroRoom());
 		else
 		if(givenTarget instanceof Room)
-			rooms.addElement((Room)givenTarget);
+			rooms.add((Room)givenTarget);
 		else
 		if((givenTarget instanceof MOB)&&(((MOB)givenTarget).location()!=null))
-			rooms.addElement(((MOB)givenTarget).location());
+			rooms.add(((MOB)givenTarget).location());
 		else
 		if(mobName.length()>0)
 		{
 			final Room R=CMLib.map().getRoom(mobName);
 			if(R!=null)
-				rooms.addElement(R);
+				rooms.add(R);
 		}
 
 		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
@@ -407,7 +407,7 @@ public class Skill_Track extends StdSkill
 					if(R!=null)
 					{
 						if(R.fetchInhabitant(mobName)!=null)
-							rooms.addElement(R);
+							rooms.add(R);
 					}
 				}
 			}
@@ -424,13 +424,13 @@ public class Skill_Track extends StdSkill
 			theTrail=null;
 			tickStatus=Tickable.STATUS_MISC6+8;
 			if((cacheCode==1)&&(rooms.size()==1))
-				theTrail=cachedPaths.get(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID(rooms.firstElement()));
+				theTrail=cachedPaths.get(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID(rooms.get(0)));
 			tickStatus=Tickable.STATUS_MISC6+9;
 			if(theTrail==null)
 				theTrail=CMLib.tracking().findTrailToAnyRoom(thisRoom,rooms,flags,radius);
 			tickStatus=Tickable.STATUS_MISC6+10;
 			if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
-				cachedPaths.put(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID(rooms.firstElement()),theTrail);
+				cachedPaths.put(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID(rooms.get(0)),theTrail);
 		}
 
 		tickStatus=Tickable.STATUS_MISC6+11;

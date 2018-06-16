@@ -324,12 +324,12 @@ public class Thief_Assassinate extends ThiefSkill
 		final boolean success=proficiencyCheck(mob,0,auto);
 
 		int range=50 + super.getXLEVELLevel(mob)+(5*super.getXMAXRANGELevel(mob));
-		final Vector<Room> rooms=new Vector<Room>();
+		final ArrayList<Room> rooms=new ArrayList<Room>();
 		if(tracking!=null)
 		{
 			final Room R=tracking.location();
 			if((R!=null)&&(R.isInhabitant(tracking))&&(CMLib.flags().canAccess(mob,R)))
-				rooms.addElement(R);
+				rooms.add(R);
 		}
 		else
 		if(mobName.length()>0)
@@ -348,7 +348,7 @@ public class Thief_Assassinate extends ThiefSkill
 				{
 					final Room R=CMLib.map().getRoom(room);
 					if(R.fetchInhabitant(mobName)!=null)
-						rooms.addElement(R);
+						rooms.add(R);
 				}
 			}
 			catch(final NoSuchElementException nse)

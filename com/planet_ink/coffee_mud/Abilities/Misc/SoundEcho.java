@@ -137,7 +137,7 @@ public class SoundEcho extends StdAbility
 					echoMsg.setOthersMessage("You hear an echo: "+CMLib.coffeeFilter().fullOutFilter(null,blindMOB(),msg.source(),msg.target(),msg.tool(),msg.othersMessage(),false));
 				msg.addTrailerMsg(echoMsg);
 				echoMsg=CMClass.getMsg(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,msg.othersCode(),str);
-				final Vector<Room> rooms=new Vector<Room>();
+				final ArrayList<Room> rooms=new ArrayList<Room>();
 				TrackingLibrary.TrackingFlags flags;
 				flags = CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.OPENONLY)
@@ -146,7 +146,7 @@ public class SoundEcho extends StdAbility
 				Room room=null;
 				for(int v=0;v<rooms.size();v++)
 				{
-					room=rooms.elementAt(v);
+					room=rooms.get(v);
 					if((room!=sourceRoom)&&(!doneRooms.contains(room)))
 					{
 						doneRooms.add(room);
@@ -164,7 +164,7 @@ public class SoundEcho extends StdAbility
 				CMLib.tracking().getRadiantRooms(sourceRoom,rooms,flags,null,range,null);
 				for(int v=0;v<rooms.size();v++)
 				{
-					room=rooms.elementAt(v);
+					room=rooms.get(v);
 					if((room!=sourceRoom)&&(!doneRooms.contains(room)))
 					{
 						doneRooms.add(room);

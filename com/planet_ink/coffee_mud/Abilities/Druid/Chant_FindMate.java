@@ -246,7 +246,7 @@ public class Chant_FindMate extends Chant
 		TrackingLibrary.TrackingFlags flags;
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
-		final Vector<Room> rooms=new Vector<Room>();
+		final ArrayList<Room> rooms=new ArrayList<Room>();
 		int radius = 50 + (10*super.getXMAXRANGELevel(mob)) + super.getXLEVELLevel(mob);
 		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,radius);
 		for (final Room R : checkSet)
@@ -257,7 +257,7 @@ public class Chant_FindMate extends Chant
 				final MOB M=R.fetchInhabitant(i);
 				if(isSuitableMate(M,target))
 				{
-					rooms.addElement(R);
+					rooms.add(R);
 					break;
 				}
 			}

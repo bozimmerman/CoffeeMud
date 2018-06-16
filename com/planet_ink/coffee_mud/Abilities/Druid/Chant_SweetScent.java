@@ -84,7 +84,7 @@ public class Chant_SweetScent extends Chant
 			if(I.owner() instanceof Room)
 			{
 				final Room room=(Room)I.owner();
-				final Vector<Room> rooms=new Vector<Room>();
+				final ArrayList<Room> rooms=new ArrayList<Room>();
 				TrackingLibrary.TrackingFlags flags;
 				flags = CMLib.tracking().newFlags()
 						.plus(TrackingLibrary.TrackingFlag.OPENONLY);
@@ -100,7 +100,7 @@ public class Chant_SweetScent extends Chant
 				}
 				for(int r=0;r<rooms.size();r++)
 				{
-					final Room R=rooms.elementAt(r);
+					final Room R=rooms.get(r);
 					if(R!=room)
 					{
 						final int dir=CMLib.tracking().radiatesFromDir(R,rooms);

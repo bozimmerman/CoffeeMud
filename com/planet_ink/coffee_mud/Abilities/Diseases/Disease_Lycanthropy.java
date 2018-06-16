@@ -185,13 +185,13 @@ public class Disease_Lycanthropy extends Disease
 		return null;
 	}
 
-	protected boolean findVictim(MOB mob, Room room, Vector<Room> rooms, int depth)
+	protected boolean findVictim(MOB mob, Room room, List<Room> rooms, int depth)
 	{
 		if(depth>5)
 			return false;
 		if(victimHere(room,mob)!=null)
 		{
-			rooms.addElement(room);
+			rooms.add(room);
 			return true;
 		}
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -202,7 +202,7 @@ public class Disease_Lycanthropy extends Disease
 			{
 				if(findVictim(mob,R,rooms,depth+1))
 				{
-					rooms.addElement(R);
+					rooms.add(R);
 					return true;
 				}
 			}
@@ -234,7 +234,7 @@ public class Disease_Lycanthropy extends Disease
 			deathTrail=null;
 		if(deathTrail==null)
 		{
-			final Vector<Room> rooms=new Vector<Room>();
+			final ArrayList<Room> rooms=new ArrayList<Room>();
 			if((findVictim(mob,mob.location(),rooms,0))&&(rooms.size()>0))
 			{
 				TrackingLibrary.TrackingFlags flags;

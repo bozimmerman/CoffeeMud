@@ -132,6 +132,7 @@ public class Eat extends StdCommand
 				newMsg.setOthersMessage(biteMsg);
 			}
 			mob.location().send(mob,newMsg);
+			return true;
 		}
 		return false;
 	}

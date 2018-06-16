@@ -180,7 +180,7 @@ public class Chant_LocateAnimals extends Chant
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final Vector<Room> rooms=new Vector<Room>();
+		final ArrayList<Room> rooms=new ArrayList<Room>();
 		final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
 		int range=20 + super.getXLEVELLevel(mob) + (2*super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
@@ -188,11 +188,11 @@ public class Chant_LocateAnimals extends Chant
 		{
 			final Room R=CMLib.map().getRoom(room);
 			if(animalHere(R)!=null)
-				rooms.addElement(R);
+				rooms.add(R);
 		}
 
 		while(rooms.size()>10)
-			rooms.removeElementAt(CMLib.dice().roll(1,rooms.size(),-1));
+			rooms.remove(CMLib.dice().roll(1,rooms.size(),-1));
 
 		if(rooms.size()>0)
 			theTrail=CMLib.tracking().findTrailToAnyRoom(mob.location(),rooms,flags,range);

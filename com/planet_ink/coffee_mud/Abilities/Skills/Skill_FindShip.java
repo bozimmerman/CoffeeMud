@@ -272,7 +272,7 @@ public class Skill_FindShip extends StdAbility
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
-		final Vector<Room> rooms=new Vector<Room>();
+		final ArrayList<Room> rooms=new ArrayList<Room>();
 		TrackingLibrary.TrackingFlags flags;
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
@@ -283,7 +283,7 @@ public class Skill_FindShip extends StdAbility
 		{
 			final Room R=CMLib.map().getRoom(room);
 			if(shipHere(mob,R,null).length()>0)
-				rooms.addElement(R);
+				rooms.add(R);
 		}
 
 		if(rooms.size()>0)

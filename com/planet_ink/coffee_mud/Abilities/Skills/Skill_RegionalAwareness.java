@@ -207,7 +207,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		}
 		final boolean amIndoors=((room.domainType()&Room.INDOORS)==Room.INDOORS);
 		final Room[][] rmap=new Room[diameter][diameter];
-		final Vector<Room> rooms=new Vector<Room>();
+		final ArrayList<Room> rooms=new ArrayList<Room>();
 		final HashSet<Room> closedPaths=new HashSet<Room>();
 		TrackingLibrary.TrackingFlags flags;
 		flags = CMLib.tracking().newFlags()
@@ -221,7 +221,7 @@ public class Skill_RegionalAwareness extends StdSkill
 		map[diameter/2][diameter/2]='*';
 		for(int i=0;i<rooms.size();i++)
 		{
-			final Room R=rooms.elementAt(i);
+			final Room R=rooms.get(i);
 			if((closedPaths.contains(R))
 			||(R==room))
 				continue;

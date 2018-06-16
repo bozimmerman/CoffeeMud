@@ -301,7 +301,7 @@ public class Thief_LocateAlcohol extends ThiefSkill
 
 		TrackingLibrary.TrackingFlags flags;
 		flags = CMLib.tracking().newFlags();
-		final Vector<Room> rooms=new Vector<Room>();
+		final ArrayList<Room> rooms=new ArrayList<Room>();
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,15+adjustedLevel(mob,asLevel));
 		for (final Room R : checkSet)
 		{
@@ -309,7 +309,7 @@ public class Thief_LocateAlcohol extends ThiefSkill
 			if(R2!=null)
 			{
 				if(alcoholHere(mob,R2).length()>0)
-					rooms.addElement(R2);
+					rooms.add(R2);
 			}
 		}
 

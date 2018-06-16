@@ -237,14 +237,14 @@ public class Ranger_TrackAnimal extends StdAbility
 			.plus(TrackingLibrary.TrackingFlag.NOAIR)
 			.plus(TrackingLibrary.TrackingFlag.NOWATER);
 
-		final Vector<Room> rooms=new Vector<Room>();
+		final ArrayList<Room> rooms=new ArrayList<Room>();
 		int range=50 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 		final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 		for (final Room room : checkSet)
 		{
 			final Room R=CMLib.map().getRoom(room);
 			if(animalHere(R)!=null)
-				rooms.addElement(R);
+				rooms.add(R);
 		}
 
 		if(rooms.size()>0)
