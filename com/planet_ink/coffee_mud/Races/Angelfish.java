@@ -56,6 +56,42 @@ public class Angelfish extends Fish
 		affectableStats.setSpeed(affectableStats.speed() + 1.0);
 	}
 	
+	private final String[]	racialAbilityNames			= { "Aquan", "Skill_Swim", "Blessing" };
+	private final int[]		racialAbilityLevels			= { 1,1,9 };
+	private final int[]		racialAbilityProficiencies	= { 100,100,100 };
+	private final boolean[]	racialAbilityQuals			= { false,false,false };
+	private final String[]	racialAbilityParms			= { "", "", "" };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

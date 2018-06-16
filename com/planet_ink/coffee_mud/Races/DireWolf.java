@@ -56,6 +56,42 @@ public class DireWolf extends GiantWolf
 		return localizedStaticRacialCat;
 	}
 
+	private final String[]	racialAbilityNames			= { "WolfSpeak", "Skill_DevourCorpse", "Skill_TrackFriend"};
+	private final int[]		racialAbilityLevels			= { 1, 21, 1 };
+	private final int[]		racialAbilityProficiencies	= { 100, 100, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "" };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 

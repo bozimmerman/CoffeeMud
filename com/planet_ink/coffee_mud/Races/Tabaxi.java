@@ -92,11 +92,11 @@ public class Tabaxi extends GreatCat
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "Skill_Hide", "Skill_Sneak" };
-	private final int[]		racialAbilityLevels			= { 4, 4 };
-	private final int[]		racialAbilityProficiencies	= { 50, 50 };
-	private final boolean[]	racialAbilityQuals			= { false, false };
-	private final String[]	racialAbilityParms			= { "", "" };
+	private final String[]	racialAbilityNames			= { "Skill_Hide", "Skill_Sneak", "BigCatSpeak", "Skill_Climb" };
+	private final int[]		racialAbilityLevels			= { 4, 4, 1, 1 };
+	private final int[]		racialAbilityProficiencies	= { 50, 50, 100, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "", "" };
 
 	@Override
 	public String[] racialAbilityNames()

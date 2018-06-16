@@ -92,7 +92,7 @@ public class Fish extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "Aquan","Skill_Swim" };
+	private final String[]	racialAbilityNames			= { "Aquan", "Skill_Swim" };
 	private final int[]		racialAbilityLevels			= { 1,1 };
 	private final int[]		racialAbilityProficiencies	= { 100,100 };
 	private final boolean[]	racialAbilityQuals			= { false,false };

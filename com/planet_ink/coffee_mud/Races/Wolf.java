@@ -98,11 +98,11 @@ public class Wolf extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "WolfSpeak" };
-	private final int[]		racialAbilityLevels			= { 1 };
-	private final int[]		racialAbilityProficiencies	= { 100 };
-	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "" };
+	private final String[]	racialAbilityNames			= { "WolfSpeak", "Hamstring", "Skill_TrackFriend"};
+	private final int[]		racialAbilityLevels			= { 1, 15, 1 };
+	private final int[]		racialAbilityProficiencies	= { 100, 100, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()

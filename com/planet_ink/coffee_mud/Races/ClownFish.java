@@ -47,4 +47,13 @@ public class ClownFish extends SmallFish
 	{
 		return localizedStaticName;
 	}
+	
+	@Override
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		if(affectedMOB.phyStats().level()>=3)
+			affectableStats.setStat(CharStats.STAT_SAVE_POISON, affectableStats.getStat(CharStats.STAT_SAVE_POISON)+100);
+	}
+
 }

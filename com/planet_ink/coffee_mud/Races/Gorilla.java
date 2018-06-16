@@ -86,11 +86,11 @@ public class Gorilla extends Monkey
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "ApeSpeak" };
-	private final int[]		racialAbilityLevels			= { 1 };
-	private final int[]		racialAbilityProficiencies	= { 100 };
-	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "" };
+	private final String[]	racialAbilityNames			= { "ApeSpeak", "Fighter_Intimidation" };
+	private final int[]		racialAbilityLevels			= { 1, 21 };
+	private final int[]		racialAbilityProficiencies	= { 100, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false };
+	private final String[]	racialAbilityParms			= { "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()

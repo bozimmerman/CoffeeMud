@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2018 Bo Zimmerman
+   Copyright 2018-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Calf extends Cow
+public class Cricket extends StdRace
 {
 	@Override
 	public String ID()
 	{
-		return "Calf";
+		return "Cricket";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Cow");
+	private final static String localizedStaticName = CMLib.lang().L("Cricket");
 
 	@Override
 	public String name()
@@ -51,34 +51,40 @@ public class Calf extends Cow
 	@Override
 	public int shortestMale()
 	{
-		return 36;
+		return 1;
 	}
 
 	@Override
 	public int shortestFemale()
 	{
-		return 36;
+		return 1;
 	}
 
 	@Override
 	public int heightVariance()
 	{
-		return 6;
+		return 0;
 	}
 
 	@Override
 	public int lightestWeight()
 	{
-		return 150;
+		return 1;
 	}
 
 	@Override
 	public int weightVariance()
 	{
-		return 100;
+		return 0;
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Bovine");
+	@Override
+	public long forbiddenWornBits()
+	{
+		return ~(Wearable.WORN_TORSO | Wearable.WORN_EYES);
+	}
+
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Insect");
 
 	@Override
 	public String racialCategory()
@@ -86,11 +92,36 @@ public class Calf extends Cow
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "CowSpeak", "Adorable", "Grazing" };
-	private final int[]		racialAbilityLevels			= { 1, 3, 1 };
-	private final int[]		racialAbilityProficiencies	= { 100, 100, 100 };
-	private final boolean[]	racialAbilityQuals			= { false, false, false };
-	private final String[]	racialAbilityParms			= { "", "", "" };
+	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
+	private static final int[] parts={2 ,2 ,0 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,0 ,0 ,1 ,0 ,0 ,0 };
+
+	@Override
+	public int[] bodyMask()
+	{
+		return parts;
+	}
+
+	private final int[]	agingChart	= { 0, 0, 0, 1, 1, 1, 1, 2, 2 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
+
+	@Override
+	public int availabilityCode()
+	{
+		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+	}
+
+	private final String[]	racialAbilityNames			= { "Thief_Distract" };
+	private final int[]		racialAbilityLevels			= { 3 };
+	private final int[]		racialAbilityProficiencies	= { 100 };
+	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
 
 	@Override
 	protected String[] racialAbilityNames()
@@ -122,30 +153,47 @@ public class Calf extends Cow
 		return racialAbilityParms;
 	}
 
-	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
-
 	@Override
-	public int[] bodyMask()
+	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		return parts;
+		super.affectPhyStats(affected,affectableStats);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_SNEAKING);
+		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_GOLEM);
 	}
 
-	protected static Vector<RawMaterial> resources=new Vector<RawMaterial>();
-	
 	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,10);
-		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,5);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,3);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,3);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 
 	@Override
-	public boolean canBreedWith(Race R)
+	public String arriveStr()
 	{
-		return false; // too young
+		return "hops in";
+	}
+
+	@Override
+	public String leaveStr()
+	{
+		return "hops";
+	}
+
+	@Override
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName(L("a nasty maw"));
+			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
+			naturalWeapon.setUsesRemaining(1000);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
+		}
+		return naturalWeapon;
 	}
 
 	@Override
@@ -156,17 +204,23 @@ public class Calf extends Cow
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				(L("a pair of @x1 hooves",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
-				resources.addElement(makeResource
-				(L("a strip of @x1 leather",name().toLowerCase()),RawMaterial.RESOURCE_LEATHER));
-				resources.addElement(makeResource
-				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_BEEF));
-				resources.addElement(makeResource
-				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
-				resources.addElement(makeResource
-				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
+				(L("a pair of @x1 legs",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;
+	}
+
+	@Override
+	public String makeMobName(char gender, int age)
+	{
+		switch(age)
+		{
+			case Race.AGE_INFANT:
+			case Race.AGE_TODDLER:
+			case Race.AGE_CHILD:
+				return "baby "+name().toLowerCase();
+			default :
+				return super.makeMobName('N', age);
+		}
 	}
 }

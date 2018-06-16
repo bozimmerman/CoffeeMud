@@ -132,11 +132,11 @@ public class Minotaur extends StdRace
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
 	}
 
-	private final String[]	racialAbilityNames			= { "Skill_Buck" };
-	private final int[]		racialAbilityLevels			= { 4 };
-	private final int[]		racialAbilityProficiencies	= { 50 };
-	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "" };
+	private final String[]	racialAbilityNames			= { "Skill_Buck", "Grazing" };
+	private final int[]		racialAbilityLevels			= { 4, 1 };
+	private final int[]		racialAbilityProficiencies	= { 50, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false };
+	private final String[]	racialAbilityParms			= { "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()

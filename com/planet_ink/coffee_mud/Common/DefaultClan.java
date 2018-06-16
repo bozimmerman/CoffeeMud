@@ -1352,6 +1352,32 @@ public class DefaultClan implements Clan
 		return filterMemberList(CMLib.database().DBReadClanMembers(clanID()), posFilter);
 	}
 
+	@Override
+	public MemberRecord findMemberRecord(String name)
+	{
+		final List<MemberRecord> members=CMLib.database().DBReadClanMembers(clanID());
+		for(final MemberRecord member : members)
+		{
+			if(member.name.equalsIgnoreCase(name))
+				return member;
+		}
+		for(final MemberRecord member : members)
+		{
+			if(member.name.startsWith(name))
+				return member;
+		}
+		return null;
+	}
+
+	@Override
+	public MOB findMember(final String name)
+	{
+		final MemberRecord M=findMemberRecord(name);
+		if(M != null)
+			return CMLib.players().getPlayerAllHosts(M.name);
+		return null;
+	}
+	
 	public MemberRecord getMember(String name)
 	{
 		return CMLib.database().DBGetClanMember(clanID(),name);

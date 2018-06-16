@@ -92,11 +92,11 @@ public class Cow extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "CowSpeak", "Skill_Buck" };
-	private final int[]		racialAbilityLevels			= { 1, 4 };
-	private final int[]		racialAbilityProficiencies	= { 100, 50 };
-	private final boolean[]	racialAbilityQuals			= { false, false };
-	private final String[]	racialAbilityParms			= { "", "" };
+	private final String[]	racialAbilityNames			= { "CowSpeak", "Skill_Buck", "Milkable", "Grazing" };
+	private final int[]		racialAbilityLevels			= { 1, 4, 1, 1 };
+	private final int[]		racialAbilityProficiencies	= { 100, 50, 100, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()

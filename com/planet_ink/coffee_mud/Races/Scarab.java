@@ -98,6 +98,42 @@ public class Scarab extends StdRace
 		return breatheAnythingArray;
 	}
 
+	private final String[]	racialAbilityNames			= { "Scavenge" };
+	private final int[]		racialAbilityLevels			= { 21 };
+	private final int[]		racialAbilityProficiencies	= { 100 };
+	private final boolean[]	racialAbilityQuals			= { false };
+	private final String[]	racialAbilityParms			= { "" };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={2 ,99,0 ,1 ,0 ,0 ,0 ,1 ,6 ,6 ,0 ,0 ,1 ,0 ,0 ,0 };
 

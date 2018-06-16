@@ -58,8 +58,8 @@ ATTADJ=0.7
 DMGADJ=0.6
 ARMADJ=1.0
 SPEEDADJ=0.3
-SHAPES=Grasshopper,Centipede,Tarantula,Scarab,ManScorpion
-RACES=Grasshopper,Centipede,Tarantula,Scarab,ManScorpion
+SHAPES=Cricket,Millipede,Tarantula,Scarab,ManScorpion
+RACES=Cricket,Millipede,Tarantula,Scarab,ManScorpion
 
 [PRIMATE FORM]
 NAME=Primate form

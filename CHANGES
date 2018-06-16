@@ -46,7 +46,9 @@
   44. Prop_ItemSlotFiller now supports ADDS argument for another way to add stuff.
   45. New skills: Autoclimb, High Jump, Grazing, Stigma, Adorable, Gore, Wild Tag Turf
   46. New skills: Smells Like Cherries, Throw Feces, Shoot Web, Blessing, Milkable
-  47. New skills: Hamstring, Scavenge, Food Begging, Bear Foraging
+  47. New skills: Hamstring, Scavenge, Food Begging, Bear Foraging, Track Friend
+  48. New skills: Racial Enemy, Combat Frenzy
+  49. New races: Orangutan, Millipede, Cricket, 
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
    1. Hunger and Thirst system can now be tweeked.  See coffeemud.ini file

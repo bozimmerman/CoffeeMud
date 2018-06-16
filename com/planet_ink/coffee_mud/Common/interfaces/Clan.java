@@ -589,6 +589,26 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public List<MemberRecord> getMemberList();
 
 	/**
+	 * Returns the named member, if possible
+	 * @see Clan#getMemberList(int)
+	 * @see Clan#getFullMemberList()
+	 * @see MemberRecord
+	 * @param name the name of the member
+	 * @return the member record
+	 */
+	public MemberRecord findMemberRecord(final String name);
+
+	/**
+	 * Returns the named member, if possible
+	 * @see Clan#getMemberList(int)
+	 * @see Clan#getFullMemberList()
+	 * @see MemberRecord
+	 * @param name the name of the member
+	 * @return the member mob
+	 */
+	public MOB findMember(final String name);
+
+	/**
 	 * Returns the set of members, where
 	 * each row represents a FullMemberRecord
 	 * @see Clan#getMemberList()

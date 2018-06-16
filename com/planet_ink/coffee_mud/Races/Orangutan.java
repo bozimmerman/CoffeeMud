@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Robin extends Bird
+public class Orangutan extends Monkey
 {
 	@Override
 	public String ID()
 	{
-		return "Robin";
+		return "Orangutan";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Robin");
+	private final static String localizedStaticName = CMLib.lang().L("Orangutan");
 
 	@Override
 	public String name()
@@ -48,7 +48,37 @@ public class Robin extends Bird
 		return localizedStaticName;
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Avian");
+	@Override
+	public int shortestMale()
+	{
+		return 36;
+	}
+
+	@Override
+	public int shortestFemale()
+	{
+		return 34;
+	}
+
+	@Override
+	public int heightVariance()
+	{
+		return 8;
+	}
+
+	@Override
+	public int lightestWeight()
+	{
+		return 80;
+	}
+
+	@Override
+	public int weightVariance()
+	{
+		return 50;
+	}
+
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Primate");
 
 	@Override
 	public String racialCategory()
@@ -56,11 +86,11 @@ public class Robin extends Bird
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "WingFlying", "BirdSpeak", "Skill_RacialEnemy" };
-	private final int[]		racialAbilityLevels			= { 1, 1, 3 };
-	private final int[]		racialAbilityProficiencies	= { 100, 100, 100 };
-	private final boolean[]	racialAbilityQuals			= { false, false, false };
-	private final String[]	racialAbilityParms			= { "", "", "Worm" };
+	private final String[]	racialAbilityNames			= { "ChimpSpeak", "ThrowFeces" };
+	private final int[]		racialAbilityLevels			= { 1,15  };
+	private final int[]		racialAbilityProficiencies	= { 100,100 };
+	private final boolean[]	racialAbilityQuals			= { false,false };
+	private final String[]	racialAbilityParms			= { "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()
@@ -93,7 +123,7 @@ public class Robin extends Bird
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,2 };
+	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
 
 	@Override
 	public int[] bodyMask()
@@ -104,6 +134,15 @@ public class Robin extends Bird
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMOB, affectableStats);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,15);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,15);
+		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
+	}
+
+	@Override
 	public List<RawMaterial> myResources()
 	{
 		synchronized(resources)
@@ -111,11 +150,11 @@ public class Robin extends Bird
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				(L("a pair of @x1 feet",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
+				(L("a @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
 				resources.addElement(makeResource
-				(L("some @x1 feathers",name().toLowerCase()),RawMaterial.RESOURCE_FEATHERS));
+				(L("some @x1 toes",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource
-				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_POULTRY));
+				(L("a pound of @x1 flesh",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource
@@ -125,3 +164,4 @@ public class Robin extends Bird
 		return resources;
 	}
 }
+
