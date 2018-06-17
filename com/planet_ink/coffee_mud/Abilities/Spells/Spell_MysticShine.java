@@ -61,7 +61,7 @@ public class Spell_MysticShine extends Spell
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_OK_SELF;
+		return Ability.QUALITY_INDIFFERENT;
 	}
 
 	@Override

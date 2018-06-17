@@ -88,13 +88,15 @@ public class Thief_UsePoison extends ThiefSkill
 
 	public List<Ability> returnOffensiveAffects(Physical fromMe)
 	{
-		final Vector<Ability> offenders=new Vector<Ability>();
+		final List<Ability> offenders=new ArrayList<Ability>();
 
 		for(final Enumeration<Ability> a=fromMe.effects();a.hasMoreElements();)
 		{
 			final Ability A=a.nextElement();
-			if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
-				offenders.addElement(A);
+			if((A!=null)
+			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)
+			&&(!A.ID().equals("Poison_Rotton")))
+				offenders.add(A);
 		}
 		return offenders;
 	}
@@ -129,7 +131,10 @@ public class Thief_UsePoison extends ThiefSkill
 		final List<Ability> V=returnOffensiveAffects(poison);
 		if((V.size()==0)||(!(poison instanceof Drink)))
 		{
-			mob.tell(L("@x1 is not a poison!",poison.name()));
+			if(poison.fetchEffect("Poison_Rotton")!=null)
+				mob.tell(L("@x1 is no longer a poison!",poison.name()));
+			else
+				mob.tell(L("@x1 is not a poison!",poison.name()));
 			return false;
 		}
 		final Drink dPoison=(Drink)poison;

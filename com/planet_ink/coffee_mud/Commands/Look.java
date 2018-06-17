@@ -77,7 +77,9 @@ public class Look extends StdCommand
 				commands.remove(1);
 			final String ID=CMParms.combine(commands,1);
 
-			if((ID.toUpperCase().startsWith("EXIT"))&&(commands.size()==2)&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH))
+			if((ID.toUpperCase().startsWith("EXIT"))
+			&&(commands.size()==2)
+			&&(CMProps.getIntVar(CMProps.Int.EXVIEW)!=CMProps.Int.EXVIEW_PARAGRAPH))
 			{
 				final CMMsg exitMsg=CMClass.getMsg(mob,R,null,CMMsg.MSG_LOOK_EXITS,null);
 				if((CMProps.getIntVar(CMProps.Int.EXVIEW)>=CMProps.Int.EXVIEW_MIXED)!=mob.isAttributeSet(MOB.Attrib.BRIEF))

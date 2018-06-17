@@ -215,6 +215,17 @@ public class Prayer_Rot extends Prayer
 		{
 			if(I.fetchEffect("Poison_Rotten")==null)
 			{
+				
+				if((I.material()==RawMaterial.RESOURCE_POISON)
+				||((I instanceof Drink)&&(((Drink)I).liquidType()==RawMaterial.RESOURCE_POISON)))
+				{
+					for(final Ability A : CMLib.flags().domainAffects(I,Ability.ACODE_POISON))
+					{
+						if(A.canBeUninvoked())
+							A.unInvoke();
+						I.delEffect(A);
+					}
+				}
 				final Ability A=CMClass.getAbility("Poison_Rotten");
 				if(A!=null)
 					I.addNonUninvokableEffect(A);

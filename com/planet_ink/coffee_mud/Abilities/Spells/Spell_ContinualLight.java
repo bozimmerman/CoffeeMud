@@ -61,7 +61,7 @@ public class Spell_ContinualLight extends Spell
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_OK_SELF;
+		return Ability.QUALITY_OK_OTHERS;
 	}
 
 	@Override
@@ -124,7 +124,7 @@ public class Spell_ContinualLight extends Spell
 		if(commands.size()==0)
 			target=mob;
 		else
-		target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
+			target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY);
 
 		if(target==null)
 			return false;

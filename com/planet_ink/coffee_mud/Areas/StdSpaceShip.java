@@ -567,7 +567,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();
-			if(!staleAirList.contains(R.roomID()))
+			if((!staleAirList.contains(R.roomID()))&&(R.numInhabitants()>0))
 				staleAirList.add(R.roomID());
 			else
 				R.setAtmosphere(RawMaterial.RESOURCE_NOTHING); // WE NOW HAVE A VACUUM HERE!!!
@@ -694,7 +694,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			doStaleCheck();
 			if(staleAirList.size()>numStaleRooms)
 				nextStaleWarn = System.currentTimeMillis() + STALE_WARN_INTERVAL;
-			if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+			if(CMSecurity.isDebugging(DbgFlag.SPACESHIP) && (staleAirList.size()>0))
 				Log.debugOut("Used up the air in "+Name()+", stale rooms: "+staleAirList.size());
 			
 		}
