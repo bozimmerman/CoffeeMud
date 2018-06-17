@@ -848,16 +848,20 @@ public class DefaultClan implements Clan
 		{
 			msg.append("-----------------------------------------------------------------\n\r");
 			msg.append("^x"+CMStrings.padRight(L("Clan Relations"),COLBL_WIDTH)+":^.^N \n\r");
+			final int COLCL_WIDTH=CMLib.lister().fixColWidth(26.0,mob);
 			for(final Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
 			{
 				final Clan C=e.nextElement();
 				if((C!=this)&&(C.isRivalrous()))
 				{
-					msg.append("^x"+CMStrings.padRight(C.name(),COLBL_WIDTH)+":^.^N ");
-					msg.append(CMStrings.capitalizeAndLower(REL_DESCS[getClanRelations(C.clanID())]));
+					msg.append("^H"+CMStrings.padRight(C.name(),COLCL_WIDTH)+":^.^N ");
+					final int rel=getClanRelations(C.clanID());
 					final int orel=C.getClanRelations(clanID());
-					if(orel!=REL_NEUTRAL)
-						msg.append(" (<-"+CMStrings.capitalizeAndLower(REL_DESCS[orel])+")");
+					msg.append(REL_COLORS[rel]).append(CMStrings.capitalizeAndLower(REL_DESCS[rel]));
+					if((rel!=REL_NEUTRAL) || (orel != REL_NEUTRAL))
+						msg.append("^N (^W<-").append(REL_COLORS[orel]).append(CMStrings.capitalizeAndLower(REL_DESCS[orel])).append("^N)");
+					else
+						msg.append("^N");
 					msg.append("\n\r");
 				}
 			}

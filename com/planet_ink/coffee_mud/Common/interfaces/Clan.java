@@ -961,6 +961,9 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	public static final String[] REL_DESCS={
 		"NEUTRAL","WAR","HOSTILE","FRIENDLY","ALLY"
 	};
+	public static final String[] REL_COLORS={
+		"^w","^R","^r","^g","^G"
+	};
 
 	/** long descriptor strings for the REL_* constants, ordered by their value.  @see Clan */
 	public static final String[] REL_STATES={
