@@ -122,7 +122,7 @@ public class Scavenge extends StdAbility
 			mob.tell(L("You are not allowed to scavenge from that corpse."));
 			return false;
 		}
-		
+
 		final DeadBody body = (DeadBody)target;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -140,12 +140,13 @@ public class Scavenge extends StdAbility
 				final List<RawMaterial> finalResources = new ArrayList<RawMaterial>(resources.size());
 				for(int i=0;i<resources.size();i++)
 				{
-					final Item newFound=(Item)resources.get(i);
-					finalResources.add((RawMaterial)newFound.copyOf());
+					final Item newFound=resources.get(i);
+					if((newFound.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
+						finalResources.add((RawMaterial)newFound.copyOf());
 				}
 				for(int i=0;i<resources.size();i++)
 				{
-					final Item newFound=(Item)resources.get(i);
+					final Item newFound=resources.get(i);
 					if((newFound.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
 					{
 						for(int x=0;x<(adjustedLevel(mob,asLevel)/8);x++)
@@ -164,7 +165,7 @@ public class Scavenge extends StdAbility
 							diseases.add(A);
 					}
 				}
-				
+
 				for(int i=0;i<finalResources.size();i++)
 				{
 					final Item newFound=finalResources.get(i);

@@ -369,119 +369,6 @@ public class Spell_MinorImage extends Spell
 		return seenTatts;
 	}
 	
-	public PairList<Item, Long> getSeenEquipment(MOB mob)
-	{
-		long wornCode=0;
-		Item thisItem=null;
-		final PairList<Item, Long> seenEQ = new PairVector<Item, Long>();
-		final Wearable.CODES codes = Wearable.CODES.instance();
-		for(int l=0;l<codes.all_ordered().length;l++)
-		{
-			wornCode=codes.all_ordered()[l];
-			final List<Item> wornHere=mob.fetchWornItems(wornCode,(short)(Short.MIN_VALUE+1),(short)0);
-			int numLocations=mob.getWearPositions(wornCode);
-			if(numLocations==0)
-				numLocations=1;
-			if(wornHere.size()>0)
-			{
-				final List<List<Item>> sets=new Vector<List<Item>>(numLocations);
-				for(int i=0;i<numLocations;i++)
-					sets.add(new Vector<Item>());
-				Item I=null;
-				Item I2=null;
-				short layer=Short.MAX_VALUE;
-				short layerAtt=0;
-				short layer2=Short.MAX_VALUE;
-				short layerAtt2=0;
-				List<Item> set=null;
-				for(int i=0;i<wornHere.size();i++)
-				{
-					I=wornHere.get(i);
-					if(I.container()!=null)
-						continue;
-					if(I instanceof Armor)
-					{
-						layer=((Armor)I).getClothingLayer();
-						layerAtt=((Armor)I).getLayerAttributes();
-					}
-					else
-					{
-						layer=0;
-						layerAtt=0;
-					}
-					for(int s=0;s<sets.size();s++)
-					{
-						set=sets.get(s);
-						if(set.size()==0)
-						{
-							set.add(I);
-							break;
-						}
-						for(int s2=0;s2<set.size();s2++)
-						{
-							I2=set.get(s2);
-							if(I2 instanceof Armor)
-							{
-								layer2=((Armor)I2).getClothingLayer();
-								layerAtt2=((Armor)I2).getLayerAttributes();
-							}
-							else
-							{
-								layer2=0;
-								layerAtt2=0;
-							}
-							if(layer2==layer)
-							{
-								if(((layerAtt&Armor.LAYERMASK_MULTIWEAR)>0)
-								&&((layerAtt2&Armor.LAYERMASK_MULTIWEAR)>0))
-									set.add(s2,I);
-								break;
-							}
-							if(layer2>layer)
-							{
-								set.add(s2,I);
-								break;
-							}
-						}
-						if(set.contains(I))
-							break;
-						if(layer2<layer)
-						{
-							set.add(I);
-							break;
-						}
-					}
-					wornHere.clear();
-					for(int s=0;s<sets.size();s++)
-					{
-						set=sets.get(s);
-						int s2=set.size()-1;
-						for(;s2>=0;s2--)
-						{
-							I2=set.get(s2);
-							wornHere.add(I2);
-							if((!(I2 instanceof Armor))
-							||(!CMath.bset(((Armor)I2).getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH)))
-							{
-								break;
-							}
-						}
-					}
-				}
-				for(int i=0;i<wornHere.size();i++)
-				{
-					thisItem=wornHere.get(i);
-					if((thisItem.container()==null)&&(thisItem.amWearingAt(wornCode)))
-					{
-						if(CMLib.flags().isSeeable(thisItem))
-							seenEQ.add(thisItem, Long.valueOf(thisItem.rawWornCode()));
-					}
-				}
-			}
-		}
-		return seenEQ;
-	}
-
 	public MOB determineMonster(MOB target, Room R, int level)
 	{
 
@@ -515,8 +402,8 @@ public class Spell_MinorImage extends Spell
 		newMOB.setMoneyVariation(0);
 		if(canSeeAppearance())
 		{
-			PairList<Item, Long> eq = this.getSeenEquipment(target);
-			for(Pair<Item, Long> e : eq)
+			final PairList<Item, Long> eq = CMLib.utensils().getSeenEquipment(target, 0);
+			for(final Pair<Item, Long> e : eq)
 			{
 				Item eqI = CMClass.getItem("GenItem");
 				eqI.setName(e.first.Name());

@@ -77,7 +77,7 @@ public class Sasquatch extends Gorilla
 		return culturalAbilityProficiencies;
 	}
 
-	private final String[]	racialAbilityNames			= { "ApeSpeak", "Skill_Hide" };
+	private final String[]	racialAbilityNames			= { "ApeSpeak", "Thief_Hide" };
 	private final int[]		racialAbilityLevels			= { 1, 15 };
 	private final int[]		racialAbilityProficiencies	= { 100, 100 };
 	private final boolean[]	racialAbilityQuals			= { false, false };

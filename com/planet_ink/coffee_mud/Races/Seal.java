@@ -100,11 +100,11 @@ public class Seal extends GiantFish
 	}
 
 	private static Vector<RawMaterial>		resources					= new Vector<RawMaterial>();
-	private final String[]					racialAbilityNames			= { "Aquan","Skill_Swim" };
-	private final int[]						racialAbilityLevels			= { 1,1 };
-	private final int[]						racialAbilityProficiencies	= { 100,100 };
-	private final boolean[]					racialAbilityQuals			= { false,false };
-	private final String[]					racialAbilityParms			= { "", "" };
+	private final String[]					racialAbilityNames			= { "Aquan", "Skill_Swim", "Skill_AutoSwim","Adorable" };
+	private final int[]						racialAbilityLevels			= { 1,1,1,3 };
+	private final int[]						racialAbilityProficiencies	= { 100,100,100,100 };
+	private final boolean[]					racialAbilityQuals			= { false,false,false,false };
+	private final String[]					racialAbilityParms			= { "", "", "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()

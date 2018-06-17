@@ -92,6 +92,42 @@ public class Spider extends StdRace
 		return localizedStaticRacialCat;
 	}
 
+	private final String[]	racialAbilityNames			= { "Poison_Venom", "ShootWeb" };
+	private final int[]		racialAbilityLevels			= { 1, 5 };
+	private final int[]		racialAbilityProficiencies	= { 25, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false };
+	private final String[]	racialAbilityParms			= { "", "" };
+
+	@Override
+	public String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	public int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	public int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	public boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={2 ,99,0 ,1 ,0 ,0 ,0 ,1 ,8 ,8 ,0 ,0 ,1 ,0 ,0 ,0 };
 

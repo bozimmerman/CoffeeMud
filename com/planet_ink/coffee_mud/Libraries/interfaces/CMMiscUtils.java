@@ -362,4 +362,15 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return a list of constituant races, or empty.
 	 */
 	public List<Race> getConstituantRaces(final String raceID);
+	
+	/**
+	 * Returns a list of worn equipment at the top layer, where it can be
+	 * seen.  An optional wornMask can narrow the locations allowed.
+	 * The require list is the item, plus the worn location.
+	 * 
+	 * @param mob the mob to get equipment from
+	 * @param wornMask 0, or a bitmap of allowed wear locations
+	 * @return the list of items and wear locations
+	 */
+	public PairList<Item, Long> getSeenEquipment(final MOB mob, final long wornMask);
 }

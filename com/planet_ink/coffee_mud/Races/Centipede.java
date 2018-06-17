@@ -121,7 +121,7 @@ public class Centipede extends StdRace
 	@Override
 	public int availabilityCode()
 	{
-		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+		return Area.THEME_ALLTHEMES | Area.THEME_SKILLONLYMASK;
 	}
 
 	@Override

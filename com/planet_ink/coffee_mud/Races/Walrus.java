@@ -84,6 +84,42 @@ public class Walrus extends Seal
 		return breatheAirWaterArray;
 	}
 	
+	private final String[]					racialAbilityNames			= { "Aquan", "Skill_Swim", "Skill_AutoSwim", "Gore" };
+	private final int[]						racialAbilityLevels			= { 1,1,1,9 };
+	private final int[]						racialAbilityProficiencies	= { 100,100,100,100 };
+	private final boolean[]					racialAbilityQuals			= { false,false,false,false };
+	private final String[]					racialAbilityParms			= { "", "", "", "" };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
 	private final int[]	agingChart	= { 0, 2, 5, 8, 10, 15, 25, 28, 30 };
 
 	@Override

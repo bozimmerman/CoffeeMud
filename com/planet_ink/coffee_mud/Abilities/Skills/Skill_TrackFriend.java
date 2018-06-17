@@ -38,10 +38,10 @@ public class Skill_TrackFriend extends StdAbility
 	@Override
 	public String ID()
 	{
-		return "Ranger_Track";
+		return "Skill_TrackFriend";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Track");
+	private final static String	localizedName	= CMLib.lang().L("Track Friend");
 
 	@Override
 	public String name()
@@ -49,7 +49,7 @@ public class Skill_TrackFriend extends StdAbility
 		return localizedName;
 	}
 
-	protected String	displayText	= L("(Tracking)");
+	protected String	displayText	= L("(Friend Tracking)");
 
 	@Override
 	public String displayText()

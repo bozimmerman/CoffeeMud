@@ -95,7 +95,7 @@ public class Bat extends StdRace
 	@Override
 	public int availabilityCode()
 	{
-		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+		return Area.THEME_ALLTHEMES | Area.THEME_SKILLONLYMASK;
 	}
 
 	private final static String localizedStaticRacialCat = CMLib.lang().L("Pteropine");
@@ -163,7 +163,19 @@ public class Bat extends StdRace
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
+		if(affected instanceof MOB)
+		{
+			final MOB mob=(MOB)affected;
+			final MOB victim=mob.getVictim();
+			if((victim==null)||(CMLib.flags().canBeHeardMovingBy(victim,mob)))
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_VICTIM);
+			if(CMLib.flags().canHear(mob))
+			{
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
+				if((affectableStats.sensesMask()&PhyStats.CAN_NOT_SEE)>0)
+					affectableStats.setSensesMask(CMath.unsetb(affectableStats.sensesMask(),PhyStats.CAN_NOT_SEE));
+			}
+		}
 		if((affectableStats.disposition() & (PhyStats.IS_SITTING|PhyStats.IS_SLEEPING))==0)
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
 	}

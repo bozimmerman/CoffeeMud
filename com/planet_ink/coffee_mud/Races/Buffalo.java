@@ -86,9 +86,9 @@ public class Buffalo extends Cow
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "CowSpeak", "Skill_Buck", "Skill_HighJump", "Grazing" };
+	private final String[]	racialAbilityNames			= { "CowSpeak", "Skill_Buck", "Fighter_Charge", "Grazing" };
 	private final int[]		racialAbilityLevels			= { 1, 4, 15, 1 };
-	private final int[]		racialAbilityProficiencies	= { 100, 50, 50, 100 };
+	private final int[]		racialAbilityProficiencies	= { 100, 50, 100, 100 };
 	private final boolean[]	racialAbilityQuals			= { false, false, false, false };
 	private final String[]	racialAbilityParms			= { "", "", "", "" };
 

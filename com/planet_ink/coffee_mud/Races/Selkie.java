@@ -95,11 +95,11 @@ public class Selkie extends StdRace
 	private final String[]	culturalAbilityNames			= { "Aquan", "Fishing" };
 	private final int[]		culturalAbilityProficiencies	= { 25, 100 };
 
-	private final String[]					racialAbilityNames			= { "Skill_Swim" };
-	private final int[]						racialAbilityLevels			= { 1 };
-	private final int[]						racialAbilityProficiencies	= { 100 };
-	private final boolean[]					racialAbilityQuals			= { false };
-	private final String[]					racialAbilityParms			= { "" };
+	private final String[]					racialAbilityNames			= { "Skill_Swim", "Skill_AutoSwim" };
+	private final int[]						racialAbilityLevels			= { 1,1 };
+	private final int[]						racialAbilityProficiencies	= { 100,100 };
+	private final boolean[]					racialAbilityQuals			= { false,false };
+	private final String[]					racialAbilityParms			= { "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()

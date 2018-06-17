@@ -356,7 +356,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void postFlee(MOB mob, String whereTo)
 	{
-		forceStandardCommand(mob,"Flee",new XVector<String>("FLEE",whereTo));
+		if((whereTo != null)&&(whereTo.length()>0))
+			forceStandardCommand(mob,"Flee",new XVector<String>("FLEE",whereTo));
+		else
+			forceStandardCommand(mob,"Flee",new XVector<String>("FLEE"));
 	}
 
 	@Override

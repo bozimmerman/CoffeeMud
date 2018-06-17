@@ -4765,7 +4765,7 @@ public class Import extends StdCommand
 							if(CMath.isSet(codeBits,15))
 								dis=dis|PhyStats.IS_SNEAKING;
 							if(CMath.isSet(codeBits,16))
-								caster.setMiscText(caster.text()+("Skill_Hide")+";");
+								caster.setMiscText(caster.text()+("Thief_Hide")+";");
 							if(CMath.isSet(codeBits,17))
 							{
 								dis=dis|PhyStats.IS_SLEEPING;

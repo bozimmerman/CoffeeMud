@@ -1398,7 +1398,7 @@ public class Reset extends StdCommand
 					mob.session().println(".");
 				for(final Iterator<Room> r=rooms.iterator();r.hasNext();)
 				{
-					Room R=CMLib.map().getRoom((Room)r.next());
+					Room R=CMLib.map().getRoom(r.next());
 					if(R!=null)
 					synchronized(("SYNC"+R.roomID()).intern())
 					{
@@ -1921,7 +1921,7 @@ public class Reset extends StdCommand
 					mob.session().println(".");
 				for(final Iterator<Room> r=rooms.iterator();r.hasNext();)
 				{
-					Room R=CMLib.map().getRoom((Room)r.next());
+					Room R=CMLib.map().getRoom(r.next());
 					if((R==null)||(R.getArea()==null)||(R.roomID().length()==0))
 						continue;
 					final Area A=R.getArea();

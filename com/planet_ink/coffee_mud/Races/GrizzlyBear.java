@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2002-2018 Bo Zimmerman
+   Copyright 2018-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,21 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Bird extends StdRace
+public class GrizzlyBear extends StdRace
 {
 	@Override
 	public String ID()
 	{
-		return "Bird";
+		return "GrizzlyBear";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Bird");
+	public GrizzlyBear()
+	{
+		super();
+		super.naturalAbilImmunities.add("Disease_PoisonIvy");
+	}
+	
+	private final static String localizedStaticName = CMLib.lang().L("Grizzly Bear");
 
 	@Override
 	public String name()
@@ -51,40 +57,40 @@ public class Bird extends StdRace
 	@Override
 	public int shortestMale()
 	{
-		return 3;
+		return 72;
 	}
 
 	@Override
 	public int shortestFemale()
 	{
-		return 3;
+		return 65;
 	}
 
 	@Override
 	public int heightVariance()
 	{
-		return 2;
+		return 10;
 	}
 
 	@Override
 	public int lightestWeight()
 	{
-		return 2;
+		return 350;
 	}
 
 	@Override
 	public int weightVariance()
 	{
-		return 5;
+		return 10;
 	}
 
 	@Override
 	public long forbiddenWornBits()
 	{
-		return ~(Wearable.WORN_HEAD | Wearable.WORN_EYES);
+		return ~(Wearable.WORN_HEAD | Wearable.WORN_FEET | Wearable.WORN_NECK | Wearable.WORN_EARS | Wearable.WORN_EYES | Wearable.WORN_TORSO);
 	}
 
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Avian");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Ursine");
 
 	@Override
 	public String racialCategory()
@@ -92,8 +98,8 @@ public class Bird extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "WingFlying", "BirdSpeak" };
-	private final int[]		racialAbilityLevels			= { 1, 1 };
+	private final String[]	racialAbilityNames			= { "BearSpeak", "Fishing" };
+	private final int[]		racialAbilityLevels			= { 1, 15 };
 	private final int[]		racialAbilityProficiencies	= { 100, 100 };
 	private final boolean[]	racialAbilityQuals			= { false, false };
 	private final String[]	racialAbilityParms			= { "", "" };
@@ -129,7 +135,7 @@ public class Bird extends StdRace
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={0 ,2 ,2 ,1 ,0 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,0 ,1 ,2 };
+	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,0 ,0 };
 
 	@Override
 	public int[] bodyMask()
@@ -137,7 +143,7 @@ public class Bird extends StdRace
 		return parts;
 	}
 
-	private final int[]	agingChart	= { 0, 1, 2, 4, 5, 5, 6, 7, 8 };
+	private final int[]	agingChart	= { 0, 1, 2, 4, 7, 15, 20, 21, 22 };
 
 	@Override
 	public int[] getAgingChart()
@@ -154,32 +160,12 @@ public class Bird extends StdRace
 	}
 
 	@Override
-	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		if((affectableStats.disposition() & (PhyStats.IS_SITTING|PhyStats.IS_SLEEPING))==0)
-			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_FLYING);
-	}
-
-	@Override
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,3);
-		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,12);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,15);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,10);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
-	}
-
-	@Override
-	public String arriveStr()
-	{
-		return "flies in";
-	}
-
-	@Override
-	public String leaveStr()
-	{
-		return "flies";
 	}
 
 	@Override
@@ -188,10 +174,10 @@ public class Bird extends StdRace
 		if(naturalWeapon==null)
 		{
 			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(L("a menacing beak"));
+			naturalWeapon.setName(L("a pair of huge claws"));
 			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
 			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponDamageType(Weapon.TYPE_NATURAL);
+			naturalWeapon.setWeaponDamageType(Weapon.TYPE_SLASHING);
 		}
 		return naturalWeapon;
 	}
@@ -203,9 +189,8 @@ public class Bird extends StdRace
 		{
 			case Race.AGE_INFANT:
 			case Race.AGE_TODDLER:
-				return name().toLowerCase()+" chick";
 			case Race.AGE_CHILD:
-				return "young "+name().toLowerCase();
+				return name().toLowerCase()+" cub";
 			default :
 				return super.makeMobName(gender, age);
 		}
@@ -220,31 +205,31 @@ public class Bird extends StdRace
 			return L("^r@x1^r is hovering on deaths door!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return L("^r@x1^r is covered in blood and matted feathers.^N",mob.name(viewer));
+			return L("^r@x1^r is covered in blood and matted hair.^N",mob.name(viewer));
 		else
 		if(pct<.30)
 			return L("^r@x1^r is bleeding badly from lots of wounds.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return L("^y@x1^y has numerous bloody matted feathers.^N",mob.name(viewer));
+			return L("^y@x1^y has large patches of bloody matted fur.^N",mob.name(viewer));
 		else
 		if(pct<.50)
-			return L("^y@x1^y has some bloody matted feathers.^N",mob.name(viewer));
+			return L("^y@x1^y has some bloody matted fur.^N",mob.name(viewer));
 		else
 		if(pct<.60)
-			return L("^p@x1^p has a lot of missing feathers.^N",mob.name(viewer));
+			return L("^p@x1^p has a lot of cuts and gashes.^N",mob.name(viewer));
 		else
 		if(pct<.70)
-			return L("^p@x1^p has a few missing feathers.^N",mob.name(viewer));
+			return L("^p@x1^p has a few cut patches.^N",mob.name(viewer));
 		else
 		if(pct<.80)
-			return L("^g@x1^g has a missing feather.^N",mob.name(viewer));
+			return L("^g@x1^g has a cut patch of fur.^N",mob.name(viewer));
 		else
 		if(pct<.90)
-			return L("^g@x1^g has a few feathers out of place.^N",mob.name(viewer));
+			return L("^g@x1^g has some disheveled fur.^N",mob.name(viewer));
 		else
 		if(pct<.99)
-			return L("^g@x1^g has a some ruffled feathers.^N",mob.name(viewer));
+			return L("^g@x1^g has some misplaced hairs.^N",mob.name(viewer));
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
@@ -257,11 +242,19 @@ public class Bird extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				(L("some @x1 brains",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
-				resources.addElement(makeResource
-				(L("some @x1 feathers",name().toLowerCase()),RawMaterial.RESOURCE_FEATHERS));
-				resources.addElement(makeResource
-				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_POULTRY));
+				(L("some @x1 claws",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
+				for(int i=0;i<5;i++)
+				{
+					resources.addElement(makeResource
+					(L("a strip of @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
+					resources.addElement(makeResource
+					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
+				}
+				for(int i=0;i<3;i++)
+				{
+					resources.addElement(makeResource
+					(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
+				}
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource

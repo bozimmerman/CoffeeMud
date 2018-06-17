@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
- Copyright 2003-2018 Bo Zimmerman
+ Copyright 2018-2018 Bo Zimmerman
 
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
@@ -33,12 +33,12 @@ import java.util.*;
  See the License for the specific language governing permissions and
  limitations under the License.
  */
-public class Rodent extends StdRace
+public class Beaver extends StdRace
 {
 	@Override
 	public String ID()
 	{
-		return "Rodent";
+		return "Beaver";
 	}
 
 	private final static String	localizedStaticName	= CMLib.lang().L("Rodent");
@@ -52,31 +52,31 @@ public class Rodent extends StdRace
 	@Override
 	public int shortestMale()
 	{
-		return 2;
+		return 12;
 	}
 
 	@Override
 	public int shortestFemale()
 	{
-		return 2;
+		return 12;
 	}
 
 	@Override
 	public int heightVariance()
 	{
-		return 3;
+		return 8;
 	}
 
 	@Override
 	public int lightestWeight()
 	{
-		return 1;
+		return 20;
 	}
 
 	@Override
 	public int weightVariance()
 	{
-		return 5;
+		return 10;
 	}
 
 	@Override
@@ -93,11 +93,11 @@ public class Rodent extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "RodentSpeak", "Thief_AvoidTraps" };
-	private final int[]		racialAbilityLevels			= { 1, 1 };
-	private final int[]		racialAbilityProficiencies	= { 100, 100 };
-	private final boolean[]	racialAbilityQuals			= { false, false };
-	private final String[]	racialAbilityParms			= { "", "" };
+	private final String[]	racialAbilityNames			= { "RodentSpeak", "WoodChopping", "Skill_Swim" };
+	private final int[]		racialAbilityLevels			= { 1, 9, 3 };
+	private final int[]		racialAbilityProficiencies	= { 100, 50, 75 };
+	private final boolean[]	racialAbilityQuals			= { false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()
@@ -138,7 +138,7 @@ public class Rodent extends StdRace
 		return parts;
 	}
 
-	private final int[]	agingChart	= { 0, 1, 1, 2, 2, 2, 3, 3, 4 };
+	private final int[]	agingChart	= { 0, 1, 2, 3, 4, 4, 5, 5, 6 };
 
 	@Override
 	public int[] getAgingChart()
@@ -165,10 +165,9 @@ public class Rodent extends StdRace
 	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setRacialStat(CharStats.STAT_STRENGTH, 3);
+		affectableStats.setRacialStat(CharStats.STAT_STRENGTH, 7);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE, 1);
-		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY, 18);
-		affectableStats.setStat(CharStats.STAT_SAVE_DISEASE, affectableStats.getStat(CharStats.STAT_SAVE_DISEASE) + 100);
+		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY, 7);
 	}
 
 	@Override
@@ -228,7 +227,7 @@ public class Rodent extends StdRace
 		final double pct = (CMath.div(mob.curState().getHitPoints(), mob.maxState().getHitPoints()));
 
 		if (pct < .10)
-			return L("^r@x1^r is one unhappy little critter!^N", mob.name(viewer));
+			return L("^r@x1^r is one unhappy critter!^N", mob.name(viewer));
 		else if (pct < .20)
 			return L("^r@x1^r is covered in blood and matted hair.^N", mob.name(viewer));
 		else if (pct < .30)

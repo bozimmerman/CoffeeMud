@@ -338,8 +338,7 @@ public class Skill_BearForaging extends StdAbility
 		else
 		if(E instanceof Item)
 		{
-			if((E!=null)
-			&&(E instanceof Food)
+			if((E instanceof Food)
 			&&(containerSet(mob,(Item)E)!=null))
 				return E;
 		}

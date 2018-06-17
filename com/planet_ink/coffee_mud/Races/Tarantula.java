@@ -99,7 +99,7 @@ public class Tarantula extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "Poison_Venom", "WebSpinning" };
+	private final String[]	racialAbilityNames			= { "Poison_Venom", "ShootWeb" };
 	private final int[]		racialAbilityLevels			= { 1, 15 };
 	private final int[]		racialAbilityProficiencies	= { 25, 100 };
 	private final boolean[]	racialAbilityQuals			= { false, false };

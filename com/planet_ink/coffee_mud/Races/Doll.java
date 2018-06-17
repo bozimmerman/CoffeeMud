@@ -132,7 +132,7 @@ public class Doll extends StdRace
 	@Override
 	public int availabilityCode()
 	{
-		return Area.THEME_FANTASY | Area.THEME_SKILLONLYMASK;
+		return Area.THEME_FANTASY | Area.THEME_TECHNOLOGY | Area.THEME_SKILLONLYMASK;
 	}
 
 	@Override

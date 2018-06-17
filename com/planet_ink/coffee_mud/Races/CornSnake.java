@@ -15,10 +15,11 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Vector;
 
 /*
-   Copyright 2003-2018 Bo Zimmerman
+   Copyright 2018-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +33,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Animal extends StdRace
+public class CornSnake extends Snake
 {
 	@Override
 	public String ID()
 	{
-		return "Animal";
+		return "CornSnake";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Animal");
+	private final static String localizedStaticName = CMLib.lang().L("Corn Snake");
 
 	@Override
 	public String name()
@@ -48,55 +49,21 @@ public class Animal extends StdRace
 		return localizedStaticName;
 	}
 
-	@Override
-	public int shortestMale()
-	{
-		return 6;
-	}
+	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
-	@Override
-	public int shortestFemale()
-	{
-		return 6;
-	}
-
-	@Override
-	public int heightVariance()
-	{
-		return 3;
-	}
-
-	@Override
-	public int lightestWeight()
-	{
-		return 10;
-	}
-
-	@Override
-	public int weightVariance()
-	{
-		return 20;
-	}
-
-	@Override
-	public long forbiddenWornBits()
-	{
-		return ~(Wearable.WORN_HEAD | Wearable.WORN_FEET | Wearable.WORN_NECK | Wearable.WORN_EARS | Wearable.WORN_EYES);
-	}
-
-	private final static String localizedStaticRacialCat = CMLib.lang().L("Animal");
+	private final static String localizedStaticRacialCat = CMLib.lang().L("Ophidian");
 
 	@Override
 	public String racialCategory()
 	{
 		return localizedStaticRacialCat;
 	}
-	
-	private final String[]	racialAbilityNames			= { "AnimalSpeak" };
-	private final int[]		racialAbilityLevels			= { 1 };
-	private final int[]		racialAbilityProficiencies	= { 100 };
-	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "" };
+
+	private final String[]	racialAbilityNames			= { "SnakeSpeak", "Stigma", "AutoCrawl", "RacialEnemy" };
+	private final int[]		racialAbilityLevels			= { 1, 1, 1, 9 };
+	private final int[]		racialAbilityProficiencies	= { 100, 100, 100, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "", "Rodent" };
 
 	@Override
 	protected String[] racialAbilityNames()
@@ -129,50 +96,11 @@ public class Animal extends StdRace
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
-
+	private static final int[] parts={0 ,2 ,2 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,0 ,1 ,0 ,1 ,0 };
 	@Override
 	public int[] bodyMask()
 	{
 		return parts;
-	}
-
-	private final int[]	agingChart	= { 0, 1, 2, 4, 7, 15, 20, 21, 22 };
-
-	@Override
-	public int[] getAgingChart()
-	{
-		return agingChart;
-	}
-
-	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
-
-	@Override
-	public int availabilityCode()
-	{
-		return Area.THEME_ALLTHEMES | Area.THEME_SKILLONLYMASK;
-	}
-
-	@Override
-	public void affectCharStats(final MOB affectedMOB, final CharStats affectableStats)
-	{
-		super.affectCharStats(affectedMOB, affectableStats);
-		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,6);
-		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
-	}
-
-	@Override
-	public Weapon myNaturalWeapon()
-	{
-		if(naturalWeapon==null)
-		{
-			naturalWeapon=CMClass.getWeapon("StdWeapon");
-			naturalWeapon.setName(L("claws"));
-			naturalWeapon.setMaterial(RawMaterial.RESOURCE_BONE);
-			naturalWeapon.setUsesRemaining(1000);
-			naturalWeapon.setWeaponDamageType(Weapon.TYPE_PIERCING);
-		}
-		return naturalWeapon;
 	}
 
 	@Override
@@ -183,15 +111,11 @@ public class Animal extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				(L("some @x1 claws",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
+				(L("some @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
 				resources.addElement(makeResource
-				(L("a strip of @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
-				resources.addElement(makeResource
-				(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
+				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
-				resources.addElement(makeResource
-				(L("a pile of @x1 bones",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 			}
 		}
 		return resources;

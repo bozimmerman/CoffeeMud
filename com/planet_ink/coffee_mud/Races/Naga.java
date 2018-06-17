@@ -92,6 +92,42 @@ public class Naga extends Python
 		return localizedStaticRacialCat;
 	}
 
+	private final String[]	racialAbilityNames			= { "Stigma", "AutoCrawl"};
+	private final int[]		racialAbilityLevels			= { 1, 1};
+	private final int[]		racialAbilityProficiencies	= { 100, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false };
+	private final String[]	racialAbilityParms			= { "", "" };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
 	private final String[]	culturalAbilityNames			= { "Draconic","SnakeSpeak" };
 	private final int[]		culturalAbilityProficiencies	= { 100, 100 };
 

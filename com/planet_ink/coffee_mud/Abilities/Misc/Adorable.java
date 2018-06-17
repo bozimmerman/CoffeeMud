@@ -98,6 +98,7 @@ public class Adorable extends StdAbility
 			&&(msg.source().phyStats().level() < (target.phyStats().level()-CMProps.getIntVar(CMProps.Int.EXPRATE)+super.getXLEVELLevel(target)))
 			&&(!CMSecurity.isAllowed(msg.source(), target.location(), CMSecurity.SecFlag.KILLDEAD))
 			&&(!CMLib.law().isLegalOfficerHere(msg.source()))
+			&&(proficiencyCheck(target, 0, false))
 			&&(!CMLib.law().isLegalJudgeHere(msg.source())))
 			{
 				msg.source().tell(L("@x1 is just too adorable to do that to.",target.name(msg.source())));

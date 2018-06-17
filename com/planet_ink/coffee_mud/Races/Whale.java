@@ -100,6 +100,64 @@ public class Whale extends GiantFish
 		return breatheAirWaterArray;
 	}
 
+	private final String[]					racialAbilityNames			= { "Aquan", "Skill_Swim", "Skill_AutoSwim" };
+	private final int[]						racialAbilityLevels			= { 1,1,1 };
+	private final int[]						racialAbilityProficiencies	= { 100,100,100 };
+	private final boolean[]					racialAbilityQuals			= { false,false,false };
+	private final String[]					racialAbilityParms			= { "", "", "" };
+
+	@Override
+	protected String[] racialAbilityNames()
+	{
+		return racialAbilityNames;
+	}
+
+	@Override
+	protected int[] racialAbilityLevels()
+	{
+		return racialAbilityLevels;
+	}
+
+	@Override
+	protected int[] racialAbilityProficiencies()
+	{
+		return racialAbilityProficiencies;
+	}
+
+	@Override
+	protected boolean[] racialAbilityQuals()
+	{
+		return racialAbilityQuals;
+	}
+
+	@Override
+	public String[] racialAbilityParms()
+	{
+		return racialAbilityParms;
+	}
+
+	private final String[]	racialEffectNames			= { "Spell_BigMouth"};
+	private final int[]		racialEffectLevels			= { 1};
+	private final String[]	racialEffectParms			= { "" };
+	
+	@Override
+	protected String[] racialEffectNames()
+	{
+		return racialEffectNames;
+	}
+
+	@Override
+	protected int[] racialEffectLevels()
+	{
+		return racialEffectLevels;
+	}
+
+	@Override
+	protected String[] racialEffectParms()
+	{
+		return racialEffectParms;
+	}
+
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,2 ,1 ,0 ,1 ,0 };
 
