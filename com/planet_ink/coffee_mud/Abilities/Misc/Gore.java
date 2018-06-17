@@ -75,6 +75,12 @@ public class Gore extends StdAbility
 	}
 
 	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
 	public int abstractQuality()
 	{
 		return Ability.QUALITY_BENEFICIAL_SELF;

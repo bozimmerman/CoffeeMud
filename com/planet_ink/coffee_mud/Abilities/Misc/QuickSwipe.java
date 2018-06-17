@@ -69,6 +69,12 @@ public class QuickSwipe extends StdAbility
 	}
 
 	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_RACIALABILITY;

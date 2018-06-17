@@ -51,9 +51,10 @@ public interface CMMiscUtils extends CMLibrary
 	 * their playerstats and generates a fully formed prompt, complete
 	 * with all variables filled in.
 	 * @param mob the mob to build a prompt for
+	 * @param prompt TODO
 	 * @return the fully filled in customized prompt string
 	 */
-	public String builtPrompt(MOB mob);
+	public String builtPrompt(MOB mob, String prompt);
 
 	/**
 	 * Returns the current mud-month-day-year for the object, depending

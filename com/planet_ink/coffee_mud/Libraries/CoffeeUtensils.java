@@ -1300,10 +1300,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 	
 	@Override
-	public String builtPrompt(MOB mob)
+	public String builtPrompt(MOB mob, String prompt)
 	{
 		final StringBuffer buf=new StringBuffer("\n\r");
-		final String prompt=mob.playerStats().getPrompt();
 		String promptUp=null;
 		int c=0;
 		while(c<prompt.length())

@@ -76,6 +76,12 @@ public class Skill_TailSwipe extends StdSkill
 	}
 
 	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SKILL | Ability.DOMAIN_RACIALABILITY;

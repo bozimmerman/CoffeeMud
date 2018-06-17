@@ -75,6 +75,12 @@ public class Scavenge extends StdAbility
 		return Ability.CAN_ITEMS;
 	}
 
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
 	private static final String[]	triggerStrings	= I(new String[] { "SCAVENGE" });
 
 	@Override

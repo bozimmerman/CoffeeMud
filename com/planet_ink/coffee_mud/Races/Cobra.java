@@ -86,7 +86,7 @@ public class Cobra extends Snake
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "SnakeSpeak", "Stigma", "AutoCrawl", "PoisonousBite" };
+	private final String[]	racialAbilityNames			= { "SnakeSpeak", "Stigma", "Skill_AutoCrawl", "PoisonousBite" };
 	private final int[]		racialAbilityLevels			= { 1, 1, 1, 21 };
 	private final int[]		racialAbilityProficiencies	= { 100, 100, 100, 100 };
 	private final boolean[]	racialAbilityQuals			= { false, false, false, false };

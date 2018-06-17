@@ -59,7 +59,7 @@ public class CornSnake extends Snake
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "SnakeSpeak", "Stigma", "AutoCrawl", "RacialEnemy" };
+	private final String[]	racialAbilityNames			= { "SnakeSpeak", "Stigma", "Skill_AutoCrawl", "RacialEnemy" };
 	private final int[]		racialAbilityLevels			= { 1, 1, 1, 9 };
 	private final int[]		racialAbilityProficiencies	= { 100, 100, 100, 100 };
 	private final boolean[]	racialAbilityQuals			= { false, false, false, false };

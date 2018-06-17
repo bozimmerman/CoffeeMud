@@ -84,6 +84,12 @@ public class Skill_TrackFriend extends StdAbility
 	}
 
 	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
+	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SKILL | Ability.DOMAIN_RACIALABILITY;

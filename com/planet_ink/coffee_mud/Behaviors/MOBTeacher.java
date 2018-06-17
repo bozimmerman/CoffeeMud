@@ -194,7 +194,7 @@ public class MOBTeacher extends CombatAbilities
 		myMOB.baseCharStats().setMyLevels(""+myMOB.phyStats().level());
 		myMOB.recoverCharStats();
 
-		final Hashtable<String,Ability> myAbles=new Hashtable<String,Ability>();
+		final Map<String,Ability> myAbles=new HashMap<String,Ability>();
 		Ability A=null;
 		for(final Enumeration<Ability> a=myMOB.allAbilities();a.hasMoreElements();)
 		{
@@ -206,7 +206,7 @@ public class MOBTeacher extends CombatAbilities
 		myMOB.baseCharStats().setStat(CharStats.STAT_WISDOM,19);
 
 		int pct=100;
-		Vector<String> V=null;
+		List<String> V=null;
 		A=CMClass.getAbility(getParms());
 		if(A!=null)
 		{
@@ -220,21 +220,21 @@ public class MOBTeacher extends CombatAbilities
 		{
 			for(int v=V.size()-1;v>=0;v--)
 			{
-				final String s=V.elementAt(v);
+				final String s=V.get(v);
 				if(s.equalsIgnoreCase("NOCOMMON"))
 				{
 					noCommon=true;
-					V.removeElementAt(v);
+					V.remove(v);
 				}
 				if(s.equalsIgnoreCase("NOEXPS")||s.equalsIgnoreCase("NOEXP"))
 				{
 					noExpertises=true;
-					V.removeElementAt(v);
+					V.remove(v);
 				}
 				if(s.equalsIgnoreCase("NOHLEXPS")||s.equalsIgnoreCase("NOHLEXP"))
 				{
 					noHLExpertises=true;
-					V.removeElementAt(v);
+					V.remove(v);
 				}
 			}
 		}
@@ -243,7 +243,7 @@ public class MOBTeacher extends CombatAbilities
 		{
 			for(int v=0;v<V.size();v++)
 			{
-				final String s=V.elementAt(v);
+				final String s=V.get(v);
 				if(s.endsWith("%"))
 				{
 					pct=CMath.s_int(s.substring(0,s.length()-1));

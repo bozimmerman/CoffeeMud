@@ -59,6 +59,12 @@ public class CombatFrenzy extends StdAbility
 		return localizedStaticDisplay;
 	}
 
+	@Override
+	public boolean putInCommandlist()
+	{
+		return false;
+	}
+
 	private static final String[]	triggerStrings	= I(new String[] { "COMBATFRENZY" });
 
 	@Override

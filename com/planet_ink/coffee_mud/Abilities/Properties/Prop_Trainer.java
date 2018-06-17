@@ -88,9 +88,11 @@ public class Prop_Trainer extends Prop_StatTrainer
 			CharClass C=null;
 			final MOB mob=(MOB)affected;
 			CharClass currC=mob.charStats().getCurrentClass();
-			final Vector<CharClass> allowedClasses=new Vector<CharClass>();
-			final Vector<ExpertiseLibrary.ExpertiseDefinition> allowedExpertises=new Vector<ExpertiseLibrary.ExpertiseDefinition>();
+			final ArrayList<CharClass> allowedClasses=new ArrayList<CharClass>(1);
+			final ArrayList<ExpertiseLibrary.ExpertiseDefinition> allowedExpertises=new ArrayList<ExpertiseLibrary.ExpertiseDefinition>(1);
 			final Vector<String> V=CMParms.parse(text());
+			boolean alsoSkills=false;
+			boolean noExper=false;
 			String s=null;
 			for(int v=0;v<V.size();v++)
 			{
@@ -108,39 +110,85 @@ public class Prop_Trainer extends Prop_StatTrainer
 							C=c.nextElement();
 							if((C.baseClass().equalsIgnoreCase(baseClass))
 							&&(!allowedClasses.contains(C)))
-								allowedClasses.addElement(C);
+								allowedClasses.add(C);
 						}
 					}
 					else
-						allowedClasses.addElement(C);
+						allowedClasses.add(C);
 				}
 				else
 				{
 					final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(s);
 					if(def!=null)
-						allowedExpertises.addElement(def);
+						allowedExpertises.add(def);
+					else
+					if(s.equalsIgnoreCase("skill")||s.equalsIgnoreCase("skills"))
+						alsoSkills=true;
+					else
+					if(s.equalsIgnoreCase("noexper")||s.equalsIgnoreCase("noexpertise"))
+						noExper=true;
 				}
 			}
 			if(allowedClasses.size()==0)
 			{
 				for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
-					allowedClasses.addElement(c.nextElement());
+					allowedClasses.add(c.nextElement());
 			}
-			if(allowedExpertises.size()==0)
+			if((allowedExpertises.size()==0)&&(!noExper))
 			{
 				for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
-					allowedExpertises.addElement(e.nextElement());
+					allowedExpertises.add(e.nextElement());
 			}
-
 			for(int c=0;c<allowedClasses.size();c++)
 			{
-				C=allowedClasses.elementAt(c);
+				C=allowedClasses.get(c);
 				addCharClassIfNotFound(mob,C);
 			}
 			for(int e=0;e<allowedExpertises.size();e++)
-				mob.addExpertise(allowedExpertises.elementAt(e).ID());
-			mob.baseCharStats().setCurrentClass(currC);
-			mob.charStats().setCurrentClass(currC);
+				mob.addExpertise(allowedExpertises.get(e).ID());
+			if(alsoSkills && (allowedClasses.size()>0))
+			{
+				mob.baseCharStats().setMyClasses("");
+				mob.charStats().setMyClasses("");
+				for(int c=0;c<allowedClasses.size();c++)
+				{
+					currC=allowedClasses.get(c);
+					mob.baseCharStats().setCurrentClass(currC);
+					mob.charStats().setCurrentClass(currC);
+					mob.baseCharStats().setClassLevel(currC,mob.basePhyStats().level()/allowedClasses.size());
+					mob.charStats().setClassLevel(currC,mob.basePhyStats().level()/allowedClasses.size());
+					currC.startCharacter(mob, true, false);
+					final Map<String,Ability> myAbles=new HashMap<String,Ability>();
+					for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
+					{
+						final Ability A=a.nextElement();
+						if(A!=null)
+							myAbles.put(A.ID(),A);
+					}
+					final String className=mob.baseCharStats().getCurrentClass().ID();
+					for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					{
+						Ability A=a.nextElement();
+						if((A!=null)
+						&&(CMLib.ableMapper().qualifiesByLevel(mob,A)&&(!CMLib.ableMapper().getSecretSkill(className,true,A.ID())))
+						&&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
+						&&(!myAbles.containsKey(A.ID())))
+						{
+							A=(Ability)A.copyOf();
+							A.setSavable(false);
+							A.setProficiency(100);
+							A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
+							myAbles.put(A.ID(),A);
+							mob.addAbility(A);
+						}
+					}
+				}
+			}
+			else
+			{
+				mob.baseCharStats().setCurrentClass(currC);
+				mob.charStats().setCurrentClass(currC);
+			}
 			mob.recoverCharStats();
 			mob.recoverPhyStats();
 			mob.recoverMaxState();

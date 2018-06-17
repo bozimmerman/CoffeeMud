@@ -92,7 +92,7 @@ public class Naga extends Python
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "Stigma", "AutoCrawl"};
+	private final String[]	racialAbilityNames			= { "Stigma", "Skill_AutoCrawl"};
 	private final int[]		racialAbilityLevels			= { 1, 1};
 	private final int[]		racialAbilityProficiencies	= { 100, 100 };
 	private final boolean[]	racialAbilityQuals			= { false, false };

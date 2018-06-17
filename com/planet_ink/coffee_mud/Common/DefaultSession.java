@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.CMRunnable;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -2412,9 +2413,9 @@ public class DefaultSession implements Session
 		final MOB mob=mob();
 		if(mob==null)
 			return;
+		final StringBuilder buf=new StringBuilder("");
 		if(mob.playerStats()==null)
 			return;
-		final StringBuilder buf=new StringBuilder("");
 		if(getClientTelnetMode(Session.TELNET_MXP))
 		{
 			buf.append("^<!ENTITY Hp '").append(mob.curState().getHitPoints())
@@ -2427,7 +2428,7 @@ public class DefaultSession implements Session
 				.append("'^>^<!ENTITY ExpNeed '").append(mob.getExpNeededLevel())
 				.append("'^>\n\r\n\r");
 		}
-		buf.append(CMLib.utensils().builtPrompt(mob));
+		buf.append(CMLib.utensils().builtPrompt(mob, mob.playerStats().getPrompt()));
 		promptPrint("^<Prompt^>"+buf.toString()+"^</Prompt^>^.^N");
 	}
 

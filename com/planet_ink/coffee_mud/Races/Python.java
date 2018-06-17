@@ -86,7 +86,7 @@ public class Python extends Snake
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "SnakeSpeak", "Stigma", "AutoCrawl", "Fighter_Pin" };
+	private final String[]	racialAbilityNames			= { "SnakeSpeak", "Stigma", "Skill_AutoCrawl", "Fighter_Pin" };
 	private final int[]		racialAbilityLevels			= { 1, 1, 1, 15 };
 	private final int[]		racialAbilityProficiencies	= { 100, 100, 100, 100 };
 	private final boolean[]	racialAbilityQuals			= { false, false, false, false };

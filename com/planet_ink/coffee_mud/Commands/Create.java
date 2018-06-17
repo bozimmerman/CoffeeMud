@@ -529,7 +529,7 @@ public class Create extends StdCommand
 	{
 		if(commands.size()<3)
 		{
-			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is CREATE MOB [MOB NAME]\n\r"));
+			mob.tell(L("You have failed to specify the proper fields.\n\rThe format is CREATE MOB [MOB ID]\n\r"));
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
@@ -543,18 +543,173 @@ public class Create extends StdCommand
 			newMOB=getNewCatalogMob(mobID);
 			doGenerica=newMOB==null;
 		}
-
+		
+		Race raceR=null;
+		Integer level=null;
+		CharClass classC = null;
 		if(newMOB == null)
 		{
-			final Race R=CMClass.getRace(mobID);
-			if(R!=null)
+			raceR=CMClass.getRace(mobID);
+			if(raceR==null)
 			{
-				newMOB = CMClass.getMOB("GenMob");
-				newMOB.setName(CMLib.english().startWithAorAn(R.name()));
-				newMOB.setDisplayText(L("@x1 is here.",newMOB.Name()));
-				newMOB.baseCharStats().setMyRace(R);
-				newMOB.recoverCharStats();
+				classC=CMClass.getCharClass(mobID);
+				if(classC == null)
+				{
+					if(CMath.isInteger(mobID))
+						level=Integer.valueOf(CMath.s_int(mobID));
+				}
 			}
+			if((raceR==null)||(classC==null)||(level==null))
+			{
+				if(commands.size()>3)
+				{
+					final String part=commands.get(2);
+					final String restpart=CMParms.combine(commands,3);
+					raceR=CMClass.getRace(part);
+					if(raceR==null)
+					{
+						classC=CMClass.getCharClass(part);
+						if(classC == null)
+						{
+							if(CMath.isInteger(part))
+								level=Integer.valueOf(CMath.s_int(part));
+						}
+					}
+					if (0<(((raceR!=null)?1:0)+((classC!=null)?1:0)+((level!=null)?1:0)))
+					{
+						if(raceR!=null)
+						{
+							if(classC==null)
+								classC=CMClass.getCharClass(restpart);
+							if(classC == null)
+							{
+								if(CMath.isInteger(restpart))
+									level=Integer.valueOf(CMath.s_int(restpart));
+							}
+						}
+						else
+						if(classC!=null)
+						{
+							raceR=CMClass.getRace(restpart);
+							if(raceR == null)
+							{
+								if(CMath.isInteger(restpart))
+									level=Integer.valueOf(CMath.s_int(restpart));
+							}
+						}
+						if(level!=null)
+						{
+							classC=CMClass.getCharClass(restpart);
+							if(classC == null)
+								raceR=CMClass.getRace(restpart);
+						}
+						if (1==(((raceR!=null)?1:0)+((classC!=null)?1:0)+((level!=null)?1:0)))
+						{
+							if(commands.size()>4)
+							{
+								final String part2=commands.get(3);
+								final String restpart2=CMParms.combine(commands,4);
+								if(raceR!=null)
+								{
+									classC=CMClass.getCharClass(part2);
+									if(classC!=null)
+									{
+										if(CMath.isInteger(restpart2))
+											level=Integer.valueOf(CMath.s_int(restpart2));
+									}
+									else
+									{
+										classC=CMClass.getCharClass(restpart2);
+										if(CMath.isInteger(part2))
+											level=Integer.valueOf(CMath.s_int(part2));
+										
+									}
+								}
+								else
+								if(classC!=null)
+								{
+									raceR=CMClass.getRace(part2);
+									if(raceR!=null)
+									{
+										if(CMath.isInteger(restpart2))
+											level=Integer.valueOf(CMath.s_int(restpart2));
+									}
+									else
+									{
+										raceR=CMClass.getRace(restpart2);
+										if(CMath.isInteger(part2))
+											level=Integer.valueOf(CMath.s_int(part2));
+										
+									}
+								}
+								if(level!=null)
+								{
+									classC=CMClass.getCharClass(part2);
+									if(classC!=null)
+										raceR=CMClass.getRace(restpart2);
+									else
+									{
+										classC=CMClass.getCharClass(restpart2);
+										if(classC!=null)
+											raceR=CMClass.getRace(part2);
+									}
+								}
+								if (3>(((raceR!=null)?1:0)+((classC!=null)?1:0)+((level!=null)?1:0)))
+								{
+									raceR=null;
+									classC=null;
+									level=null;
+								}
+							}
+							else
+							{
+								raceR=null;
+								classC=null;
+								level=null;
+							}
+						}
+					}
+				}
+			}
+		}
+
+		if((raceR!=null)||(classC!=null)||(level!=null))
+		{
+			newMOB = CMClass.getMOB("GenMob");
+			if((raceR!=null)&&(classC!=null))
+				newMOB.setName(CMLib.english().startWithAorAn(raceR.name())+" "+classC.name());
+			else
+			if(raceR!=null)
+				newMOB.setName(CMLib.english().startWithAorAn(raceR.name()));
+			else
+			if(classC!=null)
+				newMOB.setName(CMLib.english().startWithAorAn(classC.name()));
+			else
+			if(level!=null)
+				newMOB.setName("a level "+level.intValue()+"er");
+			newMOB.setDisplayText(L("@x1 is here.",newMOB.Name()));
+			if(raceR!=null)
+				newMOB.baseCharStats().setMyRace(raceR);
+			if(level!=null)
+				newMOB.basePhyStats().setLevel(level.intValue());
+			if(classC!=null)
+			{
+				final Ability A=CMClass.getAbility("Prop_Trainer");
+				String attack=CharStats.DEFAULT_STAT_DESCS[classC.getAttackAttribute()];
+				int highatt=CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
+				StringBuilder txt=new StringBuilder("SKILLS "+classC.ID()+" NOTEACH BASEVALUE=10");
+				for(int i=0;i<classC.maxStatAdjustments().length;i++)
+				{
+					if(classC.maxStatAdjustments()[i]!=0)
+						txt.append(" "+CharStats.DEFAULT_STAT_DESCS[i]+"="+(highatt+classC.maxStatAdjustments()[i]));
+				}
+				if(classC.maxStatAdjustments()[classC.getAttackAttribute()]==0)
+					txt.append(" "+attack+"="+highatt);
+				A.setMiscText(txt.toString());
+				newMOB.addNonUninvokableEffect(A);
+			}
+			newMOB.recoverPhyStats();
+			newMOB.recoverCharStats();
 		}
 		
 		if(newMOB==null)
@@ -1708,8 +1863,10 @@ public class Create extends StdCommand
 						// this is some strange shit.
 						V.remove(1);
 						for(int i=0;i<num;i++)
+						{
 							if((!execute(mob,V,metaFlags))||(!CMLib.flags().isInTheGame(mob, true)))
 								return false;
+						}
 					}
 				}
 				else
