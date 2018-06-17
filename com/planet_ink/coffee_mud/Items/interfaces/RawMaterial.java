@@ -785,7 +785,7 @@ public interface RawMaterial extends Item
 		FIBREGLASS(RESOURCE_FIBREGLASS	, 10,   0,  2, 0, "", "", null),
 		ULTRANIUM(RESOURCE_ULTRANIUM	, 175,  0, 11, 900, "", "", null),
 		DURANIUM(RESOURCE_DURANIUM		, 159,  0, 10, 300, "", "", null),
-		URANIUM(RESOURCE_URANIUM		, 100,  1,  0, 2000, "", "", null),
+		URANIUM(RESOURCE_URANIUM		, 100,  1,  0, 2000, "", "Disease_RadiationSickness", null),
 		ANTIMATTER(RESOURCE_ANTIMATTER	, 500,  0,  0, 0, "", "", null),
 		DIAMELS(RESOURCE_DIAMELS		, 5,    20, 9, 3510, "", "", null),
 		PETROLEUM(RESOURCE_PETROLEUM	, 50,   5,  1, 880, "strong oily", "", null),

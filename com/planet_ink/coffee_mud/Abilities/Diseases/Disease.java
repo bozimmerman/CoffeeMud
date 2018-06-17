@@ -304,7 +304,8 @@ public class Disease extends StdAbility implements DiseaseAffect
 					case CMMsg.TYP_GET:
 					case CMMsg.TYP_PUSH:
 					case CMMsg.TYP_PULL:
-						if(CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONTACT))
+						if(CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONTACT)
+						||(CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_GET)))
 						{
 							if((!(myItem instanceof Drink))
 							  &&(!(myItem instanceof Food))

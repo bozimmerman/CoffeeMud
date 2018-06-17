@@ -48,12 +48,14 @@ public interface DiseaseAffect extends HealthCondition
 	public final static int SPREAD_CONSUMPTION=8;
 	/** denotes a diseases spread by taking physical damage from someone who is infected. @see Ability#abilityCode() */
 	public final static int SPREAD_DAMAGE=16;
+	/** denotes a diseases spread by touching or making contact with someone who is infected. @see Ability#abilityCode() */
+	public final static int SPREAD_GET=32;
 
 	/**
 	 * Descriptions of the SPREAD_ constants
 	 */
 	public final static String[] SPREAD_DESCS = {
-		"sexual contact", "direct contact", "proximity", "ingestion", "blood contact"
+		"sexual contact", "direct contact", "proximity", "ingestion", "blood contact", "picking up"
 	};
 
 	/**

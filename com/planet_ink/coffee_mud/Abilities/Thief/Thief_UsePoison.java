@@ -95,7 +95,7 @@ public class Thief_UsePoison extends ThiefSkill
 			final Ability A=a.nextElement();
 			if((A!=null)
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON)
-			&&(!A.ID().equals("Poison_Rotton")))
+			&&(!A.ID().equals("Poison_Rotten")))
 				offenders.add(A);
 		}
 		return offenders;
@@ -131,7 +131,7 @@ public class Thief_UsePoison extends ThiefSkill
 		final List<Ability> V=returnOffensiveAffects(poison);
 		if((V.size()==0)||(!(poison instanceof Drink)))
 		{
-			if(poison.fetchEffect("Poison_Rotton")!=null)
+			if(poison.fetchEffect("Poison_Rotten")!=null)
 				mob.tell(L("@x1 is no longer a poison!",poison.name()));
 			else
 				mob.tell(L("@x1 is not a poison!",poison.name()));
