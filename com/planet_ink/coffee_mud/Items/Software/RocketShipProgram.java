@@ -54,7 +54,7 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile List<TechComponent>	sensors		= null;
 	protected volatile List<TechComponent>	components	= null;
 	
-	protected volatile Double				lastThrust			= null;
+	protected volatile Double				lastAccelleration 			= null;
 	protected volatile Double				lastInject			= null;
 	protected volatile RocketStateMachine	rocketState			= null;
 	protected volatile SpaceObject			programPlanet		= null;
@@ -524,21 +524,18 @@ public class RocketShipProgram extends GenShipProgram
 		case LAUNCHCHECK:
 		case LAUNCHSEARCH:
 		{
-			final double targetThrust = CMLib.tech().getGravityForce(myShip, programPlanet) + SpaceObject.ACCELLERATION_TYPICALROCKET; // 
-			if((this.lastThrust!=null)
+			//force/mass is the Gs felt by the occupants.. not force-mass
+			//so go ahead and push it up to 3 * g forces on ship
+			final double targetAccelleration = SpaceObject.ACCELLERATION_TYPICALSPACEROCKET; // 
+			if((this.lastAccelleration !=null)
 			&&(newInject != null)
-			&& (targetThrust!= 0.0))
+			&& (targetAccelleration != 0.0))
 			{
-				if((this.lastThrust.doubleValue() < (targetThrust * 0.9))
-				|| (this.lastThrust.doubleValue() > (targetThrust * 1.1)))
-				{
-					final double factor;
-					if(this.lastThrust.doubleValue()<targetThrust)
-						factor=1.05;
-					else
-						factor=0.95;
-					newInject = new Double(factor * newInject.doubleValue());
-				}
+				if(this.lastAccelleration .doubleValue() < (targetAccelleration * 0.9))
+					newInject = new Double(1.07 * newInject.doubleValue());
+				else
+				if(this.lastAccelleration .doubleValue() > (targetAccelleration * 1.1))
+					newInject = new Double(0.93 * newInject.doubleValue());
 			}
 		}
 		//$FALL-THROUGH$
@@ -547,7 +544,7 @@ public class RocketShipProgram extends GenShipProgram
 			final MOB mob=CMClass.getFactoryMOB();
 			try
 			{
-				this.lastThrust=null;
+				this.lastAccelleration =null;
 				if(newInject != null)
 				{
 					for(final ShipEngine engineE : programEngines)
@@ -675,16 +672,16 @@ public class RocketShipProgram extends GenShipProgram
 							double lastTryAmt=0.000001;
 							final CMMsg deactMsg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
 							msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-							final long targetThrust = CMLib.tech().getGravityForce(spaceObject, this.programPlanet);
+							final double targetAccelleration = SpaceObject.ACCELLERATION_G;
 							while((readyEngines.size()==0)&&(--tries>0))
 							{
-								this.lastThrust=null;
+								this.lastAccelleration =null;
 								final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(lastTryAmt));
 								msg.setTargetMessage(code);
 								this.trySendMsgToItem(mob, engineE, msg);
-								final Double thisLastThrust=this.lastThrust;
-								if((thisLastThrust!=null)
-								&&(thisLastThrust.doubleValue() >= targetThrust)
+								final Double thisLastAccel=this.lastAccelleration ;
+								if((thisLastAccel!=null)
+								&&(thisLastAccel.doubleValue() >= targetAccelleration)
 								&&(ship.getIsDocked()==null))
 								{
 									readyEngines.add(engineE);
@@ -896,19 +893,19 @@ public class RocketShipProgram extends GenShipProgram
 		}
 		else
 		if((msg.target() instanceof SpaceShip)
-		&&(lastThrust==null)
+		&&(lastAccelleration ==null)
 		&&(msg.targetMinor()==CMMsg.TYP_ACTIVATE)
 		&&(msg.isTarget(CMMsg.MASK_CNTRLMSG))
 		&&(msg.targetMessage()!=null))
 		{
 			final String[] parts=msg.targetMessage().split(" ");
 			final TechCommand command=TechCommand.findCommand(parts);
-			if(command == TechCommand.THRUSTED)
+			if(command == TechCommand.ACCELLERATED)
 			{
 				final Object[] parms=command.confirmAndTranslate(parts);
 				if((parms!=null)&&(parms[0]==ShipDir.AFT))
 				{
-					this.lastThrust=(Double)parms[1];
+					this.lastAccelleration =(Double)parms[1];
 				}
 			}
 		}

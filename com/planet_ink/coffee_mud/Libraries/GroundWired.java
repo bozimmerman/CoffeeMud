@@ -369,22 +369,19 @@ public class GroundWired extends StdLibrary implements TechLibrary
 	}
 
 	@Override
-	public long getGravityForce(SpaceObject S, SpaceObject cO)
+	public double getGravityForce(SpaceObject S, SpaceObject cO)
 	{
 		final WorldMap map=CMLib.map();
-		final long distance=map.getDistanceFrom(S.coordinates(), cO.coordinates());
+		final long distance=map.getDistanceFrom(S.coordinates(), cO.coordinates()) - cO.radius();
 		final long oMass = S.getMass();
 		if(((cO instanceof Area)||(cO.getMass() >= SpaceObject.ASTEROID_MASS))
-		&&(distance >= cO.radius())
+		&&(distance > 0)
 		&&(oMass < SpaceObject.MOONLET_MASS))
 		{
-			final double graviRadiusMax=cO.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS;
+			final double graviRadiusMax=(cO.radius()*(SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS-1.0));
 			if(distance<graviRadiusMax)
 			{
-				final double graviFactor=1.0-(distance/graviRadiusMax);
-				// can this cause slip-through?
-				final long mass = Math.max(1,oMass / 1000);
-				return Math.round(CMath.mul(SpaceObject.ACCELLERATION_G,mass)*graviFactor);
+				return 1.0-(distance/graviRadiusMax);
 			}
 		}
 		return 0;
@@ -420,7 +417,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					{
 						final long prevDistance=map.getDistanceFrom(startCoords, cO.coordinates());
 						final double minDistance=map.getMinDistanceFrom(O, prevDistance, cO);
-						final long gravitationalMove=this.getGravityForce(O, cO);
+						final double gravitationalMove=this.getGravityForce(O, cO);
 						if(gravitationalMove > 0)
 						{
 							if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))

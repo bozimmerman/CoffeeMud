@@ -43,14 +43,15 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 		return "StdShipFuellessThruster";
 	}
 
-	protected int		maxThrust		= 8900000;
-	protected int		minThrust		= 0;
-	protected double	thrust			= 0;
-	protected long		specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
-	protected double	fuelEfficiency	= 0.33;
-	protected boolean	constantThrust	= true;
-	
-	protected TechComponent.ShipDir[] ports 		= TechComponent.ShipDir.values(); 
+	protected int			maxThrust		= 8900000;
+	protected int			minThrust		= 0;
+	protected double		thrust			= 0;
+	protected long			specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
+	protected double		fuelEfficiency	= 0.33;
+	protected boolean		constantThrust	= true;
+	protected final long[]	lastThrustMs	= new long[] { 0 };
+
+	protected TechComponent.ShipDir[] ports = TechComponent.ShipDir.values(); 
 
 	public StdShipFuellessThruster()
 	{
@@ -64,6 +65,7 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
+
 
 	@Override
 	public boolean sameAs(final Environmental E)
@@ -194,6 +196,6 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		StdShipThruster.executeThrusterMsg(this, myHost, circuitKey, msg);
+		StdShipThruster.executeThrusterMsg(this, myHost, circuitKey, lastThrustMs, msg);
 	}
 }

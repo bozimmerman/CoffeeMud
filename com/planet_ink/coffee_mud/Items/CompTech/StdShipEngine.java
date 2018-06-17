@@ -42,15 +42,16 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 		return "StdShipEngine";
 	}
 
-	protected int		maxThrust		= 8900000;
-	protected int		minThrust		= 0;
-	protected double	thrust			= 0;
-	protected long		specificImpulse	= 10000;
-	protected double	fuelEfficiency	= 0.33;
-	protected boolean	constantThrust	= true;
+	protected int			maxThrust		= 8900000;
+	protected int			minThrust		= 0;
+	protected double		thrust			= 0;
+	protected long			specificImpulse	= 10000;
+	protected double		fuelEfficiency	= 0.33;
+	protected boolean		constantThrust	= true;
+	protected final long[]	lastThrustMs	= new long[] { 0 };
 	
-	protected TechComponent.ShipDir[] ports 		= TechComponent.ShipDir.values(); 
-	
+	protected TechComponent.ShipDir[] ports = TechComponent.ShipDir.values(); 
+
 	public StdShipEngine()
 	{
 		super();
@@ -142,7 +143,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		StdShipThruster.executeThrusterMsg(this, myHost, circuitKey, msg);
+		StdShipThruster.executeThrusterMsg(this, myHost, circuitKey, lastThrustMs, msg);
 	}
 
 	@Override

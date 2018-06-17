@@ -228,16 +228,6 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										Room R=getIsDocked();
 										if(R!=null)
 										{
-											final SpaceObject rO=CMLib.map().getSpaceObject(R, true);
-											if(rO!=null)
-											{
-												if(amount > CMLib.tech().getGravityForce(this,rO))
-												{
-													unDock(true);
-													R=null;
-												}
-											}
-											else
 											if(amount > SpaceObject.ACCELLERATION_G)
 											{
 												unDock(true);
@@ -254,15 +244,16 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 											// to eliminate all speed, do a complicated gforce calc, and re-speed
 											this.setSpeed(0);
 										}
-										final double finalRawThrust = amount*inAirFactor;
-										final long finalThrust = (R==null)?Math.round(finalRawThrust):0;
-										if(finalThrust > 0)
+										//force/mass is the Gs felt by the occupants.. not force-mass
+										final double finalRawAccelleration = amount*inAirFactor;
+										final double finalAccelleration = (R==null)?finalRawAccelleration:0;
+										if(finalAccelleration > 0)
 										{
-											CMLib.map().moveSpaceObject(this,facing(),finalThrust);
+											CMLib.map().moveSpaceObject(this,facing(),finalAccelleration);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" accellerates "+finalThrust+" to the "+dir.toString());
+												Log.debugOut("SpaceShip "+name()+" accellerates "+finalAccelleration+" to the "+dir.toString());
 										}
-										final String code=Technical.TechCommand.THRUSTED.makeCommand(dir,Double.valueOf(finalRawThrust));
+										final String code=Technical.TechCommand.ACCELLERATED.makeCommand(dir,Double.valueOf(finalRawAccelleration));
 										final MOB mob=CMClass.getFactoryMOB();
 										try
 										{
