@@ -145,7 +145,13 @@ public class Chant_WaterHammer extends Chant
 				mob.tell(L("There is no large ready source of water here to use as a hammer."));
 				return false;
 			}
-			waterName = E.name();
+			if((E instanceof Drink)
+			&&(E instanceof Item)
+			&&((((Item)E).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID))
+				waterName=L("water from @x1",E.name());
+			else
+			if(E.name().length()>0)
+				waterName = E.name();
 		}
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
