@@ -4114,6 +4114,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public int appliesToClass(Object o)
 				{
+					if(o instanceof Wand)
+						return 1;
 					return ((o instanceof Weapon) && (!(o instanceof Ammunition))) ? 2 : -1;
 				}
 	
