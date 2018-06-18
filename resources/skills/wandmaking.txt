@@ -65,7 +65,7 @@ dire wolf wand core	33	30	(onground:consumed:1:a strip of dire wolf fur:)	750	Ge
 dwarven wand core	35	30	(onground:consumed:1:a dwarf beard:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(hit+50)
 wererat wand core	37	30	(onground:consumed:1:a strip of wererat hair:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(dex+2)
 pixie wand core	39	30	(onground:consumed:1:some pixie blood:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(int+2)
-naga wand core	41	30	(onground:consumed:1:a strop of naga scales:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(armor-30)
+naga wand core	41	30	(onground:consumed:1:a strip of naga scales:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(armor-30)
 griffon wand core	43	30	(onground:consumed:1:some dirty griffon feathers:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(wis+2)
 nymph wand core	45	30	(onground:consumed:1:some nymph hair:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(cha+2)
 manitcore wand core	47	30	(onground:consumed:1:a pair of manticore horns:)	1000	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(con+2)
