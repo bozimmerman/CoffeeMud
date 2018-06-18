@@ -61,6 +61,8 @@ public class Prop_ItemSlot extends Property
 	
 	protected String	slotType	= "";
 	protected boolean	removable	= true;
+	protected int		levelShift	= 0;
+	protected int		levelDiff	= 0;
 	
 	private boolean		setAffected = true;
 
@@ -94,8 +96,16 @@ public class Prop_ItemSlot extends Property
 			slots = new Item[numSlots];
 			slotProps	= new Ability[numSlots];
 		}
+		final String lvlCode=CMParms.getParmStr(text, "LEVEL", "NONE").toUpperCase().trim();
+		levelShift=0;
+		if(lvlCode.startsWith("A"))
+			levelShift=1;
+		else
+		if(lvlCode.startsWith("H"))
+			levelShift=2;
 		slotType= CMParms.getParmStr(text, "TYPE", "");
 		removable = CMParms.getParmBool(text, "REMOVEABLE", CMParms.getParmBool(text, "REMOVABLE", true));
+		levelDiff=0;
 		if(itemXml.length()>0)
 		{
 			if(itemXml.startsWith("<ITEM>"))
@@ -116,6 +126,16 @@ public class Prop_ItemSlot extends Property
 					{
 						slotProps[aslot++]=A;
 					}
+					if(levelShift == 1)
+					{
+						levelDiff += I.phyStats().level();
+					}
+					else
+					if(levelShift == 2)
+					{
+						if(I.phyStats().level()>levelDiff)
+							levelDiff=I.phyStats().level();
+					}
 				}
 			}
 		}
@@ -129,6 +149,9 @@ public class Prop_ItemSlot extends Property
 		str.append("NUM="+slots.length+" ");
 		str.append("REMOVABLE="+(""+removable).toUpperCase()+" ");
 		str.append("TYPE=\""+slotType+"\" ");
+		final String[] levelShifts = new String[] {"NONE","ADD","HIGH"};
+		if(levelShift != 0)
+			str.append("LEVEL=\""+levelShifts[levelShift]+"\" ");
 		str.append("; ");
 		List<Item> items=new ArrayList<Item>(slots.length);
 		for(Item I : slots)
@@ -351,13 +374,31 @@ public class Prop_ItemSlot extends Property
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
-		if((host == affected)&&(!(affected instanceof Container)))
-			affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_INSIDEACCESSIBLE);
-		for(Ability A : slotProps)
+		if(host == affected)
 		{
-			if(A!=null)
+			if(!(affected instanceof Container))
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.SENSE_INSIDEACCESSIBLE);
+			switch(levelShift)
 			{
-				A.affectPhyStats(host, affectableStats);
+			case 0:
+				break;
+			case 1:
+				affectableStats.setLevel(affectableStats.level()+levelDiff);
+				break;
+			case 2:
+				if(levelDiff > affectableStats.level())
+					affectableStats.setLevel(levelDiff);
+				break;
+			}
+		}
+		else
+		{
+			for(Ability A : slotProps)
+			{
+				if(A!=null)
+				{
+					A.affectPhyStats(host, affectableStats);
+				}
 			}
 		}
 		super.affectPhyStats(host,affectableStats);
