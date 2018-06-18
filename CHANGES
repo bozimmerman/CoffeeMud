@@ -19,7 +19,7 @@
   18. New Spells: Conjure Ammunition, Harden Bullets, Light Blindness
   19. ZapperMask now supports +-ACCOUNTS and +-LOCATION
   20. New Prayer: Mass Forgive
-  21. New common skills: Legendary Weaponsmithing, Floristry, Master Herbology
+  21. New common skills: Legendary Weaponsmithing, Floristry, Master Herbology, WandMaking
   22. Prop_LocationBound is more flexible with ABSOLUTE, PLAYEROK, and TIMEOUT arguments
   23. Scriptable commands QUESTMOB, QUESTOBJ, and QUESTSCRIPTED can now scan ALL quests
   24. ShapeShift forms 6-11 added, and shapeshift now governed by skills/shapeshift.txt
@@ -40,7 +40,7 @@
   38. New Properties: Prop_UseEmoter and Prop_UseEmoter2, for quick and easy item emoting.
   39. New Faction Change Event: SOCIAL -- for triggering faction change from socials
   40. Faction Change Events can now trigger gains of XP or RolePlay XP, and have a % chance
-  41. New common skills: Master Floristry, Ship Lore, Branding
+  41. New common skills: Master Floristry, Ship Lore, Branding, Rodsmithing, Staffmaking
   42. New mob type: GenCow -- the drinkable, rideable, mob
   43. PROWESSOPTIOS and the LISTFILE can now be used to show char stats as words.
   44. Prop_ItemSlotFiller now supports ADDS argument for another way to add stuff.

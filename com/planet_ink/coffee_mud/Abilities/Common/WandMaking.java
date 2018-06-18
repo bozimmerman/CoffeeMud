@@ -35,15 +35,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
+public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 {
 	@Override
 	public String ID()
 	{
-		return "StaffMaking";
+		return "WandMaking";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Staff Making");
+	private final static String	localizedName	= CMLib.lang().L("Wand Making");
 
 	@Override
 	public String name()
@@ -51,7 +51,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 		return localizedName;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "STAFFMAKE", "STAFFMAKING" });
+	private static final String[]	triggerStrings	= I(new String[] { "WANDMAKE", "WANDMAKING" });
 
 	@Override
 	public String[] triggerStrings()
@@ -69,9 +69,9 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 	public String parametersFormat()
 	{ 
 		return
-		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
-		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tMAX_WAND_USES\tBASE_DAMAGE\t"
-		+"OPTIONAL_RESOURCE_OR_MATERIAL\tOPTIONAL_RESOURCE_OR_MATERIAL_AMT\tCODED_SPELL_LIST";
+		  "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
+		+ "ITEM_BASE_VALUE\tITEM_CLASS_ID\tOPTIONAL_RESOURCE_OR_MATERIAL\t"
+		+ "OPTIONAL_RESOURCE_OR_MATERIAL_AMT\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -81,10 +81,9 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int	RCP_VALUE		= 4;
 	protected static final int	RCP_CLASSTYPE	= 5;
 	protected static final int	RCP_MAXUSES		= 6;
-	protected static final int	RCP_ARMORDMG	= 7;
-	protected static final int	RCP_EXTRAREQ	= 8;
-	protected static final int	RCP_EXTRAREQAMT	= 9;
-	protected static final int	RCP_SPELL		= 10;
+	protected static final int	RCP_EXTRAREQ	= 7;
+	protected static final int	RCP_EXTRAREQAMT	= 8;
+	protected static final int	RCP_SPELL		= 9;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -100,7 +99,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 	@Override
 	public String parametersFile()
 	{
-		return "staffmaking.txt";
+		return "wandmaking.txt";
 	}
 
 	@Override
@@ -179,11 +178,8 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
-		if(!(I instanceof Weapon))
+		if(!(I instanceof Wand))
 			return (isANativeItem(I.Name()));
-		final Weapon W=(Weapon)I;
-		if(W.weaponClassification()==Weapon.CLASS_STAFF)
-			return true;
 		return false;
 	}
 
@@ -297,12 +293,12 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 		int duration=4;
 		bundling=false;
 		final int[] cols={
-				CMLib.lister().fixColWidth(24,mob.session()),
-				CMLib.lister().fixColWidth(3,mob.session()),
-				CMLib.lister().fixColWidth(5,mob.session()),
-				CMLib.lister().fixColWidth(30,mob.session()),
-				CMLib.lister().fixColWidth(10,mob.session()),
-			};
+			CMLib.lister().fixColWidth(24,mob.session()),
+			CMLib.lister().fixColWidth(3,mob.session()),
+			CMLib.lister().fixColWidth(5,mob.session()),
+			CMLib.lister().fixColWidth(30,mob.session()),
+			CMLib.lister().fixColWidth(10,mob.session()),
+		};
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
@@ -314,12 +310,12 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			final StringBuffer buf=new StringBuffer(L("Item <S-NAME> <S-IS-ARE> skilled at "+getActivePresentTenseVerb()+":\n\r"));
 			buf.append("^H"+
-					CMStrings.padRight(L("Item"),cols[0])+" "+
-					CMStrings.padRight(L("Lvl"),cols[1])+" "+
-					CMStrings.padRight(L(getBaseMaterialType()),cols[2])+" "+
-					CMStrings.padRight(L("Extra Req Materials"),cols[3])+" "+
-					CMStrings.padRight(L("Benefit"),cols[4])+
-					"^N");
+						CMStrings.padRight(L("Item"),cols[0])+" "+
+						CMStrings.padRight(L("Lvl"),cols[1])+" "+
+						CMStrings.padRight(L(getBaseMaterialType()),cols[2])+" "+
+						CMStrings.padRight(L("Extra Req Materials"),cols[3])+" "+
+						CMStrings.padRight(L("Benefit"),cols[4])+
+						"^N");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -509,19 +505,13 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 			if(buildingI.basePhyStats().level()<1)
 				buildingI.basePhyStats().setLevel(1);
 			setBrand(mob, buildingI);
-			final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
-			final int maxuses=CMath.s_int(foundRecipe.get(RCP_MAXUSES));
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
+			final int maxuses=CMath.s_int(foundRecipe.get(RCP_MAXUSES));
 			addSpells(buildingI,spell);
 			if((buildingI instanceof Wand)
 			&&(foundRecipe.get(RCP_MAXUSES).trim().length()>0))
 				((Wand)buildingI).setMaxUses(maxuses);
-			if(buildingI instanceof Weapon)
-			{
-				buildingI.basePhyStats().setAttackAdjustment((baseYield()+abilityCode()+(hardness*5)-1));
-				buildingI.basePhyStats().setDamage(armordmg+hardness);
-			}
 			buildingI.recoverPhyStats();
 			buildingI.text();
 			buildingI.recoverPhyStats();

@@ -1,68 +1,105 @@
-Copper-shod Staff	2	30	10	120	GenStaff	5	6	Copper	2	
-% Staff	4	15	15	270	GenStaff	5	9			
-Bronze-shod Staff	3	30	10	163	GenStaff	5	7	Bronze	2	
-% Quarterstaff	5	15	10	163	GenStaff	5	7			
-Tin-shod Staff	5	35	10	213	GenStaff	5	8	Tin	2	
-Lead-shod Staff	6	35	10	213	GenStaff	5	8	Lead	2	
-Zinc-shod Staff	7	35	10	270	GenStaff	5	9	Zinc	2	
-Walking Staff	8	20	14	333	GenStaff	5	10			
-Gnarly Staff	10	25	18	563	GenStaff	5	13			
-Crooked Staff	12	30	20	750	GenStaff	5	15			
-Brass-shod Staff	13	40	10	480	GenStaff	5	12	Brass	2	
-Iron-shod Staff	14	40	10	480	GenStaff	5	12	Iron	2	
-Copper-core Staff	15	105	10	653	GenStaff	5	14	Copper	4	
-Bronze-core Staff	16	105	10	653	GenStaff	5	14	Bronze	4	
-Tin-core Staff	17	105	10	750	GenStaff	5	15	Tin	4	
-Lead-core Staff	18	105	10	750	GenStaff	5	15	Lead	4	
-Zinc-core Staff	19	105	10	853	GenStaff	5	16	Zinc	4	
-Bent Staff	20	25	8	563	GenStaff	5	13			
-Hooked Staff	21	30	12	853	GenStaff	5	16			
-Quartz-tipped Staff	22	50	12	963	GenStaff	5	17	Quartz	2	
-Forked Staff	23	40	20	1470	GenStaff	5	21			
-Curved Staff	24	35	15	1203	GenStaff	5	19			
-Silver-shod Staff	25	55	10	1080	GenStaff	5	18	Silver	2	
-Orator Staff	26	40	18	1470	GenStaff	5	21			
-Priestly Staff	27	45	20	1763	GenStaff	5	23			
-Magely Staff	28	40	12	1203	GenStaff	5	19			
-Brass-core Staff	29	115	10	1470	GenStaff	5	21	Brass	4	
-Massive Staff	30	55	25	2430	GenStaff	5	27			
-Iron-core Staff	31	120	10	1613	GenStaff	5	22	Iron	4	
-Druidic Staff	32	45	14	1613	GenStaff	5	22			
-Reinforced Staff	33	45	12	1613	GenStaff	5	22			
-Jade-tipped Staff	34	65	12	1763	GenStaff	5	23	Jade	2	
-Aquamarine-tipped Staff	35	65	12	1920	GenStaff	5	24	Aquamarine	2	
-Chrysoberyl-tipped Staff	36	65	12	1920	GenStaff	5	24	Chrysoberyl	2	
-Silver-core Staff	39	125	10	2253	GenStaff	5	26	Silver	4	
-Peridot-tipped Staff	42	70	12	2430	GenStaff	5	27	Peridot	2	
-Garnet-tipped Staff	44	75	12	2613	GenStaff	5	28	Garnet	2	
-Onyx-tipped Staff	45	75	12	2803	GenStaff	5	29	Onyx	2	
-Turquoise-tipped Staff	46	75	12	2803	GenStaff	5	29	Turquoise	2	
-Lapis-tipped Staff	47	75	12	3000	GenStaff	5	30	Lapis	2	
-Steel-shod Staff	48	75	10	2803	GenStaff	5	29	Steel	2	
-Chromium-shod Staff	49	75	10	3000	GenStaff	5	30	Chromium	2	
-Opal-tipped Staff	50	80	12	3203	GenStaff	5	31	Opal	2	
-Amber-tipped Staff	51	80	12	3413	GenStaff	5	32	Amber	2	
-Bloodstone-tipped Staff	52	80	12	3413	GenStaff	5	32	Bloodstone	2	
-Moonstone-tipped Staff	53	85	12	3630	GenStaff	5	33	Moonstone	2	
-Alexandrite-tipped Staff	54	85	12	3630	GenStaff	5	33	Alexandrite	2	
-Ornate % Quartertaff	55	75	20	4563	GenStaff	5	37			
-Agate-tipped Staff	56	85	12	3853	GenStaff	5	34	Agate	2	
-Citrine-tipped Staff	58	90	12	4083	GenStaff	5	35	Citrine	2	
-Gold-shod Staff	60	90	10	4083	GenStaff	5	35	Gold	2	
-Steel-core Staff	62	150	10	4563	GenStaff	5	37	Steel	4	
-Chromium-core Staff	64	150	10	4813	GenStaff	5	38	Chromium	4	
-Sapphire-tipped Staff	66	95	12	5070	GenStaff	5	39	Sapphire	2	
-Topaz-tipped Staff	68	100	12	5333	GenStaff	5	40	Topaz	2	
-Emerald-tipped Staff	70	100	12	5603	GenStaff	5	41	Emerald	2	
-Amethyst-tipped Staff	72	100	12	5880	GenStaff	5	42	Amethyst	2	
-Ruby-tipped Staff	74	105	12	6163	GenStaff	5	43	Ruby	2	
-Gold-core Staff	76	165	10	6453	GenStaff	5	44	Gold	4	
-Pearl-tipped Staff	78	110	12	6750	GenStaff	5	45	Pearl	2	
-Diamond-tipped Staff	79	110	12	7053	GenStaff	5	46	Diamond	2	
-The % Staff	80	110	30	9720	GenStaff	5	54			
-Platinum-shod Staff	81	110	10	7053	GenStaff	5	46	Platinum	2	
-Mithril-shod Staff	82	110	10	7053	GenStaff	5	46	Mithril	2	
-Platinum-core Staff	84	170	10	7680	GenStaff	5	48	Platinum	4	
-Adamantite-shod Staff	86	115	10	7680	GenStaff	5	48	Adamantite	2	
-Mithril-core Staff	88	175	10	8333	GenStaff	5	50	Mithril	4	
-Adamantite-core Staff	90	180	10	8670	GenStaff	5	51	Adamantite	4	
+copper-shod staff	2	30	10	120	genstaff	6	6	copper	2	prop_itemslot;num=1 type=crown
+bronze-shod staff	3	30	10	163	genstaff	6	7	bronze	2	prop_itemslot;num=1 type=crown
+% staff	4	15	15	270	genstaff	6	9			prop_itemslot;num=1 type=crown
+% quarterstaff	5	15	10	163	genstaff	6	7			prop_itemslot;num=1 type=crown
+tin-shod staff	5	35	10	213	genstaff	6	8	tin	2	prop_itemslot;num=1 type=crown
+lead-shod staff	6	35	10	213	genstaff	7	8	lead	2	prop_itemslot;num=1 type=crown
+zinc-shod staff	7	35	10	270	genstaff	7	9	zinc	2	prop_itemslot;num=1 type=crown
+walking staff	8	20	14	333	genstaff	8	10			prop_itemslot;num=1 type=crown
+gnarly staff	10	25	18	563	genstaff	10	13			prop_itemslot;num=1 type=crown
+crooked staff	12	30	20	750	genstaff	11	15			prop_itemslot;num=1 type=crown
+brass-shod staff	13	40	10	480	genstaff	11	12	brass	2	prop_itemslot;num=1 type=crown
+iron-shod staff	14	40	10	480	genstaff	12	12	iron	2	prop_itemslot;num=1 type=crown
+copper-core staff	15	105	10	653	genstaff	12	14	copper	4	prop_itemslot;num=1 type=crown
+bronze-core staff	16	105	10	653	genstaff	13	14	bronze	4	prop_itemslot;num=1 type=crown
+tin-core staff	17	105	10	750	genstaff	13	15	tin	4	prop_itemslot;num=1 type=crown
+lead-core staff	18	105	10	750	genstaff	14	15	lead	4	prop_itemslot;num=1 type=crown
+zinc-core staff	19	105	10	853	genstaff	14	16	zinc	4	prop_itemslot;num=1 type=crown
+bent staff	20	25	8	563	genstaff	15	13			prop_itemslot;num=1 type=crown
+hooked staff	21	30	12	853	genstaff	15	16			prop_itemslot;num=1 type=crown
+quartz-tipped staff	22	50	12	963	genstaff	16	17	quartz	2	prop_itemslot;num=1 type=crown
+forked staff	23	40	20	1470	genstaff	16	21			prop_itemslot;num=1 type=crown
+curved staff	24	35	15	1203	genstaff	17	19			prop_itemslot;num=1 type=crown
+silver-shod staff	25	55	10	1080	genstaff	17	18	silver	2	prop_itemslot;num=1 type=crown
+orator staff	26	40	18	1470	genstaff	18	21			prop_itemslot;num=1 type=crown
+priestly staff	27	45	20	1763	genstaff	18	23			prop_itemslot;num=1 type=crown
+magely staff	28	40	12	1203	genstaff	19	19			prop_itemslot;num=1 type=crown
+brass-core staff	29	115	10	1470	genstaff	19	21	brass	4	prop_itemslot;num=1 type=crown
+massive staff	30	55	25	2430	genstaff	20	27			prop_itemslot;num=1 type=crown
+iron-core staff	31	120	10	1613	genstaff	20	22	iron	4	prop_itemslot;num=1 type=crown
+druidic staff	32	45	14	1613	genstaff	21	22			prop_itemslot;num=1 type=crown
+reinforced staff	33	45	12	1613	genstaff	21	22			prop_itemslot;num=1 type=crown
+jade-tipped staff	34	65	12	1763	genstaff	22	23	jade	2	prop_itemslot;num=1 type=crown
+aquamarine-tipped staff	35	65	12	1920	genstaff	22	24	aquamarine	2	prop_itemslot;num=1 type=crown
+crysoberyl-tipped staff	36	65	12	1920	genstaff	23	24	crysoberyl	2	prop_itemslot;num=1 type=crown
+silver-core staff	39	125	10	2253	genstaff	24	26	silver	4	prop_itemslot;num=1 type=crown
+peridot-tipped staff	42	70	12	2430	genstaff	26	27	peridot	2	prop_itemslot;num=1 type=crown
+garnet-tipped staff	44	75	12	2613	genstaff	27	28	garnet	2	prop_itemslot;num=1 type=crown
+onyx-tipped staff	45	75	12	2803	genstaff	27	29	onyx	2	prop_itemslot;num=1 type=crown
+turquoise-tipped staff	46	75	12	2803	genstaff	28	29	turquoise	2	prop_itemslot;num=1 type=crown
+lapis-tipped staff	47	75	12	3000	genstaff	28	30	lapis	2	prop_itemslot;num=1 type=crown
+steel-shod staff	48	75	10	2803	genstaff	29	29	steel	2	prop_itemslot;num=1 type=crown
+chromium-shod staff	49	75	10	3000	genstaff	29	30	chromium	2	prop_itemslot;num=1 type=crown
+opal-tipped staff	50	80	12	3203	genstaff	30	31	opal	2	prop_itemslot;num=1 type=crown
+amber-tipped staff	51	80	12	3413	genstaff	30	32	amber	2	prop_itemslot;num=1 type=crown
+bloodstone-tipped staff	52	80	12	3413	genstaff	31	32	bloodstone	2	prop_itemslot;num=1 type=crown
+moonstone-tipped staff	53	85	12	3630	genstaff	31	33	moonstone	2	prop_itemslot;num=1 type=crown
+alexandrite-tipped staff	54	85	12	3630	genstaff	32	33	alexandrite	2	prop_itemslot;num=1 type=crown
+ornate % quartertaff	55	75	20	4563	genstaff	32	37			prop_itemslot;num=1 type=crown
+agate-tipped staff	56	85	12	3853	genstaff	33	34	agate	2	prop_itemslot;num=1 type=crown
+citrine-tipped staff	58	90	12	4083	genstaff	34	35	citrine	2	prop_itemslot;num=1 type=crown
+gold-shod staff	60	90	10	4083	genstaff	35	35	gold	2	prop_itemslot;num=1 type=crown
+steel-core staff	62	150	10	4563	genstaff	36	37	steel	4	prop_itemslot;num=1 type=crown
+chromium-core staff	64	150	10	4813	genstaff	37	38	chromium	4	prop_itemslot;num=1 type=crown
+sapphire-tipped staff	66	95	12	5070	genstaff	38	39	sapphire	2	prop_itemslot;num=1 type=crown
+topaz-tipped staff	68	100	12	5333	genstaff	39	40	topaz	2	prop_itemslot;num=1 type=crown
+emerald-tipped staff	70	100	12	5603	genstaff	40	41	emerald	2	prop_itemslot;num=1 type=crown
+amethyst-tipped staff	72	100	12	5880	genstaff	41	42	amethyst	2	prop_itemslot;num=1 type=crown
+ruby-tipped staff	74	105	12	6163	genstaff	42	43	ruby	2	prop_itemslot;num=1 type=crown
+gold-core staff	76	165	10	6453	genstaff	43	44	gold	4	prop_itemslot;num=1 type=crown
+pearl-tipped staff	78	110	12	6750	genstaff	44	45	pearl	2	prop_itemslot;num=1 type=crown
+diamond-tipped staff	79	110	12	7053	genstaff	44	46	diamond	2	prop_itemslot;num=1 type=crown
+the % staff	80	110	30	9720	genstaff	45	54			prop_itemslot;num=1 type=crown
+platinum-shod staff	81	110	10	7053	genstaff	45	46	platinum	2	prop_itemslot;num=1 type=crown
+mithril-shod staff	82	110	10	7053	genstaff	46	46	mithril	2	prop_itemslot;num=1 type=crown
+platinum-core staff	84	170	10	7680	genstaff	47	48	platinum	4	prop_itemslot;num=1 type=crown
+adamantite-shod staff	86	115	10	7680	genstaff	48	48	adamantite	2	prop_itemslot;num=1 type=crown
+mithril-core staff	88	175	10	8333	genstaff	49	50	mithril	4	prop_itemslot;num=1 type=crown
+adamantite-core staff	90	180	10	8670	genstaff	50	51	adamantite	4	prop_itemslot;num=1 type=crown
+brittle % staff crown	1	15	1	100	genitem					prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+10)
+porous % staff crown	3	15	1	100	genitem					prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+20)
+sturdy % staff crown	5	15	1	100	genitem					prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+30)
+pliable % staff crown	7	15	1	100	genitem					prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+40)
+rigid % staff crown	9	15	1	100	genitem					prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+50)
+frog staff crown	11	20	0	250	genitem			a frog tongue	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(move+50)
+cat staff crown	13	20	0	250	genitem			some cat claws	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(dex+1)
+bat staff crown	15	20	0	250	genitem			a pair of bat wings	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(con+1)
+snake staff crown	17	20	0	250	genitem			a pair of snake fangs	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(armor-10)
+monkey staff crown	19	20	0	250	genitem			some monkey fingers	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(hit+25)
+fox staff crown	21	20	0	500	genitem			a fox tail	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(int+1)
+deer staff crown	23	20	0	500	genitem			a strip of deer 1	leather	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(cha+1)
+eagle staff crown	25	20	0	500	genitem			an eagle beak	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(wis+1)
+gorilla staff crown	27	20	0	500	genitem			a gorilla nose	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(str+1)
+horse staff crown	29	20	0	500	genitem			a strip of horse leather	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(move+100)
+dolphin staff crown	31	20	0	750	genitem			a slippery dolphin hide	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+100)
+dire wolf staff crown	33	30	0	750	genitem			some dire wolf claws	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(armor-20)
+dwarven staff crown	35	30	0	750	genitem			a pile of dwarf bones	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(hit+50)
+wererat staff crown	37	30	0	750	genitem			a pair of wererat teeth	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(dex+2)
+pixie staff crown	39	30	0	750	genitem			a pair of pixie ears	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(int+2)
+naga staff crown	41	30	0	1000	genitem			a pair of naga fangs	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(armor-30)
+griffon staff crown	43	30	0	1000	genitem			greasy griffon claws	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(wis+2)
+nymph staff crown	45	30	0	1000	genitem			a pile of nymph bones	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(cha+2)
+manitcore staff crown	47	30	0	1000	genitem			a strip of manticore leather	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(con+2)
+minotaur staff crown	49	30	0	1000	genitem			a strip of minotaur leather	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(str+2)
+troll staff crown	51	30	0	2500	genitem			a strip of troll hide	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(hit+75)
+centaur staff crown	53	30	0	2500	genitem			a strip of centaur leather	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(move+150)
+sasquatch staff crown	55	30	0	2500	genitem			a strip of sasquatch hide	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+150)
+wyvern staff crown	57	30	0	2500	genitem			a wyvern tail	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(armor-50)
+undead staff crown	59	30	0	2500	genitem			undead blood	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+200)
+unicorn staff crown	61	60	0	5000	genitem			a unicorn horn	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+250)
+spectral staff crown	63	60	0	5000	genitem			some spirit essence	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+300)
+umber hulk staff crown	65	60	0	5000	genitem			umber hulk bones	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+350)
+demonic staff crown	67	60	0	5000	genitem			a demon internal organ	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+400)
+faerie dragon staff crown	69	60	0	5000	genitem			a faerie dragon claw	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+450)
+devilish staff crown	71	60	0	7500	genitem			a devil internal organ	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+500)
+draconic staff crown	73	60	0	7500	genitem			a dragon claw	1	prop_itemslotfiller;num=1 type=crown adds=prop_wearadjuster(mana+750)
