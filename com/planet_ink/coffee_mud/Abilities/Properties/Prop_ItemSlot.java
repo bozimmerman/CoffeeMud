@@ -60,7 +60,7 @@ public class Prop_ItemSlot extends Property
 	protected Ability[] slotProps	= new Ability[0];
 	
 	protected String	slotType	= "";
-	protected boolean	removeable	= true;
+	protected boolean	removable	= true;
 	
 	private boolean		setAffected = true;
 
@@ -95,7 +95,7 @@ public class Prop_ItemSlot extends Property
 			slotProps	= new Ability[numSlots];
 		}
 		slotType= CMParms.getParmStr(text, "TYPE", "");
-		removeable = CMParms.getParmBool(text, "REMOVEABLE", true);
+		removable = CMParms.getParmBool(text, "REMOVEABLE", CMParms.getParmBool(text, "REMOVABLE", true));
 		if(itemXml.length()>0)
 		{
 			if(itemXml.startsWith("<ITEM>"))
@@ -127,7 +127,7 @@ public class Prop_ItemSlot extends Property
 	{
 		StringBuilder str=new StringBuilder("");
 		str.append("NUM="+slots.length+" ");
-		str.append("REMOVEABLE="+(""+removeable).toUpperCase()+" ");
+		str.append("REMOVABLE="+(""+removable).toUpperCase()+" ");
 		str.append("TYPE=\""+slotType+"\" ");
 		str.append("; ");
 		List<Item> items=new ArrayList<Item>(slots.length);
@@ -190,14 +190,14 @@ public class Prop_ItemSlot extends Property
 			{
 				if((aSlotNumbs > 1) && (getNumberOfEmptySlots() > 0))
 				{
-					if(removeable)
+					if(removable)
 						msg.source().tell(msg.source(),msg.target(),msg.tool(),L("<T-NAME> doesn't have enough empty slots.  It requires @x1.  You should remove something first.",""+aSlotNumbs));
 					else
 						msg.source().tell(msg.source(),msg.target(),msg.tool(),L("<T-NAME> doesn't have enough empty slots.  It requires @x1.",""+aSlotNumbs));
 				}
 				else
 				{
-					if(removeable)
+					if(removable)
 						msg.source().tell(msg.source(),msg.target(),msg.tool(),L("<T-NAME> has no more empty slots.  You should remove something first."));
 					else
 						msg.source().tell(msg.source(),msg.target(),msg.tool(),L("<T-NAME> has no available slots."));
@@ -208,7 +208,7 @@ public class Prop_ItemSlot extends Property
 			msg.setTargetCode(CMMsg.TYP_WAND_USE | msg.targetMajor());
 		}
 		else
-		if(removeable
+		if(removable
 		&&(msg.sourceMinor()==CMMsg.TYP_COMMANDFAIL)
 		&&(msg.targetMessage()!=null)
 		&&(msg.targetMessage().length()>0)

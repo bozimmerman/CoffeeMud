@@ -1,15 +1,15 @@
-short % rod	1	10	10	83	GenWand	5				Prop_ItemSlot;num=1 type=finial
-long % rod	5	20	16	333	GenStaff	7	10			Prop_ItemSlot;num=1 type=finial
-% half rod	9	20	12	333	GenWand	9				Prop_ItemSlot;num=1 type=finial
-% full rod	11	15	8	270	GenStaff	10	9			Prop_ItemSlot;num=1 type=finial
-thick % rod	31	40	10	1333	GenStaff	20	20			Prop_ItemSlot;num=1 type=finial
-stylish % rod	35	50	16	2083	GenStaff	22	25			Prop_ItemSlot;num=1 type=finial
-master short % rod	37	50	14	2083	GenWand	24				Prop_ItemSlot;num=1 type=finial
-master long % rod	38	60	24	3000	GenStaff	25	30			Prop_ItemSlot;num=1 type=finial
-master % half rod	39	50	12	2083	GenWand	25				Prop_ItemSlot;num=1 type=finial
-master % full rod	40	45	8	1763	GenStaff	26	23			Prop_ItemSlot;num=1 type=finial
-master thick % rod	41	45	8	1920	GenStaff	26	24			Prop_ItemSlot;num=1 type=finial
-master stylish % rod	43	65	22	3413	GenStaff	27	32			Prop_ItemSlot;num=1 type=finial
+short % rod	1	10	10	83	GenWand	5				Prop_ItemSlot;num=1 type=finial removable=false
+long % rod	5	20	16	333	GenStaff	7	10			Prop_ItemSlot;num=1 type=finial removable=false
+% half rod	9	20	12	333	GenWand	9				Prop_ItemSlot;num=1 type=finial removable=false
+% full rod	11	15	8	270	GenStaff	10	9			Prop_ItemSlot;num=1 type=finial removable=false
+thick % rod	31	40	10	1333	GenStaff	20	20			Prop_ItemSlot;num=1 type=finial removable=false
+stylish % rod	35	50	16	2083	GenStaff	22	25			Prop_ItemSlot;num=1 type=finial removable=false
+master short % rod	37	50	14	2083	GenWand	24				Prop_ItemSlot;num=1 type=finial removable=false
+master long % rod	38	60	24	3000	GenStaff	25	30			Prop_ItemSlot;num=1 type=finial removable=false
+master % half rod	39	50	12	2083	GenWand	25				Prop_ItemSlot;num=1 type=finial removable=false
+master % full rod	40	45	8	1763	GenStaff	26	23			Prop_ItemSlot;num=1 type=finial removable=false
+master thick % rod	41	45	8	1920	GenStaff	26	24			Prop_ItemSlot;num=1 type=finial removable=false
+master stylish % rod	43	65	22	3413	GenStaff	27	32			Prop_ItemSlot;num=1 type=finial removable=false
 round % finial	1	15	1	100	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+10)
 triangular % finial	3	15	1	100	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+20)
 square % finial	5	15	1	100	GenItem					Prop_ItemSlotFiller;num=1 type=finial adds=prop_wearadjuster(mana+30)

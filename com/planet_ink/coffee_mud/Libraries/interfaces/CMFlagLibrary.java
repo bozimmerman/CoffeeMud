@@ -417,18 +417,18 @@ public interface CMFlagLibrary extends CMLibrary
 	public void setDroppable(Item I, boolean truefalse);
 
 	/**
-	 * Returns whether the given item is marked as being removeable.
+	 * Returns whether the given item is marked as being removable.
 	 * @see CMFlagLibrary#setRemovable(Item, boolean)
 	 * @param I the item to check
-	 * @return true if it is removeable, false otherwise
+	 * @return true if it is removable, false otherwise
 	 */
 	public boolean isRemovable(Item I);
 
 	/**
-	 * Sets whether the given item is marked as being removeable.
+	 * Sets whether the given item is marked as being removable.
 	 * @see CMFlagLibrary#isRemovable(Item)
 	 * @param I the item to set
-	 * @param truefalse true if removeable, false otherwise
+	 * @param truefalse true if removable, false otherwise
 	 */
 	public void setRemovable(Item I, boolean truefalse);
 

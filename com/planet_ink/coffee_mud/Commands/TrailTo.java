@@ -152,11 +152,11 @@ public class TrailTo extends StdCommand
 					if(fallback && trail.startsWith("Unable to determine"))
 					{
 						TrackingLibrary.TrackingFlags workFlags = flags.copyOf();
-						Vector<TrackingLibrary.TrackingFlag> removeables=new XVector<TrackingLibrary.TrackingFlag>(removeOrder); 
-						while(trail.startsWith("Unable to determine") && (removeables.size()>0) && (workFlags.size()>0))
+						Vector<TrackingLibrary.TrackingFlag> removables=new XVector<TrackingLibrary.TrackingFlag>(removeOrder); 
+						while(trail.startsWith("Unable to determine") && (removables.size()>0) && (workFlags.size()>0))
 						{
 							final Vector<Room> set2=new Vector<Room>(set.size());
-							workFlags.minus(removeables.remove(0));
+							workFlags.minus(removables.remove(0));
 							CMLib.tracking().getRadiantRooms(R1,set2,workFlags,null,radius,ignoreRooms);
 							trail = CMLib.tracking().getTrailToDescription(R1,set2,A.name(),areaNames,confirm,radius,ignoreRooms,5);
 						}
@@ -183,11 +183,11 @@ public class TrailTo extends StdCommand
 						if(fallback && trail.startsWith("Unable to determine"))
 						{
 							TrackingLibrary.TrackingFlags workFlags = flags.copyOf();
-							Vector<TrackingLibrary.TrackingFlag> removeables=new XVector<TrackingLibrary.TrackingFlag>(removeOrder); 
-							while(trail.startsWith("Unable to determine") && (removeables.size()>0) && (workFlags.size()>0))
+							Vector<TrackingLibrary.TrackingFlag> removables=new XVector<TrackingLibrary.TrackingFlag>(removeOrder); 
+							while(trail.startsWith("Unable to determine") && (removables.size()>0) && (workFlags.size()>0))
 							{
 								final Vector<Room> set2=new Vector<Room>(set.size());
-								workFlags.minus(removeables.remove(0));
+								workFlags.minus(removables.remove(0));
 								CMLib.tracking().getRadiantRooms(R1,set2,workFlags,null,radius,ignoreRooms);
 								trail = CMLib.tracking().getTrailToDescription(R1,set2,R.roomID(),areaNames,confirm,radius,ignoreRooms,5);
 							}
@@ -211,11 +211,11 @@ public class TrailTo extends StdCommand
 				if(fallback && str.startsWith("Unable to determine"))
 				{
 					TrackingLibrary.TrackingFlags workFlags = flags.copyOf();
-					Vector<TrackingLibrary.TrackingFlag> removeables=new XVector<TrackingLibrary.TrackingFlag>(removeOrder); 
-					while(str.startsWith("Unable to determine") && (removeables.size()>0) && (workFlags.size()>0))
+					Vector<TrackingLibrary.TrackingFlag> removables=new XVector<TrackingLibrary.TrackingFlag>(removeOrder); 
+					while(str.startsWith("Unable to determine") && (removables.size()>0) && (workFlags.size()>0))
 					{
 						final Vector<Room> set2=new Vector<Room>(set.size());
-						workFlags.minus(removeables.remove(0));
+						workFlags.minus(removables.remove(0));
 						CMLib.tracking().getRadiantRooms(R1,set2,workFlags,null,radius,ignoreRooms);
 						str = CMLib.tracking().getTrailToDescription(R1,set2,where,areaNames,confirm,radius,ignoreRooms,5);
 					}
