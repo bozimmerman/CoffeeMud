@@ -1935,7 +1935,7 @@ public class CMClass extends ClassLoader
 		if(A==null)
 			A=(Ability)CMLib.english().fetchEnvironmental(As,calledThis,false);
 		if(A==null)
-			A=(Ability)getGlobal(c().abilities,calledThis);
+			A=(Ability)getGlobal(As,calledThis);
 		if(A!=null)
 			A=(Ability)A.newInstance();
 		return A;
