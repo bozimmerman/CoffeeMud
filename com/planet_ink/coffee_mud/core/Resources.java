@@ -803,12 +803,20 @@ public class Resources
 	 */
 	public final StringBuffer _getFileResource(final String filename, final boolean reportErrors)
 	{
-		final Object rsc=_getResource(filename);
+		String resourceFilename = makeFileResourceName(filename);
+		if(CMProps.isPrivateToMe(resourceFilename))
+		{
+			final String newPrefix = CMProps.getVar(CMProps.Str.PRIVATERESOURCEPATH);
+			if(newPrefix.length()>0)
+				resourceFilename = newPrefix+resourceFilename.substring(10);
+		}
+		final Object rsc=_getResource(resourceFilename);
 		if(rsc != null)
 			return _toStringBuffer(rsc);
-		final StringBuffer buf=new CMFile(makeFileResourceName(filename),null,reportErrors?CMFile.FLAG_LOGERRORS:0).text();
+		final CMFile F=new CMFile(resourceFilename,null,reportErrors?CMFile.FLAG_LOGERRORS:0);
+		final StringBuffer buf=F.text();
 		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
-			_submitResource(filename,buf);
+			_submitResource(resourceFilename,buf);
 		return buf;
 	}
 
