@@ -566,6 +566,35 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
+	public double[] getFacingAngleDiff(final double[] fromAngle, final double[] toAngle)
+	{
+		final double fromYaw = fromAngle[0];
+		final double fromPitch = (fromAngle[1] > Math.PI) ? Math.abs(Math.PI-fromAngle[1]) : fromAngle[1];
+
+		final double toYaw = toAngle[0];
+		final double toPitch = (toAngle[1] > Math.PI) ? Math.abs(Math.PI-toAngle[1]) : toAngle[1];
+
+		final double[] delta = new double[2];
+		if(toYaw != fromYaw)
+		{
+			if(toYaw > fromYaw)
+			{
+				delta[0]=(toYaw-fromYaw);
+				if(delta[0] > Math.PI)
+					delta[0] = -((PI_TIMES_2-toYaw)+fromYaw);
+			}
+			else
+			{
+				delta[0]=(toYaw-fromYaw);
+				if(delta[0] < -Math.PI)
+					delta[0] = -((PI_TIMES_2-fromYaw)+toYaw);
+			}
+		}
+		delta[1]=(toPitch-fromPitch);
+		return delta;
+	}
+
+	@Override
 	public double moveSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final double newAccelleration)
 	{
 		if(newAccelleration <= 0.0)
