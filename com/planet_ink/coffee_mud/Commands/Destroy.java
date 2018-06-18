@@ -1534,7 +1534,7 @@ public class Destroy extends StdCommand
 			if(commands.size()>2)
 				which=CMath.s_int(commands.get(2));
 			Session S=null;
-			int x=1;
+			int x=0;
 			for(Session s : CMLib.sessions().allIterableAllHosts())
 			{
 				if(x++ == which)
