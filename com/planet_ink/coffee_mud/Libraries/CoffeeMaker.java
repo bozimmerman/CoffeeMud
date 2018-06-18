@@ -4394,7 +4394,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			neww.setName(CMLib.english().startWithAorAn(ammo));
 			neww.setDisplayText(L("@x1 sits here.",neww.Name()));
 		}
-		((Ammunition)neww).setAmmunitionType(ammo);
+		((Ammunition)neww).setAmmunitionType(ammunitionType);
 		((Ammunition)neww).setAmmoRemaining(number);
 		neww.setMaterial(RawMaterial.RESOURCE_OAK);
 		neww.basePhyStats().setWeight(number);
