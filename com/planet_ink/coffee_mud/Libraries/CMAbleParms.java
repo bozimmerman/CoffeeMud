@@ -649,7 +649,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				final AbilityParmEditor A = editors.get(dataRow.elementAt(c,1));
 				try
 				{
-					lengths[c]+=((String)dataRow.elementAt(c, 2)).length();
+					int dataLen=((String)dataRow.elementAt(c, 2)).length();
+					if(dataLen > A.maxColWidth())
+						dataLen = A.maxColWidth();
+					if(dataLen < A.minColWidth())
+						dataLen = A.minColWidth();
+					lengths[c]+=dataLen;
 					numRows[c]++;
 				}
 				catch(Exception e)
@@ -1123,6 +1128,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "Item Name";
 				}
 	
+				@Override
+				public int minColWidth()
+				{
+					return 10;
+				}
+
 				@Override
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
@@ -2574,6 +2585,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 	
 				@Override
+				public int maxColWidth()
+				{
+					return 20;
+				}
+
+				@Override
 				public boolean confirmValue(String oldVal)
 				{
 					if(oldVal.length()==0)
@@ -2970,6 +2987,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 				}
 	
+				@Override
+				public int maxColWidth()
+				{
+					return 20;
+				}
+
 				@Override
 				public int appliesToClass(Object o)
 				{
@@ -4054,7 +4077,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
-			new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",ParmType.CHOICES)
+			new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/ Mat",ParmType.CHOICES)
 			{
 				@Override
 				public void createChoices()
@@ -4083,7 +4106,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "IRON";
 				}
 			},
-			new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",ParmType.CHOICES)
+			new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/ Mat",ParmType.CHOICES)
 			{
 				@Override
 				public void createChoices()
@@ -4174,7 +4197,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
-			new AbilityParmEditorImpl("OPTIONAL_BUILDING_RESOURCE_OR_MATERIAL","Rsc/Mat",ParmType.CHOICES)
+			new AbilityParmEditorImpl("OPTIONAL_BUILDING_RESOURCE_OR_MATERIAL","Rsc/ Mat",ParmType.CHOICES)
 			{
 				@Override
 				public void createChoices()
@@ -4236,6 +4259,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 	
 				@Override
+				public int minColWidth()
+				{
+					return 10;
+				}
+
+				@Override
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
 					if(I.material()==RawMaterial.RESOURCE_HERBS)
@@ -4256,6 +4285,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "Flower Name";
 				}
 	
+				@Override
+				public int minColWidth()
+				{
+					return 10;
+				}
+
 				@Override
 				public String convertFromItem(final ItemCraftor A, final Item I)
 				{
@@ -5003,6 +5038,18 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 		public String colHeader()
 		{
 			return header;
+		}
+
+		@Override
+		public int maxColWidth()
+		{
+			return Integer.MAX_VALUE;
+		}
+		
+		@Override
+		public int minColWidth()
+		{
+			return 0;
 		}
 
 		@Override

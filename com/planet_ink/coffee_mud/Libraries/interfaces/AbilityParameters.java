@@ -216,6 +216,22 @@ public interface AbilityParameters extends CMLibrary
 		 * @return the value from the item
 		 */
 		public String convertFromItem(final ItemCraftor A, final Item I);
+		
+		/**
+		 * The maximum width to give this column when building a table
+		 * This is a nominal value, so Integer.MAX_VALUE would be a 
+		 * good default.
+		 * @return maximum width to give this column when building a table
+		 */
+		public int maxColWidth();
+		
+		/**
+		 * The minimum width to give this column when building a table
+		 * This is a nominal value, so 0 would be a 
+		 * good default.
+		 * @return minimum width to give this column when building a table
+		 */
+		public int minColWidth();
 	}
 
 	/**

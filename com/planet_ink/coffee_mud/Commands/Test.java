@@ -2823,48 +2823,6 @@ public class Test extends StdCommand
 				}
 				mob.tell(L("Dun"));
 			}
-			
-			if(what.equalsIgnoreCase("ooky"))
-			{
-				try
-				{
-					File F=new File("c:\\dev\\coffeemud\\resources\\skills\\wandmaking.txt");
-					BufferedReader fi=new BufferedReader(new FileReader(F));
-					ByteArrayOutputStream bout=new ByteArrayOutputStream();
-					String s=fi.readLine();
-					while (s != null)
-					{
-						if(s.length()<3)
-							System.out.println("error");
-						else
-						{
-							List<String> p=CMParms.parseTabs(s, false);
-							int lvl=CMath.s_int(p.get(1));
-							int x=s.indexOf("genwand\t5");
-							if(x>0)
-							{
-								bout.write(s.substring(0,x).getBytes());
-								bout.write(new String("genstaff\t"+Math.round(5+(lvl/2))).getBytes());
-								bout.write(s.substring(x+9).getBytes());
-							}
-							else
-								bout.write(s.getBytes());
-							bout.write("\n".getBytes());
-						}
-						s=fi.readLine();
-					}
-					fi.close();
-					FileOutputStream fo=new FileOutputStream(F);
-					fo.write(bout.toByteArray());
-					fo.close();
-				}
-				catch(Exception e)
-				{
-					e.printStackTrace();
-				}
-			}
-			
-			
 			if((what.equalsIgnoreCase("all"))
 			||(what.equalsIgnoreCase("clans")))
 			{
