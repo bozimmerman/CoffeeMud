@@ -56,18 +56,19 @@ public class Skills extends StdCommand
 		if((qual==null)||(qual.length()==0)||(qual.equalsIgnoreCase("all")))
 			return false;
 		if(qual.length()>0)
-		for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
 		{
-			if(Ability.DOMAIN_DESCS[i].replace('_',' ').equalsIgnoreCase(qual))
-				return false;
-			else
-			if((Ability.DOMAIN_DESCS[i].replace('_',' ').indexOf('/')>=0)
-			&&(Ability.DOMAIN_DESCS[i].replace('_',' ').substring(Ability.DOMAIN_DESCS[i].indexOf('/')+1).equalsIgnoreCase(qual)))
-				return false;
+			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
+			{
+				if(Ability.DOMAIN_DESCS[i].replace('_',' ').equalsIgnoreCase(qual))
+					return false;
+				else
+				if((Ability.DOMAIN_DESCS[i].replace('_',' ').indexOf('/')>=0)
+				&&(Ability.DOMAIN_DESCS[i].replace('_',' ').substring(Ability.DOMAIN_DESCS[i].indexOf('/')+1).equalsIgnoreCase(qual)))
+					return false;
+			}
 		}
 		final Ability A=CMClass.findAbility(qual);
 		if((A!=null)
-		&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
 		&&(acodes.contains(Integer.valueOf(A.classificationCode()&Ability.ALL_ACODES))))
 		{
 			final Ability A2=mob.fetchAbility(A.ID());

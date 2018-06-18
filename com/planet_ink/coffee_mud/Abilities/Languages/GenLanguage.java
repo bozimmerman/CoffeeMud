@@ -100,7 +100,7 @@ public class GenLanguage extends StdLanguage
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<String[]> translationVector(String language)
+	public List<String[]> translationLists(String language)
 	{
 		return (List<String[]>)V(ID,V_WSETS);
 	}

@@ -185,20 +185,20 @@ public class GrinderAbilities
 		A.setStat("POSTCASTABILITY",CMParms.toSemicolonListString(V));
 		if(A instanceof Language)
 		{
-			((Language)A).translationVector(A.ID()).clear();
+			((Language)A).translationLists(A.ID()).clear();
 			if(httpReq.isUrlParameter("WORDLIST1"))
 			{
 				int x=1;
 				while(httpReq.isUrlParameter("WORDLIST"+x))
 				{
-					((Language)A).translationVector(A.ID())
+					((Language)A).translationLists(A.ID())
 					.add(CMParms.parseCommas(httpReq.getUrlParameter("WORDLIST"+x), true).toArray(new String[0]));
 					x++;
 				}
 			}
-			for(int i=((Language)A).translationVector(A.ID()).size()-1;i>=0;i--)
-				if(((Language)A).translationVector(A.ID()).get(i).length==0)
-					((Language)A).translationVector(A.ID()).remove(i);
+			for(int i=((Language)A).translationLists(A.ID()).size()-1;i>=0;i--)
+				if(((Language)A).translationLists(A.ID()).get(i).length==0)
+					((Language)A).translationLists(A.ID()).remove(i);
 				else
 					break;
 			((Language)A).translationHash(A.ID()).clear();

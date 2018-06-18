@@ -133,7 +133,7 @@ public class StdLanguage extends StdAbility implements Language
 	}
 
 	@Override
-	public List<String[]> translationVector(String language)
+	public List<String[]> translationLists(String language)
 	{
 		return emptyVector;
 	}
@@ -205,7 +205,7 @@ public class StdLanguage extends StdAbility implements Language
 		final MOB M=CMLib.players().getPlayer(word);
 		if(M!=null)
 			return word;
-		final List<String[]> translationVector=translationVector(language);
+		final List<String[]> translationVector=translationLists(language);
 		if(translationVector.size()>0)
 		{
 			String[] choices=null;

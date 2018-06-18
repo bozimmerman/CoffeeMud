@@ -8390,7 +8390,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			// id is bad to change.. make them delete it.
 			//genText(mob,me,null,++showNumber,showFlag,"Enter the class","CLASS");
 			promptStatStr(mob,me,null,++showNumber,showFlag,"Language name","NAME",false);
-			for(int i=0;i<=me.translationVector(me.ID()).size();i++)
+			for(int i=0;i<=me.translationLists(me.ID()).size();i++)
 			{
 				promptStatStr(mob,me,null,++showNumber,showFlag,(i+1)+" letter words","WORDS"+(i+1),true);
 			}

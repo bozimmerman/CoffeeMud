@@ -181,7 +181,7 @@ public class AbilityData extends StdWebMacro
 				{
 					if(parms.containsKey("WORDLISTS"))
 					{
-						List<String[]> wordLists=((Language)A).translationVector(A.ID());
+						List<String[]> wordLists=((Language)A).translationLists(A.ID());
 						if(httpReq.isUrlParameter("WORDLIST1"))
 						{
 							wordLists=new ArrayList<String[]>();

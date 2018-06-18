@@ -97,7 +97,7 @@ public interface Language extends Ability
 	 * @param language the language to return the vector for (usually ID())
 	 * @return the vector of word-length rough translation string arrays
 	 */
-	public List<String[]> translationVector(String language);
+	public List<String[]> translationLists(String language);
 
 	/**
 	 * Returns a language translation of the given word in the given language

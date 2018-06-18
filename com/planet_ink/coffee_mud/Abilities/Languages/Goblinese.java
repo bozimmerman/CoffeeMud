@@ -56,7 +56,7 @@ public class Goblinese extends StdLanguage
 	}
 
 	@Override
-	public List<String[]> translationVector(String language)
+	public List<String[]> translationLists(String language)
 	{
 		if(wordLists==null)
 		{

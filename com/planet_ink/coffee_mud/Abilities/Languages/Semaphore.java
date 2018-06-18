@@ -98,7 +98,7 @@ public class Semaphore extends StdLanguage
 	public static List<String[]> wordLists=null;
 
 	@Override
-	public List<String[]> translationVector(String language)
+	public List<String[]> translationLists(String language)
 	{
 		return wordLists;
 	}

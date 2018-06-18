@@ -455,7 +455,7 @@ public class Chant_SpeakWithAnimals extends Chant implements Language
 	}
 
 	@Override
-	public List<String[]> translationVector(String language)
+	public List<String[]> translationLists(String language)
 	{
 		return null;
 	}
