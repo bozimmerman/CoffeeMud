@@ -2011,7 +2011,7 @@ public class StdAbility implements Ability
 			final String names=CMLib.ableMapper().formatPreRequisites(prereqs);
 			student.tell(L("You must learn @x1 before you can gain @x2.",names,name()));
 			if(teacher != null)
-				teacher.tell(L("@x1 has net learned the pre-requisites to @x2 yet.",student.name(),name()));
+				teacher.tell(L("@x1 has not learned the pre-requisites to @x2 yet.",student.name(),name()));
 			return false;
 		}
 
