@@ -2186,7 +2186,7 @@ public class StdAbility implements Ability
 	}
 
 	@Override
-	public void practice(MOB teacher, MOB student)
+	public void practice(final MOB teacher, final MOB student)
 	{
 		if(student.getPractices()<practicesToPractice(student))
 			return;
@@ -2194,13 +2194,18 @@ public class StdAbility implements Ability
 		final Ability yourAbility=student.fetchAbility(ID());
 		if(yourAbility!=null)
 		{
+			final Ability teachAbility=teacher.fetchAbility(ID());
 			final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), .75));
 			if(yourAbility.proficiency()<prof75)
 			{
 				student.setPractices(student.getPractices()-practicesToPractice(student));
-				int newProf = yourAbility.proficiency()+(int)Math.round(25.0*(CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),36.0)));
+				final int wisint = teacher.charStats().getStat(CharStats.STAT_WISDOM) 
+								 + student.charStats().getStat(CharStats.STAT_INTELLIGENCE);
+				int newProf = yourAbility.proficiency()+(int)Math.round(25.0*(CMath.div(wisint,36.0)));
 				if(newProf > prof75)
 					newProf=prof75;
+				if((teachAbility!=null)&&(newProf > teachAbility.proficiency()))
+					newProf = teachAbility.proficiency();
 				yourAbility.setProficiency(newProf);
 				final Ability yourEffect=student.fetchEffect(ID());
 				if((yourEffect!=null)&&(yourEffect.invoker()==student))
