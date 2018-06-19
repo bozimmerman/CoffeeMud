@@ -107,7 +107,6 @@ public class Spell_MinorGlobe extends Spell
 		&&(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)
 		&&(msg.tool() instanceof Ability)
 		&&(((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
-			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
 			||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER))
 		&&(!mob.amDead())
 		&&(CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID())<=8)
