@@ -195,7 +195,12 @@ public class Qualify  extends Skills
 			if(thisLine.length()>0)
 			{
 				if(msg.length()==0)
-					msg.append(L("\n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r"));
+					msg.append("\n\r^N[^H"+CMStrings.padRight(L("Lvl"),COL_LEN1)+"^?] ")
+						.append("^w"+CMStrings.padRight(L("Name"),COL_LEN2)+" ")
+						.append("^w"+CMStrings.padRight(L("Requires"),COL_LEN3)+" ")
+						.append("^N[^H"+CMStrings.padRight(L("Lvl"),COL_LEN1)+"^?] ")
+						.append("^w"+CMStrings.padRight(L("Name"),COL_LEN2)+" ")
+						.append("^w"+L("Requires")+"^N\n\r");
 				msg.append(thisLine);
 			}
 		}
@@ -348,7 +353,12 @@ public class Qualify  extends Skills
 				if(thisLine.length()>0)
 				{
 					if(msg2.length()==0)
-						msg2.append("\n\r^HClasses:^? \n\r^N[^HLvl^?] Name                Requires     [^HLvl^?] Name                Requires\n\r");
+						msg2.append("\n\r^N[^H"+CMStrings.padRight(L("Lvl"),COL_LEN1)+"^?] ")
+						.append("^w"+CMStrings.padRight(L("Name"),COL_LEN2)+" ")
+						.append("^w"+CMStrings.padRight(L("Requires"),COL_LEN3)+" ")
+						.append("^N[^H"+CMStrings.padRight(L("Lvl"),COL_LEN1)+"^?] ")
+						.append("^w"+CMStrings.padRight(L("Name"),COL_LEN2)+" ")
+						.append("^w"+L("Requires")+"^N\n\r");
 					classesFound=true;
 					msg2.append(thisLine);
 				}
