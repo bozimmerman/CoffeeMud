@@ -64,7 +64,10 @@ public class TickTock extends StdCommand
 			}
 			else
 			if(s.startsWith("clantick"))
+			{
 				CMLib.clans().tickAllClans();
+				mob.tell(L("Clans ticked!"));
+			}
 			else
 			{
 				for(final Enumeration e=CMLib.libraries();e.hasMoreElements();)

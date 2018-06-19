@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Behaviors;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -490,6 +491,8 @@ public class Conquerable extends Arrest
 			if((itemSet!=null)&&(itemSet.size()>0))
 			{
 				final String data=itemSet.get(0).xml();
+				if(CMSecurity.isDebugging(DbgFlag.CONQUEST))
+					Log.debugOut(myArea.Name() +": clan items loaded = "+itemSet.size()+", "+((data.indexOf("GenClanFlag")>=0)?"including the flag":"without a flag!"));
 				final List<XMLLibrary.XMLTag> xml=CMLib.xml().parseAllXML(data);
 				if(xml!=null)
 				{
