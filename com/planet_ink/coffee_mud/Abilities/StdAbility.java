@@ -2118,7 +2118,7 @@ public class StdAbility implements Ability
 			return false;
 		}
 
-		if(yourAbility.proficiency()>teacherAbility.proficiency())
+		if(yourAbility.proficiency()>=teacherAbility.proficiency())
 		{
 			teacher.tell(L("You aren't proficient enough to teach any more about '@x1'.",name()));
 			student.tell(L("@x1 isn't proficient enough to teach any more about '@x2'.",teacher.name(),name()));
