@@ -2118,7 +2118,6 @@ public class StdAbility implements Ability
 			return false;
 		}
 
-		final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), .75));
 		if(yourAbility.proficiency()>teacherAbility.proficiency())
 		{
 			teacher.tell(L("You aren't proficient enough to teach any more about '@x1'.",name()));
@@ -2126,11 +2125,14 @@ public class StdAbility implements Ability
 			return false;
 		}
 		else
-		if(yourAbility.proficiency()>prof75-1)
 		{
-			teacher.tell(L("You can't teach @x1 any more about '@x2'.",student.charStats().himher(),name()));
-			student.tell(L("You can't learn any more about '@x1' except through dilligence.",name()));
-			return false;
+			final int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), .75));
+			if(yourAbility.proficiency()>prof75-1)
+			{
+				teacher.tell(L("You can't teach @x1 any more about '@x2'.",student.charStats().himher(),name()));
+				student.tell(L("You can't learn any more about '@x1' except through dilligence.",name()));
+				return false;
+			}
 		}
 
 		final int prof25=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,teacherAbility.ID()), .25));
