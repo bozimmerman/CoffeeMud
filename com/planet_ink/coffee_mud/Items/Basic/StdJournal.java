@@ -779,7 +779,7 @@ public class StdJournal extends StdItem implements Book
 					selection.append(" ");
 				if(to.toUpperCase().trim().startsWith("MASK="))
 					to=CMLib.masking().maskDesc(to.trim().substring(5),true);
-				selection.append("^<JRNL \""+CMStrings.removeColors(name())+"\"^>"+CMStrings.padRight((J.intValue()+1)+"",4)+"^</JRNL^>) "
+				selection.append("^<JRNL \""+CMStrings.removeColors(name())+"\"^>"+CMStrings.padRightPreserve((J.intValue()+1)+"",4)+"^</JRNL^>) "
 							   +((shortFormat)?"":""
 							   +CMStrings.padRight(from,10)+" "
 							   +CMStrings.padRight(to,10)+" ")
@@ -833,7 +833,7 @@ public class StdJournal extends StdItem implements Book
 
 			if((allMine)||(to.equals("ALL")))
 			{
-				buf.append("\n\r^<JRNL \""+CMStrings.removeColors(name())+"\"^>"+CMStrings.padRight((which+1)+"",3)+"^</JRNL^>)\n\r"
+				buf.append("\n\r^<JRNL \""+CMStrings.removeColors(name())+"\"^>"+CMStrings.padRightPreserve((which+1)+"",4)+"^</JRNL^>)\n\r"
 						   +"FROM: "+from
 						   +"\n\rTO  : "+to
 						   +"\n\rDATE: "+CMLib.time().date2String(date)
