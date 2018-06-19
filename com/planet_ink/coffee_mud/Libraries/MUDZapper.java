@@ -408,7 +408,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			else
 			{
 				final String str = CMLib.law().getLandOwnerName(R);
-				if((str.length()>0)&&(CMLib.clans().getClan(str)!=null))
+				if((str.length()>0)&&(CMLib.clans().getClanAnyHost(str)!=null))
 					return true;
 			}
 			break;

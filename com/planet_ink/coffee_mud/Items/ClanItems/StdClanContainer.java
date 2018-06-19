@@ -108,7 +108,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 			&& (owner() instanceof MOB) 
 			&& (!amDestroyed()))
 			{
-				if ((CMLib.clans().getClan(clanID()) == null) 
+				if ((CMLib.clans().getClanAnyHost(clanID()) == null) 
 				|| ((((MOB) owner()).getClanRole(clanID()) == null) 
 					&& (getClanItemType() != ClanItem.ClanItemType.PROPAGANDA)))
 				{
@@ -124,7 +124,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 			}
 			lastClanCheck = System.currentTimeMillis();
 			if ((clanID().length() > 0) 
-			&& (CMLib.clans().getClan(clanID()) == null))
+			&& (CMLib.clans().getClanAnyHost(clanID()) == null))
 			{
 				destroy();
 				return;

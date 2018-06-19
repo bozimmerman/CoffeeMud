@@ -137,7 +137,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 		if ((System.currentTimeMillis() - lastClanCheck) > TimeManager.MILI_HOUR)
 		{
 			lastClanCheck = System.currentTimeMillis();
-			if ((clanID().length() > 0) && (CMLib.clans().getClan(clanID()) == null))
+			if ((clanID().length() > 0) && (CMLib.clans().getClanAnyHost(clanID()) == null))
 			{
 				destroy();
 				return;

@@ -450,7 +450,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				{
 					if(!CMLib.players().playerExistsAllHosts(name))
 					{
-						if((CMLib.clans().getClan(name))==null)
+						if((CMLib.clans().getClanAnyHost(name))==null)
 							delAllDeposits(name);
 						else
 							userNames.addElement(name);

@@ -1098,7 +1098,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						more=false;
 					else
 					{
-						C=CMLib.clans().getClan(newName);
+						C=CMLib.clans().getClanAnyHost(newName);
 						if(C==null)
 							C=CMLib.clans().findClan(newName);
 						if(C!=null)

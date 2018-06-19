@@ -341,7 +341,9 @@ public class Prop_ClanEquipment extends Property implements TriggeredAffect
 		super.executeMsg(myHost,msg);
 		if(((System.currentTimeMillis()-LastChecked)>TimeManager.MILI_HOUR)&&(affected!=null))
 		{
-			if((clanName!=null)&&(clanName.length()>0)&&(CMLib.clans().getClan(clanName)==null))
+			if((clanName!=null)
+			&&(clanName.length()>0)
+			&&(CMLib.clans().getClanAnyHost(clanName)==null))
 				affected.delEffect(this);
 			LastChecked=System.currentTimeMillis();
 		}

@@ -507,7 +507,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 			}
 		}
 		else
-		if(CMLib.clans().getClan(toWhom)!=null)
+		if(CMLib.clans().getClanAnyHost(toWhom)!=null)
 		{
 			final Map<String,String> allBranchBoxes=getOurOpenBoxes(toWhom);
 			String branch=getBranchPostableTo(toWhom,postalBranch(),allBranchBoxes);

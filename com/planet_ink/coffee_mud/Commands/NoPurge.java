@@ -57,7 +57,9 @@ public class NoPurge extends StdCommand
 			mob.tell(L("Protect whom?  Enter a player name to protect from autopurge."));
 			return false;
 		}
-		if((!CMLib.players().playerExists(protectMe))&&(!CMLib.players().accountExists(protectMe))&&(CMLib.clans().getClan(protectMe)==null))
+		if((!CMLib.players().playerExists(protectMe))
+		&&(!CMLib.players().accountExists(protectMe))
+		&&(CMLib.clans().getClan(protectMe)==null))
 		{
 			mob.tell(L("Protect whom?  '@x1' is not a known player.",protectMe));
 			return false;

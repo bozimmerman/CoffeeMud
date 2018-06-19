@@ -168,8 +168,9 @@ public class Prayer_SanctifyRoom extends Prayer
 				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
 				{
 					final String landOwnerName=CMLib.law().getPropertyOwnerName((Room)target);
-					if((CMLib.clans().getClan(landOwnerName)!=null)
-					&&(!CMLib.clans().getClan(landOwnerName).getMorgue().equals(CMLib.map().getExtendedRoomID((Room)target))))
+					final Clan C=CMLib.clans().getClanAnyHost(landOwnerName);
+					if((C!=null)
+					&&(!C.getMorgue().equals(CMLib.map().getExtendedRoomID((Room)target))))
 					{
 						setMiscText(landOwnerName);
 						beneficialAffect(mob,target,asLevel,0);

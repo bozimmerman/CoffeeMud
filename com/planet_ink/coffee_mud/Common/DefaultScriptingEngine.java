@@ -5070,7 +5070,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				else
 				{
 					clanID=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1);
-					if((scripted instanceof MOB)&&(CMLib.clans().getClan(clanID)==null))
+					if((scripted instanceof MOB)
+					&&(CMLib.clans().getClanAnyHost(clanID)==null))
 					{
 						final List<Pair<Clan,Integer>> Cs=CMLib.clans().getClansByCategory((MOB)scripted, clanID);
 						if((Cs!=null)&&(Cs.size()>0))

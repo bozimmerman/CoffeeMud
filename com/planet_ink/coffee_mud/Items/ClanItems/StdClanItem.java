@@ -108,7 +108,7 @@ public class StdClanItem extends StdItem implements ClanItem
 			&& (owner() instanceof MOB) 
 			&& (!amDestroyed()))
 			{
-				if ((CMLib.clans().getClan(clanID()) == null) 
+				if ((CMLib.clans().getClanAnyHost(clanID()) == null) 
 				|| ((getClanItemType() != ClanItem.ClanItemType.PROPAGANDA) 
 					&& (((MOB) owner()).getClanRole(clanID()) == null)))
 				{
