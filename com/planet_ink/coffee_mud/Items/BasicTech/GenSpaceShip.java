@@ -205,38 +205,56 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 								final TechComponent.ShipDir dir=(TechComponent.ShipDir)parms[0];
 								final double amount=((Double)parms[1]).doubleValue();
 								final boolean isConst = ((Boolean)parms[2]).booleanValue();
+								double finalAccelleratedAmount = 0;
+								Room dockR = getIsDocked();
 								if(amount != 0)
 								{
 									switch(dir)
 									{
-									case STARBOARD: 
-										facing[0]-=CMath.mul(amount,0.017); 
+									case STARBOARD:
+										if(dockR==null)
+										{
+											finalAccelleratedAmount = -CMath.mul(amount,0.017);
+											facing[0] += finalAccelleratedAmount; 
+										}
 										break;
 									case PORT: 
-										facing[0]+=CMath.mul(amount,0.017); 
+										if(dockR==null)
+										{
+											finalAccelleratedAmount = CMath.mul(amount,0.017);
+											facing[0] += finalAccelleratedAmount; 
+										}
 										break;
 									case DORSEL: 
-										facing[1]-=CMath.mul(amount,0.017); 
+										if(dockR==null)
+										{
+											finalAccelleratedAmount = -CMath.mul(amount,0.017);
+											facing[1] += finalAccelleratedAmount;
+										}
 										break;
 									case VENTRAL: 
-										facing[1]+=CMath.mul(amount,0.017); 
+										if(dockR==null)
+										{
+											finalAccelleratedAmount = CMath.mul(amount,0.017);
+											facing[1] += finalAccelleratedAmount;
+										}
 										break;
 									case FORWARD: 
 										break;
 									case AFT:
 									{
-										Room R=getIsDocked();
-										if(R!=null)
+										if(dockR!=null)
 										{
 											if(amount > SpaceObject.ACCELLERATION_G)
 											{
 												unDock(true);
-												R=null;
+												dockR=null;
 											}
 										}
 										// this will move it, but will also update speed and direction -- all good!
 										final double inAirFactor=(shipFlags.contains(ShipFlag.IN_THE_AIR))?(1.0-getOMLCoeff()):1.0;
 										//TODO: calculate inertia gforce damage here, and send the message
+										//^^ this should be LIKE accelleration, except it can be modified by antigrav stuff
 										if(!isConst)
 										{
 											// a non-constant thruster means the ship attains speed in one burst,
@@ -245,27 +263,27 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 											this.setSpeed(0);
 										}
 										//force/mass is the Gs felt by the occupants.. not force-mass
-										final double finalRawAccelleration = amount*inAirFactor;
-										final double finalAccelleration = (R==null)?finalRawAccelleration:0;
+										finalAccelleratedAmount = amount*inAirFactor;
+										final double finalAccelleration = (dockR==null)?finalAccelleratedAmount:0;
 										if(finalAccelleration > 0)
 										{
 											CMLib.map().moveSpaceObject(this,facing(),finalAccelleration);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" accellerates "+finalAccelleration+" to the "+dir.toString());
 										}
-										final String code=Technical.TechCommand.ACCELLERATED.makeCommand(dir,Double.valueOf(finalRawAccelleration));
-										final MOB mob=CMClass.getFactoryMOB();
-										try
-										{
-											final CMMsg msg2=CMClass.getMsg(mob, this, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-											this.sendComputerMessage(mob, msg2);
-										}
-										finally
-										{
-											mob.destroy();
-										}
 										break;
 									}
+									}
+									final String code=Technical.TechCommand.ACCELLERATED.makeCommand(dir,Double.valueOf(finalAccelleratedAmount));
+									final MOB mob=CMClass.getFactoryMOB();
+									try
+									{
+										final CMMsg msg2=CMClass.getMsg(mob, this, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+										this.sendComputerMessage(mob, msg2);
+									}
+									finally
+									{
+										mob.destroy();
 									}
 									facing[0]=Math.abs(facing[0]%(2*Math.PI));
 									facing[1]=Math.abs(facing[1]%(Math.PI));  // should that really be 2*?
