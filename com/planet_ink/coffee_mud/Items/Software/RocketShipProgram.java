@@ -837,6 +837,7 @@ public class RocketShipProgram extends GenShipProgram
 	{
 		synchronized(this)
 		{
+			Electronics E  = null;
 			final Vector<String> parsed=CMParms.parse(message);
 			if(parsed.size()==0)
 			{
@@ -882,7 +883,7 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("^HINFO:^N\n\r^N"+"Please specify the system to query."));
 					return;
 				}
-				String secondWord = CMParms.combine(parsed,1);
+				String secondWord = CMParms.combine(parsed,1).toUpperCase();
 				if(secondWord.startsWith("ENGINE"))
 				{
 					
@@ -890,12 +891,34 @@ public class RocketShipProgram extends GenShipProgram
 				else
 				if(secondWord.startsWith("SYSTEM"))
 				{
-					
+					final List<TechComponent> others = new ArrayList<TechComponent>();
+					for(TechComponent component : getTechComponents())
+					{
+						if((!getEngines().contains(component))&&(!getShipSensors().contains(component)))
+							others.add(component);
+					}
+					E=findComponentByName(others,"SYSTEM",secondWord);
+					if(E==null)
+					{
+						super.addScreenMessage(L("^HINFO:^N\n\r^N"+"Specified system not found.  No information available."));
+						return;
+					}
+					final String[] marks=CMProps.getListFileStringList(CMProps.ListFile.TECH_LEVEL_NAMES);
+					super.addScreenMessage(L("^HINFO:^N\n\r^N"
+					+"System model: "+E.name()+"\n\r"
+					+"Manufacturer: "+E.getManufacturerName()+"\n\r"
+					+"System type : "+E.getTechType().name()+"\n\r"
+					+"Tech level  : "+marks[E.techLevel()%marks.length]+"\n\r"
+					));
+					return;
 				}
-				
+				else
+				{
+					super.addScreenMessage(L("^HINFO:^N\n\r^N"+"Specified system not found.  No information available."));
+					return;
+				}
 			}
 			CMMsg msg = null;
-			Electronics E  = null;
 			if(uword.equalsIgnoreCase("ACTIVATE") || uword.equalsIgnoreCase("DEACTIVATE"))
 			{
 				final String rest = CMParms.combine(parsed,1).toUpperCase();

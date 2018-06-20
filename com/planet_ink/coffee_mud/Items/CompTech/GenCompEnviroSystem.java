@@ -90,7 +90,7 @@ public class GenCompEnviroSystem extends GenElecCompItem
 							//if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 							//	Log.debugOut("Refreshing the air in "+ship.Name());
 							final String code=Technical.TechCommand.AIRREFRESH.makeCommand(Double.valueOf(pct),Integer.valueOf(airResource));
-							final CMMsg msg2=CMClass.getMsg(msg.source(), ship, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+							final CMMsg msg2=CMClass.getMsg(msg.source(), A, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 							if(A.okMessage(msg2.source(), msg2))
 								A.executeMsg(msg2.source(), msg2);
 						}

@@ -299,15 +299,22 @@ public class GravityFloat extends StdAbility
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
 		// IDEA: gravity legs should develop over time...this turns into a saved ability with a score?
-		if((affected instanceof Item)
-		&&(msg.target()==affected))
+		if(affected instanceof Item)
 		{
-			switch(msg.targetMinor())
+			final Item I=(Item)affected;
+			if(msg.target()==I)
 			{
-			case CMMsg.TYP_GET:
-				msg.addTrailerRunnable(checkStopFloating());
-				break;
+				switch(msg.targetMinor())
+				{
+				case CMMsg.TYP_GET:
+					msg.addTrailerRunnable(checkStopFloating());
+					break;
+				}
 			}
+			else
+			if((msg.target()!=null)
+			&&(msg.target()==I.container()))
+				msg.addTrailerRunnable(checkStopFloating());
 		}
 		else
 		if((affected instanceof MOB)

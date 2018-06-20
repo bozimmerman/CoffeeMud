@@ -210,6 +210,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements FuelCon
 				this.activate(false);
 				break;
 			case CMMsg.TYP_LOOK:
+				clearFuelCache();
 				return;
 			case CMMsg.TYP_POWERCURRENT:
 				if(msg.value()==0)
@@ -227,5 +228,9 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements FuelCon
 				break;
 			}
 		}
+		else
+		if((msg.tool()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_PUT))
+			clearFuelCache();
 	}
 }
