@@ -528,7 +528,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							{
 								final Item I=V.get(r);
 								if(CMLib.dice().rollPercentage()<I.basePhyStats().rejuv())
+								{
 									mob.delItem(I);
+									I.destroy();
+								}
 								else
 								{
 									I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
@@ -561,7 +564,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							{
 								final Item I=V.get(r);
 								if(chosenI!=I)
+								{
 									mob.delItem(I);
+									I.destroy();
+								}
 								else
 								{
 									I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
@@ -588,7 +594,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						for(final Item I : rivalItems)
 						{
 							if(CMLib.dice().rollPercentage()>I.basePhyStats().rejuv())
+							{
 								shop.delAllStoreInventory(I);
+								I.destroy();
+							}
 							else
 							{
 								I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
