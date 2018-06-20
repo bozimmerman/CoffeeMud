@@ -1029,6 +1029,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			{
 				owner=I.owner();
 			}
+			if(owner == null)
+				return I.name()+" is ticking unowned.";
+			if(!owner.isContent(I))
+				return I.name()+" is ticking but not where he is "+owner.name();
 			if(owner instanceof MOB)
 			{
 				final MOB M=(MOB)owner;
@@ -1043,15 +1047,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 						return I.name()+" on "+mobReport;
 				}
 			}
-			else
 			if(owner instanceof Room)
 			{
 				final String roomReport = validCheck(owner);
 				if(roomReport != null)
 					return I.name()+" in "+roomReport;
 			}
-			else
-				return I.name()+" is ticking unowned.";
 			return null;
 		}
 		return null;
