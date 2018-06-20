@@ -55,7 +55,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	public static final int LOOTFLAG_UNWORN=8;
 
 	@Override
-	public String niceCommaList(List<?> V, boolean andTOrF)
+	public String niceCommaList(final List<?> V, final boolean andTOrF)
 	{
 		String id="";
 		for(int v=0;v<V.size();v++)
@@ -80,7 +80,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public String getFormattedDate(Environmental E)
+	public String getFormattedDate(final Environmental E)
 	{
 		String date=CMStrings.padRight(L("Unknown"),11);
 		if(E!=null)
@@ -93,7 +93,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public void outfit(MOB mob, List<Item> items)
+	public void outfit(final MOB mob, final List<Item> items)
 	{
 		if((mob==null)||(items==null)||(items.size()==0))
 			return;
@@ -120,7 +120,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public Trap makeADeprecatedTrap(Physical unlockThis)
+	public Trap makeADeprecatedTrap(final Physical unlockThis)
 	{
 		Trap theTrap=null;
 		final int roll=(int)Math.round(Math.random()*100.0);
@@ -182,7 +182,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public void setTrapped(Physical myThang)
+	public void setTrapped(final Physical myThang)
 	{
 		final Trap t=makeADeprecatedTrap(myThang);
 		t.setReset(50);
@@ -190,7 +190,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public void setTrapped(Physical myThang, Trap theTrap)
+	public void setTrapped(final Physical myThang, final Trap theTrap)
 	{
 		for(int a=0;a<myThang.numEffects();a++)
 		{
@@ -204,7 +204,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public Trap fetchMyTrap(Physical myThang)
+	public Trap fetchMyTrap(final Physical myThang)
 	{
 		if(myThang==null)
 			return null;
@@ -218,7 +218,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public boolean reachableItem(MOB mob, Environmental E)
+	public boolean reachableItem(final MOB mob, final Environmental E)
 	{
 		if((E==null)||(!(E instanceof Item)))
 			return true;
@@ -236,7 +236,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public double memoryUse ( Environmental E, int number )
+	public double memoryUse (Environmental E, final int number )
 	{
 		double s=-1.0;
 		try
@@ -263,7 +263,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public Language getLanguageSpoken(Physical P)
+	public Language getLanguageSpoken(final Physical P)
 	{
 		Ability A=null;
 		if(P instanceof MOB)
@@ -289,7 +289,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public void extinguish(MOB source, Physical target, boolean mundane)
+	public void extinguish(final MOB source, final Physical target, final boolean mundane)
 	{
 		if(target instanceof Room)
 		{
@@ -339,7 +339,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public void roomAffectFully(CMMsg msg, Room room, int dirCode)
+	public void roomAffectFully(final CMMsg msg, final Room room, int dirCode)
 	{
 		room.send(msg.source(),msg);
 		if((msg.target()==null)||(!(msg.target() instanceof Exit)))
@@ -372,7 +372,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public int disenchantItem(Item target)
+	public int disenchantItem(final Item target)
 	{
 		int level=target.basePhyStats().level();
 		boolean doneSomething=false;
@@ -422,7 +422,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public boolean disInvokeEffects(Environmental E)
+	public boolean disInvokeEffects(final Environmental E)
 	{
 		if(E==null)
 			return false;
@@ -471,7 +471,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 	
 	@Override
-	public int processVariableEquipment(MOB mob)
+	public int processVariableEquipment(final MOB mob)
 	{
 		int newLastTickedDateTime=0;
 		if(mob!=null)
@@ -659,7 +659,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public MOB getMobPossessingAnother(MOB mob)
+	public MOB getMobPossessingAnother(final MOB mob)
 	{
 		if(mob==null)
 			return null;
@@ -674,7 +674,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public boolean armorCheck(MOB mob, Item I, int allowedArmorLevel)
+	public boolean armorCheck(final MOB mob, final Item I, final int allowedArmorLevel)
 	{
 		if((((I instanceof Armor)||(I instanceof Shield)))
 		&&(I.rawProperLocationBitmap()&CharClass.ARMOR_WEARMASK)>0)
@@ -762,7 +762,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public boolean armorCheck(MOB mob, int allowedArmorLevel)
+	public boolean armorCheck(final MOB mob, final int allowedArmorLevel)
 	{
 		if(allowedArmorLevel==CharClass.ARMOR_ANY)
 			return true;
@@ -782,7 +782,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public List<DeadBody> getDeadBodies(Environmental E)
+	public List<DeadBody> getDeadBodies(final Environmental E)
 	{
 		if(E instanceof DeadBody)
 			return new XVector<DeadBody>((DeadBody)E);
@@ -824,7 +824,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return true;
 	}
 
-	protected TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> parseLootPolicyFor(MOB mob)
+	protected TriadVector<Integer,Integer,MaskingLibrary.CompiledZMask> parseLootPolicyFor(final MOB mob)
 	{
 		if((mob==null)||(!mob.isMonster()))
 			return noLootPolicy;
@@ -879,7 +879,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public void confirmWearability(MOB mob)
+	public void confirmWearability(final MOB mob)
 	{
 		if(mob==null)
 			return;
@@ -944,7 +944,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public Item ruinItem(Item I)
+	public Item ruinItem(final Item I)
 	{
 		if(I==null)
 			return null;
@@ -1005,7 +1005,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public Item isRuinedLoot(MOB mob, Item I)
+	public Item isRuinedLoot(final MOB mob, final Item I)
 	{
 		if(I==null)
 			return null;
@@ -1037,7 +1037,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public void reloadCharClasses(CharClass oldC)
+	public void reloadCharClasses(final CharClass oldC)
 	{
 		for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 		{
@@ -1088,7 +1088,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public void swapRaces(Race newR, Race oldR)
+	public void swapRaces(final Race newR, final Race oldR)
 	{
 		for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 		{
@@ -1121,7 +1121,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public boolean resurrect(MOB tellMob, Room corpseRoom, DeadBody body, int XPLevel)
+	public boolean resurrect(final MOB tellMob, final Room corpseRoom, final DeadBody body, final int XPLevel)
 	{
 		final MOB rejuvedMOB=CMLib.players().getPlayer(body.getMobName());
 
@@ -1222,7 +1222,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public long[][] compileConditionalRange(List<String> condV, int numDigits, final int startOfRange, final int endOfRange)
+	public long[][] compileConditionalRange(final List<String> condV, final int numDigits, final int startOfRange, final int endOfRange)
 	{
 		final long[][] finalSet = new long[endOfRange - startOfRange + 1][];
 		for(String cond : condV)
@@ -1278,7 +1278,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public List<Item> deepCopyOf(Item oldItem)
+	public List<Item> deepCopyOf(final Item oldItem)
 	{
 		final List<Item> items=new ArrayList<Item>(1);
 		if(oldItem == null)
@@ -1309,7 +1309,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 	
 	@Override
-	public String builtPrompt(MOB mob, String prompt)
+	public String builtPrompt(final MOB mob, final String prompt)
 	{
 		final StringBuffer buf=new StringBuffer("\n\r");
 		String promptUp=null;
@@ -1731,7 +1731,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return buf.toString();
 	}
 	
-	protected String raceMixRuleCheck(String rule, String urace1, String urace2)
+	protected String raceMixRuleCheck(String rule, final String urace1,final  String urace2)
 	{
 		if(rule.toUpperCase().startsWith(urace1))
 		{
@@ -1930,7 +1930,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	}
 
 	@Override
-	public Race getMixedRace(String race1, String race2, boolean ignoreRules)
+	public Race getMixedRace(final String race1, final String race2, final boolean ignoreRules)
 	{
 		if(race1.indexOf(race2)>=0)
 			return CMClass.getRace(race1);
