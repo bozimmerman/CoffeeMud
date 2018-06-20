@@ -3678,27 +3678,20 @@ public class StdMOB implements MOB
 						recoverTickCter = CMProps.getIntVar(CMProps.Int.RECOVERRATE) * CharState.REAL_TICK_ADJUST_FACTOR;
 						if (isMonster)
 						{
-							if((R.amDestroyed())||(A.amDestroyed()))
+							final String mobReport = CMLib.flags().validCheck(this);
+							if(mobReport != null)
 							{
-								final Room startR = this.getStartRoom();
-								final Area startA = (startR == null) ? null : startR.getArea();
-								if((startR==null)||(startA==null)||(startR.amDestroyed())||(startA.amDestroyed()))
+								if(mobReport.startsWith("*"))
 								{
-									Log.warnOut("Destroying "+Name()+" because he's not ticking in a real place ("+CMLib.map().getExtendedRoomID(R)+"): ("+A.Name()+").");
-									this.destroy();
-									return false;
+									Log.warnOut("Killing "+Name()+" because he's not ticking where he is ("+CMLib.map().getExtendedRoomID(R)+"): ("+A.Name()+").");
+									this.killMeDead(false);
 								}
 								else
 								{
-									Log.warnOut("Killing "+Name()+" because he's not ticking in a real place ("+CMLib.map().getExtendedRoomID(R)+"): ("+A.Name()+").");
-									this.killMeDead(false);
+									Log.warnOut("Destroy: "+mobReport);
+									this.destroy();
+									return false;
 								}
-							}
-							else
-							if(!R.isInhabitant(this)&&(!isPlayer()))
-							{
-								Log.warnOut("Killing "+Name()+" because he's not ticking where he is ("+CMLib.map().getExtendedRoomID(R)+"): ("+A.Name()+").");
-								this.killMeDead(false);
 							}
 						}
 					}

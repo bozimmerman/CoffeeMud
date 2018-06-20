@@ -323,6 +323,18 @@ public interface CMFlagLibrary extends CMLibrary
 	public boolean canAccess(MOB mob, Room R);
 
 	/**
+	 * Checks the system validity of mobs, items, and rooms,
+	 * and returns a report if there's a problem and it
+	 * should be destroyed.  If a mob report return an
+	 * asterisk, then it probably means he just needs
+	 * killing, not destroying.
+	 * 
+	 * @param P the room, mob, or item to check
+	 * @return null if all is well, and a reason otherwise
+	 */
+	public String validCheck(final Physical P);
+	
+	/**
 	 * Returns whether the given affecting (usually a mob) is alive,
 	 * awake, mobile, and officially in the game.  This is a lighter
 	 * test than some of the others that also check if its busy.

@@ -981,6 +981,83 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 
 	@Override
+	public String validCheck(final Physical P)
+	{
+		if(P instanceof Room)
+		{
+			final Room R=(Room)P;
+			if(R.amDestroyed())
+				return " a destroyed place "+CMLib.map().getExtendedRoomID(R);
+			final Area A=R.getArea();
+			if((A == null)||(A.amDestroyed()))
+				return "a destroyed area "+CMLib.map().getExtendedRoomID(R);
+			return null;
+		}
+		if(P instanceof MOB)
+		{
+			final MOB M=(MOB)P;
+			final Room locR;
+			final Room startR;
+			synchronized(M)
+			{
+				startR=M.getStartRoom();
+				locR=M.location();
+			}
+			if(startR!=null)
+			{
+				final String roomReport =validCheck(startR);
+				if(roomReport != null)
+					return M.name()+" is from "+roomReport;
+			}
+			if(!M.amDead())
+			{
+				if(locR == null)
+					return "*"+M.name()+" is nowhere!";
+				if(!locR.isInhabitant(M)&&(!M.isPlayer()))
+					return "*"+M.name()+" is not where he is "+CMLib.map().getExtendedRoomID(locR);
+				final String roomReport =validCheck(locR);
+				if(roomReport != null)
+					return M.name()+" is from "+roomReport;
+			}
+			return null;
+		}
+		if(P instanceof Item)
+		{
+			final Item I=(Item)P;
+			final ItemPossessor owner;
+			synchronized(I)
+			{
+				owner=I.owner();
+			}
+			if(owner instanceof MOB)
+			{
+				final MOB M=(MOB)owner;
+				if(!CMLib.threads().isTicking(M, -1))
+					return I.name()+" on non-ticking mob "+M.name()+" in "+CMLib.map().getExtendedRoomID(M.location());
+				final String mobReport = validCheck(M);
+				if(mobReport != null)
+				{
+					if(mobReport.startsWith("*"))
+						return "*"+I.name()+" on "+mobReport.substring(1);
+					else
+						return I.name()+" on "+mobReport;
+				}
+			}
+			else
+			if(owner instanceof Room)
+			{
+				final String roomReport = validCheck(owner);
+				if(roomReport != null)
+					return I.name()+" in "+roomReport;
+			}
+			else
+				return I.name()+" is ticking unowned.";
+			return null;
+		}
+		return null;
+	}
+	
+	@Override
 	public boolean isAliveAwakeMobileUnbound(MOB mob, boolean quiet)
 	{
 		if(!isAliveAwakeMobile(mob,quiet))
