@@ -529,6 +529,8 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Stop program aborted with error (directional control failure)."));
 					return super.checkPowerCurrent(value);
 				}
+				if((ship.speed() < 5.0)&&(this.lastInject!=null))
+					this.lastInject = new Double(this.lastInject.doubleValue()/2.0);
 			}
 			break;
 		}
@@ -591,17 +593,23 @@ public class RocketShipProgram extends GenShipProgram
 			&&(newInject != null)
 			&& (targetAccelleration != 0.0))
 			{
-				if(this.lastAccelleration .doubleValue() < (targetAccelleration * 0.9))
+				if(this.lastAccelleration.doubleValue() < (targetAccelleration * .1))
+					newInject = new Double(newInject.doubleValue()*2.0);
+				else
+				if(this.lastAccelleration.doubleValue() > (targetAccelleration * 100))
+					newInject = new Double(newInject.doubleValue()/2.0);
+				else
+				if(this.lastAccelleration.doubleValue() < (targetAccelleration * 0.9))
 					newInject = new Double(1.07 * newInject.doubleValue());
 				else
-				if(this.lastAccelleration .doubleValue() > (targetAccelleration * 1.1))
+				if(this.lastAccelleration.doubleValue() > (targetAccelleration * 1.1))
 					newInject = new Double(0.93 * newInject.doubleValue());
 				else
-				if(this.lastAccelleration .doubleValue() < targetAccelleration)
-					newInject = new Double(1.0001 * newInject.doubleValue());
+				if(this.lastAccelleration.doubleValue() < targetAccelleration)
+					newInject = new Double(1.01 * newInject.doubleValue());
 				else
-				if(this.lastAccelleration .doubleValue() > targetAccelleration)
-					newInject = new Double(0.999 * newInject.doubleValue());
+				if(this.lastAccelleration.doubleValue() > targetAccelleration)
+					newInject = new Double(0.98 * newInject.doubleValue());
 			}
 			final MOB mob=CMClass.getFactoryMOB();
 			try
@@ -611,7 +619,8 @@ public class RocketShipProgram extends GenShipProgram
 				{
 					for(final ShipEngine engineE : programEngines)
 					{
-						if((newInject != this.lastInject)||(!engineE.isConstantThruster()))
+						if((newInject != this.lastInject)
+						||(!engineE.isConstantThruster()))
 						{
 							CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 							final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(newInject.doubleValue()));
@@ -821,7 +830,6 @@ public class RocketShipProgram extends GenShipProgram
 						else
 							break;
 					}
-					System.out.println("WHOA!"+this.lastAccelleration);
 				}
 			}
 		}

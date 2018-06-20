@@ -297,7 +297,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			if(amount == 0.0)
 			{
 				if(me.getThrust()>0.0)
-					return reportError(me, controlI, mob, lang.L("@x1 goes quiet.",me.name(mob)), lang.L("Failure: @x1: insufficient fuel.",me.name(mob)));
+					return reportError(me, controlI, mob, lang.L("@x1 goes quiet.",me.name(mob)), lang.L("Info: @x1: Engine shut down.",me.name(mob)));
 				me.setThrust(0.0);
 				return false;
 			}
@@ -316,7 +316,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		else
 			accelleration = thrust;
 		
-		if((amount > 1)&&((portDir!=TechComponent.ShipDir.AFT) || (me.getThrust() > oldThrust)))
+		if((amount > 1)&&((portDir!=TechComponent.ShipDir.AFT) || (me.getThrust() > (oldThrust * 10))))
 			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a "+rumbleWord+" and hear the blast of @x1.",me.name(mob)));
 		if(accelleration == 0.0)
 		{
