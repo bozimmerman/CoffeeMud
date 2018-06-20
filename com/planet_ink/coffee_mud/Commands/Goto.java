@@ -99,7 +99,22 @@ public class Goto extends At
 			else
 				room=CMLib.map().findWorldRoomLiberally(mob,cmd.toString(),"RIPMA",100,120000);
 		}
-
+		if(room==null)
+		{
+			SpaceObject o = CMLib.map().findSpaceObject(cmd.toString(), true);
+			if(o == null)
+				o = CMLib.map().findSpaceObject(cmd.toString(), false);
+			if(o instanceof Area)
+			{
+				room=((Area)o).getRandomProperRoom();
+			}
+			else
+			if(o instanceof BoardableShip)
+			{
+				final Area A=((BoardableShip)o).getShipArea();
+				room=A.getRandomProperRoom();
+			}
+		}
 		if(room==null)
 		{
 			mob.tell(L("Goto where? Try a Room ID, player name, area name, room text, or PREVIOUS!"));

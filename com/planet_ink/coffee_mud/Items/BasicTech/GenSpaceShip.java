@@ -136,9 +136,14 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 		if(moveToOutside)
 		{
 			final SpaceObject o = getShipSpaceObject();
+			final SpaceObject planetO = CMLib.map().getSpaceObject(R, true);
 			long[] newCoordinates = CMLib.map().moveSpaceObject(((LocationRoom)R).coordinates(), direction(), radius()+radius());
 			if((o != null)&&(R instanceof LocationRoom))
+			{
 				CMLib.map().addObjectToSpace(o,newCoordinates);
+				final double gravity = CMLib.tech().getGravityForce(o, planetO);
+				setShipFlag(SpaceShip.ShipFlag.IN_THE_AIR,(gravity > 0.0));
+			}
 		}
 		return exitRoom;
 	}
@@ -216,6 +221,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										{
 											finalAccelleratedAmount = -CMath.mul(amount,0.017);
 											facing[0] += finalAccelleratedAmount; 
+											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleratedAmount)+" to "+facing[0]);
 										}
 										break;
 									case PORT: 
@@ -223,6 +230,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										{
 											finalAccelleratedAmount = CMath.mul(amount,0.017);
 											facing[0] += finalAccelleratedAmount; 
+											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleratedAmount)+" to "+facing[0]);
 										}
 										break;
 									case DORSEL: 
@@ -230,6 +239,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										{
 											finalAccelleratedAmount = -CMath.mul(amount,0.017);
 											facing[1] += finalAccelleratedAmount;
+											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleratedAmount)+" to "+facing[1]);
 										}
 										break;
 									case VENTRAL: 
@@ -237,18 +248,22 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										{
 											finalAccelleratedAmount = CMath.mul(amount,0.017);
 											facing[1] += finalAccelleratedAmount;
+											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleratedAmount)+" to "+facing[1]);
 										}
 										break;
 									case FORWARD: 
-										break;
-									case AFT:
+									case AFT: // breaking thrusters
 									{
 										if(dockR!=null)
 										{
-											if(amount > SpaceObject.ACCELLERATION_G)
+											if(dir == ShipDir.FORWARD)
 											{
-												unDock(true);
-												dockR=null;
+												if(amount > SpaceObject.ACCELLERATION_G)
+												{
+													unDock(true);
+													dockR=null;
+												}
 											}
 										}
 										// this will move it, but will also update speed and direction -- all good!
@@ -267,9 +282,12 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										final double finalAccelleration = (dockR==null)?finalAccelleratedAmount:0;
 										if(finalAccelleration > 0)
 										{
+											double[] moveDir = facing();
+											if(dir == ShipDir.AFT)
+												moveDir = CMLib.map().getOppositeDir(moveDir);
 											CMLib.map().moveSpaceObject(this,facing(),finalAccelleration);
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" accellerates "+finalAccelleration+" to the "+dir.toString());
+												Log.debugOut("SpaceShip "+name()+" accellerates "+dir.toString()+" " +finalAccelleration);
 										}
 										break;
 									}

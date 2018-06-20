@@ -54,7 +54,8 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile List<TechComponent>	sensors		= null;
 	protected volatile List<TechComponent>	components	= null;
 	
-	protected volatile Double				lastAccelleration 			= null;
+	protected volatile Double				lastAccelleration	= null;
+	protected volatile Double				lastAngle			= null;
 	protected volatile Double				lastInject			= null;
 	protected volatile RocketStateMachine	rocketState			= null;
 	protected volatile SpaceObject			programPlanet		= null;
@@ -220,8 +221,8 @@ public class RocketShipProgram extends GenShipProgram
 		if(parsed.size()==0)
 			return false;
 		final String uword=parsed.get(0).toUpperCase();
-		if(uword.equals("ENGINEHELP")
-		||uword.equals("HELP")
+		if(uword.equals("HELP")
+		||uword.equals("INFO")
 		||uword.equals("STOP")
 		||uword.equals("LAUNCH")
 		||uword.equals("ACTIVATE")
@@ -417,7 +418,7 @@ public class RocketShipProgram extends GenShipProgram
 			}
 			str.append("^N\n\r");
 			str.append("^X").append(CMStrings.centerPreserve(L(" -- Commands -- "),60)).append("^.^N\n\r");
-			str.append("^H").append(CMStrings.padRight(L("[ENGINEHELP]/[SHIELDHELP]/[WEAPONHELP] : Get details."),60)).append("\n\r");
+			str.append("^H").append(CMStrings.padRight(L("[HELP] : Get help. [INFO] [SYSTEMNAME] : Get Details"),60)).append("\n\r");
 			str.append("^H").append(CMStrings.padRight(L("[ENGINE#/NAME] ([AFT/PORT/STARBOARD/DORSEL/VENTRAL]) [AMT]"),60)).append("\n\r");
 			str.append("^H").append(CMStrings.padRight(L("[WEAPON#/NAME] ([TARGETNAME]) [AMT]"),60)).append("\n\r");
 			str.append("^X").append(CMStrings.centerPreserve("",60)).append("^.^N\n\r");
@@ -462,34 +463,73 @@ public class RocketShipProgram extends GenShipProgram
 		final RocketShipProgram.RocketStateMachine state=this.rocketState;
 		if(state == null)
 			return super.checkPowerCurrent(value);
-		final SpaceObject myShip=CMLib.map().getSpaceObject(this,true);
+		final SpaceObject spaceObj=CMLib.map().getSpaceObject(this,true);
+		final SpaceShip ship = (spaceObj instanceof SpaceShip) ? (SpaceShip)spaceObj : null;
 		final List<ShipEngine> programEngines=this.programEngines;
 		final SpaceObject programPlanet=this.programPlanet;
 		final Double lastInject=this.lastInject;
-		if((myShip==null)||(this.programEngines==null))
+		if((ship==null)||(this.programEngines==null))
 		{
+			String reason =  (programEngines == null)?"no engines":"";
+			reason = (ship==null)?"no ship interface":reason;
 			this.rocketState=null;
 			this.programEngines=null;
 			this.lastInject=null;
+			super.addScreenMessage(L("Last program aborted with error ("+reason+")."));
 			return super.checkPowerCurrent(value);
  		}
+		if((programEngines.size()==0)||(lastInject==null))
+		{
+			String reason =  (programEngines.size()==0)?"no aft engines":"";
+			reason = (lastInject==null)?"no engine injection data":reason;
+			this.rocketState=null;
+			this.programEngines=null;
+			super.addScreenMessage(L("Stop program aborted with error ("+reason+")."));
+			return super.checkPowerCurrent(value);
+		}
 		switch(state)
 		{
-		case LAUNCHCHECK:
-		case LAUNCHCRUISE:
-		case LAUNCHSEARCH:
+		case STOP:
 		{
-			if((programPlanet==null)||(programEngines.size()==0)||(lastInject==null))
+			if(ship.speed() == 0.0)
 			{
 				this.rocketState=null;
 				this.programEngines=null;
 				this.lastInject=null;
-				super.addScreenMessage(L("Launch program aborted with error."));
+				super.addScreenMessage(L("Stop program completed successfully."));
+				return super.checkPowerCurrent(value);
+			}
+			final double[] stopFacing = CMLib.map().getOppositeDir(ship.direction());
+			double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
+			if((Math.abs(angleDelta[0])+Math.abs(angleDelta[0]))>.02)
+			{
+				if(!flipForAllStop(ship))
+				{
+					this.rocketState=null;
+					this.programEngines=null;
+					this.lastInject=null;
+					super.addScreenMessage(L("Stop program aborted with error (directional control failure)."));
+					return super.checkPowerCurrent(value);
+				}
+			}
+			break;
+		}
+		case LAUNCHCHECK:
+		case LAUNCHCRUISE:
+		case LAUNCHSEARCH:
+		{
+			if(programPlanet==null)
+			{
+				String reason = (programPlanet==null)?"no planetary information":"";
+				this.rocketState=null;
+				this.programEngines=null;
+				this.lastInject=null;
+				super.addScreenMessage(L("Launch program aborted with error ("+reason+")."));
 				return super.checkPowerCurrent(value);
 			}
 			else
 			{
-				final long distance=CMLib.map().getDistanceFrom(myShip, programPlanet);
+				final long distance=CMLib.map().getDistanceFrom(ship, programPlanet);
 				if(distance > (programPlanet.radius()*SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
 				{
 					this.rocketState=null;
@@ -501,7 +541,7 @@ public class RocketShipProgram extends GenShipProgram
 						for(final ShipEngine engineE : programEngines)
 						{
 							CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-							final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(0.0));
+							final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(0.0));
 							msg.setTargetMessage(code);
 							this.trySendMsgToItem(mob, engineE, msg);
 						}
@@ -522,6 +562,54 @@ public class RocketShipProgram extends GenShipProgram
 		Double newInject=this.lastInject;
 		switch(state)
 		{
+		case STOP:
+		{
+			//force/mass is the Gs felt by the occupants.. not force-mass
+			//so go ahead and push it up to 3 * g forces on ship
+			double targetAccelleration = SpaceObject.ACCELLERATION_TYPICALSPACEROCKET; //
+			if(targetAccelleration > ship.speed())
+				targetAccelleration = ship.speed();
+			if((this.lastAccelleration !=null)
+			&&(newInject != null)
+			&& (targetAccelleration != 0.0))
+			{
+				if(this.lastAccelleration .doubleValue() < (targetAccelleration * 0.9))
+					newInject = new Double(1.07 * newInject.doubleValue());
+				else
+				if(this.lastAccelleration .doubleValue() > (targetAccelleration * 1.1))
+					newInject = new Double(0.93 * newInject.doubleValue());
+				else
+				if(this.lastAccelleration .doubleValue() < targetAccelleration)
+					newInject = new Double(1.0001 * newInject.doubleValue());
+				else
+				if(this.lastAccelleration .doubleValue() > targetAccelleration)
+					newInject = new Double(0.999 * newInject.doubleValue());
+			}
+			final MOB mob=CMClass.getFactoryMOB();
+			try
+			{
+				this.lastAccelleration =null;
+				if(newInject != null)
+				{
+					for(final ShipEngine engineE : programEngines)
+					{
+						if((newInject != this.lastInject)||(!engineE.isConstantThruster()))
+						{
+							CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+							final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(newInject.doubleValue()));
+							msg.setTargetMessage(code);
+							this.trySendMsgToItem(mob, engineE, msg);
+							this.lastInject=newInject;
+						}
+					}
+				}
+			}
+			finally
+			{
+				mob.destroy();
+			}
+			break;
+		}
 		case LAUNCHCHECK:
 		case LAUNCHSEARCH:
 		{
@@ -553,7 +641,7 @@ public class RocketShipProgram extends GenShipProgram
 						if((newInject != this.lastInject)||(!engineE.isConstantThruster()))
 						{
 							CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-							final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(newInject.doubleValue()));
+							final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(newInject.doubleValue()));
 							msg.setTargetMessage(code);
 							this.trySendMsgToItem(mob, engineE, msg);
 							this.lastInject=newInject;
@@ -574,6 +662,131 @@ public class RocketShipProgram extends GenShipProgram
 		return true;
 	}
 
+	public boolean flipForAllStop(final SpaceShip ship)
+	{
+		CMMsg msg;
+		final List<ShipEngine> engines = getEngines();
+		final MOB M=CMClass.getFactoryMOB();
+		try
+		{
+			// step one, face opposite direction of motion
+			final double[] stopFacing = CMLib.map().getOppositeDir(ship.direction());
+			int tries=100;
+			while(!Arrays.equals(stopFacing, ship.facing()) && (--tries>0))
+			{
+				final double[] oldFacing = Arrays.copyOf(ship.facing(), ship.facing().length);
+				for(final ShipEngine engineE : engines)
+				{
+					if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.STARBOARD))
+					&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.PORT))
+					&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.DORSEL))
+					&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.VENTRAL)))
+					{
+						msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+						this.lastAngle = null;
+						final String code=TechCommand.THRUST.makeCommand(ShipDir.PORT,Double.valueOf(1));
+						msg.setTargetMessage(code);
+						this.trySendMsgToItem(M, engineE, msg);
+						if(this.lastAngle==null)
+							break;
+						double angleAchievedPerPt = Math.abs(this.lastAngle.doubleValue()); //
+						double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
+						if(Math.abs(angleDelta[0]) > 0.0000001)
+						{
+							final TechComponent.ShipDir dir = angleDelta[0] < 0 ? ShipDir.STARBOARD : ShipDir.PORT;
+							Double thrust = new Double(Math.abs(angleDelta[0])/angleAchievedPerPt);
+System.out.println("Thrusting "+thrust+" to "+dir+" to achieve "+angleDelta[0]+" by going from "+oldFacing[0]+" to "+stopFacing[0]);
+							msg.setTargetMessage(TechCommand.THRUST.makeCommand(dir,thrust));
+							this.trySendMsgToItem(M, engineE, msg);
+						}
+						angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
+						if(Math.abs(angleDelta[1]) > 0.0000001)
+						{
+							final TechComponent.ShipDir dir = angleDelta[1] < 0 ? ShipDir.VENTRAL : ShipDir.DORSEL;
+							Double thrust = new Double(Math.abs(angleDelta[1])/angleAchievedPerPt);
+System.out.println("Thrusting "+thrust+" to "+dir+" to achieve "+angleDelta[0]+" by going from "+oldFacing[1]+" to "+stopFacing[1]);
+							msg.setTargetMessage(TechCommand.THRUST.makeCommand(dir,thrust));
+							this.trySendMsgToItem(M, engineE, msg);
+						}
+						angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
+System.out.println("* Total Deltas now: "+angleDelta[0]+" + "+angleDelta[1] +"=="+(Math.abs(angleDelta[0])+Math.abs(angleDelta[1])));
+						if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<.01)
+							return true;
+					}
+				}
+				if(Arrays.equals(oldFacing, ship.facing()))
+					return false;
+			}
+		}
+		finally
+		{
+			M.destroy();
+		}
+		return false;
+	}
+	
+	public ShipEngine primeMainThrusters(final SpaceShip ship)
+	{
+		CMMsg msg;
+		final List<ShipEngine> engines = getEngines();
+		final MOB M=CMClass.getFactoryMOB();
+		final boolean isDocked = ship.getIsDocked()!=null;
+		try
+		{
+			for(final ShipEngine engineE : engines)
+			{
+				if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.AFT))
+				&&(engineE.getMaxThrust()>SpaceObject.ACCELLERATION_G)
+				&&(engineE.getMinThrust()<SpaceObject.ACCELLERATION_PASSOUT))
+				{
+					int tries=100;
+					double lastTryAmt=0.0001;
+					final CMMsg deactMsg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
+					msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+					final double targetAccelleration = SpaceObject.ACCELLERATION_G;
+					Double prevAccelleration = new Double(0.0);
+					while(--tries>0)
+					{
+						this.lastAccelleration =null;
+						final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(lastTryAmt));
+						msg.setTargetMessage(code);
+						this.trySendMsgToItem(M, engineE, msg);
+						final Double thisLastAccel=this.lastAccelleration ;
+						if(thisLastAccel!=null)
+						{
+							if((thisLastAccel.doubleValue() >= targetAccelleration)
+							&&((!isDocked)||(ship.getIsDocked()==null)))
+							{
+								this.lastInject=new Double(lastTryAmt);
+								return engineE;
+							}
+							else
+							if((thisLastAccel.doubleValue()>0.0) && ((targetAccelleration/thisLastAccel.doubleValue())>100))
+								lastTryAmt *= 2.0;
+							else
+							if(prevAccelleration.doubleValue() == thisLastAccel.doubleValue())
+								break;
+							else
+							{
+								this.trySendMsgToItem(M, engineE, deactMsg);
+								lastTryAmt *= 1.1;
+							}
+							prevAccelleration = thisLastAccel;
+						}
+						else
+							break;
+					}
+					System.out.println("WHOA!"+this.lastAccelleration);
+				}
+			}
+		}
+		finally
+		{
+			M.destroy();
+		}
+		return null;
+	}
+	
 	@Override
 	public void onTyping(MOB mob, String message)
 	{
@@ -588,24 +801,53 @@ public class RocketShipProgram extends GenShipProgram
 			final String uword=parsed.get(0).toUpperCase();
 			if(uword.equalsIgnoreCase("HELP"))
 			{
-				super.addScreenMessage(L("^HHELP:^N\n\r^N"+"The ACTIVATE command can be used to turn on any engine, "
-					+ "sensor, or other system in your ship.  The DEACTIVATE command will turn off any system specified. "
-					+ "LAUNCH will take your ship off away from the planet. "
-					+ "STOP will attempt to negate all velocity. "
-					+ "LAND will land your ship on the nearest planet. "
-					+ "Otherwise, see ENGINE help for engine commands."));
-				return;
+				if(parsed.size()==1)
+				{
+					super.addScreenMessage(L("^HHELP:^N\n\r^N"+"The ACTIVATE command can be used to turn on any engine, "
+						+ "sensor, or other system in your ship.  The DEACTIVATE command will turn off any system specified. "
+						+ "LAUNCH will take your ship off away from the planet. "
+						+ "STOP will attempt to negate all velocity. "
+						+ "LAND will land your ship on the nearest planet. "
+						+ "INFO (SYSTEMNAME) will read in identifying info. "
+						+ "Otherwise, see HELP ENGINE for engine commands."));
+					return;
+				}
+				String secondWord = CMParms.combine(parsed,1);
+				if(secondWord.equalsIgnoreCase("ENGINE"))
+				{
+					super.addScreenMessage(L("^HHELP:^N\n\r^N"+"The ENGINE command instructs the given " +
+							"engine number or name to fire in the appropriate direction. What happens, " +
+							"and how quickly, depends largely on the capabilities of the engine. " +
+							"Giving a direction is optional, and if not given, AFT is assumed. All "+
+							"directions result in corrected bursts, except for AFT, which will result " +
+							"in sustained accelleration."));
+					return;
+				}
+				else
+				{
+					super.addScreenMessage(L("^HHELP:^N\n\r^N"+"No help on "+secondWord.toUpperCase()+" available."));
+					return;
+				}
 			}
 			else
-			if(uword.equalsIgnoreCase("ENGINEHELP"))
+			if(uword.equalsIgnoreCase("INFO"))
 			{
-				super.addScreenMessage(L("^HENGINEHELP:^N\n\r^N"+"The ENGINE command instructs the given " +
-						"engine number or name to fire in the appropriate direction. What happens, " +
-						"and how quickly, depends largely on the capabilities of the engine. " +
-						"Giving a direction is optional, and if not given, AFT is assumed. All "+
-						"directions result in corrected bursts, except for AFT, which will result " +
-						"in sustained accelleration."));
-				return;
+				if(parsed.size()==1)
+				{
+					super.addScreenMessage(L("^HINFO:^N\n\r^N"+"Please specify the system to query."));
+					return;
+				}
+				String secondWord = CMParms.combine(parsed,1);
+				if(secondWord.startsWith("ENGINE"))
+				{
+					
+				}
+				else
+				if(secondWord.startsWith("SYSTEM"))
+				{
+					
+				}
+				
 			}
 			CMMsg msg = null;
 			Electronics E  = null;
@@ -615,7 +857,7 @@ public class RocketShipProgram extends GenShipProgram
 				String code = null;
 				E=findEngineByName(rest);
 				if(E!=null)
-					code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(.0000001));
+					code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(.0000001));
 				else
 					E=findSensorByName(rest);
 				if(E==null)
@@ -658,56 +900,14 @@ public class RocketShipProgram extends GenShipProgram
 					this.programEngines=null;
 				}
 				this.programPlanet=CMLib.map().getSpaceObject(ship.getIsDocked(), true);
-				final List<ShipEngine> readyEngines = new ArrayList<ShipEngine>(1);
-				final List<ShipEngine> engines = getEngines();
-				final MOB M=CMClass.getFactoryMOB();
-				try
-				{
-					for(final ShipEngine engineE : engines)
-					{
-						if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.AFT))
-						&&(engineE.getMaxThrust()>SpaceObject.ACCELLERATION_G)
-						&&(engineE.getMinThrust()<SpaceObject.ACCELLERATION_PASSOUT))
-						{
-							int tries=10000;
-							double lastTryAmt=0.000001;
-							final CMMsg deactMsg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
-							msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-							final double targetAccelleration = SpaceObject.ACCELLERATION_G;
-							while((readyEngines.size()==0)&&(--tries>0))
-							{
-								this.lastAccelleration =null;
-								final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(lastTryAmt));
-								msg.setTargetMessage(code);
-								this.trySendMsgToItem(mob, engineE, msg);
-								final Double thisLastAccel=this.lastAccelleration ;
-								if((thisLastAccel!=null)
-								&&(thisLastAccel.doubleValue() >= targetAccelleration)
-								&&(ship.getIsDocked()==null))
-								{
-									readyEngines.add(engineE);
-									this.lastInject=new Double(lastTryAmt);
-								}
-								else
-								{
-									this.trySendMsgToItem(mob, engineE, deactMsg);
-									lastTryAmt *= 1.1;
-								}
-							}
-						}
-					}
-				}
-				finally
-				{
-					M.destroy();
-				}
-				if(readyEngines.size()==0)
+				ShipEngine engineE =this.primeMainThrusters(ship);
+				if(engineE==null)
 				{
 					this.programEngines = null;
 					super.addScreenMessage(L("Error: Malfunctioning launch thrusters interface."));
 					return;
 				}
-				this.programEngines=readyEngines;
+				this.programEngines=new XVector<ShipEngine>(engineE);
 				this.rocketState = RocketShipProgram.RocketStateMachine.LAUNCHSEARCH;
 				super.addScreenMessage(L("Launch procedure initialized."));
 				return;
@@ -733,87 +933,29 @@ public class RocketShipProgram extends GenShipProgram
 					this.rocketState=null;
 					this.programEngines=null;
 				}
-				final List<ShipEngine> readyEngines = new ArrayList<ShipEngine>(1);
-				final List<ShipEngine> engines = getEngines();
-				final MOB M=CMClass.getFactoryMOB();
-				try
+				ShipEngine engineE=null;
+				if(!flipForAllStop(ship))
 				{
-					// step one, face opposite direction of motion
-					final double[] stopFacing = new double[]{(Math.PI*2.0)-ship.direction()[0],Math.PI-ship.direction()[1]};
-					int tries=10000;
-					while(!Arrays.equals(stopFacing, ship.facing()) && (--tries>0))
-					{
-						for(final ShipEngine engineE : engines)
-						{
-							if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.STARBOARD))
-							&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.PORT))
-							&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.DORSEL))
-							&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.VENTRAL)))
-							{
-								msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-								final double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing);
-								// starboard is -, port is +
-								final TechComponent.ShipDir firstDir = angleDelta[0] < 0 ? ShipDir.STARBOARD : ShipDir.PORT;
-								double moveAmt = 0.000001;
-								final String code=Technical.TechCommand.THRUST.makeCommand(firstDir,Double.valueOf(moveAmt));
-								msg.setTargetMessage(code);
-								this.trySendMsgToItem(mob, engineE, msg);
-								double ptsMoved = Math.abs(ship.facing()[0]-stopFacing[0]);
-System.out.println("ptsMoved = "+ptsMoved+" = Math.abs("+ship.facing()[0]+"-"+stopFacing[0]+");");
-return;//BZ:DELME
-							}
-						}
-					}
-					//final double[] stopFacing = CMLib.map().getDirectionFromDir(facing, roll, direction) 
-					for(final ShipEngine engineE : engines)
-					{
-						if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.AFT))
-						&&(engineE.getMaxThrust()>SpaceObject.ACCELLERATION_G)
-						&&(engineE.getMinThrust()<SpaceObject.ACCELLERATION_PASSOUT))
-						{
-							tries=10000;
-							double lastTryAmt=0.000001;
-							final CMMsg deactMsg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
-							msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-							final double targetAccelleration = SpaceObject.ACCELLERATION_G;
-							while((readyEngines.size()==0)&&(--tries>0))
-							{
-								this.lastAccelleration =null;
-								final String code=Technical.TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(lastTryAmt));
-								msg.setTargetMessage(code);
-								this.trySendMsgToItem(mob, engineE, msg);
-								final Double thisLastAccel=this.lastAccelleration ;
-								if((thisLastAccel!=null)
-								&&(thisLastAccel.doubleValue() >= targetAccelleration)
-								&&(ship.getIsDocked()==null))
-								{
-									readyEngines.add(engineE);
-									this.lastInject=new Double(lastTryAmt);
-								}
-								else
-								{
-									this.trySendMsgToItem(mob, engineE, deactMsg);
-									lastTryAmt *= 1.1;
-								}
-							}
-						}
-					}
+					super.addScreenMessage(L("Warning. Stop program cancelled due to engine failure."));
+					this.rocketState=null;
+					this.programEngines=null;
+					return;
 				}
-				finally
+				else
 				{
-					M.destroy();
+					engineE=this.primeMainThrusters(ship);
 				}
-				if(readyEngines.size()==0)
+				if(engineE==null)
 				{
+					this.rocketState=null;
 					this.programEngines = null;
 					super.addScreenMessage(L("Error: Malfunctioning thrusters interface."));
 					return;
 				}
-				this.programEngines=readyEngines;
+				this.programEngines=new XVector<ShipEngine>(engineE);
 				this.rocketState = RocketShipProgram.RocketStateMachine.STOP;
 				super.addScreenMessage(L("All Stop procedure initialized."));
 				return;
-				//TODO:
 			}
 			else
 			if(uword.equalsIgnoreCase("LAND"))
@@ -821,6 +963,7 @@ return;//BZ:DELME
 				//TODO:
 			}
 			else
+			if(!uword.equalsIgnoreCase("HELP"))
 			{
 				ShipEngine engineE=findEngineByName(uword);
 				if(engineE==null)
@@ -881,7 +1024,7 @@ return;//BZ:DELME
 				}
 				if(amount > 0)
 				{
-					final String code=Technical.TechCommand.THRUST.makeCommand(portDir,Double.valueOf(amount));
+					final String code=TechCommand.THRUST.makeCommand(portDir,Double.valueOf(amount));
 					msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 				}
 				else
@@ -992,7 +1135,6 @@ return;//BZ:DELME
 		}
 		else
 		if((msg.target() instanceof SpaceShip)
-		&&(lastAccelleration ==null)
 		&&(msg.targetMinor()==CMMsg.TYP_ACTIVATE)
 		&&(msg.isTarget(CMMsg.MASK_CNTRLMSG))
 		&&(msg.targetMessage()!=null))
@@ -1002,9 +1144,20 @@ return;//BZ:DELME
 			if(command == TechCommand.ACCELLERATED)
 			{
 				final Object[] parms=command.confirmAndTranslate(parts);
-				if((parms!=null)&&(parms[0]==ShipDir.AFT))
+				if(parms != null)
 				{
-					this.lastAccelleration =(Double)parms[1];
+					switch((ShipDir)parms[0])
+					{
+					case AFT:
+					case FORWARD:
+						if(this.lastAccelleration==null)
+							this.lastAccelleration =(Double)parms[1];
+						break;
+					default:
+						if(lastAngle==null)
+							this.lastAngle =(Double)parms[1];
+						break;
+					}
 				}
 			}
 		}

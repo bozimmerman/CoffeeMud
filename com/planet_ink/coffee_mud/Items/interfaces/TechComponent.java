@@ -95,5 +95,25 @@ public interface TechComponent extends Electronics
 		DORSEL,
 		STARBOARD,
 		FORWARD
+		;		
+		public final ShipDir opposite()
+		{
+			switch(this)
+			{
+			case AFT:
+				return FORWARD;
+			case PORT:
+				return STARBOARD;
+			case VENTRAL:
+				return DORSEL;
+			case DORSEL:
+				return VENTRAL;
+			case STARBOARD:
+				return PORT;
+			case FORWARD:
+				return AFT;
+			}
+			return this;
+		}
 	}
 }

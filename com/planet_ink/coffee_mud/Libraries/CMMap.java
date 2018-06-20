@@ -540,7 +540,6 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		final double newSpeed = moveSpaceObject(O.direction(),O.speed(),accelDirection,newAccelleration);
 		O.setSpeed(newSpeed);
-		
 	}
 
 	@Override
@@ -625,7 +624,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(yawDelta < 0.1)
 			newDirectionYaw = accelDirectionYaw;
 		else
+		{
 			newDirectionYaw = curDirectionYaw + ((curDirectionYaw > accelDirectionYaw) ? -(accelerationMultiplier * Math.sin(yawDelta)) : (accelerationMultiplier * Math.sin(yawDelta)));
+			if((newDirectionYaw > 0.0) && (PI_TIMES_2 - newDirectionYaw) < 0.000001)
+				newDirectionYaw=0.0;
+		}
 		if (newDirectionYaw < 0.0)
 			newDirectionYaw = PI_TIMES_2 + newDirectionYaw;
 		double newDirectionPitch;
@@ -657,6 +660,15 @@ public class CMMap extends StdLibrary implements WorldMap
 		return newSpeed;
 	}
 
+	@Override
+	public double[] getOppositeDir(final double[] dir)
+	{
+		final double[] newDir = new double[]{Math.PI+dir[0],Math.PI-dir[1]};
+		if(newDir[0] >= (2*Math.PI))
+			newDir[0] -= (2*Math.PI);
+		return newDir;
+	}
+	
 	@Override
 	public TechComponent.ShipDir getDirectionFromDir(double[] facing, double roll, double[] direction)
 	{

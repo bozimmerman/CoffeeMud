@@ -309,7 +309,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		
 		if((amount > 1)&&((portDir!=TechComponent.ShipDir.AFT) || (me.getThrust() > oldThrust)))
 			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a "+rumbleWord+" and hear the blast of @x1.",me.name(mob)));
-		if(accelleration == 0)
+		if(accelleration == 0.0)
 		{
 			final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_thrust_capacity.");
 			sendComputerMessage(me,circuitKey,mob,controlI,code);
@@ -319,7 +319,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		if(me.consumeFuel(fuelToConsume))
 		{
 			final SpaceObject spaceObject=ship.getShipSpaceObject();
-			final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(portDir,Double.valueOf(accelleration),Boolean.valueOf(me.isConstantThruster()));
+			final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(portDir.opposite(),Double.valueOf(accelleration),Boolean.valueOf(me.isConstantThruster()));
 			final CMMsg msg=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			if(spaceObject.okMessage(mob, msg))
 			{
