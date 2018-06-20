@@ -73,7 +73,7 @@ public class GrinderItems
 		MINTHRUST,ISCONSTTHRUST,AVAILPORTS,CONTENTSACCESS,BLENDEDVIEW,
 		ISSHIPWARCOMP,SWARNUMPORTS,SWARPORTS,SWARMTYPES,
 		RECHARGERATE,OPENTICKS,ISCLOAK,ISBOOK,MAXPAGES,MAXCHARSPAGE,
-		STATESTR,STATESUBJSTR,RIDERSTR
+		STATESTR,STATESUBJSTR,RIDERSTR,ISRESOURCE,RSCSUBTYPE
 		;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
@@ -717,6 +717,12 @@ public class GrinderItems
 				case ISELECTRONIC:
 					break;
 				case ISFOOD:
+					break;
+				case ISRESOURCE:
+					break;
+				case RSCSUBTYPE:
+					if(I instanceof RawMaterial)
+						((RawMaterial)I).setSubType(old);
 					break;
 				case ISRIDEABLE:
 					break;

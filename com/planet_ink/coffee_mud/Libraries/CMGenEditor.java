@@ -3748,6 +3748,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		E.setSecretIdentity(prompt(mob, E.rawSecretIdentity(), showNumber, showFlag, "Secret Identity", true, false));
 	}
 
+	protected void genMaterialSubType(MOB mob, RawMaterial E, int showNumber, int showFlag) throws IOException
+	{
+		E.setSubType(prompt(mob, E.getSubType(), showNumber, showFlag, "Rsc Sub-Type", true, false));
+	}
+
 	protected void genNourishment(MOB mob, Food E, int showNumber, int showFlag) throws IOException
 	{
 		E.setNourishment(prompt(mob, E.nourishment(), showNumber, showFlag, "Nourishment/Eat"));
@@ -8837,6 +8842,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genLevel(mob,me,++showNumber,showFlag);
 			genSecretIdentity(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);
+			if(me instanceof RawMaterial)
+				genMaterialSubType(mob,(RawMaterial)me,++showNumber,showFlag);
 			if(me instanceof Book)
 			{
 				((Book)me).setMaxPages(prompt(mob, ((Book)me).getMaxPages(), ++showNumber, showFlag, "Max Pages"));
@@ -8965,6 +8972,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genRejuv(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);
+			if(me instanceof RawMaterial)
+				genMaterialSubType(mob,(RawMaterial)me,++showNumber,showFlag);
 			genNourishment(mob,me,++showNumber,showFlag);
 			genBiteSize(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.basePhyStats(),++showNumber,showFlag);
@@ -9070,6 +9079,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			genThirstQuenched(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,(Item)me,++showNumber,showFlag);
+			if(me instanceof RawMaterial)
+				genMaterialSubType(mob,(RawMaterial)me,++showNumber,showFlag);
 			genDrinkHeld(mob,me,++showNumber,showFlag);
 			genGettable(mob,(Item)me,++showNumber,showFlag);
 			genReadable1(mob,(Item)me,++showNumber,showFlag);

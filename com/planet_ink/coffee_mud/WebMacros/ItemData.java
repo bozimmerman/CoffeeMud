@@ -418,6 +418,15 @@ public class ItemData extends StdWebMacro
 							old=""+((Food)I).nourishment();
 						str.append(old);
 						break;
+					case ISRESOURCE: // is resource
+						if(I instanceof RawMaterial)
+							return "true";
+						return "false";
+					case RSCSUBTYPE: // RSCSUBTYPE resource subtype
+						if((firstTime)&&(I instanceof RawMaterial))
+							old=""+((RawMaterial)I).getSubType();
+						str.append(old);
+						break;
 					case ISDRINK: // is drink
 						if(I instanceof Drink)
 							return "true";

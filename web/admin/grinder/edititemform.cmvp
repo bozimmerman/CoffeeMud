@@ -212,6 +212,13 @@
 	</TR>
 	@endif@
 @/block@
+@if?ItemData?ISRESOURCE@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Resource Sub-Type:</B></FONT></TD>
+		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=RSCSUBTYPE SIZE=5 VALUE="@ItemData?RSCSUBTYPE@">
+		</TD>
+	</TR>
+@endif@
 @if?ItemData?ISWALLPAPER@
     <TR>
         <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Item Name:</B></FONT></TD>
