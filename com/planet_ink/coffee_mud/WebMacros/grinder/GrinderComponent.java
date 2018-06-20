@@ -58,6 +58,7 @@ public class GrinderComponent
 				final String conn=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+posDex);
 				final String loc=httpReq.getUrlParameter(fixedCompID+"_PIECE_LOCATION_"+posDex);
 				final String type=httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+posDex);
+				final String stype=httpReq.getUrlParameter(fixedCompID+"_PIECE_STYPE_"+posDex);
 				final String consumed=httpReq.getUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+posDex);
 				if(!conn.equalsIgnoreCase("DELETE"))
 				{
@@ -70,7 +71,7 @@ public class GrinderComponent
 					able.setConsumed((consumed!=null)&&(consumed.equalsIgnoreCase("on")||consumed.equalsIgnoreCase("checked")));
 					able.setLocation(AbilityComponent.CompLocation.valueOf(loc));
 					able.setMask(mask);
-					able.setType(AbilityComponent.CompType.valueOf(type), str);
+					able.setType(AbilityComponent.CompType.valueOf(type), str,stype);
 					set.add(able);
 				}
 				posDex++;

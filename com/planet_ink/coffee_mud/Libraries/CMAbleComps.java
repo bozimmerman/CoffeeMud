@@ -75,10 +75,10 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			return null;
 		else
 		if(comp.getType()==AbilityComponent.CompType.RESOURCE)
-			return CMLib.materials().makeItemResource((int)comp.getLongType());
+			return CMLib.materials().makeItemResource((int)comp.getLongType(), comp.getSubType());
 		else
 		if(comp.getType()==AbilityComponent.CompType.MATERIAL)
-			return CMLib.materials().makeItemResource(RawMaterial.CODES.MOST_FREQUENT(((int)comp.getLongType())&RawMaterial.MATERIAL_MASK));
+			return CMLib.materials().makeItemResource(RawMaterial.CODES.MOST_FREQUENT(((int)comp.getLongType())&RawMaterial.MATERIAL_MASK), comp.getSubType());
 		return null;
 	}
 
@@ -92,12 +92,15 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			return false;
 		else
 		if((comp.getType()==AbilityComponent.CompType.RESOURCE)
-		&&((!(I instanceof RawMaterial))||(I.material()!=comp.getLongType())))
+		&&((!(I instanceof RawMaterial))
+			||(I.material()!=comp.getLongType())
+			||((comp.getSubType().length()>0)&&(!((RawMaterial)I).getSubType().equalsIgnoreCase(comp.getSubType())))))
 			return false;
 		else
 		if((comp.getType()==AbilityComponent.CompType.MATERIAL)
 		&&((!(I instanceof RawMaterial))
-			||(!isRightMaterial(comp.getLongType(),I.material()&RawMaterial.MATERIAL_MASK,mithrilOK))))
+			||(!isRightMaterial(comp.getLongType(),I.material()&RawMaterial.MATERIAL_MASK,mithrilOK))
+			||((comp.getSubType().length()>0)&&(!((RawMaterial)I).getSubType().equalsIgnoreCase(comp.getSubType())))))
 			return false;
 		container=I.ultimateContainer(null);
 		if(container==null)
@@ -280,6 +283,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		if(comp.getType()==AbilityComponent.CompType.RESOURCE)
 			itemDesc=RawMaterial.CODES.NAME((int)comp.getLongType()).toUpperCase();
 		curr.add("COMPONENTID",itemDesc);
+		curr.add("SUBTYPE",comp.getSubType());
 		curr.add("MASK",comp.getMaskStr());
 		return curr;
 	}
@@ -287,8 +291,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	@Override
 	public void setAbilityComponentCodedFromCodedPairs(PairList<String,String> decodedDV, AbilityComponent comp)
 	{
-		final String[] s=new String[6];
-		for(int i=0;i<6;i++)
+		final String[] s=new String[7];
+		for(int i=0;i<7;i++)
 			s[i]=decodedDV.get(i).second;
 		if(s[0].equalsIgnoreCase("||"))
 			comp.setConnector(AbilityComponent.CompConnector.OR);
@@ -312,18 +316,20 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		else
 			comp.setConsumed(false);
 		comp.setAmount(CMath.s_int(s[3]));
-		int depth=CMLib.materials().getResourceCode(s[4],false);
+		String compType=s[4];
+		String subType=s[5];
+		int depth=CMLib.materials().getResourceCode(compType,false);
 		if(depth>=0)
-			comp.setType(AbilityComponent.CompType.RESOURCE, Integer.valueOf(depth));
+			comp.setType(AbilityComponent.CompType.RESOURCE, Integer.valueOf(depth), subType);
 		else
 		{
-			depth=CMLib.materials().getMaterialCode(s[4],false);
+			depth=CMLib.materials().getMaterialCode(compType,false);
 			if(depth>=0)
-				comp.setType(AbilityComponent.CompType.MATERIAL, Integer.valueOf(depth));
+				comp.setType(AbilityComponent.CompType.MATERIAL, Integer.valueOf(depth), subType);
 			else
-				comp.setType(AbilityComponent.CompType.STRING, s[4].toUpperCase().trim());
+				comp.setType(AbilityComponent.CompType.STRING, s[4].toUpperCase().trim(), "");
 		}
-		comp.setMask(s[5]);
+		comp.setMask(s[6]);
 	}
 
 	protected List<PairList<String,String>> getAbilityComponentCodedListLists(List<AbilityComponent> req)
@@ -344,7 +350,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		comp.setLocation(AbilityComponent.CompLocation.INVENTORY);
 		comp.setConsumed(false);
 		comp.setAmount(1);
-		comp.setType(AbilityComponent.CompType.STRING, "resource-material-item name");
+		comp.setType(AbilityComponent.CompType.STRING, "resource-material-item name", "");
 		comp.setMask("");
 		return comp;
 	}
@@ -374,8 +380,10 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			buf.append(curr.get(3).second);
 			buf.append(":");
 			buf.append(curr.get(4).second);
+			if(curr.get(5).second.toString().length()>0)
+				buf.append("(").append(curr.get(5).second).append(")");
 			buf.append(":");
-			buf.append(curr.get(5).second);
+			buf.append(curr.get(6).second);
 			buf.append(")");
 		}
 		return buf.toString();
@@ -408,14 +416,30 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				buf.append("MASK: "+comp.getMaskStr()+": ");
 		}
 		amt=comp.getAmount();
-		if(comp.getType()==AbilityComponent.CompType.STRING)
-			itemDesc=((amt>1)?(amt+" "+comp.getStringType()+"s"):CMLib.english().startWithAorAn(comp.getStringType()));
+		String subType=comp.getSubType();
+		if(subType.trim().length()>0)
+		{
+			subType=subType.trim().toLowerCase();
+			if(comp.getType()==AbilityComponent.CompType.STRING)
+				itemDesc=((amt>1)?(amt+" "+CMLib.english().makePlural(comp.getStringType())):CMLib.english().startWithAorAn(comp.getStringType()));
+			else
+			if(comp.getType()==AbilityComponent.CompType.MATERIAL)
+				itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.Material.findByMask((int)comp.getLongType()).noun().toLowerCase()+" "+subType;
+			else
+			if(comp.getType()==AbilityComponent.CompType.RESOURCE)
+				itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.CODES.NAME((int)comp.getLongType()).toLowerCase()+" "+subType;
+		}
 		else
-		if(comp.getType()==AbilityComponent.CompType.MATERIAL)
-			itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.Material.findByMask((int)comp.getLongType()).noun().toLowerCase();
-		else
-		if(comp.getType()==AbilityComponent.CompType.RESOURCE)
-			itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.CODES.NAME((int)comp.getLongType()).toLowerCase();
+		{
+			if(comp.getType()==AbilityComponent.CompType.STRING)
+				itemDesc=((amt>1)?(amt+" "+comp.getStringType()+"s"):CMLib.english().startWithAorAn(comp.getStringType()));
+			else
+			if(comp.getType()==AbilityComponent.CompType.MATERIAL)
+				itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.Material.findByMask((int)comp.getLongType()).noun().toLowerCase();
+			else
+			if(comp.getType()==AbilityComponent.CompType.RESOURCE)
+				itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.CODES.NAME((int)comp.getLongType()).toLowerCase();
+		}
 		if(comp.getLocation()==AbilityComponent.CompLocation.INVENTORY)
 			buf.append(itemDesc);
 		else
@@ -571,7 +595,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				build.setAmount(CMath.s_int(parmS.substring(0,x)));
 			parmS=parmS.substring(x+1);
 
-			build.setType(AbilityComponent.CompType.STRING, "");
+			build.setType(AbilityComponent.CompType.STRING, "", "");
 			x=parmS.indexOf(':');
 			if (x <= 0)
 			{
@@ -579,16 +603,27 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				continue;
 			}
 			rsc=parmS.substring(0,x);
-			depth=CMLib.materials().getResourceCode(rsc,false);
+			String compType=rsc;
+			String subType="";
+			if(rsc.endsWith(")"))
+			{
+				int y=rsc.lastIndexOf('(');
+				if(y>0)
+				{
+					compType=rsc.substring(0, y);
+					subType=rsc.substring(y+1,rsc.length()-1);
+				}
+			}
+			depth=CMLib.materials().getResourceCode(compType,false);
 			if(depth>=0)
-				build.setType(AbilityComponent.CompType.RESOURCE, Long.valueOf(depth));
+				build.setType(AbilityComponent.CompType.RESOURCE, Long.valueOf(depth), subType);
 			else
 			{
-				depth=CMLib.materials().getMaterialCode(rsc,false);
+				depth=CMLib.materials().getMaterialCode(compType,false);
 				if(depth>=0)
-					build.setType(AbilityComponent.CompType.MATERIAL, Long.valueOf(depth));
+					build.setType(AbilityComponent.CompType.MATERIAL, Long.valueOf(depth), subType);
 				else
-					build.setType(AbilityComponent.CompType.STRING, rsc.toUpperCase().trim());
+					build.setType(AbilityComponent.CompType.STRING, rsc.toUpperCase().trim(), "");
 			}
 			parmS=parmS.substring(x+1);
 

@@ -37,6 +37,7 @@ public class DefaultAbilityComponent implements AbilityComponent
 	private long			compTypeMatRsc	= 0;
 	private String			compTypeStr		= "";
 	private String			maskStr			= "";
+	private String			compSubTypeStr	= "";
 	private CompiledZMask	compiledMask	= null;
 
 	@Override
@@ -166,9 +167,10 @@ public class DefaultAbilityComponent implements AbilityComponent
 	}
 
 	@Override
-	public void setType(CompType type, Object typeObj)
+	public void setType(CompType type, Object typeObj, String subType)
 	{
 		this.type = type;
+		compSubTypeStr = (subType == null)?"":subType.toUpperCase().trim();
 		if(typeObj == null)
 		{
 			compTypeStr="";
@@ -191,5 +193,11 @@ public class DefaultAbilityComponent implements AbilityComponent
 	public String getStringType()
 	{
 		return compTypeStr;
+	}
+
+	@Override
+	public String getSubType()
+	{
+		return compSubTypeStr;
 	}
 }

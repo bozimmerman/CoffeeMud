@@ -540,7 +540,7 @@ public class RocketShipProgram extends GenShipProgram
 		{
 			if(programPlanet==null)
 			{
-				String reason = (programPlanet==null)?"no planetary information":"";
+				String reason = "no planetary information";
 				this.rocketState=null;
 				this.programEngines=null;
 				this.lastInject=null;

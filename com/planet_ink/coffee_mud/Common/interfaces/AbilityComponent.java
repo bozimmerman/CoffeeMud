@@ -86,7 +86,7 @@ public interface AbilityComponent extends CMCommon
 	 * a component.  This type can designate a resource, material, or
 	 * an item name string.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompType
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent#setType(CompType, Object)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent#setType(CompType, Object, String)
 	 * @return a CompType enum
 	 */
 	public CompType getType();
@@ -99,18 +99,31 @@ public interface AbilityComponent extends CMCommon
 	 * long number in it.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompType
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent#getType()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent#getSubType()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent#getLongType()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent#getStringType()
 	 * @param type the CompType enum
 	 * @param typeObj either a Integer object or a String
+	 * @param subType the typeObj subType
 	 */
-	public void setType(CompType type, Object typeObj);
+	public void setType(CompType type, Object typeObj, String subType);
 
+
+	/**
+	 * Returns the item filter type for determining whether an item is
+	 * a component.  This type can designate a resource, material, or
+	 * an item name string.
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent.CompType
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent#setType(CompType, Object, String)
+	 * @return a String type
+	 */
+	public String getSubType();
+	
 	/**
 	 * For resource and material type item component filters, this will
 	 * return the type comparison object as a long value.  This is typically
 	 * a resource or material mask value.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent#setType(CompType, Object)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent#setType(CompType, Object, String)
 	 * @return a resource or material mask value
 	 */
 	public long getLongType();
@@ -119,7 +132,7 @@ public interface AbilityComponent extends CMCommon
 	 * For resource and material type item component filters, this will
 	 * return the type comparison object as a String value.  This is typically
 	 * a item name filter.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent#setType(CompType, Object)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.AbilityComponent#setType(CompType, Object, String)
 	 * @return a item name filter
 	 */
 	public String getStringType();

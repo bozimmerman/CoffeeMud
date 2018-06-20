@@ -8659,6 +8659,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			genText(mob,decoded,(new String[]{"KEPT","CONSUMED"}),choices+" KEPT, CONSUMED",++showNumber,showFlag,"Component fate (?)","FATE");
 			genText(mob,decoded,null,null,++showNumber,showFlag,"Amount of component","AMOUNT");
 			genText(mob,decoded,null,allComponents,++showNumber,showFlag,"Type of component (?)","COMPONENTID");
+			genText(mob,decoded,null,allComponents,++showNumber,showFlag,"Component Subtype","SUBTYPE");
 			genText(mob,decoded,null,CMLib.masking().maskHelp("\n","disallow"),++showNumber,showFlag,"Component applies-to mask (?)","MASK");
 
 			if (showFlag < -900)

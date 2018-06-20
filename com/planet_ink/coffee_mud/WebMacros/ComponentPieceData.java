@@ -78,6 +78,9 @@ public class ComponentPieceData extends StdWebMacro
 				String strType=httpReq.getUrlParameter(fixedCompID+"_PIECE_STRING_"+last);
 				if(strType==null)
 					strType="item name";
+				String subType=httpReq.getUrlParameter(fixedCompID+"_PIECE_STYPE_"+last);
+				if(subType==null)
+					subType="";
 				final AbilityComponent.CompType C=(AbilityComponent.CompType)CMath.s_valueOf(AbilityComponent.CompType.values(), type);
 				if((C==null)||(C==AbilityComponent.CompType.STRING))
 				{
@@ -109,7 +112,8 @@ public class ComponentPieceData extends StdWebMacro
 							str.append(">"+RawMaterial.CODES.NAME(i));
 						}
 					}
-					str.append("</SELECT>");
+					str.append("</SELECT>&nbsp;&nbsp;Sub-Type: ");
+					str.append("<INPUT TYPE=TEXT SIZE=2 NAME=\""+fixedCompID+"_PIECE_STYPE_"+last+"\" VALUE=\""+subType+"\">"); 
 				}
 			}
 			if(parms.containsKey("AMOUNT")||parms.containsKey("AMOUNTEDIT"))
@@ -150,6 +154,8 @@ public class ComponentPieceData extends StdWebMacro
 			}
 			if(parms.containsKey("TYPE"))
 				str.append(httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last));
+			if(parms.containsKey("SUBTYPE"))
+				str.append(httpReq.getUrlParameter(fixedCompID+"_PIECE_STYPE_"+last));
 			if(parms.containsKey("TYPEEDIT"))
 			{
 				String currType = httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+last);

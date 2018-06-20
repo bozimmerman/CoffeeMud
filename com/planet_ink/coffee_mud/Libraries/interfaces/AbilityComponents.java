@@ -145,7 +145,7 @@ public interface AbilityComponents extends CMLibrary
 	/**
 	 * Breaks an ability component decoded objects into a series of key/value pairs,
 	 * where the first is always the connector, and the keys are as follows:
-	 * ANDOR, DISPOSITION, FATE, AMOUNT, COMPONENTID, MASK. In that order.
+	 * ANDOR, DISPOSITION, FATE, AMOUNT, COMPONENTID, SUBTYPE, MASK. In that order.
 	 * This is primarily for simplifying editors.
 	 * @see AbilityComponents#setAbilityComponentCodedFromCodedPairs(PairList, AbilityComponent)
 	 * @param comp the decoded ability component to produce fields from
@@ -157,7 +157,7 @@ public interface AbilityComponents extends CMLibrary
 	 * Copies the key/value pairs from a PairList of specific abilitycomponent fields
 	 * into the given AbilityComponent object.	 The first pairlist entry is always the 
 	 * connector, and the keys are as follows: ANDOR, DISPOSITION, FATE, AMOUNT, 
-	 * COMPONENTID, MASK. In that order.
+	 * COMPONENTID, SUBTYPE, MASK. In that order.
 	 * This is primarily for simplifying editors.
 	 * @see AbilityComponents#getAbilityComponentCoded(AbilityComponent)
 	 * @param decodedDV  the key/value pairs of the ability component values.

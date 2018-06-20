@@ -1416,6 +1416,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 							final String strVal=httpReq.getUrlParameter(fieldName+"_CUST_STR_"+x);
 							final String loc=httpReq.getUrlParameter(fieldName+"_CUST_LOC_"+x);
 							final String typ=httpReq.getUrlParameter(fieldName+"_CUST_TYPE_"+x);
+							final String styp=httpReq.getUrlParameter(fieldName+"_CUST_STYPE_"+x);
 							final String con=httpReq.getUrlParameter(fieldName+"_CUST_CON_"+x);
 							if(connector==null)
 								connector="AND";
@@ -1432,7 +1433,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								able.setMask("");
 								able.setConsumed((con!=null) && con.equalsIgnoreCase("on"));
 								able.setLocation(AbilityComponent.CompLocation.valueOf(loc));
-								able.setType(AbilityComponent.CompType.valueOf(typ), strVal);
+								able.setType(AbilityComponent.CompType.valueOf(typ), strVal, styp);
 								comps.add(able);
 							}
 							catch(final Exception e)
@@ -1457,6 +1458,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					{
 						return ""+amt;
 					}
+					final String subType = (I instanceof RawMaterial)?((RawMaterial)I).getSubType():"";
 					final List<AbilityComponent> comps=new Vector<AbilityComponent>();
 					AbilityComponent able=CMLib.ableComponents().createBlankAbilityComponent();
 					able.setConnector(AbilityComponent.CompConnector.AND);
@@ -1464,7 +1466,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					able.setMask("");
 					able.setConsumed(true);
 					able.setLocation(AbilityComponent.CompLocation.ONGROUND);
-					able.setType(AbilityComponent.CompType.MATERIAL, Integer.valueOf(I.material() & RawMaterial.MATERIAL_MASK));
+					able.setType(AbilityComponent.CompType.MATERIAL, Integer.valueOf(I.material() & RawMaterial.MATERIAL_MASK), subType);
 					comps.add(able);
 					for(final Integer resourceCode : extraMatsM.keySet())
 					{
@@ -1474,7 +1476,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						able.setMask("");
 						able.setConsumed(true);
 						able.setLocation(AbilityComponent.CompLocation.ONGROUND);
-						able.setType(AbilityComponent.CompType.RESOURCE, resourceCode);
+						able.setType(AbilityComponent.CompType.RESOURCE, resourceCode, "");
 						comps.add(able);
 					}
 					return CMLib.ableComponents().getAbilityComponentCodedString(comps);
@@ -1555,6 +1557,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 						str.append("\n\rAmt: <INPUT TYPE=TEXT SIZE=2 NAME="+fieldName+"_CUST_AMT_"+(i+1)+" VALUE=\""+(((type!=2)||(comp==null))?"":Integer.toString(comp.getAmount()))+"\"  ONKEYDOWN=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
 						str.append("\n\r<SELECT NAME="+fieldName+"_CUST_TYPE_"+(i+1)+" ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true; ReShow();\">");
 						final AbilityComponent.CompType compType=(comp!=null)?comp.getType():AbilityComponent.CompType.STRING;
+						final String subType=(comp != null)?comp.getSubType():"";
 						for(final AbilityComponent.CompType conn : AbilityComponent.CompType.values())
 						{
 							str.append("<OPTION VALUE=\""+conn.toString()+"\" ");
@@ -1610,6 +1613,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 								}
 							}
 							str.append("</SELECT>");
+							str.append(" <INPUT TYPE=TEXT SIZE=2 NAME="+fieldName+"_CUST_STYPE_"+(i+1)+" VALUE=\""+subType+"\">");
 						}
 						str.append("\n\r<SELECT NAME="+fieldName+"_CUST_LOC_"+(i+1)+" ONCHANGE=\"document.RESOURCES."+fieldName+"_WHICH[2].checked=true;\">");
 						for(final AbilityComponent.CompLocation conn : AbilityComponent.CompLocation.values())

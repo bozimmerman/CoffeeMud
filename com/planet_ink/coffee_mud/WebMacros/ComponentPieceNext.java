@@ -72,6 +72,7 @@ public class ComponentPieceNext extends StdWebMacro
 					httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+index, A.getConnector().toString());
 					httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_LOCATION_"+index, A.getLocation().toString());
 					httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_TYPE_"+index, A.getType().toString());
+					httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_STYPE_"+index, A.getSubType().toString());
 					httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+index, A.isConsumed()?"on":"");
 					index++;
 				}
@@ -84,6 +85,7 @@ public class ComponentPieceNext extends StdWebMacro
 				httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_CONNECTOR_1", "AND");
 				httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_LOCATION_1", "INVENTORY");
 				httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_TYPE_1", "STRING");
+				httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_STYPE_1", "");
 				httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_CONSUMED_1", "on");
 			}
 		}
@@ -104,6 +106,7 @@ public class ComponentPieceNext extends StdWebMacro
 						httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+newIndex, httpReq.getUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+oldIndex));
 						httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_LOCATION_"+newIndex, httpReq.getUrlParameter(fixedCompID+"_PIECE_LOCATION_"+oldIndex));
 						httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_TYPE_"+newIndex, httpReq.getUrlParameter(fixedCompID+"_PIECE_TYPE_"+oldIndex));
+						httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_STYPE_"+newIndex, httpReq.getUrlParameter(fixedCompID+"_PIECE_STYPE_"+oldIndex));
 						httpReq.addFakeUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+newIndex, httpReq.getUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+oldIndex));
 					}
 					newIndex++;
@@ -116,6 +119,7 @@ public class ComponentPieceNext extends StdWebMacro
 			httpReq.removeUrlParameter(fixedCompID+"_PIECE_CONNECTOR_"+newIndex);
 			httpReq.removeUrlParameter(fixedCompID+"_PIECE_LOCATION_"+newIndex);
 			httpReq.removeUrlParameter(fixedCompID+"_PIECE_TYPE_"+newIndex);
+			httpReq.removeUrlParameter(fixedCompID+"_PIECE_STYPE_"+newIndex);
 			httpReq.removeUrlParameter(fixedCompID+"_PIECE_CONSUMED_"+newIndex);
 		}
 		final String last=httpReq.getUrlParameter("COMPONENTPIECE");

@@ -755,10 +755,22 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			else
 			{
 				if(I instanceof Drink)
+				{
 					I.setName(L("some @x1",name));
+					I.setDisplayText(L("some @x1 sits here.",name));
+				}
 				else
+				if((I instanceof RawMaterial)
+				&&(((RawMaterial)I).getSubType().length()>0))
+				{
+					I.setName(L("a @x1 @x2",name,((RawMaterial)I).getSubType().toLowerCase()));
+					I.setDisplayText(L("@x1 sits here.",I.Name()));
+				}
+				else
+				{
 					I.setName(L("a pound of @x1",name));
-				I.setDisplayText(L("some @x1 sits here.",name));
+					I.setDisplayText(L("some @x1 sits here.",name));
+				}
 			}
 		}
 		else
@@ -766,13 +778,22 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			if(I instanceof Drink)
 				I.setName(L("a @x1# pool of @x2",""+I.basePhyStats().weight(),name));
 			else
+			if((I instanceof RawMaterial)
+			&&(((RawMaterial)I).getSubType().length()>0))
+				I.setName(L("a @x1# @x2 @x3 bundle",""+I.basePhyStats().weight(),name,((RawMaterial)I).getSubType().toLowerCase()));
+			else
 				I.setName(L("a @x1# @x2 bundle",""+I.basePhyStats().weight(),name));
 			I.setDisplayText(L("@x1 is here.",I.name()));
 		}
 	}
 
 	@Override
-	public Item makeItemResource(int type)
+	public Item makeItemResource(final int type)
+	{
+		return makeItemResource(type, "");
+	}
+	@Override
+	public Item makeItemResource(final int type, final String subType)
 	{
 		Item I=null;
 		if(((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
@@ -783,6 +804,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			I=CMClass.getItem("GenLiquidResource");
 		else
 			I=CMClass.getItem("GenResource");
+		((RawMaterial)I).setSubType(subType);
 		I.basePhyStats().setWeight(1);
 		I.setMaterial(type);
 		adjustResourceName(I);
