@@ -247,8 +247,10 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		}
 	}
 	
-	private static int getFuelToConsume(final ShipEngine me, final Manufacturer manufacturer, double thrust)
+	private static int getFuelToConsume(final ShipEngine me, final Manufacturer manufacturer, ShipDir portDir, double thrust)
 	{
+		if((portDir != ShipDir.AFT)&&(portDir != ShipDir.FORWARD))
+			thrust = 1.0;
 		final int fuel=(int)Math.round(
 			CMath.ceiling(
 				thrust
@@ -291,18 +293,25 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			thrust=manufacturer.getReliabilityPct() * thrust;
 		final double oldThrust = me.getThrust();
 		if(portDir==TechComponent.ShipDir.AFT) // when thrusting aft, the thrust is continual, so save it
+		{
+			if(amount == 0.0)
+			{
+				if(me.getThrust()>0.0)
+					return reportError(me, controlI, mob, lang.L("@x1 goes quiet.",me.name(mob)), lang.L("Failure: @x1: insufficient fuel.",me.name(mob)));
+				me.setThrust(0.0);
+				return false;
+			}
 			me.setThrust(amount); // also, its always the intended amount, not the adjusted amount
+		}
 		
-		final int fuelToConsume=getFuelToConsume(me, manufacturer, thrust);
+		final int fuelToConsume=getFuelToConsume(me, manufacturer, portDir, thrust);
 		
 		final double accelleration;
 		if(portDir==TechComponent.ShipDir.AFT) // when thrusting aft, there's a smidgeon more power
 		{
 			accelleration = (thrust * me.getSpecificImpulse() / ship.getMass());
 			if(accelleration < me.getMinThrust())
-			{
 				return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s loudly, but nothing happens.",me.name(mob)), lang.L("Failure: @x1: insufficient thrust.",me.name(mob)));
-			}
 		}
 		else
 			accelleration = thrust;
@@ -396,6 +405,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 				if(me.activated())
 				{
 					final Manufacturer manufacturer=me.getFinalManufacturer();
+					//TODO: isn't there a method for this fuel thing?
 					final int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/getFuelDivisor()));
 					if(me.consumeFuel(fuelToConsume))
 					{

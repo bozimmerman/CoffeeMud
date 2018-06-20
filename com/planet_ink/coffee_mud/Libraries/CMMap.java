@@ -554,10 +554,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		double yawDelta = (directionYaw >  facingYaw) ? (directionYaw - facingYaw) : (facingYaw - directionYaw);
 		if(yawDelta > Math.PI)
 			yawDelta=PI_TIMES_2-yawDelta;
+
 		double pitchDelta = (directionPitch >  facingPitch) ? (directionPitch - facingPitch) : (facingPitch - directionPitch);
 		if(pitchDelta > PI_BY_2)
 			pitchDelta=Math.PI-pitchDelta;
-		
+
 		double finalDelta =  yawDelta + pitchDelta;
 		if(finalDelta > Math.PI)
 			finalDelta = Math.abs(PI_TIMES_2-finalDelta);
@@ -612,10 +613,13 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(yawDelta > PI_TIMES_2)
 			yawDelta=PI_TIMES_2-yawDelta;
 		double pitchDelta = (curDirectionPitch >  accelDirectionPitch) ? (curDirectionPitch - accelDirectionPitch) : (accelDirectionPitch - curDirectionPitch);
+		double anglesDelta;
+		if(Math.abs(pitchDelta-Math.PI)<0.00001)
+			yawDelta=0.0;
+		else
 		if(pitchDelta > Math.PI)
 			pitchDelta=Math.PI-pitchDelta;
-
-		double anglesDelta =  yawDelta + pitchDelta;
+		anglesDelta =  yawDelta + pitchDelta;
 		if(anglesDelta > Math.PI)
 			anglesDelta = Math.abs(PI_TIMES_2-anglesDelta);
 		final double accelerationMultiplier = acceleration / currentSpeed;
@@ -638,7 +642,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			newDirectionPitch = curDirectionPitch + ((curDirectionPitch > accelDirectionPitch) ? -(accelerationMultiplier * Math.sin(pitchDelta)) : (accelerationMultiplier * Math.sin(pitchDelta)));
 		if (newDirectionPitch < 0.0)
 			newDirectionPitch = PI_TIMES_2 + newDirectionPitch;
-
+	
 		double newSpeed = currentSpeed + (acceleration * Math.cos(anglesDelta));
 		if(newSpeed < 0)
 		{
@@ -646,15 +650,6 @@ public class CMMap extends StdLibrary implements WorldMap
 			newDirectionYaw = accelDirectionYaw;
 			newDirectionPitch = accelDirectionPitch;
 		}
-
-		//if((curDirection[0]>Math.PI)&&(curDirection[1]<=Math.PI))
-		//	newDirectionPitch=Math.PI+newDirectionPitch;
-		/*
-		System.out.println(CMLib.english().directionDescShort(curDirection)+"@"+curSpeed
-				+" -> "+CMLib.english().directionDescShort(accelDirection)+"@"+newAccelleration
-				+" = "+CMLib.english().directionDescShort(new double[]{newDirectionYaw,newDirectionPitch})+"@"+newSpeed
-				+"    ____ "+anglesDelta); //UBER-DEBUG
-		*/
 		curDirection[0]=newDirectionYaw;
 		curDirection[1]=newDirectionPitch;
 		return newSpeed;
@@ -817,7 +812,15 @@ public class CMMap extends StdLibrary implements WorldMap
 	public SpaceObject getSpaceObject(CMObject o, boolean ignoreMobs)
 	{
 		if(o instanceof SpaceObject)
+		{
+			if(o instanceof BoardableShip)
+			{
+				final Item I=((BoardableShip)o).getShipItem();
+				if(I instanceof SpaceObject)
+					return (SpaceObject)I;
+			}
 			return (SpaceObject)o;
+		}
 		if(o instanceof Item)
 		{
 			if(((Item)o).container()!=null)

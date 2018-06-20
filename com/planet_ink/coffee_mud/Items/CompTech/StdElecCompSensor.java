@@ -103,9 +103,10 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 		{
 			final long maxRange = Math.round(getSensorMaxRange() * this.getComputedEfficiency());
 			final List<SpaceObject> found = CMLib.map().getSpaceObjectsWithin(O, O.radius()+1, maxRange);
+			found.remove(O);
 			if(found.size() > 1)
 			{
-				if(CMLib.dice().rollPercentage() > this.getFinalManufacturer().getReliabilityPct())
+				if(CMLib.dice().rollPercentage() > (100*this.getFinalManufacturer().getReliabilityPct()))
 				{
 					//TODO: better to filter out the most distant!
 					int num = found.size() / 10; // failing reliability check always loses 10% of found things

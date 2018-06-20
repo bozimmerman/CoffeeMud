@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.threads.TimeMs;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -418,7 +419,8 @@ public class RocketShipProgram extends GenShipProgram
 			}
 			str.append("^N\n\r");
 			str.append("^X").append(CMStrings.centerPreserve(L(" -- Commands -- "),60)).append("^.^N\n\r");
-			str.append("^H").append(CMStrings.padRight(L("[HELP] : Get help. [INFO] [SYSTEMNAME] : Get Details"),60)).append("\n\r");
+			str.append("^H").append(CMStrings.padRight(L("[HELP] : Get help."),60)).append("\n\r");
+			str.append("^H").append(CMStrings.padRight(L("[INFO] [SYSTEMNAME] : Get Details"),60)).append("\n\r");
 			str.append("^H").append(CMStrings.padRight(L("[ENGINE#/NAME] ([AFT/PORT/STARBOARD/DORSEL/VENTRAL]) [AMT]"),60)).append("\n\r");
 			str.append("^H").append(CMStrings.padRight(L("[WEAPON#/NAME] ([TARGETNAME]) [AMT]"),60)).append("\n\r");
 			str.append("^X").append(CMStrings.centerPreserve("",60)).append("^.^N\n\r");
@@ -491,8 +493,24 @@ public class RocketShipProgram extends GenShipProgram
 		{
 		case STOP:
 		{
-			if(ship.speed() == 0.0)
+			if(ship.speed() < 0.5)
 			{
+				ship.setSpeed(0.0); // that's good enough, for now.
+				final MOB M=CMClass.getFactoryMOB();
+				try
+				{
+					for(final ShipEngine engineE : programEngines)
+					{
+						CMMsg msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+						final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(0.0));
+						msg.setTargetMessage(code);
+						this.trySendMsgToItem(M, engineE, msg);
+					}
+				}
+				finally
+				{
+					M.destroy();
+				}
 				this.rocketState=null;
 				this.programEngines=null;
 				this.lastInject=null;
@@ -667,55 +685,82 @@ public class RocketShipProgram extends GenShipProgram
 		CMMsg msg;
 		final List<ShipEngine> engines = getEngines();
 		final MOB M=CMClass.getFactoryMOB();
+		final boolean isDebugging = CMSecurity.isDebugging(DbgFlag.SPACESHIP);
 		try
 		{
 			// step one, face opposite direction of motion
 			final double[] stopFacing = CMLib.map().getOppositeDir(ship.direction());
-			int tries=100;
-			while(!Arrays.equals(stopFacing, ship.facing()) && (--tries>0))
+			Log.infoOut("flipping to go from "+ship.direction()[0]+","+ship.direction()[1]+"  to  "+stopFacing[0]+","+stopFacing[1]);
+			for(final ShipEngine engineE : engines)
 			{
-				final double[] oldFacing = Arrays.copyOf(ship.facing(), ship.facing().length);
-				for(final ShipEngine engineE : engines)
+				if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.STARBOARD))
+				&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.PORT))
+				&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.DORSEL))
+				&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.VENTRAL)))
 				{
-					if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.STARBOARD))
-					&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.PORT))
-					&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.DORSEL))
-					&&(CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.VENTRAL)))
+					msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+					this.lastAngle = null;
+					final String code=TechCommand.THRUST.makeCommand(ShipDir.PORT,Double.valueOf(1));
+					msg.setTargetMessage(code);
+					this.trySendMsgToItem(M, engineE, msg);
+					if(this.lastAngle==null)
+						break;
+					if(isDebugging)
+						Log.infoOut("Thrusting 1 to PORT to achieve DELTA, and got a delta of "+this.lastAngle.doubleValue());
+					double angleAchievedPerPt = Math.abs(this.lastAngle.doubleValue()); //
+					double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
+					for(int i=0;i<100;i++)
 					{
-						msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-						this.lastAngle = null;
-						final String code=TechCommand.THRUST.makeCommand(ShipDir.PORT,Double.valueOf(1));
-						msg.setTargetMessage(code);
-						this.trySendMsgToItem(M, engineE, msg);
-						if(this.lastAngle==null)
+						if(Math.abs(angleDelta[0]) > 0.00001)
+						{
+							final TechComponent.ShipDir dir = angleDelta[0] < 0 ? ShipDir.PORT : ShipDir.STARBOARD;
+							Double thrust = new Double(Math.abs(angleDelta[0]) / angleAchievedPerPt);
+							if(isDebugging)
+							{
+								Log.infoOut("Delta0="+angleDelta[0]);
+								Log.infoOut("Thrusting "+thrust+" to "+dir+" to achieve delta, and go from "+ship.facing()[0]+" to "+stopFacing[0]);
+							}
+							msg.setTargetMessage(TechCommand.THRUST.makeCommand(dir,thrust));
+							this.lastAngle = null;
+							this.trySendMsgToItem(M, engineE, msg);
+							if(this.lastAngle==null)
+								break;
+						}
+						else
 							break;
-						double angleAchievedPerPt = Math.abs(this.lastAngle.doubleValue()); //
-						double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
-						if(Math.abs(angleDelta[0]) > 0.0000001)
-						{
-							final TechComponent.ShipDir dir = angleDelta[0] < 0 ? ShipDir.STARBOARD : ShipDir.PORT;
-							Double thrust = new Double(Math.abs(angleDelta[0])/angleAchievedPerPt);
-System.out.println("Thrusting "+thrust+" to "+dir+" to achieve "+angleDelta[0]+" by going from "+oldFacing[0]+" to "+stopFacing[0]);
-							msg.setTargetMessage(TechCommand.THRUST.makeCommand(dir,thrust));
-							this.trySendMsgToItem(M, engineE, msg);
-						}
 						angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
-						if(Math.abs(angleDelta[1]) > 0.0000001)
-						{
-							final TechComponent.ShipDir dir = angleDelta[1] < 0 ? ShipDir.VENTRAL : ShipDir.DORSEL;
-							Double thrust = new Double(Math.abs(angleDelta[1])/angleAchievedPerPt);
-System.out.println("Thrusting "+thrust+" to "+dir+" to achieve "+angleDelta[0]+" by going from "+oldFacing[1]+" to "+stopFacing[1]);
-							msg.setTargetMessage(TechCommand.THRUST.makeCommand(dir,thrust));
-							this.trySendMsgToItem(M, engineE, msg);
-						}
-						angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
-System.out.println("* Total Deltas now: "+angleDelta[0]+" + "+angleDelta[1] +"=="+(Math.abs(angleDelta[0])+Math.abs(angleDelta[1])));
+						if(isDebugging)
+							Log.infoOut("* Total Deltas now: "+angleDelta[0]+" + "+angleDelta[1] +"=="+((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))));
 						if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<.01)
 							return true;
 					}
+					angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
+					for(int i=0;i<100;i++)
+					{
+						if(Math.abs(angleDelta[1]) > 0.00001)
+						{
+							final TechComponent.ShipDir dir = angleDelta[1] < 0 ? ShipDir.VENTRAL : ShipDir.DORSEL;
+							Double thrust = new Double(Math.abs(angleDelta[1]) / angleAchievedPerPt);
+							if(isDebugging)
+							{
+								Log.infoOut("Delta1="+angleDelta[1]);
+								Log.infoOut("Thrusting "+thrust+" to "+dir+" to achieve delta and go from "+ship.facing()[1]+" to "+stopFacing[1]);
+							}
+							msg.setTargetMessage(TechCommand.THRUST.makeCommand(dir,thrust));
+							this.lastAngle = null;
+							this.trySendMsgToItem(M, engineE, msg);
+							if(this.lastAngle==null)
+								break;
+						}
+						else
+							break;
+						angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
+						if(isDebugging)
+							Log.debugOut("* Total Deltas now: "+angleDelta[0]+" + "+angleDelta[1] +"=="+((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))));
+					}
+					if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<.01)
+						return true;
 				}
-				if(Arrays.equals(oldFacing, ship.facing()))
-					return false;
 			}
 		}
 		finally
