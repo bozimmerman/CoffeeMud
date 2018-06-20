@@ -3683,7 +3683,7 @@ public class StdMOB implements MOB
 							{
 								if(mobReport.startsWith("*"))
 								{
-									Log.warnOut("Killing "+Name()+" because he's not ticking where he is ("+CMLib.map().getExtendedRoomID(R)+"): ("+A.Name()+").");
+									Log.warnOut("Killing: "+mobReport);
 									this.killMeDead(false);
 								}
 								else
