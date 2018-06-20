@@ -987,10 +987,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			final Room R=(Room)P;
 			if(R.amDestroyed())
-				return " a destroyed place "+CMLib.map().getExtendedRoomID(R);
+				return " a destroyed place: "+CMLib.map().getExtendedRoomID(R);
 			final Area A=R.getArea();
 			if((A == null)||(A.amDestroyed()))
-				return "a destroyed area "+CMLib.map().getExtendedRoomID(R);
+				return "a destroyed area: "+CMLib.map().getExtendedRoomID(R);
 			return null;
 		}
 		if(P instanceof MOB)
@@ -1014,7 +1014,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				if(locR == null)
 					return "*"+M.name()+" is nowhere!";
 				if(!locR.isInhabitant(M)&&(!M.isPlayer()))
-					return "*"+M.name()+" is not where he is "+CMLib.map().getExtendedRoomID(locR);
+					return "*"+M.name()+" is not where he is: "+CMLib.map().getExtendedRoomID(locR);
 				final String roomReport =validCheck(locR);
 				if(roomReport != null)
 					return M.name()+" is from "+roomReport;
@@ -1031,13 +1031,18 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			}
 			if(owner == null)
 				return I.name()+" is ticking unowned.";
-			if(!owner.isContent(I))
-				return I.name()+" is ticking but not where he is "+owner.name();
+			final boolean ownerCheck;
+			synchronized(owner)
+			{
+				ownerCheck=owner.isContent(I);
+			}
+			if(!ownerCheck)
+				return I.name()+" is ticking, but not where it is: "+owner.name();
 			if(owner instanceof MOB)
 			{
 				final MOB M=(MOB)owner;
 				if(!CMLib.threads().isTicking(M, -1))
-					return I.name()+" on non-ticking mob "+M.name()+" in "+CMLib.map().getExtendedRoomID(M.location());
+					return I.name()+" on non-ticking mob: "+M.name()+", in: "+CMLib.map().getExtendedRoomID(M.location());
 				final String mobReport = validCheck(M);
 				if(mobReport != null)
 				{
