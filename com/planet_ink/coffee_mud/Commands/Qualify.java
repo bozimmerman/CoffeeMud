@@ -163,11 +163,10 @@ public class Qualify  extends Skills
 			&&(!checkUnMet || CMLib.ableMapper().getUnmetPreRequisites(ableM,A).size()==0))
 				highestLevel=level;
 		}
-		int col=0;
+		int col=1;
 		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerM);
 		final int COL_LEN2=CMLib.lister().fixColWidth(19.0,viewerM);
 		final int COL_LEN3=CMLib.lister().fixColWidth(12.0,viewerM);
-		final int COL_LEN4=CMLib.lister().fixColWidth(13.0,viewerM);
 		for(int l=0;l<=highestLevel;l++)
 		{
 			final StringBuffer thisLine=new StringBuffer("");
@@ -182,32 +181,33 @@ public class Qualify  extends Skills
 				   &&(CMLib.ableComponents().getSpecialSkillRemainder(ableM, A).specificSkillLimit() > 0)
 				   &&(!checkUnMet || CMLib.ableMapper().getUnmetPreRequisites(ableM,A).size()==0))
 				{
+					thisLine.append("^N[^H"+CMStrings.padRight(""+l,COL_LEN1)+"^?] "
+										   +CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>",COL_LEN2)+" "
+										   +CMStrings.padRight(A.requirements(viewerM),COL_LEN3));
 					if((++col)>2)
 					{
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("^N[^H"+CMStrings.padRight(""+l,COL_LEN1)+"^?] "
-										   +CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>",COL_LEN2)+" "
-										   +CMStrings.padRight(A.requirements(viewerM),(col==2)?COL_LEN3:COL_LEN4));
+					else
+						thisLine.append(" ");
 				}
 			}
 			if(thisLine.length()>0)
 			{
 				if(msg.length()==0)
-					msg.append("\n\r^N[^H"+CMStrings.padRight(L("Lvl"),COL_LEN1)+"^?] ")
-						.append("^w"+CMStrings.padRight(L("Name"),COL_LEN2)+" ")
-						.append("^w"+CMStrings.padRight(L("Requires"),COL_LEN3)+" ")
-						.append("^N[^H"+CMStrings.padRight(L("Lvl"),COL_LEN1)+"^?] ")
-						.append("^w"+CMStrings.padRight(L("Name"),COL_LEN2)+" ")
-						.append("^w"+L("Requires")+"^N\n\r");
+					msg.append("\n\r^w[^H"+CMStrings.padRight(L("Lvl"),COL_LEN1)+"^?] ")
+						.append(CMStrings.padRight(L("Name"),COL_LEN2)+" ")
+						.append(CMStrings.padRight(L("Requires"),COL_LEN3)+" ")
+						.append("[^H"+CMStrings.padRight(L("Lvl"),COL_LEN1)+"^?] ")
+						.append(CMStrings.padRight(L("Name"),COL_LEN2)+" ")
+						.append(L("Requires")+"^N\n\r");
 				msg.append(thisLine);
 			}
 		}
 		if(msg.length()==0)
 			return msg;
 		msg.insert(0,prefix);
-		msg.append("\n\r");
 		return msg;
 	}
 
@@ -325,14 +325,13 @@ public class Qualify  extends Skills
 		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,mob);
 		final int COL_LEN2=CMLib.lister().fixColWidth(19.0,mob);
 		final int COL_LEN3=CMLib.lister().fixColWidth(12.0,mob);
-		final int COL_LEN4=CMLib.lister().fixColWidth(13.0,mob);
 		if((mob!=null)
 		&&(showAll||("CLASSES".startsWith(qual)))
 		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.CLASSES)
 		&&(!mob.baseCharStats().getMyRace().classless()))
 		)
 		{
-			int col=0;
+			int col=1;
 			final StringBuffer msg2=new StringBuffer("");
 			for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 			{
@@ -341,29 +340,34 @@ public class Qualify  extends Skills
 				if((mob.charStats().getCurrentClass()!=C)
 				&&(CMLib.login().canChangeToThisClass(mob, C, -1)))
 				{
+					thisLine.append("^N[^H"+CMStrings.padRight(""+1,COL_LEN1)+"^?] "
+					+CMStrings.padRight("^<HELP^>"+C.name()+"^</HELP^>",COL_LEN2)+" "
+					+CMStrings.padRight(L("1 train"),COL_LEN3));
 					if((++col)>2)
 					{
 						thisLine.append("\n\r");
 						col=1;
 					}
-					thisLine.append("^N[^H"+CMStrings.padRight(""+1,COL_LEN1)+"^?] "
-					+CMStrings.padRight("^<HELP^>"+C.name()+"^</HELP^>",COL_LEN2)+" "
-					+CMStrings.padRight(L("1 train"),(col==2)?COL_LEN3:COL_LEN4));
+					else
+						thisLine.append(" ");
 				}
 				if(thisLine.length()>0)
 				{
 					if(msg2.length()==0)
-						msg2.append("\n\r^N[^H"+CMStrings.padRight(L("Lvl"),COL_LEN1)+"^?] ")
-						.append("^w"+CMStrings.padRight(L("Name"),COL_LEN2)+" ")
+					{
+						msg.append(L("\n\r^HCharacter Classes:^?\n\r"));
+						msg2.append("^N[^H"+CMStrings.padRight(L("Lvl"), COL_LEN1)+"^?] ")
+						.append("^w"+CMStrings.padRight(L("Name"), COL_LEN2)+" ")
 						.append("^w"+CMStrings.padRight(L("Requires"),COL_LEN3)+" ")
 						.append("^N[^H"+CMStrings.padRight(L("Lvl"),COL_LEN1)+"^?] ")
 						.append("^w"+CMStrings.padRight(L("Name"),COL_LEN2)+" ")
 						.append("^w"+L("Requires")+"^N\n\r");
+					}
 					classesFound=true;
 					msg2.append(thisLine);
 				}
 			}
-			msg.append(msg2.toString()+"\n\r");
+			msg.append(msg2.toString());
 		}
 
 		if((mob!=null)

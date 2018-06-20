@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -109,7 +110,16 @@ public class Config extends StdCommand
 		}
 		
 		final StringBuffer msg=new StringBuffer(L("^HYour configuration flags:^?\n\r"));
-		for(MOB.Attrib a : MOB.Attrib.values())
+		final List<MOB.Attrib> sorted = new XVector<MOB.Attrib>(MOB.Attrib.values());
+		Collections.sort(sorted,new Comparator<MOB.Attrib>()
+		{
+			@Override
+			public int compare(Attrib o1, Attrib o2)
+			{
+				return o1.compareTo(o1);
+			}
+		});
+		for(final MOB.Attrib a : sorted)
 		{
 			if((a==MOB.Attrib.SYSOPMSGS)&&(!(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.SYSMSGS))))
 				continue;
@@ -127,6 +137,8 @@ public class Config extends StdCommand
 		{
 			final String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
 			msg.append(CMStrings.padRight(L("LINEWRAP"),15)+": "+wrap);
+			if((mob.session()!=null)&&(mob.playerStats().getWrap() != mob.session().getWrap()))
+				msg.append(" ("+mob.session().getWrap()+")");
 			msg.append("\n\r");
 			final String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
 			msg.append(CMStrings.padRight(L("PAGEBREAK"),15)+": "+pageBreak);
