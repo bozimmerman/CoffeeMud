@@ -1003,6 +1003,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				startR=M.getStartRoom();
 				locR=M.location();
 			}
+			if(M.amDestroyed())
+				return M.name()+" is destroyed";
 			if(startR!=null)
 			{
 				final String roomReport =validCheck(startR);
@@ -1029,6 +1031,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			{
 				owner=I.owner();
 			}
+			if(I.amDestroyed())
+				return I.name()+" is destroyed";
 			if(owner == null)
 			{
 				if((I instanceof SpaceObject)
