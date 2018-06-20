@@ -84,7 +84,7 @@ public class Dolphin extends Seal
 		return breatheAirWaterArray;
 	}
 	
-	private final String[]					racialAbilityNames			= { "Aquan", "Skill_Swim", "Skill_AutoSwim","Skill_HighJumper" };
+	private final String[]					racialAbilityNames			= { "Aquan", "Skill_Swim", "Skill_AutoSwim","Skill_HighJump" };
 	private final int[]						racialAbilityLevels			= { 1,1,1,15 };
 	private final int[]						racialAbilityProficiencies	= { 100,100,100,50 };
 	private final boolean[]					racialAbilityQuals			= { false,false,false,false };
