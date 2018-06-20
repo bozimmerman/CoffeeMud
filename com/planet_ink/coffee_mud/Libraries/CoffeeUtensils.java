@@ -490,7 +490,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				}
 				if(newLastTickedDateTime==0)
 				{
-					final List<List<Item>> rivals=new Vector<List<Item>>();
+					final List<List<Item>> rivals=new ArrayList<List<Item>>(mob.numItems());
 					for(int i=0;i<mob.numItems();i++)
 					{
 						final Item I=mob.getItem(i);
