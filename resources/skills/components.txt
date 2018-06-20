@@ -11,6 +11,7 @@
 # [COMPONENT ID] is one of the following:
 #   a material name for a raw resource (like cloth, metal, mithril, leather, liquid, etc..)
 #   a resource name for a raw resource (like cotton, iron, spidersteel, leather, oil, etc..)
+#   a material or resource of a subtype in parenthesis like cotton(bolt)
 #   an item name for a string match (like "a long crooked stick" or "stick" or "crooked"
 # * NOTE! If you use && or || conjunctions, the same item may be found multiple times!
 # [MASK] is the zapper mask for which players in which conditions require this component.
@@ -20,6 +21,5 @@
 #   (the above requires either cotton in hand, or 10 sand in inventory to cast sleep -- applies only to mages)
 # Woodchopping=(held:kept:1:*axe*:)
 #   (the above requires an item with the characters "axe" in the name to do woodchopping)
-
-Thief_Autocaltrops=(inventory:consumed:10:metal:)||(inventory:consumed:10:mithril:)
+Thief_Autocaltrops=(inventory:consumed:10:METAL:)||(inventory:consumed:10:MITHRIL:)
 BANDAGING=(inventory:consumed:1:CLOTH:)||(held:consumed:5:DUST:-race +elf)
