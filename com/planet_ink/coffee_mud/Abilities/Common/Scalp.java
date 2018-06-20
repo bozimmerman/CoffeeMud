@@ -57,14 +57,18 @@ public class Scalp extends CommonSkill
 		return triggerStrings;
 	}
 
-	public static Vector<DeadBody>	lastSoManyScalps	= new Vector<DeadBody>();
-
 	@Override
 	public int classificationCode()
 	{
 		return Ability.ACODE_SKILL | Ability.DOMAIN_ANATOMY;
 	}
 
+	@Override
+	public String accountForYourself()
+	{
+		return L("Scalped");
+	}
+	
 	private DeadBody	body	= null;
 	protected boolean	failed	= false;
 
@@ -84,6 +88,8 @@ public class Scalp extends CommonSkill
 		&&((!((MOB)affected).location().isContent(body)))
 		&&((!((MOB)affected).isMine(body))))
 			unInvoke();
+		if(affected instanceof Item)
+			return true;
 		return super.tick(ticking,tickID);
 	}
 
@@ -97,14 +103,12 @@ public class Scalp extends CommonSkill
 				final MOB mob=(MOB)affected;
 				if((body!=null)&&(!aborted)&&(mob.location()!=null))
 				{
+					body.addNonUninvokableEffect(this);
 					if((failed)||(!mob.location().isContent(body)))
 						commonTell(mob,L("You messed up your scalping completely."));
 					else
 					{
 						mob.location().show(mob,body,this,getCompletedActivityMessageType(),L("<S-NAME> manage(s) to scalp <T-NAME>."));
-						lastSoManyScalps.addElement(body);
-						if(lastSoManyScalps.size()>100)
-							lastSoManyScalps.removeElementAt(0);
 						final Item scalp=CMClass.getItem("GenItem");
 						String race="";
 						if((body.charStats()!=null)&&(body.charStats().getMyRace()!=null))
@@ -165,7 +169,7 @@ public class Scalp extends CommonSkill
 			commonTell(mob,L("You can't scalp @x1.",I.name(mob)));
 			return false;
 		}
-		if(lastSoManyScalps.contains(I))
+		if(I.fetchEffect(ID())!=null)
 		{
 			commonTell(mob,L("@x1 has already been scalped.",I.name(mob)));
 			return false;
