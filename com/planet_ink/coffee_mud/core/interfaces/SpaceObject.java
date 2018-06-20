@@ -127,7 +127,7 @@ public interface SpaceObject extends Environmental, BoundedObject
 	public static enum Distance
 	{
 		Decameter("dm",1L),
-		Kilometer("km",100L),
+		Kilometer("km",1000L),
 		MoonRadius("mr",173740L),
 		PlanetRadius("pr",639875L),
 		SaturnRadius("sr",6026800L),
