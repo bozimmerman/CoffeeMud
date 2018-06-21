@@ -41,10 +41,10 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override
 	public String ID()
 	{
-		return "Tailoring";
+		return "Textiling";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Tailoring");
+	private final static String	localizedName	= CMLib.lang().L("Textiling");
 
 	@Override
 	public String name()
