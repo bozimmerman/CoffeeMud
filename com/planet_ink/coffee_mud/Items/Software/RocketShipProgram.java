@@ -349,7 +349,7 @@ public class RocketShipProgram extends GenShipProgram
 				if(localSensorReport.size()==0)
 					str.append("^R").append(L("No Report"));
 				else
-				for(CMObject o : localSensorReport)
+				for(Object o : localSensorReport)
 				{
 					if(o == spaceObject)
 						continue;
@@ -359,10 +359,14 @@ public class RocketShipProgram extends GenShipProgram
 						if(O.displayText().length()>0)
 							str.append("^W").append(L("Found: ")).append("^N").append(O.displayText());
 						else
-							str.append("^W").append(L("Found: ")).append("^N").append(o.name());
+							str.append("^W").append(L("Found: ")).append("^N").append(O.name());
 					}
 					else
-						str.append("^W").append(L("Found: ")).append("^N").append(o.name());
+					if(o instanceof CMObject)
+						str.append("^W").append(L("Found: ")).append("^N").append(((CMObject)o).name());
+					else
+					if(o instanceof String)
+						str.append("^W").append(L("Found: ")).append("^N").append(o.toString());
 					str.append("^.^N\n\r");
 				}
 				str.append("^.^N\n\r");
@@ -894,7 +898,51 @@ public class RocketShipProgram extends GenShipProgram
 				String secondWord = CMParms.combine(parsed,1).toUpperCase();
 				if(secondWord.startsWith("ENGINE"))
 				{
-					
+					E=findEngineByName(secondWord);
+					if(E==null)
+					{
+						super.addScreenMessage(L("^HINFO:^N\n\r^N"+"Specified system not found.  No information available."));
+						return;
+					}
+					final ShipEngine E1=(ShipEngine)E;
+					final String[] marks=CMProps.getListFileStringList(CMProps.ListFile.TECH_LEVEL_NAMES);
+					final String activated = E.activated()?" (activated)":"";
+					super.addScreenMessage(L("^HINFO:^N\n\r^N"
+					+"System model: "+E.name()+activated+"\n\r"
+					+"Manufacturer: "+E.getManufacturerName()+"\n\r"
+					+"System type : "+E.getTechType().name()+"\n\r"
+					+"Tech level  : "+marks[E.techLevel()%marks.length]+"\n\r"
+					+"Power       : "+E.powerRemaining()+"/"+E.powerCapacity()+"\n\r"
+					+(E.subjectToWearAndTear()
+					?"Status      : "+E.usesRemaining()+"%\n\r":"")
+					+"Efficiency  : "+Math.round(E1.getFuelEfficiency()*100)+"%\n\r"
+					+"Min Thrust  : "+E1.getMinThrust()+"\n\r"
+					+"Max Thrust  : "+E1.getMaxThrust()+"\n\r"
+					+"Curr Thrust : "+(Math.round(E1.getThrust()*10000)/1000.0)+"\n\r"
+					));
+					return;
+				}
+				else
+				if(secondWord.startsWith("SENSOR"))
+				{
+					E=this.findSensorByName(secondWord);
+					if(E==null)
+					{
+						super.addScreenMessage(L("^HINFO:^N\n\r^N"+"Specified system not found.  No information available."));
+						return;
+					}
+					final String activated = E.activated()?" (activated)":"";
+					final String[] marks=CMProps.getListFileStringList(CMProps.ListFile.TECH_LEVEL_NAMES);
+					super.addScreenMessage(L("^HINFO:^N\n\r^N"
+					+"System model: "+E.name()+activated+"\n\r"
+					+"Manufacturer: "+E.getManufacturerName()+"\n\r"
+					+"System type : "+E.getTechType().name()+"\n\r"
+					+"Tech level  : "+marks[E.techLevel()%marks.length]+"\n\r"
+					+"Power       : "+E.powerRemaining()+"/"+E.powerCapacity()+"\n\r"
+					+(E.subjectToWearAndTear()
+					?"Status      : "+E.usesRemaining()+"%\n\r":"")
+					));
+					return;
 				}
 				else
 				if(secondWord.startsWith("SYSTEM"))
@@ -912,11 +960,15 @@ public class RocketShipProgram extends GenShipProgram
 						return;
 					}
 					final String[] marks=CMProps.getListFileStringList(CMProps.ListFile.TECH_LEVEL_NAMES);
+					final String activated = E.activated()?" (activated)":"";
 					super.addScreenMessage(L("^HINFO:^N\n\r^N"
-					+"System model: "+E.name()+"\n\r"
+					+"System model: "+E.name()+activated+"\n\r"
 					+"Manufacturer: "+E.getManufacturerName()+"\n\r"
 					+"System type : "+E.getTechType().name()+"\n\r"
 					+"Tech level  : "+marks[E.techLevel()%marks.length]+"\n\r"
+					+"Power       : "+E.powerRemaining()+"/"+E.powerCapacity()+"\n\r"
+					+(E.subjectToWearAndTear()
+					?"Status      : "+E.usesRemaining()+"%\n\r":"")
 					));
 					return;
 				}
