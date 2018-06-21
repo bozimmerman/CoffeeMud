@@ -71,7 +71,7 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\t\tCODED_SPELL_LIST";
+		+"ITEM_CLASS_ID\tRESOURCE_NAME\tRES_SUBTYPE\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -80,8 +80,9 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 	protected static final int	RCP_WOOD		= 3;
 	protected static final int	RCP_VALUE		= 4;
 	protected static final int	RCP_CLASSTYPE	= 5;
-	protected static final int	RCP_MISCTYPE	= 6;
-	protected static final int	RCP_SPELL		= 10;
+	protected static final int	RCP_FINALRSC	= 6;
+	protected static final int	RCP_SUBTYPE		= 7;
+	protected static final int	RCP_SPELL		= 8;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -248,6 +249,7 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 						+ " \"textile learn <item>\", \"textile scan\", \"textile mend <item>\", or \"textile stop\" to cancel."));
 			return false;
 		}
+		bundling=false;
 		if((!auto)
 		&&(commands.size()>0)
 		&&((commands.get(0)).equalsIgnoreCase("bundle")))
@@ -260,7 +262,6 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		final String str=commands.get(0);
 		String startStr=null;
-		bundling=false;
 		int duration=4;
 		if(str.equalsIgnoreCase("list"))
 		{
@@ -272,15 +273,12 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 				mask="";
 			}
 			final StringBuffer buf=new StringBuffer("");
-			int toggler=1;
-			final int toggleTop=2;
 			final int[] cols={
-				CMLib.lister().fixColWidth(28,mob.session()),
+				CMLib.lister().fixColWidth(25,mob.session()),
 				CMLib.lister().fixColWidth(3,mob.session()),
-				CMLib.lister().fixColWidth(5,mob.session())
+				CMLib.lister().fixColWidth(45,mob.session())
 			};
-			for(int r=0;r<toggleTop;r++)
-				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Cloth"),cols[2]));
+			buf.append(CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Resources"),cols[2]));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -289,24 +287,19 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 				{
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
-					final String wood=getComponentDescription(mob,V,RCP_WOOD);
-					if(wood.length()>5)
+					String wood=getComponentDescription(mob,V,RCP_WOOD);
+					if(wood.length()<5)
+						wood=L("@x1 pounds of cloth",wood);
+					if(wood.length()>cols[2])
 					{
-						if(toggler>1)
-							buf.append("\n\r");
-						toggler=toggleTop;
+						int x=wood.lastIndexOf(' ',cols[2]);
+						wood=wood.substring(0,x)+"\n\r"+CMStrings.repeat(' ',cols[0]+cols[1]+2)+wood.substring(x+1);
 					}
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
-					{
-						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRightPreserve(""+wood,cols[2])+((toggler!=toggleTop)?" ":"\n\r"));
-						if(++toggler>toggleTop)
-							toggler=1;
-					}
+						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+"\n\r");
 				}
 			}
-			if(toggler!=1)
-				buf.append("\n\r");
 			commonTell(mob,buf.toString());
 			enhanceList(mob);
 			return true;
@@ -380,8 +373,6 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 			if(amount>woodRequired)
 				woodRequired=amount;
-			final String misctype=foundRecipe.get(RCP_MISCTYPE);
-			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[] pm={RawMaterial.MATERIAL_CLOTH};
 			final int[][] data=fetchFoundResourceData(mob,
 													woodRequired,"cloth",pm,
@@ -405,7 +396,20 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
-			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
+			final String materialName=foundRecipe.get(RCP_FINALRSC);
+			final String subType=foundRecipe.get(RCP_SUBTYPE);
+			int resourceType = super.getBuildingMaterial(woodRequired, data, compData);
+			if(materialName.length()>0)
+			{
+				int resource=RawMaterial.CODES.FIND_CaseSensitive(materialName);
+				if(resource < 0)
+					resource=RawMaterial.CODES.FIND_IgnoreCase(materialName);
+				if(resource < 0)
+					resource=RawMaterial.CODES.FIND_StartsWith(materialName);
+				if(resource > 0)
+					resourceType=resource;
+			}
+			buildingI.setMaterial(resourceType);
 			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
@@ -424,11 +428,17 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
-			setBrand(mob, buildingI);
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
 			addSpells(buildingI,spell);
+			if(buildingI instanceof RawMaterial)
+			{
+				((RawMaterial)buildingI).setSubType(subType);
+				buildingI.setSecretIdentity(itemName);
+			}
+			else
+				setBrand(mob, buildingI);
 			buildingI.recoverPhyStats();
 			buildingI.text();
 			buildingI.recoverPhyStats();

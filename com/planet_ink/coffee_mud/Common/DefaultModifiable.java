@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -19,7 +20,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2015-2018 Bo Zimmerman
+   Copyright 2018-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -38,16 +39,18 @@ public class DefaultModifiable implements CMCommon, Modifiable
 	@Override
 	public String ID()
 	{
-		return "DefaultModifiable";
+		if(fields.containsKey("ID"))
+			return fields.get("ID");
+		else
+			return "DefaultModifiable";
 	}
 
 	public final Map<String,String> fields = new Hashtable<String,String>();
-	private volatile String[] statCodes = null;
 	
 	@Override
 	public String name()
 	{
-		return fields.containsKey("NAME")?fields.get("NAME"):"";
+		return getStat(GenericBuilder.GenMOBCode.NAME.name());
 	}
 
 	@Override
@@ -91,18 +94,7 @@ public class DefaultModifiable implements CMCommon, Modifiable
 	@Override
 	public String[] getStatCodes()
 	{
-		if(statCodes == null)
-		{
-			synchronized(this)
-			{
-				if(statCodes == null)
-				{
-					List<String> V=new XVector<String>(fields.keySet());
-					statCodes = V.toArray(new String[0]);
-				}
-			}
-		}
-		return statCodes;
+		return new XVector<String>(fields.keySet()).toArray(new String[0]);
 	}
 
 	@Override

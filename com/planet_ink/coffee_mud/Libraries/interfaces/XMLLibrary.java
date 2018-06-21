@@ -367,6 +367,19 @@ public interface XMLLibrary extends CMLibrary
 	 * @param o the object to convert
 	 */
 	public void fromXMLtoPOJO(List<XMLTag> xmlObj, Object o);
+
+	/**
+	 * Converts a map into an xml document
+	 * @return an xml document
+	 */
+	public String toXML(final Map<String,String> map);
+	
+
+	/**
+	 * Converts a map into an xml document
+	 * @return an xml document
+	 */
+	public Map<String,String> fromXML(final String str);
 	
 	public interface XMLTag
 	{

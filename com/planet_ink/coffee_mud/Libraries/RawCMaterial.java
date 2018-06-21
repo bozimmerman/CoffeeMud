@@ -750,21 +750,25 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			&&(I.rawSecretIdentity().length()>0))
 			{
 				I.setName(I.rawSecretIdentity());
-				I.setDisplayText(L("@x1 has been left here.",I.rawSecretIdentity()));
+				I.setDisplayText(L("@x1 sits here.",I.rawSecretIdentity()));
 			}
 			else
 			{
+				if((I instanceof RawMaterial)
+				&&(((RawMaterial)I).getSubType().length()>0))
+				{
+					final String subType=((RawMaterial)I).getSubType();
+					if(subType.indexOf(' ')>0)
+						I.setName(CMLib.english().startWithAorAn(((RawMaterial)I).getSubType().toLowerCase()));
+					else
+						I.setName(CMLib.english().startWithAorAn(name+" "+((RawMaterial)I).getSubType().toLowerCase()));
+					I.setDisplayText(L("@x1 sits here.",I.Name()));
+				}
+				else
 				if(I instanceof Drink)
 				{
 					I.setName(L("some @x1",name));
 					I.setDisplayText(L("some @x1 sits here.",name));
-				}
-				else
-				if((I instanceof RawMaterial)
-				&&(((RawMaterial)I).getSubType().length()>0))
-				{
-					I.setName(L("a @x1 @x2",name,((RawMaterial)I).getSubType().toLowerCase()));
-					I.setDisplayText(L("@x1 sits here.",I.Name()));
 				}
 				else
 				{
@@ -775,12 +779,18 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		}
 		else
 		{
-			if(I instanceof Drink)
-				I.setName(L("a @x1# pool of @x2",""+I.basePhyStats().weight(),name));
-			else
 			if((I instanceof RawMaterial)
 			&&(((RawMaterial)I).getSubType().length()>0))
-				I.setName(L("a @x1# @x2 @x3 bundle",""+I.basePhyStats().weight(),name,((RawMaterial)I).getSubType().toLowerCase()));
+			{
+				final String subType=((RawMaterial)I).getSubType();
+				if(subType.indexOf(' ')>0)
+					I.setName(L("a @x1# bundle of @x2",""+I.basePhyStats().weight(),CMLib.english().makePlural(((RawMaterial)I).getSubType().toLowerCase())));
+				else
+					I.setName(L("a @x1# @x2 @x3 bundle",""+I.basePhyStats().weight(),name,((RawMaterial)I).getSubType().toLowerCase()));
+			}
+			else
+			if(I instanceof Drink)
+				I.setName(L("a @x1# pool of @x2",""+I.basePhyStats().weight(),name));
 			else
 				I.setName(L("a @x1# @x2 bundle",""+I.basePhyStats().weight(),name));
 			I.setDisplayText(L("@x1 is here.",I.name()));
@@ -1122,7 +1132,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			firstOther=findFirstResource(V,otherRequired);
 		return firstOther;
 	}
-	
+
 	@Override
 	public int getBurnDuration(Environmental E)
 	{

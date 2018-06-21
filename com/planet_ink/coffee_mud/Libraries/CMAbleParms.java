@@ -1264,7 +1264,39 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
-			
+			new AbilityParmEditorImpl("RES_SUBTYPE","Sub-Type",ParmType.STRINGORNULL)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					if(I instanceof RawMaterial)
+						return ((RawMaterial)I).getSubType();
+					return "";
+				}
+				@Override
+				public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag)
+				throws java.io.IOException
+				{
+					return super.commandLinePrompt(mob, oldVal, showNumber, showFlag).toUpperCase().trim();
+				}
+				
+				@Override
+				public String webValue(HTTPRequest httpReq, java.util.Map<String,String> parms, String oldVal, String fieldName)
+				{
+					return super.webValue(httpReq,parms,oldVal,fieldName).toUpperCase().trim();
+				}
+			},
 			new AbilityParmEditorImpl("ITEM_LEVEL","Lvl",ParmType.NUMBER)
 			{
 				@Override

@@ -784,13 +784,15 @@ public class CraftingSkill extends GatheringSkill
 		}
 		if(building==null)
 			return null;
-		building.setSecretIdentity("");
+		if(!(building instanceof RawMaterial))
+			building.setSecretIdentity("");
 		building.recoverPhyStats();
 		building.text();
 		building.recoverPhyStats();
 		if(key!=null)
 		{
-			key.setSecretIdentity("");
+			if(!(key instanceof RawMaterial))
+				key.setSecretIdentity("");
 			key.recoverPhyStats();
 			key.text();
 			key.recoverPhyStats();

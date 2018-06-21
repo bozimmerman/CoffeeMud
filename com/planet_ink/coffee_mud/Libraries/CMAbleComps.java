@@ -424,10 +424,20 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				itemDesc=((amt>1)?(amt+" "+CMLib.english().makePlural(comp.getStringType())):CMLib.english().startWithAorAn(comp.getStringType()));
 			else
 			if(comp.getType()==AbilityComponent.CompType.MATERIAL)
-				itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.Material.findByMask((int)comp.getLongType()).noun().toLowerCase()+" "+subType;
+			{
+				if(subType.indexOf(' ')>0)
+					itemDesc=amt+" "+subType;
+				else
+					itemDesc=amt+" "+RawMaterial.Material.findByMask((int)comp.getLongType()).noun().toLowerCase()+" "+subType;
+			}
 			else
 			if(comp.getType()==AbilityComponent.CompType.RESOURCE)
-				itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.CODES.NAME((int)comp.getLongType()).toLowerCase()+" "+subType;
+			{
+				if(subType.indexOf(' ')>0)
+					itemDesc=amt+" "+subType;
+				else
+					itemDesc=amt+" "+RawMaterial.CODES.NAME((int)comp.getLongType()).toLowerCase()+" "+subType;
+			}
 		}
 		else
 		{

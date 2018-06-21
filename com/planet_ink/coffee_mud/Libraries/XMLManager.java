@@ -1521,6 +1521,24 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return str.toString();
 	}
 
+	@Override
+	public String toXML(final Map<String,String> map)
+	{
+		final StringBuilder xml=new StringBuilder("");
+		for(final String key : map.keySet())
+			xml.append(convertXMLtoTag(key, map.get(key)));
+		return xml.toString();
+	}
+
+	@Override
+	public Map<String,String> fromXML(final String str)
+	{
+		final Hashtable<String,String> map=new Hashtable<String,String>();
+		for(final XMLTag tag : this.parseAllXML(str))
+			map.put(tag.tag(), tag.value());
+		return map;
+	}
+
 	/**
 	 * Converts a JSON document to a XML object.
 	 * @param XML the XML document
