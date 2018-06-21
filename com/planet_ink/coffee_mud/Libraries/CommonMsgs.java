@@ -982,6 +982,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
 				response.append(L("It is mostly made of a kind of @x1.  ",RawMaterial.Material.findByMask(item.material()&RawMaterial.MATERIAL_MASK).noun()));
 			else
+			if((item instanceof RawMaterial)&&(((RawMaterial)item).getSubType().length()>0))
+				response.append(L("It is mostly made of @x1.  ",((RawMaterial)item).getSubType().toLowerCase()));
+			else
 				response.append(L("It is mostly made of @x1.  ",RawMaterial.CODES.NAME(item.material()).toLowerCase()));
 			if(item instanceof Recipe)
 			{

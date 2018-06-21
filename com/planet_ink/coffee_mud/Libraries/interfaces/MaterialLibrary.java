@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.Sense;
 import com.planet_ink.coffee_mud.Libraries.Socials;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaterialLibrary.DeadResourceRecord;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -49,6 +50,7 @@ public interface MaterialLibrary extends CMLibrary
 	public int getRandomResourceOfMaterial(int material);
 	public boolean rebundle(Item I);
 	public boolean quickDestroy(Item I);
+	public DeadResourceRecord destroyResources(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C);
 	public int destroyResourcesValue(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never);
 	public int destroyResourcesValue(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never);
 	public int destroyResourcesValue(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C);
@@ -77,4 +79,17 @@ public interface MaterialLibrary extends CMLibrary
 	 * @return the number of ticks to burn, or 0
 	 */
 	public int getBurnDuration(Environmental E);
+	
+	/**
+	 * A record detailing information about
+	 * destoryed resources, used mostly for common
+	 * skills that consume them.
+	 * @author Bo Zimmerman
+	 */
+	public static class DeadResourceRecord
+	{
+		public int lostValue=0;
+		public int lostAmt=0;
+		public List<Ability> lostProps = null;
+	}
 }

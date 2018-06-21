@@ -840,7 +840,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	@Override
 	public int destroyResourcesAmt(List<Item> V, int howMuch, int finalMaterial, Container C)
 	{
-		return destroyResourcesAll(V, howMuch, finalMaterial, -1, null, C)[1];
+		return destroyResources(V, howMuch, finalMaterial, -1, null, C).lostAmt;
 	}
 
 	@Override
@@ -858,16 +858,20 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	@Override
 	public int destroyResourcesValue(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
 	{
-		return destroyResourcesAll(V, howMuch, finalMaterial, otherMaterial, never, C)[0];
+		return destroyResources(V, howMuch, finalMaterial, otherMaterial, never, C).lostValue;
 	}
 
-	protected int[] destroyResourcesAll(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
+	@Override
+	public DeadResourceRecord destroyResources(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
 	{
-		int lostValue=0;
-		int lostAmt=0;
-		if((V==null)||(V.size()==0)) return new int[]{0,0};
-
-		if((howMuch>0)||(otherMaterial>0))
+		DeadResourceRecord record = new DeadResourceRecord();
+		if((V==null)||(V.size()==0)) 
+			return record;
+		if((howMuch<=0)&&(otherMaterial<=0))
+			return record;
+		
+		final XVector<Ability> props=new XVector<Ability>();
+		record.lostProps=props;
 		for(int i=V.size()-1;i>=0;i--)
 		{
 			final Item I=V.get(i);
@@ -885,17 +889,18 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			{
 				if(I.basePhyStats().weight()>1)
 				{
-					I.basePhyStats().setWeight(I.basePhyStats().weight()-1);
-					final Environmental E=makeResource(otherMaterial,null,true,I.rawSecretIdentity());
+					final Environmental E=this.unbundle(I, 1, null);
 					if(E instanceof Item)
-						lostValue+=((Item)E).value();
-					if(I.baseGoldValue()>=(I.basePhyStats().weight()*((Item)E).value()))
-						I.setBaseValue(I.baseGoldValue()-((Item)E).value());
-					adjustResourceName(I);
+					{
+						record.lostValue+=((Item)E).value();
+						props.addAll(((Item)E).effects());
+					}
+					E.destroy();
 				}
 				else
 				{
-					lostValue+=I.value();
+					record.lostValue+=I.value();
+					props.addAll(I.effects());
 					((RawMaterial)I).quickDestroy();
 				}
 				otherMaterial=-1;
@@ -912,21 +917,22 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			{
 				if(I.basePhyStats().weight()>howMuch)
 				{
-					I.basePhyStats().setWeight(I.basePhyStats().weight()-howMuch);
-					lostAmt+=howMuch;
-					final Environmental E=makeResource(finalMaterial,null,true,I.rawSecretIdentity());
+					final Environmental E=unbundle(I, howMuch, null);
+					record.lostAmt+=howMuch;
 					if(E instanceof Item)
-						lostValue+=(((Item)E).value()*howMuch);
-					if(I.baseGoldValue()>=(I.basePhyStats().weight()*((Item)E).value()))
-						I.setBaseValue(I.baseGoldValue()-((Item)E).value());
-					adjustResourceName(I);
+					{
+						record.lostValue+=(((Item)E).value());
+						props.addAll(((Item)E).effects());
+					}
+					E.destroy();
 					howMuch=0;
 				}
 				else
 				{
-					lostAmt+=I.basePhyStats().weight();
+					record.lostAmt+=I.basePhyStats().weight();
 					howMuch-=I.basePhyStats().weight();
-					lostValue+=I.value();
+					props.addAll(I.effects());
+					record.lostValue+=I.value();
 					((RawMaterial)I).quickDestroy();
 				}
 				if(howMuch<=0)
@@ -937,7 +943,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				}
 			}
 		}
-		return new int[]{lostValue,lostAmt};
+		return record;
 	}
 
 	@Override
