@@ -36,7 +36,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Texttiling extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
+public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override
 	public String ID()
