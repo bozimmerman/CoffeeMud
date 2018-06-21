@@ -1,0 +1,18 @@
+#Name	LVL	TIME	WOOD	Value	ClassID	Resource Name	Resource1	Resource2	Resource3	Tailoring Affects
+Bolt of Wool	1	20	(onground:consumed:1:WOOL:)	20	GenResource	Wool	Wool			(-2) FIRE SAVE, 2 COLD SAVE
+Bolt of Cotton	2	20	(onground:consumed:1:COTTON:)	10	GenResource	COTTON	Cloth			
+Bolt of Copper Lame	3	40	(onground:consumed:1:COTTON(BOLT):)&&(onground:consumed:1:COPPER:)	80	GenResource	COTTON	Bolt of Cotton	Copper		(-2) ELEC SAVE
+Bolt of Hemp	4	20	(onground:consumed:1:HEMP:)	8	GenResource	HEMP	Hemp			
+Bolt of Jute	5	25	(onground:consumed:1:REED:)&&(onground:consumed:1:HEMP:)	10	GenResource	HEMP	Reed	Hemp		
+Bolt of Denim	8	30	1	30	GenResource	DENIM	Cotton	Bolt of Jute		
+Bolt of Silk	10	60	(onground:consumed:1:SILK:)	400	GenResource	SILK	Silk			
+Bolt of Satin	12	60	(onground:consumed:1:COTTON(BOLT):)&&(onground:consumed:1:WOODEN:)	48	GenResource	COTTON	Bolt of Cotton	Wood		
+Bolt of Centrate	14	80	1	100	GenResource	Denim	Bolt of Wool	Bolt of Denim		3 COLD SAVE
+Bolt of Silver Lame	15	40	(onground:consumed:1:COTTON(BOLT):)&&(onground:consumed:1:SILVER:)	320	GenResource	Cotton	Bolt of Cotton	Silver		(-2) ELEC SAVE
+Bolt of Chiffon	16	90	1	4240	GenResource	Silk	Bolt of Satin	Bolt of Silk		
+Bolt of Ramie	18	120	(onground:consumed:1:SILK(BOLT):)&&(onground:consumed:1:HERBS:)	802	GenResource	Silk	Bolt of Silk	(unidentified) Herb		
+Bolt of Byssus	19	300	(onground:consumed:1:SILK(BOLT):)&&(onground:consumed:1:SOME CLAMS:)	1600	GenResource	Silk	Bolt of Silk	Clams		
+Bolt of Gold Lame	20	40	(onground:consumed:1:COTTON(BOLT):)&&(onground:consumed:1:GOLD:)	2560	GenResource	Cotton	Bolt of Cotton	Gold		(-2) ELEC SAVE
+Bolt of Arcanin	24	90	1	3300	GenResource	Silk	Bolt of Chiffon	Bolt of Ramie		2 MAGIC SAVE
+Bolt of Gnomish Underweave	25	90	(onground:consumed:1:COTTON(BOLT):)&&(onground:consumed:1:IRON:)	60	GenResource	Silk	Bolt of Cotton	Iron		3 DISEASE SAVE
+Bolt of Spidersteel	30	90	(onground:consumed:1:SILK(BOLT):)&&(onground:consumed:1:MITHRIL:)	1000	GenResource	Spidersteel	Bolt of Silk	Mithril		
