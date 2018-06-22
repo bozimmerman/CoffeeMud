@@ -195,7 +195,7 @@ public class GreatFish extends GiantFish
 				for(int i=0;i<5;i++)
 				{
 					resources.addElement(makeResource
-					(L("a @x1 scaly hide",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
+					(L("a @x1 scaly hide",name().toLowerCase()),RawMaterial.RESOURCE_SCALES,L("@x1 scale")));
 				}
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));

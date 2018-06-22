@@ -164,7 +164,7 @@ public class Python extends Snake
 				for(int i=0;i<5;i++)
 				{
 					resources.addElement(makeResource
-					(L("a strip of @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
+					(L("a strip of @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES,L("@x1 scale")));
 				}
 				for(int i=0;i<3;i++)
 				{

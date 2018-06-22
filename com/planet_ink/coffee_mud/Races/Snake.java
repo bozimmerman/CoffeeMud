@@ -253,7 +253,7 @@ public class Snake extends StdRace
 				resources.addElement(makeResource
 				(L("a pair of @x1 fangs",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
-				(L("some @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
+				(L("some @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES,L("@x1 scale")));
 				resources.addElement(makeResource
 				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource

@@ -179,7 +179,7 @@ public class Naga extends Python
 				for(int i=0;i<5;i++)
 				{
 					resources.addElement(makeResource
-					(L("a strip of @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
+					(L("a strip of @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES,L("@x1 scale")));
 				}
 				resources.addElement(makeResource
 				(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));

@@ -125,7 +125,7 @@ public class SmallFish extends Fish
 				resources.addElement(makeResource
 				(L("some @x1",name().toLowerCase()),RawMaterial.RESOURCE_FISH));
 				resources.addElement(makeResource
-				(L("a @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
+				(L("a @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES,L("@x1 scale")));
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}

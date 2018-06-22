@@ -128,7 +128,7 @@ public class Alligator extends GreatLizard
 					(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				for(int i=0;i<15;i++)
 					resources.addElement(makeResource
-					(L("a @x1 scale",name().toLowerCase()),RawMaterial.RESOURCE_SCALES));
+					(L("a @x1 scale",name().toLowerCase()),RawMaterial.RESOURCE_SCALES,L("@x1 scale")));
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 			}
