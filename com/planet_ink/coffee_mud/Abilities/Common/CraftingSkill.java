@@ -706,13 +706,25 @@ public class CraftingSkill extends GatheringSkill
 
 		if(req1Required>data[0][FOUND_AMT])
 		{
-			commonTell(mob,L("You need @x1 pounds of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req1Required,RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase()));
+			String req1MatName=RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase();
+			if((firstWood != null)&&(firstWood.getSubType().length()>0))
+				req1MatName=firstWood.getSubType().toLowerCase();
+			if(req1Required>1)
+				commonTell(mob,L("You need a @x1 pound bundle of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req1Required,req1MatName));
+			else
+				commonTell(mob,L("You need a pound of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req1Required,req1MatName));
 			return null;
 		}
 		data[0][FOUND_AMT]=req1Required;
 		if((req2Required>0)&&(req2Required>data[1][FOUND_AMT]))
 		{
-			commonTell(mob,L("You need @x1 pounds of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req2Required,RawMaterial.CODES.NAME(data[1][FOUND_CODE]).toLowerCase()));
+			String req2MatName=RawMaterial.CODES.NAME(data[0][FOUND_CODE]).toLowerCase();
+			if((firstOther != null)&&(firstOther.getSubType().length()>0))
+				req2MatName=firstOther.getSubType().toLowerCase();
+			if(req2Required>1)
+				commonTell(mob,L("You need a @x1 pound bundle of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req2Required,req2MatName));
+			else
+				commonTell(mob,L("You need a pound of @x2 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",""+req2Required,req2MatName));
 			return null;
 		}
 		data[1][FOUND_AMT]=req2Required;
