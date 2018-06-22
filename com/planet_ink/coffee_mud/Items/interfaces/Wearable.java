@@ -382,6 +382,33 @@ public interface Wearable extends Environmental
 		"back"
 	};
 
+	/**
+	 * An array naming each of the worn location constants, in the order of their numeric value.
+	 */
+	public static final String[] DEFAULT_WORN_USUAL_NAMES={
+		"inventory",
+		"hat",
+		"necklace",
+		"shirt",
+		"sleeves",
+		"bracelet",
+		"bracelet",
+		"ring",
+		"ring",
+		"shoe",
+		"gizmo",
+		"weapon",
+		"gloves",
+		"floaty",
+		"belt",
+		"pants",
+		"eyeglasses",
+		"earmuffs",
+		"cloak",
+		"mouthpiece",
+		"cape"
+	};
+	
 	/** An array containing all of the worn codes,in the order of their numeric value. */
 	public static final long[] DEFAULT_WORN_CODES={
 		IN_INVENTORY,
@@ -456,7 +483,8 @@ public interface Wearable extends Environmental
 				for(int i=0;i<Wearable.DEFAULT_WORN_CODES.length;i++)
 					add(DEFAULT_WORN_DESCS[i], DEFAULT_WORN_DEPENDENCYGRID[i],
 						DEFAULT_WORN_WEIGHTS[i], CMParms.indexOf(DEFAULT_WORN_ORDER,DEFAULT_WORN_CODES[i]),
-						DEFAULT_WORN_WEIGHT_POINTS[i][0], DEFAULT_WORN_WEIGHT_POINTS[i][1], DEFAULT_WORN_WEIGHT_POINTS[i][2]);
+						DEFAULT_WORN_WEIGHT_POINTS[i][0], DEFAULT_WORN_WEIGHT_POINTS[i][1], DEFAULT_WORN_WEIGHT_POINTS[i][2],
+						Wearable.DEFAULT_WORN_USUAL_NAMES[i]);
 				// now, stupid as it is, I have to fix the worn orders
 				allCodesInOrder=Arrays.copyOf(Wearable.DEFAULT_WORN_ORDER, Wearable.DEFAULT_WORN_ORDER.length);
 
@@ -504,11 +532,12 @@ public interface Wearable extends Environmental
 					final double clothWeight=CMath.s_double(V.get(3));
 					final double leatherWeight=CMath.s_double(V.get(4));
 					final double metalWeight=CMath.s_double(V.get(5));
+					final String usualName=(V.size()>6)?V.get(6):"unusual";
 					if(type.equalsIgnoreCase("ADD"))
-						add(stat, dependencyMask, armorStrength, wornOrder, clothWeight, leatherWeight, metalWeight);
+						add(stat, dependencyMask, armorStrength, wornOrder, clothWeight, leatherWeight, metalWeight, usualName);
 					else
 					if(type.equalsIgnoreCase("REPLACE")&&(oldLocationCodeIndex>=0))
-						replace(oldLocationCodeIndex, stat, dependencyMask, armorStrength, wornOrder, clothWeight, leatherWeight, metalWeight);
+						replace(oldLocationCodeIndex, stat, dependencyMask, armorStrength, wornOrder, clothWeight, leatherWeight, metalWeight, usualName);
 				}
 			}
 		}
@@ -538,6 +567,7 @@ public interface Wearable extends Environmental
 		private double[] armorWeights =  new double[0];
 		private String[] descs = new String[0];
 		private String[] updescs = new String[0];
+		private String[] usualNames = new String[0];
 		/**
 		 * Returns total number of codes 0 - this-1
 		 * @return total number of codes 0 - this-1
@@ -789,6 +819,24 @@ public interface Wearable extends Environmental
 			return "";
 		}
 		/**
+		 * Returns the name of typical equipment here
+		 * @param code the code
+		 * @return the name of typical equipment here
+		 */
+		public String usual(long code) 
+		{
+			final int x=CMParms.indexOf(allCodes, code);
+			if(x>=0)
+				return usualNames[x];
+			return "";
+		}
+		/**
+		 * Returns the name of typical equipment here
+		 * @param code the code
+		 * @return the name of typical equipment here
+		 */
+		public static String USUAL(long code) { return c().usual(code);}
+		/**
 		 * Returns the location dependency mask (or -1) of the various locations
 		 * @return the location dependency mask (or -1) of the various locations
 		 */
@@ -828,7 +876,6 @@ public interface Wearable extends Environmental
 		/**
 		 * Adds a new wear location.  I suspect this stuff works.  I also suspect
 		 * it is not used, in favor of the hard coded stuff above.  
-		 * TODO: this isn't implemented fully!
 		 * @param desc the wear location description
 		 * @param dependencyMask the dependency locations
 		 * @param armorStrength armor strength factor
@@ -836,9 +883,11 @@ public interface Wearable extends Environmental
 		 * @param clothWeight the cloth weight factor
 		 * @param leatherWeight the leather weight factor
 		 * @param metalWeight the metal weight factor
+		 * @param usualName for auto-generated gear, a noun that might go here
 		 */
 		public synchronized void add(String desc, long dependencyMask, double armorStrength, int wornOrder,
-									 double clothWeight, double leatherWeight, double metalWeight)
+									 double clothWeight, double leatherWeight, double metalWeight,
+									 String usualName)
 		{
 			if(allCodes.length>61)
 				return;
@@ -849,6 +898,8 @@ public interface Wearable extends Environmental
 			allCodes[allCodes.length-1]=newCode;
 			descs=Arrays.copyOf(descs, descs.length+1);
 			descs[descs.length-1]=desc;
+			usualNames=Arrays.copyOf(usualNames, usualNames.length+1);
+			usualNames[usualNames.length-1]=usualName;
 			updescs=Arrays.copyOf(updescs, updescs.length+1);
 			updescs[updescs.length-1]=desc.toUpperCase();
 			dependencyMasks=Arrays.copyOf(dependencyMasks, dependencyMasks.length+1);
@@ -887,7 +938,6 @@ public interface Wearable extends Environmental
 		/**
 		 * replaces an existing wear location.  I suspect this stuff works.  I also suspect
 		 * it is not used, in favor of the hard coded stuff above.  
-		 * TODO: this isn't implemented fully!
 		 * @param codeIndex the index of the location to replace
 		 * @param desc the wear location description
 		 * @param dependencyMask the dependency locations
@@ -896,9 +946,10 @@ public interface Wearable extends Environmental
 		 * @param clothWeight the cloth weight factor
 		 * @param leatherWeight the leather weight factor
 		 * @param metalWeight the metal weight factor
+		 * @param the usual equipment name
 		 */
 		public synchronized void replace(int codeIndex, String desc, long dependencyMask, double armorStrength, int wornOrder,
-										  double clothWeight, double leatherWeight, double metalWeight)
+										  double clothWeight, double leatherWeight, double metalWeight, String usualName)
 		{
 			if(codeIndex<=0)
 				return;
@@ -909,6 +960,7 @@ public interface Wearable extends Environmental
 			final double[] newRow={clothWeight,leatherWeight,metalWeight};
 			wornWeightPoints[codeIndex]=newRow;
 			insertInOrder(allCodes[codeIndex],wornOrder);
+			usualNames[codeIndex]=usualName;
 		}
 	}
 }

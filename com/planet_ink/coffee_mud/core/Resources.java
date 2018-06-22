@@ -94,13 +94,15 @@ public class Resources
 		if(Thread.currentThread().getThreadGroup().getName().charAt(0)==code)
 			initialize();
 		else
-		if(rscs[code]!=null)
-			rscs[Thread.currentThread().getThreadGroup().getName().charAt(0)]=rscs[code];
-		else
 		{
-			initialize();
-			rscs[code]=rscs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
-
+			while(rscs[code]==null)
+			{
+				synchronized(rscs)
+				{
+					CMLib.s_sleep(100);
+				}
+			}
+			rscs[Thread.currentThread().getThreadGroup().getName().charAt(0)]=rscs[code];
 		}
 	}
 

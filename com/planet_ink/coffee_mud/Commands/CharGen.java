@@ -60,6 +60,8 @@ public class CharGen extends StdCommand
 			if(wornCode==Wearable.WORN_WIELD)
 			{
 				final Weapon W=CMClass.getWeapon("GenWeapon");
+				W.setName("a sword");
+				W.setDisplayText("a sword sits here");
 				W.setWeaponClassification(Weapon.CLASS_SWORD);
 				W.setWeaponDamageType(Weapon.TYPE_SLASHING);
 				W.setMaterial(RawMaterial.RESOURCE_STEEL);
@@ -76,19 +78,27 @@ public class CharGen extends StdCommand
 				case CharClass.WEAPONS_NEUTRALCLERIC:
 					break;
 				case CharClass.WEAPONS_DAGGERONLY:
+					W.setName("a dagger");
+					W.setDisplayText("a dagger sits here");
 					W.setWeaponClassification(Weapon.CLASS_DAGGER);
 					W.setWeaponDamageType(Weapon.TYPE_PIERCING);
 					break;
 				case CharClass.WEAPONS_NATURAL:
+					W.setName("a wooden sword");
+					W.setDisplayText("a wooden sword sits here");
 					W.setMaterial(RawMaterial.RESOURCE_OAK);
 					break;
 				case CharClass.WEAPONS_ROCKY:
+					W.setName("a stone sword");
+					W.setDisplayText("a stone sword sits here");
 					W.setMaterial(RawMaterial.RESOURCE_STONE);
 					break;
 				case CharClass.WEAPONS_GOODCLERIC:
 					CMLib.factions().setAlignment(M,Faction.Align.GOOD);
 				//$FALL-THROUGH$
 				case CharClass.WEAPONS_MAGELIKE:
+					W.setName("a staff");
+					W.setDisplayText("a staff sits here");
 					W.setMaterial(RawMaterial.RESOURCE_OAK);
 					W.setWeaponClassification(Weapon.CLASS_STAFF);
 					W.setWeaponDamageType(Weapon.TYPE_BASHING);
@@ -96,12 +106,16 @@ public class CharGen extends StdCommand
 				case CharClass.WEAPONS_ALLCLERIC:
 					if(CMLib.flags().isGood(M))
 					{
+						W.setName("a staff");
+						W.setDisplayText("a staff sits here");
 						W.setMaterial(RawMaterial.RESOURCE_OAK);
 						W.setWeaponClassification(Weapon.CLASS_STAFF);
 						W.setWeaponDamageType(Weapon.TYPE_BASHING);
 					}
 					break;
 				case CharClass.WEAPONS_FLAILONLY:
+					W.setName("a flail");
+					W.setDisplayText("a flail sits here");
 					W.setWeaponClassification(Weapon.CLASS_FLAILED);
 					W.setWeaponDamageType(Weapon.TYPE_BASHING);
 					break;
@@ -137,6 +151,9 @@ public class CharGen extends StdCommand
 					A.setMaterial(RawMaterial.RESOURCE_OAK);
 					break;
 				}
+				String adj=RawMaterial.CODES.NAME(A.material()).toLowerCase();
+				A.setName(CMLib.english().startWithAorAn(adj)+" "+Wearable.CODES.USUAL(wornCode).toLowerCase());
+				A.setDisplayText(A.name()+" sits here");
 				A.basePhyStats().setLevel(level);
 				A.basePhyStats().setWeight(8);
 				A.recoverPhyStats();
@@ -1350,7 +1367,9 @@ public class CharGen extends StdCommand
 			
 			if(commands.get(0).equalsIgnoreCase("EQUIP") && (commands.size()>1))
 			{
-				MOB M=CMLib.players().getLoadPlayer(CMParms.combine(commands,1));
+				MOB M=mob.location().fetchInhabitant(CMParms.combine(commands,1));
+				if(M==null)
+					M=CMLib.players().getLoadPlayer(CMParms.combine(commands,1));
 				if(M==null)
 				{
 					mob.tell(L("Equip Whom?"));

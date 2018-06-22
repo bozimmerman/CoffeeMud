@@ -299,14 +299,27 @@ public class CMLib
 	/**
 	 * Returns the CMLib instance associated either with
 	 * the given session, or the current thread.
-	 * @param session
-	 * @return
+	 * @param session the session
+	 * @return the cmlib
 	 */
 	public static final CMLib get(final Session session)
 	{
 		if(session != null)
+			return get(session.getGroupID());
+		return l();
+	}
+	
+	/**
+	 * Returns the CMLib instance associated with
+	 * the given thread id, or the current thread.
+	 * @param id the id
+	 * @return the cmlib
+	 */
+	public static final CMLib get(final int id)
+	{
+		if((id>=0)&&(id<libs.length))
 		{
-			final CMLib lib=libs[session.getGroupID()];
+			final CMLib lib=libs[id];
 			if(lib != null)
 				return lib;
 		}
