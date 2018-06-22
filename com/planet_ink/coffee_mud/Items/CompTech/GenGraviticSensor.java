@@ -315,7 +315,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 					@Override
 					public long[] coordinates()
 					{
-						return new long[]{0,0,0};
+						return Arrays.copyOf(obj.coordinates(), obj.coordinates().length);
 					}
 	
 					@Override

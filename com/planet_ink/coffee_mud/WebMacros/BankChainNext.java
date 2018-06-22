@@ -82,7 +82,7 @@ public class BankChainNext extends StdWebMacro
 				}
 				else
 				{
-					playerM=CMLib.players().getPlayer(player);
+					playerM=CMLib.players().getPlayerAllHosts(player);
 					if(playerM==null)
 					{
 						playerM=CMClass.getFactoryMOB();

@@ -693,7 +693,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							oldCoins=findDepositInventory(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
 							if(oldCoins!=null)
 							{
-								final MOB owner=CMLib.players().getPlayer(msg.source().getLiegeID());
+								final MOB owner=CMLib.players().getPlayerAllHosts(msg.source().getLiegeID());
 								if(owner != null)
 									depositorName=owner.Name();
 							}
@@ -799,7 +799,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							if((item2!=null)&&(item2 instanceof Coins)&&(((Coins)item2).getTotalValue()>=((Coins)old).getTotalValue()))
 							{
 								depositInventoryItem=item2;
-								final MOB owner=CMLib.players().getPlayer(msg.source().getLiegeID());
+								final MOB owner=CMLib.players().getPlayerAllHosts(msg.source().getLiegeID());
 								if(owner!=null)
 									withdrawerName=owner.Name();
 							}
@@ -1101,7 +1101,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if((!isSold(ShopKeeper.DEAL_CLANBANKER))
 						&&(msg.source().isMarriedToLiege())
 						&&(findDepositInventory(msg.source().getLiegeID(),msg.tool().Name())!=null))
-							owner=CMLib.players().getPlayer(msg.source().getLiegeID());
+							owner=CMLib.players().getPlayerAllHosts(msg.source().getLiegeID());
 						else
 						{
 							CMLib.commands().postSay(this,mob,L("You want WHAT?"),true,false);

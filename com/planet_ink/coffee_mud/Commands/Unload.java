@@ -275,7 +275,7 @@ public class Unload extends StdCommand
 				}
 				else
 				{
-					final MOB M=CMLib.players().getPlayer(which);
+					final MOB M=CMLib.players().getPlayer(which); // local, for security
 					if(M==null)
 					{
 						mob.tell(L("No such user as '@x1'!",which));

@@ -141,7 +141,7 @@ public class GrinderPlayers extends GrinderMobs
 					M.setWorshipCharID(old);
 				break;
 			case LIEGE:
-				if (CMLib.players().getPlayer(old) != null)
+				if (CMLib.players().getPlayerAllHosts(old) != null)
 					M.setLiegeID(old);
 				break;
 			case CLANNAMES:

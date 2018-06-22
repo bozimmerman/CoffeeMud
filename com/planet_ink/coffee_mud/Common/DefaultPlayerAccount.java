@@ -626,7 +626,7 @@ public class DefaultPlayerAccount implements PlayerAccount
 	}
 
 	@Override
-	public void setPlayerNames(Vector<String> names)
+	public void setPlayerNames(List<String> names)
 	{
 		if(names != null)
 		{

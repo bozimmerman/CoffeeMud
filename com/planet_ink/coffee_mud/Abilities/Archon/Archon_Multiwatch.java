@@ -330,7 +330,7 @@ public class Archon_Multiwatch extends ArchonSkill
 			for(int i=1;i<commands.size();i++)
 			{
 				final String name=commands.get(i);
-				final MOB M=CMLib.players().getPlayer(name);
+				final MOB M=CMLib.players().getPlayerAllHosts(name);
 				if((M.session()!=null)&&(CMLib.flags().isInTheGame(M,true)))
 					V.addElement(M);
 				else

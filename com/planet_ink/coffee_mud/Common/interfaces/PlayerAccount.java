@@ -95,7 +95,7 @@ public interface PlayerAccount extends CMCommon, AccountStats, Modifiable, Tatto
 	 * Sets the names of all the players that belong to this account
 	 * @param names the names of the players
 	 */
-	public void setPlayerNames(Vector<String> names);
+	public void setPlayerNames(List<String> names);
 
 	/**
 	 * Checks whether the given string flag is set for this account.

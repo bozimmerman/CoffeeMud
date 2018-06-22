@@ -237,7 +237,8 @@ public class Prop_Artifact extends Property
 				if(autodrop)
 				{
 					if((I.owner() instanceof MOB)
-					&&((!((MOB)I.owner()).isMonster())||(CMLib.players().getPlayer(((MOB)I.owner()).Name())!=null)))
+					&&((!((MOB)I.owner()).isMonster())
+						||(CMLib.players().getPlayerAllHosts(((MOB)I.owner()).Name())!=null)))
 						R.moveItemTo(I);
 				}
 			}

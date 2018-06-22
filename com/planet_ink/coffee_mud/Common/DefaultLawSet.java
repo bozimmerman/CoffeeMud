@@ -356,7 +356,7 @@ public class DefaultLawSet implements Law
 
 	protected boolean notifyPlayer(final String ownerName, String owerName, final double owed, final String fourWord, final String subject, String message)
 	{
-		MOB M=CMLib.players().getPlayer(ownerName);
+		MOB M=CMLib.players().getPlayerAllHosts(ownerName);
 		if((M!=null)&&(CMLib.flags().isInTheGame(M, true)))
 		{
 			final String amountOwed = CMLib.beanCounter().nameCurrencyLong(M, owed);

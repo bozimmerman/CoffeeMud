@@ -236,7 +236,7 @@ public class MOBloader
 		if(emptyRoom==null) 
 			emptyRoom=CMClass.getLocale("StdRoom");
 		final String[] oldLocID=new String[1];
-		if(CMLib.players().getPlayer(name)!=null)
+		if(CMLib.players().getPlayer(name)!=null) // super important to stay this t-group
 			return CMLib.players().getPlayer(name);
 		final MOB mob=DBReadUserOnly(name,oldLocID);
 		if(mob == null)

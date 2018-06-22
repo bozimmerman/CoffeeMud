@@ -1123,7 +1123,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	@Override
 	public boolean resurrect(final MOB tellMob, final Room corpseRoom, final DeadBody body, final int XPLevel)
 	{
-		final MOB rejuvedMOB=CMLib.players().getPlayer(body.getMobName());
+		final MOB rejuvedMOB=CMLib.players().getPlayerAllHosts(body.getMobName());
 
 		if(rejuvedMOB!=null) // doing this here is helpful -- it can trigger a socket error.
 			rejuvedMOB.tell(L("You are being resurrected."));

@@ -119,7 +119,7 @@ public class Corpse extends GenContainer implements DeadBody
 		if((savedMOB!=null)
 		&&(!saveSavedMOB)
 		&&((!savedMOB.isPlayer())
-			||(CMLib.players().getPlayer(savedMOB.Name())!=savedMOB)))
+			||(CMLib.players().getPlayerAllHosts(savedMOB.Name())!=savedMOB)))
 				savedMOB.destroy();
 		savedMOB=null;
 	}

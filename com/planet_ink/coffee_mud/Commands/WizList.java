@@ -68,7 +68,7 @@ public class WizList extends StdCommand
 		for(final PlayerLibrary.ThinPlayer U : allUsers)
 		{
 			CharClass C;
-			final MOB player = CMLib.players().getPlayer(U.name());
+			final MOB player = CMLib.players().getPlayer(U.name()); // only called from this t-groups database anyway, so keep it local
 			if(player != null)
 				C=player.charStats().getCurrentClass();
 			else

@@ -95,7 +95,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 	{
 		return directConverter;
 	}
-	
+
 	protected boolean doSensing(MOB mob, Software controlI)
 	{
 		final SpaceObject O=CMLib.map().getSpaceObject(this, true);

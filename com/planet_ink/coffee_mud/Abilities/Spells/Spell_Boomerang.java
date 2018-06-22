@@ -100,7 +100,7 @@ public class Spell_Boomerang extends Spell
 			&&(I.owner().Name().equals(text())))
 				owner=(MOB)I.owner();
 			else
-				owner=CMLib.players().getPlayer(text());
+				owner=CMLib.players().getPlayer(text()); // called by ticking, and should be ticking same t-group as owner.
 		}
 		return owner;
 	}

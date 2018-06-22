@@ -695,6 +695,12 @@ public class RocketShipProgram extends GenShipProgram
 
 	public boolean flipForAllStop(final SpaceShip ship)
 	{
+		final double[] stopFacing = CMLib.map().getOppositeDir(ship.direction());
+		return changeFacing(ship, stopFacing);
+	}
+
+	public boolean changeFacing(final SpaceShip ship, double[] newFacing)
+	{
 		CMMsg msg;
 		final List<ShipEngine> engines = getEngines();
 		final MOB M=CMClass.getFactoryMOB();
@@ -702,8 +708,8 @@ public class RocketShipProgram extends GenShipProgram
 		try
 		{
 			// step one, face opposite direction of motion
-			final double[] stopFacing = CMLib.map().getOppositeDir(ship.direction());
-			Log.infoOut("flipping to go from "+ship.direction()[0]+","+ship.direction()[1]+"  to  "+stopFacing[0]+","+stopFacing[1]);
+			if(isDebugging)
+				Log.debugOut("flipping to go from "+ship.direction()[0]+","+ship.direction()[1]+"  to  "+newFacing[0]+","+newFacing[1]);
 			for(final ShipEngine engineE : engines)
 			{
 				if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.STARBOARD))
@@ -719,9 +725,9 @@ public class RocketShipProgram extends GenShipProgram
 					if(this.lastAngle==null)
 						break;
 					if(isDebugging)
-						Log.infoOut("Thrusting 1 to PORT to achieve DELTA, and got a delta of "+this.lastAngle.doubleValue());
+						Log.debugOut("Thrusting 1 to PORT to achieve DELTA, and got a delta of "+this.lastAngle.doubleValue());
 					double angleAchievedPerPt = Math.abs(this.lastAngle.doubleValue()); //
-					double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
+					double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 					for(int i=0;i<100;i++)
 					{
 						if(Math.abs(angleDelta[0]) > 0.00001)
@@ -730,8 +736,8 @@ public class RocketShipProgram extends GenShipProgram
 							Double thrust = new Double(Math.abs(angleDelta[0]) / angleAchievedPerPt);
 							if(isDebugging)
 							{
-								Log.infoOut("Delta0="+angleDelta[0]);
-								Log.infoOut("Thrusting "+thrust+" to "+dir+" to achieve delta, and go from "+ship.facing()[0]+" to "+stopFacing[0]);
+								Log.debugOut("Delta0="+angleDelta[0]);
+								Log.debugOut("Thrusting "+thrust+" to "+dir+" to achieve delta, and go from "+ship.facing()[0]+" to "+newFacing[0]);
 							}
 							msg.setTargetMessage(TechCommand.THRUST.makeCommand(dir,thrust));
 							this.lastAngle = null;
@@ -741,13 +747,13 @@ public class RocketShipProgram extends GenShipProgram
 						}
 						else
 							break;
-						angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
+						angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 						if(isDebugging)
-							Log.infoOut("* Total Deltas now: "+angleDelta[0]+" + "+angleDelta[1] +"=="+((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))));
+							Log.debugOut("* Total Deltas now: "+angleDelta[0]+" + "+angleDelta[1] +"=="+((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))));
 						if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))<.01)
 							return true;
 					}
-					angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
+					angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 					for(int i=0;i<100;i++)
 					{
 						if(Math.abs(angleDelta[1]) > 0.00001)
@@ -756,8 +762,8 @@ public class RocketShipProgram extends GenShipProgram
 							Double thrust = new Double(Math.abs(angleDelta[1]) / angleAchievedPerPt);
 							if(isDebugging)
 							{
-								Log.infoOut("Delta1="+angleDelta[1]);
-								Log.infoOut("Thrusting "+thrust+" to "+dir+" to achieve delta and go from "+ship.facing()[1]+" to "+stopFacing[1]);
+								Log.debugOut("Delta1="+angleDelta[1]);
+								Log.debugOut("Thrusting "+thrust+" to "+dir+" to achieve delta and go from "+ship.facing()[1]+" to "+newFacing[1]);
 							}
 							msg.setTargetMessage(TechCommand.THRUST.makeCommand(dir,thrust));
 							this.lastAngle = null;
@@ -767,7 +773,7 @@ public class RocketShipProgram extends GenShipProgram
 						}
 						else
 							break;
-						angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
+						angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 						if(isDebugging)
 							Log.debugOut("* Total Deltas now: "+angleDelta[0]+" + "+angleDelta[1] +"=="+((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))));
 					}
@@ -1088,7 +1094,47 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			if(uword.equalsIgnoreCase("LAND"))
 			{
-				//TODO:
+				final SpaceObject spaceObject=CMLib.map().getSpaceObject(this,true);
+				final SpaceShip ship=(spaceObject instanceof SpaceShip)?(SpaceShip)spaceObject:null;
+				if(ship==null)
+				{
+					super.addScreenMessage(L("Error: Malfunctioning hull interface."));
+					return;
+				}
+				if(ship.getIsDocked() != null)
+				{
+					super.addScreenMessage(L("Error: Ship is already landed."));
+					return;
+				}
+				if(this.rocketState!=null)
+				{
+					super.addScreenMessage(L("Warning. Previous program cancelled."));
+					this.rocketState=null;
+					this.programEngines=null;
+				}
+				ShipEngine engineE=null;
+				if(!flipForAllStop(ship))
+				{
+					super.addScreenMessage(L("Warning. Stop program cancelled due to engine failure."));
+					this.rocketState=null;
+					this.programEngines=null;
+					return;
+				}
+				else
+				{
+					engineE=this.primeMainThrusters(ship);
+				}
+				if(engineE==null)
+				{
+					this.rocketState=null;
+					this.programEngines = null;
+					super.addScreenMessage(L("Error: Malfunctioning thrusters interface."));
+					return;
+				}
+				this.programEngines=new XVector<ShipEngine>(engineE);
+				this.rocketState = RocketShipProgram.RocketStateMachine.STOP;
+				super.addScreenMessage(L("All Stop procedure initialized."));
+				return;
 			}
 			else
 			if(!uword.equalsIgnoreCase("HELP"))

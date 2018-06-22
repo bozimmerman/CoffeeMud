@@ -440,7 +440,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		&&(amount>2)
 		&&(!mob.isMonster()))
 		{
-			final MOB sire=CMLib.players().getPlayer(mob.getLiegeID());
+			final MOB sire=CMLib.players().getPlayerAllHosts(mob.getLiegeID());
 			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
 			{
 				final int sireShare=(int)Math.round(CMath.div(amount,10.0));

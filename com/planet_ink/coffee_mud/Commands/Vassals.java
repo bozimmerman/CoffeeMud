@@ -62,7 +62,7 @@ public class Vassals extends StdCommand
 		str.append(L("] Character name\n\r"));
 		for(PlayerLibrary.ThinPlayer tM : players)
 		{
-			final MOB M=CMLib.players().getPlayer(tM.name());
+			final MOB M=CMLib.players().getPlayerAllHosts(tM.name());
 			if(M==null)
 			{
 				str.append("[");

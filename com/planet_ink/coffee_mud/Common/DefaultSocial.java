@@ -390,7 +390,7 @@ public class DefaultSocial implements Social
 				targetMud = targetStr.substring(targetStr.indexOf('@') + 1);
 			else
 			{
-				target = CMLib.players().getPlayer(targetStr);
+				target = CMLib.players().getPlayerAllHosts(targetStr); // socials come from anywhere on the map
 				if ((target == null) && (!makeTarget))
 				{
 					final MOB possTarget = CMLib.catalog().getCatalogMob(targetStr);

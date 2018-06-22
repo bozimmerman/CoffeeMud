@@ -138,11 +138,11 @@ public class Switch extends StdCommand
 			return false;
 		}
 		final String MOBname=CMParms.combine(commands,1);
-		MOB target=CMLib.players().getPlayer(MOBname);
+		MOB target=CMLib.players().getPlayer(MOBname); // should definitely stay in this t-grp
 		boolean resetStats = false;
 		if(target == null)
 		{
-			target=CMLib.players().getLoadPlayer(MOBname);
+			target=CMLib.players().getLoadPlayer(MOBname); // should definitely stay in this t-grp
 			resetStats = true;
 		}
 		if(target == mob)

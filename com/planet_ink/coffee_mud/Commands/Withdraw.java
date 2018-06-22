@@ -93,7 +93,7 @@ public class Withdraw extends StdCommand
 			&&(!((Banker)SHOP).isSold(ShopKeeper.DEAL_CLANBANKER))
 			&&(mob.isMarriedToLiege()))
 			{
-				final MOB mob2=CMLib.players().getPlayer(mob.getLiegeID());
+				final MOB mob2=CMLib.players().getPlayerAllHosts(mob.getLiegeID());
 				if(mob2!=null)
 				{
 					final String accountName2=((Banker)SHOP).getBankClientName(mob2, Clan.Function.WITHDRAW, false);
@@ -122,7 +122,7 @@ public class Withdraw extends StdCommand
 			&&(!((PostOffice)SHOP).isSold(ShopKeeper.DEAL_CLANPOSTMAN))
 			&&(mob.isMarriedToLiege()))
 			{
-				final MOB mob2=CMLib.players().getPlayer(mob.getLiegeID());
+				final MOB mob2=CMLib.players().getPlayerAllHosts(mob.getLiegeID());
 				if(mob2!=null)
 				{
 					final String accountName2=((PostOffice)SHOP).getSenderName(mob, Clan.Function.WITHDRAW, false);

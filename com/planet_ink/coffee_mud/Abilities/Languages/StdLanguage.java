@@ -202,7 +202,7 @@ public class StdLanguage extends StdAbility implements Language
 	{
 		if(translationHash(language).containsKey(word.toUpperCase()))
 			return fixCase(word,translationHash(language).get(word.toUpperCase()));
-		final MOB M=CMLib.players().getPlayer(word);
+		final MOB M=CMLib.players().getPlayerAllHosts(word);
 		if(M!=null)
 			return word;
 		final List<String[]> translationVector=translationLists(language);

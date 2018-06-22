@@ -102,7 +102,7 @@ public class Archon_Infect extends ArchonSkill
 			return false;
 		}
 		final List<String> whom=new XVector<String>(commands.remove(0));
-		MOB target=CMLib.players().getPlayer(whom.get(0));
+		MOB target=CMLib.players().getPlayerAllHosts(whom.get(0));
 		if((target==null)||(target.isMonster())||(!target.isPlayer())||(!CMLib.flags().isInTheGame(target, true)))
 			target=getTargetAnywhere(mob,whom,givenTarget,false,true,true);
 		if(target==null)

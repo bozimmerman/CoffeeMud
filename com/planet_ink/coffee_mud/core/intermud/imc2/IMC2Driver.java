@@ -141,7 +141,7 @@ public final class IMC2Driver extends Thread {
 		}
 		else
 		{
-			final MOB M=CMLib.players().getPlayer(name);
+			final MOB M=CMLib.players().getPlayerAllHosts(name);
 			if(M!=null)
 				M.tell(text);
 		}
@@ -1118,7 +1118,7 @@ public final class IMC2Driver extends Thread {
 		out.to = sender;
 		out.type = "whois-reply";
 
-		final MOB M=CMLib.players().getPlayer(from.name);
+		final MOB M=CMLib.players().getPlayerAllHosts(from.name);
 		if(M==null)
 			return;
 		imc_addkey(out, "text", "imcpfind "+from.name+"@"+imc_name

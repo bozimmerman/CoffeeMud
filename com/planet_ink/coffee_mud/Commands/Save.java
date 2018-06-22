@@ -298,7 +298,7 @@ public class Save extends StdCommand
 		else
 		if(firstCommand.equals("USER")||firstCommand.equals("PLAYER")||firstCommand.equals("CHARACTER")||firstCommand.equals("CHAR"))
 		{
-			final MOB M=CMLib.players().getPlayer(lastCommand);
+			final MOB M=CMLib.players().getPlayer(lastCommand); //omg stay this t-group
 			if(M==null)
 			{
 				mob.tell(L("No user named @x1",lastCommand));
@@ -310,7 +310,7 @@ public class Save extends StdCommand
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes '@x1'.\n\r",M.name()));
 		}
 		else
-		if(CMLib.players().getPlayer(firstCommand)!=null)
+		if(CMLib.players().getPlayer(firstCommand)!=null) //omg stay this t-group
 		{
 			final MOB M=CMLib.players().getPlayer(firstCommand);
 			CMLib.database().DBUpdatePlayer(M);
@@ -319,7 +319,7 @@ public class Save extends StdCommand
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes '@x1'.\n\r",M.name()));
 		}
 		else
-		if(CMLib.players().getPlayer(lastCommand)!=null)
+		if(CMLib.players().getPlayer(lastCommand)!=null) //omg stay this t-group
 		{
 			final MOB M=CMLib.players().getPlayer(lastCommand);
 			CMLib.database().DBUpdatePlayer(M);
