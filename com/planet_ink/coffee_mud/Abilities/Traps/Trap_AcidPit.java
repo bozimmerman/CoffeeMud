@@ -101,9 +101,9 @@ public class Trap_AcidPit extends Trap_RoomPit
 			return false;
 		if(mob!=null)
 		{
-			Item I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
+			RawMaterial I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
 			if((I==null)
-			||(super.findNumberOfResource(mob.location(),I.material())<1))
+			||(super.findNumberOfResource(mob.location(),I)<1))
 			{
 				mob.tell(L("You'll need to set down some limes first."));
 				return false;

@@ -103,11 +103,11 @@ public class Trap_AcidSpray extends StdTrap
 			return false;
 		if(mob!=null)
 		{
-			Item I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LEMONS);
+			RawMaterial I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LEMONS);
 			if(I==null)
 				I=this.findFirstResource(mob.location(),RawMaterial.RESOURCE_LIMES);
 			if((I==null)
-			||(super.findNumberOfResource(mob.location(),I.material())<1))
+			||(super.findNumberOfResource(mob.location(),I)<1))
 			{
 				mob.tell(L("You'll need to set down some lemons or limes first."));
 				return false;

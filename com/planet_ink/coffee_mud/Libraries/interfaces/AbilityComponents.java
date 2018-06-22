@@ -74,10 +74,11 @@ public interface AbilityComponents extends CMLibrary
 	 * components needed to use a skill requires that any of the componenets
 	 * are destroyed.
 	 * @see AbilityComponents#componentCheck(MOB, List, boolean)
+	 * @see MaterialLibrary.DeadResourceRecord
 	 * @param found the components found with componentCheck
-	 * @return the value of the components destroyed
+	 * @return the record of the components destroyed
 	 */
-	public int destroyAbilityComponents(List<Object> found);
+	public MaterialLibrary.DeadResourceRecord destroyAbilityComponents(List<Object> found);
 	
 	/**
 	 * Returns a friendly readable form of the component requirements

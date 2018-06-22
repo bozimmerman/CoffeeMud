@@ -58,10 +58,10 @@ public class Specialization_Natural extends Specialization_Weapon
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		if((activated)
+		&&(msg.amISource((MOB)affected))
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
 		&&(CMLib.dice().rollPercentage()<10)
 		&&(affected instanceof MOB)
-		&&(msg.amISource((MOB)affected))
 		&&((!(msg.tool() instanceof Weapon))||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
 			helpProficiency((MOB)affected, 0);
 		super.executeMsg(myHost, msg);

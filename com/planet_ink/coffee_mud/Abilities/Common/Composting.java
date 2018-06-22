@@ -270,7 +270,7 @@ public class Composting extends GatheringSkill
 		data[0][CraftingSkill.FOUND_AMT]=0;
 		if(firstWood!=null)
 		{
-			data[0][CraftingSkill.FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),firstWood.material());
+			data[0][CraftingSkill.FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),(RawMaterial)firstWood);
 			data[0][CraftingSkill.FOUND_CODE]=firstWood.material();
 		}
 

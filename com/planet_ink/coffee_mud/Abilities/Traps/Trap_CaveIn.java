@@ -108,9 +108,9 @@ public class Trap_CaveIn extends StdTrap
 			return false;
 		if(mob!=null)
 		{
-			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_WOODEN);
+			final RawMaterial I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_WOODEN);
 			if((I==null)
-			||(super.findNumberOfResource(mob.location(),I.material())<100))
+			||(super.findNumberOfResource(mob.location(),I)<100))
 			{
 					mob.tell(L("You'll need to set down at least 100 pounds of wood first."));
 				return false;

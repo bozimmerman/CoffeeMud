@@ -102,9 +102,9 @@ public class Trap_Boulders extends StdTrap
 			return false;
 		if(mob!=null)
 		{
-			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
+			final RawMaterial I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_ROCK);
 			if((I==null)
-			||(super.findNumberOfResource(mob.location(),I.material())<50))
+			||(super.findNumberOfResource(mob.location(),I)<50))
 			{
 				mob.tell(L("You'll need to set down at least 50 pounds of rock first."));
 				return false;

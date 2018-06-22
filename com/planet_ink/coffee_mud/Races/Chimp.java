@@ -150,7 +150,7 @@ public class Chimp extends Monkey
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				(L("a @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
+				(L("a @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur")));
 				resources.addElement(makeResource
 				(L("some @x1 toes",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource

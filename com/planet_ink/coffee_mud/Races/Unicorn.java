@@ -273,7 +273,7 @@ public class Unicorn extends StdRace
 		{
 			if(resources.size()==0)
 			{
-				resources.addElement(makeResource("a "+name().toLowerCase()+" mane",RawMaterial.RESOURCE_FUR));
+				resources.addElement(makeResource("a "+name().toLowerCase()+" mane",RawMaterial.RESOURCE_FUR,L("@x1 fur")));
 				for(int i=0;i<2;i++)
 					resources.addElement(makeResource("a piece of "+name().toLowerCase()+" leather",RawMaterial.RESOURCE_LEATHER));
 				resources.addElement(makeResource("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));

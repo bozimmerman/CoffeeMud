@@ -683,13 +683,15 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 	}
 
 	@Override
-	public int destroyAbilityComponents(List<Object> found)
+	public MaterialLibrary.DeadResourceRecord destroyAbilityComponents(final List<Object> found)
 	{
-		int value=0;
-		if(found==null)
+		MaterialLibrary.DeadResourceRecord record = new MaterialLibrary.DeadResourceRecord();
+		if((found==null)||(found.size()==0))
 		{
-			return 0;
+			return record;
 		}
+		final XVector<Ability> props=new XVector<Ability>();
+		record.lostProps=props;
 		while(found.size()>0)
 		{
 			int i=0;
@@ -704,16 +706,19 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			}
 			while(i>=0)
 			{
-				if((destroy)&&(found.get(0) instanceof Item))
+				if((destroy)
+				&&(found.get(0) instanceof Item))
 				{
-					value +=((Item)found.get(0)).value();
+					props.addAll(((Item)found.get(0)).effects());
+					record.lostAmt += ((Item)found.get(0)).basePhyStats().weight();
+					record.lostValue +=((Item)found.get(0)).value();
 					((Item)found.get(0)).destroy();
 				}
 				found.remove(0);
 				i--;
 			}
 		}
-		return value;
+		return record;
 	}
 
 	@Override

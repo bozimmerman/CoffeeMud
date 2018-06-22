@@ -247,8 +247,10 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 			commonTell(mob,L("CoffeeMud error in this alloy.  Please let your local Archon know."));
 			return false;
 		}
-		final int amountResource1=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.CODES.GET(resourceCode1));
-		final int amountResource2=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.CODES.GET(resourceCode2));
+		RawMaterial rscI1=CMLib.materials().findFirstResource(mob.location(), RawMaterial.CODES.GET(resourceCode1));
+		RawMaterial rscI2=CMLib.materials().findFirstResource(mob.location(), RawMaterial.CODES.GET(resourceCode2));
+		final int amountResource1=(rscI1==null)?0:CMLib.materials().findNumberOfResource(mob.location(),rscI1);
+		final int amountResource2=(rscI2==null)?0:CMLib.materials().findNumberOfResource(mob.location(),rscI2);
 		if(amountResource1==0)
 		{
 			commonTell(mob,L("There is no @x1 here to make @x2 from.  It might need to be put down first.",resourceDesc1,doneResourceDesc));

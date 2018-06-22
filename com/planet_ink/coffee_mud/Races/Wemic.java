@@ -180,7 +180,7 @@ public class Wemic extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				(L("@x1 mane",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
+				(L("@x1 mane",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur")));
 				for(int i=0;i<2;i++)
 				{
 					resources.addElement(makeResource

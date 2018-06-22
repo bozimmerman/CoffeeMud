@@ -830,7 +830,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				if(buildingI instanceof Perfume)
 					((Perfume)buildingI).setSmellList(spell);
 				else
-					addSpells(buildingI,spell);
+					addSpells(buildingI,spell,null,null);
 			}
 			buildingI.recoverPhyStats();
 			buildingI.text();

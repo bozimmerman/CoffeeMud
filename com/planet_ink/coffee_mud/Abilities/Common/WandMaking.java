@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaterialLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -379,7 +380,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
-			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			buildingI=getTargetItemFavorMOB(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob, buildingI,false))
 				return false;
 			activity = CraftingActivity.MENDING;
@@ -432,7 +433,8 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final int[] compData = new int[CF_TOTAL];
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, this.getActiveVerb()+" "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
+			final String realRecipeName=replacePercent(foundRecipe.get(RCP_FINALNAME),"");
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, this.getActiveVerb()+" "+CMLib.english().startWithAorAn(realRecipeName),autoGenerate,compData);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -475,9 +477,9 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 			bundling=spell.equalsIgnoreCase("BUNDLE");
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			final int lostValue=autoGenerate>0?0:
-				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
-				+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
+			final MaterialLibrary.DeadResourceRecord deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
+			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
+			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
@@ -486,7 +488,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			buildingI.setMaterial(getBuildingMaterial(woodRequired,data,compData));
-			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
+			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);;
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -508,7 +510,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
 			final int maxuses=CMath.s_int(foundRecipe.get(RCP_MAXUSES));
-			addSpells(buildingI,spell);
+			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			if((buildingI instanceof Wand)
 			&&(foundRecipe.get(RCP_MAXUSES).trim().length()>0))
 				((Wand)buildingI).setMaxUses(maxuses);

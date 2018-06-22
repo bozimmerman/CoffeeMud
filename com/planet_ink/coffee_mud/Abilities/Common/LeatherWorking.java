@@ -380,7 +380,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
-			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			buildingI=getTargetItemFavorMOB(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob,buildingI,false))
 				return false;
 			activity = CraftingActivity.MENDING;
@@ -397,7 +397,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
-			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			buildingI=getTargetItemFavorMOB(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(buildingI==null)
 				return false;
 			if((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)
@@ -466,7 +466,8 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final int[] compData = new int[CF_TOTAL];
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
+			final String realRecipeName=replacePercent(foundRecipe.get(RCP_FINALNAME),"");
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(realRecipeName),autoGenerate,compData);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -492,9 +493,9 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			final int lostValue=autoGenerate>0?0:
-				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null)
-				+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
+			final MaterialLibrary.DeadResourceRecord deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
+			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
+			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
@@ -503,7 +504,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			duration=getDuration(multiplier*CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
-			String itemName=(replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(data[0][FOUND_CODE]))).toLowerCase();
+			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -533,7 +534,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-			addSpells(buildingI,spell);
+			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			if(buildingI instanceof Wand)
 			{
 				if(foundRecipe.get(RCP_CAPACITY).trim().length()>0)

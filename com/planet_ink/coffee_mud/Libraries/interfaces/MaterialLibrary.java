@@ -50,25 +50,26 @@ public interface MaterialLibrary extends CMLibrary
 	public int getRandomResourceOfMaterial(int material);
 	public boolean rebundle(Item I);
 	public boolean quickDestroy(Item I);
-	public DeadResourceRecord destroyResources(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C);
+	public DeadResourceRecord destroyResources(Room R, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C);
+	public DeadResourceRecord destroyResources(MOB M, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C);
 	public int destroyResourcesValue(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never);
 	public int destroyResourcesValue(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never);
 	public int destroyResourcesValue(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C);
 	public int destroyResourcesAmt(MOB E, int howMuch, int finalMaterial,Container C);
 	public int destroyResourcesAmt(Room E, int howMuch, int finalMaterial,Container C);
 	public int destroyResourcesAmt(List<Item> V, int howMuch, int finalMaterial,Container C);
-	public Item fetchFoundOtherEncoded(Room E, String otherRequired);
-	public Item fetchFoundOtherEncoded(MOB E, String otherRequired);
-	public Item findMostOfMaterial(Room E, int material);
-	public Item findMostOfMaterial(MOB E, int material);
-	public int findNumberOfResource(Room E, int resource);
-	public int findNumberOfResource(MOB E, int resource);
-	public Item findMostOfMaterial(Room E, String other);
-	public Item findMostOfMaterial(MOB E, String other);
-	public Item findFirstResource(Room E, int resource);
-	public Item findFirstResource(MOB E, int resource);
-	public Item findFirstResource(Room E, String other);
-	public Item findFirstResource(MOB E, String other);
+	public RawMaterial fetchFoundOtherEncoded(Room E, String otherRequired);
+	public RawMaterial fetchFoundOtherEncoded(MOB E, String otherRequired);
+	public RawMaterial findMostOfMaterial(Room E, int material);
+	public RawMaterial findMostOfMaterial(MOB E, int material);
+	public int findNumberOfResource(Room E, RawMaterial resource);
+	public int findNumberOfResource(MOB E, RawMaterial resource);
+	public RawMaterial findMostOfMaterial(Room E, String other);
+	public RawMaterial findMostOfMaterial(MOB E, String other);
+	public RawMaterial findFirstResource(Room E, int resource);
+	public RawMaterial findFirstResource(MOB E, int resource);
+	public RawMaterial findFirstResource(Room E, String other);
+	public RawMaterial findFirstResource(MOB E, String other);
 	public void adjustResourceName(Item I);
 	public String genericType(Item I);
 
@@ -90,6 +91,8 @@ public interface MaterialLibrary extends CMLibrary
 	{
 		public int lostValue=0;
 		public int lostAmt=0;
+		public int resCode=-1;
+		public String subType="";
 		public List<Ability> lostProps = null;
 	}
 }

@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaterialLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -589,9 +590,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			final int woodDestroyed=woodRequired;
 			if(autoGenerate<=0)
-				CMLib.materials().destroyResourcesValue(mob.location(),woodDestroyed,data[0][FOUND_CODE],0,null);
+				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
 			
 			doorDir = dir;
 			activity = CraftingActivity.DOORING;
@@ -697,7 +697,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final int[] compData = new int[CF_TOTAL];
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
+			final String realRecipeName=replacePercent(foundRecipe.get(RCP_FINALNAME),"");
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(realRecipeName),autoGenerate,compData);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -719,10 +720,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			final int woodDestroyed=woodRequired;
-			final int lostValue=autoGenerate>0?0:
-				CMLib.materials().destroyResourcesValue(mob.location(),woodDestroyed,data[0][FOUND_CODE],0,null)
-				+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
+			final MaterialLibrary.DeadResourceRecord deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
+			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
+			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
@@ -731,7 +731,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),6);
 			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
-			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
+			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);;
 			if(misctype.equalsIgnoreCase("BUNDLE"))
 				itemName="a "+woodRequired+"# "+itemName;
 			else
@@ -769,7 +769,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
-			addSpells(buildingI,spell);
+			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			key=null;
 			if(buildingI instanceof Rideable)
 			{

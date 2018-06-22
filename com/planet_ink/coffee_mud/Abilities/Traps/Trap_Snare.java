@@ -102,9 +102,9 @@ public class Trap_Snare extends StdTrap
 			return false;
 		if(mob!=null)
 		{
-			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);
+			final RawMaterial I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_CLOTH);
 			if((I==null)
-			||(findNumberOfResource(mob.location(),I.material())<5))
+			||(findNumberOfResource(mob.location(),I)<5))
 			{
 				mob.tell(L("You'll need to set down at least 5 pounds of cloth first."));
 				return false;

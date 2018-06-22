@@ -165,7 +165,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		found.removeElement(bundle);
 		if(lowestNonZeroFoodNumber==Long.MAX_VALUE)
 			lowestNonZeroFoodNumber=0;
-		final Hashtable<String,Ability> foundAblesH=new Hashtable<String,Ability>();
+		final Map<String,Ability> foundAblesH=new HashMap<String,Ability>();
 		Ability A=null;
 		for(int i=0;i<found.size();i++)
 		{
@@ -191,9 +191,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		}
 		if(bundle instanceof Decayable)
 			((Decayable)bundle).setDecayTime(lowestNonZeroFoodNumber);
-		for(final Enumeration<String> e=foundAblesH.keys();e.hasMoreElements();)
+		for(final String key  : foundAblesH.keySet())
 		{
-			A=foundAblesH.get(e.nextElement());
+			A=foundAblesH.get(key);
 			if(bundle.fetchEffect(A.ID())==null)
 				bundle.addNonUninvokableEffect((Ability)A.copyOf());
 		}
@@ -328,6 +328,19 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 					{
 						((Item)E).setContainer(C);
 						loseValue+=((Item)E).baseGoldValue();
+						for(Enumeration<Ability> a=I.effects();a.hasMoreElements();)
+						{
+							final Ability A=a.nextElement();
+							if((!A.canBeUninvoked())
+							&&(!A.ID().equalsIgnoreCase("Poison_Rotten"))
+							&&(!A.ID().equalsIgnoreCase("Poison_Purify")))
+							{
+								final Ability A2=(Ability)A.copyOf();
+								E.addNonUninvokableEffect(A2);
+							}
+						}
+						if((E instanceof RawMaterial)&&(I instanceof RawMaterial))
+							((RawMaterial)E).setSubType(((RawMaterial)I).getSubType());
 						if((E instanceof Decayable)&&(I instanceof Decayable))
 							((Decayable)E).setDecayTime(((Decayable)I).decayTime());
 						if((E instanceof Food)&&(I instanceof Food))
@@ -734,14 +747,25 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	public void adjustResourceName(Item I)
 	{
 		String name=RawMaterial.CODES.NAME(I.material()).toLowerCase();
-		if((I.material()==RawMaterial.MATERIAL_MITHRIL)
-		||(I.material()==RawMaterial.MATERIAL_METAL))
+		final int iMat=I.material()&RawMaterial.MATERIAL_MASK;
+		if((I instanceof RawMaterial)
+		&&(((RawMaterial)I).getSubType().length()>0))
+		{
+			final String subType = ((RawMaterial)I).getSubType().toLowerCase();
+			if(subType.equals(name) && (iMat==RawMaterial.MATERIAL_CLOTH))
+				name=L("@x1 bolt", name);
+			else
+				name=subType;
+		}
+		else
+		if((iMat==RawMaterial.MATERIAL_MITHRIL)
+		||(iMat==RawMaterial.MATERIAL_METAL))
 		{
 			if((I.material()!=RawMaterial.RESOURCE_ADAMANTITE)
 			&&(I.material()!=RawMaterial.RESOURCE_BRASS)
 			&&(I.material()!=RawMaterial.RESOURCE_BRONZE)
 			&&(I.material()!=RawMaterial.RESOURCE_STEEL))
-				name=name+" ore";
+				name=L("@x1 ore",name);;
 		}
 
 		if(I.basePhyStats().weight()==1)
@@ -750,49 +774,28 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			&&(I.rawSecretIdentity().length()>0))
 			{
 				I.setName(I.rawSecretIdentity());
-				I.setDisplayText(L("@x1 sits here.",I.rawSecretIdentity()));
+				I.setDisplayText(L("@x1 sits here.", I.rawSecretIdentity()));
 			}
 			else
 			{
-				if((I instanceof RawMaterial)
-				&&(((RawMaterial)I).getSubType().length()>0))
-				{
-					final String subType=((RawMaterial)I).getSubType();
-					if(subType.indexOf(' ')>0)
-						I.setName(CMLib.english().startWithAorAn(((RawMaterial)I).getSubType().toLowerCase()));
-					else
-						I.setName(CMLib.english().startWithAorAn(name+" "+((RawMaterial)I).getSubType().toLowerCase()));
-					I.setDisplayText(L("@x1 sits here.",I.Name()));
-				}
-				else
 				if(I instanceof Drink)
 				{
 					I.setName(L("some @x1",name));
-					I.setDisplayText(L("some @x1 sits here.",name));
+					I.setDisplayText(L("some @x1 sits here.", name));
 				}
 				else
 				{
 					I.setName(L("a pound of @x1",name));
-					I.setDisplayText(L("some @x1 sits here.",name));
+					I.setDisplayText(L("some @x1 sits here.", name));
 				}
 			}
 		}
 		else
 		{
-			if((I instanceof RawMaterial)
-			&&(((RawMaterial)I).getSubType().length()>0))
-			{
-				final String subType=((RawMaterial)I).getSubType();
-				if(subType.indexOf(' ')>0)
-					I.setName(L("a @x1# bundle of @x2",""+I.basePhyStats().weight(),CMLib.english().makePlural(((RawMaterial)I).getSubType().toLowerCase())));
-				else
-					I.setName(L("a @x1# @x2 @x3 bundle",""+I.basePhyStats().weight(),name,((RawMaterial)I).getSubType().toLowerCase()));
-			}
-			else
 			if(I instanceof Drink)
-				I.setName(L("a @x1# pool of @x2",""+I.basePhyStats().weight(),name));
+				I.setName(L("a @x1# pool of @x2",""+I.basePhyStats().weight(), name));
 			else
-				I.setName(L("a @x1# @x2 bundle",""+I.basePhyStats().weight(),name));
+				I.setName(L("a @x1# @x2 bundle",""+I.basePhyStats().weight(), name));
 			I.setDisplayText(L("@x1 is here.",I.name()));
 		}
 	}
@@ -862,7 +865,18 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public DeadResourceRecord destroyResources(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
+	public DeadResourceRecord destroyResources(Room R, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
+	{
+		return destroyResources(getAllItems(R),howMuch,finalMaterial,otherMaterial,never,C);
+	}
+	
+	@Override
+	public DeadResourceRecord destroyResources(MOB M, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
+	{
+		return destroyResources(getAllItems(M),howMuch,finalMaterial,otherMaterial,never,C);
+	}
+	
+	protected DeadResourceRecord destroyResources(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
 	{
 		DeadResourceRecord record = new DeadResourceRecord();
 		if((V==null)||(V.size()==0)) 
@@ -872,24 +886,31 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		
 		final XVector<Ability> props=new XVector<Ability>();
 		record.lostProps=props;
+		final RawMaterial firstMaterialI = (finalMaterial>0)?this.findFirstResource(V, finalMaterial):null;
+		final RawMaterial otherMaterialI = (otherMaterial>0)?this.findFirstResource(V, otherMaterial):null;
+		final int firstResourceType = (firstMaterialI != null)?firstMaterialI.material():-1;
+		final int otherResourceType = (otherMaterialI != null)?otherMaterialI.material():-1;
 		for(int i=V.size()-1;i>=0;i--)
 		{
 			final Item I=V.get(i);
-			if(I==null)
-				break;
-			if(I==never)
+			if(!(I instanceof RawMaterial)
+			||(I==never))
 				continue;
-
-			if((otherMaterial>0)
-			&&(I instanceof RawMaterial)
-			&&(I.material()==otherMaterial)
-			&&(I.container()==C)
+			final RawMaterial rI=(RawMaterial)I;
+			if((otherResourceType>0)
+			&&(rI.material()==otherResourceType)
+			&&(rI.container()==C)
 			&&(!CMLib.flags().isOnFire(I))
-			&&(!CMLib.flags().isEnchanted(I)))
+			&&(!CMLib.flags().isEnchanted(I))
+			&&(rI.getSubType().equals(otherMaterialI.getSubType()))
+			&&(rI.rawSecretIdentity().equals(otherMaterialI.rawSecretIdentity())))
 			{
 				if(I.basePhyStats().weight()>1)
 				{
-					final Environmental E=this.unbundle(I, 1, null);
+					final List<Environmental> set=disBundle(I,1,1,C);
+					if((set==null)||(set.size()==0))
+						continue;
+					final Environmental E=set.get(0);
 					if(E instanceof Item)
 					{
 						record.lostValue+=((Item)E).value();
@@ -908,20 +929,26 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 					break;
 			}
 			else
-			if((I instanceof RawMaterial)
-			&&(I.material()==finalMaterial)
+			if((rI.material()==firstResourceType)
+			&&(howMuch>0)
 			&&(I.container()==C)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().isEnchanted(I))
-			&&(howMuch>0))
+			&&(rI.getSubType().equals(firstMaterialI.getSubType()))
+			&&(rI.rawSecretIdentity().equals(firstMaterialI.rawSecretIdentity())))
 			{
 				if(I.basePhyStats().weight()>howMuch)
 				{
-					final Environmental E=unbundle(I, howMuch, null);
+					final List<Environmental> set=disBundle(I,howMuch,howMuch,C);
+					if((set==null)||(set.size()==0))
+						continue;
+					final Environmental E=set.get(0);
 					record.lostAmt+=howMuch;
+					record.resCode=I.material();
 					if(E instanceof Item)
 					{
 						record.lostValue+=(((Item)E).value());
+						record.subType=rI.getSubType();
 						props.addAll(((Item)E).effects());
 					}
 					E.destroy();
@@ -930,6 +957,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				else
 				{
 					record.lostAmt+=I.basePhyStats().weight();
+					record.subType=rI.getSubType();
+					record.resCode=I.material();
 					howMuch-=I.basePhyStats().weight();
 					props.addAll(I.effects());
 					record.lostValue+=I.value();
@@ -938,7 +967,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				if(howMuch<=0)
 				{
 					finalMaterial=-1;
-					if(otherMaterial<0)
+					if(otherMaterial<=0)
 						break;
 				}
 			}
@@ -947,18 +976,18 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public Item findFirstResource(Room E, String other)
+	public RawMaterial findFirstResource(Room E, String other)
 	{
 		return findFirstResource(getAllItems(E), other);
 	}
 
 	@Override
-	public Item findFirstResource(MOB E, String other)
+	public RawMaterial findFirstResource(MOB E, String other)
 	{
 		return findFirstResource(getAllItems(E), other);
 	}
 
-	public Item findFirstResource(List<Item> V, String other)
+	public RawMaterial findFirstResource(List<Item> V, String other)
 	{
 		if((other==null)||(other.length()==0))
 			return null;
@@ -969,18 +998,18 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public Item findFirstResource(Room E, int resource)
+	public RawMaterial findFirstResource(Room E, int resource)
 	{
 		return findFirstResource(getAllItems(E), resource);
 	}
 
 	@Override
-	public Item findFirstResource(MOB E, int resource)
+	public RawMaterial findFirstResource(MOB E, int resource)
 	{
 		return findFirstResource(getAllItems(E), resource);
 	}
 
-	protected Item findFirstResource(List<Item> V, int resource)
+	protected RawMaterial findFirstResource(List<Item> V, int resource)
 	{
 		for(int i=0;i<V.size();i++)
 		{
@@ -990,24 +1019,24 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().isEnchanted(I))
 			&&(I.container()==null))
-				return I;
+				return (RawMaterial)I;
 		}
 		return null;
 	}
 
 	@Override
-	public Item findMostOfMaterial(Room E, String other)
+	public RawMaterial findMostOfMaterial(Room E, String other)
 	{
 		return findMostOfMaterial(getAllItems(E), other);
 	}
 
 	@Override
-	public Item findMostOfMaterial(MOB E, String other)
+	public RawMaterial findMostOfMaterial(MOB E, String other)
 	{
 		return findMostOfMaterial(getAllItems(E), other);
 	}
 
-	protected Item findMostOfMaterial(List<Item> V, String other)
+	protected RawMaterial findMostOfMaterial(List<Item> V, String other)
 	{
 		if((other==null)||(other.length()==0))
 			return null;
@@ -1018,27 +1047,29 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public int findNumberOfResource(Room E, int resource)
+	public int findNumberOfResource(Room E, RawMaterial resource)
 	{
 		return findNumberOfResource(getAllItems(E), resource);
 	}
 
 	@Override
-	public int findNumberOfResource(MOB E, int resource)
+	public int findNumberOfResource(MOB E, RawMaterial resource)
 	{
 		return findNumberOfResource(getAllItems(E), resource);
 	}
 
-	protected int findNumberOfResource(List<Item> V, int resource)
+	protected int findNumberOfResource(List<Item> V, RawMaterial resource)
 	{
 		int foundWood=0;
 		for(int i=0;i<V.size();i++)
 		{
 			final Item I=V.get(i);
 			if((I instanceof RawMaterial)
-			&&(I.material()==resource)
+			&&(I.material()==resource.material())
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().isEnchanted(I))
+			&&(((RawMaterial)I).getSubType().equals(resource.getSubType()))
+			&&(I.rawSecretIdentity().equals(resource.rawSecretIdentity()))
 			&&(I.container()==null))
 				foundWood+=I.phyStats().weight();
 		}
@@ -1046,22 +1077,22 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public Item findMostOfMaterial(Room E, int material)
+	public RawMaterial findMostOfMaterial(Room E, int material)
 	{
 		return findMostOfMaterial(getAllItems(E), material);
 	}
 
 	@Override
-	public Item findMostOfMaterial(MOB E, int material)
+	public RawMaterial findMostOfMaterial(MOB E, int material)
 	{
 		return findMostOfMaterial(getAllItems(E), material);
 	}
 
-	protected Item findMostOfMaterial(List<Item> V, int material)
+	protected RawMaterial findMostOfMaterial(List<Item> V, int material)
 	{
 		int most=0;
 		int mostMaterial=-1;
-		Item mostItem=null;
+		RawMaterial mostItem=null;
 		for(int i=0;i<V.size();i++)
 		{
 			final Item I=V.get(i);
@@ -1072,10 +1103,10 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			&&(!CMLib.flags().isEnchanted(I))
 			&&(I.container()==null))
 			{
-				final int num=findNumberOfResource(V,I.material());
+				final int num=findNumberOfResource(V,(RawMaterial)I);
 				if(num>most)
 				{
-					mostItem=I;
+					mostItem=(RawMaterial)I;
 					most=num;
 					mostMaterial=I.material();
 				}
@@ -1113,22 +1144,22 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public Item fetchFoundOtherEncoded(Room E, String otherRequired)
+	public RawMaterial fetchFoundOtherEncoded(Room E, String otherRequired)
 	{
 		return fetchFoundOtherEncoded(getAllItems(E), otherRequired);
 	}
 
 	@Override
-	public Item fetchFoundOtherEncoded(MOB E, String otherRequired)
+	public RawMaterial fetchFoundOtherEncoded(MOB E, String otherRequired)
 	{
 		return fetchFoundOtherEncoded(getAllItems(E), otherRequired);
 	}
 
-	protected Item fetchFoundOtherEncoded(List<Item> V, String otherRequired)
+	protected RawMaterial fetchFoundOtherEncoded(List<Item> V, String otherRequired)
 	{
 		if((otherRequired==null)||(otherRequired.trim().length()==0))
 			return null;
-		Item firstOther=null;
+		RawMaterial firstOther=null;
 		final boolean resourceOther=otherRequired.startsWith("!");
 		if(resourceOther)
 			otherRequired=otherRequired.substring(1);

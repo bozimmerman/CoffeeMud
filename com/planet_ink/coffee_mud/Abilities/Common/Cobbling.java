@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaterialLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -316,7 +317,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
-			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			buildingI=getTargetItemFavorMOB(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(!canMend(mob, buildingI,false))
 				return false;
 			activity = CraftingActivity.MENDING;
@@ -333,7 +334,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			activity = CraftingActivity.CRAFTING;
 			messedUp=false;
 			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
-			buildingI=getTarget(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
+			buildingI=getTargetItemFavorMOB(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(buildingI==null)
 				return false;
 			if(!buildingI.fitsOn(Wearable.WORN_FEET))
@@ -394,7 +395,8 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final int[] compData = new int[CF_TOTAL];
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
+			final String realRecipeName=replacePercent(foundRecipe.get(RCP_FINALNAME),"");
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(realRecipeName),autoGenerate,compData);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -418,9 +420,9 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			final int lostValue=autoGenerate>0?0:
-				CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null)
-				+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
+			final MaterialLibrary.DeadResourceRecord deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,null);
+			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
+			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
@@ -429,7 +431,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			buildingI.setMaterial(getBuildingMaterial(woodRequired,data,compData));
-			String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
+			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);;
 			if(itemName.endsWith("s"))
 				itemName="some "+itemName;
 			else
@@ -454,7 +456,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			if(bundling)
 				buildingI.setBaseValue(lostValue);
-			addSpells(buildingI,spell);
+			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
 			{
 				((Armor)buildingI).basePhyStats().setArmor(0);

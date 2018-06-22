@@ -983,7 +983,8 @@ public class WeatherAffects extends PuddleMaker
 
 				final MOB M=S.mob();
 				final Room R=M.location();
-				if(R==null)
+				if((R==null)
+				||(M.riding()!=null))
 					continue;
 
 				if(CMLib.flags().isWaterySurfaceRoom(R))

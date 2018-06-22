@@ -291,7 +291,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final int[] compData = new int[CF_TOTAL];
-		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
+		final String realRecipeName=replacePercent(foundRecipe.get(RCP_FINALNAME),"");
+		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(realRecipeName),autoGenerate,compData);
 		if(componentsFoundList==null)
 			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
@@ -332,9 +333,9 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		woodRequired=data[0][FOUND_AMT];
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		final int lostValue=autoGenerate>0?0:
-			CMLib.materials().destroyResourcesValue(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],0,null)
-			+CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
+		final MaterialLibrary.DeadResourceRecord deadMats = CMLib.materials().destroyResources(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
+		final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
+		final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		if(buildingI==null)
 		{
@@ -343,7 +344,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		}
 		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 		buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
-		String itemName=replacePercent(foundRecipe.get(RCP_FINALNAME),RawMaterial.CODES.NAME(buildingI.material())).toLowerCase();
+		String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);;
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
@@ -363,7 +364,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		final int armordmg=CMath.s_int(foundRecipe.get(RCP_ARMORDMG));
 		final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-3;
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-		addSpells(buildingI,spell);
+		addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 		if(buildingI instanceof Container)
 		{
 			((Container)buildingI).setCapacity(capacity+woodRequired);

@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaterialLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
@@ -155,6 +156,19 @@ public class CraftingSkill extends GatheringSkill
 		return newWeight;
 	}
 
+	protected String determineFinalName(String thisStr, int backupMaterial, MaterialLibrary.DeadResourceRecord res1, MaterialLibrary.DeadResourceRecord res2)
+	{
+		if((res1 != null)&&(res1.subType.length()>0))
+			return replacePercent(thisStr, res1.subType.toLowerCase()).toLowerCase();
+		if((res2 != null)&&(res2.subType.length()>0))
+			return replacePercent(thisStr, res1.subType.toLowerCase()).toLowerCase();
+		if((res1!=null)&&(res1.resCode>=0))
+			return replacePercent(thisStr, RawMaterial.CODES.NAME(res1.resCode)).toLowerCase();
+		if((res2!=null)&&(res2.resCode>=0))
+			return replacePercent(thisStr, RawMaterial.CODES.NAME(res2.resCode)).toLowerCase();
+		return replacePercent(thisStr, RawMaterial.CODES.NAME(backupMaterial)).toLowerCase();
+	}
+	
 	protected String replacePercent(String thisStr, String withThis)
 	{
 		if(withThis.length()==0)
@@ -386,11 +400,35 @@ public class CraftingSkill extends GatheringSkill
 		return false;
 	}
 
-	protected void addSpells(Physical P, String spells)
+	protected void addSpells(final Physical P, String spells, final List<Ability> otherSpells1, final List<Ability> otherSpells2)
 	{
-		if(spells.length()==0)
-			return;
 		if(spells.equalsIgnoreCase("bundle"))
+			return;
+		if(otherSpells1 != null)
+		{
+			for(final Ability A : otherSpells1)
+			{
+				if((!A.canBeUninvoked())
+				&&(P.fetchEffect(A.ID())==null))
+				{
+					final Ability A2=(Ability)A.copyOf();
+					P.addNonUninvokableEffect(A2);
+				}
+			}
+		}
+		if(otherSpells2 != null)
+		{
+			for(final Ability A : otherSpells2)
+			{
+				if((!A.canBeUninvoked())
+				&&(P.fetchEffect(A.ID())==null))
+				{
+					final Ability A2=(Ability)A.copyOf();
+					P.addNonUninvokableEffect(A2);
+				}
+			}
+		}
+		if(spells.length()==0)
 			return;
 		if(spells.startsWith("*") && spells.endsWith(";__DELETE__"))
 		{
@@ -536,7 +574,20 @@ public class CraftingSkill extends GatheringSkill
 		}
 		return V;
 	}
+	
+	protected static class FoundResourceData
+	{
+		public int resourceCode = -1;
+		public int resourceAmt = 0;
+		public RawMaterial resourceFound = null;
+	}
 
+	protected static class FoundResources
+	{
+		public FoundResourceData main = new FoundResourceData();
+		public FoundResourceData other = new FoundResourceData();
+	}
+	
 	protected static final int FOUND_CODE=0;
 	protected static final int FOUND_AMT=1;
 	
@@ -575,8 +626,8 @@ public class CraftingSkill extends GatheringSkill
 			return data;
 		}
 
-		Item firstWood=null;
-		Item firstOther=null;
+		RawMaterial firstWood=null;
+		RawMaterial firstOther=null;
 		if(req1!=null)
 		{
 			for (final int element : req1)
@@ -596,7 +647,7 @@ public class CraftingSkill extends GatheringSkill
 		data[0][FOUND_AMT]=0;
 		if(firstWood!=null)
 		{
-			data[0][FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),firstWood.material());
+			data[0][FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),firstWood);
 			data[0][FOUND_CODE]=firstWood.material();
 		}
 
@@ -618,7 +669,7 @@ public class CraftingSkill extends GatheringSkill
 		data[1][FOUND_AMT]=0;
 		if(firstOther!=null)
 		{
-			data[1][FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),firstOther.material());
+			data[1][FOUND_AMT]=CMLib.materials().findNumberOfResource(mob.location(),firstOther);
 			data[1][FOUND_CODE]=firstOther.material();
 		}
 		if(req1Required>0)
@@ -962,7 +1013,8 @@ public class CraftingSkill extends GatheringSkill
 			}
 			if(matches.size()>0)
 				return matches;
-			final String lastWord=CMParms.parse(recipeName).lastElement();
+			final Vector<String> rn=CMParms.parse(recipeName);
+			final String lastWord=rn.lastElement();
 			if(lastWord.length()>1)
 			{
 				for(int r=0;r<recipes.size();r++)
@@ -974,6 +1026,30 @@ public class CraftingSkill extends GatheringSkill
 						if((replacePercent(item,"").toUpperCase().indexOf(lastWord.toUpperCase())>=0)
 						||(lastWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
 							matches.add(V);
+					}
+				}
+			}
+			if((matches.size()>1)&&(rn.size()>1))
+			{
+				final String firstWord=rn.firstElement();
+				List<List<String>> otherMatches=new XVector<List<String>>();
+				if(firstWord.length()>1)
+				{
+					for(int r=0;r<matches.size();r++)
+					{
+						final List<String> V=matches.get(r);
+						if(V.size()>0)
+						{
+							final String item=V.get(RCP_FINALNAME);
+							if((replacePercent(item,"").toUpperCase().indexOf(firstWord.toUpperCase())>=0)
+							||(firstWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+								otherMatches.add(V);
+						}
+					}
+					if(otherMatches.size()<matches.size())
+					{
+						matches.clear();
+						matches.addAll(otherMatches);
 					}
 				}
 			}

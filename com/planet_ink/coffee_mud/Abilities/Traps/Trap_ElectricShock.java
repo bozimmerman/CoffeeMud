@@ -102,9 +102,9 @@ public class Trap_ElectricShock extends StdTrap
 			return false;
 		if(mob!=null)
 		{
-			final Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
+			final RawMaterial I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
 			if((I==null)
-			||(super.findNumberOfResource(mob.location(),I.material())<10))
+			||(super.findNumberOfResource(mob.location(),I)<10))
 			{
 				mob.tell(L("You'll need to set down at least 10 pounds of metal first."));
 				return false;

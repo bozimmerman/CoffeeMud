@@ -1037,27 +1037,8 @@ public class StdAbility implements Ability
 		return getTarget(mob, location, givenTarget, container, commands, filter, false);
 	}
 	
-	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, 
-			List<String> commands, Filterer<Environmental> filter, boolean quiet)
+	protected Item evalTargetItem(MOB mob, final Environmental givenTarget, final Environmental target, final String targetName, final boolean quiet)
 	{
-		String targetName=CMParms.combine(commands,0);
-
-		Environmental target=null;
-		if((givenTarget!=null)&&(givenTarget instanceof Item))
-			target=givenTarget;
-
-		if((location!=null)&&(target==null)&&(targetName.length()>0))
-			target=location.fetchFromRoomFavorItems(container,targetName);
-		if((target==null)&&(targetName.length()>0))
-		{
-			if(location!=null)
-				target=location.fetchFromMOBRoomFavorsItems(mob,container,targetName,filter);
-			else
-				target=mob.fetchItem(container, filter, targetName);
-		}
-		if(target!=null)
-			targetName=target.name();
-
 		if((target==null)
 		||(!(target instanceof Item))
 		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
@@ -1084,7 +1065,66 @@ public class StdAbility implements Ability
 		}
 		return (Item)target;
 	}
+	
+	protected Item getTarget(MOB mob, Room location, Environmental givenTarget, Item container, 
+			List<String> commands, Filterer<Environmental> filter, boolean quiet)
+	{
+		String targetName=CMParms.combine(commands,0);
 
+		Environmental target=null;
+		if((givenTarget!=null)&&(givenTarget instanceof Item))
+			target=givenTarget;
+
+		if((location!=null)&&(target==null)&&(targetName.length()>0))
+			target=location.fetchFromRoomFavorItems(container,targetName);
+		if((target==null)&&(targetName.length()>0))
+		{
+			if(location!=null)
+				target=location.fetchFromMOBRoomFavorsItems(mob,container,targetName,filter);
+			else
+				target=mob.fetchItem(container, filter, targetName);
+		}
+		if(target!=null)
+			targetName=target.name();
+		
+		return evalTargetItem(mob, givenTarget, target, targetName, quiet);
+
+	}
+
+	protected Item getTargetItemFavorMOB(MOB mob, Room location, Physical givenTarget, Item container, 
+			List<String> commands, Filterer<Environmental> filter)
+	{
+		return getTargetItemFavorMOB(mob, location, givenTarget, container, commands, filter, false);
+	}
+	
+	protected Item getTargetItemFavorMOB(MOB mob, Room location, Physical givenTarget, 
+			List<String> commands, Filterer<Environmental> filter)
+	{
+		return getTargetItemFavorMOB(mob, location, givenTarget, null, commands, filter, false);
+	}
+	
+	protected Item getTargetItemFavorMOB(MOB mob, Room location, Physical givenTarget, Item container, 
+			List<String> commands, Filterer<Environmental> filter, boolean quiet)
+	{
+		String targetName=CMParms.combine(commands,0);
+
+		Environmental target=null;
+		if((givenTarget!=null)&&(givenTarget instanceof Item))
+			target=givenTarget;
+
+		if((target==null)&&(targetName.length()>0))
+		{
+			if(location!=null)
+				target=location.fetchFromMOBRoomFavorsItems(mob,container,targetName,filter);
+			else
+				target=mob.fetchItem(container, filter, targetName);
+		}
+		if(target!=null)
+			targetName=target.name();
+
+		return evalTargetItem(mob, givenTarget, target, targetName, quiet);
+	}
+	
 	@Override
 	public int compareTo(final CMObject o)
 	{

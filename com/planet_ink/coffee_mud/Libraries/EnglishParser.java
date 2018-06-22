@@ -44,6 +44,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return "EnglishParser";
 	}
 
+	private final static String[]			PREPOSITIONS		= { "aboard", "about", "above", "across", "after", "against", "along", "amid", "among", "anti", 
+																	"around", "as", "at", "before", "behind", "below", "beneath", "beside", "besides", "between", 
+																	"beyond", "but", "by", "concerning", "considering", "despite", "down", "during", "except", 
+																	"excepting", "excluding", "following", "for", "from", "in", "inside", "into", "like", "minus", 
+																	"near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus", 
+																	"regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "under", 
+																	"underneath", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without" };
 	private final static String[]			ARTICLES			= { "a", "an", "all of", "some one", "a pair of", "one of", "all", "the", "some", "each" };
 	public static boolean[]					PUNCTUATION_TABLE	= null;
 	public final static char[]				ALL_CHRS			= "ALL".toCharArray();
@@ -191,6 +198,18 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		{
 			if(lowStr.startsWith(article+" "))
 				return s.substring(article.length()+1);
+		}
+		return s;
+	}
+
+	@Override
+	public String cleanPrepositions(String s)
+	{
+		final String lowStr=s.toLowerCase();
+		for (final String prepositino : PREPOSITIONS)
+		{
+			if(lowStr.startsWith(prepositino+" "))
+				return s.substring(prepositino.length()+1);
 		}
 		return s;
 	}

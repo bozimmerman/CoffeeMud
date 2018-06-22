@@ -113,11 +113,11 @@ public class Trap_BearTrap extends StdTrap
 			return false;
 		if(mob!=null)
 		{
-			Item I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
+			RawMaterial I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
 			if(I==null)
 				I=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_MITHRIL);
 			if((I==null)
-			||(super.findNumberOfResource(mob.location(),I.material())<30))
+			||(super.findNumberOfResource(mob.location(),I)<30))
 			{
 				mob.tell(L("You'll need to set down at least 30 pounds of metal first."));
 				return false;

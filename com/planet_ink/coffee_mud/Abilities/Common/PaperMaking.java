@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaterialLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -273,7 +274,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 
 		final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 		final int[] compData = new int[CF_TOTAL];
-		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(recipeName),autoGenerate,compData);
+		final String realRecipeName=replacePercent(foundRecipe.get(RCP_FINALNAME),"");
+		final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(realRecipeName),autoGenerate,compData);
 		if(componentsFoundList==null)
 			return false;
 		int woodRequired=CMath.s_int(woodRequiredStr);
@@ -329,11 +331,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if(autoGenerate<=0)
-		{
-			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
-			CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
-		}
+		final MaterialLibrary.DeadResourceRecord deadMats = CMLib.materials().destroyResources(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],0,null,null);
+		final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 		buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 		if(buildingI==null)
 		{
@@ -357,7 +356,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 		buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-		addSpells(buildingI,spell);
+		addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 		setBrand(mob, buildingI);
 		if(((data[0][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 		||(data[0][FOUND_CODE]==RawMaterial.RESOURCE_RICE))

@@ -294,7 +294,7 @@ public class Rabbit extends StdRace
 				resources.addElement(makeResource
 				(L("a @x1 foot",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				(L("some @x1 hair",name().toLowerCase()),RawMaterial.RESOURCE_FUR));
+				(L("some @x1 hair",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur")));
 				resources.addElement(makeResource
 				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource

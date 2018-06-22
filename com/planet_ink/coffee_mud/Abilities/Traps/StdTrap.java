@@ -658,22 +658,22 @@ public class StdTrap extends StdAbility implements Trap
 			CMLib.threads().startTickDown(this,Tickable.TICKID_TRAP_RESET,1);
 	}
 
-	protected Item findFirstResource(Room room, String other)
+	protected RawMaterial findFirstResource(Room room, String other)
 	{
 		return CMLib.materials().findFirstResource(room, other);
 	}
 
-	protected Item findFirstResource(Room room, int resource)
+	protected RawMaterial findFirstResource(Room room, int resource)
 	{
 		return CMLib.materials().findFirstResource(room, resource);
 	}
 
-	protected Item findMostOfMaterial(Room room, String other)
+	protected RawMaterial findMostOfMaterial(Room room, String other)
 	{
 		return CMLib.materials().findMostOfMaterial(room, other);
 	}
 
-	protected Item findMostOfMaterial(Room room, int material)
+	protected RawMaterial findMostOfMaterial(Room room, int material)
 	{
 		return CMLib.materials().findMostOfMaterial(room, material);
 	}
@@ -683,7 +683,7 @@ public class StdTrap extends StdAbility implements Trap
 		CMLib.materials().destroyResourcesValue(room,number,resource,-1,null);
 	}
 
-	protected int findNumberOfResource(Room room, int resource)
+	protected int findNumberOfResource(Room room, RawMaterial resource)
 	{
 		return CMLib.materials().findNumberOfResource(room, resource);
 	}
