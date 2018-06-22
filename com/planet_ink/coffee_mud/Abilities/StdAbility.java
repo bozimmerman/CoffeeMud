@@ -789,12 +789,17 @@ public class StdAbility implements Ability
 			else
 			if(abstractQuality()!=Ability.QUALITY_MALICIOUS)
 				target=mob;
+			if(target == null)
+			{
+				mob.tell(L("You need to specify a target."));
+				return null;
+			}
 		}
 		else
 		if(targetName.equalsIgnoreCase("self")||targetName.equalsIgnoreCase("me"))
 			target=mob;
 		else
-		if((targetName.length()>0)&&(mob.location()!=null))
+		if(mob.location()!=null)
 		{
 			target=mob.location().fetchInhabitant(targetName);
 			if(target==null)

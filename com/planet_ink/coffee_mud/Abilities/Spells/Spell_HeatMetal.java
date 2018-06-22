@@ -162,10 +162,13 @@ public class Spell_HeatMetal extends Spell
 
 		if(affected instanceof MOB)
 		{
+			final MOB M=(MOB)affected;
 			final Vector<Item> affectedItems=this.affectedItems;
 			if(canBeUninvoked())
 			{
 				super.unInvoke();
+				if(affectedItems.size()>0)
+					M.tell(L("Some of your items begin to cool down."));
 				for(int i=0;i<affectedItems.size();i++)
 				{
 					final Item I=affectedItems.elementAt(i);
@@ -176,6 +179,8 @@ public class Spell_HeatMetal extends Spell
 						A=I.fetchEffect(this.ID());
 					}
 				}
+				this.affectedItems.clear();
+				this.affectedItems.trimToSize();
 			}
 		}
 		else
@@ -197,7 +202,7 @@ public class Spell_HeatMetal extends Spell
 		if(success)
 		{
 			invoker=mob;
-			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> invoke(s) a spell upon <T-NAMESELF>.^?"));
+			final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":L("^S<S-NAME> heatedly invoke(s) a spell upon <T-NAMESELF>.^?"));
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
@@ -209,7 +214,7 @@ public class Spell_HeatMetal extends Spell
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> invoke(s) at <T-NAMESELF>, but the spell fizzles."));
+			return maliciousFizzle(mob,target,L("<S-NAME> heatedly invoke(s) at <T-NAMESELF>, but the spell fizzles."));
 
 		// return whether it worked
 		return success;
