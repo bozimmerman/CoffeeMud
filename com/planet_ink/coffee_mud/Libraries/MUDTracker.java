@@ -2126,6 +2126,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		else
 		if(((msg.sourceMinor()==CMMsg.TYP_SIT)||(msg.sourceMinor()==CMMsg.TYP_SLEEP))
 		&&(!(msg.target() instanceof Exit))
+		&&(!CMLib.flags().canBreatheThis(msg.source(), RawMaterial.RESOURCE_SALTWATER))
+		&&(!CMLib.flags().canBreatheThis(msg.source(), RawMaterial.RESOURCE_FRESHWATER))
 		&&((msg.source().riding()==null)||(!CMLib.flags().isSwimming(msg.source().riding()))))
 		{
 			msg.source().tell(CMLib.lang().L("You cannot rest here."));
