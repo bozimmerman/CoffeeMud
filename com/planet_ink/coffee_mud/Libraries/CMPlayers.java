@@ -1087,6 +1087,35 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		if(protectedOnes==null)
 			protectedOnes=new Vector<String>();
 
+		final List<String> warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
+		final StringBuilder warnStr=new StringBuilder("");
+		final Map<String,Long> warnMap=new TreeMap<String,Long>();
+		boolean warnChanged=false;
+		if((warnedOnes!=null)&&(warnedOnes.size()>0))
+		{
+			for(int b=0;b<warnedOnes.size();b++)
+			{
+				final String B=warnedOnes.get(b).trim();
+				if(B.trim().length()>0)
+				{
+					final int firstSpace=B.lastIndexOf(' ');
+					final String warnedName=B.substring(0, firstSpace).toUpperCase().trim();
+					final int lastSpace=B.lastIndexOf(' ');
+					final long warningDateTime=CMath.s_long(B.substring(lastSpace+1).trim());
+					if((warningDateTime > 0) 
+					&& (System.currentTimeMillis() < (warningDateTime + (10 * TimeManager.MILI_DAY))))
+					{
+						warnStr.append(B+"\n");
+						warnMap.put(warnedName, new Long(warningDateTime));
+					}
+					else
+						warnChanged=true;
+				}
+			}
+			if(warnChanged)
+				Resources.updateFileResource("::warnedplayers.ini",warnStr);
+			warnChanged=false;
+		}
 		for(final ThinPlayer user : allUsers)
 		{
 			final String name=user.name();
@@ -1119,33 +1148,18 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			}
 			else
 				continue;
+			
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
 				Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+" will be warned on "+CMLib.time().date2String(warnDateTime)+" and purged on "+CMLib.time().date2String(purgeDateTime));
+
 			if((System.currentTimeMillis()>purgeDateTime)||(System.currentTimeMillis()>warnDateTime))
 			{
 				if(isProtected(protectedOnes, name))
 					continue;
 
-				final List<String> warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
 				long foundWarningDateTime=-1;
-				final StringBuffer warnStr=new StringBuffer("");
-				if((warnedOnes!=null)&&(warnedOnes.size()>0))
-				{
-					for(int b=0;b<warnedOnes.size();b++)
-					{
-						final String B=warnedOnes.get(b).trim();
-						long warningDateTime=-1;
-						if(B.trim().length()>0)
-						{
-							final int lastSpace=B.lastIndexOf(' ');
-							warningDateTime=CMath.s_long(B.substring(lastSpace+1).trim());
-							if((warningDateTime > 0) && (System.currentTimeMillis() < warningDateTime + (10 * TimeManager.MILI_DAY)))
-								warnStr.append(B+"\n");
-							if(B.toUpperCase().startsWith(name.toUpperCase()+" "))
-								foundWarningDateTime=warningDateTime;
-						}
-					}
-				}
+				if(warnMap.containsKey(name.toUpperCase().trim()))
+					foundWarningDateTime = warnMap.get(name.toUpperCase().trim()).longValue();
 				if((foundWarningDateTime<0)
 				&&(System.currentTimeMillis()>warnDateTime))
 				{
@@ -1153,7 +1167,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					if((M!=null)&&(M.playerStats()!=null))
 					{
 						warnStr.append(M.name()+" "+M.playerStats().getEmail()+" "+System.currentTimeMillis()+"\n");
-						Resources.updateFileResource("::warnedplayers.ini",warnStr);
+						warnMap.put(M.Name().toUpperCase().trim(),new Long(System.currentTimeMillis()));
+						warnChanged=true;
 						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
 							Log.debugOut(serviceClient.getName(),name+" is now warned.");
 						warnPrePurge(M,purgeDateTime-System.currentTimeMillis());
@@ -1173,6 +1188,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					}
 				}
 			}
+			if(warnChanged)
+				Resources.updateFileResource("::warnedplayers.ini",warnStr);
 		}
 
 		// accounts!
