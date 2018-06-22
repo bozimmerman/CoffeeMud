@@ -123,6 +123,7 @@ public class WaterCurrents extends ActiveTicker
 					||(doBoats))
 				&&(!CMLib.flags().isInFlight(I))
 				&&(!CMLib.flags().isMobile(I))
+				&&(CMLib.flags().isGettable(I))
 				&&((!(I instanceof Exit))||(doBoats))
 				&&(!done.contains(I)))
 				{

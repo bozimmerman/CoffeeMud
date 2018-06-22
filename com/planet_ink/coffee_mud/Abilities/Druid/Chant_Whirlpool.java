@@ -99,6 +99,7 @@ public class Chant_Whirlpool extends Chant
 			if(theWhirlpool instanceof GridLocale)
 			{
 				((GridLocale)theWhirlpool).clearGrid(R);
+				theWhirlpool.getArea().destroy();
 				theWhirlpool = null;
 			}
 		}
@@ -138,6 +139,9 @@ public class Chant_Whirlpool extends Chant
 	
 	public boolean canEverEnterThePool(MOB M)
 	{
+		if((invoker!=null)
+		&&((invoker==M)||(!invoker.mayIFight(M))))
+			return false;
 		boolean enterThePool = false;
 		if((M.riding()!=null)&&(!CMLib.flags().isFlying(M.riding())))
 		{
@@ -292,7 +296,9 @@ public class Chant_Whirlpool extends Chant
 					W.theWhirlpool = CMClass.getLocale("Whirlpool");
 					W.theWhirlpool.setDisplayText(L("You are caught in a massive whirlpool"));
 					W.theWhirlpool.setDescription(L("The only way out appear to be to fight against the currents."));
-					((GridLocale)W.theWhirlpool).buildGrid();
+					final Area tempArea=CMClass.getAreaType("StdArea");
+					tempArea.setName("A Whirlpool");
+					W.theWhirlpool.setArea(tempArea);
 					for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 					{
 						if(d != Directions.DOWN)
@@ -301,6 +307,7 @@ public class Chant_Whirlpool extends Chant
 							W.theWhirlpool.setRawExit(d, target.getRawExit(d));
 						}
 					}
+					((GridLocale)W.theWhirlpool).buildGrid();
 				}
 				target.recoverPhyStats();
 			}

@@ -116,6 +116,7 @@ public class Spell_EnchantArmor extends Spell
 				mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("<T-NAME> glows!"));
 				target.basePhyStats().setAbility(target.basePhyStats().ability()+1);
 				target.basePhyStats().setLevel(target.basePhyStats().level()+3);
+				target.basePhyStats().setDisposition(target.basePhyStats().disposition()|PhyStats.IS_BONUS);
 				target.recoverPhyStats();
 				mob.recoverPhyStats();
 			}
