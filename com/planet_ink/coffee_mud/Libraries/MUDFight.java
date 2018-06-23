@@ -2294,11 +2294,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				Log.combatOut("KILL",killer.Name()+":"+killer.phyStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.phyStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
 			}
 			CMLib.achievements().possiblyBumpAchievement(killer, AchievementLibrary.Event.KILLS, 1, deadmob);
-			if((deadmob!=null)&&(killer!=null)
+			if((deadmob!=null)
+			&&(killer!=null)
+			&&(killer!=deadmob)
 			&&(deadmob.soulMate()==null)
-			&&(killer!=deadmob)&&(!killer.isMonster()))
+			&&(!killer.isMonster()))
 			{
-				if(!deadmob.isMonster())
+				if((!deadmob.isMonster())
+				&&((killer.isPlayer())
+				&&(deadmob.isPlayer()))
+				&&(!CMLib.players().isSameAccount(killer, deadmob)))
 				{
 					CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_PKDEATHS);
 					if(killer.playerStats()!=null)

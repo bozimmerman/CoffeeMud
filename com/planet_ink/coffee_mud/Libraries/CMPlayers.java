@@ -130,6 +130,32 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
+	public boolean isSameAccount(final MOB player1, final MOB player2)
+	{
+		if((player1==null)||(player2==null))
+			return false;
+		if((player1.playerStats()==null)||(player2.playerStats()==null))
+			return false;
+		return player1.playerStats().getAccount()==player2.playerStats().getAccount();
+	}
+	
+	@Override
+	public boolean isSameAccountIP(final MOB player1, final MOB player2)
+	{
+		if((player1==null)||(player2==null))
+			return false;
+		if((player1.playerStats()==null)||(player2.playerStats()==null))
+			return false;
+		if(player1.playerStats().getAccount()==player2.playerStats().getAccount())
+			return true;
+		if((player1.session()==null)||(player2.session()==null))
+			return false;
+		if(player1.session().getAddress().equals(player2.session().getAddress()))
+			return true;
+		return false;
+	}
+	
+	@Override
 	public PlayerAccount getLoadAccount(final String calledThis)
 	{
 		PlayerAccount A = getAccount(calledThis);

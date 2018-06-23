@@ -50,6 +50,8 @@ public interface PlayerLibrary extends CMLibrary
 	public Enumeration<MOB> players();
 	public Enumeration<PlayerAccount> accounts();
 	public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache);
+	public boolean isSameAccount(final MOB player1, final MOB player2);
+	public boolean isSameAccountIP(final MOB player1, final MOB player2);
 	public void obliteratePlayer(MOB deadMOB, boolean deleteAssets, boolean quiet);
 	public void obliterateAccountOnly(PlayerAccount deadAccount);
 	public void renamePlayer(MOB mob, String oldName);
