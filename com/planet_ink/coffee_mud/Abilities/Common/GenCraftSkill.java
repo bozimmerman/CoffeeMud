@@ -764,7 +764,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			buildingI.setMaterial(getBuildingMaterial(numRequired,data,compData));
-			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);;
+			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
 			if(bundling)
 				itemName="a "+numRequired+"# "+itemName;
 			else

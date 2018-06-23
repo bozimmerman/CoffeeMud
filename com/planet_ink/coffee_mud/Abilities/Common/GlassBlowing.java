@@ -387,7 +387,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 			buildingI.setMaterial(RawMaterial.RESOURCE_GLASS);
 		else
 			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
-		String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);;
+		String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else

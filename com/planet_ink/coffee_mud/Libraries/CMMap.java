@@ -916,6 +916,61 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
+	public List<LocationRoom> getLandingPoints(final SpaceObject ship, final Environmental O)
+	{
+		List<LocationRoom> rooms=new LinkedList<LocationRoom>();
+		Area A;
+		if(O instanceof Area)
+			A=(Area)O;
+		else
+		if(O instanceof BoardableShip)
+			A=((BoardableShip)O).getShipArea();
+		else
+		if(O instanceof Room)
+			A=((Room)O).getArea();
+		else
+			return rooms;
+		for(final Enumeration<Room> r=A.getMetroMap();r.hasMoreElements();)
+		{
+			final Room R2=r.nextElement();
+			if(R2 instanceof LocationRoom)
+			{
+				if(ship == null)
+					rooms.add((LocationRoom)R2);
+			}
+		}
+		Collections.sort(rooms,new Comparator<LocationRoom>()
+		{
+			@Override
+			public int compare(LocationRoom o1, LocationRoom o2)
+			{
+				if(o1.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+				{
+					if(o2.domainType()!=Room.DOMAIN_OUTDOORS_SPACEPORT)
+						return -1;
+				}
+				else
+				if(o2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+					return 1;
+				long distanceFrom=0;
+				if(ship != null)
+				{
+					long distanceFrom1=CMLib.map().getDistanceFrom(ship.coordinates(), o1.coordinates());
+					long distanceFrom2=CMLib.map().getDistanceFrom(ship.coordinates(), o1.coordinates());
+					if(distanceFrom1 > distanceFrom2)
+						return -1;
+					if(distanceFrom < distanceFrom2)
+						return 1;
+					return 0;
+				}
+				else
+					return 0;
+			}
+		});
+		return rooms;
+	}
+
+	@Override
 	public String createNewExit(Room from, Room room, int direction)
 	{
 		Room opRoom=from.rawDoors()[direction];
@@ -4073,5 +4128,4 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return minDistance;
 	}
-
 }

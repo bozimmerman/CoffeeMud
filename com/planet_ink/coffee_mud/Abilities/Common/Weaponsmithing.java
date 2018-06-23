@@ -501,7 +501,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
-			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);;
+			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
 			itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
 			startStr=L("<S-NAME> start(s) smithing @x1.",buildingI.name());

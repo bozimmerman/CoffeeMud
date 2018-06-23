@@ -61,14 +61,19 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile RocketStateMachine	rocketState			= null;
 	protected volatile SpaceObject			programPlanet		= null;
 	protected volatile List<ShipEngine>		programEngines		= null;
-	protected final List<CMObject>			sensorReport		= new LinkedList<CMObject>();
+	protected final	   List<SpaceObject>	sensorReport		= new LinkedList<SpaceObject>();
+
+	protected final PairSLinkedList<Long,List<SpaceObject>>	sensorReports	= new PairSLinkedList<Long,List<SpaceObject>>();
 	
 	protected enum RocketStateMachine
 	{
 		LAUNCHSEARCH,
 		LAUNCHCHECK,
 		LAUNCHCRUISE,
-		STOP
+		STOP,
+		PRE_LANDING_STOP,
+		APPROACHBEGIN,
+		LANDING
 	}
 
 	public RocketShipProgram()
@@ -236,6 +241,42 @@ public class RocketShipProgram extends GenShipProgram
 		return findEngineByName(uword)!=null;
 	}
 
+	public List<SpaceObject> takeSensorReport(final TechComponent sensor)
+	{
+		final List<SpaceObject> localSensorReport;
+		synchronized(sensorReport)
+		{
+			sensorReport.clear();
+		}
+		final String code=Technical.TechCommand.SENSE.makeCommand();
+		final MOB mob=CMClass.getFactoryMOB();
+		try
+		{
+			final CMMsg msg=CMClass.getMsg(mob, sensor, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
+			if(sensor.owner() instanceof Room)
+			{
+				if(((Room)sensor.owner()).okMessage(mob, msg))
+					((Room)sensor.owner()).send(mob, msg);
+			}
+			else
+			if(sensor.okMessage(mob, msg))
+				sensor.executeMsg(mob, msg);
+		}
+		finally
+		{
+			mob.destroy();
+		}
+		localSensorReport = new XVector<SpaceObject>(sensorReport.iterator());
+		synchronized(sensorReport)
+		{
+			sensorReport.clear();
+			while(this.sensorReports.size()>10)
+				this.sensorReports.removeLast();
+			this.sensorReports.addFirst(new Pair<Long,List<SpaceObject>>(new Long(System.currentTimeMillis()),localSensorReport));
+		}
+		return localSensorReport;
+	}
+	
 	@Override
 	public String getActivationMenu()
 	{
@@ -320,32 +361,7 @@ public class RocketShipProgram extends GenShipProgram
 				str.append(CMStrings.padRight(sensor.activated()?L("^gACTIVE"):L("^rINACTIVE"),9));
 				str.append("^H").append(CMStrings.padRight(sensor.Name(),34));
 				str.append("^.^N\n\r");
-				final List<CMObject> localSensorReport;
-				synchronized(sensorReport)
-				{
-					sensorReport.clear();
-					final String code=Technical.TechCommand.SENSE.makeCommand();
-					final MOB mob=CMClass.getFactoryMOB();
-					try
-					{
-						final CMMsg msg=CMClass.getMsg(mob, sensor, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
-						if(sensor.owner() instanceof Room)
-						{
-							if(((Room)sensor.owner()).okMessage(mob, msg))
-								((Room)sensor.owner()).send(mob, msg);
-						}
-						else
-						if(sensor.okMessage(mob, msg))
-							sensor.executeMsg(mob, msg);
-					}
-					finally
-					{
-						mob.destroy();
-					}
-					localSensorReport = new SLinkedList<CMObject>(sensorReport.iterator());
-					sensorReport.clear();
-				}
-				
+				final List<SpaceObject> localSensorReport=takeSensorReport(sensor);
 				if(localSensorReport.size()==0)
 					str.append("^R").append(L("No Report"));
 				else
@@ -1106,6 +1122,71 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: Ship is already landed."));
 					return;
 				}
+				if(sensorReports.size()==0)
+				{
+					super.addScreenMessage(L("Error: no sensor data found to identify landing position."));
+					return;
+				}
+				final List<SpaceObject> allObjects = new LinkedList<SpaceObject>();
+				for(final TechComponent sensor : sensors)
+					allObjects.addAll(takeSensorReport(sensor));
+				final WorldMap map=CMLib.map();
+				Collections.sort(allObjects, new Comparator<SpaceObject>()
+				{
+					@Override
+					public int compare(SpaceObject o1, SpaceObject o2)
+					{
+						if(o1 == null)
+							return (o2 == null) ? 0 : 1;
+						if(o2 == null)
+							return -1;
+						if(o1.coordinates() == null)
+							return (o2.coordinates() == null) ? 0 : 1;
+						if(o2.coordinates() == null)
+							return -1;
+						final long distance1 = map.getDistanceFrom(o1, spaceObject);
+						final long distance2 = map.getDistanceFrom(o2, spaceObject);
+						if(distance1 < distance2)
+							return -1;
+						if(distance1 > distance2)
+							return 1;
+						return 0;
+					}
+				});
+				SpaceObject landingPlanet = null;
+				for(SpaceObject O : allObjects)
+				{
+					if((O.coordinates()!=null)&&(O.radius()!=0))
+					{
+						List<LocationRoom> rooms=CMLib.map().getLandingPoints(ship, O);
+						if(rooms.size()>0)
+						{
+							landingPlanet=O;
+							break;
+						}
+					}
+				}
+				if(landingPlanet == null)
+				{
+					for(SpaceObject O : allObjects)
+					{
+						if((O.coordinates()!=null)&&(O.radius()!=0))
+						{
+							if(O.getMass() > SpaceObject.MOONLET_MASS)
+							{
+								landingPlanet=O;
+								break;
+							}
+						}
+					}
+				}
+				
+				if(landingPlanet == null)
+				{
+					super.addScreenMessage(L("No suitable landing target found within near sensor range."));
+					return;
+				}
+				
 				if(this.rocketState!=null)
 				{
 					super.addScreenMessage(L("Warning. Previous program cancelled."));
@@ -1113,9 +1194,9 @@ public class RocketShipProgram extends GenShipProgram
 					this.programEngines=null;
 				}
 				ShipEngine engineE=null;
-				if(!flipForAllStop(ship))
+				if(this.flipForAllStop(ship))
 				{
-					super.addScreenMessage(L("Warning. Stop program cancelled due to engine failure."));
+					super.addScreenMessage(L("Warning. Landing program cancelled due to engine failure."));
 					this.rocketState=null;
 					this.programEngines=null;
 					return;
@@ -1132,8 +1213,12 @@ public class RocketShipProgram extends GenShipProgram
 					return;
 				}
 				this.programEngines=new XVector<ShipEngine>(engineE);
-				this.rocketState = RocketShipProgram.RocketStateMachine.STOP;
-				super.addScreenMessage(L("All Stop procedure initialized."));
+				this.rocketState = RocketShipProgram.RocketStateMachine.PRE_LANDING_STOP;
+				final long distance=CMLib.map().getDistanceFrom(ship.coordinates(),landingPlanet.coordinates());
+				if(distance > (ship.radius() + Math.round(landingPlanet.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
+					super.addScreenMessage(L("Landing approach procedure initialized."));
+				else
+					super.addScreenMessage(L("Landing procedure initialized."));
 				return;
 			}
 			else
@@ -1293,9 +1378,10 @@ public class RocketShipProgram extends GenShipProgram
 				{
 					final String[] parts=msg.targetMessage().split(" ");
 					final TechCommand command=TechCommand.findCommand(parts);
-					if((command == TechCommand.SENSE) && (msg.tool() != null)) // this is a sensor report
+					if((command == TechCommand.SENSE) 
+					&& (msg.tool() instanceof SpaceObject)) // this is a sensor report
 					{
-						this.sensorReport.add(msg.tool());
+						this.sensorReport.add((SpaceObject)msg.tool());
 						return;
 					}
 				}
@@ -1344,6 +1430,7 @@ public class RocketShipProgram extends GenShipProgram
 			this.engines = null;
 			this.sensors = null;
 			this.sensorReport.clear();
+			this.sensorReports.clear();
 		}
 		super.executeMsg(host,msg);
 	}

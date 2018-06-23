@@ -765,7 +765,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			&&(I.material()!=RawMaterial.RESOURCE_BRASS)
 			&&(I.material()!=RawMaterial.RESOURCE_BRONZE)
 			&&(I.material()!=RawMaterial.RESOURCE_STEEL))
-				name=L("@x1 ore",name);;
+				name=L("@x1 ore",name);
 		}
 
 		if(I.basePhyStats().weight()==1)

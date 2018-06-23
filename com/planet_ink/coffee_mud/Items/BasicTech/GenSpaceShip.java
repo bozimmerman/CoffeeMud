@@ -443,22 +443,8 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 
 				if((!amDestroyed()) && (msg.tool() instanceof Area))
 				{
-					long shortestDistance=Long.MAX_VALUE;
-					LocationRoom LR = null;
-					for(final Enumeration<Room> r=((Area)msg.tool()).getMetroMap();r.hasMoreElements();)
-					{
-						final Room R2=r.nextElement();
-						if((R2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
-						&&(R2 instanceof LocationRoom))
-						{
-							long distanceFrom=CMLib.map().getDistanceFrom(coordinates(), ((LocationRoom)R2).coordinates());
-							if(distanceFrom<shortestDistance)
-							{
-								shortestDistance=distanceFrom;
-								LR=(LocationRoom)R2;
-							}
-						}
-					}
+					List<LocationRoom> landingPoints=CMLib.map().getLandingPoints(this, msg.tool());
+					LocationRoom LR = landingPoints.size()==0 ? null : landingPoints.get(0);
 					if(LR!=null)
 					{
 						//final CMMsg kMsg=CMClass.getMsg(msg.source(),getShipArea(),this,CMMsg.MSG_OK_ACTION,L("The ship comes to a resting stop."));

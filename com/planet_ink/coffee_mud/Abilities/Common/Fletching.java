@@ -436,7 +436,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			buildingI.setMaterial(getBuildingMaterial(woodRequired,data,compData));
 			int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-3;
-			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);;
+			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
 			itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
 			startStr=L("<S-NAME> start(s) making @x1.",buildingI.name());

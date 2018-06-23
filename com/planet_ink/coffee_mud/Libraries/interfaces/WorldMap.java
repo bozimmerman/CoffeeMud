@@ -176,6 +176,7 @@ public interface WorldMap extends CMLibrary
 	public SpaceObject findSpaceObject(String s, boolean exactOnly);
 	public String getSectorName(long[] coordinates);
 	public long[] getInSectorCoords(long[] coordinates);
+	public List<LocationRoom> getLandingPoints(final SpaceObject ship, final Environmental O);
 
 	/* ***********************************************************************/
 	/* *							 MESSAGES	 								*/
