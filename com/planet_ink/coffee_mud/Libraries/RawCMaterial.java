@@ -902,6 +902,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			&&(rI.container()==C)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().isEnchanted(I))
+			&&(otherMaterialI!=null)
 			&&(rI.getSubType().equals(otherMaterialI.getSubType()))
 			&&(rI.rawSecretIdentity().equals(otherMaterialI.rawSecretIdentity())))
 			{
@@ -934,6 +935,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			&&(I.container()==C)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().isEnchanted(I))
+			&&(firstMaterialI!=null)
 			&&(rI.getSubType().equals(firstMaterialI.getSubType()))
 			&&(rI.rawSecretIdentity().equals(firstMaterialI.rawSecretIdentity())))
 			{

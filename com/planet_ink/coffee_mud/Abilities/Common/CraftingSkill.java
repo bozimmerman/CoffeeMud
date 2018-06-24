@@ -161,7 +161,7 @@ public class CraftingSkill extends GatheringSkill
 		if((res1 != null)&&(res1.subType.length()>0))
 			return replacePercent(thisStr, res1.subType.toLowerCase()).toLowerCase();
 		if((res2 != null)&&(res2.subType.length()>0))
-			return replacePercent(thisStr, res1.subType.toLowerCase()).toLowerCase();
+			return replacePercent(thisStr, res2.subType.toLowerCase()).toLowerCase();
 		if((res1!=null)&&(res1.resCode>=0))
 			return replacePercent(thisStr, RawMaterial.CODES.NAME(res1.resCode)).toLowerCase();
 		if((res2!=null)&&(res2.resCode>=0))
