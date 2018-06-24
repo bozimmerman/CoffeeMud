@@ -455,7 +455,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				}
 				else
 				{
-					final boolean ignore=((target.playerStats()!=null)&&(target.playerStats().getIgnored().contains(mob.Name())));
+					final boolean ignore=((target.playerStats()!=null)&&(target.playerStats().isIgnored(mob)));
 					CMMsg msg=null;
 					if(((!CMLib.flags().isSeeable(mob))||(!CMLib.flags().isSeeable(target))))
 					{

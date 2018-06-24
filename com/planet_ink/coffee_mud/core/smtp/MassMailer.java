@@ -155,9 +155,11 @@ public class MassMailer implements Runnable
 			if(CMLib.players().playerExists(to))
 			{
 				final MOB toM=CMLib.players().getLoadPlayer(to);
+				final MOB fromM=CMLib.players().getLoadPlayer(from);
 				// check to see if the sender is ignored
 				if((toM.playerStats()!=null)
-				&&(toM.playerStats().getIgnored().contains(from)))
+				&&(toM.playerStats().isIgnored(fromM))
+				&&(toM.playerStats().isIgnored(from)))
 				{
 					// email is ignored
 					CMLib.database().DBDeleteJournal(journalName,key);

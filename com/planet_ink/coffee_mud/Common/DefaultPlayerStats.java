@@ -493,6 +493,36 @@ public class DefaultPlayerStats implements PlayerStats
 			return account.getIgnored();
 		return ignored;
 	}
+	
+	@Override
+	public boolean isIgnored(MOB mob)
+	{
+		if(mob==null)
+			return false;
+		if(account != null)
+			return account.isIgnored(mob);
+		if (mob.soulMate() != null)
+			mob=mob.soulMate();
+		if(ignored.contains(mob.Name()))
+			return true;
+		final PlayerStats stats=mob.playerStats();
+		if(stats ==null)
+			return false;
+		final PlayerAccount account=stats.getAccount();
+		if(account == null)
+			return false;
+		return ignored.contains(account.getAccountName()+"*");
+	}
+
+	@Override
+	public boolean isIgnored(String name)
+	{
+		if(name==null)
+			return false;
+		if(account != null)
+			return account.isIgnored(name);
+		return (ignored.contains(name) || ignored.contains(name+"*"));
+	}
 
 	@Override
 	public Map<String,Object> getClassVariableMap(final CharClass charClass)

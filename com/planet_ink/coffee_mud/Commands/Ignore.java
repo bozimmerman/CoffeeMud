@@ -76,7 +76,11 @@ public class Ignore extends StdCommand
 				return false;
 			}
 			name=CMStrings.capitalizeAndLower(name);
-			if((!CMLib.players().playerExists(name))&&(name.indexOf('@')<0))
+			if(CMLib.players().accountExistsAllHosts(name))
+				name=name+"*";
+			else
+			if((!CMLib.players().playerExistsAllHosts(name))
+			&&(name.indexOf('@')<0))
 			{
 				mob.tell(L("No player by that name was found."));
 				return false;
@@ -87,12 +91,15 @@ public class Ignore extends StdCommand
 				return false;
 			}
 			h.add(name);
-			mob.tell(L("The Player '@x1' has been added to your ignore list.",name));
+			if(name.endsWith("*"))
+				mob.tell(L("The Account '@x1' has been added to your ignore list.",name));
+			else
+				mob.tell(L("The Player/Account '@x1' has been added to your ignore list.",name));
 		}
 		else
 		if(commands.get(1).equalsIgnoreCase("REMOVE"))
 		{
-			final String name=CMParms.combine(commands,2);
+			String name=CMParms.combine(commands,2);
 			if(name.length()==0)
 			{
 				mob.tell(L("Remove whom?"));
@@ -100,11 +107,19 @@ public class Ignore extends StdCommand
 			}
 			if(!h.contains(name))
 			{
-				mob.tell(L("That name '@x1' does not appear on your list.  Watch your casing!",name));
-				return false;
+				if(h.contains(name+"*"))
+					name+="*";
+				else
+				{
+					mob.tell(L("That name '@x1' does not appear on your list.  Watch your casing!",name));
+					return false;
+				}
 			}
 			h.remove(name);
-			mob.tell(L("The Player '@x1' has been removed from your ignore list.",name));
+			if(name.endsWith("*"))
+				mob.tell(L("The Account '@x1' has been removed from your ignore list.",name));
+			else
+				mob.tell(L("The Player '@x1' has been removed from your ignore list.",name));
 		}
 		else
 		{

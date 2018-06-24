@@ -303,10 +303,29 @@ public interface AccountStats extends CMCommon
 	/**
 	 * Returns a modifiable Set that contains the set of player
 	 * Names that constitutes this players ignored player list.
+	 * @see AccountStats.getIgnored()
 	 *
 	 * @return a set of player ignored player list Names
 	 */
 	public Set<String> getIgnored();
+
+	/**
+	 * Returns whether the given player is being ignored.
+	 * @see AccountStats.getIgnored()
+	 *
+	 * @param mob the mob to check
+	 * @return true if the given mob is ignored
+	 */
+	public boolean isIgnored(final MOB mob);
+
+	/**
+	 * Returns whether the given player name is being ignored.
+	 * @see AccountStats.getIgnored()
+	 *
+	 * @param name the name to check
+	 * @return true if the given name is ignored
+	 */
+	public boolean isIgnored(final String name);
 
 	/**
 	 * Add to one of the pride stats for this player or account

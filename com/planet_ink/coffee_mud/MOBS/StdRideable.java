@@ -600,7 +600,7 @@ public class StdRideable extends StdMOB implements Rideable
 				if(this.playerStats!=null)
 				{
 					if((!charStats().getMyRace().useRideClass())
-					||(playerStats.getIgnored().contains(msg.source().Name()))
+					||(playerStats.isIgnored(msg.source()))
 					||(!getGroupMembers(new HashSet<MOB>()).contains(msg.source())))
 					{
 						msg.source().tell(L("@x1 won't let you do that.",name(msg.source())));
