@@ -469,7 +469,8 @@ public class Druid extends StdCharClass
 		{
 			Object[] stuff=animalChecking.get(host);
 			final Room room=msg.source().location();
-			if((stuff==null)||(System.currentTimeMillis()-((Long)stuff[0]).longValue()>(room.getArea().getTimeObj().getDaysInMonth()*room.getArea().getTimeObj().getHoursInDay()*CMProps.getMillisPerMudHour())))
+			if((stuff==null)
+			||(System.currentTimeMillis()-((Long)stuff[0]).longValue()>(room.getArea().getTimeObj().getDaysInMonth()*room.getArea().getTimeObj().getHoursInDay()*CMProps.getMillisPerMudHour())))
 			{
 				stuff=new Object[3];
 				stuff[0]=Long.valueOf(System.currentTimeMillis());
@@ -478,7 +479,8 @@ public class Druid extends StdCharClass
 				stuff[1]=Integer.valueOf(0);
 				stuff[2]=new Vector<String>();
 			}
-			if((((Integer)stuff[1]).intValue()<19)&&(!((List)stuff[2]).contains(""+msg.source())))
+			if((((Integer)stuff[1]).intValue()<19)
+			&&(!((List)stuff[2]).contains(""+msg.source())))
 			{
 				final ExtAbility A=(ExtAbility)CMClass.getAbility("ExtAbility");
 				A.setAbilityID("Peace_Between_"+msg.source().Name()+"_and_"+host.Name());
@@ -520,10 +522,16 @@ public class Druid extends StdCharClass
 				stuff[1]=Integer.valueOf(((Integer)stuff[1]).intValue()+1);
 				((MOB)host).tell(CMLib.lang().L("You have freed @x1 from @x2.",msg.source().name((MOB)host),(msg.source().getStartRoom().getArea().name())));
 				CMLib.leveler().postExperience((MOB)host,null,null,((Integer)stuff[1]).intValue(),false);
+				final boolean isPeace=((!msg.source().isInCombat()) && (!((MOB)host).isInCombat()));
 				for(Ability A2 : CMLib.flags().flaggedAffects(msg.source(), Ability.FLAG_CHARMING))
 				{
 					if(A2.canBeUninvoked())
 						A2.unInvoke();
+				}
+				if(isPeace)
+				{
+					msg.source().makePeace(true);
+					((MOB)host).makePeace(true);
 				}
 			}
 		}
