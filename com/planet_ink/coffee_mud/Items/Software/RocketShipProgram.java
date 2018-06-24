@@ -72,7 +72,7 @@ public class RocketShipProgram extends GenShipProgram
 		LAUNCHCRUISE,
 		STOP,
 		PRE_LANDING_STOP,
-		APPROACHBEGIN,
+		LANDING_APPROACH,
 		LANDING
 	}
 
@@ -441,8 +441,6 @@ public class RocketShipProgram extends GenShipProgram
 			str.append("^X").append(CMStrings.centerPreserve(L(" -- Commands -- "),60)).append("^.^N\n\r");
 			str.append("^H").append(CMStrings.padRight(L("[HELP] : Get help."),60)).append("\n\r");
 			str.append("^H").append(CMStrings.padRight(L("[INFO] [SYSTEMNAME] : Get Details"),60)).append("\n\r");
-			str.append("^H").append(CMStrings.padRight(L("[ENGINE#/NAME] ([AFT/PORT/STARBOARD/DORSEL/VENTRAL]) [AMT]"),60)).append("\n\r");
-			str.append("^H").append(CMStrings.padRight(L("[WEAPON#/NAME] ([TARGETNAME]) [AMT]"),60)).append("\n\r");
 			str.append("^X").append(CMStrings.centerPreserve("",60)).append("^.^N\n\r");
 			str.append("^N\n\r");
 		}
@@ -511,8 +509,41 @@ public class RocketShipProgram extends GenShipProgram
 		}
 		switch(state)
 		{
-		case STOP:
+		case LANDING:
+		case LANDING_APPROACH:
 		case PRE_LANDING_STOP:
+		{
+			if(ship.getIsDocked()!=null)
+			{
+				this.rocketState=null;
+				this.programPlanet=null;
+				this.programEngines=null;
+				this.lastInject=null;
+				super.addScreenMessage(L("Landing program completed successfully."));
+				return super.checkPowerCurrent(value);
+			}
+			else
+			if(programPlanet==null)
+			{
+				String reason = "no planetary information";
+				this.rocketState=null;
+				this.programEngines=null;
+				this.lastInject=null;
+				super.addScreenMessage(L("Launding program aborted with error ("+reason+")."));
+				return super.checkPowerCurrent(value);
+			}
+			else
+			if(this.rocketState!=RocketStateMachine.LANDING)
+			{
+				final long distance=CMLib.map().getDistanceFrom(ship.coordinates(),programPlanet.coordinates());
+				if(distance > (ship.radius() + Math.round(programPlanet.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
+					this.rocketState=RocketStateMachine.LANDING;
+			}
+			if(this.rocketState!=RocketStateMachine.PRE_LANDING_STOP)
+				break;
+		}
+		//$FALL-THROUGH$
+		case STOP:
 		{
 			if(ship.speed() < 0.5)
 			{
@@ -543,7 +574,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				else
 				{
-					this.rocketState=RocketStateMachine.APPROACHBEGIN;
+					this.rocketState=RocketStateMachine.LANDING_APPROACH;
 					state=this.rocketState;
 				}
 			}
@@ -715,6 +746,47 @@ public class RocketShipProgram extends GenShipProgram
 				mob.destroy();
 			}
 			break;
+		}
+		case LANDING_APPROACH:
+		{
+			final long distance=CMLib.map().getDistanceFrom(ship, programPlanet) 
+					- Math.round(CMath.mul(programPlanet.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)) 
+					- ship.radius();
+			if(distance <= 0)
+				this.rocketState = RocketStateMachine.LANDING;
+			else
+			{
+				final MOB mob=CMClass.getFactoryMOB();
+				try
+				{
+					this.lastAccelleration =null;
+					if(newInject != null)
+					{
+						
+						final double ticksToDestinationAtCurrentSpeed = CMath.div(distance, ship.speed());
+						//TODO: 
+						for(final ShipEngine engineE : programEngines)
+						{
+							if((newInject != this.lastInject)
+							||(!engineE.isConstantThruster()))
+							{
+								CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+								final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(newInject.doubleValue()));
+								msg.setTargetMessage(code);
+								this.trySendMsgToItem(mob, engineE, msg);
+								this.lastInject=newInject;
+							}
+						}
+					}
+				}
+				finally
+				{
+					mob.destroy();
+				}
+				break;
+				//TODO: figure out when I'm going too fast to hit 0 at the landing point,
+				//
+			}
 		}
 		default:
 			break;
@@ -903,18 +975,30 @@ public class RocketShipProgram extends GenShipProgram
 						+ "STOP will attempt to negate all velocity. "
 						+ "LAND will land your ship on the nearest planet. "
 						+ "INFO (SYSTEMNAME) will read in identifying info. "
-						+ "Otherwise, see HELP ENGINE for engine commands."));
+						+ "Otherwise, see HELP ENGINE for engine commands, "
+						+ "HELP WEAPON for weapon commands."));
 					return;
 				}
 				String secondWord = CMParms.combine(parsed,1);
 				if(secondWord.equalsIgnoreCase("ENGINE"))
 				{
-					super.addScreenMessage(L("^HHELP:^N\n\r^N"+"The ENGINE command instructs the given " +
-							"engine number or name to fire in the appropriate direction. What happens, " +
-							"and how quickly, depends largely on the capabilities of the engine. " +
-							"Giving a direction is optional, and if not given, AFT is assumed. All "+
-							"directions result in corrected bursts, except for AFT, which will result " +
-							"in sustained accelleration."));
+					super.addScreenMessage(
+						L("^HHELP:^N\n\r"
+						+"^H[ENGINE#/NAME] ([AFT/PORT/STARBOARD/DORSEL/VENTRAL]) [AMT]\n\r"
+						+ "^N"+"The ENGINE command instructs the given " +
+						"engine number or name to fire in the appropriate direction. What happens, " +
+						"and how quickly, depends largely on the capabilities of the engine. " +
+						"Giving a direction is optional, and if not given, AFT is assumed. All "+
+						"directions result in corrected bursts, except for AFT, which will result " +
+						"in sustained accelleration."));
+					return;
+				}
+				else
+				if(secondWord.equals("WEAPON"))
+				{
+					super.addScreenMessage(
+						L("^HHELP:^N\n\r"
+						+"^H[WEAPON#/NAME] ([TARGETNAME]) [AMT]\n\r"));
 					return;
 				}
 				else
@@ -1228,6 +1312,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				this.programEngines=new XVector<ShipEngine>(engineE);
 				// this lands you at the nearest point, which will pick the nearest location room, if any
+				//TODO: picking the nearest landing zone, orbiting to it, and THEN landing would be better.
 				this.rocketState = RocketShipProgram.RocketStateMachine.PRE_LANDING_STOP;
 				final long distance=CMLib.map().getDistanceFrom(ship.coordinates(),landingPlanet.coordinates());
 				if(distance > (ship.radius() + Math.round(landingPlanet.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
