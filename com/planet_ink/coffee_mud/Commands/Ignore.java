@@ -61,8 +61,13 @@ public class Ignore extends StdCommand
 			else
 			{
 				final StringBuffer str=new StringBuffer(L("You are ignoring: "));
-				for (final Object element : h)
-					str.append(((String)element)+" ");
+				for (final String element : h)
+				{
+					if(element.endsWith("*"))
+						str.append("(Account: "+element.substring(0,element.length()-1)+") ");
+					else
+						str.append(element+" ");
+				}
 				mob.tell(str.toString());
 			}
 		}
