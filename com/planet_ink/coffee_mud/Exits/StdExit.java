@@ -637,17 +637,19 @@ public class StdExit implements Exit
 		{
 			if(isOpen())
 			{
-				if((room!=null)&&(!CMLib.flags().canBeSeenBy(room,mob)))
+				if((room!=null)
+				&&(!CMLib.flags().canBeSeenBy(room,mob)))
 					viewMsg.append("darkness");
 				else
 				if(displayText().length()>0)
-					viewMsg.append(displayText()+CMLib.flags().getDispositionBlurbs(this,mob));
+					viewMsg.append(displayText()+CMLib.flags().getDispositionBlurbs(this,mob)+CMLib.flags().getDispositionBlurbs(room,mob));
 				else
 				if(room!=null)
 					viewMsg.append(room.displayText(mob)+CMLib.flags().getDispositionBlurbs(room,mob));
 			}
 			else
-			if((CMLib.flags().canBeSeenBy(this,mob))&&(closedText().trim().length()>0))
+			if((CMLib.flags().canBeSeenBy(this,mob))
+			&&(closedText().trim().length()>0))
 				viewMsg.append(closedText()+CMLib.flags().getDispositionBlurbs(this,mob));
 		}
 		return viewMsg;
