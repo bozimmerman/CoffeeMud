@@ -482,7 +482,7 @@ public class RocketShipProgram extends GenShipProgram
 	@Override
 	public boolean checkPowerCurrent(final int value)
 	{
-		final RocketShipProgram.RocketStateMachine state=this.rocketState;
+		RocketShipProgram.RocketStateMachine state=this.rocketState;
 		if(state == null)
 			return super.checkPowerCurrent(value);
 		final SpaceObject spaceObj=CMLib.map().getSpaceObject(this,true);
@@ -512,6 +512,7 @@ public class RocketShipProgram extends GenShipProgram
 		switch(state)
 		{
 		case STOP:
+		case PRE_LANDING_STOP:
 		{
 			if(ship.speed() < 0.5)
 			{
@@ -525,6 +526,7 @@ public class RocketShipProgram extends GenShipProgram
 						final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(0.0));
 						msg.setTargetMessage(code);
 						this.trySendMsgToItem(M, engineE, msg);
+						engineE.setThrust(0.0);
 					}
 				}
 				finally
@@ -534,23 +536,34 @@ public class RocketShipProgram extends GenShipProgram
 				this.rocketState=null;
 				this.programEngines=null;
 				this.lastInject=null;
-				super.addScreenMessage(L("Stop program completed successfully."));
-				return super.checkPowerCurrent(value);
-			}
-			final double[] stopFacing = CMLib.map().getOppositeDir(ship.direction());
-			double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
-			if((Math.abs(angleDelta[0])+Math.abs(angleDelta[0]))>.02)
-			{
-				if(!flipForAllStop(ship))
+				if(state == RocketStateMachine.STOP)
 				{
-					this.rocketState=null;
-					this.programEngines=null;
-					this.lastInject=null;
-					super.addScreenMessage(L("Stop program aborted with error (directional control failure)."));
+					super.addScreenMessage(L("Stop program completed successfully."));
 					return super.checkPowerCurrent(value);
 				}
-				if((ship.speed() < 5.0)&&(this.lastInject!=null))
-					this.lastInject = new Double(this.lastInject.doubleValue()/2.0);
+				else
+				{
+					this.rocketState=RocketStateMachine.APPROACHBEGIN;
+					state=this.rocketState;
+				}
+			}
+			else
+			{
+				final double[] stopFacing = CMLib.map().getOppositeDir(ship.direction());
+				double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
+				if((Math.abs(angleDelta[0])+Math.abs(angleDelta[0]))>.02)
+				{
+					if(!flipForAllStop(ship))
+					{
+						this.rocketState=null;
+						this.programEngines=null;
+						this.lastInject=null;
+						super.addScreenMessage(L("Stop program aborted with error (directional control failure)."));
+						return super.checkPowerCurrent(value);
+					}
+					if((ship.speed() < 5.0)&&(this.lastInject!=null))
+						this.lastInject = new Double(this.lastInject.doubleValue()/2.0);
+				}
 			}
 			break;
 		}
@@ -603,6 +616,7 @@ public class RocketShipProgram extends GenShipProgram
 		switch(state)
 		{
 		case STOP:
+		case PRE_LANDING_STOP:
 		{
 			//force/mass is the Gs felt by the occupants.. not force-mass
 			//so go ahead and push it up to 3 * g forces on ship
@@ -1213,6 +1227,7 @@ public class RocketShipProgram extends GenShipProgram
 					return;
 				}
 				this.programEngines=new XVector<ShipEngine>(engineE);
+				// this lands you at the nearest point, which will pick the nearest location room, if any
 				this.rocketState = RocketShipProgram.RocketStateMachine.PRE_LANDING_STOP;
 				final long distance=CMLib.map().getDistanceFrom(ship.coordinates(),landingPlanet.coordinates());
 				if(distance > (ship.radius() + Math.round(landingPlanet.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
