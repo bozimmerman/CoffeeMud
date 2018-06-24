@@ -24,7 +24,7 @@
   23. Scriptable commands QUESTMOB, QUESTOBJ, and QUESTSCRIPTED can now scan ALL quests
   24. ShapeShift forms 6-11 added, and shapeshift now governed by skills/shapeshift.txt
   25. New Race flag: infatigueable -- prevents fatigue, given to undead and golems.
-  26. New standard Race: Flesh Golem
+  26. New standard Races: Flesh Golem, Grizzly Bear, Polar Bear
   27. Light Sensitivity (Drow racial trait) is now less onerous.
   28. Siplet has better drag-move ability, resize ability from bottom bar, and font 
       resize with ctrl-uparrow and ctrl-downarrow
@@ -49,7 +49,7 @@
   47. New skills: Hamstring, Scavenge, Food Begging, Bear Foraging, Track Friend
   48. New skills: Racial Enemy, Combat Frenzy, Quills, Poisonous Bite
   49. New races: Orangutan, Millipede, Cricket, Porcupine, Beaver, Corn Snake
-  50. New races: Grizzly Bear, Polar Bear
+  50. New channel flags: REALNAMEOOC, and REALNAMEOOCNOADMIN
   51. ShapeShift.txt races have changed, and most got new racial abilities
   52. Prop_ItemSlot now supports LEVEL argument to affect the level of the item.
 # Build 5.9.6 Release 12/31/2017

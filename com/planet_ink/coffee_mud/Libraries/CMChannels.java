@@ -780,6 +780,21 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<S-NAME>", accountName));
 		}
 		
+		if((chan.flags().contains(ChannelsLibrary.ChannelFlag.REALNAMEOOC)
+			||(chan.flags().contains(ChannelsLibrary.ChannelFlag.REALNAMEOOCNOADMIN) && (!CMSecurity.isStaff(mob))))
+		&&(pStats!=null)
+		&&(pStats.getAccount()!=null)
+		&&(msg.source()==mob))
+		{
+			final String realName=mob.Name();
+			if(msg.sourceMessage()!=null)
+				msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(), "<S-NAME>", realName));
+			if(msg.targetMessage()!=null)
+				msg.setTargetMessage(CMStrings.replaceAll(msg.targetMessage(), "<S-NAME>", realName));
+			if(msg.othersMessage()!=null)
+				msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(), "<S-NAME>", realName));
+		}
+		
 		if(chan.flags().contains(ChannelsLibrary.ChannelFlag.NOLANGUAGE))
 			msg.setTool(getCommonLanguage());
 

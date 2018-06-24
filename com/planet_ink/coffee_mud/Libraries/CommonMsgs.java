@@ -2267,7 +2267,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		for(int d : Directions.DISPLAY_CODES())
 		{
 			final Exit exit=room.getExitInDir(d);
-			if((exit!=null)&&(exit.viewableText(mob, room.getRoomInDir(d)).length()>0))
+			if((exit!=null)
+			&&(exit.viewableText(mob, room.getRoomInDir(d)).length()>0))
 				buf.append("^<EX^>"+(useShipNames?CMLib.directions().getShipDirectionName(d):CMLib.directions().getDirectionName(d))+"^</EX^> ");
 		}
 		boolean noBoardableShips = false;

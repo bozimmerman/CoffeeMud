@@ -132,7 +132,7 @@ public class PlayerClass extends StdCharClass
 			for(final String prevID : prevSet)
 			{
 				final Ability pA=CMClass.getAbility(prevID);
-				if(A.classificationCode()==pA.classificationCode())
+				if((pA!=null)&&(A.classificationCode()==pA.classificationCode()))
 					reqSet.add(pA.ID());
 			}
 			if(reqSet.size()==0)

@@ -420,6 +420,8 @@ public interface ChannelsLibrary extends CMLibrary
 		TWITTER,
 		ADDROOM,
 		ADDAREA,
-		ADDACCOUNT
+		ADDACCOUNT,
+		REALNAMEOOC,
+		REALNAMEOOCNOADMIN
 	}
 }
