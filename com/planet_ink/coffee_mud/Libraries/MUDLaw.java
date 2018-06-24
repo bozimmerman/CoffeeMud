@@ -545,7 +545,10 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		final Clan clan = CMLib.clans().getClan(record.getOwnerName());
 		if(clan != null)
 			return clan.getResponsibleMember();
-		return CMLib.players().getLoadPlayer(record.getOwnerName());
+		final MOB M=CMLib.players().getPlayerAllHosts(record.getOwnerName());
+		if(M == null)
+			return CMLib.players().getLoadPlayer(record.getOwnerName());
+		return M;
 	}
 	
 	@Override
@@ -573,7 +576,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		}
 		else
 		{
-			final MOB M=CMLib.players().getLoadPlayer(record.getOwnerName());
+			MOB M=CMLib.players().getPlayerAllHosts(record.getOwnerName());
+			if(M == null)
+				M=CMLib.players().getLoadPlayer(record.getOwnerName());
 			if(M!=null)
 				return mob.mayIFight(M);
 		}
@@ -737,7 +742,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean robberyCheck(PrivateProperty record, CMMsg msg)
+	public boolean robberyCheck(PrivateProperty record, CMMsg msg, boolean quiet)
 	{
 		if(((msg.targetMinor()==CMMsg.TYP_GET)&&(!msg.isTarget(CMMsg.MASK_INTERMSG)))
 		||(msg.targetMinor()==CMMsg.TYP_PUSH)
@@ -755,26 +760,42 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			&&(!shopkeeperMobPresent(R))
 			&&(!doesHavePriviledgesHere(msg.source(),R)))
 			{
+				if(!CMLib.law().canAttackThisProperty(msg.source(), record))
+				{
+					if(!quiet)
+						msg.source().tell(L("You either need to turn on your PK flag, or be in a clan war to rob this property."));
+					return false;
+				}
 				final LegalBehavior B=getLegalBehavior(R);
 				if(B!=null)
 				{
-					for(int m=0;m<R.numInhabitants();m++)
-					{
-						final MOB M=R.fetchInhabitant(m);
-						if(doesHavePriviledgesHere(M,R))
-							return false;
-					}
-					MOB D=null;
-					if(!record.getOwnerName().startsWith("#"))
-					{
-						final Clan C=CMLib.clans().getClan(record.getOwnerName());
-						if(C!=null)
-							D=C.getResponsibleMember();
-						else
-							D=CMLib.players().getLoadPlayer(record.getOwnerName());
-					}
+					final MOB D=CMLib.law().getPropertyOwner(record);
 					if((D!=null)&&(D!=msg.source()))
-						B.accuse(getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
+					{
+						// now check for witnesses
+						boolean witnessFound=false;
+						List<Room> rooms=new LinkedList<Room>();
+						rooms.add(R);
+						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+						{
+							final Room R2=R.getRoomInDir(d);
+							if(R2!=null)
+								rooms.add(R2);
+						}
+						for(final Room R2 : rooms)
+						{
+							for(int m=0;m<R2.numInhabitants();m++)
+							{
+								final MOB M=R2.fetchInhabitant(m);
+								if((M!=null)
+								&& doesHavePriviledgesHere(M,R) // not a typo
+								&&(CMLib.flags().canBeSeenBy(msg.source(), M)))
+									witnessFound=true;
+							}
+						}
+						if(witnessFound)
+							B.accuse(getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
+					}
 				}
 				Ability propertyProp=((Item)msg.target()).fetchEffect("Prop_PrivateProperty");
 				if(propertyProp==null)
@@ -783,10 +804,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 					propertyProp.setMiscText("owner=\""+record.getOwnerName()+"\" expiresec=60");
 					((Item)msg.target()).addNonUninvokableEffect(propertyProp);
 				}
-				return true;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	@Override

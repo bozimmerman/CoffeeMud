@@ -294,7 +294,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		CMLib.law().robberyCheck(this,msg);
+		if(!CMLib.law().robberyCheck(this,msg, false))
+			return false;
 		return true;
 	}
 
