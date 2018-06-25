@@ -60,6 +60,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	protected SpaceObject	spaceTarget 	= null;
 	protected double[]		facing			= new double[2];
 	protected Set<ShipFlag>	shipFlags		= new SHashSet<ShipFlag>();
+	protected volatile double	speedTick	= 0;
 
 	public GenSpaceShip()
 	{
@@ -86,6 +87,19 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	protected String getAreaClassType()
 	{
 		return "StdSpaceShip";
+	}
+	
+
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(tickID==Tickable.TICKID_AREA) // ticking from the area
+		{
+			this.speedTick = 0.0; 
+		}
+		return true;
 	}
 	
 	@Override
@@ -210,7 +224,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 								final TechComponent.ShipDir dir=(TechComponent.ShipDir)parms[0];
 								final double amount=((Double)parms[1]).doubleValue();
 								final boolean isConst = ((Boolean)parms[2]).booleanValue();
-								double finalAccelleratedAmount = 0;
+								double finalAccelleration = 0;
 								Room dockR = getIsDocked();
 								if(amount != 0)
 								{
@@ -219,37 +233,37 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 									case STARBOARD:
 										if(dockR==null)
 										{
-											finalAccelleratedAmount = -CMath.mul(amount,0.017);
-											facing[0] += finalAccelleratedAmount; 
+											finalAccelleration = -CMath.mul(amount,0.017);
+											facing[0] += finalAccelleration; 
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleratedAmount)+" to "+facing[0]);
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleration)+" to "+facing[0]);
 										}
 										break;
 									case PORT: 
 										if(dockR==null)
 										{
-											finalAccelleratedAmount = CMath.mul(amount,0.017);
-											facing[0] += finalAccelleratedAmount; 
+											finalAccelleration = CMath.mul(amount,0.017);
+											facing[0] += finalAccelleration; 
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleratedAmount)+" to "+facing[0]);
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleration)+" to "+facing[0]);
 										}
 										break;
 									case DORSEL: 
 										if(dockR==null)
 										{
-											finalAccelleratedAmount = -CMath.mul(amount,0.017);
-											facing[1] += finalAccelleratedAmount;
+											finalAccelleration = -CMath.mul(amount,0.017);
+											facing[1] += finalAccelleration;
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleratedAmount)+" to "+facing[1]);
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleration)+" to "+facing[1]);
 										}
 										break;
 									case VENTRAL: 
 										if(dockR==null)
 										{
-											finalAccelleratedAmount = CMath.mul(amount,0.017);
-											facing[1] += finalAccelleratedAmount;
+											finalAccelleration = CMath.mul(amount,0.017);
+											facing[1] += finalAccelleration;
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleratedAmount)+" to "+facing[1]);
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleration)+" to "+facing[1]);
 										}
 										break;
 									case FORWARD: 
@@ -278,21 +292,22 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 											this.setSpeed(0);
 										}
 										//force/mass is the Gs felt by the occupants.. not force-mass
-										finalAccelleratedAmount = amount*inAirFactor;
-										final double finalAccelleration = (dockR==null)?finalAccelleratedAmount:0;
-										if(finalAccelleration > 0)
+										finalAccelleration = amount*inAirFactor;
+										if((dockR==null) && ((finalAccelleration-this.speedTick) > 0))
 										{
-											double[] moveDir = facing();
-											if(dir == ShipDir.AFT)
-												moveDir = CMLib.map().getOppositeDir(moveDir);
-											CMLib.map().moveSpaceObject(this,facing(),finalAccelleration);
+											final double prevSpeed = speed();
+											final double[] moveDir = (dir == ShipDir.FORWARD) ? facing() : CMLib.map().getOppositeDir(facing());
+											CMLib.map().moveSpaceObject(this,moveDir,finalAccelleration-this.speedTick); // have to do this to know new speed
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" accellerates "+dir.toString()+" " +finalAccelleration);
+												Log.debugOut("SpaceShip "+name()+" accellerates "+dir.toString()+" " +(finalAccelleration-this.speedTick));
+											this.speedTick += (finalAccelleration-this.speedTick);
+											if((speed()<prevSpeed) && (this.speed() < 0.5)) // enough slowing down!
+												setSpeed(0.0);
 										}
 										break;
 									}
 									}
-									final String code=Technical.TechCommand.ACCELLERATED.makeCommand(dir,Double.valueOf(finalAccelleratedAmount));
+									final String code=Technical.TechCommand.ACCELLERATED.makeCommand(dir,Double.valueOf(finalAccelleration));
 									final MOB mob=CMClass.getFactoryMOB();
 									try
 									{

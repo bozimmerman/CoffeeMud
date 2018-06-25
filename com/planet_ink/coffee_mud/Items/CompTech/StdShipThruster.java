@@ -45,11 +45,11 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 
 	protected int			maxThrust		= 8900000;
 	protected int			minThrust		= 0;
-	protected double		thrust			= 0;
 	protected long			specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
 	protected double		fuelEfficiency	= 0.33;
 	protected boolean		constantThrust	= true;
-
+	protected volatile double		thrust	= 0;
+	
 	protected TechComponent.ShipDir[] ports	= TechComponent.ShipDir.values();
 
 	public StdShipThruster()
@@ -290,7 +290,6 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		}
 		else
 			thrust=manufacturer.getReliabilityPct() * thrust;
-		final double oldThrust = me.getThrust();
 		if(portDir==TechComponent.ShipDir.AFT) // when thrusting aft, the thrust is continual, so save it
 		{
 			if(amount == 0.0)
@@ -315,8 +314,8 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		else
 			accelleration = thrust;
 		
-		if((amount > 1)&&((portDir!=TechComponent.ShipDir.AFT) || (me.getThrust() > (oldThrust * 10))))
-			tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a "+rumbleWord+" and hear the blast of @x1.",me.name(mob)));
+		//if((amount > 1)&&((portDir!=TechComponent.ShipDir.AFT) || (me.getThrust() > (oldThrust * 10))))
+		//	tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a "+rumbleWord+" and hear the blast of @x1.",me.name(mob)));
 		if(accelleration == 0.0)
 		{
 			final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_thrust_capacity.");
@@ -402,14 +401,13 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			{
 				if(me.activated())
 				{
-					final Manufacturer manufacturer=me.getFinalManufacturer();
-					//TODO: isn't there a method for this fuel thing?
-					final int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/getFuelDivisor()));
-					if(me.consumeFuel(fuelToConsume))
+					if((me.getThrust()>0.0)
+					&& (CMParms.contains(me.getAvailPorts(),TechComponent.ShipDir.AFT)))
 					{
-						if((me.getThrust() > 0) 
-						&& (me.isConstantThruster()) 
-						&& (CMParms.contains(me.getAvailPorts(),TechComponent.ShipDir.AFT)))
+						final Manufacturer manufacturer=me.getFinalManufacturer();
+						//TODO: isn't there a method for this fuel thing?
+						final int fuelToConsume=(int)Math.round(CMath.ceiling(me.getThrust()*me.getFuelEfficiency()*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))/getFuelDivisor()));
+						if(me.consumeFuel(fuelToConsume))
 						{
 							final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
 							if(obj instanceof SpaceShip)

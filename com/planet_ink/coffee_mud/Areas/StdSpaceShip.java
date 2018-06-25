@@ -710,6 +710,9 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		{
 			doAtmosphereChanges();
 			doGravityChanges();
+			final BoardableShip item=this.shipItem;
+			if(item != null)
+				item.tick(ticking, tickID);
 		}
 		tickStatus=Tickable.STATUS_NOT;
 		return true;

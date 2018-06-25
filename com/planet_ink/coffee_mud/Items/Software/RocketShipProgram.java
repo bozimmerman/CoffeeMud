@@ -603,7 +603,7 @@ public class RocketShipProgram extends GenShipProgram
 		//$FALL-THROUGH$
 		case STOP:
 		{
-			if(ship.speed() < 0.5)
+			if(ship.speed()  <= 0.0)
 			{
 				ship.setSpeed(0.0); // that's good enough, for now.
 				for(final ShipEngine engineE : programEngines)
@@ -636,8 +636,14 @@ public class RocketShipProgram extends GenShipProgram
 						super.addScreenMessage(L("Stop program aborted with error (directional control failure)."));
 						return super.checkPowerCurrent(value);
 					}
-					if((ship.speed() < 5.0)&&(this.lastInject!=null))
-						this.lastInject = new Double(this.lastInject.doubleValue()/2.0);
+					if(this.lastInject != null)
+					{
+						if(ship.speed() < SpaceObject.ACCELLERATION_TYPICALSPACEROCKET)
+							this.lastInject = new Double(this.lastInject.doubleValue()/2.0);
+						else
+						if(ship.speed() < (SpaceObject.ACCELLERATION_TYPICALSPACEROCKET * 2))
+							this.lastInject = new Double(this.lastInject.doubleValue()/1.5);
+					}
 				}
 			}
 			break;
