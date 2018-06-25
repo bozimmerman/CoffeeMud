@@ -326,7 +326,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 					@Override
 					public long radius()
 					{
-						return 0;
+						return obj.radius();
 					}
 	
 					@Override

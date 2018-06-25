@@ -230,6 +230,7 @@ public class RocketShipProgram extends GenShipProgram
 		if(uword.equals("HELP")
 		||uword.equals("INFO")
 		||uword.equals("STOP")
+		||uword.equals("LAND")
 		||uword.equals("LAUNCH")
 		||uword.equals("ACTIVATE")
 		||uword.equals("DEACTIVATE")
@@ -1238,7 +1239,7 @@ public class RocketShipProgram extends GenShipProgram
 					this.programEngines=null;
 				}
 				ShipEngine engineE=null;
-				if(this.flipForAllStop(ship))
+				if(!flipForAllStop(ship))
 				{
 					super.addScreenMessage(L("Warning. Landing program cancelled due to engine failure."));
 					this.rocketState=null;
