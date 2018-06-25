@@ -196,6 +196,6 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		StdShipThruster.executeThrusterMsg(this, myHost, circuitKey, lastThrustMs, msg);
+		StdShipThruster.executeThrusterMsg(this, myHost, circuitKey, msg);
 	}
 }

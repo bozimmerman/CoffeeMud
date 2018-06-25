@@ -143,7 +143,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		StdShipThruster.executeThrusterMsg(this, myHost, circuitKey, lastThrustMs, msg);
+		StdShipThruster.executeThrusterMsg(this, myHost, circuitKey, msg);
 	}
 
 	@Override

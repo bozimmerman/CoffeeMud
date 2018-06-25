@@ -49,7 +49,6 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	protected long			specificImpulse	= SpaceObject.VELOCITY_SUBLIGHT;
 	protected double		fuelEfficiency	= 0.33;
 	protected boolean		constantThrust	= true;
-	protected final long[]	lastThrustMs	= new long[] { 0 };	
 
 	protected TechComponent.ShipDir[] ports	= TechComponent.ShipDir.values();
 
@@ -197,7 +196,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost, msg);
-		executeThrusterMsg(this, myHost, circuitKey, lastThrustMs, msg);
+		executeThrusterMsg(this, myHost, circuitKey, msg);
 	}
 
 	public static boolean reportError(final ShipEngine me, final Software controlI, final MOB mob, final String literalMessage, final String controlMessage)
@@ -264,7 +263,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		return fuel;
 	}
 	
-	public static boolean executeThrust(final ShipEngine me, final String circuitKey, final MOB mob, final Software controlI, final TechComponent.ShipDir portDir, final double amount, final long[] lastThrustMs)
+	public static boolean executeThrust(final ShipEngine me, final String circuitKey, final MOB mob, final Software controlI, final TechComponent.ShipDir portDir, final double amount)
 	{
 		final LanguageLibrary lang=CMLib.lang();
 		final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
@@ -332,7 +331,6 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			final CMMsg msg=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			if(spaceObject.okMessage(mob, msg))
 			{
-				lastThrustMs[0]=System.currentTimeMillis();
 				spaceObject.executeMsg(mob, msg);
 				return true;
 			}
@@ -346,7 +344,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		return false;
 	}
 
-	public static boolean executeCommand(final ShipEngine me, final String circuitKey, final CMMsg msg, final long[] lastThrustMs)
+	public static boolean executeCommand(final ShipEngine me, final String circuitKey, final CMMsg msg)
 	{
 		final LanguageLibrary lang=CMLib.lang();
 		final Software controlI=(msg.tool() instanceof Software)?((Software)msg.tool()):null;
@@ -366,19 +364,19 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			if(parms==null)
 				return reportError(me, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
 			if(command == TechCommand.THRUST)
-				return executeThrust(me, circuitKey, mob, controlI, (TechComponent.ShipDir)parms[0],((Double)parms[1]).doubleValue(), lastThrustMs);
+				return executeThrust(me, circuitKey, mob, controlI, (TechComponent.ShipDir)parms[0],((Double)parms[1]).doubleValue());
 			return reportError(me, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
 		}
 	}
 
-	public static void executeThrusterMsg(ShipEngine me, Environmental myHost, String circuitKey, long[] lastThrustMs, CMMsg msg)
+	public static void executeThrusterMsg(ShipEngine me, Environmental myHost, String circuitKey, CMMsg msg)
 	{
 		if(msg.amITarget(me))
 		{
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_ACTIVATE:
-				if(executeCommand(me, circuitKey, msg, lastThrustMs))
+				if(executeCommand(me, circuitKey, msg))
 					me.activate(true);
 				break;
 			case CMMsg.TYP_DEACTIVATE:
@@ -411,8 +409,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 					{
 						if((me.getThrust() > 0) 
 						&& (me.isConstantThruster()) 
-						&& (CMParms.contains(me.getAvailPorts(),TechComponent.ShipDir.AFT))
-						&& (System.currentTimeMillis()-lastThrustMs[0]+100)>=CMProps.getTickMillis())
+						&& (CMParms.contains(me.getAvailPorts(),TechComponent.ShipDir.AFT)))
 						{
 							final SpaceObject obj=CMLib.map().getSpaceObject(me, true);
 							if(obj instanceof SpaceShip)
