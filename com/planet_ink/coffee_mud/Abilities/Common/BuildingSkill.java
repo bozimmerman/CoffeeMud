@@ -318,7 +318,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			theRoomToReturnTo.getRawExit(Directions.UP).destroy();
 			theRoomToReturnTo.setRawExit(Directions.UP, null);
 		}
-		CMLib.map().obliterateRoom(room);
+		CMLib.map().obliterateMapRoom(room);
 	}
 	
 	private void removeEffects(PhysicalAgent E, String extraProp)

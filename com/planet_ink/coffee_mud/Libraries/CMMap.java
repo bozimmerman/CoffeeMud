@@ -2336,7 +2336,18 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void obliterateRoom(Room deadRoom)
+	public void obliterateMapRoom(final Room deadRoom)
+	{
+		obliterateRoom(deadRoom,true);
+	}
+	
+	@Override
+	public void destroyRoomObject(final Room deadRoom)
+	{
+		obliterateRoom(deadRoom,false);
+	}
+	
+	protected void obliterateRoom(final Room deadRoom, final boolean includeDB)
 	{
 		for(final Enumeration<Ability> a=deadRoom.effects();a.hasMoreElements();)
 		{
@@ -2352,8 +2363,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			final List<Pair<Room,Integer>> roomsToDo=new LinkedList<Pair<Room,Integer>>();
 			for(final Enumeration<Room> r=rooms();r.hasMoreElements();)
 			{
-				Room R=r.nextElement();
-				R=getRoom(R);
+				final Room R=getRoom(r.nextElement());
 				if(R!=null)
 				{
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -2364,7 +2374,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					}
 				}
 			}
-			for(Pair<Room,Integer> p : roomsToDo)
+			for(final Pair<Room,Integer> p : roomsToDo)
 			{
 				final Room R=p.first;
 				int d=p.second.intValue();
@@ -2376,7 +2386,8 @@ public class CMMap extends StdLibrary implements WorldMap
 						final Exit GE=R.getRawExit(d);
 						GE.setTemporaryDoorLink(deadRoom.roomID());
 					}
-					CMLib.database().DBUpdateExits(R);
+					if(includeDB)
+						CMLib.database().DBUpdateExits(R);
 				}
 			}
 		}
@@ -2387,7 +2398,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		deadRoom.destroy();
 		if(deadRoom instanceof GridLocale)
 			((GridLocale)deadRoom).clearGrid(null);
-		CMLib.database().DBDeleteRoom(deadRoom);
+		if(includeDB)
+			CMLib.database().DBDeleteRoom(deadRoom);
 	}
 
 	@Override
@@ -2659,11 +2671,24 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void obliterateArea(Area A)
+	public void obliterateMapArea(Area A)
+	{
+		obliterateArea(A,true);
+	}
+	
+	@Override
+	public void destroyAreaObject(final Area A)
+	{
+		obliterateArea(A,false);
+	}
+
+	protected void obliterateArea(final Area A, final boolean includeDB)
 	{
 		if(A==null)
 			return;
 		A.setAreaState(Area.State.STOPPED);
+		if(A instanceof SpaceShip)
+			CMLib.tech().unregisterAllElectronics(CMLib.tech().getElectronicsKey(A));
 		List<Room> allRooms=new LinkedList<Room>();
 		for(int i=0;i<2;i++)
 		{
@@ -2678,9 +2703,10 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 			}
 		}
-		CMLib.database().DBDeleteAreaAndRooms(A);
+		if(includeDB)
+			CMLib.database().DBDeleteAreaAndRooms(A);
 		for(final Room R : allRooms)
-			obliterateRoom(R);
+			obliterateRoom(R,includeDB);
 		delArea(A);
 		A.destroy(); // why not?
 	}

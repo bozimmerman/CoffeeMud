@@ -106,7 +106,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 	@Override
 	public Area getShipArea()
 	{
-		if((!destroyed)&&(area==null))
+		if((!destroyed)
+		&&(area==null))
 		{
 			final Area area=super.getShipArea();
 			if(area != null)

@@ -384,7 +384,7 @@ public class GrinderRooms
 
 	public static String delRoom(Room R)
 	{
-		CMLib.map().obliterateRoom(R);
+		CMLib.map().obliterateMapRoom(R);
 		return "";
 	}
 

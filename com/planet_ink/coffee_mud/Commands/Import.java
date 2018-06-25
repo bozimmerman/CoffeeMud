@@ -488,7 +488,7 @@ public class Import extends StdCommand
 			}
 			if(foundOne==null)
 				break;
-			CMLib.map().obliterateRoom(foundOne);
+			CMLib.map().obliterateMapRoom(foundOne);
 		}
 		final Area A1=CMLib.map().getArea(areaName);
 		if(A1!=null)
@@ -5580,7 +5580,7 @@ public class Import extends StdCommand
 							catch (final NoSuchElementException e)
 							{
 							}
-							CMLib.map().obliterateRoom(R);
+							CMLib.map().obliterateMapRoom(R);
 						}
 						error=CMLib.coffeeMaker().unpackRoomFromXML(buf.toString(),true);
 					}

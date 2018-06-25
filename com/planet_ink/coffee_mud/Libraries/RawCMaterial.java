@@ -886,8 +886,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		
 		final XVector<Ability> props=new XVector<Ability>();
 		record.lostProps=props;
-		final RawMaterial firstMaterialI = (finalMaterial>0)?this.findFirstResource(V, finalMaterial):null;
-		final RawMaterial otherMaterialI = (otherMaterial>0)?this.findFirstResource(V, otherMaterial):null;
+		final RawMaterial firstMaterialI = (finalMaterial>0)?this.findFirstResource(V, finalMaterial, C):null;
+		final RawMaterial otherMaterialI = (otherMaterial>0)?this.findFirstResource(V, otherMaterial, C):null;
 		final int firstResourceType = (firstMaterialI != null)?firstMaterialI.material():-1;
 		final int otherResourceType = (otherMaterialI != null)?otherMaterialI.material():-1;
 		for(int i=V.size()-1;i>=0;i--)
@@ -995,23 +995,23 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			return null;
 		final int code = RawMaterial.CODES.FIND_IgnoreCase(other);
 		if(code >=0 )
-			return findFirstResource(V,code);
+			return findFirstResource(V,code, null);
 		return null;
 	}
 
 	@Override
 	public RawMaterial findFirstResource(Room E, int resource)
 	{
-		return findFirstResource(getAllItems(E), resource);
+		return findFirstResource(getAllItems(E), resource, null);
 	}
 
 	@Override
 	public RawMaterial findFirstResource(MOB E, int resource)
 	{
-		return findFirstResource(getAllItems(E), resource);
+		return findFirstResource(getAllItems(E), resource, null);
 	}
 
-	protected RawMaterial findFirstResource(List<Item> V, int resource)
+	protected RawMaterial findFirstResource(List<Item> V, int resource, Container C)
 	{
 		for(int i=0;i<V.size();i++)
 		{
@@ -1020,7 +1020,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			&&(I.material()==resource)
 			&&(!CMLib.flags().isOnFire(I))
 			&&(!CMLib.flags().isEnchanted(I))
-			&&(I.container()==null))
+			&&(I.container()==C))
 				return (RawMaterial)I;
 		}
 		return null;

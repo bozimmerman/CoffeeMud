@@ -476,6 +476,63 @@ public class RocketShipProgram extends GenShipProgram
 		if(engineE.okMessage(mob, msg))
 			engineE.executeMsg(mob, msg);
 	}
+
+	protected Double calculateTargetInjection(final SpaceShip ship, Double newInject)
+	{
+		//force/mass is the Gs felt by the occupants.. not force-mass
+		//so go ahead and push it up to 3 * g forces on ship
+		double targetAccelleration = SpaceObject.ACCELLERATION_TYPICALSPACEROCKET; //
+		if(targetAccelleration > ship.speed())
+			targetAccelleration = ship.speed();
+		if((this.lastAccelleration !=null)
+		&&(newInject != null)
+		&& (targetAccelleration != 0.0))
+		{
+			if(this.lastAccelleration.doubleValue() < (targetAccelleration * .1))
+				newInject = new Double(newInject.doubleValue()*2.0);
+			else
+			if(this.lastAccelleration.doubleValue() > (targetAccelleration * 100))
+				newInject = new Double(newInject.doubleValue()/2.0);
+			else
+			if(this.lastAccelleration.doubleValue() < (targetAccelleration * 0.9))
+				newInject = new Double(1.07 * newInject.doubleValue());
+			else
+			if(this.lastAccelleration.doubleValue() > (targetAccelleration * 1.1))
+				newInject = new Double(0.93 * newInject.doubleValue());
+			else
+			if(this.lastAccelleration.doubleValue() < targetAccelleration)
+				newInject = new Double(1.01 * newInject.doubleValue());
+			else
+			if(this.lastAccelleration.doubleValue() > targetAccelleration)
+				newInject = new Double(0.98 * newInject.doubleValue());
+		}
+		return newInject;
+	}
+
+	protected void performSimpleThrust(final ShipEngine engineE, final Double thrustInject, boolean alwaysThrust)
+	{
+		final MOB mob=CMClass.getFactoryMOB();
+		try
+		{
+			this.lastAccelleration =null;
+			if(thrustInject != null)
+			{
+				if((thrustInject != this.lastInject)
+				||(!engineE.isConstantThruster()))
+				{
+					CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+					final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(thrustInject.doubleValue()));
+					msg.setTargetMessage(code);
+					this.trySendMsgToItem(mob, engineE, msg);
+					this.lastInject=thrustInject;
+				}
+			}
+		}
+		finally
+		{
+			mob.destroy();
+		}
+	}
 	
 	@Override
 	public boolean checkPowerCurrent(final int value)
@@ -548,22 +605,8 @@ public class RocketShipProgram extends GenShipProgram
 			if(ship.speed() < 0.5)
 			{
 				ship.setSpeed(0.0); // that's good enough, for now.
-				final MOB M=CMClass.getFactoryMOB();
-				try
-				{
-					for(final ShipEngine engineE : programEngines)
-					{
-						CMMsg msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-						final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(0.0));
-						msg.setTargetMessage(code);
-						this.trySendMsgToItem(M, engineE, msg);
-						engineE.setThrust(0.0);
-					}
-				}
-				finally
-				{
-					M.destroy();
-				}
+				for(final ShipEngine engineE : programEngines)
+					performSimpleThrust(engineE,Double.valueOf(0.0), true);
 				this.rocketState=null;
 				this.programEngines=null;
 				this.lastInject=null;
@@ -619,21 +662,8 @@ public class RocketShipProgram extends GenShipProgram
 					this.rocketState=null;
 					this.lastInject=null;
 					super.addScreenMessage(L("Launch program completed. Shutting down thrust."));
-					final MOB mob=CMClass.getFactoryMOB();
-					try
-					{
-						for(final ShipEngine engineE : programEngines)
-						{
-							CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-							final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(0.0));
-							msg.setTargetMessage(code);
-							this.trySendMsgToItem(mob, engineE, msg);
-						}
-					}
-					finally
-					{
-						mob.destroy();
-					}
+					for(final ShipEngine engineE : programEngines)
+						performSimpleThrust(engineE,Double.valueOf(0.0), true);
 					this.programEngines=null;
 					return super.checkPowerCurrent(value);
 				}
@@ -649,106 +679,24 @@ public class RocketShipProgram extends GenShipProgram
 		case STOP:
 		case PRE_LANDING_STOP:
 		{
-			//force/mass is the Gs felt by the occupants.. not force-mass
-			//so go ahead and push it up to 3 * g forces on ship
-			double targetAccelleration = SpaceObject.ACCELLERATION_TYPICALSPACEROCKET; //
-			if(targetAccelleration > ship.speed())
-				targetAccelleration = ship.speed();
-			if((this.lastAccelleration !=null)
-			&&(newInject != null)
-			&& (targetAccelleration != 0.0))
-			{
-				if(this.lastAccelleration.doubleValue() < (targetAccelleration * .1))
-					newInject = new Double(newInject.doubleValue()*2.0);
-				else
-				if(this.lastAccelleration.doubleValue() > (targetAccelleration * 100))
-					newInject = new Double(newInject.doubleValue()/2.0);
-				else
-				if(this.lastAccelleration.doubleValue() < (targetAccelleration * 0.9))
-					newInject = new Double(1.07 * newInject.doubleValue());
-				else
-				if(this.lastAccelleration.doubleValue() > (targetAccelleration * 1.1))
-					newInject = new Double(0.93 * newInject.doubleValue());
-				else
-				if(this.lastAccelleration.doubleValue() < targetAccelleration)
-					newInject = new Double(1.01 * newInject.doubleValue());
-				else
-				if(this.lastAccelleration.doubleValue() > targetAccelleration)
-					newInject = new Double(0.98 * newInject.doubleValue());
-			}
-			final MOB mob=CMClass.getFactoryMOB();
-			try
-			{
-				this.lastAccelleration =null;
-				if(newInject != null)
-				{
-					for(final ShipEngine engineE : programEngines)
-					{
-						if((newInject != this.lastInject)
-						||(!engineE.isConstantThruster()))
-						{
-							CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-							final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(newInject.doubleValue()));
-							msg.setTargetMessage(code);
-							this.trySendMsgToItem(mob, engineE, msg);
-							this.lastInject=newInject;
-						}
-					}
-				}
-			}
-			finally
-			{
-				mob.destroy();
-			}
+			newInject=calculateTargetInjection(ship, newInject);
+			for(final ShipEngine engineE : programEngines)
+				performSimpleThrust(engineE,newInject, false);
 			break;
 		}
 		case LAUNCHCHECK:
 		case LAUNCHSEARCH:
-		{
-			//force/mass is the Gs felt by the occupants.. not force-mass
-			//so go ahead and push it up to 3 * g forces on ship
-			final double targetAccelleration = SpaceObject.ACCELLERATION_TYPICALSPACEROCKET; // 
-			if((this.lastAccelleration !=null)
-			&&(newInject != null)
-			&& (targetAccelleration != 0.0))
-			{
-				if(this.lastAccelleration .doubleValue() < (targetAccelleration * 0.9))
-					newInject = new Double(1.07 * newInject.doubleValue());
-				else
-				if(this.lastAccelleration .doubleValue() > (targetAccelleration * 1.1))
-					newInject = new Double(0.93 * newInject.doubleValue());
-			}
-		}
+			newInject=calculateTargetInjection(ship, newInject);
 		//$FALL-THROUGH$
 		case LAUNCHCRUISE:
 		{
-			final MOB mob=CMClass.getFactoryMOB();
-			try
-			{
-				this.lastAccelleration =null;
-				if(newInject != null)
-				{
-					for(final ShipEngine engineE : programEngines)
-					{
-						if((newInject != this.lastInject)||(!engineE.isConstantThruster()))
-						{
-							CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-							final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(newInject.doubleValue()));
-							msg.setTargetMessage(code);
-							this.trySendMsgToItem(mob, engineE, msg);
-							this.lastInject=newInject;
-						}
-					}
-				}
-			}
-			finally
-			{
-				mob.destroy();
-			}
+			for(final ShipEngine engineE : programEngines)
+				performSimpleThrust(engineE,newInject, false);
 			break;
 		}
 		case LANDING_APPROACH:
 		{
+			final double[] dirToPlanet = CMLib.map().getDirection(ship, programPlanet);
 			final long distance=CMLib.map().getDistanceFrom(ship, programPlanet) 
 					- Math.round(CMath.mul(programPlanet.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)) 
 					- ship.radius();
@@ -756,37 +704,35 @@ public class RocketShipProgram extends GenShipProgram
 				this.rocketState = RocketStateMachine.LANDING;
 			else
 			{
-				final MOB mob=CMClass.getFactoryMOB();
-				try
+				for(final ShipEngine engineE : programEngines)
 				{
-					this.lastAccelleration =null;
-					if(newInject != null)
-					{
-						
-						final double ticksToDestinationAtCurrentSpeed = CMath.div(distance, ship.speed());
-						//TODO: 
-						for(final ShipEngine engineE : programEngines)
-						{
-							if((newInject != this.lastInject)
-							||(!engineE.isConstantThruster()))
-							{
-								CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-								final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(newInject.doubleValue()));
-								msg.setTargetMessage(code);
-								this.trySendMsgToItem(mob, engineE, msg);
-								this.lastInject=newInject;
-							}
-						}
-					}
-				}
-				finally
-				{
-					mob.destroy();
+					double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(SpaceObject.ACCELLERATION_TYPICALSPACEROCKET,2.0));
+					final double ticksToDestinationAtCurrentSpeed = CMath.div(distance, CMath.div(ship.speed(),2.0));
+					if(ticksToDecellerate >= (ticksToDestinationAtCurrentSpeed))
+						this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
+					else
+						this.changeFacing(ship, dirToPlanet);
+					newInject=calculateTargetInjection(ship, newInject);
+					performSimpleThrust(engineE,newInject, false);
 				}
 				break;
-				//TODO: figure out when I'm going too fast to hit 0 at the landing point,
-				//
 			}
+		}
+		//$FALL-THROUGH$
+		case LANDING:
+		{
+			final double[] dirToPlanet = CMLib.map().getDirection(ship, programPlanet);
+			this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
+			if(ship.speed()>SpaceObject.ACCELLERATION_TYPICALSPACEROCKET)
+				newInject=calculateTargetInjection(ship, newInject);
+			else
+			if(ship.speed()>1.0)
+				newInject=calculateTargetInjection(ship, new Double(ship.speed()-1.0));
+			else
+				newInject=null;
+			for(final ShipEngine engineE : programEngines)
+				performSimpleThrust(engineE,newInject, true);
+			break;
 		}
 		default:
 			break;

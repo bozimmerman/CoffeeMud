@@ -331,7 +331,7 @@ public class Destroy extends StdCommand
 				if(!mob.session().confirm(L("You are fixing to permanantly destroy Room \"@x1\".  Are you ABSOLUTELY SURE (y/N)",deadRoom.roomID()),"N"))
 					return;
 			}
-			CMLib.map().obliterateRoom(deadRoom);
+			CMLib.map().obliterateMapRoom(deadRoom);
 			mob.tell(L("The sound of massive destruction rings in your ears."));
 			mob.location().showOthers(mob,null,CMMsg.MSG_NOISE,L("The sound of massive destruction rings in your ears."));
 			Log.sysOut("Rooms",mob.Name()+" destroyed room "+deadRoom.roomID()+".");
@@ -655,7 +655,7 @@ public class Destroy extends StdCommand
 			{
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A thunderous boom of destruction is heard in the distance."));
 				Log.sysOut("Rooms",mob.Name()+" destroyed area "+areaName+".");
-				CMLib.map().obliterateArea(A);
+				CMLib.map().obliterateMapArea(A);
 			}
 		}
 	}

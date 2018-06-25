@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
+import com.planet_ink.coffee_mud.Areas.interfaces.Area.State;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
@@ -141,6 +142,13 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		try
 		{
 			internalPrice = 0;
+			State resetState = null;
+			if(area != null)
+			{
+				if(CMLib.threads().isTicking(area, -1))
+					resetState=area.getAreaState();
+				area.destroy();
+			}
 			area=CMLib.coffeeMaker().unpackAreaObjectFromXML(xml);
 			if(area instanceof BoardableShip)
 			{
@@ -166,6 +174,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				Log.warnOut("Failed to unpack a boardable area for the space ship");
 				getShipArea();
 			}
+			if(resetState!=null)
+				area.setAreaState(resetState);
 		}
 		catch (final CMException e)
 		{
@@ -174,7 +184,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	}
 	
 	@Override
-	public void dockHere(Room R)
+	public void dockHere(final Room R)
 	{
 		if(!R.isContent(this))
 		{
@@ -190,7 +200,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	}
 
 	@Override
-	public Room unDock(boolean moveToOutside)
+	public Room unDock(final boolean moveToOutside)
 	{
 		final Room R=getIsDocked();
 		if(R!=null)
@@ -269,6 +279,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	{
 		final StdBoardable s=(StdBoardable)super.copyOf();
 		s.destroyed=false;
+		s.area=null; // otherwise it gets a copy of the rooms and mobs, which will be destroyed
 		s.setOwnerName("");
 		final String xml=CMLib.coffeeMaker().getAreaObjectXML(getShipArea(), null, null, null, true).toString();
 		s.setShipArea(xml);
@@ -339,7 +350,11 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	public void destroy()
 	{
 		if(area!=null)
-			CMLib.map().obliterateArea(area);
+		{
+			final Area A=area;
+			area=null; // to prevent recurse
+			CMLib.map().destroyAreaObject(A);
+		}
 		super.destroy();
 	}
 

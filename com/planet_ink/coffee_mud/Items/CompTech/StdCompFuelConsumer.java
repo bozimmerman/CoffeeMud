@@ -71,6 +71,15 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements FuelCon
 	{
 		return true;
 	}
+	
+	@Override
+	public CMObject copyOf()
+	{
+		final CMObject O=super.copyOf();
+		if(O instanceof StdCompFuelConsumer)
+			((StdCompFuelConsumer)O).fuelCache=null;
+		return O;
+	}
 
 	@Override
 	public long containTypes()

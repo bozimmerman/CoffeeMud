@@ -209,7 +209,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					@Override
 					public void run()
 					{
-						CMLib.map().obliterateRoom(room);
+						CMLib.map().obliterateMapRoom(room);
 					}
 				});
 				didAnything=true;
@@ -246,7 +246,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			checkedRetractRooms.clear();
 		if(!foundOne)
 		{
-			CMLib.map().obliterateRoom(R);
+			CMLib.map().obliterateMapRoom(R);
 			didAnything=true;
 		}
 		else

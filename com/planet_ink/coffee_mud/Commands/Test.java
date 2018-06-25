@@ -356,7 +356,7 @@ public class Test extends StdCommand
 						mob.tell("Fail!");
 						break;
 					}
-					CMLib.map().obliterateArea(A);
+					CMLib.map().obliterateMapArea(A);
 					mob.tell(L("Generate #@x1: Complete!",""+i));
 				}
 			}

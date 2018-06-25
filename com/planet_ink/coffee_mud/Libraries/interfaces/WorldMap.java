@@ -54,7 +54,8 @@ public interface WorldMap extends CMLibrary
 	public Area getFirstArea();
 	public Area getModelArea(Area A);
 	public Area getRandomArea();
-	public void obliterateArea(Area theOne);
+	public void obliterateMapArea(Area theOne);
+	public void destroyAreaObject(Area theOne);
 	public void renamedArea(Area theA);
 
 	/* ***********************************************************************/
@@ -72,7 +73,8 @@ public interface WorldMap extends CMLibrary
 	public Enumeration<Room> roomsFilled();
 	public Room getRandomRoom();
 	public void renameRooms(Area A, String oldName, List<Room> allMyDamnRooms);
-	public void obliterateRoom(Room deadRoom);
+	public void obliterateMapRoom(final Room deadRoom);
+	public void destroyRoomObject(final Room deadRoom);
 	public Room findConnectingRoom(Room room);
 	public int getRoomDir(Room from, Room to);
 	public int getExitDir(Room from, Exit to);
