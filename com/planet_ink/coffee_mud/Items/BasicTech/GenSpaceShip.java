@@ -301,7 +301,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 												Log.debugOut("SpaceShip "+name()+" accellerates "+dir.toString()+" " +(finalAccelleration-this.speedTick));
 											this.speedTick += (finalAccelleration-this.speedTick);
-											if((speed()<prevSpeed) && (this.speed() < 0.5)) // enough slowing down!
+											if((speed() < prevSpeed) && (this.speed() < 0.5)) // enough slowing down!
 												setSpeed(0.0);
 										}
 										break;

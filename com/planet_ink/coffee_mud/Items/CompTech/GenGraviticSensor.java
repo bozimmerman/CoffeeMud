@@ -62,17 +62,12 @@ public class GenGraviticSensor extends GenElecCompSensor
 			@Override
 			public Environmental convert(final SpaceObject obj)
 			{
-				final SpaceObject spaceMe = CMLib.map().getSpaceObject(me, true);
-				final long distance = CMLib.map().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
-				final double[] direction = CMLib.map().getDirection(spaceMe, obj);
-				final String name = L("an object of mass @x1",CMath.abbreviateLong(obj.getMass()));
-				final String displayText = L("An object of mass @x1 at @x2, distance: @x3",
-											CMath.abbreviateLong(obj.getMass()),
-											CMLib.english().directionDescShort(direction),
-											CMLib.english().distanceDescShort(distance));
-				final String description = displayText + L(". The object has an approximate radius of @x1.", CMLib.english().sizeDescShort(obj.radius()));
 				return new SpaceObject() 
 				{
+					final String name = L("Unknown");
+					final String displayText = "";
+					final String description = "";
+					
 					@Override
 					public String Name()
 					{

@@ -56,6 +56,8 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public static final BigDecimal TWO 					= BigDecimal.valueOf(2L);
 	
+	public final double			ZERO_ALMOST				= 0.00000001;
+	public final double			PI_ALMOST				= Math.PI-0.00000001;
 	public final double			PI_TIMES_2				= Math.PI*2.0;
 	public final double			PI_BY_2					= Math.PI/2.0;
 	public final int			QUADRANT_WIDTH  		= 10;
@@ -555,6 +557,10 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(yawDelta > Math.PI)
 			yawDelta=PI_TIMES_2-yawDelta;
 
+		if(((directionPitch == 0.0)||(directionPitch == Math.PI))
+		&&(directionPitch == facingPitch))
+			return 0.0;
+
 		double pitchDelta = (directionPitch >  facingPitch) ? (directionPitch - facingPitch) : (facingPitch - directionPitch);
 		if(pitchDelta > PI_BY_2)
 			pitchDelta=Math.PI-pitchDelta;
@@ -650,6 +656,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			newDirectionYaw = accelDirectionYaw;
 			newDirectionPitch = accelDirectionPitch;
 		}
+		//if(newSpeed < currentSpeed)System.out.println("Slowing because "+anglesDelta+"="+Math.cos(anglesDelta)); //BZ:DELME
+
 		curDirection[0]=newDirectionYaw;
 		curDirection[1]=newDirectionPitch;
 		return newSpeed;
@@ -658,6 +666,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public double[] getOppositeDir(final double[] dir)
 	{
+		if((dir[1]<ZERO_ALMOST)||(dir[1]>PI_ALMOST))
+			return new double[]{dir[0], Math.PI-dir[1]};
 		final double[] newDir = new double[]{Math.PI+dir[0],Math.PI-dir[1]};
 		if(newDir[0] >= (2*Math.PI))
 			newDir[0] -= (2*Math.PI);

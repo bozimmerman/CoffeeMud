@@ -372,11 +372,14 @@ public class RocketShipProgram extends GenShipProgram
 						continue;
 					if(o instanceof SpaceObject)
 					{
-						SpaceObject O=(SpaceObject)o;
-						if(O.displayText().length()>0)
-							str.append("^W").append(L("Found: ")).append("^N").append(O.displayText());
-						else
-							str.append("^W").append(L("Found: ")).append("^N").append(O.name());
+						final SpaceObject spaceMe = ship;
+						final SpaceObject obj = (SpaceObject)o;
+						final long distance = CMLib.map().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
+						final double[] direction = CMLib.map().getDirection(spaceMe, obj);
+						final String mass = CMath.abbreviateLong(obj.getMass());
+						final String dirStr = CMLib.english().directionDescShortest(direction);
+						final String distStr = CMLib.english().distanceDescShort(distance);
+						str.append("^W").append(obj.name()).append("^N/^WMass: ^N"+mass+"/^WDir: ^N"+dirStr+"/^WDist: ^N"+distStr);
 					}
 					else
 					if(o instanceof CMObject)
@@ -478,13 +481,10 @@ public class RocketShipProgram extends GenShipProgram
 			engineE.executeMsg(mob, msg);
 	}
 
-	protected Double calculateTargetInjection(final SpaceShip ship, Double newInject)
+	protected Double calculateTargetInjection(final SpaceShip ship, Double newInject, double targetAccelleration)
 	{
 		//force/mass is the Gs felt by the occupants.. not force-mass
 		//so go ahead and push it up to 3 * g forces on ship
-		double targetAccelleration = SpaceObject.ACCELLERATION_TYPICALSPACEROCKET; //
-		if(targetAccelleration > ship.speed())
-			targetAccelleration = ship.speed();
 		if((this.lastAccelleration !=null)
 		&&(newInject != null)
 		&& (targetAccelleration != 0.0))
@@ -594,7 +594,7 @@ public class RocketShipProgram extends GenShipProgram
 			if(this.rocketState!=RocketStateMachine.LANDING)
 			{
 				final long distance=CMLib.map().getDistanceFrom(ship.coordinates(),programPlanet.coordinates());
-				if(distance > (ship.radius() + Math.round(programPlanet.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
+				if(distance < (ship.radius() + Math.round(programPlanet.radius() * SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)))
 					this.rocketState=RocketStateMachine.LANDING;
 			}
 			if(this.rocketState!=RocketStateMachine.PRE_LANDING_STOP)
@@ -605,14 +605,14 @@ public class RocketShipProgram extends GenShipProgram
 		{
 			if(ship.speed()  <= 0.0)
 			{
-				ship.setSpeed(0.0); // that's good enough, for now.
-				for(final ShipEngine engineE : programEngines)
-					performSimpleThrust(engineE,Double.valueOf(0.0), true);
-				this.rocketState=null;
-				this.programEngines=null;
-				this.lastInject=null;
 				if(state == RocketStateMachine.STOP)
 				{
+					ship.setSpeed(0.0); // that's good enough, for now.
+					for(final ShipEngine engineE : programEngines)
+						performSimpleThrust(engineE,Double.valueOf(0.0), true);
+					this.rocketState=null;
+					this.programEngines=null;
+					this.lastInject=null;
 					super.addScreenMessage(L("Stop program completed successfully."));
 					return super.checkPowerCurrent(value);
 				}
@@ -686,14 +686,20 @@ public class RocketShipProgram extends GenShipProgram
 		case STOP:
 		case PRE_LANDING_STOP:
 		{
-			newInject=calculateTargetInjection(ship, newInject);
+			double targetAccelleration = SpaceObject.ACCELLERATION_TYPICALSPACEROCKET; //
+			if(targetAccelleration > ship.speed())
+				targetAccelleration = ship.speed();
+			newInject=calculateTargetInjection(ship, newInject, targetAccelleration);
 			for(final ShipEngine engineE : programEngines)
 				performSimpleThrust(engineE,newInject, false);
 			break;
 		}
 		case LAUNCHCHECK:
 		case LAUNCHSEARCH:
-			newInject=calculateTargetInjection(ship, newInject);
+		{
+			final double targetAccelleration = SpaceObject.ACCELLERATION_TYPICALSPACEROCKET; //
+			newInject=calculateTargetInjection(ship, newInject, targetAccelleration);
+		}
 		//$FALL-THROUGH$
 		case LAUNCHCRUISE:
 		{
@@ -714,12 +720,25 @@ public class RocketShipProgram extends GenShipProgram
 				for(final ShipEngine engineE : programEngines)
 				{
 					double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(SpaceObject.ACCELLERATION_TYPICALSPACEROCKET,2.0));
-					final double ticksToDestinationAtCurrentSpeed = CMath.div(distance, CMath.div(ship.speed(),2.0));
-					if(ticksToDecellerate >= (ticksToDestinationAtCurrentSpeed))
-						this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
+					final double ticksToDestinationAtCurrentSpeed = CMath.div(distance, ship.speed());
+					final double diff = Math.abs(ticksToDecellerate-ticksToDestinationAtCurrentSpeed);
+					if(diff <= 1.0)
+					{
+//System.out.println("Coast: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
+					}
 					else
+					if(ticksToDecellerate >= (ticksToDestinationAtCurrentSpeed))
+					{
+//System.out.println("Decelllerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
+						this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
+					}
+					else
+					{
+//System.out.println("Accelllerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
 						this.changeFacing(ship, dirToPlanet);
-					newInject=calculateTargetInjection(ship, newInject);
+					}
+					final double targetAccelleration = SpaceObject.ACCELLERATION_TYPICALSPACEROCKET; //
+					newInject=calculateTargetInjection(ship, newInject, targetAccelleration);
 					performSimpleThrust(engineE,newInject, false);
 				}
 				break;
@@ -729,14 +748,23 @@ public class RocketShipProgram extends GenShipProgram
 		case LANDING:
 		{
 			final double[] dirToPlanet = CMLib.map().getDirection(ship, programPlanet);
-			this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
-			if(ship.speed()>SpaceObject.ACCELLERATION_TYPICALSPACEROCKET)
-				newInject=calculateTargetInjection(ship, newInject);
+			if(CMLib.map().getAngleDelta(dirToPlanet, ship.direction()) > 1)
+				this.changeFacing(ship, CMLib.map().getOppositeDir(ship.direction()));
 			else
-			if(ship.speed()>1.0)
-				newInject=calculateTargetInjection(ship, new Double(ship.speed()-1.0));
-			else
-				newInject=null;
+			{
+				this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
+				if(ship.speed()>SpaceObject.ACCELLERATION_TYPICALSPACEROCKET)
+				{
+					final double targetAccelleration = SpaceObject.ACCELLERATION_TYPICALSPACEROCKET; //
+					newInject=calculateTargetInjection(ship, newInject, targetAccelleration);
+				}
+				else
+				if(ship.speed()>1.0)
+					newInject=calculateTargetInjection(ship, newInject, ship.speed()-1.0);
+				else
+					newInject=null;
+			}
+System.out.println("Landing: "+CMLib.english().directionDescShort(ship.direction())+"/"+ship.speed()); //BZ:DELME
 			for(final ShipEngine engineE : programEngines)
 				performSimpleThrust(engineE,newInject, true);
 			break;

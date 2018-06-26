@@ -346,6 +346,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	}
 	
 	@Override
+	public String directionDescShortest(double[] dir)
+	{
+		return Math.round(Math.toDegrees(dir[0])*10)/10.0+"`"+Math.round(Math.toDegrees(dir[1])*10)/10.0;
+	}
+	
+	@Override
 	public Long parseSpaceDistance(String dist)
 	{
 		if(dist==null)

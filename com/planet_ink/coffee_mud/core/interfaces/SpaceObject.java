@@ -128,15 +128,9 @@ public interface SpaceObject extends Environmental, BoundedObject
 	{
 		Decameter("dm",1L),
 		Kilometer("km",1000L),
-		MoonRadius("mr",173740L),
-		PlanetRadius("pr",639875L),
-		SaturnRadius("sr",6026800L),
+		Megameter("Mm",1000000L),
+		Gigameter("Gm",1000000000L),
 		AstroUnit("au",14959787100L),
-		StarGRadius("gr",69550000L),
-		StarDRadius("dr",959812L),
-		StarBRadius("br",695500000L),
-		SolarSystemRadius("yr",590638000000L),
-		SolarSystemDiameter("yd",590638000000L*2L),
 		DistanceBetweenStars("sd",946073047258080L*4L),
 		SpaceCombatPointBlank("pb",20000L),
 		LightYear("lY",946073047258080L),
@@ -147,6 +141,14 @@ public interface SpaceObject extends Environmental, BoundedObject
 		LightSecond("ls",946073047258080L/(365L*24L*60L)),
 		Parsec("p",3085677580000000L),
 		GalaxyRadius("xr",946073047258080L*1000L),
+		MoonRadius("mr",173740L),
+		PlanetRadius("pr",639875L),
+		SaturnRadius("sr",6026800L),
+		StarGRadius("gr",69550000L),
+		StarDRadius("dr",959812L),
+		StarBRadius("br",695500000L),
+		SolarSystemRadius("yr",590638000000L),
+		SolarSystemDiameter("yd",590638000000L*2L),
 		;
 		public final long dm;
 		public final String abbr;
@@ -195,6 +197,8 @@ public interface SpaceObject extends Environmental, BoundedObject
 		Distance.LightMinute,
 		Distance.LightSecond,
 		Distance.AstroUnit,
+		Distance.Gigameter,
+		Distance.Megameter,
 		Distance.Kilometer,
 		Distance.Decameter,
 	};

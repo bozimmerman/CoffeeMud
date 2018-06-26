@@ -74,7 +74,7 @@ public class CMath
 		int llen = (lStr.length()-1) / 3;
 		if(llen >= LONG_ABBR.length)
 			llen = LONG_ABBR.length-1;
-		return Double.toString(Math.round(Math.pow(1000, llen) * 100.0)/100.0) + LONG_ABBR[llen];
+		return Double.toString(Math.round((l/Math.pow(1000, llen)) * 100.0)/100.0) + LONG_ABBR[llen];
 	}
 	
 	/** Convert an integer to its Roman Numeral equivalent
