@@ -90,7 +90,9 @@ public class JournalNext extends StdWebMacro
 		for(int j=0;j<journals.size();j++)
 		{
 			final String B=journals.get(j);
-			if((H.contains(B.toUpperCase().trim()))&&((M==null)||(!CMSecurity.isASysOp(M))))
+			if((B.length()==0)
+			||((H.contains(B.toUpperCase().trim()))
+				&&((M==null)||(!CMSecurity.isASysOp(M)))))
 				continue;
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!B.equals(lastID))))
 			{
