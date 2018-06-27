@@ -116,7 +116,7 @@ public class Config extends StdCommand
 			@Override
 			public int compare(Attrib o1, Attrib o2)
 			{
-				return o1.compareTo(o1);
+				return o1.getName().compareTo(o2.getName());
 			}
 		});
 		for(final MOB.Attrib a : sorted)
@@ -126,24 +126,26 @@ public class Config extends StdCommand
 			if((a==MOB.Attrib.AUTOMAP)&&(CMProps.getIntVar(CMProps.Int.AWARERANGE)<=0))
 				continue;
 
-			msg.append(CMStrings.padRight(a.getName(),15)+": ");
+			msg.append("^W"+CMStrings.padRight(a.getName(),15)+"^N: ");
 			boolean set=mob.isAttributeSet(a);
 			if(a.isAutoReversed()) 
 				set=!set;
-			msg.append(set?L("ON"):L("OFF"));
+			msg.append(set?L("^gON"):L("^rOFF"));
 			msg.append("\n\r");
 		}
+		msg.append("^N");
 		if(mob.playerStats()!=null)
 		{
 			final String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
-			msg.append(CMStrings.padRight(L("LINEWRAP"),15)+": "+wrap);
+			msg.append("^W"+CMStrings.padRight(L("LINEWRAP"),15)+"^N: ^w"+wrap);
 			if((mob.session()!=null)&&(mob.playerStats().getWrap() != mob.session().getWrap()))
 				msg.append(" ("+mob.session().getWrap()+")");
 			msg.append("\n\r");
-			final String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
-			msg.append(CMStrings.padRight(L("PAGEBREAK"),15)+": "+pageBreak);
+			final String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"^rDisabled";
+			msg.append("^w"+CMStrings.padRight(L("PAGEBREAK"),15)+"^N: ^w"+pageBreak);
 			msg.append("\n\r");
 		}
+		msg.append("^N");
 		mob.tell(msg.toString());
 		mob.tell(postStr);
 		return false;
