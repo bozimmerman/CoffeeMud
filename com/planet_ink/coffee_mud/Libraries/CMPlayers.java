@@ -1116,6 +1116,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			protectedOnes=new Vector<String>();
 
 		final List<String> warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
+		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
+			Log.debugOut(serviceClient.getName(),"Autopurge process start. "+allUsers.size()+" users loaded, "+protectedOnes.size()+" protected, and "+warnedOnes.size()+" previously warned.");
+		
 		final StringBuilder warnStr=new StringBuilder("");
 		final Map<String,Long> warnMap=new TreeMap<String,Long>();
 		boolean warnChanged=false;
@@ -1275,7 +1278,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			textTimeLeft = hours + " hours";
 		}
 
-		final String msg="Your character, "+to+", is going to be autopurged by the system in "+textTimeLeft+".  If you would like to keep this character active, please re-login.  This is an automated message, please do not reply.";
+		final String msg=L("Your character, @x1, is going to be autopurged by the system in @x2.  ",to,textTimeLeft)+
+						 L("If you would like to keep this character active, please re-login.  This is an automated message, please do not reply.");
 
 		SMTPLibrary.SMTPClient SC=null;
 		try
