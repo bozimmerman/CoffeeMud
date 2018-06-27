@@ -626,7 +626,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), acct.getAccountName(), 
 				"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), acct.getAccountName(),
 				L("Password for @x1",acct.getAccountName()),
-				L("Your password for @x1 is: @x2\n\r"
+				L("Your password for @x1 is '@x2'.\n\r"
 				+ "You can login by pointing your mud client at @x3 port(s): @x4.\n\r"
 				+ "After creating a character, you may use the PASSWORD command to change it once you are online.",
 				acct.getAccountName(),password,CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS)));
@@ -1564,9 +1564,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 					}
 				}
 			}
-			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), loginObj.player.name, "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), loginObj.player.name,
-				"Password for "+loginObj.player.name,
-				"Your password for "+loginObj.player.name+" at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" is: '"+password+"'.");
+			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), loginObj.player.name, 
+				"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), loginObj.player.name,
+				L("Password for @x1",loginObj.player.name),
+				L("Your password for @x1 at @x2 is '@x3'.",loginObj.player.name,CMProps.getVar(CMProps.Str.MUDDOMAIN),password));
 			session.stopSession(false,false,false);
 			loginObj.reset=true;
 			loginObj.state=LoginState.LOGIN_START;

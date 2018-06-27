@@ -890,9 +890,11 @@ public class Reset extends StdCommand
 						CMLib.database().DBUpdateAccount((PlayerAccount)stat);
 					if(M!=null)
 						CMLib.database().DBUpdatePassword(M.Name(),stat.getPasswordStr());
-					CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), finalName, "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), stat.getEmail(),
-							"Password for "+finalName,
-							"Your password for "+finalName+" at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" has been reset by "+mob.Name()+".  It is now: '"+password+"'.");
+					CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), finalName, 
+							"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), stat.getEmail(),
+							L("Password for @x1",finalName),
+							L("Your password for @x1 at @x2 has been reset by @x3.  ",finalName,CMProps.getVar(CMProps.Str.MUDDOMAIN),mob.Name())+
+							L("It is now: '@x1'.",password));
 					mob.tell(L("The password has been reset, and this action has been logged."));
 					Log.sysOut("Reset","Password for "+finalName+" has been reset by "+mob.Name());
 				}
@@ -906,9 +908,11 @@ public class Reset extends StdCommand
 					CMLib.database().DBUpdateAccount((PlayerAccount)stat);
 				if(M!=null)
 					CMLib.database().DBUpdatePassword(M.Name(),stat.getPasswordStr());
-				CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), finalName, "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), stat.getEmail(),
-						"Password for "+finalName,
-						"Your password for "+finalName+" at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" has been reset by "+mob.Name()+".  It is now: '"+password+"'.");
+				CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), finalName, 
+						"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), stat.getEmail(),
+						L("Password for @x1",finalName),
+						L("Your password for @x1 at @x2 has been reset by @x3. ",finalName,CMProps.getVar(CMProps.Str.MUDDOMAIN),mob.Name())+
+						L("It is now: '@x1'.",password));
 				mob.tell(L("The password has been reset, and this action has been logged."));
 				Log.sysOut("Reset","Password for "+finalName+" has been reset by "+mob.Name());
 			}

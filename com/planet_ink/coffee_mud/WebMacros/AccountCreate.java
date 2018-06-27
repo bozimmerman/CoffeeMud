@@ -188,10 +188,14 @@ public class AccountCreate extends StdWebMacro
 				if(acctStats instanceof PlayerStats)
 					CMLib.database().DBUpdatePassword(login,password);
 			}
-			String message="\n\r\n\rThis message was sent through the "+CMProps.getVar(CMProps.Str.MUDNAME)+" mail server at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+", port"+CMProps.getVar(CMProps.Str.MUDPORTS)+".  Please contact the administrators regarding any abuse of this system.\n\r";
-			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), emailToName, "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), emailToName,
-				"Password for "+login,
-				"Your password for "+login+" at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" is: '"+password+"'."+message);
+			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), emailToName, 
+					"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), emailToName,
+				L("Password for @x1",login),
+				L("Your password for @x1 at @x2 is '@x3'.",login,CMProps.getVar(CMProps.Str.MUDDOMAIN),password)+
+				"\n\r\n\r"+
+				L("This message was sent through the @x1 mail server at @x2, port @x3.  ",
+						CMProps.getVar(CMProps.Str.MUDNAME),CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS))+
+				L("Please contact the administrators regarding any abuse of this system.\n\r"));
 			return "";
 		}
 		
@@ -261,8 +265,11 @@ public class AccountCreate extends StdWebMacro
 			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
 					acct.getAccountName(),
 					acct.getAccountName(),
-					"Password for "+acct.getAccountName(),
-					"Your password for "+acct.getAccountName()+" is: "+password+"\n\rYou can login by pointing your mud client at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+" port(s):"+CMProps.getVar(CMProps.Str.MUDPORTS)+".\n\rAfter creating a character, you may use the PASSWORD command to change it once you are online.");
+					L("Password for @x1",acct.getAccountName()),
+					L("Your password for @x1 is '@x2'.\n\r",acct.getAccountName(),password)+
+					L("You can login by pointing your mud client at @x1 port(s): @x2.\n\r",
+							CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS))+
+					L("After creating a character, you may use the PASSWORD command to change it once you are online."));
 		}
 		if(parms.containsKey("LOGIN"))
 		{
