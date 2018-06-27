@@ -3120,8 +3120,9 @@ public class DefaultSession implements Session
 			{
 			}
 
+			final MOB mob=mob();
 			if(((System.currentTimeMillis()-lastBlahCheck)>=60000)
-			&&(mob()!=null))
+			&&(mob!=null))
 			{
 				lastBlahCheck=System.currentTimeMillis();
 				final Vector<String> V=CMParms.parse(CMProps.getVar(CMProps.Str.IDLETIMERS));
