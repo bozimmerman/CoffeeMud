@@ -1238,6 +1238,10 @@ public class MOBloader
 						final Item cont=thisItem.ultimateContainer(null);
 						if(cont.owner() instanceof Room)
 							finalCollection.add(thisItem);
+						else
+						if((thisItem instanceof SpaceObject)
+						&&(CMLib.map().isObjectInSpace((SpaceObject)thisItem)))
+							finalCollection.add(thisItem);
 					}
 				}
 			}
