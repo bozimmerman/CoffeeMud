@@ -127,9 +127,9 @@ public interface SpaceObject extends Environmental, BoundedObject
 	public static enum Distance
 	{
 		Decameter("dm",1L),
-		Kilometer("km",1000L),
-		Megameter("Mm",1000000L),
-		Gigameter("Gm",1000000000L),
+		Kilometer("km",100L),
+		Megameter("Mm",100000L),
+		Gigameter("Gm",100000000L),
 		AstroUnit("au",14959787100L),
 		DistanceBetweenStars("sd",946073047258080L*4L),
 		SpaceCombatPointBlank("pb",20000L),
