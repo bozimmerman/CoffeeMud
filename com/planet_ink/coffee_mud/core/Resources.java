@@ -903,6 +903,12 @@ public class Resources
 		final boolean vfsFile=filename.startsWith("::");
 		final boolean localFile=filename.startsWith("//");
 		filename=makeFileResourceName(CMFile.vfsifyFilename(filename));
+		if(CMProps.isPrivateToMe(filename))
+		{
+			final String newPrefix = CMProps.getVar(CMProps.Str.PRIVATERESOURCEPATH);
+			if(newPrefix.length()>0)
+				filename = newPrefix+filename.substring(10);
+		}
 		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
 			_updateResource(filename, obj);
 		filename=(vfsFile?"::":localFile?"//":"")+filename;
@@ -924,6 +930,12 @@ public class Resources
 		final boolean vfsFile=filename.startsWith("::");
 		final boolean localFile=filename.startsWith("//");
 		filename=makeFileResourceName(CMFile.vfsifyFilename(filename));
+		if(CMProps.isPrivateToMe(filename))
+		{
+			final String newPrefix = CMProps.getVar(CMProps.Str.PRIVATERESOURCEPATH);
+			if(newPrefix.length()>0)
+				filename = newPrefix+filename.substring(10);
+		}
 		filename=(vfsFile?"::":localFile?"//":"")+filename;
 		return new CMFile(filename,whoM).saveRaw(myRsc);
 	}
