@@ -57,7 +57,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public static final BigDecimal TWO 					= BigDecimal.valueOf(2L);
 	
 	public final double			ZERO_ALMOST				= 0.000001;
-	public final double			PI_ALMOST				= Math.PI-0.000001;
+	public final double			PI_ALMOST				= Math.PI-ZERO_ALMOST;
 	public final double			PI_TIMES_2				= Math.PI*2.0;
 	public final double			PI_BY_2					= Math.PI/2.0;
 	public final int			QUADRANT_WIDTH  		= 10;
@@ -562,11 +562,11 @@ public class CMMap extends StdLibrary implements WorldMap
 			return 0.0;
 
 		double pitchDelta = (directionPitch >  facingPitch) ? (directionPitch - facingPitch) : (facingPitch - directionPitch);
+		if(pitchDelta > Math.PI)
+			pitchDelta=Math.PI-pitchDelta;
+
 		if(Math.abs(pitchDelta-Math.PI)<ZERO_ALMOST)
 			yawDelta=0.0;
-		else
-		if(pitchDelta > PI_BY_2)
-			pitchDelta=Math.PI-pitchDelta;
 
 		double finalDelta =  yawDelta + pitchDelta;
 		if(finalDelta > Math.PI)
@@ -619,27 +619,39 @@ public class CMMap extends StdLibrary implements WorldMap
 		final double acceleration = newAccelleration;
 
 		double yawDelta = (curDirectionYaw >  accelDirectionYaw) ? (curDirectionYaw - accelDirectionYaw) : (accelDirectionYaw - curDirectionYaw);
-		if(yawDelta > PI_TIMES_2)
+		// 350 and 10, diff = 340 + -360 = 20
+		if(yawDelta > Math.PI)
 			yawDelta=PI_TIMES_2-yawDelta;
+
 		double pitchDelta = (curDirectionPitch >  accelDirectionPitch) ? (curDirectionPitch - accelDirectionPitch) : (accelDirectionPitch - curDirectionPitch);
-		double anglesDelta;
-		if(Math.abs(pitchDelta-Math.PI)<ZERO_ALMOST)
-			yawDelta=0.0;
-		else
+		// 170 and 10 = 160, which is correct!
 		if(pitchDelta > Math.PI)
 			pitchDelta=Math.PI-pitchDelta;
-		anglesDelta =  yawDelta + pitchDelta;
+		if(Math.abs(pitchDelta-Math.PI)<ZERO_ALMOST)
+			yawDelta=0.0;
+		
+		/* Below is a problem 19,19 is opposite to 200,160, so the speed cos should be -1, not .77.
+		// Speeding because 39.10792895994204   (deltas: yaw=180.00000000173782, pitch=140.89207103832015) = 0.7759591226452032
+		// dir:19.48056503444094,19.627363928962563    acceldir:199.48056503617875,160.51943496728273
+		// SpaceShip a space ship Galileo accellerates FORWARD 1.44018341
+		*/
+		double anglesDelta =  yawDelta + pitchDelta;
+		// this resulted in imaginary numbers.. infinities and such.
+		//final double pitchAffect = Math.abs(pitchDelta-Math.PI); 
+		//anglesDelta =  pitchAffect + ((pitchAffect/PI_BY_2) * yawDelta);
+		//System.out.println("Test: "+pitchDelta+"->"+pitchAffect+","+yawDelta+","+anglesDelta+"  ===  "+(currentSpeed + (acceleration * Math.cos(anglesDelta)))); //BZ:DELME
+
 		if(anglesDelta > Math.PI)
 			anglesDelta = Math.abs(PI_TIMES_2-anglesDelta);
-		final double accelerationMultiplier = acceleration / currentSpeed;
 
+		final double accelerationMultiplier = acceleration / currentSpeed;
 		double newDirectionYaw;
 		if(yawDelta < 0.1)
 			newDirectionYaw = accelDirectionYaw;
 		else
 		{
 			newDirectionYaw = curDirectionYaw + ((curDirectionYaw > accelDirectionYaw) ? -(accelerationMultiplier * Math.sin(yawDelta)) : (accelerationMultiplier * Math.sin(yawDelta)));
-			if((newDirectionYaw > 0.0) && (PI_TIMES_2 - newDirectionYaw) < ZERO_ALMOST)
+			if((newDirectionYaw > 0.0) && ((PI_TIMES_2 - newDirectionYaw) < ZERO_ALMOST))
 				newDirectionYaw=0.0;
 		}
 		if (newDirectionYaw < 0.0)
@@ -659,7 +671,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			newDirectionYaw = accelDirectionYaw;
 			newDirectionPitch = accelDirectionPitch;
 		}
-		//if(newSpeed < currentSpeed)System.out.println("Slowing because "+anglesDelta+"="+Math.cos(anglesDelta)); //BZ:DELME
+		if(newSpeed < currentSpeed)System.out.println("Slowing to "+newSpeed+" because "+Math.toDegrees(anglesDelta)+"="+Math.cos(anglesDelta)); //BZ:DELME
+		else System.out.println("Speeding to "+newSpeed+" because "+Math.toDegrees(anglesDelta)+"("+Math.toDegrees(yawDelta)+","+Math.toDegrees(pitchDelta)+")="+Math.cos(anglesDelta)
+					+"       dir:"+Math.toDegrees(curDirection[0])+","+Math.toDegrees(curDirection[1])+"    acceldir:"+Math.toDegrees(accelDirection[0])+","+Math.toDegrees(accelDirection[1])); //BZ:DELME
 
 		curDirection[0]=newDirectionYaw;
 		curDirection[1]=newDirectionPitch;
@@ -672,8 +686,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		if((dir[1]<ZERO_ALMOST)||(dir[1]>PI_ALMOST))
 			return new double[]{dir[0], Math.PI-dir[1]};
 		final double[] newDir = new double[]{Math.PI+dir[0],Math.PI-dir[1]};
-		if(newDir[0] >= (2*Math.PI))
-			newDir[0] -= (2*Math.PI);
+		if(newDir[0] >= PI_TIMES_2)
+			newDir[0] -= PI_TIMES_2;
 		return newDir;
 	}
 	
@@ -4143,27 +4157,35 @@ public class CMMap extends StdLibrary implements WorldMap
 			minDistance=prevDistance;
 		else
 		{
-			final BigDecimal s=new BigDecimal(prevDistance/2.0)
-								.add(new BigDecimal(curDistance/2.0))
-								.add(new BigDecimal(baseDistance/2.0));
-			final BigDecimal s1=s.subtract(new BigDecimal(prevDistance));
-			final BigDecimal s2=s.subtract(new BigDecimal(curDistance));
-			final BigDecimal s3=s.subtract(new BigDecimal(baseDistance));
-			final BigDecimal aa=s.multiply(s1).multiply(s2).multiply(s3);
-			final MathContext mc= MathContext.DECIMAL64;
-			BigDecimal area = aa.divide(TWO, mc);
-			boolean done = false;
-			final int maxIterations = mc.getPrecision() + 1;
-			for (int i = 0; !done && i < maxIterations; i++) 
+			try
 			{
-				BigDecimal r = aa.divide(area, mc);
-				r = r.add(area);
-				r = r.divide(TWO, mc);
-				done = r.equals(area);
-				area = r;
+				final BigDecimal s=new BigDecimal(prevDistance/2.0)
+									.add(new BigDecimal(curDistance/2.0))
+									.add(new BigDecimal(baseDistance/2.0));
+				final BigDecimal s1=s.subtract(new BigDecimal(prevDistance));
+				final BigDecimal s2=s.subtract(new BigDecimal(curDistance));
+				final BigDecimal s3=s.subtract(new BigDecimal(baseDistance));
+				final BigDecimal aa=s.multiply(s1).multiply(s2).multiply(s3);
+				final MathContext mc= MathContext.DECIMAL64;
+				BigDecimal area = aa.divide(TWO, mc);
+				boolean done = false;
+				final int maxIterations = mc.getPrecision() + 1;
+				for (int i = 0; !done && i < maxIterations; i++) 
+				{
+					BigDecimal r = aa.divide(area, mc);
+					r = r.add(area);
+					r = r.divide(TWO, mc);
+					done = r.equals(area);
+					area = r;
+				}
+				final double height=2.0 * (area.doubleValue()/baseDistance);
+				minDistance=Math.round(height);
 			}
-			final double height=2.0 * (area.doubleValue()/baseDistance);
-			minDistance=Math.round(height);
+			catch(Throwable t)
+			{
+				Log.errOut("Bad Math: "+curDistance+","+prevDistance+","+baseDistance+"  -- " + FROM.speed());
+				return (prevDistance + curDistance) / 2.0;
+			}
 		}
 		return minDistance;
 	}
