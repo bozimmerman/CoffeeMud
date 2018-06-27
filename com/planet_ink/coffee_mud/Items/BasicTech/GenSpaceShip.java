@@ -1032,10 +1032,10 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			&&(!codes[i].equals("AREA")))
 				return false;
 		}
-		Area eA = ((GenSpaceShip)E).getShipArea();
-		Area A = this.getShipArea();
-		Enumeration<Room> er = eA.getProperMap();
-		Enumeration<Room> r = A.getProperMap();
+		final Area eA = ((GenSpaceShip)E).getShipArea();
+		final Area A = this.getShipArea();
+		final Enumeration<Room> er = eA.getProperMap();
+		final Enumeration<Room> r = A.getProperMap();
 		for(;r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();

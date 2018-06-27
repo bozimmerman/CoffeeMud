@@ -171,7 +171,7 @@ public class GravityFloat extends StdAbility
 		affectableStats.addAmbiance("-FLYING");
 	}
 	
-	public void showFailedToMove(final MOB mob)
+	public boolean showFailedToMove(final MOB mob)
 	{
 		if(mob != null)
 		{
@@ -191,11 +191,12 @@ public class GravityFloat extends StdAbility
 				case 9:
 				default:
 				case 10:
-					R.show(mob, null,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around trying to go somewhere, but make(s) no progress."));
-					break;
+					if(R.show(mob, this,CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> flap(s) around, making little progress.")))
+						return false;
 				}
 			}
 		}
+		return true;
 	}
 	
 	public void showFailedToTouch(final MOB mob, Physical P)
@@ -276,17 +277,11 @@ public class GravityFloat extends StdAbility
 					if(CMLib.flags().isSwimming(affected))
 					{
 						if(CMLib.dice().rollPercentage()>60)
-						{
-							showFailedToMove(msg.source());
-							return false;
-						}
+							return showFailedToMove(msg.source());
 					}
 					else
 					if(CMLib.dice().rollPercentage()>20)
-					{
-						showFailedToMove(msg.source());
-						return false;
-					}
+						return showFailedToMove(msg.source());
 				}
 				break;
 			}

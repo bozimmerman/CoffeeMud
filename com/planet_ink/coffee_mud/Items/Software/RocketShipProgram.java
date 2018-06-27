@@ -565,6 +565,8 @@ public class RocketShipProgram extends GenShipProgram
 			super.addScreenMessage(L("Stop program aborted with error ("+reason+")."));
 			return super.checkPowerCurrent(value);
 		}
+		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+			Log.debugOut("Program state: "+state.toString()); //BZ:DELME
 		switch(state)
 		{
 		case LANDING:
@@ -626,7 +628,7 @@ public class RocketShipProgram extends GenShipProgram
 			{
 				final double[] stopFacing = CMLib.map().getOppositeDir(ship.direction());
 				double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
-				if((Math.abs(angleDelta[0])+Math.abs(angleDelta[0]))>.02)
+				if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))>.02)
 				{
 					if(!flipForAllStop(ship))
 					{
@@ -717,24 +719,28 @@ public class RocketShipProgram extends GenShipProgram
 				this.rocketState = RocketStateMachine.LANDING;
 			else
 			{
+				final double angleDiff = CMLib.map().getAngleDelta(ship.direction(), dirToPlanet);
 				for(final ShipEngine engineE : programEngines)
 				{
 					double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(SpaceObject.ACCELLERATION_TYPICALSPACEROCKET,2.0));
 					final double ticksToDestinationAtCurrentSpeed = CMath.div(distance, ship.speed());
 					final double diff = Math.abs(ticksToDecellerate-ticksToDestinationAtCurrentSpeed);
+					if(Math.abs(angleDiff) > 1)
+						this.changeFacing(ship, dirToPlanet);
+					else
 					if(diff <= 1.0)
 					{
-//System.out.println("Coast: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
+						//System.out.println("Coast: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
 					}
 					else
-					if(ticksToDecellerate >= (ticksToDestinationAtCurrentSpeed))
+					if(diff > 0)
 					{
-//System.out.println("Decelllerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
+						//System.out.println("Decelllerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
 						this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
 					}
 					else
 					{
-//System.out.println("Accelllerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
+						//System.out.println("Accelllerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
 						this.changeFacing(ship, dirToPlanet);
 					}
 					final double targetAccelleration = SpaceObject.ACCELLERATION_TYPICALSPACEROCKET; //
@@ -749,7 +755,7 @@ public class RocketShipProgram extends GenShipProgram
 		{
 			final double[] dirToPlanet = CMLib.map().getDirection(ship, programPlanet);
 			if(CMLib.map().getAngleDelta(dirToPlanet, ship.direction()) > 1)
-				this.changeFacing(ship, CMLib.map().getOppositeDir(ship.direction()));
+				this.changeFacing(ship, dirToPlanet);
 			else
 			{
 				this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
@@ -764,7 +770,7 @@ public class RocketShipProgram extends GenShipProgram
 				else
 					newInject=null;
 			}
-System.out.println("Landing: "+CMLib.english().directionDescShort(ship.direction())+"/"+ship.speed()); //BZ:DELME
+			//System.out.println("Landing: "+CMLib.english().directionDescShort(ship.direction())+"/"+ship.speed()); //BZ:DELME
 			for(final ShipEngine engineE : programEngines)
 				performSimpleThrust(engineE,newInject, true);
 			break;
@@ -1223,8 +1229,8 @@ System.out.println("Landing: "+CMLib.english().directionDescShort(ship.direction
 							return (o2.coordinates() == null) ? 0 : 1;
 						if(o2.coordinates() == null)
 							return -1;
-						final long distance1 = map.getDistanceFrom(o1, spaceObject);
-						final long distance2 = map.getDistanceFrom(o2, spaceObject);
+						final long distance1 = map.getDistanceFrom(spaceObject, o1) - o1.radius();;
+						final long distance2 = map.getDistanceFrom(spaceObject, o2) - o2.radius();;
 						if(distance1 < distance2)
 							return -1;
 						if(distance1 > distance2)

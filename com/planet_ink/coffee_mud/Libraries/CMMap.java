@@ -56,8 +56,8 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public static final BigDecimal TWO 					= BigDecimal.valueOf(2L);
 	
-	public final double			ZERO_ALMOST				= 0.00000001;
-	public final double			PI_ALMOST				= Math.PI-0.00000001;
+	public final double			ZERO_ALMOST				= 0.000001;
+	public final double			PI_ALMOST				= Math.PI-0.000001;
 	public final double			PI_TIMES_2				= Math.PI*2.0;
 	public final double			PI_BY_2					= Math.PI/2.0;
 	public final int			QUADRANT_WIDTH  		= 10;
@@ -552,7 +552,7 @@ public class CMMap extends StdLibrary implements WorldMap
 
 		final double facingYaw = toAngle[0];
 		final double facingPitch = (toAngle[1] > Math.PI) ? Math.abs(Math.PI-toAngle[1]) : toAngle[1];
-		
+
 		double yawDelta = (directionYaw >  facingYaw) ? (directionYaw - facingYaw) : (facingYaw - directionYaw);
 		if(yawDelta > Math.PI)
 			yawDelta=PI_TIMES_2-yawDelta;
@@ -562,6 +562,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			return 0.0;
 
 		double pitchDelta = (directionPitch >  facingPitch) ? (directionPitch - facingPitch) : (facingPitch - directionPitch);
+		if(Math.abs(pitchDelta-Math.PI)<ZERO_ALMOST)
+			yawDelta=0.0;
+		else
 		if(pitchDelta > PI_BY_2)
 			pitchDelta=Math.PI-pitchDelta;
 
@@ -620,7 +623,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			yawDelta=PI_TIMES_2-yawDelta;
 		double pitchDelta = (curDirectionPitch >  accelDirectionPitch) ? (curDirectionPitch - accelDirectionPitch) : (accelDirectionPitch - curDirectionPitch);
 		double anglesDelta;
-		if(Math.abs(pitchDelta-Math.PI)<0.00001)
+		if(Math.abs(pitchDelta-Math.PI)<ZERO_ALMOST)
 			yawDelta=0.0;
 		else
 		if(pitchDelta > Math.PI)
@@ -636,7 +639,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		else
 		{
 			newDirectionYaw = curDirectionYaw + ((curDirectionYaw > accelDirectionYaw) ? -(accelerationMultiplier * Math.sin(yawDelta)) : (accelerationMultiplier * Math.sin(yawDelta)));
-			if((newDirectionYaw > 0.0) && (PI_TIMES_2 - newDirectionYaw) < 0.000001)
+			if((newDirectionYaw > 0.0) && (PI_TIMES_2 - newDirectionYaw) < ZERO_ALMOST)
 				newDirectionYaw=0.0;
 		}
 		if (newDirectionYaw < 0.0)
