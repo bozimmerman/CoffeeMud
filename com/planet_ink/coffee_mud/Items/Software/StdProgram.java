@@ -276,7 +276,7 @@ public class StdProgram extends StdItem implements Software
 	
 	public String display(double[] dir)
 	{
-		return CMLib.english().directionDescShort(dir);
+		return CMLib.english().directionDescShortest(dir);
 	}
 	
 	public String displayPerSec(long speed)
