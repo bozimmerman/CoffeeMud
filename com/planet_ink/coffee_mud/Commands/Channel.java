@@ -88,7 +88,7 @@ public class Channel extends StdCommand
 		}
 
 		final ChannelsLibrary.CMChannel chan=CMLib.channels().getChannel(channelInt);
-		if(!CMLib.masking().maskCheck(chan.mask(),mob,true))
+		if((chan == null)||(!CMLib.masking().maskCheck(chan.mask(),mob,true)))
 		{
 			mob.tell(L("This channel is not available to you."));
 			return false;
