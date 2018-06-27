@@ -612,15 +612,24 @@ public class Resources
 	 * @param filename the filename to resource normalize
 	 * @return the filename, resource normalized
 	 */
-	public static final String makeFileResourceName(final String filename)
+	public static final String makeFileResourceName(String filename)
 	{
 		if(filename==null)
 			return "resources/";
-		if(filename.startsWith("resources/")||filename.startsWith("/resources/"))
-			return filename;
+		String prefix = "";
+		if(filename.startsWith("::")
+		||filename.startsWith("//"))
+		{
+			prefix=filename.substring(0,2);
+			filename=filename.substring(2);
+		}
+		if(filename.startsWith("resources/"))
+			return prefix+filename;
+		if(filename.startsWith("/resources/"))
+			return prefix+filename.substring(1);
 		if(filename.startsWith("/"))
-			return "resources"+filename;
-		return "resources/"+filename;
+			return prefix+"resources"+filename;
+		return prefix+"resources/"+filename;
 	}
 
 	/**
@@ -766,11 +775,22 @@ public class Resources
 	 * @param filename the filename to look in the cache or filesystem for
 	 * @return true if the cache entry or file is found, false otherwise
 	 */
-	public final boolean _isFileResource(final String filename)
+	public final boolean _isFileResource(String filename)
 	{
+		filename=filename.trim();
+		final boolean vfsFile=filename.startsWith("::");
+		final boolean localFile=filename.startsWith("//");
+		filename=makeFileResourceName(CMFile.vfsifyFilename(filename));
+		if(CMProps.isPrivateToMe(filename))
+		{
+			final String newPrefix = CMProps.getVar(CMProps.Str.PRIVATERESOURCEPATH);
+			if(newPrefix.length()>0)
+				filename = newPrefix+filename.substring(10);
+		}
 		if(_getResource(filename)!=null)
 			return true;
-		if(new CMFile(makeFileResourceName(filename),null).exists())
+		filename=(vfsFile?"::":localFile?"//":"")+filename;
+		if(new CMFile(filename,null).exists())
 			return true;
 		return false;
 	}
@@ -803,22 +823,27 @@ public class Resources
 	 * @param reportErrors if true, file errors will be logged
 	 * @return the StringBuffer of the file at that resource filename, or null of not found
 	 */
-	public final StringBuffer _getFileResource(final String filename, final boolean reportErrors)
+	public final StringBuffer _getFileResource(String filename, final boolean reportErrors)
 	{
-		String resourceFilename = makeFileResourceName(filename);
-		if(CMProps.isPrivateToMe(resourceFilename))
+		filename=filename.trim();
+		final boolean vfsFile=filename.startsWith("::");
+		final boolean localFile=filename.startsWith("//");
+		filename=makeFileResourceName(CMFile.vfsifyFilename(filename));
+		if(CMProps.isPrivateToMe(filename))
 		{
 			final String newPrefix = CMProps.getVar(CMProps.Str.PRIVATERESOURCEPATH);
 			if(newPrefix.length()>0)
-				resourceFilename = newPrefix+resourceFilename.substring(10);
+				filename = newPrefix+filename.substring(10);
 		}
-		final Object rsc=_getResource(resourceFilename);
+		final Object rsc=_getResource(filename);
 		if(rsc != null)
 			return _toStringBuffer(rsc);
-		final CMFile F=new CMFile(resourceFilename,null,reportErrors?CMFile.FLAG_LOGERRORS:0);
+		final String filenameId = filename;
+		filename=(vfsFile?"::":localFile?"//":"")+filename;
+		final CMFile F=new CMFile(filename,null,reportErrors?CMFile.FLAG_LOGERRORS:0);
 		final StringBuffer buf=F.text();
 		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
-			_submitResource(resourceFilename,buf);
+			_submitResource(filenameId,buf);
 		return buf;
 	}
 
@@ -829,8 +854,18 @@ public class Resources
 	 * @param reportErrors if true, file errors will be logged
 	 * @return the StringBuffer of the file at that resource filename, or null of not found
 	 */
-	public final StringBuffer _getRawFileResource(final String filename, final boolean reportErrors)
+	public final StringBuffer _getRawFileResource(String filename, final boolean reportErrors)
 	{
+		filename=filename.trim();
+		final boolean vfsFile=filename.startsWith("::");
+		final boolean localFile=filename.startsWith("//");
+		filename=makeFileResourceName(CMFile.vfsifyFilename(filename));
+		if(CMProps.isPrivateToMe(filename))
+		{
+			final String newPrefix = CMProps.getVar(CMProps.Str.PRIVATERESOURCEPATH);
+			if(newPrefix.length()>0)
+				filename = newPrefix+filename.substring(10);
+		}
 		final Object rsc=_getResource(filename);
 		if(rsc != null)
 			return _toStringBuffer(rsc);
@@ -838,9 +873,11 @@ public class Resources
 		if((charSet==null)||(charSet.length()==0))
 			charSet=Charset.defaultCharset().name();
 		StringBuffer buf;
+		final String filenameId = filename;
+		filename=(vfsFile?"::":localFile?"//":"")+filename;
 		try
 		{
-			buf = new StringBuffer(new String(new CMFile(makeFileResourceName(filename),null,reportErrors?CMFile.FLAG_LOGERRORS:0).raw(),charSet));
+			buf = new StringBuffer(new String(new CMFile(filename,null,reportErrors?CMFile.FLAG_LOGERRORS:0).raw(),charSet));
 		}
 		catch (UnsupportedEncodingException e)
 		{
@@ -848,7 +885,7 @@ public class Resources
 			buf=new StringBuffer("");
 		}
 		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
-			_submitResource(filename,buf);
+			_submitResource(filenameId,buf);
 		return buf;
 	}
 
@@ -860,10 +897,15 @@ public class Resources
 	 * @param obj the string data to store in the file, stringbuffer, byte array, etc
 	 * @return true if the file was saved, or false if there were problems
 	 */
-	public final boolean _updateFileResource(final String filename, final Object obj)
+	public final boolean _updateFileResource(String filename, final Object obj)
 	{
+		filename=filename.trim();
+		final boolean vfsFile=filename.startsWith("::");
+		final boolean localFile=filename.startsWith("//");
+		filename=makeFileResourceName(CMFile.vfsifyFilename(filename));
 		if(!CMProps.getBoolVar(CMProps.Bool.FILERESOURCENOCACHE))
-			_updateResource(CMFile.vfsifyFilename(filename), obj);
+			_updateResource(filename, obj);
+		filename=(vfsFile?"::":localFile?"//":"")+filename;
 		return _saveFileResource(filename,null,_toStringBuffer(obj));
 	}
 
@@ -878,11 +920,10 @@ public class Resources
 	 */
 	public final boolean _saveFileResource(String filename, final MOB whoM, final StringBuffer myRsc)
 	{
-		final boolean vfsFile=filename.trim().startsWith("::");
-		final boolean localFile=filename.trim().startsWith("//");
-		filename=CMFile.vfsifyFilename(filename);
-		if(!filename.startsWith("resources/"))
-			filename="resources/"+filename;
+		filename=filename.trim();
+		final boolean vfsFile=filename.startsWith("::");
+		final boolean localFile=filename.startsWith("//");
+		filename=makeFileResourceName(CMFile.vfsifyFilename(filename));
 		filename=(vfsFile?"::":localFile?"//":"")+filename;
 		return new CMFile(filename,whoM).saveRaw(myRsc);
 	}
