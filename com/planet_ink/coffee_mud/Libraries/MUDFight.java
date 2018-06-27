@@ -2632,40 +2632,46 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		{
 			boolean inminrange=(fighter.rangeToTarget()>=minRangeWith(fighter, weapon));
 			boolean inmaxrange=(fighter.rangeToTarget()<=maxRangeWith(fighter, weapon));
-			if((folrange>=0)&&(fighter.rangeToTarget()>=0)&&(folrange!=fighter.rangeToTarget()))
+			if((folrange>=0)
+			&&(fighter.rangeToTarget()>=0)
+			&&(folrange!=fighter.rangeToTarget()))
 			{
 				if(fighter.rangeToTarget()<folrange)
 					inminrange=false;
 				else
 				if(fighter.rangeToTarget()>folrange)
 				{
+					final MOB victim=fighter.getVictim();
 					// these settings are ONLY to ensure that neither of the
 					// next two conditions evaluate to true.
 					inminrange=true;
 					inmaxrange=false;
 					// we advance
-					final CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_ADVANCE,L("<S-NAME> advance(s) at <T-NAMESELF>."));
+					final CMMsg msg=CMClass.getMsg(fighter,victim,CMMsg.MSG_ADVANCE,L("<S-NAME> advance(s) at <T-NAMESELF>."));
 					if(fighter.location().okMessage(fighter,msg))
 					{
 						fighter.location().send(fighter,msg);
 						fighter.setRangeToTarget(fighter.rangeToTarget()-1);
-						if((fighter.getVictim()!=null)&&(fighter.getVictim().getVictim()==fighter))
+						if((victim != null)&& (victim.getVictim()==fighter))
 						{
-							fighter.getVictim().setRangeToTarget(fighter.rangeToTarget());
-							fighter.getVictim().recoverPhyStats();
+							victim.setRangeToTarget(fighter.rangeToTarget());
+							victim.recoverPhyStats();
 						}
 					}
 				}
 			}
 
-			if((!inminrange)&&(fighter.curState().getMovement()>=25))
+			if((!inminrange)
+			&&(fighter.curState().getMovement()>=25))
 			{
 				final CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_RETREAT,L("<S-NAME> retreat(s) before <T-NAME>."));
 				if(fighter.location().okMessage(fighter,msg))
 					fighter.location().send(fighter,msg);
 			}
 			else
-			if(inminrange&&inmaxrange&&((weapon!=null)||(fighter.rangeToTarget()==0)))
+			if(inminrange
+			&&inmaxrange
+			&&((weapon!=null)||(fighter.rangeToTarget()==0)))
 				postAttack(fighter,fighter.getVictim(),weapon);
 		}
 	}

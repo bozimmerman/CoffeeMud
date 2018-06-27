@@ -60,7 +60,9 @@ public class Save extends StdCommand
 		for(int i=0;i<room.numInhabitants();i++)
 		{
 			MOB M=room.fetchInhabitant(i);
-			if((M!=null)&&(M.isSavable()))
+			if((M!=null)
+			&&(M.isSavable())
+			&&((M.amFollowing()==null)||(!M.amFollowing().isPlayer())))
 				ct++;
 		}
 		return ct;
