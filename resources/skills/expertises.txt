@@ -491,16 +491,16 @@ DATA_=Fine,Beautiful,Exquisite
 QUICKCRAFT@x1=Quick Worker @x2,10,TIME,-SKILLFLAG "+COMMON SKILL" +JAVACLASS -Dissertating,-CLASS +Archon,+WIS {10+@x1},0,20,0,0,0
 HELP_=<EXPERTISE>The ability to craft and gather items more quickly and efficiently.
 
-QUICKCOOK@x1=Quick Cooking @x2,10,TIME,-SKILLFLAG "+EPICUREAN",,+WIS {10+@x1},0,2,0,0,0
+QUICKCOOK@x1=Quick Cooking @x2,10,TIME,-SKILLFLAG "+EPICUREAN",,+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cook items more quickly and efficiently.
 
-QUICKWORK@x1=Quick Working @x2,10,TIME,-SKILLFLAG "+COMMON SKILL&!EPICUREAN&!CRAFTING&!BUILDING",,+WIS {10+@x1},0,2,0,0,0
+QUICKWORK@x1=Quick Working @x2,10,TIME,-SKILLFLAG "+COMMON SKILL&!EPICUREAN&!CRAFTING&!BUILDING",,+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cook items more quickly and efficiently.
 
-QUICKCRFT@x1=Quick Crafting @x2,10,TIME,-SKILLFLAG "+CRAFTING&!NATURE_LORE",,+WIS {10+@x1},0,2,0,0,0
+QUICKCRFT@x1=Quick Crafting @x2,10,TIME,-SKILLFLAG "+CRAFTING&!NATURE_LORE",,+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cook items more quickly and efficiently.
 
-QUICKBUILD@x1=Quick Building @x2,10,TIME,-SKILLFLAG +BUILDING,,+WIS {10+@x1},0,2,0,0,0
+QUICKBUILD@x1=Quick Building @x2,10,TIME,-SKILLFLAG +BUILDING,,+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to build more quickly and efficiently.
 
 LTHLCRAFT@x1=Lethal Crafting @x2,3,X4,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing,,+CON {10+(4*@x1)},0,2,0,0,0
