@@ -33,7 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prop_UseAdjuster extends Prop_Adjuster
+public class Prop_UseAdjuster extends Prop_Adjuster implements ArchonOnly
 {
 	@Override
 	public String ID()
@@ -112,6 +112,65 @@ public class Prop_UseAdjuster extends Prop_Adjuster
 		parameters=CMLib.masking().separateMaskStrs(text());
 	}
 	
+	public void adjCharState(final MOB mob, Object[] changes, CharState charState)
+	{
+		if(changes==null)
+			return;
+		if(multiplyCharStates)
+		{
+			for(int c=0;c<changes.length;c+=2)
+			{
+				switch(((Integer)changes[c]).intValue())
+				{
+				case CharState.STAT_HITPOINTS:
+					charState.adjHitPoints((int)Math.round(CMath.mul(charState.getHitPoints(), CMath.div(((Integer) changes[c + 1]).intValue(),100))-charState.getHitPoints()),mob.maxState());
+					break;
+				case CharState.STAT_HUNGER:
+					charState.adjHunger(((Integer) changes[c + 1]).intValue(),mob.maxState().maxHunger(mob.baseWeight()));
+					break;
+				case CharState.STAT_THIRST:
+					charState.adjThirst(((Integer) changes[c + 1]).intValue(),mob.maxState().maxThirst(mob.baseWeight()));
+					break;
+				case CharState.STAT_MANA:
+					charState.adjMana((int)Math.round(CMath.mul(charState.getMana(), CMath.div(((Integer) changes[c + 1]).intValue(),100))-charState.getMana()),mob.maxState());
+					break;
+				case CharState.STAT_MOVE:
+					charState.adjMovement((int)Math.round(CMath.mul(charState.getMovement(), CMath.div(((Integer) changes[c + 1]).intValue(),100)))-charState.getMovement(),mob.maxState());
+					break;
+				}
+			}
+		}
+		else
+		{
+			for(int c=0;c<changes.length;c+=2)
+			{
+				switch(((Integer)changes[c]).intValue())
+				{
+				case CharState.STAT_HITPOINTS:
+					charState.adjHitPoints( ((Integer) changes[c + 1]).intValue(), mob.maxState());
+					break;
+				case CharState.STAT_HUNGER:
+					charState.adjHunger( ((Integer) changes[c + 1]).intValue(), mob.maxState().maxHunger(mob.baseWeight()));
+					break;
+				case CharState.STAT_THIRST:
+					charState.adjThirst( ((Integer) changes[c + 1]).intValue(), mob.maxState().maxThirst(mob.baseWeight()));
+					break;
+				case CharState.STAT_MANA:
+					charState.adjMana( ((Integer) changes[c + 1]).intValue(), mob.maxState());
+					break;
+				case CharState.STAT_MOVE:
+					charState.adjMovement( ((Integer) changes[c + 1]).intValue(), mob.maxState());
+					break;
+				}
+			}
+		}
+		if(firstTime)
+		{
+			firstTime=false;
+			charState.copyInto(mob.curState());
+		}
+	}
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
