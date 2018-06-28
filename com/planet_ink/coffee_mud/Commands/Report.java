@@ -61,6 +61,7 @@ public class Report extends Skills
 									""+mob.curState().getMovement(),
 									""+mob.maxState().getMovement()));
 			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.SHOWXP))
 			&&!mob.charStats().getCurrentClass().expless()
 			&&!mob.charStats().getMyRace().expless()
 			&&(mob.getExpNeededLevel()<Integer.MAX_VALUE))

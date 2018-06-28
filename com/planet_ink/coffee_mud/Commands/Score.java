@@ -233,6 +233,7 @@ public class Score extends Affect
 			msg.append(L("You are carrying ^!@x1^?/^!@x2^? items weighing ^!@x3^? pounds.\n\r",""+mob.numItems(),""+mob.maxItems(),mob.phyStats().weight()+"^?/^!"+mob.maxCarry()));
 		msg.append(L("You have ^!@x1^? ^<HELP^>practices^</HELP^>, ^!@x2^? ^<HELP^>training sessions^</HELP^>, and ^!@x3^? ^<HELP^>quest points^</HELP^>.\n\r",""+mob.getPractices(),""+mob.getTrains(),""+mob.getQuestPoint()));
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.SHOWXP))
 		&&!mob.charStats().getCurrentClass().expless()
 		&&!mob.charStats().getMyRace().expless())
 		{

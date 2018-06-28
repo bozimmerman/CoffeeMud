@@ -1690,16 +1690,26 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				}
 				case 'x':
 				{
-					buf.append(mob.getExperience());
+					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
+					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.SHOWXP))
+					&&!mob.charStats().getCurrentClass().expless()
+					&&!mob.charStats().getMyRace().expless())
+						buf.append(mob.getExperience());
 					c++;
 					break;
 				}
 				case 'X':
 				{
-					if (mob.getExpNeededLevel() == Integer.MAX_VALUE)
-						buf.append("N/A");
-					else
-						buf.append(mob.getExpNeededLevel());
+					if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
+					&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.SHOWXP))
+					&&!mob.charStats().getCurrentClass().expless()
+					&&!mob.charStats().getMyRace().expless())
+					{
+						if (mob.getExpNeededLevel() == Integer.MAX_VALUE)
+							buf.append("N/A");
+						else
+							buf.append(mob.getExpNeededLevel());
+					}
 					c++;
 					break;
 				}

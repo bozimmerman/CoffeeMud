@@ -2641,7 +2641,8 @@ public class CMSecurity
 		MCP("mcp protocol"),
 		HYGIENE("hygiene system"),
 		ANSIPROMPT("ANSI Y/N Prompt"),
-		FOODROT("food/milk rot")
+		FOODROT("food/milk rot"),
+		SHOWXP("show experience")
 		;
 		private final String desc;
 		DisFlag(final String description){this.desc=description;}

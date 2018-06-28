@@ -46,6 +46,7 @@ public class Experience extends StdCommand
 			msg.append(L("Your account is Registered and Active until: @x1!\n\r",CMLib.time().date2String(mob.playerStats().getAccountExpiration())));
 
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.EXPERIENCE))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.SHOWXP))
 		&&!mob.charStats().getCurrentClass().expless()
 		&&!mob.charStats().getMyRace().expless())
 		{
