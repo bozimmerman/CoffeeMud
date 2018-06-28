@@ -375,6 +375,9 @@ HELP_=<EXPERTISE>The ability to cast abjuration spells at a higher power level, 
 EXTENDEDABJURATION@x1=Extended Abjuring @x2,10,TIME,-SKILLFLAG +ABJURATION,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cast abjuration spells that last even longer.
 
+SMARTENGINEERING@x1=Ingenious Engineering @x2,10,XPCOST,-SKILLS +Construction +Masonry +Shipwright,-MAXCLASSLEVEL +>={21+(5*@x1)},+INT {12+@x1} +WIS {12+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to engineer using fewer materials.
+
 RANGEDSAILING@x1=Ranged Sailing @x2,10,MAXRANGE,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use sea travel skills at longer ranges.
 
@@ -387,130 +390,38 @@ HELP_=<EXPERTISE>The ability to use sea travel at a higher power level, producin
 EXTENDEDSAILINGL@x1=Extended Sailing @x2,10,TIME,-SKILLFLAG +SEA_TRAVEL,-MAXCLASSLEVEL +>={19+(5*@x1)},+CON {9+@x1} +STR {9+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use sea travel that last even longer.
 
-SMARTENGINEERING@x1=Ingenious Engineering @x2,10,XPCOST,-SKILLS +Construction +Masonry +Shipwright +Landscaping +Excavation +Irrigation +Welding +ShipBuilding,-MAXCLASSLEVEL +>={21+(5*@x1)},+INT {12+@x1} +WIS {12+@x1},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to engineer using fewer materials.
-
-LITECRAFT@x1=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing +Weaving,-CLASS +Archon,+DEX {10+(4*@x1)},0,2,0,0,0
+LITECRAFT@x1=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing +Weaving,,+DEX {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft items using less material without sacrificing quality.
 HELP_LITECRAFT1=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Light" are a little lighter, and worth a little more in value.
 HELP_LITECRAFT2=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Supple" are lighter, and worth more in value.
 HELP_LITECRAFT3=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Agile" are much lighter, and worth much more in value.
 DATA_=Light,Supple,Agile
 
-LITEMETAL@x1=Light Metalworking @x2,3,X1,-SKILL +Jewelcrafting +Blacksmithing +Armorsmithing +MasterArmorsmithing +Torturesmithing,,+DEX {10+(4*@x1)},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to craft items using less material without sacrificing quality.
-HELP_LITEMETAL1=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Light" are a little lighter, and worth a little more in value.
-HELP_LITEMETAL2=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Supple" are lighter, and worth more in value.
-HELP_LITEMETAL3=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Agile" are much lighter, and worth much more in value.
-DATA_=Light,Supple,Agile
-
-LITESEW@x1=Light Sewing @x2,3,X1,-SKILL +Tailoring +Leatherworking +Costuming +MasterTailoring +MasterLeatherworking +MasterCostuming +Cobbling +Taxidermy +Weaving,,+DEX {10+(4*@x1)},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to craft items using less material without sacrificing quality.
-HELP_LITESEW1=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Light" are a little lighter, and worth a little more in value.
-HELP_LITESEW2=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Supple" are lighter, and worth more in value.
-HELP_LITESEW3=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Agile" are much lighter, and worth much more in value.
-DATA_=Light,Supple,Agile
-
-LITESHAPE@x1=Light Shaping @x2,3,X1,-SKILL +Carpentry +Sculpting +Pottery +Glassblowing +Scrimshaw +WandMaking +StaffMaking,,+DEX {10+(4*@x1)},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to craft items using less material without sacrificing quality.
-HELP_LITESHAPE1=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Light" are a little lighter, and worth a little more in value.
-HELP_LITESHAPE2=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Supple" are lighter, and worth more in value.
-HELP_LITESHAPE3=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Agile" are much lighter, and worth much more in value.
-DATA_=Light,Supple,Agile
-
-LITEFAB@x1=Light Fabricating @x2,3,X1,-SKILL +Papermaking +Fletching +InstrumentMaking +CageBuilding +Boatwrighting +Siegecraft +Wainwrighting,,+DEX {10+(4*@x1)},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to craft items using less material without sacrificing quality.
-HELP_LITEFAB1=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Light" are a little lighter, and worth a little more in value.
-HELP_LITEFAB2=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Supple" are lighter, and worth more in value.
-HELP_LITEFAB3=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Agile" are much lighter, and worth much more in value.
-DATA_=Light,Supple,Agile
-
-DURACRAFT@x1=Durable Crafting @x2,3,X2,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Cobbling +Costuming +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Tailoring +Weaving,-CLASS +Archon,+STR {10+(4*@x1)},0,2,0,0,0
+DURACRAFT@x1=Durable Crafting @x2,3,X2,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Cobbling +Costuming +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Tailoring +Weaving,,+STR {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft armors and clothing to be more protective.
 HELP_DURACRAFT1=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Strong" are a little heavier, slightly more protective, and worth a little more.
 HELP_DURACRAFT2=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Reinforced" are heavier, more protective, and worth more.
 HELP_DURACRAFT3=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Fortified" are much heavier, a lot more protective, and worth much more.
 DATA_=Strong,Reinforced,Fortified
 
-DURAMETAL@x1=Durable Metalworking @x2,3,X2,-SKILL +Jewelcrafting +Armorsmithing +MasterArmorsmithing +Torturesmithing,,+STR {10+(4*@x1)},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to craft armors and clothing to be more protective.
-HELP_DURAMETAL1=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Strong" are a little heavier, slightly more protective, and worth a little more.
-HELP_DURAMETAL2=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Reinforced" are heavier, more protective, and worth more.
-HELP_DURAMETAL3=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Fortified" are much heavier, a lot more protective, and worth much more.
-DATA_=Strong,Reinforced,Fortified
-
-DURASEW@x1=Durable Sewing @x2,3,X2,-SKILL +Tailoring +Leatherworking +MasterTailoring +MasterLeatherworking +Cobbling +Weaving,,+STR {10+(4*@x1)},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to craft armors and clothing to be more protective.
-HELP_DURASEW1=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Strong" are a little heavier, slightly more protective, and worth a little more.
-HELP_DURASEW2=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Reinforced" are heavier, more protective, and worth more.
-HELP_DURASEW3=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Fortified" are much heavier, a lot more protective, and worth much more.
-DATA_=Strong,Reinforced,Fortified
-
-DURASHAPE@x1=Durable Shaping @x2,3,X2,-SKILL +Carpentry +Sculpting +Pottery +Glassblowing +Scrimshaw,,+STR {10+(4*@x1)},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to craft armors and clothing to be more protective.
-HELP_DURASHAPE1=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Strong" are a little heavier, slightly more protective, and worth a little more.
-HELP_DURASHAPE2=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Reinforced" are heavier, more protective, and worth more.
-HELP_DURASHAPE3=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Fortified" are much heavier, a lot more protective, and worth much more.
-DATA_=Strong,Reinforced,Fortified
-
-QUALCRAFT@x1=Quality Crafting @x2,3,X3,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing +Weaving,-CLASS +Archon,+CHA {10+(4*@x1)},0,2,0,0,0
+QUALCRAFT@x1=Quality Crafting @x2,3,X3,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing +Weaving,,+CHA {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft items of the highest quality.
 HELP_QUALCRAFT1=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Fine" are worth more.
 HELP_QUALCRAFT2=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Beautiful" are worth more.
 HELP_QUALCRAFT3=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Exquisite" are worth much more and grant extra charisma from being well dressed.
 DATA_=Fine,Beautiful,Exquisite
 
-QUALMETAL@x1=Quality Metalworking @x2,3,X3,-SKILL +Jewelcrafting +Blacksmithing +Armorsmithing +MasterArmorsmithing +Torturesmithing,,+CHA {10+(4*@x1)},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to craft metal items of the highest quality.
-HELP_QUALMETAL1=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Fine" are worth more.
-HELP_QUALMETAL2=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Beautiful" are worth more.
-HELP_QUALMETAL3=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Exquisite" are worth much more and grant extra charisma from being well dressed.
-DATA_=Fine,Beautiful,Exquisite
-
-QUALSEW@x1=Quality Sewing @x2,3,X3,-SKILL +Tailoring +Leatherworking +Costuming +MasterTailoring +MasterLeatherworking +MasterCostuming +Cobbling +Taxidermy +Weaving,,+CHA {10+(4*@x1)},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to craft items of the highest quality.
-HELP_QUALSEW1=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Fine" are worth more.
-HELP_QUALSEW2=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Beautiful" are worth more.
-HELP_QUALSEW3=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Exquisite" are worth much more and grant extra charisma from being well dressed.
-DATA_=Fine,Beautiful,Exquisite
-
-QUALSHAPE@x1=Quality Shaping @x2,3,X3,-SKILL +Carpentry +Sculpting +Pottery +Glassblowing +Scrimshaw +WandMaking +StaffMaking,,+CHA {10+(4*@x1)},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to craft items of the highest quality.
-HELP_QUALSHAPE1=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Fine" are worth more.
-HELP_QUALSHAPE2=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Beautiful" are worth more.
-HELP_QUALSHAPE3=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Exquisite" are worth much more and grant extra charisma from being well dressed.
-DATA_=Fine,Beautiful,Exquisite
-
-QUALFAB@x1=Quality Fabricating @x2,3,X3,-SKILL +Papermaking +Fletching +InstrumentMaking +CageBuilding +ShipBuilding +Siegecraft +Wainwrighting,,+CHA {10+(4*@x1)},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to craft items of the highest quality.
-HELP_QUALFAB1=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Fine" are worth more.
-HELP_QUALFAB2=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Beautiful" are worth more.
-HELP_QUALFAB3=<EXPERTISE>The ability to craft items of the highest quality. Items crafted "Exquisite" are worth much more and grant extra charisma from being well dressed.
-DATA_=Fine,Beautiful,Exquisite
-
-QUICKCRAFT@x1=Quick Worker @x2,10,TIME,-SKILLFLAG "+COMMON SKILL" +JAVACLASS -Dissertating,-CLASS +Archon,+WIS {10+@x1},0,2,0,0,0
+QUICKCRAFT@x1=Quick Worker @x2,10,TIME,-SKILLFLAG "+COMMON SKILL" +JAVACLASS -Dissertating,,+WIS {10+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft and gather items more quickly and efficiently.
 
-QUICKCOOK@x1=Quick Cooking @x2,10,TIME,-SKILLFLAG "+EPICUREAN",,+WIS {10+@x1},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to cook items more quickly and efficiently.
-
-QUICKWORK@x1=Quick Working @x2,10,TIME,-SKILLFLAG "+COMMON SKILL&!EPICUREAN&!CRAFTING&!BUILDING",,+WIS {10+@x1},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to cook items more quickly and efficiently.
-
-QUICKCRFT@x1=Quick Crafting @x2,10,TIME,-SKILLFLAG "+CRAFTING&!NATURE_LORE",,+WIS {10+@x1},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to cook items more quickly and efficiently.
-
-QUICKBUILD@x1=Quick Building @x2,10,TIME,-SKILLFLAG +BUILDING,,+WIS {10+@x1},0,2,0,0,0
-HELP_=<EXPERTISE>The ability to build more quickly and efficiently.
-
-LTHLCRAFT@x1=Lethal Crafting @x2,3,X4,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing,,+CON {10+(4*@x1)},0,2,0,0,0
+LTHLCRAFT@x1=Lethal Crafting @x2,3,X4,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing,,+CON {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft weapons that are more deadly than usual.
 HELP_LTHLCRAFT1=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Damaging" are slightly more damaging, and worth slightly more.
 HELP_LTHLCRAFT2=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Brutal" are a little more damaging, and worth more.
 HELP_LTHLCRAFT3=<EXPERTISE>The ability to craft weapons that are more deadly than usual. Items crafted "Lethal" are more damaging, and worth much more.
 DATA_=Damaging,Brutal,Lethal
 
-CNTRCRAFT@x1=Counterbalance Crafting @x2,3,X5,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing,,+INT {10+(4*@x1)},0,2,0,0,0
+CNTRCRAFT@x1=Counterbalance Crafting @x2,3,X5,-SKILL +Carpentry +Fletching +ScrimShaw +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing,,+INT {10+(4*@x1)},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual.
 HELP_CNTRCRAFT1=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Even" are slightly better for attack, and worth a little more.
 HELP_CNTRCRAFT2=<EXPERTISE>The ability to craft weapons that are more balanced for attacking than usual. Items crafted "Balanced" are better for attack, and worth more.
