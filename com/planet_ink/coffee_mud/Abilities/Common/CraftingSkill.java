@@ -124,7 +124,10 @@ public class CraftingSkill extends GatheringSkill
 		DURACRAFT("DURA",ExpertiseLibrary.Flag.X2),
 		QUALCRAFT("QUAL",ExpertiseLibrary.Flag.X3),
 		LTHLCRAFT("LTHL",ExpertiseLibrary.Flag.X4),
-		CNTRCRAFT("CNTR",ExpertiseLibrary.Flag.X5)
+		CNTRCRAFT("CNTR",ExpertiseLibrary.Flag.X5),
+		FORTCRAFT("FORT",ExpertiseLibrary.Flag.X4),
+		IMBUCRAFT("IMBU",ExpertiseLibrary.Flag.X5),
+		VIGOCRAFT("VIGO",ExpertiseLibrary.Flag.X4),
 		;
 		
 		public final String stageKey;

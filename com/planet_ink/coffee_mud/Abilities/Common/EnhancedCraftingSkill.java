@@ -175,6 +175,10 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						break;
 					}
 					break;
+				case FORTCRAFT:
+				case VIGOCRAFT:
+				case IMBUCRAFT:
+					break;
 				}
 			}
 		}
@@ -580,6 +584,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	{
 		if(types==null)
 			return;
+		int addToStat = CharState.STAT_MOVE;
 		final EnhancedCraftingSkill affect=(EnhancedCraftingSkill)mob.fetchEffect(ID());
 		if((affect!=null)
 		&&(!affect.aborted)
@@ -735,6 +740,28 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					}
 					break;
 				}
+				case FORTCRAFT:
+				case VIGOCRAFT:
+				case IMBUCRAFT:
+				{
+					if (type == EnhancedExpertise.IMBUCRAFT)
+					{
+						addToStat=CharState.STAT_MANA;
+						item.basePhyStats().setDisposition(item.basePhyStats().disposition()|PhyStats.IS_BONUS);
+					}
+					Ability propA = item.fetchEffect("Prop_UseAdjuster");
+					if(propA == null)
+					{
+						String statName=CharStats.CODES.NAME(addToStat);
+						propA=CMClass.getAbility("Prop_UseAdjuster");
+						propA.setMiscText(statName+"+"+(stage*item.basePhyStats().level()));
+						affect.bumpTickDown(Math.round((1.1 + (0.1 * stage)) * affect.tickDown));
+						item.setBaseValue(atLeast1(item.baseGoldValue(),0.25));
+					}
+					break;
+				}
+				default:
+					break;
 				}
 			}
 			item.recoverPhyStats();

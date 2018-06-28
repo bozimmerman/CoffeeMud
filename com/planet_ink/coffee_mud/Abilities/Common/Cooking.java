@@ -36,7 +36,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Cooking extends CraftingSkill implements ItemCraftor
+public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 {
 	@Override
 	public String ID()
@@ -979,6 +979,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				}
 			}
 			commonTell(mob,L("@x1\n\rIngredients beginning with the ~ character are optional additives.",buf.toString()));
+			enhanceList(mob);
 			return true;
 		}
 		final Item possibleContainer=possibleContainer(mob,commands,true,Wearable.FILTER_UNWORNONLY);
