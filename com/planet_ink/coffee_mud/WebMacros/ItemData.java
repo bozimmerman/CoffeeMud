@@ -972,7 +972,9 @@ public class ItemData extends StdWebMacro
 						{
 							A=e.nextElement();
 							if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
-							&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
+							&&(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+								||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_BUILDINGSKILL)
+								||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_EPICUREAN)))
 							{
 								str.append("<OPTION VALUE=\""+A.ID()+"\"");
 								if(A.ID().equalsIgnoreCase(old))

@@ -959,7 +959,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			return aL;
 		if(A instanceof CommonSkill)
 		{
-			final boolean crafting = ((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
+			final boolean crafting = ((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+									||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_BUILDINGSKILL);
 			aL.specificSkillLimit(crafting ? aL.craftingSkills() : aL.nonCraftingSkills());
 		}
 		if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
@@ -978,7 +979,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			return aL;
 		if(A instanceof CommonSkill)
 		{
-			final boolean crafting = ((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
+			final boolean crafting = ((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+									||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_BUILDINGSKILL);
 			aL.specificSkillLimit(crafting ? aL.craftingSkills() : aL.nonCraftingSkills());
 		}
 		if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
@@ -1018,7 +1020,9 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				if(foundInAClass)
 					continue;
 				aL.commonSkills(aL.commonSkills()-1);
-				if((A2.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+				final boolean crafting = ((A2.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+										||((A2.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_BUILDINGSKILL);
+				if(crafting)
 					aL.craftingSkills(aL.craftingSkills()-1);
 				else
 					aL.nonCraftingSkills(aL.nonCraftingSkills()-1);

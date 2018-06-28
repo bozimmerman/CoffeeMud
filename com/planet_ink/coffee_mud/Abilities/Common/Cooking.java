@@ -92,6 +92,12 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
+	public int classificationCode()
+	{
+		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_EPICUREAN;
+	}
+
+	@Override
 	public String parametersFormat()
 	{
 		return

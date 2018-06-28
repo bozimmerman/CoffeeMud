@@ -719,7 +719,8 @@ public class CommonSkill extends StdAbility
 		final CharClass C=studentM.charStats().getCurrentClass();
 		if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 			return true;
-		final boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
+		final boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+								||((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_BUILDINGSKILL);
 		final AbilityComponents.AbilityLimits remainders = CMLib.ableComponents().getSpecialSkillRemainder(studentM, this);
 		if(remainders.commonSkills()<=0)
 		{
@@ -756,7 +757,8 @@ public class CommonSkill extends StdAbility
 			final CharClass C=student.charStats().getCurrentClass();
 			if(CMLib.ableMapper().getQualifyingLevel(C.ID(), false, ID())>=0)
 				return;
-			final boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL);
+			final boolean crafting = ((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+									||((classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_BUILDINGSKILL);
 			final AbilityComponents.AbilityLimits remainders = CMLib.ableComponents().getSpecialSkillRemainder(student, this);
 			if(remainders.commonSkills()<=0)
 				student.tell(L("@x1 may not learn any more common skills.",student.name()));

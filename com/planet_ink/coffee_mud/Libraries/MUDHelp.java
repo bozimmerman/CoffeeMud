@@ -316,7 +316,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			getHelpFile().put(ID.toUpperCase(),text);
 	}
 
-	private void appendAllowed(StringBuilder prepend, String ID)
+	private void appendAllowed(final MOB mob, StringBuilder prepend, String ID)
 	{
 		final Iterator<String> i=CMLib.expertises().filterUniqueExpertiseIDList(CMLib.ableMapper().getAbilityAllowsList(ID));
 		int lastLine=11;
@@ -329,8 +329,13 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				final ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(allowStr);
 				if(def!=null)
 				{
-					prepend.append(def.name());
-					lastLine+=(def.name().length()+2);
+					if((mob==null)||CMLib.masking().maskCheck(def.compiledListMask(), mob, true))
+					{
+						prepend.append(def.name());
+						lastLine+=(def.name().length()+2);
+					}
+					else
+						continue;
 				}
 				else
 				{
@@ -433,7 +438,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					final StringBuilder prepend=new StringBuilder("");
 					prepend.append(L("\n\rExpertise: @x1",def.name()));
 					prepend.append(L("\n\rRequires : @x1",CMLib.masking().maskDesc(def.allRequirements(),true)));
-					appendAllowed(prepend,def.ID());
+					appendAllowed(forMOB,prepend,def.ID());
 					str=prepend.toString()+"\n\r"+str;
 				}
 			}
@@ -661,7 +666,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 						mask=CMLib.ableMapper().getApplicableMask(forMOB,A);
 					if((mask!=null)&&(mask.length()>0))
 						prepend.append(L("\n\rRequires : @x1",CMLib.masking().maskDesc(mask,true)));
-					appendAllowed(prepend,A.ID());
+					appendAllowed(forMOB,prepend,A.ID());
 					if(type==Ability.ACODE_PRAYER)
 					{
 						String rangeDescs=null;

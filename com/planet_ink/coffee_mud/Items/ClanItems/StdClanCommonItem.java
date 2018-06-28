@@ -245,6 +245,7 @@ public class StdClanCommonItem extends StdClanItem
 					A.setProficiency(100);
 					boolean success=false;
 					if(((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_CRAFTINGSKILL)
+					&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_EPICUREAN)
 					&&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_BUILDINGSKILL)
 					&&(CMLib.flags().isMobile(M)))
 					{
@@ -410,7 +411,10 @@ public class StdClanCommonItem extends StdClanItem
 						}
 					}
 
-					if((M.numItems()>1)&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
+					if((M.numItems()>1)
+					&&(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+						||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_EPICUREAN)
+						||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_BUILDINGSKILL)))
 					{
 						Item I=null;
 						int tries=0;
@@ -430,7 +434,8 @@ public class StdClanCommonItem extends StdClanItem
 					}
 					else
 						success=A.invoke(M,new Vector<String>(),null,false,phyStats().level());
-					if((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+					if(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+					||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_EPICUREAN))
 					{
 						DVector DV=needChart.get(M.location().getArea());
 						if(!success)

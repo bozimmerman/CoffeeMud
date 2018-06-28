@@ -51,6 +51,7 @@ public class Qualify  extends Skills
 	protected final static int SKILL_CRAFTING_ONLY=-2;
 	protected final static int SKILL_BUILDING_ONLY=-3;
 	protected final static int SKILL_GATHERING_ONLY=-4;
+	protected final static int SKILL_EPICUREAN_ONLY=-5;
 
 	public StringBuffer getQualifiedAbilities(MOB viewerM,
 											  MOB ableM,
@@ -80,9 +81,13 @@ public class Qualify  extends Skills
 			badDomain = -1;
 			checkDomain = Ability.DOMAIN_CRAFTINGSKILL;
 			break;
+		case SKILL_EPICUREAN_ONLY:
+			badDomain = -1;
+			checkDomain = Ability.DOMAIN_EPICUREAN;
+			break;
 		case SKILL_GATHERING_ONLY:
-			badDomain = Ability.DOMAIN_CRAFTINGSKILL;
-			checkDomain = -1;
+			badDomain = -1;
+			checkDomain = Ability.DOMAIN_GATHERINGSKILL;
 			break;
 		case SKILL_BUILDING_ONLY:
 			badDomain = -1;
@@ -236,6 +241,12 @@ public class Qualify  extends Skills
 		{
 			domain=Ability.DOMAIN_CRAFTINGSKILL;
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_CRAFTING_ONLY,"\n\r^HCrafting Skills:^? ",shortOnly));
+		}
+		else 
+		if ("EPICUREAN SKILLS".startsWith(qual))
+		{
+			domain=Ability.DOMAIN_EPICUREAN;
+			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_EPICUREAN_ONLY,"\n\r^HEpicurean Skills:^? ",shortOnly));
 		}
 		else 
 		if ("BUILDING SKILLS".startsWith(qual))

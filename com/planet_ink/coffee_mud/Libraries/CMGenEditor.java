@@ -2045,7 +2045,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				{
 					A=e.nextElement();
 					if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
-					&&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL))
+					&&(((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_CRAFTINGSKILL)
+						||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_EPICUREAN)
+						||((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_BUILDINGSKILL)))
 						str.append(A.ID()+"\n\r");
 				}
 				mob.tell(L("\n\rCommon Skills:\n\r@x1\n\r",str.toString()));
@@ -2075,7 +2077,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final Ability A=CMClass.getAbility(E.getCommonSkillID());
 		final CraftorAbility C;
 		if((A!=null)
-		&&(A.classificationCode()==(Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL))
+		&&((A.classificationCode()==(Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL))
+			||(A.classificationCode()==(Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_EPICUREAN))
+			||(A.classificationCode()==(Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_BUILDINGSKILL)))
 		&&(A instanceof CraftorAbility))
 		{
 			C=(CraftorAbility)A;

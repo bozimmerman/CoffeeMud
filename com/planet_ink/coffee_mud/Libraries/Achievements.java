@@ -1650,9 +1650,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						{
 							final Ability A=CMClass.getAbility(abilityID);
 							if((A==null)
-							||((CMClass.getAbility(abilityID).classificationCode() & Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)
-							||((CMClass.getAbility(abilityID).classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_CRAFTINGSKILL))
-								return "Error: Unknown crafting ABILITYID: "+abilityID+"!";
+							||((A.classificationCode() & Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)
+							||(((A.classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_BUILDINGSKILL)
+								&&((A.classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_EPICUREAN)
+								&&((A.classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_CRAFTINGSKILL)))
+									return "Error: Unknown crafting ABILITYID: "+abilityID+"!";
 							this.abilityIDs.add(A.ID());
 						}
 					}

@@ -598,6 +598,7 @@ public class StdAbility implements Ability
 
 		if((classificationCode() != (Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRAFTINGSKILL))
 		&&(classificationCode() != (Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL))
+		&&(classificationCode() != (Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_EPICUREAN))
 		&&(classificationCode() != (Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_BUILDINGSKILL)))
 			tickTime+=addedTickTime(invokerMOB,tickTime);
 		if(invoker()!=null)
