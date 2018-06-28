@@ -41,7 +41,7 @@ public class MasterFloristry extends Herbology
 		return "MasterFloristry";
 	}
 
-	private final static String localizedName = CMLib.lang().L("MasterFloristry");
+	private final static String localizedName = CMLib.lang().L("Master Floristry");
 
 	@Override
 	public String name()

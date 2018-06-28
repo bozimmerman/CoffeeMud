@@ -40,7 +40,7 @@ public class FoodPreserving extends CommonSkill
 		return "FoodPreserving";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("FoodPreserving");
+	private final static String	localizedName	= CMLib.lang().L("Food Preserving");
 
 	@Override
 	public String name()

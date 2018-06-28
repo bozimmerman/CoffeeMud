@@ -102,7 +102,7 @@ public class Regeneration extends StdAbility implements HealthCondition
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL;
+		return Ability.ACODE_PROPERTY|Ability.DOMAIN_RACIALABILITY;
 	}
 
 	protected int	permanentDamage	= 0;

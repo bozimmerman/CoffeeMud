@@ -68,7 +68,7 @@ public class Milkable extends StdAbility implements Drink
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_CHANT | Ability.DOMAIN_RACIALABILITY;
+		return Ability.ACODE_PROPERTY | Ability.DOMAIN_RACIALABILITY;
 	}
 
 	@Override

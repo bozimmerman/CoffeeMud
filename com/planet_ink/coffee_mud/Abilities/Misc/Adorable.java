@@ -61,7 +61,7 @@ public class Adorable extends StdAbility
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_CHANT | Ability.DOMAIN_RACIALABILITY;
+		return Ability.ACODE_PROPERTY | Ability.DOMAIN_RACIALABILITY;
 	}
 
 	@Override

@@ -4337,7 +4337,8 @@ public class ListCmd extends StdCommand
 		if(wiki == WikiFlag.WIKILIST)
 		{
 			if(title.length()==0)
-				title="Abilities";
+				s.println("===Abilities===");
+			else
 			if(domain == 0)
 				s.println("==="+title+"s===");
 			else
