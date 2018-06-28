@@ -4068,7 +4068,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				else
 				{
 					final Object o=CMSecurity.instance().parseSecurityFlag(behave.trim().toUpperCase());
-					final CMSecurity.SecFlag flag=(CMSecurity.SecFlag)CMath.s_valueOf(CMSecurity.SecFlag.class, behave);
+					final CMSecurity.SecFlag flag=(CMSecurity.SecFlag)CMath.s_valueOf(CMSecurity.SecFlag.class, behave.toUpperCase().trim());
 					final boolean isFs=(o instanceof CMSecurity.SecPath);
 					final boolean isGroup=(o instanceof CMSecurity.SecGroup);
 					final boolean isFlag=(o instanceof CMSecurity.SecFlag) && (flag!=null);
