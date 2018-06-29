@@ -130,7 +130,7 @@ public class Chant_CalmWind extends Chant
 			mob.tell(L("The weather is nasty, but not especially windy any more."));
 			return false;
 		default:
-			mob.tell(L("If doesn't seem especially windy right now."));
+			mob.tell(L("It doesn't seem especially windy right now."));
 			return false;
 		}
 
