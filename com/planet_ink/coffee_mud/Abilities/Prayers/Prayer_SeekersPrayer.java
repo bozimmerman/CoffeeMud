@@ -94,6 +94,11 @@ public class Prayer_SeekersPrayer extends Prayer
 		Physical target=mob;
 		if((auto)&&(givenTarget!=null))
 			target=givenTarget;
+		if(target.fetchEffect(ID())!=null)
+		{
+			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
+			return false;
+		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -210,6 +210,11 @@ public class Prayer_SenseInjury extends Prayer
 		Physical target=mob;
 		if((auto)&&(givenTarget!=null))
 			target=givenTarget;
+		if(target.fetchEffect(ID())!=null)
+		{
+			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already affected by @x1.",name()));
+			return false;
+		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

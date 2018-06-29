@@ -127,6 +127,11 @@ public class Prayer_SenseEvil extends Prayer
 		Physical target=mob;
 		if((auto)&&(givenTarget!=null))
 			target=givenTarget;
+		if(target.fetchEffect(ID())!=null)
+		{
+			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already sensing evil."));
+			return false;
+		}
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
