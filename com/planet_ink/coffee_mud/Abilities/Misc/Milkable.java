@@ -103,12 +103,21 @@ public class Milkable extends StdAbility implements Drink
 	{
 		super.setMiscText(newMiscText);
 		drinkableMilkable=CMParms.getParmBool(newMiscText, "DRINK", false);
-		milkingOK = CMParms.getParmBool(newMiscText, "ON", false);
+		milkingOK = CMParms.getParmBool(newMiscText, "ON", milkingOK);
 		milkPerDay = CMParms.getParmInt(newMiscText, "PERDAY", 1000);
 		final String liquidType = CMParms.getParmStr(newMiscText, "TYPE", "MILK");
 		final int resourceCode = RawMaterial.CODES.FIND_IgnoreCase(liquidType);
 		if(resourceCode > 0)
 			this.liquidType = resourceCode;
+	}
+
+	@Override
+	public boolean autoInvocation(MOB mob, boolean force)
+	{
+		final boolean worked = super.autoInvocation(mob, force);
+		if(mob.isPlayer() || (!mob.isMonster()))
+			milkingOK=true;
+		return worked;
 	}
 
 	@Override
