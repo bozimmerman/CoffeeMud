@@ -223,6 +223,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		String startStr=null;
 		bundling=false;
 		int duration=4;
+		@SuppressWarnings("unused")
+		int recipeLevel=1;
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
@@ -279,6 +281,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 				if((autoGenerate>0)||(level<=xlevel(mob)))
 				{
 					foundRecipe=V;
+					recipeLevel=level;
 					break;
 				}
 			}

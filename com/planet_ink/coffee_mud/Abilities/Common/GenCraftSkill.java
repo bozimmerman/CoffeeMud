@@ -554,6 +554,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			return true;
 		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
+		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		final String noun=CMStrings.capitalizeAndLower(triggerStrings()[0]);
 		final String verbing=V(ID,V_VERB).toString();
@@ -715,6 +716,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 					if((autoGenerate>0)||(level<=xlevel(mob)))
 					{
 						foundRecipe=V;
+						recipeLevel=level;
 						break;
 					}
 				}
@@ -897,7 +899,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 			mob.location().send(mob,msg);
 			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
-			enhanceItem(mob,buildingI,enhancedTypes);
+			enhanceItem(mob,buildingI,recipeLevel,enhancedTypes);
 		}
 		else
 		if(bundling)

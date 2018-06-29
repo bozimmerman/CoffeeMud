@@ -102,6 +102,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		if(fire==null)
 			return false;
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
+		int recipeLevel = 1;
 		buildingI=null;
 		messedUp=false;
 		int woodRequired=50;
@@ -158,7 +159,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,asLevel,completion);
-			enhanceItem(mob,buildingI,enhancedTypes);
+			enhanceItem(mob,buildingI,recipeLevel,enhancedTypes);
 		}
 		return true;
 	}

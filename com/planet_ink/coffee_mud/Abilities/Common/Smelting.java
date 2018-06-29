@@ -170,6 +170,8 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 		final String str=commands.get(0);
 		String startStr=null;
 		int duration=4;
+		@SuppressWarnings("unused")
+		int recipeLevel=1;
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
@@ -227,6 +229,7 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 				if(level<=xlevel(mob))
 				{
 					foundRecipe=V;
+					recipeLevel=level;
 					break;
 				}
 			}

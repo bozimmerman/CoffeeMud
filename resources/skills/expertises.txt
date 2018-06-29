@@ -390,6 +390,18 @@ HELP_=<EXPERTISE>The ability to use sea travel that last even longer.
 SMARTENGINEERING@x1=Ingenious Engineering @x2,10,XPCOST,-SKILLS +Construction +Masonry +Shipwright +Landscaping +Excavation +Irrigation +Welding +ShipBuilding,-MAXCLASSLEVEL +>={21+(5*@x1)},+INT {12+@x1} +WIS {12+@x1},0,2,0,0,0
 HELP_=<EXPERTISE>The ability to engineer using fewer materials.
 
+FORTBAKE@x1=Fortified Baking @x2,10,X4,-SKILL +Baking +MasterBaking,-MAXCLASSLEVEL +>={10+(7*@x1)},+CON {8+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to bake foods that fortify movement.
+DATA_=Least,Lesser,Minor,Moderate,Great,Incredibe,Major,Wonderful,Super,Ultimate
+
+IMBUDISTIL@x1=Imbued Distilling @x2,10,X4,-SKILL +Distilling +MasterDistilling,-MAXCLASSLEVEL +>={12+(7*@x1)},+CON {8+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to distill drinks that fortify mana.
+DATA_=Least,Lesser,Minor,Moderate,Great,Incredibe,Major,Wonderful,Super,Ultimate
+
+VIGOCOOK@x1=Vigorous Cooking @x2,10,X4,-SKILL +Cooking +MasterCooking,-MAXCLASSLEVEL +>={11+(7*@x1)},+CON {8+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to cook foods that fortify movement.
+DATA_=Least,Lesser,Minor,Moderate,Great,Incredibe,Major,Wonderful,Super,Ultimate
+
 LITECRAFT@x1=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing +Weaving,-CLASS +Archon,+DEX {10+(4*@x1)},0,20,0,0,0
 HELP_=<EXPERTISE>The ability to craft items using less material without sacrificing quality.
 HELP_LITECRAFT1=<EXPERTISE>The ability to craft items using less material without sacrificing quality. Items crafted "Light" are a little lighter, and worth a little more in value.

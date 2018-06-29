@@ -339,7 +339,8 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		for(EnhancedExpertise expertise : EnhancedExpertise.values())
 		{
 			final String s=CMLib.expertises().getApplicableExpertise(ID(),expertise.flag);
-			if(s!=null)
+			if((s!=null)
+			&&(!V.contains(s)))
 				V.add(s);
 		}
 		return V;
@@ -580,11 +581,10 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		return name.trim();
 	}
 
-	public void enhanceItem(MOB mob, Item item, PairVector<EnhancedExpertise,Integer> types)
+	public void enhanceItem(MOB mob, Item item, int recipeLevel, PairVector<EnhancedExpertise,Integer> types)
 	{
 		if(types==null)
 			return;
-		int addToStat = CharState.STAT_MOVE;
 		final EnhancedCraftingSkill affect=(EnhancedCraftingSkill)mob.fetchEffect(ID());
 		if((affect!=null)
 		&&(!affect.aborted)
@@ -603,6 +603,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					def = CMLib.expertises().getDefinition(expertiseID);
 				if(def==null)
 					continue;
+				int addToStat = CharState.STAT_MOVE;
 				switch(type)
 				{
 				case LITECRAFT:
@@ -744,6 +745,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case VIGOCRAFT:
 				case IMBUCRAFT:
 				{
+					applyName(item,def.getData()[stage]);
 					if (type == EnhancedExpertise.IMBUCRAFT)
 					{
 						addToStat=CharState.STAT_MANA;
@@ -752,11 +754,14 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					Ability propA = item.fetchEffect("Prop_UseAdjuster");
 					if(propA == null)
 					{
-						String statName=CharStats.CODES.NAME(addToStat);
+						String statName=CharState.STAT_DESCS[addToStat];
 						propA=CMClass.getAbility("Prop_UseAdjuster");
-						propA.setMiscText(statName+"+"+(stage*item.basePhyStats().level()));
+						if(recipeLevel == 0)
+							recipeLevel = 1;
+						propA.setMiscText(statName+"+"+((stage+1)*recipeLevel));
 						affect.bumpTickDown(Math.round((1.1 + (0.1 * stage)) * affect.tickDown));
 						item.setBaseValue(atLeast1(item.baseGoldValue(),0.25));
+						item.addNonUninvokableEffect(propA);
 					}
 					break;
 				}

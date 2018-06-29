@@ -319,6 +319,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			return true;
 		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
+		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
@@ -479,6 +480,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 						else
 							multiplier=stage.multiplier;
 						foundRecipe=V;
+						recipeLevel=level;
 						break;
 					}
 				}
@@ -626,7 +628,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			mob.location().send(mob,msg);
 			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
-			enhanceItem(mob,buildingI,enhancedTypes);
+			enhanceItem(mob,buildingI,recipeLevel,enhancedTypes);
 		}
 		else
 		if(bundling)

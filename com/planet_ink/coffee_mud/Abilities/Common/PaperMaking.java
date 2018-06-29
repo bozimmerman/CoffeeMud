@@ -169,6 +169,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			return true;
 		final Session session=mob.session();
 
+		@SuppressWarnings("unused")
+		int recipeLevel=1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
@@ -255,6 +257,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				if((autoGenerate>0)||(level<=xlevel(mob)))
 				{
 					foundRecipe=V;
+					recipeLevel=level;
 					materialDesc=foundRecipe.get(RCP_WOODTYPE);
 					if(materialDesc.equalsIgnoreCase("WOOD"))
 						materialDesc="WOODEN";

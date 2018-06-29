@@ -232,6 +232,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			return true;
 		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
+		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
@@ -383,6 +384,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 					if((autoGenerate>0)||(level<=xlevel(mob)))
 					{
 						foundRecipe=V;
+						recipeLevel=level;
 						break;
 					}
 				}
@@ -500,7 +502,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			mob.location().send(mob,msg);
 			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
-			enhanceItem(mob,buildingI,enhancedTypes);
+			enhanceItem(mob,buildingI,recipeLevel,enhancedTypes);
 		}
 		else
 		if(bundling)

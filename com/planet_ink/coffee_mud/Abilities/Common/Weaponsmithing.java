@@ -326,6 +326,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			return true;
 		
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
+		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
@@ -452,6 +453,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 					||((level<=mob.phyStats().level())&&(canDo(V.get(RCP_WEAPONCLASS),mob))))
 					{
 						foundRecipe=V;
+						recipeLevel=level;
 						break;
 					}
 				}
@@ -566,7 +568,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			mob.location().send(mob,msg);
 			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
-			enhanceItem(mob,buildingI,enhancedTypes);
+			enhanceItem(mob,buildingI,recipeLevel,enhancedTypes);
 		}
 		else
 		if(bundling)

@@ -53,6 +53,11 @@ public interface CharState extends CMCommon, Modifiable
 	public final static int STAT_TICKSTHIRSTY=6;
 	/** stat constant for number of other stat constants */
 	public final static int STAT_NUMSTATS=7;
+	
+	/** stat constant descriptions */
+	public final static String[] STAT_DESCS=new String[] {
+		"HITPOINTS","MANA","MOVEMENT","HUNGER","THIRST","TICKSHUNGRY","TICKSTHIRSTY"
+	};
 
 	/** constant representing how many ticks between hunger/thirst messages*/
 	public final static int ANNOYANCE_DEFAULT_TICKS=60;

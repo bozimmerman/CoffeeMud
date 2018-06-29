@@ -199,6 +199,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		String clanTypeName="Clan";
 		String clanName="None";
 		Clan clanC=null;
+		@SuppressWarnings("unused")
+		int recipeLevel=1;
 		if(autoGenerate<=0)
 		{
 			if(!mob.clans().iterator().hasNext())
@@ -305,6 +307,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				if((autoGenerate>0)||(level<=xlevel(mob)))
 				{
 					foundRecipe=V;
+					recipeLevel=level;
 					break;
 				}
 			}

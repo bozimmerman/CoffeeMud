@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.EnhancedExpertise;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -866,7 +867,8 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		oldPotContents=null;
 		activity = CraftingActivity.CRAFTING;
 		final List<List<String>> allRecipes=addRecipes(mob,loadRecipes());
-
+		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
+		int recipeLevel = 1;
 		if(autoGenerate>0)
 		{
 			finalAmount=1;
@@ -1183,12 +1185,14 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
+		recipeLevel=CMath.s_int(finalRecipe.get(RCP_LEVEL));
 		final CMMsg msg=CMClass.getMsg(mob,cookingPot,this,getActivityMessageType(),getActivityMessageType(),getActivityMessageType(),L("<S-NAME> start(s) @x1 something in <T-NAME>.",cookWord()));
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
 			cookingPot=(Container)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
+			enhanceItem(mob,buildingI,recipeLevel,enhancedTypes);
 		}
 		return true;
 	}

@@ -190,6 +190,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		if(super.checkInfo(mob, commands))
 			return true;
 		
+		@SuppressWarnings("unused")
+		int recipeLevel=1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
@@ -276,6 +278,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 				&&((autoGenerate>0)||(race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
 				{
 					foundRecipe=V;
+					recipeLevel=level;
 					break;
 				}
 			}

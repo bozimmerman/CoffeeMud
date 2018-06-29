@@ -221,6 +221,8 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		if(super.checkInfo(mob, commands))
 			return true;
 		
+		@SuppressWarnings("unused")
+		int recipeLevel=1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
@@ -314,6 +316,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 				if((autoGenerate>0)||(level<=xlevel(mob)))
 				{
 					foundRecipe=V;
+					recipeLevel=level;
 					break;
 				}
 			}
