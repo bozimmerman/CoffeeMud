@@ -548,29 +548,35 @@ public class CMMap extends StdLibrary implements WorldMap
 	public double getAngleDelta(final double[] fromAngle, final double[] toAngle)
 	{
 		final double directionYaw = fromAngle[0];
-		final double directionPitch = (fromAngle[1] > Math.PI) ? Math.abs(Math.PI-fromAngle[1]) : fromAngle[1];
-
 		final double facingYaw = toAngle[0];
+		
+		final double directionPitch = (fromAngle[1] > Math.PI) ? Math.abs(Math.PI-fromAngle[1]) : fromAngle[1];
 		final double facingPitch = (toAngle[1] > Math.PI) ? Math.abs(Math.PI-toAngle[1]) : toAngle[1];
 
 		double yawDelta = (directionYaw >  facingYaw) ? (directionYaw - facingYaw) : (facingYaw - directionYaw);
 		if(yawDelta > Math.PI)
 			yawDelta=PI_TIMES_2-yawDelta;
 
-		if(((directionPitch == 0.0)||(directionPitch == Math.PI))
-		&&(directionPitch == facingPitch))
-			return 0.0;
+		//if((directionPitch == facingPitch)
+		//&&((directionPitch == 0.0)||(directionPitch == Math.PI)))
+		//	return 0.0;
 
 		double pitchDelta = (directionPitch >  facingPitch) ? (directionPitch - facingPitch) : (facingPitch - directionPitch);
 		if(pitchDelta > Math.PI)
 			pitchDelta=Math.PI-pitchDelta;
 
-		if(Math.abs(pitchDelta-Math.PI)<ZERO_ALMOST)
-			yawDelta=0.0;
+		//if(Math.abs(pitchDelta-Math.PI)<ZERO_ALMOST)
+		//	yawDelta=0.0;
 
-		double finalDelta =  yawDelta + pitchDelta;
-		if(finalDelta > Math.PI)
-			finalDelta = Math.abs(PI_TIMES_2-finalDelta);
+		
+		final double pitchSin = 2.0*Math.sin(pitchDelta/2.0);
+		final double yawSin = 2.0*Math.sin(yawDelta/2.0);
+		double yawPitchParts = (pitchSin * pitchSin)+(yawSin * yawSin);
+		final double finalDelta;
+		if(yawPitchParts > 4)
+			finalDelta = 2.0*Math.asin(2.0-(Math.sqrt(yawPitchParts)/2.0));
+		else
+			finalDelta = 2.0*Math.asin(Math.sqrt(yawPitchParts)/2.0);
 		return finalDelta;
 	}
 
