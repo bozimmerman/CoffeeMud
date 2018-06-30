@@ -122,14 +122,12 @@ public class Chant_AiryAura extends Chant
 		if(druidMob==null)
 			return false;
 		final Set<MOB> paladinsGroup=this.druidsGroup;
-		if(paladinsGroup!=null)
+		if((paladinsGroup!=null)&&(affected == druidMob))
 		{
 			final List<MOB> addHere=new LinkedList<MOB>();
 			final List<MOB>	removeFromGroup	= new LinkedList<MOB>();
 			synchronized(paladinsGroup)
 			{
-				paladinsGroup.clear();
-				druidMob.getGroupMembers(paladinsGroup);
 				if(druidMob.fetchEffect(ID())==null)
 				{
 					paladinsGroup.clear();
@@ -141,8 +139,14 @@ public class Chant_AiryAura extends Chant
 					{
 						if(M.location()!=druidMob.location())
 							removeFromGroup.add(M);
-						else
-						if((M!=druidMob)&&(M.fetchEffect(ID())==null))
+					}
+					paladinsGroup.clear();
+					druidMob.getGroupMembers(paladinsGroup);
+					for(final MOB M : paladinsGroup)
+					{
+						if((M!=druidMob)
+						&&(M.location()==druidMob.location())
+						&&(M.fetchEffect(ID())==null))
 							addHere.add(M);
 					}
 				}
@@ -150,7 +154,7 @@ public class Chant_AiryAura extends Chant
 			for(final MOB M : addHere)
 			{
 				final Ability A=(Ability)this.copyOf();
-				A.startTickDown(invoker(), M, super.tickDown);
+				A.startTickDown(druidMob, M, super.tickDown);
 				M.tell(L("You feel surrounded by an airy aura."));
 			}
 			for(final MOB M : removeFromGroup)
