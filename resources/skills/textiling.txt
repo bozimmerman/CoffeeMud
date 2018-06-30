@@ -5,7 +5,7 @@ bolt of hemp	4	20	(onground:consumed:1:HEMP:)	8	GenResource	HEMP	HEMP
 bolt of jute	5	25	(onground:consumed:1:REED:)&&(onground:consumed:1:HEMP:)	10	GenResource	HEMP	JUTE	
 bolt of denim	8	30	(onground:consumed:1:COTTON:)&&(onground:consumed:1:HEMP(JUTE):)	30	GenResource	DENIM	DENIM	
 bolt of silk	10	60	(onground:consumed:1:SILK:)	400	GenResource	SILK	SILK	
-bolt of satin	12	60	(onground:consumed:1:COTTON(COTTON):)&&(onground:consumed:1:WOODEN:)	48	GenResource	COTTON	SATIN	
+bolt of satin	12	60	(onground:consumed:1:COTTON(COTTON):)&&(onground:consumed:1:BAMBOO:)	48	GenResource	COTTON	SATIN	
 bolt of centrate	14	80	(onground:consumed:1:WOOL(WOOL):)&&(onground:consumed:1:DENIM(DENIM):)	100	GenResource	DENIM	CENTRATE	Prop_WearAdjuster;savecold+3
 bolt of silver lame	15	40	(onground:consumed:1:COTTON(COTTON):)&&(onground:consumed:1:SILVER:)	320	GenResource	COTTON	SILVER LAME	Prop_WearAdjuster;saveelec-2
 bolt of chiffon	16	90	(onground:consumed:1:COTTON(SATIN):)&&(onground:consumed:1:SILK(SILK):)	4240	GenResource	SILK	CHIFFON	
