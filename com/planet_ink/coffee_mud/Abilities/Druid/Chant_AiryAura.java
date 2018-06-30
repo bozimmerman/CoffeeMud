@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Chant_AiryAura extends StdAbility
+public class Chant_AiryAura extends Chant
 {
 	@Override
 	public String ID()
