@@ -141,6 +141,9 @@ public class Chant_AiryAura extends Chant
 					{
 						if(M.location()!=druidMob.location())
 							removeFromGroup.add(M);
+						else
+						if((M!=druidMob)&&(M.fetchEffect(ID())==null))
+							addHere.add(M);
 					}
 				}
 			}
