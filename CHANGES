@@ -16,7 +16,7 @@
   15. New LIST COMMANDJOURNALS
   16. Shipwright has all new recipes with new wonders to behold.
   17. REPORT command can now report expertises and languages also.
-  18. New Spells: Conjure Ammunition, Harden Bullets, Light Blindness
+  18. New Spells: Conjure Ammunition, Harden Bullets, Light Blindness, Mystic Loom
   19. ZapperMask now supports +-ACCOUNTS and +-LOCATION
   20. New Prayer: Mass Forgive
   21. New common skills: Legendary Weaponsmithing, Floristry, Master Herbology, WandMaking
@@ -57,6 +57,7 @@
   55. Can now disable showing experience in Score and in the Prompt using DISABLE cmd.
   56. New Property: Prop_UseAdjuster, mostly insane, but good for special potion effects.
   57. New Expertises: Vigorous cooking, Imbued Distilling, Fortified Baking
+  58. New chants: Airy Aura (Mer)
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
    1. Hunger and Thirst system can now be tweeked.  See coffeemud.ini file

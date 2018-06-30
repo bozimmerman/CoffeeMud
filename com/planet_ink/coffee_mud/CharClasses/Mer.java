@@ -174,6 +174,7 @@ public class Mer extends StdCharClass
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_CalmAnimal",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_SummonCoral",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_AiryAura",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_FeelElectricity",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Chant_BloodyWater",true);

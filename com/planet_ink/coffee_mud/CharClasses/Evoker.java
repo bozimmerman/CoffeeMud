@@ -78,6 +78,7 @@ public class Evoker extends SpecialistMage
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_IceLance",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_KineticPulse",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_Ignite",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Spell_MysticLoom",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_ForkedLightning",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_Levitate",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_Pocket",25,true);

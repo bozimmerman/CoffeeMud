@@ -1,17 +1,17 @@
 bolt of wool	1	20	(onground:consumed:1:WOOL:)	20	GenResource	WOOL	WOOL	Prop_WearAdjuster;savefire-2 savecold+2
 bolt of cotton	2	20	(onground:consumed:1:COTTON:)	10	GenResource	COTTON	COTTON	
-bolt of copper lame	3	40	(onground:consumed:1:COTTON(BOLT):)&&(onground:consumed:1:COPPER:)	80	GenResource	COTTON	COPPER LAME	Prop_WearAdjuster;saveelec-2
+bolt of copper lame	3	40	(onground:consumed:1:COTTON(COTTON):)&&(onground:consumed:1:COPPER:)	80	GenResource	COTTON	COPPER LAME	Prop_WearAdjuster;saveelec-2
 bolt of hemp	4	20	(onground:consumed:1:HEMP:)	8	GenResource	HEMP	HEMP	
 bolt of jute	5	25	(onground:consumed:1:REED:)&&(onground:consumed:1:HEMP:)	10	GenResource	HEMP	JUTE	
-bolt of denim	8	30	(onground:consumed:1:COTTON:)&&(onground:consumed:1:HEMP(JUTE BOLT):)	30	GenResource	DENIM	DENIM	
+bolt of denim	8	30	(onground:consumed:1:COTTON:)&&(onground:consumed:1:HEMP(JUTE):)	30	GenResource	DENIM	DENIM	
 bolt of silk	10	60	(onground:consumed:1:SILK:)	400	GenResource	SILK	SILK	
-bolt of satin	12	60	(onground:consumed:1:COTTON(BOLT):)&&(onground:consumed:1:WOODEN:)	48	GenResource	COTTON	SATIN	
-bolt of centrate	14	80	(onground:consumed:1:WOOL(BOLT):)&&(onground:consumed:1:DENIM(BOLT):)	100	GenResource	DENIM	CENTRATE	Prop_WearAdjuster;savecold+3
-bolt of silver lame	15	40	(onground:consumed:1:COTTON(BOLT):)&&(onground:consumed:1:SILVER:)	320	GenResource	COTTON	SILVER LAME	Prop_WearAdjuster;saveelec-2
-bolt of chiffon	16	90	(onground:consumed:1:COTTON(SATIN BOLT):)&&(onground:consumed:1:SILK(BOLT):)	4240	GenResource	SILK	CHIFFON	
-bolt of ramie	18	120	(onground:consumed:1:SILK(BOLT):)&&(onground:consumed:1:HERBS:)	802	GenResource	SILK	RAMIE	
-bolt of byssus	19	300	(onground:consumed:1:SILK(BOLT):)&&(onground:consumed:1:SOME CLAMS:)	1600	GenResource	SILK	BYSSUS	
-bolt of gold lame	20	40	(onground:consumed:1:COTTON(BOLT):)&&(onground:consumed:1:GOLD:)	2560	GenResource	COTTON	GOLD LAME	Prop_WearAdjuster;saveelec-2
-bolt of arcanin	24	90	(onground:consumed:1:SILK(CHIFFON BOLT):)&&(onground:consumed:1:SILK(RAMIE BOLT):)	3300	GenResource	SILK	ARCANIN	Prop_WearAdjuster;savemagic+2
-bolt of gnomish underweave	25	90	(onground:consumed:1:COTTON(BOLT):)&&(onground:consumed:1:IRON:)	60	GenResource	SILK	GNOMISH UNDERWEAVE	Prop_WearAdjuster;savedisease+3
-bolt of spidersteel	30	90	(onground:consumed:1:SILK(BOLT):)&&(onground:consumed:1:MITHRIL:)	1000	GenResource	SPIDERSTEEL	SPIDERSTEEL	
+bolt of satin	12	60	(onground:consumed:1:COTTON(COTTON):)&&(onground:consumed:1:WOODEN:)	48	GenResource	COTTON	SATIN	
+bolt of centrate	14	80	(onground:consumed:1:WOOL(WOOL):)&&(onground:consumed:1:DENIM(DENIM):)	100	GenResource	DENIM	CENTRATE	Prop_WearAdjuster;savecold+3
+bolt of silver lame	15	40	(onground:consumed:1:COTTON(COTTON):)&&(onground:consumed:1:SILVER:)	320	GenResource	COTTON	SILVER LAME	Prop_WearAdjuster;saveelec-2
+bolt of chiffon	16	90	(onground:consumed:1:COTTON(SATIN):)&&(onground:consumed:1:SILK(SILK):)	4240	GenResource	SILK	CHIFFON	
+bolt of ramie	18	120	(onground:consumed:1:SILK(SILK):)&&(onground:consumed:1:HERBS:)	802	GenResource	SILK	RAMIE	
+bolt of byssus	19	300	(onground:consumed:1:SILK(SILK):)&&(onground:consumed:1:SOME CLAMS:)	1600	GenResource	SILK	BYSSUS	
+bolt of gold lame	20	40	(onground:consumed:1:COTTON(COTTON):)&&(onground:consumed:1:GOLD:)	2560	GenResource	COTTON	GOLD LAME	Prop_WearAdjuster;saveelec-2
+bolt of arcanin	24	90	(onground:consumed:1:SILK(CHIFFON):)&&(onground:consumed:1:SILK(RAMIE):)	3300	GenResource	SILK	ARCANIN	Prop_WearAdjuster;savemagic+2
+bolt of gnomish underweave	25	90	(onground:consumed:1:COTTON(COTTON):)&&(onground:consumed:1:IRON:)	60	GenResource	SILK	GNOMISH UNDERWEAVE	Prop_WearAdjuster;savedisease+3
+bolt of spidersteel	30	90	(onground:consumed:1:SILK(SILK):)&&(onground:consumed:1:MITHRIL:)	1000	GenResource	SPIDERSTEEL	SPIDERSTEEL	
