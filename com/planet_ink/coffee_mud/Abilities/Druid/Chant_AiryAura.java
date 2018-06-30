@@ -53,7 +53,7 @@ public class Chant_AiryAura extends Chant
 	@Override
 	public String displayText()
 	{
-		return "";
+		return L("(Airy Aura)");
 	}
 
 	@Override
@@ -207,9 +207,12 @@ public class Chant_AiryAura extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> give(s) off an airy aura!"));
-				final Ability A=beneficialAffect(mob,target,asLevel,0);
+				final Chant_AiryAura A=(Chant_AiryAura)beneficialAffect(mob,target,asLevel,0);
 				if(A!=null)
+				{
+					A.druidsGroup = new HashSet<MOB>();
 					A.tick(mob, Tickable.TICKID_MOB);
+				}
 			}
 		}
 		else
