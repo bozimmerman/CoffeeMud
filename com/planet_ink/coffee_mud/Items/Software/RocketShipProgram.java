@@ -1229,8 +1229,8 @@ public class RocketShipProgram extends GenShipProgram
 							return (o2.coordinates() == null) ? 0 : 1;
 						if(o2.coordinates() == null)
 							return -1;
-						final long distance1 = map.getDistanceFrom(spaceObject, o1) - o1.radius();;
-						final long distance2 = map.getDistanceFrom(spaceObject, o2) - o2.radius();;
+						final long distance1 = map.getDistanceFrom(spaceObject, o1) - o1.radius();
+						final long distance2 = map.getDistanceFrom(spaceObject, o2) - o2.radius();
 						if(distance1 < distance2)
 							return -1;
 						if(distance1 > distance2)
