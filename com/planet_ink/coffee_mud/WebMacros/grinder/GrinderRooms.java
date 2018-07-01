@@ -183,7 +183,7 @@ public class GrinderRooms
 				return error;
 
 			// here's where you resolve items and mobs
-			final Vector<MOB> allmobs=new Vector<MOB>();
+			final List<MOB> allmobs=new ArrayList<MOB>();
 			int skip=0;
 			while(oldR.numInhabitants()>(skip))
 			{
@@ -191,7 +191,7 @@ public class GrinderRooms
 				if(M.isSavable())
 				{
 					if(!allmobs.contains(M))
-						allmobs.addElement(M);
+						allmobs.add(M);
 					oldR.delInhabitant(M);
 				}
 				else
@@ -203,12 +203,12 @@ public class GrinderRooms
 				else
 					skip++;
 			}
-			final Vector<Item> allitems=new Vector<Item>();
+			final List<Item> allitems=new ArrayList<Item>();
 			while(oldR.numItems()>0)
 			{
 				final Item I=oldR.getItem(0);
 				if(!allitems.contains(I))
-					allitems.addElement(I);
+					allitems.add(I);
 				oldR.delItem(I);
 			}
 
@@ -271,8 +271,8 @@ public class GrinderRooms
 
 			if(httpReq.isUrlParameter("ITEM1"))
 			{
-				final Vector<Item> items=new Vector<Item>();
-				final Vector<String> cstrings=new Vector<String>();
+				final List<Item> items=new ArrayList<Item>();
+				final List<String> cstrings=new ArrayList<String>();
 				for(int i=1;;i++)
 				{
 					final String MATCHING=httpReq.getUrlParameter("ITEM"+i);
@@ -288,19 +288,19 @@ public class GrinderRooms
 							I2.unWear();
 							//if(worn) I2.wearEvenIfImpossible(M);
 							happilyAddItem(I2,R);
-							items.addElement(I2);
+							items.add(I2);
 							I2.setContainer(null);
 							final String CONTAINER=httpReq.getUrlParameter("ITEMCONT"+i);
-							cstrings.addElement((CONTAINER==null)?"":CONTAINER);
+							cstrings.add((CONTAINER==null)?"":CONTAINER);
 						}
 					}
 				}
 				for(int i=0;i<cstrings.size();i++)
 				{
-					final String CONTAINER=cstrings.elementAt(i);
+					final String CONTAINER=cstrings.get(i);
 					if(CONTAINER.length()==0)
 						continue;
-					final Item I2=items.elementAt(i);
+					final Item I2=items.get(i);
 					final Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
 					if(C2 instanceof Container)
 						I2.setContainer((Container)C2);
@@ -311,7 +311,7 @@ public class GrinderRooms
 
 			for(int i=0;i<allitems.size();i++)
 			{
-				final Item I=allitems.elementAt(i);
+				final Item I=allitems.get(i);
 				if(!R.isContent(I))
 					I.destroy();
 			}
@@ -323,7 +323,7 @@ public class GrinderRooms
 			}
 			for(int m=0;m<allmobs.size();m++)
 			{
-				final MOB M=allmobs.elementAt(m);
+				final MOB M=allmobs.get(m);
 				if(!R.isInhabitant(M))
 					M.destroy();
 			}
