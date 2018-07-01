@@ -103,7 +103,7 @@ public class GrinderItems
 		String shopItemCode=httpReq.getUrlParameter("SHOPITEM");
 		if(shopItemCode==null)
 			shopItemCode="";
-		
+
 		final String sync=("SYNC"+((R==null)?((playerM!=null)?playerM.Name():null):R.roomID()));
 		synchronized(sync.intern())
 		{

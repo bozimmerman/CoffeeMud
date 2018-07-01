@@ -29,7 +29,7 @@
         function OpenClick(file,named)
         {
             var strFeatures="top=50,left=50,scrollbars=yes,resizeable=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
-            w=window.open(file+"?AUTH=@Authenticate?AUTH@&AREA=ITEM%23%3CP%3D@RequestParameterEncoded?PLAYER@%3E%3CR%3D@RequestParameterEncoded?ROOM@%3E%3CM%3D@RequestParameterEncoded?MOB@%3E%3CI%3D@RequestParameterEncoded?ITEM@%3E","Map",strFeatures);
+            w=window.open(file+"?AUTH=@Authenticate?AUTH@&AREA=ITEM%23%3CP%3D@RequestParameterEncoded?PLAYER@%3E%3CR%3D@RequestParameterEncoded?ROOM@%3E%3CM%3D@RequestParameterEncoded?MOB@%3E%3CI%3D@RequestParameterEncoded?ITEM@%3E%3CSI%3D@RequestParameterEncoded?SHOPITEM@%3E","Map",strFeatures);
         }
 		function EditBehavior(ME)
 		{

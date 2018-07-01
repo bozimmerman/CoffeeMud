@@ -65,6 +65,7 @@ public class MUDGrinder extends StdWebMacro
 			String roomCode=null;
 			String mobCode=null;
 			String itemCode=null;
+			String shopItemCode=null;
 			int x=xmlIsh.indexOf(">");
 			while(x>=0)
 			{
@@ -80,6 +81,9 @@ public class MUDGrinder extends StdWebMacro
 					else
 					if(thing.startsWith("I=")&&(x>2))
 						itemCode=thing.substring(2);
+					else
+					if(thing.startsWith("SI=")&&(x>3))
+						itemCode=thing.substring(3);
 					else
 					if(thing.startsWith("R=")&&(x>2))
 						roomCode=thing.substring(2);

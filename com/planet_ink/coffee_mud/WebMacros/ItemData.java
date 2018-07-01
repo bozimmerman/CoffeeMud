@@ -1380,8 +1380,9 @@ public class ItemData extends StdWebMacro
 					case AREAXML:
 						if(I instanceof BoardableShip)
 						{
+							final String xml=CMLib.xml().parseOutAngleBracketsAndQuotes(CMLib.coffeeMaker().getAreaObjectXML(((BoardableShip)I).getShipArea(), null, null, null, true).toString());
 							str.append((firstTime) ? 
-								CMLib.xml().parseOutAngleBracketsAndQuotes(CMLib.coffeeMaker().getAreaObjectXML(((BoardableShip)I).getShipArea(), null, null, null, true).toString()) :
+								xml :
 								old).append(", ");
 						}
 						break;
