@@ -249,7 +249,8 @@ public class GenComputerConsole extends StdComputerConsole
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 		{
-			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+			if((!E.getStat(codes[i]).equals(getStat(codes[i])))
+			&&(!codes[i].equals("READABLETEXT")))
 				return false;
 		}
 		return true;
