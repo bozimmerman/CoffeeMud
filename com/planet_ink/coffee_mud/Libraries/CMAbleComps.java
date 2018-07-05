@@ -428,15 +428,16 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 				if(subType.indexOf(' ')>0)
 					itemDesc=amt+" "+subType;
 				else
-					itemDesc=amt+" "+RawMaterial.Material.findByMask((int)comp.getLongType()).noun().toLowerCase()+" "+subType;
+					itemDesc=amt+" "+RawMaterial.Material.findByMask((int)comp.getLongType()).noun().toLowerCase()+" ("+subType+") ";
 			}
 			else
 			if(comp.getType()==AbilityComponent.CompType.RESOURCE)
 			{
-				if(subType.indexOf(' ')>0)
-					itemDesc=amt+" "+subType;
+				final String matName=RawMaterial.CODES.NAME((int)comp.getLongType()).toLowerCase();
+				if(subType.equals(matName) && ((comp.getLongType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH))
+					itemDesc=amt+" "+subType+" bolt";
 				else
-					itemDesc=amt+" "+RawMaterial.CODES.NAME((int)comp.getLongType()).toLowerCase()+" "+subType;
+					itemDesc=amt+" "+matName;
 			}
 		}
 		else
@@ -464,6 +465,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		else
 		if(comp.getLocation()==AbilityComponent.CompLocation.ONGROUND)
 			buf.append(L("@x1 on the ground",itemDesc));
+		System.out.println(buf.toString());//BZ:DELME
 		return buf.toString();
 	}
 

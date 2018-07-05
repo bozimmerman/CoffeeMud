@@ -235,7 +235,7 @@ public class Spell_MysticLoom extends Spell
 						final Ability A=this.skill=theLoomer.fetchEffect(skill.ID());
 						if(A!=null)
 						{
-							//System.out.println("GO: "+recipe.get(0));
+							System.out.println("GO: "+recipe.get(0));
 							int tickDown = CMath.s_int(A.getStat("TICKDOWN"));
 							if(tickDown > 0)
 							{
@@ -248,8 +248,8 @@ public class Spell_MysticLoom extends Spell
 							CMLib.threads().startTickDown(A, Tickable.TICKID_MOB, 1);
 							break;
 						}
-						//else
-						//	System.out.println("FAIL: "+recipe.get(0));
+						else
+							System.out.println("FAIL: "+recipe.get(0));
 					}
 				}
 				final List<Item> spares=new LinkedList<Item>();

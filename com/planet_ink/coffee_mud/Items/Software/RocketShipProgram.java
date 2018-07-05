@@ -566,7 +566,7 @@ public class RocketShipProgram extends GenShipProgram
 			return super.checkPowerCurrent(value);
 		}
 		if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-			Log.debugOut("Program state: "+state.toString()); //BZ:DELME
+			Log.debugOut("Program state: "+state.toString());
 		switch(state)
 		{
 		case LANDING:

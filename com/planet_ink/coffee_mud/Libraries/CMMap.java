@@ -557,26 +557,17 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(yawDelta > Math.PI)
 			yawDelta=PI_TIMES_2-yawDelta;
 
-		//if((directionPitch == facingPitch)
-		//&&((directionPitch == 0.0)||(directionPitch == Math.PI)))
-		//	return 0.0;
-
 		double pitchDelta = (directionPitch >  facingPitch) ? (directionPitch - facingPitch) : (facingPitch - directionPitch);
 		if(pitchDelta > Math.PI)
 			pitchDelta=Math.PI-pitchDelta;
-
-		//if(Math.abs(pitchDelta-Math.PI)<ZERO_ALMOST)
-		//	yawDelta=0.0;
-
 		
-		final double pitchSin = 2.0*Math.sin(pitchDelta/2.0);
-		final double yawSin = 2.0*Math.sin(yawDelta/2.0);
-		double yawPitchParts = (pitchSin * pitchSin)+(yawSin * yawSin);
-		final double finalDelta;
-		if(yawPitchParts > 4)
-			finalDelta = 2.0*Math.asin(2.0-(Math.sqrt(yawPitchParts)/2.0));
-		else
-			finalDelta = 2.0*Math.asin(Math.sqrt(yawPitchParts)/2.0);
+		final double x1=Math.sin(fromAngle[1])*Math.cos(fromAngle[0]);
+		final double y1=Math.sin(fromAngle[1])*Math.sin(fromAngle[0]);
+		final double z1=Math.cos(fromAngle[1]);
+		final double x2=Math.sin(toAngle[1])*Math.cos(toAngle[0]);
+		final double y2=Math.sin(toAngle[1])*Math.sin(toAngle[0]), z2=Math.cos(toAngle[1]);
+		final double pitchDOTyaw=x1*x2+y1*y2+z1*z2;
+		final double finalDelta=Math.acos(pitchDOTyaw);
 		return finalDelta;
 	}
 
@@ -636,20 +627,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(Math.abs(pitchDelta-Math.PI)<ZERO_ALMOST)
 			yawDelta=0.0;
 		
-		/* Below is a problem 19,19 is opposite to 200,160, so the speed cos should be -1, not .77.
-		// Speeding because 39.10792895994204   (deltas: yaw=180.00000000173782, pitch=140.89207103832015) = 0.7759591226452032
-		// dir:19.48056503444094,19.627363928962563    acceldir:199.48056503617875,160.51943496728273
-		// SpaceShip a space ship Galileo accellerates FORWARD 1.44018341
-		*/
-		double anglesDelta =  yawDelta + pitchDelta;
-		// this resulted in imaginary numbers.. infinities and such.
-		//final double pitchAffect = Math.abs(pitchDelta-Math.PI); 
-		//anglesDelta =  pitchAffect + ((pitchAffect/PI_BY_2) * yawDelta);
-		//System.out.println("Test: "+pitchDelta+"->"+pitchAffect+","+yawDelta+","+anglesDelta+"  ===  "+(currentSpeed + (acceleration * Math.cos(anglesDelta)))); //BZ:DELME
-
-		if(anglesDelta > Math.PI)
-			anglesDelta = Math.abs(PI_TIMES_2-anglesDelta);
-
+		final double anglesDelta =  getAngleDelta(curDirection, accelDirection);
 		final double accelerationMultiplier = acceleration / currentSpeed;
 		double newDirectionYaw;
 		if(yawDelta < 0.1)
@@ -677,10 +655,6 @@ public class CMMap extends StdLibrary implements WorldMap
 			newDirectionYaw = accelDirectionYaw;
 			newDirectionPitch = accelDirectionPitch;
 		}
-		if(newSpeed < currentSpeed)System.out.println("Slowing to "+newSpeed+" because "+Math.toDegrees(anglesDelta)+"="+Math.cos(anglesDelta)); //BZ:DELME
-		else System.out.println("Speeding to "+newSpeed+" because "+Math.toDegrees(anglesDelta)+"("+Math.toDegrees(yawDelta)+","+Math.toDegrees(pitchDelta)+")="+Math.cos(anglesDelta)
-					+"       dir:"+Math.toDegrees(curDirection[0])+","+Math.toDegrees(curDirection[1])+"    acceldir:"+Math.toDegrees(accelDirection[0])+","+Math.toDegrees(accelDirection[1])); //BZ:DELME
-
 		curDirection[0]=newDirectionYaw;
 		curDirection[1]=newDirectionPitch;
 		return newSpeed;
