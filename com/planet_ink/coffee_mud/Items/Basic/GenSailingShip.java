@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.Basic;
 import com.planet_ink.coffee_mud.Items.Basic.StdPortal;
+import com.planet_ink.coffee_mud.Items.BasicTech.GenSpaceShip;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Expire;
 import com.planet_ink.coffee_mud.core.interfaces.ItemPossessor.Move;
@@ -3002,9 +3003,52 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 		final String[] codes=getStatCodes();
 		for(int i=0;i<codes.length;i++)
 		{
-			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+			if((!E.getStat(codes[i]).equals(getStat(codes[i])))
+			&&(!codes[i].equals("AREA"))
+			&&(!codes[i].equals("ABILITY")))
 				return false;
 		}
+		final Area eA = ((GenSailingShip)E).getShipArea();
+		final Area A = this.getShipArea();
+		final Enumeration<Room> er = eA.getProperMap();
+		final Enumeration<Room> r = A.getProperMap();
+		for(;r.hasMoreElements();)
+		{
+			final Room R=r.nextElement();
+			if(!er.hasMoreElements())
+				return false;
+			final Room eR = er.nextElement();
+			if(!R.sameAs(eR))
+				return false;
+			Enumeration<Item> i=R.items();
+			Enumeration<Item> ei = eR.items();
+			for(;i.hasMoreElements();)
+			{
+				final Item I=i.nextElement();
+				if(!ei.hasMoreElements())
+					return false;
+				final Item eI=ei.nextElement();
+				if(!I.sameAs(eI))
+					return false;
+			}
+			if(ei.hasMoreElements())
+				return false;
+			Enumeration<MOB> m=R.inhabitants();
+			Enumeration<MOB> em = eR.inhabitants();
+			for(;m.hasMoreElements();)
+			{
+				final MOB M=m.nextElement();
+				if(!em.hasMoreElements())
+					return false;
+				final MOB eM=em.nextElement();
+				if(!M.sameAs(eM))
+					return false;
+			}
+			if(em.hasMoreElements())
+				return false;
+		}
+		if(er.hasMoreElements())
+			return false;
 		return true;
 	}
 }
