@@ -73,7 +73,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tSTATUE||LID_LOCK||WEAPON_CLASS||RIDE_BASIS||CODED_WEAR_LOCATION\t"
+		+"ITEM_CLASS_ID\tSTATUE||CONTAINER_TYPE_OR_LIDLOCK||WEAPON_CLASS||RIDE_BASIS||CODED_WEAR_LOCATION\t"
 		+"BASE_ARMOR_AMOUNT||CONTAINER_CAPACITY||BASE_DAMAGE||LIGHT_DURATION||MAX_WAND_USES||DICE_SIDES\t"
 		+"CODED_SPELL_LIST";
 	}
@@ -496,10 +496,10 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			{
 				if(capacity>0)
 					((Container)buildingI).setCapacity(capacity+woodRequired);
-				if(misctype.equalsIgnoreCase("LID"))
+				if(misctype.indexOf("LID")>=0)
 					((Container)buildingI).setDoorsNLocks(true,false,true,false,false,false);
 				else
-				if(misctype.equalsIgnoreCase("LOCK"))
+				if(misctype.indexOf("LOCK")>=0)
 				{
 					((Container)buildingI).setDoorsNLocks(true,false,true,true,false,true);
 					((Container)buildingI).setKeyName(Double.toString(Math.random()));
@@ -511,6 +511,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 					key.recoverPhyStats();
 					key.text();
 				}
+				if(!(buildingI instanceof Armor))
+					((Container)buildingI).setContainTypes(getContainerType(misctype));
 			}
 			if(buildingI instanceof Weapon)
 			{

@@ -73,7 +73,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
-		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tLID_LOCK||STONE_FLAG\t"
+		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tCONTAINER_TYPE_OR_LIDLOCK||STONE_FLAG\t"
 		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES\tCODED_SPELL_LIST";
 	}
 
@@ -387,14 +387,16 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		{
 			if(capacity>0)
 				((Container)buildingI).setCapacity(capacity+woodRequired);
-			if(misctype.equalsIgnoreCase("LID"))
+			if(misctype.indexOf("LID")>=0)
 				((Container)buildingI).setDoorsNLocks(true,false,true,false,false,false);
 			else
-			if(misctype.equalsIgnoreCase("LOCK"))
+			if(misctype.indexOf("LOCK")>=0)
 			{
 				((Container)buildingI).setDoorsNLocks(true,false,true,true,false,true);
 				((Container)buildingI).setKeyName(Double.toString(Math.random()));
 			}
+			if(!(buildingI instanceof Armor))
+				((Container)buildingI).setContainTypes(getContainerType(misctype));
 		}
 		if(buildingI instanceof Drink)
 		{
