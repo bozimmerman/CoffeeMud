@@ -40,18 +40,42 @@ public class Prop_MOBEmoter extends Property
 		return "Prop_MOBEmoter";
 	}
 
-	Behavior emoter=null;
+	protected Behavior emoter=null;
+	@Override
+	public void setMiscText(String newText)
+	{
+		super.setMiscText(newText);
+		final int x=newText.indexOf(' ');
+		if(x>0)
+		{
+			final String id=newText.substring(0, x).trim();
+			emoter = CMClass.getBehavior(id); 
+			if(emoter!=null)
+			{
+				final String behaviorArgs = newText.substring(x+1).trim();
+				emoter.setParms(behaviorArgs);
+				return;
+			}
+		}
+		emoter = CMClass.getBehavior("Emoter"); 
+		if(emoter!=null)
+			emoter.setParms(newText);
+	}
+
+	@Override
+	public String accountForYourself()
+	{
+		if(emoter != null)
+			return emoter.accountForYourself();
+		return "";
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if(emoter==null)
-		{
-			emoter=CMClass.getBehavior("Emoter");
-			emoter.setParms(text());
-		}
-		emoter.executeMsg(myHost,msg);
+		if(emoter!=null)
+			emoter.executeMsg(myHost,msg);
 	}
 
 	@Override
@@ -59,12 +83,9 @@ public class Prop_MOBEmoter extends Property
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if(emoter==null)
-		{
-			emoter=CMClass.getBehavior("Emoter");
-			emoter.setParms(text());
-		}
-		return emoter.okMessage(myHost,msg);
+		if(emoter!=null)
+			return emoter.okMessage(myHost,msg);
+		return true;
 	}
 
 	@Override
@@ -72,17 +93,16 @@ public class Prop_MOBEmoter extends Property
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		if((ticking instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
+		if((ticking instanceof MOB)
+		&&(tickID==Tickable.TICKID_MOB))
 		{
-			if(emoter==null)
+			if(emoter!=null)
 			{
-				emoter=CMClass.getBehavior("Emoter");
-				emoter.setParms(text());
-			}
-			if(!emoter.tick(ticking,tickID))
-			{
-				if(CMParms.getParmInt(emoter.getParms(),"expires",0)>0)
-					((MOB)ticking).delEffect(this);
+				if(!emoter.tick(ticking,tickID))
+				{
+					if(CMParms.getParmInt(emoter.getParms(),"expires",0)>0)
+						((MOB)ticking).delEffect(this);
+				}
 			}
 		}
 		return true;
