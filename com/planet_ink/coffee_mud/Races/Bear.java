@@ -98,11 +98,11 @@ public class Bear extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "BearSpeak", "Skill_BearForaging" };
-	private final int[]		racialAbilityLevels			= { 1, 9 };
-	private final int[]		racialAbilityProficiencies	= { 100, 100 };
-	private final boolean[]	racialAbilityQuals			= { false, false };
-	private final String[]	racialAbilityParms			= { "", "" };
+	private final String[]	racialAbilityNames			= { "BearSpeak", "Scavenge", "Skill_BearForaging" };
+	private final int[]		racialAbilityLevels			= { 1, 1, 9 };
+	private final int[]		racialAbilityProficiencies	= { 100, 100, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()

@@ -98,11 +98,11 @@ public class WereBear extends Bear
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "BearSpeak" };
-	private final int[]		racialAbilityLevels			= { 1 };
-	private final int[]		racialAbilityProficiencies	= { 100 };
-	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "" };
+	private final String[]	racialAbilityNames			= { "BearSpeak", "Scavenge" };
+	private final int[]		racialAbilityLevels			= { 1, 1 };
+	private final int[]		racialAbilityProficiencies	= { 100, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false };
+	private final String[]	racialAbilityParms			= { "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()
