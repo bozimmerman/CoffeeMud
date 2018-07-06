@@ -168,14 +168,6 @@ public class StdArea implements Area
 		return derivedAtmo;
 	}
 
-	protected Enumeration<String> allBlurbFlags()
-	{
-		final MultiEnumeration<String> multiEnum = new MultiEnumeration<String>(areaBlurbFlags());
-		for(final Iterator<Area> i=getParentsIterator();i.hasNext();)
-			multiEnum.addEnumeration(i.next().areaBlurbFlags());
-		return multiEnum;
-	}
-
 	@Override
 	public String getBlurbFlag(String flag)
 	{
@@ -1772,18 +1764,24 @@ public class StdArea implements Area
 		{
 			boolean blurbed=false;
 			String flag=null;
-			for(final Enumeration<String> f= allBlurbFlags();f.hasMoreElements();)
+			final List<Area> areas=new XVector<Area>(getParentsIterator());
+			areas.add(this);
+			for(final Iterator<Area> i= areas.iterator(); i.hasNext();)
 			{
-				flag=getBlurbFlag(f.nextElement());
-				if((flag!=null)
-				&&((!flag.startsWith("{"))||(!flag.endsWith("}"))))
+				final Area A=i.next();
+				for(final Enumeration<String> f= A.areaBlurbFlags();f.hasMoreElements();)
 				{
-					if (!blurbed)
+					flag=A.getBlurbFlag(f.nextElement());
+					if((flag!=null)
+					&&((!flag.startsWith("{"))||(!flag.endsWith("}"))))
 					{
-						blurbed = true;
-						s.append("\n\r");
+						if (!blurbed)
+						{
+							blurbed = true;
+							s.append("\n\r");
+						}
+						s.append(flag+"\n\r");
 					}
-					s.append(flag+"\n\r");
 				}
 			}
 			if(blurbed)
