@@ -66,7 +66,7 @@ public class Chant_Hippieness extends Chant
 	@Override
 	public int abstractQuality()
 	{
-		return Ability.QUALITY_OK_OTHERS;
+		return Ability.QUALITY_MALICIOUS;
 	}
 
 	@Override
