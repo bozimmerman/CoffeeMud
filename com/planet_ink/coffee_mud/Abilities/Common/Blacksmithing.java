@@ -73,8 +73,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	{ 
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
-		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tSTATUE||RIDE_BASIS||CONTAINER_TYPE_OR_LIDLOCK\t"
-		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES\tCODED_SPELL_LIST";
+		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tSTATUE||RIDE_BASIS||CONTAINER_TYPE_OR_LIDLOCK||CODED_WEAR_LOCATION\t"
+		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES||DICE_SIDES\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -450,6 +450,11 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 
+		if((buildingI instanceof Armor)&&(!(buildingI instanceof FalseLimb)))
+		{
+			((Armor)buildingI).basePhyStats().setArmor(0);
+			setWearLocation(buildingI,misctype,0);
+		}
 		if((misctype.indexOf("STATUE")>=0)
 		&&(statue!=null)
 		&&(statue.trim().length()>0))
@@ -480,7 +485,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			else
 			if(misctype.indexOf("LID")>=0)
 				((Container)buildingI).setDoorsNLocks(true,false,true,false,false,false);
-			((Container)buildingI).setContainTypes(getContainerType(misctype));
+			if(!(buildingI instanceof Armor))
+				((Container)buildingI).setContainTypes(getContainerType(misctype));
 		}
 		if(buildingI instanceof Drink)
 		{
@@ -492,6 +498,10 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 					((Drink)buildingI).setThirstQuenched(capacity*50);
 				((Drink)buildingI).setLiquidRemaining(0);
 			}
+		}
+		if(buildingI.ID().endsWith("Dice"))
+		{
+			buildingI.basePhyStats().setAbility(capacity);
 		}
 		if((buildingI instanceof Wand)
 		&&(foundRecipe.get(RCP_CAPACITY).trim().length()>0))

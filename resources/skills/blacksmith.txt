@@ -1,23 +1,149 @@
-% Cup	1	20	1	1	GenDrink		5	
-% Key Ring	1	10	1	1	GenContainer	KEYS	100	
-% Mug	1	20	1	1	GenDrink		5	
-% Plate	1	20	1	1	GenContainer		5	
-% Pot	1	30	2	6	GenDrink		15	
-% Covered Pot	1	30	2	6	GenDrink	LIQUID|EATABLES|LID|	30	
-% Pan	1	30	2	6	GenContainer		15	
-% Pitcher	1	30	2	1	GenDrink		15	
-% Wand	12	30	1	3	GenWand		10	
-% Wok	3	30	3	7	GenContainer		25	
-% Hooded Lantern	6	50	10	150	GenLantern			
-% Ice Box	30	60	50	300	GenContainer		250	*Prop_IceBox;
-% Lantern	6	40	7	100	GenLantern			
-% Bowl	1	20	1	1	GenDrink	EATABLES|LIQUID	5	
-% Statue	12	120	450	100	GenItem	STATUE		
-% Chain	12	20	20	5	GenRideable	LADDER	1	
-% Trashcan	6	20	20	5	GenContainer		250	Prop_Trashcan
-% Drum	3	10	20	1	GenDrink		250	
-% Can	1	5	5	1	GenContainer		10	
-% Lamp Post	15	150	250	1	GenItem			Spell_ContinualLight
-% Bullseye Lantern	12	50	15	200	GenLantern			
-% Colossus	75	4000	8000	10000	GenItem	STATUE		Spell_Enlarge
-% Hook-Hand	10	20	5	100	GenLimb			
+% cup	1	20	1	1	GenEmptyDrink	LIQUID	5	
+% bowl	1	20	1	1	GenEmptyDrink	LIQUID|EATABLES	6	
+% key ring	2	10	1	1	GenContainer	KEYS	100	
+% lumberjack saw	3	30	5	25	GenItem			*Prop_ImproveGather;amt=2 skills=Chopping, MasterChopping
+% plate	4	20	1	4	GenContainer	EATABLES	5	
+% mug	5	20	1	5	GenEmptyDrink	LIQUID	5	
+% pot	5	30	2	15	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	15	
+% urn	5	20	2	10	GenContainer	LID	2	
+% whisk	6	20	2	10	GenItem			
+% spoon	7	10	1	2	GenEmptyDrink	LIQUID	1	
+% lantern	7	40	7	75	GenLantern			
+% sheep shears	8	25	4	25	GenItem			*Prop_ImproveGather;amt=2 skills=Shearing, MasterShearing
+% ornament	9	10	1	2	GenItem			
+% hook-hand	10	30	5	50	GenLimb			
+% pitcher	11	30	2	20	GenEmptyDrink	LIQUID	15	
+% wand	12	40	1	10	GenWand		20	
+% lamp post	13	150	250	2000	GenItem			Spell_ContinualLight
+% pan	14	30	2	20	GenContainer	EATABLES|RAWMATERIALS	15	
+% gravy boat	15	15	2	10	GenEmptyDrink	LIQUID	5	
+large % grill	16	120	80	3000	GenRideable		250	Burning
+% hooded lantern	17	45	9	150	GenLantern			
+% spatula	18	10	2	7	GenItem			
+% trashcan	18	20	20	30	GenContainer		250	Prop_Trashcan
+% wind chimes	19	35	10	150	GenItem			*Prop_MOBEmoter;PORTAL_ENTER_ROOM clanks melodiously in the breeze.
+% fork	20	15	1	6	GenItem			
+% nose	20	40	2	36	GenLimb			
+small % bin	20	25	5	50	GenContainer		100	
+% figurine	21	120	1	60	GenItem	STATUE		
+% wok	21	30	3	43	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	25	
+% bucket	21	40	3	60	GenEmptyDrink	LIQUID|EATABLES	50	
+% kitchen tongs	22	20	1	10	GenItem			
+% horseshoes	23	10	4	8	GenArmor	0:FEET	1	*Prop_WearOverride;-RACE +HORSE +CENTAUR
+small % plate	24	10	1	5	GenContainer	EATABLES	3	
+% can	25	12	1	6	GenEmptyDrink	LIQUID	10	
+% sign	25	10	5	23	GenItem			
+% range	26	120	120	4500	GenContainer	LID	50	Burning
+% bullseye lantern	27	50	15	200	GenLantern			
+% shelf	27	30	15	240	GenContainer		100	
+% chain	27	20	20	200	GenRideable	LADDER	1	
+small % crib	27	40	20	430	GenContainer		50	
+expert % sheep shears	28	25	4	55	GenItem			*Prop_ImproveGather;amt=3 skills=Shearing, MasterShearing
+% eye	30	30	1	18	GenLimb			
+% kitchen shears	30	20	2	23	GenItem			
+% anvil	30	80	40	1900	GenItem			
+% fountain	30	100	500	5000	GenFountain		999999	
+% kettle	31	40	5	120	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	75	
+expert % lumberjack saw	31	35	5	105	GenItem			*Prop_ImproveGather;amt=3 skills=Chopping, MasterChopping
+latching % key ring	32	10	2	11	GenContainer	LID||KEYS	101	
+% bookshelf	32	35	15	310	GenContainer	READABLES|SCROLLS	200	
+% six-sided die	33	40	1	25	GenDice		6	
+small % stool	33	20	5	60	GenChair	CHAIR	1	
+% chair	33	40	10	250	GenChair	CHAIR	1	
+% saucer	34	10	1	6	GenContainer	DRINKABLES	5	
+% sign post	34	20	50	600	GenItem			Spell_Enlarge
+% four-sided die	35	50	1	32	GenDice		4	
+% goblet	35	30	2	40	GenEmptyDrink	LIQUID	5	
+% ice box	35	60	50	1200	GenContainer	LID||EATABLES	250	*Prop_IceBox;
+% pipe	36	25	2	33	GenPipe		1	
+small % bed	36	25	25	405	GenBed	BED	1	
+% grill	36	90	60	3500	GenRideable		100	Burning
+% eight-sided die	37	50	1	34	GenDice		8	
+% ladder	37	40	20	10	GenRideable	LADDER	0	
+% lamp	37	30	25	490	GenLantern			
+% crib	37	45	30	900	GenContainer		150	
+% table	38	50	50	1700	GenRideable	TABLE	2	
+% ten-sided die	39	60	1	41	GenDice		10	
+small % bench	39	20	10	130	GenChair	CHAIR	2	
+% ear trumpet	40	40	5	136	GenLimb			
+% bin	40	30	25	500	GenContainer		1000	
+% twelve-sided die	41	70	1	49	GenDice		12	
+% canteen	41	30	3	61	GenEmptyDrink	LIQUID|LID	10	
+% covered pot	41	40	4	110	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS|LID	30	
+% storage drum	41	10	10	61	GenEmptyDrink	LIQUID	250	
+% statue	41	120	450	37500	GenItem	STATUE		
+% potion rack	42	30	20	405	GenContainer	DRINKABLES	100	Prop_NoPurge
+% sarcophogus	42	40	200	5450	GenBed	BED	500	Prop_NoPurge
+% stool	43	20	5	66	GenChair	CHAIR	1	
+% tub	43	60	100	4150	GenTub	CHAIR	2000	
+% brazier	43	40	125	2500	GenItem			Spell_ContinualLight
+% platter	44	25	3	51	GenContainer		20	
+% flask	45	25	2	35	GenEmptyDrink	LIQUID|LID	5	
+% blacksmithing tongs	45	20	3	41	GenItem			
+small % chest	45	80	10	560	GenContainer	LOCK	100	
+% bed	46	30	50	1035	GenBed	BED	2	
+% stove	46	130	125	8000	GenContainer	LID	75	Burning
+% twenty-sided die	47	80	1	58	GenDice		20	
+% bench	49	40	20	560	GenChair	CHAIR	4	
+% ladle	50	15	1	11	GenEmptyDrink	LIQUID	2	
+% colander	50	20	1	15	GenItem			
+% jewelry box	50	35	5	125	GenContainer	LOCK	10	
+% peg leg	50	30	20	20	GenLimb			
+% dutch oven	51	45	5	168	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS|LID	35	
+% storage rack	51	25	50	910	GenContainer		500	
+% armor rack	52	30	75	1650	GenContainer	CLOTHES	2000	Prop_NoPurge
+large % six-sided die	53	50	2	75	GenDice		6	
+% chandelier	53	90	500	10000	GenItem			Spell_ContinualLight
+% serving tray	54	20	4	58	GenContainer		50	
+% candlestick	55	10	1	7	GenItem			
+large % four-sided die	55	60	2	90	GenDice		4	
+% chest	55	100	15	1150	GenContainer	LOCK	250	
+large % ice box	55	120	150	6000	GenContainer	LID||EATABLES	1000	*Prop_IceBox;
+% phalactery	56	16	2	22	GenItem			
+queen-sized % bed	56	40	100	2800	GenBed	BED	3	
+% furnace	56	140	150	12500	GenRideable		50	Burning
+large % eight-sided die	57	60	2	88	GenDice		8	
+% altar	58	100	100	7400	GenRideable	TABLE	150	
+large % ten-sided die	59	70	2	103	GenDice		10	
+master % sheep shears	59	30	5	108	GenItem			*Prop_ImproveGather;amt=4 skills=Shearing, MasterShearing
+large % bin	60	40	100	2910	GenContainer		5000	
+% measuring cup	61	20	1	15	GenEmptyDrink	LIQUID	3	
+large % twelve-sided die	61	80	2	119	GenDice		12	
+master % lumberjack saw	61	40	6	178	GenItem			*Prop_ImproveGather;amt=4 skills=Chopping, MasterChopping
+large % storage drum	61	20	20	283	GenEmptyDrink	LIQUID	1000	
+% weapon rack	62	30	50	1100	GenContainer	SWORDS|OTHER WEAPONS	1000	Prop_NoPurge
+% claw-foot tub	63	120	400	25000	GenTub	CHAIR	1000	
+% charger	64	20	2	30	GenContainer		10	
+% anchor	64	30	75	1650	GenItem			
+small % grill	66	80	40	2500	GenRideable		20	Burning
+King-sized % bed	66	50	150	5800	GenBed	BED	4	
+% cabinet	67	40	50	1550	GenContainer	LID	200	
+% sifter	68	20	1	16	GenItem			
+large % twenty-sided die	69	90	2	144	GenDice		20	
+Long % Bench	69	60	40	1900	GenChair	CHAIR	8	
+large % chest	70	125	25	2500	GenContainer	LOCK	500	
+% sink	70	80	100	5000	GenFountain		999	
+% pail	71	40	3	96	GenEmptyDrink	LIQUID|EATABLES	40	
+% braiser	71	45	3	108	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	30	
+% thirty-sided die	72	90	1	74	GenDice		30	
+% hat rack	72	15	10	115	GenContainer	CLOTHES	20	Prop_NoPurge
+% wall sconce	73	45	25	905	GenItem			Spell_ContinualLight
+% griddle	74	30	12	290	GenContainer	EATABLES	25	
+% hundred-sided die	75	100	1	84	GenDice		100	
+huge % ice box	75	150	600	25000	GenContainer	LID||EATABLES	5000	*Prop_IceBox;
+great % range	76	150	150	12500	GenContainer	LID	100	Burning
+Four Poster % Bed	76	60	200	10000	GenBed	BED	4	
+% strainer	77	15	1	13	GenItem			
+huge % bin	80	45	250	9400	GenContainer	LID||EATABLES	25000	
+% double dutch oven	81	50	7	305	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS|LID	40	
+huge % storage drum	81	30	40	1000	GenEmptyDrink	LIQUID	5000	
+% Colossus	81	4000	8000	26500000	GenItem	STATUE		Spell_Enlarge
+ornate % sarcophagus	82	80	300	21000	GenBed	BED	500	Prop_NoPurge
+% Throne	83	135	25	3000	GenChair	CHAIR	1	
+huge % chest	85	200	40	7200	GenContainer	LOCK	1000	
+great % stove	86	160	200	15000	GenContainer	LID	300	Burning
+large % crib	87	50	50	2250	GenContainer		500	
+legendary % sheep shears	89	35	6	190	GenItem			*Prop_ImproveGather;amt=5 skills=Shearing, MasterShearing
+holy % ark	90	250	50	11500	GenContainer	LID	500	
+legendary % lumberjack saw	91	50	7	325	GenItem			*Prop_ImproveGather;amt=5 skills=Chopping, MasterChopping
+% cauldron	91	60	10	550	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	100	

@@ -1952,6 +1952,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				@Override
 				public int appliesToClass(Object o)
 				{
+					if(o instanceof FalseLimb)
+						return -1;
 					return ((o instanceof Armor) || (o instanceof MusicalInstrument)) ? 2 : -1;
 				}
 	
@@ -3509,6 +3511,36 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					if(!(I instanceof Wand))
 						return "";
 					return ""+((Wand)I).maxUses();
+				}
+			},
+			new AbilityParmEditorImpl("DICE_SIDES","Dice.",ParmType.NUMBER)
+			{
+				@Override
+				public int appliesToClass(Object o)
+				{
+					if(o instanceof CMObject)
+					{
+						if(((CMObject)o).ID().endsWith("Dice"))
+							return 1;
+					}
+					return -1;
+				}
+	
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "6";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return ""+I.basePhyStats().ability();
 				}
 			},
 			new AbilityParmEditorImpl("WEAPON_CLASS","WClas",ParmType.CHOICES)
