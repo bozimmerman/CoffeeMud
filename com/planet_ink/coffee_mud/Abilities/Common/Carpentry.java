@@ -73,7 +73,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
 		+"LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
-		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION||MAX_WAND_USES\t"
+		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION||MAX_WAND_USES||DICE_SIDES\t"
 		+"BASE_ARMOR_AMOUNT||BASE_DAMAGE\tCONTAINER_TYPE||ATTACK_MODIFICATION\tCODED_SPELL_LIST";
 	}
 
@@ -536,6 +536,10 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 					key.recoverPhyStats();
 					key.text();
 				}
+			}
+			if(buildingI.ID().endsWith("Dice"))
+			{
+				buildingI.basePhyStats().setAbility(capacity);
 			}
 			if(buildingI instanceof Drink)
 			{

@@ -74,7 +74,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tSTATUE||LID_LOCK||WEAPON_CLASS||RIDE_BASIS||CODED_WEAR_LOCATION\t"
-		+"BASE_ARMOR_AMOUNT||CONTAINER_CAPACITY||BASE_DAMAGE||LIGHT_DURATION||MAX_WAND_USES\t"
+		+"BASE_ARMOR_AMOUNT||CONTAINER_CAPACITY||BASE_DAMAGE||LIGHT_DURATION||MAX_WAND_USES||DICE_SIDES\t"
 		+"CODED_SPELL_LIST";
 	}
 
@@ -531,6 +531,10 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(buildingI instanceof Rideable)
 			{
 				setRideBasis((Rideable)buildingI,misctype);
+			}
+			if(buildingI.ID().endsWith("Dice"))
+			{
+				buildingI.basePhyStats().setAbility(capacity);
 			}
 			if(buildingI instanceof Light)
 			{

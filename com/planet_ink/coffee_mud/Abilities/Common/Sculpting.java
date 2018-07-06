@@ -74,7 +74,8 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tSTATUE||LID_LOCK||RIDE_BASIS\tCONTAINER_CAPACITY||LIGHT_DURATION||MAX_WAND_USES\t"
+		+"ITEM_CLASS_ID\tSTATUE||LID_LOCK||RIDE_BASIS\t"
+		+"CONTAINER_CAPACITY||LIGHT_DURATION||MAX_WAND_USES||DICE_SIDES\t"
 		+"CONTAINER_TYPE\tCODED_SPELL_LIST";
 	}
 
@@ -184,6 +185,8 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
+		if(I instanceof FalseLimb)
+			return true;
 		return true;
 	}
 
@@ -514,6 +517,10 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 				((Light)buildingI).setDuration(capacity);
 				if(buildingI instanceof Container)
 					((Container)buildingI).setCapacity(0);
+			}
+			if(buildingI.ID().endsWith("Dice"))
+			{
+				buildingI.basePhyStats().setAbility(capacity);
 			}
 			buildingI.recoverPhyStats();
 			if((!CMLib.flags().isGettable(buildingI))

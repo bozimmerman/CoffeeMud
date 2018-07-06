@@ -268,7 +268,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		bundling=false;
 		int duration=4;
 		final int[] cols={
-			CMLib.lister().fixColWidth(16,mob.session()),
+			CMLib.lister().fixColWidth(25,mob.session()),
 			CMLib.lister().fixColWidth(3,mob.session())
 		};
 		if(str.equalsIgnoreCase("list"))

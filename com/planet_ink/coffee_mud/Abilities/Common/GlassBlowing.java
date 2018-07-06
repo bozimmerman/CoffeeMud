@@ -70,7 +70,9 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tLID_LOCK\tCONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES\tCODED_SPELL_LIST";
+		+"ITEM_CLASS_ID\tLID_LOCK\t"
+		+ "CONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES||DICE_SIDES\t"
+		+ "CODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -438,6 +440,10 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		&&(foundRecipe.get(RCP_CAPACITY).trim().length()>0))
 		{
 			((Wand)buildingI).setMaxUses(capacity);
+		}
+		if(buildingI.ID().endsWith("Dice"))
+		{
+			buildingI.basePhyStats().setAbility(capacity);
 		}
 		if(bundling)
 			buildingI.setBaseValue(lostValue);

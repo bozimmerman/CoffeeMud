@@ -32,7 +32,7 @@ Small % Stool	9	15	10	3	GenChair	CHAIR	1		0
 Small % Chair	9	15	15	5	GenChair	CHAIR	1		0	
 % Podium	10	15	15	5	GenRideable	TABLE	1		0	
 Small % Bench	10	20	20	10	GenChair	CHAIR	2		0	
-% Peg Leg	10	30	10	100	GenLimb	LEGS		0		
+% Peg Leg	10	30	10	100	GenLimb			0		
 Small % Bed	11	25	30	15	GenBed	BED	1		0	
 Small % Box	11	15	15	5	GenContainer		150		0	
 % Bookshelf	12	30	10	15	GenContainer		100		384	

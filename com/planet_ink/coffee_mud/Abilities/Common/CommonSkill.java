@@ -304,7 +304,10 @@ public class CommonSkill extends StdAbility
 
 	protected void setBrand(final MOB mob, final Item buildingI)
 	{
-		buildingI.setSecretIdentity(getBrand(mob));
+		if(buildingI instanceof RawMaterial)
+			buildingI.setSecretIdentity(buildingI.name());
+		else
+			buildingI.setSecretIdentity(getBrand(mob));
 	}
 
 	protected String getBrand(final Item buildingI)
