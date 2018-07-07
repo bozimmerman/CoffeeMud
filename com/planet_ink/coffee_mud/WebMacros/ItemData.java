@@ -298,6 +298,7 @@ public class ItemData extends StdWebMacro
 				final String val=vals.get(key);
 				httpReq.addFakeUrlParameter(key,val);
 			}
+			httpReq.addFakeUrlParameter("CHANGEDLEVEL", "false");
 		}
 		final boolean firstTime=(!httpReq.isUrlParameter("ACTION"))
 				||(!(httpReq.getUrlParameter("ACTION")).equals("MODIFYITEM"))
@@ -569,8 +570,11 @@ public class ItemData extends StdWebMacro
 						if(firstTime)
 							old=I.rawLogicalAnd()?"":"checked";
 						else
-						if(old.equals(""))
-							old="checked";
+						{
+							old=httpReq.getUrlParameter("ISTWOHANDED");
+							if(old.equals(""))
+								old="checked";
+						}
 						str.append(old);
 						break;
 					case ISTRAPPED: // is trapped
