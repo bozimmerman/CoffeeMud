@@ -1,43 +1,147 @@
-% comb	1	5	1	1	GenItem			
+% spoon	1	10	1	1	GenEmptyDrink	LIQUID	1	
 % toothpick	1	5	1	1	GenItem			
-Tiny % Club	1	10	10	18	GenWeapon	BLUNT	3	
-Small % Club	2	10	10	78	GenWeapon	BLUNT	4	
-% Figurine	3	40	30	25	GenItem	STATUE		
-Drinking Horn	4	10	4	5	GenDrink		100	
-% Knife	5	10	2	42	GenWeapon	DAGGER	4	
-% Table	6	30	50	20	GenRideable	TABLE	150	
-% Stool	6	30	10	6	GenChair	CHAIR	1	
-% Chair	7	30	15	10	GenChair	CHAIR	1	
-% Short sword	7	20	4	49	GenWeapon	SWORD	6	
-% Bench	8	40	30	15	GenChair	CHAIR	10	
-% Spoon	8	10	1	2	GenDrink		1	
-% Bed	9	50	70	20	GenBed	BED	2	
-% Club	9	10	10	218	GenWeapon	BLUNT	11	
-% Altar	10	100	100	200	GenRideable	TABLE	1000	
-% Sword	11	20	6	320	GenWeapon	SWORD	10	
-% Statue	12	22	100	100	GenItem	STATUE		
-% Pipe	12	40	2	10	GenPipe		3	
-% Wand	12	30	4	3	GenWand		10	
-% Flail	13	40	15	692	GenWeapon	FLAILED	14	
-% Spear	14	20	6	408	GenSpear	THROWN	12	
-Ornate % Table	15	40	60	80	GenRideable	TABLE	200	
-Elaborate % Stool	16	30	40	60	GenChair	CHAIR	1	
-% Throne	17	80	150	300	GenChair	CHAIR	1	
-Wicked % Short sword	17	140	8	149	GenWeapon	SWORD	16	
-Decorative % Bench	18	80	60	55	GenChair	CHAIR	10	
-Ominous % Bed	19	50	70	120	GenBed	BED	2	
-Spiked % Sword	20	50	32	620	GenWeapon	SWORD	21	
-% Great Club	21	20	30	752	GenWeapon	BLUNT	24	
-Spiked % Flail	22	80	30	892	GenWeapon	FLAILED	25	
-Wicked % Spear	23	40	52	608	GenSpear	THROWN	23	
-% Sliver	24	10	1	668	GenWeapon	EDGED	18	
-Spiked % Throne	25	40	50	650	GenRideable	CHAIR	1	
-Sacrificial % Altar	30	200	150	500	GenRideable	TABLE	1000	
-% Body Armor	30	100	60	500	GenArmor	S0:TORSO&&ARMS&&LEGS	70	*Prop_Doppleganger;ASMATERIAL=IRON MIN=30
-% Flail of skulls	40	80	22	1602	GenWeapon	FLAILED	31	*Prop_Doppleganger;ASMATERIAL=IRON MIN=40
-% Skull mace	50	80	18	1602	GenWeapon	BLUNT	48	*Prop_Doppleganger;ASMATERIAL=IRON MIN=50
-Spiked % Shield	55	100	40	500	GenShield	S0:HELD	70	*Prop_Doppleganger;ASMATERIAL=IRON MIN=55
-Skull-handled % sword	60	100	15	1802	GenWeapon	SWORD	58	*Prop_Doppleganger;ASMATERIAL=IRON MIN=60
-Spiked % Full Armor	70	200	70	2000	GenArmor	S0:TORSO&&ARMS&&LEGS	90	*Prop_Doppleganger;ASMATERIAL=IRON LEVELADD=5 MIN=70
-Crown of %	80	250	20	300	GenArmor	HEAD	90	*Prop_Doppleganger;ASMATERIAL=IRON LEVELADD=6 MIN=80
-Mask of %	90	250	15	450	GenArmor	3:EYES	90	*Prop_Doppleganger;ASMATERIAL=IRON LEVELADD=10 MIN=90
+small % club	2	25	10	15	GenWeapon	BLUNT	3	
+% flail	2	40	15	41	GenWeapon	FLAILED	5	
+% six-sided die	3	40	1	1	GenDice		6	
+% comb	3	5	1	1	GenItem			
+% sliver	4	10	1	8	GenWeapon	EDGED	2	
+% four-sided die	5	50	1	2	GenDice		4	
+% spear	5	20	6	41	GenSpear	THROWN	7	
+% skewer	6	10	2	11	GenWeapon	DAGGER	2	
+% eight-sided die	7	50	1	4	GenDice		8	
+% short sword	7	20	4	41	GenWeapon	SWORD	5	
+small skull mace	8	30	10	86	GenWeapon	BLUNT	7	
+% ten-sided die	9	60	1	5	GenDice		10	
+% ornament	9	10	1	1	GenItem			
+% bracers	9	30	2	20	GenArmor	S0:WRISTS	4	
+% ear trumpet	10	60	4	23	GenLimb		0	
+% twelve-sided die	11	70	1	8	GenDice		12	
+drinking horn	11	10	4	2	GenEmptyDrink	LIQUID	10	
+% breast plate	12	45	7	204	GenArmor	S0:TORSO	14	
+spiked % flail	12	80	18	360	GenWeapon	FLAILED	15	
+small % stool	13	5	5	1	GenChair	CHAIR	1	
+% sword	13	30	6	166	GenWeapon	SWORD	10	
+wicked % sliver	14	40	2	128	GenWeapon	EDGED	8	
+% club	14	30	10	216	GenWeapon	BLUNT	11	
+% greaves	15	30	4	104	GenArmor	S0:LEGS	10	
+wicked % spear	15	40	12	368	GenSpear	THROWN	21	
+% knife	16	40	2	75	GenWeapon	DAGGER	5	
+small % bed	16	25	30	100	GenBed	BED	1	
+% twenty-sided die	17	80	1	14	GenDice		20	
+% body armor	18	60	18	624	GenArmor	S0:TORSO&&ARMS&&LEGS	32	
+wicked % short sword	19	50	8	375	GenWeapon	SWORD	15	
+small % bench	19	10	10	11	GenChair	CHAIR	2	
+% wind chimes	19	35	10	63	GenItem			Prop_MOBEmoter;Sounder PORTAL_ENTER_ROOM clanks hollowly in the breeze.
+skull mace	20	35	18	515	GenWeapon	BLUNT	17	
+% cup	21	20	1	4	GenEmptyDrink	LIQUID	5	
+crown of %	21	40	4	104	GenArmor	S0:HEAD	7	
+% flail of skulls	22	80	22	912	GenWeapon	FLAILED	24	
+large % six-sided die	23	50	2	23	GenDice		6	
+small % chair	23	10	10	15	GenChair	CHAIR	1	
+mask of %	24	60	2	40	GenArmor	3:EYES	3	
+devastating % sliver	24	60	2	392	GenWeapon	EDGED	14	
+large % four-sided die	25	60	2	30	GenDice		4	
+spiked % sword	25	60	12	735	GenWeapon	SWORD	21	
+devastating % spear	25	60	18	1021	GenSpear	THROWN	35	
+% pipe	26	40	2	20	GenPipe		3	
+jagged % knife	26	60	3	234	GenWeapon	DAGGER	9	
+large % club	26	35	30	1016	GenWeapon	BLUNT	24	
+% bed	26	30	60	430	GenBed	BED	2	
+large % eight-sided die	27	60	2	32	GenDice		8	
+small % shield	27	60	8	121	GenShield	S0:HELD	22	Prop_Doppleganger;ASMATERIAL=IRON MIN=27 MAX=27
+spiked % full armor	27	100	19	888	GenArmor	TORSO&&ARMS&&LEGS	38	
+% ladder	27	40	20	210	GenRideable	LADDER	0	
+% table	28	30	50	390	GenRideable	TABLE	150	
+large % ten-sided die	29	70	2	41	GenDice		10	
+% bench	29	20	20	104	GenChair	CHAIR	4	
+skull helmet	30	40	4	148	GenArmor	HEAD	8	
+skull cup	31	10	1	3	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	5	
+large % twelve-sided die	31	80	2	50	GenDice		12	
+skull-handled % sword	31	70	15	1215	GenWeapon	SWORD	27	
+% wand	32	30	4	37	GenWand		20	
+hardened small % club	32	60	12	1032	GenWeapon	BLUNT	24	
+hardened % flail	32	100	18	1508	GenWeapon	FLAILED	31	
+% ladle	33	10	1	3	GenEmptyDrink	LIQUID	2	
+% stool	33	5	5	4	GenChair	CHAIR	1	
+hardened % sliver	34	80	2	800	GenWeapon	EDGED	20	
+hardened % spear	35	80	8	1401	GenSpear	THROWN	41	
+hardened % skewer	36	40	3	481	GenWeapon	DAGGER	13	
+hardened % short sword	37	90	5	1306	GenWeapon	SWORD	28	
+hardened small skull mace	38	70	12	1409	GenWeapon	BLUNT	28	
+large % twenty-sided die	39	90	2	72	GenDice		20	
+hardened  % bracers	39	40	3	100	GenArmor	S0:WRISTS	6	
+% figurine	41	40	2	33	GenItem	STATUE		
+% thirty-sided die	42	90	1	39	GenDice		30	
+hardened % breast plate	42	60	13	780	GenArmor	S0:TORSO	26	
+hardened spiked % flail	42	100	22	2637	GenWeapon	FLAILED	41	
+hardened % sword	43	100	8	1815	GenWeapon	SWORD	33	
+% chair	43	10	15	52	GenChair	CHAIR	1	
+hardened wicked % sliver	44	80	3	1352	GenWeapon	EDGED	26	
+hardened % club	44	80	12	1845	GenWeapon	BLUNT	32	
+% hundred-sided die	45	100	1	46	GenDice		100	
+hardened % greaves	45	45	7	392	GenArmor	S0:LEGS	18	
+hardened wicked % spear	45	80	15	2613	GenSpear	THROWN	56	
+hardened % knife	46	60	3	816	GenWeapon	DAGGER	17	
+king-sized % bed	46	50	180	4100	GenBed	BED	2	
+hardened % body armor	48	75	25	1560	GenArmor	S0:TORSO&&ARMS&&LEGS	50	
+% altar	48	100	100	4850	GenRideable	TABLE	1000	
+hardened wicked % short sword	49	110	10	2535	GenWeapon	SWORD	39	
+long % bench	49	40	40	775	GenChair	CHAIR	8	
+hardened skull mace	50	70	22	2730	GenWeapon	BLUNT	39	
+hardened crown of %	51	50	6	328	GenArmor	S0:HEAD	11	
+hardened % flail of skulls	52	120	27	3916	GenWeapon	FLAILED	50	
+elaborate % stool	53	10	40	180	GenChair	CHAIR	1	
+hardened mask of %	54	75	3	8	GenArmor	3:EYES	4	
+hardened devastating % sliver	54	100	3	2048	GenWeapon	EDGED	32	
+hardened spiked % sword	55	120	15	3375	GenWeapon	SWORD	45	
+hardened devastating % spear	55	80	22	4083	GenSpear	THROWN	70	
+hardened jagged % knife	56	80	4	1239	GenWeapon	DAGGER	21	
+hardened large % club	56	80	36	3772	GenWeapon	BLUNT	46	
+four poster % bed	56	60	250	8350	GenBed	BED	4	
+spiked % shield	57	100	10	387	GenShield	S0:HELD	44	Prop_Doppleganger;ASMATERIAL=IRON MIN=57 MAX=57
+hardened spiked % full armor	57	120	28	492	GenArmor	TORSO&&ARMS&&LEGS	56	
+hardened skull helmet	60	50	24	101	GenArmor	HEAD	12	
+hardened skull-handled % sword	61	130	18	4166	GenWeapon	SWORD	50	
+% statue	61	22	100	1275	GenItem	STATUE		
+reinforced small % club	62	90	14	3490	GenWeapon	BLUNT	44	Prop_Doppleganger;ASMATERIAL=IRON MIN=62 MAX=62
+reinforced % flail	62	120	21	5073	GenWeapon	FLAILED	57	Prop_Doppleganger;ASMATERIAL=IRON MIN=62 MAX=62
+% armor rack	62	85	80	4250	GenContainer	CLOTHES	1000	Prop_NoPurge
+% throne	63	45	150	4200	GenChair	CHAIR	1	
+reinforced % sliver	64	120	3	2888	GenWeapon	EDGED	38	Prop_Doppleganger;ASMATERIAL=IRON MIN=64 MAX=64
+reinforced % spear	65	100	10	4813	GenSpear	THROWN	76	Prop_Doppleganger;ASMATERIAL=IRON MIN=65 MAX=65
+reinforced % skewer	66	60	4	1640	GenWeapon	DAGGER	24	Prop_Doppleganger;ASMATERIAL=IRON MIN=66 MAX=66
+% sleigh bed	66	60	300	11800	GenBed	BED	4	
+reinforced % short sword	67	130	6	4335	GenWeapon	SWORD	51	Prop_Doppleganger;ASMATERIAL=IRON MIN=67 MAX=67
+reinforced small skull mace	68	100	14	4328	GenWeapon	BLUNT	49	Prop_Doppleganger;ASMATERIAL=IRON MIN=68 MAX=68
+ornate % table	68	40	60	1600	GenRideable	TABLE	200	
+reinforced  % bracers	69	50	4	69	GenArmor	S0:WRISTS	8	Prop_Doppleganger;ASMATERIAL=IRON MIN=69 MAX=69
+reinforced % breast plate	72	75	18	366	GenArmor	S0:TORSO	35	Prop_Doppleganger;ASMATERIAL=IRON MIN=72 MAX=72
+reinforced spiked % flail	72	120	26	7012	GenWeapon	FLAILED	67	Prop_Doppleganger;ASMATERIAL=IRON MIN=72 MAX=72
+% weapon rack	72	70	65	3300	GenContainer	SWORDS|OTHER WEAPONS|DAGGERS|ONE-HANDED WEAPONS	500	Prop_NoPurge
+reinforced % sword	73	140	10	5415	GenWeapon	SWORD	57	Prop_Doppleganger;ASMATERIAL=IRON MIN=73 MAX=73
+reinforced wicked % sliver	74	120	4	3872	GenWeapon	EDGED	44	Prop_Doppleganger;ASMATERIAL=IRON MIN=74 MAX=74
+reinforced % club	74	90	14	5070	GenWeapon	BLUNT	53	Prop_Doppleganger;ASMATERIAL=IRON MIN=74 MAX=74
+reinforced % greaves	75	60	9	183	GenArmor	S0:LEGS	24	Prop_Doppleganger;ASMATERIAL=IRON MIN=75 MAX=75
+reinforced wicked % spear	75	100	18	6901	GenSpear	THROWN	91	Prop_Doppleganger;ASMATERIAL=IRON MIN=75 MAX=75
+reinforced % knife	76	80	4	2221	GenWeapon	DAGGER	28	Prop_Doppleganger;ASMATERIAL=IRON MIN=76 MAX=76
+canopy % bed	76	70	275	14600	GenBed	BED	3	
+reinforced % body armor	78	100	37	870	GenArmor	S0:TORSO&&ARMS&&LEGS	74	Prop_Doppleganger;ASMATERIAL=IRON MIN=78 MAX=78
+reinforced wicked % short sword	79	150	12	6406	GenWeapon	SWORD	62	Prop_Doppleganger;ASMATERIAL=IRON MIN=79 MAX=79
+reinforced skull mace	80	100	25	6480	GenWeapon	BLUNT	60	Prop_Doppleganger;ASMATERIAL=IRON MIN=80 MAX=80
+reinforced crown of %	81	75	7	145	GenArmor	S0:HEAD	14	Prop_Doppleganger;ASMATERIAL=IRON MIN=81 MAX=81
+% hat rack	82	20	5	79	GenContainer	CLOTHES	10	Prop_NoPurge
+reinforced % flail of skulls	82	130	30	9018	GenWeapon	FLAILED	76	Prop_Doppleganger;ASMATERIAL=IRON MIN=82 MAX=82
+spiked % throne	83	40	50	1650	GenChair	CHAIR	1	
+reinforced mask of %	84	100	4	15	GenArmor	3:EYES	5	Prop_Doppleganger;ASMATERIAL=IRON MIN=84 MAX=84
+reinforced devastating % sliver	84	140	4	5000	GenWeapon	EDGED	50	Prop_Doppleganger;ASMATERIAL=IRON MIN=84 MAX=84
+reinforced spiked % sword	85	160	18	7706	GenWeapon	SWORD	68	Prop_Doppleganger;ASMATERIAL=IRON MIN=85 MAX=85
+reinforced devastating % spear	85	100	26	9363	GenSpear	THROWN	106	Prop_Doppleganger;ASMATERIAL=IRON MIN=85 MAX=85
+reinforced jagged % knife	86	100	5	2890	GenWeapon	DAGGER	32	Prop_Doppleganger;ASMATERIAL=IRON MIN=86 MAX=86
+reinforced large % club	86	90	42	8273	GenWeapon	BLUNT	68	Prop_Doppleganger;ASMATERIAL=IRON MIN=86 MAX=86
+ominous % bed	86	50	300	12800	GenBed	BED	2	
+large % shield	87	80	12	641	GenShield	S0:HELD	62	Prop_Doppleganger;ASMATERIAL=IRON MIN=87 MAX=87
+reinforced spiked % full armor	87	200	40	1020	GenArmor	TORSO&&ARMS&&LEGS	80	Prop_Doppleganger;ASMATERIAL=IRON MIN=87 MAX=87
+sacrificial % altar	88	200	150	26750	GenRideable	TABLE	1000	
+decorative % bench	89	30	40	1050	GenChair	CHAIR	4	
+reinforced skull helmet	90	75	8	170	GenArmor	HEAD	15	Prop_Doppleganger;ASMATERIAL=IRON MIN=90 MAX=90
+reinforced skull-handled % sword	91	170	22	9126	GenWeapon	SWORD	74	Prop_Doppleganger;ASMATERIAL=IRON MIN=91 MAX=91

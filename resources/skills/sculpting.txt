@@ -1,35 +1,107 @@
-% Plaque	1	10	10	50	GenItem				
-% Toy	1	10	5	1	GenItem				
-% Chessboard	1	80	30	250	GenItem				
-% Cup	1	20	10	0	GenDrink		5	1	
-% Mug	1	20	10	0	GenDrink		5	1	
-% Plate	1	20	10	0	GenContainer		5	0	
-% Lamp	1	30	25	50	GenLantern		0		
-% Bowl	1	20	10	0	GenDrink		5	0	
-% Podium	1	30	80	15	GenRideable	TABLE	40	0	
-% Box	1	30	80	0	GenContainer		25	0	
-% Book Shelf	6	40	70	10	GenRideable	TABLE	30	128	
-% Desk	6	30	300	25	GenRideable	TABLE	100	0	
-% Table	6	30	250	20	GenRideable	TABLE	150	0	
-% Stool	6	30	50	6	GenChair	CHAIR	1	0	
-% Chair	6	30	80	10	GenChair	CHAIR	1	0	
-% Bench	6	40	180	15	GenChair	CHAIR	4	0	
-% Bed	6	50	350	20	GenBed	BED	2	0	
-% Statue	12	120	450	100	GenItem	STATUE			
-% Pillar	3	30	50	25	GenRideable	TABLE	20	0	
-% Bust	6	80	150	50	GenItem	STATUE			
-% Figurine	3	40	30	25	GenItem	STATUE			
-% Sarcophogus	3	40	200	20	GenContainer		500	64	
-% Steps	12	80	400	5	GenRideable	LADDER	3	0	
-% Fountain	12	120	500	120	GenFountain		0	1	
-% Forge	15	80	1200	300	GenContainer	LID	1000	0	*Burning;NODESTROY UNEXTINGUISHABLE NOSPREAD
-% Stove	3	40	100	20	GenRideable	TABLE	100	0	*Burning;NODESTROY UNEXTINGUISHABLE NOSPREAD
-% Oven	6	60	500	50	GenContainer	LID	50	0	*Burning;NODESTROY UNEXTINGUISHABLE NOSPREAD
-% Wand	28	10	2	10	GenWand		30		
-% Tub	10	60	400	75	GenTub	CHAIR	2000	0	
-% Jacuzzi	15	80	600	75	GenTub	CHAIR	2600	0	
-% Roman Tub	15	60	500	75	GenTub	CHAIR	2400	0	
-% Sink	15	120	1000	150	GenFountain		100	1	
-% Altar	10	100	300	200	GenRideable	TABLE	100	0	
-% Throne	25	40	150	150	GenRideable	CHAIR	1	0	
-% Bird Bath	18	100	200	80	GenContainer		100	1	
+% toy	1	10	5	1	GenItem				
+crushed %	2	15	1	1	GenResource				
+% stepping stone	2	30	15	1	GenItem				
+% coaster	3	10	2	1	GenContainer		5	2048	
+% pet rock	3	10	2	1	GenItem				
+% plate	4	20	4	1	GenContainer		5	131072	
+% flower pot	5	10	10	1	GenEmptyDrink		10	65537	
+% fire pit	6	50	100	250	GenRideable		25	0	Burning
+chipped %	7	15	1	1	GenResource				
+% weight	8	10	14	1	GenItem				
+% ornament	9	20	2	2	GenItem				
+% bird bath	10	100	200	2000	GenEmptyDrink		100	1	
+% cup	11	20	2	3	GenEmptyDrink		5	1	
+% bowl	11	20	3	4	GenEmptyDrink		6	131073	
+small % flower pot	12	15	5	5	GenEmptyDrink		5	65537	
+% chessboard	13	80	30	320	GenItem				
+powdered %	14	15	1	1	GenResource				
+% mug	15	20	3	7	GenEmptyDrink		5	1	
+% fireplace	16	60	250	2400	GenRideable		50	0	Burning
+large % flower pot	17	20	40	110	GenEmptyDrink		50	65537	
+% plaque	18	10	10	10	GenItem				
+% paver	18	30	10	50	GenItem				
+% end table	19	60	40	450	GenRideable	TABLE	20	0	
+% eye	20	20	1	4	GenLimb				
+% fountain	20	120	500	12500	GenFountain		0	1	
+% ballast	21	10	140	175	GenItem				
+% planter	22	30	20	120	GenEmptyDrink		25	65537	
+% six-sided die	23	40	1	9	GenDice		6		
+small % stool	23	20	10	40	GenChair	CHAIR	1	0	
+small % plate	24	20	2	8	GenContainer		3	131072	
+% four-sided die	25	50	1	13	GenDice		4		
+% gravy boat	25	30	2	14	GenEmptyDrink		5	1	
+% pillar	25	30	50	350	GenItem				
+% stove	26	40	100	1000	GenRideable	TABLE	100	0	Burning
+small % bed	26	25	100	600	GenBed	BED	1	0	
+% eight-sided die	27	50	1	13	GenDice		8		
+% ten-sided die	29	60	1	17	GenDice		10		
+small % bench	29	40	40	450	GenChair	CHAIR	2	0	
+% coffee table	30	90	80	2200	GenRideable	TABLE	50	0	
+% twelve-sided die	31	70	1	22	GenDice		12		
+% figurine	31	40	3	36	GenItem	STATUE			
+% book shelf	32	40	70	875	GenContainer		30	384	
+% sarcophogus	32	40	500	6125	GenBed	BED	500	64	Prop_NoPurge
+% stool	33	20	50	300	GenChair	CHAIR	1	0	
+% tub	33	60	400	8000	GenTub	CHAIR	2000	0	
+% saucer	34	15	2	9	GenContainer		5	2048	
+small % box	35	15	20	90	GenContainer	LID	50	0	
+% bed	36	30	200	2050	GenBed	BED	2	0	
+% oven	36	60	500	10750	GenContainer	LID	50	0	Burning
+% twenty-sided die	37	80	1	30	GenDice		20		
+% steps	37	80	400	12000	GenRideable	LADDER	3	0	Prop_NoPurge
+% table	38	30	250	2700	GenRideable	TABLE	150	0	
+% bench	39	80	180	5600	GenChair	CHAIR	4	0	
+% vase	40	50	6	118	GenEmptyDrink		15	65537	
+% box	40	30	40	455	GenContainer	LID	150	0	
+% bust	41	80	150	5000	GenItem	STATUE			
+% wand	42	10	5	17	GenWand		20		
+large % six-sided die	43	50	2	43	GenDice		6		
+% platter	44	30	10	126	GenContainer		20	0	
+large % four-sided die	45	60	2	54	GenDice		4		
+% goblet	45	40	2	36	GenEmptyDrink		5	1	
+% scroll case	45	30	8	105	GenContainer	LID	6	256	
+% ice box	45	60	200	5400	GenContainer	LID	250	131072	*Prop_IceBox;
+% pipe	46	50	3	69	GenPipe		200	8192	
+% forge	46	80	1200	44000	GenContainer	LID	1000	0	Burning
+large % eight-sided die	47	60	2	57	GenDice		8		
+% podium	48	30	80	1100	GenRideable	TABLE	40	0	
+large % ten-sided die	49	70	2	69	GenDice		10		
+large % box	50	40	60	1175	GenContainer	LID	300	0	
+large % twelve-sided die	51	80	2	82	GenDice		12		
+% statue	51	120	450	28000	GenItem	STATUE			
+% chair	53	40	80	1650	GenChair	CHAIR	1	0	
+% roman tub	53	60	500	16000	GenTub	CHAIR	2400	0	
+% serving tray	54	40	12	255	GenContainer		50	0	
+small % chest	55	50	40	1100	GenContainer	LOCK	100	0	
+king-sized % bed	56	50	600	16700	GenBed	BED	4	0	
+% kiln	56	80	800	36000	GenContainer	LID	1500	0	Burning
+% lamp	57	30	25	415	GenLantern		0		
+% altar	58	100	300	17200	GenRideable	TABLE	100	0	
+large % twenty-sided die	59	90	2	107	GenDice		20		
+long % bench	59	160	400	38500	GenChair	CHAIR	8	0	
+% jewelry box	60	25	20	290	GenContainer	LOCK	10	0	
+% sink	60	120	100	7300	GenFountain		100	1	
+% monument	61	400	2000	500000	GenItem	STATUE			
+% thirty-sided die	62	90	1	57	GenDice		30		
+% charger	64	20	6	72	GenContainer		20	0	
+% hundred-sided die	65	100	1	66	GenDice		100		
+% chest	65	75	60	2950	GenContainer	LOCK	250	0	
+large % ice box	65	120	600	47000	GenContainer	LID	1000	131072	*Prop_IceBox;
+four poster % bed	66	60	800	31500	GenBed	BED	4	0	
+% hearth	66	100	1000	65250	GenRideable		250	0	Burning
+% ladder	67	40	100	2625	GenRideable	LADDER	0	0	
+% desk	68	30	300	5950	GenRideable	TABLE	100	0	
+small % crate	70	30	60	1225	GenContainer	LID	500	0	
+% giant statue	71	1000	5000	3600000	GenItem	STATUE			
+ornate % sarcophagus	72	100	1500	109000	GenBed	BED	500	64	Prop_NoPurge
+% throne	73	180	150	20000	GenChair	CHAIR	1	0	
+% jacuzzi	73	80	600	35000	GenTub	CHAIR	2600	0	
+small %  storage barrel	75	40	40	1180	GenContainer	LID	100	0	
+% sleigh bed	76	60	1000	45500	GenBed	BED	3	0	
+great % forge	76	120	2500	230000	GenContainer	LID	5000	0	Burning
+large % chest	80	100	100	8050	GenContainer	LOCK	500	0	
+humongous % statue	81	5000	20000	82000000	GenItem	STATUE			Spell_Enlarge
+% crate	85	35	100	2925	GenContainer	LID	2500	0	
+huge % ice box	85	150	2500	321000	GenContainer	LID	5000	131072	*Prop_IceBox;
+canopy % bed	86	70	800	48000	GenBed	BED	4	0	
+% storage barrel	90	45	80	3200	GenContainer	LID	500	0	

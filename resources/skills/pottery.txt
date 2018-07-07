@@ -1,20 +1,107 @@
-% Brick	1	1	1	0	GenResource	STONE		
-% Statue	1	1	1	0	GenItem	STATUE		
-% Cup	1	10	5	1	GenDrink		5	
-% Flask	1	10	5	1	GenDrink		8	
-% Mug	3	10	5	1	GenDrink		5	
-% Plate	3	10	5	1	GenContainer		5	
-% Pot	5	20	10	1	GenDrink		15	
-% Pan	5	20	10	1	GenContainer		15	
-% Pitcher	3	20	10	1	GenDrink		15	
-% Vase	5	20	10	1	GenDrink		15	
-% Ewer	5	20	10	1	GenDrink		15	
-China Cup	21	10	15	5	GenDrink		5	
-China Flask	21	10	15	5	GenDrink		8	
-China Mug	23	10	15	5	GenDrink		5	
-China Plate	23	10	15	10	GenContainer		5	
-China Pot	25	20	20	10	GenDrink		15	
-China Pan	25	20	20	10	GenContainer		15	
-China Pitcher	23	20	20	10	GenDrink		15	
-China Vase	25	20	20	20	GenDrink		15	
-China Ewer	25	20	20	20	GenDrink		15	
+mudbrick	1	5	1	1	GenResource	STONE		
+terracotta ash tray	1	5	1	1	GenItem			
+terracotta spoon	2	10	1	1	GenEmptyDrink	LIQUID	1	
+terracotta coaster	3	5	1	1	GenContainer	DRINKABLES	5	
+terracotta plate	4	10	2	1	GenContainer	EATABLES	5	
+small terracotta flower pot	5	10	2	1	GenContainer		5	
+beads	6	5	1	1	GenResource	STONE		
+terracotta fork	7	10	1	1	GenItem			
+terracotta ladle	8	10	1	1	GenEmptyDrink	LIQUID	2	
+terracotta saucer	9	10	1	1	GenContainer	DRINKABLES	5	
+terracotta ornament	9	10	1	1	GenItem			
+terracotta flower pot	10	15	6	5	GenContainer		25	
+miniature terracotta figurine	11	60	2	13	GenItem	STATUE		
+terracotta growler	11	35	3	10	GenEmptyDrink	LIQUID|LID	10	
+terracotta platter	13	15	5	5	GenContainer		20	
+terracotta pan	14	20	5	11	GenContainer	EATABLES|RAWMATERIALS	15	
+small % box	15	30	10	40	GenContainer	LID	50	
+large terracotta flower pot	15	20	16	38	GenContainer		125	
+clay pipe	16	10	2	2	GenPipe	SMOKEABLES	200	
+terracotta serving tray	19	15	6	13	GenContainer		50	
+% wind chimes	19	35	20	125	GenItem			Prop_MOBEmoter;Sounder PORTAL_ENTER_ROOM clanks sharply in the breeze.
+% box	20	60	20	235	GenContainer	LID	150	
+banco	21	10	1	2	GenResource	STONE		
+terracotta jug	21	35	4	28	GenEmptyDrink	LIQUID|LID	15	
+terracotta bust	21	90	25	475	GenItem	STATUE		
+terracotta trivet	23	5	2	2	GenContainer	DRINKABLES	50	
+small terracotta plate	24	10	1	2	GenContainer	EATABLES	3	
+% scroll case	25	60	4	60	GenContainer	LID|SCROLLS	6	
+terracotta charger	29	10	3	6	GenContainer		10	
+large % box	30	80	30	725	GenContainer	LID	300	
+stoneware cup	31	10	1	3	GenEmptyDrink	LIQUID	5	
+stoneware bowl	31	10	2	5	GenEmptyDrink	LIQUID|EATABLES	6	
+terracotta statue	31	120	150	5750	GenItem	STATUE		
+stoneware spoon	32	10	1	3	GenEmptyDrink	LIQUID	1	
+% coaster	33	5	1	3	GenContainer	DRINKABLES	5	
+stoneware plate	34	10	2	6	GenContainer	EATABLES	5	
+stoneware mug	35	10	2	6	GenEmptyDrink	LIQUID	5	
+stoneware pot	35	20	6	38	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	15	
+small % chest	35	100	20	710	GenContainer	LOCK	100	
+stoneware fork	37	10	1	3	GenItem			
+stoneware ladle	38	10	1	3	GenEmptyDrink	LIQUID	2	
+stoneware saucer	39	10	1	3	GenContainer	DRINKABLES	5	
+% ornament	39	10	1	3	GenItem			
+% jewelry box	40	50	10	200	GenContainer	LOCK	10	
+adobe	41	15	1	6	GenResource	STONE		
+miniature % figurine	41	60	2	50	GenItem	STATUE		
+stoneware pitcher	41	20	4	31	GenEmptyDrink	LIQUID	15	
+stoneware jug	41	30	6	71	GenEmptyDrink	LIQUID|LID	50	
+stoneware platter	43	15	5	29	GenContainer		20	
+stoneware pan	44	20	6	49	GenContainer	EATABLES|RAWMATERIALS	15	
+stoneware gravy boat	45	15	2	12	GenEmptyDrink	LIQUID	5	
+stoneware flask	45	10	4	15	GenEmptyDrink	LIQUID|LID	8	
+% chest	45	150	30	2050	GenContainer	LOCK	250	
+stoneware serving tray	49	15	6	40	GenContainer		50	
+small % crate	50	60	30	900	GenContainer	LID	500	
+porcelain fountain	50	150	500	38000	GenFountain		2147478647	
+stoneware vase	51	20	4	38	GenEmptyDrink	LIQUID|RAWMATERIALS	15	
+large stoneware jug	51	35	12	210	GenEmptyDrink	LIQUID|LID	100	
+% bust	51	90	30	1400	GenItem	STATUE		
+% wand	52	30	3	46	GenWand		20	
+stoneware trivet	53	5	2	4	GenContainer	DRINKABLES	50	
+small %  storage barrel	55	80	20	880	GenContainer	LID	100	
+stoneware charger	59	10	3	16	GenContainer		10	
+large % chest	60	200	50	6100	GenContainer	LOCK	500	
+% brick	61	20	1	12	GenResource	STONE		
+porcelain cup	61	10	1	6	GenEmptyDrink	LIQUID	5	
+porcelain bowl	61	10	2	11	GenEmptyDrink	LIQUID|EATABLES	6	
+stoneware ewer	61	20	4	47	GenEmptyDrink	LIQUID	15	
+huge stoneware jug	61	40	25	600	GenEmptyDrink	LIQUID|LID	250	
+% statue	61	120	175	13000	GenItem	STATUE		
+porcelain spoon	62	10	1	6	GenEmptyDrink	LIQUID	1	
+% coffin	62	60	100	3700	GenBed		500	Prop_NoPurge
+porcelain coaster	63	5	1	3	GenContainer	DRINKABLES	5	
+porcelain plate	64	10	2	12	GenContainer	EATABLES	5	
+porcelain mug	65	10	2	12	GenEmptyDrink	LIQUID	5	
+porcelain pot	65	20	6	75	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	15	
+% crate	65	70	50	2275	GenContainer	LID	2500	
+porcelain fork	67	10	1	6	GenItem			
+porcelain ladle	68	10	1	7	GenEmptyDrink	LIQUID	2	
+porcelain saucer	69	10	1	7	GenContainer	DRINKABLES	5	
+porcelain ornament	69	10	1	6	GenItem			
+porcelain eye	70	20	1	14	GenLimb			
+% storage barrel	70	90	40	2525	GenContainer	LID	500	
+miniature porcelain figurine	71	60	2	86	GenItem	STATUE		
+porcelain pitcher	71	20	4	55	GenEmptyDrink	LIQUID	15	
+porcelain jug	71	40	6	168	GenEmptyDrink	LIQUID|LID	50	
+stoneware covered pot	71	30	9	188	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS|LID	30	
+porcelain platter	73	15	5	52	GenContainer		20	
+porcelain pan	74	20	4	57	GenContainer	EATABLES|RAWMATERIALS	15	
+porcelain gravy boat	75	15	2	22	GenEmptyDrink	LIQUID	5	
+porcelain flask	75	10	4	27	GenEmptyDrink	LIQUID|LID	8	
+decorative % chest	75	420	70	22500	GenContainer	LOCK	750	
+porcelain serving tray	79	15	6	67	GenContainer		50	
+large % crate	80	80	100	6400	GenContainer	LID	10000	
+porcelain vase	81	20	4	63	GenEmptyDrink	LIQUID|RAWMATERIALS	15	
+large porcelain jug	81	45	12	435	GenEmptyDrink	LIQUID|LID	100	
+porcelain bust	81	90	25	1825	GenItem	STATUE		
+porcelain wand	82	40	3	98	GenWand		20	
+porcelain trivet	83	5	2	7	GenContainer	DRINKABLES	50	
+porcelain tub	83	80	400	26500	GenTub		2000	
+small porcelain plate	84	10	1	8	GenContainer	EATABLES	5	
+large % storage barrel	85	100	60	5125	GenContainer	LID	1500	
+porcelain charger	89	10	3	25	GenContainer		10	
+porcelain sink	90	120	100	10900	GenFountain		7478647	
+huge % crate	90	100	150	13600	GenContainer	LID	25000	
+porcelain ewer	91	20	4	70	GenEmptyDrink	LIQUID	15	
+huge porcelain jug	91	50	25	1130	GenEmptyDrink	LIQUID|LID	250	

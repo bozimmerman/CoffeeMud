@@ -1,21 +1,85 @@
-Glass Cup	1	20	10	1	GenDrink		5	
-% Statue	1	20	10	1	GenItem	STATUE		
-Mug	1	20	10	1	GenDrink		5	
-Plate	1	20	10	1	GenContainer		5	
-Glass Pot	1	30	20	1	GenDrink		15	
-Glass Pan	1	30	20	1	GenContainer		15	
-Pitcher	1	30	20	1	GenDrink		15	
-Mirror	5	60	40	100	GenMirror			
-Glass Wand	12	30	20	3	GenWand		10	
-Flask	1	20	5	1	GenDrink		1	
-Glass Lens	5	10	5	1	GenResource			
-Bong	5	20	10	10	GenPipe		1	
-Hooka	10	30	20	50	GenPipe		3	
-Marbles	2	5	1	1	GenItem			
-Vase	6	20	10	5	GenDrink		10	
-Carafe	8	20	5	10	GenDrink		8	
-Vial	12	10	2	5	GenDrink		1	
-a Glass Eye	10	20	5	10	GenLimb			
-Glass Pipe	15	25	3	25	GenPipe		2	
-Water Pipe	25	25	4	55	GenPipe		5	
-Glass Bottle	4	20	10	15	GenEmptyDrink		25	
+glass bowl	1	20	1	1	GenEmptyDrink	LIQUID|EATABLES	6	
+glass cup	1	20	2	1	GenEmptyDrink	LIQUID	5	
+glass marbles	2	5	3	1	GenItem			
+glass wand	2	30	4	1	GenWand		20	
+small perfume bottle	3	25	1	2	GenEmptyDrink	LIQUID	1	
+glass coaster	3	5	1	1	GenContainer	DRINKABLES	5	
+glass plate	4	20	2	2	GenContainer	EATABLES	5	
+glass mug	5	20	2	2	GenEmptyDrink	LIQUID	5	
+glass pot	5	30	3	7	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	15	
+bong	6	20	10	10	GenPipe		1	
+glass lens	7	10	2	1	GenResource			
+dressing mirror	8	45	20	62	GenMirror			
+glass ornament	9	15	1	1	GenItem			
+a glass eye	10	20	5	7	GenLimb			
+pitcher	11	30	3	8	GenEmptyDrink	LIQUID	15	
+perfume bottle	13	30	2	7	GenEmptyDrink	LIQUID|LID	2	
+glass pan	14	30	4	15	GenContainer	EATABLES|RAWMATERIALS	15	
+gravy boat	15	15	2	3	GenEmptyDrink	LIQUID	5	
+glass pipe	16	25	3	10	GenPipe		2	
+glass lantern	17	40	9	57	GenLantern			
+mirror	18	60	5	54	GenMirror			
+glass wind chimes	19	80	10	155	GenItem			Prop_MOBEmoter;SOUNDER PORTAL_ENTER_ROOM clanks loudly in the breeze.
+vase	21	20	2	7	GenEmptyDrink	LIQUID|RAWMATERIALS	10	
+display case	22	30	20	120	GenContainer		100	Prop_NoPurge
+large perfume bottle	23	30	3	19	GenEmptyDrink	LIQUID|LID	5	
+small plate	24	10	1	2	GenContainer	EATABLES	3	
+glass bottle	25	20	4	17	GenEmptyDrink	LIQUID|LID	25	
+water pipe	26	25	4	24	GenPipe		5	
+wall mirror	28	75	30	630	GenMirror			
+flask	31	20	2	11	GenEmptyDrink	LIQUID|LID	3	
+small display case	32	20	5	29	GenContainer		10	Prop_NoPurge
+saucer	34	10	1	3	GenContainer	DRINKABLES	5	
+vial	35	10	1	3	GenEmptyDrink	LIQUID	2	
+funnel	35	15	1	5	GenItem			
+hooka	36	30	20	50	GenPipe		3	
+full-length mirror	38	90	50	1750	GenMirror			
+glass covered pot	41	40	5	80	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS|LID	15	
+glass shelf	42	20	20	155	GenContainer		50	
+glass six-sided die	43	40	1	17	GenDice		6	
+platter	44	25	6	62	GenContainer		20	
+glass four-sided die	45	50	1	23	GenDice		4	
+retort flask	45	35	2	31	GenEmptyDrink	LIQUID|LID	8	
+small glass box	45	25	5	53	GenContainer	LID	50	
+glass eight-sided die	47	50	1	23	GenDice		8	
+glass lamp	47	30	25	340	GenLantern			
+glass ten-sided die	49	60	1	30	GenDice		10	
+glass box	50	45	10	222	GenContainer	LID	150	
+glass twelve-sided die	51	70	1	36	GenDice		12	
+% Figurine	51	60	1	31	GenItem	STATUE		
+carafe	51	20	5	48	GenEmptyDrink	LIQUID	8	
+glass bookshelf	52	30	50	750	GenContainer	READABLES|SCROLLS|READABLES	100	
+serving tray	54	20	8	81	GenContainer		50	
+graduated cylinder	55	30	1	17	GenEmptyDrink	LIQUID	5	
+glass scroll case	55	45	2	50	GenContainer	LID|SCROLLS	6	
+glass twenty-sided die	57	80	1	46	GenDice		20	
+glass table	58	30	60	1010	GenRideable	TABLE	50	
+large glass box	60	60	15	540	GenContainer	LID	300	
+beaker	61	35	1	21	GenEmptyDrink	LIQUID	5	
+% bust	61	90	25	1375	GenItem	STATUE		
+large display case	62	40	100	2450	GenContainer		400	Prop_NoPurge
+large % six-sided die	63	50	2	63	GenDice		6	
+glass chandelier	63	90	300	17000	GenItem			Spell_ContinualLight
+charger	64	20	4	49	GenContainer		10	
+distilling column	65	30	1	20	GenEmptyDrink	LIQUID	5	
+large % four-sided die	65	60	2	78	GenDice		4	
+Small % Chest	65	75	10	490	GenContainer	LID	100	
+large % eight-sided die	67	60	2	81	GenDice		8	
+large % ten-sided die	69	70	2	98	GenDice		10	
+% Jewelry Box	70	40	5	138	GenContainer	LOCK	10	
+large % twelve-sided die	71	80	2	115	GenDice		12	
+casserole dish	71	30	3	63	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	25	
+% statue	71	120	150	12900	GenItem	STATUE		
+huge display case	72	50	250	9000	GenContainer		1000	Prop_NoPurge
+glass tub	73	150	300	33400	GenTub		2000	
+fancy chandelier	73	120	600	53000	GenItem			Spell_ContinualLight
+pipette	75	30	1	23	GenEmptyDrink	LIQUID	3	
+% Chest	75	125	15	1425	GenContainer	LID	250	
+large % twenty-sided die	79	90	2	144	GenDice		20	
+small % Crate	80	45	15	535	GenContainer	LID	500	
+% thirty-sided die	82	90	1	75	GenDice		30	
+ornate chandelier	83	150	1000	126000	GenItem			Spell_ContinualLight
+% hundred-sided die	85	100	1	86	GenDice		100	
+burette	85	25	1	22	GenEmptyDrink	LIQUID	3	
+Small %  storage barrel	85	60	10	510	GenContainer	LID	100	
+Large % Chest	90	150	25	3400	GenContainer	LID	500	
