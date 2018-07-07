@@ -127,7 +127,7 @@ public class Ranger_HuntersEndurance extends StdAbility
 				if(proficiencyCheck(mob, 0, false))
 				{
 					mob.curState().adjFatigue(-proficiency(),mob.maxState());
-					mob.curState().adjMovement(-proficiency(),mob.maxState());
+					mob.curState().adjMovement(proficiency(),mob.maxState());
 				}
 				if(CMLib.dice().rollPercentage()==1)
 					super.helpProficiency((MOB)affected, 0);
