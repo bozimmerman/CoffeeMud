@@ -62,6 +62,7 @@ public interface SocialsList extends CMLibrary
 	public void putSocialsInHash(final Map<String,List<Social>> soc, final List<String> lines);
 
 	public List<Social> getSocialsSet(String named);
+	public Enumeration<Social> getAllSocials();
 	public int numSocialSets();
 	public List<Social> enumSocialSet(int index);
 

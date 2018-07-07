@@ -1067,6 +1067,23 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
+	public Enumeration<Social> getAllSocials()
+	{
+		MultiEnumeration<Social> m=null;
+		for(int s=0;s<CMLib.socials().numSocialSets();s++)
+		{
+			final List<Social> V=CMLib.socials().enumSocialSet(s);
+			if((V==null)||(V.size()==0))
+				continue;
+			if(m==null)
+				m=new MultiEnumeration<Social>(new IteratorEnumeration<Social>(V.iterator()));
+			else
+				m.addEnumeration(new IteratorEnumeration<Social>(V.iterator()));
+		}
+		return m;
+	}
+
+	@Override
 	public String getSocialsTable()
 	{
 		StringBuffer socialsList=(StringBuffer)Resources.getResource("SOCIALS TABLE");

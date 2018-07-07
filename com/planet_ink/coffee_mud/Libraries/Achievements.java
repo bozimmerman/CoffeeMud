@@ -1835,6 +1835,184 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			};
 			break;
+		case SOCIALUSE:
+			A=new Achievement()
+			{
+				private int 				num 		= 0;
+				private final Set<String>	socialIDs 	= new TreeSet<String>();
+				
+				@Override
+				public Event getEvent()
+				{
+					return eventType;
+				}
+
+				@Override
+				public Agent getAgent()
+				{
+					return agent;
+				}
+
+				@Override
+				public String getTattoo()
+				{
+					return tattoo;
+				}
+
+				@Override
+				public String getDisplayStr()
+				{
+					return displayStr;
+				}
+
+				@Override
+				public boolean isTargetFloor()
+				{
+					return true;
+				}
+				
+				@Override
+				public Award[] getRewards()
+				{
+					return rewardList;
+				}
+
+				@Override
+				public int getTargetCount()
+				{
+					return num;
+				}
+
+				@Override
+				public String getRawParmVal(String str)
+				{
+					return CMParms.getParmStr(params,str,"");
+				}
+
+				@Override
+				public Tracker getTracker(final int oldCount)
+				{
+					final Achievement me=this;
+					return new Tracker()
+					{
+						private volatile int count = oldCount;
+						
+						@Override
+						public Achievement getAchievement() 
+						{
+							return me;
+						}
+
+						@Override
+						public boolean isAchieved(MOB mob) 
+						{
+							return getCount(mob) >= num;
+						}
+
+						@Override
+						public int getCount(MOB mob)
+						{
+							return count;
+						}
+
+						@Override
+						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
+						{
+							final Social S;
+							if(parms.length>0)
+							{
+								if(parms[0] instanceof String)
+									S=CMLib.socials().fetchSocial((String)parms[0], true);
+								else
+								if(parms[0] instanceof Social)
+									S=(Social)parms[0];
+								else
+									S=null;
+								if((S!=null)
+								&&(socialIDs.contains("*")
+									||socialIDs.contains(S.Name())
+									||(socialIDs.contains(S.baseName()))
+									||(socialIDs.contains(S.tailName()))))
+								{
+									count+=bumpNum;
+									return true;
+								}
+							}
+							return false;
+						}
+						
+						@Override
+						public Tracker copyOf()
+						{
+							try
+							{
+								return (Tracker)this.clone();
+							}
+							catch(Exception e)
+							{
+								return this;
+							}
+						}
+					};
+				}
+				
+				@Override
+				public boolean isSavableTracker()
+				{
+					return true;
+				}
+
+				@Override
+				public String parseParms(final String parms)
+				{
+					final String numStr=CMParms.getParmStr(parms, "NUM", "");
+					if(!CMath.isInteger(numStr))
+						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
+					this.num=CMath.s_int(numStr);
+					final String abilityIDs=CMParms.getParmStr(parms, "SOCIALID", "").toUpperCase().trim();
+					if(abilityIDs.length()==0)
+						return "Error: Missing SOCIALID parameter: "+abilityIDs+"!";
+					final String[] strList=abilityIDs.split(",");
+					this.socialIDs.clear();
+					final Set<String> tails=new TreeSet<String>();
+					final Set<String> heads=new TreeSet<String>();
+					for(final Enumeration<Social> s= CMLib.socials().getAllSocials();s.hasMoreElements();)
+					{
+						final Social S=s.nextElement();
+						if(!tails.contains(S.tailName()))
+							tails.add(S.tailName());
+						if(!heads.contains(S.baseName()))
+							heads.add(S.baseName());
+					}
+					for(int i=0;i<strList.length;i++)
+					{
+						String socialID = strList[i].trim();
+						if(socialID.equals("*"))
+						{
+							this.socialIDs.add(socialID);
+							break;
+						}
+						else
+						{
+							final Social S=CMLib.socials().fetchSocial(socialID, false);
+							if(S!=null)
+								this.socialIDs.add(S.Name());
+							else
+							if(tails.contains(socialID))
+								this.socialIDs.add(socialID);
+							else
+							if(heads.contains(socialID))
+								this.socialIDs.add(socialID);
+							else
+								return "Error: Unknown SOCIALID: "+socialID+"! Check case.";
+						}
+					}
+					if(this.socialIDs.size()==0)
+						return "Error: Unknown crafting SOCIALIDs: "+socialIDs+"! Check case.";
+					return "";
+				}
+			};
+			break;
 		case QUESTOR:
 			A=new Achievement()
 			{

@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -72,6 +73,15 @@ public class DefaultSocial implements Social
 		if (x < 0)
 			return name();
 		return name().substring(0, x);
+	}
+
+	@Override
+	public String tailName()
+	{
+		final int x = name().indexOf(' ');
+		if (x < 0)
+			return "";
+		return name().substring(x+1);
 	}
 
 	@Override
@@ -300,6 +310,8 @@ public class DefaultSocial implements Social
 			if (R.okMessage(mob, msg))
 			{
 				R.send(mob, msg);
+				if(!mob.isMonster())
+					CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.SOCIALUSE, 1, this);
 			}
 		}
 		else 
@@ -312,6 +324,8 @@ public class DefaultSocial implements Social
 			if (R.okMessage(mob, msg))
 			{
 				R.send(mob, msg);
+				if(!mob.isMonster())
+					CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.SOCIALUSE, 1, this);
 			}
 		}
 		else
@@ -323,6 +337,8 @@ public class DefaultSocial implements Social
 			if (R.okMessage(mob, msg))
 			{
 				R.send(mob, msg);
+				if(!mob.isMonster())
+					CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.SOCIALUSE, 1, this);
 				if (targetE instanceof MOB)
 				{
 					final MOB tmob = (MOB) targetE;

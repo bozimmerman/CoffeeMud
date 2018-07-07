@@ -70,6 +70,7 @@ public interface AchievementLibrary extends CMLibrary
 		CRAFTING("Crafting",new String[]{"NUM","ABILITYID"}),
 		MENDER("Mending",new String[]{"NUM","ABILITYID"}),
 		SKILLUSE("Using Skills",new String[]{"NUM","ABILITYID"}),
+		SOCIALUSE("Using Socials",new String[]{"NUM","SOCIALID"}),
 		QUESTOR("Completing Quests",new String[]{"NUM","PLAYERMASK","QUESTMASK"}),
 		ACHIEVER("Completing Achievements",new String[]{"ACHIEVEMENTLIST"}), 
 		ROOMENTER("Entering a Room",new String[]{"ROOMID"}),

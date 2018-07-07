@@ -1477,7 +1477,7 @@ public class StdAbility implements Ability
 			CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_SKILLUSE);
 			CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.SKILLUSE, 1, this);
 		}
-		
+
 		if(!A.isSavable())
 			return;
 

@@ -49,6 +49,14 @@ public interface Social extends Environmental, CMCommon
 	public String baseName();
 
 	/**
+	 * Tail name is the name of the social's target word.  It is NOT unique to a social
+	 * object however, since a socials name usually includes its target extension.
+	 *
+	 * @return the target/tail name
+	 */
+	public String tailName();
+
+	/**
 	 * You_see: what the player themself sees when they use this social.
 	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#setYou_see(String)

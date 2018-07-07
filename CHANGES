@@ -58,6 +58,7 @@
   56. New Property: Prop_UseAdjuster, mostly insane, but good for special potion effects.
   57. New Expertises: Vigorous cooking, Imbued Distilling, Fortified Baking
   58. New chants: Airy Aura (Mer)
+  59. Achievements now includes social tracking.
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
    1. Hunger and Thirst system can now be tweeked.  See coffeemud.ini file
