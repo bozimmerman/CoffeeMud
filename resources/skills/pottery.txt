@@ -1,4 +1,5 @@
 % Brick	1	1	1	0	GenResource	STONE		
+% Statue	1	1	1	0	GenItem	STATUE		
 % Cup	1	10	5	1	GenDrink		5	
 % Flask	1	10	5	1	GenDrink		8	
 % Mug	3	10	5	1	GenDrink		5	

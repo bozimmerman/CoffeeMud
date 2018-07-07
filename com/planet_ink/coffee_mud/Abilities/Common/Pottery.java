@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
@@ -73,7 +74,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
-		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tCONTAINER_TYPE_OR_LIDLOCK||STONE_FLAG\t"
+		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tCONTAINER_TYPE_OR_LIDLOCK||STONE_FLAG||STATUE\t"
 		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES\tCODED_SPELL_LIST";
 	}
 
@@ -226,6 +227,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
 								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
+		final List<String> originalCommands = new XVector<String>(commands);
 		if(super.checkStop(mob, commands))
 			return true;
 
@@ -257,6 +259,15 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		bundling=false;
 		String startStr=null;
 		int duration=4;
+		String statue=null;
+		if((commands.size()>1)&&(commands.get(commands.size()-1)).startsWith("STATUE="))
+		{
+			statue=((commands.get(commands.size()-1)).substring(7)).trim();
+			if(statue.length()==0)
+				statue=null;
+			else
+				commands.remove(commands.size()-1);
+		}
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
@@ -350,6 +361,43 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		if(data==null)
 			return false;
 		woodRequired=data[0][FOUND_AMT];
+		
+		final Session session=mob.session();
+		if((misctype.equalsIgnoreCase("statue"))
+		&&(session!=null)
+		&&((statue==null)||(statue.trim().length()==0)))
+		{
+			final Ability me=this;
+			final Physical target=givenTarget;
+			if(autoGenerate>0)
+				statue=mob.Name();
+			else
+			session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
+			{
+				@Override
+				public void showPrompt()
+				{
+					session.promptPrint(L("What is this of?\n\r: "));
+				}
+
+				@Override
+				public void timedOut()
+				{
+				}
+
+				@Override
+				public void callBack()
+				{
+					final String of=this.input;
+					if((of.trim().length()==0)||(of.indexOf('<')>=0))
+						return;
+					final Vector<String> newCommands=new XVector<String>(originalCommands);
+					newCommands.add("STATUE="+of);
+					me.invoke(mob, newCommands, target, auto, asLevel);
+				}
+			});
+			return false;
+		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		final MaterialLibrary.DeadResourceRecord deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
@@ -383,6 +431,25 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 		final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 		addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+		if((misctype.equalsIgnoreCase("statue"))
+		&&(statue!=null)
+		&&(statue.trim().length()>0))
+		{
+			if(buildingI.Name().indexOf('%')>0)
+			{
+				buildingI.setName(CMStrings.replaceAll(buildingI.Name(), "%", statue.trim()));
+				buildingI.setDisplayText(CMStrings.replaceAll(buildingI.displayText(), "%", statue.trim()));
+				buildingI.setDescription(CMStrings.replaceAll(buildingI.description(), "%", statue.trim()));
+			}
+			else
+			{
+				buildingI.setName(L("@x1 of @x2",itemName,statue.trim()));
+				buildingI.setDisplayText(L("@x1 of @x2 is here",itemName,statue.trim()));
+				buildingI.setDescription(L("@x1 of @x2. ",itemName,statue.trim()));
+			}
+			verb=L("making @x1",buildingI.name());
+		}
+		else
 		if(buildingI instanceof Container)
 		{
 			if(capacity>0)

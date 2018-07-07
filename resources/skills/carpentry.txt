@@ -1,4 +1,5 @@
 % Cup	1	10	8	1	GenDrink		5		1	
+% Statue	1	10	8	1	GenItem	STATUE				
 % Bowl	1	10	8	1	GenContainer		5		1	
 Torch	1	15	5	10	GenLightSource		200			
 % Toy	2	10	5	1	GenItem					
