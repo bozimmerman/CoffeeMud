@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.CMLib.Library;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.PlayerLibrary.ThinPlayer;
@@ -1126,17 +1127,19 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		{
 			for(int b=0;b<warnedOnes.size();b++)
 			{
-				final String B=warnedOnes.get(b).trim();
-				if(B.trim().length()>0)
+				final String codedWarnStr=warnedOnes.get(b).trim();
+				if(codedWarnStr.trim().length()>0)
 				{
-					final int firstSpace=B.lastIndexOf(' ');
-					final String warnedName=B.substring(0, firstSpace).toUpperCase().trim();
-					final int lastSpace=B.lastIndexOf(' ');
-					final long warningDateTime=CMath.s_long(B.substring(lastSpace+1).trim());
+					final int firstSpace=codedWarnStr.indexOf(' ');
+					final String warnedName=codedWarnStr.substring(0, firstSpace).toUpperCase().trim();
+					final int lastSpace=codedWarnStr.lastIndexOf(' ');
+					final long warningDateTime=CMath.s_long(codedWarnStr.substring(lastSpace+1).trim());
 					if((warningDateTime > 0) 
 					&& (System.currentTimeMillis() < (warningDateTime + (10 * TimeManager.MILI_DAY))))
 					{
-						warnStr.append(B+"\n");
+						warnStr.append(codedWarnStr+"\n");
+						if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
+							Log.debugOut(serviceClient.getName(),"Warn loaded: "+warnedName+" last warned on "+CMLib.time().date2String(warningDateTime));
 						warnMap.put(warnedName, new Long(warningDateTime));
 					}
 					else
@@ -1159,7 +1162,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				if(autoPurgeDaysLevels[autoPurgeDaysLevels.length-1]==0)
 				{
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
-						Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Nothing will be done about it.");
+						Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Character is active.");
 					continue;
 				}
 				purgeDateTime=userLastLoginDateTime + autoPurgeDaysLevels[autoPurgeDaysLevels.length-1];
@@ -1171,17 +1174,18 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				if(autoPurgeDaysLevels[level]==0)
 				{
 					if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
-						Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Nothing will be done about it.");
+						Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+".  Character is active.");
 					continue;
 				}
 				purgeDateTime=userLastLoginDateTime + autoPurgeDaysLevels[level];
 				warnDateTime=userLastLoginDateTime + prePurgeLevels[level];
 			}
 			else
+			{
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
+					Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+" is level "+level+".  Skipping.");
 				continue;
-			
-			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
-				Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+" will be warned on "+CMLib.time().date2String(warnDateTime)+" and purged on "+CMLib.time().date2String(purgeDateTime));
+			}
 
 			if((System.currentTimeMillis()>purgeDateTime)||(System.currentTimeMillis()>warnDateTime))
 			{
@@ -1191,6 +1195,15 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				long foundWarningDateTime=-1;
 				if(warnMap.containsKey(name.toUpperCase().trim()))
 					foundWarningDateTime = warnMap.get(name.toUpperCase().trim()).longValue();
+				if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
+				{
+					Log.debugOut(serviceClient.getName(),
+							name+" last on "+CMLib.time().date2String(userLastLoginDateTime)
+							+" will be warned on "+CMLib.time().date2String(warnDateTime)
+							+" and purged on "+CMLib.time().date2String(purgeDateTime)
+							+((foundWarningDateTime<0)?" never warned":(" last warned on "+CMLib.time().date2String(foundWarningDateTime))));
+				}
+				
 				if((foundWarningDateTime<0)
 				&&(System.currentTimeMillis()>warnDateTime))
 				{
@@ -1219,6 +1232,9 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					}
 				}
 			}
+			else
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
+				Log.debugOut(serviceClient.getName(),name+" last on "+CMLib.time().date2String(userLastLoginDateTime)+" will be warned on "+CMLib.time().date2String(warnDateTime)+" and purged on "+CMLib.time().date2String(purgeDateTime));
 			if(warnChanged)
 				Resources.updateFileResource("::warnedplayers.ini",warnStr);
 		}
@@ -1258,8 +1274,19 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 		if((mob.playerStats()==null)
 		||(mob.playerStats().getEmail().length()==0)) // no email addy to forward TO
+		{
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
+				Log.debugOut(serviceClient.getName(),"Unable to warn "+mob.Name()+" due to lacking an email address.");
 			return;
+		}
 
+		if(CMSecurity.isDisabled(DisFlag.SMTPCLIENT))
+		{
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
+				Log.debugOut(serviceClient.getName(),"Unable to warn "+mob.Name()+" due to smtp disable.");
+			return;
+		}
+		
 		//  timeLeft is in millis
 		final String from="AutoPurgeWarning";
 		final String to=mob.Name();
