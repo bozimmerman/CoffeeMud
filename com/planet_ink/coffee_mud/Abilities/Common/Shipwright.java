@@ -87,12 +87,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	//protected static final int RCP_TICKS=2;
 	protected static final int	RCP_WOOD		= 3;
 	protected static final int	RCP_VALUE		= 4;
-	protected static final int	RCP_CLASSTYPE	= 5;
-	protected static final int	RCP_MISCTYPE	= 6;
-	protected static final int	RCP_CAPACITY	= 7;
-	protected static final int	RCP_CONTAINMASK	= 8;
-	protected static final int	RCP_STRINGS		= 9;
-	protected static final int	RCP_SPELL		= 10;
+	protected static final int	RCP_FILENAME	= 5;
+	protected static final int	RCP_SHIPINDEX	= 6;
 
 	protected Item key=null;
 
@@ -397,10 +393,9 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					final String wood=getComponentDescription(mob,V,RCP_WOOD);
-					final int capacity=CMath.s_int(V.get(RCP_CAPACITY));
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
-						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRight(""+capacity,cols[2])+" "+wood+"\n\r");
+						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());
@@ -710,8 +705,6 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			if(amount>woodRequired)
 				woodRequired=amount;
 			final int[] pm={RawMaterial.MATERIAL_WOODEN};
-			final String misctype=foundRecipe.get(RCP_MISCTYPE);
-			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
 													woodRequired,"wood",pm,
 													0,null,null,
@@ -726,23 +719,27 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final MaterialLibrary.DeadResourceRecord deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
 			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
-			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+			final String shipFilename = foundRecipe.get(RCP_FILENAME);
+			final String shipIndexStr = foundRecipe.get(RCP_SHIPINDEX);
+			final List<Item> shipPrototypes = (List<Item>)Resources.getResource("SHIPWRIGHT_PARSED_"+shipFilename);
+			if(shipPrototypes == null)
+			{
+			}
+			
+			//buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			if(buildingI==null)
 			{
-				commonTell(mob,L("There's no such thing as a @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				commonTell(mob,L("There's no such thing as a @x1!!!",shipFilename+"("+shipIndexStr)+")");
 				return false;
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),6);
 			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
 			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
-			if(misctype.equalsIgnoreCase("BUNDLE"))
-				itemName="a "+woodRequired+"# "+itemName;
-			else
-				itemName=CMLib.english().startWithAorAn(itemName);
+			itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr=L("<S-NAME> start(s) carving @x1.",buildingI.name());
-			displayText=L("You are carving @x1",buildingI.name());
-			verb=L("carving @x1",buildingI.name());
+			startStr=L("<S-NAME> start(s) building @x1.",buildingI.name());
+			displayText=L("You are building @x1",buildingI.name());
+			verb=L("building @x1",buildingI.name());
 			playSound="saw.wav";
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
@@ -750,45 +747,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			setBrand(mob, buildingI);
-			String strstr=foundRecipe.get(RCP_STRINGS);
-			if((strstr!=null)&&(strstr.length()>0)&&(buildingI instanceof Rideable))
-			{
-				List<String> strstrl=CMParms.parseSemicolons(strstr, false);
-				if((strstrl.size()>0)&&(strstrl.get(0).trim().length()>0))
-					((Rideable)buildingI).setStateString(strstrl.get(0).trim());
-				if((strstrl.size()>1)&&(strstrl.get(1).trim().length()>0))
-					((Rideable)buildingI).setStateStringSubject(strstrl.get(1).trim());
-				if((strstrl.size()>2)&&(strstrl.get(2).trim().length()>0))
-					((Rideable)buildingI).setRideString(strstrl.get(2).trim());
-				if((strstrl.size()>3)&&(strstrl.get(3).trim().length()>0))
-					((Rideable)buildingI).setMountString(strstrl.get(3).trim());
-				if((strstrl.size()>4)&&(strstrl.get(4).trim().length()>0))
-					((Rideable)buildingI).setDismountString(strstrl.get(4).trim());
-				if((strstrl.size()>5)&&(strstrl.get(5).trim().length()>0))
-					((Rideable)buildingI).setPutString(strstrl.get(5).trim());
-			}
-			final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));
-			final String capacity=foundRecipe.get(RCP_CAPACITY);
-			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
-			if(bundling)
-				buildingI.setBaseValue(lostValue);
-			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			key=null;
-			if(buildingI instanceof Rideable)
-			{
-				if(misctype.length()>0)
-					setRideBasis((Rideable)buildingI,misctype);
-				if(CMath.isInteger(capacity))
-					((Rideable)buildingI).setRiderCapacity(CMath.s_int(capacity));
-				((Container)buildingI).setContainTypes(canContain);
-				((Container)buildingI).setCapacity(buildingI.basePhyStats().weight()+250+(250*CMath.s_int(capacity)));
-			}
-			else
-			if(buildingI instanceof Container)
-			{
-				((Container)buildingI).setContainTypes(canContain);
-				((Container)buildingI).setCapacity(CMath.s_int(capacity));
-			}
 			buildingI.recoverPhyStats();
 			buildingI.text();
 			buildingI.recoverPhyStats();
