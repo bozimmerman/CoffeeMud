@@ -4600,6 +4600,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				}
 	
 				@Override
+				public int appliesToClass(Object o)
+				{
+					return (o instanceof RawMaterial) ? 5 : -1;
+				}
+				
+				@Override
 				public String defaultValue()
 				{
 					return "";

@@ -73,7 +73,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
-		+"LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
+		+"LID_LOCK||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
 		+"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION||MAX_WAND_USES||DICE_SIDES\t"
 		+"BASE_ARMOR_AMOUNT||BASE_DAMAGE\tCONTAINER_TYPE||ATTACK_MODIFICATION\tCODED_SPELL_LIST";
 	}
@@ -278,7 +278,6 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
 									final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
-		final List<String> originalCommands = new XVector<String>(commands);
 		if(super.checkStop(mob, commands))
 			return true;
 
@@ -484,56 +483,6 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				return false;
 			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
-			final Session session=mob.session();
-			if((misctype.equalsIgnoreCase("statue"))
-			&&((session!=null)||((statue!=null)&&(statue.trim().length()>0))||(rest.trim().length()>0)))
-			{
-				if(((statue==null)||(statue.trim().length()==0))&&(rest.trim().length()==0))
-				{
-					final Ability me=this;
-					final Physical target=givenTarget;
-					if(session != null)
-					{
-						if(autoGenerate>0)
-							statue=mob.Name();
-						else
-						session.prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
-						{
-							@Override
-							public void showPrompt()
-							{
-								session.promptPrint(L("What is this a statue of?\n\r: "));
-							}
-		
-							@Override
-							
-							public void timedOut()
-							{
-							}
-		
-							@Override
-							public void callBack()
-							{
-								final String of=this.input;
-								if((of.trim().length()==0)||(of.indexOf('<')>=0))
-									return;
-								final Vector<String> newCommands=new XVector<String>(originalCommands);
-								newCommands.add("STATUE="+of);
-								me.invoke(mob, newCommands, target, auto, asLevel);
-							}
-						});
-					}
-					return false;
-				}
-				else
-				{
-					if((statue==null)||(statue.trim().length()==0))
-						statue="nothing";
-					buildingI.setName(L("@x1 of @x2",itemName,statue.trim()));
-					buildingI.setDisplayText(L("@x1 of @x2 is here",itemName,statue.trim()));
-					buildingI.setDescription(L("@x1 of @x2. ",itemName,statue.trim()));
-				}
-			}
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			final MaterialLibrary.DeadResourceRecord deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,null);
