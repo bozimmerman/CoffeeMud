@@ -2874,6 +2874,7 @@ public class StdMOB implements MOB
 				&& (CMath.abs(srcM.phyStats().level() - phyStats().level()) > CMProps.getPKillLevelDiff())
 				&& (!CMSecurity.isAllowed(this, location(), CMSecurity.SecFlag.PKILL))
 				&& (!CMSecurity.isAllowed(srcM, srcM.location(), CMSecurity.SecFlag.PKILL))
+				&& (!CMLib.law().doesHavePriviledgesHere(srcM, location()))
 				&& ((!(msg.tool() instanceof Ability)) || (((Ability) msg.tool()).classificationCode() & Ability.ALL_ACODES) != Ability.ACODE_DISEASE))
 				{
 					srcM.tell(L("That is not EVEN a fair fight."));
