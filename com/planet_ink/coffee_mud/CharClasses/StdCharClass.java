@@ -493,7 +493,10 @@ public class StdCharClass implements CharClass
 					return true;
 				else
 				if(multiClassFirstRule.equals("NO")||(multiClassSecondRule.equals("NO")))
-					mob.tell(L("You should be happy to be a @x1.",curClass.name()));
+				{
+					if(!quiet)
+						mob.tell(L("You should be happy to be a @x1.",curClass.name()));
+				}
 				else
 				if(multiClassFirstRule.equals("SUB")|| multiClassSecondRule.equals("SUB"))
 				{
@@ -503,14 +506,18 @@ public class StdCharClass implements CharClass
 					for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 					{
 						final CharClass C=c.nextElement();
-						if((C.baseClass().equals(currentBaseClassID))&&(C.getSubClassRule()==SubClassRule.ANY))
+						if((C.baseClass().equals(currentBaseClassID))
+						&&(C.getSubClassRule()==SubClassRule.ANY))
 						{
 							doesBaseHaveAnAny=true;
 							break;
 						}
 					}
 					if(doesBaseHaveAnAny)
-						return true;
+					{
+						if((changeToBaseClassID.equals(changeToClassID))||(changeToBaseClassID.equals(currentBaseClassID)))
+							return true;
+					}
 					if(!quiet)
 						mob.tell(L("You must be a @x1 type to become a @x2.",changeToBaseClassID,name()));
 				}
