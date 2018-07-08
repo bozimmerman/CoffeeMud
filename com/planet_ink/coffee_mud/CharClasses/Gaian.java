@@ -165,7 +165,7 @@ public class Gaian extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Chant_FortifyFood",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_Barkskin",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_SummonSum",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_SummonSun",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Chant_SenseSentience",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Ranger_Hide",false);

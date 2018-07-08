@@ -38,10 +38,10 @@ public class Familiarity_Shield extends StdAbility
 	@Override
 	public String ID()
 	{
-		return "Familiarity_Armor";
+		return "Familiarity_Shield";
 	}
 
-	private final static String	localizedName	= CMLib.lang().L("Armor Familiarity");
+	private final static String	localizedName	= CMLib.lang().L("Shield Familiarity");
 
 	@Override
 	public String name()
