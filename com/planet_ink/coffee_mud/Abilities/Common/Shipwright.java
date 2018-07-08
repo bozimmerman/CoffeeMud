@@ -276,7 +276,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 						else
 						if(activity==CraftingActivity.LEARNING)
 						{
-							deconstructRecipeInto( buildingI, recipeHolder );
+							deconstructRecipeInto(mob, buildingI, recipeHolder );
 							buildingI.destroy();
 						}
 						else

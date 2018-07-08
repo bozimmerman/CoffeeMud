@@ -282,6 +282,14 @@ public class Artisan extends StdCharClass
 		&&((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_CRAFTINGSKILL)
 		&&(msg.value() > 0))
 			CMLib.leveler().postExperience(msg.source(),null,null,msg.value(),false);
+		else
+		if((msg.source() == myHost)
+		&&(msg.targetMinor() == CMMsg.TYP_RECIPELEARNED)
+		&&(msg.target() != null)
+		&&(msg.tool() instanceof Ability)
+		&&((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_CRAFTINGSKILL)
+		&&(msg.value() > 0))
+			CMLib.leveler().postExperience(msg.source(),null,null,msg.value(),false);
 	}
 	
 	@Override

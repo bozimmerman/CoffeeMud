@@ -190,7 +190,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 					else
 					if(activity==CraftingActivity.LEARNING)
 					{
-						deconstructRecipeInto( buildingI, recipeHolder );
+						deconstructRecipeInto(mob, buildingI, recipeHolder );
 						buildingI.destroy();
 					}
 					else

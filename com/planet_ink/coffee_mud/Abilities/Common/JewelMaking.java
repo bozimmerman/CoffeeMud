@@ -177,7 +177,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 						else
 						if(activity==CraftingActivity.LEARNING)
 						{
-							deconstructRecipeInto( buildingI, recipeHolder );
+							deconstructRecipeInto(mob, buildingI, recipeHolder );
 							buildingI.destroy();
 						}
 						else

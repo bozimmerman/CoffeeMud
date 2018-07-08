@@ -1191,6 +1191,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_RPXPCHANGE=131;
 	/** MINOR_MASK minor action code type, denoting a command's msg was rejected */
 	public static final int TYP_COMMANDREJECT=132;
+	/** MINOR_MASK minor action code type, denoting a completed item recipe learn activty */
+	public static final int TYP_RECIPELEARNED=133;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1220,7 +1222,7 @@ public interface CMMsg extends CMCommon
 		"LASER","SONIC","REPAIR","ENHANCE","INSTALL","COLLISION","AROMA","DUELLOSS",
 		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED",
 		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP", "RPXPCHANGE",
-		"COMMANDREJECT"
+		"COMMANDREJECT","RECIPELEARNED"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */

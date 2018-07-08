@@ -149,7 +149,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 						else
 						if(activity==CraftingActivity.LEARNING)
 						{
-							deconstructRecipeInto( buildingI, recipeHolder );
+							deconstructRecipeInto(mob, buildingI, recipeHolder );
 							buildingI.destroy();
 						}
 						else

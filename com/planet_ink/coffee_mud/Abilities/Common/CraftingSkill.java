@@ -71,7 +71,7 @@ public class CraftingSkill extends GatheringSkill
 	protected Recipe	recipeHolder	= null;
 	protected boolean	fireRequired	= true;
 	
-	protected LinkedList<String> last4items = new LinkedList<String>();
+	protected LinkedList<String> last25items = new LinkedList<String>();
 
 	protected enum CraftingActivity
 	{
@@ -331,6 +331,51 @@ public class CraftingSkill extends GatheringSkill
 	{
 		return name;
 	}
+
+	protected void setMsgXPValue(final MOB mob, final CMMsg msg)
+	{
+		final double levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
+		final double levelDiff=buildingI.phyStats().level()-mob.phyStats().level();
+		double levelXPFactor = 100.0;
+		if(levelDiff<(-levelLimit) )
+			levelXPFactor=0.0;
+		else
+		if(levelLimit>0)
+		{
+			double levelFactor=levelDiff / levelLimit;
+			if( levelFactor > levelLimit )
+				levelFactor = levelLimit;
+			levelXPFactor+=(levelFactor *  levelXPFactor);
+		}
+		if((buildingI instanceof DoorKey) && (!ID().equalsIgnoreCase("LockSmith")))
+			msg.setValue(0);
+		else
+		{
+			final CraftingSkill mySkill = (CraftingSkill)mob.fetchAbility(ID());
+			if(mySkill == null)
+				msg.setValue(0);
+			else
+			{
+				final LinkedList<String> localLast25Items = mySkill.last25items;
+				String buildingIName = cleanBuildingNameForXP(mob,buildingI.Name().toUpperCase());
+				int lastBaseDuration = this.lastBaseDuration;
+				if(lastBaseDuration > 75)
+					lastBaseDuration = 75;
+				double baseXP = lastBaseDuration * levelXPFactor / 25.0;
+				double xp = lastBaseDuration * levelXPFactor / 25.0;
+				for(String s : localLast25Items)
+				{
+					if(s.equals(buildingIName))
+						xp -= (baseXP * 0.25);
+				}
+				if(localLast25Items.size()==5)
+					localLast25Items.removeFirst();
+				localLast25Items.addLast(buildingIName);
+				if(xp > 0.0)
+					msg.setValue((int)Math.round(xp));
+			}
+		}
+	}
 	
 	@Override
 	protected boolean dropAWinner(MOB mob, Item buildingI)
@@ -344,48 +389,7 @@ public class CraftingSkill extends GatheringSkill
 		else
 		{
 			final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
-			
-			final double levelLimit=CMProps.getIntVar(CMProps.Int.EXPRATE);
-			final double levelDiff=buildingI.phyStats().level()-mob.phyStats().level();
-			double levelXPFactor = 100.0;
-			if(levelDiff<(-levelLimit) )
-				levelXPFactor=0.0;
-			else
-			if(levelLimit>0)
-			{
-				double levelFactor=levelDiff / levelLimit;
-				if( levelFactor > levelLimit )
-					levelFactor = levelLimit;
-				levelXPFactor+=(levelFactor *  levelXPFactor);
-			}
-			if((buildingI instanceof DoorKey) && (!ID().equalsIgnoreCase("LockSmith")))
-				msg.setValue(0);
-			else
-			{
-				final CraftingSkill mySkill = (CraftingSkill)mob.fetchAbility(ID());
-				if(mySkill == null)
-					msg.setValue(0);
-				else
-				{
-					final LinkedList<String> localLast5Items = mySkill.last4items;
-					String buildingIName = cleanBuildingNameForXP(mob,buildingI.Name().toUpperCase());
-					int lastBaseDuration = this.lastBaseDuration;
-					if(lastBaseDuration > 75)
-						lastBaseDuration = 75;
-					double baseXP = lastBaseDuration * levelXPFactor / 25.0;
-					double xp = lastBaseDuration * levelXPFactor / 25.0;
-					for(String s : localLast5Items)
-					{
-						if(s.equals(buildingIName))
-							xp -= (baseXP * 0.25);
-					}
-					if(localLast5Items.size()==5)
-						localLast5Items.removeFirst();
-					localLast5Items.addLast(buildingIName);
-					if(xp > 0.0)
-						msg.setValue((int)Math.round(xp));
-				}
-			}
+			setMsgXPValue(mob,msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				R.addItem(buildingI,ItemPossessor.Expire.Player_Drop);
@@ -1173,7 +1177,7 @@ public class CraftingSkill extends GatheringSkill
 		return false;
 	}
 
-	protected boolean deconstructRecipeInto(final Item I, final Recipe R)
+	protected boolean deconstructRecipeInto(final MOB mob, final Item I, final Recipe R)
 	{
 
 		if((I==null)||(R==null))
@@ -1190,16 +1194,24 @@ public class CraftingSkill extends GatheringSkill
 			return false;
 		try
 		{
-			existingRecipes.add(CMLib.ableParms().makeRecipeFromItem(C, I));
-			R.setRecipeCodeLines(existingRecipes.toArray(new String[0]));
-			R.setCommonSkillID( ID() );
+			final CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.TYP_RECIPELEARNED|CMMsg.MASK_ALWAYS,null);
+			setMsgXPValue(mob,msg);
+			if((mob!=null)
+			&&(mob.location()!=null)
+			&&(mob.location().okMessage(mob, msg)))
+			{
+				mob.location().send(mob, msg);
+				existingRecipes.add(CMLib.ableParms().makeRecipeFromItem(C, I));
+				R.setRecipeCodeLines(existingRecipes.toArray(new String[0]));
+				R.setCommonSkillID( ID() );
+				return true;
+			}
 		}
 		catch(final CMException cme)
 		{
 			Log.errOut("CraftingSkill",cme.getMessage());
-			return false;
 		}
-		return true;
+		return false;
 	}
 
 	protected boolean mayBeCrafted(final Item I)

@@ -163,7 +163,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 						else
 						if(activity==CraftingActivity.LEARNING)
 						{
-							deconstructRecipeInto( buildingI, recipeHolder );
+							deconstructRecipeInto(mob, buildingI, recipeHolder );
 							buildingI.destroy();
 						}
 						else

@@ -145,7 +145,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 						else
 						if(activity==CraftingActivity.LEARNING)
 						{
-							deconstructRecipeInto( buildingI, recipeHolder );
+							deconstructRecipeInto(mob, buildingI, recipeHolder );
 							buildingI.destroy();
 						}
 						else
