@@ -1608,6 +1608,19 @@ public class CraftingSkill extends GatheringSkill
 			commonTell(mob,L("You need to have either a blank recipe page or book, or one already containing recipes for @x1 that has blank pages.",name()));
 			return false;
 		}
+		for(final String codeLines : recipeHolder.getRecipeCodeLines())
+		{
+			int x=codeLines.indexOf('\t');
+			if(x >= 0)
+			{
+				final String name=this.replacePercent(codeLines.substring(0,x),"").trim();
+				if(buildingI.Name().indexOf(name)>=0)
+				{
+					commonTell(mob,L("You appear to already have that recipe written down here."));
+					return false;
+				}
+			}
+		}
 		activity = CraftingActivity.LEARNING;
 		// checking to see if there is enough space (prop_reqcapacity) to make an
 		// item is unnecessary, because you must first drop the same weight in materials

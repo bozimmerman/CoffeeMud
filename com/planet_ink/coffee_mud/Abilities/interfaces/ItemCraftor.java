@@ -122,6 +122,21 @@ public interface ItemCraftor extends CraftorAbility
 	}
 
 	/**
+	 * The base unlocalized brand added to crafted items
+	 */
+	public final static String CRAFTING_BRAND_STR_PREFIX="This is the work of ";
+
+	/**
+	 * The base unlocalized brand added to anonymously crafted items
+	 */
+	public final static String CRAFTING_BRAND_STR_ANON=CRAFTING_BRAND_STR_PREFIX+"an anonymous craftsman.";
+
+	/**
+	 * The base unlocalized brand added to named crafted items
+	 */
+	public final static String CRAFTING_BRAND_STR_NAME=CRAFTING_BRAND_STR_PREFIX+"@x1.";
+
+	/**
 	 * Returns whether the given item could have been crafted by this skill.
 	 * @param I the item to examine
 	 * @return true if the item is consistent with this crafting, or false otherwise

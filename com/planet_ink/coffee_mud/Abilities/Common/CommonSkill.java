@@ -63,10 +63,6 @@ public class CommonSkill extends StdAbility
 		return "";
 	}
 
-	protected final static String CRAFTING_BRAND_STR_PREFIX="This is the work of ";
-	protected final static String CRAFTING_BRAND_STR_ANON=CRAFTING_BRAND_STR_PREFIX+"an anonymous craftsman.";
-	protected final static String CRAFTING_BRAND_STR_NAME=CRAFTING_BRAND_STR_PREFIX+"@x1.";
-	
 	public static final Map<String, Integer[]>	resourcesMap	= new Hashtable<String, Integer[]>();
 	protected static Item						fakeFire		= null;
 	protected static final List<String>			uninvokeEmpties	= new ReadOnlyList<String>(new ArrayList<String>(0));
@@ -317,10 +313,10 @@ public class CommonSkill extends StdAbility
 			Ability A=buildingI.fetchEffect("Copyright");
 			if((A!=null)&&(A.text().length()>0))
 				return A.text();
-			final int x=buildingI.secretIdentity().indexOf(CRAFTING_BRAND_STR_PREFIX);
+			final int x=buildingI.secretIdentity().indexOf(ItemCraftor.CRAFTING_BRAND_STR_PREFIX);
 			if(x>=0)
 			{
-				int y=buildingI.secretIdentity().indexOf('.',x+CRAFTING_BRAND_STR_PREFIX.length());
+				int y=buildingI.secretIdentity().indexOf('.',x+ItemCraftor.CRAFTING_BRAND_STR_PREFIX.length());
 				if(y>=0)
 				{
 					return buildingI.secretIdentity().substring(x,y);
@@ -333,9 +329,9 @@ public class CommonSkill extends StdAbility
 	protected String getBrand(final MOB mob)
 	{
 		if(mob==null)
-			return L(CRAFTING_BRAND_STR_ANON);
+			return L(ItemCraftor.CRAFTING_BRAND_STR_ANON);
 		else
-			return L(CRAFTING_BRAND_STR_NAME,mob.Name());
+			return L(ItemCraftor.CRAFTING_BRAND_STR_NAME,mob.Name());
 	}
 
 	protected void commonTell(MOB mob, Environmental target, Environmental tool, String str)
