@@ -47,7 +47,7 @@
   45. New skills: Autoclimb, High Jump, Grazing, Stigma, Adorable, Gore, Wild Tag Turf
   46. New skills: Smells Like Cherries, Throw Feces, Shoot Web, Blessing, Milkable
   47. New skills: Hamstring, Scavenge, Food Begging, Bear Foraging, Track Friend
-  48. New skills: Racial Enemy, Combat Frenzy, Quills, Poisonous Bite
+  48. New skills: Racial Enemy, Combat Frenzy, Quills, Poisonous Bite, Boatwright
   49. New races: Orangutan, Millipede, Cricket, Porcupine, Beaver, Corn Snake
   50. New channel flags: REALNAMEOOC, and REALNAMEOOCNOADMIN
   51. ShapeShift.txt races have changed, and most got new racial abilities
@@ -59,6 +59,7 @@
   57. New Expertises: Vigorous cooking, Imbued Distilling, Fortified Baking
   58. New chants: Airy Aura (Mer)
   59. Achievements now includes social tracking.
+  60. New common skills: Boatwright (is the OLD Shipwright), and Shipwright (large sailing ships)
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
    1. Hunger and Thirst system can now be tweeked.  See coffeemud.ini file

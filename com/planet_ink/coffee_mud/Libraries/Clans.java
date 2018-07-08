@@ -244,9 +244,13 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 		final List<Pair<Clan,Clan>> finalList=new XVector<Pair<Clan,Clan>>(1,true);
 		for(final Pair<Clan,Clan> p : list)
+		{
 			for(final Pair<Clan,Integer> c : M2.clans())
+			{
 				if(c.first.isRivalrous())
 					finalList.add(new Pair<Clan,Clan>(p.first,c.first));
+			}
+		}
 		return finalList;
 	}
 

@@ -72,10 +72,10 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	@Override
 	public String parametersFormat()
 	{ 
-		return
-		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tRIDE_BASIS\tRIDE_CAPACITY\tCONTAINER_CAPACITY\t"
-		+"RIDE_OVERRIDE_STRS\tCODED_SPELL_LIST";
+		return "";
+		//"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
+		//+"ITEM_CLASS_ID\tRIDE_BASIS\tRIDE_CAPACITY\tCONTAINER_CAPACITY\t"
+		//+"RIDE_OVERRIDE_STRS\tCODED_SPELL_LIST";
 	}
 
 	private int					doorDir			= -1;
@@ -87,8 +87,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	//protected static final int RCP_TICKS=2;
 	protected static final int	RCP_WOOD		= 3;
 	protected static final int	RCP_VALUE		= 4;
-	protected static final int	RCP_FILENAME	= 5;
-	protected static final int	RCP_SHIPINDEX	= 6;
+	protected static final int	RCP_SHIPINDEX	= 5;
 
 	protected Item key=null;
 
@@ -106,9 +105,48 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		return super.tick(ticking,tickID);
 	}
 
+	protected List<Item> getShips()
+	{
+		final String allItemID = "SHIPWRIGHT_PARSED";
+		@SuppressWarnings("unchecked")
+		List<Item> shipPrototypes = (List<Item>)Resources.getResource(allItemID);
+		if(shipPrototypes == null)
+		{
+			final CMFile F=new CMFile(Resources.makeFileResourceName("skills/shipbuilding.cmare"),null);
+			if(F.exists())
+			{
+				shipPrototypes=new Vector<Item>();
+				CMLib.coffeeMaker().addItemsFromXML(F.textUnformatted().toString(), shipPrototypes, null);
+				for(final Item I : shipPrototypes)
+					CMLib.threads().deleteTick(I, -1);
+				if(shipPrototypes.size()>0)
+					Resources.submitResource(allItemID, shipPrototypes);
+			}
+		}
+		return shipPrototypes;
+	}
+	
 	@Override
 	public String parametersFile()
 	{
+		final CMFile F=new CMFile(Resources.makeFileResourceName("::skills/shipwright.txt"),null);
+		if(F.exists())
+			return "shipwright.txt";
+		List<Item> ships = getShips();
+		if(ships == null)
+			return "";
+		StringBuilder recipes = new StringBuilder("");
+		int x=0;
+		for(final Item I : getShips())
+		{
+			recipes.append(I.Name()).append("\t")
+					.append(""+I.basePhyStats().level()).append("\t")
+					.append(""+I.basePhyStats().weight()/10).append("\t")
+					.append(""+I.basePhyStats().weight()).append("\t")
+					.append(""+I.baseGoldValue()).append("\t")
+					.append(""+(x++)).append("\r\n");
+		}
+		F.saveText(recipes.toString());
 		return "shipwright.txt";
 	}
 
@@ -219,7 +257,10 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 							buildingI.destroy();
 						}
 						else
-							commonEmote(mob,L("<S-NAME> mess(es) up carving @x1.",buildingI.name()));
+						{
+							commonEmote(mob,L("<S-NAME> mess(es) up building @x1.",buildingI.name()));
+							buildingI.destroy();
+						}
 					}
 					else
 					{
@@ -247,6 +288,28 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 								dropAWinner(mob,key);
 								if(key instanceof Container)
 									key.setContainer((Container)buildingI);
+							}
+							if(buildingI instanceof BoardableShip)
+							{
+								MOB buyer = mob;
+								if(buyer.isMonster() && (buyer.amFollowing()!=null))
+									buyer = buyer.amUltimatelyFollowing();
+								if(buyer.isMonster())
+									((BoardableShip)buildingI).renameShip(""+CMLib.dice().roll(1, 999, 0));
+								else
+								{
+									final MOB shopKeeper = CMClass.getMOB("StdShopkeeper");
+									try
+									{
+										((ShopKeeper)shopKeeper).setWhatIsSoldMask(ShopKeeper.DEAL_SHIPSELLER);
+										CMMsg msg=CMClass.getMsg(buyer,buildingI,shopKeeper,CMMsg.MSG_GET,null);
+										buildingI.executeMsg(buyer, msg);
+									}
+									finally
+									{
+										shopKeeper.destroy();
+									}
+								}
 							}
 						}
 					}
@@ -276,18 +339,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
-		if(I instanceof Rideable)
-		{
-			final Rideable R=(Rideable)I;
-			final int rideType=R.rideBasis();
-			switch(rideType)
-			{
-			case Rideable.RIDEABLE_WATER:
-				return true;
-			default:
-				return false;
-			}
-		}
+		if(I instanceof SailingShip)
+			return true;
 		return false;
 	}
 
@@ -371,11 +424,13 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				mask="";
 			}
 			final int[] cols={
-				CMLib.lister().fixColWidth(16,mob.session()),
-				CMLib.lister().fixColWidth(5,mob.session()),
-				CMLib.lister().fixColWidth(8,mob.session())
+				CMLib.lister().fixColWidth(40,mob.session()),
+				CMLib.lister().fixColWidth(10,mob.session()),
+				CMLib.lister().fixColWidth(10,mob.session())
 			};
-			final StringBuffer buf=new StringBuffer(L("@x1 @x2 @x3 Wood required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Level"),cols[1]),CMStrings.padRight(L("Capacity"),cols[2])));
+			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Wood required\n\r",
+					CMStrings.padRight(L("Item"),cols[0]),
+					CMStrings.padRight(L("Level"),cols[1])));
 			Collections.sort(recipes,new Comparator<List<String>>(){
 				@Override
 				public int compare(List<String> o1, List<String> o2)
@@ -392,10 +447,12 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				{
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
-					final String wood=getComponentDescription(mob,V,RCP_WOOD);
+					String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
-						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+"\n\r");
+						buf.append(CMStrings.padRight(item,cols[0])
+								+" "+CMStrings.padRight(""+level,cols[1])
+								+" "+wood+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());
@@ -719,47 +776,49 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final MaterialLibrary.DeadResourceRecord deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
 			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
-			final String shipFilename = foundRecipe.get(RCP_FILENAME);
 			final String shipIndexStr = foundRecipe.get(RCP_SHIPINDEX);
-			final String allItemID = "SHIPWRIGHT_PARSED_"+shipFilename;
-			@SuppressWarnings("unchecked")
-			List<Item> shipPrototypes = (List<Item>)Resources.getResource(allItemID);
-			if(shipPrototypes == null)
-			{
-				final CMFile F=new CMFile(shipFilename,null);
-				if(F.exists())
-				{
-					shipPrototypes=new Vector<Item>();
-					CMLib.coffeeMaker().addItemsFromXML(F.textUnformatted().toString(), shipPrototypes, null);
-					for(final Item I : shipPrototypes)
-						CMLib.threads().deleteTick(I, -1);
-					if(shipPrototypes.size()>0)
-						Resources.submitResource(allItemID, shipPrototypes);
-				}
-			}
+			List<Item> shipPrototypes = getShips();
 			if(shipPrototypes != null)
 			{
+				if(CMath.isInteger(shipIndexStr))
+				{
+					int dex=CMath.s_int(shipIndexStr);
+					if((dex>=0)&&(dex<shipPrototypes.size()))
+						buildingI=shipPrototypes.get(dex);
+				}
+				else
+				{
+					for(Item I : shipPrototypes)
+					{
+						if(CMLib.english().containsString(I.Name(), super.replacePercent(foundRecipe.get(RCP_FINALNAME), "")))
+						{
+							buildingI=I;
+							break;
+						}
+					}
+				}
 				//buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
 			}
 			if(buildingI==null)
 			{
-				commonTell(mob,L("There's no such thing as a @x1!!!",shipFilename+"("+shipIndexStr)+")");
+				commonTell(mob,L("There's no such thing as a @x1!!!","("+shipIndexStr)+")");
 				return false;
 			}
+			buildingI=(Item)buildingI.copyOf();
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),6);
 			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
-			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
-			itemName=CMLib.english().startWithAorAn(itemName);
-			buildingI.setName(itemName);
+			//String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
+			//itemName=CMLib.english().startWithAorAn(itemName);
+			//buildingI.setName(itemName);
 			startStr=L("<S-NAME> start(s) building @x1.",buildingI.name());
 			displayText=L("You are building @x1",buildingI.name());
 			verb=L("building @x1",buildingI.name());
 			playSound="saw.wav";
-			buildingI.setDisplayText(L("@x1 lies here",itemName));
-			buildingI.setDescription(itemName+". ");
-			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
+			//buildingI.setDisplayText(L("@x1 lies here",itemName));
+			//buildingI.setDescription(itemName+". ");
+			//buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)+lostValue));
-			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
+			//buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			setBrand(mob, buildingI);
 			key=null;
 			buildingI.recoverPhyStats();
@@ -817,6 +876,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			mob.location().send(mob,msg);
 			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
+			buildingI=null;
 		}
 		else
 		if(bundling)

@@ -147,7 +147,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Stowaway",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Trawling",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Shipwright",0,"",true,false,CMParms.parseSemicolons("Carpentry",true),"");
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Boatwright",0,"",true,false,CMParms.parseSemicolons("Carpentry",true),"");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_MorseCode",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_FindShip",true);
@@ -159,6 +159,7 @@ public class Sailor extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Diving",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_ShipLore",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Shipwright",0,"",false,false,CMParms.parseSemicolons("Boatwright",true),"");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Skill_SeaCharting",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Baiting",false);
@@ -232,6 +233,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Armorsmithing",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Fletching",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Weaponsmithing",0,"",false,true);
+		//CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Boatwright",0,"",false,true);
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Shipwright",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"Wainwrighting",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),-1,"PaperMaking",0,"",false,true);

@@ -2,9 +2,6 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.Abilities.Common.BuildingSkill.Flag;
-import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
-import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -78,10 +75,6 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 		+"RIDE_OVERRIDE_STRS\tCODED_SPELL_LIST";
 	}
 
-	private int					doorDir			= -1;
-	private String				reTitle			= null;
-	private String				reDesc			= null;
-	
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
@@ -101,10 +94,7 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			if((buildingI==null)
-			&&(activity != CraftingActivity.RETITLING)
-			&&(activity != CraftingActivity.DOORING)
-			&&(activity != CraftingActivity.DEMOLISH))
+			if(buildingI==null)
 				unInvoke();
 		}
 		return super.tick(ticking,tickID);
@@ -169,46 +159,6 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				if((activity == CraftingActivity.RETITLING)
-				&&(!aborted))
-				{
-					if((messedUp)||(mob.location()!=activityRoom))
-						commonEmote(mob,L("<S-NAME> mess(es) up <S-HIS-HER> work on @x1.",activityRoom.displayText()));
-					else
-					{
-						activityRoom.setDisplayText(reTitle);
-						activityRoom.setDescription(reDesc);
-						reTitle=null;
-						reDesc=null;
-					}
-				}
-				else
-				if((activity == CraftingActivity.DOORING)
-				&&(!aborted))
-				{
-					if((messedUp)||(mob.location()!=activityRoom))
-						commonEmote(mob,L("<S-NAME> mess(es) up <S-HIS-HER> work on the door in @x1.",activityRoom.displayText()));
-					else
-						buildDoor(activityRoom,doorDir);
-				}
-				else
-				if((activity == CraftingActivity.DEMOLISH)
-				&&(!aborted))
-				{
-					if((messedUp)||(mob.location()!=activityRoom))
-						commonEmote(mob,L("<S-NAME> mess(es) up <S-HIS-HER> work on demolishing the door in @x1.",activityRoom.displayText()));
-					else
-					{
-						activityRoom.setRawExit(doorDir,CMClass.getExit("Open"));
-						if(activityRoom.rawDoors()[doorDir]!=null)
-						{
-							activityRoom.rawDoors()[doorDir].setRawExit(Directions.getOpDirectionCode(doorDir),CMClass.getExit("Open"));
-							CMLib.database().DBUpdateExits(activityRoom.rawDoors()[doorDir]);
-						}
-						CMLib.database().DBUpdateExits(activityRoom);
-					}
-				}
-				else
 				if((buildingI!=null)
 				&&(!aborted))
 				{
@@ -229,11 +179,7 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 					{
 						if(activity == CraftingActivity.MENDING)
 						{
-							if((buildingI instanceof BoardableShip)
-							&&(buildingI.usesRemaining()<95))
-								buildingI.setUsesRemaining(buildingI.usesRemaining()+5);
-							else
-								buildingI.setUsesRemaining(100);
+							buildingI.setUsesRemaining(100);
 							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, 1, this);
 						}
 						else
@@ -306,10 +252,6 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
-		if((E instanceof BoardableShip)
-		&&(E instanceof Rideable)
-		&&(((Rideable)E).rideBasis()==Rideable.RIDEABLE_ENTERIN))
-			return true;
 		if((!(E instanceof Item))||(!mayICraft((Item)E)))
 		{
 			if(!quiet)
@@ -347,8 +289,8 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 		if(commands.size()==0)
 		{
 			commonTell(mob,L("Boatwright what? Enter \"boatwright list\" for a list, \"boatwright info <item>\", \"boatwright scan\","
-						+ " \"boatwright learn <item>\", \"boatwright mend <item>\", \"boatwright title <text>\", \"boatwright desc <text>\","
-						+ " \"boatwright door <dir>\", \"boatwright demolish <dir>\", or \"boatwright stop\" to cancel."));
+						+ " \"boatwright learn <item>\", \"boatwright mend <item>\","
+						+ " or \"boatwright stop\" to cancel."));
 			return false;
 		}
 		if((!auto)
@@ -439,228 +381,6 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 			startStr=L("<S-NAME> start(s) mending @x1.",buildingI.name());
 			displayText=L("You are mending @x1",buildingI.name());
 			verb=L("mending @x1",buildingI.name());
-		}
-		else
-		if(str.equalsIgnoreCase("title"))
-		{
-			buildingI=null;
-			activity = CraftingActivity.CRAFTING;
-			key=null;
-			messedUp=false;
-			aborted=false;
-			final Room R=mob.location();
-			if((R==null)
-			||(!CMLib.law().doesOwnThisProperty(mob,R)))
-			{
-				commonTell(mob,L("You are not permitted to do that here."));
-				return false;
-			}
-			if(!(R.getArea() instanceof BoardableShip))
-			{
-				commonTell(mob,L("You don't know how to do that here."));
-				return false;
-			}
-
-			final String title=CMParms.combine(commands,1);
-			if(title.length()==0)
-			{
-				commonTell(mob,L("A title must be specified."));
-				return false;
-			}
-			final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-			final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,20);
-			for (final Room room2 : checkSet)
-			{
-				final Room R2=CMLib.map().getRoom(room2);
-				if(R2.displayText(mob).equalsIgnoreCase(title))
-				{
-					commonTell(mob,L("That title has already been taken.  Choose another."));
-					return false;
-				}
-			}
-			reTitle=title;
-			reDesc=R.description();
-			activity = CraftingActivity.RETITLING;
-			activityRoom=R;
-			duration=getDuration(10,mob,mob.phyStats().level(),3);
-		}
-		else
-		if(str.equalsIgnoreCase("desc"))
-		{
-			buildingI=null;
-			activity = CraftingActivity.CRAFTING;
-			key=null;
-			messedUp=false;
-			aborted=false;
-			final Room R=mob.location();
-			if((R==null)
-			||(!CMLib.law().doesOwnThisProperty(mob,R)))
-			{
-				commonTell(mob,L("You are not permitted to do that here."));
-				return false;
-			}
-			if(!(R.getArea() instanceof BoardableShip))
-			{
-				commonTell(mob,L("You don't know how to do that here."));
-				return false;
-			}
-
-			if(commands.size()<2)
-			{
-				commonTell(mob,L("You must specify a description for it."));
-				return false;
-			}
-
-			final String newDescription=CMParms.combine(commands,1);
-			if(newDescription.length()==0)
-			{
-				commonTell(mob,L("A description must be specified."));
-				return false;
-			}
-			reTitle=R.displayText();
-			reDesc=newDescription;
-			activity = CraftingActivity.RETITLING;
-			activityRoom=R;
-			duration=getDuration(40,mob,mob.phyStats().level(),10);
-		}
-		else
-		if(str.equalsIgnoreCase("door"))
-		{
-			buildingI=null;
-			activity = CraftingActivity.CRAFTING;
-			key=null;
-			messedUp=false;
-			aborted=false;
-			final Room R=mob.location();
-			if((R==null)
-			||(!CMLib.law().doesOwnThisProperty(mob,R)))
-			{
-				commonTell(mob,L("You are not permitted to do that here."));
-				return false;
-			}
-			if(!(R.getArea() instanceof BoardableShip))
-			{
-				commonTell(mob,L("You don't know how to do that here."));
-				return false;
-			}
-
-			final String dirName=commands.get(commands.size()-1);
-			int dir=CMLib.directions().getGoodShipDirectionCode(dirName);
-			if(dir <0)
-			{
-				commonTell(mob,L("You must specify a direction in which to build the door."));
-				return false;
-			}
-			if((dir<0)
-			||(dir==Directions.UP)
-			||(dir==Directions.DOWN))
-			{
-				commonTell(mob,L("A valid direction in which to build the door must be specified."));
-				return false;
-			}
-			
-			if((R.domainType()&Room.INDOORS)==0)
-			{
-				commonTell(mob,L("You can only build a door below decks."));
-				return false;
-			}
-			
-			Room R1=R.getRoomInDir(dir);
-			Exit E1=R.getExitInDir(dir);
-			if((R1==null)||(E1==null))
-			{
-				commonTell(mob,L("There is nowhere to build a door that way."));
-				return false;
-			}
-			if(E1.hasADoor())
-			{
-				commonTell(mob,L("There is already a door that way."));
-				return false;
-			}
-			
-			int woodRequired=125 ;
-			woodRequired=adjustWoodRequired(woodRequired,mob);
-			final int[] pm={RawMaterial.MATERIAL_WOODEN};
-			final int[][] data=fetchFoundResourceData(mob,
-													woodRequired,"wood",pm,
-													0,null,null,
-													false,
-													autoGenerate,
-													null);
-			if(data==null)
-				return false;
-			woodRequired=data[0][FOUND_AMT];
-			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-				return false;
-			if(autoGenerate<=0)
-				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
-			
-			doorDir = dir;
-			activity = CraftingActivity.DOORING;
-			activityRoom=R;
-			duration=getDuration(25,mob,mob.phyStats().level(),10);
-		}
-		else
-		if(str.equalsIgnoreCase("demolish"))
-		{
-			buildingI=null;
-			activity = CraftingActivity.CRAFTING;
-			key=null;
-			messedUp=false;
-			aborted=false;
-			final Room R=mob.location();
-			if((R==null)
-			||(!CMLib.law().doesOwnThisProperty(mob,R)))
-			{
-				commonTell(mob,L("You are not permitted to do that here."));
-				return false;
-			}
-			if(!(R.getArea() instanceof BoardableShip))
-			{
-				commonTell(mob,L("You don't know how to do that here."));
-				return false;
-			}
-
-			final String dirName=commands.get(commands.size()-1);
-			int dir=CMLib.directions().getGoodShipDirectionCode(dirName);
-			if(dir <0)
-			{
-				commonTell(mob,L("You must specify a direction in which to demolish a door."));
-				return false;
-			}
-			if((dir<0)
-			||(dir==Directions.UP)
-			||(dir==Directions.DOWN))
-			{
-				commonTell(mob,L("A valid direction in which to demolish a door must be specified."));
-				return false;
-			}
-			
-			if((R.domainType()&Room.INDOORS)==0)
-			{
-				commonTell(mob,L("You can only demolish a door below decks."));
-				return false;
-			}
-			
-			Room R1=R.getRoomInDir(dir);
-			Exit E1=R.getExitInDir(dir);
-			if((R1==null)||(E1==null))
-			{
-				commonTell(mob,L("There is nowhere to demolish a door that way."));
-				return false;
-			}
-			if(!E1.hasADoor())
-			{
-				commonTell(mob,L("There is not a door that way to demolish."));
-				return false;
-			}
-			
-			doorDir = dir;
-			activity = CraftingActivity.DEMOLISH;
-			activityRoom=R;
-			duration=getDuration(25,mob,mob.phyStats().level(),10);
-			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-				return false;
 		}
 		else
 		{
@@ -804,35 +524,8 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 			startStr=L("<S-NAME> start(s) @x1.",verb);
 			displayText=L("You are @x1",verb);
 		}
-		else
-		if(activity == CraftingActivity.RETITLING)
-		{
-			messedUp=false;
-			verb=L("working on @x1",mob.location().displayText());
-			startStr=L("<S-NAME> start(s) @x1.",verb);
-			displayText=L("You are @x1",verb);
-		}
-		else
-		if(activity == CraftingActivity.DOORING)
-		{
-			messedUp=false;
-			verb=L("working on a @x1 door in @x2",CMLib.directions().getShipDirectionName(doorDir),mob.location().displayText());
-			startStr=L("<S-NAME> start(s) @x1.",verb);
-			displayText=L("You are @x1",verb);
-		}
-		else
-		if(activity == CraftingActivity.DEMOLISH)
-		{
-			messedUp=false;
-			verb=L("working on demolishing the @x1 door in @x2",CMLib.directions().getShipDirectionName(doorDir),mob.location().displayText());
-			startStr=L("<S-NAME> start(s) @x1.",verb);
-			displayText=L("You are @x1",verb);
-		}
 
-		if((autoGenerate>0) 
-		&& (activity != CraftingActivity.RETITLING)
-		&& (activity != CraftingActivity.DOORING)
-		&& (activity != CraftingActivity.DEMOLISH))
+		if(autoGenerate>0) 
 		{
 			crafted.add(buildingI);
 			return true;

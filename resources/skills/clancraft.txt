@@ -29,7 +29,7 @@ Firebuilders Flint %	FLINT/1		5	2	20	100	0	GenClanCommonItem	FireBuilding					Fi
 Fletchers Tools %	BRONZE/20		5	2	20	100	0	GenClanCommonItem	Fletching					Fletching
 Glassblowers Tools %	TIN/5		5	2	20	100	0	GenClanCommonItem	GlassBlowing					GlassBlowing
 Sculptors Chisel %	BRASS/20		5	2	20	100	0	GenClanCommonItem	Sculpting					Sculpting
-Shipwrights Tools %	LEAD/10		5	5	20	100	0	GenClanCommonItem	ShipWrighting					Shipwright
+Boatwrights Tools %	LEAD/10		5	5	20	100	0	GenClanCommonItem	BoatWrighting					Boatwright
 Weavers Loom %	OAK/5		5	2	20	100	0	GenClanCommonItem	Weaving					Weaving
 Executioners Scales %	BRONZE/20		6	5	50	500	0	GenClanSpecialItem	GOOD					
 Shop Apron %	COTTON/30		12	2	10	250	0	GenClanApron						
