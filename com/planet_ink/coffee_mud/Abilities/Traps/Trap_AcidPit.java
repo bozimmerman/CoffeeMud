@@ -124,7 +124,7 @@ public class Trap_AcidPit extends Trap_RoomPit
 	@Override
 	public void finishSpringing(MOB target)
 	{
-		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))
+		if((!canInvokeTrapOn(invoker(),target))||(target.phyStats().weight()<5))
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) gently into the pit!"));
 		else
 		{
@@ -151,7 +151,8 @@ public class Trap_AcidPit extends Trap_RoomPit
 				for(int i=0;i<R.numInhabitants();i++)
 				{
 					final MOB M=R.fetchInhabitant(i);
-					if((M!=null)&&(M!=invoker()))
+					if((M!=null)
+					&&(M!=invoker()))
 					{
 						final int damage=CMLib.dice().roll(trapLevel()+abilityCode(),6,1);
 						CMLib.combat().postDamage(invoker(),M,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,L("The acid <DAMAGE> <T-NAME>!"));

@@ -141,7 +141,7 @@ public class Trap_Launcher extends StdTrap
 				dam=CMath.s_int(text().substring(0,x));
 				name=text().substring(x+1);
 			}
-			if((!invoker().mayIFight(target))
+			if((!canInvokeTrapOn(invoker(),target))
 			||(isLocalExempt(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())

@@ -721,12 +721,26 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 			final String shipFilename = foundRecipe.get(RCP_FILENAME);
 			final String shipIndexStr = foundRecipe.get(RCP_SHIPINDEX);
-			final List<Item> shipPrototypes = (List<Item>)Resources.getResource("SHIPWRIGHT_PARSED_"+shipFilename);
+			final String allItemID = "SHIPWRIGHT_PARSED_"+shipFilename;
+			@SuppressWarnings("unchecked")
+			List<Item> shipPrototypes = (List<Item>)Resources.getResource(allItemID);
 			if(shipPrototypes == null)
 			{
+				final CMFile F=new CMFile(shipFilename,null);
+				if(F.exists())
+				{
+					shipPrototypes=new Vector<Item>();
+					CMLib.coffeeMaker().addItemsFromXML(F.textUnformatted().toString(), shipPrototypes, null);
+					for(final Item I : shipPrototypes)
+						CMLib.threads().deleteTick(I, -1);
+					if(shipPrototypes.size()>0)
+						Resources.submitResource(allItemID, shipPrototypes);
+				}
 			}
-			
-			//buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+			if(shipPrototypes != null)
+			{
+				//buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+			}
 			if(buildingI==null)
 			{
 				commonTell(mob,L("There's no such thing as a @x1!!!",shipFilename+"("+shipIndexStr)+")");
@@ -744,7 +758,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
-			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
+			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)+lostValue));
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			setBrand(mob, buildingI);
 			key=null;

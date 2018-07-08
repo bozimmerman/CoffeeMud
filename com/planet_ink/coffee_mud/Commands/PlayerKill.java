@@ -62,6 +62,13 @@ public class PlayerKill extends StdCommand
 			mob.tell(L("YOU CANNOT TOGGLE THIS FLAG WHILE IN COMBAT!"));
 			return false;
 		}
+		
+		if(CMLib.law().isLandOwnable(mob.location()))
+		{
+			mob.tell(L("You cannot toggle this flag at this location."));
+			return false;
+		}
+
 		if(mob.isAttributeSet(MOB.Attrib.PLAYERKILL))
 		{
 			if(CMProps.getVar(CMProps.Str.PKILL).startsWith("ONEWAY"))

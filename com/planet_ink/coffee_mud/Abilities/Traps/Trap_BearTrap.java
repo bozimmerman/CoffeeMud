@@ -165,7 +165,7 @@ public class Trap_BearTrap extends StdTrap
 		trapped=null;
 		if((target!=invoker())&&(target.location()!=null))
 		{
-			if((!invoker().mayIFight(target))
+			if((!canInvokeTrapOn(invoker(),target))
 			||(isLocalExempt(target))
 			||(CMLib.flags().isInFlight(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))

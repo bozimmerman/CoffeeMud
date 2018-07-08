@@ -47,7 +47,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	protected SHashtable<String,ExpertiseLibrary.ExpertiseDefinition> completeEduMap=new SHashtable<String,ExpertiseLibrary.ExpertiseDefinition>();
 	protected SHashtable<String,List<String>> baseEduSetLists=new SHashtable<String,List<String>>();
 	@SuppressWarnings("unchecked")
-	protected Hashtable<String,String>[] completeUsageMap=new Hashtable[ExpertiseLibrary.Flag.values().length];
+	protected Map<String,String>[] completeUsageMap=new Hashtable[ExpertiseLibrary.Flag.values().length];
+	@SuppressWarnings("unchecked")
+	protected Map<String,String[]>[] completeUsageMaps=new Hashtable[ExpertiseLibrary.Flag.values().length];
 	protected Properties helpMap=new Properties();
 	protected DVector rawDefinitions=new DVector(7);
 
@@ -376,11 +378,28 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
+	public String[] getApplicableExpertises(String ID, Flag code)
+	{
+		return completeUsageMaps[code.ordinal()].get(ID);
+	}
+
+	@Override
 	public int getApplicableExpertiseLevel(String ID, Flag code, MOB mob)
 	{
-		final Pair<String,Integer> e=mob.fetchExpertise(completeUsageMap[code.ordinal()].get(ID));
+		final String[] applicableExpIDs = getApplicableExpertises(ID, code);
+		if((applicableExpIDs==null)||(applicableExpIDs.length<1))
+			return 0;
+		final Pair<String,Integer> e=mob.fetchExpertise(applicableExpIDs[0]);
 		if((e!=null)&&(e.getValue()!=null))
 			return e.getValue().intValue();
+		if(applicableExpIDs.length<2)
+			return 0;
+		for(final String expID : applicableExpIDs)
+		{
+			final Pair<String,Integer> e2=mob.fetchExpertise(expID);
+			if((e2!=null)&&(e2.getValue()!=null))
+				return e2.getValue().intValue();
+		}
 		return 0;
 	}
 
@@ -672,7 +691,19 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			if(flags.contains(ExpertiseLibrary.Flag.values()[u].name()))
 			{
 				for(int k=0;k<skillsToRegister.size();k++)
-					completeUsageMap[u].put(skillsToRegister.get(k),ID);
+				{
+					final String skid = skillsToRegister.get(k);
+					completeUsageMap[u].put(skid, ID);
+					if(!completeUsageMaps[u].containsKey(skid))
+						completeUsageMaps[u].put(skid, new String[]{ID});
+					else
+					{
+						String[] oldSet=completeUsageMaps[u].get(skid);
+						String[] newSet=Arrays.copyOf(oldSet, oldSet.length+1);
+						newSet[newSet.length-1]=ID;
+						completeUsageMaps[u].put(skid, newSet);
+					}
+				}
 			}
 		}
 		return addIfPossible?ID:null;
@@ -683,6 +714,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	{
 		for(int u=0;u<completeUsageMap.length;u++)
 			completeUsageMap[u]=new Hashtable<String,String>();
+		for(int u=0;u<completeUsageMaps.length;u++)
+			completeUsageMaps[u]=new Hashtable<String,String[]>();
 		helpMap.clear();
 		final List<String> V=Resources.getFileLineVector(Resources.getFileResource("skills/expertises.txt",true));
 		String ID=null,WKID=null;

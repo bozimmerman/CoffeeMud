@@ -140,7 +140,7 @@ public class Trap_SpellBlast extends StdTrap
 	{
 		if((target!=invoker())&&(target.location()!=null))
 		{
-			if((!invoker().mayIFight(target))
+			if((!canInvokeTrapOn(invoker(),target))
 			||(isLocalExempt(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())

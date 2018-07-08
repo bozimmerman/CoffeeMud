@@ -180,6 +180,36 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		return T;
 	}
 
+	public boolean isLocalExempt(MOB target)
+	{
+		if(target==null)
+			return false;
+		final Room R=target.location();
+		if((!canBeUninvoked())
+		&&(!isABomb())
+		&&(R!=null))
+		{
+			if((CMLib.law().getLandTitle(R)!=null)
+			&&(CMLib.law().doesHavePriviledgesHere(target,R)))
+				return true;
+
+			if((target.isMonster())
+			&&(target.getStartRoom()!=null)
+			&&(target.getStartRoom().getArea()==R.getArea()))
+				return true;
+		}
+		return false;
+	}
+
+	protected boolean canInvokeTrapOn(final MOB invoker, final MOB target)
+	{
+		if(invoker.mayIFight(target))
+			return true;
+		if(isLocalExempt(invoker))
+			return true;
+		return false;
+	}
+	
 	@Override
 	public void spring(MOB M)
 	{

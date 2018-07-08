@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.ByteArrayInputStream;
@@ -760,7 +761,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			&&(!shopkeeperMobPresent(R))
 			&&(!doesHavePriviledgesHere(msg.source(),R)))
 			{
-				if(!CMLib.law().canAttackThisProperty(msg.source(), record))
+				if((!CMLib.law().canAttackThisProperty(msg.source(), record))
+				&&(!msg.source().isAttributeSet(Attrib.PLAYERKILL)))
 				{
 					if(!quiet)
 						msg.source().tell(L("You either need to turn on your PK flag, or be in a clan war to rob this property."));

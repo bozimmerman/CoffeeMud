@@ -166,6 +166,36 @@ public class Chant_PlantTrap extends Chant implements Trap
 		doMyThing(M);
 	}
 
+	public boolean isLocalExempt(MOB target)
+	{
+		if(target==null)
+			return false;
+		final Room R=target.location();
+		if((!canBeUninvoked())
+		&&(!isABomb())
+		&&(R!=null))
+		{
+			if((CMLib.law().getLandTitle(R)!=null)
+			&&(CMLib.law().doesHavePriviledgesHere(target,R)))
+				return true;
+
+			if((target.isMonster())
+			&&(target.getStartRoom()!=null)
+			&&(target.getStartRoom().getArea()==R.getArea()))
+				return true;
+		}
+		return false;
+	}
+
+	protected boolean canInvokeTrapOn(final MOB invoker, final MOB target)
+	{
+		if(invoker.mayIFight(target))
+			return true;
+		if(isLocalExempt(invoker))
+			return true;
+		return false;
+	}
+	
 	public static final String[] choices={"Chant_PlantChoke","Chant_PlantConstriction"};
 	public void doMyThing(MOB target)
 	{

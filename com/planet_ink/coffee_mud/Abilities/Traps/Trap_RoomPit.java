@@ -216,7 +216,7 @@ public class Trap_RoomPit extends StdTrap
 
 	public void finishSpringing(MOB target)
 	{
-		if((!invoker().mayIFight(target))||(target.phyStats().weight()<5))
+		if((!canInvokeTrapOn(invoker(),target))||(target.phyStats().weight()<5))
 			target.location().show(target,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> float(s) gently into the pit!"));
 		else
 		{
@@ -232,7 +232,7 @@ public class Trap_RoomPit extends StdTrap
 	{
 		if((target!=invoker())&&(target.location()!=null)&&(!CMLib.flags().isInFlight(target)))
 		{
-			if((!invoker().mayIFight(target))
+			if((!canInvokeTrapOn(invoker(),target))
 			||(isLocalExempt(target))
 			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(target==invoker())

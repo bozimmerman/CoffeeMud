@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_TITLES=true&||AUTH_ACHIEVEMENTS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+    <title>Achievements / Auto-Titles</title>
+    <script language=JavaScript>
+    <!--
+        function NewTitle()
+        {
+            if(confirm('Create a new title?'))
+            {
+                var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=150,width=450,alwaysRaised=yes,dependent=yes";
+                w=window.open("autotitle.cmvp?AUTH=@Authenticate?AUTH@&AUTOTITLE=",
+                    "Title",strFeatures, false);
+            }
+        }
+        function Title(autotitleid,action)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=150,width=450,alwaysRaised=yes,dependent=yes";
+            w=window.open("autotitle.cmvp?AUTH=@Authenticate?AUTH@&AUTOTITLE="+autotitleid+action,
+                "Title",strFeatures, false);
+        }
+        function NewAchievement(agent)
+        {
+            if(confirm('Create a new achievement?'))
+            {
+                var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+                w=window.open("achievement.cmvp?AUTH=@Authenticate?AUTH@&AGENT="+agent+"&ACHIEVEMENT=",
+                    "Achievement",strFeatures, false);
+            }
+        }
+        function Achievement(achievementid,agent)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("achievement.cmvp?AUTH=@Authenticate?AUTH@&ACHIEVEMENT="+achievementid+"&AGENT="+agent,
+                "Achievement",strFeatures, false);
+        }
+        function Clicked(action)
+        {
+            document.RESOURCES.action=action;
+            document.RESOURCES.submit();
+        }
+        function Refresh()
+        {
+            document.RESOURCES.action='autotitles.cmvp';
+            document.RESOURCES.submit();
+        }
+        function ToTitles()
+        {
+            document.RESOURCES.MODE.value='TITLE';
+            Refresh();
+        }
+        function ToAchievements()
+        {
+            document.RESOURCES.MODE.value='';
+            Refresh();
+        }
+    //-->
+    </script>
+</head>
+<body BGCOLOR=BLACK>
+    <TABLE WIDTH=100% BORDER=0>
+    <TR>
+    <TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
+    <TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+    <TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+        <TABLE WIDTH=50% BORDER=1>
+        <TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+        <TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+        <TR><TD><A href="javascript:Clicked('autotitles.cmvp')"><FONT COLOR=WHITE SIZE=-1><B>Auto-Titles</B></FONT></A></TD></TR>
+        <TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+        </TABLE>
+    </TD>
+    </TR>
+    </TABLE>
+    <CENTER>
+	@if?!CheckAuthCode?AUTH_TITLES=true@ @AddRequestParameter?MODE=@ @endif@
+	@if?!CheckAuthCode?AUTH_ACHIEVEMENTS=true@ @AddRequestParameter?MODE=TITLE@ @endif@
+    <TABLE WIDTH=100% BORDER=1>
+    <TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Achievements/Titles Manager</H2></FONT></TD></TR>
+    @if?CheckReqParm?MODE=@
+        <TR>
+        <TD WIDTH=50% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>Achievements</FONT></TD>
+        <TD WIDTH=50% ALIGN=CENTER><a href="javascript:ToTitles()"><FONT COLOR=WHITE>Automatic Titles</FONT></a></TD>
+        </TR>
+        <TR>
+        <TD WIDTH=100% COLSPAN=2>
+            <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autotitles.cmvp">
+            <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+            <INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
+            <TABLE WIDTH=100% BORDER=1>
+            <TR><TD WIDTH=100% COLSPAN=7 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Player Achievements Manager</H2></FONT></TD></TR>
+            <TR>
+            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Tattoo/ID</FONT></b></TD>
+            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Type</FONT></b></TD>
+            <TD WIDTH=25%><B><FONT COLOR=YELLOW>Display</FONT></b></TD>
+            <TD WIDTH=5%><B><FONT COLOR=YELLOW>Count</FONT></b></TD>
+            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Awards</FONT></b></TD>
+            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Misc</FONT></b></TD>
+            </TR>
+            @AchievementNext?RESET@
+            @AddRequestParameter?AGENT=PLAYER@
+            @loop@
+            @AchievementNext@
+                <TR>
+                <TD><a href="javascript:Achievement('@AchievementID?ENCODED@','PLAYER')"><FONT COLOR=WHITE><B>@AchievementID@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@AchievementData?EVENT@</B></FONT></TD>
+                <TD><FONT COLOR=WHITE><B>@AchievementData?DISPLAY@</B></FONT></TD>
+                <TD><FONT COLOR=WHITE><B>@AchievementData?COUNT@</B></FONT></TD>
+                <TD><FONT COLOR=WHITE><B>@AchievementData?TITLE@ @AchievementData?REWARD@</B></FONT></TD>
+                <TD><FONT COLOR=WHITE><B>@AchievementData?MISC@</B></FONT></TD>
+                </TR>
+            @back@
+	            <TR>
+	            <TD COLSPAN=4><a href="javascript:NewAchievement('PLAYER')"><FONT COLOR=WHITE><B>Create New Player Achievement</a></B></FONT></TD>
+	            </TR>
+            @if?IsAccountSystem@
+	            <TR><TD WIDTH=100% COLSPAN=7 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Account Achievements Manager</H2></FONT></TD></TR>
+	            <TR>
+	            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Tattoo/ID</FONT></b></TD>
+	            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Type</FONT></b></TD>
+	            <TD WIDTH=25%><B><FONT COLOR=YELLOW>Display</FONT></b></TD>
+	            <TD WIDTH=5%><B><FONT COLOR=YELLOW>Count</FONT></b></TD>
+	            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Awards</FONT></b></TD>
+	            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Misc</FONT></b></TD>
+	            </TR>
+	            @AchievementNext?RESET@
+	            @AddRequestParameter?AGENT=ACCOUNT@
+	            @loop@
+	            @AchievementNext@
+	                <TR>
+	                <TD><a href="javascript:Achievement('@AchievementID?ENCODED@','ACCOUNT')"><FONT COLOR=WHITE><B>@AchievementID@</B></FONT></a></TD>
+	                <TD><FONT COLOR=WHITE><B>@AchievementData?EVENT@</B></FONT></TD>
+	                <TD><FONT COLOR=WHITE><B>@AchievementData?DISPLAY@</B></FONT></TD>
+	                <TD><FONT COLOR=WHITE><B>@AchievementData?COUNT@</B></FONT></TD>
+	                <TD><FONT COLOR=WHITE><B>@AchievementData?TITLE@ @AchievementData?REWARD@</B></FONT></TD>
+	                <TD><FONT COLOR=WHITE><B>@AchievementData?MISC@</B></FONT></TD>
+	                </TR>
+	            @back@
+	            <TR>
+	            <TD COLSPAN=4><a href="javascript:NewAchievement('ACCOUNT')"><FONT COLOR=WHITE><B>Create New Account Achievement</a></B></FONT></TD>
+	            </TR>
+            @endif@
+            </TABLE>
+            </FORM>
+        </TD>
+        </TR>
+    @else@
+        <TR>
+        <TD WIDTH=50% ALIGN=CENTER><a href="javascript:ToAchievements()"><FONT COLOR=WHITE>Achievements</FONT></a></TD>
+        <TD WIDTH=50% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>Automatic Titles</FONT></TD>
+        </TR>
+        <TR>
+        <TD WIDTH=100% COLSPAN=2>
+            <FORM  ACCEPT-CHARSET="UTF-8" NAME=RESOURCES TARGET=_top METHOD=POST ACTION="autotitles.cmvp">
+            <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+            <INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
+            <TABLE WIDTH=100% BORDER=1>
+            <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Title Manager</H2></FONT></TD></TR>
+            <TR>
+            <TD WIDTH=50%><B><FONT COLOR=YELLOW>ID</FONT></b></TD>
+            <TD WIDTH=50%><B><FONT COLOR=YELLOW>Mask</FONT></b></TD>
+            </TR>
+            @AutoTitleNext?RESET@
+            @loop@
+            @AutoTitleNext?ALL@
+                <TR>
+                <TD><a href="javascript:Title('@AutoTitleID?ENCODED@','')"><FONT COLOR=WHITE><B>@AutoTitleID@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@AutoTitleData?MASK@</B></FONT></a></TD>
+                </TR>
+            @back@
+            <TR>
+            <TD COLSPAN=4><a href="javascript:NewTitle()"><FONT COLOR=WHITE><B>Create New</a></B></FONT></TD>
+            </TR>
+            <CENTER>
+            </CENTER>
+            </FORM>
+        </TD>
+        </TR>
+    @endif@
+    </TABLE>
+    <P>
+    <TABLE WIDTH=100% BORDER=0>
+    <TR>
+    <TD WIDTH=33% ALIGN=CENTER>
+    </TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Refresh();"></TD>
+    <TD WIDTH=33% ALIGN=CENTER>
+    </TD>
+    </TR>
+    </TABLE>
+</BODY>
+</HTML>
+@endif@
+@endif@

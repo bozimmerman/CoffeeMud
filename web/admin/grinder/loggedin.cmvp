@@ -253,7 +253,7 @@
 			<BR>
 			@endif@
 			@if?CheckAuthCode?AUTH_TITLES=true@
-			<A href="javascript:Clicked('autotitles.cmvp')"><FONT COLOR=WHITE>Achievements</FONT></a>
+			<A href="javascript:Clicked('achievements.cmvp')"><FONT COLOR=WHITE>Achievements</FONT></a>
 			<BR>
 			@endif@
 			@if?CheckAuthCode?AUTH_CMDQUESTS=true@

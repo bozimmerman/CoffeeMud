@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.ExpertiseDefinition;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
@@ -335,13 +336,18 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 
 	public List<String> getThisSkillsExpertises()
 	{
-		final List<String> V=new Vector<String>();
+		final List<String> V=new ArrayList<String>(3);
 		for(EnhancedExpertise expertise : EnhancedExpertise.values())
 		{
-			final String s=CMLib.expertises().getApplicableExpertise(ID(),expertise.flag);
-			if((s!=null)
-			&&(!V.contains(s)))
-				V.add(s);
+			final String[] ss=CMLib.expertises().getApplicableExpertises(ID(),expertise.flag);
+			if(ss!=null)
+			{
+				for(String sid : ss)
+				{
+					if(!V.contains(sid))
+						V.add(sid);
+				}
+			}
 		}
 		return V;
 	}

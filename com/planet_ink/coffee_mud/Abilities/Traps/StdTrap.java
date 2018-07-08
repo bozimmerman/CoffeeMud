@@ -185,6 +185,15 @@ public class StdTrap extends StdAbility implements Trap
 		return false;
 	}
 
+	protected boolean canInvokeTrapOn(final MOB invoker, final MOB target)
+	{
+		if(invoker.mayIFight(target))
+			return true;
+		if(isLocalExempt(invoker))
+			return true;
+		return false;
+	}
+	
 	@Override
 	public void disable()
 	{
