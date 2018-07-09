@@ -465,7 +465,6 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		else
 		if(comp.getLocation()==AbilityComponent.CompLocation.ONGROUND)
 			buf.append(L("@x1 on the ground",itemDesc));
-		System.out.println(buf.toString());//BZ:DELME
 		return buf.toString();
 	}
 

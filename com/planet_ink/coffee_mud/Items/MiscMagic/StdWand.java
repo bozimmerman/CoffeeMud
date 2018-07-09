@@ -99,7 +99,8 @@ public class StdWand extends StdItem implements Wand
 	@Override
 	public int value()
 	{
-		if(usesRemaining()<=0)
+		if((usesRemaining()<=0)
+		&&((getSpell()!=null)||(numEffects()==0)))
 			return 0;
 		return super.value();
 	}
