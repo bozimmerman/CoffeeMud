@@ -843,6 +843,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 
 		boolean doSagain=false;
 		boolean firstSdone=false;
+		boolean capitalize = true;
 		final StringBuffer buf=new StringBuffer(msg);
 
 		final int wrap=(S!=null)?S.getWrap():78;
@@ -1209,7 +1210,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 									else
 										replacement=CMLib.english().cleanArticles(regarding.name());
 								}
-							break;
+								break;
 							case NAMESELF:
 								{
 									if(regarding==null)
@@ -1388,10 +1389,13 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 								final String newReplacement=CMLib.lang().filterTranslation(replacement);
 								if(newReplacement!=null)
 									replacement=newReplacement;
+								if(capitalize)
+									replacement=CMStrings.capitalizeFirstLetter(replacement);
 								buf.delete(loop,ldex+1);
 								buf.insert(loop,replacement.toCharArray());
 								loop--;
 							}
+							capitalize=false;
 						}
 						else
 						if((S!=null)
@@ -1403,7 +1407,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						}
 					}
 					break;
-					case '\033': // skip escapes
+				case '\033': // skip escapes
 					{
 						if((S!=null)&&(!S.getClientTelnetMode(Session.TELNET_ANSI)))
 						{
@@ -1439,7 +1443,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						}
 						break;
 					}
-					case '^':
+				case '^':
 					{
 						if(loop<buf.length()-1)
 						{
@@ -1453,10 +1457,16 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						}
 						break;
 					}
-					default:
+				case '.':
+					capitalize=(loop < buf.length()-3) 
+					&& (buf.charAt(loop+1)==' ')
+					&& ((buf.charAt(loop+2)==' ')||(buf.charAt(loop+2)=='<'));
+					break;
+				default:
 					{
 						if((firstAlpha < 0)&&(Character.isLetter(buf.charAt(loop))))
 							firstAlpha = loop;
+						capitalize=false;
 						break;
 					}
 				}
