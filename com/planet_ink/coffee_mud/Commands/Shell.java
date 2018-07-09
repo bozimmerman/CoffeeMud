@@ -367,6 +367,7 @@ public class Shell extends StdCommand
 			{
 				mob.tell(L("^xError  : source and destination must be specified!^N"));
 				mob.tell(L("^xOptions: -r = recurse into directories.^N"));
+				mob.tell(L("^x       : -f = force/overwirte.^N"));
 				mob.tell(L("^x       : -p = preserve paths.^N"));
 				return false;
 			}
@@ -462,7 +463,7 @@ public class Shell extends StdCommand
 					mob.tell(L("^xError: destination must be a directory!^N"));
 					return false;
 				}
-				if (DF.mustOverwrite())
+				if (DF.mustOverwrite() && (!opts.forceOverwrites))
 				{
 					mob.tell(L("^xError: destination @x1 already exists!^N", desc(DF)));
 					return false;
