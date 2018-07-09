@@ -171,69 +171,272 @@ See guides/RandomAreas.html for information about documents of this type.
 
 <MOB id="oceanfloor_mob" select="any-1" requires="level_range=int,aggrochance=int">
 	<MOB id="oceanfloor_mobs" select="all" requires="level_range=int,aggrochance=int">
-		<MOB class="genmob" copyof="Lizard" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
-			<BEHAVIOR CLASS="Mobile" />
-			<BEHAVIOR CLASS="BrotherHelper" />
+		<MOB class="GenMob" level="$level_range" race="angelfish" gender="$anygender" hpmod="8">
+			<NAME select="all">
+				<NAME condition="$mob_level&lt;10">a small angelfish</NAME>
+				<NAME condition="$mob_level&lt;40 and $mob_level&gt;=10">a tiny angelfish</NAME>
+				<NAME condition="$mob_level&lt;80 and $mob_level&gt;=40">an angelfish</NAME>
+			</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name swims around you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name swims here.</DISPLAY>
+			</DISPLAY>
+			<DESCRIPTION>$mob_name is small and doesn't look like a particularly filling meal.</DESCRIPTION>
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$mob_level&gt;=40" class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
+			<ABILITY select="pick-1">
+				<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />	  
+			</ABILITY>
 		</MOB>
-		<MOB class="genmob" copyof="Lizard" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
-			<BEHAVIOR CLASS="Mobile" />
-			<BEHAVIOR CLASS="BrotherHelper" />
+		<MOB class="GenMob" level="$level_range" race="clownfish" gender="$anygender" hpmod="8">
+			<NAME select="all">
+				<NAME condition="$mob_level&lt;10">a small clown fish</NAME>
+				<NAME condition="$mob_level&lt;40 and $mob_level&gt;=10">a silly clown fish</NAME>
+				<NAME condition="$mob_level&lt;80 and $mob_level&gt;=40">a clown fish</NAME>
+			</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name jets towards you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name swims here.</DISPLAY>
+			</DISPLAY>
+			<DESCRIPTION>$mob_name is small and doesn't look like a particularly filling meal.</DESCRIPTION>
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$mob_level&gt;=40" class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
+			<ABILITY select="pick-1">
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
+				<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />	  
+			</ABILITY>
 		</MOB>
-		<MOB class="genmob" copyof="Vulture" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
-			<BEHAVIOR CLASS="Mobile" />
-			<BEHAVIOR CLASS="BrotherHelper" />
+		<MOB class="GenMob" level="$level_range" race="crab" gender="$anygender" hpmod="15">
+			<NAME select="all">
+				<NAME>a dark crab</NAME>
+				<NAME>a large crab</NAME>
+				<NAME>an evil-looking crab</NAME>
+				<NAME>a blue crab</NAME>
+				<NAME>a hermit crab</NAME>
+			</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name scuttles around you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name pauses here.</DISPLAY>
+			</DISPLAY>
+			<DESCRIPTION>$mob_name looks like a great dinner!</DESCRIPTION>
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$mob_level&gt;=20" class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
+			<AFFECT class="Prop_CombatAdjuster" parms="ARMOR+$[2*$mob_level]" />
+			<ABILITY select="pick-1">
+				<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="thief_scratch" parms="" />
+				<ABILITY pickweight="3" condition="$mob_level&gt;=10" class="thief_lure" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=10" class="thief_hide" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="Fighter_WaterTactics" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="Thief_Distract" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="Thief_DeepCut" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="Fighter_Shrug" parms="" />
+				<ABILITY pickweight="2" condition="$mob_level&gt;=20" class="Skill_Attack2" parms="" />		
+			</ABILITY>
 		</MOB>
-		<MOB class="genmob" copyof="Rabbit" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
-			<BEHAVIOR CLASS="Mobile" />
-			<BEHAVIOR CLASS="BrotherHelper" />
+		<MOB class="GenMob" level="$level_range" race="fish" gender="$anygender" hpmod="11">
+			<NAME select="all">
+				<NAME>a round fish</NAME>
+				<NAME>an ugly fish</NAME>
+				<NAME>a colorful fish</NAME>
+				<NAME>a mean-looking fish</NAME>
+			</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name swims around you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name swims here.</DISPLAY>
+			</DISPLAY>
+			<DESCRIPTION>$mob_name is just another fish in the sea, trying to avoid being swallowed by bigger fish.</DESCRIPTION>
+			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 		</MOB>
-		<MOB class="genmob" copyof="Rat" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
-			<BEHAVIOR CLASS="Mobile" />
-			<BEHAVIOR CLASS="BrotherHelper" />
+		<MOB class="GenMob" level="$level_range" race="giantfish" gender="$anygender" hpmod="20">
+			<NAME select="all">
+				<NAME>a large fish</NAME>
+				<NAME>a very large fish</NAME>
+				<NAME>a big fish</NAME>
+				<NAME>a long fish</NAME>
+			</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name swims around you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name swims here.</DISPLAY>
+			</DISPLAY>
+			<DESCRIPTION>$mob_name is a good-sized fish.</DESCRIPTION>
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$mob_level&gt;=40" class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
+			<ABILITY select="pick-1">
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
+				<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />
+				<ABILITY pickweight="5" condition="$mob_level&gt;=10" class="Fighter_WaterTactics" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=30" class="Fighter_Charge" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=50" class="Fighter_CalledStrike" parms="" />
+				<ABILITY pickweight="2" condition="$mob_level&gt;=60" class="Fighter_Shrug" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=70" class="Skill_Attack2" parms="" />		
+			</ABILITY>
 		</MOB>
-		<MOB class="genmob" copyof="Toad" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
-			<BEHAVIOR CLASS="Mobile" />
-			<BEHAVIOR CLASS="BrotherHelper" />
+		<MOB class="GenMob" level="$level_range" race="giantseahorse" gender="$anygender" hpmod="8">
+			<NAME>a giant seahorse</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name jets towards you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name swims here.</DISPLAY>
+			</DISPLAY>
+			<DESCRIPTION>$mob_name is an amazing and peaceful creature.</DESCRIPTION>
+			<BEHAVIOR class="wimpy" />
+			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 		</MOB>
-		<MOB class="genmob" copyof="Spider" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
-			<BEHAVIOR CLASS="Mobile" />
-			<BEHAVIOR CLASS="BrotherHelper" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		<MOB class="GenMob" level="$level_range" race="greatfish" gender="$anygender" hpmod="30">
+			<NAME select="all">
+				<NAME>a large fish</NAME>
+				<NAME>a very large fish</NAME>
+				<NAME>an impressive fish</NAME>
+				<NAME>a large, mean fish</NAME>
+			</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name swims around you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name swims here.</DISPLAY>
+			</DISPLAY>
+			<DESCRIPTION>$mob_name is enough meat to feed a small army, and may take a small army to kill.</DESCRIPTION>
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$mob_level&gt;=40" class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
+			<ABILITY class="Fighter_Intimidate" />
+			<ABILITY select="pick-1">
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
+				<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=10" class="Fighter_WaterTactics" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=30" class="Fighter_Charge" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=50" class="Fighter_CalledStrike" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=60" class="Fighter_Shrug" parms="" />
+				<ABILITY pickweight="2" condition="$mob_level&gt;=70" class="Skill_Attack2" parms="" />		
+			</ABILITY>
 		</MOB>
-		<MOB class="genmob" copyof="Scorpion" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
-			<BEHAVIOR CLASS="Mobile" />
-			<BEHAVIOR CLASS="BrotherHelper" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		<MOB class="GenMob" level="$level_range" race="merfolk" gender="$anygender" hpmod="11">
+			<NAME select="any">
+				<NAME>a scrawny merfolk</NAME>
+				<NAME>a beautiful merfolk</NAME>
+				<NAME>a young merfolk</NAME>
+				<NAME>an agine merfolk</NAME>
+			</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name swims towards you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is watching you closely.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name swims here.</DISPLAY>
+			</DISPLAY>
+			<DESCRIPTION>$mob_name looks like a fish from the waist down, and humanoid above the waistline.</DESCRIPTION>
+			<BEHAVIOR select="any">
+				<BEHAVIOR class="CombatAbilities" parms="" />
+				<BEHAVIOR class="Bardness" parms="Bard" />
+				<BEHAVIOR class="Bardness" parms="Dancer" />
+				<BEHAVIOR class="Bardness" parms="Jester" />
+				<BEHAVIOR class="Bardness" parms="Minstrel" />
+				<BEHAVIOR class="Clericness" parms="Cleric" />
+				<BEHAVIOR class="Clericness" parms="Doomsayer" />
+				<BEHAVIOR class="Clericness" parms="Healer" />
+				<BEHAVIOR class="Clericness" parms="Missionary" />
+				<BEHAVIOR class="Clericness" parms="Necromancer" />
+				<BEHAVIOR class="Clericness" parms="Oracle" />
+				<BEHAVIOR class="Clericness" parms="Purist" />
+				<BEHAVIOR class="Clericness" parms="Shaman" />
+				<BEHAVIOR class="Clericness" parms="Templar" />
+				<BEHAVIOR class="Druidness" parms="Beastmaster" />
+				<BEHAVIOR class="Druidness" parms="Delver" />
+				<BEHAVIOR class="Druidness" parms="Druid" />
+				<BEHAVIOR class="Druidness" parms="Mer" />
+				<BEHAVIOR class="Druidness" parms="Skywatcher" />
+				<BEHAVIOR class="Fighterness" parms="Barbarian" />
+				<BEHAVIOR class="Fighterness" parms="Fighter" />
+				<BEHAVIOR class="Fighterness" parms="Ranger" />
+				<BEHAVIOR class="Mageness" parms="Abjurer" />
+				<BEHAVIOR class="Mageness" parms="Alterer" />
+				<BEHAVIOR class="Mageness" parms="Conjurer" />
+				<BEHAVIOR class="Mageness" parms="Diviner" />
+				<BEHAVIOR class="Mageness" parms="Enchanter" />
+				<BEHAVIOR class="Mageness" parms="Evoker" />
+				<BEHAVIOR class="Mageness" parms="Illusionist" />
+				<BEHAVIOR class="Mageness" parms="Mage" />
+				<BEHAVIOR class="Mageness" parms="Transmuter" />
+				<BEHAVIOR class="Thiefness" parms="Arcanist" />
+				<BEHAVIOR class="Thiefness" parms="Assassin" />
+				<BEHAVIOR class="Thiefness" parms="Burglar" />
+				<BEHAVIOR class="Thiefness" parms="Pirate" />
+				<BEHAVIOR class="Thiefness" parms="Thief" />
+				<BEHAVIOR class="Thiefness" parms="Trapper" />
+			</BEHAVIOR>
+			<ABILITY select="any">
+				<ABILITY condition="$mob_level&gt;=5" class="Fighter_WaterTactics" parms="" />
+				<ABILITY condition="$mob_level&gt;=10" class="Druid_WaterCover" parms="" />
+				<ABILITY condition="$mob_level&gt;=40" class="Fighter_Shrug" parms="" />
+				<ABILITY condition="$mob_level&gt;=50" class="Skill_Feint" parms="" />
+				<ABILITY condition="$mob_level&gt;=80" class="Chant_BloodyWater" parms="" />		 
+			</ABILITY>
 		</MOB>
-		<MOB condition="$NOFANTASY != 'true'" class="genmob" copyof="Zombie" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
-			<BEHAVIOR CLASS="Mobile" />
-			<BEHAVIOR CLASS="BrotherHelper" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		<MOB class="GenMob" level="$level_range" race="smallfish" gender="$anygender" hpmod="8">
+			<NAME select="all">
+				<NAME condition="$mob_level&lt;10">a small fish</NAME>
+				<NAME condition="$mob_level&lt;40 and $mob_level&gt;=10">a dangerous tiny fish</NAME>
+				<NAME condition="$mob_level&lt;80 and $mob_level&gt;=40">a small mean fish</NAME>
+				<NAME condition="$mob_level&gt;=80">a viscious small fish</NAME>
+			</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name jets towards you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name swims here.</DISPLAY>
+			</DISPLAY>
+			<DESCRIPTION>$mob_name is small and doesn't look like a particularly filling meal.</DESCRIPTION>
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$mob_level&gt;=40" class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
+			<ABILITY select="pick-1">
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
+				<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />	  
+			</ABILITY>
 		</MOB>
-		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
-			<BEHAVIOR CLASS="Mobile" />
-			<BEHAVIOR CLASS="BrotherHelper" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-		</MOB>
-		<MOB class="genmob" copyof="Scorpion" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
-			<BEHAVIOR CLASS="Mobile" />
-			<BEHAVIOR CLASS="BrotherHelper" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-		</MOB>
-		<MOB class="genmob" copyof="Rattlesnake" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
-			<BEHAVIOR CLASS="Mobile" />
-			<BEHAVIOR CLASS="BrotherHelper" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-		</MOB>
-		<MOB class="genmob" copyof="GiantScorpion" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
-			<BEHAVIOR CLASS="Mobile" />
-			<BEHAVIOR CLASS="BrotherHelper" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
-		</MOB>
-		<MOB class="genmob" copyof="Cobra" level="$level_range" gender="$anygender" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
-			<BEHAVIOR CLASS="Mobile" />
-			<BEHAVIOR CLASS="BrotherHelper" />
-			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		<MOB class="GenMob" level="$level_range" race="swordfish" gender="$anygender" hpmod="12">
+			<NAME select="all">
+				<NAME condition="$mob_level&lt;10">a small swordfish</NAME>
+				<NAME condition="$mob_level&lt;40 and $mob_level&gt;=10">a swordfish</NAME>
+				<NAME condition="$mob_level&lt;80 and $mob_level&gt;=40">a large swordfish</NAME>
+				<NAME condition="$mob_level&gt;=80">a huge swordfish</NAME>
+			</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY pickweight="1">$mob_name jets towards you.</DISPLAY>
+				<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+				<DISPLAY pickweight="5">$mob_name swims here.</DISPLAY>
+			</DISPLAY>
+			<DESCRIPTION>$mob_name has a very long and sharp point and a beautiful crested fin.</DESCRIPTION>
+			<BEHAVIOR select="all">
+				<BEHAVIOR class="CombatAbilities" parms="" />
+				<BEHAVIOR class="WimpyAggressive" parms="" />
+			</BEHAVIOR>
+			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
+			<ABILITY select="all">
+				<ABILITY condition="$mob_level&gt;=10" class="Fighter_WaterTactics" parms="" />
+				<ABILITY condition="$mob_level&gt;=20" class="Druid_WaterCover" parms="" />
+				<ABILITY condition="$mob_level&gt;=30" class="Fighter_Charge" parms="" />
+				<ABILITY condition="$mob_level&gt;=50" class="Fighter_CalledStrike" parms="" />
+				<ABILITY condition="$mob_level&gt;=60" class="Fighter_Shrug" parms="" />
+				<ABILITY condition="$mob_level&gt;=70" class="Skill_Attack2" parms="" />		
+			</ABILITY>
 		</MOB>
 	</MOB>
 </MOB>

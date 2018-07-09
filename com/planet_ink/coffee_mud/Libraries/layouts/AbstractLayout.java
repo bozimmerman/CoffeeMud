@@ -37,7 +37,8 @@ public abstract class AbstractLayout implements LayoutManager
 {
 	Random r = new Random();
 
-	public int diff(int width, int height, int num) {
+	public int diff(int width, int height, int num) 
+	{
 		final int x = width * height;
 		return (x<num) ? (num - x) : (x - num);
 	}

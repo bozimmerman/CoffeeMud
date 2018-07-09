@@ -195,7 +195,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public List<ExpertiseDefinition> myListableExpertises(MOB mob)
+	public List<ExpertiseDefinition> myListableExpertises(final MOB mob)
 	{
 		ExpertiseDefinition D=null;
 		final List<ExpertiseDefinition> V=new Vector<ExpertiseDefinition>();

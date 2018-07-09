@@ -1055,6 +1055,13 @@ public class DefaultCharStats implements CharStats
 		if(abilityCode<stats.length)
 			stats[abilityCode]=(short)value;
 	}
+	
+	@Override
+	public void adjStat(int statNum, int value)
+	{
+		if(statNum<stats.length)
+			stats[statNum]+=(short)value;
+	}
 
 	@Override
 	public int getCode(String abilityName)

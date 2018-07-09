@@ -166,6 +166,15 @@ public interface CharStats extends CMCommon, Modifiable
 	public void setStat(int statNum, int value);
 
 	/**
+	 * Adjusts the value of one of the STAT_ constants, representing attributes,
+	 * saving throws, and max attributes, from the CharStats interface.
+	 * @see CharStats
+	 * @param statNum which STAT_ constant to adjust
+	 * @param value the amount + or -, to adjust by
+	 */
+	public void adjStat(int statNum, int value);
+
+	/**
 	 * Set one of the basic attributes to a given value.  The basic attributes
 	 * are defined as the first 6 STAT_ constants from the CharStats interface.
 	 * Using this method will also update the STAT_MAX_* attributes to make
