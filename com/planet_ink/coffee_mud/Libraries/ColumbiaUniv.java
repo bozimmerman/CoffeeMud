@@ -203,7 +203,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		{
 			D=e.nextElement();
 			if((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true)))
+			{
 				V.add(D);
+			}
 		}
 		final PlayerStats pStats = mob.playerStats();
 		if(pStats != null)
