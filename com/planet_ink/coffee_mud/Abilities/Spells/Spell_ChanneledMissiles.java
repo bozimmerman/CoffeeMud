@@ -93,6 +93,13 @@ public class Spell_ChanneledMissiles extends Spell
 
 		final MOB mob=(MOB)affected;
 
+		if(msg.amITarget(mob)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+		{
+			unInvoke();
+			mob.recoverPhyStats();
+		}
+		else
 		if(msg.amISource(mob)
 		&&(abilityCode()==0)
 		&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
