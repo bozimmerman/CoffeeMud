@@ -72,7 +72,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tCONTAINER_TYPE_OR_LIDLOCK||RIDE_BASIS||STATUE||\t"
-		+ "CONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES||DICE_SIDES\t"
+		+ "CONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES||LIGHT_DURATION||DICE_SIDES\t"
 		+ "CODED_SPELL_LIST";
 	}
 
@@ -485,6 +485,17 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 			if(capacity<5)
 				((Rideable)buildingI).setRiderCapacity(capacity);
 		}
+		if(buildingI instanceof Light)
+		{
+			((Light)buildingI).setDuration(capacity);
+			if((buildingI instanceof Container)
+			&&(!misctype.equals("SMOKE")))
+			{
+				((Light)buildingI).setDuration(200);
+				((Container)buildingI).setCapacity(0);
+			}
+		}
+		else
 		if(buildingI instanceof Container)
 		{
 			if(capacity>0)

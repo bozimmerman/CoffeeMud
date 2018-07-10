@@ -74,7 +74,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tSTATUE||RIDE_BASIS||CONTAINER_TYPE_OR_LIDLOCK||CODED_WEAR_LOCATION\t"
-		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES||DICE_SIDES\tCODED_SPELL_LIST";
+		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||MAX_WAND_USES||LIGHT_DURATION||DICE_SIDES\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -472,6 +472,17 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			else
 			if(capacity<5)
 				((Rideable)buildingI).setRiderCapacity(capacity);
+		}
+		else
+		if(buildingI instanceof Light)
+		{
+			((Light)buildingI).setDuration(capacity);
+			if((buildingI instanceof Container)
+			&&(!misctype.equals("SMOKE")))
+			{
+				((Light)buildingI).setDuration(200);
+				((Container)buildingI).setCapacity(0);
+			}
 		}
 		else
 		if(buildingI instanceof Container)
