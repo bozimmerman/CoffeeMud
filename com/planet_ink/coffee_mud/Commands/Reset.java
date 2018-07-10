@@ -472,6 +472,27 @@ public class Reset extends StdCommand
 		return false;
 	}
 	
+	public boolean fixWeaponMob(MOB M, StringBuffer recordedChanges)
+	{
+		final Item W=M.fetchWieldedItem();
+		if(!(W instanceof Weapon))
+			return false;
+		MOB oldM=M;
+		if(recordedChanges!=null)
+			M=(MOB)M.copyOf();
+		if(M.basePhyStats().damage()>W.basePhyStats().damage())
+			M.basePhyStats().setDamage(M.basePhyStats().damage()-W.basePhyStats().damage());
+		else
+			M.basePhyStats().setDamage(0);
+		M.recoverPhyStats();
+		if(recordedChanges!=null)
+		{
+			reportChangesDestroyNewM(oldM,M,recordedChanges);
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean compareRaces(String usefulID, Race race1, Race race2, MOB tellM)
 	{
 		boolean same = true;
@@ -1424,6 +1445,135 @@ public class Reset extends StdCommand
 							&&(!CMLib.flags().isCataloged(M))
 							&&(M.getStartRoom()==R))
 								somethingDone=fixMob(M,recordedChanges) || somethingDone;
+						}
+						if(somethingDone)
+						{
+							mob.tell(L("Room @x1 done.",R.roomID()));
+							CMLib.database().DBUpdateMOBs(R);
+						}
+						if(R.getArea().getAreaState()!=Area.State.ACTIVE)
+							R.getArea().setAreaState(Area.State.ACTIVE);
+					}
+					if(recordedChanges==null)
+						mob.session().print(".");
+				}
+				if((recordedChanges!=null)&&(recordedChanges.length()>0))
+					mob.session().rawOut(recordedChanges.toString());
+				mob.session().println(L("done!"));
+			}
+		}
+		else
+		if(s.equalsIgnoreCase("mobweapondamage")&&(CMSecurity.isASysOp(mob)))
+		{
+			s="room";
+			if(commands.size()>1)
+				s=commands.get(1);
+			if(mob.session()==null)
+				return false;
+			if(mob.session().confirm(L("Alter weapon bearing mobs damage stat to damage-weapon or 0?!"), L("N")))
+			{
+				mob.session().print(L("working..."));
+				StringBuffer recordedChanges=null;
+				for(int i=1;i<commands.size();i++)
+				{
+					if(commands.get(i).equalsIgnoreCase("NOSAVE"))
+					{
+						recordedChanges=new StringBuffer("");
+						break;
+					}
+				}
+				final ArrayList<Room> rooms=new ArrayList<Room>();
+				if(s.toUpperCase().startsWith("ROOM"))
+					rooms.add(mob.location());
+				else
+				if(s.toUpperCase().startsWith("AREA"))
+				{
+					try
+					{
+						for(final Enumeration<Room> e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
+							rooms.add(e.nextElement());
+					}
+					catch (final NoSuchElementException nse)
+					{
+					}
+				}
+				else
+				if(s.toUpperCase().startsWith("CATALOG"))
+				{
+					try
+					{
+						final MOB[] mobs=CMLib.catalog().getCatalogMobs();
+						for (final MOB M : mobs)
+						{
+							if(fixMob(M,recordedChanges))
+							{
+								mob.tell(L("Catalog mob @x1 done.",M.Name()));
+								CMLib.catalog().updateCatalog(M);
+							}
+						}
+					}
+					catch (final NoSuchElementException nse)
+					{
+					}
+				}
+				else
+				if(s.toUpperCase().startsWith("WORLD"))
+				{
+					try
+					{
+						for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+						{
+							final Area A=(Area)e.nextElement();
+							boolean skip=false;
+							for(int i=1;i<commands.size();i++)
+							{
+								if(commands.get(i).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
+								{
+									skip=true;
+									break;
+								}
+							}
+							if(skip)
+								continue;
+							for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+								rooms.add(r.nextElement());
+						}
+					}
+					catch (final NoSuchElementException nse)
+					{
+					}
+				}
+				else
+				{
+					mob.tell(L("Try ROOM, AREA, CATALOG, or WORLD."));
+					return false;
+				}
+				if(recordedChanges!=null)
+					mob.session().println(".");
+				for(final Iterator<Room> r=rooms.iterator();r.hasNext();)
+				{
+					Room R=CMLib.map().getRoom(r.next());
+					if(R!=null)
+					synchronized(("SYNC"+R.roomID()).intern())
+					{
+						R=CMLib.map().getRoom(R);
+						if(R==null)
+							continue;
+						if((recordedChanges!=null)&&(recordedChanges.length()>0))
+						{
+							mob.session().rawOut(recordedChanges.toString());
+							recordedChanges.setLength(0);
+						}
+						R.getArea().setAreaState(Area.State.FROZEN);
+						CMLib.map().resetRoom(R, true);
+						boolean somethingDone=false;
+						for(int m=0;m<R.numInhabitants();m++)
+						{
+							final MOB M=R.fetchInhabitant(m);
+							if((M.isSavable())
+							&&(!CMLib.flags().isCataloged(M))
+							&&(M.getStartRoom()==R))
+								somethingDone=fixWeaponMob(M,recordedChanges) || somethingDone;
 						}
 						if(somethingDone)
 						{
