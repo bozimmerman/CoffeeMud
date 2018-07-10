@@ -458,7 +458,7 @@ HELP_DURASEW2=<EXPERTISE>The ability to craft armors and clothing to be more pro
 HELP_DURASEW3=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Fortified" are much heavier, a lot more protective, and worth much more.
 DATA_=Strong,Reinforced,Fortified
 
-DURASHAPE@x1=Durable Shaping @x2,3,X2,-SKILL +Carpentry +Sculpting +Pottery +Glassblowing +Scrimshaw,,+STR {10+(4*@x1)},0,2,0,0,0
+DURASHAPE@x1=Durable Shaping @x2,3,X2,-SKILL +Carpentry +Scrimshaw,,+STR {10+(4*@x1)},0,2,0,0,0
 HELP_=<EXPERTISE>The ability to craft armors and clothing to be more protective.
 HELP_DURASHAPE1=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Strong" are a little heavier, slightly more protective, and worth a little more.
 HELP_DURASHAPE2=<EXPERTISE>The ability to craft armors and clothing to be more protective. Items crafted "Reinforced" are heavier, more protective, and worth more.

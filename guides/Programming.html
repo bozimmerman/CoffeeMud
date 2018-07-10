@@ -1,15 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
   <meta content="HTML Tidy, see www.w3.org" name="generator" />
-  <title>Programming for CoffeeMud 5.9</title>
-  <link media="screen" type="text/css" href="style.css" rel="StyleSheet" />
-<!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors -->
-</head>
+  
+  <title>Programming for CoffeeMud 5.9</title><link media="screen" type="text/css" href="style.css" rel="StyleSheet" /><!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors --></head>
+
 <body>
 <center>
-<table border="1"
- cellpadding="10" cellspacing="0">
+<table border="1" cellpadding="10" cellspacing="0">
   <tbody>
     <tr>
       <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
@@ -116,8 +113,7 @@ Tables</a></li>
         <li><a href="#LANGS">Languages</a></li>
       </ul>
       </td>
-      <td align="left" valign="top"> <img src="images/mug.jpg"
- alt="CoffeeMud logo" />
+      <td align="left" valign="top"> <img src="images/mug.jpg" alt="CoffeeMud logo" />
       <h2><a name="overview" id="overview">Overview</a></h2>
       <p>The purpose of this
 document is to assist those who wish to
@@ -127,8 +123,7 @@ should be experienced with writing and compiling Java classes. The
 object oriented notions of class inheritance and polymorphism, as well
 as the Java constructs of interfaces should be at least vaguely
 familiar to you before attempting to build classes for CoffeeMud. Also,
-it is expected that all of the ideas presented in the <a
- href="ArchonGuide.html">Archons Guide</a>
+it is expected that all of the ideas presented in the <a href="ArchonGuide.html">Archons Guide</a>
 and <a href="GameBuildersGuide.html">Game
 Builders Guide</a>
 are completely familiar. The difference between a GenItem and a
@@ -350,7 +345,7 @@ Observer=Source, otherwise 'He'/'She'</td>
             <td>Outputs
 'Sir'/'Madam'</td>
           </tr>
-          <tr>
+          <tr><td><code>&lt;S-MRMS&gt;</code></td><td>Outputs 'Mr.'/'Ms.'</td></tr><tr><td><code>&lt;S-MISTERMADAM&gt;</code></td><td>Outputs 'Mister'/'Madam'</td></tr><tr>
             <td><code>&lt;S-IS-ARE&gt;</code> </td>
             <td>Outputs 'Are' if
 Observer=Source, otherwise 'Is'.</td>
@@ -414,7 +409,7 @@ Observer=Target, otherwise 'He'/'She'</td>
             <td>Outputs
 'Sir'/'Madam'</td>
           </tr>
-          <tr>
+          <tr><td><code>&lt;T-MRMS&gt;</code></td><td>Outputs 'Mr.'/'Ms.'</td></tr><tr><td><code>&lt;T-MISTERMADAM&gt;</code></td><td>Outputs 'Mister'/'Madam'</td></tr><tr>
             <td><code>&lt;T-IS-ARE&gt;</code> </td>
             <td>Outputs 'Are' if
 Observer=Target, otherwise 'Is'.</td>
@@ -2440,8 +2435,7 @@ is the prompt to display, while the second parameter is the default
 response should the user just hit ENTER by itself. &nbsp;Next we
 ask
 the user to<span style="font-family: monospace;"> confirm(...) </span>that
-they really want to view that message. &nbsp;The first parameter to <span
- style="font-family: monospace;">confirm(...)</span>
+they really want to view that message. &nbsp;The first parameter to <span style="font-family: monospace;">confirm(...)</span>
 is again the message to display, while the second is either "Y" or "N",
 meaning what the default is should the user just hit ENTER.
 &nbsp;Last
@@ -2468,9 +2462,7 @@ which helps prevent the system from using too many or from running out
 of them. &nbsp;Sharing is good; once a piece of CoffeeMud is
 finished
 running, it hands its thread off to other parts of CoffeeMud.
-&nbsp;However, the three methods shown above ( <span
- style="font-family: monospace;">prompt(String,String)</span>, <span
- style="font-family: monospace;">confirm(String,String)</span>,
+&nbsp;However, the three methods shown above ( <span style="font-family: monospace;">prompt(String,String)</span>, <span style="font-family: monospace;">confirm(String,String)</span>,
 and <span style="font-family: monospace;">choose(String,
 String, String)</span>
 ) do not share their thread with the rest of CoffeeMud. &nbsp;In
@@ -2479,8 +2471,7 @@ what happens when they execute is that the precious thread that is
 running that piece of code just sits around doing nothing until the
 user presses ENTER. &nbsp;This is *awful*. &nbsp;For this
 reason, a new
-method of prompting the user was added to the&nbsp;<span
- style="font-family: monospace;">session()</span>
+method of prompting the user was added to the&nbsp;<span style="font-family: monospace;">session()</span>
 object to allow your
 Java to prompt the user without hogging the thread all to itself.
 &nbsp;So, let's look at a new example:</p>
@@ -2499,8 +2490,7 @@ old methods did, and he last parameter is a time, in milliseconds,
 before the prompt will time-out (we use 0 to prevent timeouts).
 &nbsp;The <span style="font-family: monospace;">InputCallback.Type.CHOOSE</span>
 constructor also accepted, just before the timeout value, the letters
-to choose from, just like in the old <span
- style="font-family: monospace;">session().choose(..)</span>
+to choose from, just like in the old <span style="font-family: monospace;">session().choose(..)</span>
 method.
 &nbsp;In every case, the first thing that happens is that
 the&nbsp;<span style="font-family: monospace;">InputCallback.showPrompt()&nbsp;</span>method
@@ -2510,8 +2500,7 @@ the new <span style="font-family: monospace;">session.prompt(...)&nbsp;</span>im
 returns, allowing any code afterwards to immediately execute.
 &nbsp;However, the user must now enter something as well.
 &nbsp;After
-the user enters something valid, the <span
- style="font-family: monospace;">InputCallback.callBack()</span>
+the user enters something valid, the <span style="font-family: monospace;">InputCallback.callBack()</span>
 method
 is called, and <span style="font-family: monospace;">this.input</span>
 will contain the information the user entered. &nbsp;</p>
@@ -2520,14 +2509,12 @@ things to bear in mind when working with these asynchronous user input
 prompts: one, any variables that are local to the surrounding method
 must either be final, or copied into final variables to be accessible
 in the <span style="font-family: monospace;">callBack() </span>methods
-below. &nbsp;Another thing is to always bear in mind that <span
- style="font-family: monospace;">session().prompt(InputCallback)</span>
+below. &nbsp;Another thing is to always bear in mind that <span style="font-family: monospace;">session().prompt(InputCallback)</span>
 displays a message and returns immediately -- it does not block the
 thread like the other methods did. &nbsp;This last fact will play
 with
 your mind and mess up your coding if you aren't careful.</p>
-      <img style="width: 87px; height: 80px;" alt="coffeedb"
- src="images/coffeedb.jpg" /><br />
+      <img style="width: 87px; height: 80px;" alt="coffeedb" src="images/coffeedb.jpg" /><br />
       <h3><a name="DIG6" id="DIG5">Core Topic 6: Database
 Tables</a></h3>
 If all goes well, you will never ever have to care about this topic.
@@ -2585,9 +2572,7 @@ possibility of conflict. &nbsp;<br />
 And that, my friends, is why the CoffeeMud database is the way it is.
 &nbsp;So, how is it? &nbsp;Let's look:<br />
       <br />
-      <table
- style="text-align: left; background-color: rgb(255, 255, 204); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(255, 255, 204); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%"><big>cmvfs</big></td>
@@ -2722,9 +2707,7 @@ room clan item.</td>
       </table>
       <br />
       <p style="font-weight: bold; font-style: italic;"><big>CMCHAB</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMUSERID</td>
@@ -2742,9 +2725,7 @@ MAX=effect)</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMCHAR</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMCHID</td>
@@ -2882,9 +2863,7 @@ document</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMCHFO</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMUSERID</td>
@@ -2908,9 +2887,7 @@ document</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMCHCL</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMUSERID</td>
@@ -2927,9 +2904,7 @@ document</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMCHIT</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMUSERID</td>
@@ -2964,9 +2939,7 @@ document</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMROCH</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMROID</td>
@@ -2995,9 +2968,7 @@ document</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMROEX</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMROID</td>
@@ -3019,9 +2990,7 @@ exit travels to from CMROID)</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMROIT</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMROID</td>
@@ -3056,9 +3025,7 @@ exit travels to from CMROID)</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMROOM</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMROID</td>
@@ -3082,9 +3049,7 @@ in XML</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMAREA</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMAREA</td>
@@ -3112,9 +3077,7 @@ in XML</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMJRNL</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMJKEY</td>
@@ -3162,9 +3125,7 @@ message)</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMCLAN</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMCLID</td>
@@ -3201,9 +3162,7 @@ doc</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMCLIT</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMCLID</td>
@@ -3238,9 +3197,7 @@ doc</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMQUESTS</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMQUESID</td>
@@ -3262,9 +3219,7 @@ winners (semicolon delimited)</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMPDAT</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMPLID</td>
@@ -3281,9 +3236,7 @@ winners (semicolon delimited)</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMGRAC</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMRCID</td>
@@ -3294,9 +3247,7 @@ winners (semicolon delimited)</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMCCAC</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMCCID</td>
@@ -3307,9 +3258,7 @@ winners (semicolon delimited)</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMGAAC</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMGAID</td>
@@ -3324,9 +3273,7 @@ winners (semicolon delimited)</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMSTAT</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMSTRT</td>
@@ -3342,9 +3289,7 @@ period as an XML document</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMPOLL</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMNAME</td>
@@ -3377,9 +3322,7 @@ period as an XML document</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMVFS</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMFNAM</td>
@@ -3400,9 +3343,7 @@ period as an XML document</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMACCT</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMANAM</td>
@@ -3419,9 +3360,7 @@ period as an XML document</td>
         </tbody>
       </table>
       <p style="font-weight: bold; font-style: italic;"><big>CMBKLG</big></p>
-      <table
- style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;"
- border="1" cellpadding="2" cellspacing="2">
+      <table style="text-align: left; background-color: rgb(204, 255, 255); width: 100%;" border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td style="font-weight: bold;" width="15%">CMNAME</td>
@@ -4364,10 +4303,7 @@ integers, each of which is a RawMaterial code representing something
 like AIR, or FRESHWATER, or OXYGEN, etc. It tells the system what kind
 of atmospheres this race can breathe without dying. &nbsp;There are
 several pre-defined built-in static arrays in StdRace.java that you can
-use for common cases, such as&nbsp; <span
- style="font-family: monospace;">breatheAirArray</span>, <span
- style="font-family: monospace;">breatheWaterArray</span>, <span
- style="font-family: monospace;">breatheAirWaterArray</span>,
+use for common cases, such as&nbsp; <span style="font-family: monospace;">breatheAirArray</span>, <span style="font-family: monospace;">breatheWaterArray</span>, <span style="font-family: monospace;">breatheAirWaterArray</span>,
 or <span style="font-family: monospace;">breatheAnythingArray</span>
 (which is
 empty). &nbsp;You can define your own also, of course.
@@ -5537,8 +5473,7 @@ editors, both online and command line, but giving the engine a coded
 representation of the meaning of each column as specified above.
 &nbsp;Each column is tab-delimited, and each entry is one of the
 specific value codes. &nbsp;If a column can have multiple meanings,
-usually based on class, it is separated by <span
- style="font-family: monospace;">||</span>
+usually based on class, it is separated by <span style="font-family: monospace;">||</span>
 characters. &nbsp; Value
 codes include: &nbsp;<span style="font-family: monospace;">OPTIONAL_RESOURCE_OR_MATERIAL,
 AMMO_TYPE, BASE_ARMOR_AMOUNT, WEAPON_TYPE, REQUIRED_COMMON_SKILL_ID,
@@ -6003,7 +5938,7 @@ classes. For this reason, we save ourselves the trouble by having the
 language declare its qualifications itself by accessing the same
 CMLib.ableMapper()
 method we saw up in Character Class creation.</p>
-      <pre>  public static List&lt;String[]&gt; wordLists = null;<br />  public List&lt;String[]&gt; translationVector(String language)<br />  {<br />    if(wordLists==null)<br />    {<br />      String[] one = { "a", "e", "i", "o", "&iuml;&iquest;&frac12;", "&iuml;&iquest;&frac12;", "&iuml;&iquest;&frac12;", "&iuml;&iquest;&frac12;" };<br /><br />      String[] two = { "os", "vi", "ne", "vo", "li", "eh", "no", "ai", "by", "et", "ce", "un", "il" };<br /><br />      String[] three = { "&iuml;&iquest;&frac12;na", "cil", "sar", "tan", "hel", "loa", "sir", "hep", "yur", "nol", "hol", "qua", "&iuml;&iquest;&frac12;th" };<br /><br />      String[] four = { "s&iuml;&iquest;&frac12;ya", "qual", "quel", "lara", "uqua", "sana", "yava", "masse", "yanna", "quettaparma", "manna", "manan",<br />                        "merme", "carma", "harno", "harne", "varno", "essar", "saira", "cilta", "veuma", "norta", "turme", "saita" };<br /><br />      String[] five = { "cuiva", "cuina", "nonwa", "imire", "nauta", "cilta", "entuc", "norta", "latin", "l&iuml;&iquest;&frac12;tea", "veuya", "veuro",<br />                        "apama", "hampa", "nurta", "firta", "saira", "holle", "herwa", "uquen", "arcoa", "calte", "cemma", "hanta",<br />                        "tanen"};<br /><br />      String[] six = { "mahtale", "porisalque", "hairie", "tararan", "ambarwa", "latina", "ol&iuml;&iquest;&frac12;tie", "amawil", "apacen",<br />                       "yavinqua", "apalume", "linquilea", "menelwa", "alassea", "nurmea", "parmasse", "ceniril", "heldasse",<br />                       "imirin", "earina", "calatengew", "lapselunga", "rianna", "eneques" };<br /><br />      wordLists=new Vector();<br />      wordLists.add( one );<br />      wordLists.add( two );<br />      wordLists.add( three );<br />      wordLists.add( four );<br />      wordLists.add( five );<br />      wordLists.add( six );<br />    }<br />    return wordLists;<br />  }<br /></pre>
+      <pre>  public static List&lt;String[]&gt; wordLists = null;<br />  public List&lt;String[]&gt; translationVector(String language)<br />  {<br />    if(wordLists==null)<br />    {<br />      String[] one = { "a", "e", "i", "o", "�", "�", "�", "�" };<br /><br />      String[] two = { "os", "vi", "ne", "vo", "li", "eh", "no", "ai", "by", "et", "ce", "un", "il" };<br /><br />      String[] three = { "�na", "cil", "sar", "tan", "hel", "loa", "sir", "hep", "yur", "nol", "hol", "qua", "�th" };<br /><br />      String[] four = { "s�ya", "qual", "quel", "lara", "uqua", "sana", "yava", "masse", "yanna", "quettaparma", "manna", "manan",<br />                        "merme", "carma", "harno", "harne", "varno", "essar", "saira", "cilta", "veuma", "norta", "turme", "saita" };<br /><br />      String[] five = { "cuiva", "cuina", "nonwa", "imire", "nauta", "cilta", "entuc", "norta", "latin", "l�tea", "veuya", "veuro",<br />                        "apama", "hampa", "nurta", "firta", "saira", "holle", "herwa", "uquen", "arcoa", "calte", "cemma", "hanta",<br />                        "tanen"};<br /><br />      String[] six = { "mahtale", "porisalque", "hairie", "tararan", "ambarwa", "latina", "ol�tie", "amawil", "apacen",<br />                       "yavinqua", "apalume", "linquilea", "menelwa", "alassea", "nurmea", "parmasse", "ceniril", "heldasse",<br />                       "imirin", "earina", "calatengew", "lapselunga", "rianna", "eneques" };<br /><br />      wordLists=new Vector();<br />      wordLists.add( one );<br />      wordLists.add( two );<br />      wordLists.add( three );<br />      wordLists.add( four );<br />      wordLists.add( five );<br />      wordLists.add( six );<br />    }<br />    return wordLists;<br />  }<br /></pre>
       <p>The first, often only,
 and certainly most important Language
 method is <code>translationVector(String
@@ -6024,7 +5959,7 @@ Keeping the number of letters close or the same as the Common word
 equivalent provides a certain symmetry, however, and makes it fun for
 the players who don't speak a language to try and guess what is being
 said by counting letters.</p>
-      <pre>  private static final Map&lt;String,String&gt; hashwords = new Hashtable();<br />  public Map&lt;String,String&gt; translationHash(String language)<br />  {<br />    if( ( hashwords != null ) &amp;&amp; ( hashwords.size() &gt; 0 ) )<br />    {<br />      return hashwords;<br />    }<br /><br />    hashwords.put( "ABANDON", "avarta" );<br />    hashwords.put( "ABLE", "pol" );<br />    hashwords.put( "ACCOMMODATE", "camta" );<br />    hashwords.put( "ACT", "car" );<br /><br /> ...<br /><br />    hashwords.put( "WRONG", "raic&iuml;&iquest;&frac12;" );<br />    hashwords.put( "YES", "y&iuml;&iquest;&frac12;" );<br />    hashwords.put( "YESTERDAY", "tellaur&iuml;&iquest;&frac12;" );<br />    return hashwords;<br />  }<br />}<br /></pre>
+      <pre>  private static final Map&lt;String,String&gt; hashwords = new Hashtable();<br />  public Map&lt;String,String&gt; translationHash(String language)<br />  {<br />    if( ( hashwords != null ) &amp;&amp; ( hashwords.size() &gt; 0 ) )<br />    {<br />      return hashwords;<br />    }<br /><br />    hashwords.put( "ABANDON", "avarta" );<br />    hashwords.put( "ABLE", "pol" );<br />    hashwords.put( "ACCOMMODATE", "camta" );<br />    hashwords.put( "ACT", "car" );<br /><br /> ...<br /><br />    hashwords.put( "WRONG", "raic�" );<br />    hashwords.put( "YES", "y�" );<br />    hashwords.put( "YESTERDAY", "tellaur�" );<br />    return hashwords;<br />  }<br />}<br /></pre>
       <p>The last Language method
 is <code>translationHash(String
 language)</code>.
@@ -6042,5 +5977,4 @@ entry value. Correct casing is taken care of by the Language base class.</p>
   </tbody>
 </table>
 </center>
-</body>
-</html>
+</body></html>

@@ -1351,6 +1351,28 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 										replacement="sir";
 								}
 								break;
+							case MRMS:
+								{
+									if(regarding==null)
+										replacement="";
+									else
+									if(regarding instanceof MOB)
+										replacement=((MOB)regarding).charStats().MrMs();
+									else
+										replacement="Mr.";
+								}
+								break;
+							case MISTERMADAM:
+								{
+									if(regarding==null)
+										replacement="";
+									else
+									if(regarding instanceof MOB)
+										replacement=((MOB)regarding).charStats().MisterMadam();
+									else
+										replacement="Mister";
+								}
+								break;
 							case ISARE:
 								{
 									if(regarding==null)

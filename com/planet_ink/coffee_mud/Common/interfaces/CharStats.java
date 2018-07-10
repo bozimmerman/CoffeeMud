@@ -658,6 +658,18 @@ public interface CharStats extends CMCommon, Modifiable
 	public String SirMadam();
 
 	/**
+	 * Based on the apparent gender of the mob, return the appropriate word "Mr.", or "Ms.".
+	 * @return the gender-correct title for this mob
+	 */
+	public String MrMs();
+
+	/**
+	 * Based on the apparent gender of the mob, return the appropriate word "Mister", or "Madam".
+	 * @return the gender-correct title for this mob
+	 */
+	public String MisterMadam();
+
+	/**
 	 * Returns the age category for this mob, based on the age stat constant stored here.  The age
 	 * categories are defined in the Race interface as AGE_ constants.
 	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race

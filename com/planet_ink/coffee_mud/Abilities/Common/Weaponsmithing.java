@@ -217,6 +217,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		String specialization="";
 		switch(specClass(weaponClass))
 		{
+		case Weapon.CLASS_NATURAL:
+			return true;
 		case Weapon.CLASS_AXE:
 			specialization = "Specialization_Axe";
 			break;

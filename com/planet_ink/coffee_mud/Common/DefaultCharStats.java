@@ -957,6 +957,40 @@ public class DefaultCharStats implements CharStats
 			return CMLib.lang().L("Sir");
 		}
 	}
+	
+	@Override
+	public String MrMs()
+	{
+		final char c=((genderName!=null)&&(genderName.length()>0))
+					? Character.toUpperCase(genderName.charAt(0)) 
+					: (char)getStat(STAT_GENDER);
+		switch(c)
+		{
+		case 'M':
+			return CMLib.lang().L("Mr.");
+		case 'F':
+			return CMLib.lang().L("Ms.");
+		default:
+			return CMLib.lang().L("Mr.");
+		}
+	}
+
+	@Override
+	public String MisterMadam()
+	{
+		final char c=((genderName!=null)&&(genderName.length()>0))
+					? Character.toUpperCase(genderName.charAt(0)) 
+					: (char)getStat(STAT_GENDER);
+		switch(c)
+		{
+		case 'M':
+			return CMLib.lang().L("Mister");
+		case 'F':
+			return CMLib.lang().L("Madam");
+		default:
+			return CMLib.lang().L("Mister");
+		}
+	}
 
 	@Override
 	public String HeShe()

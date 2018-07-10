@@ -185,28 +185,31 @@ public class ListCmd extends StdCommand
 		return str;
 	}
 
-	public StringBuilder roomDetails(Session viewerS, List<Room> these, Room likeRoom)
+	public StringBuilder roomDetails(Session viewerS, List<Room> these, Room likeRoom, String rest)
 	{
-		return roomDetails(viewerS, new IteratorEnumeration<Room>(these.iterator()), likeRoom);
+		return roomDetails(viewerS, new IteratorEnumeration<Room>(these.iterator()), likeRoom, rest);
 	}
 
-	public StringBuilder roomDetails(Session viewerS, Enumeration<Room> these, Room likeRoom)
+	public StringBuilder roomDetails(Session viewerS, Enumeration<Room> these, Room likeRoom, String rest)
 	{
 		final StringBuilder lines=new StringBuilder("");
 		if(!these.hasMoreElements())
 			return lines;
-		if(likeRoom==null)
-			return lines;
-		Room thisThang=null;
+		Room R=null;
 		String thisOne=null;
 		final int COL_LEN1=CMLib.lister().fixColWidth(31.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(43.0,viewerS);
+		final  boolean chkRest = (rest != null) && (rest.length()>0);
 		for(final Enumeration<Room> r=these;r.hasMoreElements();)
 		{
-			thisThang=r.nextElement();
-			thisOne=thisThang.roomID();
-			if((thisOne.length()>0)&&(thisThang.getArea().Name().equals(likeRoom.getArea().Name())))
-				lines.append(CMStrings.padRightPreserve("^N^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",COL_LEN1)+": "+CMStrings.limit(thisThang.displayText(),COL_LEN2)+"^N^.\n\r");
+			R=r.nextElement();
+			thisOne=R.roomID();
+			if((thisOne.length()>0)
+			&&((likeRoom==null)||(R.getArea().Name().equals(likeRoom.getArea().Name())))
+			&&((!chkRest)
+				||(CMLib.english().containsString(R.displayText(), rest))
+				||(R.roomID().indexOf(rest)>=0)))
+				lines.append(CMStrings.padRightPreserve("^N^<LSTROOMID^>"+thisOne+"^</LSTROOMID^>",COL_LEN1)+": "+CMStrings.limit(R.displayText(),COL_LEN2)+"^N^.\n\r");
 		}
 		lines.append("\n\r");
 		return lines;
@@ -5005,7 +5008,7 @@ public class ListCmd extends StdCommand
 			break;
 		case ROOMS:
 			s.println("^HRoom Locale IDs:^N");
-			s.wraplessPrintln(roomDetails(mob.session(), mob.location().getArea().getMetroMap(), mob.location()).toString());
+			s.wraplessPrintln(roomDetails(mob.session(), mob.location().getArea().getMetroMap(), mob.location(), rest).toString());
 			break;
 		case AREA:
 			s.println("^HArea IDs:^N");

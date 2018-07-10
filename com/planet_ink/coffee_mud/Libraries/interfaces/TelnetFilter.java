@@ -48,6 +48,8 @@ public interface TelnetFilter extends CMLibrary
 		HIMHERSELF("-HIM-HERSELF","-ms"),
 		HISHERSELF("-HIS-HERSELF","-hs"),
 		SIRMADAM("-SIRMADAM",null),
+		MRMS("-MRMS",null),
+		MISTERMADAM("-MISTERMADAM",null),
 		ISARE2("IS-ARE",null),
 		NAMENOART("-NAMENOART",null),
 		ACCOUNTNAME("-ACCOUNTNAME",null);
