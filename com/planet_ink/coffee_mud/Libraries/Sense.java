@@ -1050,7 +1050,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			if(owner instanceof MOB)
 			{
 				final MOB M=(MOB)owner;
-				if(!CMLib.threads().isTicking(M, -1))
+				if((!M.isPlayer()) && (!CMLib.threads().isTicking(M, -1)))
 					return I.name()+" on non-ticking mob: "+M.name()+", in: "+CMLib.map().getExtendedRoomID(M.location());
 				final String mobReport = validCheck(M);
 				if(mobReport != null)
