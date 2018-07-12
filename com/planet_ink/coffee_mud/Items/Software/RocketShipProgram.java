@@ -769,10 +769,15 @@ public class RocketShipProgram extends GenShipProgram
 				final long distance=CMLib.map().getDistanceFrom(ship, programPlanet) 
 						- programPlanet.radius() 
 						- ship.radius()
-						+10; // margin for soft landing
+						-10; // margin for soft landing
+				final double atmoWidth = CMath.mul(programPlanet.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS) - programPlanet.radius();
+				final long critRadius = Math.round(programPlanet.radius() + (atmoWidth / 2.0));
+				final long distanceToCritRadius=CMLib.map().getDistanceFrom(ship, programPlanet) 
+						- critRadius 
+						- ship.radius()
+						-10; // margin for soft landing
 				final double ticksToDestinationAtCurrentSpeed = Math.abs(CMath.div(distance, ship.speed()));
 				double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(SpaceObject.ACCELLERATION_TYPICALSPACEROCKET,2.0));
-				this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
 				if((ticksToDecellerate > ticksToDestinationAtCurrentSpeed)
 				||(distance < ship.speed() * 20))
 				{
@@ -787,6 +792,7 @@ public class RocketShipProgram extends GenShipProgram
 					else
 					if(ship.speed()>CMLib.map().getDistanceFrom(ship, programPlanet)/4)
 						targetAccelleration = ship.speed() - 1.0;
+					this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
 					newInject=calculateTargetInjection(ship, newInject, ship.speed()-1.0);
 					if((targetAccelleration > 1.0) && (newInject.doubleValue()==0.0))
 					{
@@ -795,9 +801,21 @@ public class RocketShipProgram extends GenShipProgram
 					}
 				}
 				else
+				if((distance > distanceToCritRadius) && (ship.speed() < Math.sqrt(distance)))
+				{
+					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+						Log.debugOut("Landing Accelerating to "+  Math.sqrt(distance));
+					this.changeFacing(ship, dirToPlanet);
+					newInject=calculateTargetInjection(ship, this.lastInject, SpaceObject.ACCELLERATION_TYPICALSPACEROCKET);
+				}
+				else
+				{
+					//this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
 					newInject=new Double(0.0);
+				}
 			}
-			//System.out.println("Landing: "+CMLib.english().directionDescShort(ship.direction())+"/"+ship.speed()+"/"+((newInject != null) ? newInject.toString():"null")); //BZ:DELME
+			if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+				Log.debugOut("Landing: dir="+CMLib.english().directionDescShort(ship.direction())+"/speed="+ship.speed()+"/inject="+((newInject != null) ? newInject.toString():"null"));
 			for(final ShipEngine engineE : programEngines)
 				performSimpleThrust(engineE,newInject, true);
 			break;
