@@ -295,7 +295,10 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			if(amount == 0.0)
 			{
 				if(me.getThrust()>0.0)
+				{
+					me.setThrust(0.0);
 					return reportError(me, controlI, mob, lang.L("@x1 goes quiet.",me.name(mob)), lang.L("Info: @x1: Engine shut down.",me.name(mob)));
+				}
 				me.setThrust(0.0);
 				return false;
 			}
