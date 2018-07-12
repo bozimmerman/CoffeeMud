@@ -519,7 +519,8 @@ public class RocketShipProgram extends GenShipProgram
 			if(thrustInject != null)
 			{
 				if((thrustInject != this.lastInject)
-				||(!engineE.isConstantThruster()))
+				||(!engineE.isConstantThruster())
+				||((thrustInject.doubleValue()>0.0)&&(engineE.getThrust()==0.0)))
 				{
 					CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 					final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(thrustInject.doubleValue()));
@@ -719,32 +720,39 @@ public class RocketShipProgram extends GenShipProgram
 				this.rocketState = RocketStateMachine.LANDING;
 			else
 			{
-				final double angleDiff = CMLib.map().getAngleDelta(ship.direction(), dirToPlanet);
+				//final double angleDiff = CMLib.map().getAngleDelta(ship.direction(), dirToPlanet);
 				for(final ShipEngine engineE : programEngines)
 				{
 					double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(SpaceObject.ACCELLERATION_TYPICALSPACEROCKET,2.0));
 					final double ticksToDestinationAtCurrentSpeed = CMath.div(distance, ship.speed());
 					final double diff = Math.abs(ticksToDecellerate-ticksToDestinationAtCurrentSpeed);
-					if(Math.abs(angleDiff) > 1)
-						this.changeFacing(ship, dirToPlanet);
-					else
-					if(diff <= 1.0)
+					if((diff < 1) || (diff < Math.sqrt(ticksToDecellerate)))
 					{
-						//System.out.println("Coast: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
+						//System.out.println("** Coast: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()+"/"+this.lastInject); //BZ:DELME
+						final Double oldInject=this.lastInject;
+						performSimpleThrust(engineE,new Double(0.0), false);
+						this.lastInject=oldInject;
+						break;
 					}
 					else
-					if(diff > 0)
+					if(ticksToDecellerate > ticksToDestinationAtCurrentSpeed)
 					{
-						//System.out.println("Decelllerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
+						//System.out.println("** Decellerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
 						this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
 					}
 					else
+					if((ticksToDecellerate<50)||(diff > 10.0))
 					{
-						//System.out.println("Accelllerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
+						//System.out.println("** Accellerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
 						this.changeFacing(ship, dirToPlanet);
 					}
 					final double targetAccelleration = SpaceObject.ACCELLERATION_TYPICALSPACEROCKET; //
 					newInject=calculateTargetInjection(ship, newInject, targetAccelleration);
+					if((targetAccelleration > 1.0) && (newInject.doubleValue()==0.0))
+					{
+						primeMainThrusters(ship);
+						newInject=calculateTargetInjection(ship, this.lastInject, ship.speed()-1.0);
+					}
 					performSimpleThrust(engineE,newInject, false);
 				}
 				break;
@@ -758,19 +766,38 @@ public class RocketShipProgram extends GenShipProgram
 				this.changeFacing(ship, dirToPlanet);
 			else
 			{
+				final long distance=CMLib.map().getDistanceFrom(ship, programPlanet) 
+						- programPlanet.radius() 
+						- ship.radius()
+						+10; // margin for soft landing
+				final double ticksToDestinationAtCurrentSpeed = Math.abs(CMath.div(distance, ship.speed()));
+				double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(SpaceObject.ACCELLERATION_TYPICALSPACEROCKET,2.0));
 				this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
-				if(ship.speed()>SpaceObject.ACCELLERATION_TYPICALSPACEROCKET)
+				if((ticksToDecellerate > ticksToDestinationAtCurrentSpeed)
+				||(distance < ship.speed() * 20))
 				{
-					final double targetAccelleration = SpaceObject.ACCELLERATION_TYPICALSPACEROCKET; //
-					newInject=calculateTargetInjection(ship, newInject, targetAccelleration);
+					double targetAccelleration = 0.0;
+					if(ship.speed()>SpaceObject.ACCELLERATION_TYPICALSPACEROCKET)
+					{
+						if(ship.speed() < (SpaceObject.ACCELLERATION_TYPICALSPACEROCKET + 1.0))
+							targetAccelleration = 1.0;
+						else
+							targetAccelleration = SpaceObject.ACCELLERATION_TYPICALSPACEROCKET;
+					}
+					else
+					if(ship.speed()>CMLib.map().getDistanceFrom(ship, programPlanet)/4)
+						targetAccelleration = ship.speed() - 1.0;
+					newInject=calculateTargetInjection(ship, newInject, ship.speed()-1.0);
+					if((targetAccelleration > 1.0) && (newInject.doubleValue()==0.0))
+					{
+						primeMainThrusters(ship);
+						newInject=calculateTargetInjection(ship, this.lastInject, ship.speed()-1.0);
+					}
 				}
 				else
-				if(ship.speed()>1.0)
-					newInject=calculateTargetInjection(ship, newInject, ship.speed()-1.0);
-				else
-					newInject=null;
+					newInject=new Double(0.0);
 			}
-			//System.out.println("Landing: "+CMLib.english().directionDescShort(ship.direction())+"/"+ship.speed()); //BZ:DELME
+			//System.out.println("Landing: "+CMLib.english().directionDescShort(ship.direction())+"/"+ship.speed()+"/"+((newInject != null) ? newInject.toString():"null")); //BZ:DELME
 			for(final ShipEngine engineE : programEngines)
 				performSimpleThrust(engineE,newInject, true);
 			break;
@@ -796,9 +823,12 @@ public class RocketShipProgram extends GenShipProgram
 		final boolean isDebugging = CMSecurity.isDebugging(DbgFlag.SPACESHIP);
 		try
 		{
+			final double angleDiff = CMLib.map().getAngleDelta(ship.facing(), newFacing);
+			if(angleDiff == 0.0)
+				return true;
 			// step one, face opposite direction of motion
 			if(isDebugging)
-				Log.debugOut("flipping to go from "+ship.direction()[0]+","+ship.direction()[1]+"  to  "+newFacing[0]+","+newFacing[1]);
+				Log.debugOut("flipping to go from "+ship.facing()[0]+","+ship.facing()[1]+"  to  "+newFacing[0]+","+newFacing[1]);
 			for(final ShipEngine engineE : engines)
 			{
 				if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.STARBOARD))
@@ -1297,6 +1327,7 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: Malfunctioning thrusters interface."));
 					return;
 				}
+				this.programPlanet = landingPlanet;
 				this.programEngines=new XVector<ShipEngine>(engineE);
 				// this lands you at the nearest point, which will pick the nearest location room, if any
 				//TODO: picking the nearest landing zone, orbiting to it, and THEN landing would be better.

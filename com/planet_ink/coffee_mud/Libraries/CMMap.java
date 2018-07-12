@@ -657,6 +657,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		curDirection[0]=newDirectionYaw;
 		curDirection[1]=newDirectionPitch;
+		if(Double.isInfinite(newSpeed) || Double.isNaN(newSpeed))
+		{
+			Log.errOut("Invalid new speed: "+newSpeed);
+			return curSpeed;
+		}
 		return newSpeed;
 	}
 

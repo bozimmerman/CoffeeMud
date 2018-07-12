@@ -764,6 +764,11 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 	@Override 
 	public void setSpeed(double v)
 	{
+		if(Double.isNaN(v))
+		{
+			Log.errOut("Bad Speed: "+v);
+			return;
+		}
 		speed=v;
 	}
 
