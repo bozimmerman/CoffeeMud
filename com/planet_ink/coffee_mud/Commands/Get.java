@@ -189,12 +189,13 @@ public class Get extends StdCommand
 				addendumStr="."+(++addendum);
 			}
 
+			final boolean optimize = V.size()>1;
 			for(int i=0;i<V.size();i++)
 			{
 				final Item getThis=V.get(i);
 				if(!getThis.amDestroyed())
 				{
-					get(mob,container,getThis,quiet,"get",true);
+					get(mob,container,getThis,quiet,"get",optimize);
 					if(getThis instanceof Coins)
 						((Coins)getThis).putCoinsBack();
 					if(getThis instanceof RawMaterial)
