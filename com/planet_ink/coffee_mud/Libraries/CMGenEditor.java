@@ -2105,7 +2105,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			{ 
 				public String getErrors(String line)
 				{
-					if(C==null)
+					if((C==null)&&(E.getCommonSkillID()!=null)&&(E.getCommonSkillID().length()>0))
 						return L("Skill @x1 is not a crafting skill!",E.getCommonSkillID());
 					try
 					{

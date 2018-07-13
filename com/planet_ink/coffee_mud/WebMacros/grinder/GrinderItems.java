@@ -586,9 +586,10 @@ public class GrinderItems
 						}
 						final String rAstr=httpReq.getUrlParameter("RECIPESKILL");
 						final CraftorAbility rA=(CraftorAbility)CMClass.getAbility(rAstr);
-						if(rA==null)
+						if((rA==null)&&(rAstr!=null)&&(rAstr.length()>0))
 							return CMLib.lang().L("Skill @x1 is not a crafting skill!",rAstr);
 						else
+						if(rA!=null)
 						{
 							try
 							{
