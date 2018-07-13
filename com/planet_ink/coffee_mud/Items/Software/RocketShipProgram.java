@@ -716,7 +716,12 @@ public class RocketShipProgram extends GenShipProgram
 			final long distance=CMLib.map().getDistanceFrom(ship, programPlanet) 
 					- Math.round(CMath.mul(programPlanet.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)) 
 					- ship.radius();
-			if(distance <= 0)
+			final double atmoWidth = CMath.mul(programPlanet.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS) - programPlanet.radius();
+			final long critRadius = Math.round(programPlanet.radius() + (atmoWidth / 2.0));
+			final long distanceToCritRadius=CMLib.map().getDistanceFrom(ship, programPlanet) 
+					- critRadius 
+					- ship.radius();
+			if(distanceToCritRadius <= 0)
 				this.rocketState = RocketStateMachine.LANDING;
 			else
 			{
@@ -724,7 +729,7 @@ public class RocketShipProgram extends GenShipProgram
 				for(final ShipEngine engineE : programEngines)
 				{
 					double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(SpaceObject.ACCELLERATION_TYPICALSPACEROCKET,2.0));
-					final double ticksToDestinationAtCurrentSpeed = CMath.div(distance, ship.speed());
+					final double ticksToDestinationAtCurrentSpeed = CMath.div(distanceToCritRadius, ship.speed());
 					final double diff = Math.abs(ticksToDecellerate-ticksToDestinationAtCurrentSpeed);
 					if((diff < 1) || (diff < Math.sqrt(ticksToDecellerate)))
 					{
@@ -774,8 +779,7 @@ public class RocketShipProgram extends GenShipProgram
 				final long critRadius = Math.round(programPlanet.radius() + (atmoWidth / 2.0));
 				final long distanceToCritRadius=CMLib.map().getDistanceFrom(ship, programPlanet) 
 						- critRadius 
-						- ship.radius()
-						-10; // margin for soft landing
+						- ship.radius();
 				final double ticksToDestinationAtCurrentSpeed = Math.abs(CMath.div(distance, ship.speed()));
 				double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(SpaceObject.ACCELLERATION_TYPICALSPACEROCKET,2.0));
 				if((ticksToDecellerate > ticksToDestinationAtCurrentSpeed)
@@ -794,10 +798,10 @@ public class RocketShipProgram extends GenShipProgram
 						targetAccelleration = ship.speed() - 1.0;
 					this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
 					newInject=calculateTargetInjection(ship, newInject, ship.speed()-1.0);
-					if((targetAccelleration > 1.0) && (newInject.doubleValue()==0.0))
+					if((targetAccelleration >= 1.0) && (newInject.doubleValue()==0.0))
 					{
 						primeMainThrusters(ship);
-						newInject=calculateTargetInjection(ship, this.lastInject, ship.speed()-1.0);
+						newInject=calculateTargetInjection(ship, this.lastInject, targetAccelleration);
 					}
 				}
 				else

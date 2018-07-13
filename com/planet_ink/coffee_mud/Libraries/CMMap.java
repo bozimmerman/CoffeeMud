@@ -568,6 +568,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		final double y2=Math.sin(toAngle[1])*Math.sin(toAngle[0]), z2=Math.cos(toAngle[1]);
 		final double pitchDOTyaw=x1*x2+y1*y2+z1*z2;
 		final double finalDelta=Math.acos(pitchDOTyaw);
+		if(Double.isNaN(finalDelta) || Double.isInfinite(finalDelta))
+		{
+			Log.errOut("finalDelta = "+ finalDelta+"= ("+fromAngle[0]+","+fromAngle[1]+") -> ("+toAngle[0]+","+toAngle[1]+")");
+			Log.errOut("pitchDOTyaw = " + pitchDOTyaw+", x1 = "+ x1 + ", y1 = "+ y1 + ", z1 = "+ z1 + ", x2 = "+ x2 + ", y2 = "+ y2);
+		}
 		return finalDelta;
 	}
 
@@ -659,7 +664,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		curDirection[1]=newDirectionPitch;
 		if(Double.isInfinite(newSpeed) || Double.isNaN(newSpeed))
 		{
-			Log.errOut("Invalid new speed: "+newSpeed);
+			Log.errOut("Invalid new speed: "+newSpeed + "("+currentSpeed+"+"+"("+acceleration+"*Math.cos("+anglesDelta+"))");
 			return curSpeed;
 		}
 		return newSpeed;
