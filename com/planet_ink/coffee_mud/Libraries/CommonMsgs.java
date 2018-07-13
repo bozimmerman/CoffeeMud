@@ -1464,8 +1464,6 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					finalLookStr.append(CMLib.protocol().mxpImage(room," ALIGN=RIGHT H=70 W=70"));
 				if(compress)
 					finalLookStr.append("^N  ");
-				else
-					finalLookStr.append("^N\n\r\n\r");
 			}
 		}
 
@@ -1479,7 +1477,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			notItem=null;
 		
 		final List<Item> viewItems=new ArrayList<Item>(room.numItems());
-		final List<Item> compressedItems=((compress) || (lookCode==LOOK_LONG)) ? null :  new ArrayList<Item>(1);
+		final List<Item> compressedItems=(lookCode==LOOK_LONG) ? null :  new ArrayList<Item>(1);
 		int itemsInTheDarkness=0;
 		for(int c=0;c<room.numItems();c++)
 		{
@@ -1491,19 +1489,24 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			{
 				if(CMLib.flags().canBarelyBeSeenBy(item,mob))
 					itemsInTheDarkness++;
-				if((compressedItems!=null)&&(CMath.bset(item.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSCOMPRESSED)))
+				if((compressedItems!=null)&&(compress || CMath.bset(item.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSCOMPRESSED)))
 					compressedItems.add(item);
 				else
 					viewItems.add(item);
 			}
 		}
-
-		if((compressedItems != null) && (compressedItems.size()>0))
+		final boolean hadCompressedItems = ((compressedItems != null) && (compressedItems.size()>0)); 
+		if(hadCompressedItems)
 		{
 			final StringBuilder itemStr=CMLib.lister().lister(mob,compressedItems,false,"RItem"," \"*\"",false,true);
 			if(itemStr.length()>0)
-				finalLookStr.append(itemStr).append("\n\r\n\r");
+				finalLookStr.append(itemStr);
 		}
+		if(CMLib.flags().canBeSeenBy(room,mob)
+		&&((lookCode!=LOOK_BRIEFOK)
+			||(!mob.isAttributeSet(MOB.Attrib.BRIEF))
+			||(hadCompressedItems)))
+				finalLookStr.append("^N\n\r\n\r");
 		final StringBuilder itemStr=CMLib.lister().lister(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
 		if(itemStr.length()>0)
 			finalLookStr.append(itemStr);

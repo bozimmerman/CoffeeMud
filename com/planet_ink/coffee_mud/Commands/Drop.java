@@ -195,6 +195,7 @@ public class Drop extends StdCommand
 			addendumStr="."+(++addendum);
 		}
 
+		final boolean optimize = V.size()>1;
 		if(V.size()==0)
 			mob.tell(L("You don't seem to be carrying that."));
 		else
@@ -202,10 +203,11 @@ public class Drop extends StdCommand
 		{
 			final Item I=V.get(i);
 			if(!I.amDestroyed())
-				drop(mob,I,false,true,false);
+				drop(mob,I,false,optimize,false);
 		}
 		R.recoverRoomStats();
-		R.recoverRoomStats();
+		if(!optimize)
+			R.recoverRoomStats();
 		return false;
 	}
 

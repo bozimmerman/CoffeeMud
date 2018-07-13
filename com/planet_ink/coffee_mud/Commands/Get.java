@@ -204,7 +204,8 @@ public class Get extends StdCommand
 				}
 			}
 			R.recoverRoomStats();
-			R.recoverRoomStats();
+			if(!optimize)
+				R.recoverRoomStats();
 
 			if(containers.size()==0)
 				break;

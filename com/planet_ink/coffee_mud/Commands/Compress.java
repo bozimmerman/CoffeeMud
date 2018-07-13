@@ -66,7 +66,7 @@ public class Compress extends StdCommand
 		else
 		if((parm.length()==0)||(parm.equalsIgnoreCase("OFF")))
 		{
-			if(!mob.isAttributeSet(MOB.Attrib.COMPRESS))
+			if(mob.isAttributeSet(MOB.Attrib.COMPRESS))
 			{
 				mob.setAttribute(MOB.Attrib.COMPRESS,false);
 				mob.tell(L("Compressed views are now inactive."));
