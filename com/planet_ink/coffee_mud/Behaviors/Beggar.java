@@ -106,7 +106,7 @@ public class Beggar extends StdBehavior
 					CMLib.commands().postSay(mob,mob2,L("Spare some change?"),false,false);
 					break;
 				case 4:
-					CMLib.commands().postSay(mob,mob2,L("Please @x1, a little something for an old @x2 down on @x3 luck?",((mob2.charStats().getStat(CharStats.STAT_GENDER)=='M')?"mister":"madam"),((mob.charStats().getStat(CharStats.STAT_GENDER)=='M')?"man":"woman"),mob.charStats().hisher()),false,false);
+					CMLib.commands().postSay(mob,mob2,L("Please @x1, a little something for an old @x2 down on @x3 luck?",mob2.charStats().MisterMadam(),((mob.charStats().getStat(CharStats.STAT_GENDER)=='M')?"man":"woman"),mob.charStats().hisher()),false,false);
 					break;
 				case 5:
 					CMLib.commands().postSay(mob,mob2,L("Hey, I lost my 'Will Work For Food' sign.  Can you spare me the money to buy one?"),false,false);
