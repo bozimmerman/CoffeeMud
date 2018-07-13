@@ -326,7 +326,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 				{
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
-					final String wood=getComponentDescription(mob,V,RCP_WOOD);
+					final String wood=getComponentDescription(mob,V,RCP_WOOD).toLowerCase();
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
@@ -335,7 +335,7 @@ public class WandMaking extends EnhancedCraftingSkill implements ItemCraftor
 						final String otherBenefit=getOtherRscRequired(V.get(RCP_SPELL));
 						String mat="";
 						if((otherAmtRequired>0)&&(otherRequired.length()>0))
-							mat=otherAmtRequired+" "+otherRequired;
+							mat=otherAmtRequired+" "+otherRequired.toLowerCase();
 						String magic="";
 						if(otherBenefit.length()>0)
 						{
