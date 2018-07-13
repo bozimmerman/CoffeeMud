@@ -51,16 +51,30 @@ public class Compress extends StdCommand
 		throws java.io.IOException
 	{
 		String parm = (commands.size() > 1) ? CMParms.combine(commands,1) : ""; 
-		if((!mob.isAttributeSet(MOB.Attrib.COMPRESS) && (parm.length()==0))||(parm.equalsIgnoreCase("ON")))
+		if((parm.length()==0)||(parm.equalsIgnoreCase("ON")))
 		{
-			mob.setAttribute(MOB.Attrib.COMPRESS,true);
-			mob.tell(L("Compressed views are now active."));
+			if(!mob.isAttributeSet(MOB.Attrib.COMPRESS))
+			{
+				mob.setAttribute(MOB.Attrib.COMPRESS,true);
+				mob.tell(L("Compressed views are now active."));
+			}
+			else
+			{
+				mob.tell(L("Compressed views are already active."));
+			}
 		}
 		else
-		if((!mob.isAttributeSet(MOB.Attrib.COMPRESS) && (parm.length()==0))||(parm.equalsIgnoreCase("OFF")))
+		if((parm.length()==0)||(parm.equalsIgnoreCase("OFF")))
 		{
-			mob.setAttribute(MOB.Attrib.COMPRESS,false);
-			mob.tell(L("Compressed views are now inactive."));
+			if(!mob.isAttributeSet(MOB.Attrib.COMPRESS))
+			{
+				mob.setAttribute(MOB.Attrib.COMPRESS,false);
+				mob.tell(L("Compressed views are now inactive."));
+			}
+			else
+			{
+				mob.tell(L("Compressed views are already inactive."));
+			}
 		}
 		else
 		if(parm.length() > 0)
