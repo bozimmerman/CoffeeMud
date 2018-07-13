@@ -234,7 +234,6 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 		return req;
 	}
 	
-	
 	protected String getActivePresentTenseVerb()
 	{
 		return "making";
@@ -353,13 +352,25 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 									magic="";
 							}
 						}
-						buf.append(
-							CMStrings.padRight(item,cols[0])+" "+
-							CMStrings.padRight(""+level,cols[1])+" "+
-							CMStrings.padRight(""+wood,cols[2])+" "+
-							CMStrings.padRight(""+mat,cols[3])+" "+
-							CMStrings.padRight(""+magic,cols[4])+
-							"\n\r");
+						if((wood.length()>5)&&(mat.length()<5))
+						{
+							buf.append(
+									CMStrings.padRight(item,cols[0])+" "+
+									CMStrings.padRight(""+level,cols[1])+" "+
+									CMStrings.padRight(""+wood+mat,cols[2]+cols[3])+"  "+
+									CMStrings.padRight(""+magic,cols[4])+
+									"\n\r");
+						}
+						else
+						{
+							buf.append(
+								CMStrings.padRight(item,cols[0])+" "+
+								CMStrings.padRight(""+level,cols[1])+" "+
+								CMStrings.padRight(""+wood,cols[2])+" "+
+								CMStrings.padRight(""+mat,cols[3])+" "+
+								CMStrings.padRight(""+magic,cols[4])+
+								"\n\r");
+						}
 					}
 				}
 			}

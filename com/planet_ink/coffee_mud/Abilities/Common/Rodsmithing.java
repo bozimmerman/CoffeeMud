@@ -71,31 +71,37 @@ public class Rodsmithing extends StaffMaking implements ItemCraftor
 		return "rodsmithing.txt";
 	}
 
+	@Override
 	protected String getActivePresentTenseVerb()
 	{
 		return "smithing";
 	}
 	
+	@Override
 	protected String getActiveVerb()
 	{
 		return "smith";
 	}
 	
+	@Override
 	protected String getTriggerKeyword()
 	{
 		return this.triggerStrings()[0].toLowerCase();
 	}
 
+	@Override
 	protected String getSoundFile()
 	{
-		return "sawing.wav";
+		return "tinktinktink2.wav";
 	}
 	
+	@Override
 	protected String getBaseMaterialType()
 	{
 		return "Metal";
 	}
 	
+	@Override
 	protected int[] getBaseMaterialCodes()
 	{
 		return new int[]{RawMaterial.MATERIAL_METAL|RawMaterial.MATERIAL_MITHRIL};
