@@ -61,6 +61,7 @@
   59. Achievements now includes social tracking.
   60. New common skills: Boatwright (is the OLD Shipwright), and Shipwright (large sailing ships)
   61. New skills: Familiarity_Axe/Sword/etc, Familiarity_Armor/Shield - for crafted items
+  62. New common skills: Decorating
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
    1. Hunger and Thirst system can now be tweeked.  See coffeemud.ini file
