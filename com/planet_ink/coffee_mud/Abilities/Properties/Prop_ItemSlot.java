@@ -278,6 +278,22 @@ public class Prop_ItemSlot extends Property
 						}
 						A.setAffectedOne(gemI);
 						msg.source().addItem(gemI);
+						levelDiff = 0;
+						for(int i=0;i<slots.length;i++)
+						{
+							if(slots[i]==null)
+								continue;
+							if(levelShift == 1)
+							{
+								levelDiff += slots[i].phyStats().level();
+							}
+							else
+							if(levelShift == 2)
+							{
+								if(slots[i].phyStats().level()>levelDiff)
+									levelDiff=slots[i].phyStats().level();
+							}
+						}
 					}
 				}
 			}
@@ -325,6 +341,16 @@ public class Prop_ItemSlot extends Property
 							break;
 						}
 					}
+				}
+				if(levelShift == 1)
+				{
+					levelDiff += slotItem.phyStats().level();
+				}
+				else
+				if(levelShift == 2)
+				{
+					if(slotItem.phyStats().level()>levelDiff)
+						levelDiff=slotItem.phyStats().level();
 				}
 			}
 			else
