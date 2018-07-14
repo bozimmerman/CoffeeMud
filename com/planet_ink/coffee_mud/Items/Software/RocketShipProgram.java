@@ -489,8 +489,20 @@ public class RocketShipProgram extends GenShipProgram
 		&&(newInject != null)
 		&& (targetAccelleration != 0.0))
 		{
+			if(this.lastAccelleration.doubleValue() < (targetAccelleration * .00001))
+				newInject = new Double(newInject.doubleValue()*200.0);
+			else
+			if(this.lastAccelleration.doubleValue() < (targetAccelleration * .001))
+				newInject = new Double(newInject.doubleValue()*20.0);
+			else
 			if(this.lastAccelleration.doubleValue() < (targetAccelleration * .1))
 				newInject = new Double(newInject.doubleValue()*2.0);
+			else
+			if(this.lastAccelleration.doubleValue() > (targetAccelleration * 1000000))
+				newInject = new Double(newInject.doubleValue()/200.0);
+			else
+			if(this.lastAccelleration.doubleValue() > (targetAccelleration * 10000))
+				newInject = new Double(newInject.doubleValue()/20.0);
 			else
 			if(this.lastAccelleration.doubleValue() > (targetAccelleration * 100))
 				newInject = new Double(newInject.doubleValue()/2.0);
