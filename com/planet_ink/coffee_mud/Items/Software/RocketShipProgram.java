@@ -968,7 +968,7 @@ public class RocketShipProgram extends GenShipProgram
 							}
 							else
 							if((thisLastAccel.doubleValue()>0.0) && (ratio>100))
-								lastTryAmt *= (ratio/50.0);
+								lastTryAmt *= (Math.sqrt(ratio)/5.0);
 							else
 							if(prevAccelleration.doubleValue() == thisLastAccel.doubleValue())
 								break;
