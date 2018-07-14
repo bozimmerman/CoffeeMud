@@ -2087,6 +2087,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public String getDispositionBlurbs(Physical seen , MOB seer)
 	{
 		final PhyStats pStats=seen.phyStats();
+		if(pStats == null)
+			return ""; // an exit?
 		final String[] ambiances=pStats.ambiances();
 		if(!pStats.isAmbiance("-ALL"))
 		{
