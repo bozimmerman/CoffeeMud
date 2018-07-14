@@ -112,31 +112,31 @@ public class Socials extends StdLibrary implements SocialsList
 					x=getline.indexOf("\t");
 					if(x>=0)
 					{
-						socobj.setYou_see(getline.substring(0,x));
+						socobj.setSourceMessage(getline.substring(0,x));
 						getline=getline.substring(x+1);
 						x=getline.indexOf("\t");
 						if(x>=0)
 						{
-							socobj.setThird_party_sees(getline.substring(0,x));
+							socobj.setOthersMessage(getline.substring(0,x));
 							getline=getline.substring(x+1);
 							x=getline.indexOf("\t");
 							if(x>=0)
 							{
-								socobj.setTarget_sees(getline.substring(0,x));
+								socobj.setTargetMessage(getline.substring(0,x));
 								getline=getline.substring(x+1);
 								x=getline.indexOf("\t");
 								if(x>=0)
 								{
-									socobj.setSee_when_no_target(getline.substring(0,x));
+									socobj.setFailedMessage(getline.substring(0,x));
 									getline=getline.substring(x+1);
 									x=getline.indexOf("\t");
 									if(x>=0)
-										socobj.setMSPfile(getline.substring(0,x));
+										socobj.setSoundFile(getline.substring(0,x));
 									else
-										socobj.setMSPfile(getline);
+										socobj.setSoundFile(getline);
 								}
 								else
-									socobj.setSee_when_no_target(getline);
+									socobj.setFailedMessage(getline);
 
 							}
 						}
@@ -265,7 +265,7 @@ public class Socials extends StdLibrary implements SocialsList
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.session().safeRawPrintln(L("@x1. Others Effect type: @x2",""+showNumber,((me.othersCode()==CMMsg.MSG_HANDS)?"HANDS":((me.othersCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.othersCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.othersCode()==CMMsg.MSG_NOISYMOVEMENT)?"SEEING MOVEMENT":"HEARING NOISE"))))));
+		mob.session().safeRawPrintln(L("@x1. Others Effect type: @x2",""+showNumber,((me.getOthersCode()==CMMsg.MSG_HANDS)?"HANDS":((me.getOthersCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.getOthersCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.getOthersCode()==CMMsg.MSG_NOISYMOVEMENT)?"SEEING MOVEMENT":"HEARING NOISE"))))));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName=mob.session().choose(L("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: "),L("WMSVH"),"");
@@ -306,7 +306,7 @@ public class Socials extends StdLibrary implements SocialsList
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.session().safeRawPrintln(L("@x1. Target Effect type: @x2",""+showNumber,((me.targetCode()==CMMsg.MSG_HANDS)?"HANDS":((me.targetCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.targetCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.targetCode()==CMMsg.MSG_NOISYMOVEMENT)?"BEING MOVED ON":"HEARING NOISE"))))));
+		mob.session().safeRawPrintln(L("@x1. Target Effect type: @x2",""+showNumber,((me.getTargetCode()==CMMsg.MSG_HANDS)?"HANDS":((me.getTargetCode()==CMMsg.MSG_OK_VISUAL)?"VISUAL ONLY":((me.getTargetCode()==CMMsg.MSG_SPEAK)?"HEARING WORDS":((me.getTargetCode()==CMMsg.MSG_NOISYMOVEMENT)?"BEING MOVED ON":"HEARING NOISE"))))));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName=mob.session().choose(L("Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands: "),L("WMSVH"),"");
@@ -342,7 +342,7 @@ public class Socials extends StdLibrary implements SocialsList
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.session().safeRawPrintln(L("@x1. Your action type: @x2",""+showNumber,((me.sourceCode()==CMMsg.MSG_NOISYMOVEMENT)?"LARGE MOVEMENT":((me.sourceCode()==CMMsg.MSG_SPEAK)?"SPEAKING":((me.sourceCode()==CMMsg.MSG_HANDS)?"MOVEMENT":"MAKING NOISE")))));
+		mob.session().safeRawPrintln(L("@x1. Your action type: @x2",""+showNumber,((me.getSourceCode()==CMMsg.MSG_NOISYMOVEMENT)?"LARGE MOVEMENT":((me.getSourceCode()==CMMsg.MSG_SPEAK)?"SPEAKING":((me.getSourceCode()==CMMsg.MSG_HANDS)?"MOVEMENT":"MAKING NOISE")))));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName=mob.session().choose(L("Change W)ords, M)ovement (small), S)ound, L)arge Movement: "),L("WMSL"),"");
@@ -529,24 +529,24 @@ public class Socials extends StdLibrary implements SocialsList
 				while(!ok)
 				{
 					int showNumber=0;
-					soc.setYou_see(CMLib.genEd().prompt(mob,soc.You_see(),++showNumber,showFlag,L("You-see string"),false,true));
-					if(soc.sourceCode()==CMMsg.MSG_OK_ACTION)
+					soc.setSourceMessage(CMLib.genEd().prompt(mob,soc.getSourceMessage(),++showNumber,showFlag,L("You-see string"),false,true));
+					if(soc.getSourceCode()==CMMsg.MSG_OK_ACTION)
 						soc.setSourceCode(CMMsg.MSG_HANDS);
 					modifySocialSourceCode(mob,soc,++showNumber,showFlag);
-					soc.setThird_party_sees(CMLib.genEd().prompt(mob,soc.Third_party_sees(),++showNumber,showFlag,L("Others-see string"),false,true));
-					if(soc.othersCode()==CMMsg.MSG_OK_ACTION)
+					soc.setOthersMessage(CMLib.genEd().prompt(mob,soc.getOthersMessage(),++showNumber,showFlag,L("Others-see string"),false,true));
+					if(soc.getOthersCode()==CMMsg.MSG_OK_ACTION)
 						soc.setOthersCode(CMMsg.MSG_HANDS);
 					modifySocialOthersCode(mob,soc,++showNumber,showFlag);
 					if(soc.Name().endsWith(" <T-NAME>"))
 					{
-						soc.setTarget_sees(CMLib.genEd().prompt(mob,soc.Target_sees(),++showNumber,showFlag,L("Target-sees string"),false,true));
-						if(soc.targetCode()==CMMsg.MSG_OK_ACTION)
+						soc.setTargetMessage(CMLib.genEd().prompt(mob,soc.getTargetMessage(),++showNumber,showFlag,L("Target-sees string"),false,true));
+						if(soc.getTargetCode()==CMMsg.MSG_OK_ACTION)
 							soc.setTargetCode(CMMsg.MSG_HANDS);
 						modifySocialTargetCode(mob,soc,++showNumber,showFlag);
 					}
 					if(soc.Name().endsWith(" <T-NAME>")||soc.Name().endsWith(" <I-NAME>")||soc.Name().endsWith(" <V-NAME>")||soc.Name().endsWith(" <E-NAME>")||(soc.Name().endsWith(" ALL")))
-						soc.setSee_when_no_target(CMLib.genEd().prompt(mob,soc.See_when_no_target(),++showNumber,showFlag,L("You-see when no target"),false,true));
-					soc.setMSPfile(CMLib.genEd().prompt(mob,soc.MSPfile(),++showNumber,showFlag,L("Sound file"),true,false));
+						soc.setFailedMessage(CMLib.genEd().prompt(mob,soc.getFailedTargetMessage(),++showNumber,showFlag,L("You-see when no target"),false,true));
+					soc.setSoundFile(CMLib.genEd().prompt(mob,soc.getSoundFile(),++showNumber,showFlag,L("Sound file"),true,false));
 					resaveSocials=true;
 					if(showFlag<-900)
 					{
@@ -784,27 +784,27 @@ public class Socials extends StdLibrary implements SocialsList
 		soc.setName(name+type);
 		if(type.trim().length()==0)
 		{
-			soc.setYou_see("You "+name.toLowerCase()+".");
-			soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s.");
+			soc.setSourceMessage("You "+name.toLowerCase()+".");
+			soc.setOthersMessage("<S-NAME> "+name.toLowerCase()+"s.");
 			soc.setSourceCode(CMMsg.MSG_HANDS);
 			soc.setOthersCode(CMMsg.MSG_HANDS);
 		}
 		else
 		if(type.trim().equals("ALL"))
 		{
-			soc.setYou_see("You "+name.toLowerCase()+" everyone.");
-			soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s everyone.");
-			soc.setSee_when_no_target(CMStrings.capitalizeAndLower(name)+" who?");
+			soc.setSourceMessage("You "+name.toLowerCase()+" everyone.");
+			soc.setOthersMessage("<S-NAME> "+name.toLowerCase()+"s everyone.");
+			soc.setFailedMessage(CMStrings.capitalizeAndLower(name)+" who?");
 			soc.setSourceCode(CMMsg.MSG_SPEAK);
 			soc.setOthersCode(CMMsg.MSG_SPEAK);
 		}
 		else
 		if(type.trim().endsWith("-NAME>"))
 		{
-			soc.setYou_see("You "+name.toLowerCase()+" <T-NAME>.");
-			soc.setTarget_sees("<S-NAME> "+name.toLowerCase()+"s you.");
-			soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s <T-NAMESELF>.");
-			soc.setSee_when_no_target(CMStrings.capitalizeAndLower(name)+" who?");
+			soc.setSourceMessage("You "+name.toLowerCase()+" <T-NAME>.");
+			soc.setTargetMessage("<S-NAME> "+name.toLowerCase()+"s you.");
+			soc.setOthersMessage("<S-NAME> "+name.toLowerCase()+"s <T-NAMESELF>.");
+			soc.setFailedMessage(CMStrings.capitalizeAndLower(name)+" who?");
 			soc.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
 			soc.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
 			soc.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
@@ -812,15 +812,15 @@ public class Socials extends StdLibrary implements SocialsList
 		else
 		if(type.trim().equals("SELF"))
 		{
-			soc.setYou_see("You "+name.toLowerCase()+" yourself.");
-			soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s <S-HIM-HERSELF>.");
+			soc.setSourceMessage("You "+name.toLowerCase()+" yourself.");
+			soc.setOthersMessage("<S-NAME> "+name.toLowerCase()+"s <S-HIM-HERSELF>.");
 			soc.setSourceCode(CMMsg.MSG_NOISE);
 			soc.setOthersCode(CMMsg.MSG_NOISE);
 		}
 		else
 		{
-			soc.setYou_see("You "+name.toLowerCase()+type.toLowerCase()+".");
-			soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s"+type.toLowerCase()+".");
+			soc.setSourceMessage("You "+name.toLowerCase()+type.toLowerCase()+".");
+			soc.setOthersMessage("<S-NAME> "+name.toLowerCase()+"s"+type.toLowerCase()+".");
 			soc.setSourceCode(CMMsg.MSG_HANDS);
 			soc.setOthersCode(CMMsg.MSG_HANDS);
 		}
@@ -873,7 +873,7 @@ public class Socials extends StdLibrary implements SocialsList
 		{
 			final Social I=V2.elementAt(v);
 
-			switch(I.sourceCode())
+			switch(I.getSourceCode())
 			{
 			case CMMsg.MSG_SPEAK:
 				buf.append('w');
@@ -891,7 +891,7 @@ public class Socials extends StdLibrary implements SocialsList
 				buf.append(' ');
 				break;
 			}
-			switch(I.targetCode())
+			switch(I.getTargetCode())
 			{
 			case CMMsg.MSG_HANDS:
 				buf.append('t');
@@ -914,11 +914,11 @@ public class Socials extends StdLibrary implements SocialsList
 			}
 			final String[] stuff=new String[6];
 			stuff[0]=I.name();
-			stuff[1]=I.You_see();
-			stuff[2]=I.Third_party_sees();
-			stuff[3]=I.Target_sees();
-			stuff[4]=I.See_when_no_target();
-			stuff[5]=I.MSPfile();
+			stuff[1]=I.getSourceMessage();
+			stuff[2]=I.getOthersMessage();
+			stuff[3]=I.getTargetMessage();
+			stuff[4]=I.getFailedTargetMessage();
+			stuff[5]=I.getSoundFile();
 			buf.append('\t');
 			for (final String element : stuff)
 			{
@@ -986,8 +986,8 @@ public class Socials extends StdLibrary implements SocialsList
 				help.append("\n\r");
 				help.append("^H");
 				help.append("Target     ^?: ^xnone^.^N\n\r");
-				help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, null, null, S.You_see(), false)+"\n\r");
-				help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, null, null, S.Third_party_sees(), false)+"\n\r");
+				help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, null, null, S.getSourceMessage(), false)+"\n\r");
+				help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, null, null, S.getOthersMessage(), false)+"\n\r");
 			}
 			else
 			if(rest.equals("<T-NAME>"))
@@ -995,10 +995,10 @@ public class Socials extends StdLibrary implements SocialsList
 				help.append("\n\r");
 				help.append("^H");
 				help.append("Target     ^?: ^xsomeone^.^N\n\r");
-				help.append("No Target  : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.See_when_no_target(), false)+"\n\r");
-				help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.You_see(), false)+"\n\r");
-				help.append("Target sees: "+CMLib.coffeeFilter().fullOutFilter(session, tgtMOB, mob, tgtMOB, null, S.Target_sees(), false)+"\n\r");
-				help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, tgtMOB, null, S.Third_party_sees(), false)+"\n\r");
+				help.append("No Target  : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.getFailedTargetMessage(), false)+"\n\r");
+				help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.getSourceMessage(), false)+"\n\r");
+				help.append("Target sees: "+CMLib.coffeeFilter().fullOutFilter(session, tgtMOB, mob, tgtMOB, null, S.getTargetMessage(), false)+"\n\r");
+				help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, tgtMOB, null, S.getOthersMessage(), false)+"\n\r");
 			}
 			else
 			if(rest.equals("<I-NAME>"))
@@ -1006,9 +1006,9 @@ public class Socials extends StdLibrary implements SocialsList
 				help.append("\n\r");
 				help.append("^H");
 				help.append("Target     ^?: ^xroom item^.^N\n\r");
-				help.append("No Target  : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.See_when_no_target(), false)+"\n\r");
-				help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.You_see(), false)+"\n\r");
-				help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, tgtMOB, null, S.Third_party_sees(), false)+"\n\r");
+				help.append("No Target  : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.getFailedTargetMessage(), false)+"\n\r");
+				help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.getSourceMessage(), false)+"\n\r");
+				help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, tgtMOB, null, S.getOthersMessage(), false)+"\n\r");
 			}
 			else
 			if(rest.equals("<V-NAME>"))
@@ -1016,9 +1016,9 @@ public class Socials extends StdLibrary implements SocialsList
 				help.append("\n\r");
 				help.append("^H");
 				help.append("Target     ^?: ^xinventory item^.^N\n\r");
-				help.append("No Target  : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.See_when_no_target(), false)+"\n\r");
-				help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.You_see(), false)+"\n\r");
-				help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, tgtMOB, null, S.Third_party_sees(), false)+"\n\r");
+				help.append("No Target  : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.getFailedTargetMessage(), false)+"\n\r");
+				help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.getSourceMessage(), false)+"\n\r");
+				help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, tgtMOB, null, S.getOthersMessage(), false)+"\n\r");
 			}
 			else
 			if(rest.equals("<E-NAME>"))
@@ -1026,17 +1026,17 @@ public class Socials extends StdLibrary implements SocialsList
 				help.append("\n\r");
 				help.append("^H");
 				help.append("Target     ^?: ^xequipped item^.^N\n\r");
-				help.append("No Target  : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.See_when_no_target(), false)+"\n\r");
-				help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.You_see(), false)+"\n\r");
-				help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, tgtMOB, null, S.Third_party_sees(), false)+"\n\r");
+				help.append("No Target  : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.getFailedTargetMessage(), false)+"\n\r");
+				help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, tgtMOB, null, S.getSourceMessage(), false)+"\n\r");
+				help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, tgtMOB, null, S.getOthersMessage(), false)+"\n\r");
 			}
 			else
 			{
 				help.append("\n\r");
 				help.append("^H");
 				help.append("Target     ^?: ^x"+rest.toLowerCase()+"^.^N\n\r");
-				help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, null, null, S.You_see(), false)+"\n\r");
-				help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, null, null, S.Third_party_sees(), false)+"\n\r");
+				help.append("You see    : "+CMLib.coffeeFilter().fullOutFilter(session, mob, mob, null, null, S.getSourceMessage(), false)+"\n\r");
+				help.append("Others see : "+CMLib.coffeeFilter().fullOutFilter(session, othMOB, mob, null, null, S.getOthersMessage(), false)+"\n\r");
 			}
 		}
 		tgtMOB.destroy();

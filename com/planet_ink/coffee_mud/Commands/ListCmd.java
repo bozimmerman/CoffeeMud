@@ -3357,61 +3357,61 @@ public class ListCmd extends StdCommand
 			else
 			if(wiki == WikiFlag.WIKIHELP)
 			{
-				final String TargetNoneYouSee;
-				final String TargetNoneOthersSee;
-				final String TargetSomeoneNoTarget;
-				final String TargetSomeoneYouSee;
-				final String TargetSomeoneTargetSees;
-				final String TargetSomeoneOthersSee;
-				final String TargetSelfYouSee;
-				final String TargetSelfOthersSee;
-				final Social TargetNoneSoc = CMLib.socials().fetchSocial(soc.baseName(), true);
-				if(TargetNoneSoc!=null)
+				final String targetNoneYouSee;
+				final String targetNoneOthersSee;
+				final String targetSomeoneNoTarget;
+				final String targetSomeoneYouSee;
+				final String targetSomeoneTargetSees;
+				final String targetSomeoneOthersSee;
+				final String targetSelfYouSee;
+				final String targetSelfOthersSee;
+				final Social targetNoneSoc = CMLib.socials().fetchSocial(soc.baseName(), true);
+				if(targetNoneSoc!=null)
 				{
-					TargetNoneYouSee = TargetNoneSoc.You_see();
-					TargetNoneOthersSee = TargetNoneSoc.Third_party_sees();
+					targetNoneYouSee = targetNoneSoc.getSourceMessage();
+					targetNoneOthersSee = targetNoneSoc.getOthersMessage();
 				}
 				else
 				{
-					TargetNoneYouSee = "";
-					TargetNoneOthersSee = "";
+					targetNoneYouSee = "";
+					targetNoneOthersSee = "";
 				}
-				final Social TargetSomeoneSoc = CMLib.socials().fetchSocial(soc.baseName()+" <T-NAME>", true);
-				if(TargetSomeoneSoc!=null)
+				final Social targetSomeoneSoc = CMLib.socials().fetchSocial(soc.baseName()+" <T-NAME>", true);
+				if(targetSomeoneSoc!=null)
 				{
-					TargetSomeoneNoTarget = TargetSomeoneSoc.See_when_no_target();
-					TargetSomeoneYouSee = TargetSomeoneSoc.You_see();
-					TargetSomeoneOthersSee = TargetSomeoneSoc.Third_party_sees();
-					TargetSomeoneTargetSees=TargetSomeoneSoc.Target_sees();
-				}
-				else
-				{
-					TargetSomeoneNoTarget = "";
-					TargetSomeoneYouSee = "";
-					TargetSomeoneOthersSee = "";
-					TargetSomeoneTargetSees= "";
-				}
-				final Social TargetSelfSoc = CMLib.socials().fetchSocial(soc.baseName()+" SELF", true);
-				if(TargetSelfSoc!=null)
-				{
-					TargetSelfYouSee = TargetSelfSoc.You_see();
-					TargetSelfOthersSee = TargetSelfSoc.Third_party_sees();
+					targetSomeoneNoTarget = targetSomeoneSoc.getFailedTargetMessage();
+					targetSomeoneYouSee = targetSomeoneSoc.getSourceMessage();
+					targetSomeoneOthersSee = targetSomeoneSoc.getOthersMessage();
+					targetSomeoneTargetSees=targetSomeoneSoc.getTargetMessage();
 				}
 				else
 				{
-					TargetSelfYouSee = "";
-					TargetSelfOthersSee = "";
+					targetSomeoneNoTarget = "";
+					targetSomeoneYouSee = "";
+					targetSomeoneOthersSee = "";
+					targetSomeoneTargetSees= "";
+				}
+				final Social targetSelfSoc = CMLib.socials().fetchSocial(soc.baseName()+" SELF", true);
+				if(targetSelfSoc!=null)
+				{
+					targetSelfYouSee = targetSelfSoc.getSourceMessage();
+					targetSelfOthersSee = targetSelfSoc.getOthersMessage();
+				}
+				else
+				{
+					targetSelfYouSee = "";
+					targetSelfOthersSee = "";
 				}
 				buf.append("{{SocialTemplate"
 						+ "|Name="+CMStrings.capitalizeAndLower(soc.baseName())
-						+ "|TargetNoneUSee="+TargetNoneYouSee
-						+ "|TargetNoneTheySee="+TargetNoneOthersSee
-						+ "|TargetSomeoneNoTarget="+TargetSomeoneNoTarget
-						+ "|TargetSomeoneUSee="+TargetSomeoneYouSee
-						+ "|TargetSomeoneTargetSees="+TargetSomeoneTargetSees
-						+ "|TargetSomeoneOthersSee="+TargetSomeoneOthersSee
-						+ "|TargetSelfUSee="+TargetSelfYouSee
-						+ "|TargetSelfOthersSee="+TargetSelfOthersSee
+						+ "|targetNoneUSee="+targetNoneYouSee
+						+ "|targetNoneTheySee="+targetNoneOthersSee
+						+ "|targetSomeoneNoTarget="+targetSomeoneNoTarget
+						+ "|targetSomeoneUSee="+targetSomeoneYouSee
+						+ "|targetSomeoneTargetSees="+targetSomeoneTargetSees
+						+ "|targetSomeoneOthersSee="+targetSomeoneOthersSee
+						+ "|targetSelfUSee="+targetSelfYouSee
+						+ "|targetSelfOthersSee="+targetSelfOthersSee
 						+ "}}\n\r");
 			}
 			else

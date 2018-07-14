@@ -38,12 +38,17 @@ import java.util.*;
 
 public class DefaultSocial implements Social
 {
-	protected String	Social_name;
-	protected String	You_see;
-	protected String	Third_party_sees;
-	protected String	Target_sees;
-	protected String	See_when_no_target;
-	private String		MSPfile		= "";
+	protected String	socialFullID;
+	protected String	socialFullTail;
+	protected String	socialBaseName;
+	protected String	socialTarget;
+	protected boolean	isTargetable;
+	protected String	socialArg;
+	protected String	sourceMsg;
+	protected String	othersSeeMsg;
+	protected String	targetSeesMsg;
+	protected String	failedTargetMsg;
+	private String		soundFile	= "";
 	protected int		sourceCode	= CMMsg.MSG_OK_ACTION;
 	protected int		othersCode	= CMMsg.MSG_OK_ACTION;
 	protected int		targetCode	= CMMsg.MSG_OK_ACTION;
@@ -57,7 +62,7 @@ public class DefaultSocial implements Social
 	@Override
 	public String name()
 	{
-		return Social_name;
+		return socialFullID;
 	}
 
 	@Override
@@ -69,21 +74,33 @@ public class DefaultSocial implements Social
 	@Override
 	public String baseName()
 	{
-		final int x = name().indexOf(' ');
-		if (x < 0)
-			return name();
-		return name().substring(0, x);
+		return socialBaseName;
 	}
 
 	@Override
 	public String tailName()
 	{
-		final int x = name().indexOf(' ');
-		if (x < 0)
-			return "";
-		return name().substring(x+1);
+		return socialFullTail;
 	}
 
+	@Override
+	public boolean isTargetable()
+	{
+		return isTargetable();
+	}
+	
+	@Override
+	public String targetName()
+	{
+		return socialTarget;
+	}
+	
+	@Override
+	public String argumentName()
+	{
+		return socialArg;
+	}
+	
 	@Override
 	public String L(final String str, final String... xs)
 	{
@@ -93,73 +110,99 @@ public class DefaultSocial implements Social
 	@Override
 	public void setName(String newName)
 	{
-		Social_name = newName;
+		socialFullID = newName.toUpperCase().trim();
+		int x = newName.indexOf(' ');
+		if(x>0)
+		{
+			socialBaseName=newName.substring(0, x);
+			socialFullTail=newName.substring(x+1).trim();
+			int y=newName.indexOf(' ',x+1);
+			if(y>x)
+			{
+				socialTarget=newName.substring(x+1,y).trim();
+				socialArg=newName.substring(y+1).trim();
+			}
+			else
+			{
+				socialTarget=newName.substring(x+1);
+				socialArg="";
+			}
+			isTargetable = socialTarget.endsWith("-NAME>");
+		}
+		else
+		{
+			socialBaseName=newName;
+			socialTarget="";
+			isTargetable=false;
+			socialFullTail="";
+			socialArg="";
+		}
 	}
 
 	@Override
-	public String You_see()
+	public String getSourceMessage()
 	{
-		return You_see;
+		return sourceMsg;
 	}
 
 	@Override
-	public String Third_party_sees()
+	public String getOthersMessage()
 	{
-		return Third_party_sees;
+		return othersSeeMsg;
 	}
 
 	@Override
-	public String Target_sees()
+	public String getTargetMessage()
 	{
-		return Target_sees;
+		return targetSeesMsg;
 	}
 
 	@Override
-	public String See_when_no_target()
+	public String getFailedTargetMessage()
 	{
-		return See_when_no_target;
+		return failedTargetMsg;
 	}
 
 	@Override
-	public int sourceCode()
+	public int getSourceCode()
 	{
 		return sourceCode;
 	}
 
 	@Override
-	public int othersCode()
+	public int getOthersCode()
 	{
 		return othersCode;
 	}
 
 	@Override
-	public int targetCode()
+	public int getTargetCode()
 	{
 		return targetCode;
 	}
 
 	@Override
-	public void setYou_see(String str)
+	public void setSourceMessage(String str)
 	{
-		You_see = str;
+		sourceMsg = str;
 	}
 
 	@Override
-	public void setThird_party_sees(String str)
+	public void setOthersMessage(String str)
 	{
-		Third_party_sees = str;
+		othersSeeMsg = str;
 	}
 
 	@Override
-	public void setTarget_sees(String str)
+	public void setTargetMessage(String str)
 	{
-		Target_sees = str;
+		targetSeesMsg = str;
 	}
 
 	@Override
-	public void setSee_when_no_target(String str)
+	public void setFailedMessage(String str)
 	{
-		See_when_no_target = str;
+		failedTargetMsg = str;
 	}
 
 	@Override
@@ -187,15 +230,15 @@ public class DefaultSocial implements Social
 	}
 
 	@Override
-	public String MSPfile()
+	public String getSoundFile()
 	{
-		return MSPfile;
+		return soundFile;
 	}
 
 	@Override
-	public void setMSPfile(String newFile)
+	public void setSoundFile(String newFile)
 	{
-		MSPfile = newFile;
+		soundFile = newFile;
 	}
 
 	@Override
@@ -213,9 +256,9 @@ public class DefaultSocial implements Social
 	public boolean targetable(Environmental E)
 	{
 		if (E == null)
-			return name().endsWith("-NAME>");
+			return isTargetable;
 		if (E instanceof MOB)
-			return name().endsWith(" <T-NAME>");
+			return isTargetable && targetName().equals("<T-NAME>");
 		if ((E instanceof Item) && (((Item) E).container() == null))
 		{
 			final Item I = (Item) E;
@@ -225,14 +268,14 @@ public class DefaultSocial implements Social
 				&&(!CMLib.flags().isGettable(I))
 				&&((targetCode==CMMsg.MSG_NOISYMOVEMENT)||(targetCode==CMMsg.MSG_HANDS)))
 					return false; // added so that touch didn't work on wallpaper
-				return name().endsWith(" <I-NAME>");
+				return targetName().equals("<I-NAME>");
 			}
 			if (I.owner() instanceof MOB)
 			{
 				if (I.amWearingAt(Wearable.IN_INVENTORY))
-					return name().endsWith(" <V-NAME>");
+					return targetName().equals("<V-NAME>");
 				else
-					return name().endsWith(" <E-NAME>");
+					return targetName().equals("<E-NAME>");
 			}
 		}
 		return false;
@@ -282,29 +325,29 @@ public class DefaultSocial implements Social
 			}
 		}
 
-		final String mspFile = ((MSPfile != null) && (MSPfile.length() > 0)) ? CMLib.protocol().msp(MSPfile, 10) : "";
+		final String mspFile = ((soundFile != null) && (soundFile.length() > 0)) ? CMLib.protocol().msp(soundFile, 10) : "";
 
-		String You_see = You_see();
-		if ((You_see != null) && (You_see.trim().length() == 0))
-			You_see = null;
+		String srcMsg = getSourceMessage();
+		if ((srcMsg != null) && (srcMsg.trim().length() == 0))
+			srcMsg = null;
 
-		String Third_party_sees = Third_party_sees();
-		if ((Third_party_sees != null) && (Third_party_sees.trim().length() == 0))
-			Third_party_sees = null;
+		String othMsg = getOthersMessage();
+		if ((othMsg != null) && (othMsg.trim().length() == 0))
+			othMsg = null;
 
-		String Target_sees = Target_sees();
-		if ((Target_sees != null) && (Target_sees.trim().length() == 0))
-			Target_sees = null;
+		String tgtMsg = getTargetMessage();
+		if ((tgtMsg != null) && (tgtMsg.trim().length() == 0))
+			tgtMsg = null;
 
-		String See_when_no_target = See_when_no_target();
-		if ((See_when_no_target != null) && (See_when_no_target.trim().length() == 0))
-			See_when_no_target = null;
+		String failMsg = getFailedTargetMessage();
+		if ((failMsg != null) && (failMsg.trim().length() == 0))
+			failMsg = null;
 
 		if (((targetE == null) && (targetable(null))) 
 		|| ((targetE != null) && (!targetable(targetE))))
 		{
 			final CMMsg msg = CMClass.getMsg(mob, null, this, 
-					(auto ? CMMsg.MASK_ALWAYS : 0) | sourceCode(), See_when_no_target, 
+					(auto ? CMMsg.MASK_ALWAYS : 0) | getSourceCode(), failMsg, 
 					CMMsg.NO_EFFECT, null, 
 					CMMsg.NO_EFFECT, null);
 			if (R.okMessage(mob, msg))
@@ -318,9 +361,9 @@ public class DefaultSocial implements Social
 		if (targetE == null)
 		{
 			final CMMsg msg = CMClass.getMsg(mob, null, this, 
-					(auto ? CMMsg.MASK_ALWAYS : 0) | sourceCode(), (You_see == null) ? null : You_see + mspFile, 
+					(auto ? CMMsg.MASK_ALWAYS : 0) | getSourceCode(), (srcMsg == null) ? null : srcMsg + mspFile, 
 					CMMsg.NO_EFFECT, null, 
-					othersCode(), (Third_party_sees == null) ? null : Third_party_sees + mspFile);
+					getOthersCode(), (othMsg == null) ? null : othMsg + mspFile);
 			if (R.okMessage(mob, msg))
 			{
 				R.send(mob, msg);
@@ -331,9 +374,9 @@ public class DefaultSocial implements Social
 		else
 		{
 			final CMMsg msg = CMClass.getMsg(mob, targetE, this, 
-					(auto ? CMMsg.MASK_ALWAYS : 0) | sourceCode(), (You_see == null) ? null : You_see + mspFile, 
-					targetCode(), (Target_sees == null) ? null : Target_sees + mspFile, 
-					othersCode(), (Third_party_sees == null) ? null : Third_party_sees + mspFile);
+					(auto ? CMMsg.MASK_ALWAYS : 0) | getSourceCode(), (srcMsg == null) ? null : srcMsg + mspFile, 
+					getTargetCode(), (tgtMsg == null) ? null : tgtMsg + mspFile, 
+					getOthersCode(), (othMsg == null) ? null : othMsg + mspFile);
 			if (R.okMessage(mob, msg))
 			{
 				R.send(mob, msg);
@@ -439,15 +482,15 @@ public class DefaultSocial implements Social
 				target = null;
 		}
 
-		String mspFile = ((MSPfile != null) && (MSPfile.length() > 0)) ? CMLib.protocol().msp(MSPfile, 10) : "";
+		String mspFile = ((soundFile != null) && (soundFile.length() > 0)) ? CMLib.protocol().msp(soundFile, 10) : "";
 		if (end.length() == 0)
 			mspFile = "";
 
 		int targetCode = fullCode;
 		int otherCode = fullCode;
-		int srcCode = srcMask | sourceCode();
+		int srcCode = srcMask | getSourceCode();
 
-		String You_see = You_see();
+		String You_see = getSourceMessage();
 		if ((You_see != null) 
 		&& (You_see.trim().length() == 0))
 		{
@@ -457,7 +500,7 @@ public class DefaultSocial implements Social
 		else
 			You_see = str + You_see + end + mspFile;
 
-		String Third_party_sees = Third_party_sees();
+		String Third_party_sees = getOthersMessage();
 		if ((Third_party_sees != null) 
 		&& (Third_party_sees.trim().length() == 0))
 		{
@@ -467,7 +510,7 @@ public class DefaultSocial implements Social
 		else
 			Third_party_sees = str + Third_party_sees + end + mspFile;
 
-		String Target_sees = Target_sees();
+		String Target_sees = getTargetMessage();
 		if ((Target_sees != null) 
 		&& (Target_sees.trim().length() == 0))
 		{
@@ -477,7 +520,7 @@ public class DefaultSocial implements Social
 		else
 			Target_sees = str + Target_sees + end + mspFile;
 
-		String See_when_no_target = See_when_no_target();
+		String See_when_no_target = getFailedTargetMessage();
 		if ((See_when_no_target != null) 
 		&& (See_when_no_target.trim().length() == 0))
 			See_when_no_target = null;
@@ -621,29 +664,29 @@ public class DefaultSocial implements Social
 	{
 		if (!(E instanceof Social))
 			return false;
-		final String name = Social_name.toUpperCase().trim();
+		final String name = socialFullID.toUpperCase().trim();
 		if (!(((Social) E).name().toUpperCase().equals(name.trim())))
 			return false;
-		if (((You_see == null) != (((Social) E).You_see() == null))
-		|| ((You_see != null) && (!You_see.equals(((Social) E).You_see()))))
+		if (((sourceMsg == null) != (((Social) E).getSourceMessage() == null))
+		|| ((sourceMsg != null) && (!sourceMsg.equals(((Social) E).getSourceMessage()))))
 			return false;
-		if (this.sourceCode != ((Social) E).sourceCode())
+		if (this.sourceCode != ((Social) E).getSourceCode())
 			return false;
-		if (this.targetCode != ((Social) E).targetCode())
+		if (this.targetCode != ((Social) E).getTargetCode())
 			return false;
-		if (this.othersCode != ((Social) E).othersCode())
+		if (this.othersCode != ((Social) E).getOthersCode())
 			return false;
-		if (((Third_party_sees == null) != (((Social) E).Third_party_sees() == null))
-		|| ((Third_party_sees != null) && (!Third_party_sees.equals(((Social) E).Third_party_sees()))))
+		if (((othersSeeMsg == null) != (((Social) E).getOthersMessage() == null))
+		|| ((othersSeeMsg != null) && (!othersSeeMsg.equals(((Social) E).getOthersMessage()))))
 			return false;
-		if (((Target_sees == null) != (((Social) E).Target_sees() == null))
-		|| ((Target_sees != null) && (!Target_sees.equals(((Social) E).Target_sees()))))
+		if (((targetSeesMsg == null) != (((Social) E).getTargetMessage() == null))
+		|| ((targetSeesMsg != null) && (!targetSeesMsg.equals(((Social) E).getTargetMessage()))))
 			return false;
-		if (((See_when_no_target == null) != (((Social) E).See_when_no_target() == null))
-		|| ((See_when_no_target != null) && (!See_when_no_target.equals(((Social) E).See_when_no_target()))))
+		if (((failedTargetMsg == null) != (((Social) E).getFailedTargetMessage() == null))
+		|| ((failedTargetMsg != null) && (!failedTargetMsg.equals(((Social) E).getFailedTargetMessage()))))
 			return false;
-		if (((MSPfile == null) != (((Social) E).MSPfile() == null))
-		|| ((MSPfile != null) && (!MSPfile.equals(((Social) E).MSPfile()))))
+		if (((soundFile == null) != (((Social) E).getSoundFile() == null))
+		|| ((soundFile != null) && (!soundFile.equals(((Social) E).getSoundFile()))))
 			return false;
 		return true;
 	}

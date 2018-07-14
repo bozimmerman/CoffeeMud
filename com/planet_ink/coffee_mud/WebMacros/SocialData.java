@@ -239,19 +239,19 @@ public class SocialData extends StdWebMacro
 						switch(field.charAt(f))
 						{
 						case 'Y':
-							S.setYou_see(old);
+							S.setSourceMessage(old);
 							break;
 						case 'O':
-							S.setThird_party_sees(old);
+							S.setOthersMessage(old);
 							break;
 						case 'N':
-							S.setSee_when_no_target(old);
+							S.setFailedMessage(old);
 							break;
 						case 'M':
-							S.setMSPfile(old);
+							S.setSoundFile(old);
 							break;
 						case 'T':
-							S.setTarget_sees(old);
+							S.setTargetMessage(old);
 							break;
 						}
 					}
@@ -452,19 +452,19 @@ public class SocialData extends StdWebMacro
 									switch(field.charAt(f))
 									{
 									case 'Y':
-										old = S.You_see();
+										old = S.getSourceMessage();
 										break;
 									case 'O':
-										old = S.Third_party_sees();
+										old = S.getOthersMessage();
 										break;
 									case 'N':
-										old = S.See_when_no_target();
+										old = S.getFailedTargetMessage();
 										break;
 									case 'M':
-										old = S.MSPfile();
+										old = S.getSoundFile();
 										break;
 									case 'T':
-										old = S.Target_sees();
+										old = S.getTargetMessage();
 										break;
 									}
 								}
@@ -480,10 +480,10 @@ public class SocialData extends StdWebMacro
 									switch(field.charAt(f))
 									{
 									case 'Y':
-										old = (S == null) ? null : "" + S.sourceCode();
+										old = (S == null) ? null : "" + S.getSourceCode();
 										break;
 									case 'O':
-										old = (S == null) ? null : "" + S.targetCode();
+										old = (S == null) ? null : "" + S.getTargetCode();
 										break;
 									case 'N':
 										break;

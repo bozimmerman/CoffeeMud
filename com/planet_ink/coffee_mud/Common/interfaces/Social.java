@@ -49,80 +49,109 @@ public interface Social extends Environmental, CMCommon
 	public String baseName();
 
 	/**
-	 * Tail name is the name of the social's target word.  It is NOT unique to a social
-	 * object however, since a socials name usually includes its target extension.
+	 * Tail name is the full remainder of the social's target AND optional argument(s).  
+	 * It is NOT unique to a social object however, since a socials name usually 
+	 * includes its target extension.
 	 *
-	 * @return the target/tail name
+	 * @return the full tail name
 	 */
 	public String tailName();
 
 	/**
+	 * Target name is the social's target argument only, such as <T-NAME>.  
+	 * It is NOT unique to a social object however, since a socials name usually 
+	 * includes their target extension.
+	 *
+	 * @return the target name, if any
+	 */
+	public String targetName();
+
+	/**
+	 * Returns whether targetName is an -NAME> code, meaning it is targettable 
+	 * at a person or mob or something.
+	 *
+	 * @return true if this social is targetable at someone other than the user
+	 */
+	public boolean isTargetable();
+
+	/**
+	 * Argument name is the social's optional remaining argument.  This requires
+	 * that the social be targetable, and further specifies something about the
+	 * target, or a qualifier.  
+	 * It is NOT unique to a social object however, since a socials name usually 
+	 * includes their target extension and name and stuff.
+	 *
+	 * @return the socials optional remaining argument.
+	 */
+	public String argumentName();
+
+	/**
 	 * You_see: what the player themself sees when they use this social.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#setYou_see(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#setSourceMessage(String)
 	 * @return  what the player themself sees when they use this social.
 	 */
-	public String You_see();
+	public String getSourceMessage();
 
 	/**
 	 * You_see: what the player themself sees when they use this social.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#You_see()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#getSourceMessage()
 	 * @param str  what the player themself sees when they use this social.
 	 */
-	public void setYou_see(String str);
+	public void setSourceMessage(String str);
 
 	/**
 	 * Third_party_sees:  what everyone but the player and their target
 	 * sees when a player uses this social.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#setThird_party_sees(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#setOthersMessage(String)
 	 * @return the string everyone else sees
 	 */
-	public String Third_party_sees();
+	public String getOthersMessage();
 
 	/**
 	 * Third_party_sees:  what everyone but the player and their target
 	 * sees when a player uses this social.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#Third_party_sees()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#getOthersMessage()
 	 * @param str the string everyone else sees
 	 */
-	public void setThird_party_sees(String str);
+	public void setOthersMessage(String str);
 
 	/**
 	 * Target_sees: what the target of this social sees when social is used on them.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#setTarget_sees(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#setTargetMessage(String)
 	 * @return  what the target of this social sees when social is used on them
 	 */
-	public String Target_sees();
+	public String getTargetMessage();
 
 	/**
 	 * Target_sees: what the target of this social sees when social is used on them.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#Target_sees()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#getTargetMessage()
 	 * @param str what the target of this social sees when social is used on them
 	 */
-	public void setTarget_sees(String str);
+	public void setTargetMessage(String str);
 
 	/**
 	 * See_when_no_target: what the player sees when this social is used targeted, but
 	 * the target is not available.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#setSee_when_no_target(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#setFailedMessage(String)
 	 * @return the string seen by the player when the target has left
 	 */
-	public String See_when_no_target();
+	public String getFailedTargetMessage();
 
 	/**
 	 * See_when_no_target: what the player sees when this social is used targeted, but
 	 * the target is not available.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#See_when_no_target()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#getFailedTargetMessage()
 	 * @param str the string seen by the player when the target has left
 	 */
-	public void setSee_when_no_target(String str);
+	public void setFailedMessage(String str);
 
 	/**
 	 * The official CoffeeMud message code used as the source code for this social,
@@ -135,13 +164,13 @@ public interface Social extends Environmental, CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MSG_NOISYMOVEMENT
 	 * @return the CMMsg social code, fully formed
 	 */
-	public int sourceCode();
+	public int getSourceCode();
 
 	/**
 	 * Sets the official CoffeeMud message code used as the source code for this social,
 	 * which reflects what the player is doing.  Only certain codes allowed.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#sourceCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#getSourceCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MSG_SPEAK
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MSG_HANDS
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MSG_NOISE
@@ -162,13 +191,13 @@ public interface Social extends Environmental, CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MSG_OK_VISUAL
 	 * @return the CMMsg social code, fully formed
 	 */
-	public int othersCode();
+	public int getOthersCode();
 
 	/**
 	 * Sets the official CoffeeMud message code used as the others code for this social,
 	 * which reflects what the player appears to be doing.  Only certain codes allowed.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#othersCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#getOthersCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MSG_SPEAK
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MSG_HANDS
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MSG_NOISE
@@ -191,13 +220,13 @@ public interface Social extends Environmental, CMCommon
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MSG_OK_VISUAL
 	 * @return the CMMsg social code, fully formed
 	 */
-	public int targetCode();
+	public int getTargetCode();
 
 	/**
 	 * Sets the official CoffeeMud message code used as the target code for this social,
 	 * which reflects what is being done to the target.  Only certain codes allowed.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#targetCode()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#getTargetCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MSG_SPEAK
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MSG_HANDS
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MSG_NOISE
@@ -220,18 +249,18 @@ public interface Social extends Environmental, CMCommon
 	/**
 	 * Returns the name of the MSP sound file associated with this social.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#setMSPfile(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#setSoundFile(String)
 	 * @return the msp sound file name
 	 */
-	public String MSPfile();
+	public String getSoundFile();
 
 	/**
 	 * Sets the name of the MSP sound file associated with this social.
 	 *
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#MSPfile()
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Social#getSoundFile()
 	 * @param newFile the msp sound file name
 	 */
-	public void setMSPfile(String newFile);
+	public void setSoundFile(String newFile);
 
 	/**
 	 * Executes this social by the given mob, using the target provided, with

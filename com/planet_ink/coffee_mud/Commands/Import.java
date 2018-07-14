@@ -5957,24 +5957,24 @@ public class Import extends StdCommand
 						if(str.startsWith("#"))
 							continue;
 	
-						if((S1.You_see()==null)||(!S1.You_see().equals(str)))
+						if((S1.getSourceMessage()==null)||(!S1.getSourceMessage().equals(str)))
 						{
 							if((changing)&&prompt&&(session!=null))
-								session.rawPrint(L("Change Social '@x1' from '@x2', you see, to: '@x3'",S1.name(),S1.You_see(),str));
+								session.rawPrint(L("Change Social '@x1' from '@x2', you see, to: '@x3'",S1.name(),S1.getSourceMessage(),str));
 							if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
-								S1.setYou_see(str);
+								S1.setSourceMessage(str);
 						}
 	
 						str=socialFix(eatNextLine(socialData));
 						if(str.startsWith("#"))
 							continue;
 	
-						if((S1.Third_party_sees()==null)||(!S1.Third_party_sees().equals(str)))
+						if((S1.getOthersMessage()==null)||(!S1.getOthersMessage().equals(str)))
 						{
 							if((changing)&&prompt&&(session!=null))
-								session.rawPrint(L("Change Social '@x1' from '@x2', others see, to: '@x3'",S1.name(),S1.Third_party_sees(),str));
+								session.rawPrint(L("Change Social '@x1' from '@x2', others see, to: '@x3'",S1.name(),S1.getOthersMessage(),str));
 							if((!changing)||((session!=null)&&prompt&&(session.confirm("?","Y"))))
-								S1.setThird_party_sees(str);
+								S1.setOthersMessage(str);
 						}
 	
 						changing=true;
@@ -5989,48 +5989,48 @@ public class Import extends StdCommand
 							changing=false;
 						}
 	
-						if((S2.You_see()==null)||(!S2.You_see().equals(str)))
+						if((S2.getSourceMessage()==null)||(!S2.getSourceMessage().equals(str)))
 						{
 							if((changing)&&prompt&&(session!=null))
-								session.rawPrint(L("Change Social '@x1' from '@x2', you see, to: '@x3'",S2.name(),S2.You_see(),str));
+								session.rawPrint(L("Change Social '@x1' from '@x2', you see, to: '@x3'",S2.name(),S2.getSourceMessage(),str));
 							if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
-								S2.setYou_see(str);
+								S2.setSourceMessage(str);
 						}
 	
 						str=socialFix(eatNextLine(socialData));
 						if(str.startsWith("#"))
 							continue;
 	
-						if((S2.Third_party_sees()==null)||(!S2.Third_party_sees().equals(str)))
+						if((S2.getOthersMessage()==null)||(!S2.getOthersMessage().equals(str)))
 						{
 							if((session!=null)&&prompt&&changing)
-								session.rawPrint(L("Change Social '@x1', others see from '@x2', to: '@x3'",S2.name(),S2.Third_party_sees(),str));
+								session.rawPrint(L("Change Social '@x1', others see from '@x2', to: '@x3'",S2.name(),S2.getOthersMessage(),str));
 							if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
-								S2.setThird_party_sees(str);
+								S2.setOthersMessage(str);
 						}
 	
 						str=socialFix(eatNextLine(socialData));
 						if(str.startsWith("#"))
 							continue;
 	
-						if((S2.Target_sees()==null)||(!S2.Target_sees().equals(str)))
+						if((S2.getTargetMessage()==null)||(!S2.getTargetMessage().equals(str)))
 						{
 							if((session!=null)&&prompt&&changing)
-								session.rawPrint(L("Change Social '@x1', target sees from '@x2', to: '@x3'",S2.name(),S2.Target_sees(),str));
+								session.rawPrint(L("Change Social '@x1', target sees from '@x2', to: '@x3'",S2.name(),S2.getTargetMessage(),str));
 							if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
-								S2.setTarget_sees(str);
+								S2.setTargetMessage(str);
 						}
 	
 						str=socialFix(eatNextLine(socialData));
 						if(str.startsWith("#"))
 							continue;
 	
-						if((S2.See_when_no_target()==null)||(!S2.See_when_no_target().equals(str)))
+						if((S2.getFailedTargetMessage()==null)||(!S2.getFailedTargetMessage().equals(str)))
 						{
 							if((session!=null)&&prompt&&changing)
-								session.rawPrint(L("Change Social '@x1', no target sees from '@x2', to: '@x3'",S2.name(),S2.See_when_no_target(),str));
+								session.rawPrint(L("Change Social '@x1', no target sees from '@x2', to: '@x3'",S2.name(),S2.getFailedTargetMessage(),str));
 							if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
-								S2.setSee_when_no_target(str);
+								S2.setFailedMessage(str);
 						}
 	
 						changing=true;
@@ -6045,24 +6045,24 @@ public class Import extends StdCommand
 							changing=false;
 						}
 	
-						if((S3.You_see()==null)||(!S3.You_see().equals(str)))
+						if((S3.getSourceMessage()==null)||(!S3.getSourceMessage().equals(str)))
 						{
 							if((session!=null)&&prompt&&changing)
-								session.rawPrint(L("Change Social '@x1', you see from '@x2', to: '@x3''",S3.name(),S3.You_see(),str));
+								session.rawPrint(L("Change Social '@x1', you see from '@x2', to: '@x3''",S3.name(),S3.getSourceMessage(),str));
 							if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
-								S3.setYou_see(str);
+								S3.setSourceMessage(str);
 						}
 	
 						str=socialFix(eatNextLine(socialData));
 						if(str.startsWith("#"))
 							continue;
 	
-						if((S3.Third_party_sees()==null)||(!S3.Third_party_sees().equals(str)))
+						if((S3.getOthersMessage()==null)||(!S3.getOthersMessage().equals(str)))
 						{
 							if((session!=null)&&prompt&&changing)
-								session.rawPrint(L("Change Social '@x1', others see from '@x2', to: '@x3'",S3.name(),S3.Third_party_sees(),str));
+								session.rawPrint(L("Change Social '@x1', others see from '@x2', to: '@x3'",S3.name(),S3.getOthersMessage(),str));
 							if((!changing)||((session!=null)&&prompt&&session.confirm("?","Y")))
-								S3.setThird_party_sees(str);
+								S3.setOthersMessage(str);
 						}
 	
 					}
