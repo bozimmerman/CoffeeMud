@@ -375,7 +375,7 @@ public class Log extends java.util.logging.Logger
 					final PrintWriter[] writer=new PrintWriter[]{new PrintWriter(fileStream,true)};
 					for(int i=0;i<10;i++)
 						writers[i]=writer;
-					if(!WRITTEN.containsKey(writer))
+					if(!WRITTEN.containsKey(writer[0]))
 						WRITTEN.put(writer[0], new long[]{0,0});
 				}
 				catch (final IOException e)

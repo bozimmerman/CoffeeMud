@@ -348,7 +348,7 @@ public class Prop_AbsorbDamage extends Property implements TriggeredAffect
 					if((this.ableDomains!=null)&&(this.ableDomains.containsKey(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS))))
 						absorb=this.ableDomains.get(Integer.valueOf(A.classificationCode()&Ability.ALL_DOMAINS));
 					if((this.ableIDs!=null)&&(this.ableIDs.containsKey(A.ID())))
-						absorb=this.ableIDs.get(Integer.valueOf(A.ID()));
+						absorb=this.ableIDs.get(A.ID());
 					if(this.ableFlags!=null)
 					{
 						for(Long L : this.ableFlags.keySet())

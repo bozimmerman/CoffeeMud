@@ -65,7 +65,7 @@ public class MUDGrinder extends StdWebMacro
 			String roomCode=null;
 			String mobCode=null;
 			String itemCode=null;
-			String shopItemCode=null;
+			//String shopItemCode=null;
 			int x=xmlIsh.indexOf(">");
 			while(x>=0)
 			{

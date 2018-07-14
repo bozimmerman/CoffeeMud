@@ -2244,7 +2244,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		PairVector<Room,int[]> rooms = new PairVector<Room,int[]>();
 		if(room==null)
 			return rooms;
-		if(rooms.contains(room))
+		if(rooms.containsFirst(room))
 			return rooms;
 		final Set<Room> H=new HashSet<Room>(1000);
 		H.add(room);

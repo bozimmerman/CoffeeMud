@@ -404,8 +404,8 @@ public class JournalFunction extends StdWebMacro
 						if(journal!=null)
 						{
 							List<String> users=new ArrayList<String>();
-							if(forum != null)
-								users.addAll(CMParms.parseAny(forum.getFlag(CommandJournalFlags.ASSIGN),':',true));
+							//if(forum != null)
+							//	users.addAll(CMParms.parseAny(forum.getFlag(ForumJournalFlags.ASSIGN),':',true));
 							if(!users.contains("ALL"))
 								users.add("ALL");
 							final boolean isPlayer=CMLib.players().playerExists(CMStrings.capitalizeAndLower(journal));

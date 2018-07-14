@@ -538,7 +538,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						}
 						String timeToFire=""+(CMLib.threads().msToNextTick((Tickable)CMLib.combat(), Tickable.TICKID_SUPPORT|Tickable.TICKID_SOLITARYMASK) / 1000);
 						String msgStr=L("<S-NAME> aim(s) <O-NAME> at <T-NAME> (@x1).",""+leadAmt);
-						if(msg.source().isMonster() && aimings.contains(weapon))
+						if(msg.source().isMonster() && aimings.containsFirst(weapon))
 						{
 							msg.source().tell(L("@x1 is already aimed.",weapon.Name()));
 							return false;
@@ -1341,7 +1341,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 					*/
 					String rest = CMParms.combine(cmds,1);
 					final Item meI=thisRoom.findItem(rest);
-					if((meI==this)&&(CMLib.flags().canBeSeenBy(this, msg.source())))
+					if((meI==this)
+					&&(CMLib.flags().canBeSeenBy(this, msg.source())))
 					{
 						if(targetedShip != null)
 						{
@@ -1349,7 +1350,8 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 							return false;
 						}
 						final Room R=CMLib.map().roomLocation(msg.source());
-						if((R!=null)&&(R.show(msg.source(), this, CMMsg.TYP_ADVANCE, L("<S-NAME> tender(s) @x1 alonside <T-NAME>, wating to be raised on board.",msg.source().riding().name()))))
+						if((R!=null)
+						&&(R.show(msg.source(), this, CMMsg.TYP_ADVANCE, L("<S-NAME> tender(s) @x1 alonside <T-NAME>, wating to be raised on board.",msg.source().riding().name()))))
 						{
 							for(final Iterator<Item> i=smallTenderRequests.iterator();i.hasNext();)
 							{
@@ -1357,8 +1359,12 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 								if(!R.isContent(I))
 									smallTenderRequests.remove(I);
 							}
-							if(!smallTenderRequests.contains(msg.source().riding()))
-								smallTenderRequests.add((Item)msg.source().riding());
+							final Rideable sR=msg.source().riding();
+							if(sR instanceof Item)
+							{
+								if(!smallTenderRequests.contains((Item)sR))
+									smallTenderRequests.add((Item)sR);
+							}
 						}
 					}
 					else

@@ -1404,7 +1404,7 @@ public class MOBloader
 	{
 		if(P==null)
 			return;
-		if(list.contains(P))
+		if(list.containsFirst(P))
 			return;
 		if((P instanceof MOB)
 		&&((!((MOB)P).isMonster())||(((MOB)P).isPossessing())))

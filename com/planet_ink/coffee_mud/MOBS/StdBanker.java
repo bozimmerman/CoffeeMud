@@ -912,7 +912,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							if(L.getOwnerObject()==null)
 							{
 								delDepositInventory(listerName,(Item)L);
-								V.remove(L);
+								V.remove((Item)L);
 							}
 						}
 					}

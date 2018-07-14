@@ -77,130 +77,130 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	};
 	
 	@Override
-	public void promptStatInt(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException
+	public void promptStatInt(MOB mob, Modifiable E, int showNumber, int showFlag, String fieldDisplayStr, String field) throws IOException
 	{
-		promptStatInt(mob, E, null, showNumber, showFlag, FieldDisp, Field);
+		promptStatInt(mob, E, null, showNumber, showFlag, fieldDisplayStr, field);
 	}
 
 	@Override
-	public void promptStatInt(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException
+	public void promptStatInt(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String fieldDisplayStr, String field) throws IOException
 	{
-		E.setStat(Field, "" + prompt(mob, CMath.s_long(E.getStat(Field)), showNumber, showFlag, FieldDisp, help));
+		E.setStat(field, "" + prompt(mob, CMath.s_long(E.getStat(field)), showNumber, showFlag, fieldDisplayStr, help));
 	}
 
 	@Override
-	public void promptStatBool(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException
+	public void promptStatBool(MOB mob, Modifiable E, int showNumber, int showFlag, String fieldDisplayStr, String field) throws IOException
 	{
-		promptStatBool(mob, E, null, showNumber, showFlag, FieldDisp, Field);
+		promptStatBool(mob, E, null, showNumber, showFlag, fieldDisplayStr, field);
 	}
 
 	@Override
-	public void promptStatBool(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException
+	public void promptStatBool(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String fieldDisplayStr, String field) throws IOException
 	{
-		E.setStat(Field, "" + prompt(mob, CMath.s_bool(E.getStat(Field)), showNumber, showFlag, FieldDisp, help));
+		E.setStat(field, "" + prompt(mob, CMath.s_bool(E.getStat(field)), showNumber, showFlag, fieldDisplayStr, help));
 	}
 
 	@Override
-	public void promptStatStr(MOB mob, Modifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException
+	public void promptStatStr(MOB mob, Modifiable E, int showNumber, int showFlag, String fieldDisplayStr, String field) throws IOException
 	{
-		promptStatStr(mob, E, null, showNumber, showFlag, FieldDisp, Field, true);
+		promptStatStr(mob, E, null, showNumber, showFlag, fieldDisplayStr, field, true);
 	}
 
 	@Override
-	public void promptStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK) throws IOException
+	public void promptStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String fieldDisplayStr, String field, boolean emptyOK) throws IOException
 	{
-		E.setStat(Field, prompt(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, emptyOK, false, help, null, null));
+		E.setStat(field, prompt(mob, E.getStat(field), showNumber, showFlag, fieldDisplayStr, emptyOK, false, help, null, null));
 	}
 
-	public void promptRawStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK) throws IOException
+	public void promptRawStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String fieldDisplayStr, String field, boolean emptyOK) throws IOException
 	{
-		E.setStat(Field, prompt(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, emptyOK, true, help, null, null));
+		E.setStat(field, prompt(mob, E.getStat(field), showNumber, showFlag, fieldDisplayStr, emptyOK, true, help, null, null));
 	}
 
-	public void promptStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, int maxChars) throws IOException
+	public void promptStatStr(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String fieldDisplayStr, String field, int maxChars) throws IOException
 	{
-		E.setStat(Field, prompt(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, false, false, maxChars, help, null, null));
-	}
-
-	@Override
-	public void promptStatChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException
-	{
-		E.setStat(Field, prompt(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, false, false, help, CMEVAL_INSTANCE, choices));
+		E.setStat(field, prompt(mob, E.getStat(field), showNumber, showFlag, fieldDisplayStr, false, false, maxChars, help, null, null));
 	}
 
 	@Override
-	public void promptStatCommaChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, Object[] choices) throws IOException
+	public void promptStatChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String fieldDisplayStr, String field, Object[] choices) throws IOException
 	{
-		E.setStat(Field, this.promptCommaList(mob, E.getStat(Field), showNumber, showFlag, FieldDisp, help, CMEVAL_INSTANCE, choices));
+		E.setStat(field, prompt(mob, E.getStat(field), showNumber, showFlag, fieldDisplayStr, false, false, help, CMEVAL_INSTANCE, choices));
 	}
 
 	@Override
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException
+	public void promptStatCommaChoices(MOB mob, Modifiable E, String help, int showNumber, int showFlag, String fieldDisplayStr, String field, Object[] choices) throws IOException
 	{
-		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, false, false, null, null, null);
+		E.setStat(field, this.promptCommaList(mob, E.getStat(field), showNumber, showFlag, fieldDisplayStr, help, CMEVAL_INSTANCE, choices));
 	}
 
 	@Override
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisplayStr) throws IOException
 	{
-		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, false, false, help, null, null);
+		return prompt(mob, oldVal, showNumber, showFlag, fieldDisplayStr, false, false, null, null, null);
 	}
 
 	@Override
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK) throws IOException
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisplayStr, String help) throws IOException
 	{
-		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, emptyOK, false, null, null, null);
+		return prompt(mob, oldVal, showNumber, showFlag, fieldDisplayStr, false, false, help, null, null);
 	}
 
 	@Override
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, String help) throws IOException
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisplayStr, boolean emptyOK) throws IOException
 	{
-		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, emptyOK, false, help);
+		return prompt(mob, oldVal, showNumber, showFlag, fieldDisplayStr, emptyOK, false, null, null, null);
 	}
 
 	@Override
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint) throws IOException
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisplayStr, boolean emptyOK, String help) throws IOException
 	{
-		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, emptyOK, rawPrint, null, null, null);
+		return prompt(mob, oldVal, showNumber, showFlag, fieldDisplayStr, emptyOK, false, help);
 	}
 
 	@Override
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint, String help) throws IOException
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisplayStr, boolean emptyOK, boolean rawPrint) throws IOException
 	{
-		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, emptyOK, rawPrint, help, null, null);
+		return prompt(mob, oldVal, showNumber, showFlag, fieldDisplayStr, emptyOK, rawPrint, null, null, null);
 	}
 
 	@Override
-	public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisplayStr, boolean emptyOK, boolean rawPrint, String help) throws IOException
 	{
-		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, null);
+		return prompt(mob, oldVal, showNumber, showFlag, fieldDisplayStr, emptyOK, rawPrint, help, null, null);
 	}
 
 	@Override
-	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException
+	public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String fieldDisplayStr) throws IOException
 	{
-		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, null);
+		return prompt(mob, oldVal, showNumber, showFlag, fieldDisplayStr, null);
 	}
 
 	@Override
-	public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException
+	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String fieldDisplayStr) throws IOException
 	{
-		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, null);
+		return prompt(mob, oldVal, showNumber, showFlag, fieldDisplayStr, null);
 	}
 
 	@Override
-	public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException
+	public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String fieldDisplayStr) throws IOException
 	{
-		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, null);
+		return prompt(mob, oldVal, showNumber, showFlag, fieldDisplayStr, null);
 	}
 
 	@Override
-	public boolean promptToggle(MOB mob, int showNumber, int showFlag, String FieldDisp)
+	public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String fieldDisplayStr) throws IOException
+	{
+		return prompt(mob, oldVal, showNumber, showFlag, fieldDisplayStr, null);
+	}
+
+	@Override
+	public boolean promptToggle(MOB mob, int showNumber, int showFlag, String fieldDisplayStr)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return false;
-		mob.tell(showNumber+". "+FieldDisp);
+		mob.tell(showNumber+". "+fieldDisplayStr);
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return false;
 		if(showFlag!=showNumber)
@@ -212,14 +212,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 								  String oldVal,
 								  int showNumber,
 								  int showFlag,
-								  String FieldDisp,
+								  String fieldDisplayStr,
 								  String help,
 								  CMEval eval,
 								  Object[] choices) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return oldVal;
-		mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+oldVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;
 		String newName="?";
@@ -283,7 +283,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						String oldVal,
 						int showNumber,
 						int showFlag,
-						String FieldDisp,
+						String fieldDisplayStr,
 						boolean emptyOK,
 						boolean rawPrint,
 						String help,
@@ -291,7 +291,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						Object[] choices)
 	throws IOException
 	{
-		return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,emptyOK,rawPrint,0,help,eval,choices);
+		return prompt(mob,oldVal,showNumber,showFlag,fieldDisplayStr,emptyOK,rawPrint,0,help,eval,choices);
 	}
 
 	@Override
@@ -388,12 +388,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+	public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String fieldDisplayStr, String help)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return oldVal;
-		mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+oldVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;
 		String newName="?";
@@ -416,18 +416,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String fieldDisplayStr, String help)
 	throws IOException
 	{
-		return prompt(mob, oldVal, showNumber, showFlag, FieldDisp, help,Double.MIN_VALUE,Double.MAX_VALUE);
+		return prompt(mob, oldVal, showNumber, showFlag, fieldDisplayStr, help,Double.MIN_VALUE,Double.MAX_VALUE);
 	}
 
-	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help, double minValue, double maxValue)
+	public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String fieldDisplayStr, String help, double minValue, double maxValue)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return oldVal;
-		mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+oldVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;
 		String newName="?";
@@ -456,12 +456,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+	public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String fieldDisplayStr, String help)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return oldVal;
-		mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+oldVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;
 		String newName="?";
@@ -481,12 +481,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp, String help)
+	public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String fieldDisplayStr, String help)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return oldVal;
-		mob.tell(showNumber+". "+FieldDisp+": '"+oldVal+"'.");
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+oldVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;
 		String newName="?";
@@ -506,14 +506,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public int promptMulti(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices)
+	public int promptMulti(MOB mob, int oldVal, int showNumber, int showFlag, String fieldDisplayStr, PairList<String,String> choices)
 	throws IOException
 	{
-		return CMath.s_int(promptMultiOrExtra(mob,""+oldVal,showNumber,showFlag,FieldDisp,choices));
+		return CMath.s_int(promptMultiOrExtra(mob,""+oldVal,showNumber,showFlag,fieldDisplayStr,choices));
 	}
 
 	@Override
-	public String promptMultiOrExtra(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices)
+	public String promptMultiOrExtra(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisplayStr, PairList<String,String> choices)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -526,9 +526,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					oldVals.addElement(choices.get(c).second);
 		}
 		else
-		if(choices.contains(oldVal.toUpperCase().trim()))
+		if(choices.containsFirst(oldVal.toUpperCase().trim()))
 			oldVals.addElement(oldVal);
-		mob.tell(showNumber+". "+FieldDisp+": '"+CMParms.toListString(oldVals)+"'.");
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+CMParms.toListString(oldVals)+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;
 		String newVal=oldVal;
@@ -544,7 +544,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			else
 			if(thisVal.equalsIgnoreCase("NULL"))
 			{
-				if(choices.contains(""))
+				if(choices.containsFirst(""))
 					newVal = "";
 				else
 					newVal = "0";
@@ -606,7 +606,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public String promptMultiSelectList(MOB mob, String oldVal, String delimiter, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices, boolean nullOK)
+	public String promptMultiSelectList(MOB mob, String oldVal, String delimiter, int showNumber, int showFlag, String fieldDisplayStr, PairList<String,String> choices, boolean nullOK)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -614,18 +614,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		final Vector<String> oldVals = new Vector<String>();
 		for(String s : CMParms.parseAny(oldVal,delimiter,!nullOK))
 		{
-			if(choices.contains(s.toUpperCase().trim())&&(!oldVals.contains(s.toUpperCase().trim())))
+			if(choices.containsFirst(s.toUpperCase().trim())&&(!oldVals.contains(s.toUpperCase().trim())))
 				oldVals.addElement(s);
 		}
 		if((showFlag!=showNumber)&&(showFlag>-999))
 		{
-			mob.tell(showNumber+". "+FieldDisp+": '"+CMParms.toListString(oldVals)+"'.");
+			mob.tell(showNumber+". "+fieldDisplayStr+": '"+CMParms.toListString(oldVals)+"'.");
 			return oldVal;
 		}
 		String thisVal="?";
 		while(thisVal.equals("?")&&(mob.session()!=null)&&(!mob.session().isStopped()))
 		{
-			mob.tell(showNumber+". "+FieldDisp+": '"+CMParms.toListString(oldVals)+"'.");
+			mob.tell(showNumber+". "+fieldDisplayStr+": '"+CMParms.toListString(oldVals)+"'.");
 			thisVal=mob.session().prompt(L("Enter a new choice to add/remove (?):"),"").trim();
 			if(thisVal.equals("?"))
 				mob.tell(CMParms.toListString(choices.toArraySecond(new String[0])));
@@ -673,7 +673,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	}
 
 	@Override
-	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, PairList<String,String> choices)
+	public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String fieldDisplayStr, PairList<String,String> choices)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
@@ -684,7 +684,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if(choices.get(c).first.equalsIgnoreCase(oldVal))
 				oldShowVal = choices.get(c).second;
 		}
-		mob.tell(showNumber+". "+FieldDisp+": '"+oldShowVal+"'.");
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+oldShowVal+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return oldVal;
 		String newVal="?";
@@ -5003,18 +5003,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genClanMembers(MOB mob, Clan E, int showNumber, int showFlag) throws IOException
+	protected void genClanMembers(MOB mob, Clan C, int showNumber, int showFlag) throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		String behave="NO";
-		final List<MemberRecord> members=E.getMemberList();
+		final List<MemberRecord> members=C.getMemberList();
 		final List<MemberRecord> membersCopy=new XVector<MemberRecord>(members);
 		while((mob.session()!=null)&&(!mob.session().isStopped())&&(behave.length()>0))
 		{
 			String memberStr="";
 			for(final Clan.MemberRecord member : members)
-				memberStr+=member.name+" ("+E.getRoleName(member.role,true,false)+"), ";
+				memberStr+=member.name+" ("+C.getRoleName(member.role,true,false)+"), ";
 			if(memberStr.length()>0)
 				memberStr=memberStr.substring(0,memberStr.length()-2);
 			mob.tell(L("@x1. Clan Members : '@x2'.",""+showNumber,memberStr));
@@ -5053,16 +5053,16 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						if(index<0)
 						{
 							index=members.size();
-							members.add(new MemberRecord(M.name(),E.getGovernment().getAcceptPos()));
+							members.add(new MemberRecord(M.name(),C.getGovernment().getAcceptPos()));
 						}
 
 						int newRole=-1;
 						while((mob.session()!=null)&&(!mob.session().isStopped())&&(newRole<0))
 						{
-							final String newRoleStr=mob.session().prompt(L("Enter this members role (?) '@x1': ",E.getRoleName(members.get(index).role,true,false)),"");
-							newRole =E.getRoleFromName(newRoleStr);
+							final String newRoleStr=mob.session().prompt(L("Enter this members role (?) '@x1': ",C.getRoleName(members.get(index).role,true,false)),"");
+							newRole =C.getRoleFromName(newRoleStr);
 							if(newRole<0)
-								mob.tell(L("That role is invalid.  Valid roles include: @x1",CMParms.toListString(E.getRolesList())));
+								mob.tell(L("That role is invalid.  Valid roles include: @x1",CMParms.toListString(C.getRolesList())));
 							else
 								break;
 						}
@@ -5081,12 +5081,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				// first add missing ones
 				for(int m=0;m<members.size();m++)
 				{
-					final String newName=members.get(m).name;
-					if(!membersCopy.contains(newName))
+					final MemberRecord mR=members.get(m);
+					final String newName=mR.name;
+					if(!membersCopy.contains(mR))
 					{
 						final MOB M=CMLib.players().getLoadPlayer(newName);
-						if((M!=null)&&(M.getClanRole(E.clanID())==null))
-							E.addMember(M, 0);
+						if((M!=null)&&(M.getClanRole(C.clanID())==null))
+							C.addMember(M, 0);
 					}
 				}
 				// now adjust changed roles
@@ -5099,13 +5100,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if(found)
 					{
 						final MOB M=CMLib.players().getLoadPlayer(newName);
-						final Pair<Clan,Integer> oldClanRole=M.getClanRole(E.clanID());
+						final Pair<Clan,Integer> oldClanRole=M.getClanRole(C.clanID());
 						final int newRole=members.get(m).role;
 						if((oldClanRole!=null)&&(newRole!=oldClanRole.second.intValue()))
 						{
-							CMLib.database().DBUpdateClanMembership(M.Name(), E.clanID(), newRole);
-							M.setClan(E.clanID(),newRole);
-							E.updateClanPrivileges(M);
+							CMLib.database().DBUpdateClanMembership(M.Name(), C.clanID(), newRole);
+							M.setClan(C.clanID(),newRole);
+							C.updateClanPrivileges(M);
 						}
 					}
 				}
@@ -5119,8 +5120,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 					if(!found)
 					{
 						final MOB M=CMLib.players().getLoadPlayer(newName);
-						if((M!=null)&&(M.getClanRole(E.clanID())!=null))
-							E.delMember(M);
+						if((M!=null)&&(M.getClanRole(C.clanID())!=null))
+							C.delMember(M);
 					}
 				}
 			}
@@ -5688,12 +5689,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		E.setLiquidRemaining(E.liquidHeld());
 	}
 
-	protected void genAttackAttribute(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genAttackAttribute(MOB mob, CharClass E, int showNumber, int showFlag, String fieldDisplayStr, String field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.tell(showNumber+". "+FieldDisp+": '"+CharStats.CODES.DESC(CMath.s_int(E.getStat(Field)))+"'.");
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+CharStats.CODES.DESC(CMath.s_int(E.getStat(field)))+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		final String newName=mob.session().prompt(L("Enter a new one\n\r:"),"");
@@ -5704,17 +5705,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				newStat=""+i;
 		}
 		if(newStat.length()>0)
-			E.setStat(Field,newStat);
+			E.setStat(field,newStat);
 		else
 			mob.tell(L("(no change)"));
 	}
 
-	protected void genArmorCode(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genArmorCode(MOB mob, CharClass E, int showNumber, int showFlag, String fieldDisplayStr, String field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.tell(showNumber+". "+FieldDisp+": '"+CharClass.ARMOR_LONGDESC[CMath.s_int(E.getStat(Field))]+"'.");
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+CharClass.ARMOR_LONGDESC[CMath.s_int(E.getStat(field))]+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		final String newName=mob.session().prompt(L("Enter (@x1)\n\r:",CMParms.toListString(CharClass.ARMOR_DESCS)),"");
@@ -5725,17 +5726,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				newStat=""+i;
 		}
 		if(newStat.length()>0)
-			E.setStat(Field,newStat);
+			E.setStat(field,newStat);
 		else
 			mob.tell(L("(no change)"));
 	}
 
-	protected void genQualifications(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected void genQualifications(MOB mob, CharClass E, int showNumber, int showFlag, String fieldDisplayStr, String field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		mob.tell(showNumber+". "+FieldDisp+": '"+CMLib.masking().maskDesc(E.getStat(Field))+"'.");
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+CMLib.masking().maskDesc(E.getStat(field))+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName="?";
@@ -5746,7 +5747,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 				mob.tell(CMLib.masking().maskHelp("\n","disallow"));
 		}
 		if((newName.length()>0)&&(!newName.equals("?")))
-			E.setStat(Field,newName);
+			E.setStat(field,newName);
 		else
 			mob.tell(L("(no change)"));
 	}
@@ -5756,17 +5757,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		E.setAcceptanceSettings(prompt(mob, E.getAcceptanceSettings(), showNumber, showFlag, "Clan Qualifications", false, false, CMLib.masking().maskHelp("\n", "disallow")));
 	}
 
-	protected void genWeaponRestr(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String FieldNum, String Field)
+	protected void genWeaponRestr(MOB mob, CharClass E, int showNumber, int showFlag, String fieldDisplayStr, String FieldNum, String field)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		final List<String> set=CMParms.parseCommas(E.getStat(Field),true);
+		final List<String> set=CMParms.parseCommas(E.getStat(field),true);
 		final StringBuffer str=new StringBuffer("");
 		for(int v=0;v<set.size();v++)
 			str.append(" "+Weapon.CLASS_DESCS[CMath.s_int(set.get(v))].toLowerCase());
 
-		mob.tell(showNumber+". "+FieldDisp+": '"+str.toString()+"'.");
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+str.toString()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName="?";
@@ -5811,22 +5812,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 		if(setChanged)
-			E.setStat(Field,CMParms.toListString(set));
+			E.setStat(field,CMParms.toListString(set));
 		else
 			mob.tell(L("(no change)"));
 	}
 
-	protected void genWeaponMaterials(MOB mob, CharClass E, int showNumber, int showFlag, String FieldDisp, String FieldNum, String Field)
+	protected void genWeaponMaterials(MOB mob, CharClass E, int showNumber, int showFlag, String fieldDisplayStr, String FieldNum, String field)
 	throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
-		final List<String> set=CMParms.parseCommas(E.getStat(Field),true);
+		final List<String> set=CMParms.parseCommas(E.getStat(field),true);
 		final StringBuffer str=new StringBuffer("");
 		for(int v=0;v<set.size();v++)
 			str.append(" "+CMLib.materials().getMaterialDesc(CMath.s_int(set.get(v))));
 
-		mob.tell(showNumber+". "+FieldDisp+": '"+str.toString()+"'.");
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+str.toString()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return;
 		String newName="?";
@@ -5868,7 +5869,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 		}
 		if(setChanged)
-			E.setStat(Field,CMParms.toListString(set));
+			E.setStat(field,CMParms.toListString(set));
 		else
 			mob.tell(L("(no change)"));
 	}
@@ -6417,13 +6418,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genAStats(MOB mob, Race R, String Field, String FieldName, int showNumber, int showFlag)
+	protected void genAStats(MOB mob, Race R, String field, String FieldName, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		final CharStats S=(CharStats)CMClass.getCommon("DefaultCharStats"); S.setAllValues(0);
-		CMLib.coffeeMaker().setCharStats(S,R.getStat(Field));
+		CMLib.coffeeMaker().setCharStats(S,R.getStat(field));
 		final StringBuffer parts=new StringBuffer("");
 		for(final int i : CharStats.CODES.ALLCODES())
 		{
@@ -6477,9 +6478,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							}
 						}
 						if(zereoed)
-							R.setStat(Field,"");
+							R.setStat(field,"");
 						else
-							R.setStat(Field,CMLib.coffeeMaker().getCharStatsStr(S));
+							R.setStat(field,CMLib.coffeeMaker().getCharStatsStr(S));
 					}
 					else
 						mob.tell(L("(no change)"));
@@ -6666,13 +6667,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected void genAStats(MOB mob, CharClass R, String Field, String FieldName, int showNumber, int showFlag)
+	protected void genAStats(MOB mob, CharClass R, String field, String FieldName, int showNumber, int showFlag)
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber))
 			return;
 		final CharStats S=(CharStats)CMClass.getCommon("DefaultCharStats"); S.setAllValues(0);
-		CMLib.coffeeMaker().setCharStats(S,R.getStat(Field));
+		CMLib.coffeeMaker().setCharStats(S,R.getStat(field));
 		final StringBuffer parts=new StringBuffer("");
 		for(final int i : CharStats.CODES.ALLCODES())
 		{
@@ -6720,9 +6721,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 							}
 						}
 						if(zereoed)
-							R.setStat(Field,"");
+							R.setStat(field,"");
 						else
-							R.setStat(Field,CMLib.coffeeMaker().getCharStatsStr(S));
+							R.setStat(field,CMLib.coffeeMaker().getCharStatsStr(S));
 					}
 					else
 						mob.tell(L("(no change)"));
@@ -8548,13 +8549,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 		}
 	}
 
-	protected boolean genText(MOB mob, PairList<String,String> set, String[] choices, String help, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected boolean genText(MOB mob, PairList<String,String> set, String[] choices, String help, int showNumber, int showFlag, String fieldDisplayStr, String field)
 	throws IOException
 	{
-		final int setDex=set.indexOf(Field);
+		final int setDex=set.indexOfFirst(field);
 		if(((showFlag>0)&&(showFlag!=showNumber))||(setDex<0))
 			return true;
-		mob.tell(showNumber+". "+FieldDisp+": '"+(set.get(setDex).second+"'."));
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+(set.get(setDex).second+"'."));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return true;
 		String newName=mob.session().prompt(L("Enter a new one\n\r:"),"");
@@ -8568,7 +8569,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((mob.session()==null)||(mob.session().isStopped()))
 				return false;
 			mob.tell(help);
-			return genText(mob,set,choices,help,showNumber,showFlag,FieldDisp,Field);
+			return genText(mob,set,choices,help,showNumber,showFlag,fieldDisplayStr,field);
 		}
 		if(newName.equalsIgnoreCase("null"))
 			newName="";
@@ -8592,18 +8593,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((mob.session()==null)||(mob.session().isStopped()))
 				return false;
 			mob.tell(help);
-			return genText(mob,set,choices,help,showNumber,showFlag,FieldDisp,Field);
+			return genText(mob,set,choices,help,showNumber,showFlag,fieldDisplayStr,field);
 		}
 		set.get(setDex).second = newName;
 		return true;
 	}
 
-	protected boolean genText(MOB mob, Map<String,String> map, String[] choices, String help, int showNumber, int showFlag, String FieldDisp, String Field)
+	protected boolean genText(MOB mob, Map<String,String> map, String[] choices, String help, int showNumber, int showFlag, String fieldDisplayStr, String field)
 	throws IOException
 	{
-		if(((showFlag>0)&&(showFlag!=showNumber))||(!map.containsKey(Field)))
+		if(((showFlag>0)&&(showFlag!=showNumber))||(!map.containsKey(field)))
 			return true;
-		mob.tell(showNumber+". "+FieldDisp+": '"+(map.get(Field)+"'."));
+		mob.tell(showNumber+". "+fieldDisplayStr+": '"+(map.get(field)+"'."));
 		if((showFlag!=showNumber)&&(showFlag>-999))
 			return true;
 		String newName=mob.session().prompt(L("Enter a new one\n\r:"),"");
@@ -8617,13 +8618,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((mob.session()==null)||(mob.session().isStopped()))
 				return false;
 			mob.tell(help);
-			return genText(mob,map,choices,help,showNumber,showFlag,FieldDisp,Field);
+			return genText(mob,map,choices,help,showNumber,showFlag,fieldDisplayStr,field);
 		}
 		if(newName.equalsIgnoreCase("null"))
 			newName="";
 		if((choices==null)||(choices.length==0))
 		{
-			map.put(Field,newName);
+			map.put(field,newName);
 			return true;
 		}
 		boolean found=false;
@@ -8641,9 +8642,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			if((mob.session()==null)||(mob.session().isStopped()))
 				return false;
 			mob.tell(help);
-			return genText(mob,map,choices,help,showNumber,showFlag,FieldDisp,Field);
+			return genText(mob,map,choices,help,showNumber,showFlag,fieldDisplayStr,field);
 		}
-		map.put(Field,newName);
+		map.put(field,newName);
 		return true;
 	}
 

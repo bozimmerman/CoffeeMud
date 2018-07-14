@@ -713,9 +713,9 @@ public class RocketShipProgram extends GenShipProgram
 		case LANDING_APPROACH:
 		{
 			final double[] dirToPlanet = CMLib.map().getDirection(ship, programPlanet);
-			final long distance=CMLib.map().getDistanceFrom(ship, programPlanet) 
-					- Math.round(CMath.mul(programPlanet.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)) 
-					- ship.radius();
+			//final long distance=CMLib.map().getDistanceFrom(ship, programPlanet) 
+			//		- Math.round(CMath.mul(programPlanet.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)) 
+			//		- ship.radius();
 			final double atmoWidth = CMath.mul(programPlanet.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS) - programPlanet.radius();
 			final long critRadius = Math.round(programPlanet.radius() + (atmoWidth / 2.0));
 			final long distanceToCritRadius=CMLib.map().getDistanceFrom(ship, programPlanet) 

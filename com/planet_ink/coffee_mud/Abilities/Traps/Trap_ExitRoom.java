@@ -118,7 +118,7 @@ public class Trap_ExitRoom extends Trap_Trap
 				{
 					synchronized(safeDirs)
 					{
-						final int dex=safeDirs.indexOf(msg.source());
+						final int dex=safeDirs.indexOfFirst(msg.source());
 						if(dex>=0)
 							safeDirs.remove(dex);
 						while(safeDirs.size()>room.numInhabitants()+1)

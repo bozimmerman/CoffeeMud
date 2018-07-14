@@ -733,7 +733,7 @@ public class StdThinInstance extends StdThinArea
 								if((CMLib.flags().isInTheGame(M,true))
 								&&(M.location().getArea()!=instanceChildren.get(i).A))
 								{
-									V.remove(M);
+									V.remove(wmob);
 									instanceChildren.get(myDex).mobs.add(new WeakReference<MOB>(M));
 								}
 							}

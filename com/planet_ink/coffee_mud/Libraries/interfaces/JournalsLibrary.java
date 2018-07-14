@@ -132,7 +132,7 @@ public interface JournalsLibrary extends CMLibrary
 		public String postMask();
 		public String replyMask();
 		public String adminMask();
-		public String getFlag(CommandJournalFlags flag);
+		public String getFlag(ForumJournalFlags flag);
 		public boolean maskCheck(MOB M, String mask);
 		public boolean authorizationCheck(MOB M, ForumJournalFlags fl);
 	}

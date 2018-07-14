@@ -535,7 +535,7 @@ public class HolidayData extends StdWebMacro
 			}
 			else
 			{
-				final int pndex=stats.indexOf("PRICEMASKS");
+				final int pndex=stats.indexOfFirst("PRICEMASKS");
 				final String priceStr=(pndex<0)?"":(String)stats.get(pndex).second;
 				final List<String> priceV=CMParms.parseCommas(priceStr,true);
 				for(int v=0;v<priceV.size();v++)

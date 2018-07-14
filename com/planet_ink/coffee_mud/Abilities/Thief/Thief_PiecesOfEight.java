@@ -130,14 +130,14 @@ public class Thief_PiecesOfEight extends ThiefSkill
 			{
 				final Ability A=I.fetchEffect("Thief_BuriedTreasure");
 				if((A!=null)
-				&&(mob.Name().equals(I.fetchEffect(A.text()))))
+				&&(mob.Name().equals(A.text())))
 				{
-					List<Item> contents = ((Container)I).getContents();
-					for(Item I2 : contents)
+					final List<Item> contents = ((Container)I).getContents();
+					for(final Item I2 : contents)
 					{
 						if(I2 instanceof Coins)
 						{
-							Coins C=(Coins)I2;
+							final Coins C=(Coins)I2;
 							if(C.getCurrency().equals(triad.first))
 							{
 								if(C.getDenomination()==triad.second.doubleValue())

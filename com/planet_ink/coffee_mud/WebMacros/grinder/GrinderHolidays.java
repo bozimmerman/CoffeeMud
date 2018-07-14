@@ -101,9 +101,9 @@ public class GrinderHolidays
 		if(!httpReq.isUrlParameter("SCHEDULETYPE"))
 			return "Schedule not found.";
 		final int typeIndex=CMath.s_int(httpReq.getUrlParameter("SCHEDULETYPE"));
-		final int mudDayIndex=settings.indexOf("MUDDAY");
-		final int dateIndex=settings.indexOf("DATE");
-		final int waitIndex=settings.indexOf("WAIT");
+		final int mudDayIndex=settings.indexOfFirst("MUDDAY");
+		final int dateIndex=settings.indexOfFirst("DATE");
+		final int waitIndex=settings.indexOfFirst("WAIT");
 		final String scheduleName=new String[]{"WAIT","MUDDAY","DATE"}[typeIndex];
 		if((typeIndex!=0)&&(waitIndex>=0))
 			settings.removeFirst("WAIT");

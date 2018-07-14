@@ -229,7 +229,7 @@ public class HTTPException extends Exception
 		}
 		if(finalBody.getLength()>0)
 		{
-			if(!headers.containsKey(HTTPHeader.Common.CONTENT_TYPE.lowerCaseName()))
+			if(!headers.containsKey(HTTPHeader.Common.CONTENT_TYPE))
 				str.append(HTTPHeader.Common.CONTENT_TYPE.makeLine(MIMEType.All.html.getType()));
 			str.append(HTTPHeader.Common.CONTENT_LENGTH.makeLine(finalBody.getLength()));
 		}

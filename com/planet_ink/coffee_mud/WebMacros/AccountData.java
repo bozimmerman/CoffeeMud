@@ -120,8 +120,8 @@ public class AccountData extends StdWebMacro
 				final StringBuffer str=new StringBuffer("");
 				for (final PlayerAccount.AccountFlag element : PlayerAccount.AccountFlag.values())
 				{
-					str.append("<OPTION VALUE=\""+element+"\"");
-					if(set.contains(element))
+					str.append("<OPTION VALUE=\""+element.name()+"\"");
+					if(set.contains(element.name()))
 						str.append(" SELECTED");
 					str.append(">"+CMStrings.capitalizeAndLower(element.name()));
 				}

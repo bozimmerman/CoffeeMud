@@ -302,9 +302,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				final List<AbilityParmEditor> colV=(List<AbilityParmEditor>)columns.get(d);
 				for(int c=0;c<colV.size();c++)
 				{
-					final AbilityParmEditor A = editors.get(colV.get(c));
+					final AbilityParmEditor A = editors.get(colV.get(c).ID());
 					if(A==null)
-						throw new CMException("Column name "+(colV.get(c))+" is not found.");
+						throw new CMException("Column name "+(colV.get(c).ID())+" is not found.");
 					if((applicableA==null)
 					||(A.appliesToClass(I) > applicableA.appliesToClass(I)))
 						applicableA = A;
@@ -5150,7 +5150,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return CMStrings.contains(choices.toArrayFirst(new String[0]),oldVal.toUpperCase().trim());
 				return true;
 			case MULTICHOICES:
-				return CMath.isInteger(oldVal)||choices().contains(oldVal);
+				return CMath.isInteger(oldVal)||choices().containsFirst(oldVal);
 			case SPECIAL:
 				break;
 			}

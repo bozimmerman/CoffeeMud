@@ -202,7 +202,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if(M != null)
 				M.monitorMsg(room, msg);
 			else
-				globalMonitors.remove(M);
+				globalMonitors.remove(W);
 		}
 	}
 

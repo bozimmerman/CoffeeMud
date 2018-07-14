@@ -221,11 +221,11 @@ public class QuintVector<T, K, L, M, N> extends Vector<Quint<T, K, L, M, N>> imp
 		return false;
 	}
 
-	public boolean containsFifth(M m)
+	public boolean containsFifth(N n)
 	{
 		for (final Iterator<Quint<T, K, L, M, N>> i = iterator(); i.hasNext();)
 		{
-			if ((m == null) ? i.next() == null : m.equals(i.next().fifth))
+			if ((n == null) ? i.next() == null : n.equals(i.next().fifth))
 				return true;
 		}
 		return false;
@@ -501,13 +501,13 @@ public class QuintVector<T, K, L, M, N> extends Vector<Quint<T, K, L, M, N>> imp
 		return false;
 	}
 
-	public synchronized boolean removeFifth(M m)
+	public synchronized boolean removeFifth(N n)
 	{
 		Quint<T, K, L, M, N> pair;
 		for (final Iterator<Quint<T, K, L, M, N>> i = iterator(); i.hasNext();)
 		{
 			pair = i.next();
-			if ((m == null ? pair.fifth == null : m.equals(pair.fifth)))
+			if ((n == null ? pair.fifth == null : n.equals(pair.fifth)))
 			{
 				i.remove();
 				return true;
@@ -536,9 +536,9 @@ public class QuintVector<T, K, L, M, N> extends Vector<Quint<T, K, L, M, N>> imp
 		return removeFourth(m);
 	}
 
-	public boolean removeElementFifth(M m)
+	public boolean removeElementFifth(N n)
 	{
-		return removeFifth(m);
+		return removeFifth(n);
 	}
 
 	public T firstFirstElement(int index)

@@ -124,7 +124,7 @@ public class RaceData extends StdWebMacro
 		str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
 		for(int i=0;i<E.getStatCodes().length;i++)
 		{
-			if((CMath.isNumber(E.getStat(E.getStatCodes()[i])))&&(!theclasses.contains(E.getStatCodes()[i])))
+			if((CMath.isNumber(E.getStat(E.getStatCodes()[i])))&&(!theclasses.containsFirst(E.getStatCodes()[i])))
 				str.append("<OPTION VALUE=\""+E.getStatCodes()[i]+"\">"+E.getStatCodes()[i]);
 		}
 		str.append("</SELECT>");
@@ -187,7 +187,7 @@ public class RaceData extends StdWebMacro
 		str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
 		for(final int i : CharStats.CODES.ALLCODES())
 		{
-			if(!theclasses.contains(CharStats.CODES.NAME(i)))
+			if(!theclasses.containsFirst(CharStats.CODES.NAME(i)))
 				str.append("<OPTION VALUE=\""+CharStats.CODES.NAME(i)+"\">"+CharStats.CODES.DESC(i));
 		}
 		str.append("</SELECT>");
@@ -252,7 +252,7 @@ public class RaceData extends StdWebMacro
 		{
 			if(CMath.isNumber(E.getStat(E.getStatCodes()[i])))
 			{
-				if(!theclasses.contains(E.getStatCodes()[i]))
+				if(!theclasses.containsFirst(E.getStatCodes()[i]))
 					str.append("<OPTION VALUE=\""+E.getStatCodes()[i]+"\">"+E.getStatCodes()[i]);
 			}
 		}

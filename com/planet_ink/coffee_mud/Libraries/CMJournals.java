@@ -524,7 +524,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 				}
 				
 				@Override
-				public String getFlag(CommandJournalFlags flag)
+				public String getFlag(ForumJournalFlags flag)
 				{
 					return flags.get(flag);
 				}
@@ -668,7 +668,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 			for(final Enumeration<ForumJournal> e=forumJournals();e.hasMoreElements();)
 			{
 				final ForumJournal FMJ=e.nextElement();
-				final String num=FMJ.getFlag(CommandJournalFlags.EXPIRE);
+				final String num=FMJ.getFlag(ForumJournalFlags.EXPIRE);
 				if((num!=null)&&(CMath.isNumber(num))&&(CMath.s_double(num)>0.0))
 				{
 					setThreadStatus(serviceClient,"updating journal "+FMJ.NAME());

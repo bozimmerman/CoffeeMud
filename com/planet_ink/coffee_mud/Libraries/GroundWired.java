@@ -664,6 +664,16 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			final LinkedList<WeakReference<Electronics>> rawSet=sets.get(key.toLowerCase());
 			if(rawSet!=null)
 			{
+				final Set<Electronics> rawSetSet = new HashSet<Electronics>();
+				for(final Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
+				{
+					final WeakReference<Electronics> W=w.next();
+					final Electronics E=W.get();
+					if(E==null)
+						w.remove();
+					else
+						rawSetSet.add(E);
+				}
 				for(final Iterator<WeakReference<Electronics>> w=rawSet.iterator(); w.hasNext(); )
 				{
 					final WeakReference<Electronics> W=w.next();
@@ -683,8 +693,11 @@ public class GroundWired extends StdLibrary implements TechLibrary
 							if(E instanceof ElecPanel)
 								panels.add((ElecPanel)E);
 							else
-							if((E.owner() instanceof ElecPanel)&&(!rawSet.contains(E.owner())))
+							if((E.owner() instanceof ElecPanel)&&(!rawSetSet.contains((ElecPanel)E.owner())))
+							{
+								rawSetSet.add((ElecPanel)E.owner());
 								panels.add((ElecPanel)E.owner());
+							}
 						}
 						if(areaLocation == null)
 							areaLocation=CMLib.map().areaLocation(E);
