@@ -959,6 +959,7 @@ public class RocketShipProgram extends GenShipProgram
 						final Double thisLastAccel=this.lastAccelleration ;
 						if(thisLastAccel!=null)
 						{
+							final double ratio = targetAccelleration/thisLastAccel.doubleValue(); 
 							if((thisLastAccel.doubleValue() >= targetAccelleration)
 							&&((!isDocked)||(ship.getIsDocked()==null)))
 							{
@@ -966,8 +967,8 @@ public class RocketShipProgram extends GenShipProgram
 								return engineE;
 							}
 							else
-							if((thisLastAccel.doubleValue()>0.0) && ((targetAccelleration/thisLastAccel.doubleValue())>100))
-								lastTryAmt *= 2.0;
+							if((thisLastAccel.doubleValue()>0.0) && (ratio>100))
+								lastTryAmt *= (ratio/50.0);
 							else
 							if(prevAccelleration.doubleValue() == thisLastAccel.doubleValue())
 								break;
