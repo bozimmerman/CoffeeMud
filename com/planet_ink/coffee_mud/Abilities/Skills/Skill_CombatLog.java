@@ -178,7 +178,7 @@ public class Skill_CombatLog extends StdSkill
 				{
 					double age = Math.round(stats.get(CombatStat.NUM_GOLD_LOOTED)[0]/stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]);
 					rep.append(CMStrings.padRight(L("^HGold per enemy    : ^w@x1",""+age),colWidth2));
-					if((level>=10)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>0))
+					if((level>=10)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>(CMProps.getMillisPerMudHour()/1000)))
 					{
 						double agh = Math.round(stats.get(CombatStat.NUM_GOLD_LOOTED)[0]/((stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]*1000)/CMProps.getMillisPerMudHour()));
 						rep.append(L("^HGold per game-hour: ^w@x1",""+agh));
@@ -193,7 +193,7 @@ public class Skill_CombatLog extends StdSkill
 				{
 					double age = Math.round(stats.get(CombatStat.NUM_XP_GAINED)[0]/stats.get(CombatStat.NUM_ENEMIES_KILLED)[0]);
 					rep.append(CMStrings.padRight(L("^HExp. per enemy    : ^w@x1",""+age),colWidth2));
-					if((level>=10)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>0))
+					if((level>=10)&&(stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]>(CMProps.getMillisPerMudHour()/1000)))
 					{
 						double agh = Math.round(stats.get(CombatStat.NUM_XP_GAINED)[0]/((stats.get(CombatStat.NUM_SECONDS_TOTAL)[0]*1000)/CMProps.getMillisPerMudHour()));
 						rep.append(L("^HExp. per game-hour: ^w@x1",""+agh));
