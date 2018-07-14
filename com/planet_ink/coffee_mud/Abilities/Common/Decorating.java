@@ -73,6 +73,7 @@ public class Decorating extends CommonSkill
 
 	protected String	mountWord	= "mounted";
 	protected Item		mountingI	= null;
+	protected Room		mountingR	= null;
 	protected boolean	messedUp	= false;
 
 	@Override
@@ -151,7 +152,7 @@ public class Decorating extends CommonSkill
 				{
 					final Item I=mountingI;
 					if((messedUp)||(I==null))
-						commonTell(mob,L("You've failed to "+mountWord+" @x1!",I.name()));
+						commonTell(mob,L("You've failed to "+mountWord+"!"));
 					else
 					{
 						final Room room=CMLib.map().roomLocation(I);
@@ -169,7 +170,7 @@ public class Decorating extends CommonSkill
 								I.setDisplayText(I.name()+" is mounted here.");
 							else
 								I.setDisplayText(I.name()+" is hanging here.");
-							room.addItem(I, Expire.Never);
+							room.moveItemTo(I, Expire.Never);
 							room.show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to "+mountWord+" @x1.",I.name()));
 						}
 					}

@@ -189,7 +189,7 @@ public class Get extends StdCommand
 				addendumStr="."+(++addendum);
 			}
 
-			final boolean optimize = V.size()>1;
+			final boolean optimize = V.size()>1 || allFlag;
 			for(int i=0;i<V.size();i++)
 			{
 				final Item getThis=V.get(i);

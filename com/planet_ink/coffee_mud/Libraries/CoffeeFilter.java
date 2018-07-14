@@ -1414,7 +1414,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 								if(capitalize)
 									replacement=CMStrings.capitalizeFirstLetter(replacement);
 								buf.delete(loop,ldex+1);
-								buf.insert(loop,replacement.toCharArray());
+								if(replacement != null)
+									buf.insert(loop,replacement.toCharArray());
 								loop--;
 							}
 							capitalize=false;

@@ -338,7 +338,6 @@ ss	INNOCENT <T-NAME>	You look at <T-NAMESELF> and bat your eyelashes -- the pict
 mo	INSANE	You feel your sanity slipping away...	Before your eyes, <S-NAME>'s sanity is slipping away...			
 oo	JIG	You do a little jig.	<S-NAME> does a little jig.			
 oo	JIG <T-NAME>	You grab <T-NAME> and do a little jig.	<S-NAME> grabs <T-NAMESELF> and does a little jig.	<S-NAME> does a jig with you.	Jig with who?	
-
 mo	JUDGE	Yes, but who?				
 mo	JUDGE <T-NAME>	You judge <S-HIM-HER> on a scale of 1 to 10.	On a scale from 1 to 10, <S-NAME> thinks <T-NAMESELF> is a complete ZERO!!!	<S-NAME> judges your actions on a scale of 1 to 10 and comes up with ZERO!!!	They aren't here right now.	
 mo	JUDGE SELF	You don't REALLY want to do that.				
@@ -499,7 +498,6 @@ mw	PROPOSE <T-NAME>	You kneel and romantically propose to <T-NAMESELF>.	<S-NAME>
 ww	PROPOSE SELF	You are SO full of yourself!	<S-NAME> proposes to <S-HIM-HERSELF> -- how narcissistic!			
 oo	PROPS <T-NAME>	You give <T-NAME> mad props!	<S-NAME> gives <T-NAMESELF> mad props!	<S-NAME> gives you mad props! Awesome!	Give mad props to who?	
 oo	PROPS SELF	You give mad props!	<S-NAME> gives <S-HIM-HERSELF> mad props. Lame!			
-
 mv	PUKE	You puke...chunks everywhere!!! YUK!	<S-NAME> pukes.			puke.wav
 ov	PUKE <T-NAME>	You puke on <T-HIM-HER>.	<S-NAME> pukes on <T-NAMESELF>.	<S-NAME> spews vomit and pukes all over your clothing!	Once again?	puke.wav
 mv	PUKE SELF	You puke on yourself.	<S-NAME> pukes on <S-HIS-HER> clothes.			puke.wav

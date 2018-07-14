@@ -195,7 +195,7 @@ public class Drop extends StdCommand
 			addendumStr="."+(++addendum);
 		}
 
-		final boolean optimize = V.size()>1;
+		final boolean optimize = V.size()>1 || allFlag;
 		if(V.size()==0)
 			mob.tell(L("You don't seem to be carrying that."));
 		else
