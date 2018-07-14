@@ -73,7 +73,7 @@ public class ListCmd extends StdCommand
 	{
 		if(commands == null)
 			return WikiFlag.NO;
-		for(String s : commands)
+		for(final String s : commands)
 		{
 			if(s.equalsIgnoreCase("wiki"))
 			{
@@ -1408,7 +1408,7 @@ public class ListCmd extends StdCommand
 			else
 			{
 				List<String> chosen=CMParms.parseCommas(rest.toUpperCase().trim(), true);
-				for(String chosen1 : chosen)
+				for(final String chosen1 : chosen)
 				{
 					if(CMLib.players().playerExists(CMStrings.capitalizeAndLower(chosen1)))
 						toV.add(CMStrings.capitalizeAndLower(chosen1));
@@ -1889,14 +1889,14 @@ public class ListCmd extends StdCommand
 						ableStr+=((ableStr.length()>0)?", ":"")+R.getDispositionChgDesc();
 					if(R.getAbilitiesDesc().length()>0)
 					{
-						for(Ability A : R.racialAbilities(null))
+						for(final Ability A : R.racialAbilities(null))
 						{
 							if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 								langStr+=("[["+A.ID()+"|"+A.name()+"]] ");
 							else
 								rableStr+=("[["+A.ID()+"|"+A.name()+"]] ");
 						}
-						for(Ability A : R.racialEffects(null))
+						for(final Ability A : R.racialEffects(null))
 						{
 							if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)
 								langStr+=("[["+A.ID()+"|"+A.name()+"]] ");
@@ -1920,7 +1920,7 @@ public class ListCmd extends StdCommand
 						}
 					}
 					String immunoStr="";
-					for(String ableID : R.abilityImmunities())
+					for(final String ableID : R.abilityImmunities())
 					{
 						final Ability A=CMClass.getAbilityPrototype(ableID);
 						if(A!=null)
@@ -2006,7 +2006,7 @@ public class ListCmd extends StdCommand
 	{
 		boolean shortList=false;
 		WikiFlag wiki=this.getWikiFlagRemoved(commands);
-		for(String c : commands)
+		for(final String c : commands)
 		{
 			if(c.equalsIgnoreCase("SHORT"))
 				shortList=true;
@@ -2121,9 +2121,9 @@ public class ListCmd extends StdCommand
 							}
 						}
 					}
-					for(Ability A : autoGains)
+					for(final Ability A : autoGains)
 						levelList.append("[["+A.ID()+"|"+A.name()+"]]&nbsp;&nbsp;&nbsp;&nbsp;");
-					for(Ability A : qualifies)
+					for(final Ability A : qualifies)
 						levelList.append("([["+A.ID()+"|"+A.name()+"]])&nbsp;&nbsp;&nbsp;&nbsp;");
 					
 					lines.append("|level"+l+"="+levelList.toString());
@@ -2152,7 +2152,7 @@ public class ListCmd extends StdCommand
 		if(!these.hasMoreElements())
 			return lines;
 		boolean shortList=false;
-		for(String c : commands)
+		for(final String c : commands)
 		{
 			if(c.equalsIgnoreCase("SHORT"))
 				shortList=true;
@@ -3140,7 +3140,7 @@ public class ListCmd extends StdCommand
 		if(shortList)
 			return CMParms.toListString(RawMaterial.CODES.NAMES());
 		final StringBuilder str=new StringBuilder("");
-		//for(String S : RawMaterial.CODES.NAMES())
+		//for(final String S : RawMaterial.CODES.NAMES())
 		//	str.append(CMStrings.padRight(CMStrings.capitalizeAndLower(S.toLowerCase()),16));
 		final int COL_LEN1=CMLib.lister().fixColWidth(15.0,viewerS);
 		final int COL_LEN2=CMLib.lister().fixColWidth(10.0,viewerS);
@@ -3327,12 +3327,14 @@ public class ListCmd extends StdCommand
 			}
 		}
 		else
-		for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
 		{
-			final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
-			buf.append(CMStrings.padRight("^Z"+def.ID(),COL_LEN)+"^?: "
-					  +CMStrings.padRight(def.name(),COL_LEN)+": "
-					  +CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
+			for(final Enumeration<ExpertiseLibrary.ExpertiseDefinition> e=CMLib.expertises().definitions();e.hasMoreElements();)
+			{
+				final ExpertiseLibrary.ExpertiseDefinition def=e.nextElement();
+				buf.append(CMStrings.padRight("^Z"+def.ID(),COL_LEN)+"^?: "
+						  +CMStrings.padRight(def.name(),COL_LEN)+": "
+						  +CMLib.masking().maskDesc(def.allRequirements())+"\n\r");
+			}
 		}
 		if(buf.length()==0)
 			return "None defined.";
@@ -3346,7 +3348,7 @@ public class ListCmd extends StdCommand
 		final int COL_LEN=CMLib.lister().fixColWidth(18.0,viewerS);
 		int col=0;
 		Set<String> baseDone = new HashSet<String>();
-		for(String social : CMLib.socials().getSocialsList())
+		for(final String social : CMLib.socials().getSocialsList())
 		{
 			final Social soc=CMLib.socials().fetchSocial(social,true);
 			if(baseDone.contains(soc.baseName()))
@@ -3404,14 +3406,16 @@ public class ListCmd extends StdCommand
 				}
 				buf.append("{{SocialTemplate"
 						+ "|Name="+CMStrings.capitalizeAndLower(soc.baseName())
-						+ "|targetNoneUSee="+targetNoneYouSee
-						+ "|targetNoneTheySee="+targetNoneOthersSee
-						+ "|targetSomeoneNoTarget="+targetSomeoneNoTarget
-						+ "|targetSomeoneUSee="+targetSomeoneYouSee
-						+ "|targetSomeoneTargetSees="+targetSomeoneTargetSees
-						+ "|targetSomeoneOthersSee="+targetSomeoneOthersSee
-						+ "|targetSelfUSee="+targetSelfYouSee
-						+ "|targetSelfOthersSee="+targetSelfOthersSee
+						+ "|Target="+soc.targetName()
+						+ "|OptArg="+soc.argumentName()
+						+ "|TargetNoneUSee="+targetNoneYouSee
+						+ "|TargetNoneTheySee="+targetNoneOthersSee
+						+ "|TargetSomeoneNoTarget="+targetSomeoneNoTarget
+						+ "|TargetSomeoneUSee="+targetSomeoneYouSee
+						+ "|TargetSomeoneTargetSees="+targetSomeoneTargetSees
+						+ "|TargetSomeoneOthersSee="+targetSomeoneOthersSee
+						+ "|TargetSelfUSee="+targetSelfYouSee
+						+ "|TargetSelfOthersSee="+targetSelfOthersSee
 						+ "}}\n\r");
 			}
 			else
@@ -3455,7 +3459,7 @@ public class ListCmd extends StdCommand
 		final int COL_LEN6=CMLib.lister().fixColWidth(26.0,viewerS);
 		final int COL_LEN7=COL_LEN1+1+COL_LEN2+1+COL_LEN3+1+COL_LEN4+1+COL_LEN5+1;
 		final boolean accountSys = CMProps.isUsingAccountSystem(); 
-		for(AccountStats.Agent agent : AccountStats.Agent.values())
+		for(final AccountStats.Agent agent : AccountStats.Agent.values())
 		{
 			if((!accountSys) && (agent != AccountStats.Agent.PLAYER))
 				continue;
@@ -3483,7 +3487,7 @@ public class ListCmd extends StdCommand
 				listStr.append(CMStrings.padRight(A.getEvent().name(),COL_LEN2)+" ");
 				StringBuilder rewardDisplay = new StringBuilder("");
 				TitleAward titleAward = null;
-				for(Award award : A.getRewards())
+				for(final Award award : A.getRewards())
 				{
 					switch(award.getType())
 					{
@@ -3520,7 +3524,7 @@ public class ListCmd extends StdCommand
 				listStr.append(CMStrings.padRight(rewardDisplay.toString(),COL_LEN3)+" ");
 				listStr.append(CMStrings.padRight(A.getTargetCount()+"",COL_LEN4)+" ");
 				String miscVal = "";
-				for(String parmName : A.getEvent().getParameters())
+				for(final String parmName : A.getEvent().getParameters())
 				{
 					if(!CMStrings.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS,parmName))
 					{
@@ -3714,7 +3718,7 @@ public class ListCmd extends StdCommand
 			if(R!=null)
 			{
 				CMLib.coffeeMaker().fillFileMap(R, found);
-				for(String foundPath : found.keySet())
+				for(final String foundPath : found.keySet())
 				{
 					final String lfoundPath = foundPath.toLowerCase();
 					if(lfoundPath.endsWith(fileName) || fileName.endsWith(lfoundPath))
@@ -4638,7 +4642,7 @@ public class ListCmd extends StdCommand
 			String topName = topClockerMap.get(C).first;
 			str.append(L("\n\r^HTime Zone: ^N@x1\n\r",topName));
 			int col =0;
-			for(Area A : timeMap.get(C))
+			for(final Area A : timeMap.get(C))
 			{
 				col++;
 				if(col >= numCols)
@@ -4763,7 +4767,7 @@ public class ListCmd extends StdCommand
 				@Override
 				public int compare(Area arg0, Area arg1) 
 				{
-					for(String sortField : sortFields)
+					for(final String sortField : sortFields)
 					{
 						Comparable val0=getAreaStatFromSomewhere(arg0,sortField);
 						Comparable val1=getAreaStatFromSomewhere(arg1,sortField);
