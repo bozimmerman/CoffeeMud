@@ -2109,7 +2109,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						return L("Skill @x1 is not a crafting skill!",E.getCommonSkillID());
 					try
 					{
-						CMLib.ableParms().testRecipeParsing(new StringBuffer(CMStrings.replaceAll(line,",","\t")), C.parametersFormat());
+						if(C!=null)
+							CMLib.ableParms().testRecipeParsing(new StringBuffer(CMStrings.replaceAll(line,",","\t")), C.parametersFormat());
 					}
 					catch(final CMException cme)
 					{
