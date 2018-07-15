@@ -3351,9 +3351,6 @@ public class ListCmd extends StdCommand
 		for(final String social : CMLib.socials().getSocialsList())
 		{
 			final Social soc=CMLib.socials().fetchSocial(social,true);
-			if(baseDone.contains(soc.baseName()))
-				continue;
-			baseDone.add(soc.baseName());
 			if(wiki == WikiFlag.WIKILIST)
 				buf.append("*[["+social+"|"+social+"]]\n\r");
 			else

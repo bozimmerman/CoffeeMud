@@ -43,7 +43,7 @@ public class SocialData extends StdWebMacro
 	}
 	static String[] BTYPES={"NONE","ALL","SELF","TARGETMOB","TARGETITEM","TARGETINV","TARGETEQUIP"};
 	static String[] BEXTNS={""," ALL"," SELF"," <T-NAME>"," <I-NAME>"," <V-NAME>"," <E-NAME>"};
-	static String[] BFIELDS={"YOM","YONM","YOM","YTONM","YONM","YONM","YONM"};
+	static String[] BFIELDS={"YOM","YONM","YOM","YTONMA","YONM","YONM","YONM"};
 
 	static String[] CODESTR={"WORDS","MOVEMENT","SOUND","VISUAL","HANDS"};
 	static int[] CODES={CMMsg.MSG_SPEAK,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISE,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_HANDS};
@@ -195,12 +195,12 @@ public class SocialData extends StdWebMacro
 				last=old;
 			}
 
-			final Vector<String> TYPES=new Vector<String>();
-			final Vector<String> EXTNS=new Vector<String>();
+			final List<String> TYPES=new ArrayList<String>();
+			final List<String> EXTNS=new ArrayList<String>();
 			for (final String element : BTYPES)
-				TYPES.addElement(element);
+				TYPES.add(element);
 			for (final String element : BEXTNS)
-				EXTNS.addElement(element);
+				EXTNS.add(element);
 			old=httpReq.getUrlParameter("NUMXTRAS");
 			if(old!=null)
 			{
@@ -213,16 +213,34 @@ public class SocialData extends StdWebMacro
 					&&(httpReq.isUrlParameter("IS"+old.toUpperCase().trim()))
 					&&(httpReq.getUrlParameter("IS"+old.toUpperCase().trim()).equalsIgnoreCase("on")))
 					{
-						TYPES.addElement(old.toUpperCase().trim());
-						EXTNS.addElement(" "+old.toUpperCase().trim());
+						TYPES.add(old.toUpperCase().trim());
+						EXTNS.add(" "+old.toUpperCase().trim());
+					}
+				}
+			}
+
+			old=httpReq.getUrlParameter("NUMXARGS");
+			if(old!=null)
+			{
+				final int numXtras=CMath.s_int(httpReq.getUrlParameter("NUMXARGS"));
+				for(int n=0;n<numXtras;n++)
+				{
+					old=httpReq.getUrlParameter("XARG"+n);
+					if((old!=null)
+					&&(old.length()>0)
+					&&(httpReq.isUrlParameter("ISTARGETMOB_"+old.toUpperCase().trim()))
+					&&(httpReq.getUrlParameter("ISTARGETMOB_"+old.toUpperCase().trim()).equalsIgnoreCase("on")))
+					{
+						TYPES.add("TARGETMOB_"+old.toUpperCase().trim());
+						EXTNS.add(" <T-NAME> "+old.toUpperCase().trim());
 					}
 				}
 			}
 
 			for(int t=0;t<TYPES.size();t++)
 			{
-				final String TYPE=TYPES.elementAt(t);
-				final String EXTN=EXTNS.elementAt(t);
+				final String TYPE=TYPES.get(t);
+				final String EXTN=EXTNS.get(t);
 
 				old=httpReq.getUrlParameter("IS"+TYPE);
 				if((old==null)||(!old.equalsIgnoreCase("on")))
@@ -280,12 +298,12 @@ public class SocialData extends StdWebMacro
 			}
 			if(OSV!=null)
 			{
-				for(int s=0;s<OSV.size();s++)
-					CMLib.socials().remove(OSV.get(s).Name());
+				for(final Social S : OSV)
+					CMLib.socials().remove(S.Name());
 			}
 
-			for(int s=0;s<SV.size();s++)
-				CMLib.socials().addSocial(SV.get(s));
+			for(final Social S : SV)
+				CMLib.socials().addSocial(S);
 
 			CMLib.socials().save(M);
 			if(create)
@@ -350,12 +368,12 @@ public class SocialData extends StdWebMacro
 							old=last;
 						str.append(old+", ");
 					}
-					final Vector<String> TYPES=new Vector<String>();
-					final Vector<String> EXTNS=new Vector<String>();
+					final List<String> TYPES=new ArrayList<String>();
+					final List<String> EXTNS=new ArrayList<String>();
 					for (final String element : BTYPES)
-						TYPES.addElement(element);
+						TYPES.add(element);
 					for (final String element : BEXTNS)
-						EXTNS.addElement(element);
+						EXTNS.add(element);
 					old=httpReq.getUrlParameter("NUMXTRAS");
 					if(old!=null)
 					{
@@ -368,34 +386,32 @@ public class SocialData extends StdWebMacro
 							&&(httpReq.isUrlParameter("IS"+old.toUpperCase().trim()))
 							&&(httpReq.getUrlParameter("IS"+old.toUpperCase().trim()).equalsIgnoreCase("on")))
 							{
-								TYPES.addElement(old.toUpperCase().trim());
-								EXTNS.addElement(old.toUpperCase().trim());
+								TYPES.add(old.toUpperCase().trim());
+								EXTNS.add(old.toUpperCase().trim());
 							}
 						}
 					}
 					else
-					for(int s=0;s<SV.size();s++)
 					{
-						final Social S=SV.get(s);
-						boolean found=false;
-						for (final String element : BEXTNS)
+						for(int s=0;s<SV.size();s++)
 						{
-							if(S.Name().equalsIgnoreCase(last+element))
-								found=true;
-						}
-						if(!found)
-						{
-							final int x=S.Name().indexOf(' ');
-							if(x>0)
+							final Social S=SV.get(s);
+							boolean found=false;
+							for (final String element : BEXTNS)
 							{
-								final String TYPE=S.Name().substring(x+1).trim().toUpperCase();
-								TYPES.addElement(TYPE);
-								EXTNS.addElement(" "+TYPE);
+								if(S.targetName().equalsIgnoreCase(element.trim()))
+									found=true;
+							}
+							if(!found)
+							{
+								final String TYPE=S.targetName();
+								TYPES.add(TYPE);
+								EXTNS.add(" "+TYPE);
 								httpReq.addFakeUrlParameter("IS"+TYPE,"on");
 							}
 						}
 					}
-
+					
 					old=httpReq.getUrlParameter("DOADDXSOCIAL");
 					if((old!=null)
 					&&(old.equalsIgnoreCase("on"))
@@ -404,8 +420,8 @@ public class SocialData extends StdWebMacro
 					&&(!TYPES.contains(httpReq.getUrlParameter("ADDXSOCIAL").toUpperCase().trim())))
 					{
 						final String TYPE=httpReq.getUrlParameter("ADDXSOCIAL").toUpperCase().trim();
-						TYPES.addElement(TYPE);
-						EXTNS.addElement(" "+TYPE);
+						TYPES.add(TYPE);
+						EXTNS.add(" "+TYPE);
 						httpReq.addFakeUrlParameter("IS"+TYPE,"on");
 					}
 
@@ -414,12 +430,68 @@ public class SocialData extends StdWebMacro
 						str.append(""+numxtras+", ");
 					if(parms.containsKey("GETEXTRA")
 					&&(CMath.s_int(parms.get("GETEXTRA"))<numxtras))
-						str.append(TYPES.elementAt(BTYPES.length+CMath.s_int(parms.get("GETEXTRA")))+", ");
+						str.append(TYPES.get(BTYPES.length+CMath.s_int(parms.get("GETEXTRA")))+", ");
+
+					
+					old=httpReq.getUrlParameter("NUMXARGS");
+					List<String> xargs=new ArrayList<String>();
+					if(old!=null)
+					{
+						final int numXtras=CMath.s_int(httpReq.getUrlParameter("NUMXARGS"));
+						for(int n=0;n<numXtras;n++)
+						{
+							old=httpReq.getUrlParameter("XARG"+n);
+							if((old!=null)
+							&&(old.length()>0)
+							&&(httpReq.isUrlParameter("ISTARGETMOB_"+old.toUpperCase().trim()))
+							&&(httpReq.getUrlParameter("ISTARGETMOB_"+old.toUpperCase().trim()).equalsIgnoreCase("on")))
+							{
+								xargs.add(old.toUpperCase().trim());
+								TYPES.add("TARGETMOB_"+old.toUpperCase().trim());
+								EXTNS.add(" <T-NAME> "+old.toUpperCase().trim());
+							}
+						}
+					}
+					else
+					{
+						for(int s=0;s<SV.size();s++)
+						{
+							final Social S=SV.get(s);
+							final String TYPE=S.argumentName();
+							if(TYPE.length()==0)
+								continue;
+							TYPES.add("TARGETMOB_"+TYPE);
+							EXTNS.add(" <T-NAME> "+TYPE);
+							xargs.add(TYPE);
+							httpReq.addFakeUrlParameter("ISTARGETMOB_"+TYPE,"on");
+						}
+					}
+					
+					old=httpReq.getUrlParameter("DOADDXARG");
+					if((old!=null)
+					&&(old.equalsIgnoreCase("on"))
+					&&(httpReq.getUrlParameter("ADDXARG")!=null)
+					&&(httpReq.getUrlParameter("ADDXARG").trim().length()>0)
+					&&(!TYPES.contains(httpReq.getUrlParameter("ADDXARG").toUpperCase().trim())))
+					{
+						final String TYPE=httpReq.getUrlParameter("ADDXARG").toUpperCase().trim();
+						TYPES.add("TARGETMOB_"+TYPE);
+						EXTNS.add(" <T-NAME> "+TYPE);
+						xargs.add(TYPE);
+						httpReq.addFakeUrlParameter("ISTARGETMOB_"+TYPE,"on");
+					}
+
+					final int numxargs=xargs.size();
+					if(parms.containsKey("NUMXARGS"))
+						str.append(""+numxargs+", ");
+					if(parms.containsKey("GETXARG")
+					&&(CMath.s_int(parms.get("GETXARG"))<xargs.size()))
+						str.append(xargs.get(CMath.s_int(parms.get("GETXARG")))+", ");
 
 					for(int t=0;t<TYPES.size();t++)
 					{
-						final String TYPE=TYPES.elementAt(t);
-						final String EXTN=EXTNS.elementAt(t);
+						final String TYPE=TYPES.get(t);
+						final String EXTN=EXTNS.get(t);
 						Social S=null;
 						for(int s=0;s<SV.size();s++)
 						{
@@ -433,7 +505,7 @@ public class SocialData extends StdWebMacro
 						{
 							old=httpReq.getUrlParameter("IS"+TYPE);
 							if(old==null)
-								old=(((S!=null)&&(!httpReq.isUrlParameter("NUMXTRAS")))?"on":"");
+								old=(((S!=null)&&(!httpReq.isUrlParameter("NUMXTRAS"))&&(!httpReq.isUrlParameter("NUMARGS")))?"on":"");
 							str.append(""+old.equalsIgnoreCase("on")+", ");
 							if(!old.equalsIgnoreCase("on"))
 								continue;
@@ -463,6 +535,9 @@ public class SocialData extends StdWebMacro
 									case 'M':
 										old = S.getSoundFile();
 										break;
+									case 'A':
+										old = S.argumentName();
+										break;
 									case 'T':
 										old = S.getTargetMessage();
 										break;
@@ -488,6 +563,8 @@ public class SocialData extends StdWebMacro
 									case 'N':
 										break;
 									case 'M':
+										break;
+									case 'A':
 										break;
 									case 'T':
 										break;

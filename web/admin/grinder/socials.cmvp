@@ -129,7 +129,7 @@
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
     <TABLE WIDTH=100% BORDER=1>
-    <TR><TD WIDTH=100% COLSPAN=9 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Socials Manager</H2></FONT></TD></TR>
+    <TR><TD WIDTH=100% COLSPAN=10 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Socials Manager</H2></FONT></TD></TR>
     <TR>
     <TD WIDTH=12%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
     <TD WIDTH=8%><B><FONT COLOR=YELLOW>No Target</FONT></b></TD>
@@ -139,7 +139,8 @@
     <TD WIDTH=8%><B><FONT COLOR=YELLOW>Target Item</FONT></B></TD>
     <TD WIDTH=8%><B><FONT COLOR=YELLOW>Target Inv.</FONT></B></TD>
     <TD WIDTH=8%><B><FONT COLOR=YELLOW>Target All</FONT></B></TD>
-    <TD WIDTH=40%><B><FONT COLOR=YELLOW>MSP File</FONT></B></TD>
+    <TD WIDTH=16%><B><FONT COLOR=YELLOW>Arguments</FONT></B></TD>
+    <TD WIDTH=16%><B><FONT COLOR=YELLOW>MSP File</FONT></B></TD>
     </TR>
     @SocialNext?RESET@
     @loop@
@@ -153,6 +154,7 @@
     <TD ALIGN=CENTER><FONT COLOR=WHITE>@if?SocialData?ISTARGETITEM@Y@else@&nbsp;@endif@</FONT></TD>
     <TD ALIGN=CENTER><FONT COLOR=WHITE>@if?SocialData?ISTARGETINV@Y@else@&nbsp;@endif@</FONT></TD>
     <TD ALIGN=CENTER><FONT COLOR=WHITE>@if?SocialData?ISALL@Y@else@&nbsp;@endif@</FONT></TD>
+    <TD ALIGN=CENTER><FONT COLOR=WHITE>@SocialData?ALLOPTARGS@</FONT></TD>
     <TD><FONT COLOR=WHITE>
         @if?SocialData?ISNONE@ 
             @SocialData?SDAT_NONE_M@&nbsp;

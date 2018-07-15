@@ -248,12 +248,18 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 				&& (((DeadBody)body).getSavedMOB()!=null))
 				{
 					final MOB rejuvedMOB=((DeadBody)body).getSavedMOB();
-					rejuvedMOB.recoverCharStats();
-					rejuvedMOB.recoverMaxState();
-					body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
-					body.destroy();
-					rejuvedMOB.bringToLife(mob.location(),true);
-					rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> get(s) up!"));
+					final Room R=mob.location();
+					if((rejuvedMOB != null) && (R!=null))
+					{
+						rejuvedMOB.recoverCharStats();
+						rejuvedMOB.recoverMaxState();
+						body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
+						body.destroy();
+						rejuvedMOB.bringToLife(R,true);
+						R.show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> get(s) up!"));
+					}
+					else
+						mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,L("<T-NAME> jerk(s) for a moment, but the spirit is too far gone."));
 				}
 				else
 					mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,L("<T-NAME> jerk(s) for a moment, but the spirit is too far gone."));

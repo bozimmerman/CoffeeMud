@@ -1200,6 +1200,25 @@ public class StdMOB implements MOB
 		}
 	}
 
+	protected final boolean confirmLocation(final Room whereHeShouldBeR)
+	{
+		if (location() == null)
+		{
+			if(getStartRoom()!=null)
+			{
+				Log.errOut("StdMOB", name() + " of " + CMLib.map().getDescriptiveExtendedRoomID(whereHeShouldBeR) + " was auto-killed for being nowhere!");
+				killMeDead(false);
+			}
+			else
+			{
+				Log.errOut("StdMOB", name() + " of " + CMLib.map().getDescriptiveExtendedRoomID(whereHeShouldBeR)+ " was auto-destroyed by its tick!!");
+				destroy();
+			}
+			return false;
+		}
+		return true;
+	}
+	
 	@Override
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
@@ -1224,11 +1243,8 @@ public class StdMOB implements MOB
 		if (location() == null)
 		{
 			setLocation(CMLib.map().getStartRoom(this));
-			if (location() == null)
-			{
-				Log.errOut("StdMOB", username + " cannot get a location.");
+			if(!confirmLocation(newLocation))
 				return;
-			}
 		}
 		if (!location().isInhabitant(this))
 			location().addInhabitant(this);
@@ -1252,12 +1268,8 @@ public class StdMOB implements MOB
 			if (A != null)
 				A.autoInvocation(this, false);
 		}
-		if (location() == null)
-		{
-			Log.errOut("StdMOB", name() + " of " + CMLib.map().getDescriptiveExtendedRoomID(newLocation) + " was auto-destroyed!");
-			destroy();
+		if(!confirmLocation(newLocation))
 			return;
-		}
 		CMLib.factions().updatePlayerFactions(this, location(), false);
 		if (tickStatus == Tickable.STATUS_NOT)
 		{
@@ -1276,27 +1288,17 @@ public class StdMOB implements MOB
 				phyStats.setSensesMask(CMath.dobit(phyStats.sensesMask(), PhyStats.CAN_NOT_MOVE, isImMobile));
 			}
 		}
-		if (location() == null)
-		{
-			Log.errOut("StdMOB", name() + " of " + CMLib.map().getDescriptiveExtendedRoomID(newLocation)
-					+ " was auto-destroyed by its tick!!");
-			destroy();
+		if(!confirmLocation(newLocation))
 			return;
-		}
 
 		location().recoverRoomStats();
 		if ((!isGeneric()) && (resetStats))
 		{
 			resetToMaxState();
 		}
-
-		if (location() == null)
-		{
-			Log.errOut("StdMOB", name() + " of " + CMLib.map().getDescriptiveExtendedRoomID(newLocation)
-					+ " was auto-destroyed by its room recover!!");
-			destroy();
+		
+		if(!confirmLocation(newLocation))
 			return;
-		}
 
 		if (isMonster())
 		{
@@ -2088,7 +2090,7 @@ public class StdMOB implements MOB
 		}
 		catch (final Exception e)
 		{
-			Log.errOut("StdMOB", Name()+" did "+CMParms.toListString(commands)+" in "+CMLib.map().roomLocation(location()));
+			Log.errOut("StdMOB", Name()+" did '"+CMParms.toListString(commands)+"' in "+CMLib.map().getExtendedRoomID(location()));
 			Log.errOut("StdMOB", e);
 			tell(L("Oops!"));
 		}

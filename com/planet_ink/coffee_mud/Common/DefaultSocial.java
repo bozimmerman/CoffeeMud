@@ -48,10 +48,10 @@ public class DefaultSocial implements Social
 	protected String	othersSeeMsg;
 	protected String	targetSeesMsg;
 	protected String	failedTargetMsg;
-	private String		soundFile	= "";
-	protected int		sourceCode	= CMMsg.MSG_OK_ACTION;
-	protected int		othersCode	= CMMsg.MSG_OK_ACTION;
-	protected int		targetCode	= CMMsg.MSG_OK_ACTION;
+	protected String	soundFile		= "";
+	protected int		sourceCode		= CMMsg.MSG_OK_ACTION;
+	protected int		othersCode		= CMMsg.MSG_OK_ACTION;
+	protected int		targetCode		= CMMsg.MSG_OK_ACTION;
 
 	@Override
 	public String ID()
@@ -86,7 +86,7 @@ public class DefaultSocial implements Social
 	@Override
 	public boolean isTargetable()
 	{
-		return isTargetable();
+		return isTargetable;
 	}
 	
 	@Override
@@ -305,10 +305,15 @@ public class DefaultSocial implements Social
 			return false;
 		
 		String targetStr = "";
+		String restArg = "";
 		if ((commands.size() > 1) 
 		&& (!commands.get(1).equalsIgnoreCase("SELF")) 
 		&& (!commands.get(1).equalsIgnoreCase("ALL")))
+		{
 			targetStr = commands.get(1);
+			if (commands.size() > 2)
+				restArg=commands.get(2);
+		}
 
 		Physical targetE = target;
 		if (targetE == null)
@@ -319,7 +324,7 @@ public class DefaultSocial implements Social
 			else 
 			if ((targetE != null) && (!targetable(targetE)))
 			{
-				final Social S = CMLib.socials().fetchSocial(baseName(), targetE, true);
+				final Social S = CMLib.socials().fetchSocial(baseName(), targetE, restArg, true);
 				if (S != null)
 					return S.invoke(mob, commands, targetE, auto);
 			}

@@ -121,9 +121,6 @@ public class Prayer_SenseEvil extends Prayer
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
-
 		Physical target=mob;
 		if((auto)&&(givenTarget!=null))
 			target=givenTarget;
@@ -132,6 +129,9 @@ public class Prayer_SenseEvil extends Prayer
 			mob.tell(mob,target,null,L("<T-NAME> <T-IS-ARE> already sensing evil."));
 			return false;
 		}
+
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 

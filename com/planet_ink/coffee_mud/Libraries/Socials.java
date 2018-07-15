@@ -589,77 +589,121 @@ public class Socials extends StdLibrary implements SocialsList
 	}
 
 	@Override
-	public Social fetchSocial(List<Social> set, String name, boolean exactOnly)
+	public Social fetchSocial(final List<Social> set, String targetCode, String arg, final boolean exactOnly)
 	{
+		targetCode=targetCode.toUpperCase().trim();
+		arg=arg.toUpperCase().trim();
+		for(final Social S : set)
+		{
+			if(S.targetName().equals(targetCode) && S.argumentName().equals(arg))
+				return S;
+		}
+		if(exactOnly)
+			return null;
+		for(final Social S : set)
+		{
+			if(S.targetName().equals(targetCode) && S.argumentName().startsWith(arg))
+				return S;
+		}
+		return null;
+	}
+
+	@Override
+	public Social fetchSocial(final List<Social> set, String fullSocialID, final boolean exactOnly)
+	{
+		fullSocialID=fullSocialID.toUpperCase().trim();
 		for(int s=0;s<set.size();s++)
 		{
-			if(set.get(s).Name().equalsIgnoreCase(name))
+			if(set.get(s).Name().equals(fullSocialID))
 				return set.get(s);
 		}
 		if(exactOnly)
 			return null;
-		name=name.toUpperCase();
+		fullSocialID=fullSocialID.toUpperCase();
 		for(int s=0;s<set.size();s++)
 		{
-			if(set.get(s).Name().toUpperCase().startsWith(name))
+			if(set.get(s).Name().toUpperCase().startsWith(fullSocialID))
 				return set.get(s);
 		}
 		return null;
 	}
 
 	@Override
-	public Social fetchSocial(String baseName, Environmental targetE, boolean exactOnly)
+	public Social fetchSocial(final String baseName, final Environmental targetE, final String arg, final boolean exactOnly)
 	{
-		return fetchSocial(getSocialHash(),baseName,targetE,exactOnly);
+		return fetchSocial(getSocialHash(), baseName, targetE, arg, exactOnly);
 	}
 
-	protected Social fetchSocial(final Map<String,List<Social>> soc, final String baseName, final Environmental targetE, final boolean exactOnly)
+	protected Social fetchSocial(final Map<String,List<Social>> soc, final String baseName, final Environmental targetE, final String arg, final boolean exactOnly)
 	{
 		if(targetE==null)
-			return fetchSocial(soc,baseName,exactOnly);
+			return fetchSocial(soc, baseName, "", "", exactOnly);
 		if(targetE instanceof MOB)
-			return fetchSocial(soc,baseName+" <T-NAME>",exactOnly);
+			return fetchSocial(soc, baseName,"<T-NAME>", arg, exactOnly);
 		if(!(targetE instanceof Item))
 			return null;
 		final Item I=(Item)targetE;
 		if(I.owner() instanceof Room)
-			return fetchSocial(soc,baseName+" <I-NAME>",exactOnly);
+			return fetchSocial(soc, baseName,"<I-NAME>", arg, exactOnly);
 		if(!(I.owner() instanceof MOB))
 			return null;
 		if(I.amWearingAt(Wearable.IN_INVENTORY))
-			return fetchSocial(soc,baseName+" <V-NAME>",exactOnly);
-		return fetchSocial(soc,baseName+" <E-NAME>",exactOnly);
+			return fetchSocial(soc, baseName, "<V-NAME>", arg, exactOnly);
+		return fetchSocial(soc, baseName, "<E-NAME>", arg, exactOnly);
 	}
 
 	@Override
-	public Social fetchSocial(String name, boolean exactOnly)
+	public Social fetchSocial(final String fullSocialID, boolean exactOnly)
 	{
-		return fetchSocial(getSocialHash(),name,exactOnly);
-	}
-
-	protected Social fetchSocial(final Map<String,List<Social>> soc, final String name, final boolean exactOnly)
-	{
-		final String realName=realName(name);
-		final List<Social> V=soc.get(realName);
-		if((V==null)&&(exactOnly))
+		final Map<String,List<Social>> soc = getSocialHash();
+		final int x=fullSocialID.indexOf(' ');
+		String baseID = ((x<0) ? fullSocialID : fullSocialID.substring(0,x)).toUpperCase().trim();
+		final String rest = ((x<0) ? "" : fullSocialID.substring(x+1)).trim();
+		List<Social> listS = soc.get(baseID);
+		if((listS == null) && (exactOnly))
 			return null;
-		Social S=null;
-		if(V!=null)
-			S=fetchSocial(V,name,exactOnly);
-		if(S!=null)
-			return S;
-		if(V==null)
-			return null;
-		for(final String key : soc.keySet())
+		if(listS == null)
 		{
-			if(key.startsWith(name))
-				return fetchSocial(V,name,false);
+			for(final String key : soc.keySet())
+			{
+				if(key.startsWith(baseID))
+				{
+					listS=soc.get(key);
+					if(listS.size()>0)
+						baseID = listS.get(0).baseName(); 
+					break;
+				}
+			}
+			if(listS == null)
+				return null;
 		}
-		return null;
+		return fetchSocial(listS, (baseID + " " + rest).trim(), exactOnly);
+	}
+
+	protected Social fetchSocial(final Map<String,List<Social>> soc, String baseName, String target, String arg, final boolean exactOnly)
+	{
+		baseName=baseName.toUpperCase().trim();
+		List<Social> listS=soc.get(baseName);
+		if(listS==null)
+		{
+			if(!exactOnly)
+			{
+				for(final String key : soc.keySet())
+				{
+					if(key.startsWith(baseName))
+					{
+						listS=soc.get(key);
+						return fetchSocial(listS,target,arg,exactOnly);
+					}
+				}
+			}
+			return null;
+		}
+		return fetchSocial(listS,target,arg,exactOnly);
 	}
 
 	@Override
-	public Social fetchSocial(List<String> C, boolean exactOnly, boolean checkItemTargets)
+	public Social fetchSocial(final List<String> C, final boolean exactOnly, final boolean checkItemTargets)
 	{
 		return fetchSocialFromSet(getSocialHash(),C,exactOnly,checkItemTargets);
 	}
@@ -667,96 +711,54 @@ public class Socials extends StdLibrary implements SocialsList
 	@Override
 	public Social fetchSocialFromSet(final Map<String,List<Social>> soc, final List<String> C, final boolean exactOnly, final boolean checkItemTargets)
 	{
-
 		if(C==null)
 			return null;
 		if(C.size()==0)
 			return null;
 
 		String socialName=C.get(0);
-		String theRest="";
-		Social S=null;
-		boolean tryTargets=false;
-		if(C.size()>1)
+		final String target= (C.size()>1) ? C.get(1).toUpperCase().trim() : "";
+		final String arg = (C.size() > 2) ? C.get(2).toUpperCase().trim() : "";
+		if((target.equals("SELF"))||(target.equals("ALL")))
+			return fetchSocial(soc, socialName, target, arg, exactOnly);
+		final List<Social> listS = getSocialsSet(socialName, exactOnly);
+		if(listS == null)
+			return null; // not a chance
+		if(target.length()==0)
 		{
-			final String Target=C.get(1).toUpperCase();
-			S=fetchSocial(soc,socialName+" "+Target,true);
-			if((S==null)
-			&&((!Target.equals("SELF"))&&(!Target.equals("ALL"))))
+			for(final Social S : listS)
 			{
-				if(checkItemTargets)
-					tryTargets=true;
-				else
-					theRest=" <T-NAME>";
+				if(!S.isTargetable() 
+				&&(S.targetName().length() == 0))
+					return S;
 			}
-			else
-			if(S==null)
-				theRest=" <T-NAME>";
+			return null;
 		}
-		if(S==null)
+		for(final Social S : listS)
 		{
-			if(!tryTargets)
-				S=fetchSocial(soc,socialName+theRest,true);
-			else
-			if((S=fetchSocial(soc,socialName+" <T-NAME>",true))==null)
-			{
-				if((S=fetchSocial(soc,socialName+" <I-NAME>",true))==null)
-				{
-					if((S=fetchSocial(soc,socialName+" <E-NAME>",true))==null)
-					{
-						if((S=fetchSocial(soc,socialName+" <V-NAME>",true))==null)
-						{
-						}
-					}
-				}
-			}
+			if(S.targetName().equals("<T-NAME>")
+			&&(S.argumentName().equals(arg)
+				||((!exactOnly)&&(S.argumentName().startsWith(arg)))))
+					return S;
 		}
-		if((S==null)&&(!exactOnly))
+		if(!checkItemTargets)
+			return null;
+		for(final Social S : listS)
 		{
-			String backupSocialName=null;
-			final String socName=socialName.toUpperCase();
-			socialName=null;
-			for(final String key : soc.keySet())
-			{
-				if((key.startsWith(socName))&&(key.indexOf(' ')<0))
-				{
-					socialName=key;
-					break;
-				}
-				else
-				if(key.startsWith(socName))
-				{
-					backupSocialName=key;
-					break;
-				}
-			}
-			if(socialName==null)
-			{
-				if(backupSocialName == null)
-					socialName=C.get(0);
-				else
-					socialName=backupSocialName;
-			}
-			if(socialName!=null)
-			{
-				if(!tryTargets)
-					S=fetchSocial(soc,socialName+theRest,true);
-				else
-				if((S=fetchSocial(soc,socialName+" <T-NAME>",true))==null)
-				{
-					if((S=fetchSocial(soc,socialName+" <I-NAME>",true))==null)
-					{
-						if((S=fetchSocial(soc,socialName+" <E-NAME>",true))==null)
-						{
-							if((S=fetchSocial(soc,socialName+" <V-NAME>",true))==null)
-							{
-							}
-						}
-					}
-				}
-			}
+			if(S.targetName().startsWith("<")
+			&&(S.argumentName().equals(arg)
+				||((!exactOnly)&&(S.argumentName().startsWith(arg)))))
+					return S;
 		}
-		return S;
+		if(exactOnly || (arg.length()==0))
+			return null;
+		for(final Social S : listS)
+		{
+			if(S.targetName().startsWith("<")
+			&&(S.argumentName().startsWith(arg)))
+				return S;
+		}
+		return null;
 	}
 
 	@Override
@@ -782,6 +784,9 @@ public class Socials extends StdLibrary implements SocialsList
 		if((type.length()>0)&&(!type.startsWith(" ")))
 			type=" "+type;
 		soc.setName(name+type);
+		String funnyAppendage="";
+		if(soc.argumentName().length()>0)
+			funnyAppendage=" in the "+soc.argumentName().toLowerCase();
 		if(type.trim().length()==0)
 		{
 			soc.setSourceMessage("You "+name.toLowerCase()+".");
@@ -792,18 +797,18 @@ public class Socials extends StdLibrary implements SocialsList
 		else
 		if(type.trim().equals("ALL"))
 		{
-			soc.setSourceMessage("You "+name.toLowerCase()+" everyone.");
-			soc.setOthersMessage("<S-NAME> "+name.toLowerCase()+"s everyone.");
+			soc.setSourceMessage("You "+name.toLowerCase()+" everyone"+funnyAppendage+".");
+			soc.setOthersMessage("<S-NAME> "+name.toLowerCase()+"s everyone"+funnyAppendage+".");
 			soc.setFailedMessage(CMStrings.capitalizeAndLower(name)+" who?");
 			soc.setSourceCode(CMMsg.MSG_SPEAK);
 			soc.setOthersCode(CMMsg.MSG_SPEAK);
 		}
 		else
-		if(type.trim().endsWith("-NAME>"))
+		if(type.trim().startsWith("<"))
 		{
-			soc.setSourceMessage("You "+name.toLowerCase()+" <T-NAME>.");
-			soc.setTargetMessage("<S-NAME> "+name.toLowerCase()+"s you.");
-			soc.setOthersMessage("<S-NAME> "+name.toLowerCase()+"s <T-NAMESELF>.");
+			soc.setSourceMessage("You "+name.toLowerCase()+" <T-NAME>"+funnyAppendage+".");
+			soc.setTargetMessage("<S-NAME> "+name.toLowerCase()+"s you"+funnyAppendage+".");
+			soc.setOthersMessage("<S-NAME> "+name.toLowerCase()+"s <T-NAMESELF>"+funnyAppendage+".");
 			soc.setFailedMessage(CMStrings.capitalizeAndLower(name)+" who?");
 			soc.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
 			soc.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
@@ -812,8 +817,8 @@ public class Socials extends StdLibrary implements SocialsList
 		else
 		if(type.trim().equals("SELF"))
 		{
-			soc.setSourceMessage("You "+name.toLowerCase()+" yourself.");
-			soc.setOthersMessage("<S-NAME> "+name.toLowerCase()+"s <S-HIM-HERSELF>.");
+			soc.setSourceMessage("You "+name.toLowerCase()+" yourself"+funnyAppendage+".");
+			soc.setOthersMessage("<S-NAME> "+name.toLowerCase()+"s <S-HIM-HERSELF>"+funnyAppendage+".");
 			soc.setSourceCode(CMMsg.MSG_NOISE);
 			soc.setOthersCode(CMMsg.MSG_NOISE);
 		}
@@ -949,13 +954,50 @@ public class Socials extends StdLibrary implements SocialsList
 		return findSocialName(getSocialHash(),named,exactOnly);
 	}
 
+	protected List<Social> getSocialsSet(String named, boolean exactOnly)
+	{
+		if(named == null)
+			return null;
+		named=realName(named);
+		final List<Social> listS=getSocialsSet(named);
+		if(listS != null)
+			return listS;
+		if(exactOnly)
+			return null;
+		final Map<String,List<Social>> soc=getSocialHash();
+		for(final String key : soc.keySet())
+		{
+			if(key.startsWith(named))
+				return soc.get(key);
+		}
+		return null;
+	}
+
 	protected String findSocialName(final Map<String,List<Social>> soc, final String named, final boolean exactOnly)
 	{
 		if(named==null)
 			return null;
-		final Social S = fetchSocial(soc, named,exactOnly);
-		if(S!=null)
-			return realName(S.Name()).toLowerCase();
+		final int x=named.indexOf(' ');
+		final String baseID = ((x<0) ? named : named.substring(0,x)).toUpperCase().trim();
+		List<Social> listS = soc.get(baseID);
+		if((listS == null) && (exactOnly))
+			return null;
+		if(listS == null)
+		{
+			for(final String key : soc.keySet())
+			{
+				if(key.startsWith(baseID))
+				{
+					listS=soc.get(key);
+					if(listS.size()>0)
+						return listS.get(0).baseName(); 
+				}
+			}
+			return null;
+		}
+		
+		if(listS.size()>0)
+			return listS.get(0).baseName(); 
 		return null;
 	}
 

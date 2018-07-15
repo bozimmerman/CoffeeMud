@@ -134,7 +134,7 @@ public class AnimalHusbandry extends CommonSkill
 						commonTell(mob,L("@x1 is already pregnant.",wifeM.name()));
 					else
 					{
-						final Social S=CMLib.socials().fetchSocial("MATE", wifeM, true);
+						final Social S=CMLib.socials().fetchSocial("MATE", wifeM, "", true);
 						if(S!=null)
 						{
 							if(husbanding[0].charStats().getMyRace().canBreedWith(husbanding[1].charStats().getMyRace()))

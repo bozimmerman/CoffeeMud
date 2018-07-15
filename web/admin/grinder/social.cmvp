@@ -18,7 +18,7 @@
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
             w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,
-            	"Race_Item",strFeatures, false);
+                "Race_Item",strFeatures, false);
         }
         function AddItem(ME)
         {
@@ -42,7 +42,7 @@
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
             w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM="+ME+"&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,
-            	"Race_Item",strFeatures, false);
+                "Race_Item",strFeatures, false);
         }
         function AddMember(v)
         {
@@ -262,6 +262,56 @@
                 @endif@
             </TD>
         </TR>
+        <TR><TD><INPUT TYPE=HIDDEN NAME=NUMXARGS VALUE=@SocialData?NUMXARGS@></TD></TR>
+        @if?SocialData?ISTARGETMOB@
+	        @AddRequestParameter?NUMXARG=@@SocialData?NUMXARGS@@ @
+	        @AddRequestParameter?CURRNUM=0@
+	        @loop@
+	            @ChkReqParmBreak?NUMXARG=@@RequestParameter?CURRNUM@@ @
+	            @AddRequestParameter?XARG=@@SocialData?GETXARG=@@@RequestParameter?CURRNUM@@@ @@ @
+	            <TR>
+	                <TD>
+	                    <FONT COLOR=YELLOW>Target (MOB) Argument: @RequestParameter?XARG@</FONT>
+	                    <INPUT TYPE=HIDDEN NAME=XARG@RequestParameter?CURRNUM@ VALUE="@RequestParameter?XARG@"></TD>
+	                </TD>
+	                <TD>
+	                    <INPUT TYPE=CHECKBOX NAME=ISTARGETMOB_@RequestParameter?XARG@ @if?SocialData?ISTARGETMOB_@@RequestParameter?XARG@@ @CHECKED@endif@  ONCLICK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
+	                    @if?SocialData?ISTARGETMOB_@@RequestParameter?XARG@@ @
+	                    <P>
+	                    <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+	                    <TR>
+	                        <TD WIDTH=20%><FONT COLOR=YELLOW>You See: </FONT></TD>
+	                        <TD WIDTH=80%><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_TARGETMOB_@RequestParameter?XARG@_Y VALUE="@SocialData?SDAT_TARGETMOB_@@RequestParameter?XARG@@_Y@"></TD>
+	                    </TR>
+	                    <TR>
+	                        <TD><FONT COLOR=YELLOW>You Do: </FONT></TD>
+	                        <TD><SELECT NAME=SDAT_TARGETMOB_@RequestParameter?XARG@_YC>@SocialData?SDAT_TARGETMOB_@@RequestParameter?XARG@@_YC@</SELECT></TD>
+	                    </TR>
+	                    <TR>
+	                        <TD><FONT COLOR=YELLOW>Others See: </FONT></TD>
+	                        <TD><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_TARGETMOB_@RequestParameter?XARG@_O VALUE="@SocialData?SDAT_TARGETMOB_@@RequestParameter?XARG@@_O@"></TD>
+	                    </TR>
+	                    <TR>
+	                        <TD><FONT COLOR=YELLOW>Others: </FONT></TD>
+	                        <TD><SELECT NAME=SDAT_TARGETMOB_@RequestParameter?XARG@_OC>@SocialData?SDAT_TARGETMOB_@@RequestParameter?XARG@@_OC@</SELECT></TD>
+	                    </TR>
+	                    <TR>
+	                        <TD><FONT COLOR=YELLOW>MSP Filename: </FONT></TD>
+	                        <TD><INPUT TYPE=TEXT SIZE=40 NAME=SDAT_TARGETMOB_@RequestParameter?XARG@_M VALUE="@SocialData?SDAT_TARGETMOB_@@RequestParameter?XARG@@_M@"></TD>
+	                    </TR>
+	                    </TABLE>
+	                    @endif@
+	                </TD>
+	            </TR>
+	            @AddRequestParameter?CURRNUM=++@
+	        @back@
+	        <TR>
+	            <TD><FONT COLOR=YELLOW>Target (MOB) Argument: <INPUT TYPE=TEXT NAME=ADDXARG VALUE="" SIZE=10></FONT></TD>
+	            <TD>
+	                <INPUT TYPE=CHECKBOX NAME=DOADDXARG ONCLICK="ReShow();"><FONT COLOR=WHITE>Create new Target (MOB)</FONT>
+	            </TD>
+	        </TR>
+        @endif@
         <TR>
             <TD><FONT COLOR=YELLOW>Target (INVENTORY): </FONT></TD>
             <TD>
