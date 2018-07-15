@@ -201,6 +201,8 @@ public class Fighter_Behead extends FighterSkill
 				final Item limb=CMClass.getItem("GenLimb");
 				limb.setName(L("@x1`s head",target.Name()));
 				limb.basePhyStats().setAbility(1);
+				if(affected instanceof MOB)
+					((FalseLimb)limb).setRaceID(((MOB)affected).charStats().getMyRace().ID());
 				limb.setDisplayText(L("the bloody head of @x1 is sitting here.",target.Name()));
 				limb.setSecretIdentity(target.name()+"`s bloody head.");
 				int material=RawMaterial.RESOURCE_MEAT;

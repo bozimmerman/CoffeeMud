@@ -527,6 +527,8 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			limb.setDisplayText(L("a bloody @x1 is sitting here.",gone));
 			if(affected != null)
 				limb.setSecretIdentity(affected.name()+"`s bloody "+gone+".");
+			if(affected instanceof MOB)
+				((FalseLimb)limb).setRaceID(((MOB)affected).charStats().getMyRace().ID());
 			int material=RawMaterial.RESOURCE_MEAT;
 			if((R!=null)&&(R.myResources()!=null)&&(R.myResources().size()>0))
 			{

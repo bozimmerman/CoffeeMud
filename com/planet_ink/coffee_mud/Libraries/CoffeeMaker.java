@@ -209,18 +209,19 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	
 	protected String getOrdPropertiesStr(Environmental E)
 	{
+		final XMLLibrary xml=CMLib.xml();
 		final StringBuilder str=new StringBuilder("");
 		if(E instanceof Room)
 		{
-			str.append(CMLib.xml().convertXMLtoTag("RCLIM", ((Room)E).getClimateTypeCode()));
-			str.append(CMLib.xml().convertXMLtoTag("RATMO", ((Room)E).getAtmosphereCode()));
+			str.append(xml.convertXMLtoTag("RCLIM", ((Room)E).getClimateTypeCode()));
+			str.append(xml.convertXMLtoTag("RATMO", ((Room)E).getAtmosphereCode()));
 			if(E instanceof GridLocale)
 			{
-				str.append(CMLib.xml().convertXMLtoTag("XGRID",((GridLocale)E).xGridSize()));
-				str.append(CMLib.xml().convertXMLtoTag("YGRID",((GridLocale)E).yGridSize()));
+				str.append(xml.convertXMLtoTag("XGRID",((GridLocale)E).xGridSize()));
+				str.append(xml.convertXMLtoTag("YGRID",((GridLocale)E).yGridSize()));
 			}
 			if(E instanceof LocationRoom)
-				str.append(CMLib.xml().convertXMLtoTag("COREDIR",CMParms.toListString(((LocationRoom)E).getDirectionFromCore())));
+				str.append(xml.convertXMLtoTag("COREDIR",CMParms.toListString(((LocationRoom)E).getDirectionFromCore())));
 			str.append(getExtraEnvPropertiesStr(E));
 			str.append(getGenScripts((Room)E,false));
 		}
@@ -230,7 +231,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			final Area myArea=(Area)E;
 			final StringBuilder parentstr = new StringBuilder();
 			final StringBuilder childrenstr = new StringBuilder();
-			str.append(CMLib.xml().convertXMLtoTag("ARCHP",myArea.getArchivePath()));
+			str.append(xml.convertXMLtoTag("ARCHP",myArea.getArchivePath()));
 			final Area defaultParentArea=CMLib.map().getDefaultParentArea();
 			for(final Enumeration<Area> e=myArea.getParents(); e.hasMoreElements();)
 			{
@@ -238,25 +239,25 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				if((A!=defaultParentArea)||(A.getTimeObj()!=CMLib.time().globalClock()))
 				{
 					parentstr.append("<PARENT>");
-					parentstr.append(CMLib.xml().convertXMLtoTag("PARENTNAMED", A.name()));
+					parentstr.append(xml.convertXMLtoTag("PARENTNAMED", A.name()));
 					parentstr.append("</PARENT>");
 				}
 			}
-			str.append(CMLib.xml().convertXMLtoTag("PARENTS",parentstr.toString()));
+			str.append(xml.convertXMLtoTag("PARENTS",parentstr.toString()));
 			for(final Enumeration<Area> e=myArea.getChildren(); e.hasMoreElements();)
 			{
 				final Area A=e.nextElement();
 				childrenstr.append("<CHILD>");
-				childrenstr.append(CMLib.xml().convertXMLtoTag("CHILDNAMED", A.name()));
+				childrenstr.append(xml.convertXMLtoTag("CHILDNAMED", A.name()));
 				childrenstr.append("</CHILD>");
 			}
-			str.append(CMLib.xml().convertXMLtoTag("CHILDREN",childrenstr.toString()));
+			str.append(xml.convertXMLtoTag("CHILDREN",childrenstr.toString()));
 			str.append(getExtraEnvPropertiesStr(E));
 			str.append(getGenScripts((Area)E,false));
-			str.append(CMLib.xml().convertXMLtoTag("AUTHOR",myArea.getAuthorID()));
-			str.append(CMLib.xml().convertXMLtoTag("CURRENCY",myArea.getCurrency()));
+			str.append(xml.convertXMLtoTag("AUTHOR",myArea.getAuthorID()));
+			str.append(xml.convertXMLtoTag("CURRENCY",myArea.getCurrency()));
 			if(myArea instanceof BoardableShip)
-				str.append(CMLib.xml().convertXMLtoTag("DISP",CMLib.xml().parseOutAngleBrackets(myArea.displayText())));
+				str.append(xml.convertXMLtoTag("DISP",xml.parseOutAngleBrackets(myArea.displayText())));
 			final Vector<String> V=new Vector<String>();
 			String flag=null;
 			for(final Enumeration<String> f=myArea.areaBlurbFlags();f.hasMoreElements();)
@@ -264,41 +265,41 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				flag=f.nextElement();
 				V.addElement((flag+" "+myArea.getBlurbFlag(flag)).trim());
 			}
-			str.append(CMLib.xml().convertXMLtoTag("BLURBS",CMLib.xml().getXMLList(V)));
-			str.append(CMLib.xml().convertXMLtoTag("AATMO",((Area)E).getAtmosphereCode()));
+			str.append(xml.convertXMLtoTag("BLURBS",xml.getXMLList(V)));
+			str.append(xml.convertXMLtoTag("AATMO",((Area)E).getAtmosphereCode()));
 			if(E instanceof GridZones)
-				str.append(CMLib.xml().convertXMLtoTag("XGRID",((GridZones)E).xGridSize())
-						  +CMLib.xml().convertXMLtoTag("YGRID",((GridZones)E).yGridSize()));
+				str.append(xml.convertXMLtoTag("XGRID",((GridZones)E).xGridSize())
+						  +xml.convertXMLtoTag("YGRID",((GridZones)E).yGridSize()));
 			if(E instanceof AutoGenArea)
 			{
-				str.append(CMLib.xml().convertXMLtoTag("AGXMLPATH",CMLib.xml().parseOutAngleBrackets(((AutoGenArea)E).getGeneratorXmlPath())));
-				str.append(CMLib.xml().convertXMLtoTag("AGAUTOVAR",CMLib.xml().parseOutAngleBrackets(CMParms.toEqListString(((AutoGenArea)E).getAutoGenVariables()))));
+				str.append(xml.convertXMLtoTag("AGXMLPATH",xml.parseOutAngleBrackets(((AutoGenArea)E).getGeneratorXmlPath())));
+				str.append(xml.convertXMLtoTag("AGAUTOVAR",xml.parseOutAngleBrackets(CMParms.toEqListString(((AutoGenArea)E).getAutoGenVariables()))));
 			}
 		}
 		else
 		if(E instanceof Ability)
-			str.append(CMLib.xml().convertXMLtoTag("AWRAP",E.text()));
+			str.append(xml.convertXMLtoTag("AWRAP",E.text()));
 		else
 		if(E instanceof Item)
 		{
 			final Item I=(Item)E;
 			str.append((((I instanceof Container)&&(((Container)I).capacity()>0))
-				?CMLib.xml().convertXMLtoTag("IID",""+I):""));
-			str.append(CMLib.xml().convertXMLtoTag("IWORN",""+I.rawWornCode()));
-			str.append(CMLib.xml().convertXMLtoTag("ILOC",""+((I.container()!=null)?(""+I.container()):"")));
-			str.append(CMLib.xml().convertXMLtoTag("IUSES",""+I.usesRemaining()));
-			str.append(CMLib.xml().convertXMLtoTag("ILEVL",""+I.basePhyStats().level()));
-			str.append(CMLib.xml().convertXMLtoTag("IABLE",""+I.basePhyStats().ability()));
-			str.append((E.isGeneric()?"":CMLib.xml().convertXMLtoTag("ITEXT",""+I.text())));
+				?xml.convertXMLtoTag("IID",""+I):""));
+			str.append(xml.convertXMLtoTag("IWORN",""+I.rawWornCode()));
+			str.append(xml.convertXMLtoTag("ILOC",""+((I.container()!=null)?(""+I.container()):"")));
+			str.append(xml.convertXMLtoTag("IUSES",""+I.usesRemaining()));
+			str.append(xml.convertXMLtoTag("ILEVL",""+I.basePhyStats().level()));
+			str.append(xml.convertXMLtoTag("IABLE",""+I.basePhyStats().ability()));
+			str.append((E.isGeneric()?"":xml.convertXMLtoTag("ITEXT",""+I.text())));
 		}
 		else
 		if(E instanceof MOB)
 		{
 			final MOB M=(MOB)E;
-			str.append(CMLib.xml().convertXMLtoTag("MLEVL",""+M.basePhyStats().level()));
-			str.append(CMLib.xml().convertXMLtoTag("MABLE",""+M.basePhyStats().ability()));
-			str.append(CMLib.xml().convertXMLtoTag("MREJV",""+M.basePhyStats().rejuv()));
-			str.append(((E.isGeneric()?"":CMLib.xml().convertXMLtoTag("MTEXT",""+M.text()))));
+			str.append(xml.convertXMLtoTag("MLEVL",""+M.basePhyStats().level()));
+			str.append(xml.convertXMLtoTag("MABLE",""+M.basePhyStats().ability()));
+			str.append(xml.convertXMLtoTag("MREJV",""+M.basePhyStats().rejuv()));
+			str.append(((E.isGeneric()?"":xml.convertXMLtoTag("MTEXT",""+M.text()))));
 		}
 		return str.toString();
 	}
@@ -505,201 +506,209 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 	protected String getGenPropertiesStr(Environmental E)
 	{
+		final XMLLibrary xml=CMLib.xml();
 		final StringBuilder text=new StringBuilder("");
 		text.append(getEnvPropertiesStr(E));
 
-		text.append(CMLib.xml().convertXMLtoTag("FLAG",envFlags(E)));
+		text.append(xml.convertXMLtoTag("FLAG",envFlags(E)));
 
 		if(E instanceof Exit)
 		{
 			final Exit exit=(Exit)E;
 			text.append(
-			 CMLib.xml().convertXMLtoTag("CLOSTX",exit.closedText())
-			+CMLib.xml().convertXMLtoTag("DOORNM",exit.doorName())
-			+CMLib.xml().convertXMLtoTag("OPENNM",exit.openWord())
-			+CMLib.xml().convertXMLtoTag("CLOSNM",exit.closeWord())
-			+CMLib.xml().convertXMLtoTag("KEYNM",exit.keyName())
-			+CMLib.xml().convertXMLtoTag("OPENTK",exit.openDelayTicks()));
+			 xml.convertXMLtoTag("CLOSTX",exit.closedText())
+			+xml.convertXMLtoTag("DOORNM",exit.doorName())
+			+xml.convertXMLtoTag("OPENNM",exit.openWord())
+			+xml.convertXMLtoTag("CLOSNM",exit.closeWord())
+			+xml.convertXMLtoTag("KEYNM",exit.keyName())
+			+xml.convertXMLtoTag("OPENTK",exit.openDelayTicks()));
 		}
 
 		if(E instanceof ClanItem)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("CLANID",""+((ClanItem)E).clanID()));
-			text.append(CMLib.xml().convertXMLtoTag("CITYPE",""+((ClanItem)E).getClanItemType().ordinal()));
+			text.append(xml.convertXMLtoTag("CLANID",""+((ClanItem)E).clanID()));
+			text.append(xml.convertXMLtoTag("CITYPE",""+((ClanItem)E).getClanItemType().ordinal()));
 		}
 
 		if(E instanceof Item)
 		{
 			final Item item=(Item)E;
 			text.append(
-			 CMLib.xml().convertXMLtoTag("IDENT",item.rawSecretIdentity())
-			+CMLib.xml().convertXMLtoTag("VALUE",item.baseGoldValue())
-			//+CMLib.xml().convertXMLtoTag("USES",item.usesRemaining()) // handled 'from top' & in db
-			+CMLib.xml().convertXMLtoTag("MTRAL",item.material())
-			+CMLib.xml().convertXMLtoTag("READ",item.readableText())
-			+CMLib.xml().convertXMLtoTag("WORNL",item.rawLogicalAnd())
-			+CMLib.xml().convertXMLtoTag("WORNB",item.rawProperLocationBitmap()));
+			 xml.convertXMLtoTag("IDENT",item.rawSecretIdentity())
+			+xml.convertXMLtoTag("VALUE",item.baseGoldValue())
+			//+xml.convertXMLtoTag("USES",item.usesRemaining()) // handled 'from top' & in db
+			+xml.convertXMLtoTag("MTRAL",item.material())
+			+xml.convertXMLtoTag("READ",item.readableText())
+			+xml.convertXMLtoTag("WORNL",item.rawLogicalAnd())
+			+xml.convertXMLtoTag("WORNB",item.rawProperLocationBitmap()));
 			if(E instanceof Container)
 			{
-				text.append(CMLib.xml().convertXMLtoTag("CAPA",((Container)item).capacity()));
-				text.append(CMLib.xml().convertXMLtoTag("CONT",((Container)item).containTypes()));
-				text.append(CMLib.xml().convertXMLtoTag("OPENTK",((Container)item).openDelayTicks()));
+				text.append(xml.convertXMLtoTag("CAPA",((Container)item).capacity()));
+				text.append(xml.convertXMLtoTag("CONT",((Container)item).containTypes()));
+				text.append(xml.convertXMLtoTag("OPENTK",((Container)item).openDelayTicks()));
 			}
 			if(E instanceof AmmunitionWeapon)
-				text.append(CMLib.xml().convertXMLtoTag("ACAPA",((AmmunitionWeapon)item).ammunitionCapacity()));
+				text.append(xml.convertXMLtoTag("ACAPA",((AmmunitionWeapon)item).ammunitionCapacity()));
 
 			if(E instanceof BoardableShip)
 			{
-				text.append(CMLib.xml().convertXMLtoTag("SSAREA",CMLib.xml().parseOutAngleBrackets(getAreaObjectXML(((BoardableShip)item).getShipArea(), null, null, null, true).toString())));
-				text.append(CMLib.xml().convertXMLtoTag("PORTID",((BoardableShip)item).getHomePortID()));
+				text.append(xml.convertXMLtoTag("SSAREA",xml.parseOutAngleBrackets(getAreaObjectXML(((BoardableShip)item).getShipArea(), null, null, null, true).toString())));
+				text.append(xml.convertXMLtoTag("PORTID",((BoardableShip)item).getHomePortID()));
 			}
 			if(E instanceof SpaceShip)
 			{
-				text.append(CMLib.xml().convertXMLtoTag("SSOML",((SpaceShip)item).getOMLCoeff()+""));
-				text.append(CMLib.xml().convertXMLtoTag("SSFACE", CMParms.toListString(((SpaceShip)item).facing())));
+				text.append(xml.convertXMLtoTag("SSOML",((SpaceShip)item).getOMLCoeff()+""));
+				text.append(xml.convertXMLtoTag("SSFACE", CMParms.toListString(((SpaceShip)item).facing())));
 			}
 		}
 
 		if(E instanceof Coins)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("CRNC",((Coins)E).getCurrency()));
-			text.append(CMLib.xml().convertXMLtoTag("DENOM",""+((Coins)E).getDenomination()));
+			text.append(xml.convertXMLtoTag("CRNC",((Coins)E).getCurrency()));
+			text.append(xml.convertXMLtoTag("DENOM",""+((Coins)E).getDenomination()));
 		}
 		if(E instanceof Electronics)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("POWC",""+((Electronics)E).powerCapacity()));
-			text.append(CMLib.xml().convertXMLtoTag("POWR",""+((Electronics)E).powerRemaining()));
-			text.append(CMLib.xml().convertXMLtoTag("EACT", ""+((Electronics)E).activated()));
-			text.append(CMLib.xml().convertXMLtoTag("MANUFACT", ((Electronics)E).getManufacturerName()));
+			text.append(xml.convertXMLtoTag("POWC",""+((Electronics)E).powerCapacity()));
+			text.append(xml.convertXMLtoTag("POWR",""+((Electronics)E).powerRemaining()));
+			text.append(xml.convertXMLtoTag("EACT", ""+((Electronics)E).activated()));
+			text.append(xml.convertXMLtoTag("MANUFACT", ((Electronics)E).getManufacturerName()));
 
 		}
 		if(E instanceof ElecPanel)
 		{
 			if(((ElecPanel)E).panelType()!=null)
-				text.append(CMLib.xml().convertXMLtoTag("SSPANELT",""+((ElecPanel)E).panelType().name()));
+				text.append(xml.convertXMLtoTag("SSPANELT",""+((ElecPanel)E).panelType().name()));
 		}
 		if(E instanceof TechComponent)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("INSTF",""+((TechComponent)E).getInstalledFactor()));
-			text.append(CMLib.xml().convertXMLtoTag("RECHRATE",""+((TechComponent)E).getRechargeRate()));
+			text.append(xml.convertXMLtoTag("INSTF",""+((TechComponent)E).getInstalledFactor()));
+			text.append(xml.convertXMLtoTag("RECHRATE",""+((TechComponent)E).getRechargeRate()));
 		}
 		if(E instanceof ShipEngine)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("SSTHRUST",""+((ShipEngine)E).getMaxThrust()));
-			text.append(CMLib.xml().convertXMLtoTag("SSIMPL",""+((ShipEngine)E).getSpecificImpulse()));
-			text.append(CMLib.xml().convertXMLtoTag("SSFEFF",""+((ShipEngine)E).getFuelEfficiency()));
-			text.append(CMLib.xml().convertXMLtoTag("SSNTHRUST",""+((ShipEngine)E).getMinThrust()));
-			text.append(CMLib.xml().convertXMLtoTag("SSCONST",""+((ShipEngine)E).isConstantThruster()));
-			text.append(CMLib.xml().convertXMLtoTag("SSAPORTS",CMParms.toListString(((ShipEngine)E).getAvailPorts())));
+			text.append(xml.convertXMLtoTag("SSTHRUST",""+((ShipEngine)E).getMaxThrust()));
+			text.append(xml.convertXMLtoTag("SSIMPL",""+((ShipEngine)E).getSpecificImpulse()));
+			text.append(xml.convertXMLtoTag("SSFEFF",""+((ShipEngine)E).getFuelEfficiency()));
+			text.append(xml.convertXMLtoTag("SSNTHRUST",""+((ShipEngine)E).getMinThrust()));
+			text.append(xml.convertXMLtoTag("SSCONST",""+((ShipEngine)E).isConstantThruster()));
+			text.append(xml.convertXMLtoTag("SSAPORTS",CMParms.toListString(((ShipEngine)E).getAvailPorts())));
 		}
 		if(E instanceof ShipWarComponent)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("SSPDIRS",""+((ShipWarComponent)E).getPermittedNumDirections()));
-			text.append(CMLib.xml().convertXMLtoTag("SSAPORTS",""+CMParms.toListString(((ShipWarComponent)E).getPermittedDirections())));
-			text.append(CMLib.xml().convertXMLtoTag("SSMTYPES",""+CMParms.toListString(((ShipWarComponent)E).getDamageMsgTypes())));
+			text.append(xml.convertXMLtoTag("SSPDIRS",""+((ShipWarComponent)E).getPermittedNumDirections()));
+			text.append(xml.convertXMLtoTag("SSAPORTS",""+CMParms.toListString(((ShipWarComponent)E).getPermittedDirections())));
+			text.append(xml.convertXMLtoTag("SSMTYPES",""+CMParms.toListString(((ShipWarComponent)E).getDamageMsgTypes())));
 		}
 		if(E instanceof PowerGenerator)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("EGENAMT",""+((PowerGenerator)E).getGeneratedAmountPerTick()));
+			text.append(xml.convertXMLtoTag("EGENAMT",""+((PowerGenerator)E).getGeneratedAmountPerTick()));
 		}
 		if(E instanceof FuelConsumer)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("ECONSTYP",CMParms.toListString(((FuelConsumer)E).getConsumedFuelTypes())));
+			text.append(xml.convertXMLtoTag("ECONSTYP",CMParms.toListString(((FuelConsumer)E).getConsumedFuelTypes())));
 		}
 		if(E instanceof Recipe)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("SKILLID",((Recipe)E).getCommonSkillID()));
+			text.append(xml.convertXMLtoTag("SKILLID",((Recipe)E).getCommonSkillID()));
 			final String[] recipes = ((Recipe)E).getRecipeCodeLines();
 			for(final String recipe : recipes)
-				text.append(CMLib.xml().convertXMLtoTag("RECIPE",recipe));
+				text.append(xml.convertXMLtoTag("RECIPE",recipe));
 		}
 
 		if(E instanceof Light)
-			text.append(CMLib.xml().convertXMLtoTag("BURNOUT",((Light)E).destroyedWhenBurnedOut()));
+			text.append(xml.convertXMLtoTag("BURNOUT",((Light)E).destroyedWhenBurnedOut()));
 
 		if(E instanceof Wand)
-			text.append(CMLib.xml().convertXMLtoTag("MAXUSE",((Wand)E).maxUses()));
+			text.append(xml.convertXMLtoTag("MAXUSE",((Wand)E).maxUses()));
 
 		if(E instanceof Book)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("MAXPG",((Book)E).getMaxPages()));
-			text.append(CMLib.xml().convertXMLtoTag("MAXCHPG",((Book)E).getMaxCharsPerPage()));
+			text.append(xml.convertXMLtoTag("MAXPG",((Book)E).getMaxPages()));
+			text.append(xml.convertXMLtoTag("MAXCHPG",((Book)E).getMaxCharsPerPage()));
 		}
 		
 		if(E instanceof Rideable)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
-			text.append(CMLib.xml().convertXMLtoTag("RIDEC",((Rideable)E).riderCapacity()));
-			text.append(CMLib.xml().convertXMLtoTag("PUTSTR",((Rideable)E).getPutString()));
-			text.append(CMLib.xml().convertXMLtoTag("MOUNTSTR",((Rideable)E).getMountString()));
-			text.append(CMLib.xml().convertXMLtoTag("DISMOUNTSTR",((Rideable)E).getDismountString()));
-			text.append(CMLib.xml().convertXMLtoTag("STATESTR",((Rideable)E).getStateString()));
-			text.append(CMLib.xml().convertXMLtoTag("STATESUBJSTR",((Rideable)E).getStateStringSubject()));
-			text.append(CMLib.xml().convertXMLtoTag("RIDERSTR",((Rideable)E).getRideString()));
+			text.append(xml.convertXMLtoTag("RIDET",((Rideable)E).rideBasis()));
+			text.append(xml.convertXMLtoTag("RIDEC",((Rideable)E).riderCapacity()));
+			text.append(xml.convertXMLtoTag("PUTSTR",((Rideable)E).getPutString()));
+			text.append(xml.convertXMLtoTag("MOUNTSTR",((Rideable)E).getMountString()));
+			text.append(xml.convertXMLtoTag("DISMOUNTSTR",((Rideable)E).getDismountString()));
+			text.append(xml.convertXMLtoTag("STATESTR",((Rideable)E).getStateString()));
+			text.append(xml.convertXMLtoTag("STATESUBJSTR",((Rideable)E).getStateStringSubject()));
+			text.append(xml.convertXMLtoTag("RIDERSTR",((Rideable)E).getRideString()));
 		}
 
 		if(E instanceof RawMaterial)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("DOMN",((RawMaterial)E).domainSource()+""));
-			text.append(CMLib.xml().convertXMLtoTag("RSUBT",((RawMaterial)E).getSubType()+""));
+			text.append(xml.convertXMLtoTag("DOMN",((RawMaterial)E).domainSource()+""));
+			text.append(xml.convertXMLtoTag("RSUBT",((RawMaterial)E).getSubType()+""));
 		}
 
 		if(E instanceof Food)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("CAPA2",((Food)E).nourishment()));
-			text.append(CMLib.xml().convertXMLtoTag("BITE",((Food)E).bite()));
+			text.append(xml.convertXMLtoTag("CAPA2",((Food)E).nourishment()));
+			text.append(xml.convertXMLtoTag("BITE",((Food)E).bite()));
 		}
 
 		if(E instanceof Drink)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("CAPA2",((Drink)E).liquidHeld()));
-			text.append(CMLib.xml().convertXMLtoTag("REMAN",((Drink)E).liquidRemaining()));
-			text.append(CMLib.xml().convertXMLtoTag("LTYPE",((Drink)E).liquidType()));
-			text.append(CMLib.xml().convertXMLtoTag("DRINK",((Drink)E).thirstQuenched()));
+			text.append(xml.convertXMLtoTag("CAPA2",((Drink)E).liquidHeld()));
+			text.append(xml.convertXMLtoTag("REMAN",((Drink)E).liquidRemaining()));
+			text.append(xml.convertXMLtoTag("LTYPE",((Drink)E).liquidType()));
+			text.append(xml.convertXMLtoTag("DRINK",((Drink)E).thirstQuenched()));
 		}
 
 		if(E instanceof Weapon)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("TYPE",((Weapon)E).weaponDamageType()));
-			text.append(CMLib.xml().convertXMLtoTag("CLASS",((Weapon)E).weaponClassification()));
-			text.append(CMLib.xml().convertXMLtoTag("MINR",((Weapon)E).minRange()));
-			text.append(CMLib.xml().convertXMLtoTag("MAXR",((Weapon)E).maxRange()));
+			text.append(xml.convertXMLtoTag("TYPE",((Weapon)E).weaponDamageType()));
+			text.append(xml.convertXMLtoTag("CLASS",((Weapon)E).weaponClassification()));
+			text.append(xml.convertXMLtoTag("MINR",((Weapon)E).minRange()));
+			text.append(xml.convertXMLtoTag("MAXR",((Weapon)E).maxRange()));
+		}
+
+		if(E instanceof FalseLimb)
+		{
+			text.append(xml.convertXMLtoTag("BPARTCD",((FalseLimb)E).getBodyPartCode()));
+			text.append(xml.convertXMLtoTag("WORNLOC",((FalseLimb)E).getWearLocations()));
+			text.append(xml.convertXMLtoTag("RACE",((FalseLimb)E).getRaceID()));
 		}
 
 		if(E instanceof Armor)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("LAYR",((Armor)E).getClothingLayer()));
-			text.append(CMLib.xml().convertXMLtoTag("LAYA",((Armor)E).getLayerAttributes()));
+			text.append(xml.convertXMLtoTag("LAYR",((Armor)E).getClothingLayer()));
+			text.append(xml.convertXMLtoTag("LAYA",((Armor)E).getLayerAttributes()));
 		}
 
 		if(E instanceof LandTitle)
-			text.append(CMLib.xml().convertXMLtoTag("LANDID",((LandTitle)E).landPropertyID()));
+			text.append(xml.convertXMLtoTag("LANDID",((LandTitle)E).landPropertyID()));
 		else
 		if(E instanceof PrivateProperty)
 		{
-			text.append(CMLib.xml().convertXMLtoTag("OWNERID",((PrivateProperty)E).getOwnerName()));
-			text.append(CMLib.xml().convertXMLtoTag("PRICE",((PrivateProperty)E).getPrice()));
+			text.append(xml.convertXMLtoTag("OWNERID",((PrivateProperty)E).getOwnerName()));
+			text.append(xml.convertXMLtoTag("PRICE",((PrivateProperty)E).getPrice()));
 		}
 
 		if(E instanceof Perfume)
-			text.append(CMLib.xml().convertXMLtoTag("SMELLLST",((Perfume)E).getSmellList()));
+			text.append(xml.convertXMLtoTag("SMELLLST",((Perfume)E).getSmellList()));
 
 		if(E instanceof DeadBody)
 		{
 			if(((DeadBody)E).charStats()!=null)
 			{
-				text.append(CMLib.xml().convertXMLtoTag("GENDER",""+(char)((DeadBody)E).charStats().getStat(CharStats.STAT_GENDER)));
-				text.append(CMLib.xml().convertXMLtoTag("MRACE",""+((DeadBody)E).charStats().getMyRace().ID()));
-				text.append(CMLib.xml().convertXMLtoTag("MDNAME",""+((DeadBody)E).getMobName()));
-				text.append(CMLib.xml().convertXMLtoTag("MDDESC",""+((DeadBody)E).getMobDescription()));
-				text.append(CMLib.xml().convertXMLtoTag("MKNAME",""+((DeadBody)E).getKillerName()));
-				text.append(CMLib.xml().convertXMLtoTag("MTOD",""+((DeadBody)E).getTimeOfDeath()));
-				text.append(CMLib.xml().convertXMLtoTag("MKPLAY",""+((DeadBody)E).isKillerPlayer()));
-				text.append(CMLib.xml().convertXMLtoTag("MHASH",""+((DeadBody)E).getMobHash()));
-				text.append(CMLib.xml().convertXMLtoTag("MDLMSG",""+((DeadBody)E).getLastMessage()));
-				text.append(CMLib.xml().convertXMLtoTag("MBREAL",""+((DeadBody)E).isDestroyedAfterLooting()));
-				text.append(CMLib.xml().convertXMLtoTag("MPLAYR",""+((DeadBody)E).isPlayerCorpse()));
-				text.append(CMLib.xml().convertXMLtoTag("MPKILL",""+((DeadBody)E).getMobPKFlag()));
+				text.append(xml.convertXMLtoTag("GENDER",""+(char)((DeadBody)E).charStats().getStat(CharStats.STAT_GENDER)));
+				text.append(xml.convertXMLtoTag("MRACE",""+((DeadBody)E).charStats().getMyRace().ID()));
+				text.append(xml.convertXMLtoTag("MDNAME",""+((DeadBody)E).getMobName()));
+				text.append(xml.convertXMLtoTag("MDDESC",""+((DeadBody)E).getMobDescription()));
+				text.append(xml.convertXMLtoTag("MKNAME",""+((DeadBody)E).getKillerName()));
+				text.append(xml.convertXMLtoTag("MTOD",""+((DeadBody)E).getTimeOfDeath()));
+				text.append(xml.convertXMLtoTag("MKPLAY",""+((DeadBody)E).isKillerPlayer()));
+				text.append(xml.convertXMLtoTag("MHASH",""+((DeadBody)E).getMobHash()));
+				text.append(xml.convertXMLtoTag("MDLMSG",""+((DeadBody)E).getLastMessage()));
+				text.append(xml.convertXMLtoTag("MBREAL",""+((DeadBody)E).isDestroyedAfterLooting()));
+				text.append(xml.convertXMLtoTag("MPLAYR",""+((DeadBody)E).isPlayerCorpse()));
+				text.append(xml.convertXMLtoTag("MPKILL",""+((DeadBody)E).getMobPKFlag()));
 				final MOB savedDeadBodyM=((DeadBody)E).getSavedMOB();
 				if(savedDeadBodyM!=null)
 				{
@@ -713,83 +722,83 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				else
 				{
 					text.append("<KLTOOL>");
-					text.append(CMLib.xml().convertXMLtoTag("KLCLASS",CMClass.classID(((DeadBody)E).getKillerTool())));
-					text.append(CMLib.xml().convertXMLtoTag("KLDATA",getPropertiesStr(((DeadBody)E).getKillerTool(),true)));
+					text.append(xml.convertXMLtoTag("KLCLASS",CMClass.classID(((DeadBody)E).getKillerTool())));
+					text.append(xml.convertXMLtoTag("KLDATA",getPropertiesStr(((DeadBody)E).getKillerTool(),true)));
 					text.append("</KLTOOL>");
 				}
 			}
 			else
 			{
-				text.append(CMLib.xml().convertXMLtoTag("GENDER","M"));
-				text.append(CMLib.xml().convertXMLtoTag("MRACE","Human"));
-				text.append(CMLib.xml().convertXMLtoTag("MPLAYR","false"));
+				text.append(xml.convertXMLtoTag("GENDER","M"));
+				text.append(xml.convertXMLtoTag("MRACE","Human"));
+				text.append(xml.convertXMLtoTag("MPLAYR","false"));
 			}
 		}
 
 		if(E instanceof MOB)
 		{
 			final int money = CMLib.beanCounter().getMoney((MOB)E);
-			text.append(CMLib.xml().convertXMLtoTag("MONEY",money));
-			text.append(CMLib.xml().convertXMLtoTag("VARMONEY",""+((MOB)E).getMoneyVariation()));
+			text.append(xml.convertXMLtoTag("MONEY",money));
+			text.append(xml.convertXMLtoTag("VARMONEY",""+((MOB)E).getMoneyVariation()));
 			CMLib.beanCounter().clearInventoryMoney((MOB)E,null);
 			((MOB)E).setMoney(money);
 			for(final Pair<Clan,Integer> p : ((MOB)E).clans())
 				text.append("<CLAN ROLE=").append(p.second.toString()).append(">").append(p.first.clanID()).append("</CLAN>");
-			text.append(CMLib.xml().convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getStat(CharStats.STAT_GENDER)));
-			text.append(CMLib.xml().convertXMLtoTag("MRACE",""+((MOB)E).baseCharStats().getMyRace().ID()));
+			text.append(xml.convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getStat(CharStats.STAT_GENDER)));
+			text.append(xml.convertXMLtoTag("MRACE",""+((MOB)E).baseCharStats().getMyRace().ID()));
 			text.append(getFactionXML((MOB)E));
 			text.append(getGenMobInventory((MOB)E));
 			text.append(getGenMobAbilities((MOB)E));
 
 			if(E instanceof Banker)
 			{
-				text.append(CMLib.xml().convertXMLtoTag("BANK",""+((Banker)E).bankChain()));
-				text.append(CMLib.xml().convertXMLtoTag("COININT",""+((Banker)E).getCoinInterest()));
-				text.append(CMLib.xml().convertXMLtoTag("ITEMINT",""+((Banker)E).getItemInterest()));
-				text.append(CMLib.xml().convertXMLtoTag("LOANINT",""+((Banker)E).getLoanInterest()));
+				text.append(xml.convertXMLtoTag("BANK",""+((Banker)E).bankChain()));
+				text.append(xml.convertXMLtoTag("COININT",""+((Banker)E).getCoinInterest()));
+				text.append(xml.convertXMLtoTag("ITEMINT",""+((Banker)E).getItemInterest()));
+				text.append(xml.convertXMLtoTag("LOANINT",""+((Banker)E).getLoanInterest()));
 			}
 			if(E instanceof PostOffice)
 			{
-				text.append(CMLib.xml().convertXMLtoTag("POSTCHAIN",""+((PostOffice)E).postalChain()));
-				text.append(CMLib.xml().convertXMLtoTag("POSTMIN",""+((PostOffice)E).minimumPostage()));
-				text.append(CMLib.xml().convertXMLtoTag("POSTLBS",""+((PostOffice)E).postagePerPound()));
-				text.append(CMLib.xml().convertXMLtoTag("POSTHOLD",""+((PostOffice)E).holdFeePerPound()));
-				text.append(CMLib.xml().convertXMLtoTag("POSTNEW",""+((PostOffice)E).feeForNewBox()));
-				text.append(CMLib.xml().convertXMLtoTag("POSTHELD",""+((PostOffice)E).maxMudMonthsHeld()));
+				text.append(xml.convertXMLtoTag("POSTCHAIN",""+((PostOffice)E).postalChain()));
+				text.append(xml.convertXMLtoTag("POSTMIN",""+((PostOffice)E).minimumPostage()));
+				text.append(xml.convertXMLtoTag("POSTLBS",""+((PostOffice)E).postagePerPound()));
+				text.append(xml.convertXMLtoTag("POSTHOLD",""+((PostOffice)E).holdFeePerPound()));
+				text.append(xml.convertXMLtoTag("POSTNEW",""+((PostOffice)E).feeForNewBox()));
+				text.append(xml.convertXMLtoTag("POSTHELD",""+((PostOffice)E).maxMudMonthsHeld()));
 			}
 			if(E instanceof Librarian)
 			{
-				text.append(CMLib.xml().convertXMLtoTag("LIBRCHAIN",""+((Librarian)E).libraryChain()));
-				text.append(CMLib.xml().convertXMLtoTag("LIBROVERCHG",""+((Librarian)E).getOverdueCharge()));
-				text.append(CMLib.xml().convertXMLtoTag("LIBRDAYCHG",""+((Librarian)E).getDailyOverdueCharge()));
-				text.append(CMLib.xml().convertXMLtoTag("LIBROVERPCT",""+((Librarian)E).getOverdueChargePct()));
-				text.append(CMLib.xml().convertXMLtoTag("LIBDAYPCT",""+((Librarian)E).getDailyOverdueChargePct()));
-				text.append(CMLib.xml().convertXMLtoTag("LIBMINDAYS",""+((Librarian)E).getMinOverdueDays()));
-				text.append(CMLib.xml().convertXMLtoTag("LIBMAXDAYS",""+((Librarian)E).getMaxOverdueDays()));
-				text.append(CMLib.xml().convertXMLtoTag("LIBMAXBORROW",""+((Librarian)E).getMaxBorrowed()));
-				text.append(CMLib.xml().convertXMLtoTag("POSTCMASK",""+((Librarian)E).contributorMask()));
+				text.append(xml.convertXMLtoTag("LIBRCHAIN",""+((Librarian)E).libraryChain()));
+				text.append(xml.convertXMLtoTag("LIBROVERCHG",""+((Librarian)E).getOverdueCharge()));
+				text.append(xml.convertXMLtoTag("LIBRDAYCHG",""+((Librarian)E).getDailyOverdueCharge()));
+				text.append(xml.convertXMLtoTag("LIBROVERPCT",""+((Librarian)E).getOverdueChargePct()));
+				text.append(xml.convertXMLtoTag("LIBDAYPCT",""+((Librarian)E).getDailyOverdueChargePct()));
+				text.append(xml.convertXMLtoTag("LIBMINDAYS",""+((Librarian)E).getMinOverdueDays()));
+				text.append(xml.convertXMLtoTag("LIBMAXDAYS",""+((Librarian)E).getMaxOverdueDays()));
+				text.append(xml.convertXMLtoTag("LIBMAXBORROW",""+((Librarian)E).getMaxBorrowed()));
+				text.append(xml.convertXMLtoTag("POSTCMASK",""+((Librarian)E).contributorMask()));
 			}
 			if(E instanceof Auctioneer)
 			{
-				text.append(CMLib.xml().convertXMLtoTag("AUCHOUSE",""+((Auctioneer)E).auctionHouse()));
-				//text.append(CMLib.xml().convertXMLtoTag("LIVEPRICE",""+((Auctioneer)E).liveListingPrice()));
-				text.append(CMLib.xml().convertXMLtoTag("TIMEPRICE",""+((Auctioneer)E).timedListingPrice()));
-				text.append(CMLib.xml().convertXMLtoTag("TIMEPCT",""+((Auctioneer)E).timedListingPct()));
-				//text.append(CMLib.xml().convertXMLtoTag("LIVECUT",""+((Auctioneer)E).liveFinalCutPct()));
-				text.append(CMLib.xml().convertXMLtoTag("TIMECUT",""+((Auctioneer)E).timedFinalCutPct()));
-				text.append(CMLib.xml().convertXMLtoTag("MAXADAYS",""+((Auctioneer)E).maxTimedAuctionDays()));
-				text.append(CMLib.xml().convertXMLtoTag("MINADAYS",""+((Auctioneer)E).minTimedAuctionDays()));
+				text.append(xml.convertXMLtoTag("AUCHOUSE",""+((Auctioneer)E).auctionHouse()));
+				//text.append(xml.convertXMLtoTag("LIVEPRICE",""+((Auctioneer)E).liveListingPrice()));
+				text.append(xml.convertXMLtoTag("TIMEPRICE",""+((Auctioneer)E).timedListingPrice()));
+				text.append(xml.convertXMLtoTag("TIMEPCT",""+((Auctioneer)E).timedListingPct()));
+				//text.append(xml.convertXMLtoTag("LIVECUT",""+((Auctioneer)E).liveFinalCutPct()));
+				text.append(xml.convertXMLtoTag("TIMECUT",""+((Auctioneer)E).timedFinalCutPct()));
+				text.append(xml.convertXMLtoTag("MAXADAYS",""+((Auctioneer)E).maxTimedAuctionDays()));
+				text.append(xml.convertXMLtoTag("MINADAYS",""+((Auctioneer)E).minTimedAuctionDays()));
 			}
 			if(E instanceof Deity)
 			{
-				text.append(CMLib.xml().convertXMLtoTag("CLEREQ",((Deity)E).getClericRequirements()));
-				text.append(CMLib.xml().convertXMLtoTag("WORREQ",((Deity)E).getWorshipRequirements()));
-				text.append(CMLib.xml().convertXMLtoTag("CLERIT",((Deity)E).getClericRitual()));
-				text.append(CMLib.xml().convertXMLtoTag("WORRIT",((Deity)E).getWorshipRitual()));
-				text.append(CMLib.xml().convertXMLtoTag("CLERSIT",((Deity)E).getClericSin()));
-				text.append(CMLib.xml().convertXMLtoTag("WORRSIT",((Deity)E).getWorshipSin()));
-				text.append(CMLib.xml().convertXMLtoTag("CLERPOW",((Deity)E).getClericPowerup()));
-				text.append(CMLib.xml().convertXMLtoTag("SVCRIT",((Deity)E).getServiceRitual()));
+				text.append(xml.convertXMLtoTag("CLEREQ",((Deity)E).getClericRequirements()));
+				text.append(xml.convertXMLtoTag("WORREQ",((Deity)E).getWorshipRequirements()));
+				text.append(xml.convertXMLtoTag("CLERIT",((Deity)E).getClericRitual()));
+				text.append(xml.convertXMLtoTag("WORRIT",((Deity)E).getWorshipRitual()));
+				text.append(xml.convertXMLtoTag("CLERSIT",((Deity)E).getClericSin()));
+				text.append(xml.convertXMLtoTag("WORRSIT",((Deity)E).getWorshipSin()));
+				text.append(xml.convertXMLtoTag("CLERPOW",((Deity)E).getClericPowerup()));
+				text.append(xml.convertXMLtoTag("SVCRIT",((Deity)E).getServiceRitual()));
 
 				StringBuilder itemstr=new StringBuilder("");
 				for(int b=0;b<((Deity)E).numBlessings();b++)
@@ -798,12 +807,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					if(A==null)
 						continue;
 					itemstr.append("<BLESS>");
-					itemstr.append(CMLib.xml().convertXMLtoTag("BLCLASS",CMClass.classID(A)));
-					itemstr.append(CMLib.xml().convertXMLtoTag("BLONLY",""+((Deity)E).fetchBlessingCleric(b)));
-					itemstr.append(CMLib.xml().convertXMLtoTag("BLDATA",getPropertiesStr(A,true)));
+					itemstr.append(xml.convertXMLtoTag("BLCLASS",CMClass.classID(A)));
+					itemstr.append(xml.convertXMLtoTag("BLONLY",""+((Deity)E).fetchBlessingCleric(b)));
+					itemstr.append(xml.convertXMLtoTag("BLDATA",getPropertiesStr(A,true)));
 					itemstr.append("</BLESS>");
 				}
-				text.append(CMLib.xml().convertXMLtoTag("BLESSINGS",itemstr.toString()));
+				text.append(xml.convertXMLtoTag("BLESSINGS",itemstr.toString()));
 
 				itemstr=new StringBuilder("");
 				for(int b=0;b<((Deity)E).numCurses();b++)
@@ -812,12 +821,12 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					if(A==null)
 						continue;
 					itemstr.append("<CURSE>");
-					itemstr.append(CMLib.xml().convertXMLtoTag("CUCLASS",CMClass.classID(A)));
-					itemstr.append(CMLib.xml().convertXMLtoTag("CUONLY",""+((Deity)E).fetchCurseCleric(b)));
-					itemstr.append(CMLib.xml().convertXMLtoTag("CUDATA",getPropertiesStr(A,true)));
+					itemstr.append(xml.convertXMLtoTag("CUCLASS",CMClass.classID(A)));
+					itemstr.append(xml.convertXMLtoTag("CUONLY",""+((Deity)E).fetchCurseCleric(b)));
+					itemstr.append(xml.convertXMLtoTag("CUDATA",getPropertiesStr(A,true)));
 					itemstr.append("</CURSE>");
 				}
-				text.append(CMLib.xml().convertXMLtoTag("CURSES",itemstr.toString()));
+				text.append(xml.convertXMLtoTag("CURSES",itemstr.toString()));
 
 				itemstr=new StringBuilder("");
 				for(int b=0;b<((Deity)E).numPowers();b++)
@@ -826,30 +835,30 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					if(A==null)
 						continue;
 					itemstr.append("<POWER>");
-					itemstr.append(CMLib.xml().convertXMLtoTag("POCLASS",CMClass.classID(A)));
-					itemstr.append(CMLib.xml().convertXMLtoTag("PODATA",getPropertiesStr(A,true)));
+					itemstr.append(xml.convertXMLtoTag("POCLASS",CMClass.classID(A)));
+					itemstr.append(xml.convertXMLtoTag("PODATA",getPropertiesStr(A,true)));
 					itemstr.append("</POWER>");
 				}
-				text.append(CMLib.xml().convertXMLtoTag("POWERS",itemstr.toString()));
+				text.append(xml.convertXMLtoTag("POWERS",itemstr.toString()));
 			}
 			if(E instanceof ShopKeeper)
 			{
-				text.append(CMLib.xml().convertXMLtoTag("SELLCD",((ShopKeeper)E).getWhatIsSoldMask()));
-				text.append(CMLib.xml().convertXMLtoTag("SELLIMSK",CMLib.xml().parseOutAngleBrackets(((ShopKeeper)E).getWhatIsSoldZappermask())));
+				text.append(xml.convertXMLtoTag("SELLCD",((ShopKeeper)E).getWhatIsSoldMask()));
+				text.append(xml.convertXMLtoTag("SELLIMSK",xml.parseOutAngleBrackets(((ShopKeeper)E).getWhatIsSoldZappermask())));
 				final StringBuilder itemstr=new StringBuilder("");
 				final CoffeeShop shop=(E instanceof Librarian)?((Librarian)E).getBaseLibrary():((ShopKeeper)E).getShop();
 				for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 				{
 					final Environmental E2=i.next();
 					itemstr.append("<SHITEM>");
-					itemstr.append(CMLib.xml().convertXMLtoTag("SICLASS",CMClass.classID(E2)));
-					itemstr.append(CMLib.xml().convertXMLtoTag("SITYPE",CMClass.getType(E2).toString()));
-					itemstr.append(CMLib.xml().convertXMLtoTag("SISTOCK",shop.numberInStock(E2)));
-					itemstr.append(CMLib.xml().convertXMLtoTag("SIPRICE",shop.stockPrice(E2)));
-					itemstr.append(CMLib.xml().convertXMLtoTag("SIDATA",getPropertiesStr(E2,true)));
+					itemstr.append(xml.convertXMLtoTag("SICLASS",CMClass.classID(E2)));
+					itemstr.append(xml.convertXMLtoTag("SITYPE",CMClass.getType(E2).toString()));
+					itemstr.append(xml.convertXMLtoTag("SISTOCK",shop.numberInStock(E2)));
+					itemstr.append(xml.convertXMLtoTag("SIPRICE",shop.stockPrice(E2)));
+					itemstr.append(xml.convertXMLtoTag("SIDATA",getPropertiesStr(E2,true)));
 					itemstr.append("</SHITEM>");
 				}
-				text.append(CMLib.xml().convertXMLtoTag("STORE",itemstr.toString()));
+				text.append(xml.convertXMLtoTag("STORE",itemstr.toString()));
 			}
 			if(((MOB)E).tattoos().hasMoreElements())
 			{
@@ -3088,13 +3097,14 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 	protected void setGenPropertiesStr(Environmental E, List<XMLTag> buf)
 	{
+		final XMLLibrary xml = CMLib.xml();
 		if(buf==null)
 		{
 			Log.errOut("CoffeeMaker","null XML returned on "+identifier(E,null)+" parse.  Load aborted.");
 			return;
 		}
 
-		if((E instanceof MOB)&&(CMLib.xml().getValFromPieces(buf,"GENDER").length()==0))
+		if((E instanceof MOB)&&(xml.getValFromPieces(buf,"GENDER").length()==0))
 		{
 			Log.errOut("CoffeeMaker","MOB "+identifier(E,null)+" has malformed XML. Load aborted.");
 			return;
@@ -3141,8 +3151,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof MOB)
 		{
 			final MOB mob=(MOB)E;
-			mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.xml().getValFromPieces(buf,"GENDER").charAt(0));
-			final List<XMLTag> clanPieces=CMLib.xml().getPiecesFromPieces(buf,"CLAN");
+			mob.baseCharStats().setStat(CharStats.STAT_GENDER,xml.getValFromPieces(buf,"GENDER").charAt(0));
+			final List<XMLTag> clanPieces=xml.getPiecesFromPieces(buf,"CLAN");
 			for(final XMLTag p : clanPieces)
 			{
 				final String clanID=p.value();
@@ -3155,7 +3165,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					mob.setClan(C.clanID(), roleID);
 				}
 			}
-			final String raceID=CMLib.xml().getValFromPieces(buf,"MRACE");
+			final String raceID=xml.getValFromPieces(buf,"MRACE");
 			final Race R=(raceID.length()>0)?CMClass.getRace(raceID):null;
 			if(R!=null)
 			{
@@ -3167,58 +3177,58 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 
 		setEnvProperties(E,buf);
-		final String deprecatedFlag=CMLib.xml().getValFromPieces(buf,"FLAG");
+		final String deprecatedFlag=xml.getValFromPieces(buf,"FLAG");
 		if((deprecatedFlag!=null)&&(deprecatedFlag.length()>0))
 			setEnvFlags(E,CMath.s_int(deprecatedFlag));
 
 		if(E instanceof Exit)
 		{
 			final Exit exit=(Exit)E;
-			final String closedText=CMLib.xml().getValFromPieces(buf,"CLOSTX");
-			final String doorName=CMLib.xml().getValFromPieces(buf,"DOORNM");
-			final String openName=CMLib.xml().getValFromPieces(buf,"OPENNM");
-			final String closeName=CMLib.xml().getValFromPieces(buf,"CLOSNM");
+			final String closedText=xml.getValFromPieces(buf,"CLOSTX");
+			final String doorName=xml.getValFromPieces(buf,"DOORNM");
+			final String openName=xml.getValFromPieces(buf,"OPENNM");
+			final String closeName=xml.getValFromPieces(buf,"CLOSNM");
 			exit.setExitParams(doorName,closeName,openName,closedText);
-			exit.setKeyName(CMLib.xml().getValFromPieces(buf,"KEYNM"));
-			exit.setOpenDelayTicks(CMLib.xml().getIntFromPieces(buf,"OPENTK"));
+			exit.setKeyName(xml.getValFromPieces(buf,"KEYNM"));
+			exit.setOpenDelayTicks(xml.getIntFromPieces(buf,"OPENTK"));
 		}
 
 		if(E instanceof ClanItem)
 		{
-			((ClanItem)E).setClanID(CMLib.xml().getValFromPieces(buf,"CLANID"));
-			((ClanItem)E).setClanItemType(ClanItem.ClanItemType.values()[CMLib.xml().getIntFromPieces(buf,"CITYPE")]);
+			((ClanItem)E).setClanID(xml.getValFromPieces(buf,"CLANID"));
+			((ClanItem)E).setClanItemType(ClanItem.ClanItemType.values()[xml.getIntFromPieces(buf,"CITYPE")]);
 		}
 
 		if(E instanceof Item)
 		{
 			final Item item=(Item)E;
-			item.setSecretIdentity(CMLib.xml().getValFromPieces(buf,"IDENT"));
-			item.setBaseValue(CMLib.xml().getIntFromPieces(buf,"VALUE"));
-			item.setMaterial(CMLib.xml().getIntFromPieces(buf,"MTRAL"));
-			//item.setUsesRemaining(CMath.s_int(CMLib.xml().returnXMLValue(buf,"USES"))); // handled 'from top' & in db
+			item.setSecretIdentity(xml.getValFromPieces(buf,"IDENT"));
+			item.setBaseValue(xml.getIntFromPieces(buf,"VALUE"));
+			item.setMaterial(xml.getIntFromPieces(buf,"MTRAL"));
+			//item.setUsesRemaining(CMath.s_int(xml.returnXMLValue(buf,"USES"))); // handled 'from top' & in db
 			if(item instanceof Container)
 			{
-				((Container)item).setCapacity(CMLib.xml().getIntFromPieces(buf,"CAPA"));
-				((Container)item).setContainTypes(CMLib.xml().getLongFromPieces(buf,"CONT"));
-				final String openDelayStr=CMLib.xml().getValFromPieces(buf,"OPENTK");
+				((Container)item).setCapacity(xml.getIntFromPieces(buf,"CAPA"));
+				((Container)item).setContainTypes(xml.getLongFromPieces(buf,"CONT"));
+				final String openDelayStr=xml.getValFromPieces(buf,"OPENTK");
 				if((openDelayStr!=null)&&(openDelayStr.length()>0))
 					((Container)item).setOpenDelayTicks(CMath.s_int(openDelayStr));
 
 			}
 			if(item instanceof AmmunitionWeapon)
-				((AmmunitionWeapon)item).setAmmoCapacity(CMLib.xml().getIntFromPieces(buf,"ACAPA"));
-			item.setRawLogicalAnd(CMLib.xml().getBoolFromPieces(buf,"WORNL"));
-			item.setRawProperLocationBitmap(CMLib.xml().getLongFromPieces(buf,"WORNB"));
-			item.setReadableText(CMLib.xml().getValFromPieces(buf,"READ"));
+				((AmmunitionWeapon)item).setAmmoCapacity(xml.getIntFromPieces(buf,"ACAPA"));
+			item.setRawLogicalAnd(xml.getBoolFromPieces(buf,"WORNL"));
+			item.setRawProperLocationBitmap(xml.getLongFromPieces(buf,"WORNB"));
+			item.setReadableText(xml.getValFromPieces(buf,"READ"));
 			if(item instanceof BoardableShip)
 			{
-				((BoardableShip)item).setShipArea(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(buf,"SSAREA")));
-				((BoardableShip)item).setHomePortID(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(buf,"PORTID")));
+				((BoardableShip)item).setShipArea(xml.restoreAngleBrackets(xml.getValFromPieces(buf,"SSAREA")));
+				((BoardableShip)item).setHomePortID(xml.restoreAngleBrackets(xml.getValFromPieces(buf,"PORTID")));
 			}
 			if(item instanceof SpaceShip)
 			{
-				((SpaceShip)item).setOMLCoeff(CMLib.xml().getDoubleFromPieces(buf,"SSOML"));
-				double[] facing=CMParms.toDoubleArray(CMParms.parseCommas(CMLib.xml().getValFromPieces(buf,"SSFACE"),true));
+				((SpaceShip)item).setOMLCoeff(xml.getDoubleFromPieces(buf,"SSOML"));
+				double[] facing=CMParms.toDoubleArray(CMParms.parseCommas(xml.getValFromPieces(buf,"SSFACE"),true));
 				if((facing!=null)&&(facing.length==2))
 					((SpaceShip)item).setFacing(facing);
 			}
@@ -3226,48 +3236,48 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 
 		if(E instanceof Book)
 		{
-			((Book)E).setMaxPages(CMLib.xml().getIntFromPieces(buf, "MAXPG"));
-			((Book)E).setMaxCharsPerPage(CMLib.xml().getIntFromPieces(buf, "MAXCHPG"));
+			((Book)E).setMaxPages(xml.getIntFromPieces(buf, "MAXPG"));
+			((Book)E).setMaxCharsPerPage(xml.getIntFromPieces(buf, "MAXCHPG"));
 		}
 		
 		if(E instanceof Rideable)
 		{
-			((Rideable)E).setRideBasis(CMLib.xml().getIntFromPieces(buf,"RIDET"));
-			((Rideable)E).setRiderCapacity(CMLib.xml().getIntFromPieces(buf,"RIDEC"));
-			((Rideable)E).setPutString(CMLib.xml().getValFromPieces(buf, "PUTSTR", ""));
-			((Rideable)E).setMountString(CMLib.xml().getValFromPieces(buf, "MOUNTSTR", ""));
-			((Rideable)E).setDismountString(CMLib.xml().getValFromPieces(buf, "DISMOUNTSTR", ""));
-			((Rideable)E).setRideString(CMLib.xml().getValFromPieces(buf, "RIDERSTR", ""));
-			((Rideable)E).setStateString(CMLib.xml().getValFromPieces(buf, "STATESTR", ""));
-			((Rideable)E).setStateStringSubject(CMLib.xml().getValFromPieces(buf, "STATESUBJSTR", ""));
+			((Rideable)E).setRideBasis(xml.getIntFromPieces(buf,"RIDET"));
+			((Rideable)E).setRiderCapacity(xml.getIntFromPieces(buf,"RIDEC"));
+			((Rideable)E).setPutString(xml.getValFromPieces(buf, "PUTSTR", ""));
+			((Rideable)E).setMountString(xml.getValFromPieces(buf, "MOUNTSTR", ""));
+			((Rideable)E).setDismountString(xml.getValFromPieces(buf, "DISMOUNTSTR", ""));
+			((Rideable)E).setRideString(xml.getValFromPieces(buf, "RIDERSTR", ""));
+			((Rideable)E).setStateString(xml.getValFromPieces(buf, "STATESTR", ""));
+			((Rideable)E).setStateStringSubject(xml.getValFromPieces(buf, "STATESUBJSTR", ""));
 		}
 		if(E instanceof Electronics)
 		{
-			((Electronics)E).setPowerCapacity(CMLib.xml().getIntFromPieces(buf,"POWC"));
-			((Electronics)E).setPowerRemaining(CMLib.xml().getIntFromPieces(buf,"POWR"));
-			((Electronics)E).activate(CMLib.xml().getBoolFromPieces(buf, "EACT"));
-			((Electronics)E).setManufacturerName(CMLib.xml().getValFromPieces(buf, "MANUFACT"));
+			((Electronics)E).setPowerCapacity(xml.getIntFromPieces(buf,"POWC"));
+			((Electronics)E).setPowerRemaining(xml.getIntFromPieces(buf,"POWR"));
+			((Electronics)E).activate(xml.getBoolFromPieces(buf, "EACT"));
+			((Electronics)E).setManufacturerName(xml.getValFromPieces(buf, "MANUFACT"));
 		}
 		if(E instanceof ElecPanel)
 		{
-			final String panelType=CMLib.xml().getValFromPieces(buf,"SSPANELT");
+			final String panelType=xml.getValFromPieces(buf,"SSPANELT");
 			final Technical.TechType type = (Technical.TechType)CMath.s_valueOf(Technical.TechType.class, panelType);
 			if(type != null)
 				((ElecPanel)E).setPanelType(type);
 		}
 		if(E instanceof TechComponent)
 		{
-			((TechComponent)E).setInstalledFactor((float)CMLib.xml().getDoubleFromPieces(buf,"INSTF"));
-			((TechComponent)E).setRechargeRate((float)CMLib.xml().getDoubleFromPieces(buf,"RECHRATE",((TechComponent)E).getRechargeRate()));
+			((TechComponent)E).setInstalledFactor((float)xml.getDoubleFromPieces(buf,"INSTF"));
+			((TechComponent)E).setRechargeRate((float)xml.getDoubleFromPieces(buf,"RECHRATE",((TechComponent)E).getRechargeRate()));
 		}
 		if(E instanceof ShipEngine)
 		{
-			((ShipEngine)E).setMaxThrust(CMLib.xml().getIntFromPieces(buf,"SSTHRUST"));
-			((ShipEngine)E).setSpecificImpulse(CMLib.xml().getIntFromPieces(buf,"SSIMPL"));
-			((ShipEngine)E).setFuelEfficiency(CMLib.xml().getDoubleFromPieces(buf,"SSFEFF"));
-			((ShipEngine)E).setMinThrust(CMLib.xml().getIntFromPieces(buf,"SSNTHRUST"));
-			((ShipEngine)E).setConstantThruster(CMLib.xml().getBoolFromPieces(buf,"SSCONST",true));
-			final String portsStr = CMLib.xml().getValFromPieces(buf, "SSAPORTS", "");
+			((ShipEngine)E).setMaxThrust(xml.getIntFromPieces(buf,"SSTHRUST"));
+			((ShipEngine)E).setSpecificImpulse(xml.getIntFromPieces(buf,"SSIMPL"));
+			((ShipEngine)E).setFuelEfficiency(xml.getDoubleFromPieces(buf,"SSFEFF"));
+			((ShipEngine)E).setMinThrust(xml.getIntFromPieces(buf,"SSNTHRUST"));
+			((ShipEngine)E).setConstantThruster(xml.getBoolFromPieces(buf,"SSCONST",true));
+			final String portsStr = xml.getValFromPieces(buf, "SSAPORTS", "");
 			if(portsStr.length()==0)
 				((ShipEngine)E).setAvailPorts(TechComponent.ShipDir.values());
 			else
@@ -3275,17 +3285,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof ShipWarComponent)
 		{
-			((ShipWarComponent)E).setPermittedNumDirections(CMLib.xml().getIntFromPieces(buf,"SSPDIRS"));
-			((ShipWarComponent)E).setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class, CMLib.xml().getValFromPieces(buf,"SSAPORTS"), ',').toArray(new TechComponent.ShipDir[0]));
-			((ShipWarComponent)E).setDamageMsgTypes(CMParms.parseIntList(CMLib.xml().getValFromPieces(buf,"SSMTYPES"),','));
+			((ShipWarComponent)E).setPermittedNumDirections(xml.getIntFromPieces(buf,"SSPDIRS"));
+			((ShipWarComponent)E).setPermittedDirections(CMParms.parseEnumList(TechComponent.ShipDir.class, xml.getValFromPieces(buf,"SSAPORTS"), ',').toArray(new TechComponent.ShipDir[0]));
+			((ShipWarComponent)E).setDamageMsgTypes(CMParms.parseIntList(xml.getValFromPieces(buf,"SSMTYPES"),','));
 		}
 		if(E instanceof PowerGenerator)
 		{
-			((PowerGenerator)E).setGeneratedAmountPerTick(CMLib.xml().getIntFromPieces(buf,"EGENAMT"));
+			((PowerGenerator)E).setGeneratedAmountPerTick(xml.getIntFromPieces(buf,"EGENAMT"));
 		}
 		if(E instanceof FuelConsumer)
 		{
-			final List<String> mats = CMParms.parseCommas(CMLib.xml().getValFromPieces(buf,"ECONSTYP"),true);
+			final List<String> mats = CMParms.parseCommas(xml.getValFromPieces(buf,"ECONSTYP"),true);
 			final int[] newMats = new int[mats.size()];
 			for(int x=0;x<mats.size();x++)
 				newMats[x]=CMath.s_int(mats.get(x).trim());
@@ -3293,17 +3303,17 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof Coins)
 		{
-			((Coins)E).setCurrency(CMLib.xml().getValFromPieces(buf,"CRNC"));
-			((Coins)E).setDenomination(CMLib.xml().getDoubleFromPieces(buf,"DENOM"));
+			((Coins)E).setCurrency(xml.getValFromPieces(buf,"CRNC"));
+			((Coins)E).setDenomination(xml.getDoubleFromPieces(buf,"DENOM"));
 		}
 		if(E instanceof Recipe)
 		{
-			((Recipe)E).setCommonSkillID(CMLib.xml().getValFromPieces(buf,"SKILLID"));
-			int numSupported = CMLib.xml().getIntFromPieces(buf,"NUMRECIPES");
+			((Recipe)E).setCommonSkillID(xml.getValFromPieces(buf,"SKILLID"));
+			int numSupported = xml.getIntFromPieces(buf,"NUMRECIPES");
 			if(numSupported<=0)
 				numSupported=1;
 			((Recipe)E).setTotalRecipePages(numSupported);
-			final List<XMLTag> allRecipes = CMLib.xml().getPiecesFromPieces(buf, "RECIPE");
+			final List<XMLTag> allRecipes = xml.getPiecesFromPieces(buf, "RECIPE");
 			final List<String> allRecipeStrings=new ArrayList<String>(allRecipes.size());
 			for(final XMLTag piece : allRecipes)
 				allRecipeStrings.add(piece.value());
@@ -3311,66 +3321,77 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		if(E instanceof Light)
 		{
-			final String bo=CMLib.xml().getValFromPieces(buf,"BURNOUT");
+			final String bo=xml.getValFromPieces(buf,"BURNOUT");
 			if((bo!=null)&&(bo.length()>0))
 				((Light)E).setDestroyedWhenBurntOut(CMath.s_bool(bo));
 		}
 
+		if(E instanceof FalseLimb)
+		{
+			final String bpartcd=xml.getValFromPieces(buf, "BPARTCD");
+			if(CMath.isInteger(bpartcd))
+				((FalseLimb)E).setBodyPartCode(CMath.s_int(bpartcd));
+			final String wornloc=xml.getValFromPieces(buf, "WORNLOC");
+			if(CMath.isLong(wornloc))
+				((FalseLimb)E).setWearLocations(CMath.s_long(wornloc));
+			((FalseLimb)E).setRaceID(xml.getValFromPieces(buf, "RACE"));
+		}
+
 		if(E instanceof Wand)
 		{
-			final String bo=CMLib.xml().getValFromPieces(buf,"MAXUSE");
+			final String bo=xml.getValFromPieces(buf,"MAXUSE");
 			if((bo!=null)&&(bo.length()>0))
 				((Wand)E).setMaxUses(CMath.s_int(bo));
 		}
 
 		if(E instanceof LandTitle)
-			((LandTitle)E).setLandPropertyID(CMLib.xml().getValFromPieces(buf,"LANDID"));
+			((LandTitle)E).setLandPropertyID(xml.getValFromPieces(buf,"LANDID"));
 		else
 		if(E instanceof PrivateProperty)
 		{
-			((PrivateProperty)E).setOwnerName(CMLib.xml().getValFromPieces(buf,"OWNERID"));
-			((PrivateProperty)E).setPrice(CMLib.xml().getIntFromPieces(buf,"PRICE"));
+			((PrivateProperty)E).setOwnerName(xml.getValFromPieces(buf,"OWNERID"));
+			((PrivateProperty)E).setPrice(xml.getIntFromPieces(buf,"PRICE"));
 		}
 
 		if(E instanceof Perfume)
-			((Perfume)E).setSmellList(CMLib.xml().getValFromPieces(buf,"SMELLLST"));
+			((Perfume)E).setSmellList(xml.getValFromPieces(buf,"SMELLLST"));
 
 		if(E instanceof Food)
 		{
-			((Food)E).setNourishment(CMLib.xml().getIntFromPieces(buf,"CAPA2"));
-			((Food)E).setBite(CMLib.xml().getIntFromPieces(buf,"BITE"));
+			((Food)E).setNourishment(xml.getIntFromPieces(buf,"CAPA2"));
+			((Food)E).setBite(xml.getIntFromPieces(buf,"BITE"));
 		}
 
 		if(E instanceof RawMaterial)
 		{
-			((RawMaterial)E).setDomainSource(CMLib.xml().getValFromPieces(buf,"DOMN"));
-			((RawMaterial)E).setSubType(CMLib.xml().getValFromPieces(buf,"RSUBT"));
+			((RawMaterial)E).setDomainSource(xml.getValFromPieces(buf,"DOMN"));
+			((RawMaterial)E).setSubType(xml.getValFromPieces(buf,"RSUBT"));
 		}
 
 		if(E instanceof Drink)
 		{
-			final int capacity=CMLib.xml().getIntFromPieces(buf,"CAPA2");
+			final int capacity=xml.getIntFromPieces(buf,"CAPA2");
 			((Drink)E).setLiquidHeld(capacity);
-			final String remaining=CMLib.xml().getValFromPieces(buf,"REMAN");
+			final String remaining=xml.getValFromPieces(buf,"REMAN");
 			if(remaining.length()>0)
 			{
 				((Drink)E).setLiquidRemaining(CMath.s_int(remaining));
-				((Drink)E).setLiquidType(CMLib.xml().getIntFromPieces(buf,"LTYPE"));
+				((Drink)E).setLiquidType(xml.getIntFromPieces(buf,"LTYPE"));
 			}
 			else
 				((Drink)E).setLiquidRemaining(capacity);
-			((Drink)E).setThirstQuenched(CMLib.xml().getIntFromPieces(buf,"DRINK"));
+			((Drink)E).setThirstQuenched(xml.getIntFromPieces(buf,"DRINK"));
 		}
 		if(E instanceof Weapon)
 		{
-			((Weapon)E).setWeaponDamageType(CMLib.xml().getIntFromPieces(buf,"TYPE"));
-			((Weapon)E).setWeaponClassification(CMLib.xml().getIntFromPieces(buf,"CLASS"));
-			((Weapon)E).setRanges(CMLib.xml().getIntFromPieces(buf,"MINR"),CMLib.xml().getIntFromPieces(buf,"MAXR"));
+			((Weapon)E).setWeaponDamageType(xml.getIntFromPieces(buf,"TYPE"));
+			((Weapon)E).setWeaponClassification(xml.getIntFromPieces(buf,"CLASS"));
+			((Weapon)E).setRanges(xml.getIntFromPieces(buf,"MINR"),xml.getIntFromPieces(buf,"MAXR"));
 		}
 		if(E instanceof Armor)
 		{
-			((Armor)E).setClothingLayer(CMLib.xml().getShortFromPieces(buf,"LAYR"));
-			((Armor)E).setLayerAttributes(CMLib.xml().getShortFromPieces(buf,"LAYA"));
+			((Armor)E).setClothingLayer(xml.getShortFromPieces(buf,"LAYR"));
+			((Armor)E).setLayerAttributes(xml.getShortFromPieces(buf,"LAYA"));
 		}
 		if(E instanceof DeadBody)
 		{
@@ -3378,21 +3399,21 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				((DeadBody)E).setCharStats((CharStats)CMClass.getCommon("DefaultCharStats"));
 			try
 			{
-				((DeadBody)E).charStats().setStat(CharStats.STAT_GENDER,CMLib.xml().getValFromPieces(buf,"GENDER").charAt(0));
-				((DeadBody)E).setIsPlayerCorpse(CMLib.xml().getBoolFromPieces(buf,"MPLAYR"));
-				final String mobName=CMLib.xml().getValFromPieces(buf,"MDNAME");
+				((DeadBody)E).charStats().setStat(CharStats.STAT_GENDER,xml.getValFromPieces(buf,"GENDER").charAt(0));
+				((DeadBody)E).setIsPlayerCorpse(xml.getBoolFromPieces(buf,"MPLAYR"));
+				final String mobName=xml.getValFromPieces(buf,"MDNAME");
 				if(mobName.length()>0)
 				{
 					((DeadBody)E).setMobName(mobName);
-					((DeadBody)E).setMobDescription(CMLib.xml().getValFromPieces(buf,"MDDESC"));
-					((DeadBody)E).setTimeOfDeath(CMLib.xml().getLongFromPieces(buf,"MTOD"));
-					((DeadBody)E).setKillerName(CMLib.xml().getValFromPieces(buf,"MKNAME"));
-					((DeadBody)E).setIsKillerPlayer(CMLib.xml().getBoolFromPieces(buf,"MKPLAY"));
-					((DeadBody)E).setMobHash(CMLib.xml().getIntFromPieces(buf,"MHASH"));
-					((DeadBody)E).setMobPKFlag(CMLib.xml().getBoolFromPieces(buf,"MPKILL"));
-					((DeadBody)E).setIsDestroyAfterLooting(CMLib.xml().getBoolFromPieces(buf,"MBREAL"));
-					((DeadBody)E).setLastMessage(CMLib.xml().getValFromPieces(buf,"MDLMSG"));
-					final String mobsXML=CMLib.xml().getValFromPieces(buf,"MOBS");
+					((DeadBody)E).setMobDescription(xml.getValFromPieces(buf,"MDDESC"));
+					((DeadBody)E).setTimeOfDeath(xml.getLongFromPieces(buf,"MTOD"));
+					((DeadBody)E).setKillerName(xml.getValFromPieces(buf,"MKNAME"));
+					((DeadBody)E).setIsKillerPlayer(xml.getBoolFromPieces(buf,"MKPLAY"));
+					((DeadBody)E).setMobHash(xml.getIntFromPieces(buf,"MHASH"));
+					((DeadBody)E).setMobPKFlag(xml.getBoolFromPieces(buf,"MPKILL"));
+					((DeadBody)E).setIsDestroyAfterLooting(xml.getBoolFromPieces(buf,"MBREAL"));
+					((DeadBody)E).setLastMessage(xml.getValFromPieces(buf,"MDLMSG"));
+					final String mobsXML=xml.getValFromPieces(buf,"MOBS");
 					if((mobsXML!=null)&&(mobsXML.length()>0))
 					{
 						final List<MOB> V=new Vector<MOB>();
@@ -3401,11 +3422,11 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 							((DeadBody)E).setSavedMOB(V.get(0), false);
 
 					}
-					final List<XMLLibrary.XMLTag> dblk=CMLib.xml().getContentsFromPieces(buf,"KLTOOL");
+					final List<XMLLibrary.XMLTag> dblk=xml.getContentsFromPieces(buf,"KLTOOL");
 					if((dblk!=null)&&(dblk.size()>0))
 					{
-						final String itemi=CMLib.xml().getValFromPieces(dblk,"KLCLASS");
-						final List<XMLLibrary.XMLTag> idat=CMLib.xml().getContentsFromPieces(dblk,"KLDATA");
+						final String itemi=xml.getValFromPieces(dblk,"KLCLASS");
+						final List<XMLLibrary.XMLTag> idat=xml.getContentsFromPieces(dblk,"KLDATA");
 						final Environmental newOne=CMClass.getUnknown(itemi);
 						if(newOne==null)
 							Log.errOut("CoffeeMaker","Unknown tool "+itemi+" of "+identifier(E,null)+".  Skipping.");
@@ -3422,7 +3443,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			catch(final Exception e)
 			{
 			}
-			final String raceID=CMLib.xml().getValFromPieces(buf,"MRACE");
+			final String raceID=xml.getValFromPieces(buf,"MRACE");
 			if((raceID.length()>0)&&(CMClass.getRace(raceID)!=null))
 			{
 				final Race R=CMClass.getRace(raceID);
@@ -3433,73 +3454,73 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		if(E instanceof MOB)
 		{
 			final MOB mob=(MOB)E;
-			final String alignStr=CMLib.xml().getValFromPieces(buf,"ALIG");
+			final String alignStr=xml.getValFromPieces(buf,"ALIG");
 			if((alignStr.length()>0)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
 				CMLib.factions().setAlignmentOldRange(mob,CMath.s_int(alignStr));
-			CMLib.beanCounter().setMoney(mob,CMLib.xml().getIntFromPieces(buf,"MONEY"));
-			mob.setMoneyVariation(CMLib.xml().getDoubleFromPieces(buf,"VARMONEY"));
+			CMLib.beanCounter().setMoney(mob,xml.getIntFromPieces(buf,"MONEY"));
+			mob.setMoneyVariation(xml.getDoubleFromPieces(buf,"VARMONEY"));
 			setGenMobInventory((MOB)E,buf);
 			setGenMobAbilities((MOB)E,buf);
 			setFactionFromXML((MOB)E,buf);
 
 			if(E instanceof Banker)
 			{
-				((Banker)E).setBankChain(CMLib.xml().getValFromPieces(buf,"BANK"));
-				((Banker)E).setCoinInterest(CMLib.xml().getDoubleFromPieces(buf,"COININT"));
-				((Banker)E).setItemInterest(CMLib.xml().getDoubleFromPieces(buf,"ITEMINT"));
-				final String loanInt=CMLib.xml().getValFromPieces(buf,"LOANINT");
+				((Banker)E).setBankChain(xml.getValFromPieces(buf,"BANK"));
+				((Banker)E).setCoinInterest(xml.getDoubleFromPieces(buf,"COININT"));
+				((Banker)E).setItemInterest(xml.getDoubleFromPieces(buf,"ITEMINT"));
+				final String loanInt=xml.getValFromPieces(buf,"LOANINT");
 				if(loanInt.length()>0)
 					((Banker)E).setLoanInterest(CMath.s_double(loanInt));
 			}
 
 			if(E instanceof PostOffice)
 			{
-				((PostOffice)E).setPostalChain(CMLib.xml().getValFromPieces(buf,"POSTCHAIN"));
-				((PostOffice)E).setMinimumPostage(CMLib.xml().getDoubleFromPieces(buf,"POSTMIN"));
-				((PostOffice)E).setPostagePerPound(CMLib.xml().getDoubleFromPieces(buf,"POSTLBS"));
-				((PostOffice)E).setHoldFeePerPound(CMLib.xml().getDoubleFromPieces(buf,"POSTHOLD"));
-				((PostOffice)E).setFeeForNewBox(CMLib.xml().getDoubleFromPieces(buf,"POSTNEW"));
-				((PostOffice)E).setMaxMudMonthsHeld(CMLib.xml().getIntFromPieces(buf,"POSTHELD"));
+				((PostOffice)E).setPostalChain(xml.getValFromPieces(buf,"POSTCHAIN"));
+				((PostOffice)E).setMinimumPostage(xml.getDoubleFromPieces(buf,"POSTMIN"));
+				((PostOffice)E).setPostagePerPound(xml.getDoubleFromPieces(buf,"POSTLBS"));
+				((PostOffice)E).setHoldFeePerPound(xml.getDoubleFromPieces(buf,"POSTHOLD"));
+				((PostOffice)E).setFeeForNewBox(xml.getDoubleFromPieces(buf,"POSTNEW"));
+				((PostOffice)E).setMaxMudMonthsHeld(xml.getIntFromPieces(buf,"POSTHELD"));
 			}
 
 			if(E instanceof Librarian)
 			{
-				((Librarian)E).setLibraryChain(CMLib.xml().getValFromPieces(buf,"LIBRCHAIN"));
-				((Librarian)E).setOverdueCharge(CMLib.xml().getDoubleFromPieces(buf,"LIBROVERCHG"));
-				((Librarian)E).setDailyOverdueCharge(CMLib.xml().getDoubleFromPieces(buf,"LIBRDAYCHG"));
-				((Librarian)E).setOverdueChargePct(CMLib.xml().getDoubleFromPieces(buf,"LIBROVERPCT"));
-				((Librarian)E).setDailyOverdueChargePct(CMLib.xml().getDoubleFromPieces(buf,"LIBDAYPCT"));
-				((Librarian)E).setMinOverdueDays(CMLib.xml().getIntFromPieces(buf,"LIBMINDAYS"));
-				((Librarian)E).setMaxOverdueDays(CMLib.xml().getIntFromPieces(buf,"LIBMAXDAYS"));
-				((Librarian)E).setMaxBorrowed(CMLib.xml().getIntFromPieces(buf,"LIBMAXBORROW"));
-				((Librarian)E).setContributorMask(CMLib.xml().getValFromPieces(buf,"LIBRCMASK"));
+				((Librarian)E).setLibraryChain(xml.getValFromPieces(buf,"LIBRCHAIN"));
+				((Librarian)E).setOverdueCharge(xml.getDoubleFromPieces(buf,"LIBROVERCHG"));
+				((Librarian)E).setDailyOverdueCharge(xml.getDoubleFromPieces(buf,"LIBRDAYCHG"));
+				((Librarian)E).setOverdueChargePct(xml.getDoubleFromPieces(buf,"LIBROVERPCT"));
+				((Librarian)E).setDailyOverdueChargePct(xml.getDoubleFromPieces(buf,"LIBDAYPCT"));
+				((Librarian)E).setMinOverdueDays(xml.getIntFromPieces(buf,"LIBMINDAYS"));
+				((Librarian)E).setMaxOverdueDays(xml.getIntFromPieces(buf,"LIBMAXDAYS"));
+				((Librarian)E).setMaxBorrowed(xml.getIntFromPieces(buf,"LIBMAXBORROW"));
+				((Librarian)E).setContributorMask(xml.getValFromPieces(buf,"LIBRCMASK"));
 			}
 			
 			if(E instanceof Auctioneer)
 			{
-				((Auctioneer)E).setAuctionHouse(CMLib.xml().getValFromPieces(buf,"AUCHOUSE"));
-				//((Auctioneer)E).setLiveListingPrice(CMLib.xml().getDoubleFromPieces(buf,"LIVEPRICE"));
-				((Auctioneer)E).setTimedListingPrice(CMLib.xml().getDoubleFromPieces(buf,"TIMEPRICE"));
-				((Auctioneer)E).setTimedListingPct(CMLib.xml().getDoubleFromPieces(buf,"TIMEPCT"));
-				//((Auctioneer)E).setLiveFinalCutPct(CMLib.xml().getDoubleFromPieces(buf,"LIVECUT"));
-				((Auctioneer)E).setTimedFinalCutPct(CMLib.xml().getDoubleFromPieces(buf,"TIMECUT"));
-				((Auctioneer)E).setMaxTimedAuctionDays(CMLib.xml().getIntFromPieces(buf,"MAXADAYS"));
-				((Auctioneer)E).setMinTimedAuctionDays(CMLib.xml().getIntFromPieces(buf,"MINADAYS"));
+				((Auctioneer)E).setAuctionHouse(xml.getValFromPieces(buf,"AUCHOUSE"));
+				//((Auctioneer)E).setLiveListingPrice(xml.getDoubleFromPieces(buf,"LIVEPRICE"));
+				((Auctioneer)E).setTimedListingPrice(xml.getDoubleFromPieces(buf,"TIMEPRICE"));
+				((Auctioneer)E).setTimedListingPct(xml.getDoubleFromPieces(buf,"TIMEPCT"));
+				//((Auctioneer)E).setLiveFinalCutPct(xml.getDoubleFromPieces(buf,"LIVECUT"));
+				((Auctioneer)E).setTimedFinalCutPct(xml.getDoubleFromPieces(buf,"TIMECUT"));
+				((Auctioneer)E).setMaxTimedAuctionDays(xml.getIntFromPieces(buf,"MAXADAYS"));
+				((Auctioneer)E).setMinTimedAuctionDays(xml.getIntFromPieces(buf,"MINADAYS"));
 			}
 
 			if(E instanceof Deity)
 			{
 				final Deity godmob=(Deity)E;
-				godmob.setClericRequirements(CMLib.xml().getValFromPieces(buf,"CLEREQ"));
-				godmob.setWorshipRequirements(CMLib.xml().getValFromPieces(buf,"WORREQ"));
-				godmob.setClericRitual(CMLib.xml().getValFromPieces(buf,"CLERIT"));
-				godmob.setWorshipRitual(CMLib.xml().getValFromPieces(buf,"WORRIT"));
-				godmob.setClericSin(CMLib.xml().getValFromPieces(buf,"CLERSIT"));
-				godmob.setWorshipSin(CMLib.xml().getValFromPieces(buf,"WORRSIT"));
-				godmob.setClericPowerup(CMLib.xml().getValFromPieces(buf,"CLERPOW"));
-				godmob.setServiceRitual(CMLib.xml().getValFromPieces(buf,"SVCRIT"));
+				godmob.setClericRequirements(xml.getValFromPieces(buf,"CLEREQ"));
+				godmob.setWorshipRequirements(xml.getValFromPieces(buf,"WORREQ"));
+				godmob.setClericRitual(xml.getValFromPieces(buf,"CLERIT"));
+				godmob.setWorshipRitual(xml.getValFromPieces(buf,"WORRIT"));
+				godmob.setClericSin(xml.getValFromPieces(buf,"CLERSIT"));
+				godmob.setWorshipSin(xml.getValFromPieces(buf,"WORRSIT"));
+				godmob.setClericPowerup(xml.getValFromPieces(buf,"CLERPOW"));
+				godmob.setServiceRitual(xml.getValFromPieces(buf,"SVCRIT"));
 
-				List<XMLLibrary.XMLTag> V=CMLib.xml().getContentsFromPieces(buf,"BLESSINGS");
+				List<XMLLibrary.XMLTag> V=xml.getContentsFromPieces(buf,"BLESSINGS");
 				if(V==null)
 				{
 					Log.errOut("CoffeeMaker","Error parsing 'BLESSINGS' of "+identifier(E,null)+".  Load aborted");
@@ -3529,7 +3550,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					setPropertiesStr(newOne,adat,true);
 					godmob.addBlessing(newOne,clericsOnly);
 				}
-				V=CMLib.xml().getContentsFromPieces(buf,"CURSES");
+				V=xml.getContentsFromPieces(buf,"CURSES");
 				if(V!=null)
 				{
 					for(int i=0;i<V.size();i++)
@@ -3557,7 +3578,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						godmob.addCurse(newOne,clericsOnly);
 					}
 				}
-				V=CMLib.xml().getContentsFromPieces(buf,"POWERS");
+				V=xml.getContentsFromPieces(buf,"POWERS");
 				if(V!=null)
 				{
 					for(int i=0;i<V.size();i++)
@@ -3585,13 +3606,13 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 					}
 				}
 			}
-			List<String> V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"TATTS"),true);
+			List<String> V9=CMParms.parseSemicolons(xml.getValFromPieces(buf,"TATTS"),true);
 			for(final Enumeration<Tattoo> e=((MOB)E).tattoos();e.hasMoreElements();)
 				((MOB)E).delTattoo(e.nextElement());
 			for(final String tatt : V9)
 				((MOB)E).addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tatt));
 
-			V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"EDUS"),true);
+			V9=CMParms.parseSemicolons(xml.getValFromPieces(buf,"EDUS"),true);
 			((MOB)E).delAllExpertises();
 			for(int v=0;v<V9.size();v++)
 				((MOB)E).addExpertise(V9.get(v));

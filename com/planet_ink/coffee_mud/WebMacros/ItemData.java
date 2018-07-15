@@ -1191,6 +1191,25 @@ public class ItemData extends StdWebMacro
 							old="checked";
 						str.append(old);
 						break;
+					case ISLIMB:
+						str.append(I instanceof FalseLimb);
+						break;
+					case RACEID:
+						if((firstTime)&&(I instanceof FalseLimb))
+							old=((FalseLimb)I).getRaceID();
+						str.append("<OPTION VALUE=\"\"");
+						if(old.trim().length()==0)
+							str.append(" SELECTED");
+						str.append(">N/A (False Limb)");
+						for(final Enumeration<Race> r = CMClass.races();r.hasMoreElements();)
+						{
+							final Race R1=r.nextElement();
+							str.append("<OPTION VALUE=\""+R1.ID()+"\"");
+							if(R1.ID().equalsIgnoreCase(old))
+								str.append(" SELECTED");
+							str.append(">"+R1.name());
+						}
+						break;
 					case ISBOARDABLEITEM:
 						str.append(I instanceof BoardableShip);
 						break;

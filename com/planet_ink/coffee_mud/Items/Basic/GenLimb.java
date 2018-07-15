@@ -81,12 +81,24 @@ public class GenLimb extends StdLimb
 		recoverPhyStats();
 	}
 
+	private final static String[] MYCODES={"WORNLOC","RACE","BPARTCD"};
+
 	@Override
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
-		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		switch(getCodeNum(code))
+		{
+		case 0:
+			return "" + getWearLocations();
+		case 1:
+			return "" + getRaceID();
+		case 2:
+			return "" + getBodyPartCode();
+		default:
+			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+		}
 	}
 
 	@Override
@@ -94,16 +106,52 @@ public class GenLimb extends StdLimb
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
-		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
+		else
+		switch(getCodeNum(code))
+		{
+		case 0:
+			if(CMath.isLong(val))
+				this.setWearLocations(CMath.s_long(val));
+			break;
+		case 1:
+			this.setRaceID(val);
+			break;
+		case 2:
+			if(CMath.isInteger(val))
+				this.setBodyPartCode(CMath.s_int(val));
+			break;
+		default:
+			CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+			break;
+		}
 	}
 
-	private static String[] codes=null;
+	@Override
+	protected int getCodeNum(final String code)
+	{
+		for(int i=0;i<MYCODES.length;i++)
+		{
+			if(code.equalsIgnoreCase(MYCODES[i]))
+				return i;
+		}
+		return -1;
+	}
+
+	private static String[]	codes	= null;
 
 	@Override
 	public String[] getStatCodes()
 	{
-		if(codes==null)
-			codes=CMProps.getStatCodesList(CMParms.toStringArray(GenericBuilder.GenItemCode.values()),this);
+		if(codes!=null)
+			return codes;
+		final String[] MYCODES=CMProps.getStatCodesList(GenLimb.MYCODES,this);
+		final String[] superCodes=CMParms.toStringArray(GenericBuilder.GenItemCode.values());
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
 		return codes;
 	}
 
@@ -112,9 +160,10 @@ public class GenLimb extends StdLimb
 	{
 		if(!(E instanceof GenLimb))
 			return false;
-		for(int i=0;i<getStatCodes().length;i++)
+		final String[] codes=getStatCodes();
+		for(int i=0;i<codes.length;i++)
 		{
-			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
+			if(!E.getStat(codes[i]).equals(getStat(codes[i])))
 				return false;
 		}
 		return true;

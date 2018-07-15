@@ -44,6 +44,7 @@ public interface FalseLimb extends Armor
 	 * Gets the racial body part code that corresponds with the
 	 * part of the body that this false limb replaces.
 	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race#BODYPARTSTR
+	 * @see FalseLimb#setBodyPartCode(int)
 	 * @return the racial body part code
 	 */
 	public int getBodyPartCode();
@@ -52,6 +53,7 @@ public interface FalseLimb extends Armor
 	 * Sets the racial body part code that corresponds with the
 	 * part of the body that this false limb replaces.
 	 * @see com.planet_ink.coffee_mud.Races.interfaces.Race#BODYPARTSTR
+	 * @see FalseLimb#getBodyPartCode()
 	 * @param partNum the racial body part code
 	 */
 	public void setBodyPartCode(int partNum);
@@ -61,6 +63,7 @@ public interface FalseLimb extends Armor
 	 * and appears to be worn underneath other clothing.  The number
 	 * is a bit value, but not a mask of worn location bits.
 	 * @see Wearable#DEFAULT_WORN_DESCS
+	 * @see FalseLimb#setWearLocations(long)
 	 * @return  the single wear location bit value
 	 */
 	public long getWearLocations();
@@ -70,7 +73,29 @@ public interface FalseLimb extends Armor
 	 * and appears to be worn underneath other clothing.  The number
 	 * is a bit value, but not a mask of worn location bits.
 	 * @see Wearable#DEFAULT_WORN_DESCS
+	 * @see FalseLimb#getWearLocations()
 	 * @param wearPlace  the single wear location bit value
 	 */
 	public void setWearLocations(long wearPlace);
+	
+	/**
+	 * This sets a true false limb from an actual limb apart from each
+	 * other.  It returns "" if the limb is truly false, and the race
+	 * id if it is an actual limb cut off from someone.
+	 * @see Race#ID()
+	 * @see FalseLimb#setRaceID(String)
+	 * @return the race id or ""
+	 */
+	public String getRaceID();
+	
+	/**
+	 * This sets a true false limb from an actual limb apart from each
+	 * other.  Set "" if the limb is truly false, and the race
+	 * id if it is an actual limb cut off from someone.
+	 * @see Race#ID()
+	 * @see FalseLimb#getRaceID()
+	 * @param raceID the race id or ""
+	 */
+	public void setRaceID(String raceID);
+	
 }

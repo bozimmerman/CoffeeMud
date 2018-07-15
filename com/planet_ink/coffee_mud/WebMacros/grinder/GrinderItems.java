@@ -73,7 +73,8 @@ public class GrinderItems
 		MINTHRUST,ISCONSTTHRUST,AVAILPORTS,CONTENTSACCESS,BLENDEDVIEW,
 		ISSHIPWARCOMP,SWARNUMPORTS,SWARPORTS,SWARMTYPES,
 		RECHARGERATE,OPENTICKS,ISCLOAK,ISBOOK,MAXPAGES,MAXCHARSPAGE,
-		STATESTR,STATESUBJSTR,RIDERSTR,ISRESOURCE,RSCSUBTYPE
+		STATESTR,STATESUBJSTR,RIDERSTR,ISRESOURCE,RSCSUBTYPE,
+		ISLIMB,RACEID
 		;
 		public boolean isGenField;
 		private ItemDataField(boolean isGeneric)
@@ -714,6 +715,12 @@ public class GrinderItems
 				case OWNER:
 					if(I instanceof PrivateProperty)
 						((PrivateProperty)I).setOwnerName(old);
+					break;
+				case ISLIMB:
+					break;
+				case RACEID:
+					if(I instanceof FalseLimb)
+						((FalseLimb)I).setRaceID(old);
 					break;
 				case ISELECTRONIC:
 					break;

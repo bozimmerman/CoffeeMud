@@ -317,6 +317,16 @@
 		</TD>
 	</TR>
 	@endif@
+	@if?!ItemData?ISLIMB@
+	<TR>
+		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Limb Race ID:</B></FONT></TD>
+		<TD WIDTH=450 COLSPAN=2>
+		<SELECT NAME=RACEID>
+		@ItemData?RACEID@
+		</SELECT>
+		</TD>
+	</TR>
+	@endif@
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Weight:</B></FONT></TD>
 		<TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=WEIGHT SIZE=5 VALUE="@ItemData?WEIGHT@">

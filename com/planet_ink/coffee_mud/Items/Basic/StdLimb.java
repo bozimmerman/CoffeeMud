@@ -41,10 +41,11 @@ public class StdLimb extends StdItem implements FalseLimb
 		return "StdLimb";
 	}
 
-	protected int	partnum			= -1;
-	protected long	wearplace		= -1;
-	protected short	layer			= -10;
-	protected short	layerAttributes	= 0;
+	protected String	raceID			= "";
+	protected int		partnum			= -1;
+	protected long		wearplace		= -1;
+	protected short		layer			= -10;
+	protected short		layerAttributes	= 0;
 
 	public StdLimb()
 	{
@@ -257,5 +258,20 @@ public class StdLimb extends StdItem implements FalseLimb
 	public void setLayerAttributes(short newAttributes)
 	{
 		layerAttributes=newAttributes;
+	}
+
+	@Override
+	public String getRaceID()
+	{
+		return raceID;
+	}
+
+	@Override
+	public void setRaceID(String raceID)
+	{
+		if(raceID==null)
+			this.raceID="";
+		else
+			this.raceID=raceID;
 	}
 }

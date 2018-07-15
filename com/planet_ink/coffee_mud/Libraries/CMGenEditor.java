@@ -8867,6 +8867,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 			}
 			if((me instanceof ElecPanel)&&(!(me instanceof Computer)))
 				genPanelType(mob,(ElecPanel)me,++showNumber,showFlag);
+			if(me instanceof FalseLimb)
+				((FalseLimb)me).setRaceID(prompt(mob,((FalseLimb)me).getRaceID(),++showNumber,showFlag,"Race ID"));
 			if(me instanceof TechComponent)
 			{
 				final TechComponent E=(TechComponent)me;
