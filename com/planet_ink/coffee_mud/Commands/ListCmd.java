@@ -3347,10 +3347,9 @@ public class ListCmd extends StdCommand
 		final StringBuilder buf=new StringBuilder("^xAll Defined Socials: ^N\n\r");
 		final int COL_LEN=CMLib.lister().fixColWidth(18.0,viewerS);
 		int col=0;
-		Set<String> baseDone = new HashSet<String>();
 		for(final String social : CMLib.socials().getSocialsList())
 		{
-			final Social soc=CMLib.socials().fetchSocial(social,true);
+			final Social soc=CMLib.socials().fetchSocial(social,false);
 			if(wiki == WikiFlag.WIKILIST)
 				buf.append("*[["+social+"|"+social+"]]\n\r");
 			else

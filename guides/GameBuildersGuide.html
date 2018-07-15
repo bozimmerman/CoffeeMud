@@ -1,10 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html><head>
+<html>
+<head>
   <meta content="HTML Tidy, see www.w3.org" name="generator">
-  <title></title></head>
+  <title></title>
+</head>
 <body>
 <center>
-<table border="1" bordercolor="gray" cellpadding="10" cellspacing="0" width="90%">
+<table border="1" bordercolor="gray" cellpadding="10" cellspacing="0"
+ width="90%">
   <tbody>
     <tr>
       <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
@@ -32,12 +35,15 @@ Builders Guide</h1>
         <li><a href="#clans">Clans</a></li>
         <li><a href="#governments">Governments</a></li>
         <li><a href="#achievements">Achievements</a></li>
-        <li style="list-style-type: none; list-style-image: none; list-style-position: outside;"><span style="text-decoration: underline;"><br>
+        <li
+ style="list-style-type: none; list-style-image: none; list-style-position: outside;"><span
+ style="text-decoration: underline;"><br>
           </span></li>
       </ul>
       </td>
       <td align="left" valign="top">
-      <p style="text-align: center;" align="left"><strong><img src="images/mug.jpg"></strong></p>
+      <p style="text-align: center;" align="left"><strong><img
+ src="images/mug.jpg"></strong></p>
       <strong style="color: rgb(255, 0, 0);"><font size="5">Introduction</font></strong><br>
       <br>
 The purpose of this document is to cover aspects of CoffeeMud game
@@ -176,7 +182,8 @@ that one instead. Now, look at the directory again:</p>
       <p>This time we displayed
 the directory using an * wildcard, just
 to demonstrate that we can use mask characters when displaying
-directories. The command is doing the same thing the previous two <strong><font face="Courier New">shell dir</font></strong>
+directories. The command is doing the same thing the previous two <strong><font
+ face="Courier New">shell dir</font></strong>
 commands did, just in a different way. Now, you'll see that most of the
 files still have the "+" sign in front, but now <strong>socials.txt</strong>
 only has a "-" character. This means that the file exists only in the
@@ -200,7 +207,8 @@ shell commands you can make use of,
 such as <strong><font face="Courier New">makedirectory</font></strong>
 to create new folders, <strong><font face="Courier New">edit</font></strong>
 to modify a text file, <strong><font face="Courier New">findfile</font></strong>
-to hunt down a file with a given name, or <strong><font face="Courier New">searchtext</font></strong>
+to hunt down a file with a given name, or <strong><font
+ face="Courier New">searchtext</font></strong>
 to find a file
 containing a given text string. The shell command is a useful tool for
 mirror your local files in your VFS database for safety, convenience,
@@ -327,7 +335,8 @@ general kind of ability it is, for instance "Spell_", "Chant_",
 modifying a new ability, the Archon is
 presented with a menu of selections and options available to customize
 the class. Here is a description of those options:</p>
-      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+      <table style="width: 100%;" bgcolor="yellow" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
         <tbody>
           <tr>
             <td width="25%"><strong>Property</strong></td>
@@ -395,7 +404,8 @@ String</em></td>
             <td>what is displayed
 in the Affects list when players and
 mobs are affected by this ability. Enter nothing, or NULL to show
-nothing at all. &nbsp;This is only used when <span style="font-style: italic;">Can Affect</span> is set properly.</td>
+nothing at all. &nbsp;This is only used when <span
+ style="font-style: italic;">Can Affect</span> is set properly.</td>
           </tr>
           <tr>
             <td><em>Is
@@ -635,7 +645,8 @@ not, for some unknown reason.</p>
 modifying a new language, the Archon is
 presented with a menu of selections and options available to customize
 the class. Here is a description of those options:</p>
-      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+      <table style="width: 100%;" bgcolor="yellow" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
         <tbody>
           <tr>
             <td width="25%"><strong>Property</strong></td>
@@ -710,7 +721,8 @@ modifying a new skill, the Archon is
 presented with a menu of selections and options available to customize
 the class. Here is a description of those options:</p>
       <strong></strong>
-      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+      <table style="width: 100%;" bgcolor="yellow" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
         <tbody>
           <tr>
             <td width="25%"><strong>Property</strong></td>
@@ -829,7 +841,8 @@ component, whether it is one of many requred, or just an optional
 component. &nbsp;To edit one, enter its number. &nbsp;To add a
 new one, enter the highest number shown. &nbsp;This will give you a
 menu of information about that component, as follows:</p>
-      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+      <table style="width: 100%;" bgcolor="yellow" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
         <tbody>
           <tr>
             <td width="25%"><strong>Property</strong></td>
@@ -882,7 +895,12 @@ components, material types, specific material resources, or arbitrary
 item names. Use ? for a list of resources.&nbsp;</p>
             </td>
           </tr>
-          <tr><td><span style="font-style: italic;">Component Sub-Type</span></td><td>normally blank, this is a sub-type string for the type of required material or resource item. </td></tr><tr>
+          <tr>
+            <td><span style="font-style: italic;">Component Sub-Type</span></td>
+            <td>normally blank, this is a sub-type string for the type
+of required material or resource item. </td>
+          </tr>
+          <tr>
             <td><em>Component
 Mask</em></td>
             <td>a zapper mask (see
@@ -931,7 +949,8 @@ ability ids in your mud, or LIST ALLQUALIFYS to view the existing
 entries. &nbsp;</p>
       <p>Either way, you are then
 presented with a wizard menu&nbsp;:</p>
-      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+      <table style="width: 100%;" bgcolor="yellow" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
         <tbody>
           <tr>
             <td width="25%"><strong>Property</strong></td>
@@ -1004,7 +1023,8 @@ are probably hard to read in 80 columns. &nbsp; Entering a number
 next to one of the columns will give you a menu for each of those
 confusing columns. &nbsp;Here is a list of all the possible columns
 you may see and what they mean:</p>
-      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+      <table style="width: 100%;" bgcolor="yellow" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
         <tbody>
           <tr>
             <td width="25%"><b>Field
@@ -1070,7 +1090,8 @@ definition (see skill components in this document)<br>
 containing one or more components, each of which contains: disposition
 (inventory, held, worn, nearby, onground), fate (consumed or kept) ,
 amount of items, component id (name of a raw resource, name of a
-material type, or an item name), subtype (nromally blank), and mask (zapper mask for players that
+material type, or an item name), subtype (nromally blank), and mask
+(zapper mask for players that
 this component applies to)</td>
           </tr>
           <tr>
@@ -1353,7 +1374,8 @@ MODIFY CLASS commands.</p>
 modifying a new class, the Archon is
 presented with a menu of selections and options available to customize
 the class. Here is a description of those options:</p>
-      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+      <table style="width: 100%;" bgcolor="yellow" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
         <tbody>
           <tr>
             <td width="25%"><strong>Property</strong></td>
@@ -1880,7 +1902,8 @@ parameters, can have the following Trigger Parameters specified:
         <li>CHANCE=x to set a percent chance of triggering x, which, of
 course, is 100% by default</li>
         <li>MASK=x to set a zapper mask&nbsp;to filter on event source
-mobs instead of the target, which is handled by the main mask below.</li></ul>
+mobs instead of the target, which is handled by the main mask below.</li>
+      </ul>
       <p>Valid Change Directions include:&nbsp;</p>
       <ul>
         <li>Up</li>
@@ -1910,9 +1933,11 @@ the trigger to apply even when the source or target are the same
 person</li>
         <li>JUST100, which overrides the normal modifications of a
 change (based on experience or other factors) and uses 100 points as a
-base amount for the change from this trigger.&nbsp;</li><li>XP=x to automtically give x experience points to the source
+base amount for the change from this trigger.&nbsp;</li>
+        <li>XP=x to automtically give x experience points to the source
 of the event, modified by the level of the target, when the event is
-triggered.</li><li>RPXP=x to automtically give x roleplaying experience points
+triggered.</li>
+        <li>RPXP=x to automtically give x roleplaying experience points
 to the source of the
 event when the event is triggered.</li>
       </ul>
@@ -1953,7 +1978,8 @@ existing faction, regardless of whether it appears on the LIST FACTIONS
 list, so long as the filename/identifier given refers to an existing
 faction file. The Faction editor contains numerous other complex and
 interesting fields to change, which we will now describe.</p>
-      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+      <table style="width: 100%;" bgcolor="yellow" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
         <tbody>
           <tr>
             <td width="25%"><strong>Property</strong></td>
@@ -2147,7 +2173,8 @@ may not work as expected. </td>
           </tr>
         </tbody>
       </table>
-      <p align="left"><strong><a name="quests"><font color="green" size="5">Quests</font></a></strong></p>
+      <p align="left"><strong><a name="quests"><font color="green"
+ size="5">Quests</font></a></strong></p>
       <p>Quests are tasks which
 can be completed by players for prizes,
 typically quest points, experience, money, or all three. Quest tasks,
@@ -2198,9 +2225,11 @@ prompt designates special syntax for the expression of data -- not
 following the rules can make the difference between a Quest working and
 falling flat, leaving a nasty trail of error messages in your log. In
 data dealing with the things mobs will announce or say, remember that
-you can use any of the special codes described in the <a href="Scriptable.html#codes">Scriptable</a>
+you can use any of the special codes described in the <a
+ href="Scriptable.html#codes">Scriptable</a>
 guide to insert data into
-the mobs speech, such as <span style="font-weight: bold; font-family: monospace;">$i
+the mobs speech, such as <span
+ style="font-weight: bold; font-family: monospace;">$i
 $r $a</span>
 and others. When you are done filling in all the fields, your new quest
 will be ready for playing according to the timing you laid out. You can
@@ -2214,7 +2243,8 @@ and are ready to try your hand at poking around the innards of a Quest,
 continue reading. Otherwise, you're done learning about Quests.</p>
       <p>A quest weaves its way
 into your world through a long set of
-definitions and pseudo-commands called a <span style="color: rgb(204, 0, 0);">QUEST-SCRIPT</span>.
+definitions and pseudo-commands called a <span
+ style="color: rgb(204, 0, 0);">QUEST-SCRIPT</span>.
 The quest scripts
 are manually created by an Archon using the <strong>CREATE
 QUEST</strong>
@@ -2250,33 +2280,42 @@ the <strong>SAVE QUESTS</strong>
 command. Quests saved this way will be restored during the next
 CoffeeMud reboot. Any time the CREATE QUEST command is used, you will
 need to follow it with a SAVE QUESTS if you want your quest to remain.</p>
-      <p><font style="background-color: aquamarine;" color="#4169e1" size="4"><strong>Quest
+      <p><font style="background-color: aquamarine;" color="#4169e1"
+ size="4"><strong>Quest
 Scripts</strong></font></p>
       <p>When creating a new quest
 using the <strong>CREATE QUEST</strong>
 [SCRIPT] command, whether you use the load command to specify an
 external script, or include the script directly into the create
 command, the quest script commands are as follows:</p>
-      <p><span style="color: rgb(51, 102, 102);">SET NAME</span> <span style="color: rgb(102, 51, 102);">[QUEST
+      <p><span style="color: rgb(51, 102, 102);">SET NAME</span> <span
+ style="color: rgb(102, 51, 102);">[QUEST
 NAME]</span> - the *unique*
 name of your quest. This is a required command!</p>
-      <p><span style="color: rgb(51, 102, 102);">SET DISPLAY</span><span style="color: rgb(102, 51, 102);"> [DISPLAY QUEST NAME]</span> - a
+      <p><span style="color: rgb(51, 102, 102);">SET DISPLAY</span><span
+ style="color: rgb(102, 51, 102);"> [DISPLAY QUEST NAME]</span> - a
 friendly displayable name for your quest. &nbsp;Completely optional.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET DURATION</span> <span style="color: rgb(102, 51, 102);">[#TICKS/TIME]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET DURATION</span> <span
+ style="color: rgb(102, 51, 102);">[#TICKS/TIME]</span>
 - Either a number of ticks (4 second periods) the quest will last once
 started, or a formula, or a number followed by the word minutes,
 seconds, hours, days, mudhours, or muddays. Use a simple
 value of 0 to make your quest run continually. &nbsp;This is a
 required
 command!</p>
-      <p style="color: rgb(51, 0, 0);"><span style="color: rgb(51, 102, 102);">SET WAIT</span> <span style="color: rgb(102, 51, 102);">[#TICKS</span><span style="color: rgb(102, 51, 102);">/TIME</span><span style="color: rgb(102, 51, 102);">]</span>
+      <p style="color: rgb(51, 0, 0);"><span
+ style="color: rgb(51, 102, 102);">SET WAIT</span> <span
+ style="color: rgb(102, 51, 102);">[#TICKS</span><span
+ style="color: rgb(102, 51, 102);">/TIME</span><span
+ style="color: rgb(102, 51, 102);">]</span>
 - Either a&nbsp;number of
 ticks, or a formula, or a number followed by the word minutes, seconds,
 hours, days, mudhours, or muddays to minimally wait between auto-starts
 of the quest. This works in conjucton with SET INTERVAL. &nbsp;The full
 wait time between quest starts is WAIT + (random number between 1 and
 INTERVAL).&nbsp; Required for scheduled quests.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET INTERVAL</span> <span style="color: rgb(102, 51, 102);">[#TICKS/TIME]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET INTERVAL</span> <span
+ style="color: rgb(102, 51, 102);">[#TICKS/TIME]</span>
 -&nbsp;Either a
 number of ticks (1-#TICKS), or a formula, or a number followed by the
 word minutes, seconds, hours, days, mudhours, or muddays to
@@ -2288,7 +2327,9 @@ quest starts is WAIT + (random number between 1 and INTERVAL).
 for
 scheduled quests.</p>
       <span style="color: rgb(51, 102, 102);"></span>
-      <p style="color: rgb(51, 0, 0);"><span style="color: rgb(51, 102, 102);">SET SPAWNABLE <span style="color: rgb(102, 51, 102);">[TRUE/ALL]</span></span>
+      <p style="color: rgb(51, 0, 0);"><span
+ style="color: rgb(51, 102, 102);">SET SPAWNABLE <span
+ style="color: rgb(102, 51, 102);">[TRUE/ALL]</span></span>
 - whether this quest will, when started, spawn a copy of itself and run
 the copy instead. This allows the same quest to run more than once at
 the same time, though it will share its name as well as its list of
@@ -2312,26 +2353,32 @@ WAIT/INTERVAL variables.<br>
 SET DATE</span> <span style="color: rgb(102, 51, 102);">[#DAY]-[#MONTH]</span>
 - The real-life start-date of the quest. This is a valid substitute for
 the SET WAIT requirement.</p>
-      <p style="color: rgb(51, 0, 0);"><span style="color: rgb(51, 102, 102);">SET MUDDAY</span> <span style="color: rgb(102, 51, 102);">[#DAY]-[#MONTH]</span>
+      <p style="color: rgb(51, 0, 0);"><span
+ style="color: rgb(51, 102, 102);">SET MUDDAY</span> <span
+ style="color: rgb(102, 51, 102);">[#DAY]-[#MONTH]</span>
 - The start
 mud-date of the quest, according to the default global mud calendar.
 This is a valid substitute for the SET WAIT requirement.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET MINPLAYERS</span> <span style="color: rgb(102, 51, 102);">[#PLAYERS]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET MINPLAYERS</span> <span
+ style="color: rgb(102, 51, 102);">[#PLAYERS]</span>
 - Minimum number
 of players who must be online for a timed quest to automatically start.
 See SET PLAYERMASK.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET PLAYERMASK</span> <span style="color: rgb(102, 51, 102);">[MASKSTRING]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET PLAYERMASK</span> <span
+ style="color: rgb(102, 51, 102);">[MASKSTRING]</span>
 - If this string is empty or not specified, then anyone is considered a
 player for the purposes of the MINPLAYERS setting above. However, you
 can specify a "zapper mask" to narrow down the definition of a player.
 See HELP ZAPPERMASKS for the list of valid mask values to put here.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET RUNLEVEL</span> <span style="color: rgb(102, 51, 102);">[#LEVEL]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET RUNLEVEL</span> <span
+ style="color: rgb(102, 51, 102);">[#LEVEL]</span>
 - Normally, a timed quest will always run when its time comes up.
 Setting a value above -1 will prevent this quest from running when its
 time comes up if another quest is also running at the same or LOWER run
 level. This does not affect spawned quest copies, which will always run
 even when another of the same name (and runlevel) is active.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET PRESERVE</span> <span style="color: rgb(102, 51, 102);">[#STEPS]</span>-
+      <p><span style="color: rgb(51, 102, 102);">SET PRESERVE</span> <span
+ style="color: rgb(102, 51, 102);">[#STEPS]</span>-
 If a number greater than 0 is issued, then when a STEP command is
 encountered and the commands following it are executed due to a
 MPSTEPQUEST Scriptable command, then any objects, behaviors, abilities,
@@ -2359,12 +2406,16 @@ duration settings from previous steps will be re-used. Numerous STEP
 commands may be places in your quest scripts. An MPSTOPQUEST command,
 or an expired duration, however, will always cause the entire quest to
 cease executing and all objects to be cleaned up. See also SET PRESERVE.</p>
-      <p><span style="color: rgb(51, 102, 102);">STEP&nbsp;<span style="color: rgb(102, 51, 102);">AUTO</span></span><span style="color: rgb(102, 51, 102);">-</span>This
+      <p><span style="color: rgb(51, 102, 102);">STEP&nbsp;<span
+ style="color: rgb(102, 51, 102);">AUTO</span></span><span
+ style="color: rgb(102, 51, 102);">-</span>This
 command is the same as the normal STEP command, except that when the
 normal duration runs out, the next step is automatically executed.
 &nbsp;The duration can still be short-cutted with MPSTEPQUEST or
 MPSTOPQUEST as usual.</p>
-      <p><span style="color: rgb(51, 102, 102);">STEP <span style="color: rgb(102, 51, 102);">BACK</span></span><span style="color: rgb(102, 51, 102);">-</span>This
+      <p><span style="color: rgb(51, 102, 102);">STEP <span
+ style="color: rgb(102, 51, 102);">BACK</span></span><span
+ style="color: rgb(102, 51, 102);">-</span>This
 command is the same as the normal STEP command, except that it will
 reset the script line pointer so that the next time the quest is
 ordered to step again, it will repeat the given step. &nbsp;This
@@ -2378,28 +2429,33 @@ applies new scripts to a given player. &nbsp;Since any number of
 players may accept a quest, you would want this step repeated for each
 player that accept, which explains the endless nature.</p>
       <span style="color: rgb(51, 102, 102);"></span>
-      <p><span style="color: rgb(51, 102, 102);">STEP <span style="color: rgb(102, 51, 102);">BREAK</span></span><span style="color: rgb(102, 51, 102);">-</span>
+      <p><span style="color: rgb(51, 102, 102);">STEP <span
+ style="color: rgb(102, 51, 102);">BREAK</span></span><span
+ style="color: rgb(102, 51, 102);">-</span>
 This command will cause the quest script to stop evaluating any further
 settings. Statements after a STEP BREAK, including any SETS, LOADS, or
 any other statements, will not be executed. This is used in conjunction
 with SET SPAWNABLE ANY to allow quest scripts which have been broken
 into several descrete steps to run independently. A SET SPAWNABLE ANY
 quest is considered successfully run when this command is encountered.</p>
-      <p><span style="color: rgb(51, 102, 102);">IMPORT MOBS</span> <span style="color: rgb(102, 51, 102);">[XML
+      <p><span style="color: rgb(51, 102, 102);">IMPORT MOBS</span> <span
+ style="color: rgb(102, 51, 102);">[XML
 FILE PATH]</span>
 - this will import a list of custom mobs from a .CMARE file generated
 using the EXPORT ROOM MOBS command. The parameter must be the path and
 file name of the file, using the same format as the LOAD= command
 mentioned above. This list can then be accessed with the LOAD MOB, or
 LOAD MOBGROUP command.</p>
-      <p><span style="color: rgb(51, 102, 102);">IMPORT ITEMS</span> <span style="color: rgb(102, 51, 102);">[XML
+      <p><span style="color: rgb(51, 102, 102);">IMPORT ITEMS</span> <span
+ style="color: rgb(102, 51, 102);">[XML
 FILE PATH]</span>
 - this will import a list of custom items from a .CMARE file generated
 using the EXPORT ROOM ITEMS command. The parameter must be the path and
 file name of the file, using the same format as the LOAD= command
 mentioned above. This list can then be accessed with the LOAD ITEM or
 LOAD ITEMGROUP command.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET AREA</span> <span style="color: rgb(102, 51, 102);">([AREA
+      <p><span style="color: rgb(51, 102, 102);">SET AREA</span> <span
+ style="color: rgb(102, 51, 102);">([AREA
 NAME OR NAMES])</span>
 - will set the current designated area to the area specified. Although
 this does nothing in itself, it is important for the several commands
@@ -2409,12 +2465,14 @@ the first area name as ANY, followed by your other area name choices,
 separated by spaces. If no area name is given, this will CLEAR the area
 designation. This can have a profound impact on how subsequent mob or
 item loading, or room setting commands work.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET AREA</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET AREA</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET AREAGROUP</span> <span style="color: rgb(102, 51, 102);">([AREA
+      <p><span style="color: rgb(51, 102, 102);">SET AREAGROUP</span> <span
+ style="color: rgb(102, 51, 102);">([AREA
 NAME OR NAMES])</span>
 - essentially the same as set ROOMGROUP below, this will set the
 current designated roomgroup to the rooms in the area(s) specified.
@@ -2428,7 +2486,8 @@ If no area name is given, this will CLEAR the ROOMGROUP designation.
 This can have a profound impact on how subsequent mob or item loading,
 or room setting commands work. This command will automatically clear
 the AREA setting.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ROOMGROUP</span> <span style="color: rgb(102, 51, 102);">([ROOM
+      <p><span style="color: rgb(51, 102, 102);">SET ROOMGROUP</span> <span
+ style="color: rgb(102, 51, 102);">([ROOM
 NAME])</span>
 - will set the ROOMGROUP to the set specified. If an area has been
 previously designated, and not cleared (see SET AREA), then the rooms
@@ -2445,13 +2504,16 @@ names include map room IDs such as MyArea#123, or key words from the
 titles or descriptions of rooms. &nbsp;Rooms designated this way
 are
 available in Scripts using the QUESTROOM function.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">ROOMGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">ROOMGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing.&nbsp; &nbsp;Rooms designated this way are
 available in
 Scripts using the QUESTROOM function.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ROOM</span> <span style="color: rgb(102, 51, 102);">([ROOM
+      <p><span style="color: rgb(51, 102, 102);">SET ROOM</span> <span
+ style="color: rgb(102, 51, 102);">([ROOM
 NAME])</span>
 - will set the current designated room to the set specified. If a room
 or area has been previously designated, and not cleared (see SET AREA),
@@ -2465,7 +2527,8 @@ room name is given, this will effectly clear the room designation (but
 it will not clear the area designation!). Valid room names include map
 room IDs such as MyArea#123, or key words from the titles or
 descriptions of rooms.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ROOM</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET ROOM</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing. If the object resolves to a group of objects, a random
@@ -2502,7 +2565,9 @@ designation (but it will not clear the area designation!). Valid locale
 names may be Locale class names such as MountainSurface, StdRoom, etc,
 or they may be locale types such as stone, wooden, underwater,
 mountains, etc.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">LOCALEGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">LOCALEGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing.&nbsp; &nbsp;Rooms designated this way are
@@ -2525,7 +2590,8 @@ or they may be locale types such as stone, wooden, underwater,
 mountains, etc.&nbsp; &nbsp;Rooms designated this way are
 available in
 Scripts using the QUESTROOM function.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET LOCALE</span> <span style="color: rgb(102, 51, 102);">([LOCALE])</span>
+      <p><span style="color: rgb(51, 102, 102);">SET LOCALE</span> <span
+ style="color: rgb(102, 51, 102);">([LOCALE])</span>
 - will set the current designated room to the one with the specified
 class name. If a room or area has been previously designated, and not
 cleared (see SET AREA), then the room will be selected from the
@@ -2539,12 +2605,14 @@ clear the room designation (but it will not clear the area
 designation!). Valid locale names may be Locale class names such as
 MountainSurface, StdRoom, etc, or they may be locale types such as
 stone, wooden, underwater, mountains, etc.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET LOCALE</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET LOCALE</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET MOBGROUP</span> <span style="color: rgb(102, 51, 102);">(RESELECT)
+      <p><span style="color: rgb(51, 102, 102);">SET MOBGROUP</span> <span
+ style="color: rgb(102, 51, 102);">(RESELECT)
 ([MOB NAME])</span>
 - will designate a set of mobs with the given name. If the name ends
 with MASK=..., then a mask as described by the help entry for
@@ -2562,13 +2630,17 @@ as the RESELECT flag was also used in the previous SET MOB or SET
 MOBTYPE command.&nbsp; &nbsp;Mobs designated this way are
 available in
 Scripts using the QUESTMOB function.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">MOBGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">MOBGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing.&nbsp;Mobs designated this way are available in
 Scripts
 using the QUESTMOB function.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET MOB</span> <span style="color: rgb(102, 51, 102);">(RESELECT)</span> <span style="color: rgb(102, 51, 102);">([MOB
+      <p><span style="color: rgb(51, 102, 102);">SET MOB</span> <span
+ style="color: rgb(102, 51, 102);">(RESELECT)</span> <span
+ style="color: rgb(102, 51, 102);">([MOB
 NAME])</span>
 - will set the current mob to one with the given mob name. If the name
 ends with MASK=..., then a mask as described by the help entry for
@@ -2588,12 +2660,14 @@ chosen if previously chosen, so long as the RESELECT flag was also used
 in the previous SET MOB or SET MOBTYPE command. Note: mobs, items,
 rooms, etc that are Cloaked (as per Prop_WizInvis) are never ever
 selected with any SET command.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET MOB</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET MOB</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET MOBTYPE</span> <span style="color: rgb(102, 51, 102);">(RESELECT)
+      <p><span style="color: rgb(51, 102, 102);">SET MOBTYPE</span> <span
+ style="color: rgb(102, 51, 102);">(RESELECT)
 ([CLASS])</span>
 - will set the current mob to one with the given class name. Ths mob
 chosen will be selected from a MOBGROUP if one has been set. Otherwise,
@@ -2608,12 +2682,15 @@ with SET MOB, or SET MOBTYPE. The RESELECT flag is an optional first
 flag which, if specified, designates that a mob may be chosen if
 previously chosen, so long as the RESELECT flag was also used in the
 previous SET MOB or SET MOBTYPE command.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET MOBTYPE</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET MOBTYPE</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ITEMGROUP</span> <span style="color: rgb(102, 51, 102);">(RESELECT)</span> <span style="color: rgb(102, 51, 102);">([ITEM
+      <p><span style="color: rgb(51, 102, 102);">SET ITEMGROUP</span> <span
+ style="color: rgb(102, 51, 102);">(RESELECT)</span> <span
+ style="color: rgb(102, 51, 102);">([ITEM
 NAME])</span>
 - will designate a set of items with the given name. If the name ends
 with MASK=..., then a mask as described by the help entry for
@@ -2629,12 +2706,16 @@ specified, designates that items may be placed in the itemgroup even if
 previously set, so long as the RESELECT flag was also used in the
 previous SET ITEM or SET ITEMTYPE command. Items designated this way
 are available in Scripts using the QUESTITEM function.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">ITEMGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">ITEMGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing.&nbsp; Items designated this way are available in
 Scripts using the QUESTITEM function.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ITEM</span> <span style="color: rgb(102, 51, 102);">(RESELECT)</span> <span style="color: rgb(102, 51, 102);">([ITEM
+      <p><span style="color: rgb(51, 102, 102);">SET ITEM</span> <span
+ style="color: rgb(102, 51, 102);">(RESELECT)</span> <span
+ style="color: rgb(102, 51, 102);">([ITEM
 NAME])</span>
 - will set the current item to one with the given name. The item chosen
 will be selected from those in the designated ROOMGROUP (if one is
@@ -2648,12 +2729,15 @@ been previously set with SET ITEM, or SET ITEMTYPE. The RESELECT flag
 is an optional first flag which, if specified, designates that an item
 may be chosen if previously chosen, so long as the RESELECT flag was
 also used in the previous SET ITEM or SET ITEMTYPE command.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ITEM</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET ITEM</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - serves the same purpose as the above command of the same name, but
 the argument is an object specifier. See Object Specifiers below this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ITEMTYPE</span> <span style="color: rgb(102, 51, 102);">(RESELECT)</span> <span style="color: rgb(102, 51, 102);">([CLASS])</span>
+      <p><span style="color: rgb(51, 102, 102);">SET ITEMTYPE</span> <span
+ style="color: rgb(102, 51, 102);">(RESELECT)</span> <span
+ style="color: rgb(102, 51, 102);">([CLASS])</span>
 - will set the current item to one with the given class name. The item
 chosen will be selected from those in the designated ROOMGROUP (if one
 is designated), AREA (if one is designated) or the world. The item must
@@ -2666,7 +2750,8 @@ been previously set with SET ITEM, or SET ITEMTYPE. The RESELECT flag
 is an optional first flag which, if specified, designates that an item
 may be chosen if previously chosen, so long as the RESELECT flag was
 also used in the previous SET ITEM or SET ITEMTYPE command.</p>
-      <p><span style="color: rgb(51, 102, 102);">LOAD MOBGROUP</span> <span style="color: rgb(102, 51, 102);">([#NUMBER])
+      <p><span style="color: rgb(51, 102, 102);">LOAD MOBGROUP</span> <span
+ style="color: rgb(102, 51, 102);">([#NUMBER])
 [MOB NAME]</span>
 - will instantiate all (or optionally, the given number) mobs of the
 given name from the set of mobs imported using the IMPORT MOBS command
@@ -2679,7 +2764,8 @@ designated, then this command will create each mob in that room or
 random room in the area. If a room or area has not been designated (or
 was cleared), then this command will designate a random room and area.
 This command will also designate the current mob to the last one loaded.</p>
-      <p><span style="color: rgb(51, 102, 102);">LOAD MOB</span> <span style="color: rgb(102, 51, 102);">[MOB
+      <p><span style="color: rgb(51, 102, 102);">LOAD MOB</span> <span
+ style="color: rgb(102, 51, 102);">[MOB
 NAME]</span>
 - will instantiate a mob of the given name from the list of mobs
 imported using the IMPORT MOBS command above.Use a name of ANY to load
@@ -2690,7 +2776,9 @@ current mob. If a room, roomgroup, or area has been previously
 designated, then this command will create the mob in that room. If a
 room or area has not been designated (or was cleared), then this
 command will designate a random room and area.</p>
-      <p><span style="color: rgb(51, 102, 102);">LOAD ITEMGROUP</span> <span style="color: rgb(102, 51, 102);">([#NUMBER])</span> <span style="color: rgb(102, 51, 102);">[ITEM
+      <p><span style="color: rgb(51, 102, 102);">LOAD ITEMGROUP</span> <span
+ style="color: rgb(102, 51, 102);">([#NUMBER])</span> <span
+ style="color: rgb(102, 51, 102);">[ITEM
 NAME]</span>
 - will instantiate all (or optionally, the given number) items of the
 given name from the list of items imported using the IMPORT ITEMS
@@ -2700,7 +2788,8 @@ command will create the item in that room. If a room or area has not
 been designated (or was cleared), then this command will designate a
 random room and area. This command will also designate the current item
 to the last one loaded. Use a name of ANY or ALL to load them all.</p>
-      <p><span style="color: rgb(51, 102, 102);">LOAD ITEM</span> <span style="color: rgb(102, 51, 102);">[ITEM
+      <p><span style="color: rgb(51, 102, 102);">LOAD ITEM</span> <span
+ style="color: rgb(102, 51, 102);">[ITEM
 NAME]</span>
 - will instantiate an item of the given name from the list of items
 imported using the IMPORT ITEMS command above. This item will be set as
@@ -2721,7 +2810,8 @@ will give all currently designated items (designated using the SET
 ITEM, SET ITEMGROUP, LOAD ITEM, or LOAD ITEMGROUP command) to the last
 designated mob or mobs (designated using the SET MOB, SET MOBGROUP,
 LOAD MOBGROUP, or LOAD MOB commands).</p>
-      <p><span style="color: rgb(51, 102, 102);">GIVE STAT <span style="color: rgb(102, 51, 102);">[STAT ID] [VALUE]</span></span>-
+      <p><span style="color: rgb(51, 102, 102);">GIVE STAT <span
+ style="color: rgb(102, 51, 102);">[STAT ID] [VALUE]</span></span>-
 will give the currently designated object (designated using the SET
 ITEM/MOB/ROOM/AREA, or LOAD ITEM/MOB command) a new value for their
 internal stat designated by the STAT ID. An important stat to be aware
@@ -2730,7 +2820,8 @@ true,
 it will make it so that the death of the mob or mobs it is assigned to
 instantly ends the quest. &nbsp;This is an advanced coding
 feature; use it wisely..</p>
-      <p><span style="color: rgb(51, 102, 102);">GIVE BEHAVIOR</span> <span style="color: rgb(102, 51, 102);">[BEHAVIOR
+      <p><span style="color: rgb(51, 102, 102);">GIVE BEHAVIOR</span> <span
+ style="color: rgb(102, 51, 102);">[BEHAVIOR
 ID] ([PARAMETERS])</span>
 - The behavior ID must be a valid behavior class name. The parameters
 are any parameters you wish to pass to the behavior. This command will
@@ -2741,7 +2832,8 @@ text that would be valid for the behavior id specified. The text may
 also optionally include embedded references to other quest objects. See
 below Object Specifiers in Parameters below for more information on
 using this feature.</p>
-      <p><span style="color: rgb(51, 102, 102);">GIVE ABILITY</span> <span style="color: rgb(102, 51, 102);">[ABILITY
+      <p><span style="color: rgb(51, 102, 102);">GIVE ABILITY</span> <span
+ style="color: rgb(102, 51, 102);">[ABILITY
 ID] ([PARAMETERS])</span>
 - The ability ID must be a valid ability class name. The parameters are
 any parameters you wish to pass to the ability. This command will give
@@ -2751,7 +2843,8 @@ and include any text that would be valid for the ability id specified.
 The text may also optionally include embedded references to other quest
 objects. See below Object Specifiers in Parameters below for more
 information on using this feature.</p>
-      <p><span style="color: rgb(51, 102, 102);">GIVE AFFECT</span> <span style="color: rgb(102, 51, 102);">[ABILITY
+      <p><span style="color: rgb(51, 102, 102);">GIVE AFFECT</span> <span
+ style="color: rgb(102, 51, 102);">[ABILITY
 ID] ([PARAMETERS]</span>)
 - The ability ID must be a valid ability class name. The parameters are
 any parameters you wish to pass to the ability. This command will give
@@ -2762,7 +2855,8 @@ would be valid for the ability id specified. The text may also
 optionally include embedded references to other quest objects. See
 below Object Specifiers in Parameters below for more information on
 using this feature.</p>
-      <p><span style="color: rgb(51, 102, 102);">GIVE FOLLOWER</span> <span style="color: rgb(102, 51, 102);">[MOB
+      <p><span style="color: rgb(51, 102, 102);">GIVE FOLLOWER</span> <span
+ style="color: rgb(102, 51, 102);">[MOB
 NAME]</span>
 - The mob name is a mob which will be selected from the list of
 previously designated mobs (designated using the LOAD MOB, SET MOB, or
@@ -2770,18 +2864,23 @@ SET MOBTYPE commands). This mob will be made into a follower of the mob
 most recently designated using the SET MOB, SET MOBTYPE, or LOAD MOB
 command. This command does not change the current mob designation, nor
 does it change the location of either mob.</p>
-      <p><span style="color: rgb(51, 102, 102);">TAKE BEHAVIOR</span> <span style="color: rgb(102, 51, 102);">[BEHAVIOR
+      <p><span style="color: rgb(51, 102, 102);">TAKE BEHAVIOR</span> <span
+ style="color: rgb(102, 51, 102);">[BEHAVIOR
 ID]</span>-
 The behavior ID must be a valid behavior class name. This command will
 take from the most recently designated mob, item, area, room or
 mobgroup (designated using the set or load commands), itemgroup, or
 roomgroup the above behavior.</p>
-      <p><span style="color: rgb(51, 102, 102);">TAKE</span> <span style="color: rgb(51, 102, 102);">ABILITY</span> <span style="color: rgb(102, 51, 102);">[ABILITY
+      <p><span style="color: rgb(51, 102, 102);">TAKE</span> <span
+ style="color: rgb(51, 102, 102);">ABILITY</span> <span
+ style="color: rgb(102, 51, 102);">[ABILITY
 ID]</span> - The ability ID
 must be a valid ability class name. This command will take from the
 currently designated mob, or mobgroup (designated using the set or load
 commands) the above ability.</p>
-      <p><span style="color: rgb(51, 102, 102);">TAKE</span> <span style="color: rgb(51, 102, 102);">AFFECT</span> <span style="color: rgb(102, 51, 102);">[ABILITY
+      <p><span style="color: rgb(51, 102, 102);">TAKE</span> <span
+ style="color: rgb(51, 102, 102);">AFFECT</span> <span
+ style="color: rgb(102, 51, 102);">[ABILITY
 ID]</span>
 - The ability ID must be a valid ability class name. This command will
 take from the currently designated mob, item, room, area, or mobgroup
@@ -2803,7 +2902,8 @@ is completed.</p>
 script. The end is designated by a corresponding
 &lt;/SCRIPT&gt; tag on
 its own line. See the next section for more details.</p>
-      <p><span style="color: rgb(51, 102, 102);">LOAD= <span style="color: rgb(102, 51, 102);">([QUEST FILE])
+      <p><span style="color: rgb(51, 102, 102);">LOAD= <span
+ style="color: rgb(102, 51, 102);">([QUEST FILE])
 ([ARGUMENT] ...
 [ARGUMENT])</span></span>
 - This command will cause the specified external quest script file to
@@ -2820,7 +2920,8 @@ evaluates to an Object Specifier which represents a group of objects
 will execute once for every object inside the group! See the discussion
 of Object Specifiers and Object Spcifiers in Parameters for more
 information.</p>
-      <p><span style="color: rgb(51, 102, 102);">&lt;OPTION&gt; <span style="color: rgb(102, 51, 102);">([QUEST
+      <p><span style="color: rgb(51, 102, 102);">&lt;OPTION&gt; <span
+ style="color: rgb(102, 51, 102);">([QUEST
 SCRIPT COMMANDS]) <span style="color: rgb(51, 102, 102);">&lt;/OPTION&gt;</span></span></span>-
 Putting quest script commands inside of &lt;OPTION&gt; tags
 means that,
@@ -2840,7 +2941,8 @@ and any of the following operators: + - * \ () ?. The ? may be used to
 generate random numbers in a math expression. For example, 1?4 would
 generate a random number from 1 to 4, and 3+1?4 would generate a random
 number from 4 to 7.</p>
-      <p><span style="color: rgb(102, 0, 0); font-weight: bold;"><a name="questcrobjsp"></a>*
+      <p><span style="color: rgb(102, 0, 0); font-weight: bold;"><a
+ name="questcrobjsp"></a>*
 Object Specifiers</span><span style="font-weight: bold;">.</span>
 Many of the SET ... commands, such as SET MOBGROUP, SET MOB, SET
 ITEMGROUP, SET ROOM, etc, have forms which allow you to designate their
@@ -2882,25 +2984,31 @@ generated. Special characters are: '_' (to make the name in uppercase),
 or
 '|' to replace all spaces in the name with | characters (which is very
 useful for QuestChat parameters).</p>
-      <p><font style="background-color: aquamarine;" color="#4169e1" size="4"><strong>Mystery
+      <p><font style="background-color: aquamarine;" color="#4169e1"
+ size="4"><strong>Mystery
 Objects in Quest scripts:</strong></font></p>
       <p>In addition to the normal
 quest objects mentioned above, such
 as MOB, ITEM, ROOM and so forth, there are also extranous objects and
 groups intended for use when building logic problem mysteries. The
 commands for setting these are as follows:</p>
-      <p><span style="color: rgb(51, 102, 102);">SET AGENT</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET AGENT</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the AGENT
-variable to the [OBJECT]. Will also set the MOB object. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+variable to the [OBJECT]. Will also set the MOB object. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this command listing. If the object resolves to a group of
 objects, a random one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET AGENTGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET AGENTGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the AGENTGROUP variable to the [OBJECT]. Will also set the
 MOBGROUP object to the same, as well as designate one random mob from
-the group as the AGENT and the MOB. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+the group as the AGENT and the MOB. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET AGENTGROUP</span> <span style="color: rgb(102, 51, 102);">[#NUMBER]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET AGENTGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[#NUMBER]</span>
 - Sets the AGENTGROUP variable to the currently set MOBGROUP, selecting
 at most NUMBER mobs randomly from that list. Will also set the MOBGROUP
 object to the same, as well as designate one random mob from the group
@@ -2918,7 +3026,8 @@ objects, a random one from the group will be chosen.</p>
 WHEREHAPPENEDGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the WHEREHAPPENEDGROUP variable to the [OBJECT]. Will also set
 the ROOMGROUP object to the same, as well as designate one random room
-from the group as the WHEREHAPPENED and the ROOM. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+from the group as the WHEREHAPPENED and the ROOM. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
       <p><span style="color: rgb(51, 102, 102);">SET
@@ -2926,31 +3035,43 @@ WHEREHAPPENEDGROUP</span> <span style="color: rgb(102, 51, 102);">[#NUMBER]</spa
 - Sets the WHEREHAPPENEDGROUP variable to the currently set ROOMGROUP,
 selecting at most NUMBER rooms randomly from that list. Will also set
 the ROOMGROUP object to the same, as well as designate one random room
-from the group as the WHEREHAPPENED and the ROOM. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+from the group as the WHEREHAPPENED and the ROOM. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET WHEREAT</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET WHEREAT</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the WHEREAT
-variable to the [OBJECT]. Will also set the ROOM object. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+variable to the [OBJECT]. Will also set the ROOM object. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this command listing. If the object resolves to a group of
 objects, a random one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">WHEREATGROUP</span> <span style="color: rgb(102, 51, 102);">[</span><span style="color: rgb(102, 51, 102);">OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">WHEREATGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[</span><span
+ style="color: rgb(102, 51, 102);">OBJECT]</span>
 - Sets the WHEREATGROUP variable to the [OBJECT]. Will also set the
 ROOMGROUP object to the same, as well as designate one random room from
-the group as the WHEREAT and the ROOM. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+the group as the WHEREAT and the ROOM. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">WHEREATGROUP</span> <span style="color: rgb(102, 51, 102);">[</span><span style="color: rgb(102, 51, 102);">#NUMBER]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">WHEREATGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[</span><span
+ style="color: rgb(102, 51, 102);">#NUMBER]</span>
 - Sets the WHEREATGROUP variable to the currently set ROOMGROUP,
 selecting at most NUMBER rooms randomly from that list. Will also set
 the ROOMGROUP object to the same, as well as designate one random room
-from the group as the WHEREAT and the ROOM. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+from the group as the WHEREAT and the ROOM. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
       <p><span style="color: rgb(51, 102, 102);">SET WHENHAPPENED</span>
       <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets
-the WHENHAPPENED variable to the timeclock [OBJECT]. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+the WHENHAPPENED variable to the timeclock [OBJECT]. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
@@ -2964,24 +3085,33 @@ group of objects, a random one from the group will be chosen.</p>
       <p><span style="color: rgb(51, 102, 102);">SET
 WHENHAPPENEDGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the WHENHAPPENEDGROUP variable to the [OBJECT]. Will also
-designate one random time from the group as the WHENHAPPENED. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+designate one random time from the group as the WHENHAPPENED. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
       <p><span style="color: rgb(51, 102, 102);">SET
-WHENHAPPENEDGROUP</span> <span style="color: rgb(102, 51, 102);">[#</span><span style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span style="color: rgb(102, 51, 102);">] ...</span> <span style="color: rgb(102, 51, 102);">[#</span><span style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span style="color: rgb(102, 51, 102);">]</span>
+WHENHAPPENEDGROUP</span> <span style="color: rgb(102, 51, 102);">[#</span><span
+ style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span
+ style="color: rgb(102, 51, 102);">] ...</span> <span
+ style="color: rgb(102, 51, 102);">[#</span><span
+ style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span
+ style="color: rgb(102, 51, 102);">]</span>
 - Sets the
 WHENHAPPENEDGROUP list to the current time plus or minus the list of
 hours-differences given. Will also designate one random time from the
 group as the WHENHAPPENED. See <a href="ArchonTome.html#questcrobjsp">Object
 Specifiers</a> above this command
 listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET WHENAT</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET WHENAT</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the
-WHENHAPPENED variable to the timeclock [OBJECT]. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+WHENHAPPENED variable to the timeclock [OBJECT]. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET WHENAT</span> <span style="color: rgb(102, 51, 102);">[#HOURS-DIFFERENCE]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET WHENAT</span> <span
+ style="color: rgb(102, 51, 102);">[#HOURS-DIFFERENCE]</span>
 - Sets
 the WHENAT variable to the current time plus or minus the hours
 difference specified. See <a href="ArchonTome.html#questcrobjsp">Object
@@ -2992,29 +3122,40 @@ group of objects, a random one from the group will be chosen.</p>
       <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets
 the WHENATGROUP variable to the [OBJECT]. Will also designate one
-random time from the group as the WHENAT. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+random time from the group as the WHENAT. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
       <p><span style="color: rgb(51, 102, 102);">SET WHENATGROUP</span>
-      <span style="color: rgb(102, 51, 102);">[#</span><span style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span style="color: rgb(102, 51, 102);">] ...</span> <span style="color: rgb(102, 51, 102);">[#</span><span style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span style="color: rgb(102, 51, 102);">]</span>
+      <span style="color: rgb(102, 51, 102);">[#</span><span
+ style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span
+ style="color: rgb(102, 51, 102);">] ...</span> <span
+ style="color: rgb(102, 51, 102);">[#</span><span
+ style="color: rgb(102, 51, 102);">HOURS-DIFFERENCE</span><span
+ style="color: rgb(102, 51, 102);">]</span>
 - Sets the WHENATGROUP list
 to the current time plus or minus the list of hours-differences given.
-Will also designate one random time from the group as the WHENAT. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+Will also designate one random time from the group as the WHENAT. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET FACTION</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET FACTION</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the FACTION
-variable to the faction string [OBJECT]. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+variable to the faction string [OBJECT]. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET FACTION</span> <span style="color: rgb(102, 51, 102);">[FACTION
+      <p><span style="color: rgb(51, 102, 102);">SET FACTION</span> <span
+ style="color: rgb(102, 51, 102);">[FACTION
 NAME]</span> - Sets the
 FACTION variable to one of the given name or ANY to choose a random one.</p>
       <p><span style="color: rgb(51, 102, 102);">SET FACTIONGROUP</span>
       <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the FACTIONGROUP variable to the [OBJECT]. Will also designate
-one random faction from the group as the FACTION. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+one random faction from the group as the FACTION. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
       <p><span style="color: rgb(51, 102, 102);">SET FACTIONGROUP</span>
@@ -3032,10 +3173,12 @@ NAME] ...
 the faction names. Will also designate one random faction from the
 group as the FACTION. The faction names are space delimited, and names
 grouped with double-quotes.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET TARGET</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET TARGET</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the TARGET
 variable to the [OBJECT]. Will also set the MOB or ITEM object
-depending on what gets designated. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+depending on what gets designated. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
@@ -3044,7 +3187,8 @@ one from the group will be chosen.</p>
 - Sets the TARGETGROUP variable to the [OBJECT]. Will also set the
 MOBGROUP or ITEMGROUP object to the same (depending on what type of
 group is designated), as well as designate one random object from the
-group as the TARGET, and either the MOB or ITEM. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+group as the TARGET, and either the MOB or ITEM. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
       <p><span style="color: rgb(51, 102, 102);">SET TARGETGROUP</span>
@@ -3053,97 +3197,138 @@ command listing.</p>
 is currently set) or ITEMGROUP if not. It will select at most NUMBER
 objects randomly from that list. Will also re-set the MOBGROUP or
 ITEMGROUP object to the same, as well as designate one random mob or
-item from the group as the TARGET and either the MOB or ITEM. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+item from the group as the TARGET and either the MOB or ITEM. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET TOOL</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET TOOL</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the TOOL
 variable to the [OBJECT]. Will also set the MOB or ITEM object
-depending on what gets designated. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+depending on what gets designated. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET TOOLGROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET TOOLGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the TOOLGROUP variable to the [OBJECT]. Will also set the
 MOBGROUP or ITEMGROUP object to the same (depending on what type of
 group is designated), as well as designate one random object from the
-group as the TOOL, and either the MOB or ITEM. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+group as the TOOL, and either the MOB or ITEM. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET TOOLGROUP</span> <span style="color: rgb(102, 51, 102);">[#NUMBER]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET TOOLGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[#NUMBER]</span>
 - Sets the TOOLGROUP variable to the currently set MOBGROUP (if one is
 currently set) or ITEMGROUP if not. It will select at most NUMBER
 objects randomly from that list. Will also re-set the MOBGROUP or
 ITEMGROUP object to the same, as well as designate one random mob or
-item from the group as the TOOL and either the MOB or ITEM. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+item from the group as the TOOL and either the MOB or ITEM. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET MOTIVE</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET MOTIVE</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the MOTIVE
-variable to the string [OBJECT]. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+variable to the string [OBJECT]. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">MOTIVE</span> <span style="color: rgb(102, 51, 102);">[STRING]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">MOTIVE</span> <span
+ style="color: rgb(102, 51, 102);">[STRING]</span>
 - Sets the MOTIVE
 variable to the string.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">MOTIVE</span><span style="color: rgb(51, 102, 102);">GROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">MOTIVE</span><span
+ style="color: rgb(51, 102, 102);">GROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the
 MOTIVEGROUP variable to the [OBJECT]. Will also designate one random
-string from the group as the MOTIVE. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+string from the group as the MOTIVE. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">MOTIVEGROUP</span> <span style="color: rgb(102, 51, 102);">[STRING]
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">MOTIVEGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[STRING]
 .. [STRING]</span> - Sets
 the MOTIVEGROUP to the set of strings specified. Will also designate
 one random string from the group as the MOTIVE. The strings are space
 delimited, and words grouped with double-quotes.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">MOTIVE</span><span style="color: rgb(51, 102, 102);">GROUP</span> <span style="color: rgb(102, 51, 102);">[#NUMBER]
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">MOTIVE</span><span
+ style="color: rgb(51, 102, 102);">GROUP</span> <span
+ style="color: rgb(102, 51, 102);">[#NUMBER]
 [OBJECT]</span>
 - Sets the MOTIVEGROUP variable to [NUMBER] of the items represented by
 [OBJECT]. Will also designate one random string from the group as the
 MOTIVE. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this command listing. [#NUMBER] may be a math expression.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">MOTIVEGROUP</span> <span style="color: rgb(102, 51, 102);">[#NUMBER]</span> <span style="color: rgb(102, 51, 102);">[STRING]
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">MOTIVEGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[#NUMBER]</span> <span
+ style="color: rgb(102, 51, 102);">[STRING]
 .. [STRING]</span>
 - Sets the MOTIVEGROUP to [NUMBER] of the set of strings specified.
 Will also designate one random string from the group as the MOTIVE. The
 strings are space delimited, and words grouped with double-quotes.
 [#NUMBER] may be a math expression.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET ACTION</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET ACTION</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the ACTION
-variable to the string [OBJECT]. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+variable to the string [OBJECT]. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing. If the object resolves to a group of objects, a random
 one from the group will be chosen.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">ACTION</span> <span style="color: rgb(102, 51, 102);">[STRING]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">ACTION</span> <span
+ style="color: rgb(102, 51, 102);">[STRING]</span>
 - Sets the ACTION
 variable to the string.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">ACTION</span><span style="color: rgb(51, 102, 102);">GROUP</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">ACTION</span><span
+ style="color: rgb(51, 102, 102);">GROUP</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the
 ACTIONGROUP variable to the [OBJECT]. Will also designate one random
-string from the group as the ACTION. See <a href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
+string from the group as the ACTION. See <a
+ href="ArchonTome.html#questcrobjsp">Object Specifiers</a>
 above this
 command listing.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">ACTIONGROUP</span> <span style="color: rgb(102, 51, 102);">[STRING]
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">ACTIONGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[STRING]
 .. [STRING]</span> - Sets
 the ACTIONGROUP to the set of strings specified. Will also designate
 one random string from the group as the ACTION. The strings are space
 delimited, and words grouped with double-quotes.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">ACTION</span><span style="color: rgb(51, 102, 102);">GROUP</span> <span style="color: rgb(102, 51, 102);">[#NUMBER]</span> <span style="color: rgb(102, 51, 102);">[OBJECT]</span>
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">ACTION</span><span
+ style="color: rgb(51, 102, 102);">GROUP</span> <span
+ style="color: rgb(102, 51, 102);">[#NUMBER]</span> <span
+ style="color: rgb(102, 51, 102);">[OBJECT]</span>
 - Sets the
 ACTIONGROUP variable to [NUMBER] of the items represented by [OBJECT].
 Will also designate one random string from the group as the ACTION. See
       <a href="ArchonTome.html#questcrobjsp">Object
 Specifiers</a>
 above this command listing. [#NUMBER] may be a math expression.</p>
-      <p><span style="color: rgb(51, 102, 102);">SET</span> <span style="color: rgb(51, 102, 102);">ACTIONGROUP</span> <span style="color: rgb(102, 51, 102);">[#NUMBER]</span> <span style="color: rgb(102, 51, 102);">[STRING]
+      <p><span style="color: rgb(51, 102, 102);">SET</span> <span
+ style="color: rgb(51, 102, 102);">ACTIONGROUP</span> <span
+ style="color: rgb(102, 51, 102);">[#NUMBER]</span> <span
+ style="color: rgb(102, 51, 102);">[STRING]
 .. [STRING]</span>
 - Sets the ACTIONGROUP to [NUMBER] of the set of strings specified.
 Will also designate one random string from the group as the ACTION. The
 strings are space delimited, and words grouped with double-quotes.
 [#NUMBER] may be a math expression.</p>
-      <p><font style="background-color: aquamarine;" color="#4169e1" size="4"><strong>JavaScripting
+      <p><font style="background-color: aquamarine;" color="#4169e1"
+ size="4"><strong>JavaScripting
 in Quest scripts:</strong></font></p>
       <p>The CoffeeMud quest
 manager engine will allow you embed
@@ -3152,18 +3337,25 @@ setting up your quests. The Javascript must be located between the
 &lt;SCRIPT&gt; and &lt;/SCRIPT&gt; quest script
 commands to be
 recognized.</p>
-      <p class="MsoNormal"><span style="font-size: 14pt; color: blue;"><font color="#000000"><font size="3">Javascript
+      <p class="MsoNormal"><span style="font-size: 14pt; color: blue;"><font
+ color="#000000"><font size="3">Javascript
 is a wholly different language than the standard Scriptable/MOBPROG
 language OR the quest script language described in this document. You
-should read the JavaScripting section of the CoffeeMud</font> <a href="Programming.html"><font size="3">Programming Guide</font></a> <font size="3">for
+should read the JavaScripting section of the CoffeeMud</font> <a
+ href="Programming.html"><font size="3">Programming Guide</font></a> <font
+ size="3">for
 more information, as well as the following web sites
 which discuss the usage and syntax of the Javascript language itself:</font>
       <a href="http://www.mozilla.org/js/"><font size="3">http://www.mozilla.org/js/</font></a>
-      <font size="3">and</font> <a href="http://www.mozilla.org/rhino/"><font size="3">http://www.mozilla.org/rhino/</font></a> <font size="3">.</font></font></span></p>
-      <p class="MsoNormal"><span style="font-size: 14pt; color: blue;"><font color="#000000" size="3"><span style="font-size: 14pt; color: blue;"><font color="#000000" size="3">Aside from the above
+      <font size="3">and</font> <a href="http://www.mozilla.org/rhino/"><font
+ size="3">http://www.mozilla.org/rhino/</font></a> <font size="3">.</font></font></span></p>
+      <p class="MsoNormal"><span style="font-size: 14pt; color: blue;"><font
+ color="#000000" size="3"><span style="font-size: 14pt; color: blue;"><font
+ color="#000000" size="3">Aside from the above
 information about
 JavaScripting in CoffeeMud, there are still a few more details to learn
-about JavaScripting in your quest scripts. Although</font></span><span style="font-size: 14pt; color: blue;"><font color="#000000" size="3">Javascript
+about JavaScripting in your quest scripts. Although</font></span><span
+ style="font-size: 14pt; color: blue;"><font color="#000000" size="3">Javascript
 does not require semicolon line delimeters and it will not likely cause
 problems, you should be aware that the quest manager engine will strip
 out all semicolons as part of its command parsing process. For this
@@ -3178,13 +3370,16 @@ quest()</font></font> <font face="Times New Roman">method,
 which, as you can see, returns a Quest object which represents to the
 current quest script. The Quest object returned has numerous useful
 methods on them for doing things like determining which mobs and items
-were selected by the SET commands as described above (<font face="Courier New" size="2">isDesignatedObject,
+were selected by the SET commands as described above (<font
+ face="Courier New" size="2">isDesignatedObject,
 getQuestStuff,
 getQuestMob, getQuestItem</font>,
 etc). There are also methods for
-properly adding other such mobs and items to your quest (<font face="Courier New" size="2">runtimeRegisterObject</font>),
+properly adding other such mobs and items to your quest (<font
+ face="Courier New" size="2">runtimeRegisterObject</font>),
 or for
-adding abilities, behaviors, or effects to existing objects ( <font face="Courier New" size="2">runtimeRegisterAbility,
+adding abilities, behaviors, or effects to existing objects ( <font
+ face="Courier New" size="2">runtimeRegisterAbility,
 runtimeRegisterEffect, runtimeRegisterBehavior</font>).
 You should
 check out the Quest interface for more information on these methods;
@@ -3200,21 +3395,29 @@ your quest Script. There are several useful properties of the object,
 such as <font face="Courier New" size="2">area, room, mob, mobGroup,
 item,</font> and <font face="Courier New" size="2">envObject</font>
 which will refer to the last such objects SET by your quest script
-before Javascript was executed. The Vectors</font></font> <font size="2"><font size="3"><span style="font-family: monospace;">loadedMobs</span></font></font><font face="Courier New" size="2"><font face="Times New Roman" size="3">and</font></font>
-      <font size="2"><font size="3"><span style="font-family: monospace;">loadedItems</span></font></font><font face="Courier New" size="2"><font face="Times New Roman" size="3">are
+before Javascript was executed. The Vectors</font></font> <font
+ size="2"><font size="3"><span style="font-family: monospace;">loadedMobs</span></font></font><font
+ face="Courier New" size="2"><font face="Times New Roman" size="3">and</font></font>
+      <font size="2"><font size="3"><span
+ style="font-family: monospace;">loadedItems</span></font></font><font
+ face="Courier New" size="2"><font face="Times New Roman" size="3">are
 available with any items or mobs gained from the IMPORT command,
 regardless of whether they were LOADed. There is also the</font></font>
-      <font size="2"><font size="3"><span style="font-family: monospace;">mysteryData</span></font></font><font face="Courier New" size="2"><font face="Times New Roman" size="3">object
+      <font size="2"><font size="3"><span
+ style="font-family: monospace;">mysteryData</span></font></font><font
+ face="Courier New" size="2"><font face="Times New Roman" size="3">object
 with all the objects and Vectors SET for building logic problem
 mysteries.</font></font></p>
-      <p><font style="background-color: aquamarine;" color="#4169e1" size="4"><strong>Final
+      <p><font style="background-color: aquamarine;" color="#4169e1"
+ size="4"><strong>Final
 Quest Notes:</strong></font></p>
       <p>This stuff may seem
 complicated, but just make sure you
 carefully examine the sample quests found in the CoffeeMud resources
 directory! Also, remember that quest script errors are always sent out
 to your mud.log, so check their often when starting up a new quest!</p>
-      <p class="MsoNormal"><a name="holidays"><strong><font color="#008000" size="5">Holidays</font></strong></a></p>
+      <p class="MsoNormal"><a name="holidays"><strong><font
+ color="#008000" size="5">Holidays</font></strong></a></p>
 Holidays are a special/reserved quest defined by file
 /resources/quests/holidays/holidays.quest.<br>
       <br>
@@ -3239,7 +3442,9 @@ creator is standing in when it is created.<br>
 Here are the standard settings for holidays:<br>
       <br>
       <br>
-      <table style="text-align: left; background-color: rgb(255, 255, 153); width: 100%;" border="1" cellpadding="2" cellspacing="2">
+      <table
+ style="text-align: left; background-color: rgb(255, 255, 153); width: 100%;"
+ border="1" cellpadding="2" cellspacing="2">
         <tbody>
           <tr>
             <td><span style="font-weight: bold;">Property</span></td>
@@ -3363,45 +3568,60 @@ help.</td>
           </tr>
         </tbody>
       </table>
-      <p class="MsoNormal"><a name="socials"><strong><font color="#008000" size="5">Socials</font></strong></a></p>
+      <p class="MsoNormal"><a name="socials"><strong><font
+ color="#008000" size="5">Socials</font></strong></a></p>
       <p>Socials are those
 miscellaneous and happy little emoting
 blurbs that help make muds a more fun and realistic place for players
 to interact. Without them, players couldn't smile, roll their eyes, or
 flip anyone off without considerable typing. The command line includes
 a social creator and editor:</p>
-      <p><strong><font style="background-color: moccasin;">CREATE
-SOCIAL TWIGGLE</font></strong><br>
-      <br>
-This starts the creation process for a social called TWIGGLE. There are
+      <p><strong><font style="background-color: moccasin;">CREATING</font></strong><strong><font
+ style="background-color: moccasin;"> THE TWIGGLE </font></strong><strong><font
+ style="background-color: moccasin;">SOCIAL</font></strong></p>
+      <p><strong></strong>From the command line, enter the command:</p>
+      <p style="font-weight: bold;">CREATE SOCIAL TWIGGLE</p>
+      <p> This starts the creation process for a social called TWIGGLE.
+There are
 actually four different kinds of TWIGGLE we will make: TWIGGLE (no
-parameters), TWIGGLE SELF, TWIGGLE ALL, and TWIGGLE (to a target). This
-is type 1 of 4.<br>
+parameters), TWIGGLE SELF, TWIGGLE ALL,&nbsp;TWIGGLE with a custom
+target, TWIGGLE (to a target), and TWIGGLE to a target with an
+argument.&nbsp;</p>
+      <p>We'll start with the first type:.<br>
       <br>
       <em>You wave your arms...<br>
-Social name 'TWIGGLE' Enter new.<br>
-:<br>
+The social 'TWIGGLE' does not exist.&nbsp; Create it (y/N)? y<br>
+      <br>
+Select a target:<br>
+1) Add a new target<br>
+      <br>
+Select an option or RETURN: Select an option or RETURN: <br>
       </em><br>
-This is here in case you want to change the social name before you
-create it. Doubtful, so just hit ENTER and skip it.<br>
+This is where you can start to add new variants of this social. &nbsp;
+Enter 1 to add a new target type..<br>
       <br>
-      <em>(No change)<br>
-Target=NONE<br>
-Change T)arget, S)elf, A)ll, or N)one:</em><br>
-      <br>
-This is where you choose the social type. For type1 socials, this would
-be None.<br>
-      <br>
-      <em>(No change)<br>
-You see 'null'. Enter new.<br>
-:<br>
+      <em>New target (?): ?<br>
+Choices: MOBTARGET, ITEMTARGET, INVTARGET, EQUIPTARGET, NONE, ALL, SELF<br>
       </em><br>
-This is what you as a player would see when you perform the social.<br>
+This is where you choose the social target type. For type 1 socials,
+this would
+be NONE.<br>
       <br>
-      <strong>You wiggle your toes.</strong><br>
+      <em>1. You-see string: 'You twiggle.'.<br>
+2. Your action type: MOVEMENT<br>
+3. Others-see string: '&lt;S-NAME&gt; twiggles.'.<br>
+4. Others Effect type: HANDS<br>
+5. Sound file: ''.<br>
+      </em><br>
+Now you have a menu of the various strings and their messages.
+&nbsp;Enter 1 and then enter:<br>
       <br>
-      <em>Your action type=MOVEMENT<br>
-Change W)ords, M)ovement (small), S)ound, L)arge Movement<br>
+      <strong>You&nbsp;wiggle your toes.</strong><br>
+      </p>
+      <p>After changing the You-see string, enter option 2 to define
+the action type: <em></em></p>
+      <p><em>2. Your action type: MOVEMENT<br>
+Change W)ords, M)ovement (small), S)ound, L)arge Movement:&nbsp;<br>
       </em><br>
 This is the requirement of the social. Small movement just needs hands,
 fingers, toes, lips, and other small body movements, while large
@@ -3409,173 +3629,220 @@ movements require legs, and often moving the entire body. I tend to not
 use the Words one, and I leave sounds for, well, yelling and such. This
 particular social involves toes, thus it's a M)ovement. Type "<strong>M</strong>"
 for that.</p>
-      <p><em>Others
-see 'null'. Enter new.<br>
-:<br>
-      </em><br>
-This is what the people in the room see when you perform a social.<br>
+      <p><em>3. Others-see string: '&lt;S-NAME&gt; twiggles.'.<br>
+Enter a new value<br>
+:</em><br>
+      </p>
+      <p>Option 3 from the menu above&nbsp;is what the people in the
+room see when you perform a social.<br>
       <br>
-      <strong>&lt;S-NAME&gt;
-wiggles &lt;S-HIS-HER&gt; toes.</strong><br>
+      <strong>&lt;S-NAME&gt;&nbsp;wiggles &lt;S-HIS-HER&gt; toes.</strong><br>
       <br>
 &lt;S-NAME&gt; means Source Name. Character performing the
 social is
 the source. I'll have a list of usable tags at the end of this tutorial
 for you.<br>
       <br>
-      <strong>Others Effect
-type=HANDS<br>
-Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands:<br>
+      <strong><span style="font-weight: normal; font-style: italic;">4.
+Others Effect
+type=HANDS</span><br style="font-weight: normal; font-style: italic;">
+      <span style="font-weight: normal; font-style: italic;">Change
+W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands:</span><br>
       </strong><br>
 This is what others in the room need to be able to know you're
 performing a social. This social involves toe wiggling, so I would
 recommend Visual. If you're curious about Hands, that would be left for
 handshakes, highfives, etc.</p>
       <p>And that concludes the
-creation of our TWIGGLE social, type 1.<br>
+creation of our type 1 TWIGGLE social.<br>
       <br>
-      <strong><font style="background-color: moccasin;">CREATE SOCIAL
-TWIGGLE SELF</font></strong><br>
+      <strong><font style="background-color: moccasin;">CREATING</font></strong><strong><font
+ style="background-color: moccasin;">&nbsp;TWIGGLE SELF </font></strong><strong><font
+ style="background-color: moccasin;">SOCIAL</font></strong><br>
       <br>
-Ahh. Part 2, the SELF portion.<br>
+Ahh. Part 2, the SELF portion. &nbsp;Select the option to enter a new
+variant /target type.<br>
       <br>
-      <em>You wave your arms...<br>
-Social name 'TWIGGLE' Enter new.<br>
-:<br>
+      <em>New target (?): ?<br>
+Choices: MOBTARGET, ITEMTARGET, INVTARGET, EQUIPTARGET, NONE, ALL, SELF<br>
+      </em><em>:<br>
       </em><br>
-Like the above, you don't need to change the name.<br>
+Because this portion is the SELF portion, choose "<strong>S</strong>ELF".<br>
       <br>
-      <em>(No change)<br>
-Target=NONE<br>
-Change T)arget, S)elf, A)ll, or N)one:<br>
-      </em><br>
-Because this portion is the SELF portion, choose "<strong>S</strong>".<br>
-      <br>
-      <em>You see 'null'. Enter
-new.<br>
-:<br>
-      </em><br>
-This is what you see when you perform the social TWIGGLE SELF.<br>
+      <em>1. You-see string: 'You twiggle yourself.'.<br>
+2. Your action type: MAKING NOISE<br>
+3. Others-see string: '&lt;S-NAME&gt; twiggles &lt;S-HIM-HERSELF&gt;.'.<br>
+4. Others Effect type: HEARING NOISE<br>
+5. Sound file: ''.<br>
+Edit which (or DELETE)?</em></p>
+      <p>Change 1 to change&nbsp;what you see when you perform the
+social TWIGGLE SELF.<br>
       <br>
       <strong>You glaze over while
-you try to wiggle your toes at
+you try to&nbsp;wiggle your toes at
 yourself.</strong><br>
-      <br>
-      <em>Your action type=MOVEMENT<br>
+      </p>
+      <p>Now select option 2:</p>
+      <p> <em>2. Your action type=MAKING NOISE<br>
 Change W)ords, M)ovement (small), S)ound, L)arge Movement<br>
       </em><br>
 You need toes to wiggle them, right? <strong>M</strong>)ovement
 for
-that.<br>
+that. &nbsp;Now select option 3:<br>
       <br>
-      <em>Others see 'null'. Enter
-new.<br>
+      <em>3. Others-see string: '&lt;S-NAME&gt; twiggles
+&lt;S-HIM-HERSELF&gt;.'.<br>
+Enter a new value<br>
 :<br>
       </em><br>
 What the others in the room see when you perform the social.<br>
       <br>
-      <strong>&lt;S-NAME&gt;
-wiggles &lt;S-HIS-HER&gt; toes at
+      <strong>&lt;S-NAME&gt;&nbsp;wiggles &lt;S-HIS-HER&gt; toes at
 &lt;S-HIM-HERSELF&gt;. Very odd.<br>
       </strong><br>
-      <em>Others Effect type=HANDS<br>
+      <em>4. Others Effect type=HEARING NOISE<br>
 Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands:<br>
       </em><br>
 They need to see it happen, right? I would guess it's a <strong>V</strong>)isual
 requirement.</p>
       <p>And that concludes the
 creation of our type 2 TWIGGLE social.</p>
-      <p><strong><font style="background-color: moccasin;">CREATE
-SOCIAL TWIGGLE ALL</font><br>
-      </strong><br>
-Yay! Type 3! The ALL is the Target Name.<br>
+      <p><strong><font style="background-color: moccasin;">CREATING</font></strong><strong><font
+ style="background-color: moccasin;">&nbsp;TWIGGLE ALL </font></strong><strong><font
+ style="background-color: moccasin;">SOCIAL</font></strong><br>
       <br>
-      <em>You wave your arms...<br>
-Social name 'TWIGGLE' Enter new.<br>
-:<br>
-      </em><br>
-I doubt you would still need to change the name. You have type one and
-two. Why make 3 different?<br>
+Yay! Type 3! The ALL is the Target Name. &nbsp;Select the option to
+enter a new variant /target type.<br>
       <br>
-      <em>(No change)<br>
-Target=NONE<br>
-Change T)arget, S)elf, A)ll, or N)one:<br>
+      <em>New target (?): ?<br>
+Choices: MOBTARGET, ITEMTARGET, INVTARGET, EQUIPTARGET, NONE, ALL, SELF<br>
+      </em><em>:<br>
       </em><br>
-It's the ALL portion of social creation, so choose "<strong>A</strong>".<br>
+Because this portion is the&nbsp;ALL. portion, enter "ALL".<br>
       <br>
-      <em>You see 'null'. Enter
-new.<br>
-:<br>
-      </em><br>
-What you would see when you perform TWIGGLE [Target] (ex: TWIGGLE
-VIRAX).<br>
+      <em>New target (?): &nbsp;ALL<br>
+1. You-see string: 'You twiggle everyone.'.<br>
+2. Your action type: SPEAKING<br>
+3. Others-see string: '&lt;S-NAME&gt; twiggles everyone.'.<br>
+4. Others Effect type: HEARING WORDS<br>
+5. You-see when no target: 'Twiggle who?'.<br>
+6. Sound file: ''.<br>
+Edit which (or DELETE)?&nbsp;</em>
+      </p>
+      <p>Change 1 to change&nbsp;what you see when you perform the
+social TWIGGLE ALL.<br>
       <br>
       <strong>You wiggle your toes
 at everyone. How wierd.</strong><br>
-      <br>
-The display would replace the tag with the appropriate name, and in
-this example it would be Virax.<br>
-      <br>
-      <em>Your action type=MOVEMENT<br>
+      </p>
+      <p>Now select option 2:</p>
+      <p> <em>2. Your action type=MAKING NOISE<br>
 Change W)ords, M)ovement (small), S)ound, L)arge Movement<br>
       </em><br>
-We have toes we'll need to wiggle. <strong>M</strong>)ovement.<br>
+You need toes to wiggle them, right? <strong>M</strong>)ovement
+for
+that. &nbsp;Now select option 3:<br>
       <br>
-      <em>Others see 'null'. Enter
-new.<br>
-:<br>
+      <em>3. Others-see string: '&lt;S-NAME&gt; twiggles
+&lt;S-HIM-HERSELF&gt;.'.<br>
+Enter a new value<br>
+:::<br>
       </em><br>
-What those twiggled at people witness.<br>
+What the others in the room see when you perform the social.<br>
       <br>
       <strong>&lt;S-NAME&gt;
 wiggles &lt;S-HIS-HER&gt; toes at
 everyone. Very strange.</strong><br>
       <br>
-      <em>Others Effect type=HANDS<br>
+      <em>4. Others Effect type=HEARING NOISE<br>
 Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands:<br>
       </em><br>
-I'd say another thing they would have to see. Don't you? <strong>V</strong>)isual.<br>
+They need to see it happen, right? I would guess it's a <strong>V</strong>)isual
+requirement. Now select option 5:</p>
+      <p><em>5. You-see when no target: 'Twiggle who?'.<br>
+Enter a new value<br>
+:<br>
+      </em>This is what you would see if no one is around to appreciate
+your toe wiggling.<br>
       <br>
-      <strong><font style="background-color: moccasin;">CREATE SOCIAL
-TWIGGLE &lt;T-NAME&gt;</font><br>
+      <strong>Sorry. They aren't
+here for that lovely toe wiggle.</strong></p>
+      <p>And that concludes the
+creation of our type 3 TWIGGLE social.</p>
+      <strong></strong>
+      <p><strong><font style="background-color: moccasin;">CREATING&nbsp;TWIGGLE
+ELABORATELY </font></strong><strong><font
+ style="background-color: moccasin;">SOCIAL</font></strong><strong><br>
+      </strong></p>
+      <p>Yay! Type 4! We are going to invent our very own custom target
+for this one, called ELABORATELY.<br>
       <br>
-      </strong> Yay! Type 4! The
+      <em>New target (?): ?<br>
+Choices: MOBTARGET, ITEMTARGET, INVTARGET, EQUIPTARGET, NONE, ALL, SELF<br>
+      </em><em>:<br>
+      </em><br>
+Because this portion is custom, ignore the list and enter "ELABORATELY".<br>
+      <br>
+      <span style="font-style: italic;">'ELABORATELY' is a non-standard
+target.&nbsp; Are you sure (y/N)? y<br>
+1. You-see string: 'You twiggle elaborately.'.<br>
+2. Your action type: MOVEMENT<br>
+3. Others-see string: '&lt;S-NAME&gt; twiggles elaborately.'.<br>
+4. Others Effect type: HANDS<br>
+5. Sound file: ''.<br>
+Edit which (or DELETE)? </span><em><br>
+      </em><br>
+It's the ALL portion of social creation, so choose "<strong>A</strong>".<br>
+      <br>
+      <em></em>From here on out, it's the exact same as TWIGGLE SELF,
+so you can just follow those examples....<br>
+      <br>
+      <strong><font style="background-color: moccasin;">CREATING</font></strong><strong><font
+ style="background-color: moccasin;">&nbsp;TWIGGLE &lt;T-NAME&gt; </font></strong><strong><font
+ style="background-color: moccasin;">SOCIAL</font></strong><strong><br>
+      <br>
+      </strong>Type 5! The
 TARGET! &lt;T-NAME&gt; is the Target
-Name.<br>
+Name. &nbsp;This is the type that is used when a user selects a visible
+target in the room for their social. &nbsp;Such as TWIGGLE orc.
+&nbsp;So! Select the option now to add another variant.<br>
       <br>
-      <em>You wave your arms...<br>
-Social name 'TWIGGLE' Enter new.<br>
-:<br>
+      <em>New target (?): ?<br>
+Choices: MOBTARGET, ITEMTARGET, INVTARGET, EQUIPTARGET, NONE, ALL, SELF<br>
+      </em><em>:</em><em><br>
       </em><br>
-I doubt you would still need to change the name. You have type one,
-two, and three. Why make 4 different?<br>
+It's the MOBTARGET portion of social creation, so enter "<strong>MOBTARGET</strong>".<br>
       <br>
-      <em>(No change)<br>
-Target=NONE<br>
-Change T)arget, S)elf, A)ll, or N)one:<br>
+      <em>New target (?): mobtarget<br>
+1. You-see string: 'You twiggle &lt;T-NAME&gt;.'.<br>
+2. Your action type: LARGE MOVEMENT<br>
+3. Others-see string: '&lt;S-NAME&gt; twiggles &lt;T-NAMESELF&gt;.'.<br>
+4. Others Effect type: SEEING MOVEMENT<br>
+5. Target-sees string: '&lt;S-NAME&gt; twiggles you.'.<br>
+6. Target Effect type: BEING MOVED ON<br>
+7. You-see when no target: 'Twiggle who?'.<br>
+8. Sound file: ''.<br>
+Edit which (or DELETE)? <br>
       </em><br>
-It's the TARGET portion of social creation, so choose "<strong>T</strong>".<br>
-      <br>
-      <em>You see 'null'. Enter
-new.<br>
-:<br>
-      </em><br>
-What you would see when you perform TWIGGLE [Target] (ex: TWIGGLE
+Selecting option 1 edit what you would see when you perform TWIGGLE
+[Target] (ex: TWIGGLE
 VIRAX).<br>
       <br>
       <strong>You wiggle your toes
 at &lt;T-NAME&gt;. How cute.</strong><br>
       <br>
 The display would replace the tag with the appropriate name, and in
-this example it would be Virax.<br>
+this example it would be Virax. Now option 2:<br>
       <br>
-      <em>Your action type=MOVEMENT<br>
+      <em>2. Your action type=MOVEMENT<br>
 Change W)ords, M)ovement (small), S)ound, L)arge Movement<br>
       </em><br>
-We have toes we'll need to wiggle. <strong>M</strong>)ovement.<br>
+We have toes we'll need to wiggle. <strong>M</strong>)ovement. On to
+option 3:<br>
       <br>
-      <em>Others see 'null'. Enter
-new.<br>
+      <em>3. Others-see string: '&lt;S-NAME&gt; twiggles
+&lt;T-NAMESELF&gt;.'.<br>
+Enter a new value<br>
 :<br>
       </em><br>
 What those bystanders witness.<br>
@@ -3584,45 +3851,88 @@ What those bystanders witness.<br>
 wiggles &lt;S-HIS-HER&gt; toes at
 &lt;T-NAME&gt;. Very strange.</strong><br>
       <br>
-      <em>Others Effect type=HANDS<br>
+Now you are up to option 4, which is the action type for the above:.</p>
+      <p><em>Others Effect type=HANDS<br>
 Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands:<br>
       </em><br>
-I'd say another thing they would have to see. Don't you? <strong>V</strong>)isual.<br>
+I'd say another thing they would have to see. Don't you? <strong>V</strong>)isual.
+Now for option 5:<br>
       <br>
-      <em>Target sees 'null'.
-Enter new.<br>
+      <em>5. Target-sees string: '&lt;S-NAME&gt; twiggles you.'.<br>
+Enter a new value<br>
 :<br>
       </em><br>
-If you were the unfortunate victim, this is what you would see.<br>
+If you were the unfortunate victim, this is what you would see.
+&nbsp;Let's change it:<br>
       <br>
       <strong>&lt;S-NAME&gt;
 wiggles &lt;S-HIS-HER&gt; toes at you.</strong><br>
       <br>
-      <em>Target Effect
+      <em>6. Target Effect
 type=HEARING NOISE<br>
 Change W)ords, M)ovement (w/noise), S)ound, V)isual, H)ands:<br>
       </em><br>
-You see them wiggling their toes, so this would also be <strong>V</strong>)isual.<br>
+You see them wiggling their toes, so this would also be <strong>V</strong>)isual.
+The last option is 7:<br>
       <br>
-      <em>You see when no target
-'null'. Enter new.<br>
+      <em>7. You-see when no target: 'Twiggle who?'.<br>
+Enter a new value<br>
 :<br>
       </em><br>
 This is what you would see if the target you want to use the social
-against isn't there.<br>
+against isn't there. Let's try this:<br>
       <br>
       <strong>Sorry. They aren't
 here for that lovely toe wiggle.</strong><br>
+      </p>
+      <p>And that's all for a targeted twiggle. &nbsp;One more type.</p>
+      <p><strong><font style="background-color: moccasin;">CREATING</font></strong><strong><font
+ style="background-color: moccasin;">&nbsp;TWIGGLE &lt;T-NAME&gt;
+ELABORATELY </font></strong><strong><font
+ style="background-color: moccasin;">SOCIAL</font></strong><strong><br>
       <br>
-This concludes the social creation process. Enjoy creating your own
+      </strong>Type 6! The
+TARGET with argument! &lt;T-NAME&gt; is the Target
+Name. &nbsp;ELABORATELY is our custom argument. This is the type that
+is used when a user selects a visible
+target in the room for their social. &nbsp;Such as TWIGGLE orc
+elaborately. &nbsp;So! Select
+the option now to add another variant.<br>
+      <br>
+      <em>New target (?): ?<br>
+Choices: MOBTARGET, ITEMTARGET, INVTARGET, EQUIPTARGET, NONE, ALL, SELF<br>
+      </em><em>:</em><em><br>
+      </em><br>
+It's the MOBTARGET ELABORATELY portion of social creation, so enter "<strong>MOBTARGET</strong>
+      <span style="font-weight: bold;">ELABORATELY</span>".<br>
+      <br>
+      <em>New target (?): mobtarget elaborately<br>
+Target: 'MOBS' is a valid target, with an argument of
+ELABORATELY.&nbsp; Is this<br>
+OK (Y/n)? y</em></p>
+      <p><em>1. You-see string: 'You twiggle &lt;T-NAME&gt; in the
+elaborately.'.<br>
+2. Your action type: LARGE MOVEMENT<br>
+3. Others-see string: '&lt;S-NAME&gt; twiggles &lt;T-NAMESELF&gt; in
+the elaborately.'.<br>
+4. Others Effect type: SEEING MOVEMENT<br>
+5. Target-sees string: '&lt;S-NAME&gt; twiggles you in the
+elaborately.'.<br>
+6. Target Effect type: BEING MOVED ON<br>
+7. You-see when no target: 'Twiggle who?'.<br>
+8. Sound file: ''.<br>
+Edit which (or DELETE)?<br>
+      </em><br>
+      <strong style="font-weight: normal;">I think you can figure it
+out from here.<br>
+      </strong></p>
+      <p>This concludes the social creation process. Enjoy creating
+your own
 socials, folks! To modify an existing social, purely use MODIFY SOCIAL
-[NAME] (i.e. MODIFY SOCIAL BONK, MODIFY SOCIAL HIGHFIVE
-&lt;T-NAME&gt;)
-or even MODIFY SOCIAL PAT SELF) What this does is it goes through the
-command list like you are creating that particular social, but with the
-information that is already stored on it. What you can do is just hit
-ENTER until you get to the part of the social you want to change and
-change it accordingly.</p>
+[NAME] (i.e. MODIFY SOCIAL BONK, MODIFY SOCIAL HIGHFIVE, etc),
+&nbsp;When you get tired of a social variant, you can use the MODIFY
+SOCIAL command to delete targets. &nbsp;To eliminate a social entirely,
+use DESTROY SOCIAL [NAME].</p>
       <p><font style="background-color: moccasin;">======= AND NOW
 FOR
 THE LIST OF TAGS =======</font><br>
@@ -3637,7 +3947,10 @@ otherwise the
 Name<br>
 &lt;S-HE-SHE&gt; Outputs 'You' if Observer=Source, otherwise
 'He'/'She'<br>
-&lt;S-SIRMADAM&gt; Outputs 'Sir'/'Madam'<br>&lt;S-MRMS&gt; Outputs 'Mr.'/'Ms.'<br>&lt;S-MISTERMADAM&gt; Outputs 'Mister'/'Madam'<br>&lt;S-IS-ARE&gt; Outputs 'Are' if Observer=Source, otherwise
+&lt;S-SIRMADAM&gt; Outputs 'Sir'/'Madam'<br>
+&lt;S-MRMS&gt; Outputs 'Mr.'/'Ms.'<br>
+&lt;S-MISTERMADAM&gt; Outputs 'Mister'/'Madam'<br>
+&lt;S-IS-ARE&gt; Outputs 'Are' if Observer=Source, otherwise
 'Is'.<br>
 &lt;S-HAS-HAVE&gt; Outputs 'Have' if Observer=Source, otherwise
 'Has'.<br>
@@ -3661,7 +3974,9 @@ otherwise the
 Name<br>
 &lt;T-HE-SHE&gt; Outputs 'You' if Observer=Target, otherwise
 'He'/'She'<br>
-&lt;T-SIRMADAM&gt; Outputs 'Sir'/'Madam'<br>&lt;T-MRMS&gt; Outputs 'Mr.'/'Ms.'<br>&lt;T-MISTERMADAM&gt; Outputs 'Mister'/'Madam'<br>
+&lt;T-SIRMADAM&gt; Outputs 'Sir'/'Madam'<br>
+&lt;T-MRMS&gt; Outputs 'Mr.'/'Ms.'<br>
+&lt;T-MISTERMADAM&gt; Outputs 'Mister'/'Madam'<br>
 &lt;T-IS-ARE&gt; Outputs 'Are' if Observer=Target, otherwise
 'Is'.<br>
 &lt;T-HAS-HAVE&gt; Outputs 'Have' if Observer=Target, otherwise
@@ -3675,7 +3990,8 @@ the 'Himself'/'Herself'<br>
 &lt;T-HIS-HERSELF&gt; Outputs 'Yourself' if Observer=Source,
 otherwise
 the 'Hisself'/'Herself'</p>
-      <p class="MsoNormal"><a name="polls"><strong><font color="#008000" size="5">Polls</font></strong></a></p>
+      <p class="MsoNormal"><a name="polls"><strong><font color="#008000"
+ size="5">Polls</font></strong></a></p>
       <p>Polls can be an
 entertaining and sometimes amusing way to
 measure the thoughts of players. CoffeeMud supports single-selection
@@ -3690,7 +4006,8 @@ a new blank poll. When a poll is
 created or modified, you are presented with a list of properties to
 fill in. Pressing enter will leave the property unchanged. The
 properties include:</p>
-      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+      <table style="width: 100%;" bgcolor="yellow" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
         <tbody>
           <tr>
             <td width="25%"><strong>Property</strong></td>
@@ -3784,7 +4101,8 @@ options the participants may choose between.</td>
           </tr>
         </tbody>
       </table>
-      <p class="MsoNormal"><a name="clans"><strong><font color="#008000" size="5">Clans</font></strong></a></p>
+      <p class="MsoNormal"><a name="clans"><strong><font color="#008000"
+ size="5">Clans</font></strong></a></p>
       <p>Clans serve many purposes
 in the CoffeeMud engine. They
 provide a way for multiple players to own property, conquer areas, and
@@ -3824,7 +4142,8 @@ CLAN &lt;clanname&gt;</strong></p>
 are presented with a list of
 properties to fill in. Pressing enter will leave the property
 unchanged. The properties include:</p>
-      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+      <table style="width: 100%;" bgcolor="yellow" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
         <tbody>
           <tr>
             <td width="25%"><strong>Property</strong></td>
@@ -3969,7 +4288,8 @@ can be altered manually here.</td>
       </table>
       <br>
       <br>
-      <p class="MsoNormal"><a name="governments"><strong><font color="#008000" size="5">Clan Governments</font></strong></a></p>
+      <p class="MsoNormal"><a name="governments"><strong><font
+ color="#008000" size="5">Clan Governments</font></strong></a></p>
       <p>You might want to read
 the previous section on Clans before
 proceeding.</p>
@@ -4002,7 +4322,8 @@ GOVERNMENT &lt;clangovtname&gt;</strong></p>
 modified, you are presented with a list of
 properties to fill in. Pressing enter will leave the property
 unchanged. The properties include:</p>
-      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+      <table style="width: 100%;" bgcolor="yellow" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
         <tbody>
           <tr>
             <td width="25%"><strong>Property</strong></td>
@@ -4170,7 +4491,8 @@ effect. </td>
 constitute the ranks, roles, or positions within this clan. These also
 have their own fields, enumerated below:</p>
       <br>
-      <table style="width: 100%;" bgcolor="#ddd800" border="1" cellpadding="1" cellspacing="1" width="100%">
+      <table style="width: 100%;" bgcolor="#ddd800" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
         <tbody>
           <tr>
             <td width="25%"><strong>Property</strong></td>
@@ -4220,7 +4542,8 @@ functions that this role can always perform, without a vote<br>
       </table>
       <br>
       <br>
-      <p class="MsoNormal"><a name="achievements"><strong><font color="#008000" size="5">Achievements</font></strong></a></p>
+      <p class="MsoNormal"><a name="achievements"><strong><font
+ color="#008000" size="5">Achievements</font></strong></a></p>
       <p>Achievements are things that players can do for the bragging
 rights, for some small reward, or for a Title. &nbsp;Things like
 completing so many quests, training their stats up to unheard-of
@@ -4239,7 +4562,8 @@ add or remove them that way. &nbsp;</p>
       <p>Achievements come in several different Event types, which
 describe the general nature of the achievement and how it is attained.
 &nbsp;These types are as follows:</p>
-      <table style="width: 100%;" bgcolor="#ddd800" border="1" cellpadding="1" cellspacing="1" width="100%">
+      <table style="width: 100%;" bgcolor="#ddd800" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
         <tbody>
           <tr>
             <td width="25%"><strong>Event Type</strong></td>
@@ -4369,7 +4693,8 @@ then enter the following commands at any time:<br>
 modified, you are presented with a list of
 properties to fill in. Pressing enter will leave the property
 unchanged. The properties include:</p>
-      <table style="width: 100%;" bgcolor="yellow" border="1" cellpadding="1" cellspacing="1" width="100%">
+      <table style="width: 100%;" bgcolor="yellow" border="1"
+ cellpadding="1" cellspacing="1" width="100%">
         <tbody>
           <tr>
             <td width="25%"><strong>Property</strong></td>
@@ -4568,4 +4893,5 @@ seconds which must be accumulated in order to complete this achievement.</td>
   </tbody>
 </table>
 </center>
-</body></html>
+</body>
+</html>

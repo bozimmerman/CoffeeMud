@@ -369,6 +369,42 @@ public class Socials extends StdLibrary implements SocialsList
 			mob.session().println(L("(no change)"));
 	}
 
+
+	/**
+	 * Finds the first and only the first instance of the second parameter string in the first string,
+	 * and replaces it with the third string.  Returns the first string with or without changes. 
+	 * This method is case sensitive.
+	 * @param str the string to look inside of
+	 * @param thisStr the string to look for inside the first string
+	 * @param withThisStr the string to replace the second string with, if found.
+	 * @return the string modified, or not modified if no replacement was made.
+	 */
+	protected final static String replaceFirstWordStartsWith(final String str, final String thisStr, final String withThisStr)
+	{
+		if((str==null)
+		||(thisStr==null)
+		||(withThisStr==null)
+		||(str.length()==0)
+		||(thisStr.length()==0))
+			return str;
+		if(Character.toUpperCase(str.charAt(0))==Character.toUpperCase(thisStr.charAt(0)))
+		{
+			if(str.toUpperCase().startsWith(thisStr.toUpperCase())
+			&&(str.toUpperCase().equals(thisStr.toUpperCase())
+				||((str.length()>thisStr.length())&&(Character.isWhitespace(str.charAt(thisStr.length()))))))
+				return withThisStr+str.substring(thisStr.length());
+			if(thisStr.toUpperCase().startsWith(str.toUpperCase()))
+				return withThisStr;
+			int x=str.indexOf(' ');
+			if(x>1)
+			{
+				if(thisStr.toUpperCase().startsWith(str.substring(0,x).toUpperCase()))
+					return withThisStr+str.substring(x+1);
+			}
+		}
+		return str;
+	}
+	
 	@Override
 	public boolean modifySocialInterface(MOB mob, String socialString)
 		throws IOException
@@ -403,6 +439,7 @@ public class Socials extends StdLibrary implements SocialsList
 				{
 					final Social S=socials.get(v);
 					final int x=S.Name().indexOf(' ');
+					final int y=(x<0)?-1:S.Name().indexOf(' ',x+1);
 					if(x<0)
 					{
 						str.append((v+1)+") No Target (NONE)\n\r");
@@ -413,25 +450,40 @@ public class Socials extends StdLibrary implements SocialsList
 						selection=(v+1);
 					if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<T-NAME>"))
 					{
-						str.append((v+1)+") MOB Targeted (MOBTARGET)\n\r");
+						str.append((v+1)+") MOB Targeted (MOBTARGET)");
+						if(y>x)
+							str.append(" with argument ("+S.Name().substring(y+1)+")");
+						str.append("\n\r");
 						continue;
 					}
 					if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<I-NAME>"))
 					{
-						str.append((v+1)+") Room Item Targeted (ITEMTARGET)\n\r");
+						str.append((v+1)+") Room Item Targeted (ITEMTARGET)");
+						if(y>x)
+							str.append(" with argument ("+S.Name().substring(y+1)+")");
+						str.append("\n\r");
 						continue;
 					}
 					if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<V-NAME>"))
 					{
-						str.append((v+1)+") Inventory Targeted (INVTARGET)\n\r");
+						str.append((v+1)+") Inventory Targeted (INVTARGET)");
+						if(y>x)
+							str.append(" with argument ("+S.Name().substring(y+1)+")");
+						str.append("\n\r");
 						continue;
 					}
 					if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<E-NAME>"))
 					{
-						str.append((v+1)+") Equipment Targeted (EQUIPTARGET)\n\r");
+						str.append((v+1)+") Equipment Targeted (EQUIPTARGET)");
+						if(y>x)
+							str.append(" with argument ("+S.Name().substring(y+1)+")");
+						str.append("\n\r");
 						continue;
 					}
-					str.append((v+1)+") "+S.Name().substring(x+1).toUpperCase().trim()+"\n\r");
+					str.append((v+1)+") "+S.Name().substring(x+1).toUpperCase().trim());
+					if(y>x)
+						str.append(" with argument ("+S.Name().substring(y+1)+")");
+					str.append("\n\r");
 				}
 				str.append(L("@x1) Add a new target\n\r",""+(socials.size()+1)));
 				String s=null;
@@ -470,31 +522,46 @@ public class Socials extends StdLibrary implements SocialsList
 						continue;
 					}
 				}
-				if(newOne.startsWith("<T-")||(newOne.startsWith("T-")))
-					newOne="TNAME";
-				if(newOne.startsWith("<I-")||(newOne.startsWith("I-")))
-					newOne="INAME";
-				if(newOne.startsWith("<V-")||(newOne.startsWith("V-")))
-					newOne="VNAME";
-				if(newOne.startsWith("<E-")||(newOne.startsWith("E-")))
-					newOne="ENAME";
-				if(newOne.equalsIgnoreCase("TNAME")||newOne.equalsIgnoreCase("TARGET"))
-					newOne=" <T-NAME>";
-				else
-				if(newOne.equalsIgnoreCase("INAME")||newOne.equalsIgnoreCase("ITEMTARGET"))
-					newOne=" <I-NAME>";
-				else
-				if(newOne.equalsIgnoreCase("VNAME")||newOne.equalsIgnoreCase("INVTARGET"))
-					newOne=" <V-NAME>";
-				else
-				if(newOne.equalsIgnoreCase("ENAME")||newOne.equalsIgnoreCase("EQUIPTARGET"))
-					newOne=" <E-NAME>";
-				else
+				newOne=newOne.toUpperCase().trim();
+				final String[] validTargets={"NONE","ALL","SELF","<T-NAME>","<I-NAME>","<V-NAME>","<E-NAME>"};
+				final String[] friendlyTargets={"NONE","ALL","SELF","MOBS","ITEMS","INVENTORY","EQUIPMENT"};
+				newOne=replaceFirstWordStartsWith(newOne, "TNAME", "<T-NAME>");
+				newOne=replaceFirstWordStartsWith(newOne, "INAME", "<I-NAME>");
+				newOne=replaceFirstWordStartsWith(newOne, "VNAME", "<V-NAME>");
+				newOne=replaceFirstWordStartsWith(newOne, "ENAME", "<E-NAME>");
+				newOne=replaceFirstWordStartsWith(newOne, "T-NAME", "<T-NAME>");
+				newOne=replaceFirstWordStartsWith(newOne, "I-NAME", "<I-NAME>");
+				newOne=replaceFirstWordStartsWith(newOne, "V-NAME", "<V-NAME>");
+				newOne=replaceFirstWordStartsWith(newOne, "E-NAME", "<E-NAME>");
+				newOne=replaceFirstWordStartsWith(newOne, "MOBTARGET", "<T-NAME>");
+				newOne=replaceFirstWordStartsWith(newOne, "ITEMTARGET", "<I-NAME>");
+				newOne=replaceFirstWordStartsWith(newOne, "INVTARGET", "<V-NAME>");
+				newOne=replaceFirstWordStartsWith(newOne, "EQUIPTARGET", "<E-NAME>");
+				final int spaceDex=newOne.indexOf(' ');
+				final String tag=(spaceDex<0) ? newOne : newOne.substring(0,spaceDex).trim();
+				final int foundDex=CMParms.indexOf(validTargets, tag);
+				final String friendlyTag = (foundDex < 0) ? "" : friendlyTargets[foundDex];
+				if(newOne.startsWith("<"))
+				{
+					if(foundDex<0)
+					{
+						mob.tell(L("@x1 is an invalid target.  Enter ? for some choices."));
+						pickNewSocial=true;
+						continue;
+					}
+				}
 				if(newOne.equalsIgnoreCase("NONE"))
 					newOne="";
 				else
-				if(!newOne.equals("ALL")&&!newOne.equals("SELF")
-				&&!mob.session().confirm(L("'@x1' is a non-standard target.  Are you sure (y/N)? ",newOne),"N"))
+				if((foundDex<0)
+				&&(!mob.session().confirm(L("'@x1' is a non-standard target.  Are you sure (y/N)? ",tag),"N")))
+				{
+					rest="";
+					pickNewSocial=true;
+				}
+				else
+				if((spaceDex > 0)
+				&&(!mob.session().confirm(L("Target: '@x1' is a valid target, with an argument of @x2.  Is this OK (Y/n)? ",friendlyTag,newOne.substring(spaceDex+1)),"Y")))
 				{
 					rest="";
 					pickNewSocial=true;
@@ -502,22 +569,24 @@ public class Socials extends StdLibrary implements SocialsList
 				else
 					newOne=" "+newOne;
 				if(!pickNewSocial)
-				for(int i=0;i<socials.size();i++)
 				{
-					if(socials.get(i).Name().equals(name+newOne))
+					for(int i=0;i<socials.size();i++)
 					{
-						mob.tell(L("This social already exists.  Pick it off the list above."));
-						pickNewSocial=true;
-						break;
+						if(socials.get(i).Name().equals(name+newOne))
+						{
+							mob.tell(L("This social already exists.  Pick it off the list above."));
+							pickNewSocial=true;
+							break;
+						}
 					}
-				}
-				if(!pickNewSocial)
-				{
-					soc=makeDefaultSocial(name,newOne);
-					addSocial(soc);
-					if(!socials.contains(soc))
-						socials.add(soc);
-					resaveSocials=true;
+					if(!pickNewSocial)
+					{
+						soc=makeDefaultSocial(name,newOne);
+						addSocial(soc);
+						if(!socials.contains(soc))
+							socials.add(soc);
+						resaveSocials=true;
+					}
 				}
 			}
 			if(soc!=null)
@@ -537,14 +606,19 @@ public class Socials extends StdLibrary implements SocialsList
 					if(soc.getOthersCode()==CMMsg.MSG_OK_ACTION)
 						soc.setOthersCode(CMMsg.MSG_HANDS);
 					modifySocialOthersCode(mob,soc,++showNumber,showFlag);
-					if(soc.Name().endsWith(" <T-NAME>"))
+					
+					if(soc.targetName().equals("<T-NAME>"))
 					{
 						soc.setTargetMessage(CMLib.genEd().prompt(mob,soc.getTargetMessage(),++showNumber,showFlag,L("Target-sees string"),false,true));
 						if(soc.getTargetCode()==CMMsg.MSG_OK_ACTION)
 							soc.setTargetCode(CMMsg.MSG_HANDS);
 						modifySocialTargetCode(mob,soc,++showNumber,showFlag);
 					}
-					if(soc.Name().endsWith(" <T-NAME>")||soc.Name().endsWith(" <I-NAME>")||soc.Name().endsWith(" <V-NAME>")||soc.Name().endsWith(" <E-NAME>")||(soc.Name().endsWith(" ALL")))
+					if(soc.targetName().equals("<T-NAME>")
+					||soc.targetName().equals("<I-NAME>")
+					||soc.targetName().equals("<V-NAME>")
+					||soc.targetName().equals("<E-NAME>")
+					||soc.targetName().equals("ALL"))
 						soc.setFailedMessage(CMLib.genEd().prompt(mob,soc.getFailedTargetMessage(),++showNumber,showFlag,L("You-see when no target"),false,true));
 					soc.setSoundFile(CMLib.genEd().prompt(mob,soc.getSoundFile(),++showNumber,showFlag,L("Sound file"),true,false));
 					resaveSocials=true;

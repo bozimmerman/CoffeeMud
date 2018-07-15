@@ -1367,7 +1367,7 @@ public class Modify extends StdCommand
 		String stuff="";
 		if(commands.size()>3)
 			stuff=CMParms.combine(commands,3).toUpperCase().trim();
-		if(stuff.startsWith("<")||stuff.startsWith(">")||(stuff.startsWith("T-")))
+		if(stuff.startsWith("T-"))
 			stuff="TNAME";
 		if(stuff.equals("TNAME"))
 			stuff="<T-NAME>";
@@ -1381,10 +1381,10 @@ public class Modify extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 			return;
 		}
-		final List<Social> oldSocials = new Vector<Social>();
+		final List<Social> oldSocials = new ArrayList<Social>();
 		List<Social> allSocials = CMLib.socials().getSocialsSet(name);
 		if(allSocials==null)
-			allSocials=new Vector<Social>();
+			allSocials=new ArrayList<Social>();
 		for(int a = 0; a<allSocials.size();a++)
 			oldSocials.add((Social)allSocials.get(a).copyOf());
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  @x1s.",S.name()));
