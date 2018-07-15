@@ -448,7 +448,7 @@ public class Socials extends StdLibrary implements SocialsList
 					if((rest.length()>0)
 					&&(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase(rest.toUpperCase().trim())))
 						selection=(v+1);
-					if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<T-NAME>"))
+					if(S.Name().substring(x+1).toUpperCase().trim().startsWith("<T-NAME>"))
 					{
 						str.append((v+1)+") MOB Targeted (MOBTARGET)");
 						if(y>x)
@@ -456,7 +456,7 @@ public class Socials extends StdLibrary implements SocialsList
 						str.append("\n\r");
 						continue;
 					}
-					if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<I-NAME>"))
+					if(S.Name().substring(x+1).toUpperCase().trim().startsWith("<I-NAME>"))
 					{
 						str.append((v+1)+") Room Item Targeted (ITEMTARGET)");
 						if(y>x)
@@ -464,7 +464,7 @@ public class Socials extends StdLibrary implements SocialsList
 						str.append("\n\r");
 						continue;
 					}
-					if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<V-NAME>"))
+					if(S.Name().substring(x+1).toUpperCase().trim().startsWith("<V-NAME>"))
 					{
 						str.append((v+1)+") Inventory Targeted (INVTARGET)");
 						if(y>x)
@@ -472,7 +472,7 @@ public class Socials extends StdLibrary implements SocialsList
 						str.append("\n\r");
 						continue;
 					}
-					if(S.Name().substring(x+1).toUpperCase().trim().equalsIgnoreCase("<E-NAME>"))
+					if(S.Name().substring(x+1).toUpperCase().trim().startsWith("<E-NAME>"))
 					{
 						str.append((v+1)+") Equipment Targeted (EQUIPTARGET)");
 						if(y>x)
