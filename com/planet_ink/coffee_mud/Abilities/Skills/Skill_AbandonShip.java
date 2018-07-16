@@ -188,7 +188,7 @@ public class Skill_AbandonShip extends StdSkill
 						}
 					}
 				}
-				if(CMLib.commands().forceStandardCommand(mob, "Yell", new XVector<String>("YELL",L("ABANDON SHIP!"))))
+				CMLib.commands().forceStandardCommand(mob, "Yell", new XVector<String>("YELL",L("ABANDON SHIP!")));
 				{
 					final int maxCrew = adjustedLevel(mob,asLevel) /2;
 					final int maxPaddle = adjustedLevel(mob, asLevel) /3;
@@ -299,6 +299,7 @@ public class Skill_AbandonShip extends StdSkill
 										final Item I=items.get(0);
 										if(boatC.phyStats().weight() + I.phyStats().weight() > boatC.capacity())
 											break;
+										items.remove(0);
 										if(R.show(mob, I, boatC, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> load(s) <T-NAME> into <O-NAME>.")))
 										{
 											R.moveItemTo(I);

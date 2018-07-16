@@ -177,7 +177,7 @@ public class Skill_HardToStern extends StdSkill
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				if(CMLib.commands().forceStandardCommand(mob, "Yell", new XVector<String>("YELL",L("HARD TO STERN!"))))
+				CMLib.commands().forceStandardCommand(mob, "Yell", new XVector<String>("YELL",L("HARD TO STERN!")));
 				{
 					int newDirection = -1;
 					switch(myShipItem.getDirectionFacing())
@@ -211,7 +211,7 @@ public class Skill_HardToStern extends StdSkill
 						newDirection=Directions.NORTHWEST;
 						break;
 					}
-					if(newDirection != 0)
+					if(newDirection >= 0)
 					{
 						final Room thisRoom=myShipRoom;
 						final MOB smob = CMClass.getFactoryMOB(myShipItem.name(),myShipItem.phyStats().level(),thisRoom);

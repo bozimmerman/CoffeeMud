@@ -179,7 +179,7 @@ public class Skill_HardToPort extends StdSkill
 			if(R.okMessage(mob,msg))
 			{
 				R.send(mob,msg);
-				if(CMLib.commands().forceStandardCommand(mob, "Yell", new XVector<String>("YELL",L("HARD TO PORT!"))))
+				CMLib.commands().forceStandardCommand(mob, "Yell", new XVector<String>("YELL",L("HARD TO PORT!")));
 				{
 					int newDirection = -1;
 					switch(myShipItem.getDirectionFacing())
@@ -213,7 +213,7 @@ public class Skill_HardToPort extends StdSkill
 						newDirection=Directions.SOUTHEAST;
 						break;
 					}
-					if(newDirection != 0)
+					if(newDirection >= 0)
 					{
 						final Room thisRoom=myShipRoom;
 						final MOB smob = CMClass.getFactoryMOB(myShipItem.name(),myShipItem.phyStats().level(),thisRoom);
