@@ -103,7 +103,7 @@ public class Skill_TieDown extends StdSkill
 	{
 		super.affectPhyStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_BOUND);
-		affectableStats.addAmbiance("(Tied Down)");
+		affectableStats.addAmbiance("Tied Down");
 	}
 
 	@Override
@@ -115,7 +115,7 @@ public class Skill_TieDown extends StdSkill
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		if((msg.targetMinor()==CMMsg.MSG_LEAVE)
+		if((msg.targetMinor()==CMMsg.TYP_LEAVE)
 		&&(msg.source().riding()==affected))
 		{
 			final Physical affected=this.affected;
