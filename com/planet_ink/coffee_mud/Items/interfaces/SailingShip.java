@@ -51,6 +51,12 @@ public interface SailingShip extends BoardableShip, Item, Combatant, Rideable
 	public int getDirectionFacing();
 	
 	/**
+	 * Sets which direction the ship is currently facing.
+	 * @return the direction the ship is facing. 
+	 */
+	public void setDirectionFacing(int dir);
+	
+	/**
 	 * Returns whether the anchor is down, thus holding the ship in place.
 	 * @return true if the anchor is down, holding the ship in place.
 	 */

@@ -145,6 +145,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Thief_Belay",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_Stowaway",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Skill_AbandonShip",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Trawling",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Boatwright",0,"",true,false,CMParms.parseSemicolons("Carpentry",true),"");
@@ -154,6 +155,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_CrowsNest",0,"",true,false,CMParms.parseSemicolons("Skill_Climb(74)", true),"");
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_AvoidCurrents",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_TieDown",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_SeaMapping",true);
 
@@ -168,6 +170,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"FishLore",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_SeaNavigation",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"CargoLoading",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Bind",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Thief_Scuttle",true);
@@ -180,6 +183,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_WaterTactics",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_DeepBreath",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_HardToPort",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_CombatRepairs",true);
 
@@ -187,6 +191,7 @@ public class Sailor extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"MasterFishing",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_FoulWeatherSailing",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_HardToStern",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_NavalTactics",false);
 

@@ -62,6 +62,28 @@ public interface Wearable extends Environmental
 			return false;
 		}
 	};
+	/** a constant used in the Locale item search classes to filter on only items in mob inventory */
+	public static final Filterer<Environmental> FILTER_MOBINVONLY=new Filterer<Environmental>()
+	{
+		@Override
+		public boolean passesFilter(Environmental obj)
+		{
+			if(obj instanceof Item)
+				return ((Item)obj).amWearingAt(IN_INVENTORY) && (((Item)obj).owner() instanceof MOB);
+			return false;
+		}
+	};
+	/** a constant used in the Locale item search classes to filter on only items in a room */
+	public static final Filterer<Environmental> FILTER_ROOMONLY=new Filterer<Environmental>()
+	{
+		@Override
+		public boolean passesFilter(Environmental obj)
+		{
+			if(obj instanceof Item)
+				return (((Item)obj).owner() instanceof Room);
+			return false;
+		}
+	};
 	/** a constant used in the Locale item search classes to filter on only items being worn OR not being worn */
 	@SuppressWarnings("unchecked")
 	public static final Filterer<Environmental> FILTER_ANY=Filterer.ANYTHING;

@@ -71,10 +71,11 @@ public class Unbinding extends CommonSkill
 	@Override
 	protected int canTargetCode()
 	{
-		return Ability.CAN_MOBS;
+		return Ability.CAN_MOBS|Ability.CAN_ITEMS;
 	}
-	MOB found=null;
-	Ability removing=null;
+	
+	protected Physical	found		= null;
+	protected Ability	removing	= null;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -103,7 +104,8 @@ public class Unbinding extends CommonSkill
 			else
 			if((found!=null)&&(mob!=null))
 			{
-				if(found.location()!=mob.location())
+				final Room foundR=CMLib.map().roomLocation(found);
+				if(foundR!=mob.location())
 				{
 					aborted=true;
 					unInvoke();
@@ -154,7 +156,7 @@ public class Unbinding extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		final MOB target=getTarget(mob,commands,givenTarget);
+		final Physical target=super.getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null)
 			return false;
 		if((!auto)&&(target==mob))
@@ -190,7 +192,8 @@ public class Unbinding extends CommonSkill
 			found=target;
 			verb=L("unbinding @x1",found.name());
 			displayText=L("You are @x1",verb);
-			found=proficiencyCheck(mob,0,auto)?found:null;
+			final int difficulty = (A.invoker()==mob) ? 0 : -A.abilityCode();
+			found=proficiencyCheck(mob,difficulty,auto)?found:null;
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

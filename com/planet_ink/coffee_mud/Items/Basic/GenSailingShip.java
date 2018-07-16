@@ -1351,7 +1351,7 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 						}
 						final Room R=CMLib.map().roomLocation(msg.source());
 						if((R!=null)
-						&&(R.show(msg.source(), this, CMMsg.TYP_ADVANCE, L("<S-NAME> tender(s) @x1 alonside <T-NAME>, wating to be raised on board.",msg.source().riding().name()))))
+						&&(R.show(msg.source(), this, CMMsg.TYP_ADVANCE, L("<S-NAME> tender(s) @x1 alonside <T-NAME>, waiting to be raised on board.",msg.source().riding().name()))))
 						{
 							for(final Iterator<Item> i=smallTenderRequests.iterator();i.hasNext();)
 							{
@@ -2364,6 +2364,12 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 			return direction;
 		}
 		return directionFacing;
+	}
+	
+	@Override
+	public void setDirectionFacing(final int direction)
+	{
+		this.directionFacing=direction;
 	}
 	
 	protected SailResult sail(final int direction)

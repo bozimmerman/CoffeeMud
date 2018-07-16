@@ -131,11 +131,14 @@ public class Arcanist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Spell_Scribe",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"WandMaking",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Rodsmithing",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Spell_EnchantArmor",false);
+
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_DisenchantWand",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Map",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Fighter_RapidShot",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_EnchantWeapon",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Spell_EnchantWand",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Thief_PowerGrab",true);
@@ -151,11 +154,11 @@ public class Arcanist extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Spell_Refit",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Thief_Detection",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_EnchantArmor",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Spell_GreaterEnchantArmor",false,new XVector<String>("Spell_EnchantArmor(100)"));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Observation",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_EnchantWeapon",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Spell_GreaterEnchantWeapon",false,new XVector<String>("Spell_EnchantWeapon(100)"));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_DampenAuras",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_Mend",true);
