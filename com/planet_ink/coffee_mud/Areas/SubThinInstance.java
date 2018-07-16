@@ -103,11 +103,13 @@ public class SubThinInstance extends StdThinInstance
 	}
 
 	@Override
-	protected Area createRedirectArea(List<MOB> mobs)
+	protected Area createRedirectArea(final List<MOB> mobs)
 	{
 		if(instanceChildren.size()==0)
 		{
 			final Area oldArea = this.getParentArea();
+			if(oldArea == null)
+				return null;
 			properRooms=new STreeMap<String, Room>(new Area.RoomIDComparator());
 			properRoomIDSet = null;
 			metroRoomIDSet = null;
