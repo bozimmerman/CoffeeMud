@@ -159,7 +159,7 @@ public class CargoLoading extends CommonSkill
 				else
 				{
 					cargoR.moveItemTo(loadingI, Expire.Never);
-					cargoR.show(mob,loadingI,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> store(s) <T-NAME> here."));
+					cargoR.showOthers(mob,loadingI,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> store(s) <T-NAME> here."));
 					if(mob.location()!=cargoR)
 						mob.location().show(mob,loadingI,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> finish(es) cargo-loading <T-NAME>."));
 				}
@@ -173,7 +173,7 @@ public class CargoLoading extends CommonSkill
 			if(!isaborted)
 			{
 				mob.location().moveItemTo(loadingI,Expire.Player_Drop);
-				cargoR.show(mob,loadingI,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> finish(es) unloading <T-NAME>."));
+				cargoR.showOthers(mob,loadingI,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> finish(es) unloading <T-NAME>."));
 				if(mob.location()!=cargoR)
 					mob.location().show(mob,loadingI,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> unload(s) <T-NAME> cargo here."));
 			}
@@ -201,6 +201,7 @@ public class CargoLoading extends CommonSkill
 		if("LOAD".startsWith(typ))
 		{
 		}
+		else
 		if("UNLOAD".startsWith(typ))
 		{
 			loading=false;
