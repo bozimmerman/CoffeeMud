@@ -88,7 +88,8 @@ public class Spell_ChainLightening extends Spell
 		for (final MOB element : myGroup)
 		{
 			final MOB M=element;
-			if((M!=mob)&&(!targets.contains(M)))
+			if((M!=mob)
+			&&(!targets.contains(M)))
 				targets.addElement(M);
 		}
 		if(!targets.contains(mob))
@@ -103,7 +104,8 @@ public class Spell_ChainLightening extends Spell
 		final boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?")+CMLib.protocol().msp("lightning.wav",40)))
+			final Room R=mob.location();
+			if(R.show(mob,null,this,verbalCastCode(mob,null,auto),L(auto?"A thunderous crack of lightning erupts!":"^S<S-NAME> invoke(s) a thunderous crack of lightning.^?")+CMLib.protocol().msp("lightning.wav",40)))
 			{
 				while(damage>0)
 				{
@@ -111,16 +113,16 @@ public class Spell_ChainLightening extends Spell
 					for(int i=0;i<targets.size();i++)
 					{
 						final MOB target=targets.elementAt(i);
-						if(target.amDead()||(target.location()!=mob.location()))
+						if(target.amDead()||(target.location()!=R))
 						{
 							int count=0;
 							for(int i2=0;i2<targets.size();i2++)
 							{
 								final MOB M2=targets.elementAt(i2);
 								if((!M2.amDead())
-								&&(mob.location()!=null)
-								&&(mob.location().isInhabitant(M2))
-								&&(M2.location()==mob.location()))
+								&&(R!=null)
+								&&(R.isInhabitant(M2))
+								&&(M2.location()==R))
 									count++;
 							}
 							if(count<2)
@@ -134,16 +136,17 @@ public class Spell_ChainLightening extends Spell
 						final CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 						final CMMsg msg2=CMClass.getMsg(mob,target,this,CMMsg.MSK_CAST_MALICIOUS_VERBAL|CMMsg.TYP_ELECTRIC|(auto?CMMsg.MASK_ALWAYS:0),null);
 						auto=oldAuto;
-						if((mob.location().okMessage(mob,msg))&&((mob.location().okMessage(mob,msg2))))
+						if((R.okMessage(mob,msg))
+						&&(R.okMessage(mob,msg2)))
 						{
-							mob.location().send(mob,msg);
-							mob.location().send(mob,msg2);
+							R.send(mob,msg);
+							R.send(mob,msg2);
 							invoker=mob;
 
 							int dmg=damage;
 							if((msg.value()>0)||(msg2.value()>0)||myGroup.contains(target)||(mob==target))
 								dmg = (int)Math.round(CMath.div(dmg,2.0));
-							if(target.location()==mob.location())
+							if(target.location()==R)
 							{
 								CMLib.combat().postDamage(mob,target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,L("The bolt <DAMAGE> <T-NAME>!"));
 								damage = (int)Math.round(CMath.div(damage,2.0));
