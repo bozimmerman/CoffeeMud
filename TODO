@@ -1,8 +1,10 @@
 BUGS
 
 TECH
-   *. Finish launch, stop programs
-   *. test ship phaser, laser systems murder motel again
+   *. make ship dampeners, 
+   *. make fake gravity generators
+   *. test phaser and missile targeting systems 
+   *. test ship phaser, laser systems against shield types - murder motel 
    *. make ship torpedo launchers and torpedo containers-- see tech doc
    *. make ship impulse and warp engines -- see tech doc
    *. make more ship sensors
@@ -14,8 +16,6 @@ TECH
    *. work on automatic component values ??
    *. Talk to Tim: Space Tech power consumption depends on tech level of generator, panel, or interaction damage?
    *. Implement accelleration damage to the people on-board.
-   *. make ship dampeners, 
-   *. make fake gravity generators
    *. make food generators, and refrigerators, water recycler, 
    *. turbo lift -- moveable rooms
    *. make message bouey launcher
