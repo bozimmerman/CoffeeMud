@@ -1393,10 +1393,6 @@ public class StdMOB implements MOB
 			return true;
 		if (mob == this)
 			return true;
-		if (CMProps.getVar(CMProps.Str.PKILL).startsWith("ALWAYS"))
-			return true;
-		if (CMProps.getVar(CMProps.Str.PKILL).startsWith("NEVER"))
-			return false;
 		if (CMLib.clans().isAtClanWar(this, mob))
 			return true;
 		if (this.isAttributeSet(MOB.Attrib.PLAYERKILL))
