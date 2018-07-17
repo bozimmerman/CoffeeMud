@@ -434,7 +434,9 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			if(comp.getType()==AbilityComponent.CompType.RESOURCE)
 			{
 				final String matName=RawMaterial.CODES.NAME((int)comp.getLongType()).toLowerCase();
-				if(subType.equals(matName) && ((comp.getLongType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH))
+				if(subType.equals(matName) 
+				&& (((comp.getLongType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH)
+					||((comp.getLongType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PAPER)))
 					itemDesc=amt+" "+subType+" bolt";
 				else
 					itemDesc=amt+" "+matName;

@@ -478,6 +478,7 @@ mv	POINT UP	You point up.	<S-NAME> points up.
 mv	POINT WEST	You point west.	<S-NAME> points west.			
 mo	POKE	Poke who??				
 mt	POKE <T-NAME>	You poke <T-HIM-HER> in the ribs.	<S-NAME> pokes <T-NAMESELF> in the ribs.	<S-NAME> pokes you in the ribs.	You can't poke someone who's not here!.	
+ov	POKE <V-NAME> POOP	You poke <T-NAME> in the poop.	<S-NAME> pokes <T-NAMESELF> in the poop.	<S-NAME> pokes you in the poop.	Poke who?	
 mo	POKE SELF	You poke yourself in the ribs, feeling very silly.	<S-NAME> pokes <S-HIM-HERSELF> in the ribs, looking very sheepish.			
 ss	POLITE	You give a polite little chuckle.	<S-NAME> gives a polite little chuckle.			
 ss	POLITE <T-NAME>	You indicate your underappreciation of <T-HIS-HER> joke.	<S-NAME> gives a polite little chuckle to <T-NAMESELF>'s joke.	<S-NAME> gives a politle but unappreciative chuckle to your joke.	You can't find a friend to chuckle with.	
@@ -711,6 +712,12 @@ mo	TWEAK SELF	You can't DO that.
 mo	TWIDDLE	You patiently twiddle your thumbs.	<S-NAME> patiently twiddles <S-HIS-HER> thumbs.			
 mo	TWIDDLE <T-NAME>	You twiddle <T-HIS-HER> ears.	<S-NAME> twiddles <T-NAMESELF>'s ears.	<S-NAME> twiddles your ears.	You don't see the person here.	
 mo	TWIDDLE SELF	You twiddle your ears like Dumbo.	<S-NAME> twiddles <S-HIS-HER> own ears like Dumbo.			
+mv	TWIGGLE	You twiggle.	<S-NAME> twiggles.			
+ov	TWIGGLE <T-NAME>	You twiggle <T-NAME>.	5	<S-NAME> twiggles you.	Twiggle who?	
+ov	TWIGGLE <T-NAME> ELABORATELY	You twiggle <T-NAME> in the elaborately.	<S-NAME> twiggles <T-NAMESELF> in the elaborately.	<S-NAME> twiggles you in the elaborately.	Twiggle who?	
+wv	TWIGGLE ALL	You twiggle everyone.	<S-NAME> twiggles everyone.		elaborately	
+mv	TWIGGLE ELABORATELY	You twiggle elaborately.	<S-NAME> twiggles elaborately.			
+sv	TWIGGLE SELF	You twiggle yourself.	<S-NAME> twiggles <S-HIM-HERSELF>.			
 mo	TWITCH	You twitch nervously.	<S-NAME> twitches nervously.			
 mo	TWITCH <T-NAME>	You twitch involuntarily at <T-NAMESELF>'s presence.	<T-NAMESELF> must really be getting to <S-NAME>...	<S-NAME> notices you and twitches.	Nervous? They aren't even here.	
 mo	TYPE	You can't type for crap tonight!  You give up in frustration!	<S-NAME> throws <S-HIS-HER> hands up in disgust at <S-HIS-HER> lousy typing skills!			

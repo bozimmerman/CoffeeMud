@@ -129,7 +129,7 @@ public class Harpy extends GreatBird
 				for(int i=0;i<2;i++)
 				{
 					resources.addElement(makeResource
-					(L("some dirty @x1 feathers",name().toLowerCase()),RawMaterial.RESOURCE_FEATHERS));
+					(L("some dirty @x1 feathers",name().toLowerCase()),RawMaterial.RESOURCE_FEATHERS,L("@x1 FEATHER",name().toUpperCase())));
 				}
 				resources.addElement(makeResource
 				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_POULTRY));

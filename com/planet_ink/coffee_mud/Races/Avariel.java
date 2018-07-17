@@ -283,7 +283,7 @@ public class Avariel extends StdRace
 				resources.addElement(makeResource
 				(L("a pair of @x1 ears",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource
-				(L("some @x1 feathers",name().toLowerCase()),RawMaterial.RESOURCE_FEATHERS));
+				(L("some @x1 feathers",name().toLowerCase()),RawMaterial.RESOURCE_FEATHERS,L("@x1 FEATHER",name().toUpperCase())));
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource

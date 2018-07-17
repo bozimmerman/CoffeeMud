@@ -137,7 +137,7 @@ public class Goose extends WaterFowl
 				resources.addElement(makeResource
 				(L("some webbed @x1 feet",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
-				(L("some @x1 feathers",name().toLowerCase()),RawMaterial.RESOURCE_FEATHERS));
+				(L("some @x1 feathers",name().toLowerCase()),RawMaterial.RESOURCE_FEATHERS,L("@x1 FEATHER",name().toUpperCase())));
 				resources.addElement(makeResource
 				(L("some @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_POULTRY));
 				resources.addElement(makeResource

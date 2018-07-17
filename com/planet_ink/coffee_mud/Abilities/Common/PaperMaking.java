@@ -72,7 +72,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	public String parametersFormat()
 	{
 		return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t" 
-			+ "ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tLID_LOCK||STATUE||\tCONTAINER_CAPACITY||PAGES_CHARS\tCODED_SPELL_LIST";
+			+ "ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tLID_LOCK||STATUE\tRES_SUBTYPE||\tCONTAINER_CAPACITY||PAGES_CHARS\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -387,6 +387,10 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		buildingI.text();
 		buildingI.recoverPhyStats();
 
+		if((buildingI instanceof RawMaterial)
+		&&(misctype.length()>0))
+			((RawMaterial)buildingI).setSubType(misctype.toUpperCase().trim());
+		else
 		if((misctype.equalsIgnoreCase("statue"))
 		&&(statue!=null)
 		&&(statue.trim().length()>0))

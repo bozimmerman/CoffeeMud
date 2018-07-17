@@ -752,7 +752,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		&&(((RawMaterial)I).getSubType().length()>0))
 		{
 			final String subType = ((RawMaterial)I).getSubType().toLowerCase();
-			if(subType.equals(name) && (iMat==RawMaterial.MATERIAL_CLOTH))
+			if(subType.equals(name) 
+			&& ((iMat==RawMaterial.MATERIAL_CLOTH)||(iMat==RawMaterial.MATERIAL_PAPER)))
 				name=L("@x1 bolt", name);
 			else
 				name=subType;

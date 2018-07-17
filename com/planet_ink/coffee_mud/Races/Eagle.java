@@ -122,7 +122,7 @@ public class Eagle extends GreatBird
 				resources.addElement(makeResource
 				(L("an @x1 beak",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
-				(L("some @x1 feathers",name().toLowerCase()),RawMaterial.RESOURCE_FEATHERS));
+				(L("some @x1 feathers",name().toLowerCase()),RawMaterial.RESOURCE_FEATHERS,L("@x1 FEATHER",name().toUpperCase())));
 				resources.addElement(makeResource
 				(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource

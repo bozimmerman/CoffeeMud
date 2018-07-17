@@ -189,7 +189,7 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 			return false;
 		if(!(I instanceof RawMaterial))
 			return false;
-		if(!((RawMaterial)I).getSubType().equalsIgnoreCase("BOLT"))
+		if(((RawMaterial)I).getSubType().length()==0)
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;

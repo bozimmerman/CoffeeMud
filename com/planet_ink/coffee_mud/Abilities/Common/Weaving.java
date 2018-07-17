@@ -64,7 +64,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	@Override
 	public String supportedResourceString()
 	{
-		return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON|FLOWERS|BAMBOO";
+		return "WHEAT|VINE|SEAWEED|HEMP|FLOWERS|BAMBOO|FEATHERS|HERBS";
+		
 	}
 
 	@Override
@@ -91,6 +92,18 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 
 	protected Item key=null;
 
+	final static int[] pm=
+	{ 
+		RawMaterial.RESOURCE_FEATHERS,
+		RawMaterial.RESOURCE_HERBS,
+		RawMaterial.RESOURCE_HEMP,
+		RawMaterial.RESOURCE_VINE,
+		RawMaterial.RESOURCE_FLOWERS,
+		RawMaterial.RESOURCE_BAMBOO,
+		RawMaterial.RESOURCE_WHEAT,
+		RawMaterial.RESOURCE_SEAWEED
+	};
+	
 	public Weaving()
 	{
 		super();
@@ -210,14 +223,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			return false;
 		if(I.material()==RawMaterial.RESOURCE_PAPER)
 			return false;
-		if((I.material()!=RawMaterial.RESOURCE_COTTON)
-		&&(I.material()!=RawMaterial.RESOURCE_SILK)
-		&&(I.material()!=RawMaterial.RESOURCE_HEMP)
-		&&(I.material()!=RawMaterial.RESOURCE_VINE)
-		&&(I.material()!=RawMaterial.RESOURCE_WHEAT)
-		&&(I.material()!=RawMaterial.RESOURCE_FLOWERS)
-		&&(I.material()!=RawMaterial.RESOURCE_BAMBOO)
-		&&(I.material()!=RawMaterial.RESOURCE_SEAWEED)
+		if((!CMParms.contains(pm, I.material()))
 		&&(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)))
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
@@ -410,14 +416,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			buildingI=getTargetItemFavorMOB(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(buildingI==null)
 				return false;
-			if((buildingI.material()!=RawMaterial.RESOURCE_COTTON)
-			&&(buildingI.material()!=RawMaterial.RESOURCE_SILK)
-			&&(buildingI.material()!=RawMaterial.RESOURCE_HEMP)
-			&&(buildingI.material()!=RawMaterial.RESOURCE_VINE)
-			&&(buildingI.material()!=RawMaterial.RESOURCE_WHEAT)
-			&&(buildingI.material()!=RawMaterial.RESOURCE_BAMBOO)
-			&&(buildingI.material()!=RawMaterial.RESOURCE_FLOWERS)
-			&&(buildingI.material()!=RawMaterial.RESOURCE_SEAWEED))
+			if((!CMParms.contains(pm, buildingI.material())))
 			{
 				commonTell(mob,L("That's not made of any sort of weavable material.  It can't be refitted."));
 				return false;
@@ -497,15 +496,6 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 
 			if(amount>woodRequired)
 				woodRequired=amount;
-			final int[] pm={RawMaterial.RESOURCE_COTTON,
-							RawMaterial.RESOURCE_SILK,
-							RawMaterial.RESOURCE_HEMP,
-							RawMaterial.RESOURCE_VINE,
-							RawMaterial.RESOURCE_FLOWERS,
-							RawMaterial.RESOURCE_BAMBOO,
-							RawMaterial.RESOURCE_WHEAT,
-							RawMaterial.RESOURCE_SEAWEED
-							};
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
 			bundling=spell.equalsIgnoreCase("BUNDLE")||misctype.equalsIgnoreCase("BUNDLE");

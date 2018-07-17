@@ -493,7 +493,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-1;
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
-			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
+			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL))+(hardness*3));
 			setBrand(mob, buildingI);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
 			final long canContain=getContainerType(foundRecipe.get(RCP_CONTAINMASK));

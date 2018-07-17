@@ -1,4 +1,5 @@
 a piece of paper	1	40	1	1	GenPaper	WOOD		1/2000	
+a bolt of paper	1	40	5	1	GenResource	WOOD	PAPER		
 a scroll	1	120	(onground:consumed:1:a piece of paper:)	20	GenScroll	PAPER			
 a leaflet	2	40	1	1	GenPaper	WOOD		1/280	
 a pound of paper	2	80	5	10	GenResource	WOOD			
