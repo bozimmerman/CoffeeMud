@@ -547,26 +547,17 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public double getAngleDelta(final double[] fromAngle, final double[] toAngle)
 	{
-		final double directionYaw = fromAngle[0];
-		final double facingYaw = toAngle[0];
-		
-		final double directionPitch = (fromAngle[1] > Math.PI) ? Math.abs(Math.PI-fromAngle[1]) : fromAngle[1];
-		final double facingPitch = (toAngle[1] > Math.PI) ? Math.abs(Math.PI-toAngle[1]) : toAngle[1];
-
-		double yawDelta = (directionYaw >  facingYaw) ? (directionYaw - facingYaw) : (facingYaw - directionYaw);
-		if(yawDelta > Math.PI)
-			yawDelta=PI_TIMES_2-yawDelta;
-
-		double pitchDelta = (directionPitch >  facingPitch) ? (directionPitch - facingPitch) : (facingPitch - directionPitch);
-		if(pitchDelta > Math.PI)
-			pitchDelta=Math.PI-pitchDelta;
-		
 		final double x1=Math.sin(fromAngle[1])*Math.cos(fromAngle[0]);
 		final double y1=Math.sin(fromAngle[1])*Math.sin(fromAngle[0]);
 		final double z1=Math.cos(fromAngle[1]);
 		final double x2=Math.sin(toAngle[1])*Math.cos(toAngle[0]);
-		final double y2=Math.sin(toAngle[1])*Math.sin(toAngle[0]), z2=Math.cos(toAngle[1]);
-		final double pitchDOTyaw=x1*x2+y1*y2+z1*z2;
+		final double y2=Math.sin(toAngle[1])*Math.sin(toAngle[0]);
+		final double z2=Math.cos(toAngle[1]);
+		double pitchDOTyaw=x1*x2+y1*y2+z1*z2;
+		if(pitchDOTyaw>1) 
+			pitchDOTyaw=(2-pitchDOTyaw);
+		if(pitchDOTyaw<-1)
+			pitchDOTyaw=(-1*pitchDOTyaw)-2;
 		final double finalDelta=Math.acos(pitchDOTyaw);
 		if(Double.isNaN(finalDelta) || Double.isInfinite(finalDelta))
 		{
@@ -935,8 +926,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public List<LocationRoom> getLandingPoints(final SpaceObject ship, final Environmental O)
 	{
-		List<LocationRoom> rooms=new LinkedList<LocationRoom>();
-		Area A;
+		final List<LocationRoom> rooms=new LinkedList<LocationRoom>();
+		final Area A;
 		if(O instanceof Area)
 			A=(Area)O;
 		else
@@ -952,8 +943,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			final Room R2=r.nextElement();
 			if(R2 instanceof LocationRoom)
 			{
-				if(ship == null)
-					rooms.add((LocationRoom)R2);
+				rooms.add((LocationRoom)R2);
 			}
 		}
 		Collections.sort(rooms,new Comparator<LocationRoom>()

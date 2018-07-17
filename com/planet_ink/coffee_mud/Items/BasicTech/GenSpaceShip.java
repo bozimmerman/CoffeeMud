@@ -460,17 +460,30 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 				{
 					List<LocationRoom> landingPoints=CMLib.map().getLandingPoints(this, msg.tool());
 					LocationRoom LR = landingPoints.size()==0 ? null : landingPoints.get(0);
+					stopThisShip(mob);
 					if(LR!=null)
 					{
+						if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+							Log.debugOut(Name()+" Landed and Stopped, and docking at "+CMLib.map().getExtendedRoomID(LR));
 						//final CMMsg kMsg=CMClass.getMsg(msg.source(),getShipArea(),this,CMMsg.MSG_OK_ACTION,L("The ship comes to a resting stop."));
 						dockHere(LR); // set location and so forth
 					}
 					else
 					{
+						if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+							Log.debugOut(Name()+" Landed and Stopped, but nowhere to dock. :(");
 						// we landed, but there was nowhere to dock!
-						stopThisShip(mob);
 					}
 				}
+				else
+				if(!amDestroyed())
+				{
+					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+						Log.debugOut(Name()+" Collided with weird thing: "+msg.tool().ID());
+				}
+				else
+				if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+					Log.debugOut(Name()+" was destroyed.");
 				sendComputerMessage(mob,msg);
 				break;
 			}
@@ -542,7 +555,12 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 			{
 				final CMMsg msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
 				if(E.okMessage(mob, msg))
+				{
 					E.executeMsg(mob, msg);
+					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
+						Log.debugOut("SpaceShip "+name()+" deactivated "+E.Name()+"!");
+					((ShipEngine)E).setThrust(0.0);
+				}
 			}
 		}
 	}

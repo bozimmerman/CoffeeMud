@@ -297,10 +297,15 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 				if(me.getThrust()>0.0)
 				{
 					me.setThrust(0.0);
-					return reportError(me, controlI, mob, lang.L("@x1 goes quiet.",me.name(mob)), lang.L("Info: @x1: Engine shut down.",me.name(mob)));
+					//return reportError(me, controlI, mob, lang.L("@x1 goes quiet.",me.name(mob)), lang.L("Info: @x1: Engine shut down.",me.name(mob)));
 				}
 				me.setThrust(0.0);
 				return false;
+			}
+			if(me.getThrust()==0.0)
+			{
+				me.setThrust(amount); // also, its always the intended amount, not the adjusted amount
+				//return reportError(me, controlI, mob, lang.L("@x1 roars to life.",me.name(mob)), lang.L("Info: @x1: Engine activated.",me.name(mob)));
 			}
 			me.setThrust(amount); // also, its always the intended amount, not the adjusted amount
 		}
@@ -382,7 +387,6 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 					me.activate(true);
 				break;
 			case CMMsg.TYP_DEACTIVATE:
-				me.setThrust(0);
 				if(me.activated())
 				{
 					// when a constant thruster deactivates, all speed stops
@@ -398,6 +402,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 							spaceObject.executeMsg(mob, msg2);
 					}
 				}
+				me.setThrust(0);
 				me.activate(false);
 				break;
 			case CMMsg.TYP_POWERCURRENT:

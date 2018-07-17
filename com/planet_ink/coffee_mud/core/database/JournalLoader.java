@@ -395,10 +395,14 @@ public class JournalLoader
 			public JournalEntry convert(int cardinal, String obj)
 			{
 				final JournalEntry j=DBReadJournalEntry(journalID, obj);
-				j.cardinal(cardinal);
-				if(j.key().equals(lastEntry))
-					j.lastEntry(true);
-				return j;
+				if(j != null)
+				{
+					j.cardinal(cardinal);
+					if(j.key().equals(lastEntry))
+						j.lastEntry(true);
+					return j;
+				}
+				return null;
 			}
 
 			@Override

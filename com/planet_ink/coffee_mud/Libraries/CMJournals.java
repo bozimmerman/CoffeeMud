@@ -665,6 +665,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 		}
 		try
 		{
+			final List<Pair<String,String>> deleteThese = new LinkedList<Pair<String,String>>();
 			for(final Enumeration<ForumJournal> e=forumJournals();e.hasMoreElements();)
 			{
 				final ForumJournal FMJ=e.nextElement();
@@ -682,12 +683,14 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 							final String from=entry.from();
 							final String message=entry.msg();
 							Log.debugOut(Thread.currentThread().getName(),"Expired "+FMJ.NAME()+" from "+from+": "+message);
-							CMLib.database().DBDeleteJournal(FMJ.NAME(),entry.key());
+							deleteThese.add(new Pair<String,String>(FMJ.NAME(),entry.key()));
 						}
 					}
 					setThreadStatus(serviceClient,"forum journal sweeping");
 				}
 			}
+			for(final Pair<String,String> p : deleteThese)
+				CMLib.database().DBDeleteJournal(p.first,p.second);
 		}
 		catch(final NoSuchElementException nse)
 		{
