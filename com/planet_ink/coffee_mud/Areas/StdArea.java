@@ -2107,13 +2107,18 @@ public class StdArea implements Area
 				return ((GridLocale)R).getRandomGridChild();
 			return R;
 		}*/
-		final String roomID=metroRoomIDSet.random();
-		final Room R=CMLib.map().getRoom(roomID);
-		if(R instanceof GridLocale)
-			return ((GridLocale)R).getRandomGridChild();
-		if(R==null)
-			Log.errOut("StdArea","Unable to random-metro-find: "+roomID);
-		return R;
+		final RoomnumberSet metroRoomIDSet=this.metroRoomIDSet;
+		if(metroRoomIDSet != null)
+		{
+			final String roomID=metroRoomIDSet.random();
+			final Room R=CMLib.map().getRoom(roomID);
+			if(R instanceof GridLocale)
+				return ((GridLocale)R).getRandomGridChild();
+			if(R==null)
+				Log.errOut("StdArea","Unable to random-metro-find: "+roomID);
+			return R;
+		}
+		return null;
 	}
 
 	@Override
