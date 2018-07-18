@@ -262,13 +262,13 @@ public class Unload extends StdCommand
 			}
 			else
 			// User Unloading
-			if((commands.get(1).equalsIgnoreCase("USER"))
-			&&(mob.session()!=null)
-			&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)))
+			if((commands.get(1).equalsIgnoreCase("USER")||commands.get(1).equalsIgnoreCase("PLAYER"))
+			&&(mob.session()!=null))
 			{
 				final String which=CMParms.combine(commands,2);
 				final Vector<MOB> users=new Vector<MOB>();
-				if(which.equalsIgnoreCase("all"))
+				if((which.equalsIgnoreCase("all"))
+				&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)))
 				{
 					for(final Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
 						users.add(e.nextElement());

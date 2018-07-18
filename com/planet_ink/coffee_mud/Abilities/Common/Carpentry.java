@@ -660,9 +660,9 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 					((Armor)buildingI).basePhyStats().setArmor(armordmg+(baseYield()+abilityCode()-1));
 				setWearLocation(buildingI,misctype,hardness);
 			}
+			else
 			if(buildingI instanceof Light)
 			{
-				((Light)buildingI).setDuration(capacity);
 				if((buildingI instanceof Container)
 				&&(!misctype.equals("SMOKE")))
 				{

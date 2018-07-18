@@ -484,7 +484,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			if((buildingI instanceof Container)
 			&&(!misctype.equals("SMOKE")))
 			{
-				((Light)buildingI).setDuration(200);
+				((Light)buildingI).setDuration((capacity > 200) ? capacity : 200);
 				((Container)buildingI).setCapacity(0);
 			}
 		}

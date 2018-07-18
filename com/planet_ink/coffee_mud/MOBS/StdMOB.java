@@ -4963,7 +4963,7 @@ public class StdMOB implements MOB
 	{
 		if(baseCode==null)
 			return null;
-		final Entry<String,Integer> p=CMath.getStringFollowedByNumber(baseCode, true);
+		final Entry<String,Integer> p=CMath.getStringFollowedByNumber(baseCode, false);
 		final String key=p.getKey().toUpperCase();
 		final Integer num=expertises.get(key);
 		if((expertises.containsKey(key))

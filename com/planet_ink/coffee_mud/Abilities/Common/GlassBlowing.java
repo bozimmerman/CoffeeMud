@@ -489,13 +489,14 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 			if(capacity<5)
 				((Rideable)buildingI).setRiderCapacity(capacity);
 		}
+		else
 		if(buildingI instanceof Light)
 		{
 			((Light)buildingI).setDuration(capacity);
 			if((buildingI instanceof Container)
 			&&(!misctype.equals("SMOKE")))
 			{
-				((Light)buildingI).setDuration(200);
+				((Light)buildingI).setDuration((capacity > 200) ? capacity : 200);
 				((Container)buildingI).setCapacity(0);
 			}
 		}

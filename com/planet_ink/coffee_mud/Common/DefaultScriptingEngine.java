@@ -113,7 +113,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public void setSavable(boolean truefalse)
+	public void setSavable(final boolean truefalse)
 	{
 		isSavable = truefalse;
 	}
@@ -132,7 +132,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public void setVarScope(String newScope)
+	public void setVarScope(final String newScope)
 	{
 		if((newScope==null)||(newScope.trim().length()==0)||newScope.equalsIgnoreCase("GLOBAL"))
 		{
@@ -191,7 +191,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public void setLocalVarXML(String xml)
+	public void setLocalVarXML(final String xml)
 	{
 		for(final Iterator<String> k = Resources.findResourceKeys("SCRIPTVAR-");k.hasNext();)
 		{
@@ -217,7 +217,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 	}
 
-	private Quest getQuest(String named)
+	private Quest getQuest(final String named)
 	{
 		if((defaultQuestName.length()>0)&&(named.equals("*")||named.equalsIgnoreCase(defaultQuestName)))
 			return defaultQuest();
@@ -254,7 +254,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public void registerDefaultQuest(String qName)
+	public void registerDefaultQuest(final String qName)
 	{
 		if((qName==null)||(qName.trim().length()==0))
 			defaultQuestName="";
@@ -296,7 +296,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	/*
 	 * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
 	 */
-	protected String[] parseBits(DVector script, int row, String instructions)
+	protected String[] parseBits(final DVector script, final int row, final String instructions)
 	{
 		final String line=(String)script.elementAt(row,1);
 		final String[] newLine=parseBits(line,instructions);
@@ -304,7 +304,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return newLine;
 	}
 
-	protected String[] parseSpecial3PartEval(String[][] eval, int t)
+	protected String[] parseSpecial3PartEval(final String[][] eval, final int t)
 	{
 		String[] tt=eval[0];
 		final String funcParms=tt[t];
@@ -327,7 +327,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	/*
 	 * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
 	 */
-	protected String[] parseBits(String line, String instructions)
+	protected String[] parseBits(String line, final String instructions)
 	{
 		String[] newLine=new String[instructions.length()];
 		for(int i=0;i<instructions.length();i++)
@@ -402,7 +402,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return newLine;
 	}
 
-	protected String[] insertStringArray(String[] oldS, String[] inS, int where)
+	protected String[] insertStringArray(final String[] oldS, final String[] inS, final int where)
 	{
 		final String[] newLine=new String[oldS.length+inS.length-1];
 		for(int i=0;i<where;i++)
@@ -417,7 +417,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	/*
 	 * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
 	 */
-	protected String[] parseBits(String[][] oldBits, int start, String instructions)
+	protected String[] parseBits(final String[][] oldBits, final int start, final String instructions)
 	{
 		final String[] tt=oldBits[0];
 		final String parseMe=tt[start];
@@ -433,7 +433,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public boolean endQuest(PhysicalAgent hostObj, MOB mob, String quest)
+	public boolean endQuest(final PhysicalAgent hostObj, final MOB mob, final String quest)
 	{
 		if(mob!=null)
 		{
@@ -477,16 +477,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return xmlfiles;
 	}
 
-	protected String getVarHost(Environmental E,
+	protected String getVarHost(final Environmental E,
 								String rawHost,
-								MOB source,
-								Environmental target,
-								PhysicalAgent scripted,
-								MOB monster,
-								Item primaryItem,
-								Item secondaryItem,
-								String msg,
-								Object[] tmp)
+								final MOB source,
+								final Environmental target,
+								final PhysicalAgent scripted,
+								final MOB monster,
+								final Item primaryItem,
+								final Item secondaryItem,
+								final String msg,
+								final Object[] tmp)
 	{
 		if(!rawHost.equals("*"))
 		{
@@ -502,7 +502,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public boolean isVar(String host, String var)
+	public boolean isVar(final String host, String var)
 	{
 		if(host.equalsIgnoreCase("*"))
 		{
@@ -530,15 +530,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return (val!=null);
 	}
 
-	public String getVar(Environmental E, String rawHost, String var, MOB source, Environmental target,
-						 PhysicalAgent scripted, MOB monster, Item primaryItem, Item secondaryItem, String msg,
-						 Object[] tmp)
+	public String getVar(final Environmental E, final String rawHost, final String var, final MOB source, final Environmental target,
+						 final PhysicalAgent scripted, final MOB monster, final Item primaryItem, final Item secondaryItem, final String msg,
+						 final Object[] tmp)
 	{
 		return getVar(getVarHost(E,rawHost,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp),var);
 	}
 
 	@Override
-	public String getVar(String host, String var)
+	public String getVar(final String host, final String var)
 	{
 		String varVal = getVar(resources,host,var,null);
 		if(varVal != null)
@@ -612,7 +612,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return val;
 	}
 
-	private StringBuffer getResourceFileData(String named, boolean showErrors)
+	private StringBuffer getResourceFileData(final String named, final boolean showErrors)
 	{
 		if(getQuest("*")!=null)
 			return getQuest("*").getResourceFileData(named, showErrors);
@@ -660,7 +660,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			scriptKey="PARSEDPRG: "+myScript;
 	}
 
-	public boolean isFreeToBeTriggered(Tickable affecting)
+	public boolean isFreeToBeTriggered(final Tickable affecting)
 	{
 		if(alwaysTriggers)
 			return CMLib.flags().canActAtAll(affecting);
@@ -668,7 +668,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return CMLib.flags().canFreelyBehaveNormal(affecting);
 	}
 
-	protected String parseLoads(String text, int depth, Vector<String> filenames, StringBuffer nonFilenameScript)
+	protected String parseLoads(final String text, final int depth, final Vector<String> filenames, final StringBuffer nonFilenameScript)
 	{
 		final StringBuffer results=new StringBuffer("");
 		String parse=text;
@@ -762,7 +762,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return V2;
 	}
 
-	protected Room getRoom(String thisName, Room imHere)
+	protected Room getRoom(final String thisName, final Room imHere)
 	{
 		if(thisName.length()==0)
 			return null;
@@ -815,7 +815,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return room;
 	}
 
-	protected void logError(Environmental scripted, String cmdName, String errType, String errMsg)
+	protected void logError(final Environmental scripted, final String cmdName, final String errType, final String errMsg)
 	{
 		if(scripted!=null)
 		{
@@ -829,7 +829,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
 	}
 
-	protected boolean simpleEvalStr(Environmental scripted, String arg1, String arg2, String cmp, String cmdName)
+	protected boolean simpleEvalStr(final Environmental scripted, final String arg1, final String arg2, final String cmp, final String cmdName)
 	{
 		final int x=arg1.compareToIgnoreCase(arg2);
 		final Integer SIGN=signH.get(cmp);
@@ -859,7 +859,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 	}
 
-	protected boolean simpleEval(Environmental scripted, String arg1, String arg2, String cmp, String cmdName)
+	protected boolean simpleEval(final Environmental scripted, final String arg1, final String arg2, final String cmp, final String cmdName)
 	{
 		final long val1=CMath.s_long(arg1.trim());
 		final long val2=CMath.s_long(arg2.trim());
@@ -890,7 +890,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 	}
 
-	protected boolean simpleExpressionEval(Environmental scripted, String arg1, String arg2, String cmp, String cmdName)
+	protected boolean simpleExpressionEval(final Environmental scripted, final String arg1, final String arg2, final String cmp, final String cmdName)
 	{
 		final double val1=CMath.s_parseMathExpression(arg1.trim());
 		final double val2=CMath.s_parseMathExpression(arg2.trim());
@@ -921,7 +921,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 	}
 
-	protected List<PhysicalAgent> loadMobsFromFile(Environmental scripted, String filename)
+	protected List<PhysicalAgent> loadMobsFromFile(final Environmental scripted, String filename)
 	{
 		filename=filename.trim();
 		List monsters=(List)Resources.getResource("RANDOMMONSTERS-"+filename);
@@ -973,7 +973,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return monsters;
 	}
 
-	protected List<PhysicalAgent> generateMobsFromFile(Environmental scripted, String filename, String tagName, String rest)
+	protected List<PhysicalAgent> generateMobsFromFile(final Environmental scripted, String filename, final String tagName, final String rest)
 	{
 		filename=filename.trim();
 		List monsters=(List)Resources.getResource("RANDOMGENMONSTERS-"+filename+"."+tagName+"-"+rest);
@@ -1053,7 +1053,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return monsters;
 	}
 
-	protected List<PhysicalAgent> loadItemsFromFile(Environmental scripted, String filename)
+	protected List<PhysicalAgent> loadItemsFromFile(final Environmental scripted, String filename)
 	{
 		filename=filename.trim();
 		List items=(List)Resources.getResource("RANDOMITEMS-"+filename);
@@ -1105,7 +1105,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return items;
 	}
 
-	protected List<PhysicalAgent> generateItemsFromFile(Environmental scripted, String filename, String tagName, String rest)
+	protected List<PhysicalAgent> generateItemsFromFile(final Environmental scripted, String filename, final String tagName, final String rest)
 	{
 		filename=filename.trim();
 		List items=(List)Resources.getResource("RANDOMGENITEMS-"+filename+"."+tagName+"-"+rest);
@@ -1185,7 +1185,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return items;
 	}
 
-	protected Environmental findSomethingCalledThis(String thisName, MOB meMOB, Room imHere, List<Environmental> OBJS, boolean mob)
+	protected Environmental findSomethingCalledThis(final String thisName, final MOB meMOB, final Room imHere, List<Environmental> OBJS, final boolean mob)
 	{
 		if(thisName.length()==0)
 			return null;
@@ -1331,27 +1331,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return null;
 	}
 
-	protected PhysicalAgent getArgumentMOB(String str,
-												MOB source,
-												MOB monster,
-												Environmental target,
-												Item primaryItem,
-												Item secondaryItem,
-												String msg,
-												Object[] tmp)
+	protected PhysicalAgent getArgumentMOB(final String str,
+										   final MOB source,
+										   final MOB monster,
+										   final Environmental target,
+										   final Item primaryItem,
+										   final Item secondaryItem,
+										   final String msg,
+										   final Object[] tmp)
 	{
 		return getArgumentItem(str,source,monster,monster,target,primaryItem,secondaryItem,msg,tmp);
 	}
 
 	protected PhysicalAgent getArgumentItem(String str,
-											MOB source,
-											MOB monster,
-											PhysicalAgent scripted,
-											Environmental target,
-											Item primaryItem,
-											Item secondaryItem,
-											String msg,
-											Object[] tmp)
+											final MOB source,
+											final MOB monster,
+											final PhysicalAgent scripted,
+											final Environmental target,
+											final Item primaryItem,
+											final Item secondaryItem,
+											final String msg,
+											final Object[] tmp)
 	{
 		if(str.length()<2)
 			return null;
@@ -1505,7 +1505,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return null;
 	}
 
-	private String makeNamedString(Object O)
+	private String makeNamedString(final Object O)
 	{
 		if(O instanceof List)
 			return makeParsableString((List)O);
@@ -1521,7 +1521,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return "";
 	}
 
-	private String makeParsableString(List V)
+	private String makeParsableString(final List V)
 	{
 		if((V==null)||(V.size()==0))
 			return "";
@@ -1889,7 +1889,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return varifyable;
 	}
 
-	protected DVector getScriptVarSet(String mobname, String varname)
+	protected DVector getScriptVarSet(final String mobname, final String varname)
 	{
 		final DVector set=new DVector(2);
 		if(mobname.equals("*"))
@@ -1930,7 +1930,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return set;
 	}
 
-	protected String getStatValue(Environmental E, String arg2)
+	protected String getStatValue(final Environmental E, final String arg2)
 	{
 		boolean found=false;
 		String val="";
@@ -2043,7 +2043,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return val;
 	}
 
-	protected String getGStatValue(Environmental E, String arg2)
+	protected String getGStatValue(final Environmental E, String arg2)
 	{
 		if(E==null)
 			return null;
@@ -2179,7 +2179,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public void setVar(String baseName, String key, String val)
+	public void setVar(final String baseName, String key, String val)
 	{
 		final DVector V=getScriptVarSet(baseName,key);
 		for(int v=0;v<V.size();v++)
@@ -2298,7 +2298,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public String[] parseEval(String evaluable) throws ScriptParseException
+	public String[] parseEval(final String evaluable) throws ScriptParseException
 	{
 		final int STATE_MAIN=0;
 		final int STATE_INFUNCTION=1;
@@ -5711,7 +5711,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return ((Boolean)stack.firstElement()).booleanValue();
 	}
 
-	protected void setShopPrice(ShopKeeper shopHere, Environmental E, Object[] tmp)
+	protected void setShopPrice(final ShopKeeper shopHere, final Environmental E, final Object[] tmp)
 	{
 		if(shopHere instanceof MOB)
 		{
@@ -7498,7 +7498,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return results.toString();
 	}
 
-	protected MOB getRandPC(MOB monster, Object[] tmp, Room room)
+	protected MOB getRandPC(final MOB monster, final Object[] tmp, final Room room)
 	{
 		if((tmp[SPECIAL_RANDPC]==null)||(tmp[SPECIAL_RANDPC]==monster))
 		{
@@ -7527,7 +7527,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return (MOB)tmp[SPECIAL_RANDPC];
 	}
 
-	protected MOB getRandAnyone(MOB monster, Object[] tmp, Room room)
+	protected MOB getRandAnyone(final MOB monster, final Object[] tmp, final Room room)
 	{
 		if((tmp[SPECIAL_RANDANYONE]==null)||(tmp[SPECIAL_RANDANYONE]==monster))
 		{
@@ -11414,7 +11414,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return scripts;
 	}
 
-	protected boolean match(String str, String patt)
+	protected boolean match(final String str, final String patt)
 	{
 		if(patt.trim().equalsIgnoreCase("ALL"))
 			return true;
@@ -11427,7 +11427,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return false;
 	}
 
-	private Item makeCheapItem(Environmental E)
+	private Item makeCheapItem(final Environmental E)
 	{
 		Item product=null;
 		if(E instanceof Item)
@@ -11622,7 +11622,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return true;
 	}
 
-	protected String standardTriggerCheck(DVector script, String[] t, Environmental E)
+	protected String standardTriggerCheck(final DVector script, String[] t, final Environmental E)
 	{
 		if(E==null)
 			return null;
@@ -11717,7 +11717,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=CMath.s_int(t[1]);
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
 								return;
 							}
 						}
@@ -11736,7 +11736,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=CMath.s_int(t[1]);
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
 								return;
 							}
 						}
@@ -11756,7 +11756,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=CMath.s_int(t[1]);
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
 								return;
 							}
 						}
@@ -11792,7 +11792,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							str=CMStrings.replaceAll(str,"\n\r"," ");
 							if((t[1].length()==0)||(t[1].equals("ALL")))
 							{
-								enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
+								enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str, t);
 								return;
 							}
 							else
@@ -11800,7 +11800,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							{
 								if(match(str.trim(),t[2]))
 								{
-									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
+									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str, t);
 									return;
 								}
 							}
@@ -11810,7 +11810,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								final int x=str.indexOf(" "+t[i]+" ");
 								if(x>=0)
 								{
-									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim());
+									enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim(), t);
 									return;
 								}
 							}
@@ -11834,7 +11834,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(lastMsg==msg)
 								break;
 							lastMsg=msg;
-							enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,check);
+							enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -11847,7 +11847,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String check=standardTriggerCheck(script,t,msg.target());
 						if(check!=null)
 						{
-							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
+							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -11968,12 +11968,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									if(Tool==null)
 										Tool=defaultItem;
 									if(msg.target() instanceof MOB)
-										enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+										enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 									else
 									if(msg.target() instanceof Item)
-										enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
+										enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str, t);
 									else
-										enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+										enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 									return;
 								}
 							}
@@ -11988,7 +11988,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String check=standardTriggerCheck(script,t,msg.target());
 						if(check!=null)
 						{
-							enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,defaultItem,script,1,check);
+							enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -12013,7 +12013,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(lastMsg==msg)
 								break;
 							lastMsg=msg;
-							enqueResponse(affecting,msg.source(),msg.target(),monster,checkInE,defaultItem,script,1,check);
+							enqueResponse(affecting,msg.source(),msg.target(),monster,checkInE,defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -12037,7 +12037,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(msg.target() instanceof Coins)
 								execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
 							else
-								enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
+								enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -12055,7 +12055,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String check=standardTriggerCheck(script,t,msg.target());
 						if(check!=null)
 						{
-							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
+							enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -12088,7 +12088,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String check=standardTriggerCheck(script,t,msg.target());
 						if(check!=null)
 						{
-							enqueResponse(affecting,msg.source(),msg.target(),monster,I,defaultItem,script,1,check);
+							enqueResponse(affecting,msg.source(),msg.target(),monster,I,defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -12108,7 +12108,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							&&(affecting instanceof Food))
 								execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
 							else
-								enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
+								enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -12130,7 +12130,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
 								execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
 							else
-								enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)msg.tool(),script,1,check);
+								enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)msg.tool(),script,1,check, t);
 							return;
 						}
 					}
@@ -12150,7 +12150,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							&&(product.owner() instanceof Room))
 								execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,check,newObjs());
 							else
-								enqueResponse(affecting,msg.source(),monster,monster,product,product,script,1,check);
+								enqueResponse(affecting,msg.source(),monster,monster,product,product,script,1,check, t);
 							return;
 						}
 					}
@@ -12169,7 +12169,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							&&(product.owner() instanceof Room))
 								execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,newObjs());
 							else
-								enqueResponse(affecting,msg.source(),monster,monster,product,product,script,1,check);
+								enqueResponse(affecting,msg.source(),monster,monster,product,product,script,1,check, t);
 							return;
 						}
 					}
@@ -12186,7 +12186,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String check=standardTriggerCheck(script,t,msg.target());
 						if(check!=null)
 						{
-							enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+							enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check, t);
 							return;
 						}
 					}
@@ -12216,7 +12216,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							||(t[1].equals("ALL"))
 							||(t[1].equals("ANY")))
 							{
-								enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null);
+								enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null, t);
 								return;
 							}
 						}
@@ -12252,7 +12252,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										break;
 									}
 								}
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID);
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID, t);
 								return;
 							}
 						}
@@ -12286,7 +12286,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										break;
 									}
 								}
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID);
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID, t);
 								return;
 							}
 						}
@@ -12354,7 +12354,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=CMath.s_int(t[1]);
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
 								return;
 							}
 						}
@@ -12378,7 +12378,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=CMath.s_int(t[1]);
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
 								return;
 							}
 						}
@@ -12396,7 +12396,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=CMath.s_int(t[1]);
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
-								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
+								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
 								return;
 							}
 						}
@@ -12459,12 +12459,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(Tool==null)
 								Tool=defaultItem;
 							if(msg.target() instanceof MOB)
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 							else
 							if(msg.target() instanceof Item)
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str, t);
 							else
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 							return;
 						}
 					}
@@ -12481,12 +12481,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						{
 							final Item Tool=defaultItem;
 							if(msg.target() instanceof MOB)
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name());
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name(), t);
 							else
 							if(msg.target() instanceof Item)
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,msg.tool().Name());
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,msg.tool().Name(), t);
 							else
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name());
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name(), t);
 							return;
 						}
 					}
@@ -12562,12 +12562,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								if(Tool==null)
 									Tool=defaultItem;
 								if(msg.target() instanceof MOB)
-									enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+									enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 								else
 								if(msg.target() instanceof Item)
-									enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
+									enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str, t);
 								else
-									enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+									enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 								return;
 							}
 						}
@@ -12613,12 +12613,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(Tool==null)
 								Tool=defaultItem;
 							if(msg.target() instanceof MOB)
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 							else
 							if(msg.target() instanceof Item)
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str, t);
 							else
-								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
+								enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str, t);
 							return;
 						}
 					}
@@ -12632,7 +12632,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 	}
 
-	protected int getTriggerCode(String trigger, String[] ttrigger)
+	protected int getTriggerCode(final String trigger, final String[] ttrigger)
 	{
 		Integer I=null;
 		if((ttrigger!=null)&&(ttrigger.length>0))
@@ -12651,7 +12651,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	}
 
 	@Override
-	public MOB getMakeMOB(Tickable ticking)
+	public MOB getMakeMOB(final Tickable ticking)
 	{
 		MOB mob=null;
 		if(ticking instanceof MOB)
@@ -12698,7 +12698,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return mob;
 	}
 
-	protected boolean canTrigger(int triggerCode)
+	protected boolean canTrigger(final int triggerCode)
 	{
 		final Long L=noTrigger.get(Integer.valueOf(triggerCode));
 		if(L==null)
@@ -12995,21 +12995,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
 	}
 
-	public void enqueResponse(PhysicalAgent host,
-							  MOB source,
-							  Environmental target,
-							  MOB monster,
-							  Item primaryItem,
-							  Item secondaryItem,
-							  DVector script,
-							  int ticks,
-							  String msg)
+	public void enqueResponse(final PhysicalAgent host,
+							  final MOB source,
+							  final Environmental target,
+							  final MOB monster,
+							  final Item primaryItem,
+							  final Item secondaryItem,
+							  final DVector script,
+							  final int ticks,
+							  final String msg, 
+							  final String[] triggerStr)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return;
 		if(que.size()>25)
 		{
-			this.logError(monster, "UNK", "SYS", "Attempt to que more than 25 events.");
+			this.logError(monster, "UNK", "SYS", "Attempt to enque more than 25 events (last was "+CMParms.toListString(triggerStr)+" ).");
 			que.clear();
 		}
 		if(noDelay)
@@ -13018,21 +13019,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			que.add(new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));
 	}
 
-	public void prequeResponse(PhysicalAgent host,
-							   MOB source,
-							   Environmental target,
-							   MOB monster,
-							   Item primaryItem,
-							   Item secondaryItem,
-							   DVector script,
-							   int ticks,
-							   String msg)
+	public void prequeResponse(final PhysicalAgent host,
+							   final MOB source,
+							   final Environmental target,
+							   final MOB monster,
+							   final Item primaryItem,
+							   final Item secondaryItem,
+							   final DVector script,
+							   final int ticks,
+							   final String msg)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return;
 		if(que.size()>25)
 		{
-			this.logError(monster, "UNK", "SYS", "Attempt to que more than 25 events.");
+			this.logError(monster, "UNK", "SYS", "Attempt to pre que more than 25 events.");
 			que.clear();
 		}
 		que.add(0,new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));

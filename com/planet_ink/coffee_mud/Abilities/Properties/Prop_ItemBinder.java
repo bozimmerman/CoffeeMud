@@ -131,7 +131,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(affected==null)
-			return false;
+			return true;
 
 		final MOB mob=msg.source();
 		if(mob.location()==null)
