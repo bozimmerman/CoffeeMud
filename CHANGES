@@ -67,6 +67,7 @@
   65. New skills: Hard to Port, Hard to Stern, Tie Down, Abandon Ship
   66. New spells: Greater Enchant Armor, Greater Enchant Weapon
   67. Fishing now has fishing.txt, with lots of expanded override fish-types.
+  68. Smelting has been altered to work more like textiling, expanding its range of possibilities.
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
    1. Hunger and Thirst system can now be tweeked.  See coffeemud.ini file
