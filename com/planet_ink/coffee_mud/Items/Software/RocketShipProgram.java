@@ -64,6 +64,7 @@ public class RocketShipProgram extends GenShipProgram
 	protected final	   List<SpaceObject>	sensorReport		= new LinkedList<SpaceObject>();
 
 	protected final PairSLinkedList<Long,List<SpaceObject>>	sensorReports	= new PairSLinkedList<Long,List<SpaceObject>>();
+	protected volatile Map<ShipEngine,Double[]> 			primeInjects	= new HashMap<ShipEngine,Double[]>();
 	
 	protected enum RocketStateMachine
 	{
@@ -1029,7 +1030,14 @@ public class RocketShipProgram extends GenShipProgram
 				&&(engineE.getMinThrust()<SpaceObject.ACCELLERATION_PASSOUT))
 				{
 					int tries=100;
-					double lastTryAmt=0.0001;
+					double lastTryAmt;
+					if(this.primeInjects.containsKey(engineE))
+					{
+						lastTryAmt = this.primeInjects.get(engineE)[0].doubleValue();
+						lastAccelleration=this.primeInjects.get(engineE)[1];
+					}
+					else
+						lastTryAmt= 0.0001;
 					final CMMsg deactMsg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
 					msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 					Double prevAccelleration = new Double(0.0);
@@ -1047,6 +1055,7 @@ public class RocketShipProgram extends GenShipProgram
 							&&((!isDocked)||(ship.getIsDocked()==null)))
 							{
 								this.lastInject=new Double(lastTryAmt);
+								this.primeInjects.put(engineE,new Double[] {lastInject,lastAccelleration});
 								return engineE;
 							}
 							else
@@ -1054,7 +1063,10 @@ public class RocketShipProgram extends GenShipProgram
 								lastTryAmt *= (Math.sqrt(ratio)/5.0);
 							else
 							if(prevAccelleration.doubleValue() == thisLastAccel.doubleValue())
+							{
+								this.primeInjects.put(engineE,new Double[] {lastInject,lastAccelleration});
 								break;
+							}
 							else
 							{
 								this.trySendMsgToItem(M, engineE, deactMsg);
