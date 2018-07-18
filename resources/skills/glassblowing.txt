@@ -17,7 +17,7 @@ perfume bottle	13	30	2	7	GenEmptyDrink	LIQUID|LID	2
 glass pan	14	30	4	15	GenContainer	EATABLES|RAWMATERIALS	15	
 gravy boat	15	15	2	3	GenEmptyDrink	LIQUID	5	
 glass pipe	16	25	3	10	GenPipe		2	
-glass lantern	17	40	9	57	GenLantern			
+glass lantern	17	40	9	57	GenLantern		800	
 mirror	18	60	5	54	GenMirror			
 glass wind chimes	19	80	10	155	GenItem			Prop_MOBEmoter;SOUNDER PORTAL_ENTER_ROOM clanks loudly in the breeze.
 vase	21	20	2	7	GenEmptyDrink	LIQUID|RAWMATERIALS	10	
@@ -42,7 +42,7 @@ glass four-sided die	45	50	1	23	GenDice		4
 retort flask	45	35	2	31	GenEmptyDrink	LIQUID|LID	8	
 small glass box	45	25	5	53	GenContainer	LID	50	
 glass eight-sided die	47	50	1	23	GenDice		8	
-glass lamp	47	30	25	340	GenLantern			
+glass lamp	47	30	25	340	GenLantern		3600	
 glass ten-sided die	49	60	1	30	GenDice		10	
 glass box	50	45	10	222	GenContainer	LID	150	
 glass twelve-sided die	51	70	1	36	GenDice		12	

@@ -60,7 +60,7 @@ deer wand core	23	20	(onground:consumed:1:a pair of deer horns:)	500	GenItem				
 eagle wand core	25	20	(onground:consumed:1:some eagle feathers:)	500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(wis+1)
 gorilla wand core	27	20	(onground:consumed:1:a strip of gorilla fur:)	500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(str+1)
 horse wand core	29	20	(onground:consumed:1:horse mane:)	500	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(move+100)
-dolphin wand core	31	20	(onground:consumed:1:a slippery dophin hide:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(mana+100)
+dolphin wand core	31	20	(onground:consumed:1:A SLIPPERY DOLPHIN HIDE:)	750	GenItem				*Prop_ItemSlotFiller;num=1 type=wandcore adds=prop_wearadjuster(mana+100)
 dire wolf wand core	33	30	(onground:consumed:1:a strip of dire wolf fur:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(armor-20)
 dwarven wand core	35	30	(onground:consumed:1:a dwarf beard:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(hit+50)
 wererat wand core	37	30	(onground:consumed:1:a strip of wererat hair:)	750	GenItem				prop_itemslotfiller;num=1 type=wandcore adds=prop_wearadjuster(dex+2)

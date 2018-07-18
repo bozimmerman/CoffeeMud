@@ -1,15 +1,15 @@
 % cup	1	20	1	1	GenEmptyDrink	LIQUID	5	
 % bowl	1	20	1	1	GenEmptyDrink	LIQUID|EATABLES	6	
 % key ring	2	10	1	1	GenContainer	KEYS	100	
-% lumberjack saw	3	30	5	25	GenItem			*Prop_ImproveGather;amt=2 skills=Chopping, MasterChopping
+% lumberjack saw	3	30	5	25	GenItem			*Prop_ImproveGather;amt=2 skills=Chopping,MasterChopping
 % plate	4	20	1	4	GenContainer	EATABLES	5	
 % mug	5	20	1	5	GenEmptyDrink	LIQUID	5	
 % pot	5	30	2	15	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	15	
 % urn	5	20	2	10	GenContainer	LID	2	
 % whisk	6	20	2	10	GenItem			
 % spoon	7	10	1	2	GenEmptyDrink	LIQUID	1	
-% lantern	7	40	7	75	GenLantern			
-% sheep shears	8	25	4	25	GenItem			*Prop_ImproveGather;amt=2 skills=Shearing, MasterShearing
+% lantern	7	40	7	75	GenLantern		800	
+% sheep shears	8	25	4	25	GenItem			*Prop_ImproveGather;amt=2 skills=Shearing,MasterShearing
 % ornament	9	10	1	2	GenItem			
 % hook-hand	10	30	5	50	GenLimb			
 % pitcher	11	30	2	20	GenEmptyDrink	LIQUID	15	
@@ -18,7 +18,7 @@
 % pan	14	30	2	20	GenContainer	EATABLES|RAWMATERIALS	15	
 % gravy boat	15	15	2	10	GenEmptyDrink	LIQUID	5	
 large % grill	16	120	80	3000	GenRideable		250	Burning
-% hooded lantern	17	45	9	150	GenLantern			
+% hooded lantern	17	45	9	150	GenLantern		1600	
 % spatula	18	10	2	7	GenItem			
 % trashcan	18	20	20	30	GenContainer		250	Prop_Trashcan
 % wind chimes	19	35	10	150	GenItem			*Prop_MOBEmoter;PORTAL_ENTER_ROOM clanks melodiously in the breeze.
@@ -34,17 +34,17 @@ small % plate	24	10	1	5	GenContainer	EATABLES	3
 % can	25	12	1	6	GenEmptyDrink	LIQUID	10	
 % sign	25	10	5	23	GenItem			
 % range	26	120	120	4500	GenContainer	LID	50	Burning
-% bullseye lantern	27	50	15	200	GenLantern			
+% bullseye lantern	27	50	15	200	GenLantern		2400	
 % shelf	27	30	15	240	GenContainer		100	
 % chain	27	20	20	200	GenRideable	LADDER	1	
 small % crib	27	40	20	430	GenContainer		50	
-expert % sheep shears	28	25	4	55	GenItem			*Prop_ImproveGather;amt=3 skills=Shearing, MasterShearing
+expert % sheep shears	28	25	4	55	GenItem			*Prop_ImproveGather;amt=3 skills=Shearing,MasterShearing
 % eye	30	30	1	18	GenLimb			
 % kitchen shears	30	20	2	23	GenItem			
 % anvil	30	80	40	1900	GenItem			
 % fountain	30	100	500	5000	GenFountain		999999	
 % kettle	31	40	5	120	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	75	
-expert % lumberjack saw	31	35	5	105	GenItem			*Prop_ImproveGather;amt=3 skills=Chopping, MasterChopping
+expert % lumberjack saw	31	35	5	105	GenItem			*Prop_ImproveGather;amt=3 skills=Chopping,MasterChopping
 latching % key ring	32	10	2	11	GenContainer	LID||KEYS	101	
 % bookshelf	32	35	15	310	GenContainer	READABLES|SCROLLS	200	
 % six-sided die	33	40	1	25	GenDice		6	
@@ -60,7 +60,7 @@ small % bed	36	25	25	405	GenBed	BED	1
 % grill	36	90	60	3500	GenRideable		100	Burning
 % eight-sided die	37	50	1	34	GenDice		8	
 % ladder	37	40	20	10	GenRideable	LADDER	0	
-% lamp	37	30	25	490	GenLantern			
+% lamp	37	30	25	490	GenLantern		3600	
 % crib	37	45	30	900	GenContainer		150	
 % table	38	50	50	1700	GenRideable	TABLE	2	
 % ten-sided die	39	60	1	41	GenDice		10	
@@ -105,11 +105,11 @@ queen-sized % bed	56	40	100	2800	GenBed	BED	3
 large % eight-sided die	57	60	2	88	GenDice		8	
 % altar	58	100	100	7400	GenRideable	TABLE	150	
 large % ten-sided die	59	70	2	103	GenDice		10	
-master % sheep shears	59	30	5	108	GenItem			*Prop_ImproveGather;amt=4 skills=Shearing, MasterShearing
+master % sheep shears	59	30	5	108	GenItem			*Prop_ImproveGather;amt=4 skills=Shearing,MasterShearing
 large % bin	60	40	100	2910	GenContainer		5000	
 % measuring cup	61	20	1	15	GenEmptyDrink	LIQUID	3	
 large % twelve-sided die	61	80	2	119	GenDice		12	
-master % lumberjack saw	61	40	6	178	GenItem			*Prop_ImproveGather;amt=4 skills=Chopping, MasterChopping
+master % lumberjack saw	61	40	6	178	GenItem			*Prop_ImproveGather;amt=4 skills=Chopping,MasterChopping
 large % storage drum	61	20	20	283	GenEmptyDrink	LIQUID	1000	
 % weapon rack	62	30	50	1100	GenContainer	SWORDS|OTHER WEAPONS	1000	Prop_NoPurge
 % claw-foot tub	63	120	400	25000	GenTub	CHAIR	1000	
@@ -143,7 +143,7 @@ ornate % sarcophagus	82	80	300	21000	GenBed	BED	500	Prop_NoPurge
 huge % chest	85	200	40	7200	GenContainer	LOCK	1000	
 great % stove	86	160	200	15000	GenContainer	LID	300	Burning
 large % crib	87	50	50	2250	GenContainer		500	
-legendary % sheep shears	89	35	6	190	GenItem			*Prop_ImproveGather;amt=5 skills=Shearing, MasterShearing
+legendary % sheep shears	89	35	6	190	GenItem			*Prop_ImproveGather;amt=5 skills=Shearing,MasterShearing
 holy % ark	90	250	50	11500	GenContainer	LID	500	
-legendary % lumberjack saw	91	50	7	325	GenItem			*Prop_ImproveGather;amt=5 skills=Chopping, MasterChopping
+legendary % lumberjack saw	91	50	7	325	GenItem			*Prop_ImproveGather;amt=5 skills=Chopping,MasterChopping
 % cauldron	91	60	10	550	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	100	
