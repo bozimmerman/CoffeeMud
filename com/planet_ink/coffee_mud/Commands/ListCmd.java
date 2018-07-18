@@ -2404,7 +2404,10 @@ public class ListCmd extends StdCommand
 				}
 			}
 			if(!finalCol.equals(lastWord))
-				return new StringBuilder("Invalid column: '"+lastWord+"'.  Valid cols are: "+CMParms.toListString(validCols));
+			{
+				if(!CMath.isInteger(lastWord))
+					return new StringBuilder("Invalid column: '"+lastWord+"'.  Valid cols are: "+CMParms.toListString(validCols));
+			}
 			else
 			{
 				whichGroupStr=whichGroupStr.substring(0,x).trim();
@@ -2420,20 +2423,25 @@ public class ListCmd extends StdCommand
 		if("ACTIVE".startsWith(whichGroupStr.toUpperCase())&&(whichGroupStr.length()>0))
 			activeOnly=true;
 		else
-		if("PROBLEMS".startsWith(whichGroupStr.toUpperCase())&&(whichGroupStr.length()>0))
+		if(("PROBLEMS".startsWith(whichGroupStr.toUpperCase())
+			||whichGroupStr.toUpperCase().startsWith("PROBLEMS " ))
+		&&(whichGroupStr.length()>0))
 		{
-			String probType = "tickerProblems";
+			final List<String> p=CMParms.parse(whichGroupStr);
+			final String parm=(p.size()>1)?p.get(1):"";
+			final int lastNum=CMath.isInteger(parm) ? CMath.s_int(parm) : -1;
+			String probType = "tickerProblems" + (lastNum>0?("-"+lastNum):"");
 			if(x<0)
 			{
 				finalCol="tickermilliavg";
 				finalColName="Msavg";
 			}
 			if(finalCol.equals("tickermillitotal"))
-				probType="tickerProb2";
+				probType="tickerProb2"+ (lastNum>0?("-"+lastNum):"");
 			else
 			{
 				msg.append("\n\r^HProblems by total time used:^N\n\r");
-				msg.append(listTicks(viewerS,"problems tickermillitotal"));
+				msg.append(listTicks(viewerS,"problems"+ (lastNum>0?(" "+lastNum):"")+" tickermillitotal"));
 				msg.append("\n\r\n\r^HProblems by average time used:^N\n\r\n\r");
 			}
 			whichTicks=new HashSet<Pair<Integer,Integer>>();
