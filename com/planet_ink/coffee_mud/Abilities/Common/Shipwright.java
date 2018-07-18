@@ -773,7 +773,11 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			final MaterialLibrary.DeadResourceRecord deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
+			final MaterialLibrary.DeadResourceRecord deadMats;
+			if(componentsFoundList.size() > 0)
+				deadMats = new MaterialLibrary.DeadResourceRecord();
+			else
+				deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
 			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 			final String shipIndexStr = foundRecipe.get(RCP_SHIPINDEX);

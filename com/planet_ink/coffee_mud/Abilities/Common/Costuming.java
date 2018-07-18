@@ -462,7 +462,11 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			final MaterialLibrary.DeadResourceRecord deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,null);
+			final MaterialLibrary.DeadResourceRecord deadMats;
+			if(componentsFoundList.size() > 0)
+				deadMats = new MaterialLibrary.DeadResourceRecord();
+			else
+				deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,null);
 			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
