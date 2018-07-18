@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -37,7 +38,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
+public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override
 	public String ID()
@@ -64,7 +65,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 	@Override
 	public String supportedResourceString()
 	{
-		return "CLOTH";
+		return "PAPER";
 	}
 
 	@Override
@@ -120,6 +121,12 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 	}
 
 	@Override
+	public boolean supportsDeconstruction()
+	{
+		return true;
+	}
+
+	@Override
 	public double getItemWeightMultiplier(boolean bundling)
 	{
 		return bundling ? 1.0 : 0.5;
@@ -141,10 +148,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 							messedUpCrafting(mob);
 						else
 						if(activity == CraftingActivity.LEARNING)
-						{
 							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
-							buildingI.destroy();
-						}
 						else
 						if(activity == CraftingActivity.REFITTING)
 							commonEmote(mob,L("<S-NAME> mess(es) up refitting @x1.",buildingI.name()));
@@ -160,10 +164,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 						}
 						else
 						if(activity==CraftingActivity.LEARNING)
-						{
 							deconstructRecipeInto(mob, buildingI, recipeHolder );
-							buildingI.destroy();
-						}
 						else
 						if(activity == CraftingActivity.REFITTING)
 						{
@@ -184,13 +185,89 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		super.unInvoke();
 	}
 
+	protected boolean deconstructRecipeInto(final MOB mob, final Item I, final Recipe R)
+	{
+
+		if((I==null)||(R==null))
+			return false;
+		if(!(this instanceof ItemCraftor))
+			return false;
+		final List<String> existingRecipes=new XVector<String>(R.getRecipeCodeLines());
+		if(R.getTotalRecipePages() <=existingRecipes.size())
+			return false;
+		final CMMsg msg=CMClass.getMsg(mob,I,this,CMMsg.TYP_RECIPELEARNED|CMMsg.MASK_ALWAYS,null);
+		setMsgXPValue(mob,msg);
+		if((mob!=null)
+		&&(mob.location()!=null)
+		&&(mob.location().okMessage(mob, msg)))
+		{
+			mob.location().send(mob, msg);
+			StringBuilder str=new StringBuilder("");
+			str.append(I.Name()).append("\t");
+			str.append(I.basePhyStats().level()).append("\t");
+			str.append(5+(I.basePhyStats().level()/5)).append("\t");
+			int wood=0;
+			for(long code : Wearable.CODES.ALL())
+			{
+				if(I.fitsOn(code))
+				{
+					if (code == Wearable.WORN_ABOUT_BODY)
+						wood += 4;
+					else
+					if (code == Wearable.WORN_TORSO)
+						wood += 3;
+					else
+					if((code == Wearable.WORN_ARMS)
+					|| (code == Wearable.WORN_LEGS)
+					|| (code == Wearable.WORN_BACK))
+						wood += 2;
+					else
+						wood += 1;
+				}
+			}
+			str.append(wood).append("\t");
+			str.append(0).append("\t");
+			str.append(I.ID()).append("\t");
+			if(I instanceof Armor)
+			{
+				str.append(((Armor)I).getClothingLayer()+10).append(":");
+				String connector = ((Armor)I).rawLogicalAnd() ? "&&" : "||";
+				boolean didAny=false;
+				for(long code : Wearable.CODES.ALL())
+				{
+					if(I.fitsOn(code))
+					{
+						str.append(Wearable.CODES.NAMEUP(code)).append(connector);
+						didAny=true;
+					}
+				}
+				if(didAny)
+					str.setLength(str.length()-2);
+			}
+			str.append("\t");
+			str.append("0\t");
+			str.append("0\t");
+			str.append("0\t");
+			existingRecipes.add(str.toString());
+			R.setRecipeCodeLines(existingRecipes.toArray(new String[0]));
+			R.setCommonSkillID( ID() );
+			return true;
+		}
+		return false;
+	}
+
+	
 	protected boolean masterCraftCheck(final Item I)
 	{
 		if(I.basePhyStats().level()>31)
 			return false;
-		if(I.name().toUpperCase().startsWith("DESIGNER")||(I.name().toUpperCase().indexOf(" DESIGNER ")>0))
-			return false;
 		return true;
+	}
+
+	@Override
+	protected boolean mayILearnToCraft(final MOB mob, final Item I)
+	{
+		return (I instanceof Armor) || ((I!=null) && isANativeItem(I.Name()));
 	}
 
 	@Override
@@ -200,33 +277,25 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			return false;
 		if(!super.mayBeCrafted(I))
 			return false;
-		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
+		if((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
 			return false;
 		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
 			return false;
-		if(isANativeItem(I.Name()) && (I instanceof Armor))
-			return true;
-		if(I.baseGoldValue()<I.basePhyStats().level())
+		if(I.basePhyStats().weight()>50)
 			return false;
 		if(I instanceof Armor)
 		{
-			if(!masterCraftCheck(I))
+			if(I.basePhyStats().armor()>0)
 				return false;
-			if(I.baseGoldValue() < I.phyStats().level())
+			if(CMath.bset(((Armor)I).getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH))
 				return false;
-			return true;
-		}
-		if(I instanceof Weapon)
-		{
-			if(I.basePhyStats().damage()!=0)
-				return false;
-			if(I.basePhyStats().attackAdjustment()!=0)
+			if(((Armor)I).getClothingLayer()<10)
 				return false;
 			if(!masterCraftCheck(I))
 				return false;
 			return true;
 		}
-		return (isANativeItem(I.Name()));
+		return isANativeItem(I.Name());
 	}
 
 	@Override
@@ -271,8 +340,6 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if(super.checkInfo(mob, commands))
 			return true;
 		
-		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
-		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
@@ -313,7 +380,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			int toggler=1;
 			final int toggleTop=2;
 			for(int r=0;r<toggleTop;r++)
-				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Cloth"),cols[2]));
+				buf.append((r>0?" ":"")+CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Paper Bolts"),cols[2]));
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -341,7 +408,6 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(toggler!=1)
 				buf.append("\n\r");
 			commonTell(mob,buf.toString());
-			enhanceList(mob);
 			return true;
 		}
 		else
@@ -379,9 +445,9 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI=getTargetItemFavorMOB(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
 			if(buildingI==null)
 				return false;
-			if((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
+			if((buildingI.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER)
 			{
-				commonTell(mob,L("That's not made of cloth.  It can't be refitted."));
+				commonTell(mob,L("That's not made of paper.  It can't be refitted."));
 				return false;
 			}
 			if(!(buildingI instanceof Armor))
@@ -425,14 +491,13 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 					if((autoGenerate>0)||(level<=xlevel(mob)))
 					{
 						foundRecipe=V;
-						recipeLevel=level;
 						break;
 					}
 				}
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,L("You don't know how to make a '@x1'.  Try \"@x2 list\" for a list.",recipeName,triggerStrings()[0].toLowerCase()));
+				commonTell(mob,L("You don't know how to make a '@x1' costume. Have you LEARNed any recipes yet? Try \"@x2 list\" for a list.",recipeName,triggerStrings()[0].toLowerCase()));
 				return false;
 			}
 
@@ -448,17 +513,16 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(amount>woodRequired)
 				woodRequired=amount;
 			final String misctype=foundRecipe.get(RCP_MISCTYPE);
-			final int[] pm= { RawMaterial.MATERIAL_CLOTH };
+			final int[] pm= null;
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
-													  woodRequired,"cloth",pm,
+													  woodRequired,"paper(paper)",pm,
 													  0,null,null,
 													  bundling,
 													  autoGenerate,
-													  enhancedTypes);
+													  null);
 			if(data==null)
 				return false;
-			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList);
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -494,7 +558,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
 			final int hardness=RawMaterial.CODES.HARDNESS(buildingI.material())-1;
-			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
+			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE))+deadMats.lostValue+deadComps.lostValue);
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			setBrand(mob, buildingI);
 			final int capacity=CMath.s_int(foundRecipe.get(RCP_CAPACITY));
@@ -556,7 +620,6 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			mob.location().send(mob,msg);
 			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
-			enhanceItem(mob,buildingI,recipeLevel,enhancedTypes);
 		}
 		else
 		if(bundling)

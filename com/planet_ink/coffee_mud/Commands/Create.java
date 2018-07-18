@@ -1773,7 +1773,10 @@ public class Create extends StdCommand
 			Environmental E=null;
 			E=CMClass.getItem(allWord);
 			if((E instanceof Item)
-			||(CMLib.english().numPossibleGold(null,allWord)>0)
+			||((CMLib.english().numPossibleGold(null,allWord)>0)
+				&&((CMParms.parse(allWord).size()!=2)
+					||(!CMath.isInteger(CMParms.parse(allWord).get(0)))
+					||(RawMaterial.CODES.FIND_IgnoreCase(CMParms.parse(allWord).get(1))<0)))
 			||(CMLib.catalog().getCatalogItem(allWord)!=null))
 			{
 				commands.add(1,"ITEM");
@@ -1848,7 +1851,12 @@ public class Create extends StdCommand
 					if((theRest.length()>0)&&(matCode>=0))
 					{
 						for(int i=0;i<num;i++)
-							mob.location().addItem(CMLib.materials().makeItemResource(matCode),ItemPossessor.Expire.Player_Drop);
+						{
+							final Item I=CMLib.materials().makeItemResource(matCode);
+							mob.location().addItem(I,ItemPossessor.Expire.Player_Drop);
+							if((i%10 == 9)||(i==num-1))
+								((RawMaterial)I).rebundle();
+						}
 						mob.location().showHappens(CMMsg.MSG_OK_VISUAL, L("Suddenly @x1 @x2 fall from the sky.",""+num,RawMaterial.CODES.NAME(matCode)));
 					}
 					else 

@@ -217,6 +217,7 @@ public class Fishing extends GatheringSkill
 		return V;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected List<List<String>> loadRecipes(String filename)
 	{
 		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);

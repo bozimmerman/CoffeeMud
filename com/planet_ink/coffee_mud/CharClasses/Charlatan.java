@@ -128,6 +128,7 @@ public class Charlatan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Befriend",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Song_Nothing",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Costuming",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Haggle",true);
 
@@ -153,6 +154,7 @@ public class Charlatan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_Distract",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_WandUse",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_DecipherScript",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"MasterCostuming",false,new XVector<String>("Costuming(50)"));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_Warrants",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_BreakALeg",false);

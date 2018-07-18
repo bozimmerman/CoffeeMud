@@ -575,7 +575,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
 			V=loadList(str);
-			if((V.size()==0)&&(!ID().equals("GenCraftSkill")))
+			if((V.size()==0)&&(!ID().equals("GenCraftSkill"))&&(!ID().endsWith("Costuming")))
 				Log.errOut(ID(),"Recipes not found!");
 			Resources.submitResource("PARSED_RECIPE: "+filename,V);
 		}
@@ -1521,7 +1521,11 @@ public class CraftingSkill extends GatheringSkill
 			}
 			final StringBuffer buf=new StringBuffer("");
 			for(int r=0;r<componentsRequirements.size();r++)
-				buf.append(CMLib.ableComponents().getAbilityComponentDesc(mob,componentsRequirements.get(r),r>0));
+			{
+				String str=CMLib.ableComponents().getAbilityComponentDesc(mob,componentsRequirements.get(r),r>0);
+				str=CMStrings.replaceAll(str,L(" on the ground"), ""); // this is implied
+				buf.append(str);
+			}
 			mob.tell(L("You lack the necessary materials to @x1, the requirements are: @x2.",doingWhat.toLowerCase(),buf.toString()));
 			return null;
 		}
@@ -1557,9 +1561,17 @@ public class CraftingSkill extends GatheringSkill
 			else
 				componentsRequirements=CMLib.ableComponents().getAbilityComponentMap().get(ID);
 			if(componentsRequirements!=null)
-				return CMLib.ableComponents().getAbilityComponentDesc(mob, componentsRequirements);
+				return CMStrings.replaceAll(
+						CMLib.ableComponents().getAbilityComponentDesc(mob, componentsRequirements),
+						L(" on the ground"),
+						"");
 		}
 		return "?";
+	}
+	
+	protected boolean mayILearnToCraft(final MOB mob, final Item I)
+	{
+		return mayICraft(mob,I);
 	}
 
 	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
@@ -1585,7 +1597,7 @@ public class CraftingSkill extends GatheringSkill
 			commonTell(mob,L("You need to pick that up first."));
 			return false;
 		}
-		if(!mayICraft( mob, buildingI ))
+		if(!mayILearnToCraft( mob, buildingI ))
 		{
 			commonTell(mob,L("You can't learn anything about @x1 with @x2.",buildingI.name(mob),name()));
 			return false;
