@@ -48,17 +48,16 @@ public class Group extends StdCommand
 
 	public static StringBuffer showWhoLong(MOB seer, MOB who)
 	{
-
 		final StringBuffer msg=new StringBuffer("^N");
 		msg.append("[^w");
 		final int[] cols={
-				CMLib.lister().fixColWidth(7,seer.session()),
-				CMLib.lister().fixColWidth(7,seer.session()),
-				CMLib.lister().fixColWidth(5,seer.session()),
-				CMLib.lister().fixColWidth(13,seer.session()),
-				CMLib.lister().fixColWidth(3,seer.session()),
-				CMLib.lister().fixColWidth(12,seer.session())
-			};
+			CMLib.lister().fixColWidth(7,seer.session()),
+			CMLib.lister().fixColWidth(7,seer.session()),
+			CMLib.lister().fixColWidth(5,seer.session()),
+			CMLib.lister().fixColWidth(13,seer.session()),
+			CMLib.lister().fixColWidth(3,seer.session()),
+			CMLib.lister().fixColWidth(12,seer.session())
+		};
 		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.RACES))
 		{
 			if(who.charStats().getCurrentClass().raceless())
