@@ -69,6 +69,12 @@ public class Fishing extends GatheringSkill
 		return "FLESH";
 	}
 
+	// common recipe definition indexes
+	protected static final int	RCP_RESOURCE	= 0;
+	protected static final int	RCP_FREQ		= 1;
+	protected static final int	RCP_FINALNAME	= 2;
+	protected static final int	RCP_VALUE		= 3;
+	
 	protected Item		found			= null;
 	protected String	foundShortName	= "";
 
@@ -119,7 +125,10 @@ public class Fishing extends GatheringSkill
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				if((found!=null)&&(!aborted)&&(!helping)&&(mob.location()!=null))
+				if((found!=null)
+				&&(!aborted)
+				&&(!helping)
+				&&(mob.location()!=null))
 				{
 					final int amount=CMLib.dice().roll(1,3,0)*(baseYield()+abilityCode());
 					final CMMsg msg=CMClass.getMsg(mob,found,this,getCompletedActivityMessageType(),null);
@@ -147,6 +156,82 @@ public class Fishing extends GatheringSkill
 		super.unInvoke();
 	}
 
+	@SuppressWarnings("rawtypes")
+	protected List<List<String>> loadList(StringBuffer str)
+	{
+		final List<List<String>> V=new Vector<List<String>>();
+		if(str==null)
+			return V;
+		List<String> V2=new Vector<String>();
+		boolean oneComma=false;
+		int start=0;
+		int longestList=0;
+		boolean skipLine=(str.length()>0)&&(str.charAt(0)=='#');
+		for(int i=0;i<str.length();i++)
+		{
+			if(str.charAt(i)=='\t')
+			{
+				if(!skipLine)
+				{
+					V2.add(str.substring(start,i));
+					start=i+1;
+					oneComma=true;
+				}
+			}
+			else
+			if((str.charAt(i)=='\n')||(str.charAt(i)=='\r'))
+			{
+				if(skipLine)
+					skipLine=false;
+				else
+				if(oneComma)
+				{
+					V2.add(str.substring(start,i));
+					if(V2.size()>longestList)
+						longestList=V2.size();
+					if(V2 instanceof Vector)
+						((Vector)V2).trimToSize();
+					V.add(V2);
+					V2=new Vector<String>();
+				}
+				start=i+1;
+				oneComma=false;
+				if((start<str.length())&&(str.charAt(start)=='#'))
+					skipLine=true;
+			}
+		}
+		if((oneComma)&&(str.substring(start).trim().length()>0)&&(!skipLine))
+			V2.add(str.substring(start));
+		if(V2.size()>1)
+		{
+			if(V2.size()>longestList)
+				longestList=V2.size();
+			V.add(V2);
+		}
+		for(int v=0;v<V.size();v++)
+		{
+			V2=V.get(v);
+			while(V2.size()<longestList)
+				V2.add("");
+		}
+		return V;
+	}
+
+	protected List<List<String>> loadRecipes(String filename)
+	{
+		List<List<String>> V=(List<List<String>>)Resources.getResource("PARSED_RECIPE: "+filename);
+		if(V==null)
+		{
+			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
+			V=loadList(str);
+			if((V.size()==0)&&(!ID().equals("GenCraftSkill")))
+				Log.errOut(ID(),"Recipes not found!");
+			Resources.submitResource("PARSED_RECIPE: "+filename,V);
+		}
+		return V;
+	}
+	
+	
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
@@ -203,7 +288,53 @@ public class Fishing extends GatheringSkill
 			found=(Item)CMLib.materials().makeResource(foundFish,Integer.toString(fishRoom.domainType()),false,null);
 			foundShortName="nothing";
 			if(found!=null)
+			{
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
+				final List<List<String>> recipes = loadRecipes("fishing.txt");
+				if((recipes != null)
+				&&(recipes.size()>0))
+				{
+					int totalWeights = 0;
+					List<List<String>> subset=new ArrayList<List<String>>();
+					for(final List<String> subl : recipes)
+					{
+						if(subl.size()<4)
+							continue;
+						if(subl.get(RCP_RESOURCE).toLowerCase().equals(foundShortName))
+						{
+							subset.add(subl);
+							totalWeights += CMath.s_int(subl.get(RCP_FREQ));
+						}
+					}
+					List<String> winl = null;
+					if(totalWeights > 0)
+					{
+						int winner=CMLib.dice().roll(1, totalWeights, -1);
+						int current = 0;
+						for(final List<String> subl : subset)
+						{
+							current += CMath.s_int(subl.get(RCP_FREQ));
+							if(winner < current)
+							{
+								winl = subl;
+								break;
+							}
+						}
+						if(winl == null)
+							winl=subset.get(subset.size()-1);
+					}
+					if(winl != null)
+					{
+						foundShortName=winl.get(RCP_FINALNAME).toLowerCase();
+						found.setName(L("a pound of @x1",foundShortName));
+						found.setDisplayText(L("a pound of @x1 has been left here.",foundShortName));
+						if(found instanceof RawMaterial)
+							((RawMaterial)found).setSubType(foundShortName.toUpperCase().trim());
+						if(CMath.isInteger(winl.get(RCP_VALUE)))
+							found.setBaseValue(CMath.s_int(winl.get(RCP_VALUE)));
+					}
+				}
+			}
 		}
 		final int duration=getDuration(mob,1);
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) fishing."));

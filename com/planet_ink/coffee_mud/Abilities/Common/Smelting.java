@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Abilities.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -11,7 +12,9 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.ListingLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MaterialLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -34,7 +37,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Smelting extends CraftingSkill implements CraftorAbility
+public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	@Override
 	public String ID()
@@ -50,7 +53,7 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 		return localizedName;
 	}
 
-	private static final String[]	triggerStrings	= I(new String[] { "SMELT", "SMELTING" });
+	private static final String[]	triggerStrings	= I(new String[] { "SMELTING" });
 
 	@Override
 	public String[] triggerStrings()
@@ -67,33 +70,28 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 	@Override
 	public String parametersFormat()
 	{
-		return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tFUTURE_USE\tFUTURE_USE\tITEM_CLASS_ID\tRESOURCE_NAME\tRESOURCE_NAME";
+		return
+		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
+		+"ITEM_CLASS_ID\tRESOURCE_NAME\tRES_SUBTYPE\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
-	//private static final int RCP_WOOD_ALWAYSONEONE=3;
-	//private static final int RCP_VALUE_DONTMATTER=4;
-	//private static final int RCP_CLASSTYPE=5;
-	protected static final int RCP_METALONE=6;
-	protected static final int RCP_METALTWO=7;
-
-	protected int amountMaking=0;
+	protected static final int	RCP_WOOD		= 3;
+	protected static final int	RCP_VALUE		= 4;
+	protected static final int	RCP_CLASSTYPE	= 5;
+	protected static final int	RCP_FINALRSC	= 6;
+	protected static final int	RCP_SUBTYPE		= 7;
+	protected static final int	RCP_SPELL		= 8;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
-			final MOB mob=(MOB)affected;
-			if((buildingI==null)
-			||(amountMaking<1)
-			||(getRequiredFire(mob,0)==null))
-			{
-				messedUp=true;
+			if(buildingI==null)
 				unInvoke();
-			}
 		}
 		return super.tick(ticking,tickID);
 	}
@@ -111,12 +109,6 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 	}
 
 	@Override
-	public String getDecodedComponentsDescription(MOB mob, List<String> recipe)
-	{
-		return "1";
-	}
-
-	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -126,52 +118,136 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 				final MOB mob=(MOB)affected;
 				if((buildingI!=null)&&(!aborted))
 				{
-					amountMaking=amountMaking*(baseYield()+abilityCode());
 					if(messedUp)
 					{
-						final Item copy=(Item)buildingI.copyOf();
-						if(copy instanceof RawMaterial)
+						if(activity == CraftingActivity.LEARNING)
 						{
-							copy.basePhyStats().setWeight(amountMaking);
-							copy.phyStats().setWeight(amountMaking);
-							CMLib.materials().adjustResourceName(copy);
+							commonEmote(mob,L("<S-NAME> fail(s) to learn how to smelt @x1.",buildingI.name()));
+							buildingI.destroy();
 						}
-						commonEmote(mob,L("<S-NAME> ruin(s) @x1!",copy.name()));
-						copy.destroy();
+						else
+							commonEmote(mob,L("<S-NAME> mess(es) up smelting @x1.",buildingI.name()));
 					}
 					else
-					for(int i=0;i<amountMaking;i++)
 					{
-						final Item copy=(Item)buildingI.copyOf();
-						copy.setMiscText(buildingI.text());
-						copy.recoverPhyStats();
-						if(!dropAWinner(mob,copy))
-							break;
+						if(activity==CraftingActivity.LEARNING)
+						{
+							deconstructRecipeInto(mob, buildingI, recipeHolder );
+							buildingI.destroy();
+						}
+						else
+						{
+							dropAWinner(mob,buildingI);
+							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this);
+						}
 					}
 				}
 				buildingI=null;
+				activity = CraftingActivity.CRAFTING;
 			}
 		}
 		super.unInvoke();
 	}
 
 	@Override
+	public double getItemWeightMultiplier(boolean bundling)
+	{
+		return bundling ? 1.0 : 0.5;
+	}
+
+	protected boolean masterCraftCheck(final Item I)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean mayICraft(final Item I)
+	{
+		if(I==null)
+			return false;
+		if(!super.mayBeCrafted(I))
+			return false;
+		if(((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
+		&&((I.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL))
+			return false;
+		if(!(I instanceof RawMaterial))
+			return false;
+		if(((RawMaterial)I).getSubType().length()==0)
+			return false;
+		if(CMLib.flags().isDeadlyOrMaliciousEffect(I))
+			return false;
+		if(!masterCraftCheck(I))
+			return (isANativeItem(I.Name()));
+		if(I.baseGoldValue()>I.basePhyStats().level())
+			return (isANativeItem(I.Name()));
+		return (isANativeItem(I.Name()));
+	}
+
+	@Override
+	public boolean supportsMending(Physical item)
+	{
+		return canMend(null, item, true);
+	}
+
+	@Override
+	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	{
+		if(!super.canMend(mob,E,quiet))
+			return false;
+		if((!(E instanceof Item))||(!mayICraft((Item)E)))
+		{
+			if(!quiet)
+				commonTell(mob,L("That's not a @x1 item.",CMLib.english().startWithAorAn(Name().toLowerCase())));
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
+	{
+		return super.getComponentDescription( mob, recipe, RCP_WOOD );
+	}
+
+	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	{
+		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
+	}
+	
+	@Override
+	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
+								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
+
+		if(super.checkInfo(mob, commands))
+			return true;
+		
+		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
+		int recipeLevel = 1;
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{
-			commonTell(mob,L("Make what? Enter \"smelt list\" for a list, or \"smelt stop\" to cancel."));
+			commonTell(mob,L("Make what? Enter \"smelt list\" for a list, \"smelt info <item>\","
+						+ " \"smelt learn <item>\", or \"smelt stop\" to cancel."));
+			return false;
+		}
+		bundling=false;
+		if((!auto)
+		&&(commands.size()>0)
+		&&((commands.get(0)).equalsIgnoreCase("bundle")))
+		{
+			bundling=true;
+			if(super.invoke(mob,commands,givenTarget,auto,asLevel))
+				return super.bundle(mob,commands);
 			return false;
 		}
 		final List<List<String>> recipes=addRecipes(mob,loadRecipes());
 		final String str=commands.get(0);
 		String startStr=null;
 		int duration=4;
-		@SuppressWarnings("unused")
-		int recipeLevel=1;
 		if(str.equalsIgnoreCase("list"))
 		{
 			String mask=CMParms.combine(commands,1);
@@ -181,12 +257,14 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 				allFlag=true;
 				mask="";
 			}
+			final StringBuffer buf=new StringBuffer("");
 			final int[] cols={
-				CMLib.lister().fixColWidth(20,mob.session()),
+				CMLib.lister().fixColWidth(25,mob.session()),
 				CMLib.lister().fixColWidth(3,mob.session()),
-				CMLib.lister().fixColWidth(16,mob.session())
+				CMLib.lister().fixColWidth(45,mob.session())
 			};
-			final StringBuffer buf=new StringBuffer(L("@x1 @x2 @x3 Metal #2\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1]),CMStrings.padRight(L("Metal #1"),cols[2])));
+			buf.append(CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Resources"),cols[2]));
+			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);
@@ -194,94 +272,174 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 				{
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
-					final String metal1=V.get(RCP_METALONE).toLowerCase();
-					final String metal2=V.get(RCP_METALTWO).toLowerCase();
+					String wood=getComponentDescription(mob,V,RCP_WOOD);
+					if(wood.length()<5)
+						wood=L("@x1 pounds of metal",wood);
+					if(wood.length()>cols[2])
+					{
+						int x=wood.lastIndexOf(' ',cols[2]);
+						wood=wood.substring(0,x)+"\n\r"+CMStrings.repeat(' ',cols[0]+cols[1]+2)+wood.substring(x+1);
+					}
 					if(((level<=xlevel(mob))||allFlag)
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
-						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRight(metal1,cols[2])+" "+metal2+"\n\r");
+						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+"\n\r");
 				}
 			}
 			commonTell(mob,buf.toString());
+			enhanceList(mob);
 			return true;
 		}
-		final Item fire=getRequiredFire(mob,0);
-		if(fire==null)
-			return false;
-		activity = CraftingActivity.CRAFTING;
-		buildingI=null;
-		messedUp=false;
-		String recipeName=CMParms.combine(commands,0);
-		int maxAmount=1;
-		if((commands.size()>1)&&(CMath.isNumber(commands.get(commands.size()-1))))
+		else
+		if(((commands.get(0))).equalsIgnoreCase("learn"))
 		{
-			maxAmount=CMath.s_int(commands.get(commands.size()-1));
-			commands.remove(commands.size()-1);
-			recipeName=CMParms.combine(commands,0);
+			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 		}
-		List<String> foundRecipe=null;
-		final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
-		for(int r=0;r<matches.size();r++)
+		else
 		{
-			final List<String> V=matches.get(r);
-			if(V.size()>0)
+			buildingI=null;
+			activity = CraftingActivity.CRAFTING;
+			messedUp=false;
+			aborted=false;
+			int amount=-1;
+			if((commands.size()>1)&&(CMath.isNumber(commands.get(commands.size()-1))))
 			{
-				final int level=CMath.s_int(V.get(RCP_LEVEL));
-				if(level<=xlevel(mob))
+				amount=CMath.s_int(commands.get(commands.size()-1));
+				commands.remove(commands.size()-1);
+			}
+			final String recipeName=CMParms.combine(commands,0);
+			List<String> foundRecipe=null;
+			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+			for(int r=0;r<matches.size();r++)
+			{
+				final List<String> V=matches.get(r);
+				if(V.size()>0)
 				{
-					foundRecipe=V;
-					recipeLevel=level;
-					break;
+					final int level=CMath.s_int(V.get(RCP_LEVEL));
+					if((autoGenerate>0)||(level<=xlevel(mob)))
+					{
+						foundRecipe=V;
+						recipeLevel=level;
+						break;
+					}
 				}
 			}
+			if(foundRecipe==null)
+			{
+				commonTell(mob,L("You don't know how to smelt '@x1'.  Try \"@x2 list\" for a list.",recipeName,triggerStrings()[0].toLowerCase()));
+				return false;
+			}
+			final String realRecipeName=replacePercent(foundRecipe.get(RCP_FINALNAME),"");
+			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
+			final int[] compData = new int[CF_TOTAL];
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "smelt "+CMLib.english().startWithAorAn(realRecipeName),autoGenerate,compData);
+			if(componentsFoundList==null)
+				return false;
+			int woodRequired=CMath.s_int(woodRequiredStr);
+			woodRequired=adjustWoodRequired(woodRequired,mob);
+
+			if(amount>woodRequired)
+				woodRequired=amount;
+			final int[] pm={RawMaterial.MATERIAL_METAL|RawMaterial.MATERIAL_MITHRIL};
+			final int[][] data=fetchFoundResourceData(mob,
+													woodRequired,"metal",pm,
+													0,null,null,
+													bundling,
+													autoGenerate,
+													enhancedTypes);
+			if(data==null)
+				return false;
+			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList);
+			woodRequired=data[0][FOUND_AMT];
+			if(!bundling)
+			{
+				fireRequired=true;
+				final Item fire=getRequiredFire(mob,autoGenerate);
+				if(fire==null)
+					return false;
+			}
+			else
+				fireRequired=false;
+
+			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+				return false;
+			final MaterialLibrary.DeadResourceRecord deadMats;
+			if(componentsFoundList.size() > 0)
+				deadMats = new MaterialLibrary.DeadResourceRecord();
+			else
+				deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
+			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
+			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
+			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
+			if(buildingI==null)
+			{
+				commonTell(mob,L("There's no such thing as @x1!!!",foundRecipe.get(RCP_CLASSTYPE)));
+				return false;
+			}
+			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
+			final String materialName=foundRecipe.get(RCP_FINALRSC);
+			final String subType=foundRecipe.get(RCP_SUBTYPE);
+			int resourceType = super.getBuildingMaterial(woodRequired, data, compData);
+			if(materialName.length()>0)
+			{
+				int resource=RawMaterial.CODES.FIND_CaseSensitive(materialName);
+				if(resource < 0)
+					resource=RawMaterial.CODES.FIND_IgnoreCase(materialName);
+				if(resource < 0)
+					resource=RawMaterial.CODES.FIND_StartsWith(materialName);
+				if(resource > 0)
+					resourceType=resource;
+			}
+			buildingI.setMaterial(resourceType);
+			String itemName=determineFinalName(foundRecipe.get(RCP_FINALNAME),buildingI.material(),deadMats,deadComps);
+			if(bundling)
+				itemName="a "+woodRequired+"# "+itemName;
+			else
+			if(itemName.endsWith("s"))
+				itemName="some "+itemName;
+			else
+				itemName="a pound of "+itemName;
+			buildingI.setName(itemName);
+			startStr=L("<S-NAME> start(s) smelting @x1.",buildingI.name());
+			displayText=L("You are smelting @x1",buildingI.name());
+			verb=L("smelting @x1",buildingI.name());
+			playSound="sizzling.wav";
+			buildingI.setDisplayText(L("@x1 lies here",itemName));
+			buildingI.setDescription(itemName+". ");
+			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
+			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
+			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
+			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
+			if(bundling)
+				buildingI.setBaseValue(lostValue);
+			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
+			if(buildingI instanceof RawMaterial)
+			{
+				((RawMaterial)buildingI).setSubType(subType);
+				buildingI.setSecretIdentity(itemName);
+			}
+			else
+				setBrand(mob, buildingI);
+			buildingI.recoverPhyStats();
+			buildingI.text();
+			buildingI.recoverPhyStats();
 		}
-		if(foundRecipe==null)
-		{
-			commonTell(mob,L("You don't know how to make '@x1'.  Try \"smelt list\" for a list.",recipeName));
-			return false;
-		}
-		final String doneResourceDesc=foundRecipe.get(RCP_FINALNAME);
-		final String resourceDesc1=foundRecipe.get(RCP_METALONE);
-		final String resourceDesc2=foundRecipe.get(RCP_METALTWO);
-		final int resourceCode1=RawMaterial.CODES.FIND_IgnoreCase(resourceDesc1);
-		final int resourceCode2=RawMaterial.CODES.FIND_IgnoreCase(resourceDesc2);
-		final int doneResourceCode=RawMaterial.CODES.FIND_IgnoreCase(doneResourceDesc);
-		if((resourceCode1<0)||(resourceCode2<0)||(doneResourceCode<0))
-		{
-			commonTell(mob,L("CoffeeMud error in this alloy.  Please let your local Archon know."));
-			return false;
-		}
-		RawMaterial rscI1=CMLib.materials().findFirstResource(mob.location(), RawMaterial.CODES.GET(resourceCode1));
-		RawMaterial rscI2=CMLib.materials().findFirstResource(mob.location(), RawMaterial.CODES.GET(resourceCode2));
-		final int amountResource1=(rscI1==null)?0:CMLib.materials().findNumberOfResource(mob.location(),rscI1);
-		final int amountResource2=(rscI2==null)?0:CMLib.materials().findNumberOfResource(mob.location(),rscI2);
-		if(amountResource1==0)
-		{
-			commonTell(mob,L("There is no @x1 here to make @x2 from.  It might need to be put down first.",resourceDesc1,doneResourceDesc));
-			return false;
-		}
-		if(amountResource2==0)
-		{
-			commonTell(mob,L("There is no @x1 here to make @x2 from.  It might need to be put down first.",resourceDesc2,doneResourceDesc));
-			return false;
-		}
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
-		amountMaking=amountResource1;
-		if(amountResource2<amountResource1)
-			amountMaking=amountResource2;
-		if((maxAmount>0)&&(amountMaking>maxAmount))
-			amountMaking=maxAmount;
-		CMLib.materials().destroyResourcesValue(mob.location(),amountMaking,RawMaterial.CODES.GET(resourceCode1),0,null);
-		CMLib.materials().destroyResourcesValue(mob.location(),amountMaking,RawMaterial.CODES.GET(resourceCode2),0,null);
-		duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),6);
-		amountMaking+=amountMaking;
-		buildingI=(Item)CMLib.materials().makeResource(RawMaterial.CODES.GET(doneResourceCode),null,false,null);
-		startStr=L("<S-NAME> start(s) smelting @x1.",doneResourceDesc.toLowerCase());
-		displayText=L("You are smelting @x1",doneResourceDesc.toLowerCase());
-		playSound="sizzling.wav";
-		verb=L("smelting @x1",doneResourceDesc.toLowerCase());
 
 		messedUp=!proficiencyCheck(mob,0,auto);
+
+		if(bundling)
+		{
+			messedUp=false;
+			duration=1;
+			verb=L("bundling @x1",RawMaterial.CODES.NAME(buildingI.material()).toLowerCase());
+			startStr=L("<S-NAME> start(s) @x1.",verb);
+			displayText=L("You are @x1",verb);
+		}
+
+		if(autoGenerate>0)
+		{
+			crafted.add(buildingI);
+			return true;
+		}
 
 		final CMMsg msg=CMClass.getMsg(mob,buildingI,this,getActivityMessageType(),startStr);
 		if(mob.location().okMessage(mob,msg))
@@ -289,6 +447,14 @@ public class Smelting extends CraftingSkill implements CraftorAbility
 			mob.location().send(mob,msg);
 			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
+			enhanceItem(mob,buildingI,recipeLevel,enhancedTypes);
+		}
+		else
+		if(bundling)
+		{
+			messedUp=false;
+			aborted=false;
+			unInvoke();
 		}
 		return true;
 	}

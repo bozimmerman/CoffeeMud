@@ -120,38 +120,20 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 				{
 					if(messedUp)
 					{
-						if(activity == CraftingActivity.MENDING)
-							messedUpCrafting(mob);
-						else
 						if(activity == CraftingActivity.LEARNING)
 						{
 							commonEmote(mob,L("<S-NAME> fail(s) to learn how to make @x1.",buildingI.name()));
 							buildingI.destroy();
 						}
 						else
-						if(activity == CraftingActivity.REFITTING)
-							commonEmote(mob,L("<S-NAME> mess(es) up refitting @x1.",buildingI.name()));
-						else
 							commonEmote(mob,L("<S-NAME> mess(es) up weaving @x1.",buildingI.name()));
 					}
 					else
 					{
-						if(activity == CraftingActivity.MENDING)
-						{
-							buildingI.setUsesRemaining(100);
-							CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.MENDER, 1, this);
-						}
-						else
 						if(activity==CraftingActivity.LEARNING)
 						{
 							deconstructRecipeInto(mob, buildingI, recipeHolder );
 							buildingI.destroy();
-						}
-						else
-						if(activity == CraftingActivity.REFITTING)
-						{
-							buildingI.basePhyStats().setHeight(0);
-							buildingI.recoverPhyStats();
 						}
 						else
 						{
@@ -248,7 +230,7 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 		if(commands.size()==0)
 		{
 			commonTell(mob,L("Make what? Enter \"textile list\" for a list, \"textile info <item>\","
-						+ " \"textile learn <item>\", \"textile scan\", \"textile mend <item>\", or \"textile stop\" to cancel."));
+						+ " \"textile learn <item>\", or \"textile stop\" to cancel."));
 			return false;
 		}
 		bundling=false;
@@ -312,26 +294,6 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 			return doLearnRecipe(mob, commands, givenTarget, auto, asLevel);
 		}
 		else
-		if(str.equalsIgnoreCase("scan"))
-			return publicScan(mob,commands);
-		else
-		if(str.equalsIgnoreCase("mend"))
-		{
-			buildingI=null;
-			activity = CraftingActivity.CRAFTING;
-			messedUp=false;
-			final Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
-			buildingI=getTargetItemFavorMOB(mob,mob.location(),givenTarget,newCommands,Wearable.FILTER_UNWORNONLY);
-			if(!canMend(mob,buildingI,false))
-				return false;
-			activity = CraftingActivity.MENDING;
-			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-				return false;
-			startStr=L("<S-NAME> start(s) mending @x1.",buildingI.name());
-			displayText=L("You are mending @x1",buildingI.name());
-			verb=L("mending @x1",buildingI.name());
-		}
-		else
 		{
 			buildingI=null;
 			activity = CraftingActivity.CRAFTING;
@@ -389,7 +351,11 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			final MaterialLibrary.DeadResourceRecord deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
+			final MaterialLibrary.DeadResourceRecord deadMats;
+			if(componentsFoundList.size() > 0)
+				deadMats = new MaterialLibrary.DeadResourceRecord();
+			else
+				deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
 			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 			buildingI=CMClass.getItem(foundRecipe.get(RCP_CLASSTYPE));
