@@ -327,7 +327,7 @@ public class CoffeeTableRows extends StdWebMacro
 						numberOnlineCounter+=T.numberOnlineCounter();
 					}
 					final long minsOnline=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/(1000*60);
-					totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/scale/(1000*60);
+					totals[CoffeeTableRow.STAT_TICKSONLINE]=minsOnline;
 					double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
 					avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
 					table.append("<TR>");
