@@ -123,6 +123,15 @@ public class Group extends StdCommand
 		for (final Object element : orderedGroup)
 		{
 			final MOB follower=(MOB)element;
+			if((follower!=null)
+			&& (follower!=mob))
+			{
+				if(follower.amFollowing()==null)
+				{
+					Log.errOut(follower.Name()+" should be in "+mob.Name()+"'s group, but is in no ones.  Fixing.");
+					follower.setFollowing(mob);
+				}
+			}
 			msg.append(showWhoLong(mob,follower));
 		}
 		mob.tell(msg.toString());
