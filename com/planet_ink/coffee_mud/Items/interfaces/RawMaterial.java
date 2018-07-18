@@ -718,7 +718,7 @@ public interface RawMaterial extends Item
 		ONIONS(RESOURCE_ONIONS, 10, 1, 1, 760, "stinging oniony", "", null),
 		CHERRIES(RESOURCE_CHERRIES, 10, 1, 1, 810, "cherry", "", ResourceFlag.WOODY),
 		GARLIC(RESOURCE_GARLIC, 10, 1, 1, 815, "", "", null),
-		PINEAPPLES(RESOURCE_PINEAPPLES, 10, 1, 1, 500, "fruity", "", ResourceFlag.WOODY),
+		PINEAPPLES(RESOURCE_PINEAPPLES, 10, 1, 1, 500, "fruity", "",null),
 		COCONUTS(RESOURCE_COCONUTS, 10, 1, 2, 250, "", "", ResourceFlag.WOODY),
 		BANANAS(RESOURCE_BANANAS, 10, 1, 1, 790, "pungent banana", "", ResourceFlag.WOODY),
 		LIMES(RESOURCE_LIMES, 10, 1, 1, 690, "citrusy", "", ResourceFlag.WOODY),
