@@ -1,0 +1,60 @@
+#Resource	Override Frequency	Override Name	Override Value
+Shrimp	10	Shrimp	1
+Shrimp	2	Lobster	5
+Shrimp	2	Crab	4
+Shrimp	2	Mussels	2
+Shrimp	3	Oysters	2
+Shrimp	2	Prawn	3
+Shrimp	1	King Crab	8
+Shrimp	1	Snow Crab	10
+Salmon	10	Salmon	1
+Salmon	4	Crappie	1
+Salmon	2	Bluegill	2
+Salmon	3	Freshwater Drum	1
+Salmon	6	Whitefish	1
+Salmon	4	Walleye	1
+Salmon	6	Perch	1
+Carp 	20	Carp	1
+Carp	2	Grass Carp	3
+Carp	4	Grayling	2
+Carp	4	Paddlefish	2
+Carp	6	Muskellunge	1
+Trout 	20	Tiger Trout	1
+Trout	4	Bull Trout	1
+Trout	2	Golden Trout	2
+Trout	8	Gar	0
+Trout	4	Wiper	1
+Catfish 25	Catfish	1
+Catfish	4	Blue Catfish	2
+Catfish	2	Spotted Bass	2
+Catfish	2	Striped Bass	2
+Catfish	1	Whiterock Bass	3
+Catfish	2	Speckled Bass	2
+Catfish	5	Largemouth Bass	1
+Catfish	3	Rock Bass	1
+Catfish	5	Smallmouth Bass	1
+Tuna 	20	Tuna	1
+Tuna	2	Swordfish	3
+Tuna	2	Pompano	2
+Tuna	2	Albacore	4
+Tuna	4	Bonito	1
+Tuna	3	Cod	1
+Tuna	1	Halibut	3
+Tuna	2	Bigeye Tuna	2
+Tuna	2	Grouper	2
+Tuna	1	Blue Marlin	4
+Tuna	2	Seabass	2
+Tuna	1	Bluefin Tuna	20
+Tuna	4	Bluefish	2
+Tuna	2	Yellowtail	2
+Tuna	10	Mackerel	1
+Tuna	1	Dogtooth Tuna	1
+Tuna	4	Flounder	1
+Tuna	2	Barracuda	0
+Tuna	2	Amberjack	2
+Tuna	1	Spearfish	3
+Tuna	6	Snapper	1
+Tuna	2	Sailfish	2
+Tuna	1	Swordfish	6
+Tuna	1	Wahoo	5
+Tuna	2	Yellowfin Tuna	3

@@ -49,6 +49,14 @@ public class Skill_CurtainCall extends BardSkill
 		return localizedName;
 	}
 
+	private final static String localizedDisplayText = CMLib.lang().L("(Curtain Call)");
+
+	@Override
+	public String displayText()
+	{
+		return localizedDisplayText;
+	}
+
 	@Override
 	protected int canAffectCode()
 	{

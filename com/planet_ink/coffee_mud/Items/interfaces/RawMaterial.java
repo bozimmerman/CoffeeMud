@@ -640,7 +640,7 @@ public interface RawMaterial extends Item
 		MITHRIL(RESOURCE_MITHRIL, 100, 1, 9, 3990, "", "", null),
 		ADAMANTITE(RESOURCE_ADAMANTITE, 175, 1, 10, 4500, "", "", null),
 		STEEL(RESOURCE_STEEL, 75, 0, 8, 7840, "", "", null),
-		BRASS(RESOURCE_BRASS, 120, 0, 6, 5500, "", "", null),
+		BRASS(RESOURCE_BRASS, 18, 0, 6, 5500, "", "", null),
 		WOOD(RESOURCE_WOOD, 2, 10, 3, 920, "", "", null),
 		PINE(RESOURCE_PINE, 4, 10, 3, 650, "fresh, clean piney", "", null),
 		BALSA(RESOURCE_BALSA, 1, 5, 2, 130, "", "", null),

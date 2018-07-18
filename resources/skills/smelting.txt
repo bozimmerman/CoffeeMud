@@ -1,7 +1,8 @@
-Bronze	1	40	1	1	GenResource	TIN	COPPER
-Brass	10	40	1	1	GenResource	ZINC	COPPER
-Steel	15	120	1	1	GenResource	IRON	COAL
-Spidersteel	20	120	1	1	GenResource	SILK	MITHRIL
-Adamantite	30	250	1	1	GenResource	MITHRIL	STEEL
-Atlantite	40	200	1	1	GenResource	MITHRIL	SEAWEED
-White gold	25	80	1	1	GenResource	GOLD	ZINC
+bronze	1	40	(onground:consumed:1:TIN:)&&(onground:consumed:1:COPPER:)	10	GenResource	BRONZE		
+pewter	5	50	(onground:consumed:1:TIN:)&&(onground:consumed:1:COPPER:)&&(onground:consumed:1:LEAD:)	10	GenResource	BRONZE	PEWTER	
+brass	10	40	(onground:consumed:1:ZINC:)&&(onground:consumed:1:COPPER:)	20	GenResource	BRASS		
+cold iron	14	50	(onground:consumed:1:IRON:)&&(onground:consumed:1:CHROMIUM:)	18	GenResource	IRON	COLD IRON	
+steel	15	120	(onground:consumed:1:IRON:)&&(onground:consumed:1:COAL:)	75	GenResource	STEEL		
+stainless steel	20	120	(onground:consumed:1:STEEL:)&&(onground:consumed:1:CHROMIUM:)	60	GenResource	STEEL	STAINLESS STEEL	
+adamantite	30	250	(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:STEEL:)	175	GenResource	ADAMANTITE		
+atlantite	40	200	(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:SEAWEED:)	200	GenResource	ATLANTITE		

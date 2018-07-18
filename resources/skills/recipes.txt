@@ -15,7 +15,7 @@ Draconian Steak	FOOD		7	dragonmeat	1
 fried %	FOOD		8	poultry	1												
 lamb chops	FOOD		9	mutton	1												
 % fillet	FOOD		10	fish	1												
-fried catfish	FOOD		10	catfish	1												
+fried %	FOOD		10	catfish	1												
 fish and chips	FOOD		10	fish	1	potatoes	1										
 pancakes	FOOD		11	wheat	1	water	1	eggs	1								
 waffles	FOOD		11	wheat	1	water	1	eggs	1	fruit							
