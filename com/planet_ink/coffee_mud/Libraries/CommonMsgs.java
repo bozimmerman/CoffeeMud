@@ -1484,7 +1484,17 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			final Item item=room.getItem(c);
 			if((item==null)||(item==notItem))
 				continue;
-
+			final ItemPossessor owner=item.owner();
+			if(owner != room)
+			{
+				if(owner==null)
+				{
+					item.setOwner(room);
+					Log.errOut(item.Name()+" in room "+CMLib.map().getExtendedRoomID(room)+" had no owner.  Fixing.");
+				}
+				else
+					Log.errOut(item.Name()+" in room "+CMLib.map().getExtendedRoomID(room)+" had wrong owner "+owner.Name()+".  Fixing.");
+			}
 			if(item.container()==null)
 			{
 				if(CMLib.flags().canBarelyBeSeenBy(item,mob))
