@@ -1493,7 +1493,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					Log.errOut(item.Name()+" in room "+CMLib.map().getExtendedRoomID(room)+" had no owner.  Fixing.");
 				}
 				else
-					Log.errOut(item.Name()+" in room "+CMLib.map().getExtendedRoomID(room)+" had wrong owner "+owner.Name()+".  Fixing.");
+					Log.errOut(item.Name()+" in room "+CMLib.map().getExtendedRoomID(room)+" had wrong owner "+owner.Name()+".  That sucks.");
 			}
 			if(item.container()==null)
 			{
@@ -1527,6 +1527,15 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			final MOB mob2=room.fetchInhabitant(i);
 			if((mob2!=null)&&(mob2!=mob))
 			{
+				final Room mob2loc = mob2.location();
+				if(mob2loc != room)
+				{
+					if(mob2loc==null)
+						Log.errOut(mob2.Name()+" in room "+CMLib.map().getExtendedRoomID(room)+" had no location.  Fixing.");
+					else
+						Log.errOut(mob2.Name()+" in room "+CMLib.map().getExtendedRoomID(room)+" had wrong location "+CMLib.map().getExtendedRoomID(mob2loc)+".  Fixing.");
+					mob2.setLocation(room);
+				}
 				final String displayText=mob2.displayText(mob);
 				if((displayText.length()>0)
 				||(sysmsgs))
