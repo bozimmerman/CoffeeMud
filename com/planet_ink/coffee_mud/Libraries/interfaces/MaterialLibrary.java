@@ -71,6 +71,8 @@ public interface MaterialLibrary extends CMLibrary
 	public RawMaterial findFirstResource(Room E, String other);
 	public RawMaterial findFirstResource(MOB E, String other);
 	public void adjustResourceName(Item I);
+	public String makeResourceSimpleName(final int rscCode, String subType);
+	public String makeResourceDescriptiveName(final int rscCode, String subType, final boolean plural);
 	public String genericType(Item I);
 
 	/**

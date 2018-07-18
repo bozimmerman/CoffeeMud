@@ -744,6 +744,74 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
+	public String makeResourceDescriptiveName(final int rscCode, String subType, final boolean plural)
+	{
+		String name=RawMaterial.CODES.NAME(rscCode).toLowerCase();
+		int iMat = rscCode&RawMaterial.MATERIAL_MASK;
+		if((subType!=null)&&(subType.length()>0))
+		{
+			subType = subType.toLowerCase();
+			if(subType.equals(name) 
+			&& ((iMat==RawMaterial.MATERIAL_CLOTH)||(iMat==RawMaterial.MATERIAL_PAPER)))
+				name=L("@x1 bolt", name);
+			else
+				name=subType;
+		}
+		else
+		if((iMat==RawMaterial.MATERIAL_MITHRIL)
+		||(iMat==RawMaterial.MATERIAL_METAL))
+		{
+			if((iMat!=RawMaterial.RESOURCE_ADAMANTITE)
+			&&(iMat!=RawMaterial.RESOURCE_BRASS)
+			&&(iMat!=RawMaterial.RESOURCE_BRONZE)
+			&&(iMat!=RawMaterial.RESOURCE_STEEL))
+				name=L("@x1 ore",name);
+		}
+
+		if(!plural)
+		{
+			if((rscCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+				return L("some @x1",name);
+			else
+				return L("a pound of @x1",name);
+		}
+		else
+		{
+			if((rscCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+				return L("a pool of @x1", name);
+			else
+				return L("a bundle of @x1", name);
+		}
+	}
+	
+	@Override
+	public String makeResourceSimpleName(final int rscCode, String subType)
+	{
+		String name=RawMaterial.CODES.NAME(rscCode).toLowerCase();
+		int iMat = rscCode&RawMaterial.MATERIAL_MASK;
+		if((subType!=null)&&(subType.length()>0))
+		{
+			subType = subType.toLowerCase();
+			if(subType.equals(name) 
+			&& ((iMat==RawMaterial.MATERIAL_CLOTH)||(iMat==RawMaterial.MATERIAL_PAPER)))
+				name=L("@x1 bolt", name);
+			else
+				name=subType;
+		}
+		else
+		if((iMat==RawMaterial.MATERIAL_MITHRIL)
+		||(iMat==RawMaterial.MATERIAL_METAL))
+		{
+			if((iMat!=RawMaterial.RESOURCE_ADAMANTITE)
+			&&(iMat!=RawMaterial.RESOURCE_BRASS)
+			&&(iMat!=RawMaterial.RESOURCE_BRONZE)
+			&&(iMat!=RawMaterial.RESOURCE_STEEL))
+				name=L("@x1 ore",name);
+		}
+		return name;
+	}
+	
+	@Override
 	public void adjustResourceName(Item I)
 	{
 		String name=RawMaterial.CODES.NAME(I.material()).toLowerCase();

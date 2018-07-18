@@ -684,7 +684,21 @@ public class CraftingSkill extends GatheringSkill
 			if(data[0][FOUND_AMT]==0)
 			{
 				if(req1Desc!=null)
+				{
+					int x=req1Desc.indexOf('(');
+					if((x>0)&&(req1Desc.endsWith(")")))
+					{
+						String subType=req1Desc.substring(x+1,req1Desc.length()-1);
+						int rscCode=RawMaterial.CODES.FIND_IgnoreCase(req1Desc.substring(0,x));
+						String rscName=CMLib.materials().makeResourceSimpleName(rscCode, subType);
+						if(rscName!=null)
+						{
+							commonTell(mob,L("There is no @x1 here to make anything from!  It might need to be put down first.",rscName));
+							return null;
+						}
+					}
 					commonTell(mob,L("There is no @x1 here to make anything from!  It might need to be put down first.",req1Desc.toLowerCase()));
+				}
 				return null;
 			}
 			if(!bundle)
@@ -703,7 +717,21 @@ public class CraftingSkill extends GatheringSkill
 					if(req2Desc.equalsIgnoreCase("WOODEN"))
 						commonTell(mob,L("You need some wood to make that.  There is not enough here.  Are you sure you set it all on the ground first?"));
 					else
+					{
+						int x=req2Desc.indexOf('(');
+						if((x>0)&&(req2Desc.endsWith(")")))
+						{
+							String subType=req2Desc.substring(x+1,req2Desc.length()-1);
+							int rscCode=RawMaterial.CODES.FIND_IgnoreCase(req2Desc.substring(0,x));
+							String rscName=CMLib.materials().makeResourceSimpleName(rscCode, subType);
+							if(rscName!=null)
+							{
+								commonTell(mob,L("There is no @x1 here to make anything from!  It might need to be put down first.",rscName));
+								return null;
+							}
+						}
 						commonTell(mob,L("You need some @x1 to make that.  There is not enough here.  Are you sure you set it all on the ground first?",req2Desc.toLowerCase()));
+					}
 					return null;
 				}
 			}
