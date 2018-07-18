@@ -439,7 +439,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 					||((comp.getLongType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PAPER)))
 					itemDesc=amt+" "+subType+" bolt";
 				else
-					itemDesc=amt+" "+matName;
+					itemDesc=amt+" "+subType;
 			}
 		}
 		else
