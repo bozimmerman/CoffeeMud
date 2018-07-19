@@ -259,7 +259,7 @@ public class Charlatan extends StdCharClass
 				+ "Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level! "
 				+ "Receives exploration and pub-finding experience based on danger level.");
 	}
-	
+
 	@Override
 	public List<Item> outfit(MOB myChar)
 	{
