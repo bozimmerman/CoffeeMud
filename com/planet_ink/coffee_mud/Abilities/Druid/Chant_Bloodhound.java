@@ -84,6 +84,22 @@ public class Chant_Bloodhound extends Chant
 	}
 
 	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		final Physical affected = this.affected;
+		if((affected instanceof MOB) // because senses are diff on mobs
+		&&(CMath.bset(affected.phyStats().sensesMask(), PhyStats.CAN_NOT_SEE)))
+		{
+			affected.delEffect(this);
+			affected.addEffect(this);
+			affected.recoverPhyStats();
+		}
+		return true;
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		// undo the affects of this spell

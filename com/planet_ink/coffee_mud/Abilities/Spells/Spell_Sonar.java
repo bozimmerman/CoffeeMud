@@ -100,12 +100,24 @@ public class Spell_Sonar extends Spell
 			if((victim==null)||(CMLib.flags().canBeHeardMovingBy(victim,mob)))
 				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_VICTIM);
 			if(CMLib.flags().canHear(mob))
-			{
-				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
-				if((affectableStats.sensesMask()&PhyStats.CAN_NOT_SEE)>0)
-					affectableStats.setSensesMask(CMath.unsetb(affectableStats.sensesMask(),PhyStats.CAN_NOT_SEE));
-			}
+				affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK & (~PhyStats.CAN_NOT_SEE));
 		}
+	}
+
+	@Override
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		final Physical affected = this.affected;
+		if((affected instanceof MOB) // because senses are diff on mobs
+		&&(CMath.bset(affected.phyStats().sensesMask(), PhyStats.CAN_NOT_SEE)))
+		{
+			affected.delEffect(this);
+			affected.addEffect(this);
+			affected.recoverPhyStats();
+		}
+		return true;
 	}
 
 	@Override
