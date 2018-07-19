@@ -209,18 +209,34 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 		affects=null;
 		super.setMiscText(text);
 	}
-	
+
+	protected boolean isSlotted()
+	{
+		final Physical affected=this.affected;
+		if(affected == null)
+			return true;
+		if(!(affected instanceof Item))
+			return true;
+		final Item I=(Item)affected;
+		if(I.owner() == null)
+			return true;
+		return false;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		for(Ability A : getAffects())
+		if(isSlotted())
 		{
-			if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+			for(final Ability A : getAffects())
 			{
-				if(!A.okMessage(myHost, msg))
-					return false;
+				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+				{
+					if(!A.okMessage(myHost, msg))
+						return false;
+				}
 			}
 		}
 		return true;
@@ -229,11 +245,14 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		for(Ability A : getAffects())
+		if(isSlotted())
 		{
-			if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+			for(Ability A : getAffects())
 			{
-				A.executeMsg(myHost, msg);
+				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+				{
+					A.executeMsg(myHost, msg);
+				}
 			}
 		}
 		super.executeMsg(myHost, msg);
@@ -242,11 +261,14 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	@Override
 	public void affectPhyStats(Physical host, PhyStats affectableStats)
 	{
-		for(Ability A : getAffects())
+		if(isSlotted())
 		{
-			if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+			for(Ability A : getAffects())
 			{
-				A.affectPhyStats(host, affectableStats);
+				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+				{
+					A.affectPhyStats(host, affectableStats);
+				}
 			}
 		}
 		super.affectPhyStats(host,affectableStats);
@@ -255,11 +277,14 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	@Override
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
 	{
-		for(Ability A : getAffects())
+		if(isSlotted())
 		{
-			if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+			for(Ability A : getAffects())
 			{
-				A.affectCharStats(affectedMOB, affectedStats);
+				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+				{
+					A.affectCharStats(affectedMOB, affectedStats);
+				}
 			}
 		}
 		super.affectCharStats(affectedMOB,affectedStats);
@@ -268,11 +293,14 @@ public class Prop_ItemSlotFiller extends Property implements AbilityContainer
 	@Override
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
-		for(Ability A : getAffects())
+		if(isSlotted())
 		{
-			if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+			for(Ability A : getAffects())
 			{
-				A.affectCharState(affectedMOB, affectedState);
+				if((A!=null)&&(!A.ID().equals("Prop_ItemSlot")))
+				{
+					A.affectCharState(affectedMOB, affectedState);
+				}
 			}
 		}
 		super.affectCharState(affectedMOB,affectedState);

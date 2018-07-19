@@ -1015,9 +1015,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			{
 				if(locR == null)
 					return "*"+M.name()+" is nowhere!";
+				final MOB ultFol = M.amUltimatelyFollowing();
 				if(!locR.isInhabitant(M)
 				&&(!M.isPlayer())
-				&&((M.amUltimatelyFollowing()==null)||(!M.amUltimatelyFollowing().isPlayer())))
+				&&((ultFol==null)||(!ultFol.isPlayer())))
 					return "*"+M.name()+" is not where he is: "+CMLib.map().getExtendedRoomID(locR);
 				final String roomReport =validCheck(locR);
 				if(roomReport != null)
@@ -1040,7 +1041,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				if((I instanceof SpaceObject)
 				&&(CMLib.map().isObjectInSpace((SpaceObject)I)))
 					return null;
-				return I.name()+" is ticking unowned.";
+				return I.name()+" is unowned.";
 			}
 			final boolean ownerCheck;
 			synchronized(owner)
@@ -1048,7 +1049,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				ownerCheck=owner.isContent(I);
 			}
 			if(!ownerCheck)
-				return I.name()+" is ticking, but not where it is: "+owner.name();
+				return I.name()+" is not where it is: "+owner.name();
 			if(owner instanceof MOB)
 			{
 				final MOB M=(MOB)owner;

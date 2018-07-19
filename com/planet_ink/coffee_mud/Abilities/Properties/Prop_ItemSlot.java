@@ -190,7 +190,9 @@ public class Prop_ItemSlot extends Property
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if((msg.target() == affected) && (msg.targetMinor() == CMMsg.TYP_PUT) && (msg.tool() instanceof Item))
+		if((msg.target() == affected) 
+		&& (msg.targetMinor() == CMMsg.TYP_PUT) 
+		&& (msg.tool() instanceof Item))
 		{
 			final Item slotItem = (Item)msg.tool();
 			final Ability A=slotItem.fetchEffect("Prop_ItemSlotFiller");
@@ -227,7 +229,6 @@ public class Prop_ItemSlot extends Property
 				}
 				return false;
 			}
-			
 			msg.setTargetCode(CMMsg.TYP_WAND_USE | msg.targetMajor());
 		}
 		else
@@ -235,10 +236,95 @@ public class Prop_ItemSlot extends Property
 		&&(msg.sourceMinor()==CMMsg.TYP_COMMANDFAIL)
 		&&(msg.targetMessage()!=null)
 		&&(msg.targetMessage().length()>0)
-		&&(msg.targetMessage().startsWith("R")||msg.targetMessage().startsWith("r"))
+		&&("Rr".indexOf(msg.targetMessage().charAt(0))==0)
 		&&(affected!=null))
 		{
 			Vector<String> V=CMParms.parse(msg.targetMessage().toUpperCase());
+			if((V.size()>2) // keep this block, even though the "Rr" above makes it unused
+			&&("PUT".startsWith(V.get(0).toUpperCase()))) 
+			{
+				int x=V.lastIndexOf("INTO");
+				if((x>0)&&(x<V.size()-1))
+					V.remove(x);
+				else
+					x=V.size()-1;
+				String intoWhat = CMParms.combine(V,x);
+				String what=CMParms.combine(V,1,x);
+				if(CMLib.english().containsString(affected.name(), intoWhat)||CMLib.english().containsString(affected.displayText(), intoWhat))
+				{
+					final List<Item> items=new ArrayList<Item>(slots.length);
+					for(Enumeration<Item> i = msg.source().items();i.hasMoreElements();)
+					{
+						final Item I = i.nextElement();
+						if((I!=null)
+						&&(I != affected)
+						&&(I.container()==null)
+						&&(CMLib.flags().canBeSeenBy(I, msg.source()))
+						&&(I.amWearingAt(Item.IN_INVENTORY))
+						&&(!items.contains(I)))
+							items.add(I);
+					}
+					Environmental E=CMLib.english().fetchEnvironmental(items, what, true);
+					if(E==null)
+						E=CMLib.english().fetchEnvironmental(items, what, false);
+					if(!(E instanceof Item))
+					{
+						msg.setSourceMessage(L("You don't seem to have '@x1' handy.",what));
+						return true;
+					}
+					final Item slotItem = (Item)E;
+					final Ability A=slotItem.fetchEffect("Prop_ItemSlotFiller");
+					if(A==null)
+					{
+						if(!(affected instanceof Container))
+						{
+							msg.setSourceMessage(L("@x1 will not fit in @x2.",slotItem.name(),affected.name()));
+							return true;
+						}
+						return true;
+					}
+					final String aSlotType= CMParms.getParmStr(A.text(), "TYPE", "");
+					final int aSlotNumbs= CMParms.getParmInt(A.text(), "NUM", 1);
+					if(!aSlotType.equalsIgnoreCase(slotType))
+					{
+						msg.setSourceMessage(L("@x1 will not fit in @x2.",slotItem.name(),affected.name()));
+						return true;
+					}
+					if(getNumberOfEmptySlots() < aSlotNumbs)
+					{
+						if((aSlotNumbs > 1) && (getNumberOfEmptySlots() > 0))
+						{
+							if(removable)
+								msg.setSourceMessage(L("@x1 doesn't have enough empty slots.  It requires @x2.  You should remove something first.",affected.name(),""+aSlotNumbs));
+							else
+								msg.setSourceMessage(L("@x1 doesn't have enough empty slots.  It requires @x2.",affected.name(),""+aSlotNumbs));
+						}
+						else
+						{
+							if(removable)
+								msg.setSourceMessage(L("@x1 has no more empty slots.  You should remove something first.",affected.name()));
+							else
+								msg.setSourceMessage(L("@x1 has no more available slots.",affected.name()));
+						}
+						return true;
+					}
+					final CMMsg msg2=(CMMsg)msg.copyOf();
+					msg2.setTarget(affected);
+					msg2.setTool(slotItem);
+					msg2.setSourceCode(CMMsg.TYP_WAND_USE | CMMsg.MASK_HANDS);
+					msg2.setTargetCode(CMMsg.TYP_WAND_USE | CMMsg.MASK_HANDS);
+					msg2.setSourceCode(CMMsg.TYP_WAND_USE | CMMsg.MASK_HANDS);
+					msg2.setSourceMessage(L("<S-NAME> put(s) <O-NAME> into <T-NAME>."));
+					msg2.setTargetMessage(L("<S-NAME> put(s) <O-NAME> into <T-NAME>."));
+					msg2.setOthersMessage(L("<S-NAME> put(s) <O-NAME> into <T-NAME>."));
+					final Room R=CMLib.map().roomLocation(affected);
+					if((R!=null)
+					&&(R.okMessage(msg.source(), msg2)))
+						R.send(msg.source(), msg2);
+					return false;
+				}
+			}
+			else
 			if((V.size()>2)&&("REMOVE".startsWith(V.get(0).toUpperCase())))
 			{
 				int x=V.lastIndexOf("FROM");
@@ -312,7 +398,8 @@ public class Prop_ItemSlot extends Property
 		final Item affected = (this.affected instanceof Item)? (Item)this.affected : null;
 		if(msg.target() == affected)
 		{
-			if((msg.targetMinor() == CMMsg.TYP_WAND_USE) && (msg.tool() instanceof Item))
+			if((msg.targetMinor() == CMMsg.TYP_WAND_USE) 
+			&& (msg.tool() instanceof Item))
 			{
 				final Item slotItem = (Item)msg.tool();
 				final Ability A=slotItem.fetchEffect("Prop_ItemSlotFiller");
@@ -323,6 +410,7 @@ public class Prop_ItemSlot extends Property
 					if(slots[islot]==null)
 					{
 						slotItem.removeFromOwnerContainer();
+						slotItem.setOwner(null);
 						slots[islot] = slotItem;
 						if((--aSlotNumbs) == 0)
 						{

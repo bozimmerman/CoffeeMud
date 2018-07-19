@@ -623,34 +623,37 @@ public class StdExit implements Exit
 	public StringBuilder viewableText(MOB mob, Room room)
 	{
 		final StringBuilder viewMsg=new StringBuilder("");
+		final CMFlagLibrary flags=CMLib.flags();
 		if(mob.isAttributeSet(MOB.Attrib.SYSOPMSGS))
 		{
 			if(room==null)
 				viewMsg.append("^Z(null)^.^? ");
 			else
-				viewMsg.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.displayText(mob)+CMLib.flags().getDispositionBlurbs(room,mob)+" ");
+				viewMsg.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.displayText(mob)+flags.getDispositionBlurbs(room,mob)+" ");
 			viewMsg.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
 		}
 		else
-		if(((CMLib.flags().canBeSeenBy(this,mob))||(isOpen()&&hasADoor()))
-		&&(CMLib.flags().isSeeable(this)))
+		if(((flags.canBeSeenBy(this,mob))||(isOpen()&&hasADoor()))
+		&&(flags.isSeeable(this)))
 		{
 			if(isOpen())
 			{
 				if((room!=null)
-				&&(!CMLib.flags().canBeSeenBy(room,mob)))
+				&&(!flags.canBeSeenBy(room,mob)))
 					viewMsg.append("darkness");
 				else
 				if(displayText().length()>0)
-					viewMsg.append(displayText()+CMLib.flags().getDispositionBlurbs(this,mob)+CMLib.flags().getDispositionBlurbs(room,mob));
+					viewMsg.append(displayText()
+							+flags.getDispositionBlurbs(this,mob)
+							+flags.getDispositionBlurbs(room,mob));
 				else
 				if(room!=null)
-					viewMsg.append(room.displayText(mob)+CMLib.flags().getDispositionBlurbs(room,mob));
+					viewMsg.append(room.displayText(mob)+flags.getDispositionBlurbs(room,mob));
 			}
 			else
-			if((CMLib.flags().canBeSeenBy(this,mob))
+			if((flags.canBeSeenBy(this,mob))
 			&&(closedText().trim().length()>0))
-				viewMsg.append(closedText()+CMLib.flags().getDispositionBlurbs(this,mob));
+				viewMsg.append(closedText()+flags.getDispositionBlurbs(this,mob));
 		}
 		return viewMsg;
 	}
