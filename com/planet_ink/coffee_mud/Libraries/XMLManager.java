@@ -920,9 +920,18 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	{
 		switch(c)
 		{
-		case ' ': case '\t': case '\r': case '\n': bufDex++; return;
-		case '<': changeTagState(State.BEFORETAG); return;
-		case '/': changedTagState(State.BEFORECLOSETAG); return;
+		case ' ':
+		case '\t':
+		case '\r':
+		case '\n':
+			bufDex++;
+			return;
+		case '<':
+			changeTagState(State.BEFORETAG);
+			return;
+		case '/':
+			changedTagState(State.BEFORECLOSETAG);
+			return;
 		default:
 			if(Character.isLetter(c))
 				changedTagState(State.INTAG);
@@ -973,10 +982,11 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			if(closePiece.innerStartIndex()>=0)
 				closePiece.value = buf.substring(closePiece.innerStartIndex(),beginDex[State.BEFORETAG.ordinal()]-1);
 			piece=closePiece;
-			doneWithPiece(outerEnd);
 		}
 		else
+		if(!closeTag.startsWith("HADLEY"))
 			Log.errOut("XMLManager","Unable to close tag "+closeTag);
+		doneWithPiece(outerEnd);
 	}
 
 	protected void inTag(final char c)
@@ -992,7 +1002,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			else
 				changeTagState(State.START);
 			return;
-		case '<': changeTagState(State.BEFORETAG); return;
+		case '<':
+			changeTagState(State.BEFORETAG);
+			return;
 		case '>':
 			if(canStartPiece(bufDex))
 			{
@@ -1005,7 +1017,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			startPiece(bufDex);
 			changedTagState(State.BEGINTAGSELFEND);
 			return;
-		default: bufDex++; return;
+		default:
+			bufDex++;
+			return;
 		}
 	}
 

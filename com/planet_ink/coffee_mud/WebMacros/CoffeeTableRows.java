@@ -327,7 +327,6 @@ public class CoffeeTableRows extends StdWebMacro
 						numberOnlineCounter+=T.numberOnlineCounter();
 					}
 					final long minsOnline=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/(1000*60);
-					totals[CoffeeTableRow.STAT_TICKSONLINE]=minsOnline;
 					double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
 					avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
 					table.append("<TR>");
@@ -362,7 +361,7 @@ public class CoffeeTableRows extends StdWebMacro
 							table.append("<TD" + colspan + ">" + header + ((totals[CoffeeTableRow.STAT_LOGINS] > 0) ? (minsOnline / totals[CoffeeTableRow.STAT_LOGINS]) : 0) + "</TD>");
 						else 
 						if (key.equalsIgnoreCase("TOTALHOURS"))
-							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_TICKSONLINE] + footer + "</TD>");
+							table.append("<TD" + colspan + ">" + header + minsOnline + footer + "</TD>");
 						else 
 						if (key.equalsIgnoreCase("NEWPLAYERS"))
 							table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_NEWPLAYERS] + footer + "</TD>");
@@ -434,7 +433,6 @@ public class CoffeeTableRows extends StdWebMacro
 					numberOnlineCounter+=T.numberOnlineCounter();
 				}
 				final long minsOnline=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/(1000*60);
-				totals[CoffeeTableRow.STAT_TICKSONLINE]=(totals[CoffeeTableRow.STAT_TICKSONLINE]*CMProps.getTickMillis())/(1000*60*60);
 				double avgOnline=(numberOnlineCounter>0)?CMath.div(numberOnlineTotal,numberOnlineCounter):0.0;
 				avgOnline=CMath.div(Math.round(avgOnline*10.0),10.0);
 				table.append("<TR>");
@@ -466,7 +464,7 @@ public class CoffeeTableRows extends StdWebMacro
 						table.append("<TD" + colspan + ">" + header + ((totals[CoffeeTableRow.STAT_LOGINS] > 0) ? (minsOnline / totals[CoffeeTableRow.STAT_LOGINS]) : 0) + "</TD>");
 					else 
 					if (key.equalsIgnoreCase("TOTALHOURS"))
-						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_TICKSONLINE] + footer + "</TD>");
+						table.append("<TD" + colspan + ">" + header + minsOnline + footer + "</TD>");
 					else 
 					if (key.equalsIgnoreCase("NEWPLAYERS"))
 						table.append("<TD" + colspan + ">" + header + totals[CoffeeTableRow.STAT_NEWPLAYERS] + footer + "</TD>");
