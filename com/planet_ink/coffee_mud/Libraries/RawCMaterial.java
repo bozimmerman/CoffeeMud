@@ -510,124 +510,120 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			   material=RawMaterial.MATERIAL_LEATHER;
 			if(CMParms.contains(RawMaterial.CODES.FISHES(), myResource))
 				material=RawMaterial.MATERIAL_VEGETATION;
-			if((material==RawMaterial.MATERIAL_LEATHER)
-			||(material==RawMaterial.MATERIAL_FLESH))
+			switch(myResource)
 			{
-				switch(myResource)
+			case RawMaterial.RESOURCE_MUTTON:
+			case RawMaterial.RESOURCE_WOOL:
+				return CMClass.getMOB("Sheep");
+			case RawMaterial.RESOURCE_LEATHER:
+				switch(CMLib.dice().roll(1,10,0))
 				{
-				case RawMaterial.RESOURCE_MUTTON:
-				case RawMaterial.RESOURCE_WOOL:
-					return CMClass.getMOB("Sheep");
-				case RawMaterial.RESOURCE_LEATHER:
-					switch(CMLib.dice().roll(1,10,0))
-					{
-					case 1:
-					case 2:
-					case 3:
-						return CMClass.getMOB("Cow");
-					case 4:
-						return CMClass.getMOB("Bull");
-					case 5:
-					case 6:
-					case 7:
-						return CMClass.getMOB("Doe");
-					case 8:
-					case 9:
-					case 10:
-						return CMClass.getMOB("Buck");
-					}
-					break;
-				case RawMaterial.RESOURCE_HIDE:
-					switch(CMLib.dice().roll(1,10,0))
-					{
-					case 1:
-					case 2:
-						return CMClass.getMOB("Gorilla");
-					case 3:
-						return CMClass.getMOB("Lion");
-					case 4:
-						return CMClass.getMOB("Cheetah");
-					case 5:
-					case 6:
-						return CMClass.getMOB("Ape");
-					case 7:
-					case 8:
-						return CMClass.getMOB("Fox");
-					case 9:
-					case 10:
-						return CMClass.getMOB("Monkey");
-					}
-					break;
-				case RawMaterial.RESOURCE_PORK:
-					return CMClass.getMOB("Pig");
-				case RawMaterial.RESOURCE_FUR:
-				case RawMaterial.RESOURCE_MEAT:
-					switch(CMLib.dice().roll(1,10,0))
-					{
-					case 1:
-					case 2:
-					case 3:
-					case 4:
-						return CMClass.getMOB("Wolf");
-					case 5:
-					case 6:
-					case 7:
-						return CMClass.getMOB("Buffalo");
-					case 8:
-					case 9:
-						return CMClass.getMOB("BrownBear");
-					case 10:
-						return CMClass.getMOB("BlackBear");
-					}
-					break;
-				case RawMaterial.RESOURCE_SCALES:
-					switch(CMLib.dice().roll(1,10,0))
-					{
-					case 1:
-					case 2:
-					case 3:
-					case 4:
-						return CMClass.getMOB("Lizard");
-					case 5:
-					case 6:
-					case 7:
-						return CMClass.getMOB("GardenSnake");
-					case 8:
-					case 9:
-						return CMClass.getMOB("Cobra");
-					case 10:
-						return CMClass.getMOB("Python");
-					}
-					break;
-				case RawMaterial.RESOURCE_POULTRY:
-				case RawMaterial.RESOURCE_EGGS:
-					return CMClass.getMOB("Chicken");
-				case RawMaterial.RESOURCE_BEEF:
-					switch(CMLib.dice().roll(1,5,0))
-					{
-					case 1:
-					case 2:
-					case 3:
-					case 4:
-						return CMClass.getMOB("Cow");
-					case 5:
-						return CMClass.getMOB("Bull");
-					}
-					break;
-				case RawMaterial.RESOURCE_FEATHERS:
-					switch(CMLib.dice().roll(1,4,0))
-					{
-					case 1:
-						return CMClass.getMOB("WildEagle");
-					case 2:
-						return CMClass.getMOB("Falcon");
-					case 3:
-						return CMClass.getMOB("Chicken");
-					case 4:
-						return CMClass.getMOB("Parakeet");
-					}
-					break;
+				case 1:
+				case 2:
+				case 3:
+					return CMClass.getMOB("Cow");
+				case 4:
+					return CMClass.getMOB("Bull");
+				case 5:
+				case 6:
+				case 7:
+					return CMClass.getMOB("Doe");
+				case 8:
+				case 9:
+				case 10:
+					return CMClass.getMOB("Buck");
 				}
+				break;
+			case RawMaterial.RESOURCE_HIDE:
+				switch(CMLib.dice().roll(1,10,0))
+				{
+				case 1:
+				case 2:
+					return CMClass.getMOB("Gorilla");
+				case 3:
+					return CMClass.getMOB("Lion");
+				case 4:
+					return CMClass.getMOB("Cheetah");
+				case 5:
+				case 6:
+					return CMClass.getMOB("Ape");
+				case 7:
+				case 8:
+					return CMClass.getMOB("Fox");
+				case 9:
+				case 10:
+					return CMClass.getMOB("Monkey");
+				}
+				break;
+			case RawMaterial.RESOURCE_PORK:
+				return CMClass.getMOB("Pig");
+			case RawMaterial.RESOURCE_FUR:
+			case RawMaterial.RESOURCE_MEAT:
+				switch(CMLib.dice().roll(1,10,0))
+				{
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+					return CMClass.getMOB("Wolf");
+				case 5:
+				case 6:
+				case 7:
+					return CMClass.getMOB("Buffalo");
+				case 8:
+				case 9:
+					return CMClass.getMOB("BrownBear");
+				case 10:
+					return CMClass.getMOB("BlackBear");
+				}
+				break;
+			case RawMaterial.RESOURCE_SCALES:
+				switch(CMLib.dice().roll(1,10,0))
+				{
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+					return CMClass.getMOB("Lizard");
+				case 5:
+				case 6:
+				case 7:
+					return CMClass.getMOB("GardenSnake");
+				case 8:
+				case 9:
+					return CMClass.getMOB("Cobra");
+				case 10:
+					return CMClass.getMOB("Python");
+				}
+				break;
+			case RawMaterial.RESOURCE_POULTRY:
+			case RawMaterial.RESOURCE_EGGS:
+				return CMClass.getMOB("Chicken");
+			case RawMaterial.RESOURCE_BEEF:
+				switch(CMLib.dice().roll(1,5,0))
+				{
+				case 1:
+				case 2:
+				case 3:
+				case 4:
+					return CMClass.getMOB("Cow");
+				case 5:
+					return CMClass.getMOB("Bull");
+				}
+				break;
+			case RawMaterial.RESOURCE_FEATHERS:
+				switch(CMLib.dice().roll(1,4,0))
+				{
+				case 1:
+					return CMClass.getMOB("WildEagle");
+				case 2:
+					return CMClass.getMOB("Falcon");
+				case 3:
+					return CMClass.getMOB("Chicken");
+				case 4:
+					return CMClass.getMOB("Parakeet");
+				}
+				break;
 			}
 		}
 		switch(material)
