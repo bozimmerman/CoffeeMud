@@ -84,7 +84,6 @@ public class Jungle extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_BANANAS),
 		Integer.valueOf(RawMaterial.RESOURCE_LIMES),
 		Integer.valueOf(RawMaterial.RESOURCE_JADE),
-		Integer.valueOf(RawMaterial.RESOURCE_SCALES),
 		Integer.valueOf(RawMaterial.RESOURCE_HEMP),
 		Integer.valueOf(RawMaterial.RESOURCE_BALSA),
 		Integer.valueOf(RawMaterial.RESOURCE_IRONWOOD),
@@ -99,6 +98,7 @@ public class Jungle extends StdRoom
 		Integer.valueOf(RawMaterial.RESOURCE_DIRT),
 		Integer.valueOf(RawMaterial.RESOURCE_VINE),
 		Integer.valueOf(RawMaterial.RESOURCE_LEMONS),
+		Integer.valueOf(RawMaterial.RESOURCE_SCALES),
 		Integer.valueOf(RawMaterial.RESOURCE_FUR),
 		Integer.valueOf(RawMaterial.RESOURCE_FEATHERS)
 	};

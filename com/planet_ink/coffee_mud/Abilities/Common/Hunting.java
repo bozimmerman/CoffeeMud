@@ -33,12 +33,19 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Hunting extends CommonSkill
+public class Hunting extends GatheringSkill
 {
 	@Override
 	public String ID()
 	{
 		return "Hunting";
+	}
+
+	public Hunting()
+	{
+		super();
+		displayText=L("You are hunting...");
+		verb=L("hunting");
 	}
 
 	private final static String localizedName = CMLib.lang().L("Hunting");
@@ -62,14 +69,14 @@ public class Hunting extends CommonSkill
 		return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_GATHERINGSKILL;
 	}
 
-	protected MOB found=null;
-	protected String foundShortName="";
-	public Hunting()
-	{
-		super();
-		displayText=L("You are hunting...");
-		verb=L("hunting");
-	}
+	// common recipe definition indexes
+	protected static final int	RCP_RESOURCE= 0;
+	protected static final int	RCP_DOMAIN	= 1;
+	protected static final int	RCP_FREQ	= 2;
+	protected static final int	RCP_MOB		= 3;
+	
+	protected MOB		found			= null;
+	protected String	foundShortName	= "";
 
 	public Room nearByRoom()
 	{
@@ -97,20 +104,23 @@ public class Hunting extends CommonSkill
 		if(found.location()==null)
 			return;
 
-		final Vector<Integer> possibilities=new Vector<Integer>();
+		final List<Integer> possibilities=new ArrayList<Integer>();
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			if(d!=Directions.UP)
+			final Room room=found.location().getRoomInDir(d);
+			if((room == null)
+			||(CMLib.flags().isAiryRoom(room)&&(!CMLib.flags().isFlying(found))))
 			{
-				final Room room=found.location().getRoomInDir(d);
 				final Exit exit=found.location().getExitInDir(d);
-				if((room!=null)&&(exit!=null)&&(exit.isOpen()))
-					possibilities.addElement(Integer.valueOf(d));
+				if((exit!=null)
+				&&(exit.isOpen())
+				&&(CMLib.flags().canBreatheHere(found, room)))
+					possibilities.add(Integer.valueOf(d));
 			}
 		}
 		if(possibilities.size()>0)
 		{
-			final int dir=possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1)).intValue();
+			final int dir=possibilities.get(CMLib.dice().roll(1,possibilities.size(),-1)).intValue();
 			CMLib.tracking().walk(found,dir,true,false);
 		}
 	}
@@ -150,7 +160,10 @@ public class Hunting extends CommonSkill
 			{
 				if(found!=null)
 				{
-					commonTell(mob,L("You have found some @x1 tracks!",foundShortName));
+					if(CMLib.flags().isWateryRoom(mob.location()))
+						commonTell(mob,L("You have found some @x1 signs!",foundShortName));
+					else
+						commonTell(mob,L("You have found some @x1 tracks!",foundShortName));
 					commonTell(mob,L("You need to find the @x1 nearby before the trail goes cold!",foundShortName));
 					displayText=L("You are hunting for @x1",found.name());
 					verb=L("hunting for @x1",found.name());
@@ -227,46 +240,123 @@ public class Hunting extends CommonSkill
 		verb=L("hunting");
 		found=null;
 		activityRoom=null;
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		final int resourceType=mob.location().myResource();
+		final int resourceType=R.myResource();
+		final String resourceName = RawMaterial.CODES.NAME(resourceType).toUpperCase();
+		final int domainType = R.domainType()&(~Room.INDOORS);
+		final String domainName;
+		if((R.domainType()&Room.INDOORS)==0)
+			domainName = (domainType < Room.DOMAIN_OUTDOOR_DESCS.length) ? Room.DOMAIN_OUTDOOR_DESCS[domainType].toUpperCase() : "";
+		else
+			domainName = (domainType < Room.DOMAIN_INDOORS_DESCS.length) ? Room.DOMAIN_INDOORS_DESCS[domainType].toUpperCase() : "";
+
 		if((proficiencyCheck(mob,0,auto))
-		&&(nearByRoom()!=null)
-		&&(!CMParms.contains(RawMaterial.CODES.FISHES(), resourceType))
-		&&(((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
-		   ||(resourceType==RawMaterial.RESOURCE_BLOOD)
-		   ||(resourceType==RawMaterial.RESOURCE_BONE)
-		   ||(resourceType==RawMaterial.RESOURCE_EGGS)
-		   ||(resourceType==RawMaterial.RESOURCE_FEATHERS)
-		   ||(resourceType==RawMaterial.RESOURCE_FUR)
-		   ||(resourceType==RawMaterial.RESOURCE_HIDE)
-		   ||(resourceType==RawMaterial.RESOURCE_MILK)
-		   ||(resourceType==RawMaterial.RESOURCE_SCALES)
-		   ||(resourceType==RawMaterial.RESOURCE_WOOL)
-		   ||((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)))
+		&&(nearByRoom()!=null))
 		{
-			PhysicalAgent E=CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
-			if(!(E instanceof MOB))
+			final List<List<String>> recipes = loadRecipes("hunting.txt");
+			if((recipes != null)
+			&&(recipes.size()>0))
 			{
-				Log.errOut("Hunting","Failed to convert resource "+resourceType+" to mob.");
-				return false;
-			}
-			found=(MOB)E;
-			foundShortName="nothing";
-			if(found!=null)
-			{
-				foundShortName=found.name();
-				int x=0;
-				if((x=foundShortName.lastIndexOf(' '))>=0)
-					foundShortName=foundShortName.substring(x).trim().toLowerCase();
-				found.setLocation(null);
+				int totalWeights = 0;
+				List<List<String>> subset=new ArrayList<List<String>>();
+				for(final List<String> subl : recipes)
+				{
+					if(subl.size()<4)
+						continue;
+					if(subl.get(RCP_RESOURCE).toUpperCase().equals(resourceName)
+					&&((subl.get(RCP_DOMAIN).equals("*"))
+						||(subl.get(RCP_DOMAIN).equals(domainName))
+						||(subl.get(RCP_DOMAIN).equals(R.ID()))))
+					{
+						subset.add(subl);
+						totalWeights += CMath.s_int(subl.get(RCP_FREQ));
+					}
+				}
+				List<String> winl = null;
+				if(totalWeights > 0)
+				{
+					int winner=CMLib.dice().roll(1, totalWeights, -1);
+					int current = 0;
+					for(final List<String> subl : subset)
+					{
+						current += CMath.s_int(subl.get(RCP_FREQ));
+						if(winner < current)
+						{
+							winl = subl;
+							break;
+						}
+					}
+					if(winl == null)
+						winl=subset.get(subset.size()-1);
+				}
+				if(winl != null)
+				{
+					String mobID = winl.get(RCP_MOB);
+					MOB stdM = CMClass.getMOB(mobID);
+					if(stdM == null)
+						stdM = CMLib.catalog().getCatalogMob(mobID);
+					if(stdM == null)
+					{
+						commonTell(mob,L("There are no signs of life here."));
+						return false;
+					}
+					MOB genM=stdM;
+					if(!genM.isGeneric())
+					{
+						if(genM.baseCharStats().getMyRace().useRideClass())
+							genM=CMClass.getMOB("GenRideable");
+						else
+							genM=CMClass.getMOB("GenMob");
+						genM.setBaseCharStats((CharStats)stdM.baseCharStats().copyOf());
+						genM.setBasePhyStats((PhyStats)stdM.basePhyStats().copyOf());
+						genM.setBaseState((CharState)stdM.baseState().copyOf());
+						for(final GenericBuilder.GenMOBCode stat : GenericBuilder.GenMOBCode.values())
+						{
+							if(stat != GenericBuilder.GenMOBCode.ABILITY) // because this screws up gen hit points
+								genM.setStat(stat.name(), CMLib.coffeeMaker().getGenMobStat((MOB)stdM,stat.name()));
+						}
+						genM.recoverCharStats();
+						genM.recoverPhyStats();
+						genM.recoverMaxState();
+						genM.resetToMaxState();
+					}
+					final int moblevel = Math.round(CMath.sqrt(mob.phyStats().level())); // pity on artisans
+					final int addlevel = (moblevel < CMProps.getIntVar(CMProps.Int.EXPRATE)) ? 0 : (moblevel - CMProps.getIntVar(CMProps.Int.EXPRATE));
+					genM.basePhyStats().setLevel(genM.basePhyStats().level() + addlevel);
+					genM.recoverCharStats();
+					genM.recoverPhyStats();
+					genM.recoverMaxState();
+					genM.resetToMaxState();
+					CMLib.leveler().fillOutMOB(genM,genM.basePhyStats().level());
+					
+					found=genM;
+					foundShortName=found.name();
+					int x=0;
+					if((x=foundShortName.lastIndexOf(' '))>=0)
+						foundShortName=foundShortName.substring(x).trim().toLowerCase();
+					found.setLocation(null);
+					if(found instanceof Rideable)
+					{
+						if((CMLib.flags().canBreatheThis(found, RawMaterial.RESOURCE_FRESHWATER)
+							|| CMLib.flags().canBreatheThis(found, RawMaterial.RESOURCE_SALTWATER))
+						&&(!CMLib.flags().canBreatheThis(found, RawMaterial.RESOURCE_AIR)))
+							((Rideable)found).setRideBasis(Rideable.RIDEABLE_WATER);
+						else
+							((Rideable)found).setRideBasis(Rideable.RIDEABLE_LAND);
+					}
+				}
 			}
 		}
 		final int duration=10+mob.phyStats().level()+(super.getXTIMELevel(mob)*2);
 		final CMMsg msg=CMClass.getMsg(mob,found,this,getActivityMessageType(),L("<S-NAME> start(s) hunting."));
-		if(mob.location().okMessage(mob,msg))
+		if(R.okMessage(mob,msg))
 		{
-			mob.location().send(mob,msg);
+			R.send(mob,msg);
 			found=(MOB)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}

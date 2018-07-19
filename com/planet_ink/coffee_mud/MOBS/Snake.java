@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Locales;
+package com.planet_ink.coffee_mud.MOBS;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2018 Bo Zimmerman
+   Copyright 2018-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,45 +32,40 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Shore extends StdRoom
+public class Snake extends StdMOB
 {
 	@Override
 	public String ID()
 	{
-		return "Shore";
+		return "Snake";
 	}
 
-	public Shore()
+	public Snake()
 	{
 		super();
-		name="the shore";
-		basePhyStats.setWeight(2);
+		username="a snake";
+		setDescription("It\\`s all scaley and slithery.");
+		setDisplayText("A snake slithers around here.");
+		CMLib.factions().setAlignment(this,Faction.Align.NEUTRAL);
+		setMoney(0);
+		setWimpHitPoint(2);
+
+		basePhyStats().setDamage(4);
+
+		baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,1);
+
+		basePhyStats().setAbility(0);
+		basePhyStats().setLevel(1);
+		basePhyStats().setArmor(90);
+
+		baseCharStats().setMyRace(CMClass.getRace("Snake"));
+		baseCharStats().getMyRace().startRacing(this,false);
+		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),11,basePhyStats().level()));
+
+		recoverMaxState();
+		resetToMaxState();
 		recoverPhyStats();
-		climask=Places.CLIMASK_WET;
+		recoverCharStats();
 	}
 
-	@Override
-	protected int baseThirst()
-	{
-		return 1;
-	}
-
-	@Override
-	public int domainType()
-	{
-		return Room.DOMAIN_OUTDOORS_DESERT;
-	}
-
-	public static final Integer[] resourceList={
-		Integer.valueOf(RawMaterial.RESOURCE_FISH),
-		Integer.valueOf(RawMaterial.RESOURCE_HIDE),
-		Integer.valueOf(RawMaterial.RESOURCE_SAND)
-	};
-	public static final List<Integer> roomResources=new Vector<Integer>(Arrays.asList(resourceList));
-
-	@Override
-	public List<Integer> resourceChoices()
-	{
-		return Shore.roomResources;
-	}
 }
