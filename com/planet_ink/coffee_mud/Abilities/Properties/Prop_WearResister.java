@@ -84,7 +84,10 @@ public class Prop_WearResister extends Prop_HaveResister
 			if((I instanceof Armor)
 			&&(I.amBeingWornProperly())
 			&&((I.rawWornCode()&A.rawWornCode())>0)
-			&&(I!=A))
+			&&(I!=A)
+			&&((I.basePhyStats().armor()>0)
+				||(I.numEffects()>0)
+				||(I.material()!=RawMaterial.RESOURCE_PAPER)))
 			{
 				disabled=A.getClothingLayer()<=((Armor)I).getClothingLayer();
 				if(disabled)
