@@ -2089,8 +2089,10 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	}
 	
 	@Override
-	public String getDispositionBlurbs(Physical seen , MOB seer)
+	public String getDispositionBlurbs(final Physical seen, final MOB seer)
 	{
+		if(seen == null)
+			return "";
 		final PhyStats pStats=seen.phyStats();
 		if(pStats == null)
 			return ""; // an exit?

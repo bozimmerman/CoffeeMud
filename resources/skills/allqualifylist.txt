@@ -21,6 +21,7 @@
 1 Common PROF=100 AUTOGAIN 
 1 SmokeRings MASK=+CHA 5 
 1 UnderCommon 
+1 PlayInstrument MASK=+WIS 5
 
 3 FireBuilding AUTOGAIN 
 

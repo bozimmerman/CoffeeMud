@@ -64,7 +64,7 @@
   62. New common skills: Decorating, CargoLoading
   63. Artisan class has been re-imagined using a Skill Tree instead of the normal system.
   64. Socials can now have multi-word targeted variations for further specificity.
-  65. New skills: Hard to Port, Hard to Stern, Tie Down, Abandon Ship
+  65. New skills: Hard to Port, Hard to Stern, Tie Down, Abandon Ship, Play Instrument
   66. New spells: Greater Enchant Armor, Greater Enchant Weapon
   67. Fishing now has fishing.txt, with lots of expanded override fish-types.
   68. Smelting has been altered to work more like textiling, expanding its range of possibilities.
