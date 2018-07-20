@@ -141,7 +141,7 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		else
 		if(I.phyStats().weight()>amt[0])
 		{
-			I=(Item)CMLib.materials().unbundle(I,amt[0],null);
+			I=(Item)CMLib.materials().splitBundle(I,amt[0],null);
 			if(I==null)
 				return false;
 			amt[0]=amt[0]-I.phyStats().weight();

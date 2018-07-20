@@ -330,14 +330,14 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 			final String realRecipeName=replacePercent(foundRecipe.get(RCP_FINALNAME),"");
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final int[] compData = new int[CF_TOTAL];
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(realRecipeName),autoGenerate,compData);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(realRecipeName),autoGenerate,compData,amount);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
 			woodRequired=adjustWoodRequired(woodRequired,mob);
-
 			if(amount>woodRequired)
 				woodRequired=amount;
+
 			final int[] pm={RawMaterial.MATERIAL_CLOTH};
 			final int[][] data=fetchFoundResourceData(mob,
 													woodRequired,"cloth",pm,
@@ -347,7 +347,7 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 													enhancedTypes);
 			if(data==null)
 				return false;
-			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList);
+			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList, amount);
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
@@ -388,10 +388,6 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 			else
 				itemName=CMLib.english().startWithAorAn(itemName);
 			buildingI.setName(itemName);
-			startStr=L("<S-NAME> start(s) weaving @x1.",buildingI.name());
-			displayText=L("You are weaving @x1",buildingI.name());
-			verb=L("weaving @x1",buildingI.name());
-			playSound="scissor.wav";
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
@@ -409,8 +405,13 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 			else
 				setBrand(mob, buildingI);
 			buildingI.recoverPhyStats();
+			CMLib.materials().adjustResourceName(buildingI);
 			buildingI.text();
 			buildingI.recoverPhyStats();
+			startStr=L("<S-NAME> start(s) weaving @x1.",buildingI.name());
+			displayText=L("You are weaving @x1",buildingI.name());
+			verb=L("weaving @x1",buildingI.name());
+			playSound="scissor.wav";
 		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);

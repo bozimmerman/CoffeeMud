@@ -494,7 +494,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			final String woodRequiredStr = foundRecipe.get(RCP_WOOD);
 			final int[] compData = new int[CF_TOTAL];
 			final String realRecipeName=replacePercent(foundRecipe.get(RCP_FINALNAME),"");
-			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(realRecipeName),autoGenerate,compData);
+			final List<Object> componentsFoundList=getAbilityComponents(mob, woodRequiredStr, "make "+CMLib.english().startWithAorAn(realRecipeName),autoGenerate,compData,1);
 			if(componentsFoundList==null)
 				return false;
 			int woodRequired=CMath.s_int(woodRequiredStr);
@@ -516,7 +516,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 													enhancedTypes);
 			if(data==null)
 				return false;
-			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList);
+			fixDataForComponents(data,woodRequiredStr,(autoGenerate>0) && (woodRequired==0),componentsFoundList, 1);
 			woodRequired=data[0][FOUND_AMT];
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;

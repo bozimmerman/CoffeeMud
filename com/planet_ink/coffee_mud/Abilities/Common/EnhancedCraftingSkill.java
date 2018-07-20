@@ -189,7 +189,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				bundle,autoGeneration,expMods);
 	}
 
-	public void fixDataForComponents(int[][] data, String woodRequiredStr, boolean autoGeneration, List<Object> componentsFoundList)
+	public void fixDataForComponents(int[][] data, String woodRequiredStr, boolean autoGeneration, List<Object> componentsFoundList, int amount)
 	{
 		boolean emptyComponents=false;
 		if((componentsFoundList==null)||(componentsFoundList.size()==0))
@@ -197,7 +197,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			emptyComponents=true;
 			if(componentsFoundList==null)
 				componentsFoundList=new ArrayList<Object>();
-			final List<AbilityComponent> componentsRequirements=getNonStandardComponentRequirements(woodRequiredStr);
+			final List<AbilityComponent> componentsRequirements=getNonStandardComponentRequirements(woodRequiredStr, amount);
 			if(componentsRequirements!=null)
 			{
 				final List<Item> components=CMLib.ableComponents().componentsSample(componentsRequirements, true);

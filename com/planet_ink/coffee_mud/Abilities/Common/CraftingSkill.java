@@ -1428,7 +1428,7 @@ public class CraftingSkill extends GatheringSkill
 		return true;
 	}
 
-	protected List<AbilityComponent> getNonStandardComponentRequirements(String woodRequiredStr)
+	protected List<AbilityComponent> getNonStandardComponentRequirements(String woodRequiredStr, int adjustAmounts)
 	{
 		final List<AbilityComponent> componentsRequirements;
 		if(woodRequiredStr==null)
@@ -1444,15 +1444,26 @@ public class CraftingSkill extends GatheringSkill
 		}
 		else
 			componentsRequirements=CMLib.ableComponents().getAbilityComponentMap().get(woodRequiredStr.toUpperCase());
-		return componentsRequirements;
+		if(adjustAmounts<=0)
+			return componentsRequirements;
+		if(componentsRequirements == null)
+			return null;
+		final List<AbilityComponent> newSet = new XVector<AbilityComponent>();
+		for(final AbilityComponent A : componentsRequirements)
+		{
+			AbilityComponent newA = (AbilityComponent)A.copyOf();
+			newA.setAmount(newA.getAmount() * adjustAmounts);
+			newSet.add(newA);
+		}
+		return newSet;
 	}
 	
-	public List<Object> getAbilityComponents(MOB mob, String componentID, String doingWhat, int autoGenerate, int[] compData)
+	public List<Object> getAbilityComponents(MOB mob, String componentID, String doingWhat, int autoGenerate, int[] compData, int adjustAmounts)
 	{
 		if(autoGenerate>0)
 			return new LinkedList<Object>();
 
-		final List<AbilityComponent> componentsRequirements=getNonStandardComponentRequirements(componentID);
+		final List<AbilityComponent> componentsRequirements=getNonStandardComponentRequirements(componentID, adjustAmounts);
 		if(componentsRequirements!=null)
 		{
 			final List<Object> components=CMLib.ableComponents().componentCheck(mob,componentsRequirements, true);
@@ -1460,7 +1471,7 @@ public class CraftingSkill extends GatheringSkill
 			{
 				if(compData != null)
 				{
-					for(Object o : components)
+					for(final Object o : components)
 					{
 						if(o instanceof Physical)
 							compData[CF_AMOUNT] += ((Physical)o).phyStats().weight();
