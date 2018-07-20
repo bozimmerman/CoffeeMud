@@ -1667,9 +1667,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 								else
 								if(CMParms.contains(Ability.DOMAIN_DESCS,abilityID)
-								&&((CMParms.indexOfIgnoreCase(Ability.DOMAIN_DESCS, abilityID)==(Ability.DOMAIN_BUILDINGSKILL<<5))
-									||(CMParms.indexOfIgnoreCase(Ability.ACODE_DESCS, abilityID)==(Ability.DOMAIN_EPICUREAN<<5))
-									||(CMParms.indexOfIgnoreCase(Ability.ACODE_DESCS, abilityID)==(Ability.DOMAIN_CRAFTINGSKILL<<5))))
+								&&((CMParms.indexOfIgnoreCase(Ability.DOMAIN_DESCS, abilityID)==(Ability.DOMAIN_BUILDINGSKILL>>5))
+									||(CMParms.indexOfIgnoreCase(Ability.DOMAIN_DESCS, abilityID)==(Ability.DOMAIN_EPICUREAN>>5))
+									||(CMParms.indexOfIgnoreCase(Ability.DOMAIN_DESCS, abilityID)==(Ability.DOMAIN_CRAFTINGSKILL>>5))))
 								{
 									this.abilityIDs.add(abilityID);
 								}
