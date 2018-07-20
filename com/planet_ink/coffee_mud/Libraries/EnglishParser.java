@@ -912,7 +912,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return PUNCTUATION_TABLE;
 	}
 
-	private boolean isPunctuation(final byte b)
+	@Override
+	public boolean isPunctuation(final byte b)
 	{
 		if((b<0)||(b>255))
 			return false;

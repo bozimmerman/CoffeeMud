@@ -125,46 +125,58 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	}
 
 	@Override
-	public String itemSeenString(MOB viewerM, Environmental item, boolean useName, boolean longLook, boolean sysmsgs)
+	public String itemSeenString(final MOB viewerM, final Environmental item, final boolean useName, final boolean longLook, final boolean sysmsgs, final boolean compress)
 	{
+		final String seen;
 		if(useName)
 		{
 			if(item instanceof Physical)
-				return CMStrings.capitalizeFirstLetter(((Physical)item).name(viewerM))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+				seen = CMStrings.capitalizeFirstLetter(((Physical)item).name(viewerM))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 			else
-				return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+				seen = CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 		}
 		else
 		if((longLook)&&(item instanceof Item)&&(((Item)item).container()!=null))
-			return CMStrings.capitalizeFirstLetter("     "+((Item)item).name(viewerM))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+			seen = CMStrings.capitalizeFirstLetter("     "+((Item)item).name(viewerM))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 		else
 		if(!item.name().equals(item.Name()))
 		{
 			if(item instanceof Physical)
-				return CMStrings.capitalizeFirstLetter(L("@x1 is here.",((Physical)item).name(viewerM)))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+				seen = CMStrings.capitalizeFirstLetter(L("@x1 is here.",((Physical)item).name(viewerM)))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 			else
-				return CMStrings.capitalizeFirstLetter(L("@x1 is here.",item.name()))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+				seen = CMStrings.capitalizeFirstLetter(L("@x1 is here.",item.name()))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
 		}
 		else
 		if(item.displayText().length()>0)
 		{
-			if(item instanceof Physical)
-				return CMStrings.capitalizeFirstLetter(((Physical)item).displayText(viewerM))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+			if(compress)
+			{
+				if(item instanceof Physical)
+					seen = CMStrings.capitalizeFirstLetterAndEndSentence(((Physical)item).displayText(viewerM))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+				else
+					seen = CMStrings.capitalizeFirstLetterAndEndSentence(item.displayText())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+			}
 			else
-				return CMStrings.capitalizeFirstLetter(item.displayText())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+			{
+				if(item instanceof Physical)
+					seen = CMStrings.capitalizeFirstLetter(((Physical)item).displayText(viewerM))+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+				else
+					seen = CMStrings.capitalizeFirstLetter(item.displayText())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+			}
 		}
 		else
-			return CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+			seen = CMStrings.capitalizeFirstLetter(item.name())+(sysmsgs?" ^H("+CMClass.classID(item)+")^N":"");
+		return seen;
 	}
 
 	@Override
-	public int getReps(MOB viewerM,
-					   Environmental item,
-					   List<? extends Environmental> theRest,
-					   boolean useName,
-					   boolean longLook)
+	public int getReps(final MOB viewerM,
+					   final Environmental item,
+					   final List<? extends Environmental> theRest,
+					   final boolean useName,
+					   final boolean longLook)
 	{
-		final String str=itemSeenString(viewerM,item,useName,longLook,false);
+		final String str=itemSeenString(viewerM,item,useName,longLook,false, false);
 		String str2=null;
 		int reps=0;
 		int here=0;
@@ -172,7 +184,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		while(here<theRest.size())
 		{
 			item2=theRest.get(here);
-			str2=itemSeenString(viewerM,item2,useName,longLook,false);
+			str2=itemSeenString(viewerM,item2,useName,longLook,false, false);
 			if(str2.length()==0)
 				theRest.remove(item2);
 			else
@@ -191,7 +203,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	}
 
 	@Override
-	public void appendReps(int reps, StringBuilder say, boolean compress)
+	public void appendReps(final int reps, final StringBuilder say, final boolean compress)
 	{
 		if(compress)
 		{
@@ -248,13 +260,13 @@ public class CMLister extends StdLibrary implements ListingLibrary
 	}
 
 	@Override
-	public StringBuilder lister(MOB viewerM,
-								List<? extends Environmental> items,
-								boolean useName,
-								String tag,
-								String tagParm,
-								boolean longLook,
-								boolean compress)
+	public StringBuilder lister(final MOB viewerM,
+								final List<? extends Environmental> items,
+								final boolean useName,
+								final String tag,
+								final String tagParm,
+								final boolean longLook,
+								final boolean compress)
 	{
 		final boolean nameTagParm=((tagParm!=null)&&(tagParm.indexOf('*')>=0));
 		final StringBuilder say=new StringBuilder("");
@@ -294,7 +306,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 				}
 				if((compress)&&(item instanceof Physical))
 					say.append(CMLib.flags().getDispositionBlurbs((Physical)item,viewerM)+"^I");
-				say.append(itemSeenString(viewerM,item,useName,longLook,sysmsgs));
+				say.append(itemSeenString(viewerM,item,useName,longLook,sysmsgs, compress));
 				if(tag!=null)
 					say.append("^</"+tag+"^>");
 				if((!compress)&&(item instanceof Physical))
@@ -332,7 +344,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
 							say.append("^I");
 							if(compress)
 								say.append(CMLib.flags().getDispositionBlurbs(item2,viewerM)+"^I");
-							say.append(CMStrings.endWithAPeriod(itemSeenString(viewerM,item2,useName,longLook,sysmsgs)));
+							say.append(CMStrings.endWithAPeriod(itemSeenString(viewerM,item2,useName,longLook,sysmsgs, compress)));
 							if(!compress)
 								say.append(CMLib.flags().getDispositionBlurbs(item2,viewerM)+"^N\n\r");
 							else

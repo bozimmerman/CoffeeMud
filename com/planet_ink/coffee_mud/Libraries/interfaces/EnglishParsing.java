@@ -41,6 +41,7 @@ public interface EnglishParsing extends CMLibrary
 	public String cleanPrepositions(String s);
 	public boolean startsWithAnArticle(String s);
 	public String stripPunctuation(String str);
+	public boolean isPunctuation(final byte b);
 	public boolean hasPunctuation(String str);
 	public String makePlural(String str);
 	public String makeSingular(String str);

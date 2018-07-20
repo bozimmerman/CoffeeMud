@@ -1077,6 +1077,86 @@ public class CMStrings
 	/**
 	 * Capitalizes the first letter in the given string, if one is found.
 	 * This method respects special CoffeeMUD color codes, skipping over
+	 * them to find that elusive first letter.  This will also add a period
+	 * at the end, if no other punctuation is found.
+	 * @param name the string to capitalize and punctuationify
+	 * @return the string, capitalized and punctuated
+	 */
+	public final static String capitalizeFirstLetterAndEndSentence(final String name)
+	{
+		final StringBuilder  c=new StringBuilder(name);
+		int lastLetter = -1;
+		int firstLetter = -1;
+		int lastPunctuation = -1;
+		int i=0;
+		for(;i<c.length();i++)
+		{
+			if(c.charAt(i)=='^')
+			{
+				i++;
+				if(i<c.length())
+				{
+					switch(c.charAt(i))
+					{
+					case ColorLibrary.COLORCODE_FANSI256:
+						i += 3;
+						break;
+					case ColorLibrary.COLORCODE_BANSI256:
+						i += 3;
+						break;
+					case ColorLibrary.COLORCODE_BACKGROUND:
+						i++;
+						break;
+					case '<':
+						while(i<c.length()-1)
+						{
+							if((c.charAt(i)!='^')||(c.charAt(i+1)!='>'))
+								i++;
+							else
+							{
+								i++;
+								break;
+							}
+						}
+						break;
+					case '&':
+						while(i<c.length())
+						{
+							if(c.charAt(i)!=';')
+								i++;
+							else
+								break;
+						}
+						break;
+					}
+				}
+			}
+			else
+			if(Character.isLetter(c.charAt(i))&&(firstLetter < 0))
+				firstLetter = i;
+			else
+			if(Character.isLetterOrDigit(c.charAt(i)))
+				lastLetter = i;
+			else
+			if("!?.*&$@)".indexOf(c.charAt(i))>=0)
+				lastPunctuation = i;
+		}
+		if((firstLetter >= 0) && (firstLetter<c.length()))
+			c.setCharAt(firstLetter, Character.toUpperCase(c.charAt(firstLetter)));
+		if(lastLetter > 0)
+		{
+			if(lastLetter == c.length()-1)
+				c.append(".");
+			else
+			if(lastPunctuation < lastLetter)
+				c.insert(lastLetter+1, ".");
+		}
+		return c.toString().trim();
+	}
+	
+	/**
+	 * Capitalizes the first letter in the given string, if one is found.
+	 * This method respects special CoffeeMUD color codes, skipping over
 	 * them to find that elusive first letter.
 	 * @param name the string to capitalize
 	 * @return the string, capitalized
