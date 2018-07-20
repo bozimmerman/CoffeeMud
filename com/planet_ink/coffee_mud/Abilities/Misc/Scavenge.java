@@ -156,7 +156,10 @@ public class Scavenge extends StdAbility
 					if((newFound.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
 					{
 						for(int x=0;x<(adjustedLevel(mob,asLevel)/8);x++)
-							finalResources.add(i, (RawMaterial)newFound.copyOf());
+							if(i<finalResources.size()-1)
+								finalResources.add(i, (RawMaterial)newFound.copyOf());
+							else
+								finalResources.add((RawMaterial)newFound.copyOf());
 						break;
 					}
 				}
