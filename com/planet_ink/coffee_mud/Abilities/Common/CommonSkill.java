@@ -166,6 +166,26 @@ public class CommonSkill extends StdAbility
 		return activityCode | CMMsg.TYP_ITEMSGENERATED;
 	}
 
+	protected String getAlmostDoneMessage()
+	{
+		final String sound=(playSound!=null)?CMLib.protocol().msp(playSound,10):"";
+		return L("<S-NAME> <S-IS-ARE> almost done @x1.@x2",verb,sound);
+	}
+
+	protected String getYouContinueMessage()
+	{
+		final int total=tickUp+tickDown;
+		final int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
+		final String sound=(playSound!=null)?CMLib.protocol().msp(playSound,10):"";
+		return L("<S-NAME> continue(s) @x1 (@x2% completed).@x3",verb,""+pct,sound);
+	}
+
+	protected String getOthersContinueMessage()
+	{
+		final String sound=(playSound!=null)?CMLib.protocol().msp(playSound,10):"";
+		return L("<S-NAME> continue(s) @x1.@x2",verb,sound);
+	}
+
 	@Override
 	public int abilityCode()
 	{
@@ -211,10 +231,9 @@ public class CommonSkill extends StdAbility
 				unInvoke();
 				return false;
 			}
-			final String sound=(playSound!=null)?CMLib.protocol().msp(playSound,10):"";
 			if(tickDown==4)
 			{
-				if(!R.show(mob,null,getActivityMessageType(),L("<S-NAME> <S-IS-ARE> almost done @x1.@x2",verb,sound)))
+				if(!R.show(mob,null,getActivityMessageType(),getAlmostDoneMessage()))
 				{
 					aborted=true;
 					unInvoke();
@@ -224,9 +243,7 @@ public class CommonSkill extends StdAbility
 			else
 			if((tickUp%4)==0)
 			{
-				final int total=tickUp+tickDown;
-				final int pct=(int)Math.round(CMath.div(tickUp,total)*100.0);
-				if(!R.show(mob,null,this,getActivityMessageType(),L("<S-NAME> continue(s) @x1 (@x2% completed).@x3",verb,""+pct,sound),null,L("<S-NAME> continue(s) @x1.@x2",verb,sound)))
+				if(!R.show(mob,null,this,getActivityMessageType(),this.getYouContinueMessage(),null,this.getOthersContinueMessage()))
 				{
 					aborted=true;
 					unInvoke();
