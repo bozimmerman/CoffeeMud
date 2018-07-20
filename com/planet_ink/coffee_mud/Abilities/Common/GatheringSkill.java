@@ -139,7 +139,9 @@ public class GatheringSkill extends CommonSkill
 		{
 			final StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,CMFile.FLAG_LOGERRORS).text();
 			V=loadList(str);
-			if((V.size()==0)&&(!ID().equals("GenCraftSkill")))
+			if((V.size()==0)
+			&&(!ID().equals("GenCraftSkill"))
+			&&(!ID().endsWith("Costuming")))
 				Log.errOut(ID(),"Recipes not found!");
 			Resources.submitResource("PARSED_RECIPE: "+filename,V);
 		}
