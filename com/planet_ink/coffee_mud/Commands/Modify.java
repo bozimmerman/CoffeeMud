@@ -1390,7 +1390,9 @@ public class Modify extends StdCommand
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  @x1s.",S.name()));
 		CMLib.socials().modifySocialInterface(mob,(name+" "+oldStuff).trim());
 		allSocials = CMLib.socials().getSocialsSet(name);
-		boolean changed = allSocials.size() != oldSocials.size();
+		if(allSocials==null)
+			allSocials=new ArrayList<Social>();
+		boolean changed = allSocials. size() != oldSocials.size();
 		if(!changed)
 		{
 			for(int a=0;a<oldSocials.size();a++)
