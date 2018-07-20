@@ -1596,7 +1596,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									A=(Ability)parms[0];
 								else
 									A=null;
-								if((A!=null)&&(abilityIDs.contains("*")||abilityIDs.contains(A.ID())))
+								if((A!=null)
+								&&(abilityIDs.contains("*")
+									||abilityIDs.contains(A.ID())
+									||(abilityIDs.contains(Ability.ACODE_DESCS[A.classificationCode()&Ability.ALL_ACODES]))
+									||(abilityIDs.contains(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5]))))
 								{
 									count+=bumpNum;
 									return true;
@@ -1648,14 +1652,32 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 						else
 						{
-							final Ability A=CMClass.getAbility(abilityID);
+							final Ability A;
+							A=CMClass.getAbility(abilityID);
 							if((A==null)
 							||((A.classificationCode() & Ability.ALL_ACODES)!=Ability.ACODE_COMMON_SKILL)
 							||(((A.classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_BUILDINGSKILL)
 								&&((A.classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_EPICUREAN)
 								&&((A.classificationCode() & Ability.ALL_DOMAINS)!=Ability.DOMAIN_CRAFTINGSKILL)))
+							{
+								if(CMParms.contains(Ability.ACODE_DESCS,abilityID)
+								&&(CMParms.indexOfIgnoreCase(Ability.ACODE_DESCS, abilityID)==Ability.ACODE_COMMON_SKILL))
+								{
+									this.abilityIDs.add(abilityID);
+								}
+								else
+								if(CMParms.contains(Ability.DOMAIN_DESCS,abilityID)
+								&&((CMParms.indexOfIgnoreCase(Ability.DOMAIN_DESCS, abilityID)==(Ability.DOMAIN_BUILDINGSKILL<<5))
+									||(CMParms.indexOfIgnoreCase(Ability.ACODE_DESCS, abilityID)==(Ability.DOMAIN_EPICUREAN<<5))
+									||(CMParms.indexOfIgnoreCase(Ability.ACODE_DESCS, abilityID)==(Ability.DOMAIN_CRAFTINGSKILL<<5))))
+								{
+									this.abilityIDs.add(abilityID);
+								}
+								else
 									return "Error: Unknown crafting ABILITYID: "+abilityID+"!";
-							this.abilityIDs.add(A.ID());
+							}
+							else
+								this.abilityIDs.add(A.ID());
 						}
 					}
 					if(this.abilityIDs.size()==0)
