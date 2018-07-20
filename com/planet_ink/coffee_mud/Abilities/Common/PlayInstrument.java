@@ -125,7 +125,10 @@ public class PlayInstrument extends CommonSkill
 	public String text()
 	{
 		proficiency();
-		return CMParms.toEqListString(proficiencies);
+		final Map<String,String> strMap=new HashMap<String,String>();
+		for(final String key : proficiencies.keySet())
+			strMap.put(key, ""+proficiencies.get(key)[0]);
+		return CMParms.toEqListString(strMap);
 	}
 
 	@Override
