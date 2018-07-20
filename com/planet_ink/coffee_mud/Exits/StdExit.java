@@ -638,17 +638,22 @@ public class StdExit implements Exit
 		{
 			if(isOpen())
 			{
-				if((room!=null)
-				&&(!flags.canBeSeenBy(room,mob)))
-					viewMsg.append("darkness");
+				if(room != null)
+				{
+					if(!flags.canBeSeenBy(room,mob))
+						viewMsg.append("darkness");
+					else
+					if(displayText().length()>0)
+						viewMsg.append(displayText()
+								+flags.getDispositionBlurbs(this,mob)
+								+flags.getDispositionBlurbs(room,mob));
+					else
+					if(room!=null)
+						viewMsg.append(room.displayText(mob)+flags.getDispositionBlurbs(room,mob));
+				}
 				else
 				if(displayText().length()>0)
-					viewMsg.append(displayText()
-							+flags.getDispositionBlurbs(this,mob)
-							+flags.getDispositionBlurbs(room,mob));
-				else
-				if(room!=null)
-					viewMsg.append(room.displayText(mob)+flags.getDispositionBlurbs(room,mob));
+					viewMsg.append(displayText()+flags.getDispositionBlurbs(this,mob));
 			}
 			else
 			if((flags.canBeSeenBy(this,mob))
