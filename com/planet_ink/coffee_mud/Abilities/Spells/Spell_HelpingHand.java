@@ -165,22 +165,32 @@ public class Spell_HelpingHand extends Spell
 			Room handIR=CMLib.map().roomLocation(handI);
 			if(targetM.location() != handIR)
 			{
-				targetM.location().moveItemTo(handI);
-				if(frustration < 3)
-					targetM.location().show(CMLib.map().deity(), targetM, handI, CMMsg.MSG_OK_VISUAL, L("<O-NAME> floats into the room and gestures for <T-NAME> to follow it."));
-				else
-				if(frustration < 10)
-					targetM.location().show(CMLib.map().deity(), targetM, handI, CMMsg.MSG_OK_VISUAL, L("<O-NAME> floats into the room and urgently gestures for <T-NAME> to follow it."));
-				else
-				if(frustration < 20)
-					targetM.location().show(CMLib.map().deity(), targetM, handI, CMMsg.MSG_OK_VISUAL, L("<O-NAME> floats into the room and wildly gestures for <T-NAME> to follow it."));
-				else
-				if(frustration < 50)
-					targetM.location().show(CMLib.map().deity(), targetM, handI, CMMsg.MSG_OK_VISUAL, L("<O-NAME> floats into the room and INSISTS that <T-NAME> follow it."));
-				else
-					targetM.location().show(CMLib.map().deity(), targetM, handI, CMMsg.MSG_OK_VISUAL, L("<O-NAME> floats into the room, grabs <T-NAME> by the collar and DEMANDS that <T-NAME> follow it."));
+				if((frustration % 2) == 0)
+				{
+					targetM.location().moveItemTo(handI);
+					if(frustration < 3)
+						targetM.location().show(CMLib.map().deity(), targetM, handI, CMMsg.MSG_OK_VISUAL, L("<O-NAME> floats into the room and gestures for <T-NAME> to follow it."));
+					else
+					if(frustration < 10)
+						targetM.location().show(CMLib.map().deity(), targetM, handI, CMMsg.MSG_OK_VISUAL, L("<O-NAME> floats into the room and urgently gestures for <T-NAME> to follow it."));
+					else
+					if(frustration < 20)
+						targetM.location().show(CMLib.map().deity(), targetM, handI, CMMsg.MSG_OK_VISUAL, L("<O-NAME> floats into the room and wildly gestures for <T-NAME> to follow it."));
+					else
+					if(frustration < 30)
+						targetM.location().show(CMLib.map().deity(), targetM, handI, CMMsg.MSG_OK_VISUAL, L("<O-NAME> floats into the room and INSISTS that <T-NAME> follow it."));
+					else
+					if(frustration < 40)
+						targetM.location().show(CMLib.map().deity(), targetM, handI, CMMsg.MSG_OK_VISUAL, L("<O-NAME> floats into the room, grabs <T-NAME> by the collar and DEMANDS that <T-NAME> follow it."));
+					else
+					{
+						targetM.location().show(CMLib.map().deity(), targetM, handI, CMMsg.MSG_OK_VISUAL, L("<O-NAME> floats into the room, slaps <T-NAME> in the face, and disappears."));
+						unInvoke();
+						return false;
+					}
+					handIR=targetM.location();
+				}
 				frustration++;
-				handIR=targetM.location();
 				// give the target a second to read
 				return true;
 			}
