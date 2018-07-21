@@ -422,6 +422,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			if(B instanceof ScriptingEngine)
 				((ScriptingEngine)B).registerDefaultQuest(this.name());
 		}
+		if((E instanceof Item)
+		&&(((Item)E).numBehaviors()>0)
+		&&(!CMLib.threads().isTicking(E, Tickable.TICKID_ITEM_BEHAVIOR)))
+			CMLib.threads().startTickDown(E,Tickable.TICKID_ITEM_BEHAVIOR,1);
 	}
 
 	private Enumeration<Room> getAppropriateRoomSet(QuestState q)
@@ -2908,15 +2912,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									if(q.item==I3)
 									{
 										M2.moveItemTo(I3);
-										q.item=(Item)q.item.copyOf();
-										q.item.setOwner(null); // because the item copy is definitely nowhere
 										questifyScriptableBehavs(q.item);
+										q.item=(Item)q.item.copyOf();
+										questifyScriptableBehavs(q.item);
+										CMLib.threads().deleteTick(I3, Tickable.TICKID_ITEM_BEHAVIOR); // because it may not be used
+										q.item.setOwner(null); // because the item copy is definitely nowhere
 									}
 									else
 									{
-										I3=(Item)I3.copyOf();
-										I3.setOwner(null); // because the i3 copy is nowhere
 										questifyScriptableBehavs(I3);
+										I3=(Item)I3.copyOf();
+										questifyScriptableBehavs(I3);
+										CMLib.threads().deleteTick(I3, Tickable.TICKID_ITEM_BEHAVIOR); // because it may not be used
+										I3.setOwner(null); // because the i3 copy is nowhere
 										M2.moveItemTo(I3);
 									}
 								}
@@ -2932,9 +2940,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									q.item=(Item)q.item.copyOf();
 									q.item.setOwner(null);// because the copy is nowhere
 									questifyScriptableBehavs(q.item);
+									CMLib.threads().deleteTick(q.item, Tickable.TICKID_ITEM_BEHAVIOR); // because it may not be used
 								}
 								else
 								{
+									CMLib.threads().deleteTick(I3, Tickable.TICKID_ITEM_BEHAVIOR); // because it may not be used
 									I3=(Item)I3.copyOf();
 									I3.setOwner(null);// because the copy is nowhere
 									questifyScriptableBehavs(I3);

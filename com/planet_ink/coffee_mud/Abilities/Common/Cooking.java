@@ -695,7 +695,10 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			if(!messedUp)
 				CMLib.materials().addEffectsToResource(food);
 			food.basePhyStats().setWeight(food.basePhyStats().weight()/finalAmount);
-			food.setBite(food.nourishment() / (food.basePhyStats().weight()*2));
+			if(food.basePhyStats().weight()>0)
+				food.setBite(food.nourishment() / (food.basePhyStats().weight()*2));
+			else
+				food.setBite(food.nourishment());
 			playSound=defaultFoodSound;
 		}
 		else
@@ -744,7 +747,10 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			{
 				drink.setLiquidRemaining(drink.liquidRemaining()+homeCookValue(mob,10));
 				drink.setLiquidHeld(drink.liquidRemaining()+homeCookValue(mob,10));
-				drink.setThirstQuenched(drink.liquidRemaining()/(buildingI.basePhyStats().weight()*2));
+				if(buildingI.basePhyStats().weight()>0)
+					drink.setThirstQuenched(drink.liquidRemaining()/(buildingI.basePhyStats().weight()*2));
+				else
+					drink.setThirstQuenched(drink.liquidRemaining());
 			}
 			else
 			{
