@@ -143,7 +143,7 @@ mo	COVER	You cover your ears to protect them from the noise.	<S-NAME> covers <S-
 mo	COVER <T-NAME>	You glare at <T-NAMESELF> and cover your ears.	<S-NAME> glares at <T-NAMESELF> and covers <S-HIS-HER> ears.	<S-NAME> covers <S-HIS-HER> ears because of you... you are TOO LOUD!	They aren't here right now.	
 mo	COVER SELF	No... I don't think so.				
 mo	COWER	You cower in a corner.	<S-NAME> cowers in a corner and whimpers softly.			
-mo	COWER <T-NAME>	You cower away from <T-NAMESELF> and <T-HIS-HER> harsh words.	<S-NAME> cowers in a corner, terrified that <T-NAMESELF> will come after <S-HIM-HER>.	You scared poor <S-NAME>!  Now <T-HIS-HER> is cowering in a corner, afraid for <S-HIS-HER> life.	That person is AWOL at the moment.	
+mo	COWER <T-NAME>	You cower away from <T-NAMESELF> and <T-HIS-HER> harsh words.	<S-NAME> cowers in a corner, terrified that <T-NAMESELF> will come after <S-HIM-HER>.	You scared poor <S-NAME>!  Now <S-HE-SHE> <S-IS-ARE> cowering in a corner, afraid for <S-HIS-HER> life.	That person is AWOL at the moment.	
 mo	COWER SELF	You are afraid of your own shadow!	<S-NAME> cowers in the corner afraid of <S-HIS-HER> own shadow			
 mv	CPAT	Who do you want to pat on the cheek?				
 mv	CPAT <T-NAME>	You pat <T-YOUPOSS> cheek gently.	<S-NAME> pats <T-YOUPOSS> cheek amicably.	<S-NAME> pats <T-YOUPOSS> cheek gently.	They don`t want you to touch them, apparently -- they aren`t there.	
