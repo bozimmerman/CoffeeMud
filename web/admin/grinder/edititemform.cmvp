@@ -317,7 +317,7 @@
 		</TD>
 	</TR>
 	@endif@
-	@if?!ItemData?ISLIMB@
+	@if?ItemData?ISLIMB@
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Limb Race ID:</B></FONT></TD>
 		<TD WIDTH=450 COLSPAN=2>
