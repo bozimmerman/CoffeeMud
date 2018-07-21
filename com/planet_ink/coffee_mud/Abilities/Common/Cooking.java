@@ -913,9 +913,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	protected void applyName(Item item, String word)
+	protected void applyName(Item item, String word, boolean hide)
 	{
-		super.applyName(item, word);
+		super.applyName(item, word, hide);
 		if(!buildingI.description().contains(L("rotten")))
 			buildingI.setDescription(L("It looks @x1",((messedUp)?"burnt!":(word+"!"))));
 	}
