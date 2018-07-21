@@ -107,10 +107,10 @@ public class StdFood extends StdItem implements Food
 				||(mob.isMine(this))
 				||(!CMLib.flags().isGettable(this)))
 				{
-					int amountEaten=nourishmentPerBite;
-					if((amountEaten<1)||(amountEaten>amountOfNourishment))
-						amountEaten=amountOfNourishment;
-					msg.setValue((amountEaten<amountOfNourishment)?amountEaten:0);
+					int amountEaten=bite();
+					if((amountEaten<1)||(amountEaten>nourishment()))
+						amountEaten=nourishment();
+					msg.setValue((amountEaten<nourishment())?amountEaten:0);
 					return true;
 				}
 				mob.tell(L("You don't have that."));
@@ -144,17 +144,17 @@ public class StdFood extends StdItem implements Food
 						A.invoke(mob, mob, true, 0);
 					}
 				}
-				int amountEaten=nourishmentPerBite;
-				if((amountEaten<1)||(amountEaten>amountOfNourishment))
-					amountEaten=amountOfNourishment;
-				amountOfNourishment-=amountEaten;
+				int amountEaten=bite();
+				if((amountEaten<1)||(amountEaten>nourishment()))
+					amountEaten=nourishment();
+				setNourishment(nourishment()-amountEaten);
 				final boolean full=!mob.curState().adjHunger(amountEaten,mob.maxState().maxHunger(mob.baseWeight()));
 				if((hungry)&&(mob.curState().getHunger()>0))
 					mob.tell(L("You are no longer hungry."));
 				else
 				if(full)
 					mob.tell(L("You are full."));
-				if(amountOfNourishment<=0)
+				if(nourishment()<=0)
 					this.destroy();
 				if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();

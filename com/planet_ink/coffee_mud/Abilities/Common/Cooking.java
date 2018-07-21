@@ -562,9 +562,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 							timesTwo=true;
 						else
 						if(I instanceof Food)
-							food.setNourishment(food.nourishment()+(((Food)I).nourishment()+((Food)I).nourishment()));
+							food.setNourishment(food.nourishment()+(((Food)I).nourishment()+((Food)I).nourishment())+25);
 						else
-							food.setNourishment(food.nourishment()+10);
+							food.setNourishment(food.nourishment()+25);
 					}
 				}
 				else
@@ -597,8 +597,6 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				}
 				if(timesTwo)
 					food.setNourishment(food.nourishment()*2);
-				if(food.nourishment()>300)
-					food.setBite((int)Math.round(Math.ceil(CMath.div(food.nourishment(),2))));
 			}
 			int material=-1;
 			for(int vr=RCP_MAININGR;vr<finalRecipe.size();vr+=2)
@@ -697,6 +695,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			if(!messedUp)
 				CMLib.materials().addEffectsToResource(food);
 			food.basePhyStats().setWeight(food.basePhyStats().weight()/finalAmount);
+			food.setBite(food.nourishment() / (food.basePhyStats().weight()*2));
 			playSound=defaultFoodSound;
 		}
 		else
@@ -733,18 +732,19 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					final Item I=contents.get(v);
 					buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()+((I.basePhyStats().weight())/finalAmount));
 					if(I instanceof Food)
-						drink.setLiquidRemaining(drink.liquidRemaining()+((Food)I).nourishment());
+						drink.setLiquidRemaining(drink.liquidRemaining()+((Food)I).nourishment()+25);
 					if((I instanceof Drink)
 					&&(liquidType < 0)
 					&&((((Drink)I).liquidType()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 						liquidType=((Drink)I).liquidType();
 				}
 			}
+			buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()/finalAmount);
 			if(drink.liquidRemaining()>0)
 			{
 				drink.setLiquidRemaining(drink.liquidRemaining()+homeCookValue(mob,10));
-				drink.setLiquidHeld(drink.liquidRemaining());
-				drink.setThirstQuenched(drink.liquidRemaining());
+				drink.setLiquidHeld(drink.liquidRemaining()+homeCookValue(mob,10));
+				drink.setThirstQuenched(drink.liquidRemaining()/(buildingI.basePhyStats().weight()*2));
 			}
 			else
 			{
@@ -752,7 +752,6 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				drink.setLiquidRemaining(1);
 				drink.setThirstQuenched(1);
 			}
-			buildingI.basePhyStats().setWeight(buildingI.basePhyStats().weight()/finalAmount);
 			if(messedUp)
 				drink.setThirstQuenched(1);
 			else

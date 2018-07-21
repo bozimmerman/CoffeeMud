@@ -2909,11 +2909,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									{
 										M2.moveItemTo(I3);
 										q.item=(Item)q.item.copyOf();
+										q.item.setOwner(null); // because the item copy is definitely nowhere
 										questifyScriptableBehavs(q.item);
 									}
 									else
 									{
 										I3=(Item)I3.copyOf();
+										I3.setOwner(null); // because the i3 copy is nowhere
 										questifyScriptableBehavs(I3);
 										M2.moveItemTo(I3);
 									}
@@ -2928,11 +2930,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								{
 									M2.moveItemTo(I3);
 									q.item=(Item)q.item.copyOf();
+									q.item.setOwner(null);// because the copy is nowhere
 									questifyScriptableBehavs(q.item);
 								}
 								else
 								{
 									I3=(Item)I3.copyOf();
+									I3.setOwner(null);// because the copy is nowhere
 									questifyScriptableBehavs(I3);
 									M2.moveItemTo(I3);
 								}
