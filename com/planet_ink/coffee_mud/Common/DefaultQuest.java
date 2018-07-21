@@ -2618,6 +2618,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
 							I.recoverPhyStats();
 							I.text();
+							CMLib.threads().deleteTick(I,Tickable.TICKID_ITEM_BEHAVIOR);
 						}
 					}
 					else
@@ -2765,7 +2766,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							||(CMLib.english().containsString(I2.name(),itemName))
 							||(CMLib.english().containsString(I2.displayText(),itemName))
 							||(CMLib.english().containsString(I2.description(),itemName)))
-								choices.add((Item)I2.copyOf());
+							{
+								final Item I3=(Item)I2.copyOf();
+								CMLib.threads().deleteTick(I3,Tickable.TICKID_ITEM_BEHAVIOR);
+								choices.add(I3);
+							}
 						}
 						if(choices.size()==0)
 						{
@@ -2783,7 +2788,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						while((itemsToDo.size()>maxToLoad)&&(maxToLoad>0))
 							itemsToDo.remove(CMLib.dice().roll(1,itemsToDo.size(),-1));
 						while((itemsToDo.size()<maxToLoad)&&(maxToLoad>0)&&(maxToLoad<Integer.MAX_VALUE))
-							itemsToDo.add((Item)(itemsToDo.get(CMLib.dice().roll(1,itemsToDo.size(),-1))).copyOf());
+						{
+							final Item I3=(Item)(itemsToDo.get(CMLib.dice().roll(1,itemsToDo.size(),-1))).copyOf();
+							CMLib.threads().deleteTick(I3,Tickable.TICKID_ITEM_BEHAVIOR);
+							itemsToDo.add(I3);
+						}
 						final Room choiceRoom=q.room;
 						for(int m=0;m<itemsToDo.size();m++)
 						{
