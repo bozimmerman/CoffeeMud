@@ -300,6 +300,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		if((I instanceof RawMaterial)
 		&&(I.container()==C)
 		&&(!CMLib.flags().isOnFire(I))
+		&&(!CMLib.flags().isABonusItems(I))
 		&&(!CMLib.flags().isEnchanted(I)))
 		{
 			final Ability rott=I.fetchEffect("Poison_Rotten");

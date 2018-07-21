@@ -171,9 +171,42 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(((msg.target()==cookingPot)||(msg.tool()==cookingPot))
+		&&(CMath.bset(msg.targetMajor(), CMMsg.MASK_HANDS))
+		&&(!CMath.bset(msg.targetMajor(), CMMsg.MASK_ALWAYS))
+		&&(requireFire())
+		&&(affected instanceof MOB))
+		{
+			msg.source().tell(L("Ouch! That's HOT!"));
+			return false;
+		}
+		return super.okMessage(myHost, msg);
+	}
+	
+	public void stirThePot(final MOB mob)
+	{
+		if(buildingI!=null)
+		{
+			if((tickUp % 5)==1)
+			{
+				final Room R=mob.location();
+				if(R==activityRoom)
+				{
+					R.show(mob,cookingPot,buildingI,CMMsg.MASK_ALWAYS|getActivityMessageType(),
+							L("<S-NAME> taste-test(s) the <O-NAME> in <T-NAME>."));
+				}
+			}
+		}
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
+		if((affected!=null)
+		&&(affected instanceof MOB)
+		&&(tickID==Tickable.TICKID_MOB))
 		{
 			final MOB mob=(MOB)affected;
 			if((cookingPot==null)
@@ -230,7 +263,14 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		{
 			if(affected instanceof MOB)
 			{
-				if((cookingPot!=null)&&(finalRecipe!=null)&&(buildingI!=null))
+				final MOB mob=(MOB)affected;
+				final Container cookingPot=(Container)this.cookingPot;
+				final List<String> finalRecipe = this.finalRecipe;
+				final Item buildingI=(Item)this.buildingI;
+				if((cookingPot!=null)
+				&&(finalRecipe!=null)
+				&&(buildingI!=null)
+				&&(mob!=null))
 				{
 					final List<Item> V=cookingPot.getDeepContents();
 					for(int v=0;v<V.size();v++)
@@ -238,21 +278,30 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					if((cookingPot instanceof Drink)&&(buildingI instanceof Drink))
 						((Drink)cookingPot).setLiquidRemaining(0);
 					if(!aborted)
-					for(int i=0;i<finalAmount*(baseYield()+abilityCode());i++)
 					{
-						final Item food=((Item)buildingI.copyOf());
-						food.setMiscText(buildingI.text());
-						food.recoverPhyStats();
-						if(cookingPot.owner() instanceof Room)
-							((Room)cookingPot.owner()).addItem(food,ItemPossessor.Expire.Player_Drop);
-						else
-						if(cookingPot.owner() instanceof MOB)
-							((MOB)cookingPot.owner()).addItem(food);
-						food.setContainer(cookingPot);
-						if(((food.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
-						&&(cookingPot instanceof Drink))
-							((Drink)cookingPot).setLiquidRemaining(0);
-
+						final CMMsg msg=CMClass.getMsg(mob,buildingI,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
+						setMsgXPValue(mob,msg);
+						if(mob.location().okMessage(mob,msg))
+						{
+							mob.location().send(mob,msg);
+							buildingI.basePhyStats().setLevel(1); // the newbie exception
+							buildingI.phyStats().setLevel(1); // the newbie exception
+							for(int i=0;i<finalAmount*(baseYield()+abilityCode());i++)
+							{
+								final Item food=((Item)buildingI.copyOf());
+								food.setMiscText(buildingI.text());
+								food.recoverPhyStats();
+								if(cookingPot.owner() instanceof Room)
+									((Room)cookingPot.owner()).addItem(food,ItemPossessor.Expire.Player_Drop);
+								else
+								if(cookingPot.owner() instanceof MOB)
+									((MOB)cookingPot.owner()).addItem(food);
+								food.setContainer(cookingPot);
+								if(((food.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
+								&&(cookingPot instanceof Drink))
+									((Drink)cookingPot).setLiquidRemaining(0);
+							}
+						}
 					}
 				}
 			}
@@ -549,6 +598,8 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI.setName(((messedUp)?"burnt ":"")+finalDishName);
 			buildingI.setDisplayText(L("some @x1@x2 is here",((messedUp)?"burnt ":""),finalDishName));
 			buildingI.setDescription(L("It looks @x1",((messedUp)?"burnt!":rotten?"rotten!":"good!")));
+			buildingI.basePhyStats().setLevel(CMath.s_int(finalRecipe.get(RCP_LEVEL)));
+			buildingI.phyStats().setLevel(buildingI.basePhyStats().level());
 			food.setNourishment(0);
 			if(!messedUp)
 			{
@@ -598,6 +649,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				if(timesTwo)
 					food.setNourishment(food.nourishment()*2);
 			}
+			food.setNourishment((int)Math.round(food.nourishment()*(1+(.5*super.getXLEVELLevel(mob)))));
 			int material=-1;
 			for(int vr=RCP_MAININGR;vr<finalRecipe.size();vr+=2)
 			{
@@ -710,6 +762,8 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			buildingI.setName((messedUp?"spoiled ":"")+finalDishName);
 			buildingI.setDisplayText(L("some @x1@x2 is here.",((messedUp)?"spoiled ":""),finalDishName));
 			buildingI.setDescription(L("It looks @x1",((messedUp)?"spoiled!":rotten?"rotten!":"good!")));
+			buildingI.basePhyStats().setLevel(CMath.s_int(finalRecipe.get(RCP_LEVEL)));
+			buildingI.phyStats().setLevel(buildingI.basePhyStats().level());
 			final Drink drink=(Drink)buildingI;
 			int liquidType=RawMaterial.RESOURCE_FRESHWATER;
 			for(int vr=RCP_MAININGR;vr<finalRecipe.size();vr+=2)
@@ -751,6 +805,8 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					drink.setThirstQuenched(drink.liquidRemaining()/(buildingI.basePhyStats().weight()*2));
 				else
 					drink.setThirstQuenched(drink.liquidRemaining());
+				drink.setLiquidHeld((int)Math.round(drink.liquidHeld()*(1+(.5*super.getXLEVELLevel(mob)))));
+				drink.setLiquidRemaining((int)Math.round(drink.liquidRemaining()*(1+(.5*super.getXLEVELLevel(mob)))));
 			}
 			else
 			{
@@ -855,7 +911,15 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
+	@Override
+	protected void applyName(Item item, String word)
+	{
+		super.applyName(item, word);
+		if(!buildingI.description().contains(L("rotten")))
+			buildingI.setDescription(L("It looks @x1",((messedUp)?"burnt!":(word+"!"))));
+	}
+
 	@Override
 	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
 									final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
@@ -928,7 +992,8 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			return true;
 		}
 		randomRecipeFix(mob,allRecipes,commands,-1);
-		final int colWidth=CMLib.lister().fixColWidth(20,mob.session());
+		final int colWidth1=CMLib.lister().fixColWidth(20,mob.session());
+		final int colWidth2=CMLib.lister().fixColWidth(4,mob.session());
 		final int lineWidth=CMLib.lister().fixColWidth(78,mob.session());
 		if((commands.size()>0)
 		&&(commands.get(0)).equalsIgnoreCase("list"))
@@ -940,7 +1005,11 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				allFlag=true;
 				mask="";
 			}
-			final StringBuffer buf=new StringBuffer(L("@x1^.^? ^B^~wIngredients required^N\n\r",CMStrings.padRight(L("^xRecipe"),colWidth)));
+			final StringBuffer buf=new StringBuffer(
+				L("@x1 @x2^.^? ^B^~wIngredients required^N\n\r"
+				,CMStrings.padRight(L("^xRecipe"),colWidth1)
+				,CMStrings.padRight(L("^xLvl"),colWidth2))
+			);
 			for(int r=0;r<allRecipes.size();r++)
 			{
 				final List<String> Vr=allRecipes.get(r);
@@ -954,7 +1023,8 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						StringBuilder line=new StringBuilder("");
-						line.append("^c"+CMStrings.padRight(CMStrings.capitalizeAndLower(replacePercent(item,"")),colWidth)+"^w ");
+						line.append("^c"+CMStrings.padRight(CMStrings.capitalizeAndLower(replacePercent(item,"")),colWidth1)+"^w ")
+							.append(CMStrings.padRight(""+level,colWidth2)+"^w ");
 						for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)
 						{
 							String ingredient=Vr.get(vr);
@@ -976,7 +1046,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 								if(line.length()+next.length()-2>=lineWidth)
 								{
 									buf.append(line).append("\n\r");
-									line=new StringBuilder("^w ").append(CMStrings.padRight(" ", colWidth));
+									line=new StringBuilder("^w ")
+											.append(CMStrings.padRight(" ", colWidth1)).append(" ")
+											.append(CMStrings.padRight(" ", colWidth2));
 								}
 								line.append(next);
 							}

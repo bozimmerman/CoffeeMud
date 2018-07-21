@@ -99,4 +99,20 @@ public class FoodPrep extends Cooking
 		defaultFoodSound = "chopchop.wav";
 	}
 
+	@Override
+	public void stirThePot(final MOB mob)
+	{
+		if(buildingI!=null)
+		{
+			if((tickUp % 5)==1)
+			{
+				final Room R=mob.location();
+				if(R==activityRoom)
+				{
+					R.show(mob,cookingPot,buildingI,CMMsg.MASK_ALWAYS|getActivityMessageType(),
+							L("<S-NAME> do(es) prep work for <O-NAME>."));
+				}
+			}
+		}
+	}
 }

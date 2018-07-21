@@ -72,7 +72,7 @@ HELP_=<EXPERTISE>Knowledge of arcane symbology and custom for better arcane iden
 TUNING@x1=Artsy @x2,10,LEVEL,-SKILLFLAG +ARTISTIC,-MAXCLASSLEVEL +>={27+(5*@x1)},+CHA {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to use artistic skills to their greatest level.
 
-HOMECOOKING@x1=Home Cooking @x2,3,LEVEL,-SKILL +Cooking +Baking +Distilling +FoodPrep +Alchemy,-MAXCLASSLEVEL +>={10+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
+HOMECOOKING@x1=Home Cooking @x2,3,LEVEL,-SKILL +Cooking +Baking +Distilling +FoodPrep,-MAXCLASSLEVEL +>={10+(5*@x1)},+WIS {12+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cook, distil, food prep, or bake especially nourishing foods or thirst quenching drinks.
 
 IRONPUNCH@x1=Iron Punching @x2,10,LEVEL,-SKILLFLAG +PUNCHING,-MAXCLASSLEVEL +>={22+(5*@x1)},+STR {12+@x1},0,1,0,0,0
@@ -400,6 +400,10 @@ DATA_=Least,Lesser,Minor,Moderate,Great,Incredibe,Major,Wonderful,Super,Ultimate
 
 VIGOCOOK@x1=Vigorous Cooking @x2,10,X4,-SKILL +Cooking +MasterCooking,-MAXCLASSLEVEL +>={11+(7*@x1)},+CON {8+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to cook foods that fortify movement.
+DATA_=Least,Lesser,Minor,Moderate,Great,Incredibe,Major,Wonderful,Super,Ultimate
+
+VIGOPREP@x1=Creative Food Prep @x2,10,X4,-SKILL +FoodPrep +MasterFoodPrep,-MAXCLASSLEVEL +>={11+(7*@x1)},+CHA {8+@x1},0,1,0,0,0
+HELP_=<EXPERTISE>The ability to prep foods that fortify movement.
 DATA_=Least,Lesser,Minor,Moderate,Great,Incredibe,Major,Wonderful,Super,Ultimate
 
 LITECRAFT@x1=Light Crafting @x2,3,X1,-SKILL +Carpentry +Armorsmithing +MasterArmorsmithing +Blacksmithing +Cobbling +Costuming +Fletching +JewelMaking +LeatherWorking +MasterCostuming +MasterLeatherWorking +MasterTailoring +Paladin_CraftHolyAvenger +ScrimShaw +Sculpting +Tailoring +Weaponsmithing +MasterWeaponsmithing +LegendaryWeaponsmithing +Weaving,-CLASS +Archon,+DEX {10+(4*@x1)},0,20,0,0,0

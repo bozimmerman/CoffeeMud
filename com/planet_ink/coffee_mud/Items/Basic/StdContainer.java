@@ -511,7 +511,9 @@ public class StdContainer extends StdItem implements Container
 						return true;
 					break;
 				case CONTAIN_RAWMATERIALS:
-					return (I instanceof RawMaterial);
+					if(I instanceof RawMaterial)
+						return true;
+					break;
 				case CONTAIN_OTHERWEAPONS:
 					if((I instanceof Weapon)
 					&&(((Weapon)I).weaponClassification()!=Weapon.CLASS_SWORD)

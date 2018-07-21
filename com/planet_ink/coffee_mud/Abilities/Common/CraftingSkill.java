@@ -376,7 +376,7 @@ public class CraftingSkill extends GatheringSkill
 			}
 		}
 	}
-	
+
 	@Override
 	protected boolean dropAWinner(MOB mob, Item buildingI)
 	{

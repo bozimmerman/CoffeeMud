@@ -101,6 +101,23 @@ public class Distilling extends Cooking
 	}
 
 	@Override
+	public void stirThePot(final MOB mob)
+	{
+		if(buildingI!=null)
+		{
+			if((tickUp % 5)==1)
+			{
+				final Room R=mob.location();
+				if(R==activityRoom)
+				{
+					R.show(mob,cookingPot,buildingI,CMMsg.MASK_ALWAYS|getActivityMessageType(),
+							L("<S-NAME> stir(s) the <O-NAME> in <T-NAME>."));
+				}
+			}
+		}
+	}
+
+	@Override
 	public boolean mayICraft(final Item I)
 	{
 		if(I==null)
