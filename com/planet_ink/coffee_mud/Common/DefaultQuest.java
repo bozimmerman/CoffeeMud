@@ -423,7 +423,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				((ScriptingEngine)B).registerDefaultQuest(this.name());
 		}
 		if((E instanceof Item)
-		&&(((Item)E).numBehaviors()>0)
+		&&((((Item)E).numBehaviors()>0)||(((Item)E).numScripts()>0))
 		&&(!CMLib.threads().isTicking(E, Tickable.TICKID_ITEM_BEHAVIOR)))
 			CMLib.threads().startTickDown(E,Tickable.TICKID_ITEM_BEHAVIOR,1);
 	}
@@ -3023,6 +3023,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							final Environmental E2=(Environmental)toSet.get(i);
 							if(E2 instanceof PhysicalAgent)
 								runtimeRegisterBehavior((PhysicalAgent)E2,B.ID(),CMParms.combineQuoted(p,3),true);
+							if(E2 instanceof Item)
+								CMLib.threads().deleteTick(E2, Tickable.TICKID_ITEM_BEHAVIOR);
 						}
 					}
 					else
@@ -3119,6 +3121,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								S.setScript(val);
 								((PhysicalAgent)E2).addScript(S);
 								runtimeRegisterObject(((PhysicalAgent)E2));
+								if(E2 instanceof Item)
+									CMLib.threads().deleteTick(E2, Tickable.TICKID_ITEM_BEHAVIOR);
 								synchronized(questState)
 								{
 									questState.addons.addElement(new XVector(E2,S),Integer.valueOf(questState.preserveState));
