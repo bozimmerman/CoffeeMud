@@ -425,7 +425,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		if((E instanceof Item)
 		&&((((Item)E).numBehaviors()>0)||(((Item)E).numScripts()>0))
 		&&(!CMLib.threads().isTicking(E, Tickable.TICKID_ITEM_BEHAVIOR)))
+		{
 			CMLib.threads().startTickDown(E,Tickable.TICKID_ITEM_BEHAVIOR,1);
+		}
 	}
 
 	private Enumeration<Room> getAppropriateRoomSet(QuestState q)
@@ -2924,7 +2926,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 										questifyScriptableBehavs(q.item);
 										q.item=(Item)q.item.copyOf();
 										questifyScriptableBehavs(q.item);
-										CMLib.threads().deleteTick(I3, Tickable.TICKID_ITEM_BEHAVIOR); // because it may not be used
+										CMLib.threads().deleteTick(q.item, Tickable.TICKID_ITEM_BEHAVIOR); // because it may not be used
 										q.item.setOwner(null); // because the item copy is definitely nowhere
 									}
 									else
