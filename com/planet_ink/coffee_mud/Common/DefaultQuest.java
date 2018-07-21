@@ -3236,6 +3236,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							final Environmental E2=(Environmental)toSet.get(i);
 							if(E2 instanceof PhysicalAgent)
 								runtimeRegisterBehavior((PhysicalAgent)E2,B.ID(),CMParms.combineQuoted(p,3),false);
+							if(E2 instanceof Item)
+								CMLib.threads().deleteTick(E2, Tickable.TICKID_ITEM_BEHAVIOR);
 						}
 					}
 					else
