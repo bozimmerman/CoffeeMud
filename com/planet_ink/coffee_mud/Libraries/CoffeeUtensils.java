@@ -21,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.concurrent.TimeUnit;
 
 /*
    Copyright 2001-2018 Bo Zimmerman
@@ -1713,10 +1714,54 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					c++;
 					break;
 				}
+				case 'y':
+				{
+					final List<Ability> As = CMLib.flags().domainAffects(mob, Ability.ACODE_COMMON_SKILL);
+					if(As != null)
+					{
+						for(final Ability A : As)
+						{
+							final String pct=A.getStat("PCTREMAIN");
+							if(pct.length()>0)
+							{
+								buf.append(pct);
+								break;
+							}
+						}
+					}
+				}
+				case 'Y':
+				{
+					final List<Ability> As = CMLib.flags().domainAffects(mob, Ability.ACODE_COMMON_SKILL);
+					if(As != null)
+					{
+						for(final Ability A : As)
+						{
+							final String tickUpStr=A.getStat("TICKUP");
+							if(tickUpStr.length()>0)
+							{
+								long tr=A.expirationDate();
+								if(A.invoker()!=null)
+									tr=tr-(System.currentTimeMillis()-A.invoker().lastTickedDateTime());
+								if(tr<Ability.TICKS_ALMOST_FOREVER)
+									buf.append(CMLib.time().date2EllapsedTime(tr, TimeUnit.SECONDS, true));
+							}
+						}
+					}
+				}
 				case 'z':
 				{
 					if (mob.location() != null)
 						buf.append(mob.location().getArea().name());
+					c++;
+					break;
+				}
+				case 'Z':
+				{
+					final Room R=mob.location();
+					final SpaceObject O=CMLib.map().getSpaceObject(R,true);
+					if ( O != null)
+						buf.append(O.name());
 					c++;
 					break;
 				}
