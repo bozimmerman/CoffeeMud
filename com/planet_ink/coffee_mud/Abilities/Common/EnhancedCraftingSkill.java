@@ -183,6 +183,10 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				case VIGOCRAFT:
 				case IMBUCRAFT:
 					break;
+				case ADVNCRAFT:
+					break;
+				default:
+					break;
 				}
 			}
 		}
@@ -661,6 +665,68 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 						//addStatAdjustment(item,"DEX","+1");
 						affect.bumpTickDown(Math.round(0.5 * affect.tickDown));
 						break;
+					}
+					break;
+				}
+				case ADVNCRAFT:
+				{
+					if(stage > 0)
+					{
+						applyName(item,def.getData()[stage], hide);
+						item.basePhyStats().setLevel(item.basePhyStats().level()+stage+1);
+						item.phyStats().setLevel(item.basePhyStats().level()+stage+1);
+						if((item instanceof Weapon)
+						&&(item.basePhyStats().damage()>0))
+						{
+							final Item itemCopy=(Item)item.copyOf();
+							final int level=CMLib.itemBuilder().timsLevelCalculator(itemCopy);
+							itemCopy.basePhyStats().setLevel(level);
+							itemCopy.phyStats().setLevel(level);
+							CMLib.itemBuilder().balanceItemByLevel(itemCopy);
+							final int oldDamage=itemCopy.basePhyStats().damage();
+							itemCopy.basePhyStats().setLevel(level+stage+1);
+							itemCopy.phyStats().setLevel(level+stage+1);
+							CMLib.itemBuilder().balanceItemByLevel(itemCopy);
+							final int damDiff = itemCopy.basePhyStats().damage() - oldDamage;
+							item.basePhyStats().setDamage(item.basePhyStats().damage() + damDiff);
+							item.phyStats().setDamage(item.phyStats().damage() + damDiff);
+							itemCopy.destroy();
+						}
+						else
+						if((item instanceof Armor)
+						&&(item.basePhyStats().armor()>0))
+						{
+							final Item itemCopy=(Item)item.copyOf();
+							final int level=CMLib.itemBuilder().timsLevelCalculator(itemCopy);
+							itemCopy.basePhyStats().setLevel(level);
+							itemCopy.phyStats().setLevel(level);
+							CMLib.itemBuilder().balanceItemByLevel(itemCopy);
+							final int oldArmor=itemCopy.basePhyStats().armor();
+							itemCopy.basePhyStats().setLevel(level+stage+1);
+							itemCopy.phyStats().setLevel(level+stage+1);
+							CMLib.itemBuilder().balanceItemByLevel(itemCopy);
+							final int damDiff = itemCopy.basePhyStats().armor() - oldArmor;
+							item.basePhyStats().setArmor(item.basePhyStats().armor() + damDiff);
+							item.phyStats().setArmor(item.phyStats().armor() + damDiff);
+							itemCopy.destroy();
+						}
+						else
+						if((item instanceof Container)
+						&&(((Container)item).capacity()>0)
+						&&(((Container)item).capacity()<Integer.MAX_VALUE/2))
+							((Container)item).setCapacity(atLeast1(((Container)item).capacity(),0.1*(stage+1)));
+						else
+						if((item instanceof Food)
+						||((item instanceof Drink)&&(CMath.bset(item.material(), RawMaterial.MATERIAL_LIQUID))))
+						{
+							if(item instanceof Food)
+								((Food)item).setNourishment((int)Math.round(((Food)item).nourishment()*(1+(.5*(stage+1)))));
+							else
+							{
+								((Drink)item).setLiquidHeld((int)Math.round(((Drink)item).liquidHeld()*(1+(.5*(stage+1)))));
+								((Drink)item).setLiquidRemaining((int)Math.round(((Drink)item).liquidRemaining()*(1+(.5*stage))));
+							}
+						}
 					}
 					break;
 				}

@@ -649,7 +649,6 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				if(timesTwo)
 					food.setNourishment(food.nourishment()*2);
 			}
-			food.setNourishment((int)Math.round(food.nourishment()*(1+(.5*super.getXLEVELLevel(mob)))));
 			int material=-1;
 			for(int vr=RCP_MAININGR;vr<finalRecipe.size();vr+=2)
 			{
@@ -805,8 +804,6 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 					drink.setThirstQuenched(drink.liquidRemaining()/(buildingI.basePhyStats().weight()*2));
 				else
 					drink.setThirstQuenched(drink.liquidRemaining());
-				drink.setLiquidHeld((int)Math.round(drink.liquidHeld()*(1+(.5*super.getXLEVELLevel(mob)))));
-				drink.setLiquidRemaining((int)Math.round(drink.liquidRemaining()*(1+(.5*super.getXLEVELLevel(mob)))));
 			}
 			else
 			{

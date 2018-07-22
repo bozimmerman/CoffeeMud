@@ -120,6 +120,7 @@ public class CraftingSkill extends GatheringSkill
 
 	protected enum EnhancedExpertise
 	{
+		ADVNCRAFT("ADVN",ExpertiseLibrary.Flag.LEVEL),
 		LITECRAFT("LITE",ExpertiseLibrary.Flag.X1),
 		DURACRAFT("DURA",ExpertiseLibrary.Flag.X2),
 		QUALCRAFT("QUAL",ExpertiseLibrary.Flag.X3),

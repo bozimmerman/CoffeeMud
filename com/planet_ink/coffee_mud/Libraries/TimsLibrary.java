@@ -144,7 +144,15 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			final int wclass=((Weapon)savedI).weaponClassification();
 			final double dmgMod = this.timsDmgModifier(wclass);
 			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
-			final double attackLevel = (curAttack - this.timsBaseAttackModifier(wclass)) / this.timsAttackModifier(wclass);
+			final double baseAttack = (curAttack - timsBaseAttackModifier(wclass));
+			double attackLevel;
+			if(baseAttack < 0)
+				attackLevel = dmgLevel - baseAttack;
+			else
+			if(this.timsAttackModifier(wclass)>0.0)
+				attackLevel = baseAttack / this.timsAttackModifier(wclass);
+			else
+				attackLevel = dmgLevel + baseAttack;
 			level = (int)Math.round((dmgLevel + attackLevel) / 2.0);
 		}
 		else
@@ -578,7 +586,6 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			int damage=(int)Math.round((((level-1.0)/(((double)reach/(double)weight)+2.0) + ((double)weight-(double)baseattack)/5.0 -reach)*(((hands*2.0)+1.0)/2.0))*dmgModifier);
 			final int cost=(int)Math.round(2.0*(((double)weight*(double)materialvalue)+((2.0*damage)+baseattack+(reach*10.0))*damage)/(hands+1.0));
 			baseattack += (int)Math.round(level * this.timsAttackModifier(wclass));
-
 			if(basematerial==RawMaterial.MATERIAL_METAL)
 			{
 				switch(material&RawMaterial.MATERIAL_MASK)
@@ -915,7 +922,15 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			final int wclass = ((Weapon)I).weaponClassification();
 			final double dmgMod = this.timsDmgModifier(wclass);
 			final double dmgLevel = Math.floor(((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)/dmgMod))+1;
-			final double attackLevel = (curAttack - this.timsBaseAttackModifier(wclass)) / this.timsAttackModifier(wclass);
+			final double baseAttack = (curAttack - timsBaseAttackModifier(wclass));
+			double attackLevel;
+			if(baseAttack < 0)
+				attackLevel = dmgLevel - baseAttack;
+			else
+			if(this.timsAttackModifier(wclass)>0.0)
+				attackLevel = baseAttack / this.timsAttackModifier(wclass);
+			else
+				attackLevel = dmgLevel + baseAttack;
 			level = (int)Math.round((dmgLevel + attackLevel) / 2.0);
 		}
 		else
