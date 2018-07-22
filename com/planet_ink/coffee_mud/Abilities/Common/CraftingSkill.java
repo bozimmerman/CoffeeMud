@@ -245,6 +245,19 @@ public class CraftingSkill extends GatheringSkill
 	{
 		if(mob==null)
 			return recipes;
+		Collections.sort(recipes,new Comparator<List<String>>(){
+			@Override
+			public int compare(List<String> o1, List<String> o2)
+			{
+				if(o1.size()<=RCP_LEVEL)
+					return -1;
+				if(o2.size()<=RCP_LEVEL)
+					return 1;
+				final int level1=CMath.s_int(o1.get(RCP_LEVEL));
+				final int level2=CMath.s_int(o2.get(RCP_LEVEL));
+				return (level1>level2)?1:(level1<level2)?-1:0;
+			}
+		});
 		Item I=null;
 		List<List<String>> V=null;
 		List<String> V2=null;
@@ -937,6 +950,24 @@ public class CraftingSkill extends GatheringSkill
 		final List<List<String>> matches=new Vector<List<String>>();
 		if(recipeName.length()==0)
 			return matches;
+		int selNum=-1;
+		int lastPeriodDex = recipeName.lastIndexOf('.');
+		if(lastPeriodDex > 0)
+		{
+			if(CMath.isInteger(recipeName.substring(lastPeriodDex+1)))
+			{
+				selNum=CMath.s_int(recipeName.substring(lastPeriodDex+1));
+				recipeName=recipeName.substring(0,lastPeriodDex);
+			}
+			else
+			if(CMath.isInteger(recipeName.substring(0,lastPeriodDex))
+			&&(lastPeriodDex<recipeName.length()-1))
+			{
+				selNum=CMath.s_int(recipeName.substring(0,lastPeriodDex));
+				recipeName=recipeName.substring(lastPeriodDex+1);
+			}
+		}
+		
 		for(int r=0;r<recipes.size();r++)
 		{
 			final List<String> V=recipes.get(r);
@@ -947,33 +978,33 @@ public class CraftingSkill extends GatheringSkill
 					matches.add(V);
 			}
 		}
-		if(matches.size()>0)
-			return matches;
-		for(int r=0;r<recipes.size();r++)
+		if(matches.size()==0)
 		{
-			final List<String> V=recipes.get(r);
-			if(V.size()>0)
+			for(int r=0;r<recipes.size();r++)
 			{
-				final String item=V.get(RCP_FINALNAME);
-				if(((replacePercent(item,"").toUpperCase()+" ").startsWith(recipeName.toUpperCase())))
-					matches.add(V);
+				final List<String> V=recipes.get(r);
+				if(V.size()>0)
+				{
+					final String item=V.get(RCP_FINALNAME);
+					if(((replacePercent(item,"").toUpperCase()+" ").startsWith(recipeName.toUpperCase())))
+						matches.add(V);
+				}
 			}
 		}
-		if(matches.size()>0)
-			return matches;
-		for(int r=0;r<recipes.size();r++)
+		if(matches.size()==0)
 		{
-			final List<String> V=recipes.get(r);
-			if(V.size()>0)
+			for(int r=0;r<recipes.size();r++)
 			{
-				final String item=V.get(RCP_FINALNAME);
-				if(((" "+replacePercent(item,"").toUpperCase()+" ").indexOf(" "+recipeName.toUpperCase()+" ")>=0))
-					matches.add(V);
+				final List<String> V=recipes.get(r);
+				if(V.size()>0)
+				{
+					final String item=V.get(RCP_FINALNAME);
+					if(((" "+replacePercent(item,"").toUpperCase()+" ").indexOf(" "+recipeName.toUpperCase()+" ")>=0))
+						matches.add(V);
+				}
 			}
 		}
-		if(matches.size()>0)
-			return matches;
-		if(beLoose)
+		if(beLoose && (matches.size()==0))
 		{
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -985,48 +1016,56 @@ public class CraftingSkill extends GatheringSkill
 						matches.add(V);
 				}
 			}
-			if(matches.size()>0)
-				return matches;
-			final Vector<String> rn=CMParms.parse(recipeName);
-			final String lastWord=rn.lastElement();
-			if(lastWord.length()>1)
+			if(matches.size()==0)
 			{
-				for(int r=0;r<recipes.size();r++)
+				final Vector<String> rn=CMParms.parse(recipeName);
+				final String lastWord=rn.lastElement();
+				if(lastWord.length()>1)
 				{
-					final List<String> V=recipes.get(r);
-					if(V.size()>0)
+					for(int r=0;r<recipes.size();r++)
 					{
-						final String item=V.get(RCP_FINALNAME);
-						if((replacePercent(item,"").toUpperCase().indexOf(lastWord.toUpperCase())>=0)
-						||(lastWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
-							matches.add(V);
-					}
-				}
-			}
-			if((matches.size()>1)&&(rn.size()>1))
-			{
-				final String firstWord=rn.firstElement();
-				List<List<String>> otherMatches=new XVector<List<String>>();
-				if(firstWord.length()>1)
-				{
-					for(int r=0;r<matches.size();r++)
-					{
-						final List<String> V=matches.get(r);
+						final List<String> V=recipes.get(r);
 						if(V.size()>0)
 						{
 							final String item=V.get(RCP_FINALNAME);
-							if((replacePercent(item,"").toUpperCase().indexOf(firstWord.toUpperCase())>=0)
-							||(firstWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
-								otherMatches.add(V);
+							if((replacePercent(item,"").toUpperCase().indexOf(lastWord.toUpperCase())>=0)
+							||(lastWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+								matches.add(V);
 						}
 					}
-					if(otherMatches.size()<matches.size())
+				}
+				if((matches.size()>1)&&(rn.size()>1))
+				{
+					final String firstWord=rn.firstElement();
+					List<List<String>> otherMatches=new XVector<List<String>>();
+					if(firstWord.length()>1)
 					{
-						matches.clear();
-						matches.addAll(otherMatches);
+						for(int r=0;r<matches.size();r++)
+						{
+							final List<String> V=matches.get(r);
+							if(V.size()>0)
+							{
+								final String item=V.get(RCP_FINALNAME);
+								if((replacePercent(item,"").toUpperCase().indexOf(firstWord.toUpperCase())>=0)
+								||(firstWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+									otherMatches.add(V);
+							}
+						}
+						if(otherMatches.size()<matches.size())
+						{
+							matches.clear();
+							matches.addAll(otherMatches);
+						}
 					}
 				}
 			}
+		}
+		if(selNum>0)
+		{
+			final List<List<String>> newMatches=new Vector<List<String>>();
+			if(selNum<=matches.size())
+				newMatches.add(matches.get(selNum));
+			return newMatches;
 		}
 		return matches;
 	}

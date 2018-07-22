@@ -431,15 +431,6 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Wood required\n\r",
 					CMStrings.padRight(L("Item"),cols[0]),
 					CMStrings.padRight(L("Level"),cols[1])));
-			Collections.sort(recipes,new Comparator<List<String>>(){
-				@Override
-				public int compare(List<String> o1, List<String> o2)
-				{
-					final int level1=CMath.s_int(o1.get(RCP_LEVEL));
-					final int level2=CMath.s_int(o2.get(RCP_LEVEL));
-					return (level1>level2)?1:(level1<level2)?-1:0;
-				}
-			});
 			for(int r=0;r<recipes.size();r++)
 			{
 				final List<String> V=recipes.get(r);

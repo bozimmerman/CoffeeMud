@@ -245,20 +245,6 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		int duration=4;
 		if(str.equalsIgnoreCase("list"))
 		{
-			Collections.sort(recipes,new Comparator<List<String>>()
-			{
-				@Override
-				public int compare(List<String> o1, List<String> o2)
-				{
-					if(o1.size()<=RCP_LEVEL)
-						return -1;
-					if(o2.size()<=RCP_LEVEL)
-						return 1;
-					final int lvl1=CMath.s_int(o1.get(RCP_LEVEL));
-					final int lvl2=CMath.s_int(o2.get(RCP_LEVEL));
-					return lvl1==lvl2 ? 0 : lvl1 > lvl2 ? 1 : -1;
-				}
-			});
 			String mask=CMParms.combine(commands,1);
 			boolean allFlag=false;
 			if(mask.equalsIgnoreCase("all"))
