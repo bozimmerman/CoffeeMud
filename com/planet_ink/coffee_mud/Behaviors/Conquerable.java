@@ -69,7 +69,7 @@ public class Conquerable extends Arrest
 	protected String			journalName			= "";
 	protected boolean			allowLaw			= false;
 	protected boolean			switchOwnership		= false;
-	protected boolean			REVOLTNOW			= false;
+	protected int				revoltFails			= 0;
 	protected long				waitToReload		= 0;
 	protected long				conquestDate		= 0;
 	protected int				revoltDown			= REVOLTFREQ;
@@ -658,31 +658,33 @@ public class Conquerable extends Arrest
 					if((C==null)||(C.isLoyaltyThroughItems()))
 					{
 						final int chance=calcRevoltChance(A);
-						if((REVOLTNOW)&&(chance<100))
+						if(CMLib.dice().rollPercentage()<chance)
 						{
-							Log.sysOut("Conquerable",A.Name()+" revolted against "+holdingClan+" with "+chance+"% chance");
-							if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST))
-								Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+" with "+chance+"% chance, after "+calcItemControlPoints(myArea)+" item points of "+totalControlPoints+" control points.");
-							final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
-							for(int i=0;i<channels.size();i++)
-								CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("The inhabitants of @x1 have revolted against @x2.",myArea.name(),holdingClan),false);
-							if(journalName.length()>0)
-								CMLib.database().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".","See the subject line.");
-							if((prevHoldingClan.length()>0)
-							&&(!holdingClan.equalsIgnoreCase(prevHoldingClan))
-							&&(CMLib.clans().getClanAnyHost(prevHoldingClan)!=null)
-							&&(flagFound(A,prevHoldingClan)))
-								declareWinner(prevHoldingClan);
+							if(revoltFails>2)
+							{
+								Log.sysOut("Conquerable",A.Name()+" revolted against "+holdingClan+" with "+chance+"% chance");
+								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST))
+									Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+" with "+chance+"% chance, after "+calcItemControlPoints(myArea)+" item points of "+totalControlPoints+" control points.");
+								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
+								for(int i=0;i<channels.size();i++)
+									CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("The inhabitants of @x1 have revolted against @x2.",myArea.name(),holdingClan),false);
+								if(journalName.length()>0)
+									CMLib.database().DBWriteJournal(journalName,"Conquest","ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".","See the subject line.");
+								if((prevHoldingClan.length()>0)
+								&&(!holdingClan.equalsIgnoreCase(prevHoldingClan))
+								&&(CMLib.clans().getClanAnyHost(prevHoldingClan)!=null)
+								&&(flagFound(A,prevHoldingClan)))
+									declareWinner(prevHoldingClan);
+								else
+									endClanRule(L(" due to revolt"));
+								revoltFails=0;
+							}
 							else
-								endClanRule(L(" due to revolt"));
-						}
-						else
-						{
-							if(CMLib.dice().rollPercentage()<chance)
 							{
 								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 								for(int i=0;i<channels.size();i++)
 									CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("There are the rumblings of revolt in @x1.",myArea.name()),false);
+								revoltFails++;
 							}
 						}
 					}

@@ -1125,9 +1125,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					biteSize = remain;
 				final int[] namts=new int[] {
 					1,
+					50,
 					250,
 					500,
-					1000
+					1000,
+					5000
 				};
 				int eatNDex=namts.length;
 				for(int i=0;i<namts.length;i++)
@@ -1142,7 +1144,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					"crumb",
 					"nibble",
 					"bite",
-					"morsel"
+					"morsel",
+					"mouthful",
+					"gorging"
 				};
 				final String eatNoun=nstrs[eatNDex];
 				final int adjSize=(int)Math.round(CMath.div(namts[eatNDex] , biteSize));
