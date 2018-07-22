@@ -91,7 +91,8 @@ public class DrinkCmd extends StdCommand
 			for(int v=0;v<V.size();v++)
 			{
 				final Item I=V.get(v);
-				if((I instanceof Drink)&&(I instanceof RawMaterial))
+				if((I instanceof Drink)
+				&&(I instanceof RawMaterial))
 				{
 					tool=thisThang;
 					thisThang=I;

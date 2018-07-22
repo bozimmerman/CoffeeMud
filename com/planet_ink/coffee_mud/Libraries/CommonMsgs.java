@@ -1025,7 +1025,159 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						response.append(L("You believe it will hold about @x1 pounds.  ",""+finalCap));
 				}
 			}
-					
+			if((item instanceof Drink)
+			&&(!CMath.bset(item.material(), RawMaterial.MATERIAL_LIQUID))
+			&&(!CMath.bset(item.material(), RawMaterial.MATERIAL_GAS))
+			&&((mob==null)||(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>4)))
+			{
+				if(!((Drink)item).containsDrink())
+					response.append(L("It is empty.  "));
+				else
+				if(((Drink)item).liquidHeld()>0)
+				{
+					int remain = ((Drink)item).liquidRemaining();
+					int sipSize = ((Drink)item).thirstQuenched();
+					if(sipSize > remain)
+						sipSize = remain;
+					if(item instanceof Container)
+					{
+						final List<Item> V=((Container)item).getContents();
+						for(int v=0;v<V.size();v++)
+						{
+							final Item I=V.get(v);
+							if((I instanceof Drink)
+							&&(I instanceof RawMaterial)
+							&&(((Drink)I).containsDrink()))
+							{
+								remain+=((Drink)I).liquidRemaining();
+								if(((Drink)I).thirstQuenched() > sipSize)
+									sipSize = ((Drink)I).thirstQuenched();
+							}
+						}
+					}
+					final int[] namts=new int[] {
+						1,
+						50,
+						250,
+						500,
+						1000,
+						5000
+					};
+					int drNDex=namts.length;
+					for(int i=0;i<namts.length;i++)
+					{
+						if(namts[i]>sipSize)
+						{
+							drNDex=i;
+							break;
+						}
+					}
+					final String[] nstrs=new String[] {
+						"sip",
+						"swallow",
+						"quaff",
+						"swig",
+						"gulp",
+						"guzzle"
+					};
+					final String drNoun=nstrs[drNDex];
+					final int adjSize=(int)Math.round(CMath.div(namts[drNDex] , sipSize));
+					final int[] aamts=new int[] {
+						2,
+						3,
+						4,
+						5,
+						9
+					};
+					int drADex=aamts.length;
+					for(int i=0;i<aamts.length;i++)
+					{
+						if(aamts[i]>adjSize)
+						{
+							drADex=i;
+							break;
+						}
+					}
+					final String[] astrs=new String[] {
+						"tiny",
+						"small",
+						"average",
+						"large",
+						"huge",
+						"humongous"
+					};
+					final String drAdj=astrs[drADex];
+					final int numSips = remain / sipSize;
+					if(numSips <= 1)
+						response.append(L("There is about 1 "+drAdj+" "+drNoun+" remaining.  "));
+					else
+						response.append(L("There are about @x1 "+drAdj+" "+drNoun+"(s) remaining.  ",""+numSips));
+				}
+			}
+			else
+			if((item instanceof Food)
+			&&((mob==null)||(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>4))
+			&&(((Food)item).nourishment()>0))
+			{
+				final int remain = ((Food)item).nourishment();
+				int biteSize = ((Food)item).bite();
+				if((biteSize < 1)||(biteSize > remain))
+					biteSize = remain;
+				final int[] namts=new int[] {
+					1,
+					250,
+					500,
+					1000
+				};
+				int eatNDex=namts.length;
+				for(int i=0;i<namts.length;i++)
+				{
+					if(namts[i]>biteSize)
+					{
+						eatNDex=i;
+						break;
+					}
+				}
+				final String[] nstrs=new String[] {
+					"crumb",
+					"nibble",
+					"bite",
+					"morsel"
+				};
+				final String eatNoun=nstrs[eatNDex];
+				final int adjSize=(int)Math.round(CMath.div(namts[eatNDex] , biteSize));
+				final int[] aamts=new int[] {
+					2,
+					3,
+					4,
+					5,
+					10
+				};
+				int eatADex=aamts.length;
+				for(int i=0;i<aamts.length;i++)
+				{
+					if(aamts[i]>adjSize)
+					{
+						eatADex=i;
+						break;
+					}
+				}
+				final String[] astrs=new String[] {
+					"tiny",
+					"small",
+					"average",
+					"large",
+					"huge",
+					"humongous"
+				};
+				final String eatAdj=astrs[eatADex];
+				final int numBites = remain / biteSize;
+				if(numBites <= 1)
+					response.append(L("There is about 1 "+eatAdj+" "+eatNoun+" remaining.  "));
+				else
+					response.append(L("There are about @x1 "+eatAdj+" "+eatNoun+"(s) remaining.  ",""+numBites));
+			}
+
 			if(item instanceof Ammunition)
 				response.append(L("It is @x1 ammunition of type '@x2'.  ",""+((Ammunition)item).ammunitionRemaining(),((Ammunition)item).ammunitionType()));
 			else
@@ -1150,7 +1302,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			buf.append(L("You don't see anything special about @x1.",item.name()));
 		else
 			buf.append(item.description(mob));
-		if((msg.targetMinor()==CMMsg.TYP_EXAMINE)&&(!item.ID().endsWith("Wallpaper")))
+		if((msg.targetMinor()==CMMsg.TYP_EXAMINE)
+		&&(!item.ID().endsWith("Wallpaper")))
 			buf.append(getExamineItemString(mob,item));
 		if(item instanceof Container)
 		{
@@ -1162,8 +1315,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				||((contitem instanceof Drink)&&(((Drink)contitem).liquidRemaining()>0))))
 			{
 				buf.append(item.name()+" contains:^<!ENTITY container \""+CMStrings.removeColors(item.name())+"\"^>"+(mob.isAttributeSet(MOB.Attrib.COMPRESS)?" ":"\n\r"));
-				final Vector<Item> newItems=new Vector<Item>();
-				if((item instanceof Drink)&&(((Drink)item).liquidRemaining()>0))
+				final List<Item> newItems=new ArrayList<Item>(0);
+				if((item instanceof Drink)
+				&&(((Drink)item).liquidRemaining()>0))
 				{
 					final RawMaterial l=(RawMaterial)CMClass.getItem("GenLiquidResource");
 					final int myResource=((Drink)item).liquidType();
@@ -1177,7 +1331,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					l.setDescription("");
 					CMLib.materials().addEffectsToResource(l);
 					l.recoverPhyStats();
-					newItems.addElement(l);
+					newItems.add(l);
 				}
 
 				if(item.owner() instanceof MOB)
@@ -1186,8 +1340,9 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					for(int i=0;i<M.numItems();i++)
 					{
 						final Item item2=M.getItem(i);
-						if((item2!=null)&&(item2.container()==item))
-							newItems.addElement(item2);
+						if((item2!=null)
+						&&(item2.container()==item))
+							newItems.add(item2);
 					}
 					buf.append(CMLib.lister().lister(mob,newItems,true,"CMItem","",false,mob.isAttributeSet(MOB.Attrib.COMPRESS)));
 				}
@@ -1200,7 +1355,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					{
 						final Item item2=room.getItem(i);
 						if((item2!=null)&&(item2.container()==item))
-							newItems.addElement(item2);
+							newItems.add(item2);
 					}
 					buf.append(CMLib.lister().lister(mob,newItems,true,"CRItem","",false,mob.isAttributeSet(MOB.Attrib.COMPRESS)));
 				}
