@@ -294,17 +294,17 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 			buf.append(CMStrings.padRight(L("Spell"),cols[0])+" "+CMStrings.padRight(L("Spell"),cols[0])+" "+CMStrings.padRight(L("Spell"),cols[0]));
 			int toggler=1;
 			final int toggleTop=3;
-			for(int r=0;r<recipes.size();r++)
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
+			for(int r=0;r<listRecipes.size();r++)
 			{
-				final List<String> V=recipes.get(r);
+				final List<String> V=listRecipes.get(r);
 				if(V.size()>0)
 				{
 					final String spell=V.get(0);
 					final Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&((spellLevel(mob,A)>=0)||(allFlag))
-					&&((xlevel(mob)>=spellLevel(mob,A))||(allFlag))
-					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(spell,mask)))
+					&&((xlevel(mob)>=spellLevel(mob,A))||(allFlag)))
 					{
 						buf.append(CMStrings.padRight(A.name(),cols[0])+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop)

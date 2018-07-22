@@ -694,6 +694,9 @@ public class StdArmor extends StdContainer implements Armor
 		else
 		if(phyStats().ability()<0)
 			id=name()+" "+phyStats().ability()+((id.length()>0)?"\n\r":"")+id;
+		final int timsLevel=CMLib.itemBuilder().timsLevelCalculator(this);
+		if(timsLevel != phyStats.level())
+			id += " (Power level: "+timsLevel+")";
 		return id+"\n\r"+L("Base Protection: @x1",""+phyStats().armor());
 	}
 }

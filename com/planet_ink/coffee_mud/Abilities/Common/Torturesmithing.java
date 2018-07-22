@@ -235,9 +235,10 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 				mask="";
 			}
 			final StringBuffer buf=new StringBuffer(L("@x1 Lvl Material required\n\r",CMStrings.padRight(L("Item"),16)));
-			for(int r=0;r<recipes.size();r++)
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
+			for(int r=0;r<listRecipes.size();r++)
 			{
-				final List<String> V=recipes.get(r);
+				final List<String> V=listRecipes.get(r);
 				if(V.size()>0)
 				{
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
@@ -246,8 +247,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 					final String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if(wood.length()>5)
 						mat="";
-					if(((level<=xlevel(mob))||allFlag)
-					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
+					if((level<=xlevel(mob))||allFlag)
 						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+wood+" "+mat.toLowerCase()+"\n\r");
 				}
 			}

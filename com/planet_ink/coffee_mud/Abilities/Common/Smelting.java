@@ -265,9 +265,10 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			};
 			buf.append(CMStrings.padRight(L("Item"),cols[0])+" "+CMStrings.padRight(L("Lvl"),cols[1])+" "+CMStrings.padRight(L("Resources"),cols[2]));
 			buf.append("\n\r");
-			for(int r=0;r<recipes.size();r++)
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
+			for(int r=0;r<listRecipes.size();r++)
 			{
-				final List<String> V=recipes.get(r);
+				final List<String> V=listRecipes.get(r);
 				if(V.size()>0)
 				{
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
@@ -280,8 +281,7 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 						int x=wood.lastIndexOf(' ',cols[2]);
 						wood=wood.substring(0,x)+"\n\r"+CMStrings.repeat(' ',cols[0]+cols[1]+2)+wood.substring(x+1);
 					}
-					if(((level<=xlevel(mob))||allFlag)
-					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
+					if((level<=xlevel(mob))||allFlag)
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+"\n\r");
 				}
 			}

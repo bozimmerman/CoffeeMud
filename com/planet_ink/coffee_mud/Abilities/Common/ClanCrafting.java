@@ -250,16 +250,16 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 					   +CMStrings.padRight(L("Amt#1"),cols[3])+" "
 					   +CMStrings.padRight(L("Material#2"),cols[4])+" "
 					   +CMStrings.padRight(L("Amt#2"),cols[5])+"\n\r");
-			for(int r=0;r<recipes.size();r++)
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
+			for(int r=0;r<listRecipes.size();r++)
 			{
-				final List<String> V=recipes.get(r);
+				final List<String> V=listRecipes.get(r);
 				if(V.size()>0)
 				{
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					final int exp=CMath.s_int(V.get(RCP_EXP));
-					if(((level<=xlevel(mob))||allFlag)
-					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
+					if((level<=xlevel(mob))||allFlag)
 					{
 						String mat1=V.get(RCP_MATERIAL1);
 						String mat2=V.get(RCP_MATERIAL2);

@@ -75,6 +75,18 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
+	protected boolean supportsArmors()
+	{
+		return parametersFormat().indexOf("CODED_WEAR_LOCATION")>=0;
+	}
+
+	@Override
+	protected boolean supportsWeapons()
+	{
+		return parametersFormat().indexOf("WEAPON_CLASS")>=0;
+	}
+
+	@Override
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
 											 String req1Desc, int[] req1,

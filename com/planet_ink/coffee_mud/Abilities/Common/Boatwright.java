@@ -322,17 +322,17 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 				CMLib.lister().fixColWidth(8,mob.session())
 			};
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 @x3 Wood required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Level"),cols[1]),CMStrings.padRight(L("Capacity"),cols[2])));
-			for(int r=0;r<recipes.size();r++)
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
+			for(int r=0;r<listRecipes.size();r++)
 			{
-				final List<String> V=recipes.get(r);
+				final List<String> V=listRecipes.get(r);
 				if(V.size()>0)
 				{
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					final String wood=getComponentDescription(mob,V,RCP_WOOD);
 					final int capacity=CMath.s_int(V.get(RCP_CAPACITY));
-					if(((level<=xlevel(mob))||allFlag)
-					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
+					if(((level<=xlevel(mob))||allFlag))
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+CMStrings.padRight(""+capacity,cols[2])+" "+wood+"\n\r");
 				}
 			}

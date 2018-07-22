@@ -204,9 +204,10 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				CMLib.lister().fixColWidth(3,mob.session())
 			};
 			final StringBuffer buf=new StringBuffer(L("@x1 @x2 Material required\n\r",CMStrings.padRight(L("Item"),cols[0]),CMStrings.padRight(L("Lvl"),cols[1])));
-			for(int r=0;r<recipes.size();r++)
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
+			for(int r=0;r<listRecipes.size();r++)
 			{
-				final List<String> V=recipes.get(r);
+				final List<String> V=listRecipes.get(r);
 				if(V.size()>0)
 				{
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
@@ -223,8 +224,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 						material="pounds of "+material;
 					else
 						material="pound of "+material;
-					if(((level<=xlevel(mob))||allFlag)
-					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
+					if((level<=xlevel(mob))||allFlag)
 						buf.append(CMStrings.padRight(item,cols[0])+" "+CMStrings.padRight(""+level,cols[1])+" "+wood+" "+material.toLowerCase()+"\n\r");
 				}
 			}

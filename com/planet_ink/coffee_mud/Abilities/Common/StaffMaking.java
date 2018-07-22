@@ -322,16 +322,16 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 					CMStrings.padRight(L("Benefit"),cols[4])+
 					"^N");
 			buf.append("\n\r");
-			for(int r=0;r<recipes.size();r++)
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
+			for(int r=0;r<listRecipes.size();r++)
 			{
-				final List<String> V=recipes.get(r);
+				final List<String> V=listRecipes.get(r);
 				if(V.size()>0)
 				{
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					final String wood=getComponentDescription(mob,V,RCP_WOOD).toLowerCase();
-					if(((level<=xlevel(mob))||allFlag)
-					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
+					if((level<=xlevel(mob))||allFlag)
 					{
 						final String otherRequired=getOtherRscRequired(V.get(RCP_EXTRAREQ));
 						final int otherAmtRequired=getOtherRscAmtRequired(mob,V.get(RCP_EXTRAREQAMT));

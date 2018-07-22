@@ -1007,17 +1007,17 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				,CMStrings.padRight(L("^xRecipe"),colWidth1)
 				,CMStrings.padRight(L("^xLvl"),colWidth2))
 			);
-			for(int r=0;r<allRecipes.size();r++)
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? allRecipes : super.matchingRecipeNames(allRecipes, mask, true);
+			for(int r=0;r<listRecipes.size();r++)
 			{
-				final List<String> Vr=allRecipes.get(r);
+				final List<String> Vr=listRecipes.get(r);
 				if(Vr.size()>0)
 				{
 					final String item=Vr.get(RCP_FINALFOOD);
 					if(item.length()==0)
 						continue;
 					final int level=CMath.s_int(Vr.get(RCP_LEVEL));
-					if(((level<=xlevel(mob))||allFlag)
-					&&((mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
+					if(((level<=xlevel(mob))||allFlag))
 					{
 						StringBuilder line=new StringBuilder("");
 						line.append("^c"+CMStrings.padRight(CMStrings.capitalizeAndLower(replacePercent(item,"")),colWidth1)+"^w ")

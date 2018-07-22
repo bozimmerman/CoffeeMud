@@ -945,6 +945,16 @@ public class CraftingSkill extends GatheringSkill
 		return matchingRecipeNames(fetchRecipes(),recipeName,beLoose);
 	}
 
+	protected boolean supportsWeapons()
+	{
+		return false;
+	}
+	
+	protected boolean supportsArmors()
+	{
+		return false;
+	}
+	
 	protected List<List<String>> matchingRecipeNames(List<List<String>> recipes, String recipeName, boolean beLoose)
 	{
 		final List<List<String>> matches=new Vector<List<String>>();
@@ -967,15 +977,66 @@ public class CraftingSkill extends GatheringSkill
 				recipeName=recipeName.substring(lastPeriodDex+1);
 			}
 		}
-		
-		for(int r=0;r<recipes.size();r++)
+
+		if(supportsWeapons() && (matches.size()==0))
 		{
-			final List<String> V=recipes.get(r);
-			if(V.size()>0)
+			int x=CMParms.indexOf(Weapon.CLASS_DESCS,recipeName.toUpperCase().trim());
+			if(x>=0)
 			{
-				final String item=V.get(RCP_FINALNAME);
-				if(replacePercent(item,"").equalsIgnoreCase(recipeName))
-					matches.add(V);
+				final String weaponClass = Weapon.CLASS_DESCS[x];
+				for(int r=0;r<recipes.size();r++)
+				{
+					final List<String> V=recipes.get(r);
+					if(V.contains(weaponClass))
+						matches.add(V);
+				}
+				return matches;
+			}
+			x=CMParms.indexOf(Weapon.TYPE_DESCS,recipeName.toUpperCase().trim());
+			if(x>=0)
+			{
+				final String weaponType = Weapon.TYPE_DESCS[x];
+				for(int r=0;r<recipes.size();r++)
+				{
+					final List<String> V=recipes.get(r);
+					if(V.contains(weaponType))
+						matches.add(V);
+				}
+			}
+		}
+
+		if(supportsArmors() && (matches.size()==0))
+		{
+			final long code=Wearable.CODES.FIND_ignoreCase(recipeName.toUpperCase().trim());
+			if(code > 0)
+			{
+				final String wearLoc = Wearable.CODES.NAMEUP(code);
+				for(int r=0;r<recipes.size();r++)
+				{
+					final List<String> V=recipes.get(r);
+					for(int v=0;v<V.size();v++)
+					{
+						if(V.get(v).toUpperCase().indexOf(wearLoc)>=0)
+						{
+							matches.add(V);
+							break;
+						}
+					}
+				}
+			}
+		}
+
+		if(matches.size()==0)
+		{
+			for(int r=0;r<recipes.size();r++)
+			{
+				final List<String> V=recipes.get(r);
+				if(V.size()>0)
+				{
+					final String item=V.get(RCP_FINALNAME);
+					if(replacePercent(item,"").equalsIgnoreCase(recipeName))
+						matches.add(V);
+				}
 			}
 		}
 		if(matches.size()==0)

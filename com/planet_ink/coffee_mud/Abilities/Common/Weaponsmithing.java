@@ -366,9 +366,10 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 			for(int r=0;r<toggleTop;r++)
 				buf.append(L("@x1 Lvl @x2@x3",CMStrings.padRight(L("Item"),itemWidth),CMStrings.padRight(L("Amt"),3),((r<(toggleTop-1)?" ":""))));
 			buf.append("\n\r");
-			for(int r=0;r<recipes.size();r++)
+			final List<List<String>> listRecipes=((mask.length()==0) || mask.equalsIgnoreCase("all")) ? recipes : super.matchingRecipeNames(recipes, mask, true);
+			for(int r=0;r<listRecipes.size();r++)
 			{
-				final List<String> V=recipes.get(r);
+				final List<String> V=listRecipes.get(r);
 				if(V.size()>0)
 				{
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
@@ -380,12 +381,9 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 							buf.append("\n\r");
 						toggler=toggleTop;
 					}
-					if(((autoGenerate>0)
+					if((autoGenerate>0)
 						||(level<=xlevel(mob))
 						||(allFlag))
-					&&((mask.length()==0)
-						||mask.equalsIgnoreCase("all")
-						||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight(item,itemWidth)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRightPreserve(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop)
