@@ -97,7 +97,7 @@ public class Spell_MysticLoom extends Spell
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;
+		return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;
 	}
 
 	protected Item theLoom=null;
