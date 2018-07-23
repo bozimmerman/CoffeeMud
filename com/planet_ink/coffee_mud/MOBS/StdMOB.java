@@ -3597,7 +3597,10 @@ public class StdMOB implements MOB
 						if ((phyStats().rejuv() < 0) || (CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN)))
 						{
 							final Room startRoom=CMLib.map().getStartRoom(this);
-							if((startRoom == null) || (startRoom.amDestroyed()))
+							if((startRoom == null) 
+							|| (startRoom.amDestroyed())
+							|| (startRoom.getArea() == null)
+							|| (startRoom.getArea().amDestroyed()))
 							{
 								tickStatus = Tickable.STATUS_END;
 								if (soulMate() == null)
