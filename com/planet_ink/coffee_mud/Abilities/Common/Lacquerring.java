@@ -57,6 +57,12 @@ public class Lacquerring extends CommonSkill
 		return triggerStrings;
 	}
 
+	// common recipe definition indexes
+	protected static final int	RCP_FINALNAME	= 0;
+	protected static final int	RCP_LEVEL		= 1;
+	protected static final int	RCP_FREQ		= 2;
+	protected static final int	RCP_COLOR		= 3;
+
 	@Override
 	public int classificationCode()
 	{
@@ -73,16 +79,18 @@ public class Lacquerring extends CommonSkill
 		verb=L("lacquering");
 	}
 
-	protected String fixColor(String name, char color, String colorWord)
+	protected String fixColor(String name, char colorChar, String colorWord)
 	{
 		final int end=name.indexOf("^?");
 		if((end>0)&&(end<=name.length()-3))
 		{
 			final int start=name.substring(0,end).indexOf('^');
 			if((start>=0)&&(start<(end-3)))
-				name=name.substring(0,start)+name.substring(end+3);
+			{
+				name=name.substring(0,start)
+					 +name.substring(end+3);
+			}
 		}
-		colorWord="^"+color+colorWord+"^?";
 		final Vector<String> V=CMParms.parse(name);
 		for(int v=0;v<V.size();v++)
 		{
@@ -100,8 +108,7 @@ public class Lacquerring extends CommonSkill
 			else
 			if((word.equalsIgnoreCase("of"))
 			||(word.equalsIgnoreCase("some"))
-			||(word.equalsIgnoreCase("the"))
-			   )
+			||(word.equalsIgnoreCase("the")))
 			{
 				V.insertElementAt(colorWord,v+1);
 				return CMParms.combine(V,0);
@@ -116,31 +123,48 @@ public class Lacquerring extends CommonSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping))
+			if((affected!=null)
+			&&(affected instanceof MOB)
+			&&(!aborted)
+			&&(!helping))
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
 					commonEmote(mob,L("<S-NAME> mess(es) up the lacquering."));
 				else
 				{
+					char colorCode='^';
+					for(int i=0;i<writing.length();i++)
+					{
+						if((writing.charAt(i)=='^')
+						&&(i<writing.length()-1)
+						&&(writing.charAt(i+1)!='?')
+						&&(writing.charAt(i+1)!=ColorLibrary.COLORCODE_BACKGROUND)
+						&&(writing.charAt(i+1)!=ColorLibrary.COLORCODE_FANSI256)
+						&&(writing.charAt(i+1)!=ColorLibrary.COLORCODE_BANSI256))
+						{
+							colorCode=writing.charAt(i+1);
+							break;
+						}
+					}
 					final StringBuffer desc=new StringBuffer(found.description());
 					for(int x=0;x<(desc.length()-1);x++)
 					{
 						if((desc.charAt(x)=='^')
 						&&(desc.charAt(x+1)!='?')
-						&&(desc.charAt(x+1)!='_')
-						&&(desc.charAt(x+1)!='#'))
-							desc.setCharAt(x+1,writing.charAt(0));
+						&&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_BACKGROUND)
+						&&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_FANSI256)
+						&&(desc.charAt(x+1)!=ColorLibrary.COLORCODE_BANSI256))
+							desc.setCharAt(x+1, colorCode);
 					}
 					final String d=desc.toString();
 					if(!d.endsWith("^?"))
 						desc.append("^?");
-					if(!d.startsWith("^"+writing.charAt(0)))
-						desc.insert(0,"^"+writing.charAt(0));
+					if(!d.startsWith("^"+colorCode))
+						desc.insert(0,"^"+colorCode);
 					found.setDescription(desc.toString());
-					final String writingName=Character.isUpperCase(writing.charAt(0))?"dark "+writing.toLowerCase():writing.toLowerCase();
-					found.setName(fixColor(found.Name(),writing.charAt(0),writingName));
-					found.setDisplayText(fixColor(found.displayText(),writing.charAt(0),writingName));
+					found.setName(fixColor(found.Name(), colorCode, writing));
+					found.setDisplayText(fixColor(found.displayText(), colorCode, writing));
 					found.text();
 				}
 			}
@@ -153,9 +177,25 @@ public class Lacquerring extends CommonSkill
 	{
 		if(super.checkStop(mob, commands))
 			return true;
+		final List<List<String>> recipes = addRecipes(mob,super.loadRecipes("lacquering.txt"));
+		writing=CMParms.combine(commands,0).toLowerCase();
+		List<String> finalRecipe = null; 
+		if(writing.equalsIgnoreCase("list"))
+		{
+			final StringBuilder colors=new StringBuilder(L("^NColors you can choose: "));
+			for(final List<String> list : recipes)
+		{
+				final String name=list.get(0);
+				final int level=CMath.s_int(list.get(1));
+				if(level <= adjustedLevel(mob,asLevel))
+					colors.append(name).append(", ");
+			}
+			commonTell(mob,colors.substring(0,colors.length()-2)+".\n\r");
+			return false;
+		}
 		if(commands.size()<2)
 		{
-			commonTell(mob,L("You must specify what you want to lacquer, and the color to lacquer it in."));
+			commonTell(mob,L("You must specify what you want to lacqer, and color to it to be, or LIST."));
 			return false;
 		}
 		Item target=mob.fetchItem(null,Wearable.FILTER_UNWORNONLY,commands.get(0));
@@ -197,30 +237,36 @@ public class Lacquerring extends CommonSkill
 		}
 
 		writing=CMParms.combine(commands,0).toLowerCase();
-		boolean darkFlag=false;
-		if(writing.startsWith("dark "))
+		
+		for(final List<String> list : recipes)
 		{
-			darkFlag=true;
-			writing=writing.substring(5).trim();
+			final String name=list.get(0);
+			final int level=CMath.s_int(list.get(1));
+			if(name.equalsIgnoreCase(writing)
+			&&(level<=adjustedLevel(mob,asLevel)))
+			{
+				finalRecipe=list;
+				break;
+			}
 		}
-		if((" white green blue red yellow cyan purple ".indexOf(" "+writing.trim()+" ")<0)||(writing.trim().indexOf(' ')>=0))
+		if(finalRecipe == null)
 		{
-			commonTell(mob,L("You can't lacquer anything '@x1'.  Try white, green, blue, red, yellow, cyan, or purple. You can also prefix the colors with the word 'dark'.",writing));
+			commonTell(mob,L("You can't lacquer anything '@x1'. Try LACQUER LIST for a list.",writing));
 			return false;
 		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		verb=L("lacquering @x1 @x2",target.name(),(darkFlag?"dark ":"")+writing);
+		verb=L("lacquering @x1 @x2",target.name(),writing);
 		displayText=L("You are @x1",verb);
 		found=target;
-		if(darkFlag)
-			writing=CMStrings.capitalizeAndLower(writing);
 		if(!proficiencyCheck(mob,0,auto))
 			writing="";
 		final int duration=getDuration(60,mob,1,12);
-		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),L("<S-NAME> start(s) lacquering <T-NAME>."));
+		final CMMsg msg=CMClass.getMsg(mob,target,this,getActivityMessageType(),L("<S-NAME> start(s) lacquering <T-NAME> @x1.",writing));
 		if(mob.location().okMessage(mob,msg))
 		{
+			writing = finalRecipe.get(RCP_COLOR);
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,asLevel,duration);
 		}

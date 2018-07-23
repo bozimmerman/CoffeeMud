@@ -1,0 +1,26 @@
+white	1	10	^wwhite^?
+green	1	10	^ggreen^?
+blue	1	10	^bblue^?
+red	1	10	^rred^?
+yellow	1	10	^yyellow^?
+cyan	1	10	^ccyan^?
+purple	1	10	^ppurple^?
+grey	1	10	^Wgrey^?
+dark green	5	10	^Gdark green^?
+dark blue	5	10	^Bdark blue^?
+dark red	5	10	^Rdark red^?
+brown	5	10	^Ybrown^?
+dark cyan	5	10	^Cdark cyan^?
+dark purple	5	10	^Pdark purple^?
+deep green	10	10	^Gdeep green^?
+deep blue	10	10	^Bdeep blue^?
+deep red	10	10	^Rdeep red^?
+deep brown	10	10	^Ydeep brown^?
+deep cyan	10	10	^Cdeep cyan^?
+deep purple	10	10	^Pdeep purple^?
+very green	15	10	^gvery green^?
+very blue	15	10	^bvery blue^?
+very red	15	10	^rvery red^?
+very yellow	15	10	^yvery yellow^?
+very cyan	15	10	^cvery cyan^?
+very purple	15	10	^pvery purple^?

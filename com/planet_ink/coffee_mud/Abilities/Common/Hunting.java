@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Hunting extends GatheringSkill
 {
 	@Override
@@ -74,7 +73,7 @@ public class Hunting extends GatheringSkill
 	protected static final int	RCP_DOMAIN	= 1;
 	protected static final int	RCP_FREQ	= 2;
 	protected static final int	RCP_MOB		= 3;
-	
+
 	protected MOB		found			= null;
 	protected String	foundShortName	= "";
 

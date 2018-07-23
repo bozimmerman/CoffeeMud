@@ -38,7 +38,7 @@ import java.util.*;
    limitations under the License.
 */
 
-@SuppressWarnings({"unchecked","rawtypes"})
+@SuppressWarnings("unchecked")
 public class CraftingSkill extends GatheringSkill
 {
 	@Override
@@ -172,6 +172,27 @@ public class CraftingSkill extends GatheringSkill
 			return replacePercent(thisStr, RawMaterial.CODES.NAME(res2.resCode)).toLowerCase();
 		return replacePercent(thisStr, RawMaterial.CODES.NAME(backupMaterial)).toLowerCase();
 	}
+
+	@Override
+	protected List<List<String>> addRecipes(final MOB mob, final List<List<String>> recipes)
+	{
+		if(mob==null)
+			return recipes;
+		Collections.sort(recipes,new Comparator<List<String>>(){
+			@Override
+			public int compare(List<String> o1, List<String> o2)
+			{
+				if(o1.size()<=RCP_LEVEL)
+					return -1;
+				if(o2.size()<=RCP_LEVEL)
+					return 1;
+				final int level1=CMath.s_int(o1.get(RCP_LEVEL));
+				final int level2=CMath.s_int(o2.get(RCP_LEVEL));
+				return (level1>level2)?1:(level1<level2)?-1:0;
+			}
+		});
+		return super.addRecipes(mob, recipes);
+	}
 	
 	protected String replacePercent(String thisStr, String withThis)
 	{
@@ -239,79 +260,6 @@ public class CraftingSkill extends GatheringSkill
 			}
 		}
 		return ret;
-	}
-
-	protected List<List<String>> addRecipes(MOB mob, List<List<String>> recipes)
-	{
-		if(mob==null)
-			return recipes;
-		Collections.sort(recipes,new Comparator<List<String>>(){
-			@Override
-			public int compare(List<String> o1, List<String> o2)
-			{
-				if(o1.size()<=RCP_LEVEL)
-					return -1;
-				if(o2.size()<=RCP_LEVEL)
-					return 1;
-				final int level1=CMath.s_int(o1.get(RCP_LEVEL));
-				final int level2=CMath.s_int(o2.get(RCP_LEVEL));
-				return (level1>level2)?1:(level1<level2)?-1:0;
-			}
-		});
-		Item I=null;
-		List<List<String>> V=null;
-		List<String> V2=null;
-		List<String> lastRecipeV=null;
-		boolean clonedYet=false;
-		for(int i=0;i<mob.numItems();i++)
-		{
-			I=mob.getItem(i);
-			if((I instanceof Recipe)
-			&&(((Recipe)I).getCommonSkillID().equalsIgnoreCase(ID())))
-			{
-				if(!clonedYet)
-				{
-					recipes=new XVector<List<String>>(recipes);
-					clonedYet=true;
-				}
-				final StringBuffer allRecipeLines=new StringBuffer("");
-				if(((Recipe)I).getRecipeCodeLines().length>0)
-				{
-					for(final String recipeLine : ((Recipe)I).getRecipeCodeLines())
-					{
-						allRecipeLines.append(recipeLine);
-						allRecipeLines.append( "\n" );
-					}
-				}
-				V=loadList(allRecipeLines);
-				for(int v=0;v<V.size();v++)
-				{
-					V2=V.get(v);
-					if(recipes.size()==0)
-						recipes.add(V2);
-					else
-					{
-						lastRecipeV=recipes.get(recipes.size()-1);
-						if((recipes.size()==0)||lastRecipeV.size()<=V2.size())
-							recipes.add(V2);
-						else
-						{
-							//Log.errOut(ID(),"Not enough parms ("+lastRecipeV.size()+"<="+V2.size()+"): "+CMParms.combine(V2));
-							while(V2.size()<lastRecipeV.size())
-								V2.add("");
-							while(V2.size()>lastRecipeV.size())
-								V2.remove(V2.size()-1);
-							recipes.add(V2);
-						}
-					}
-					if(V2 instanceof Vector)
-						((Vector)V2).trimToSize();
-				}
-			}
-		}
-		if(recipes instanceof Vector)
-			((Vector)recipes).trimToSize();
-		return recipes;
 	}
 
 	protected int getBuildingMaterial(int woodRequired, int[][] foundData, int[] compData)
