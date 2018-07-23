@@ -391,7 +391,7 @@ public class ServiceEngine implements ThreadEngine
 	}
 
 	@Override
-	public long msToNextTick(Tickable E, int tickID)
+	public long msToNextTick(final Tickable E, final int tickID)
 	{
 		for(final Iterator<TickableGroup> e=tickGroups();e.hasNext();)
 		{
@@ -407,8 +407,18 @@ public class ServiceEngine implements ThreadEngine
 	}
 
 	@Override
-	public boolean isTicking(Tickable E, int tickID)
+	public boolean isTicking(final Tickable E, final int tickID)
 	{
+		if((E instanceof MOB)
+		&&(((MOB)E).lastTickedDateTime()>0))
+		{
+			final long diff = System.currentTimeMillis() - ((MOB)E).lastTickedDateTime();
+			final long tickMillis = CMProps.getTickMillis(); 
+			if(diff <= tickMillis)
+				return true;
+			if((diff > (tickMillis * 2)) && (diff < (tickMillis * 10L)))
+				return false;
+		}
 		for(final Iterator<TickableGroup> e=tickGroups();e.hasNext();)
 		{
 			final TickableGroup almostTock=e.next();
@@ -926,6 +936,19 @@ public class ServiceEngine implements ThreadEngine
 		deleteTick(ticker, -1);
 		final WorldMap map=CMLib.map();
 		boolean deleted = false;
+		if(ticker instanceof MOB)
+		{
+			final MOB M=(MOB)ticker;
+			for(int i=0;i<M.numItems();i++)
+				deleteTick(M.getItem(i), -1);
+		}
+		if((ticker instanceof Physical)
+		&&(!(ticker instanceof MOB)))
+		{
+			final Physical P=(Physical)ticker;
+			for(int i=0;i<P.numEffects();i++)
+				deleteTick(P.fetchEffect(i), -1);
+		}
 		if(ticker instanceof Room)
 		{
 			TickableGroup almostTock=null;
