@@ -1414,7 +1414,8 @@ public class StdRoom implements Room
 			for(final Enumeration<Pair<MOB,Short>> f=mob.followers();f.hasMoreElements();)
 			{
 				final MOB folM=f.nextElement().first;
-				if(folM.location()==oldRoom)
+				if((folM.location()==oldRoom)
+				&&(oldRoom != this))
 					bringMobHere(folM,true);
 			}
 		}
@@ -1439,7 +1440,9 @@ public class StdRoom implements Room
 			else
 				mob.setRiding(null);
 		}
-		if((oldRoom!=null)&&(mob instanceof Rideable)&&(oldRoom!=this))
+		if((oldRoom!=null)
+		&&(mob instanceof Rideable)
+		&&(oldRoom!=this))
 		{
 			for(final Enumeration<Rider> r=((Rideable)mob).riders();r.hasMoreElements();)
 			{
