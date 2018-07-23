@@ -41,7 +41,7 @@ public class AutoAffects extends StdCommand
 	
 	private final String[]	access	= I(new String[] { "AUTOAFFECTS", "AUTOAFF", "AAF" });
 
-	private final static Class[][] internalParameters=new Class[][]{{MOB.class},{StringBuffer.class},{StringBuilder.class},{List.class},{}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{MOB.class},{StringBuffer.class},{StringBuilder.class},{List.class},{}};
 
 	@Override
 	public String[] getAccessWords()

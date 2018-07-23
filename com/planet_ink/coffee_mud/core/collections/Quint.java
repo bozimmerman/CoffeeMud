@@ -62,8 +62,7 @@ public class Quint<T, K, L, M, N> extends Quad<T, K, L, M>
 			return true;
 		if (o instanceof Quint)
 		{
-			@SuppressWarnings("rawtypes")
-			final Quint p = (Quint) o;
+			final Quint<?,?,?,?,?> p = (Quint<?,?,?,?,?>) o;
 			return ((p.first == first) || ((p.first != null) && (p.first.equals(first)))) && ((p.second == second) || ((p.second != null) && (p.second.equals(second))))
 			        && ((p.third == third) || ((p.third != null) && (p.third.equals(third)))) && ((p.fourth == fourth) || ((p.fourth != null) && (p.fourth.equals(fourth))))
 			        && ((p.fifth == fifth) || ((p.fifth != null) && (p.fifth.equals(fifth))));

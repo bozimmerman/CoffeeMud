@@ -72,8 +72,7 @@ public class Pair<T, K> implements Map.Entry<T, K>
 			return true;
 		if (o instanceof Pair)
 		{
-			@SuppressWarnings("rawtypes")
-			final Pair p = (Pair) o;
+			final Pair<?,?> p = (Pair<?,?>) o;
 			return ((p.first == first) || ((p.first != null) && (p.first.equals(first)))) && ((p.second == second) || ((p.second != null) && (p.second.equals(second))));
 		}
 		return super.equals(o);

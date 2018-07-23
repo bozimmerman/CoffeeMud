@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-@SuppressWarnings("rawtypes")
 public class StringXVector extends XVector<String>
 {
 	/**
@@ -13,7 +12,7 @@ public class StringXVector extends XVector<String>
 	 */
 	private static final long	serialVersionUID	= -2080154538499166336L;
 
-	public StringXVector(List V)
+	public StringXVector(List<?> V)
 	{
 		super();
 		if (V != null)
@@ -71,7 +70,7 @@ public class StringXVector extends XVector<String>
 			add(E4.toString());
 	}
 
-	public StringXVector(Set E)
+	public StringXVector(Set<?> E)
 	{
 		super();
 		if (E != null)
@@ -81,7 +80,7 @@ public class StringXVector extends XVector<String>
 		}
 	}
 
-	public StringXVector(Enumeration E)
+	public StringXVector(Enumeration<?> E)
 	{
 		super();
 		if (E != null)
@@ -91,7 +90,7 @@ public class StringXVector extends XVector<String>
 		}
 	}
 
-	public StringXVector(Iterator E)
+	public StringXVector(Iterator<?> E)
 	{
 		super();
 		if (E != null)

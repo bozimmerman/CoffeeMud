@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class Deities extends StdCommand
 {
 	public Deities()
@@ -46,7 +45,7 @@ public class Deities extends StdCommand
 		return access;
 	}
 
-	private final static Class[][] internalParameters=new Class[][]{{Deity.class}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Deity.class}};
 
 	public String getDeityInformation(MOB mob, Deity D)
 	{
@@ -132,9 +131,9 @@ public class Deities extends StdCommand
 			msg.append(L("\n\r^HThe known deities named '@x1':^? \n\r",str));
 		int col=0;
 		final int colWidth=CMLib.lister().fixColWidth(18,mob.session());
-		for(final Enumeration d=CMLib.map().deities();d.hasMoreElements();)
+		for(final Enumeration<Deity> d=CMLib.map().deities();d.hasMoreElements();)
 		{
-			final Deity D=(Deity)d.nextElement();
+			final Deity D=d.nextElement();
 			if((str.length()>0)&&(CMLib.english().containsString(D.name(),str)))
 				msg.append(this.getDeityInformation(mob, D));
 			else

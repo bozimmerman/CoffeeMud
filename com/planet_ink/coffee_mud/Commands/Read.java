@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class Read extends StdCommand
 {
 	public Read()
@@ -47,7 +46,7 @@ public class Read extends StdCommand
 		return access;
 	}
 
-	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,String.class,Boolean.class}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Environmental.class,String.class,Boolean.class}};
 
 	public boolean read(MOB mob, Environmental thisThang, String theRest, boolean quiet)
 	{

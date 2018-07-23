@@ -41,8 +41,7 @@ public class Wield extends StdCommand
 	
 	private final String[]	access	= I(new String[] { "WIELD" });
 	
-	@SuppressWarnings("rawtypes")
-	private final static Class[][] internalParameters=new Class[][]{{Item.class}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Item.class}};
 
 	@Override
 	public String[] getAccessWords()

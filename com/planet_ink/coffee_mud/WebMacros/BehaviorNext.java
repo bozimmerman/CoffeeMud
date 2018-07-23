@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class BehaviorNext extends StdWebMacro
 {
 	@Override
@@ -54,9 +53,9 @@ public class BehaviorNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(final Enumeration b=CMClass.behaviors();b.hasMoreElements();)
+		for(final Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 		{
-			final Behavior B=(Behavior)b.nextElement();
+			final Behavior B=b.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!B.ID().equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("BEHAVIOR",B.ID());

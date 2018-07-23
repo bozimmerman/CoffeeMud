@@ -443,7 +443,6 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 		setObject(parameterIndex, null);
 	}
 
-	@SuppressWarnings("rawtypes")
 	private boolean setRecursiveObject(final int parameterIndex, final Object x, final List<Backend.FakeCondition> conds, final int[] atIndex)
 	{
 		if ((conds != null) && (conds.size() > 0))
@@ -458,7 +457,7 @@ public class PreparedStatement extends Statement implements java.sql.PreparedSta
 							cond.conditionValue = new Backend.ComparableValue(null);
 						else 
 						if (x instanceof Comparable)
-							cond.conditionValue = new Backend.ComparableValue((Comparable) x);
+							cond.conditionValue = new Backend.ComparableValue((Comparable<?>) x);
 						else
 							cond.conditionValue = new Backend.ComparableValue(x.toString());
 						return true;

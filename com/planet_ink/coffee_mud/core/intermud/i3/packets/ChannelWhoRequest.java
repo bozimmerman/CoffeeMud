@@ -33,8 +33,8 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
-public class ChannelWhoRequest extends Packet {
+public class ChannelWhoRequest extends Packet 
+{
 	public String channel = null;
 
 	public ChannelWhoRequest()
@@ -43,7 +43,8 @@ public class ChannelWhoRequest extends Packet {
 		type = Packet.CHAN_WHO_REQ;
 	}
 
-	public ChannelWhoRequest(Vector v) throws InvalidPacketException {
+	public ChannelWhoRequest(Vector<?> v) throws InvalidPacketException 
+	{
 		super(v);
 		try
 		{
@@ -58,7 +59,8 @@ public class ChannelWhoRequest extends Packet {
 	}
 
 	@Override
-	public void send() throws InvalidPacketException {
+	public void send() throws InvalidPacketException 
+	{
 		if( sender_name == null || target_mud == null || sender_mud == null  || channel == null)
 		{
 			throw new InvalidPacketException();

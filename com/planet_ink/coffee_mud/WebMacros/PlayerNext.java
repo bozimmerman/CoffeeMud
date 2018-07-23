@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class PlayerNext extends StdWebMacro
 {
 	@Override
@@ -66,7 +65,7 @@ public class PlayerNext extends StdWebMacro
 		String sort=httpReq.getUrlParameter("SORTBY");
 		if(sort==null)
 			sort="";
-		final Enumeration pe=CMLib.players().thinPlayers(sort,httpReq.getRequestObjects());
+		final Enumeration<PlayerLibrary.ThinPlayer> pe=CMLib.players().thinPlayers(sort,httpReq.getRequestObjects());
 		for(;pe.hasMoreElements();)
 		{
 			final PlayerLibrary.ThinPlayer user=(PlayerLibrary.ThinPlayer)pe.nextElement();

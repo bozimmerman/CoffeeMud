@@ -49,8 +49,7 @@ public class Modify extends StdCommand
 		return access;
 	}
 
-	@SuppressWarnings("rawtypes")
-	private final static Class[][] internalParameters=new Class[][]{{Environmental.class}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Environmental.class}};
 	
 	public void items(MOB mob, List<String> commands)
 		throws IOException

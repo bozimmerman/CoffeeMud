@@ -4033,8 +4033,7 @@ public class ListCmd extends StdCommand
 			this.len=Integer.valueOf(len);
 		}
 
-		@SuppressWarnings("rawtypes")
-		public Comparable getFromArea(Area A)
+		public Comparable<?> getFromArea(Area A)
 		{
 			switch(this)
 			{
@@ -4056,8 +4055,7 @@ public class ListCmd extends StdCommand
 		}
 	}
 
-	@SuppressWarnings("rawtypes")
-	public Comparable getAreaStatFromSomewhere(Area A, String stat)
+	public Comparable<?> getAreaStatFromSomewhere(Area A, String stat)
 	{
 		if(A==null)
 			return null;

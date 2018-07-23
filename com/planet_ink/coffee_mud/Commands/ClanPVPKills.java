@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class ClanPVPKills extends StdCommand
 {
 	public ClanPVPKills()
@@ -61,7 +60,7 @@ public class ClanPVPKills extends StdCommand
 			Clan foundClan=CMLib.clans().getClan(clanName);
 			if(foundClan == null)
 			{
-				for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
+				for(final Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
 				{
 					final Clan C=(Clan)e.nextElement();
 					if(CMLib.english().containsString(C.getName(), clanName))

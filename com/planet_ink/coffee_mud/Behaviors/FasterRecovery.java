@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class FasterRecovery extends StdBehavior
 {
 	@Override
@@ -155,7 +154,7 @@ public class FasterRecovery extends StdBehavior
 	{
 		if(area==null)
 			return;
-		for(final Enumeration r=area.getMetroMap();r.hasMoreElements();)
+		for(final Enumeration<Room> r=area.getMetroMap();r.hasMoreElements();)
 		{
 			final Room R=(Room)r.nextElement();
 			doBe(R,burst,health,hits,mana,move);

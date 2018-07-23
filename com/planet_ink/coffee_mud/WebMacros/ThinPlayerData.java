@@ -33,9 +33,8 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
-public class ThinPlayerData extends StdWebMacro {
-
+public class ThinPlayerData extends StdWebMacro 
+{
 	@Override
 	public String name()
 	{
@@ -59,10 +58,10 @@ public class ThinPlayerData extends StdWebMacro {
 			if(sort==null)
 				sort="";
 			PlayerLibrary.ThinPlayer player = null;
-			final Enumeration pe=CMLib.players().thinPlayers(sort, httpReq.getRequestObjects());
+			final Enumeration<PlayerLibrary.ThinPlayer> pe=CMLib.players().thinPlayers(sort, httpReq.getRequestObjects());
 			for(;pe.hasMoreElements();)
 			{
-				final PlayerLibrary.ThinPlayer TP=(PlayerLibrary.ThinPlayer)pe.nextElement();
+				final PlayerLibrary.ThinPlayer TP=pe.nextElement();
 				if(TP.name().equalsIgnoreCase(last))
 				{
 					player = TP;

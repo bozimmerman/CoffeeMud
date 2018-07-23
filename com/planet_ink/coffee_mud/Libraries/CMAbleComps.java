@@ -489,10 +489,8 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 		return buf.toString();
 	}
 
-	@SuppressWarnings("rawtypes")
-
 	@Override
-	public String addAbilityComponent(String s, Map<String, List<AbilityComponent>> H)
+	public String addAbilityComponent(final String s, final Map<String, List<AbilityComponent>> H)
 	{
 		int x=s.indexOf('=');
 		if(x<0)
@@ -645,9 +643,9 @@ public class CMAbleComps extends StdLibrary implements AbilityComponents
 			parm.add(build);
 		}
 		if(parm instanceof Vector)
-			((Vector)parm).trimToSize();
+			((Vector<?>)parm).trimToSize();
 		if(parm instanceof SVector)
-			((SVector)parm).trimToSize();
+			((SVector<?>)parm).trimToSize();
 		if(error!=null)
 			return error;
 		if(parm.size()>0)

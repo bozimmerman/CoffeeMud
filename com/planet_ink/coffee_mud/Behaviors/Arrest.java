@@ -37,7 +37,7 @@ import java.io.ByteArrayOutputStream;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
+
 public class Arrest extends StdBehavior implements LegalBehavior
 {
 	@Override
@@ -737,9 +737,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		MOB M=getElligibleOfficerHere(laws,myArea,R,criminal,victim);
 		if((M==null)&&(myArea!=null))
 		{
-			for(final Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
+			for(final Enumeration<Room> e=myArea.getMetroMap();e.hasMoreElements();)
 			{
-				final Room R2=(Room)e.nextElement();
+				final Room R2=e.nextElement();
 				M=getElligibleOfficerHere(laws,myArea,R2,criminal,victim);
 				if(M!=null)
 					break;
@@ -1072,9 +1072,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public Room findTheJudge(Law laws, Area myArea)
 	{
-		for(final Enumeration r=myArea.getMetroMap();r.hasMoreElements();)
+		for(final Enumeration<Room> r=myArea.getMetroMap();r.hasMoreElements();)
 		{
-			final Room R=(Room)r.nextElement();
+			final Room R=r.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				final MOB M=R.fetchInhabitant(i);
@@ -1176,9 +1176,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		jail=CMLib.map().getRoom(which);
 		if(jail==null)
 		{
-			for(final Enumeration r=A.getMetroMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=A.getMetroMap();r.hasMoreElements();)
 			{
-				final Room R=(Room)r.nextElement();
+				final Room R=r.nextElement();
 				if(CMLib.english().containsString(R.displayText(),which))
 				{
 					jail = R;
@@ -1188,9 +1188,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		}
 		if(jail==null)
 		{
-			for(final Enumeration r=A.getMetroMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=A.getMetroMap();r.hasMoreElements();)
 			{
-				final Room R=(Room)r.nextElement();
+				final Room R=r.nextElement();
 				if(CMLib.english().containsString(R.description(),which))
 				{
 					jail = R;

@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class Score extends Affect
 {
 	public Score()
@@ -87,6 +86,8 @@ public class Score extends Affect
 	
 	public StringBuilder getScore(MOB mob, String parm)
 	{
+		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
+
 		final StringBuilder msg=new StringBuilder("^N");
 
 		final int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
@@ -196,7 +197,6 @@ public class Score extends Affect
 				CT=mob.baseCharStats();
 			msg.append("^N^!");
 			final int longest=CharStats.CODES.LONNGEST_BASECODE_NAME();
-			final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
 			final boolean useWords=CMProps.Int.Prowesses.STAT_PROFICIENCY.is(prowessCode);
 			final String[] charStatList = CMProps.getListFileStringList(CMProps.ListFile.CHARSTAT_CHART);
 			for(final int i : CharStats.CODES.BASECODES())
@@ -253,16 +253,24 @@ public class Score extends Affect
 				msg.append(L("You have scored ^!@x1^? ^<HELP^>experience points^</HELP^>.\n\r",""+mob.getExperience()));
 		}
 		msg.append(L("You have been online for ^!@x1^? hours.\n\r",""+Math.round(CMath.div(mob.getAgeMinutes(),60.0))));
-		for(final Enumeration e=mob.factions();e.hasMoreElements();)
+		final FactionManager fac=CMLib.factions();
+		final boolean useFactionWords=CMProps.Int.Prowesses.FACTION_RANGE.is(prowessCode);
+		for(final Enumeration<String> e=mob.factions();e.hasMoreElements();)
 		{
-			final String factionID=(String)e.nextElement();
-			final Faction F=CMLib.factions().getFaction(factionID);
+			final String factionID=e.nextElement();
+			final Faction F=fac.getFaction(factionID);
 			if(F!=null)
 			{
 				final int factionAmt=mob.fetchFaction(factionID);
-				final Faction.FRange FR=CMLib.factions().getRange(factionID,factionAmt);
-				if((FR!=null)&&(F.showInScore()))
-					msg.append(L("^NYour ")+CMStrings.padRight(L("^<HELP^>@x1^</HELP^>",F.name()),15)+": ^H"+FR.name()+" ^.("+factionAmt+")\n\r");
+				final Faction.FRange FR=fac.getRange(factionID,factionAmt);
+				if((FR!=null)
+				&&(F.showInScore()))
+				{
+					if(useFactionWords)
+						msg.append(L("^NYour ")+CMStrings.padRight(L("^<HELP^>@x1^</HELP^>",F.name()),15)+": ^H"+FR.name()+" ^.\n\r");
+					else
+						msg.append(L("^NYour ")+CMStrings.padRight(L("^<HELP^>@x1^</HELP^>",F.name()),15)+": ^H"+FR.name()+" ^.("+factionAmt+")\n\r");
+				}
 			}
 		}
 		if((CMProps.getIntVar(CMProps.Int.COMBATPROWESS)&CMProps.Int.ANY_ARMOR_PROWESS)!=0)

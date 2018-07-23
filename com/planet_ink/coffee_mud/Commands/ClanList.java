@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class ClanList extends StdCommand
 {
 	public ClanList()
@@ -63,9 +62,9 @@ public class ClanList extends StdCommand
 			head.append(" | "+CMStrings.padRight(L("Trophies"),8));
 		head.append("]^.^? \n\r");
 		final StringBuffer msg=new StringBuffer("");
-		for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
+		for(final Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
 		{
-			final Clan thisClan=(Clan)e.nextElement();
+			final Clan thisClan=e.nextElement();
 			if(!thisClan.isPubliclyListedFor(mob))
 				continue;
 
@@ -83,9 +82,9 @@ public class ClanList extends StdCommand
 			msg.append("^<CLAN^>"+CMStrings.padRight(CMStrings.removeColors(thisClan.clanID()),30)+"^</CLAN^>  ");
 			msg.append(CMStrings.padRight(thisClan.getGovernmentName(),10)+"  ");
 			boolean war=false;
-			for(final Enumeration e2=CMLib.clans().clans();e2.hasMoreElements();)
+			for(final Enumeration<Clan> e2=CMLib.clans().clans();e2.hasMoreElements();)
 			{
-				final Clan C=(Clan)e2.nextElement();
+				final Clan C=e2.nextElement();
 				if((C!=thisClan)
 				&&((thisClan.getClanRelations(C.clanID())==Clan.REL_WAR)
 					||(C.getClanRelations(thisClan.clanID())==Clan.REL_WAR)))

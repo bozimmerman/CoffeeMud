@@ -47,8 +47,7 @@ public class Follow extends StdCommand
 		return access;
 	}
 
-	@SuppressWarnings("rawtypes")
-	private final static Class[][] internalParameters=new Class[][]{{MOB.class,Boolean.class}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{MOB.class,Boolean.class}};
 
 	public boolean nofollow(MOB mob, boolean errorsOk, boolean quiet)
 	{

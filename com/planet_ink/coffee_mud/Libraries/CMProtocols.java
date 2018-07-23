@@ -990,7 +990,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return image;
 	}
 
-	@SuppressWarnings("rawtypes")
 	protected Object msdpStringify(Object o)
 	{
 		if(o instanceof StringBuilder)
@@ -999,10 +998,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		if(o instanceof Map)
 		{
 			final Map<String,Object> newO=new HashMap<String,Object>();
-			for(final Object key : ((Map)o).keySet())
+			for(final Object key : ((Map<?,?>)o).keySet())
 			{
 				if(key instanceof StringBuilder)
-					newO.put(((StringBuilder)key).toString().toUpperCase(), msdpStringify(((Map)o).get(key)));
+					newO.put(((StringBuilder)key).toString().toUpperCase(), msdpStringify(((Map<?,?>)o).get(key)));
 			}
 			return newO;
 		}
@@ -1010,7 +1009,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		if(o instanceof List)
 		{
 			final List<Object> newO=new LinkedList<Object>();
-			for(final Object subO : (List)o)
+			for(final Object subO : (List<?>)o)
 				newO.add(msdpStringify(subO));
 			return newO;
 		}
@@ -1583,7 +1582,6 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@Override
-	@SuppressWarnings("rawtypes")
 	public byte[] processMsdp(final Session session, final char[] data, final int dataSize, final Map<Object,Object> reportables)
 	{
 		try
@@ -1605,7 +1603,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					else
 					if(o instanceof List)
 					{
-						for(final Object o2 : ((List)o))
+						for(final Object o2 : ((List<?>)o))
 						{
 							if(o2 instanceof String)
 							{
@@ -1628,7 +1626,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				else
 				if(o instanceof List)
 				{
-					for(final Object o2 : ((List)o))
+					for(final Object o2 : ((List<?>)o))
 					{
 						if(o2 instanceof String)
 							buf.write(processMsdpSend(session,(String)o2));
@@ -1645,7 +1643,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				else
 				if(o instanceof List)
 				{
-					for(final Object o2 : ((List)o))
+					for(final Object o2 : ((List<?>)o))
 					{
 						if(o2 instanceof String)
 							buf.write(Session.MSDP_VAR);buf.write(((String)o2).getBytes(Session.MSDP_CHARSET));buf.write(Session.MSDP_VAL);buf.write(processMsdpList(session,(String)o2,reportables));
@@ -1664,7 +1662,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				else
 				if(o instanceof List)
 				{
-					for(final Object o2 : ((List)o))
+					for(final Object o2 : ((List<?>)o))
 					{
 						if(o2 instanceof String)
 						{
@@ -1685,7 +1683,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				else
 				if(o instanceof List)
 				{
-					for(final Object o2 : ((List)o))
+					for(final Object o2 : ((List<?>)o))
 					{
 						if(o2 instanceof String)
 							resetMsdpConfigurable(session, (String)o2);

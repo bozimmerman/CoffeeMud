@@ -46,8 +46,7 @@ public class Consider extends StdCommand
 		return access;
 	}
 
-	@SuppressWarnings("rawtypes")
-	private final static Class[][] internalParameters=new Class[][]{{MOB.class}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{MOB.class}};
 
 	public int relativeLevelDiff(MOB mob1, MOB mob2)
 	{

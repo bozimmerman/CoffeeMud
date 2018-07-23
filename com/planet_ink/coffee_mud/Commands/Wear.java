@@ -47,8 +47,8 @@ public class Wear extends StdCommand
 		return access;
 	}
 
-	@SuppressWarnings("rawtypes")
-	private final static Class[][] internalParameters=new Class[][]{
+	private final static Class<?>[][] internalParameters=new Class<?>[][]
+	{
 		{Item.class},
 		{Item.class,Boolean.class},
 		{Item.class,Integer.class},

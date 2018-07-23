@@ -713,11 +713,10 @@ public class Resources
 	 * @param obj the object to prepare for storage
 	 * @return the prepared object
 	 */
-	@SuppressWarnings("rawtypes")
 	public static final Object prepareObject(final Object obj)
 	{
 		if(obj instanceof Vector)
-			((Vector)obj).trimToSize();
+			((Vector<?>)obj).trimToSize();
 		if(obj instanceof DVector)
 			((DVector)obj).trimToSize();
 		if(!compress)

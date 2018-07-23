@@ -48,8 +48,7 @@ public class Drop extends StdCommand
 		return access;
 	}
 
-	@SuppressWarnings("rawtypes")
-	private final static Class[][] internalParameters=new Class[][]
+	private final static Class<?>[][] internalParameters=new Class<?>[][]
 	{
 		{Environmental.class,Boolean.class,Boolean.class,Boolean.class},
 		{

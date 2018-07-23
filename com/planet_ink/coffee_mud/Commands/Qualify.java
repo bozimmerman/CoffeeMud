@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class Qualify  extends Skills
 {
 	public Qualify()
@@ -344,9 +343,9 @@ public class Qualify  extends Skills
 		{
 			int col=1;
 			final StringBuffer msg2=new StringBuffer("");
-			for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				final CharClass C=(CharClass)c.nextElement();
+				final CharClass C=c.nextElement();
 				final StringBuffer thisLine=new StringBuffer("");
 				if((mob.charStats().getCurrentClass()!=C)
 				&&(CMLib.login().canChangeToThisClass(mob, C, -1)))

@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class Save extends StdCommand
 {
 	public Save()
@@ -219,8 +218,8 @@ public class Save extends StdCommand
 				{
 					final Area A=mob.location().getArea();
 					boolean saved = false;
-					for(final Enumeration e=A.getProperMap();e.hasMoreElements();)
-						saved = clearSaveAndRestart(mob,(Room)e.nextElement(),SaveTask.ALL, true) || saved;
+					for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+						saved = clearSaveAndRestart(mob,e.nextElement(),SaveTask.ALL, true) || saved;
 					if(saved)
 						mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the area.\n\r"));
 				}
@@ -248,8 +247,8 @@ public class Save extends StdCommand
 				{
 					final Area A=mob.location().getArea();
 					boolean saved = false;
-					for(final Enumeration e=A.getProperMap();e.hasMoreElements();)
-						saved = clearSaveAndRestart(mob,(Room)e.nextElement(),SaveTask.MOBS, true) || saved;
+					for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+						saved = clearSaveAndRestart(mob,e.nextElement(),SaveTask.MOBS, true) || saved;
 					if(saved)
 						mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("A feeling of permanency envelopes the area.\n\r"));
 				}

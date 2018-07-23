@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class CombatAbilities extends StdBehavior
 {
 	@Override
@@ -42,21 +41,21 @@ public class CombatAbilities extends StdBehavior
 		return "CombatAbilities";
 	}
 
-	public int				combatMode	= 0;
-	public Map<MOB,int[]>	aggro		= null;
-	public short			chkDown		= 0;
-	public List<String>		skillsNever = null;
-	public List<String>		skillsAlways= null;
-	protected boolean[]		wandUseCheck= {false,false};
-	protected boolean		proficient	= false;
-	protected int			preCastSet	= Integer.MAX_VALUE;
-	protected int			preCastDown	= Integer.MAX_VALUE;
-	protected String		lastSpell	= null;
-	protected boolean		noStat		= false;
-	protected boolean		noCombatStat= false;
-	protected StringBuffer	record		= null;
-	protected int			physicalDamageTaken=0;
-	protected InternalWeaponSet weaponSet	= new InternalWeaponSet();
+	public int					combatMode			= 0;
+	public Map<MOB, int[]>		aggro				= null;
+	public short				chkDown				= 0;
+	public List<String>			skillsNever			= null;
+	public List<String>			skillsAlways		= null;
+	protected boolean[]			wandUseCheck		= { false, false };
+	protected boolean			proficient			= false;
+	protected int				preCastSet			= Integer.MAX_VALUE;
+	protected int				preCastDown			= Integer.MAX_VALUE;
+	protected String			lastSpell			= null;
+	protected boolean			noStat				= false;
+	protected boolean			noCombatStat		= false;
+	protected StringBuffer		record				= null;
+	protected int				physicalDamageTaken	= 0;
+	protected InternalWeaponSet	weaponSet			= new InternalWeaponSet();
 
 	public final static int COMBAT_RANDOM=0;
 	public final static int COMBAT_DEFENSIVE=1;
@@ -417,9 +416,9 @@ public class CombatAbilities extends StdBehavior
 			}
 		}
 		if(skillsNever instanceof Vector) 
-			((Vector)skillsNever).trimToSize();
+			((Vector<?>)skillsNever).trimToSize();
 		if(skillsAlways instanceof Vector) 
-			((Vector)skillsAlways).trimToSize();
+			((Vector<?>)skillsAlways).trimToSize();
 	}
 
 	protected boolean isRightCombatAbilities(MOB mob)

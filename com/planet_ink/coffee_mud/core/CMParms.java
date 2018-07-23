@@ -2620,7 +2620,6 @@ public class CMParms
 	 * @param o the object to convert to something stringy
 	 * @return the string representation of the object
 	 */
-	@SuppressWarnings("rawtypes")
 	public final static String toString(final Object o)
 	{
 		if(o==null) 
@@ -2628,13 +2627,13 @@ public class CMParms
 		if(o instanceof String) 
 			return (String)o;
 		if(o instanceof List) 
-			return toListString((List)o);
+			return toListString((List<?>)o);
 		if(o instanceof String[]) 
 			return toListString((String[])o);
 		if(o instanceof Enumeration) 
-			return toListString((Enumeration)o);
+			return toListString((Enumeration<?>)o);
 		if(o instanceof Iterator) 
-			return toListString((Iterator)o);
+			return toListString((Iterator<?>)o);
 		return o.toString();
 	}
 

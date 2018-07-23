@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class CharGen extends StdCommand
 {
 	public CharGen()
@@ -289,9 +288,9 @@ public class CharGen extends StdCommand
 		int numClasses=0;
 		for(;tries<numTriesClass;tries++)
 		{
-			for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 			{
-				final CharClass C=(CharClass)c.nextElement();
+				final CharClass C=c.nextElement();
 				if(C.availabilityCode()!=0)
 				{
 					numClasses++;
@@ -346,9 +345,9 @@ public class CharGen extends StdCommand
 			{"Fighter","Fighterness"},
 		};
 
-		for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+		for(final Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
 		{
-			final CharClass C=(CharClass)e.nextElement();
+			final CharClass C=e.nextElement();
 			if(CMLib.login().isAvailableCharClass(C))
 			{
 				String behav="CombatAbilities";
@@ -448,9 +447,9 @@ public class CharGen extends StdCommand
 			if(s.endsWith("s"))
 			{
 				s=s.substring(0,s.length()-1);
-				for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+				for(final Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
 				{
-					final CharClass C=(CharClass)e.nextElement();
+					final CharClass C=e.nextElement();
 					if(CMLib.login().isAvailableCharClass(C)
 					&&(C.baseClass().equalsIgnoreCase(s)||(s.equalsIgnoreCase("charclasse"))))
 					{
@@ -953,9 +952,9 @@ public class CharGen extends StdCommand
 							if((c.failSkillCheck!=null)&&(c.failSkillCheck.size()>0))
 							{
 								final StringBuffer fails=new StringBuffer("SKILLFAILS: ");
-								for(final Enumeration i=c.failSkillCheck.keys();i.hasMoreElements();)
+								for(final Enumeration<String> i=c.failSkillCheck.keys();i.hasMoreElements();)
 								{
-									final String s=(String)i.nextElement();
+									final String s=i.nextElement();
 									final int[] times=c.failSkillCheck.get(s);
 									if(times[1]>0)
 									{

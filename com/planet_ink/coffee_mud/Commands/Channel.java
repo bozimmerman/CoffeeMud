@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class Channel extends StdCommand
 {
 	public Channel()
@@ -45,7 +44,7 @@ public class Channel extends StdCommand
 		return CMLib.channels().getChannelNames();
 	}
 
-	private final static Class[][] internalParameters=new Class[][]{{Boolean.class,String.class,String.class}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Boolean.class,String.class,String.class}};
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)

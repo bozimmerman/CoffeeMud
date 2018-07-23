@@ -40,8 +40,7 @@ public class Get extends StdCommand
 
 	private final String[]	access	= I(new String[] { "GET", "G" });
 
-	@SuppressWarnings("rawtypes")
-	private final static Class[][] internalParameters=new Class[][]
+	private final static Class<?>[][] internalParameters=new Class<?>[][]
 	{
 		{Item.class},
 		{Item.class,Boolean.class},

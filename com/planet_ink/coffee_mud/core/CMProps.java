@@ -356,7 +356,8 @@ public class CMProps extends Properties
 			DAMAGE_ADJ(2048),
 			DAMAGE_NUMBER(4096),
 			SKILL_PROFICIENCY(8192),
-			STAT_PROFICIENCY(16384)
+			STAT_PROFICIENCY(16384),
+			FACTION_RANGE(32768)
 			;
 			public int value;
 			private Prowesses(int val)
@@ -523,8 +524,8 @@ public class CMProps extends Properties
 		NEWPLAYERS
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static final Class<? extends Enum>[] PROP_CLASSES = new Class[]  
+	@SuppressWarnings("unchecked")
+	public static final Class<? extends Enum<?>>[] PROP_CLASSES = new Class[]  
 	{
 		CMProps.Bool.class,
 		CMProps.Str.class,
@@ -1057,13 +1058,12 @@ public class CMProps extends Properties
 	 * @param varName the possible name of a property
 	 * @return true if it is some sort of prop enum, false otherwise
 	 */
-	@SuppressWarnings("rawtypes")
 	public static boolean isPropName(String varName)
 	{
 		if(varName == null)
 			return false;
 		varName = varName.toUpperCase().trim();
-		for(Class<? extends Enum> c : CMProps.PROP_CLASSES)
+		for(Class<? extends Enum<?>> c : CMProps.PROP_CLASSES)
 		{
 			if(CMath.s_valueOf(c, varName) != null)
 				return true;
@@ -1079,13 +1079,12 @@ public class CMProps extends Properties
 	 * @param varName the name of a property
 	 * @return the string value of that property
 	 */
-	@SuppressWarnings("rawtypes")
 	public static String getProp(String varName)
 	{
 		if(varName == null)
 			return "";
 		varName = varName.toUpperCase().trim();
-		for(Class<? extends Enum> c : CMProps.PROP_CLASSES)
+		for(Class<? extends Enum<?>> c : CMProps.PROP_CLASSES)
 		{
 			if(CMath.s_valueOf(c, varName) != null)
 			{

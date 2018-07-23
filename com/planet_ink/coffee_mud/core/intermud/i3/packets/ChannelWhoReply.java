@@ -33,10 +33,10 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
-public class ChannelWhoReply extends Packet {
+public class ChannelWhoReply extends Packet 
+{
 	public String channel = null;
-	public Vector who=null;
+	public Vector<?> who=null;
 
 	public ChannelWhoReply()
 	{
@@ -44,7 +44,7 @@ public class ChannelWhoReply extends Packet {
 		type = Packet.CHAN_WHO_REP;
 	}
 
-	public ChannelWhoReply(Vector v) throws InvalidPacketException {
+	public ChannelWhoReply(Vector<?> v) throws InvalidPacketException {
 		super(v);
 		try
 		{
@@ -53,11 +53,11 @@ public class ChannelWhoReply extends Packet {
 			channel = Intermud.getLocalChannel(channel);
 			try
 			{
-				who = (Vector) v.elementAt(7);
+				who = (Vector<?>) v.elementAt(7);
 			}
 			catch (final Exception e)
 			{
-				who = new Vector();
+				who = (Vector<?>)new Vector<Object>();
 			}
 		}
 		catch( final ClassCastException e )
@@ -67,7 +67,8 @@ public class ChannelWhoReply extends Packet {
 	}
 
 	@Override
-	public void send() throws InvalidPacketException {
+	public void send() throws InvalidPacketException 
+	{
 		if( channel==null || who == null  )
 		{
 			throw new InvalidPacketException();

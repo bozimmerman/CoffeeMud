@@ -33,7 +33,6 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
 public class MudAuthRequest extends Packet
 {
 	public MudAuthRequest()
@@ -43,7 +42,7 @@ public class MudAuthRequest extends Packet
 		target_mud=I3Server.getMudName();
 	}
 
-	public MudAuthRequest(Vector v)
+	public MudAuthRequest(Vector<?> v)
 	{
 		super(v);
 		type = Packet.MAUTH_REQUEST;

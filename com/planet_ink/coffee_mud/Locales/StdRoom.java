@@ -1415,6 +1415,7 @@ public class StdRoom implements Room
 			{
 				final MOB folM=f.nextElement().first;
 				if((folM.location()==oldRoom)
+				&&(folM != mob)
 				&&(oldRoom != this))
 					bringMobHere(folM,true);
 			}
@@ -1451,7 +1452,9 @@ public class StdRoom implements Room
 				{
 					if(((Rideable)mob).isMobileRideBasis())
 					{
-						if((RR instanceof MOB)&&(andFollowers))
+						if((RR instanceof MOB)
+						&&(andFollowers)
+						&&(RR!=mob))
 							bringMobHere((MOB)RR,andFollowers);
 						else
 						if(RR instanceof Item)

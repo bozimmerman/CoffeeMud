@@ -39,8 +39,7 @@ public class Put extends StdCommand
 	{
 	}
 
-	@SuppressWarnings("rawtypes")
-	private final static Class[][] internalParameters=new Class[][]
+	private final static Class<?>[][] internalParameters=new Class<?>[][]
 	{
 		{Item.class,Container.class,Boolean.class},
 	};

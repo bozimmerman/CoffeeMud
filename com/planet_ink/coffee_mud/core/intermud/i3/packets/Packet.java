@@ -38,8 +38,8 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
-public class Packet {
+public class Packet 
+{
 	/*
 		Transmissions are LPC arrays with a predefined set of six initial elements:
 	({ type, ttl, originator mudname, originator username, target mudname, target username, ... }).
@@ -79,7 +79,7 @@ public class Packet {
 		sender_mud = I3Server.getMudName();
 	}
 
-	public Packet(Vector v)
+	public Packet(Vector<?> v)
 	{
 		super();
 		{

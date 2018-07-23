@@ -35,8 +35,8 @@ import java.util.Vector;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
-@SuppressWarnings("rawtypes")
-public interface ImudServices {
+public interface ImudServices 
+{
 	/**
 	 * Handles an incoming I3 packet asynchronously.
 	 * An implementation should make sure that asynchronously
@@ -54,7 +54,7 @@ public interface ImudServices {
 	/**
 	 * @return an enumeration of channels this mud subscribes to
 	 */
-	public abstract java.util.Enumeration getChannels();
+	public abstract java.util.Enumeration<String> getChannels();
 
 	/**
 	 * Given a I3 channel name, this method should provide

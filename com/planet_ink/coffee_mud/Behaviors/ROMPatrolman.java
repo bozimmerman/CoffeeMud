@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class ROMPatrolman extends StdBehavior
 {
 	@Override
@@ -70,9 +69,9 @@ public class ROMPatrolman extends StdBehavior
 		if(BrotherHelper.isBrother(victim,observer,false))
 			return;
 		observer.location().show(observer,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> blow(s) down hard on <S-HIS-HER> whistle. ***WHEEEEEEEEEEEET***"));
-		for(final Enumeration r=observer.location().getArea().getMetroMap();r.hasMoreElements();)
+		for(final Enumeration<Room> r=observer.location().getArea().getMetroMap();r.hasMoreElements();)
 		{
-			final Room R=(Room)r.nextElement();
+			final Room R=r.nextElement();
 			if((R!=observer.location())&&(R.numPCInhabitants()>0))
 				R.showHappens(CMMsg.MSG_NOISE,L("You hear a shrill whistling sound in the distance."));
 		}

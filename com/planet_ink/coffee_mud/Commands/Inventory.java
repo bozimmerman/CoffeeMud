@@ -41,7 +41,7 @@ public class Inventory extends StdCommand
 
 	private final String[]	access	= I(new String[] { "INVENTORY", "INV", "I" });
 
-	private final static Class[][] internalParameters=new Class[][]{ {MOB.class}, {MOB.class,Boolean.class} };
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{ {MOB.class}, {MOB.class,Boolean.class} };
 	@Override
 	public String[] getAccessWords()
 	{

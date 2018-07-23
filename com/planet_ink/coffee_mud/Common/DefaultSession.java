@@ -49,7 +49,6 @@ import java.nio.charset.Charset;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class DefaultSession implements Session
 {
 	protected static final int		SOTIMEOUT		= 300;
@@ -3334,9 +3333,9 @@ public class DefaultSession implements Session
 				{
 					if((R!=null)&&(theMOB.location()!=null))
 						R.send(theMOB,msg);
-					for(final Iterator i=skipRooms.iterator();i.hasNext();)
+					for(final Iterator<Room> i=skipRooms.iterator();i.hasNext();)
 					{
-						R=(Room)i.next();
+						R=i.next();
 						if(theMOB.location()!=null)
 							R.sendOthers(theMOB,msg);
 					}
@@ -3360,9 +3359,9 @@ public class DefaultSession implements Session
 				Room R=null;
 				try
 				{
-					for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+					for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 					{
-						R=(Room)e.nextElement();
+						R=e.nextElement();
 						if((!skipRooms.contains(R))&&(theMOB.location()!=null))
 							R.sendOthers(theMOB,msg);
 					}

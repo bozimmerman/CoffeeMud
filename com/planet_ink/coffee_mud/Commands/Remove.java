@@ -47,8 +47,7 @@ public class Remove extends StdCommand
 		return access;
 	}
 
-	@SuppressWarnings("rawtypes")
-	private final static Class[][] internalParameters=new Class[][]{{Item.class},{Item.class,Boolean.class}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Item.class},{Item.class,Boolean.class}};
 
 	@Override
 	public boolean execute(MOB mob, List<String> commands, int metaFlags)

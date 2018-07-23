@@ -33,8 +33,8 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
-public class ChannelAdd extends Packet  {
+public class ChannelAdd extends Packet  
+{
 	public String channel = null;
 
 	public ChannelAdd()
@@ -43,7 +43,8 @@ public class ChannelAdd extends Packet  {
 		type = Packet.CHAN_ADD;
 	}
 
-	public ChannelAdd(Vector v) throws InvalidPacketException {
+	public ChannelAdd(Vector<?> v) throws InvalidPacketException 
+	{
 		super(v);
 		try
 		{

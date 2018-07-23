@@ -43,10 +43,10 @@ public class CrossRefTreeMap<T, K>
 			return o1.hashCode() > o2.hashCode() ? 1 : -1;
 		}
 	};
-	final TreeMap<T,TreeSet<K>> map1		=new TreeMap<T,TreeSet<K>>(comparator);
-	final TreeMap<K,TreeSet<T>> map2		=new TreeMap<K,TreeSet<T>>(comparator);
-	final int 					maxKsInMap1;
-	final int 					maxTsInMap2;
+	final Map<T,TreeSet<K>> map1		=new TreeMap<T,TreeSet<K>>(comparator);
+	final Map<K,TreeSet<T>> map2		=new TreeMap<K,TreeSet<T>>(comparator);
+	final int 				maxKsInMap1;
+	final int 				maxTsInMap2;
 	@SuppressWarnings("rawtypes")
 	private static final Set empty=new TreeSet();
 

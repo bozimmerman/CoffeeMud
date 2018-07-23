@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class GrinderMobs
 {
 	public enum MOBDataField
@@ -152,9 +151,9 @@ public class GrinderMobs
 
 	public static String factions(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
 	{
-		for(final Enumeration e=E.factions();e.hasMoreElements();)
+		for(final Enumeration<String> e=E.factions();e.hasMoreElements();)
 		{
-			final String strip=(String)e.nextElement();
+			final String strip=e.nextElement();
 			E.removeFaction(strip);
 		}
 		if(httpReq.isUrlParameter("FACTION1"))
@@ -951,9 +950,9 @@ public class GrinderMobs
 						else
 						{
 							Environmental O=null;
-							for(final Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
+							for(final Enumeration<MOB> m=CMClass.mobTypes();m.hasMoreElements();)
 							{
-								final MOB M2=(MOB)m.nextElement();
+								final MOB M2=m.nextElement();
 								if(CMClass.classID(M2).equals(MATCHING)&&(!M2.isGeneric()))
 								{
 									O=(MOB)M2.copyOf();

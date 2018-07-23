@@ -33,7 +33,6 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
 public class PingPacket extends Packet
 {
 	public PingPacket()
@@ -43,7 +42,7 @@ public class PingPacket extends Packet
 		target_mud=Intermud.getNameServer().name;
 	}
 
-	public PingPacket(Vector v)
+	public PingPacket(Vector<?> v)
 	{
 		super(v);
 		type = Packet.PING_PACKET;

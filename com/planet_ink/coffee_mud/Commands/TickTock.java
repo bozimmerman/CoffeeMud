@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class TickTock extends StdCommand
 {
 	public TickTock()
@@ -70,9 +69,9 @@ public class TickTock extends StdCommand
 			}
 			else
 			{
-				for(final Enumeration e=CMLib.libraries();e.hasMoreElements();)
+				for(final Enumeration<CMLibrary> e=CMLib.libraries();e.hasMoreElements();)
 				{
-					final CMLibrary lib=(CMLibrary)e.nextElement();
+					final CMLibrary lib=e.nextElement();
 					if((lib.getServiceClient()!=null)&&(s.equalsIgnoreCase(lib.getServiceClient().getName())))
 					{
 						if(lib instanceof Runnable)

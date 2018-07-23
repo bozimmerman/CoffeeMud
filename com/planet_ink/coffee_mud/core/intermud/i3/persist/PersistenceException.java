@@ -40,11 +40,10 @@ import java.util.NoSuchElementException;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
-@SuppressWarnings("rawtypes")
 public class PersistenceException extends Exception
 {
-	public static final long serialVersionUID=0;
-	private final Exception prior;
+	public static final long	serialVersionUID	= 0333444555666L;
+	private final Exception		prior;
 
 	public PersistenceException()
 	{
@@ -96,47 +95,46 @@ public class PersistenceException extends Exception
 	/**
 	 * @return the full chain of exceptions leading to this one
 	 */
-	public Enumeration getExceptionChain()
+	public Enumeration<Exception> getExceptionChain()
 	{
 		return new PersistenceExceptionEnumeration(this);
 	}
 }
 
-@SuppressWarnings("rawtypes")
-final class PersistenceExceptionEnumeration implements Enumeration {
-  private Exception exception;
+final class PersistenceExceptionEnumeration implements Enumeration<Exception> 
+{
+	private Exception exception;
 
-  public PersistenceExceptionEnumeration()
-  {
-	this(null);
-  }
+	public PersistenceExceptionEnumeration()
+	{
+		this(null);
+	}
 
-  public PersistenceExceptionEnumeration(Exception e)
-  {
-	exception = e;
-  }
+	public PersistenceExceptionEnumeration(Exception e)
+	{
+		exception = e;
+	}
 
-  @Override
-public boolean hasMoreElements()
-  {
+	@Override
+	public boolean hasMoreElements()
+	{
+		if( exception == null )
+			return false;
+		return true;
+	}
 
-	if( exception == null )
-		return false;
-	return true;
-  }
+	@Override
+	public Exception nextElement()
+	{
+		Exception e;
 
-  @Override
-public Object nextElement()
-  {
-	Exception e;
-
-	if( exception == null )
-		throw new NoSuchElementException();
-	e = exception;
-	if( e instanceof PersistenceException )
-		exception = ((PersistenceException)e).getPriorException();
-	else exception = null;
-	return e;
-  }
+		if( exception == null )
+			throw new NoSuchElementException();
+		e = exception;
+		if( e instanceof PersistenceException )
+			exception = ((PersistenceException)e).getPriorException();
+		else exception = null;
+		return e;
+	}
 }
 

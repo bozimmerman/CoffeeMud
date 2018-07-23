@@ -51,7 +51,7 @@ public class Import extends StdCommand
 		return access;
 	}
 
-	private final static Class[][] internalParameters=new Class[][]
+	private final static Class<?>[][] internalParameters=new Class<?>[][]
 	{
 		{Object.class},
 		{Object.class,Object.class},

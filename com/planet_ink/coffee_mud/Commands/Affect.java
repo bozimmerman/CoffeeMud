@@ -42,7 +42,7 @@ public class Affect extends StdCommand
 		return access;
 	}
 
-//	private final static Class[][] internalParameters=new Class[][]{{Physical.class}};
+//	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Physical.class}};
 
 	public String getMOBState(final MOB mob)
 	{

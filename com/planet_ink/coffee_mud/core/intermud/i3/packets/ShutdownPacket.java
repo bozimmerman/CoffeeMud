@@ -33,7 +33,6 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
 public class ShutdownPacket extends Packet
 {
 	public ShutdownPacket()
@@ -42,7 +41,7 @@ public class ShutdownPacket extends Packet
 		type = Packet.SHUTDOWN;
 	}
 
-	public ShutdownPacket(Vector v)
+	public ShutdownPacket(Vector<?> v)
 	{
 		super(v);
 		type = Packet.SHUTDOWN;

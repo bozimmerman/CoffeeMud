@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class RaceNext extends StdWebMacro
 {
 	@Override
@@ -54,9 +53,9 @@ public class RaceNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(final Enumeration r=MobData.sortedRaces(httpReq);r.hasMoreElements();)
+		for(final Enumeration<Race> r=MobData.sortedRaces(httpReq);r.hasMoreElements();)
 		{
-			final Race R=(Race)r.nextElement();
+			final Race R=r.nextElement();
 			if((CMLib.login().isAvailableRace(R))
 			||(parms.containsKey("ALL")))
 			{

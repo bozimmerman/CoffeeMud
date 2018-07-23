@@ -33,8 +33,8 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
-public class LocateQueryPacket extends Packet {
+public class LocateQueryPacket extends Packet 
+{
 	public String user_name;
 
 	public LocateQueryPacket()
@@ -43,7 +43,8 @@ public class LocateQueryPacket extends Packet {
 		type = Packet.LOCATE_QUERY;
 	}
 
-	public LocateQueryPacket(Vector v) throws InvalidPacketException {
+	public LocateQueryPacket(Vector<?> v) throws InvalidPacketException 
+	{
 		super(v);
 		try
 		{
@@ -65,7 +66,8 @@ public class LocateQueryPacket extends Packet {
 	}
 
 	@Override
-	public void send() throws InvalidPacketException {
+	public void send() throws InvalidPacketException 
+	{
 		if( sender_name == null || user_name == null )
 		{
 			throw new InvalidPacketException();

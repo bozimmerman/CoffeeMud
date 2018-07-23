@@ -33,9 +33,9 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
-public class WhoPacket extends Packet {
-	public Vector who = null;
+public class WhoPacket extends Packet 
+{
+	public Vector<?> who = null;
 
 	public WhoPacket()
 	{
@@ -43,7 +43,7 @@ public class WhoPacket extends Packet {
 		type = Packet.WHO_REQUEST;
 	}
 
-	public WhoPacket(Vector v)
+	public WhoPacket(Vector<?> v)
 	{
 		super(v);
 		if( v.size() == 6 )
@@ -53,12 +53,13 @@ public class WhoPacket extends Packet {
 		else
 		{
 			type = Packet.WHO_REPLY;
-			who = (Vector)v.elementAt(6);
+			who = (Vector<?>)v.elementAt(6);
 		}
 	}
 
 	@Override
-	public void send() throws InvalidPacketException {
+	public void send() throws InvalidPacketException 
+	{
 		if( type == Packet.WHO_REPLY && who == null )
 		{
 			throw new InvalidPacketException();
@@ -81,7 +82,7 @@ public class WhoPacket extends Packet {
 
 		for(i=0; i<who.size(); i++)
 		{
-			final Vector v = (Vector)who.elementAt(i);
+			final Vector<?> v = (Vector<?>)who.elementAt(i);
 			final String nom = (String)v.elementAt(0);
 			final int idle = ((Integer)v.elementAt(1)).intValue();
 			final String xtra = (String)v.elementAt(2);

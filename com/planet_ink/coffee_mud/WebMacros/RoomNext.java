@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class RoomNext extends StdWebMacro
 {
 	@Override
@@ -61,9 +60,9 @@ public class RoomNext extends StdWebMacro
 		}
 		String lastID="";
 
-		for(final Enumeration d=A.getProperRoomnumbers().getRoomIDs();d.hasMoreElements();)
+		for(final Enumeration<String> d=A.getProperRoomnumbers().getRoomIDs();d.hasMoreElements();)
 		{
-			final String roomid=(String)d.nextElement();
+			final String roomid=d.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!roomid.equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("ROOM",roomid);

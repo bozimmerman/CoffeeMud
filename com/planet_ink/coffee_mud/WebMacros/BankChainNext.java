@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class BankChainNext extends StdWebMacro
 {
 	@Override
@@ -97,9 +96,9 @@ public class BankChainNext extends StdWebMacro
 			if(!CMSecurity.isAllowedEverywhere(M,CMSecurity.SecFlag.CMDPLAYERS))
 				return "";
 	
-			for(final Iterator j=CMLib.map().bankChains(null);j.hasNext();)
+			for(final Iterator<String> j=CMLib.map().bankChains(null);j.hasNext();)
 			{
-				final String bankChain=(String)j.next();
+				final String bankChain=j.next();
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!bankChain.equals(lastID))))
 				{
 					httpReq.addFakeUrlParameter("BANKCHAIN",bankChain);

@@ -33,8 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
-public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
+public class ManualClasses extends StdItem implements MiscMagic, ArchonOnly
 {
 	@Override
 	public String ID()
@@ -78,9 +77,9 @@ public class ManualClasses extends StdItem implements MiscMagic,ArchonOnly
 							mob.tell(L("The manual glows softly, enveloping you in its wisdom."));
 							CharClass lastC=null;
 							CharClass thisC=null;
-							for(final Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+							for(final Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 							{
-								final CharClass C=(CharClass)c.nextElement();
+								final CharClass C=c.nextElement();
 								if(thisC==null)
 									thisC=C;
 								if((lastC!=null)&&(thisC==mob.charStats().getCurrentClass()))

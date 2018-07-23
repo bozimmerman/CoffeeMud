@@ -33,8 +33,8 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
-public class ChannelListen extends Packet  {
+public class ChannelListen extends Packet  
+{
 	public String channel = null;
 	public String onoff="0";
 
@@ -44,7 +44,8 @@ public class ChannelListen extends Packet  {
 		type = Packet.CHAN_LISTEN;
 	}
 
-	public ChannelListen(Vector v) throws InvalidPacketException {
+	public ChannelListen(Vector<?> v) throws InvalidPacketException 
+	{
 		super(v);
 		try
 		{
@@ -67,7 +68,8 @@ public class ChannelListen extends Packet  {
 	}
 
 	@Override
-	public void send() throws InvalidPacketException {
+	public void send() throws InvalidPacketException 
+	{
 		if( channel == null  )
 		{
 			throw new InvalidPacketException();

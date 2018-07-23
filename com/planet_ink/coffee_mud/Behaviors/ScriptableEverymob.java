@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 {
 	@Override
@@ -100,14 +99,14 @@ public class ScriptableEverymob extends StdBehavior implements ScriptingEngine
 		&&(!started))
 		{
 			started = true;
-			final Enumeration rooms=determineRooms(forMe);
+			final Enumeration<Room> rooms=determineRooms(forMe);
 			final Area A=determineArea(forMe);
 			if((A!=null)&&(rooms!=null))
 			{
 				Room R=null;
 				for(;rooms.hasMoreElements();)
 				{
-					R=(Room)rooms.nextElement();
+					R=rooms.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)
 						giveUpTheScript(A,R.fetchInhabitant(m));
 				}

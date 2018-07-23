@@ -70,7 +70,6 @@ public class GatheringSkill extends CommonSkill
 		super();
 	}
 
-	@SuppressWarnings("rawtypes")
 	protected List<List<String>> loadList(StringBuffer str)
 	{
 		final List<List<String>> V=new Vector<List<String>>();
@@ -104,7 +103,7 @@ public class GatheringSkill extends CommonSkill
 					if(V2.size()>longestList)
 						longestList=V2.size();
 					if(V2 instanceof Vector)
-						((Vector)V2).trimToSize();
+						((Vector<?>)V2).trimToSize();
 					V.add(V2);
 					V2=new Vector<String>();
 				}

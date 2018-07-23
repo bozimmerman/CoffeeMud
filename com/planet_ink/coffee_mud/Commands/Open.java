@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class Open extends StdCommand
 {
 	public Open()
@@ -47,7 +46,7 @@ public class Open extends StdCommand
 		return access;
 	}
 
-	private final static Class[][] internalParameters=new Class[][]{{Environmental.class,Boolean.class}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Environmental.class,Boolean.class}};
 
 	public boolean open(MOB mob, Environmental openThis, String openableWord, int dirCode, boolean quietly)
 	{

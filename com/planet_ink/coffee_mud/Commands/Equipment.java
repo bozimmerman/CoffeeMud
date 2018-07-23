@@ -47,8 +47,7 @@ public class Equipment extends StdCommand
 		return access;
 	}
 
-	@SuppressWarnings("rawtypes")
-	private final static Class[][] internalParameters=new Class[][]{{MOB.class},{Boolean.class},{}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{MOB.class},{Boolean.class},{}};
 
 	public StringBuilder getEquipment(MOB seer, MOB mob, boolean allPlaces)
 	{

@@ -38,9 +38,8 @@ public class Possess extends StdCommand
 	public Possess()
 	{
 	}
-	
-	@SuppressWarnings("rawtypes")
-	private final static Class[][] internalParameters=new Class[][]{{MOB.class, Boolean.class}};
+
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{MOB.class, Boolean.class}};
 
 	private final String[]	access	= I(new String[] { "POSSESS", "POSS" });
 

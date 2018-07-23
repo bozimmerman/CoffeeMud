@@ -19,7 +19,6 @@ import java.util.NoSuchElementException;
    See the License for the specific language governing permissions and
    limitations under the License.
  */
-@SuppressWarnings("rawtypes")
 public class EmptyIterator<K> implements Iterator<K>
 {
 	private EmptyIterator()
@@ -44,6 +43,7 @@ public class EmptyIterator<K> implements Iterator<K>
 		throw new NoSuchElementException();
 	}
 
+	@SuppressWarnings("rawtypes")
 	public static final Iterator		INSTANCE	    = new EmptyIterator();
 	public static final Iterator<String>STRINSTANCE	= new EmptyIterator<String>();
 }

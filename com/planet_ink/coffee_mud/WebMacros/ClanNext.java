@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class ClanNext extends StdWebMacro
 {
 	@Override
@@ -54,9 +53,9 @@ public class ClanNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(final Enumeration c=CMLib.clans().clans();c.hasMoreElements();)
+		for(final Enumeration<Clan> c=CMLib.clans().clans();c.hasMoreElements();)
 		{
-			final Clan C=(Clan)c.nextElement();
+			final Clan C=c.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!C.clanID().equals(lastID))))
 			{
 				httpReq.addFakeUrlParameter("CLAN",C.clanID());

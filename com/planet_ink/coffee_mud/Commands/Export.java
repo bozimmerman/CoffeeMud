@@ -47,8 +47,7 @@ public class Export extends StdCommand
 		return access;
 	}
 
-	@SuppressWarnings("rawtypes")
-	private final static Class[][] internalParameters=new Class[][]{
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{
 		{
 			String.class,String.class,String.class,Integer.class,null,Area.class,Room.class
 		}
@@ -369,13 +368,12 @@ public class Export extends StdCommand
 		return type;
 	}
 
-	@SuppressWarnings("rawtypes")
 	protected String getCatalogData(Map<String,?> found)
 	{
 		StringBuilder str = new StringBuilder("<CATADATAS>");
 		for(String key : found.keySet())
 		{
-			List foundMs = (List)found.get(key);
+			List<?> foundMs = (List<?>)found.get(key);
 			for(Object P : foundMs)
 			{
 				CatalogLibrary.CataData data = CMLib.catalog().getCatalogData((Physical)P);

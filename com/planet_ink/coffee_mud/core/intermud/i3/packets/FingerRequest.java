@@ -33,7 +33,6 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
 public class FingerRequest extends Packet
 {
 	public FingerRequest()
@@ -42,7 +41,8 @@ public class FingerRequest extends Packet
 		type = Packet.FINGER_REQUEST;
 	}
 
-	public FingerRequest(Vector v) throws InvalidPacketException {
+	public FingerRequest(Vector<?> v) throws InvalidPacketException 
+	{
 		super(v);
 		try
 		{
@@ -57,7 +57,8 @@ public class FingerRequest extends Packet
 	}
 
 	@Override
-	public void send() throws InvalidPacketException {
+	public void send() throws InvalidPacketException 
+	{
 		if( sender_name == null || target_mud == null || sender_mud == null  || target_name == null)
 		{
 			throw new InvalidPacketException();

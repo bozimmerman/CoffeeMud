@@ -32,7 +32,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class Close extends StdCommand
 {
 	public Close()
@@ -47,7 +46,7 @@ public class Close extends StdCommand
 		return access;
 	}
 
-	private final static Class[][]	internalParameters	= new Class[][] { { Environmental.class, String.class, Integer.class } };
+	private final static Class<?>[][]	internalParameters	= new Class<?>[][] { { Environmental.class, String.class, Integer.class } };
 
 	public boolean closeMe(final MOB mob, final Environmental closeThis, final String whatToClose, int dirCode)
 	{

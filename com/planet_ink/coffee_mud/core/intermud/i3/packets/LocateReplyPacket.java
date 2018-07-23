@@ -33,14 +33,15 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
-public class LocateReplyPacket extends Packet {
+public class LocateReplyPacket extends Packet 
+{
 	public String located_mud_name;
 	public String located_visible_name;
 	public int    idle_time;
 	public String status;
 
-	public LocateReplyPacket(Vector v) throws InvalidPacketException {
+	public LocateReplyPacket(Vector<?> v) throws InvalidPacketException 
+	{
 		super(v);
 		try
 		{
@@ -83,10 +84,11 @@ public class LocateReplyPacket extends Packet {
 	}
 
 	@Override
-	public void send() throws InvalidPacketException {
+	public void send() throws InvalidPacketException 
+	{
 		if( target_name == null || located_mud_name == null ||
 			located_visible_name == null || status == null )
-			{
+		{
 			throw new InvalidPacketException();
 		}
 		super.send();

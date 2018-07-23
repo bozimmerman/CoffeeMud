@@ -857,8 +857,18 @@ public class StdMOB implements MOB
 		int total = 0;
 		try
 		{
-			for (final Enumeration<Pair<MOB,Short>> f = followers(); f.hasMoreElements();)
-				total += (1+f.nextElement().first.totalFollowers());
+			final PairList<MOB,Short> followers=this.followers;
+			if(followers != null)
+			{
+				for (final Iterator<Pair<MOB,Short>> f = followers.iterator(); f.hasNext();)
+				{
+					final MOB F=f.next().first;
+					if(F != this)
+						total += (1+F.totalFollowers());
+					else
+						f.remove();
+				}
+			}
 		}
 		catch (final Exception t)
 		{

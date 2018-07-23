@@ -34,7 +34,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class Reset extends StdCommand
 {
 	public Reset()
@@ -991,9 +990,9 @@ public class Reset extends StdCommand
 			final Area A=mob.location().getArea();
 			boolean somethingDone=false;
 			int number=0;
-			for(final Enumeration e=A.getCompleteMap();e.hasMoreElements();)
+			for(final Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
 			{
-				Room R=(Room)e.nextElement();
+				final Room R=e.nextElement();
 				if((R.roomID().length()>0)&&(CMLib.map().getRoom(A.Name()+"#"+(number++))!=null))
 				{
 					mob.tell(L("Can't renumber rooms -- a number is too low."));
@@ -1003,9 +1002,9 @@ public class Reset extends StdCommand
 			}
 			number=0;
 			if(!somethingDone)
-			for(final Enumeration e=A.getCompleteMap();e.hasMoreElements();)
+			for(final Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
 			{
-				Room R=(Room)e.nextElement();
+				Room R=e.nextElement();
 				synchronized(("SYNC"+R.roomID()).intern())
 				{
 					R=CMLib.map().getRoom(R);
@@ -1051,9 +1050,9 @@ public class Reset extends StdCommand
 		{
 			final Area A=mob.location().getArea();
 			boolean somethingDone=false;
-			for(final Enumeration e=A.getCompleteMap();e.hasMoreElements();)
+			for(final Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
 			{
-				Room R=(Room)e.nextElement();
+				Room R=e.nextElement();
 				synchronized(("SYNC"+R.roomID()).intern())
 				{
 					R=CMLib.map().getRoom(R);
@@ -1109,9 +1108,9 @@ public class Reset extends StdCommand
 			{
 				Room R=null;
 				LandTitle T=null;
-				for(final Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+				for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
 				{
-					R=(Room)e.nextElement();
+					R=e.nextElement();
 					synchronized(("SYNC"+R.roomID()).intern())
 					{
 						R=CMLib.map().getRoom(R);
@@ -1132,9 +1131,9 @@ public class Reset extends StdCommand
 		{
 			if(mob.session().confirm(L("Alter the stat gains every generic race automatically?"), L("N")))
 			{
-				for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+				for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 				{
-					final Race R=(Race)e.nextElement();
+					final Race R=e.nextElement();
 					if(R.isGeneric())
 					{
 						final CharStats ADJSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
@@ -1165,9 +1164,9 @@ public class Reset extends StdCommand
 		{
 			if(mob.session().confirm(L("Alter the aging charts of every race automatically?"), L("N")))
 			{
-				for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+				for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 				{
-					final Race R=(Race)e.nextElement();
+					final Race R=e.nextElement();
 					if(R.isGeneric())
 					{
 						final List<Race> racesToBaseFrom=CMLib.utensils().getConstituantRaces(R.ID());
@@ -1221,9 +1220,9 @@ public class Reset extends StdCommand
 			{
 				if(mob.session().confirm(L("Recreate all the gen-mixed-races?!"), L("N")))
 				{
-					for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+					for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 					{
-						final Race R=(Race)e.nextElement();
+						final Race R=e.nextElement();
 						if(R.isGeneric())
 						{
 							final List<Race> racesToBaseFrom=CMLib.utensils().getConstituantRaces(R.ID());
@@ -1392,9 +1391,9 @@ public class Reset extends StdCommand
 				{
 					try
 					{
-						for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+						for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 						{
-							final Area A=(Area)e.nextElement();
+							final Area A=e.nextElement();
 							boolean skip=false;
 							for(int i=1;i<commands.size();i++)
 							{
@@ -1521,9 +1520,9 @@ public class Reset extends StdCommand
 				{
 					try
 					{
-						for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+						for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 						{
-							final Area A=(Area)e.nextElement();
+							final Area A=e.nextElement();
 							boolean skip=false;
 							for(int i=1;i<commands.size();i++)
 							{
@@ -1642,9 +1641,9 @@ public class Reset extends StdCommand
 				{
 					final Area A=a.nextElement();
 					A.setAreaState(Area.State.FROZEN);
-					for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+					for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 					{
-						Room R=(Room)r.nextElement();
+						Room R=r.nextElement();
 						if(R.roomID().length()==0)
 							continue;
 						synchronized(("SYNC"+R.roomID()).intern())
@@ -1691,9 +1690,9 @@ public class Reset extends StdCommand
 				{
 					final Area A=a.nextElement();
 					A.setAreaState(Area.State.FROZEN);
-					for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+					for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 					{
-						Room R=(Room)r.nextElement();
+						Room R=r.nextElement();
 						if(R.roomID().length()==0)
 							continue;
 						synchronized(("SYNC"+R.roomID()).intern())
@@ -1807,9 +1806,9 @@ public class Reset extends StdCommand
 				{
 					final Area A=a.nextElement();
 					A.setAreaState(Area.State.FROZEN);
-					for(final Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+					for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 					{
-						Room R=(Room)r.nextElement();
+						Room R=r.nextElement();
 						if(R.roomID().length()>0)
 						{
 							synchronized(("SYNC"+R.roomID()).intern())
@@ -2043,9 +2042,9 @@ public class Reset extends StdCommand
 				{
 					try
 					{
-						for(final Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+						for(final Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
 						{
-							final Area A=(Area)e.nextElement();
+							final Area A=e.nextElement();
 							boolean skip=false;
 							for(int i=1;i<commands.size();i++)
 							{
@@ -2272,36 +2271,36 @@ public class Reset extends StdCommand
 											String poss="";
 											if(poss.length()==0)
 											{
-												for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+												for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 												{
-													final Race R3=(Race)e.nextElement();
+													final Race R3=e.nextElement();
 													if(R3.ID().toUpperCase().startsWith(str.toUpperCase()))
 														poss=R3.name();
 												}
 											}
 											if(poss.length()==0)
 											{
-												for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+												for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 												{
-													final Race R3=(Race)e.nextElement();
+													final Race R3=e.nextElement();
 													if(R3.ID().toUpperCase().indexOf(str.toUpperCase())>=0)
 														poss=R3.name();
 												}
 											}
 											if(poss.length()==0)
 											{
-												for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+												for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 												{
-													final Race R3=(Race)e.nextElement();
+													final Race R3=e.nextElement();
 													if(R3.name().toUpperCase().startsWith(str.toUpperCase()))
 														poss=R3.name();
 												}
 											}
 											if(poss.length()==0)
 											{
-												for(final Enumeration e=CMClass.races();e.hasMoreElements();)
+												for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 												{
-													final Race R3=(Race)e.nextElement();
+													final Race R3=e.nextElement();
 													if(R3.name().toUpperCase().indexOf(str.toUpperCase())>=0)
 														poss=R3.name();
 												}

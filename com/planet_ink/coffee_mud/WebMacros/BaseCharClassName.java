@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class BaseCharClassName extends StdWebMacro
 {
 	@Override
@@ -59,9 +58,9 @@ public class BaseCharClassName extends StdWebMacro
 				else
 					return clearWebMacros(C.name());
 			}
-			for(final Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+			for(final Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
 			{
-				C=(CharClass)e.nextElement();
+				C=e.nextElement();
 				if(C.baseClass().equalsIgnoreCase(last))
 				{
 					if(parms.containsKey("PLURAL"))

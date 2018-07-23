@@ -39,8 +39,7 @@ public class Wealth extends Inventory
 		return access;
 	}
 
-	@SuppressWarnings("rawtypes")
-	private final static Class[][] internalParameters=new Class[][]{{MOB.class}};
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{MOB.class}};
 
 	@Override
 	public StringBuilder getInventory(MOB seer, MOB mob, String mask, boolean longInv)

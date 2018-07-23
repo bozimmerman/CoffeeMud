@@ -33,8 +33,8 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
-public class ChannelUserReply extends Packet {
+public class ChannelUserReply extends Packet 
+{
 	public String userRequested=null;
 	public String userVisibleName=null;
 	public char gender = 'N';
@@ -45,7 +45,8 @@ public class ChannelUserReply extends Packet {
 		type = Packet.CHAN_USER_REP;
 	}
 
-	public ChannelUserReply(Vector v) throws InvalidPacketException {
+	public ChannelUserReply(Vector<?> v) throws InvalidPacketException 
+	{
 		super(v);
 		try
 		{
@@ -79,7 +80,8 @@ public class ChannelUserReply extends Packet {
 	}
 
 	@Override
-	public void send() throws InvalidPacketException {
+	public void send() throws InvalidPacketException 
+	{
 		if( userRequested == null || userVisibleName == null )
 		{
 			throw new InvalidPacketException();

@@ -33,12 +33,11 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
 public class ErrorPacket extends Packet
 {
-	public String error_code="";
-	public String error_message = "";
-	public String packetStr = "";
+	public String	error_code		= "";
+	public String	error_message	= "";
+	public String	packetStr		= "";
 
 	public ErrorPacket()
 	{
@@ -57,7 +56,7 @@ public class ErrorPacket extends Packet
 		this.packetStr=packetStr;
 	}
 
-	public ErrorPacket(Vector v) throws InvalidPacketException
+	public ErrorPacket(Vector<?> v) throws InvalidPacketException
 	{
 		super(v);
 		try

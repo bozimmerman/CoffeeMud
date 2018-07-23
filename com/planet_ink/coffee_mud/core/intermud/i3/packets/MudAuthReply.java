@@ -33,7 +33,6 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
-@SuppressWarnings("rawtypes")
 public class MudAuthReply extends Packet
 {
 	public long key=0;
@@ -45,7 +44,7 @@ public class MudAuthReply extends Packet
 		target_mud=I3Server.getMudName();
 	}
 
-	public MudAuthReply(Vector v)
+	public MudAuthReply(Vector<?> v)
 	{
 		super(v);
 		type = Packet.MAUTH_REPLY;

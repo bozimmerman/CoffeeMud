@@ -33,7 +33,6 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("rawtypes")
 public class FactionNext extends StdWebMacro
 {
 	@Override
@@ -62,9 +61,9 @@ public class FactionNext extends StdWebMacro
 		String lastID="";
 		Faction F;
 		String factionID;
-		for(final Enumeration q=CMLib.factions().factions();q.hasMoreElements();)
+		for(final Enumeration<Faction> q=CMLib.factions().factions();q.hasMoreElements();)
 		{
-			F=(Faction)q.nextElement();
+			F=q.nextElement();
 			factionID=F.factionID().toUpperCase().trim();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!factionID.equalsIgnoreCase(lastID))))
 			{
