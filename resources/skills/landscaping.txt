@@ -1,16 +1,16 @@
-Demolish	1	25	0		DIR	DEMOLISH	Plains	-		demolishing	
-Title	1	15	0			TITLE	NA	-	-	title	
-Description	1	10	0			DESC	NA	-	-	description	
-Barrier	1	25	100		DIR	WALL	NA	-		barrier @x1	
-Desert	10	113	1500	SAND	OUTDOOR	ROOM	Desert	0		desert	
-Hills	25	225	3000	ROCK	OUTDOOR	ROOM	Hills	0		hills	
-Jungle	20	188	2500	WOODEN	OUTDOOR	ROOM	Jungle	0		jungle	
-Mountains	30	6000	5000	ROCK	OUTDOOR	ROOM	Mountains	0		mountains	
-Cave	17	169	2250	ROCK	OUTDOOR	ROOM	CaveRoom	0		cave	
-Plains	1	5	1000	VEGETATION	OUTDOOR	ROOM	Plains	0		plains	
-Road	1	38	500	ROCK	OUTDOOR	ROOM	Road	0		road	
-CityStreet	1	38	500	ROCK	OUTDOOR	ROOM	CityStreet	0		city street	
-Shallow Water	5	75	1000	SAND	OUTDOOR	ROOM	ShallowWater	0		shallow water	
-Shore	7	94	1250	SAND	OUTDOOR	ROOM	Shore	0		shore	
-Swamp	15	150	2000	VEGETATION	OUTDOOR	ROOM	Swamp	0		swamp	
-Forest	3	112	750	WOODEN	OUTDOOR	ROOM	Woods	0		forest	
+Demolish	1	25	0		DIR	DEMOLISH	Plains	-		demolishing		Demolishes something, which has different effects.
+Title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
+Description	1	10	0			DESC	NA	-	-	description		Long elaborate description of the room details.
+Barrier	1	25	100		DIR	WALL	NA	-		barrier @x1		Blocks entry or exit between two places.
+Desert	10	113	1500	SAND	OUTDOOR	ROOM	Desert	0		desert		Turns a place into a dry hot sandy one.
+Hills	25	225	3000	ROCK	OUTDOOR	ROOM	Hills	0		hills		Turns a place into a green hilly one.
+Jungle	20	188	2500	WOODEN	OUTDOOR	ROOM	Jungle	0		jungle		Turns a place into a deep green jungle.
+Mountains	30	6000	5000	ROCK	OUTDOOR	ROOM	Mountains	0		mountains		Turns a place into a tall mountenous one.
+Cave	17	169	2250	ROCK	OUTDOOR	ROOM	CaveRoom	0		cave		Turns a room into an indoor cave room.
+Plains	1	5	1000	VEGETATION	OUTDOOR	ROOM	Plains	0		plains		Turns a place into a flat green one.
+Road	1	38	500	ROCK	OUTDOOR	ROOM	Road	0		road		Turns a place into an easily travellable one.
+CityStreet	1	38	500	ROCK	OUTDOOR	ROOM	CityStreet	0		city street		Turns a place into a city street.
+Shallow Water	5	75	1000	SAND	OUTDOOR	ROOM	ShallowWater	0		shallow water		Turns outdoor room into a very wet outdoor room.
+Shore	7	94	1250	SAND	OUTDOOR	ROOM	Shore	0		shore		Turns a place into a sandy shore by the water.
+Swamp	15	150	2000	VEGETATION	OUTDOOR	ROOM	Swamp	0		swamp		Turns a place into a very wet hot green mucky one.
+Forest	3	112	750	WOODEN	OUTDOOR	ROOM	Woods	0		forest		Turns a place into a deep green forest.

@@ -1,20 +1,20 @@
-Wall	1	45	100		DIR INDOOR	WALL	NA	-		wall @x1	
-Door	1	25	125		INDOOR DIR	DOOR	GenDoor	door		door @x1	
-Roof	1	110	350		OUTDOOR	ROOM	WoodRoom	0		frame and roof	
-Low Roof	1	85	250		OUTDOOR	ROOM	WoodRoom	0	Prop_Crawlspace()	lower frame and roof	
-Wide Roof	1	135	1000		OUTDOOR	ROOM	WoodRoom	0	Prop_EnlargeRoom(10)	broad frame and roof	
-Small Maze	1	160	1500		OUTDOOR	ROOM	WoodRoomMaze	3		small maze frame and roof	
-Maze	1	185	2500		OUTDOOR	ROOM	WoodRoomMaze	5		maze frame and roof	
-Big Maze	1	210	3500		OUTDOOR	ROOM	WoodRoomMaze	7		large maze frame and roof	
-Gate	1	25	50		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1	
-Fence	1	25	50		OUTDOOR DIR	WALL	NA			fence @x1	
-Demolish	1	25	0		DIR	DEMOLISH	Plains	-		demolishing	
-Title	1	15	0			TITLE	NA	-	-	title	
-Description	1	10	0			DESC	NA	-	-	description	
-Secret Door	1	25	200		INDOOR DIR	DOOR	GenDoor	secret door	Prop_Hidden	secret door @x1	-BASECLASS +Thief
-Shallow Water	1	35	200		OUTDOOR	ROOM	ShallowWater	0		shallow water	
-Window	1	25	50		INDOOR DIR NOWALL	DOOR	GenDoor	window|open|close|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	window @x1	
-Crawlway	1	25	250		INDOOR DIR NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawlway @x1	
-Stairs	1	195	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1	
-Hole Floor	1	165	2550		INDOOR	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor	
-Trap Door	1	30	150		DIRUPDOWN INDOOR	DOOR	GenDoor	trapdoor|open|close|A closed trapdoor.|An open doorway.		door @x1	
+Wall	1	45	100		DIR INDOOR	WALL	NA	-		wall @x1		Blocks entry or exit between two indoor places.
+Door	1	25	125		INDOOR DIR	DOOR	GenDoor	door		door @x1		Openable exit between two indoor places.
+Roof	1	110	350		OUTDOOR	ROOM	WoodRoom	0		frame and roof		Turns an outdoor place into an indoor one.
+Low Roof	1	85	250		OUTDOOR	ROOM	WoodRoom	0	Prop_Crawlspace()	lower frame and roof		Turns an outdoor place into an indoor one you crawl through.
+Wide Roof	1	135	1000		OUTDOOR	ROOM	WoodRoom	0	Prop_EnlargeRoom(10)	broad frame and roof		Turns an outdoor place into an indoor one of exceptional size.
+Small Maze	1	160	1500		OUTDOOR	ROOM	WoodRoomMaze	3		small maze frame and roof		Turns an outdoor place into a small indoor one of twisting turns.
+Maze	1	185	2500		OUTDOOR	ROOM	WoodRoomMaze	5		maze frame and roof		Turns an outdoor place into a larger indoor one of twisting turns
+Big Maze	1	210	3500		OUTDOOR	ROOM	WoodRoomMaze	7		large maze frame and roof		Turns an outdoor place into a large indoor one of twisting turns
+Gate	1	25	50		OUTDOOR DIR	DOOR	GenDoor	gate		gate @x1		Openable exit between two outdoor places.
+Fence	1	25	50		OUTDOOR DIR	WALL	NA			fence @x1		Blocks entry or exit between two outdoor places.
+Demolish	1	25	0		DIR	DEMOLISH	Plains	-		demolishing		Demolishes something, which has different effects.
+Title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
+Description	1	10	0			DESC	NA	-	-	description		Long elaborate description of the room details.
+Secret Door	1	25	200		INDOOR DIR	DOOR	GenDoor	secret door	Prop_Hidden	secret door @x1	-BASECLASS +Thief	Hidden openable exit between two indoor places.
+Shallow Water	1	35	200		OUTDOOR	ROOM	ShallowWater	0		shallow water		Turns outdoor room into a very wet outdoor room.
+Window	1	25	50		INDOOR DIR NOWALL	DOOR	GenDoor	window|open|close|A window.|An open window.	Prop_Crawlspace()Prop_RoomView()	window @x1		Object that, when looked at, shows you what's behind it.
+Crawlway	1	25	250		INDOOR DIR NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawlway @x1		Exit between two indoor places you crawl through.
+Stairs	1	195	2550		INDOOR	STAIRS		@x1stairs to the @x2 floor		stairway @x1		Exit from an indoor place to a new indoor room above it.
+Hole Floor	1	165	2550		INDOOR	STAIRS		@x1 a hole to the @x2 floor.	Spell_Fly()	hole @x1 to another floor		Exit from an indoor place to an existing room below it.
+Trap Door	1	30	150		DIRUPDOWN INDOOR	DOOR	GenDoor	trapdoor|open|close|A closed trapdoor.|An open doorway.		door @x1		Openable exit between two indoor rooms above or below each other.

@@ -134,6 +134,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	protected Room		room				= null;
 	protected int		dir					= -1;
 	protected String[]	recipe				= null;
+	protected int		poundsOfMatsUsed	= 0;
 	protected String	designTitle			= "";
 	protected String	designDescription	= "";	
 	
@@ -149,6 +150,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	protected final static int	DAT_PROPERTIES		= 9;
 	protected final static int	DAT_DESC			= 10;
 	protected final static int	DAT_BUILDERMASK		= 11;
+	protected final static int	DAT_DESCRIPTION		= 12;
 	
 	@Override
 	public String parametersFormat()
@@ -162,7 +164,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		}
 		return"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tOPTIONAL_BUILDING_RESOURCE_OR_MATERIAL\t"
 			+ "BUILDING_FLAGS\tBUILDING_CODE\tROOM_CLASS_ID||EXIT_CLASS_ID||ALLITEM_CLASS_ID||ROOM_CLASS_ID_OR_NONE\t"
-			+ "BUILDING_GRID_SIZE||EXIT_NAMES||STAIRS_DESC\tPCODED_SPELL_LIST\tBUILDING_NOUN\tBUILDER_MASK";
+			+ "BUILDING_GRID_SIZE||EXIT_NAMES||STAIRS_DESC\tPCODED_SPELL_LIST\tBUILDING_NOUN\tBUILDER_MASK\tBUILDER_DESC";
 	}
 	
 	@Override
@@ -206,6 +208,13 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					else
 					{
 						this.buildComplete(mob, recipe, room, dir, designTitle, designDescription);
+						if(poundsOfMatsUsed>0)
+						{
+							final CMMsg msg=CMClass.getMsg(mob,room,this,CMMsg.TYP_ITEMGENERATED|CMMsg.MASK_ALWAYS,null);
+							msg.setValue(poundsOfMatsUsed/2);
+							if(mob.location().okMessage(mob,msg))
+								mob.location().send(mob,msg);
+						}
 					}
 				}
 			}
@@ -1170,18 +1179,29 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			commonTell(mob,L("What kind of @x1, where? Try @x2 list.",name(),CMStrings.capitalizeAndLower(this.triggerStrings()[0])));
 			return false;
 		}
+		poundsOfMatsUsed	= 0;
 		canBeDoneSittingDown = false;
 		final String str=commands.get(0);
 		final String[][] data=getRecipeData(mob);
 		LandTitle title = CMLib.law().getLandTitle(mob.location());
 		double landValue = ((title == null) ? 0 : title.getPrice()) / 100.0;
 		String landCurrency = CMLib.beanCounter().getCurrency(mob.location());
-		if(("LIST").startsWith(str.toUpperCase()))
+		final boolean getInfo = ("INFO").startsWith(str.toUpperCase());
+		if(("LIST").startsWith(str.toUpperCase())||getInfo)
 		{
 			boolean hasValueTag = false;
-			final String mask=CMParms.combine(commands,1);
-			final int colWidth=CMLib.lister().fixColWidth(20,mob.session());
-			final StringBuffer buf=new StringBuffer(CMStrings.padRight(L("Item"),colWidth) + L(" @x1 required\n\r",this.getMainResourceName()));
+			String mask=CMParms.combine(commands,1);
+			if((getInfo && mask.length()==0))
+				mask="ALL";
+			int colWidth=CMLib.lister().fixColWidth(20,mob.session());
+			final StringBuffer buf;
+			if(getInfo)
+			{
+				colWidth=CMLib.lister().fixColWidth(13,mob.session());
+				buf=new StringBuffer(CMStrings.padRight(L("Item"),colWidth) + L(" Description\n\r",this.getMainResourceName()));
+			}
+			else
+				buf=new StringBuffer(CMStrings.padRight(L("Item"),colWidth) + L(" @x1 required\n\r",this.getMainResourceName()));
 			for(int r=0;r<data.length;r++)
 			{
 				if(((data[r][DAT_BUILDERMASK].length()==0)
@@ -1193,44 +1213,52 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					||CMLib.english().containsString(CMStrings.padRight(data[r][RCP_FINALNAME],colWidth),mask)))
 				{
 					buf.append(CMStrings.padRight(data[r][RCP_FINALNAME],colWidth)+" ");
-					String material=data[r][DAT_WOODTYPE];
-					if(material.equalsIgnoreCase("VALUE"))
+					if(getInfo)
 					{
-						hasValueTag=true;
-						final String woodStr = data[r][DAT_WOOD];
-						if(CMath.isInteger(woodStr))
+						if(DAT_DESCRIPTION < data[r].length)
+							buf.append(data[r][DAT_DESCRIPTION]).append("\n\r");
+					}
+					else
+					{
+						String material=data[r][DAT_WOODTYPE];
+						if(material.equalsIgnoreCase("VALUE"))
 						{
-							int wood=CMath.s_int(woodStr);
-							wood=adjustWoodRequired(wood,mob);
-							if(title == null)
-								buf.append(wood+"% ??\n\r");
+							hasValueTag=true;
+							final String woodStr = data[r][DAT_WOOD];
+							if(CMath.isInteger(woodStr))
+							{
+								int wood=CMath.s_int(woodStr);
+								wood=adjustWoodRequired(wood,mob);
+								if(title == null)
+									buf.append(wood+"% ??\n\r");
+								else
+									buf.append(CMLib.beanCounter().nameCurrencyLong(landCurrency, landValue * wood)).append("\n\r");
+							}
 							else
-								buf.append(CMLib.beanCounter().nameCurrencyLong(landCurrency, landValue * wood)).append("\n\r");
+								buf.append("??\n\r");
 						}
 						else
-							buf.append("??\n\r");
-					}
-					else
-					if(material.equalsIgnoreCase("MONEY"))
-					{
-						final String woodStr = data[r][DAT_WOOD];
-						if(CMath.isInteger(woodStr))
+						if(material.equalsIgnoreCase("MONEY"))
 						{
-							int wood=CMath.s_int(woodStr);
-							wood=adjustWoodRequired(wood,mob);
-							buf.append(CMLib.beanCounter().nameCurrencyLong(landCurrency, wood)).append("\n\r");
+							final String woodStr = data[r][DAT_WOOD];
+							if(CMath.isInteger(woodStr))
+							{
+								int wood=CMath.s_int(woodStr);
+								wood=adjustWoodRequired(wood,mob);
+								buf.append(CMLib.beanCounter().nameCurrencyLong(landCurrency, wood)).append("\n\r");
+							}
+							else
+								buf.append("??\n\r");
 						}
 						else
-							buf.append("??\n\r");
-					}
-					else
-					{
-						final String wood=getComponentDescription(mob,Arrays.asList(data[r]),DAT_WOOD);
-						if(wood.length()>5)
-							material="";
-						if(material.equalsIgnoreCase("wooden"))
-							material="wood";
-						buf.append(wood+" "+material.toLowerCase()+"\n\r");
+						{
+							final String wood=getComponentDescription(mob,Arrays.asList(data[r]),DAT_WOOD);
+							if(wood.length()>5)
+								material="";
+							if(material.equalsIgnoreCase("wooden"))
+								material="wood";
+							buf.append(wood+" "+material.toLowerCase()+"\n\r");
+						}
 					}
 				}
 			}
@@ -1771,6 +1799,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		startStr=L("<S-NAME> start(s) @x1",verb);
 		playSound=this.getSoundName();
 		duration=getDuration(CMath.s_int(recipe[RCP_TICKS]),mob,CMath.s_int(recipe[RCP_LEVEL]),10);
+		poundsOfMatsUsed += woodRequired;
 
 		final CMMsg msg=CMClass.getMsg(mob,null,this,getActivityMessageType(),startStr+".");
 		if(mob.location().okMessage(mob,msg))

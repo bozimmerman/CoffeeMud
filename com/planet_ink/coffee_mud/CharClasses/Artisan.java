@@ -279,9 +279,13 @@ public class Artisan extends StdCharClass
 		&&(msg.targetMinor() == CMMsg.TYP_ITEMGENERATED)
 		&&(msg.target() != null)
 		&&(msg.tool() instanceof Ability)
-		&&((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_CRAFTINGSKILL)
-		&&(msg.value() > 0))
-			CMLib.leveler().postExperience(msg.source(),null,null,msg.value(),false);
+		&&(msg.value() > 0)
+		&&(((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_CRAFTINGSKILL)
+			||((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_EPICUREAN)
+			||((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_BUILDINGSKILL)))
+		{
+				CMLib.leveler().postExperience(msg.source(),null,null,msg.value(),false);
+		}
 		else
 		if((msg.source() == myHost)
 		&&(msg.targetMinor() == CMMsg.TYP_RECIPELEARNED)

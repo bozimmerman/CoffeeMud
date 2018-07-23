@@ -1267,6 +1267,25 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					return "";
 				}
 			},
+			new AbilityParmEditorImpl("BUILDER_DESC","Info Description",ParmType.STRING)
+			{
+				@Override
+				public void createChoices()
+				{
+				}
+	
+				@Override
+				public String defaultValue()
+				{
+					return "";
+				}
+	
+				@Override
+				public String convertFromItem(final ItemCraftor A, final Item I)
+				{
+					return "";
+				}
+			},
 			new AbilityParmEditorImpl("RES_SUBTYPE","Sub-Type",ParmType.STRINGORNULL)
 			{
 				@Override

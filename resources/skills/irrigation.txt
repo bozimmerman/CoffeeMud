@@ -1,13 +1,13 @@
-Demolish	1	25	0		DIR OUTDOOR WATERONLY	DEMOLISH	Swamp	-		demolishing	
-Title	1	15	0			TITLE	NA	-	-	title	
-Description	1	10	0			DESC	NA	-	-	description	
-Barrier	1	25	100		DIR	WALL	NA	-		barrier @x1	
-Sea	15	325	600	VALUE	OUTDOOR	ROOM	SaltWaterSurface	0		sea	
-Lake	10	225	300	VALUE	OUTDOOR	ROOM	WaterSurface	0		lake	
-No Current	22	150	0		WATERONLY DIR	DELEFFECT				no current	WaterCurrents()
-Slow Current	22	150	50	VALUE	WATERONLY DIR	ROOMEFFECT				slow current	WaterCurrents(min=1 max=20 chance=99 @dir)
-Light Current	23	150	100	VALUE	WATERONLY DIR	ROOMEFFECT				light current	WaterCurrents(min=1 max=15 chance=99 @dir)
-Water Current	25	150	150	VALUE	WATERONLY DIR	ROOMEFFECT				water current	WaterCurrents(min=1 max=10 chance=99 @dir)
-Strong Current	27	150	200	VALUE	WATERONLY DIR	ROOMEFFECT				strong current	WaterCurrents(min=1 max=5 chance=99 @dir)
-Fresh Underwater	17	90	255	VALUE	DOWNONLY WATERSURFACEONLY FRESHWATER	STAIRS	UnderWater	0		underwater	
-Salty Underwater	17	90	255	VALUE	DOWNONLY WATERSURFACEONLY SALTWATER	STAIRS	UnderSaltWater	0		underwater	
+Demolish	1	25	0		DIR OUTDOOR WATERONLY	DEMOLISH	Swamp	-		demolishing		Demolishes something, which has different effects.
+Title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
+Description	1	10	0			DESC	NA	-	-	description		Long elaborate description of the room details.
+Barrier	1	25	100		DIR	WALL	NA	-		barrier @x1		Blocks entry or exit between two places.
+Sea	15	325	600	VALUE	OUTDOOR	ROOM	SaltWaterSurface	0		sea		Turns an outdoor room into a salty water surface.
+Lake	10	225	300	VALUE	OUTDOOR	ROOM	WaterSurface	0		lake		Turns an outdoor room into a fresh water surface.
+No Current	22	150	0		WATERONLY DIR	DELEFFECT				no current	WaterCurrents()	Removes any artificial currents from a water surface.
+Slow Current	22	150	50	VALUE	WATERONLY DIR	ROOMEFFECT				slow current	WaterCurrents(min=1 max=20 chance=99 @dir)	Adds a slow artificial current to a swimmable room.
+Light Current	23	150	100	VALUE	WATERONLY DIR	ROOMEFFECT				light current	WaterCurrents(min=1 max=15 chance=99 @dir)	Adds a light artificial current to a swimmable room.
+Water Current	25	150	150	VALUE	WATERONLY DIR	ROOMEFFECT				water current	WaterCurrents(min=1 max=10 chance=99 @dir)	Adds an artificial current to a swimmable room.
+Strong Current	27	150	200	VALUE	WATERONLY DIR	ROOMEFFECT				strong current	WaterCurrents(min=1 max=5 chance=99 @dir)	Adds a strong artificial current to a swimmable room.
+Fresh Underwater	17	90	255	VALUE	DOWNONLY WATERSURFACEONLY FRESHWATER	STAIRS	UnderWater	0		underwater		Adds a deep fresh under-water room below a Lake. 
+Salty Underwater	17	90	255	VALUE	DOWNONLY WATERSURFACEONLY SALTWATER	STAIRS	UnderSaltWater	0		underwater		Adds a deep salt under-water room below a Lake.

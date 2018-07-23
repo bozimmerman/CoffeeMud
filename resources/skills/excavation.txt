@@ -1,15 +1,15 @@
-Wall	1	25	0		DIRUPDOWN CAVEONLY INDOOR	WALL	NA	-		wall @x1	
-Demolish	1	200	0		DIRUPDOWN	DEMOLISH		-		demolishing	
-Title	1	15	0			TITLE	NA	-	-	title	
-Description	1	10	0			DESC	NA	-	-	description	
-Secret Door	1	25	200		CAVEONLY DIR	DOOR	GenDoor	secret door	Prop_Hidden	secret door @x1	-BASECLASS +Thief
-Crawlway	1	25	0		CAVEONLY DIR NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawlway @x1	
-Room	1	145	0		DIRUPDOWN CAVEONLY	EXCAVATE	CaveRoom	0		new room @x1	
-Small Maze	1	190	1500		CAVEONLY	ROOM	CaveMaze	3		small maze frame and roof	
-Maze	1	215	2500		CAVEONLY	ROOM	CaveMaze	5		maze frame and roof	
-Big Maze	1	240	3500		CAVEONLY	ROOM	CaveMaze	7		large maze frame and roof	
-Archway	1	25	200		CAVEONLY DIR	DOOR	GenExit	archway		archway @x1	
-Pool	1	160	0		CAVEONLY	ROOM	IndoorWaterSurface	0		pool	
-Deep Pool	1	200	0		CAVEONLY	ROOM	IndoorWaterSurface	1		pool	
-Portcullis	1	25	100	METAL	CAVEONLY DIR	DOOR	GenDoor	portcullis|raise|lower|A portcullis blocks your way.		portcullis @x1	
-Shallow Water	1	35	0		CAVEONLY	ROOM	IndoorShallowWater	0		shallow water	
+Wall	1	25	0		DIRUPDOWN CAVEONLY INDOOR	WALL	NA	-		wall @x1		Blocks entry/exit between two places above/below each other.
+Demolish	1	200	0		DIRUPDOWN	DEMOLISH		-		demolishing		Demolishes something, which has different effects.
+Title	1	15	0			TITLE	NA	-	-	title		Brief 1-6 word description of a room.
+Description	1	10	0			DESC	NA	-	-	description		Long elaborate description of the room details.
+Secret Door	1	25	200		CAVEONLY DIR	DOOR	GenDoor	secret door	Prop_Hidden	secret door @x1	-BASECLASS +Thief	Hidden openable exit between two indoor places.
+Crawlway	1	25	0		CAVEONLY DIR NOWALL	DOOR	GenExit	crawlway	Prop_Crawlspace	crawlway @x1		Exit between two indoor places you crawl through.
+Room	1	145	0		DIRUPDOWN CAVEONLY	EXCAVATE	CaveRoom	0		new room @x1		Excavates a new room above or below this one.
+Small Maze	1	190	1500		CAVEONLY	ROOM	CaveMaze	3		small maze frame and roof		Turns a room into a small series of twists and turns.
+Maze	1	215	2500		CAVEONLY	ROOM	CaveMaze	5		maze frame and roof		Turns a room into a series of twists and turns.
+Big Maze	1	240	3500		CAVEONLY	ROOM	CaveMaze	7		large maze frame and roof		Turns a room into numerous serieses of twists and turns.
+Archway	1	25	200		CAVEONLY DIR	DOOR	GenExit	archway		archway @x1		A special kind of open passageway between two cave rooms.
+Pool	1	160	0		CAVEONLY	ROOM	IndoorWaterSurface	0		pool		Turns a room into one of water to swim through.
+Deep Pool	1	200	0		CAVEONLY	ROOM	IndoorWaterSurface	1		pool		Turns a room into one of deep water to swim through and under.
+Portcullis	1	25	100	METAL	CAVEONLY DIR	DOOR	GenDoor	portcullis|raise|lower|A portcullis blocks your way.		portcullis @x1		Openable exit between two rooms.
+Shallow Water	1	35	0		CAVEONLY	ROOM	IndoorShallowWater	0		shallow water		Turns a room into a very wet one.
