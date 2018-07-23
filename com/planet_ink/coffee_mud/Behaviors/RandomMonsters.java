@@ -238,6 +238,8 @@ public class RandomMonsters extends ActiveTicker
 				Log.errOut("RandomMonsters: No mobs loaded for '"+thangName+"' ("+thangID+").");
 				return null;
 			}
+			for(final MOB M : monsters)
+				CMLib.threads().deleteAllTicks(M);
 			Resources.submitResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode(),monsters);
 		}
 		else
@@ -274,7 +276,8 @@ public class RandomMonsters extends ActiveTicker
 					Log.errOut("RandomMonsters: No mobs loaded: '"+filename+"' for '"+thangName+"' ("+thangID+").");
 					return null;
 				}
-
+				for(final MOB M : monsters)
+					CMLib.threads().deleteAllTicks(M);
 				Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
 			}
 		}
