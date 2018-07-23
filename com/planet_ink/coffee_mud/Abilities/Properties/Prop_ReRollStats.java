@@ -53,9 +53,9 @@ public class Prop_ReRollStats extends Property
 		return Ability.CAN_MOBS;
 	}
 
-	protected int bonusPointsPerStat=0;
-	protected boolean reRollFlag=true;
-	protected boolean rePickClass=false;
+	protected int		bonusPointsPerStat	= 0;
+	protected boolean	reRollFlag			= true;
+	protected boolean	rePickClass			= false;
 
 	@Override
 	public String accountForYourself()
