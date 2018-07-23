@@ -1007,7 +1007,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			{
 				if(I.basePhyStats().weight()>howMuch)
 				{
-					final List<Environmental> set=disBundle(I,howMuch,howMuch,C);
+					final List<Environmental> set=disBundle(I,1,howMuch,C);
 					if((set==null)||(set.size()==0))
 						continue;
 					final Environmental E=set.get(0);
