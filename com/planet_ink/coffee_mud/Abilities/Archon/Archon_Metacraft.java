@@ -156,7 +156,8 @@ public class Archon_Metacraft extends ArchonSkill
 					}
 				}
 			}
-			if(commands.size()>1)
+			if((commands.size()>2)
+			||(commands.size()>1)&&(RawMaterial.CODES.FIND_IgnoreCase(commands.get(commands.size()-1))>0))
 			{
 				mat=(commands.get(commands.size()-1)).toUpperCase();
 				commands.remove(commands.size()-1);
@@ -186,8 +187,12 @@ public class Archon_Metacraft extends ArchonSkill
 		}
 		
 		ItemCraftor skill=null;
-		String recipe=CMParms.combine(commands,0);
 		List<Pair<Ability,String>> skillsToUse=new Vector<Pair<Ability,String>>();
+		if(commands.size()>1)
+		{
+			
+		}
+		String recipe=CMParms.combine(commands,0);
 		boolean everyFlag=false;
 		if(recipe.equalsIgnoreCase("everything"))
 		{

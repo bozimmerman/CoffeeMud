@@ -475,19 +475,22 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 			if(((data[1][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 			||((data[1][FOUND_CODE]&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL))
 			{
-				for(int i=0;i<mob.location().numItems();i++)
+				if(autoGenerate<=0)
 				{
-					final Item I2=mob.location().getItem(i);
-					if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
+					for(int i=0;i<mob.location().numItems();i++)
 					{
-						fire=I2;
-						break;
+						final Item I2=mob.location().getItem(i);
+						if((I2!=null)&&(I2.container()==null)&&(CMLib.flags().isOnFire(I2)))
+						{
+							fire=I2;
+							break;
+						}
 					}
-				}
-				if((fire==null)||(!mob.location().isContent(fire)))
-				{
-					commonTell(mob,L("You'll need to build a fire first."));
-					return false;
+					if((fire==null)||(!mob.location().isContent(fire)))
+					{
+						commonTell(mob,L("You'll need to build a fire first."));
+						return false;
+					}
 				}
 			}
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
