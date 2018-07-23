@@ -1134,6 +1134,12 @@ public class StdRoom implements Room
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		tickStatus=Tickable.STATUS_START;
+		if((myArea != null) && (myArea.amDestroyed()))
+		{
+			Log.errOut("Destroying "+CMLib.map().getExtendedRoomID(this)+" because of destroyed area.");
+			destroy();
+			return false;
+		}
 		if(tickID==Tickable.TICKID_ROOM_BEHAVIOR)
 		{
 			if((numBehaviors()<=0)&&(numScripts()<=0))

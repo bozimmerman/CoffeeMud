@@ -324,6 +324,7 @@ public class StdThinInstance extends StdThinArea
 	{
 		final Area childA=child.A;
 		final Set<Physical> protectedList = getProtectedSet(childA, child.mobs);
+		childA.setAreaState(State.STOPPED); // kill motion!
 		Room returnBoatsToR = null;
 		for(final Physical P : protectedList)
 		{
@@ -382,22 +383,11 @@ public class StdThinInstance extends StdThinArea
 		final MOB mob=CMClass.getFactoryMOB();
 		try
 		{
-			for(final Enumeration<Room> r=childA.getFilledProperMap();r.hasMoreElements();)
-			{
-				final Room R=r.nextElement();
-				try
-				{
-					CMLib.map().emptyRoom(R, null, true);
-				}
-				catch(Exception e)
-				{
-					Log.errOut(e);
-				}
-			}
 			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
 			final LinkedList<Room> propRooms = new LinkedList<Room>();
-			for(final Enumeration<Room> r=childA.getProperMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=childA.getFilledProperMap();r.hasMoreElements();)
 				propRooms.add(r.nextElement());
+			// msgs only, handles saves and stuff, but ignores grid rooms!!
 			for(final Iterator<Room> r=propRooms.iterator();r.hasNext();)
 			{
 				final Room R=r.next();
@@ -408,12 +398,20 @@ public class StdThinInstance extends StdThinArea
 						R.clearSky();
 						msg.setTarget(R);
 						R.executeMsg(mob,msg);
+						try
+						{
+							CMLib.map().emptyRoom(R, null, true);
+						}
+						catch(Exception e)
+						{
+							Log.errOut(e);
+						}
 					}
 					catch(Exception e)
 					{
 						Log.errOut(e);
 					}
-					R.destroy();
+					R.destroy(); // destroys the mobs and items.  the Deadly Thing.
 				}
 				catch(Exception e)
 				{

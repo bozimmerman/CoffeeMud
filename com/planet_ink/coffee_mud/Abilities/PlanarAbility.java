@@ -1074,20 +1074,57 @@ public class PlanarAbility extends StdAbility
 					}
 				}
 			}
-			final MOB mob=CMClass.sampleMOB();
-			final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
-			final LinkedList<Room> propRooms = new LinkedList<Room>();
-			for(final Enumeration<Room> r=planeA.getFilledProperMap();r.hasMoreElements();)
-				propRooms.add(r.nextElement());
-			for(final Iterator<Room> e=propRooms.iterator();e.hasNext();)
+			final MOB mob=CMClass.getFactoryMOB();
+			try
 			{
-				final Room R=e.next();
-				CMLib.map().emptyRoom(R, null, true);
-				msg.setTarget(R);
-				R.executeMsg(mob,msg);
-				R.destroy();
+				final CMMsg msg=CMClass.getMsg(mob,null,null,CMMsg.MSG_EXPIRE,null);
+				final LinkedList<Room> propRooms = new LinkedList<Room>();
+				for(final Enumeration<Room> r=planeA.getFilledProperMap();r.hasMoreElements();)
+					propRooms.add(r.nextElement());
+				// sends everyone home
+				for(final Iterator<Room> r=propRooms.iterator();r.hasNext();)
+				{
+					final Room R=r.next();
+					try
+					{
+						CMLib.map().emptyRoom(R, null, true);
+					}
+					catch(Exception e)
+					{
+						Log.errOut(e);
+					}
+				}
+				// msgs only, handles saves and stuff, but ignores grid rooms!!
+				for(final Iterator<Room> r=propRooms.iterator();r.hasNext();)
+				{
+					final Room R=r.next();
+					try
+					{
+						try
+						{
+							R.clearSky();
+							msg.setTarget(R);
+							R.executeMsg(mob,msg);
+						}
+						catch(Exception e)
+						{
+							Log.errOut(e);
+						}
+						R.destroy(); // destroys the mobs and items.  the Deadly Thing.
+					}
+					catch(Exception e)
+					{
+						Log.errOut(e);
+					}
+				}
+				propRooms.clear();
+				CMLib.map().delArea(planeA);
+				planeA.destroy();
 			}
-			propRooms.clear();
+			finally
+			{
+				mob.destroy();
+			}
 			planeA.destroy();
 		}
 	}

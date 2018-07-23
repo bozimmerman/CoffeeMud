@@ -213,7 +213,8 @@ public class WaterSurface extends StdRoom implements Drink
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
-		fixUnderwater();
+		if(msg.sourceMinor()!=CMMsg.TYP_EXPIRE)
+			fixUnderwater();
 		switch(CMLib.tracking().isOkWaterSurfaceAffect(this,msg))
 		{
 		case CANCEL:
@@ -229,7 +230,8 @@ public class WaterSurface extends StdRoom implements Drink
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		fixUnderwater();
+		if(msg.sourceMinor()!=CMMsg.TYP_EXPIRE)
+			fixUnderwater();
 		super.executeMsg(myHost,msg);
 		UnderWater.sinkAffects(this,msg);
 	}

@@ -409,16 +409,6 @@ public class ServiceEngine implements ThreadEngine
 	@Override
 	public boolean isTicking(final Tickable E, final int tickID)
 	{
-		if((E instanceof MOB)
-		&&(((MOB)E).lastTickedDateTime()>0))
-		{
-			final long diff = System.currentTimeMillis() - ((MOB)E).lastTickedDateTime();
-			final long tickMillis = CMProps.getTickMillis(); 
-			if(diff <= tickMillis)
-				return true;
-			if((diff > (tickMillis * 2)) && (diff < (tickMillis * 10L)))
-				return false;
-		}
 		for(final Iterator<TickableGroup> e=tickGroups();e.hasNext();)
 		{
 			final TickableGroup almostTock=e.next();

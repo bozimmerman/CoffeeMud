@@ -467,9 +467,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		||(!(P instanceof DBIdentifiable))
 		||(!((DBIdentifiable)P).canSaveDatabaseID()))
 			return;
-		if((P instanceof Item)
-		&&((((Item)P).numBehaviors()>0)||(((Item)P).numScripts()>0)))
-			CMLib.threads().deleteTick((Item)P,Tickable.TICKID_ITEM_BEHAVIOR);
+		CMLib.threads().deleteAllTicks(P);
 		synchronized(getSync(P).intern())
 		{
 			if(getCatalogObj(P)!=null)
