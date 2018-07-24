@@ -684,11 +684,12 @@ public class Conquerable extends Arrest
 								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 								for(int i=0;i<channels.size();i++)
 									CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("There are the rumblings of revolt in @x1.",myArea.name()),false);
-								revoltFails++;
+								revoltFails=10;
 							}
 						}
 						else
-							revoltFails=0;
+						if(revoltFails>0)
+							revoltFails--;
 					}
 				}
 			}
