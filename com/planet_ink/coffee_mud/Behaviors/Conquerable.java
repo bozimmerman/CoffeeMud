@@ -660,7 +660,7 @@ public class Conquerable extends Arrest
 						final int chance=calcRevoltChance(A);
 						if(CMLib.dice().rollPercentage()<chance)
 						{
-							if(revoltFails>2)
+							if(revoltFails>0)
 							{
 								Log.sysOut("Conquerable",A.Name()+" revolted against "+holdingClan+" with "+chance+"% chance");
 								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CONQUEST))
@@ -687,6 +687,8 @@ public class Conquerable extends Arrest
 								revoltFails++;
 							}
 						}
+						else
+							revoltFails=0;
 					}
 				}
 			}
