@@ -181,6 +181,7 @@ public class Dance extends StdAbility
 		||(CMLib.flags().isSitting(invoker()))
 		||(!CMLib.flags().isAliveAwakeMobile(mob,true))
 		||(!CMLib.flags().isAliveAwakeMobile(invoker(),true))
+		||(mob.riding() instanceof MOB)
 		||(!CMLib.flags().canBeSeenBy(invoker,mob)))
 			return undanceMe(mob,null);
 
