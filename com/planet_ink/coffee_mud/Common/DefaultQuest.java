@@ -4109,8 +4109,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void runtimeRegisterObject(PhysicalAgent P)
+	public void runtimeRegisterObject(final PhysicalAgent P)
 	{
+		if(P==null)
+			return;
 		synchronized(questState)
 		{
 			for(final PreservedQuestObject PO : questState.worldObjects)
