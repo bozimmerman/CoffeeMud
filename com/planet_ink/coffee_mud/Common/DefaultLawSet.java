@@ -86,26 +86,26 @@ public class DefaultLawSet implements Law
 		}
 	}
 
-	private boolean namesModifiable=false;
-	private boolean lawsModifiable=false;
-	private LegalBehavior legalDetails=null;
+	private boolean			namesModifiable	= false;
+	private boolean			lawsModifiable	= false;
+	private LegalBehavior	legalDetails	= null;
 
-	private final List<List<String>>	otherCrimes=new Vector<List<String>>();
-	private final List<String[]> 		otherBits=new Vector<String[]>();
-	private final List<List<String>> 	bannedSubstances=new Vector<List<String>>();
-	private final List<String[]> 		bannedBits=new Vector<String[]>();
-	private final Map<String,String[]>	abilityCrimes=new Hashtable<String,String[]>();
-	private final Map<String,String[]>	basicCrimes=new Hashtable<String,String[]>();
-	private final Map<String, Object>	taxLaws=new Hashtable<String, Object>();
+	private final List<List<String>>	otherCrimes		= new Vector<List<String>>();
+	private final List<String[]>		otherBits		= new Vector<String[]>();
+	private final List<List<String>>	bannedSubstances= new Vector<List<String>>();
+	private final List<String[]>		bannedBits		= new Vector<String[]>();
+	private final Map<String, String[]>	abilityCrimes	= new Hashtable<String, String[]>();
+	private final Map<String, String[]>	basicCrimes		= new Hashtable<String, String[]>();
+	private final Map<String, Object>	taxLaws			= new Hashtable<String, Object>();
 
-	private List<String> chitChat=new Vector<String>();
-	private List<String> chitChat2=new Vector<String>();
-	private List<String> chitChat3=new Vector<String>();
-	private List<String> jailRooms=new Vector<String>();
-	private List<String> releaseRooms=new Vector<String>();
-	private List<String> officerNames=new Vector<String>();
-	private List<String> judgeNames=new Vector<String>();
-	private String[] 	 messages=new String[Law.MSG_TOTAL];
+	private List<String>chitChat	= new Vector<String>();
+	private List<String>chitChat2	= new Vector<String>();
+	private List<String>chitChat3	= new Vector<String>();
+	private List<String>jailRooms	= new Vector<String>();
+	private List<String>releaseRooms= new Vector<String>();
+	private List<String>officerNames= new Vector<String>();
+	private List<String>judgeNames	= new Vector<String>();
+	private String[]	messages	= new String[Law.MSG_TOTAL];
 
 	private boolean activated=true;
 
@@ -115,7 +115,6 @@ public class DefaultLawSet implements Law
 	private boolean arrestMobs=false;
 
 	private Properties theLaws=null;
-	private int lastMonthChecked=-1;
 
 	private final String[] paroleMessages=new String[4];
 	private final Integer[] paroleTimes=new Integer[4];
@@ -384,9 +383,12 @@ public class DefaultLawSet implements Law
 	@Override
 	public void propertyTaxTick(final Area A, final boolean debugging)
 	{
+		if(!Resources.isResource("SYSTEM_TAXES_LASTCHECK"))
+			Resources.submitResource("SYSTEM_TAXES_LASTCHECK", Integer.valueOf(A.getTimeObj().getMonth()));
+		int lastMonthChecked = ((Integer)Resources.getResource("SYSTEM_TAXES_LASTCHECK")).intValue();
 		if(lastMonthChecked!=A.getTimeObj().getMonth())
 		{
-			lastMonthChecked=A.getTimeObj().getMonth();
+			Resources.submitResource("SYSTEM_TAXES_LASTCHECK", Integer.valueOf(A.getTimeObj().getMonth()));
 			double tax=CMath.s_double((String)taxLaws.get("PROPERTYTAX"));
 			if(tax==0.0)
 				return;
