@@ -205,7 +205,8 @@ public class Reset extends StdCommand
 				String str=mob.session().prompt(L("@x1@x2 requires (@x3): ",lead,I.Name(),W.ammunitionType()));
 				if(str.length()>0)
 				{
-					if((str.trim().length()==0)||(str.equalsIgnoreCase("no")))
+					if((str.trim().length()==0)
+					||(str.equalsIgnoreCase("no")))
 					{
 						W.setAmmunitionType("");
 						W.setAmmoCapacity(0);
@@ -213,6 +214,9 @@ public class Reset extends StdCommand
 						str=mob.session().prompt(L("@x1@x2 new weapon type: ",lead,I.Name()));
 						W.setWeaponDamageType(CMath.s_int(str));
 					}
+					else
+					if(str.equalsIgnoreCase("quit"))
+						return Integer.MIN_VALUE;
 					else
 						W.setAmmunitionType(str.trim());
 					nochange=1;
@@ -231,11 +235,14 @@ public class Reset extends StdCommand
 			mob.tell(L("@x1@x2 Changed to @x3",lead,I.Name(),RawMaterial.CODES.NAME(I.material())));
 			return 1;
 		}
-		while(true)
+		while(!mob.session().isStopped())
 		{
 			final String str=mob.session().prompt(lead+I.Name()+"/"+RawMaterial.CODES.NAME(I.material()),"");
 			if(str.equalsIgnoreCase("delete"))
 				return -1;
+			else
+			if(str.equalsIgnoreCase("quit"))
+				return Integer.MIN_VALUE;
 			else
 			if(str.length()==0)
 			{
@@ -268,6 +275,7 @@ public class Reset extends StdCommand
 				mob.tell(L("@x1'@x2' does not exist.  Try '@x3'.",lead,str,poss));
 			}
 		}
+		return nochange;
 	}
 
 	public void makeManufacturer(String[] names, TechType[] types)
@@ -2201,10 +2209,11 @@ public class Reset extends StdCommand
 				final Hashtable<String,Race> rememberM=new Hashtable<String,Race>();
 				try
 				{
-					for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+					for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements() && (!mob.session().isStopped());)
 					{
 						Room R=r.nextElement();
-						if(R.roomID().length()>0)
+						if(R.roomID().length()==0)
+							continue;
 						synchronized(("SYNC"+R.roomID()).intern())
 						{
 							R=CMLib.map().getRoom(R);
@@ -2217,6 +2226,9 @@ public class Reset extends StdCommand
 								if(I.ID().equalsIgnoreCase("GenWallpaper"))
 									continue;
 								final int returned=resetAreaOramaManaI(mob,I,rememberI," ");
+								if(returned==Integer.MIN_VALUE)
+									return false;
+								else
 								if(returned<0)
 								{
 									R.delItem(I);
@@ -2230,7 +2242,7 @@ public class Reset extends StdCommand
 							if(somethingDone)
 								CMLib.database().DBUpdateItems(R);
 							somethingDone=false;
-							for(int m=0;m<R.numInhabitants();m++)
+							for(int m=0;(m<R.numInhabitants()) && (!mob.session().isStopped());m++)
 							{
 								final MOB M=R.fetchInhabitant(m);
 								if(M==mob)
@@ -2253,7 +2265,7 @@ public class Reset extends StdCommand
 									}
 								}
 								else
-								while(true)
+								while(!mob.session().isStopped())
 								{
 									final String str=mob.session().prompt(" "+M.Name()+"/"+M.charStats().getMyRace().ID(),"");
 									if(str.length()==0)
@@ -2263,6 +2275,9 @@ public class Reset extends StdCommand
 									}
 									if(str.equals("?"))
 										mob.tell(M.Name()+"/"+M.displayText()+"/"+M.description());
+									else
+									if(str.equals("quit"))
+										return false;
 									else
 									{
 										R2=CMClass.getRace(str);
@@ -2322,6 +2337,9 @@ public class Reset extends StdCommand
 								{
 									final Item I=M.getItem(i);
 									final int returned=resetAreaOramaManaI(mob,I,rememberI,"   ");
+									if(returned==Integer.MIN_VALUE)
+										return false;
+									else
 									if(returned<0)
 									{
 										M.delItem(I);
@@ -2342,6 +2360,9 @@ public class Reset extends StdCommand
 										{
 											final Item I=(Item)E;
 											final int returned=resetAreaOramaManaI(mob,I,rememberI," - ");
+											if(returned==Integer.MIN_VALUE)
+												return false;
+											else
 											if(returned<0)
 											{
 												SK.getShop().delAllStoreInventory(I);
