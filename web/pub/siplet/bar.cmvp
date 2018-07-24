@@ -18,35 +18,50 @@
 	var currColors = new Array(10);
 	for(var i=0;i<10;i++)
 		currColors[i]='b';
-	function redStatus(wnum){redColor(wnum);}
+	function redStatus(wnum)
+	{
+		redColor(wnum);
+	}
 	function redColor(wnum)
 	{
 		var obj = document.getElementById('BAR'+wnum);
 		obj.style.backgroundColor='red';
 		currColors[wnum]='r';
 	}
-	function yellowStatus(wnum){yellowColor(wnum);}
+	function yellowStatus(wnum)
+	{
+		yellowColor(wnum);
+	}
 	function yellowColor(wnum)
 	{
 		var obj = document.getElementById('BAR'+wnum);
 		obj.style.backgroundColor='yellow';
 		currColors[wnum]='y';
 	}
-	function blackStatus(wnum){blackColor(wnum);}
+	function blackStatus(wnum)
+	{
+		blackColor(wnum);
+	}
 	function blackColor(wnum)
 	{
 		var obj = document.getElementById('BAR'+wnum);
 		obj.style.backgroundColor='black';
 		currColors[wnum]='b';
 	}
-	function greenStatus(wnum){greenColor(wnum);}
+	function greenStatus(wnum)
+	{
+		greenColor(wnum);
+	}
 	function greenColor(wnum)
 	{
 		var obj = document.getElementById('BAR'+wnum);
 		obj.style.backgroundColor='green';
 		currColors[wnum]='g';
 	}
-	function lightgreenStatus(wnum){lightgreenColor(wnum);}
+	function lightgreenStatus(wnum)
+	{
+	lightgreenColor(wnum);
+}
 	function lightgreenColor(wnum)
 	{
 		var obj = document.getElementById('BAR'+wnum);

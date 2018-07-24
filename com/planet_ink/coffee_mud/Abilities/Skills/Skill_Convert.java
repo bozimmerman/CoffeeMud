@@ -219,7 +219,8 @@ public class Skill_Convert extends StdSkill
 					final Deity tD=D;
 					final MOB t=target;
 					final Ability A=this;
-					tsess.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", 30000L) {
+					tsess.prompt(new InputCallback(InputCallback.Type.CONFIRM, "N", 30000L) 
+					{
 						
 						final Session session = tsess;
 						final Deity D=tD;

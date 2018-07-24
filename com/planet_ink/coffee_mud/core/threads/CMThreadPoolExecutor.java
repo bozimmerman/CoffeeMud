@@ -75,9 +75,17 @@ public class CMThreadPoolExecutor extends ThreadPoolExecutor
 		this.queueSize=queueSize;
 		setRejectedExecutionHandler(new RejectedExecutionHandler()
 		{
-			@Override public void rejectedExecution(Runnable r, ThreadPoolExecutor executor)
+			@Override
+			public void rejectedExecution(Runnable r, ThreadPoolExecutor executor)
 			{
-				try { executor.getQueue().put(r); } catch (final InterruptedException e) { throw new RejectedExecutionException(e); }
+				try
+				{
+					executor.getQueue().put(r);
+				}
+				catch (final InterruptedException e)
+				{
+					throw new RejectedExecutionException(e);
+				}
 			}
 		});
 	}

@@ -46,7 +46,8 @@ public class VFShell
 	public static void main(final String[] args)
 	{
 		ThreadGroup g=new ThreadGroup("0");
-		Thread t=new Thread(g,new Runnable(){
+		Thread t=new Thread(g,new Runnable()
+		{
 			@Override
 			public void run()
 			{

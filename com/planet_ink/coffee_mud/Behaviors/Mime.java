@@ -63,10 +63,13 @@ public class Mime extends ActiveTicker
 	}
 
 	@Override
-	protected int canImproveCode(){return Behavior.CAN_MOBS
-										  |Behavior.CAN_EXITS
-										  |Behavior.CAN_ITEMS
-										  |Behavior.CAN_ROOMS;}
+	protected int canImproveCode()
+	{
+		return Behavior.CAN_MOBS | 
+				Behavior.CAN_EXITS | 
+				Behavior.CAN_ITEMS | 
+				Behavior.CAN_ROOMS;
+	}
 
 	@Override
 	public void executeMsg(final Environmental affecting, final CMMsg msg)

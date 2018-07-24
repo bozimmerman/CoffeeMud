@@ -178,7 +178,8 @@ public class CraftingSkill extends GatheringSkill
 	{
 		if(mob==null)
 			return recipes;
-		Collections.sort(recipes,new Comparator<List<String>>(){
+		Collections.sort(recipes,new Comparator<List<String>>()
+		{
 			@Override
 			public int compare(List<String> o1, List<String> o2)
 			{

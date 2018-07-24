@@ -340,16 +340,7 @@ public class DefaultLawSet implements Law
 
 	protected boolean sendGameMail(final String mailBox, final String subject, String message)
 	{
-		if(CMProps.getIntVar(CMProps.Int.MAXMAILBOX)>0)
-		{
-			final int count=CMLib.database().DBCountJournal(CMProps.getVar(CMProps.Str.MAILBOX),null,mailBox);
-			if(count>=CMProps.getIntVar(CMProps.Int.MAXMAILBOX))
-				return false;
-		}
-		message+=CMLib.lang().L("\n\r\n\rThis message was sent through the @x1 mail server at @x2, port @x3"
-				+".  Please contact the administrators regarding any abuse of this system.\n\r",
-				CMProps.getVar(CMProps.Str.MUDNAME),CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS));
-		CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX), mailBox, mailBox, subject, message);
+		CMLib.smtp().emailOrJournal(mailBox,mailBox, mailBox, subject, message);
 		return true;
 	}
 

@@ -564,8 +564,16 @@ public interface Wearable extends Environmental
 			}
 		}
 
-		private static CODES c(){ return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
-		public static CODES c(byte c){return insts[c];}
+		private static CODES c()
+		{
+			return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+		}
+
+		public static CODES c(byte c)
+		{
+			return insts[c];
+		}
+
 		public static CODES instance()
 		{
 			CODES c=insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
@@ -582,63 +590,106 @@ public interface Wearable extends Environmental
 
 		private static CODES[] insts=new CODES[256];
 
-		private long[] allCodes = new long[0];
-		private long[] allCodesInOrder=new long[0];
-		private long[] dependencyMasks = new long[0];
-		private double[][] wornWeightPoints = new double[0][0];
-		private double[] armorWeights =  new double[0];
-		private String[] descs = new String[0];
-		private String[] updescs = new String[0];
-		private String[] usualNames = new String[0];
+		private long[]		allCodes			= new long[0];
+		private long[]		allCodesInOrder		= new long[0];
+		private long[]		dependencyMasks		= new long[0];
+		private double[][]	wornWeightPoints	= new double[0][0];
+		private double[]	armorWeights		= new double[0];
+		private String[]	descs				= new String[0];
+		private String[]	updescs				= new String[0];
+		private String[]	usualNames			= new String[0];
+
 		/**
 		 * Returns total number of codes 0 - this-1
 		 * @return total number of codes 0 - this-1
 		 */
-		public static int TOTAL() { return c().allCodes.length;}
+		public static int TOTAL()
+		{
+			return c().allCodes.length;
+		}
+
 		/**
 		 * Returns total number of codes 0 - this-1
+		 * 
 		 * @return total number of codes 0 - this-1
 		 */
-		public int total() { return allCodes.length;}
+		public int total()
+		{
+			return allCodes.length;
+		}
 
 		/**
 		 * Returns an array of the numeric codes for all locations
+		 * 
 		 * @return an array of the numeric codes for all locations
 		 */
-		public static long[] ALL_ORDERED() { return c().allCodesInOrder;}
+		public static long[] ALL_ORDERED()
+		{
+			return c().allCodesInOrder;
+		}
+
 		/**
 		 * Returns an array of the numeric codes for all locations
+		 * 
 		 * @return an array of the numeric codes for all locations
 		 */
-		public long[] all_ordered() { return allCodesInOrder;}
+		public long[] all_ordered()
+		{
+			return allCodesInOrder;
+		}
+
 		/**
 		 * Returns an array of the numeric codes for all locations
+		 * 
 		 * @return an array of the numeric codes for all locations
 		 */
-		public static long[] ALL() { return c().allCodes;}
+		public static long[] ALL()
+		{
+			return c().allCodes;
+		}
+
 		/**
 		 * Returns an array of the numeric codes for all locations
+		 * 
 		 * @return an array of the numeric codes for all locations
 		 */
-		public long[] all() { return allCodes;}
+		public long[] all()
+		{
+			return allCodes;
+		}
+
 		/**
 		 * Returns an the numeric codes of the indexes locations code
+		 * 
 		 * @param x the indexed locations code
 		 * @return an the numeric codes of the indexes locations code
 		 */
-		public static long GET(int x) { return c().allCodes[x];}
+		public static long GET(int x)
+		{
+			return c().allCodes[x];
+		}
+
 		/**
 		 * Returns an the numeric codes of the indexes locations code
+		 * 
 		 * @param x the indexed locations code
 		 * @return an the numeric codes of the indexes locations code
 		 */
-		public long get(int x) { return allCodes[x];}
+		public long get(int x)
+		{
+			return allCodes[x];
+		}
+
 		/**
 		 * Returns the index of the names locations, or -1
+		 * 
 		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
-		public static int FINDDEX_ignoreCase(String rsc) { return c().findDex_ignoreCase(rsc);}
+		public static int FINDDEX_ignoreCase(String rsc)
+		{
+			return c().findDex_ignoreCase(rsc);
+		}
 
 		/**
 		 * Returns the index of the names locations, or -1
@@ -659,7 +710,10 @@ public interface Wearable extends Environmental
 		 * @param rsc the resource name
 		 * @return the code of the names , or -1
 		 */
-		public static long FIND_ignoreCase(String rsc) { return c().find_ignoreCase(rsc);}
+		public static long FIND_ignoreCase(String rsc)
+		{
+			return c().find_ignoreCase(rsc);
+		}
 
 		/**
 		 * Returns the code of the names , or -1
@@ -704,7 +758,10 @@ public interface Wearable extends Environmental
 		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
-		public static long FIND_endsWith(String rsc) { return c().find_endsWith(rsc);}
+		public static long FIND_endsWith(String rsc)
+		{
+			return c().find_endsWith(rsc);
+		}
 
 		/**
 		 * Returns the index of the names locations, or -1
@@ -764,58 +821,107 @@ public interface Wearable extends Environmental
 		 * Returns the names of the various locations
 		 * @return the names of the various locations
 		 */
-		public static String[] NAMES() { return c().descs;}
+		public static String[] NAMES()
+		{
+			return c().descs;
+		}
+
 		/**
 		 * Returns the names of the various locations
+		 * 
 		 * @return the names of the various locations
 		 */
-		public static String[] NAMESUP() { return c().updescs;}
+		public static String[] NAMESUP()
+		{
+			return c().updescs;
+		}
+
 		/**
 		 * Returns the names of the various locations
+		 * 
 		 * @return the names of the various locations
 		 */
-		public String[] names() { return descs;}
+		public String[] names()
+		{
+			return descs;
+		}
+
 		/**
 		 * Returns the names of the various locations
+		 * 
 		 * @return the names of the various locations
 		 */
-		public String[] namesup() { return updescs;}
+		public String[] namesup()
+		{
+			return updescs;
+		}
+
 		/**
 		 * Returns the name of the locations
+		 * 
 		 * @param code the code
 		 * @return the name of the locations
 		 */
-		public static String NAME(int code) { return c().descs[code];}
+		public static String NAME(int code)
+		{
+			return c().descs[code];
+		}
+
 		/**
 		 * Returns the name of the locations
+		 * 
 		 * @param code the code
 		 * @return the name of the locations
 		 */
-		public static String NAMEUP(int code) { return c().updescs[code];}
+		public static String NAMEUP(int code)
+		{
+			return c().updescs[code];
+		}
+
 		/**
 		 * Returns the name of the code
+		 * 
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public String name(int code) { return CMLib.lang().L(descs[code]); }
+		public String name(int code)
+		{
+			return CMLib.lang().L(descs[code]);
+		}
+
 		/**
 		 * Returns the name of the code
+		 * 
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public String nameup(int code) { return updescs[code]; }
+		public String nameup(int code)
+		{
+			return updescs[code];
+		}
+
 		/**
 		 * Returns the name of the locations
+		 * 
 		 * @param code the code
 		 * @return the name of the locations
 		 */
-		public static String NAME(long code) { return c().name(code);}
+		public static String NAME(long code)
+		{
+			return c().name(code);
+		}
+
 		/**
 		 * Returns the name of the locations
+		 * 
 		 * @param code the code
 		 * @return the name of the locations
 		 */
-		public static String NAMEUP(long code) { return c().nameup(code);}
+		public static String NAMEUP(long code)
+		{
+			return c().nameup(code);
+		}
+
 		/**
 		 * Returns the name of the code
 		 * @param code the code
@@ -828,6 +934,7 @@ public interface Wearable extends Environmental
 				return descs[x];
 			return "";
 		}
+
 		/**
 		 * Returns the name of the code
 		 * @param code the code
@@ -852,48 +959,83 @@ public interface Wearable extends Environmental
 				return usualNames[x];
 			return "";
 		}
+
 		/**
 		 * Returns the name of typical equipment here
+		 * 
 		 * @param code the code
 		 * @return the name of typical equipment here
 		 */
-		public static String USUAL(long code) { return c().usual(code);}
+		public static String USUAL(long code)
+		{
+			return c().usual(code);
+		}
+
 		/**
 		 * Returns the location dependency mask (or -1) of the various locations
+		 * 
 		 * @return the location dependency mask (or -1) of the various locations
 		 */
-		public static long[] DEPENDENCY_MASKS() { return c().dependencyMasks;}
+		public static long[] DEPENDENCY_MASKS()
+		{
+			return c().dependencyMasks;
+		}
+
 		/**
 		 * Returns the location dependency mask (or -1) of the various locations
+		 * 
 		 * @return the location dependency mask (or -1) of the various locations
 		 */
-		public long[] dependency_masks() { return dependencyMasks;}
+		public long[] dependency_masks()
+		{
+			return dependencyMasks;
+		}
+
 		/**
 		 * Returns an array representing the relative weight of items made for
-		 * each of the several worn locations, in the same order as their numeric
-		 * value. These weights are broken, in turn, into values for cloth,
-		 * leather, and metal armors respectively.
+		 * each of the several worn locations, in the same order as their
+		 * numeric value. These weights are broken, in turn, into values for
+		 * cloth, leather, and metal armors respectively.
+		 * 
 		 * @return the doule double array
 		 */
-		public static double[][] MATERIAL_WEIGHT_POINTS() { return c().wornWeightPoints;}
+		public static double[][] MATERIAL_WEIGHT_POINTS()
+		{
+			return c().wornWeightPoints;
+		}
+
 		/**
 		 * Returns an array representing the relative weight of items made for
-		 * each of the several worn locations, in the same order as their numeric
-		 * value. These weights are broken, in turn, into values for cloth,
-		 * leather, and metal armors respectively.
+		 * each of the several worn locations, in the same order as their
+		 * numeric value. These weights are broken, in turn, into values for
+		 * cloth, leather, and metal armors respectively.
+		 * 
 		 * @return the doule double array
 		 */
-		public double[][] material_weight_points() { return wornWeightPoints;}
+		public double[][] material_weight_points()
+		{
+			return wornWeightPoints;
+		}
+
 		/**
 		 * Returns an array of the protective strength of each location
+		 * 
 		 * @return an array of the protective strength of each location
 		 */
-		public static double[] LOCATION_STRENGTH_POINTS() { return c().armorWeights;}
+		public static double[] LOCATION_STRENGTH_POINTS()
+		{
+			return c().armorWeights;
+		}
+
 		/**
 		 * Returns an array of the protective strength of each location
+		 * 
 		 * @return an array of the protective strength of each location
 		 */
-		public double[] location_strength_points() { return armorWeights;}
+		public double[] location_strength_points()
+		{
+			return armorWeights;
+		}
 
 		/**
 		 * Adds a new wear location.  I suspect this stuff works.  I also suspect

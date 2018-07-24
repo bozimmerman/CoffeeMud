@@ -387,11 +387,10 @@ public class StdJournal extends StdItem implements Book
 											final String replyMsg=mob.session().prompt(L("Enter your email response\n\r: "));
 											if((replyMsg.trim().length()>0) && (read != null))
 											{
-												CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
-																				  mob.Name(),
-																				  M.Name(),
-																				  "RE: "+read.subj(),
-																				  replyMsg);
+												CMLib.smtp().emailOrJournal(mob.Name(), 
+																			 mob.Name(), M.Name(), 
+																			 "RE: "+read.subj(),
+																			 replyMsg);
 												mob.tell(L("Email queued."));
 											}
 											else
@@ -557,7 +556,8 @@ public class StdJournal extends StdItem implements Book
 					final JournalEntry entry2=journal2.get(which-1);
 					final List<String> vbuf=new ArrayList<String>();
 					vbuf.addAll(CMParms.parseAny(entry2.msg(),"\n",false));
-					CMLib.journals().makeMessageASync(mob, entry2.subj(), vbuf, false, new MsgMkrCallback(){
+					CMLib.journals().makeMessageASync(mob, entry2.subj(), vbuf, false, new MsgMkrCallback()
+					{
 						@Override
 						public void callBack(MOB mob, Session sess, MsgMkrResolution res)
 						{

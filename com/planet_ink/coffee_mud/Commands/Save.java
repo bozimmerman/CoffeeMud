@@ -343,10 +343,13 @@ public class Save extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)
-												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)
-												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS)
-												 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)
-												 ||CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPLAYERS);}
+	public boolean securityCheck(MOB mob)
+	{
+		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)
+			 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)
+			 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDFACTIONS)
+			 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDQUESTS)
+			 ||CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPLAYERS);
+	}
 
 }

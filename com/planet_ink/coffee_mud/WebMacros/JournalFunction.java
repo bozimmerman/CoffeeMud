@@ -289,7 +289,7 @@ public class JournalFunction extends StdWebMacro
 				{
 					if((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.REPLY)))
 						return "Email not submitted -- Unauthorized.";
-					final String replyMsg=httpReq.getUrlParameter("NEWTEXT"+fieldSuffix);
+					String replyMsg=httpReq.getUrlParameter("NEWTEXT"+fieldSuffix);
 					if(replyMsg.length()==0)
 						messages.append("Email to #"+cardinalNumber+" not submitted -- No text!<BR>");
 					else
@@ -302,11 +302,11 @@ public class JournalFunction extends StdWebMacro
 						{
 							if(toM.playerStats().getEmail().indexOf('@')<0)
 								messages.append("Warning: Player '"+toName+"' has no email address..<BR>");
-							CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX),
-															M.Name(),
-															toM.Name(),
-															"RE: "+entry.subj(),
-															clearWebMacros(replyMsg));
+							CMLib.smtp().emailOrJournal(M.Name(),
+														M.Name(),
+														toM.Name(),
+														"RE: "+entry.subj(),
+														clearWebMacros(replyMsg));
 							JournalInfo.clearJournalCache(httpReq, journalName);
 							messages.append("Email to #"+cardinalNumber+" queued<BR>");
 						}

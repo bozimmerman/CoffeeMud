@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.Clan.MemberRecord;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -1808,7 +1809,12 @@ public class MOBloader
 			final MOB M=e.nextElement();
 			if((M.Name().equalsIgnoreCase(name))&&(M.playerStats()!=null))
 			{
-				return new Pair<String,Boolean>(M.playerStats().getEmail(),Boolean.valueOf(M.isAttributeSet(MOB.Attrib.AUTOFORWARD)));
+				final boolean canReceiveRealEmail = 
+					(M.playerStats()!=null)
+					&&(M.isAttributeSet(MOB.Attrib.AUTOFORWARD))
+					&&((M.playerStats().getAccount()==null)
+						||(!M.playerStats().getAccount().isSet(AccountFlag.NOAUTOFORWARD)));
+				return new Pair<String,Boolean>(M.playerStats().getEmail(),Boolean.valueOf(canReceiveRealEmail));
 			}
 		}
 		DBConnection D=null;

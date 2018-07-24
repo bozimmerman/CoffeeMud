@@ -273,7 +273,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	protected void fillOutRequiredStatCodeSafe(final Modifiable E, final List<String> ignoreStats, final String defPrefix, 
 			final String tagName, final String statName, final XMLTag piece, final Map<String,Object> defined) throws CMException
 	{
-		PostProcessAttempter(defined,new PostProcessAttempt() {
+		PostProcessAttempter(defined,new PostProcessAttempt() 
+		{
 			@Override
 			public String attempt() throws CMException, PostProcessException 
 			{
@@ -466,7 +467,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		A.setName(name);
 		defined.put("AREA_NAME",name);
 		
-		PostProcessAttempter(defined,new PostProcessAttempt() {
+		PostProcessAttempter(defined,new PostProcessAttempt() 
+		{
 			@Override
 			public String attempt() throws CMException, PostProcessException 
 			{
@@ -479,7 +481,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				return author;
 			}
 		});
-		PostProcessAttempter(defined,new PostProcessAttempt() {
+		PostProcessAttempter(defined,new PostProcessAttempt() 
+		{
 			@Override
 			public String attempt() throws CMException, PostProcessException 
 			{
@@ -1091,7 +1094,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		{
 			try
 			{
-				return PostProcessAttempter(defined,new PostProcessAttempt() {
+				return PostProcessAttempter(defined,new PostProcessAttempt() 
+				{
 					@Override
 					public String attempt() throws CMException, PostProcessException 
 					{
@@ -1256,7 +1260,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(!copyFilled)
 			M.baseCharStats().setMyRace(CMClass.getRace("StdRace"));
 
-		PostProcessAttempter(defined,new PostProcessAttempt() {
+		PostProcessAttempter(defined,new PostProcessAttempt() 
+		{
 			@Override
 			public String attempt() throws CMException, PostProcessException 
 			{
@@ -1272,7 +1277,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 		});
 		
-		PostProcessAttempter(defined,new PostProcessAttempt() {
+		PostProcessAttempter(defined,new PostProcessAttempt() 
+		{
 			@Override
 			public String attempt() throws CMException, PostProcessException 
 			{
@@ -1284,7 +1290,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				}
 				else
 					mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.dice().rollPercentage()>50?'M':'F');
-				PostProcessAttempter(this.defined,new PostProcessAttempt() {
+				PostProcessAttempter(this.defined,new PostProcessAttempt() 
+				{
 					@Override
 					public String attempt() throws CMException, PostProcessException 
 					{
@@ -1473,14 +1480,18 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					if(baseStr != null)
 						baseNumber[0]=baseStr;
 				}
-				catch(final Exception e){ }
+				catch (final Exception e)
+				{
+				}
 				try
 				{
 					final String baseStr=shopPiece.getParmValue("PRICE");
 					if(baseStr != null)
 						basePrice[0]=baseStr;
 				}
-				catch(final Exception e){ }
+				catch (final Exception e)
+				{
+				}
 				final BuildCallback callBack=new BuildCallback()
 				{
 					@Override 
@@ -1490,12 +1501,26 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(numbStr == null)
 							numbStr=baseNumber[0];
 						int number;
-						try{ number=CMath.parseIntExpression(strFilter(E,null,null,numbStr.trim(),piece, defined)); } catch(final Exception e){ number=1; }
+						try
+						{
+							number = CMath.parseIntExpression(strFilter(E, null, null, numbStr.trim(), piece, defined));
+						}
+						catch (final Exception e)
+						{
+							number = 1;
+						}
 						numbStr=XMLTag.getParmValue("PRICE");
 						if(numbStr == null)
 							numbStr=basePrice[0];
 						long price;
-						try{ price=CMath.parseLongExpression(strFilter(E,null,null,numbStr.trim(),piece, defined)); } catch(final Exception e){ price=-1; }
+						try
+						{
+							price = CMath.parseLongExpression(strFilter(E, null, null, numbStr.trim(), piece, defined));
+						}
+						catch (final Exception e)
+						{
+							price = -1;
+						}
 						V.add(new Triad<Environmental,Integer,Long>(E,Integer.valueOf(number),Long.valueOf(price)));
 					}
 				};
@@ -2063,7 +2088,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(A == null)
 			throw new CMException("Unable to build ability on classID '"+classID+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		final Ability aA=A;
-		PostProcessAttempter(defined,new PostProcessAttempt() {
+		PostProcessAttempter(defined,new PostProcessAttempt() 
+		{
 			@Override
 			public String attempt() throws CMException, PostProcessException 
 			{
@@ -2085,7 +2111,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(B == null)
 			throw new CMException("Unable to build behavior on classID '"+classID+"', Data: "+CMParms.toKeyValueSlashListString(piece.parms())+":"+CMStrings.limit(piece.value(),100));
 		final Behavior bB=B;
-		PostProcessAttempter(defined,new PostProcessAttempt() {
+		PostProcessAttempter(defined,new PostProcessAttempt() 
+		{
 			@Override
 			public String attempt() throws CMException, PostProcessException 
 			{

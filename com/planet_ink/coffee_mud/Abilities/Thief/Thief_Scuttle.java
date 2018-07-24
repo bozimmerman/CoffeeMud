@@ -184,7 +184,8 @@ public class Thief_Scuttle extends ThiefSkill
 				if((boat instanceof Item)
 				&&(((Item)boat).subjectToWearAndTear()))
 					((Item)boat).setUsesRemaining(0);
-				CMLib.threads().scheduleRunnable(new Runnable(){
+				CMLib.threads().scheduleRunnable(new Runnable()
+				{
 					@Override
 					public void run()
 					{

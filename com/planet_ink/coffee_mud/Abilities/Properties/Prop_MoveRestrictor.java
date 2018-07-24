@@ -253,9 +253,9 @@ public class Prop_MoveRestrictor extends Property implements TriggeredAffect
 					}
 					if(castings.size()>0)
 					{
-						CMLib.threads().scheduleRunnable(new Runnable(){
+						CMLib.threads().scheduleRunnable(new Runnable()
+						{
 							final MOB mob=msg.source();
-							
 							@Override
 							public void run()
 							{

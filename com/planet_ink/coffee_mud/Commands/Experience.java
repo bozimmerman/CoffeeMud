@@ -83,7 +83,11 @@ public class Experience extends StdCommand
 		return false;
 	}
 
-	public int ticksToExecute(){return 0;}
+	public int ticksToExecute()
+	{
+		return 0;
+	}
+
 	@Override
 	public boolean canBeOrdered()
 	{

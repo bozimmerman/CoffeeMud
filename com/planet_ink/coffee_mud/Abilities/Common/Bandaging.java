@@ -156,7 +156,10 @@ public class Bandaging extends CommonSkill implements MendingSkill
 		super.unInvoke();
 	}
 
-	public double healthPct(MOB mob){ return CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints());}
+	public double healthPct(MOB mob)
+	{
+		return CMath.div(mob.curState().getHitPoints(), mob.maxState().getHitPoints());
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

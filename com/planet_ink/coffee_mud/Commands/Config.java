@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -104,7 +105,18 @@ public class Config extends StdCommand
 			else
 			{
 				postStr=L("Configuration flag toggled: "+finalA.getName());
-				mob.setAttribute(finalA, !mob.isAttributeSet(finalA));
+				final boolean newSet = !mob.isAttributeSet(finalA);
+				if(finalA == Attrib.AUTOFORWARD)
+				{
+					final PlayerStats pStats = mob.playerStats();
+					if((pStats != null)
+					&&(pStats.getAccount() != null))
+					{
+						pStats.getAccount().setFlag(AccountFlag.NOAUTOFORWARD, newSet);
+						CMLib.database().DBUpdateAccount(pStats.getAccount());
+					}
+				}
+				mob.setAttribute(finalA, newSet);
 			}
 			mob.tell(postStr);
 		}

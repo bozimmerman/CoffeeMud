@@ -108,11 +108,20 @@ public class Hireling extends StdBehavior
 		}
 	}
 
-	protected double price() { return price;}
+	protected double price()
+	{
+		return price;
+	}
 
-	protected int minutes() { return minutes;}
+	protected int minutes()
+	{
+		return minutes;
+	}
 
-	protected String zapper() { return zapperMask;}
+	protected String zapper()
+	{
+		return zapperMask;
+	}
 
 	protected double gamehours()
 	{

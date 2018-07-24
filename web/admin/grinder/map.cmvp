@@ -196,8 +196,10 @@
 		  } 
 		} 
 
-		function setVariables() {
-		  if (navigator.appName == "Netscape") {
+		function setVariables() 
+		{
+		  if (navigator.appName == "Netscape") 
+		  {
 		    v=".top=";
 		    w=".left=";
 		    dS="document.";
@@ -205,7 +207,8 @@
 		    x="window.pageXOffset";
 		    y="window.pageYOffset";
 		  }
-		  else {
+		  else 
+		  {
 		    v=".pixelTop=";
 		    w=".pixelLeft=";
 		    dS="";

@@ -138,9 +138,20 @@ public class SMTPserver extends Thread implements Tickable
 		return tickStatus;
 	}
 
-	public MudHost getMUD()	{return mud;}
-	public String domainName(){return domain;}
-	public String mailboxName(){return CMProps.getVar(CMProps.Str.MAILBOX);}
+	public MudHost getMUD()
+	{
+		return mud;
+	}
+
+	public String domainName()
+	{
+		return domain;
+	}
+
+	public String mailboxName()
+	{
+		return CMProps.getVar(CMProps.Str.MAILBOX);
+	}
 
 	public Properties getCommonPropPage()
 	{
@@ -473,8 +484,17 @@ public class SMTPserver extends Thread implements Tickable
 		else
 		{
 			int att=0;
-			while((att<100)&&(getTickStatus()!=Tickable.STATUS_NOT))
-			{try{att++;Thread.sleep(100);}catch(final Exception e){}}
+			while ((att < 100) && (getTickStatus() != Tickable.STATUS_NOT))
+			{
+				try
+				{
+					att++;
+					Thread.sleep(100);
+				}
+				catch (final Exception e)
+				{
+				}
+			}
 		}
 		threadPool.shutdownNow();
 		CMLib.killThread(this,1000,30);

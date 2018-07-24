@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -188,14 +189,9 @@ public class AccountCreate extends StdWebMacro
 				if(acctStats instanceof PlayerStats)
 					CMLib.database().DBUpdatePassword(login,password);
 			}
-			CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), emailToName, 
-					"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), emailToName,
-				L("Password for @x1",login),
-				L("Your password for @x1 at @x2 is '@x3'.",login,CMProps.getVar(CMProps.Str.MUDDOMAIN),password)+
-				"\n\r\n\r"+
-				L("This message was sent through the @x1 mail server at @x2, port @x3.  ",
-						CMProps.getVar(CMProps.Str.MUDNAME),CMProps.getVar(CMProps.Str.MUDDOMAIN),CMProps.getVar(CMProps.Str.MUDPORTS))+
-				L("Please contact the administrators regarding any abuse of this system.\n\r"));
+			CMLib.smtp().emailOrJournal(emailToName, "noreply", 
+					emailToName, L("Password for @x1",login),
+				L("Your password for @x1 at @x2 is '@x3'.",login,CMProps.getVar(CMProps.Str.MUDDOMAIN),password));
 			return "";
 		}
 		
@@ -278,8 +274,8 @@ public class AccountCreate extends StdWebMacro
 			{
 				try
 				{
-					final String loginUrlStr= URLEncoder.encode(Authenticate.Encrypt(Authenticate.getLogin(httpReq)),"UTF-8");
-					final String passwordUrlStr=URLEncoder.encode(Authenticate.Encrypt(Authenticate.getPassword(httpReq)),"UTF-8");
+					final String loginUrlStr= URLEncoder.encode(CMLib.encoder().filterEncrypt(Authenticate.getLogin(httpReq)),"UTF-8");
+					final String passwordUrlStr=URLEncoder.encode(CMLib.encoder().filterEncrypt(Authenticate.getPassword(httpReq)),"UTF-8");
 					httpReq.addFakeUrlParameter("AUTH", loginUrlStr+"-"+passwordUrlStr);
 				}
 				catch(final Exception u)

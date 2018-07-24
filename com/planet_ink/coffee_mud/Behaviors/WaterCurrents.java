@@ -383,9 +383,13 @@ public class WaterCurrents extends ActiveTicker
 			return 0;
 		}
 
-		// protected void finalize(){
-		// CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed
-		// for mem & perf
+		/*
+		protected void finalize()
+		{
+			CMClass.unbumpCounter(this, CMClass.CMObjectType.ABILITY);
+		}// removed for mem & perf
+		*/
+
 		@Override
 		public long expirationDate()
 		{

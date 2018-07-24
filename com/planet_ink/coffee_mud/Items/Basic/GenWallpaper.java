@@ -175,9 +175,13 @@ public class GenWallpaper implements Item
 		return 1;
 	}
 
-	// protected void
-	// finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.ITEM);}//removed
-	// for mem & perf
+	/*
+	protected void finalize()
+	{
+		CMClass.unbumpCounter(this, CMClass.CMObjectType.ITEM);
+	}// removed for mem&perf
+	*/
+	
 	@Override
 	public CMObject newInstance()
 	{

@@ -43,7 +43,8 @@ public class Sessions extends StdLibrary implements SessionsList
 	private final static Filterer<Session> localOnlineFilter=new Filterer<Session>()
 	{
 		@Override
-		public boolean passesFilter(Session obj) {
+		public boolean passesFilter(Session obj) 
+		{
 			if((obj!=null) && (!obj.isStopped()) && (((obj.getStatus())==Session.SessionStatus.MAINLOOP)))
 			{
 				final MOB M=obj.mob();

@@ -18,6 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.nio.charset.Charset;
 import java.util.*;
 import java.util.Map.Entry;
@@ -259,7 +260,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			if(s<0.0)
 				return memoryUse(E,number);
 		}
-		catch(final Exception e){return -1;}
+		catch (final Exception e)
+		{
+			return -1;
+		}
 		return s;
 	}
 
@@ -1807,6 +1811,48 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		return "";
 	}
 
+	@Override
+	public String getUnsubscribeURL(final String name)
+	{
+		if((name == null)||(name.length()==0))
+			return "N/A";
+		final String passwordOfAnyKind;
+		final PlayerAccount acct = CMLib.players().getLoadAccount(name);
+		if((acct != null))
+			passwordOfAnyKind = acct.getPasswordStr();
+		else
+		{
+			MOB M=CMLib.players().getLoadPlayer(name);
+			if((M == null)
+			&&(CMLib.players().playerExistsAllHosts(name)))
+				M=CMLib.players().getPlayerAllHosts(name);
+			if((M != null) && (M.playerStats()!=null))
+				passwordOfAnyKind = M.playerStats().getPasswordStr();
+			else
+			if(CMLib.players().accountExistsAllHosts(name))
+			{
+				final PlayerAccount acct2=CMLib.players().getAccountAllHosts(name);
+				if(acct2 != null)
+					passwordOfAnyKind = acct2.getPasswordStr();
+				else
+					return "N/A";
+			}
+			else
+				return "N/A";
+		}
+		final String hostPart = CMLib.host().geWebHostUrl();
+		final String b64repeatedHash = CMLib.encoder().makeRepeatableHashString(CMStrings.capitalizeAndLower(name)+"_"+passwordOfAnyKind);
+		try
+		{
+			return hostPart+"Unsubscribe?USER="+CMStrings.capitalizeAndLower(name)+"&UNSUBKEY="+URLEncoder.encode(b64repeatedHash, "UTF-8");
+		}
+		catch (UnsupportedEncodingException e)
+		{
+			Log.errOut(e);
+			return "[ERR]";
+		}
+	}
+	
 	@Override
 	public List<Race> getConstituantRaces(final String raceID)
 	{

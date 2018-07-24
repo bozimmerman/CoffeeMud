@@ -38,8 +38,11 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.ColorLibrary;
  */
 public class CMStrings
 {
-	private CMStrings(){super();}
-	
+	private CMStrings()
+	{
+		super();
+	}
+
 	/**
 	 * A string array with 0 entries
 	 */
@@ -2622,7 +2625,9 @@ public class CMStrings
 			return token;
 		}
 
-		private StringExpToken() { }
+		private StringExpToken()
+		{
+		}
 	}
 
 	/**

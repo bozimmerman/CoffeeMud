@@ -131,9 +131,13 @@ public class StdBehavior implements Behavior
 	{
 	}
 
-	// protected void
-	// finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.BEHAVIOR);}//removed
-	// for perf
+	/*
+	protected void finalize()
+	{
+		CMClass.unbumpCounter(this, CMClass.CMObjectType.BEHAVIOR);
+	}// removed for perf
+	*/
+
 	@Override
 	public void setSavable(boolean truefalse)
 	{

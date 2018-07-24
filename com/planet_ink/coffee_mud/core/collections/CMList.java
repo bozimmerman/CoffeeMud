@@ -24,19 +24,23 @@ public class CMList<K> implements Serializable, Cloneable, Iterable<K>, Collecti
 	private static final Random rand=new Random(System.currentTimeMillis());
 	private class CMListNode
 	{
-		public K obj;
-		public boolean active=false;
-		public CMListNode next=null;
-		public CMListNode prev=null;
-		public CMListNode randNext=null;
-		public CMListNode randPrev=null;
-		public CMListNode(K obj) { this.obj=obj;}
+		public K			obj;
+		public boolean		active		= false;
+		public CMListNode	next		= null;
+		public CMListNode	prev		= null;
+		public CMListNode	randNext	= null;
+		public CMListNode	randPrev	= null;
+
+		public CMListNode(K obj)
+		{
+			this.obj = obj;
+		}
 	}
 
-	private volatile CMListNode randNode=null;
-	private volatile CMListNode head=null;
-	private volatile CMListNode tail=null;
-	private volatile int size=0;
+	private volatile CMListNode	randNode	= null;
+	private volatile CMListNode	head		= null;
+	private volatile CMListNode	tail		= null;
+	private volatile int		size		= 0;
 
 	public CMList()
 	{

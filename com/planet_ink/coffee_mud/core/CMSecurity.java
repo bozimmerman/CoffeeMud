@@ -2645,7 +2645,15 @@ public class CMSecurity
 		SHOWXP("show experience")
 		;
 		private final String desc;
-		DisFlag(final String description){this.desc=description;}
-		public String description() { return desc;}
+
+		DisFlag(final String description)
+		{
+			this.desc = description;
+		}
+
+		public String description()
+		{
+			return desc;
+		}
 	}
 }

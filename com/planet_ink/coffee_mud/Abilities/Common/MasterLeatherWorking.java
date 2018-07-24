@@ -68,11 +68,14 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	}
 
 	@Override
-	public String parametersFormat(){ return
+	public String parametersFormat()
+	{ 
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION\t"
 		+"CONTAINER_CAPACITY||LIQUID_CAPACITY||WEAPON_HANDS_REQUIRED||MAX_WAND_USES\tBASE_DAMAGE||BASE_ARMOR_AMOUNT\t"
-		+"CONTAINER_TYPE\tCODED_SPELL_LIST";}
+		+"CONTAINER_TYPE\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;

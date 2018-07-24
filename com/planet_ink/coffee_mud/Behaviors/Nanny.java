@@ -75,17 +75,28 @@ public class Nanny extends StdBehavior
 
 	private static class DropOff
 	{
-		public MOB mommyM;
-		public PhysicalAgent baby;
-		public long dropOffTime;
-		public DropOff(MOB momM, PhysicalAgent baby, long dropOff){mommyM=momM;this.baby=baby; dropOffTime=dropOff;}
+		public MOB				mommyM;
+		public PhysicalAgent	baby;
+		public long				dropOffTime;
+
+		public DropOff(MOB momM, PhysicalAgent baby, long dropOff)
+		{
+			mommyM = momM;
+			this.baby = baby;
+			dropOffTime = dropOff;
+		}
 	}
 
 	private static class Payment
 	{
-		public MOB mommyM;
-		public double paid;
-		public Payment(MOB M, double d){mommyM=M; paid=d;}
+		public MOB		mommyM;
+		public double	paid;
+
+		public Payment(MOB M, double d)
+		{
+			mommyM = M;
+			paid = d;
+		}
 	}
 
 	public double getPaidBy(MOB mob)

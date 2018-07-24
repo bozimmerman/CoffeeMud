@@ -32,10 +32,17 @@ import com.planet_ink.coffee_mud.core.interfaces.Environmental;
  */
 public class CMParms
 {
-	private CMParms(){super();}
-	private static CMParms inst=new CMParms();
-	
-	public final static CMParms instance(){return inst;}
+	private CMParms()
+	{
+		super();
+	}
+
+	private static CMParms inst = new CMParms();
+
+	public final static CMParms instance()
+	{
+		return inst;
+	}
 	
 	public static boolean[] PUNCTUATION_TABLE=null;
 	

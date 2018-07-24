@@ -89,7 +89,10 @@ public class Prayer_BladeBarrier extends Prayer
 
 	protected long oncePerTickTime=0;
 
-	protected String startStr() { return "A barrier of blades begin to spin around <T-NAME>!^?"; }
+	protected String startStr()
+	{
+		return "A barrier of blades begin to spin around <T-NAME>!^?";
+	}
 
 	protected void doDamage(MOB srcM, MOB targetM, int damage)
 	{

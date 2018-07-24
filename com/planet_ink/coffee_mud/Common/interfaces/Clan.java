@@ -995,7 +995,10 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 			this.codeString=codeName;
 		}
 
-		public int flagNum(){return (int)Math.round(Math.pow(2.0, ordinal())); }
+		public int flagNum()
+		{
+			return (int) Math.round(Math.pow(2.0, ordinal()));
+		}
 	}
 
 	/**

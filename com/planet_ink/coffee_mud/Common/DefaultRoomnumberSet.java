@@ -437,7 +437,12 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		long[] nums=null;
 		String nextID=null;
 		int n=0;
-		public RoomnumberSetEnumeration(){ areaNames=getAreaNames();}
+
+		public RoomnumberSetEnumeration()
+		{
+			areaNames = getAreaNames();
+		}
+
 		@Override
 		public boolean hasMoreElements()
 		{

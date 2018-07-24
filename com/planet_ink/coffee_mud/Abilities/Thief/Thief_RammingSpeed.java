@@ -116,7 +116,8 @@ public class Thief_RammingSpeed extends ThiefSkill
 		&&(msg.sourceMinor()==CMMsg.TYP_ADVANCE))
 		{
 			final Ability unInvokeMe=this;
-			msg.addTrailerRunnable(new Runnable(){
+			msg.addTrailerRunnable(new Runnable()
+			{
 				@Override
 				public void run()
 				{

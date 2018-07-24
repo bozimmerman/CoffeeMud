@@ -62,6 +62,13 @@ public interface MudHost
 	public int getPort();
 
 	/**
+	 * The hostname, port of the most public web server for this host
+	 * Includes trailing slash
+	 * @return http://mydomain:myport/
+	 */
+	public String geWebHostUrl();
+
+	/**
 	 * An order to permanently shutdown the entire mud system
 	 * @param S a player session to send status messages to.  May be null.
 	 * @param keepItDown true to shutdown, false to restart

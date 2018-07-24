@@ -44,7 +44,10 @@ public class TreeLayout extends AbstractLayout
 			currNode = new DefaultLayoutNode(coord);
 		}
 
-		private long[] getCoord(long[] curr, int dir) { return lSet.makeNextCoord(curr,dir);}
+		private long[] getCoord(long[] curr, int dir)
+		{
+			return lSet.makeNextCoord(curr, dir);
+		}
 
 		private int[] getTurns(int dir)
 		{

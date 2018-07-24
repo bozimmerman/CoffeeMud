@@ -84,8 +84,10 @@
 		function showDiv(pass) 
 		{
 		  var divs = document.getElementsByTagName('div'); 
-		  for(i=0;i<divs.length;i++){ 
-		    if((divs[i].id.match(pass))||(divs[i].id.match('layersMenu'))){//if they are 'see' divs 
+		  for(i=0;i<divs.length;i++)
+		  { 
+		    if((divs[i].id.match(pass))||(divs[i].id.match('layersMenu')))
+		    {//if they are 'see' divs 
 		      if (document.getElementById) // DOM3 = IE5, NS6 
 		        divs[i].style.visibility="visible";// show/hide 
 		      else 
@@ -107,7 +109,8 @@
 
 		function setVariables() 
 		{
-		  if (navigator.appName == "Netscape") {
+		  if (navigator.appName == "Netscape") 
+		  {
 		    v=".top=";
 		    w=".left=";
 		    dS="document.";
@@ -115,7 +118,8 @@
 		    x="window.pageXOffset";
 		    y="window.pageYOffset";
 		  }
-		  else {
+		  else 
+		  {
 		    v=".pixelTop=";
 		    w=".pixelLeft=";
 		    dS="";
@@ -125,7 +129,9 @@
 		   }
 		}
 		
-		function preloadImages() {}
+		function preloadImages() 
+		{
+		}
 		
 		function checkLocation() 
 		{

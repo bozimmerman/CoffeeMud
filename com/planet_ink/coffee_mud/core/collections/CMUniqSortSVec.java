@@ -120,7 +120,8 @@ public class CMUniqSortSVec<T extends CMObject> extends SVector<T> implements Se
 	@Override
 	public Iterator<String> keyIterator()
 	{
-		return new ConvertingIterator<T,String>(this.iterator(),new Converter<T,String>(){
+		return new ConvertingIterator<T,String>(this.iterator(),new Converter<T,String>()
+		{
 			@Override
 			public String convert(T obj)
 			{

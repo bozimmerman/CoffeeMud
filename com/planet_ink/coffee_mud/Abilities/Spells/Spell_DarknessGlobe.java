@@ -147,7 +147,8 @@ public class Spell_DarknessGlobe extends Spell
 		if((msg.target() instanceof Room)
 		&&(msg.targetMinor()==CMMsg.TYP_LEAVE))
 		{
-			msg.addTrailerRunnable(new Runnable(){
+			msg.addTrailerRunnable(new Runnable()
+			{
 				final Room R=(Room)msg.target();
 				final MOB M=msg.source();
 				@Override
@@ -163,7 +164,8 @@ public class Spell_DarknessGlobe extends Spell
 		if((msg.targetMinor()==CMMsg.TYP_ENTER)
 		&&(msg.source() != affected))
 		{
-			msg.addTrailerRunnable(new Runnable(){
+			msg.addTrailerRunnable(new Runnable()
+			{
 				final Physical aff=affected;
 				@Override
 				public void run()

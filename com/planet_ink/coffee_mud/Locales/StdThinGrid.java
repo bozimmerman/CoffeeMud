@@ -840,7 +840,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					return true;
 			}
 		}
-		catch(final Exception e){} // optimization
+		catch (final Exception e)
+		{
+		} // optimization
 		return false;
 	}
 
@@ -856,7 +858,10 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				entry.room.destroy();
 			rooms.clear();
 		}
-		catch(final Exception e){Log.debugOut("StdThinGrid",e);}
+		catch (final Exception e)
+		{
+			Log.debugOut("StdThinGrid", e);
+		}
 	}
 
 	@Override

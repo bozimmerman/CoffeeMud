@@ -260,8 +260,15 @@ public class FileCache implements FileCacheManager
 			finally
 			{
 				if(compressor!=null)
+				{
 					try
-					{ compressor.close();} catch(final Exception e){}
+					{
+						compressor.close();
+					}
+					catch (final Exception e)
+					{
+					}
+				}
 			}
 			final byte[] compressedBytes = bufStream.toByteArray();
 			if((cacheActive) && (entry != null) && (entry.buf[type.ordinal()] == null))

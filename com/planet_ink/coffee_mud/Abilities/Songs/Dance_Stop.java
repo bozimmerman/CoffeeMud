@@ -55,7 +55,12 @@ public class Dance_Stop extends Dance
 		return Ability.QUALITY_INDIFFERENT;
 	}
 
-	protected boolean skipStandardSongInvoke(){return true;}
+	@Override
+	protected boolean skipStandardDanceInvoke()
+	{
+		return true;
+	}
+
 	public Dance_Stop()
 	{
 		super();

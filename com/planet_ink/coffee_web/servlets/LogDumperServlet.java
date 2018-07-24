@@ -75,9 +75,12 @@ public class LogDumperServlet implements SimpleServlet
 					try
 					{
 						bs.close(); 
+					}
+					catch (final Exception e)
+					{
+					} // java really needs an " i don't care " syntax for
+						// exception handling
 				}
-					catch(final Exception e) {} // java really needs an " i don't care " syntax for exception handling
-			}
 		}
 		}
 		catch (final HTTPException e)
@@ -86,7 +89,9 @@ public class LogDumperServlet implements SimpleServlet
 			{
 				response.getOutputStream().write(e.generateOutput(request).flushToBuffer().array());
 			}
-			catch (final Exception e1){}
+			catch (final Exception e1)
+			{
+			}
 		}
 	}
 

@@ -47,9 +47,12 @@ public class Prop_Uncampable extends Property
 	}
 
 	@Override
-	protected int canAffectCode(){return Ability.CAN_MOBS
-										 |Ability.CAN_ITEMS
-										 |Ability.CAN_ROOMS;}
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS
+			 |Ability.CAN_ITEMS
+			 |Ability.CAN_ROOMS;
+	}
 	
 	@Override
 	public long flags()

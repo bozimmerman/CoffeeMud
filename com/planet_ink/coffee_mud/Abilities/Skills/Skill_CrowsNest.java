@@ -138,7 +138,8 @@ public class Skill_CrowsNest extends StdSkill
 				if(msg.target() instanceof Exit)
 				{
 					final Room shipRR=shipR;
-					msg.addTrailerRunnable(new Runnable(){
+					msg.addTrailerRunnable(new Runnable()
+					{
 						final Room shipR=shipRR;
 						final MOB mob=msg.source();
 						final Exit E=(Exit)msg.target();
@@ -195,7 +196,8 @@ public class Skill_CrowsNest extends StdSkill
 					final Skill_CrowsNest self=this;
 					final MOB mob=msg.source();
 					final Room shipRR=shipR;
-					msg.addTrailerRunnable(new Runnable(){
+					msg.addTrailerRunnable(new Runnable()
+					{
 						final Skill_CrowsNest selfA=self;
 						final Room shipR=shipRR;
 

@@ -231,8 +231,14 @@ public class Log extends java.util.logging.Logger
 	 */
 	private static final int s_int(final String INT)
 	{
-		try{ return Integer.parseInt(INT); }
-		catch(final java.lang.NumberFormatException e){ return 0;}
+		try
+		{
+			return Integer.parseInt(INT);
+		}
+		catch (final java.lang.NumberFormatException e)
+		{
+			return 0;
+		}
 	}
 
 	/**
@@ -418,7 +424,10 @@ public class Log extends java.util.logging.Logger
 		if(Character.isDigit(code.charAt(0)))
 		{
 			x=0;
-			while((x<code.length())&&(Character.isDigit(code.charAt(x)))) {x++;}
+			while ((x < code.length()) && (Character.isDigit(code.charAt(x))))
+			{
+				x++;
+			}
 			maxNumberOfLogs=s_int(code.substring(0,x));
 			code=code.substring(x).trim();
 		}
@@ -455,7 +464,9 @@ public class Log extends java.util.logging.Logger
 		if(Character.isDigit(code.charAt(code.length()-1)))
 		{
 			x=code.length();
-			while(Character.isDigit(code.charAt(--x))) {}
+			while ((x < code.length()) && Character.isDigit(code.charAt(--x)))
+			{
+			}
 			maxLevel=s_int(code.substring(x+1));
 		}
 		Target t;

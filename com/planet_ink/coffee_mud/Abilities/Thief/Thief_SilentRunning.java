@@ -138,7 +138,8 @@ public class Thief_SilentRunning extends ThiefSkill
 						A.setProficiency(100);
 				}
 				final Ability unInVokeMe=this;
-				msg.addTrailerRunnable(new Runnable(){
+				msg.addTrailerRunnable(new Runnable()
+				{
 					@Override
 					public void run()
 					{

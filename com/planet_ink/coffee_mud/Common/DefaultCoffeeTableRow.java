@@ -288,6 +288,9 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 			CR.stats.putAll(stats);
 			return CR;
 		}
-		catch(final Exception e){return newInstance();}
+		catch (final Exception e)
+		{
+			return newInstance();
+		}
 	}
 }

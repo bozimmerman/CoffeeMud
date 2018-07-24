@@ -36,7 +36,9 @@ public class RTree<T extends BoundedObject>
 		TrackingVector<T> data;
 		final RTreeNode me=this;
 
-		public RTreeNode() {}
+		public RTreeNode()
+		{
+		}
 
 		public RTreeNode(boolean isLeaf)	
 		{

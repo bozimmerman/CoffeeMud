@@ -84,7 +84,8 @@ function connect(url,port,tries)
 	errorState=false;
 	goCaution();
 	gauges=new Array(0);
-	theSiplet.connectToURL(url,@WebServerPort?CURRENT@,port,function(connectWorked, txt){
+	theSiplet.connectToURL(url,@WebServerPort?CURRENT@,port,function(connectWorked, txt)
+	{
 		theSiplet.callback = receivedData;
 		var s='';
 		var x=txt.indexOf(';');

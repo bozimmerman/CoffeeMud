@@ -227,9 +227,9 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					{
 						E.setKeyName("");
 						E.setDoorsNLocks(E.hasADoor(),E.isOpen(),E.defaultsClosed(),false,false,false);
-						postWork.add(new Runnable(){
+						postWork.add(new Runnable()
+						{
 							final Room room=R2;
-
 							@Override
 							public void run()
 							{

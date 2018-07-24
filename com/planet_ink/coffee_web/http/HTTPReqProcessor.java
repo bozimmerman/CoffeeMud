@@ -482,9 +482,15 @@ public class HTTPReqProcessor implements HTTPFileGetter
 				if(sinceDate >= lastModDate)
 					throw HTTPException.standardException(HTTPStatus.S304_NOT_MODIFIED);
 			}
-			catch(final ParseException e) { }
-			catch(final NumberFormatException e) { }
-			catch(final ArrayIndexOutOfBoundsException e) { }
+			catch (final ParseException e)
+			{
+			}
+			catch (final NumberFormatException e)
+			{
+			}
+			catch (final ArrayIndexOutOfBoundsException e)
+			{
+			}
 		}
 	}
 	
@@ -604,11 +610,14 @@ public class HTTPReqProcessor implements HTTPFileGetter
 				buffers=config.getFileCache().getFileData(pageFile, null);
 				//checkIfModifiedSince(request,buffers); this is RETARDED!!!
 				HTTPOutputConverter converter;
-				try { 
+				try
+				{
 					converter = converterClass.newInstance();
 					return new CWDataBuffers(converter.convertOutput(config, request, pathFile, HTTPStatus.S200_OK, buffers.flushToBuffer()), System.currentTimeMillis(), true);
 				}
-				catch (final Exception e) { }
+				catch (final Exception e)
+				{
+				}
 				return buffers;
 			}
 			else

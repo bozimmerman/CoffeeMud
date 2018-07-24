@@ -301,7 +301,8 @@ public class Factions extends StdLibrary implements FactionManager
 		msg.append(L("| ^HFaction Name^N                   | ^HFaction INI Source File (Faction ID)^N    |\n\r"));
 		msg.append("+--------------------------------+-----------------------------------------+\n\r");
 		final XVector<Faction> sorted = new XVector<Faction>(factionSet.elements());
-		Collections.sort(sorted,new Comparator<Faction>(){
+		Collections.sort(sorted,new Comparator<Faction>()
+		{
 			@Override
 			public int compare(Faction o1, Faction o2)
 			{
@@ -390,7 +391,8 @@ public class Factions extends StdLibrary implements FactionManager
 	}
 
 	@Override
-	public Enumeration<Faction.FRange> getRanges(String factionID) {
+	public Enumeration<Faction.FRange> getRanges(String factionID) 
+	{
 		final Faction f=getFaction(factionID);
 		if(f!=null)
 			return f.ranges();

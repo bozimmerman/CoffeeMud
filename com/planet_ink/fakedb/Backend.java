@@ -927,7 +927,8 @@ public class Backend
 			final int[] count = { 0 };
 			try
 			{
-				final FakeConditionResponder responder = new FakeConditionResponder() {
+				final FakeConditionResponder responder = new FakeConditionResponder() 
+				{
 					public int[]				count;
 					public int[]				newCols;
 					public ComparableValue[]	updatedValues	= null;

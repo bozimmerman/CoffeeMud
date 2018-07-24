@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -65,7 +66,10 @@ public class MassMailer implements Runnable
 		this.oldEmailComplaints=oldEmailComplaints;
 	}
 
-	public String domainName() { return domain;}
+	public String domainName()
+	{
+		return domain;
+	}
 
 	public int getFailureDays()
 	{
@@ -152,32 +156,74 @@ public class MassMailer implements Runnable
 			// check for valid recipient
 			final String toEmail;
 			final String toName;
-			if(CMLib.players().playerExists(to))
+			if(CMLib.players().playerExistsAllHosts(to))
 			{
-				final MOB toM=CMLib.players().getLoadPlayer(to);
-				final MOB fromM=CMLib.players().getLoadPlayer(from);
+				MOB toM=CMLib.players().getLoadPlayer(to);
+				if(toM == null)
+					toM = CMLib.players().getPlayerAllHosts(to);
+				if(toM == null)
+					continue;
 				// check to see if the sender is ignored
-				if((toM.playerStats()!=null)
-				&&(toM.playerStats().isIgnored(fromM))
-				&&(toM.playerStats().isIgnored(from)))
+				final PlayerStats toMpStats=toM.playerStats();
+				if(toMpStats==null)
+					continue;
+				if(toMpStats.isIgnored(from))
 				{
 					// email is ignored
 					CMLib.database().DBDeleteJournal(journalName,key);
 					continue;
 				}
+				if(CMLib.players().playerExistsAllHosts(from))
+				{
+					MOB fromM=CMLib.players().getPlayer(from);
+					if(fromM == null)
+						fromM=CMLib.players().getPlayer(from);
+					if(fromM != null)
+					{
+						if(toMpStats.isIgnored(fromM))
+						{
+							// email is ignored
+							CMLib.database().DBDeleteJournal(journalName,key);
+							continue;
+						}
+					}
+					else
+					{
+						fromM = CMLib.players().getLoadPlayer(from);
+						if(fromM != null)
+						{
+							if(toMpStats.isIgnored(fromM))
+							{
+								// email is ignored
+								CMLib.database().DBDeleteJournal(journalName,key);
+								continue;
+							}
+							CMLib.players().unloadOfflinePlayer(fromM);
+						}
+					}
+				}
+				final PlayerAccount acct=toMpStats.getAccount();
+				if((acct != null)
+				&&(acct.isSet(AccountFlag.NOAUTOFORWARD)))
+					continue;
 				if(toM.isAttributeSet(MOB.Attrib.AUTOFORWARD)) // forwarding OFF
 					continue;
-				if((toM.playerStats()==null)
-				||(toM.playerStats().getEmail().length()==0)) // no email addy to forward TO
+				if(toM.playerStats().getEmail().length()==0) // no email addy to forward TO
 					continue;
 				toName=toM.Name();
 				toEmail=toM.playerStats().getEmail();
 			}
 			else
-			if(CMLib.players().accountExists(to))
+			if(CMLib.players().accountExistsAllHosts(to))
 			{
-				final PlayerAccount P=CMLib.players().getLoadAccount(to);
+				PlayerAccount P=CMLib.players().getLoadAccount(to);
+				if(P == null)
+					P=CMLib.players().getAccountAllHosts(to);
+				if(P == null)
+					continue;
 				if((P.getEmail().length()==0)) // no email addy to forward TO
+					continue;
+				if(P.isSet(AccountFlag.NOAUTOFORWARD))
 					continue;
 				toName=P.getAccountName();
 				toEmail=P.getEmail();
@@ -243,9 +289,9 @@ public class MassMailer implements Runnable
 			{
 				// it has FAILUREDAYS days to get better.
 				if(deleteEmailIfOld(journalName, key, date,getFailureDays()))
-					Log.errOut("SMTPServer","Permanently unable to send to '"+toEmail+"' for user '"+toName+"': "+ioe.getMessage()+".");
+					Log.errOut("SMTPServer","Permanently unable to send email from '"+from+"@"+domainName()+"' to '"+toEmail+"' for user '"+toName+"': "+ioe.getMessage()+".");
 				else
-					Log.errOut("SMTPServer","Failure to send to '"+toEmail+"' for user '"+toName+"'.");
+					Log.errOut("SMTPServer","Failure to send from '"+from+"@"+domainName()+"' to '"+toEmail+"' for user '"+toName+"': "+ioe.getMessage()+".");
 			}
 		}
 	}

@@ -161,7 +161,10 @@ public class OffLine extends Thread implements MudHost
 					offLineText.append((char)fin.read());
 				Resources.submitResource(fileName,offLineText);
 			}
-			catch(final Exception e){e.printStackTrace();}
+			catch (final Exception e)
+			{
+				e.printStackTrace();
+			}
 			finally
 			{
 				try
@@ -554,5 +557,11 @@ public class OffLine extends Thread implements MudHost
 		throws Exception
 	{
 		throw new Exception("Not implemented");
+	}
+
+	@Override
+	public String geWebHostUrl()
+	{
+		return "/";
 	}
 }

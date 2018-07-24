@@ -955,7 +955,11 @@ public class RoomLoader
 						newItem.basePhyStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
 						newItem.recoverPhyStats();
 					}
-					catch(final Exception e) { Log.errOut("RoomLoader",e); itemNums.remove(itemNum);}
+					catch (final Exception e)
+					{
+						Log.errOut("RoomLoader", e);
+						itemNums.remove(itemNum);
+					}
 				}
 				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Loading Items ("+currentRecordPos+" of "+recordCount+")");

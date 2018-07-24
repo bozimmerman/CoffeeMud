@@ -36,8 +36,12 @@
 		}
 		function searchKeyPress(e,value)
 		{
-			if (typeof e == 'undefined' && window.event) { e = window.event; }
-			if (e.keyCode == 13)
+
+			if (typeof e == 'undefined' && window.event) 
+			{
+				e = window.event;
+			}
+			if (e.keyCode == 13) 
 			{
 				DoSearch(value);
 			}

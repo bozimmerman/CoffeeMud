@@ -145,7 +145,10 @@ public class I3Cmd extends StdCommand
 			{
 				mob.tell(CMLib.hosts().get(0).executeCommand("START I3"));
 			}
-			catch(final Exception e){ Log.errOut("I3Cmd",e);}
+			catch (final Exception e)
+			{
+				Log.errOut("I3Cmd", e);
+			}
 		}
 		else
 		if(str.equalsIgnoreCase("locate"))

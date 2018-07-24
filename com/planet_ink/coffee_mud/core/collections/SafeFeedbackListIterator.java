@@ -62,32 +62,38 @@ public class SafeFeedbackListIterator<K> implements ListIterator<K>
 	}
 
 	@Override
-	public boolean hasPrevious() {
+	public boolean hasPrevious() 
+	{
 		return iter.hasPrevious();
 	}
 
 	@Override
-	public K previous() {
+	public K previous() 
+	{
 		return iter.previous();
 	}
 
 	@Override
-	public int nextIndex() {
+	public int nextIndex() 
+	{
 		return iter.nextIndex();
 	}
 
 	@Override
-	public int previousIndex() {
+	public int previousIndex() 
+	{
 		return iter.previousIndex();
 	}
 
 	@Override
-	public void set(K e) {
+	public void set(K e) 
+	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public void add(K e) {
+	public void add(K e) 
+	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 

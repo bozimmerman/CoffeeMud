@@ -62,7 +62,8 @@ public class Reset extends StdCommand
 
 	private enum helpSets
 	{
-		SKILLS("/resources/help/skill_help.ini", new Filterer<Ability>(){
+		SKILLS("/resources/help/skill_help.ini", new Filterer<Ability>()
+		{
 			@Override
 			public boolean passesFilter(Ability A)
 			{
@@ -76,7 +77,8 @@ public class Reset extends StdCommand
 				return false;
 			}
 		}),
-		CHANTS("/resources/help/chant_help.ini", new Filterer<Ability>(){
+		CHANTS("/resources/help/chant_help.ini", new Filterer<Ability>()
+		{
 			@Override
 			public boolean passesFilter(Ability A)
 			{
@@ -87,7 +89,8 @@ public class Reset extends StdCommand
 				return false;
 			}
 		}),
-		COMMON("/resources/help/common_help.ini", new Filterer<Ability>(){
+		COMMON("/resources/help/common_help.ini", new Filterer<Ability>()
+		{
 			@Override
 			public boolean passesFilter(Ability A)
 			{
@@ -97,7 +100,8 @@ public class Reset extends StdCommand
 				return false;
 			}
 		}),
-		PRAYERS("/resources/help/prayer_help.ini", new Filterer<Ability>(){
+		PRAYERS("/resources/help/prayer_help.ini", new Filterer<Ability>()
+		{
 			@Override
 			public boolean passesFilter(Ability A)
 			{
@@ -108,7 +112,8 @@ public class Reset extends StdCommand
 				return false;
 			}
 		}),
-		SONGS("/resources/help/songs_help.ini", new Filterer<Ability>(){
+		SONGS("/resources/help/songs_help.ini", new Filterer<Ability>()
+		{
 			@Override
 			public boolean passesFilter(Ability A)
 			{
@@ -121,7 +126,8 @@ public class Reset extends StdCommand
 				return false;
 			}
 		}),
-		SPELLS("/resources/help/spell_help.ini", new Filterer<Ability>(){
+		SPELLS("/resources/help/spell_help.ini", new Filterer<Ability>()
+		{
 			@Override
 			public boolean passesFilter(Ability A)
 			{
@@ -132,7 +138,8 @@ public class Reset extends StdCommand
 				return false;
 			}
 		}),
-		TRAPS("/resources/help/traps.ini", new Filterer<Ability>(){
+		TRAPS("/resources/help/traps.ini", new Filterer<Ability>()
+		{
 			@Override
 			public boolean passesFilter(Ability A)
 			{
@@ -143,7 +150,8 @@ public class Reset extends StdCommand
 				return false;
 			}
 		}),
-		POISONS("/resources/help/poisons.ini", new Filterer<Ability>(){
+		POISONS("/resources/help/poisons.ini", new Filterer<Ability>()
+		{
 			@Override
 			public boolean passesFilter(Ability A)
 			{
@@ -154,7 +162,8 @@ public class Reset extends StdCommand
 				return false;
 			}
 		}),
-		DISEASES("/resources/help/diseases.ini", new Filterer<Ability>(){
+		DISEASES("/resources/help/diseases.ini", new Filterer<Ability>()
+		{
 			@Override
 			public boolean passesFilter(Ability A)
 			{
@@ -165,7 +174,8 @@ public class Reset extends StdCommand
 				return false;
 			}
 		}),
-		PROPERTIES("/resources/help/arc_properties.ini", false, new Filterer<Ability>(){
+		PROPERTIES("/resources/help/arc_properties.ini", false, new Filterer<Ability>()
+		{
 			@Override
 			public boolean passesFilter(Ability A)
 			{
@@ -918,9 +928,8 @@ public class Reset extends StdCommand
 						CMLib.database().DBUpdateAccount((PlayerAccount)stat);
 					if(M!=null)
 						CMLib.database().DBUpdatePassword(M.Name(),stat.getPasswordStr());
-					CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), finalName, 
-							"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), stat.getEmail(),
-							L("Password for @x1",finalName),
+					CMLib.smtp().emailOrJournal(finalName, "noreply", 
+							stat.getEmail(), L("Password for @x1",finalName),
 							L("Your password for @x1 at @x2 has been reset by @x3.  ",finalName,CMProps.getVar(CMProps.Str.MUDDOMAIN),mob.Name())+
 							L("It is now: '@x1'.",password));
 					mob.tell(L("The password has been reset, and this action has been logged."));
@@ -936,9 +945,8 @@ public class Reset extends StdCommand
 					CMLib.database().DBUpdateAccount((PlayerAccount)stat);
 				if(M!=null)
 					CMLib.database().DBUpdatePassword(M.Name(),stat.getPasswordStr());
-				CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), finalName, 
-						"noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), stat.getEmail(),
-						L("Password for @x1",finalName),
+				CMLib.smtp().emailOrJournal(finalName, "noreply", 
+						stat.getEmail(), L("Password for @x1",finalName),
 						L("Your password for @x1 at @x2 has been reset by @x3. ",finalName,CMProps.getVar(CMProps.Str.MUDDOMAIN),mob.Name())+
 						L("It is now: '@x1'.",password));
 				mob.tell(L("The password has been reset, and this action has been logged."));

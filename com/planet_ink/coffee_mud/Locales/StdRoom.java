@@ -86,9 +86,14 @@ public class StdRoom implements Room
 		basePhyStats.setWeight(2);
 		recoverPhyStats();
 	}
-	
-	//protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.LOCALE); }//removed for mem & perf
-	
+
+	/*
+	protected void finalize()
+	{
+		CMClass.unbumpCounter(this, CMClass.CMObjectType.LOCALE);
+	}// removed for mem & perf
+	*/
+
 	@Override 
 	public void initializeClass()
 	{
@@ -1289,7 +1294,8 @@ public class StdRoom implements Room
 	public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 	{
 		getArea().affectCharStats(affectedMob,affectableStats);
-		eachEffect(new EachApplicable<Ability>(){ 
+		eachEffect(new EachApplicable<Ability>()
+		{ 
 			@Override
 			public final void apply(final Ability A)
 			{
@@ -1303,7 +1309,8 @@ public class StdRoom implements Room
 	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 		getArea().affectCharState(affectedMob,affectableMaxState);
-		eachEffect(new EachApplicable<Ability>(){ 
+		eachEffect(new EachApplicable<Ability>()
+		{ 
 			@Override
 			public final void apply(final Ability A)
 			{

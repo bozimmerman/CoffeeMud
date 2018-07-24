@@ -308,7 +308,8 @@ public class Thief_WarningShot extends ThiefSkill
 					targetSeesStr=L("You are no match for @x1.",myShipItem.Name());
 					iSeeStr=L("@x1 is no match for you.",target.Name());
 				}
-				CMLib.threads().scheduleRunnable(new Runnable(){
+				CMLib.threads().scheduleRunnable(new Runnable()
+				{
 					@Override
 					public void run()
 					{

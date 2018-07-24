@@ -202,10 +202,37 @@ public class B64Encoder
 		}
 		finally
 		{
-			try{ if(oos!=null)oos.close();   } catch( final Exception e ){}
-			try{ if(gzos!=null)gzos.close();  } catch( final Exception e ){}
-			try{ if(b64os!=null)b64os.close(); } catch( final Exception e ){}
-			try{ baos.close();  } catch( final Exception e ){}
+			try
+			{
+				if (oos != null)
+					oos.close();
+			}
+			catch (final Exception e)
+			{
+			}
+			try
+			{
+				if (gzos != null)
+					gzos.close();
+			}
+			catch (final Exception e)
+			{
+			}
+			try
+			{
+				if (b64os != null)
+					b64os.close();
+			}
+			catch (final Exception e)
+			{
+			}
+			try
+			{
+				baos.close();
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 
 		try
@@ -259,9 +286,29 @@ public class B64Encoder
 			}
 			finally
 			{
-				try{ if(gzos!=null)gzos.close();  } catch( final Exception e ){}
-				try{ if(b64os!=null)b64os.close(); } catch( final Exception e ){}
-				try{ baos.close();  } catch( final Exception e ){}
+				try
+				{
+					if (gzos != null)
+						gzos.close();
+				}
+				catch (final Exception e)
+				{
+				}
+				try
+				{
+					if (b64os != null)
+						b64os.close();
+				}
+				catch (final Exception e)
+				{
+				}
+				try
+				{
+					baos.close();
+				}
+				catch (final Exception e)
+				{
+				}
 			}
 			try
 			{
@@ -441,9 +488,30 @@ public class B64Encoder
 				}
 				finally
 				{
-					try{ if(baos!=null)baos.close(); } catch( final Exception e ){}
-					try{ if(gzis!=null)gzis.close(); } catch( final Exception e ){}
-					try{ if(bais!=null)bais.close(); } catch( final Exception e ){}
+					try
+					{
+						if (baos != null)
+							baos.close();
+					}
+					catch (final Exception e)
+					{
+					}
+					try
+					{
+						if (gzis != null)
+							gzis.close();
+					}
+					catch (final Exception e)
+					{
+					}
+					try
+					{
+						if (bais != null)
+							bais.close();
+					}
+					catch (final Exception e)
+					{
+					}
 				}
 			}
 		}
@@ -476,8 +544,22 @@ public class B64Encoder
 		}
 		finally
 		{
-			try{ if(bais!=null)bais.close(); } catch( final Exception e ){}
-			try{ if(ois!=null)ois.close();  } catch( final Exception e ){}
+			try
+			{
+				if (bais != null)
+					bais.close();
+			}
+			catch (final Exception e)
+			{
+			}
+			try
+			{
+				if (ois != null)
+					ois.close();
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 
 		return obj;
@@ -501,7 +583,14 @@ public class B64Encoder
 		}
 		finally
 		{
-			try{ if(bos!=null)bos.close(); } catch( final Exception e ){}
+			try
+			{
+				if (bos != null)
+					bos.close();
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 
 		return success;
@@ -513,10 +602,10 @@ public class B64Encoder
 		B64OutputStream bos = null;
 		try
 		{
-				bos = new B64OutputStream(
-						  new java.io.FileOutputStream( filename ), DECODE );
-				bos.write( dataToDecode.getBytes( PREFERRED_ENCODING ) );
-				success = true;
+			bos = new B64OutputStream(
+					  new java.io.FileOutputStream( filename ), DECODE );
+			bos.write( dataToDecode.getBytes( PREFERRED_ENCODING ) );
+			success = true;
 		}
 		catch( final java.io.IOException e )
 		{
@@ -524,7 +613,14 @@ public class B64Encoder
 		}
 		finally
 		{
-				try{ if(bos!=null)bos.close(); } catch( final Exception e ){}
+			try
+			{
+				if (bos != null)
+					bos.close();
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 
 		return success;
@@ -565,7 +661,14 @@ public class B64Encoder
 		}
 		finally
 		{
-			try{ if(bis!=null)bis.close(); } catch( final Exception e) {}
+			try
+			{
+				if (bis != null)
+					bis.close();
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 
 		return decodedData;
@@ -595,7 +698,14 @@ public class B64Encoder
 		}
 		finally
 		{
-			try{ if(bis!=null)bis.close(); } catch( final Exception e) {}
+			try
+			{
+				if (bis != null)
+					bis.close();
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 
 		return encodedData;

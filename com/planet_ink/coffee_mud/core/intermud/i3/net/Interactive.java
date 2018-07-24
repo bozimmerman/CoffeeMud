@@ -694,8 +694,13 @@ class InputThread implements Runnable
 			{
 				Log.errOut("Excessive buffer size: "+internalSize);
 			}
-			try { Thread.sleep(10); }
-			catch( final InterruptedException e ) { }
+			try
+			{
+				Thread.sleep(10);
+			}
+			catch (final InterruptedException e)
+			{
+			}
 		}
 	}
 

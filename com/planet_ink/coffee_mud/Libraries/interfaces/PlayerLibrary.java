@@ -57,6 +57,7 @@ public interface PlayerLibrary extends CMLibrary
 	public void renamePlayer(MOB mob, String oldName);
 	public boolean playerExists(String name);
 	public boolean playerExistsAllHosts(String name);
+	public void unloadOfflinePlayer(final MOB mob);
 	public void forceTick();
 	public int savePlayers();
 	public Enumeration<ThinPlayer> thinPlayers(String sort, Map<String, Object> cache);

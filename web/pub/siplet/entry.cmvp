@@ -23,134 +23,139 @@
 
 <script language=JavaScript>
 <!--
-    String.prototype.trim = function() { return this.replace(/^\s+|\s+$/, ''); };
-    var input=new Array(0);
-    var position=-1;
-    
-    function newWindow(event)
-    {
-    	if(event)
-    	{
-            event.cancelBubble=true;
-            event.returnValue=0;
-        }
-    	top.term.openWindow();
-    	return false;
-    }
-    
-    function enqueText(s)
-    {
-        if(s.trim().length>0)
-        {
-            if((input.length==0)||(s.toUpperCase().trim()!=input[input.length-1].toUpperCase().trim()))
-            {
-                var input2;
-                if(input.length>=100)
-                {
-                    input2=new Array(input.length);
-                    for(i=1;i<input.length;i++)
-                        input2[i-1]=input[i];
-                    input2[input.length-1]=s;
-                }
-                else
-                {
-                    input2=new Array(input.length+1);
-                    for(i=0;i<input.length;i++)
-                        input2[i]=input[i];
-                    input2[input.length]=s;
-                }
-                input=input2;
-            }
-        }
-    }
-    
-    function sendTextField()
-    {
-        var textEl=document.getElementById("TEXT");
-        sendText(textEl.value);
-    }
-    function sendText(val)
-    {
-        top.term.addToWindow(val+'<BR>');
-        position=-1;
-        enqueText(val);
-    	top.term.sendData(val);
-        boxFocus();
-    }
-    
-    function disconnect()
-    {
-    	window.console.info("Siplet Entry disconnect");
-        top.term.closeWindow();
-    }
-    function reconnect(event)
-    {
-    	if(event)
-    	{
-            event.cancelBubble=true;
-            event.returnValue=0;
-        }
-    	window.console.info("Siplet Entry reconnect");
-        top.term.reconnect();
-        return false;
-    }
-    
-    function keydown(event,textEl)
-    {
-        top.term.keyDown(event);
-        if((event.keyCode==13)||(event.keyCode==10))
-        {
-            sendText(textEl.value);
-            event.cancelBubble=true;
-            event.returnValue=0;
-            textEl.value='';
-            return false;
-        }
-        else
-        if(event.keyCode==38)
-        {
-            if(position<0)
-            {
-                enqueText(textEl.value);
-                position=input.length-1;
-            }
-            else
-            if(position==0)
-                return true;
-            else
-                position--;
-            if((position>=0)&&(position<input.length))
-                textEl.value=input[position];
-        }
-        else
-        if((event.keyCode==40)&&(position>=0))
-        {
-            if(position==(input.length-1))
-                return true;
-            position++;
-            if((position>=0)&&(position<input.length))
-                textEl.value=input[position];
-        }
-        return true;
-    }
-    
-    function keyme(event,textEl)
-    {
-        if((event.keyCode==10)||(event.keyCode==13))
-        {
-            textEl.value='';
-            event.cancelBubble=true;
-            event.returnValue=0;
-            textEl.value='';
-            return false;
-        }
-        return true;
-    }
-    function boxFocus()
-    {
-        setTimeout('document.ENTER.TEXT.focus();',100);
-    }
-    setTimeout('boxFocus()',900);
+
+	String.prototype.trim = function() 
+	{
+		return this.replace(/^\s+|\s+$/, '');
+	};
+	var input = new Array(0);
+	var position = -1;
+
+	function newWindow(event) 
+	{
+		if (event) 
+		{
+			event.cancelBubble = true;
+			event.returnValue = 0;
+		}
+		top.term.openWindow();
+		return false;
+	}
+
+	function enqueText(s) 
+	{
+		if (s.trim().length > 0) 
+		{
+			if ((input.length == 0)
+			|| (s.toUpperCase().trim() != input[input.length - 1]
+					.toUpperCase().trim())) 
+			{
+				var input2;
+				if (input.length >= 100) 
+				{
+					input2 = new Array(input.length);
+					for (i = 1; i < input.length; i++)
+						input2[i - 1] = input[i];
+					input2[input.length - 1] = s;
+				} 
+				else 
+				{
+					input2 = new Array(input.length + 1);
+					for (i = 0; i < input.length; i++)
+						input2[i] = input[i];
+					input2[input.length] = s;
+				}
+				input = input2;
+			}
+		}
+	}
+
+	function sendTextField() 
+	{
+		var textEl = document.getElementById("TEXT");
+		sendText(textEl.value);
+	}
+	function sendText(val) 
+	{
+		top.term.addToWindow(val + '<BR>');
+		position = -1;
+		enqueText(val);
+		top.term.sendData(val);
+		boxFocus();
+	}
+	function disconnect() 
+	{
+		window.console.info("Siplet Entry disconnect");
+		top.term.closeWindow();
+	}
+	function reconnect(event) 
+	{
+		if (event) 
+		{
+			event.cancelBubble = true;
+			event.returnValue = 0;
+		}
+		window.console.info("Siplet Entry reconnect");
+		top.term.reconnect();
+		return false;
+	}
+
+	function keydown(event, textEl) 
+	{
+		top.term.keyDown(event);
+		if ((event.keyCode == 13) || (event.keyCode == 10)) 
+		{
+			sendText(textEl.value);
+			event.cancelBubble = true;
+			event.returnValue = 0;
+			textEl.value = '';
+			return false;
+		} 
+		else 
+		if (event.keyCode == 38) 
+		{
+			if (position < 0) 
+			{
+				enqueText(textEl.value);
+				position = input.length - 1;
+			} 
+			else 
+			if (position == 0)
+				return true;
+			else
+				position--;
+			if ((position >= 0) && (position < input.length))
+				textEl.value = input[position];
+		} 
+		else 
+		if ((event.keyCode == 40) && (position >= 0)) 
+		{
+			if (position == (input.length - 1))
+				return true;
+			position++;
+			if ((position >= 0) && (position < input.length))
+				textEl.value = input[position];
+		}
+		return true;
+	}
+
+	function keyme(event, textEl) 
+	{
+		if ((event.keyCode == 10) || (event.keyCode == 13)) 
+		{
+			textEl.value = '';
+			event.cancelBubble = true;
+			event.returnValue = 0;
+			textEl.value = '';
+			return false;
+		}
+		return true;
+	}
+	function boxFocus() 
+	{
+		setTimeout('document.ENTER.TEXT.focus();', 100);
+	}
+	setTimeout('boxFocus()', 900);
 //-->
 </script>
 </BODY>

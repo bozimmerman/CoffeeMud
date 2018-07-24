@@ -126,7 +126,8 @@ public class StdLasso extends StdWeapon
 				{
 					if(CMLib.law().doesHavePriviledgesHere(msg.source(), msg.source().location()))
 						targetMOB.makePeace(false);
-					msg.addTrailerRunnable(new Runnable(){
+					msg.addTrailerRunnable(new Runnable()
+					{
 						@Override
 						public void run()
 						{

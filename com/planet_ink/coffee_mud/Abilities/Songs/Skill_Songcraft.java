@@ -90,8 +90,12 @@ public class Skill_Songcraft extends BardSkill
 		return Ability.ACODE_SKILL|Ability.DOMAIN_ARCANELORE;
 	}
 
-	public String lastID="";
-	public int craftType(){return Ability.ACODE_SONG;}
+	public String lastID = "";
+
+	public int craftType()
+	{
+		return Ability.ACODE_SONG;
+	}
 
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)

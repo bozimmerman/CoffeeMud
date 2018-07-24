@@ -293,7 +293,13 @@ public class StdArea implements Area
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
 
-	//protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.AREA);}//removed for mem & perf
+	/*
+	protected void finalize()
+	{
+		CMClass.unbumpCounter(this, CMClass.CMObjectType.AREA);
+	}// removed for mem & perf
+	*/
+
 	@Override
 	public void destroy()
 	{

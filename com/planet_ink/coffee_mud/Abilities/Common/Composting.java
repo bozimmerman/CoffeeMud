@@ -362,7 +362,8 @@ public class Composting extends GatheringSkill
 			return false;
 		}
 		foundShortName = CMParms.combine(commands);
-		Item mine=super.getTarget(mob, mob.location(), givenTarget, commands, new Filterer<Environmental>(){
+		Item mine=super.getTarget(mob, mob.location(), givenTarget, commands, new Filterer<Environmental>()
+		{
 			@Override
 			public boolean passesFilter(Environmental obj)
 			{

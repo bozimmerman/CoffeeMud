@@ -16,7 +16,8 @@
 		function ClickedBox(skillRpt,questRpt,areaRpt)
 		{
 			var newVal='';
-			if(skillRpt=='SKILLRPT') {
+			if(skillRpt=='SKILLRPT') 
+			{
 			     if(confirm('Generating a skills report may require several minutes of intense calculation.  Are you sure?'))
     			     newVal='on';
     			 else

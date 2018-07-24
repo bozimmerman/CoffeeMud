@@ -144,7 +144,15 @@ public class ServletResponse implements SimpleServletResponse
 		{
 			final byte[] output=bout.toByteArray();
 			bufs.add(output, System.currentTimeMillis(),true);
-			try{ bout.flush();  bout.reset(); bout.close(); }catch(final Exception e){}
+			try
+			{
+				bout.flush();
+				bout.reset();
+				bout.close();
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 		return bufs;
 	}

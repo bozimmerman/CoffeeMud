@@ -91,11 +91,16 @@ public class Fighter_FieldTactics extends FighterSkill
 		return false;
 	}
 
-	private static final Integer[] landClasses = {Integer.valueOf(-1)};
-	public Integer[] landClasses(){return landClasses;}
-	protected boolean activated=false;
-	protected boolean hidden=false;
-	protected long sitTime=0;
+	private static final Integer[] landClasses = { Integer.valueOf(-1) };
+
+	public Integer[] landClasses()
+	{
+		return landClasses;
+	}
+
+	protected boolean	activated	= false;
+	protected boolean	hidden		= false;
+	protected long		sitTime		= 0;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)

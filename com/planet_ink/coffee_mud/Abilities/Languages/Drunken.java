@@ -55,8 +55,11 @@ public class Drunken extends StdLanguage
 	public Drunken()
 	{
 		super();
-		if(!mapped){mapped=true;
-					CMLib.ableMapper().addCharAbilityMapping("Archon",1,ID(),false);}
+		if (!mapped)
+		{
+			mapped = true;
+			CMLib.ableMapper().addCharAbilityMapping("Archon", 1, ID(), false);
+		}
 	}
 
 	@Override

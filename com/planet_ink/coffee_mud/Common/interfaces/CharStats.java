@@ -1523,7 +1523,10 @@ public interface CharStats extends CMCommon, Modifiable
 		 * @param exactOnly true to only return exact matches, false to do otherwise
 		 * @return the stat code
 		 */
-		public static int findWhole(String name, boolean exactOnly) { return c().find(name, exactOnly); }
+		public static int findWhole(String name, boolean exactOnly)
+		{
+			return c().find(name, exactOnly);
+		}
 
 		/**
 		 * Adds a new base stat to this object for all mobs and players to share

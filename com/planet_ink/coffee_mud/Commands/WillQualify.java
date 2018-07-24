@@ -39,7 +39,10 @@ import java.util.*;
 
 public class WillQualify  extends Skills
 {
-	public WillQualify() {}
+	public WillQualify()
+	{
+	}
+
 	private final String[] access=I(new String[]{"WILLQUALIFY"});
 	@Override
 	public String[] getAccessWords()

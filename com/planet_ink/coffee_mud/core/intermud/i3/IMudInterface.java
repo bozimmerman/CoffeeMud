@@ -351,9 +351,12 @@ public class IMudInterface implements ImudServices, Serializable
 					final LocateReplyPacket lpk=new LocateReplyPacket(lk.sender_name,lk.sender_mud,name,0,stat);
 					try
 					{
-					lpk.send();
+						lpk.send();
 					}
-					catch(final Exception e){Log.errOut("IMudClient",e);}
+					catch (final Exception e)
+					{
+						Log.errOut("IMudClient", e);
+					}
 				}
 			}
 			break;
@@ -398,7 +401,10 @@ public class IMudInterface implements ImudServices, Serializable
 				{
 					pkt.send();
 				}
-				catch(final Exception e){Log.errOut("IMudClient",e);}
+				catch (final Exception e)
+				{
+					Log.errOut("IMudClient", e);
+				}
 			}
 			break;
 		case Packet.FINGER_REPLY:
@@ -443,7 +449,10 @@ public class IMudInterface implements ImudServices, Serializable
 				{
 					pkt.send();
 				}
-				catch(final Exception e){Log.errOut("IMudClient",e);}
+				catch (final Exception e)
+				{
+					Log.errOut("IMudClient", e);
+				}
 			}
 			break;
 		case Packet.MAUTH_REPLY:
@@ -531,9 +540,12 @@ public class IMudInterface implements ImudServices, Serializable
 				wkr.who=whoV;
 				try
 				{
-				wkr.send();
+					wkr.send();
 				}
-				catch(final Exception e){Log.errOut("IMudClient",e);}
+				catch (final Exception e)
+				{
+					Log.errOut("IMudClient", e);
+				}
 			}
 			break;
 		case Packet.CHAN_USER_REQ:
@@ -553,7 +565,10 @@ public class IMudInterface implements ImudServices, Serializable
 					{
 						wkr.send();
 					}
-					catch(final Exception e){Log.errOut("IMudClient",e);}
+					catch (final Exception e)
+					{
+						Log.errOut("IMudClient", e);
+					}
 				}
 			}
 			break;
@@ -586,9 +601,12 @@ public class IMudInterface implements ImudServices, Serializable
 				wkr.who=whoV;
 				try
 				{
-				wkr.send();
+					wkr.send();
 				}
-				catch(final Exception e){Log.errOut("IMudClient",e);}
+				catch (final Exception e)
+				{
+					Log.errOut("IMudClient", e);
+				}
 			}
 			break;
 		case Packet.TELL:

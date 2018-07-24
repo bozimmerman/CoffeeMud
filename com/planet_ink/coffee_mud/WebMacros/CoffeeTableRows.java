@@ -192,7 +192,8 @@ public class CoffeeTableRows extends StdWebMacro
 		if(parms.containsKey("QUESTNAME")||parms.containsKey("QUESTRPT"))
 		{
 			final List<Quest> sortedQuests=new XVector<Quest>(CMLib.quests().enumQuests());
-			Collections.sort(sortedQuests,new Comparator<Quest>(){
+			Collections.sort(sortedQuests,new Comparator<Quest>()
+			{
 				@Override
 				public int compare(Quest o1, Quest o2)
 				{

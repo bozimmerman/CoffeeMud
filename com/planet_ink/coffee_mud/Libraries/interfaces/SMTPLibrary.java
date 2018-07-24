@@ -35,7 +35,7 @@ public interface SMTPLibrary extends CMLibrary
 	public boolean emailIfPossible(String SMTPServerInfo, String from, String replyTo, String to, String subject, String message)
 		throws IOException;
 	public boolean emailIfPossible(String fromName, String toName, String subj, String msg);
-	public void emailOrJournal(String SMTPServerInfo, String from, String replyTo, String to, String subject, String message);
+	public void emailOrJournal(String from, String replyTo, String to, String subject, String message);
 	public SMTPClient getClient(String SMTPServerInfo, int port)  throws UnknownHostException, IOException;
 	public SMTPClient getClient(String emailAddress) throws IOException, BadEmailAddressException;
 

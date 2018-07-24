@@ -2400,7 +2400,8 @@ public class DefaultFaction implements Faction, MsgListener
 						{
 							// follow checks are in setPresenceReaction
 							final Ability A=setPresenceReaction(msg.source(),(Physical)myHost);
-							if(A!=null){ // means yes, we are using light, and yes, heres a reaction to add
+							if(A!=null)
+							{ // means yes, we are using light, and yes, heres a reaction to add
 								lightPresenceAbilities = Arrays.copyOf(lightPresenceAbilities, lightPresenceAbilities.length+1);
 								lightPresenceAbilities[lightPresenceAbilities.length-1]=A;
 							}

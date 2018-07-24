@@ -3448,41 +3448,44 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						PO.preserveState--;
 						continue;
 					}
-					final PhysicalAgent P=PO.obj;
-					final Ability A=P.fetchEffect("QuestBound");
-					if(A!=null)
-						P.delEffect(A);
 					questState.worldObjects.remove(PO);
-					if(P instanceof Item)
+					final PhysicalAgent P=PO.obj;
+					if(P != null)
 					{
-						if((CMath.bset(P.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE))
-						&&(!((Item)P).amDestroyed()))
-							((Item)P).destroy();
-					}
-					else
-					if(P instanceof MOB)
-					{
-						final MOB M=(MOB)P;
-						final ScriptingEngine B=(ScriptingEngine)M.fetchBehavior("Scriptable");
-						if(B!=null)
-							B.endQuest(M,M,name());
-						final Room R=M.getStartRoom();
-						if((R==null)||(CMath.bset(M.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE)))
+						final Ability A=P.fetchEffect("QuestBound");
+						if(A!=null)
+							P.delEffect(A);
+						if(P instanceof Item)
 						{
-							M.setFollowing(null);
-							CMLib.tracking().wanderAway(M,true,false);
-							if(M.location()!=null)
-								M.location().delInhabitant(M);
-							M.setLocation(null);
-							M.destroy();
+							if((CMath.bset(P.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE))
+							&&(!((Item)P).amDestroyed()))
+								((Item)P).destroy();
 						}
 						else
-						if((!M.amDead())
-						&&(!M.amDestroyed())
-						&&((M.location()!=R)||(!R.isInhabitant(M))))
+						if(P instanceof MOB)
 						{
-							M.setFollowing(null);
-							CMLib.tracking().wanderAway(M,false,true);
+							final MOB M=(MOB)P;
+							final ScriptingEngine B=(ScriptingEngine)M.fetchBehavior("Scriptable");
+							if(B!=null)
+								B.endQuest(M,M,name());
+							final Room R=M.getStartRoom();
+							if((R==null)||(CMath.bset(M.basePhyStats().disposition(),PhyStats.IS_UNSAVABLE)))
+							{
+								M.setFollowing(null);
+								CMLib.tracking().wanderAway(M,true,false);
+								if(M.location()!=null)
+									M.location().delInhabitant(M);
+								M.setLocation(null);
+								M.destroy();
+							}
+							else
+							if((!M.amDead())
+							&&(!M.amDestroyed())
+							&&((M.location()!=R)||(!R.isInhabitant(M))))
+							{
+								M.setFollowing(null);
+								CMLib.tracking().wanderAway(M,false,true);
+							}
 						}
 					}
 				}

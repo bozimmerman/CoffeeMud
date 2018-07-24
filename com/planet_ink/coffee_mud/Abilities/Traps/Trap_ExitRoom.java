@@ -63,7 +63,10 @@ public class Trap_ExitRoom extends Trap_Trap
 
 	public PairVector<MOB, Integer>	safeDirs	= new PairVector<MOB, Integer>();
 
-	protected boolean mayNotLeave() { return true; }
+	protected boolean mayNotLeave()
+	{
+		return true;
+	}
 
 	@Override 
 	@SuppressWarnings({ "unchecked", "rawtypes" })

@@ -40,12 +40,15 @@ import com.planet_ink.coffee_mud.core.interfaces.Tickable;
 */
 public class FakeSession implements Session
 {
-	protected CMFile theFile=null;
-	protected ByteArrayOutputStream bout=null;
-	protected MOB mob = null;
-	protected Vector<String> inputV = new Vector<String>();
+	protected CMFile				theFile	= null;
+	protected ByteArrayOutputStream	bout	= null;
+	protected MOB					mob		= null;
+	protected Vector<String>		inputV	= new Vector<String>();
 
-	public boolean tick(final Tickable ticking, final int tickID){return false;}
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		return false;
+	}
 
 	@Override
 	public String ID()

@@ -117,8 +117,8 @@ public class Chant_FindDriftwood extends Chant_FindPlant
 		if((msg.target() == theDriftwood)
 		&&(msg.targetMinor()==CMMsg.TYP_GET))
 		{
-			msg.addTrailerRunnable(new Runnable(){
-
+			msg.addTrailerRunnable(new Runnable()
+			{
 				@Override
 				public void run()
 				{

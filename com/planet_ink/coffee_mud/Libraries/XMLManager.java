@@ -524,8 +524,14 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	protected static double s_double(String DOUBLE)
 	{
 		double sdouble=0;
-		try{ sdouble=Double.parseDouble(DOUBLE); }
-		catch(final Exception e){ return 0;}
+		try
+		{
+			sdouble = Double.parseDouble(DOUBLE);
+		}
+		catch (final Exception e)
+		{
+			return 0;
+		}
 		return sdouble;
 	}
 
@@ -539,8 +545,14 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	protected static int s_int(String INT)
 	{
 		int sint=0;
-		try{ sint=Integer.parseInt(INT); }
-		catch(final java.lang.NumberFormatException e){ return 0;}
+		try
+		{
+			sint = Integer.parseInt(INT);
+		}
+		catch (final java.lang.NumberFormatException e)
+		{
+			return 0;
+		}
 		return sint;
 	}
 
@@ -554,8 +566,14 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	protected static short s_short(String SHORT)
 	{
 		short sint=0;
-		try{ sint=Short.parseShort(SHORT); }
-		catch(final java.lang.NumberFormatException e){ return 0;}
+		try
+		{
+			sint = Short.parseShort(SHORT);
+		}
+		catch (final java.lang.NumberFormatException e)
+		{
+			return 0;
+		}
 		return sint;
 	}
 
@@ -569,8 +587,14 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	protected static  long s_long(String LONG)
 	{
 		long slong=0;
-		try{ slong=Long.parseLong(LONG); }
-		catch(final java.lang.NumberFormatException e){ return 0;}
+		try
+		{
+			slong = Long.parseLong(LONG);
+		}
+		catch (final java.lang.NumberFormatException e)
+		{
+			return 0;
+		}
 		return slong;
 	}
 
@@ -1402,7 +1426,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			if((start>=Blob.length())||(Blob.charAt(start-1)!='>')||(Blob.charAt(start-1)=='/'))
 				return "";
 		}
-		catch (final Throwable t){return "";}
+		catch (final Throwable t)
+		{
+			return "";
+		}
 		return Blob.substring(start+1).trim();
 	}
 
@@ -1418,7 +1445,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			if((start>=Blob.length())||(Blob.charAt(start)!='>')||(Blob.charAt(start-1)=='/'))
 				return "";
 		}
-		catch (final Throwable t){return "";}
+		catch (final Throwable t)
+		{
+			return "";
+		}
 		return Blob.substring(start+1).trim();
 	}
 

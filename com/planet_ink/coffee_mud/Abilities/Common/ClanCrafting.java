@@ -70,11 +70,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	protected Clan myClan=null;
 
 	@Override
-	public String parametersFormat(){ return
+	public String parametersFormat()
+	{ 
+		return
 		"ITEM_NAME\tRESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED\tRESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED\t"
 		+"CLAN_ITEM_CODENUMBER\tITEM_LEVEL\tBUILD_TIME_TICKS\tCLAN_EXPERIENCE_COST_AMOUNT\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tCLAN_AREA_FLAG||CODED_WEAR_LOCATION||READABLE_TEXT\t"
-		+"CONTAINER_CAPACITY\tBASE_ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST\tREQUIRED_COMMON_SKILL_ID";}
+		+"CONTAINER_CAPACITY\tBASE_ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST\tREQUIRED_COMMON_SKILL_ID";
+	}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_MATERIAL1=1;
@@ -92,7 +95,11 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_SPELL=13;
 	protected static final int RCP_REQUIREDSKILL=14;
 
-	public Hashtable<String,String> parametersFields(){ return new Hashtable<String,String>();}
+	public Hashtable<String, String> parametersFields()
+	{
+		return new Hashtable<String, String>();
+	}
+
 	@Override
 	public String parametersFile()
 	{

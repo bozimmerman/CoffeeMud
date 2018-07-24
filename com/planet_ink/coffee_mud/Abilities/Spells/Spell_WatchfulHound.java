@@ -132,8 +132,8 @@ public class Spell_WatchfulHound extends Spell
 					if(CMLib.flags().isPossiblyAggressive(msg.source()))
 					{
 						final Room R = mob.location();
-						CMLib.threads().scheduleRunnable(new Runnable(){
-
+						CMLib.threads().scheduleRunnable(new Runnable()
+						{
 							@Override
 							public void run() 
 							{

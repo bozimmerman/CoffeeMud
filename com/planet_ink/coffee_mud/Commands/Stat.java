@@ -301,7 +301,8 @@ public class Stat  extends Skills
 		if(questStats)
 		{
 			final List<Quest> sortedQuests=new XVector<Quest>(CMLib.quests().enumQuests());
-			Collections.sort(sortedQuests,new Comparator<Quest>(){
+			Collections.sort(sortedQuests,new Comparator<Quest>()
+			{
 				@Override
 				public int compare(Quest o1, Quest o2)
 				{

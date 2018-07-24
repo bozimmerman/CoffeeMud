@@ -34,7 +34,8 @@ public class FilteredIterable<K> implements Iterable<K>
 	}
 
 	@Override
-	public Iterator<K> iterator() {
+	public Iterator<K> iterator() 
+	{
 		return new FilteredIterator<K>(iter.iterator(),filterer);
 	}
 }

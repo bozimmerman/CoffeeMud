@@ -192,25 +192,33 @@ public class Siplet
 				out.flush();
 			}
 		}
-		catch(final Exception e) { }
+		catch (final Exception e)
+		{
+		}
 		try
 		{
-			if((in!=null)&&(in[0]!=null))
+			if ((in != null) && (in[0] != null))
 				in[0].close();
 		}
-		catch(final Exception e) { }
+		catch (final Exception e)
+		{
+		}
 		try
 		{
-			if(out!=null)
+			if (out != null)
 				out.close();
 		}
-		catch(final Exception e) { }
+		catch (final Exception e)
+		{
+		}
 		try
 		{
-			if(sock!=null)
+			if (sock != null)
 				sock.close();
 		}
-		catch(final Exception e) { }
+		catch (final Exception e)
+		{
+		}
 		in=null;
 		out=null;
 		sock=null;

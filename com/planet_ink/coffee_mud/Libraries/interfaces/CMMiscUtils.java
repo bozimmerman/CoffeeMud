@@ -374,4 +374,13 @@ public interface CMMiscUtils extends CMLibrary
 	 * @return the list of items and wear locations
 	 */
 	public PairList<Item, Long> getSeenEquipment(final MOB mob, final long wornMask);
+	
+	/**
+	 * Does its best to come up with a specially encoded unsubscribe url for 
+	 * a particular user.  The url will be unique to the user, but is man-in-the-
+	 * middle attackable, as it is a simple hash.
+	 * @param name the account or player name
+	 * @return the full web url with http and everything
+	 */
+	public String getUnsubscribeURL(final String name);
 }

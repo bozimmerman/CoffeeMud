@@ -46,7 +46,11 @@ public class CMProps extends Properties
 {
 	private static final long serialVersionUID = -6592429720705457521L;
 	private static final CMProps[] props	   = new CMProps[256];
-	private static final CMProps p(){ return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+
+	private static final CMProps p()
+	{
+		return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+	}
 
 	protected static final String FILTER_PATTERN="%#@*!$&?";
 	protected static final char[] FILTER_CHARS=FILTER_PATTERN.toCharArray();

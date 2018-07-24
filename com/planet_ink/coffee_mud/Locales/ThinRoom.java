@@ -396,13 +396,21 @@ public class ThinRoom implements Room
 	public boolean show(MOB source,
 						Environmental target,
 						int allCode,
-						String allMessage){return true;}
+						String allMessage)
+	{
+		return true;
+	}
+	
 	@Override
 	public boolean show(MOB source,
 						Environmental target,
 						Environmental tool,
 						int allCode,
-						String allMessage){return true;}
+						String allMessage)
+	{
+		return true;
+	}
+	
 	@Override
 	public boolean show(MOB source,
 						Environmental target,
@@ -410,7 +418,11 @@ public class ThinRoom implements Room
 						int srcCode,
 						int tarCode,
 						int othCode,
-						String allMessage){return true;}
+						String allMessage)
+	{
+		return true;
+	}
+	
 	@Override
 	public boolean show(MOB source,
 						Environmental target,
@@ -420,7 +432,11 @@ public class ThinRoom implements Room
 						int tarCode,
 						String tarMessage,
 						int othCode,
-						String othMessage){return true;}
+						String othMessage)
+	{
+		return true;
+	}
+	
 	@Override
 	public boolean show(MOB source,
 						Environmental target,
@@ -428,29 +444,48 @@ public class ThinRoom implements Room
 						int allCode,
 						String srcMessage,
 						String tarMessage,
-						String othMessage){return true;}
+						String othMessage)
+	{
+		return true;
+	}
+	
 	@Override
 	public boolean showOthers(MOB source,
 							  Environmental target,
 							  int allCode,
-							  String allMessage){return true;}
+							  String allMessage)
+	{
+		return true;
+	}
+	
 	@Override
 	public boolean showSource(MOB source,
 							  Environmental target,
 							  int allCode,
-							  String allMessage){return true;}
+							  String allMessage)
+	{
+		return true;
+	}
+	
 	@Override
 	public boolean showOthers(MOB source,
 							  Environmental target,
 							  Environmental tool,
 							  int allCode,
-							  String allMessage){return true;}
+							  String allMessage)
+	{
+		return true;
+	}
+	
 	@Override
 	public boolean showSource(MOB source,
 							  Environmental target,
 							  Environmental tool,
 							  int allCode,
-							  String allMessage){return true;}
+							  String allMessage)
+	{
+		return true;
+	}
 
 	@Override
 	public void eachInhabitant(final EachApplicable<MOB> applier)
@@ -969,9 +1004,12 @@ public class ThinRoom implements Room
 		return phyStats;
 	}
 
-	// protected void finalize(){
-	// CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for
-	// mem & perf
+	/*
+	protected void finalize()
+	{
+		CMClass.unbumpCounter(this, CMClass.CMObjectType.ABILITY);
+	}// removed for mem & perf
+	*/
 
 	@Override
 	public void recoverPhyStats()

@@ -38,7 +38,8 @@ public class TickTock extends StdCommand
 	{
 	}
 
-	private final String[] access=I(new String[]{"TICKTOCK"});
+	private final String[] access = I(new String[] { "TICKTOCK" });
+
 	@Override
 	public String[] getAccessWords()
 	{
@@ -67,6 +68,9 @@ public class TickTock extends StdCommand
 				CMLib.clans().tickAllClans();
 				mob.tell(L("Clans ticked!"));
 			}
+			else
+			if(s.startsWith("smtp"))
+				mob.tell(L(CMLib.host().executeCommand("TICK SMTP")));
 			else
 			{
 				for(final Enumeration<CMLibrary> e=CMLib.libraries();e.hasMoreElements();)

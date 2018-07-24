@@ -97,13 +97,35 @@ public class Dance extends StdAbility
 	protected Vector<Room> commonRoomSet=null;
 	protected Room originRoom=null;
 
-	protected boolean skipStandardDanceInvoke(){return false;}
-	protected boolean mindAttack(){return abstractQuality()==Ability.QUALITY_MALICIOUS;}
-	protected boolean skipStandardDanceTick(){return false;}
-	protected boolean maliciousButNotAggressiveFlag(){return false;}
-	protected String danceOf(){return name();}
+	protected boolean skipStandardDanceInvoke()
+	{
+		return false;
+	}
 
-	protected boolean HAS_QUANTITATIVE_ASPECT(){return true;}
+	protected boolean mindAttack()
+	{
+		return abstractQuality() == Ability.QUALITY_MALICIOUS;
+	}
+
+	protected boolean skipStandardDanceTick()
+	{
+		return false;
+	}
+
+	protected boolean maliciousButNotAggressiveFlag()
+	{
+		return false;
+	}
+
+	protected String danceOf()
+	{
+		return name();
+	}
+
+	protected boolean HAS_QUANTITATIVE_ASPECT()
+	{
+		return true;
+	}
 
 	@Override
 	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)

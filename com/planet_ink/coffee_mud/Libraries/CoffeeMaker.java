@@ -4622,10 +4622,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			I.setImage(val);
 			break; // img
 		/*
-		 * case 23: { while(I.numScripts()>0) { ScriptingEngine
-		 * S=I.fetchScript(0); if(S!=null) I.delScript(S); }
-		 * setGenScripts(I,CMLib.xml().parseAllXML(val),false); break; }
-		 */
+		case 23:
+		{
+			while (I.numScripts() > 0)
+			{
+				ScriptingEngine S = I.fetchScript(0);
+				if (S != null)
+					I.delScript(S);
+			}
+			setGenScripts(I, CMLib.xml().parseAllXML(val), false);
+			break;
+		}
+		*/
 		}
 	}
 
@@ -4884,10 +4892,18 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			M.setMoneyVariation(CMath.s_parseMathExpression(val));
 			break; // varmoney
 		/*
-		 * case 23: { while(M.numScripts()>0) { ScriptingEngine
-		 * S=M.fetchScript(0); if(S!=null) M.delScript(S); }
-		 * setGenScripts(M,CMLib.xml().parseAllXML(val),false); break; }
-		 */
+		case 23:
+		{
+			while (M.numScripts() > 0)
+			{
+				ScriptingEngine S = M.fetchScript(0);
+				if (S != null)
+					M.delScript(S);
+			}
+			setGenScripts(M, CMLib.xml().parseAllXML(val), false);
+			break;
+		}
+		*/
 		}
 	}
 

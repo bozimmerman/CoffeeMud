@@ -1074,7 +1074,10 @@ public class CMMap extends StdLibrary implements WorldMap
 			catch(final java.lang.ArrayIndexOutOfBoundsException xx)
 			{
 			}
-			catch(final Exception x){Log.errOut("CMMap",x);}
+			catch (final Exception x)
+			{
+				Log.errOut("CMMap", x);
+			}
 		}
 		return true;
 	}

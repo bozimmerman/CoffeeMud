@@ -68,7 +68,13 @@ public class StdExit implements Exit
 		isLocked=defaultsLocked();
 	}
 
-	//protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.EXIT);}//removed for mem & perf
+	/*
+	protected void finalize()
+	{
+		CMClass.unbumpCounter(this, CMClass.CMObjectType.EXIT);
+	}// removed for mem & perf
+	*/
+
 	@Override
 	public void initializeClass()
 	{
@@ -782,7 +788,8 @@ public class StdExit implements Exit
 		{
 			if(numBehaviors()>0)
 			{
-				eachBehavior(new EachApplicable<Behavior>(){ 
+				eachBehavior(new EachApplicable<Behavior>()
+				{ 
 					@Override
 					public final void apply(final Behavior B)
 					{
@@ -792,7 +799,8 @@ public class StdExit implements Exit
 			}
 			if(numScripts()>0)
 			{
-				eachScript(new EachApplicable<ScriptingEngine>(){ 
+				eachScript(new EachApplicable<ScriptingEngine>()
+				{ 
 					@Override
 					public final void apply(final ScriptingEngine S)
 					{
@@ -806,7 +814,8 @@ public class StdExit implements Exit
 		{
 			if(numEffects()>0)
 			{
-				eachEffect(new EachApplicable<Ability>(){ 
+				eachEffect(new EachApplicable<Ability>()
+				{ 
 					@Override
 					public final void apply(final Ability A)
 					{

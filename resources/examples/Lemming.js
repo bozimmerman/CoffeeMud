@@ -10,7 +10,10 @@
 
 // just like in all other cm classes, an ID method must be defined
 // and the value returned must be the class name.
-function ID(){return "Lemming";}
+function ID() 
+{
+	return "Lemming";
+}
 
 // since we don't have constructor access to set our initial fields,
 // we must use the newInstance() method.

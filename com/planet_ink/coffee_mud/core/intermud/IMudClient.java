@@ -156,9 +156,12 @@ public class IMudClient implements I3Interface
 			wk.who=new Vector();
 			try
 			{
-			wk.send();
+				wk.send();
 			}
-			catch(final Exception e){Log.errOut("IMudClient",e);}
+			catch (final Exception e)
+			{
+				Log.errOut("IMudClient", e);
+			}
 		}
 		else
 		if(imc2online()&&(imc2.getIMC2Mud(mudName)!=null))
@@ -229,9 +232,12 @@ public class IMudClient implements I3Interface
 		ck.channel=channel;
 		try
 		{
-		ck.send();
+			ck.send();
 		}
-		catch(final Exception e){Log.errOut("IMudClient",e);}
+		catch (final Exception e)
+		{
+			Log.errOut("IMudClient", e);
+		}
 	}
 
 	@Override
@@ -250,9 +256,12 @@ public class IMudClient implements I3Interface
 		ck.channel=channel;
 		try
 		{
-		ck.send();
+			ck.send();
 		}
-		catch(final Exception e){Log.errOut("IMudClient",e);}
+		catch (final Exception e)
+		{
+			Log.errOut("IMudClient", e);
+		}
 	}
 
 	@Override
@@ -278,9 +287,12 @@ public class IMudClient implements I3Interface
 		ck.onoff="1";
 		try
 		{
-		ck.send();
+			ck.send();
 		}
-		catch(final Exception e){Log.errOut("IMudClient",e);}
+		catch (final Exception e)
+		{
+			Log.errOut("IMudClient", e);
+		}
 	}
 
 	@Override
@@ -304,9 +316,12 @@ public class IMudClient implements I3Interface
 		ck.onoff="0";
 		try
 		{
-		ck.send();
+			ck.send();
 		}
-		catch(final Exception e){Log.errOut("IMudClient",e);}
+		catch (final Exception e)
+		{
+			Log.errOut("IMudClient", e);
+		}
 	}
 
 	@Override
@@ -324,9 +339,12 @@ public class IMudClient implements I3Interface
 		ck.channel=channel;
 		try
 		{
-		ck.send();
+			ck.send();
 		}
-		catch(final Exception e){Log.errOut("IMudClient",e);}
+		catch (final Exception e)
+		{
+			Log.errOut("IMudClient", e);
+		}
 	}
 
 	@Override
@@ -370,9 +388,12 @@ public class IMudClient implements I3Interface
 				mob.playerStats().addTellStack("You tell "+tellName+" '"+message+"'");
 			try
 			{
-			tk.send();
+				tk.send();
 			}
-			catch(final Exception e){Log.errOut("IMudClient",e);}
+			catch (final Exception e)
+			{
+				Log.errOut("IMudClient", e);
+			}
 		}
 		else
 		if(imc2online()&&(imc2.getIMC2Mud(mudName)!=null))
@@ -496,7 +517,10 @@ public class IMudClient implements I3Interface
 			{
 				ck.send();
 			}
-			catch(final Exception e){Log.errOut("IMudClient",e);}
+			catch (final Exception e)
+			{
+				Log.errOut("IMudClient", e);
+			}
 		}
 		else
 		if(imc2online()&&(imc2.getAnIMC2Channel(channelName)!=null))
@@ -583,9 +607,12 @@ public class IMudClient implements I3Interface
 			ck.user_name=mobName;
 			try
 			{
-			ck.send();
+				ck.send();
 			}
-			catch(final Exception e){Log.errOut("IMudClient",e);}
+			catch (final Exception e)
+			{
+				Log.errOut("IMudClient", e);
+			}
 		}
 		if(imc2online())
 			imc2.imc_send_whois(mob.Name(),mobName,mob.phyStats().level());
@@ -603,9 +630,12 @@ public class IMudClient implements I3Interface
 			final PingPacket ck=new PingPacket(I3Server.getMudName());
 			try
 			{
-			ck.send();
+				ck.send();
 			}
-			catch(final Exception e){Log.errOut("IMudClient",e);}
+			catch (final Exception e)
+			{
+				Log.errOut("IMudClient", e);
+			}
 		}
 	}
 
@@ -631,9 +661,12 @@ public class IMudClient implements I3Interface
 			ck.target_mud=mudName;
 			try
 			{
-			ck.send();
+				ck.send();
 			}
-			catch(final Exception e){Log.errOut("IMudClient",e);}
+			catch (final Exception e)
+			{
+				Log.errOut("IMudClient", e);
+			}
 		}
 		if(imc2online())
 			imc2.imc_send_whois(mob.Name(),mobName,mob.phyStats().level());

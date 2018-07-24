@@ -73,8 +73,15 @@ public class Prayer_SenseProfessions extends Prayer
 		return Ability.FLAG_HOLY;
 	}
 
-	protected int senseWhat() { return ACODE_COMMON_SKILL; }
-	protected String senseWhatStr() { return "professions"; }
+	protected int senseWhat()
+	{
+		return ACODE_COMMON_SKILL;
+	}
+
+	protected String senseWhatStr()
+	{
+		return "professions";
+	}
 
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)

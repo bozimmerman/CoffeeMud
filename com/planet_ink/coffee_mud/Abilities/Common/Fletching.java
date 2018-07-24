@@ -68,10 +68,13 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	}
 
 	@Override
-	public String parametersFormat(){ return
+	public String parametersFormat()
+	{ 
+		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tAMMO_TYPE\tAMMO_CAPACITY\tBASE_DAMAGE\tMAXIMUM_RANGE\t"
-		+"OPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";}
+		+"OPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";
+	}
 
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;

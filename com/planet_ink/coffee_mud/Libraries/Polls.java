@@ -264,7 +264,15 @@ public class Polls extends StdLibrary implements PollManager
 			if((expirationDate.trim().length()==0)||(expirationDate.equalsIgnoreCase("NA")))
 				P.setExpiration(0);
 			else
-			{ try{P.setExpiration(CMLib.time().string2Millis(expirationDate.trim()));}catch(final Exception e){}}
+			{
+				try
+				{
+					P.setExpiration(CMLib.time().string2Millis(expirationDate.trim()));
+				}
+				catch (final Exception e)
+				{
+				}
+			}
 
 			final Vector<Poll.PollOption> del=new Vector<Poll.PollOption>();
 			for(int i=0;i<P.getOptions().size();i++)

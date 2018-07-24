@@ -173,7 +173,9 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 			{
 				chan.close();
 			}
-			catch(final Exception e){}
+			catch (final Exception e)
+			{
+			}
 			if(forwarder!=null)
 				forwarder.closeChannels();
 			if(this.protocolHandler != this)
@@ -192,7 +194,13 @@ public class HTTPReader implements HTTPIOHandler, ProtocolHandler, Runnable
 		final long time = System.currentTimeMillis();
 		while((System.currentTimeMillis()-time<30000) && (isRunning.get()))
 		{
-			try { Thread.sleep(100); }catch(final Exception e){}
+			try
+			{
+				Thread.sleep(100);
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 		if(forwarder!=null)
 			forwarder.closeAndWait();

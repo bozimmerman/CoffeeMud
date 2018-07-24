@@ -57,7 +57,10 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 	protected String msgStr="";
 	protected MaskingLibrary.CompiledZMask mask=null;
 
-	protected String defaultMessage() { return "<O-NAME> flashes and flies out of <S-HIS-HER> hands!";}
+	protected String defaultMessage()
+	{
+		return "<O-NAME> flashes and flies out of <S-HIS-HER> hands!";
+	}
 
 	@Override
 	public long flags()

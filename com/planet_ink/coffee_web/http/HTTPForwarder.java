@@ -148,7 +148,10 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 			try
 			{
 				webServerChannel.close();
-			}catch(final Exception e){}
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 	}
 
@@ -163,7 +166,13 @@ public class HTTPForwarder implements HTTPIOHandler, Runnable
 		final long time = System.currentTimeMillis();
 		while((System.currentTimeMillis()-time<30000) && (isRunning))
 		{
-			try { Thread.sleep(100); }catch(final Exception e){}
+			try
+			{
+				Thread.sleep(100);
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 	}
 

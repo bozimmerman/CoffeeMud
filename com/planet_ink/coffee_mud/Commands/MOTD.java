@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Common.interfaces.Session.InputCallback;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -208,7 +209,14 @@ public class MOTD extends StdCommand
 				if(CJseparator)
 					buf.append("\n\r--------------------------------------\n\r");
 
-				if((mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
+				final boolean canReceiveRealEmail = 
+						(mob.playerStats()!=null)
+					  &&(mob.playerStats().getEmail().length()>0)
+					  &&(mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
+					  &&((mob.playerStats().getAccount()==null)
+						||(!mob.playerStats().getAccount().isSet(AccountFlag.NOAUTOFORWARD)));
+				
+				if(canReceiveRealEmail
 				&&(CMProps.getVar(CMProps.Str.MAILBOX).length()>0))
 				{
 					final String[] queries=new String[] { mob.Name(),"ALL","MASK=%" };

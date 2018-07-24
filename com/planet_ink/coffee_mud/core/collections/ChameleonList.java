@@ -54,7 +54,10 @@ public class ChameleonList<K> implements List<K>, SizedIterable<K>
 		this.signaler=fromList.signaler;
 	}
 
-	public Signaler<K> getSignaler() { return signaler;}
+	public Signaler<K> getSignaler()
+	{
+		return signaler;
+	}
 
 	@Override
 	public boolean add(K arg0)

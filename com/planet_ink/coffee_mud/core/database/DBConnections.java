@@ -621,7 +621,10 @@ public class DBConnections
 				Log.errOut("DBConnections",""+sqle);
 			return 0;
 		}
-		catch(final java.lang.NumberFormatException nfe){ return 0;}
+		catch (final java.lang.NumberFormatException nfe)
+		{
+			return 0;
+		}
 	}
 
 	/**

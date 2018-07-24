@@ -61,12 +61,18 @@ public class Trap_Trap extends StdAbility implements Trap
 		return 0;
 	}
 
-	protected static MOB benefactor=CMClass.getMOB("StdMOB");
-	protected boolean sprung=false;
-	protected Room myPit=null;
-	protected Room myPitUp=null;
-	protected int reset=60; // 5 minute reset is standard
-	protected int trapType(){return CMLib.dice().roll(1,3,-1);}
+	protected static MOB	benefactor	= CMClass.getMOB("StdMOB");
+	protected boolean		sprung		= false;
+	protected Room			myPit		= null;
+	protected Room			myPitUp		= null;
+	protected int			reset		= 60;						// 5 minute
+																	// reset is
+																	// standard
+
+	protected int trapType()
+	{
+		return CMLib.dice().roll(1, 3, -1);
+	}
 
 	public Trap_Trap()
 	{

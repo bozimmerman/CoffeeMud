@@ -79,7 +79,8 @@ public class Semaphore extends StdLanguage
 					{
 						final CMMsg outerMsg=(CMMsg)msg.copyOf();
 						msg.modify(msg.source(), null,null, CMMsg.NO_EFFECT,null);
-						msg.addTrailerRunnable(new Runnable(){
+						msg.addTrailerRunnable(new Runnable()
+						{
 							@Override
 							public void run()
 							{

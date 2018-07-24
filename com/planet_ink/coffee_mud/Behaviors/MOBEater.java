@@ -99,7 +99,8 @@ public class MOBEater extends ActiveTicker
 			stomachR.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
 			final ExtendableAbility A=(ExtendableAbility)CMClass.getAbility("ExtAbility");
 			final WeakReference<MOB> eater=new WeakReference<MOB>(lastKnownEaterM);
-			stomachR.addNonUninvokableEffect(A.setAbilityID("MOBEaterStomachWatcher").setMsgListener(new MsgListener(){
+			stomachR.addNonUninvokableEffect(A.setAbilityID("MOBEaterStomachWatcher").setMsgListener(new MsgListener()
+			{
 				@Override
 				public void executeMsg(final Environmental myHost, final CMMsg msg) 
 				{

@@ -602,7 +602,13 @@ public class Test extends StdCommand
 				final ScriptingEngine S=(ScriptingEngine)M.fetchBehavior("Scriptable");
 				for(int i=0;i<1000;i++)
 				{
-					try{ Thread.sleep(1000); } catch(final Exception e){}
+					try
+					{
+						Thread.sleep(1000);
+					}
+					catch (final Exception e)
+					{
+					}
 					if(S.getVar("Shoppy","ERRORS").length()>0)
 						break;
 				}
@@ -2790,18 +2796,21 @@ public class Test extends StdCommand
 							counter.incrementAndGet();
 						}
 						else
-						CMLib.threads().executeRunnable(new Runnable(){
-							final Ability A=A1;
-							@Override
-							public void run()
+						{
+							CMLib.threads().executeRunnable(new Runnable()
 							{
-								if(delayType == 2)
-									CMLib.s_sleep(CMLib.dice().roll(1, 10, -1));
-								if(vec.find(A.ID())==null)
-									vec.addElement(A);
-								counter.incrementAndGet();
-							}
-						});
+								final Ability A=A1;
+								@Override
+								public void run()
+								{
+									if(delayType == 2)
+										CMLib.s_sleep(CMLib.dice().roll(1, 10, -1));
+									if(vec.find(A.ID())==null)
+										vec.addElement(A);
+									counter.incrementAndGet();
+								}
+							});
+						}
 					}
 					while(counter.get() < tests.length)
 						CMLib.s_sleep(10);

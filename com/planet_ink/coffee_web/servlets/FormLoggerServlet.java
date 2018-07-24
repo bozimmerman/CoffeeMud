@@ -49,16 +49,24 @@ public class FormLoggerServlet implements SimpleServlet
 		for(String field : request.getUrlParameters())
 			request.getLogger().info("Url Field \""+field+"\": "+request.getUrlParameter(field));
 		int contentLength = 0;
-		try {
+		try
+		{
 			contentLength = Integer.parseInt(request.getHeader(HTTPHeader.Common.CONTENT_LENGTH.lowerCaseName()));
-		} catch (Exception e) { }
-		if(contentLength > 0) {
+		}
+		catch (Exception e)
+		{
+		}
+		if (contentLength > 0)
+		{
 			try {
 				Reader bodyReader = new InputStreamReader(request.getBody());
 				char[] buf = new char[contentLength];
 				bodyReader.read(buf);
 				request.getLogger().info("Body: "+new String(buf));
-			} catch (IOException e) { }
+			}
+			catch (IOException e)
+			{
+			}
 		}
 		request.getLogger().info(" ^^^-------------------- PayloadLogger ----------------------^^^");
 	}

@@ -1370,8 +1370,8 @@ public class MUDGrinder extends StdWebMacro
 					Log.sysOut("Create",mob.Name()+" mass created account "+thisAcct.getAccountName()+".");
 					if(email.length()>0)
 					{
-						CMLib.smtp().emailOrJournal(CMProps.getVar(CMProps.Str.SMTPSERVERNAME), accountName, "noreply@"+CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase(), email,
-								L("Password for @x1",accountName),
+						CMLib.smtp().emailOrJournal(accountName, 
+								"noreply", email, L("Password for @x1",accountName),
 								L("Your password for @x1 at @x2 is '@x3'.",accountName,CMProps.getVar(CMProps.Str.MUDDOMAIN),password));
 						response.append(L("Created: '@x1'\n\r<BR>",accountName));
 					}

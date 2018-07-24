@@ -472,7 +472,8 @@ public class StdBook extends StdItem implements Book
 								final List<String> vbuf=new ArrayList<String>();
 								if(message[0]!=null)
 									vbuf.addAll(CMParms.parseAny(message[0],"\\n",false));
-								CMLib.journals().makeMessageASync(mob, messageTitle, vbuf, true, new JournalsLibrary.MsgMkrCallback(){
+								CMLib.journals().makeMessageASync(mob, messageTitle, vbuf, true, new JournalsLibrary.MsgMkrCallback()
+								{
 									@Override
 									public void callBack(MOB mob, Session sess, MsgMkrResolution res)
 									{

@@ -21,10 +21,22 @@ Siplet.prototype.connectToURL = function(host, port, mudport, callback)
 		var self=this;
 		this.host = host;
 		this.mudport = mudport;
-		this.socket.onmessage = function(event){ self.receivedData.apply(self,[event]); };
-		this.socket.onopen = function(event){ self.openOccurred.apply(self,[event]); }; 
-		this.socket.onclose = function(event){ self.closeOccurred.apply(self,[event]); }; 
-		this.socket.onerror = function(event){ self.errorOccurred.apply(self,[event]); };
+		this.socket.onmessage = function(event) 
+		{
+			self.receivedData.apply(self, [ event ]);
+		};
+		this.socket.onopen = function(event) 
+		{
+			self.openOccurred.apply(self, [ event ]);
+		};
+		this.socket.onclose = function(event) 
+		{
+			self.closeOccurred.apply(self, [ event ]);
+		};
+		this.socket.onerror = function(event) 
+		{
+			self.errorOccurred.apply(self, [ event ]);
+		};
 		if(callback)
 			this.callback = callback;
 		window.console.info("cn:"+this.sipNum+":"+(new Date).getTime()+": "+this.socket.readyState+": connectToURL "+host+":"+port);
@@ -81,7 +93,12 @@ Siplet.prototype.openOccurred = function(event)
 		}
 		else
 		if(self.socket && (self.socket.readyState == 0) && (tries < 10))
-			setTimeout(function(){finishConnect(tries+1);},500);
+		{
+			setTimeout(function() 
+			{
+				finishConnect(tries + 1);
+			}, 500);
+		}
 	};
 	finishConnect(0);
 };

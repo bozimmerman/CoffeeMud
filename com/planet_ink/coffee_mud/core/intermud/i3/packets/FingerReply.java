@@ -66,16 +66,18 @@ public class FingerReply extends Packet
 			type = Packet.FINGER_REPLY;
 			try
 			{
-			visible_name = v.elementAt(6).toString();
-			title = v.elementAt(7).toString();
-			real_name = v.elementAt(8).toString();
-			e_mail = v.elementAt(9).toString();
-			loginout_time = v.elementAt(10).toString();
-			idle_time = v.elementAt(11).toString();
-			ip_time = v.elementAt(12).toString();
-			extra = v.elementAt(13).toString();
+				visible_name = v.elementAt(6).toString();
+				title = v.elementAt(7).toString();
+				real_name = v.elementAt(8).toString();
+				e_mail = v.elementAt(9).toString();
+				loginout_time = v.elementAt(10).toString();
+				idle_time = v.elementAt(11).toString();
+				ip_time = v.elementAt(12).toString();
+				extra = v.elementAt(13).toString();
 			}
-			catch(final Exception e){ }
+			catch (final Exception e)
+			{
+			}
 		}
 		catch( final ClassCastException e )
 		{

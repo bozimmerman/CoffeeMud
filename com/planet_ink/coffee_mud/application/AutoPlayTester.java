@@ -314,7 +314,10 @@ public class AutoPlayTester
 			{
 				return testObj.waitFor(toJavaString(regexO),1)[0];
 			}
-			catch(final Exception e) { return null; }
+			catch (final Exception e)
+			{
+				return null;
+			}
 		}
 
 		public Object waitForOptions(Object regexO)
@@ -325,7 +328,10 @@ public class AutoPlayTester
 				return "";
 				//return ""+testObj.waitForOptions((String[])o);
 			}
-			catch(final Exception e) { return null; }
+			catch (final Exception e)
+			{
+				return null;
+			}
 		}
 
 		public Object waitForMultiMatch(Object regexO, Object numMatches)
@@ -334,7 +340,10 @@ public class AutoPlayTester
 			{
 				return testObj.waitFor(toJavaString(regexO),Integer.parseInt(toJavaString(numMatches)));
 			}
-			catch(final Exception e) { return null; }
+			catch (final Exception e)
+			{
+				return null;
+			}
 		}
 
 		public boolean writeLine(Object O)
@@ -344,7 +353,10 @@ public class AutoPlayTester
 				testObj.writeln(toJavaString(O));
 				return true;
 			}
-			catch(final Exception e) { return false; }
+			catch (final Exception e)
+			{
+				return false;
+			}
 		}
 
 		public JScriptEvent(AutoPlayTester testObj)
@@ -355,8 +367,14 @@ public class AutoPlayTester
 
 	public final static int s_int(final String INT)
 	{
-		try{ return Integer.parseInt(INT); }
-		catch(final Exception e){ return 0;}
+		try
+		{
+			return Integer.parseInt(INT);
+		}
+		catch (final Exception e)
+		{
+			return 0;
+		}
 	}
 
 	public static void main(String[] args)

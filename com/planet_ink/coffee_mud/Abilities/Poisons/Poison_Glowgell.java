@@ -50,9 +50,12 @@ public class Poison_Glowgell extends Poison
 	}
 
 	@Override
-	protected int canAffectCode(){return Ability.CAN_MOBS
-										 |Ability.CAN_ITEMS
-										 |Ability.CAN_EXITS;}
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS
+			 |Ability.CAN_ITEMS
+			 |Ability.CAN_EXITS;
+	}
 
 	@Override
 	protected int POISON_DAMAGE()

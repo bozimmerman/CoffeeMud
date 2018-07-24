@@ -1443,7 +1443,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 	{
 		boolean updateMailingLists=false;
 		if((CMProps.getVar(CMProps.Str.MAILBOX).length()>0)
-		&&(CMLib.players().playerExists(userName)||CMLib.players().accountExists(userName)))
+		&&(CMLib.players().playerExistsAllHosts(userName)||CMLib.players().accountExistsAllHosts(userName)))
 		{
 			final Map<String, List<String>> lists=Resources.getCachedMultiLists("mailinglists.txt",true);
 			List<String> mylist=lists.get(journalName);
@@ -1474,7 +1474,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						if((msgs.length>0) && (msgs[1].length()>0))
 							subscribedMsg = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[1],"<NAME>",journalName));
 					}
-					CMLib.database().DBWriteJournalEmail(CMProps.getVar(CMProps.Str.MAILBOX),journalName,journalName,userName,subscribeTitle,subscribedMsg);
+					CMLib.smtp().emailOrJournal(journalName,journalName,userName,subscribeTitle,subscribedMsg);
 				}
 			}
 		}
@@ -1514,7 +1514,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 						if((msgs.length>3) && (msgs[1].length()>0))
 							unsubscribedMsg = CMLib.coffeeFilter().fullInFilter(CMStrings.replaceAll(msgs[3],"<NAME>",journalName));
 					}
-					CMLib.database().DBWriteJournalEmail(CMProps.getVar(CMProps.Str.MAILBOX),journalName,journalName,userName,unsubscribeTitle,unsubscribedMsg);
+					CMLib.smtp().emailOrJournal(journalName,journalName,userName,unsubscribeTitle,unsubscribedMsg);
 				}
 			}
 		}

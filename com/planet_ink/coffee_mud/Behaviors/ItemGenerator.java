@@ -342,7 +342,9 @@ public class ItemGenerator extends ActiveTicker
 				if(!isStillMaintained(E,SK,I))
 					maintained.removeElement(I);
 			}
-			catch(final Exception e){	}
+			catch (final Exception e)
+			{
+			}
 		}
 		if(maintained.size()>=maxItems)
 			return true;

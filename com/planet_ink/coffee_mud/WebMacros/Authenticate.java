@@ -59,8 +59,8 @@ public class Authenticate extends StdWebMacro
 		{
 			try
 			{
-				final String loginUrlStr= URLEncoder.encode(Authenticate.Encrypt(Authenticate.getLogin(httpReq)),"UTF-8");
-				final String passwordUrlStr=URLEncoder.encode(Authenticate.Encrypt(Authenticate.getPassword(httpReq)),"UTF-8");
+				final String loginUrlStr= URLEncoder.encode(CMLib.encoder().filterEncrypt(Authenticate.getLogin(httpReq)),"UTF-8");
+				final String passwordUrlStr=URLEncoder.encode(CMLib.encoder().filterEncrypt(Authenticate.getPassword(httpReq)),"UTF-8");
 				return loginUrlStr+"-"+passwordUrlStr;
 			}
 			catch(final Exception u)
@@ -80,106 +80,6 @@ public class Authenticate extends StdWebMacro
 		if(authenticated(httpReq,login,getPassword(httpReq)))
 			return "true";
 		return "false";
-	}
-
-	protected static byte[] FILTER=null;
-	public static byte[] getFilter()
-	{
-		if(FILTER==null)
-		{
-			// this is coffeemud's unsophisticated xor(mac address) encryption system.
-			final byte[] filterc = new String("wrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad").getBytes();
-			FILTER=new byte[256];
-			try
-			{
-				for(int i=0;i<256;i++)
-					FILTER[i]=filterc[i % filterc.length];
-				final String domain=CMProps.getVar(CMProps.Str.MUDDOMAIN);
-				if(domain.length()>0)
-				{
-					for(int i=0;i<256;i++)
-						FILTER[i]^=domain.charAt(i % domain.length());
-				}
-				final String name=CMProps.getVar(CMProps.Str.MUDNAME);
-				if(name.length()>0)
-				{
-					for(int i=0;i<256;i++)
-						FILTER[i]^=name.charAt(i % name.length());
-				}
-				final String email=CMProps.getVar(CMProps.Str.ADMINEMAIL);
-				if(email.length()>0)
-				{
-					for(int i=0;i<256;i++)
-						FILTER[i]^=email.charAt(i % email.length());
-				}
-				for(final Enumeration<NetworkInterface> nie = NetworkInterface.getNetworkInterfaces(); nie.hasMoreElements();)
-				{
-					final NetworkInterface ni = nie.nextElement();
-					if(ni != null)
-					{
-						final byte[] mac = ni.getHardwareAddress();
-						if((mac != null) && (mac.length > 0))
-						{
-							for(int i=0;i<256;i++)
-								FILTER[i]^=Math.abs(mac[i % mac.length]);
-						}
-					}
-				}
-			}
-			catch(final Exception e)
-			{
-				e.printStackTrace();
-			}
-		}
-		return FILTER;
-	}
-
-	protected static byte[] EnDeCrypt(byte[] bytes)
-	{
-		final byte[] FILTER=getFilter();
-		for ( int i = 0, j = 0; i < bytes.length; i++, j++ )
-		{
-			if ( j >= FILTER.length ) 
-				j = 0;
-			bytes[i]=(byte)((bytes[i] ^ FILTER[j]) & 0xff);
-		}
-		return bytes;
-	}
-
-	protected static String Encrypt(String ENCRYPTME)
-	{
-		try
-		{
-			final byte[] buf=B64Encoder.B64encodeBytes(EnDeCrypt(ENCRYPTME.getBytes()),B64Encoder.DONT_BREAK_LINES).getBytes();
-			final StringBuilder s=new StringBuilder("");
-			for(final byte b : buf)
-			{
-				String s2=Integer.toHexString(b);
-				while(s2.length()<2)
-					s2="0"+s2;
-				s.append(s2);
-			}
-			return s.toString();
-		}
-		catch(final Exception e)
-		{
-			return "";
-		}
-	}
-
-	protected static String Decrypt(String DECRYPTME)
-	{
-		try
-		{
-			final byte[] buf=new byte[DECRYPTME.length()/2];
-			for(int i=0;i<DECRYPTME.length();i+=2)
-				buf[i/2]=(byte)(Integer.parseInt(DECRYPTME.substring(i,i+2),16) & 0xff);
-			return new String(EnDeCrypt(B64Encoder.B64decode(new String(buf))));
-		}
-		catch(final Exception e)
-		{
-			return "";
-		}
 	}
 
 	public static boolean authenticated(HTTPRequest httpReq, String login, String password)
@@ -300,7 +200,7 @@ public class Authenticate extends StdWebMacro
 			return "";
 		final int x = auth.indexOf('-');
 		if(x>=0)
-			login=Decrypt(auth.substring(0,x));
+			login=CMLib.encoder().filterDecrypt(auth.substring(0,x));
 		return login;
 	}
 
@@ -314,7 +214,7 @@ public class Authenticate extends StdWebMacro
 			return "";
 		final int x = auth.indexOf('-');
 		if(x>=0)
-			password=Decrypt(auth.substring(x+1));
+			password=CMLib.encoder().filterDecrypt(auth.substring(x+1));
 		return password;
 	}
 }

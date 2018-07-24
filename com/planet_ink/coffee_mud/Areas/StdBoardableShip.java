@@ -84,8 +84,13 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		//CMClass.bumpCounter(this,CMClass.CMObjectType.AREA);
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
-	
-	//protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.AREA);}//removed for mem & perf
+
+	/*
+	protected void finalize()
+	{
+		CMClass.unbumpCounter(this, CMClass.CMObjectType.AREA);
+	}// removed for mem & perf
+	*/
 	
 	@Override
 	public Room getIsDocked()

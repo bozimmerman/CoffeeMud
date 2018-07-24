@@ -255,7 +255,8 @@ public class Prop_OutfitContainer extends Property
 			final MOB mob=msg.source();
 			if(item.container() == null)
 			{
-				msg.addTrailerRunnable(new Runnable(){
+				msg.addTrailerRunnable(new Runnable()
+				{
 					final Item I=item;
 					final MOB M = mob;
 					@Override

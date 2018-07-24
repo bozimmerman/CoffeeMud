@@ -112,7 +112,9 @@ public class ServletManager implements SimpleServletManager
 				servlet = c.newInstance();
 				servlet.init();
 			}
-			catch (final Exception e){}
+			catch (final Exception e)
+			{
+			}
 			servletInit.put(c, Boolean.TRUE);
 		}
 		return c;

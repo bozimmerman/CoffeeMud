@@ -64,7 +64,13 @@ public class StdAbility implements Ability
 		super();
 		//CMClass.bumpCounter(this,CMClass.CMObjectType.ABILITY);//removed for mem & perf
 	}
-	//protected void finalize(){ CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for mem & perf
+
+	/*
+	protected void finalize()
+	{
+		CMClass.unbumpCounter(this, CMClass.CMObjectType.ABILITY);
+	}// removed for mem & perf
+	*/
 
 	@Override
 	public CMObject newInstance()
@@ -450,22 +456,29 @@ public class StdAbility implements Ability
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @return a mask showing the type of objects this ability can affect
 	 */
-	protected int canAffectCode(){return Ability.CAN_AREAS|
-										 Ability.CAN_ITEMS|
-										 Ability.CAN_MOBS|
-										 Ability.CAN_ROOMS|
-										 Ability.CAN_EXITS;}
+	protected int canAffectCode()
+	{
+		return Ability.CAN_AREAS|
+				 Ability.CAN_ITEMS|
+				 Ability.CAN_MOBS|
+				 Ability.CAN_ROOMS|
+				 Ability.CAN_EXITS;
+	}
+	
 	/**
 	 * Designates whether, when invoked as a skill, what sort of objects this
 	 * ability can effectively target. Uses the Ability.CAN_* constants.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @return a mask showing the type of objects this ability can target
 	 */
-	protected int canTargetCode(){return Ability.CAN_AREAS|
-										 Ability.CAN_ITEMS|
-										 Ability.CAN_MOBS|
-										 Ability.CAN_ROOMS|
-										 Ability.CAN_EXITS;}
+	protected int canTargetCode()
+	{
+		return Ability.CAN_AREAS|
+				 Ability.CAN_ITEMS|
+				 Ability.CAN_MOBS|
+				 Ability.CAN_ROOMS|
+				 Ability.CAN_EXITS;
+	}
 
 	@Override
 	public int classificationCode()

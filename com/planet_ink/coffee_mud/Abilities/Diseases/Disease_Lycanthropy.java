@@ -111,7 +111,11 @@ public class Disease_Lycanthropy extends Disease
 		return "";
 	}
 
-	protected boolean DISEASE_STD(){return false;}
+	protected boolean DISEASE_STD()
+	{
+		return false;
+	}
+
 	@Override
 	public int difficultyLevel()
 	{

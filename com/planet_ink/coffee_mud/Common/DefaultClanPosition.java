@@ -227,7 +227,11 @@ public class DefaultClanPosition implements ClanPosition
 		return POS_STAT_CODES.values().length;
 	}
 
-	private POS_STAT_CODES getStatIndex(String code) { return (POS_STAT_CODES)CMath.s_valueOf(POS_STAT_CODES.values(),code); }
+	private POS_STAT_CODES getStatIndex(String code)
+	{
+		return (POS_STAT_CODES) CMath.s_valueOf(POS_STAT_CODES.values(), code);
+	}
+
 	@Override
 	public String getStat(String code)
 	{

@@ -258,7 +258,8 @@ public class Thief_WalkThePlank extends ThiefSkill
 				R.send(mob,msg2);
 				if((msg.value()<=0) && (msg2.value()<=0))
 				{
-					CMLib.threads().scheduleRunnable(new Runnable(){
+					CMLib.threads().scheduleRunnable(new Runnable()
+					{
 						@Override
 						public void run()
 						{

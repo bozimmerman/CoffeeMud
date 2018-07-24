@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -128,6 +129,33 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				return getLoadPlayer(P.name());
 		}
 		return null;
+	}
+	
+	@Override
+	public void unloadOfflinePlayer(final MOB mob)
+	{
+		final PlayerStats pStats = mob.playerStats();
+		if(pStats != null)
+		{
+			pStats.getExtItems().delAllItems(true);
+			if(getPlayer(mob.Name())==mob)
+			{
+				delPlayer(mob);
+				mob.destroy();
+			}
+			else // check other hosts
+			{
+				for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
+				{
+					if(pLib2.getPlayer(mob.Name())==mob)
+					{
+						delPlayer(mob);
+						mob.destroy();
+					}
+				}
+			}
+			
+		}
 	}
 
 	@Override
@@ -1280,6 +1308,18 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			return;
 		}
 
+		final boolean canReceiveRealEmail = 
+				(mob.playerStats()!=null)
+				&&(mob.playerStats().getEmail().length()>0)
+				&&(mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
+				&&((mob.playerStats().getAccount()==null)
+					||(!mob.playerStats().getAccount().isSet(AccountFlag.NOAUTOFORWARD)));
+		if(!canReceiveRealEmail)
+		{
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
+				Log.debugOut(serviceClient.getName(),mob.Name()+" Opting out of auto-forward.");
+		}
+
 		if(CMSecurity.isDisabled(DisFlag.SMTPCLIENT))
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
@@ -1290,7 +1330,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		//  timeLeft is in millis
 		final String from="AutoPurgeWarning";
 		final String to=mob.Name();
-		final String subj=CMProps.Str.MUDNAME+" Autopurge Warning: "+to;
+		final String subj=CMProps.getVar(CMProps.Str.MUDNAME)+" Autopurge Warning: "+to;
 		String textTimeLeft="";
 		if(timeLeft<0)
 			timeLeft = 1000*60*60*24;
@@ -1307,40 +1347,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 		final String msg=L("Your character, @x1, is going to be autopurged by the system in @x2.  ",to,textTimeLeft)+
 						 L("If you would like to keep this character active, please re-login.  This is an automated message, please do not reply.");
-
-		SMTPLibrary.SMTPClient SC=null;
-		try
-		{
-			if(CMProps.getVar(CMProps.Str.SMTPSERVERNAME).length()>0)
-				SC=CMLib.smtp().getClient(CMProps.getVar(CMProps.Str.SMTPSERVERNAME),SMTPLibrary.DEFAULT_PORT);
-			else
-				SC=CMLib.smtp().getClient(mob.playerStats().getEmail());
-		}
-		catch(final BadEmailAddressException be)
-		{
-			Log.errOut(serviceClient.getName(),"Unable to notify "+to+" of impending autopurge.  Invalid email address.");
-			return;
-		}
-		catch(final java.io.IOException ioe)
-		{
-			return;
-		}
-
-		final String replyTo="AutoPurge";
-		final String domain=CMProps.getVar(CMProps.Str.MUDDOMAIN).toLowerCase();
-		try
-		{
-			SC.sendMessage(from+"@"+domain,
-						   replyTo+"@"+domain,
-						   mob.playerStats().getEmail(),
-						   mob.playerStats().getEmail(),
-						   subj,
-						   CMLib.coffeeFilter().simpleOutFilter(msg));
-		}
-		catch(final java.io.IOException ioe)
-		{
-			Log.errOut(serviceClient.getName(),"Unable to notify "+to+" of impending autopurge.");
-		}
+		CMLib.smtp().emailOrJournal(from, from, to, subj, CMLib.coffeeFilter().simpleOutFilter(msg));
 	}
 
 	@Override

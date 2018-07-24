@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.PlayerAccount.AccountFlag;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
@@ -107,17 +108,26 @@ public class Email extends StdCommand
 					for(int num=0;num<msgs.size();num++)
 					{
 						final JournalEntry thismsg=msgs.get(num);
-						messages.append(CMStrings.padRight(""+(num+1),4)
-								+CMStrings.padRight((thismsg.from()),cols[1])+" "
-								+CMStrings.padRight(CMLib.time().date2String(thismsg.date()),cols[2])+" "
-								+(thismsg.subj())
-								+"\n\r");
+						if(thismsg != null)
+						{
+							messages.append(CMStrings.padRight(""+(num+1),4)
+									+CMStrings.padRight((thismsg.from()),cols[1])+" "
+									+CMStrings.padRight(CMLib.time().date2String(thismsg.date()),cols[2])+" "
+									+(thismsg.subj())
+									+"\n\r");
+						}
+						else
+							Log.errOut("Message "+num+" of "+msgs.size()+" not found.");
 					}
 					if((msgs.size()==0)
 					||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_POSSESSED))
 					||(CMath.bset(metaFlags,MUDCmdProcessor.METAFLAG_AS)))
 					{
-						if(!mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
+						if((!mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
+						&&(mob.playerStats()!=null)
+						&&(mob.playerStats().getEmail().length()>0)
+						&&((mob.playerStats().getAccount()==null)
+							||(!mob.playerStats().getAccount().isSet(AccountFlag.NOAUTOFORWARD))))
 							mob.tell(L("You have no email waiting, but then, it's probably been forwarded to you already."));
 						else
 							mob.tell(L("You have no email waiting."));
@@ -204,7 +214,11 @@ public class Email extends StdCommand
 					mob.tell(L("There is no player called '@x1' to send email to.  If you were trying to read your mail, try EMAIL BOX.  If you were trying to change your email address, just enter EMAIL without any parameters.",name));
 					return false;
 				}
-				if(!M.isAttributeSet(MOB.Attrib.AUTOFORWARD))
+				if((!M.isAttributeSet(MOB.Attrib.AUTOFORWARD))
+				&&((M.playerStats()!=null)
+				&&(M.playerStats().getEmail().length()>0))		
+				&&((M.playerStats().getAccount()==null)
+					||(!M.playerStats().getAccount().isSet(AccountFlag.NOAUTOFORWARD))))
 				{
 					if(!mob.session().confirm(L("Send email to '@x1' (Y/n)?",M.Name()),"Y"))
 						return false;
@@ -241,8 +255,7 @@ public class Email extends StdCommand
 				}
 				if(mob.session()==null)
 					return false;
-				message+="\n\r\n\rThis message was sent through the "+CMProps.getVar(CMProps.Str.MUDNAME)+" mail server at "+CMProps.getVar(CMProps.Str.MUDDOMAIN)+", port"+CMProps.getVar(CMProps.Str.MUDPORTS)+".  Please contact the administrators regarding any abuse of this system.\n\r";
-				CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX), mob.Name(), M.Name(), subject, message);
+				CMLib.smtp().emailOrJournal(mob.Name(), mob.Name(), M.Name(), subject, message);
 				mob.tell(L("Your email has been sent."));
 				return true;
 			}

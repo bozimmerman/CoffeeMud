@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.application;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.CMSecurity.DbgFlag;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -31,6 +32,7 @@ import com.planet_ink.coffee_web.http.MIMEType;
 import com.planet_ink.coffee_web.interfaces.FileManager;
 import com.planet_ink.coffee_web.server.WebServer;
 import com.planet_ink.coffee_web.util.CWConfig;
+import com.planet_ink.coffee_web.util.CWThread;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -66,12 +68,18 @@ public class MUD extends Thread implements MudHost
 {
 	private static final float	  HOST_VERSION_MAJOR	= (float)5.9;
 	private static final float	  HOST_VERSION_MINOR	= (float)6.3;
-	private static enum MudState {STARTING,WAITING,ACCEPTING,STOPPED}
+
+	private static enum MudState
+	{
+		STARTING,
+		WAITING,
+		ACCEPTING,
+		STOPPED
+	}
 
 	private volatile MudState state		 = MudState.STOPPED;
 	private ServerSocket	  servsock	 = null;
 	private boolean			  acceptConns= false;
-	private final String	  host		 = "MyHost";
 	private int				  port		 = 5555;
 	private final long		  startupTime= System.currentTimeMillis();
 	private final ThreadGroup threadGroup;
@@ -1277,13 +1285,37 @@ public class MUD extends Thread implements MudHost
 	@Override
 	public String getHost()
 	{
-		return host;
+		return CMProps.getVar(Str.MUDDOMAIN);
 	}
 
 	@Override
 	public int getPort()
 	{
 		return port;
+	}
+
+	@Override
+	public String geWebHostUrl()
+	{
+		WebServer server=null;
+		for(final WebServer serv : webServers)
+		{
+			if(!CMath.s_bool(serv.getConfig().getMiscProp("ADMIN")))
+			{
+				server=serv;
+				break;
+			}
+		}
+		if((server == null) && (webServers.size()>0))
+			server = webServers.get(0);
+		if(server == null)
+			return "/";
+		final int[] ports = server.getConfig().getHttpListenPorts();
+		if((ports == null)||(ports.length==0))
+			return "/";
+		if(CMParms.contains(ports, 80))
+			return "http://" + CMProps.getVar(Str.MUDDOMAIN)+"/";
+		return "http://" + CMProps.getVar(Str.MUDDOMAIN)+":"+ports[0]+"/";
 	}
 
 	private static class HostGroup extends Thread
@@ -2119,6 +2151,21 @@ public class MUD extends Thread implements MudHost
 		if(V.size()==0)
 			throw new CMException("Unknown command!");
 		final String word=V.get(0);
+		if(word.equalsIgnoreCase("TICK")&&(V.size()>1))
+		{
+			final String what=V.get(1);
+			if(what.equalsIgnoreCase("SMTP"))
+			{
+				if((smtpServerThread != null)
+				&&(smtpServerThread.tick(smtpServerThread, Tickable.TICKID_EMAIL)))
+					return "Done";
+				else
+					return "Failure";
+			}
+			else
+				return "Failure";
+		}
+		else
 		if(word.equalsIgnoreCase("START")&&(V.size()>1))
 		{
 			final String what=V.get(1);

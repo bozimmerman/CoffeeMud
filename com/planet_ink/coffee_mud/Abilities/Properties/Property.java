@@ -437,9 +437,12 @@ public class Property implements Ability
 		return amDestroyed;
 	}
 
-	// protected void finalize(){
-	// CMClass.unbumpCounter(this,CMClass.CMObjectType.ABILITY); }//removed for
-	// mem & perf
+	/*
+	protected void finalize()
+	{
+		CMClass.unbumpCounter(this, CMClass.CMObjectType.ABILITY);
+	}// removed for mem & perf
+	*/
 
 	@Override
 	public CMObject newInstance()

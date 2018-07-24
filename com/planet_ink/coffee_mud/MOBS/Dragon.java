@@ -75,8 +75,16 @@ public class Dragon extends StdMOB
 	public final static int GOLD				= 9;
 
 	// ===== Defined Value for holding the Dragon Type
-	protected int DragonColor(){ return basePhyStats().ability();}
-	protected int DragonAge(){ return basePhyStats().level()/10;}
+	protected int DragonColor()
+	{
+		return basePhyStats().ability();
+	}
+
+	protected int DragonAge()
+	{
+		return basePhyStats().level() / 10;
+	}
+
 	protected Room Stomach = null;
 
 	// ===== random constructor

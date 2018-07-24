@@ -905,7 +905,10 @@ public class CMath
 	 * @param s the string number
 	 * @return the percentage %
 	 */
-	public final static String toPct(final String s) { return toPct(s_pct(s)); }
+	public final static String toPct(final String s)
+	{
+		return toPct(s_pct(s));
+	}
 
 	/**
 	 * Returns true if the bitnumberth bit (0...) is set

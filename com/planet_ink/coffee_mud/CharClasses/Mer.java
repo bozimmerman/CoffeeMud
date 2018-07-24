@@ -345,7 +345,8 @@ public class Mer extends StdCharClass
 		if(!CMParms.contains(affectableStats.getBreathables(),breathableStuff))
 		{
 			final int[] newSet = oldSets.get(affectableStats.getBreathables());
-			if(newSet != null) {
+			if(newSet != null) 
+			{
 				affectableStats.setBreathables(newSet);
 			}
 			else

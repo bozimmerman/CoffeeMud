@@ -67,14 +67,17 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String parametersFormat(){ return
+	public String parametersFormat()
+	{ 
+		return
 		"SPELL_ID\tITEM_LEVEL\t"
 		+"RESOURCE_NAME_OR_HERB_NAME\t"
 		+"RESOURCE_NAME_OR_HERB_NAME\t"
 		+"RESOURCE_NAME_OR_HERB_NAME\t"
 		+"RESOURCE_NAME_OR_HERB_NAME\t"
 		+"RESOURCE_NAME_OR_HERB_NAME\t"
-		+"RESOURCE_NAME_OR_HERB_NAME";}
+		+"RESOURCE_NAME_OR_HERB_NAME";
+	}
 
 	String oldName="";
 	private Ability theSpell=null;

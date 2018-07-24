@@ -257,6 +257,27 @@ public class CMLib
 	}
 
 	/**
+	 * Returns the MudHost associated with the callers
+	 * thread group.
+	 * @return the appropriate mud host.
+	 */
+	public static final MudHost host()
+	{
+		if(mudThreads.size()==0)
+			return null;
+		for(int i=0;i<mudThreads.size();i++)
+		{
+			final MudHost host = mudThreads.get(i);
+			if(host instanceof Thread)
+			{
+				if(((Thread)host).getThreadGroup() == Thread.currentThread().getThreadGroup())
+					return host;
+			}
+		}
+		return mudThreads.get(0);
+	}
+	
+	/**
 	 * Returns the mud running on the given port, or null
 	 * if none is found.
 	 * @see com.planet_ink.coffee_mud.core.interfaces.MudHost

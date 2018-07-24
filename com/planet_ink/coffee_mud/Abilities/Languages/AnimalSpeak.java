@@ -55,8 +55,11 @@ public class AnimalSpeak extends StdLanguage
 	public AnimalSpeak()
 	{
 		super();
-		if(!mapped){mapped=true;
-					CMLib.ableMapper().addCharAbilityMapping("Archon",1,ID(),false);}
+		if (!mapped)
+		{
+			mapped = true;
+			CMLib.ableMapper().addCharAbilityMapping("Archon", 1, ID(), false);
+		}
 	}
 	
 	private final static String[] animalSounds={

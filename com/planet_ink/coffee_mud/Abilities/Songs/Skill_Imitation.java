@@ -98,8 +98,13 @@ public class Skill_Imitation extends BardSkill
 		return Ability.ACODE_SKILL|Ability.DOMAIN_DECEPTIVE;
 	}
 
-	public String lastID="";
-	public int craftType(){return Ability.ACODE_SPELL;}
+	public String lastID = "";
+
+	public int craftType()
+	{
+		return Ability.ACODE_SPELL;
+	}
+
 	@Override
 	public int usageType()
 	{

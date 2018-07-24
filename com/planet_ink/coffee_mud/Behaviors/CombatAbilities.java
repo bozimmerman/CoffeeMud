@@ -320,7 +320,10 @@ public class CombatAbilities extends StdBehavior
 			if(mob.isInCombat())
 			{
 				final MOB victim=mob.getVictim();
-				if(victim==null){}else
+				if (victim == null)
+				{
+				}
+				else
 				if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 				&&(msg.value()>0)
 				&&(msg.source()!=mob))
@@ -791,7 +794,10 @@ public class CombatAbilities extends StdBehavior
 		{
 			skillUsed=useSkill(mob, victim, leader)!=null;
 		}
-		catch(final CMException cme) { return true;}
+		catch (final CMException cme)
+		{
+			return true;
+		}
 
 		Ability A=null;
 		// if a skill use failed, take a stab at wanding

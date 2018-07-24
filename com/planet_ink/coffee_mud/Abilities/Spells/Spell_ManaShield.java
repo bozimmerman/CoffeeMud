@@ -76,8 +76,15 @@ public class Spell_ManaShield extends Spell
 		return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;
 	}
 
-	protected double protection(){return 0.5;}
-	protected String adjective(){return " a";}
+	protected double protection()
+	{
+		return 0.5;
+	}
+
+	protected String adjective()
+	{
+		return " a";
+	}
 
 	@Override
 	public void unInvoke()

@@ -464,7 +464,8 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			{
 				if(this.getShipFlag(ShipFlag.NO_GRAVITY))
 				{
-					msg.addTrailerRunnable(new Runnable(){
+					msg.addTrailerRunnable(new Runnable()
+					{
 						@Override
 						public void run()
 						{
@@ -487,7 +488,8 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 					if(this.getShipFlag(ShipFlag.NO_GRAVITY))
 					{
 						final Item I=(msg.target() instanceof Item) ? (Item)msg.target(): (Item)msg.tool();
-						msg.addTrailerRunnable(new Runnable(){
+						msg.addTrailerRunnable(new Runnable()
+						{
 							@Override
 							public void run()
 							{

@@ -40,4 +40,7 @@ public interface TextEncoders extends CMLibrary
 	public boolean checkHashStringPairs(final String hashString1, final String hashString2);
 	public String makeRandomHashString(final String password);
 	public String generateRandomPassword();
+	public String makeRepeatableHashString(final String str);
+	public String filterDecrypt(String str);
+	public String filterEncrypt(String str);
 }

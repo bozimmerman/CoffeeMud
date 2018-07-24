@@ -92,7 +92,8 @@ public class StdItem implements Item
 		return true;
 	}
 
-	// protected void finalize() {
+	// protected void finalize() 
+	// {
 	// CMClass.unbumpCounter(this,CMClass.CMObjectType.ITEM); }//removed for mem
 	// & perf
 	@Override

@@ -623,7 +623,13 @@ public class Intermud implements Runnable, Persistent, Serializable
 			if((!shutdown) && (System.currentTimeMillis()-lastPingSentTime)>( 30 * 60 * 1000))
 			{
 				lastPingSentTime=System.currentTimeMillis();
-				try { new MudAuthRequest(I3Server.getMudName()).send(); } catch(final Exception e) { }
+				try
+				{
+					new MudAuthRequest(I3Server.getMudName()).send();
+				}
+				catch (final Exception e)
+				{
+				}
 				final long ellapsedTime = System.currentTimeMillis() - intermud.getLastPacketReceivedTime();
 				if(ellapsedTime>(60  * 60 * 1000)) // one hour
 				{
@@ -1051,14 +1057,16 @@ public class Intermud implements Runnable, Persistent, Serializable
 		shutdown=true;
 		try
 		{
-			 if(input!=null) input.close();
+			if (input != null)
+				input.close();
 		}
 		catch(final Exception e)
 		{
 		}
 		try
 		{
-			 if(connection!=null) connection.close();
+			if (connection != null)
+				connection.close();
 		}
 		catch(final Exception e)
 		{
@@ -1068,11 +1076,17 @@ public class Intermud implements Runnable, Persistent, Serializable
 			CMLib.threads().deleteTick(save_thread, -1);
 			save_thread=null;
 		}
-		try { save(); }
-		catch( final PersistenceException e ) { }
 		try
 		{
-			 if(input_thread!=null) CMLib.killThread(input_thread,100,1); 
+			save();
+		}
+		catch (final PersistenceException e)
+		{
+		}
+		try
+		{
+			if (input_thread != null)
+				CMLib.killThread(input_thread, 100, 1);
 		}
 		catch(final Exception e)
 		{

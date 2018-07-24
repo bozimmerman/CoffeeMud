@@ -270,7 +270,10 @@ public interface Poll extends CMCommon
 		 * Creates a single choosable option for this poll
 		 * @param opt the text of the option, as shown to the user
 		 */
-		public PollOption(String opt) { text=opt;}
+		public PollOption(String opt)
+		{
+			text = opt;
+		}
 	}
 
 	/**

@@ -578,7 +578,12 @@ public interface Law extends CMCommon
 	{
 		public Room room;
 		public Container container;
-		public TreasurySet(Room R, Container C){ room=R; container=C;}
+
+		public TreasurySet(Room R, Container C)
+		{
+			room = R;
+			container = C;
+		}
 	}
 
 	/** A base punishment code meaning the officer warns the criminal */

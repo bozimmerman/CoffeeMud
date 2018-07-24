@@ -1776,7 +1776,8 @@ public class DefaultClan implements Clan
 					}
 					if(basePromoteBy==AutoPromoteFlag.GOLD)
 					{
-						Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>(){
+						Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>()
+						{
 							@Override
 							public int compare(MemberRecord o1, MemberRecord o2)
 							{
@@ -1786,7 +1787,8 @@ public class DefaultClan implements Clan
 					}
 					if(basePromoteBy==AutoPromoteFlag.XP)
 					{
-						Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>(){
+						Collections.sort(highestQualifiedMembers,new Comparator<MemberRecord>()
+						{
 							@Override
 							public int compare(MemberRecord o1, MemberRecord o2)
 							{

@@ -2,20 +2,8 @@ package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Str;
 import com.planet_ink.coffee_mud.core.collections.*;
-import com.planet_ink.coffee_mud.Abilities.interfaces.*;
-import com.planet_ink.coffee_mud.Areas.interfaces.*;
-import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
-import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
-import com.planet_ink.coffee_mud.Commands.interfaces.*;
-import com.planet_ink.coffee_mud.Common.interfaces.*;
-import com.planet_ink.coffee_mud.Exits.interfaces.*;
-import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Locales.interfaces.*;
-import com.planet_ink.coffee_mud.MOBS.interfaces.*;
-import com.planet_ink.coffee_mud.Races.interfaces.*;
-import com.planet_ink.coffee_mud.WebMacros.JournalInfo;
-import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
 
 import java.net.*;
 import java.io.*;
@@ -259,13 +247,34 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	}
 
 	@Override
-	public void emailOrJournal(String SMTPServerInfo, String from, String replyTo, String to, String subject, String message)
+	public void emailOrJournal(String from, String replyTo, String to, String subject, String message)
 	{
-		final String fromEmail=makeValidEmailAddress(from);
+		final String smtpServerInfo = CMProps.getVar(CMProps.Str.SMTPSERVERNAME);
+		final String fromEmail=(from.indexOf('@')>0)?makeValidEmailAddress(from):(from+'@'+CMProps.getVar(Str.MUDDOMAIN).toLowerCase());
 		final String toEmail=makeValidEmailAddress(to);
-		final String replyToEmail=makeValidEmailAddress(replyTo);
-		if(!this.emailIfPossible(SMTPServerInfo, fromEmail, replyToEmail, toEmail, subject, message))
+		final String replyToEmail=(replyTo.indexOf('@')>0)?makeValidEmailAddress(replyTo):(replyTo+'@'+CMProps.getVar(Str.MUDDOMAIN).toLowerCase());
+		final String unSubUrl;
+		if(!isValidEmailAddress(to))
+			unSubUrl = CMLib.utensils().getUnsubscribeURL(to);
+		else
+			unSubUrl = null;
+		message+=L("\n\r\n\rThis message was sent through the @x1 mail server at @x2, port @x3.  ",
+				CMProps.getVar(CMProps.Str.MUDNAME), CMProps.getVar(CMProps.Str.MUDDOMAIN), CMProps.getVar(CMProps.Str.MUDPORTS))+
+				L("Please contact the administrators regarding any abuse of this system.\n\r")+
+				((unSubUrl == null) ? "" : L("To unsubscribe, visit: @x1  \n\r",unSubUrl));
+		if(!emailIfPossible(smtpServerInfo, fromEmail, replyToEmail, toEmail, subject, message))
+		{
+			if(CMProps.getIntVar(CMProps.Int.MAXMAILBOX)>0)
+			{
+				final int count=CMLib.database().DBCountJournal(CMProps.getVar(CMProps.Str.MAILBOX),null,to);
+				if(count>=CMProps.getIntVar(CMProps.Int.MAXMAILBOX))
+				{
+					Log.warnOut("Unable to email "+to+" because max mailbox has been reached.");
+					return;
+				}
+			}
 			CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.Str.MAILBOX), from, to, subject, message);
+		}
 	}
 
 	/** private constants for chars that are valid in email addy names */
@@ -343,10 +352,16 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		if(!isValidEmailAddress(name))
 		{
 			if(CMLib.players().playerExists(name))
-				name=CMLib.players().getLoadPlayer(name).playerStats().getEmail();
+				return CMLib.players().getLoadPlayer(name).playerStats().getEmail();
 			else
 			if(CMLib.players().accountExists(name))
-				name=CMLib.players().getLoadAccount(name).getEmail();
+				return CMLib.players().getLoadAccount(name).getEmail();
+			else
+			if(CMLib.players().playerExistsAllHosts(name))
+				return CMLib.players().getPlayerAllHosts(name).playerStats().getEmail();
+			else
+			if(CMLib.players().accountExistsAllHosts(name))
+				return CMLib.players().getAccountAllHosts(name).getEmail();
 		}
 		return name;
 	}
@@ -617,12 +632,20 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 			password=info.remove(0);
 		}
 
-		private String host="";
-		private String authType="";
-		private String login="";
-		private String password="";
-		public String getHost(){ return host;}
-		public String getAuthType(){ return authType;}
+		private String	host		= "";
+		private String	authType	= "";
+		private String	login		= "";
+		private String	password	= "";
+
+		public String getHost()
+		{
+			return host;
+		}
+
+		public String getAuthType()
+		{
+			return authType;
+		}
 
 		public String getPlainLogin()
 		{

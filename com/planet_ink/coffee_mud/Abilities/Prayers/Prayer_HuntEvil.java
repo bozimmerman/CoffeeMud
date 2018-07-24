@@ -63,7 +63,11 @@ public class Prayer_HuntEvil extends Prayer
 		return localizedStaticDisplay;
 	}
 
-	protected String word(){return "evil";}
+	protected String word()
+	{
+		return "evil";
+	}
+
 	@Override
 	public int classificationCode()
 	{

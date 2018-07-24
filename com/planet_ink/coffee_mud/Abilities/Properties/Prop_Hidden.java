@@ -48,10 +48,14 @@ public class Prop_Hidden extends Property
 	}
 
 	@Override
-	protected int canAffectCode(){return Ability.CAN_MOBS
-										 |Ability.CAN_ITEMS
-										 |Ability.CAN_EXITS
-										 |Ability.CAN_AREAS;}
+	protected int canAffectCode()
+	{
+		return Ability.CAN_MOBS
+			 |Ability.CAN_ITEMS
+			 |Ability.CAN_EXITS
+			 |Ability.CAN_AREAS;
+	}
+
 	protected int ticksSinceLoss=100;
 	protected boolean unLocatable=false;
 

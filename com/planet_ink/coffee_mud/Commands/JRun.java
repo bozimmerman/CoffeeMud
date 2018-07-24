@@ -95,8 +95,17 @@ public class JRun extends StdCommand
 		static final long serialVersionUID=45;
 		MOB s=null;
 		List<String> v=null;
-		public MOB mob(){return s;}
-		public int numParms(){return (v==null)?0:v.size();}
+
+		public MOB mob()
+		{
+			return s;
+		}
+
+		public int numParms()
+		{
+			return (v == null) ? 0 : v.size();
+		}
+
 		public String getParm(int i)
 		{
 			if(v==null)
@@ -106,10 +115,23 @@ public class JRun extends StdCommand
 			return v.get(i);
 		}
 
-		public static String[] functions = { "mob", "numParms", "getParm", "getParms", "toJavaString"};
-		public String getParms(){return (v==null)?"":CMParms.combineQuoted(v,0);}
-		public JScriptWindow(MOB executor, List<String> parms){s=executor; v=parms;}
-		public String toJavaString(Object O){return Context.toString(O);}
+		public static String[] functions = { "mob", "numParms", "getParm", "getParms", "toJavaString" };
+
+		public String getParms()
+		{
+			return (v == null) ? "" : CMParms.combineQuoted(v, 0);
+		}
+
+		public JScriptWindow(MOB executor, List<String> parms)
+		{
+			s = executor;
+			v = parms;
+		}
+
+		public String toJavaString(Object O)
+		{
+			return Context.toString(O);
+		}
 	}
 
 	@Override

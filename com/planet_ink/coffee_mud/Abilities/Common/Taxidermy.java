@@ -63,7 +63,10 @@ public class Taxidermy extends CraftingSkill
 		return "BODIES";
 	}
 
-	public String parametersFormat(){ return "POSE_NAME\nPOSE_DESCRIPTION\n...\n";}
+	public String parametersFormat()
+	{
+		return "POSE_NAME\nPOSE_DESCRIPTION\n...\n";
+	}
 
 	protected final static String CRAFTING_RACE_STR_PREFIX="This statue was once ";
 	protected final static String CRAFTING_RACE_STR=CRAFTING_RACE_STR_PREFIX+"@x1.";

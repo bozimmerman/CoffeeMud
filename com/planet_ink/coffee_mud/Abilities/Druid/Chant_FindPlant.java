@@ -80,10 +80,19 @@ public class Chant_FindPlant extends Chant
 
 	private final int[] myMats={RawMaterial.MATERIAL_VEGETATION,
 						  RawMaterial.MATERIAL_WOODEN};
-	protected int[] okMaterials(){    return myMats;}
+
+	protected int[] okMaterials()
+	{
+		return myMats;
+	}
+
 	private final int[] myRscs={RawMaterial.RESOURCE_COTTON,
 						  RawMaterial.RESOURCE_HEMP};
-	protected int[] okResources(){    return myRscs;}
+
+	protected int[] okResources()
+	{
+		return myRscs;
+	}
 
 	protected Vector<Integer> allResources=null;
 	protected Vector<Integer> allOkResources()

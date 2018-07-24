@@ -66,7 +66,20 @@ public class Shutdown
 				read=in.readLine();
 			System.out.println(read.substring("\033[1z<".length()));
 		}
-		catch(final Exception e){e.printStackTrace();}
-		finally { if(sock!=null) try{ sock.close(); } catch (final IOException e) { } }
+		catch (final Exception e)
+		{
+			e.printStackTrace();
+		}
+		finally
+		{
+			if (sock != null)
+				try
+				{
+					sock.close();
+				}
+				catch (final IOException e)
+				{
+				}
+		}
 	}
 }

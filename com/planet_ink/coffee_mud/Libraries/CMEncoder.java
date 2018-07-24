@@ -1,7 +1,9 @@
 package com.planet_ink.coffee_mud.Libraries;
 import java.nio.ByteBuffer;
+import java.util.Enumeration;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
+import java.net.NetworkInterface;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.TextEncoders;
 import com.planet_ink.coffee_mud.core.B64Encoder;
@@ -36,6 +38,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 	private byte[]			encodeBuffer	= new byte[65536];
 	private final Deflater	compresser		= new Deflater(Deflater.BEST_COMPRESSION);
 	private final Inflater	decompresser	= new Inflater();
+	protected static byte[]	encrFilter		= null;
 
 	public CMEncoder()
 	{
@@ -107,6 +110,13 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 	}
 
 	@Override
+	public String makeRepeatableHashString(final String str)
+	{
+		final int passHash=str.toLowerCase().hashCode();
+		return "|"+B64Encoder.B64encodeBytes(enDeCrypt(ByteBuffer.allocate(4).putInt(passHash).array()));
+	}
+
+	@Override
 	public boolean isARandomHashString(final String password)
 	{
 		return ((password.length()>2) && (password.startsWith("|")) && (password.indexOf('|',1)>1));
@@ -162,19 +172,119 @@ public class CMEncoder extends StdLibrary implements TextEncoders
 		
 		if(pass1.equalsIgnoreCase(pass2))
 			return true;
-		if(CMLib.encoder().isARandomHashString(pass2))
+		if(isARandomHashString(pass2))
 		{
-			if(CMLib.encoder().isARandomHashString(pass1))
+			if(isARandomHashString(pass1))
 				return checkHashStringPairs(pass1,pass2);
 			else
-				return CMLib.encoder().checkPasswordAgainstRandomHashString(pass1, pass2);
+				return checkPasswordAgainstRandomHashString(pass1, pass2);
 		}
 		else
 		{
-			if(CMLib.encoder().isARandomHashString(pass1))
-				return CMLib.encoder().checkPasswordAgainstRandomHashString(pass2, pass1);
+			if(isARandomHashString(pass1))
+				return checkPasswordAgainstRandomHashString(pass2, pass1);
 			return pass1.equalsIgnoreCase(pass2);
 		}
 	}
 
+	public static byte[] getFilter()
+	{
+		if(encrFilter==null)
+		{
+			// this is coffeemud's unsophisticated xor(mac address) encryption system.
+			final byte[] filterc = new String("wrinkletellmetrueisthereanythingasnastyasyouwellmaybesothenumber7470issprettybad").getBytes();
+			encrFilter=new byte[256];
+			try
+			{
+				for(int i=0;i<256;i++)
+					encrFilter[i]=filterc[i % filterc.length];
+				final String domain=CMProps.getVar(CMProps.Str.MUDDOMAIN);
+				if(domain.length()>0)
+				{
+					for(int i=0;i<256;i++)
+						encrFilter[i]^=domain.charAt(i % domain.length());
+				}
+				final String name=CMProps.getVar(CMProps.Str.MUDNAME);
+				if(name.length()>0)
+				{
+					for(int i=0;i<256;i++)
+						encrFilter[i]^=name.charAt(i % name.length());
+				}
+				final String email=CMProps.getVar(CMProps.Str.ADMINEMAIL);
+				if(email.length()>0)
+				{
+					for(int i=0;i<256;i++)
+						encrFilter[i]^=email.charAt(i % email.length());
+				}
+				for(final Enumeration<NetworkInterface> nie = NetworkInterface.getNetworkInterfaces(); nie.hasMoreElements();)
+				{
+					final NetworkInterface ni = nie.nextElement();
+					if(ni != null)
+					{
+						final byte[] mac = ni.getHardwareAddress();
+						if((mac != null) && (mac.length > 0))
+						{
+							for(int i=0;i<256;i++)
+								encrFilter[i]^=Math.abs(mac[i % mac.length]);
+						}
+					}
+				}
+			}
+			catch(final Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+		return encrFilter;
+	}
+
+	protected byte[] enDeCrypt(byte[] bytes)
+	{
+		final byte[] encrFilter=getFilter();
+		for ( int i = 0, j = 0; i < bytes.length; i++, j++ )
+		{
+			if ( j >= encrFilter.length ) 
+				j = 0;
+			bytes[i]=(byte)((bytes[i] ^ encrFilter[j]) & 0xff);
+		}
+		return bytes;
+	}
+
+	@Override
+	public String filterEncrypt(String str)
+	{
+		try
+		{
+			final byte[] buf=B64Encoder.B64encodeBytes(enDeCrypt(str.getBytes()),B64Encoder.DONT_BREAK_LINES).getBytes();
+			final StringBuilder s=new StringBuilder("");
+			for(final byte b : buf)
+			{
+				String s2=Integer.toHexString(b);
+				while(s2.length()<2)
+					s2="0"+s2;
+				s.append(s2);
+			}
+			return s.toString();
+		}
+		catch(final Exception e)
+		{
+			return "";
+		}
+	}
+
+	@Override
+	public String filterDecrypt(String str)
+	{
+		try
+		{
+			final byte[] buf=new byte[str.length()/2];
+			for(int i=0;i<str.length();i+=2)
+				buf[i/2]=(byte)(Integer.parseInt(str.substring(i,i+2),16) & 0xff);
+			return new String(enDeCrypt(B64Encoder.B64decode(new String(buf))));
+		}
+		catch(final Exception e)
+		{
+			return "";
+		}
+	}
 }

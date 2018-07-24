@@ -291,7 +291,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return new DefaultScriptingEngine();
 		}
 	}
-	//protected void finalize(){CMClass.unbumpCounter(this,CMClass.CMObjectType.COMMON);}//removed for mem & perf
+
+	/*
+	protected void finalize()
+	{
+		CMClass.unbumpCounter(this, CMClass.CMObjectType.COMMON);
+	}// removed for mem & perf
+	*/
 
 	/*
 	 * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
@@ -8256,7 +8262,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 																		secondaryItem,
 																		msg,
 																		tmp);
-							((MOB)newTarget).session().prompt(new InputCallback(InputCallback.Type.PROMPT,"",0){
+							((MOB)newTarget).session().prompt(new InputCallback(InputCallback.Type.PROMPT,"",0)
+							{
 								private final JScriptEvent event=continueEvent;
 								private final int lineNum=lastLineNum;
 								private final String scope=newTarget.Name();
@@ -13139,7 +13146,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return c.getVar(host, var);
 		}
 
-		public String toJavaString(Object O){return Context.toString(O);}
+		public String toJavaString(Object O)
+		{
+			return Context.toString(O);
+		}
 
 		@Override
 		public Object get(final String name, Scriptable start)

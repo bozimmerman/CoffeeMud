@@ -278,7 +278,10 @@ public class StdTickGroup implements TickableGroup, Cloneable
 		return tickers.subSet(new StdTickClient(T,0,-1), true, new StdTickClient(T,0,Integer.MAX_VALUE), true).size()>0;
 	}
 
-	public int getCounter(){return tickObjectCounter;}
+	public int getCounter()
+	{
+		return tickObjectCounter;
+	}
 
 	@Override
 	public boolean delTicker(TickClient C)

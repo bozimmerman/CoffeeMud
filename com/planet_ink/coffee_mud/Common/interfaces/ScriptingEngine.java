@@ -401,7 +401,10 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 		 * the tick counter has dropped to or below 0
 		 * @return true if its time to execute
 		 */
-		public boolean checkTimeToExecute() { return ((--tickDelay)<=0); }
+		public boolean checkTimeToExecute()
+		{
+			return ((--tickDelay) <= 0);
+		}
 	}
 
 	/** The number of local variables associated with an execution of a script */

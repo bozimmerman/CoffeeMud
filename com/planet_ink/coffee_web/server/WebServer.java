@@ -56,7 +56,17 @@ public class WebServer extends Thread
 	public static final	String	  NAME				= "CoffeeWebServer";
 	public static final String	  POMVERSION		= "2.4";
 	public static 		double	  VERSION;
-	static { try { VERSION=Double.parseDouble(POMVERSION); } catch(final Exception e){ VERSION=0.0;} }
+	static
+	{
+		try
+		{
+			VERSION = Double.parseDouble(POMVERSION);
+		}
+		catch (final Exception e)
+		{
+			VERSION = 0.0;
+		}
+	}
 	
 	private volatile boolean	  	shutdownRequested	= false;// notice of external shutdown request
 	private volatile String	  		lastErrorMsg		= "";	// spam prevention for error reporting
@@ -215,7 +225,9 @@ public class WebServer extends Thread
 						}
 					}
 				}
-				catch(final InterruptedException e) {}
+				catch (final InterruptedException e)
+				{
+				}
 				finally
 				{
 					config.getLogger().info( "Timeout Thread shutdown");
@@ -344,7 +356,9 @@ public class WebServer extends Thread
 					{
 						i.remove();
 					}
-					catch(Exception xe){ }
+					catch (Exception xe)
+					{
+					}
 				}
 			}
 		}
@@ -439,13 +453,19 @@ public class WebServer extends Thread
 		try
 		{
 			servSelector.close();
-		}catch(final Exception e){} // ugh, why can't there be an "i don't care" exception syntax in java
+		}
+		catch (final Exception e)
+		{
+		} // ugh, why can't there be an "i don't care" exception syntax in java
 		for(final ServerSocketChannel servChan : servChannels.keySet())
 		{
 			try
 			{
 				servChan.close();
-			}catch(final Exception e){}
+			}
+			catch (final Exception e)
+			{
+			}
 		}
 		if(!executor.isShutdown())
 		{
@@ -469,7 +489,10 @@ public class WebServer extends Thread
 				try
 				{
 					handler.closeAndWait();
-				}catch(final Exception e){}
+				}
+				catch (final Exception e)
+				{
+				}
 			}
 			handlers.clear();
 		}

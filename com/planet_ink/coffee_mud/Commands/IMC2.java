@@ -91,7 +91,10 @@ public class IMC2 extends StdCommand
 			{
 				mob.tell(CMLib.hosts().get(0).executeCommand("START IMC2"));
 			}
-			catch(final Exception e){ Log.errOut("IMC2Cmd",e);}
+			catch (final Exception e)
+			{
+				Log.errOut("IMC2Cmd", e);
+			}
 		}
 		else
 			IMC2Error(mob);

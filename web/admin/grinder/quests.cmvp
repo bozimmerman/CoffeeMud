@@ -41,7 +41,10 @@
 			document.QUESTS.action='/grinder/quests.cmvp';
 			document.QUESTS.submit();
 		}
-		function Clicked2(action){Load(action);}
+		function Clicked2(action)
+		{
+			Load(action);
+		}
 		function Load(action)
 		{
 			document.QUESTS.QUEST.value="";

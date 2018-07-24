@@ -50,7 +50,11 @@ public class Spell_Youth extends Spell
 		return localizedName;
 	}
 
-	public int overridemana(){return Ability.COST_ALL;}
+	@Override
+	public int overrideMana()
+	{
+		return Ability.COST_ALL;
+	}
 
 	@Override
 	public int classificationCode()

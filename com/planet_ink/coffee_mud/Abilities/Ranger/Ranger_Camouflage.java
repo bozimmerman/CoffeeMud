@@ -190,9 +190,11 @@ public class Ranger_Camouflage extends StdAbility
 	@Override
 	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
 	{
-		final Physical target=super.getAnyTarget(mob, commands, givenTarget, new Filterer(){
+		final Physical target=super.getAnyTarget(mob, commands, givenTarget, new Filterer()
+		{
 			@Override
-			public boolean passesFilter(Object obj) {
+			public boolean passesFilter(Object obj) 
+			{
 				if((obj instanceof MOB)
 				||(obj instanceof Exit))
 					return true;
