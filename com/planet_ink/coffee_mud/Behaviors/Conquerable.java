@@ -414,7 +414,6 @@ public class Conquerable extends Arrest
 		if(chance<=0)
 			return 0;
 		return chance;
-
 	}
 
 	protected void announceToArea(Area area, String clanID, int amount)
