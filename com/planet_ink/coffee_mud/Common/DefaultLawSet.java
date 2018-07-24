@@ -382,7 +382,7 @@ public class DefaultLawSet implements Law
 	}
 	
 	@Override
-	public void propertyTaxTick(Area A, boolean debugging)
+	public void propertyTaxTick(final Area A, final boolean debugging)
 	{
 		if(lastMonthChecked!=A.getTimeObj().getMonth())
 		{
@@ -392,16 +392,16 @@ public class DefaultLawSet implements Law
 				return;
 			tax=CMath.div(tax,100.0);
 			List<LandTitle> titles=CMLib.law().getAllUniqueLandTitles(A.getMetroMap(),"*",false);
-			final Hashtable<String,Vector<LandTitle>> owners=new Hashtable<String,Vector<LandTitle>>();
+			final Map<String,List<LandTitle>> owners=new Hashtable<String,List<LandTitle>>();
 			for(final LandTitle T : titles)
 			{
-				Vector<LandTitle> D=owners.get(T.getOwnerName());
+				List<LandTitle> D=owners.get(T.getOwnerName());
 				if(D==null)
 				{
 					D=new Vector<LandTitle>();
 					owners.put(T.getOwnerName(),D);
 				}
-				D.addElement(T);
+				D.add(T);
 			}
 			titles=null;
 			final Law.TreasurySet treas=getTreasuryNSafe(A);
@@ -417,7 +417,7 @@ public class DefaultLawSet implements Law
 					responsibleMob=C.getResponsibleMember();
 				else
 					responsibleMob=CMLib.players().getLoadPlayer(owner);
-				final Vector<LandTitle> particulars=owners.get(owner);
+				final List<LandTitle> particulars=owners.get(owner);
 
 				double totalValue=0;
 				double paid=0;
@@ -430,7 +430,7 @@ public class DefaultLawSet implements Law
 				{
 					if(p>0)
 						properties.append(", ");
-					T=(particulars.elementAt(p));
+					T=(particulars.get(p));
 					propertyRooms=T.getAllTitledRooms();
 					if((propertyRooms.size()<2)
 					||(CMLib.map().getArea(T.landPropertyID())!=null))
@@ -450,7 +450,7 @@ public class DefaultLawSet implements Law
 				{
 					for(int p=0;p<particulars.size();p++)
 					{
-						T=(particulars.elementAt(p));
+						T=(particulars.get(p));
 						if(T.backTaxes()<0)
 						{
 							if((-T.backTaxes())>=owed)
@@ -479,7 +479,7 @@ public class DefaultLawSet implements Law
 						boolean owesButNotConfiscated=false;
 						for(int p=0;p<particulars.size();p++)
 						{
-							T=particulars.elementAt(p);
+							T=particulars.get(p);
 							double owedOnThisLand=CMath.mul(T.getPrice(),tax);
 							owedOnThisLand-=(paid/particulars.size());
 							if(owedOnThisLand>0)
@@ -496,17 +496,21 @@ public class DefaultLawSet implements Law
 										clanSet.add(new Pair<Clan,Integer>(C,Integer.valueOf(0)));
 										final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 										for(int i=0;i<channels.size();i++)
-											CMLib.commands().postChannel(channels.get(i),clanSet,CMLib.lang().L("@x1 has lost the title to @x2 due to failure to pay property taxes.",T.getOwnerName(),T.landPropertyID()),false);
+										{
+											CMLib.commands().postChannel(channels.get(i),clanSet,
+												CMLib.lang().L("@x1 has lost the title to @x2 in "+A.Name()+" due to failure to pay "
+														+ "property taxes.",T.getOwnerName(),T.landPropertyID()),false);
+										}
 										if(M!=null)
 										{
 											notifyPlayer(M.Name(),clanC.name(),owed,"","@x1 lost property on @x3.",
-													"@x1 has lost the title to @x4 due to failure to pay property taxes.");
+													"@x1 has lost the title to @x4 in "+A.Name()+" due to failure to pay property taxes.");
 										}
 									}
 									else
 									{
 										notifyPlayer(T.getOwnerName(),"",owed,T.landPropertyID(),"@x1 property lost on @x3.",
-												"@x1 has lost the title to @x4 due to failure to pay property taxes.");
+												"@x1 has lost the title to @x4 in "+A.Name()+" due to failure to pay property taxes.");
 									}
 									T.setBackTaxes(0);
 									T.setOwnerName("");
@@ -532,19 +536,22 @@ public class DefaultLawSet implements Law
 								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
 								for(int i=0;i<channels.size();i++)
 								{
-									CMLib.commands().postChannel(channels.get(i),clanSet,CMLib.lang().L("@x1 owes @x2 in back taxes.  Sufficient funds were not found in a local bank account."
+									CMLib.commands().postChannel(channels.get(i),clanSet,CMLib.lang().L("@x1 owes @x2 in back taxes to "+A.Name()+".  "
+											+ "Sufficient funds were not found in a local bank account."
 											+ "  Failure to pay could result in loss of property. ",clanC.name(),amountOwed),false);
 								}
 								if(M!=null)
 								{
-									notifyPlayer(M.Name(),clanC.name(),owed,"","Taxes Owed by @x1 on @x3.",
-											"@x1 owes @x2 in back taxes.  Sufficient funds were not found in a local bank account.  Failure to pay could result in loss of property.");
+									notifyPlayer(M.Name(),clanC.name(),owed,"",A.Name()+" Taxes Owed by @x1 on @x3.",
+											"@x1 owes @x2 in back taxes to "+A.Name()+".  Sufficient funds were not found in a local bank account.  "
+											+ "Failure to pay could result in loss of property.");
 								}
 							}
 							else
 							{
-								notifyPlayer(owner,"",owed,"","Taxes Owed by @x1 on @x3.",
-										"@x1 owes @x2 in back taxes.  Sufficient were not found in a local bank account.  Failure to pay could result in loss of property.");
+								notifyPlayer(owner,"",owed,"",A.Name()+"Taxes Owed by @x1 on @x3.",
+										"@x1 owes @x2 in back taxes to "+A.Name()+".  Sufficient were not found in a local bank account.  "
+												+ "Failure to pay could result in loss of property.");
 							}
 							if((evasionBits!=null)
 							&&(evasionBits[Law.BIT_CRIMENAME].length()>0)
@@ -566,7 +573,7 @@ public class DefaultLawSet implements Law
 					{
 						for(int p=0;p<particulars.size();p++)
 						{
-							T=particulars.elementAt(p);
+							T=particulars.get(p);
 							if(T.backTaxes()>0)
 							{
 								T.setBackTaxes(0);
