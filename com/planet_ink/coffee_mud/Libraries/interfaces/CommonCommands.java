@@ -43,7 +43,23 @@ import java.util.*;
  */
 public interface CommonCommands extends CMLibrary
 {
+	/**
+	 * Adjusts the mobs age based on ellapsed time,
+	 * and checks for age related diseases and 
+	 * wish someone a happy birthday.
+	 * 
+	 * @param mob the mob to tick
+	 * @param millisSinceLast the ellapsed time
+	 */
 	public void tickAging(MOB mob, long millisSinceLast);
+	
+	/**
+	 * An optional system that consumes mana based on
+	 * effects cast by the player.
+	 * @param mob the mob to consume mana of.
+	 * @param manaConsumeCounter internally manipulated counter
+	 * @return
+	 */
 	public int tickManaConsumption(MOB mob, int manaConsumeCounter);
 	public void delGlobalMonitor(MsgMonitor M);
 	public void monitorGlobalMessage(Room room, CMMsg msg);

@@ -706,7 +706,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		&&(CMProps.getIntVar(CMProps.Int.MANACONSUMEAMT)>0)
 		&&((--manaConsumeCounter)<=0))
 		{
-			final Vector<Ability> expenseAffects=new Vector<Ability>();
+			final List<Ability> expenseAffects=new ArrayList<Ability>(mob.numEffects());
 			manaConsumeCounter=CMProps.getIntVar(CMProps.Int.MANACONSUMETIME);
 			for(final Enumeration<Ability> a=mob.effects();a.hasMoreElements();)
 			{
@@ -723,7 +723,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					{
 						final Ability myA=mob.fetchAbility(A.ID());
 						if(((myA!=null)&&(myA.usageCost(mob,false)[0]>0))||(A.usageCost(mob, false)[0]>0))
-							expenseAffects.addElement(A);
+							expenseAffects.add(A);
 					}
 				}
 			}
@@ -740,7 +740,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						int total=0;
 						for(int a1=0;a1<expenseAffects.size();a1++)
 						{
-							final int lql=CMLib.ableMapper().lowestQualifyingLevel(expenseAffects.elementAt(a1).ID());
+							final int lql=CMLib.ableMapper().lowestQualifyingLevel(expenseAffects.get(a1).ID());
 							if(lql>0)
 								total+=lql;
 							else
@@ -761,7 +761,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> strength of will begins to crumble."));
 					//pick one and kill it
-					final Ability A=expenseAffects.elementAt(CMLib.dice().roll(1,expenseAffects.size(),-1));
+					final Ability A=expenseAffects.get(CMLib.dice().roll(1,expenseAffects.size(),-1));
 					A.unInvoke();
 					expenseAffects.remove(A);
 					reallyEat=basePrice*expenseAffects.size();

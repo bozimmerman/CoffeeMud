@@ -236,7 +236,7 @@ public class Prop_ItemSlot extends Property
 		&&(msg.sourceMinor()==CMMsg.TYP_COMMANDFAIL)
 		&&(msg.targetMessage()!=null)
 		&&(msg.targetMessage().length()>0)
-		&&("Rr".indexOf(msg.targetMessage().charAt(0))==0)
+		&&("Rr".indexOf(msg.targetMessage().charAt(0))>=0)
 		&&(affected!=null))
 		{
 			Vector<String> V=CMParms.parse(msg.targetMessage().toUpperCase());
@@ -351,7 +351,7 @@ public class Prop_ItemSlot extends Property
 					{
 						Item gemI=(Item)E;
 						Ability A=gemI.fetchEffect("Prop_ItemSlotFiller");
-						msg.modify(msg.source(),affected,gemI,CMMsg.MSG_GET,CMLib.lang().L("<S-NAME> remove(s) <O-NAME> from <T-NAME>."));
+						msg.modify(msg.source(),affected,gemI,CMMsg.MSG_HANDS,CMLib.lang().L("<S-NAME> remove(s) <O-NAME> from <T-NAME>."));
 						for(int i=0;i<slots.length;i++)
 						{
 							if(slots[i]==gemI)
