@@ -39,18 +39,19 @@ import java.io.*;
 */
 public class MassMailer implements Runnable
 {
-	private final LinkedList<MassMailerEntry> entries=new LinkedList<MassMailerEntry>();
-	private final CMProps 		  page;
-	private final String		  domain;
-	private final HashSet<String> oldEmailComplaints;
+	private final List<MassMail>entries	= new LinkedList<MassMail>();
+	private final CMProps		page;
+	private final String		domain;
+	private final Set<String>	oldEmailComplaints;
 
-	private static class MassMailerEntry
+	private static class MassMail
 	{
-		public final JournalEntry mail;
-		public final String  journalName;
-		public final String  overrideReplyTo;
-		public final boolean usePrivateRules;
-		public MassMailerEntry(JournalEntry mail, String journalName, String overrideReplyTo, boolean usePrivateRules)
+		public final JournalEntry	mail;
+		public final String			journalName;
+		public final String			overrideReplyTo;
+		public final boolean		usePrivateRules;
+
+		public MassMail(JournalEntry mail, String journalName, String overrideReplyTo, boolean usePrivateRules)
 		{
 			this.mail=mail;
 			this.journalName=journalName;
@@ -59,7 +60,7 @@ public class MassMailer implements Runnable
 		}
 	}
 
-	public MassMailer(CMProps page, String domain, HashSet<String> oldEmailComplaints)
+	public MassMailer(CMProps page, String domain, Set<String> oldEmailComplaints)
 	{
 		this.page=page;
 		this.domain=domain;
@@ -109,7 +110,7 @@ public class MassMailer implements Runnable
 
 	public void addMail(JournalEntry mail, String journalName, String overrideReplyTo, boolean usePrivateRules)
 	{
-		entries.add(new MassMailerEntry(mail,journalName,overrideReplyTo,usePrivateRules));
+		entries.add(new MassMail(mail,journalName,overrideReplyTo,usePrivateRules));
 	}
 
 	protected boolean rightTimeToSendEmail(long email)
@@ -133,7 +134,7 @@ public class MassMailer implements Runnable
 	@Override
 	public void run()
 	{
-		for(final MassMailerEntry entry : entries)
+		for(final MassMail entry : entries)
 		{
 			final JournalEntry mail=entry.mail;
 			final String journalName=entry.journalName;

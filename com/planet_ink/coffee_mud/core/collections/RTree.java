@@ -312,7 +312,8 @@ public class RTree<T extends BoundedObject>
 				else
 					parent = g1;
 
-				for (int i = 0; i < n.children.size(); i++)	{
+				for (int i = 0; i < n.children.size(); i++)
+				{
 					parent.children.add(n.children.get(i));
 					n.children.get(i).parent = parent;
 				}

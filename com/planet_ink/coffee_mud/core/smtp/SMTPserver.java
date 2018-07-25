@@ -106,7 +106,7 @@ public class SMTPserver extends Thread implements Tickable
 	private String 		domain="coffeemud";
 	private int			maxThreads = 3;
 	private int			threadTimeoutMins = 10;
-	private final HashSet<String> 		 oldEmailComplaints=new HashSet<String>();
+	private final Set<String> 		 oldEmailComplaints=new HashSet<String>();
 	private final CMThreadPoolExecutor  	 threadPool;
 
 	public SMTPserver()
@@ -500,7 +500,10 @@ public class SMTPserver extends Thread implements Tickable
 		CMLib.killThread(this,1000,30);
 	}
 
-	public void shutdown()	{shutdown(null);}
+	public void shutdown()
+	{
+		shutdown(null);
+	}
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -514,7 +517,7 @@ public class SMTPserver extends Thread implements Tickable
 		{
 			final MassMailer massMailer = new MassMailer(page,domain,oldEmailComplaints);
 
-			final TreeMap<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
+			final Map<String, JournalsLibrary.SMTPJournal> set=getJournalSets();
 			long lastAllProcessing=0;
 			if(Resources.isPropResource("SMTP","LASTALLPROCESING"))
 				lastAllProcessing=CMath.s_long(Resources.getPropResource("SMTP","LASTALLPROCESING"));
@@ -621,12 +624,14 @@ public class SMTPserver extends Thread implements Tickable
 				{
 					final List<JournalEntry> emails=CMLib.database().DBReadJournalMsgsByUpdateDate(mailboxName(), true);
 					if(emails!=null)
-					for(final JournalEntry mail : emails)
 					{
-						if((mail.data().length()>0)&&(isAForwardingJournal(mail.data())))
-							massMailer.addMail(mail, mailboxName(), mail.data(), true);
-						else
-							massMailer.addMail(mail, mailboxName(), null, true);
+						for(final JournalEntry mail : emails)
+						{
+							if((mail.data().length()>0)&&(isAForwardingJournal(mail.data())))
+								massMailer.addMail(mail, mailboxName(), mail.data(), true);
+							else
+								massMailer.addMail(mail, mailboxName(), null, true);
+						}
 					}
 				}
 			}

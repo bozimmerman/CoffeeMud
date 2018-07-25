@@ -136,7 +136,8 @@ public class AnimalTaming extends CommonSkill
 								if(animal.numBehaviors()==0)
 									break;
 								final Behavior B=animal.fetchBehavior(CMLib.dice().roll(1,animal.numBehaviors(),-1));
-								if(B!=null)	{
+								if(B!=null)
+								{
 									animal.delBehavior(B);
 								}
 								animal.recoverCharStats();

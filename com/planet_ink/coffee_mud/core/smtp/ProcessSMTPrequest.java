@@ -40,20 +40,21 @@ import java.io.*;
 */
 public class ProcessSMTPrequest implements Runnable
 {
-	private final static String cr = "\r\n";
-	private final static String S_250 = "250 OK";
-	private final static long IDLE_TIMEOUT=10000;
+	private final static String	cr				= "\r\n";
+	private final static String	S_250			= "250 OK";
+	private final static long	IDLE_TIMEOUT	= 10000;	
+	
 	private static volatile AtomicInteger instanceCnt = new AtomicInteger(0);
 
-	private Socket  		 sock;
-	private SMTPserver  	 server=null;
-	private StringBuffer	 data=null;
-	protected String		 from=null;
-	protected MOB			 fromM=null;
-	protected String		 domain=null;
-	protected String		 runnableName;
-	protected boolean   	 debug=false;
-	protected Vector<String> to=null;
+	private Socket				sock;
+	private SMTPserver			server	= null;
+	private StringBuffer		data	= null;
+	protected String			from	= null;
+	protected MOB				fromM	= null;
+	protected String			domain	= null;
+	protected String			runnableName;
+	protected boolean			debug	= false;
+	protected Vector<String>	to		= null;
 
 	public ProcessSMTPrequest(Socket a_sock, SMTPserver a_Server)
 	{
@@ -91,11 +92,11 @@ public class ProcessSMTPrequest implements Runnable
 			return server.getAnEmailJournal(name);
 		if(server.mailboxName().length()>0)
 		{
-			if(CMLib.players().playerExists(name))
+			if(CMLib.players().playerExistsAllHosts(name))
 				return CMStrings.capitalizeAndLower(name);
 			if(checkFROMcase) // accounts cannot receive emails
 			{
-				if(CMLib.players().accountExists(name))
+				if(CMLib.players().accountExistsAllHosts(name))
 					return CMStrings.capitalizeAndLower(name);
 			}
 		}
@@ -105,6 +106,8 @@ public class ProcessSMTPrequest implements Runnable
 	public MOB getAccountMob(String s)
 	{
 		MOB M=CMLib.players().getPlayer(s);
+		if(M == null)
+			M=CMLib.players().getPlayerAllHosts(s);
 		if(M!=null)
 			return M;
 		if(CMLib.players().playerExists(s))
