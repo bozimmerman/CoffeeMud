@@ -119,16 +119,23 @@ public class Group extends StdCommand
 		orderedGroup.addAll(group);
 		group.clear();
 		final StringBuffer msg=new StringBuffer("");
-		for (final Object element : orderedGroup)
+		for (final MOB follower : orderedGroup)
 		{
-			final MOB follower=(MOB)element;
 			if((follower!=null)
 			&& (follower!=mob))
 			{
 				if(follower.amFollowing()==null)
 				{
-					Log.errOut(follower.Name()+" should be in "+mob.Name()+"'s group, but is in no ones.  Fixing.");
-					follower.setFollowing(mob);
+					for (final MOB leader : orderedGroup)
+					{
+						if((leader!=null)
+						&&(leader != follower)
+						&&(leader.isFollowedBy(follower)))
+						{
+							Log.errOut(follower.Name()+" should be in "+mob.Name()+"'s group, but is in no ones.  Fixing.");
+							follower.setFollowing(leader);
+						}
+					}
 				}
 			}
 			msg.append(showWhoLong(mob,follower));
