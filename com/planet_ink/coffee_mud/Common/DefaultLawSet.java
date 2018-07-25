@@ -418,14 +418,13 @@ public class DefaultLawSet implements Law
 				double owed=0;
 				final StringBuffer properties=new StringBuffer("");
 				LandTitle T=null;
-				List<Room> propertyRooms=null;
 
 				for(int p=0;p<particulars.size();p++)
 				{
 					if(p>0)
 						properties.append(", ");
 					T=(particulars.get(p));
-					propertyRooms=T.getAllTitledRooms();
+					final List<Room> propertyRooms=T.getAllTitledRooms();
 					if((propertyRooms.size()<2)
 					||(CMLib.map().getArea(T.landPropertyID())!=null))
 						properties.append(T.landPropertyID());

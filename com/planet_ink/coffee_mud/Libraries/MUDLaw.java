@@ -145,32 +145,43 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	{
 		final Vector<LandTitle> V=new Vector<LandTitle>();
 		final HashSet<Room> roomsDone=new HashSet<Room>();
+		final Set<String> titlesDone = new HashSet<String>();
 		Room R=null;
 		for(;e.hasMoreElements();)
 		{
 			R=e.nextElement();
-			final LandTitle T=getLandTitle(R);
+			LandTitle T=getLandTitle(R);
 			if((T!=null)
 			&&(!V.contains(T))
+			&&(!titlesDone.contains(T.getTitleID()))
 			&&(includeRentals||(!T.rentalProperty()))
 			&&((owner==null)
 				||(owner.length()==0)
 				||(owner.equals("*")&&(T.getOwnerName().length()>0))
 				||(T.getOwnerName().equals(owner))))
 			{
+				titlesDone.add(T.getTitleID());
+				int price = T.getPrice();
 				final List<Room> V2=T.getAllTitledRooms();
-				boolean proceed=true;
 				for(int v=0;v<V2.size();v++)
 				{
 					final Room R2=V2.get(v);
-					if(!roomsDone.contains(R2))
-						roomsDone.add(R2);
-					else
-						proceed=false;
+					if(R2 != null)
+					{
+						if(!roomsDone.contains(R2))
+						{
+							roomsDone.add(R2);
+							final LandTitle T2=getLandTitle(R2);
+							if((T2 != null)
+							&&(T2.getPrice() > price))
+							{
+								T=T2;
+								price=T2.getPrice();
+							}
+						}
+					}
 				}
-				if(proceed)
-					V.addElement(T);
-
+				V.addElement(T); // should be the best taxable title
 			}
 		}
 		return V;
