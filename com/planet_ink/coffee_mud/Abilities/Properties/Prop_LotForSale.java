@@ -58,6 +58,7 @@ public class Prop_LotForSale extends Prop_LotsForSale
 	{
 		final LandTitle newTitle=(LandTitle)this.copyOf();
 		newTitle.setBackTaxes(0);
+		newTitle.setPrice(1); // because you don't have to buy it.
 		return newTitle;
 	}
 

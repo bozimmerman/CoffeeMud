@@ -394,7 +394,8 @@ public class DefaultLawSet implements Law
 					D=new Vector<LandTitle>();
 					owners.put(T.getOwnerName(),D);
 				}
-				D.add(T);
+				if(T.getPrice()>1)
+					D.add(T);
 			}
 			titles=null;
 			final Law.TreasurySet treas=getTreasuryNSafe(A);
