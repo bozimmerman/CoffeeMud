@@ -652,6 +652,9 @@ public class Age extends StdAbility
 						babe.setName(name);
 						babe.setDisplayText(L("@x1 stands here.",name));
 					}
+					final Ability psA=babe.fetchEffect("Prop_SafePet");
+					if(psA != null)
+						babe.delEffect(psA);
 					CMLib.database().DBDeletePlayerData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
 					if(liege!=babe.amFollowing())
 						babe.amFollowing().tell(L("@x1 has just grown up to be a mob.",babe.Name()));
@@ -728,10 +731,11 @@ public class Age extends StdAbility
 				babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
 				babe.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,10);
 				babe.baseCharStats().setStat(CharStats.STAT_DEXTERITY,10);
-				babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,10);
+				if(!CMLib.flags().isAnimalIntelligence(babe))
+					babe.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,10);
 				babe.baseCharStats().setStat(CharStats.STAT_STRENGTH,10);
 				babe.baseCharStats().setStat(CharStats.STAT_WISDOM,10);
-				getMyRace().setHeightWeight(babe.basePhyStats(), (char)babe.baseCharStats().getStat(CharStats.STAT_GENDER));
+				babe.baseCharStats().getMyRace().setHeightWeight(babe.basePhyStats(), (char)babe.baseCharStats().getStat(CharStats.STAT_GENDER));
 				babe.baseState().setHitPoints(15);
 				babe.baseState().setMana(25);
 				babe.baseState().setMovement(80);
