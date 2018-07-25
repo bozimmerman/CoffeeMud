@@ -417,7 +417,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 					{
 						final long prevDistance=map.getDistanceFrom(startCoords, cO.coordinates());
 						final double minDistance=map.getMinDistanceFrom(O, prevDistance, cO);
-						final double gravitationalMove=this.getGravityForce(O, cO);
+						final double gravitationalMove=getGravityForce(O, cO);
 						if(gravitationalMove > 0)
 						{
 							if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))

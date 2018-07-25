@@ -45,7 +45,9 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 
 	private static final long STALE_WARN_INTERVAL = 5 * 30 * 1000;
 	
-	protected static Climate climateObj=null;
+	protected static Climate		climateObj	= null;
+	protected volatile ShipEngine	lastEngine	= null;
+	protected volatile double		lastEThrust	= 0.0;
 
 	protected volatile int	mass			= -1;
 	protected SpaceObject	spaceSource		= null;
@@ -57,6 +59,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	protected volatile long	nextStaleWarn	= System.currentTimeMillis() + STALE_WARN_INTERVAL;
 	protected Set<String> 	staleAirList	= new HashSet<String>();
 	protected Ability 		gravityFloaterA = null;
+	
 	
 	@Override
 	public String ID()
@@ -591,10 +594,35 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		}
 		return gravityFloaterA;
 	}
-	
+
 	protected void doGravityChanges()
 	{
-		final boolean gravExistsNow = getShipFlag(ShipFlag.IN_THE_AIR) || (this.getIsDocked()!=null);
+		if((lastEngine != null)
+		&&(!lastEngine.amDestroyed())
+		&&(lastEngine.activated())
+		&&(lastEngine.getThrust()>1.0)
+		&&(CMLib.map().areaLocation(lastEngine)==this))
+			lastEThrust = lastEngine.getThrust();
+		else
+		{
+			lastEngine = null;
+			lastEThrust = 0.0;
+			final List<Electronics> electronics=CMLib.tech().getMakeRegisteredElectronics(CMLib.tech().getElectronicsKey(this));
+			for(final Electronics E : electronics)
+			{
+				if((E instanceof ShipEngine)
+				&&(E.activated())
+				&&((lastEngine == null)
+					||(((ShipEngine)E).getThrust() > lastEngine.getThrust())))
+						lastEngine = (ShipEngine)E;
+			}
+			lastEThrust =  (lastEngine == null) ? 0.0 : lastEngine.getThrust();
+		}
+		final boolean gravExistsNow = 
+				getShipFlag(ShipFlag.IN_THE_AIR) 
+			|| (getIsDocked() != null)
+			|| (lastEThrust > 0.2);
+
 		if(gravExistsNow == getShipFlag(ShipFlag.NO_GRAVITY)) // opposite, so it needs changing
 		{
 			final Ability floater = getGravityFloat();
@@ -608,6 +636,14 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 				else
 					msgStr=L("You no longer feel the pull of gravity.");
 				final CMMsg msg=CMClass.getMsg(floater.invoker(), spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.MSG_QUIETMOVEMENT,msgStr);
+				CMMsg gmsg;
+				if(lastEThrust >= (SpaceObject.ACCELLERATION_PASSOUT-0.49))
+				{
+					gmsg=CMClass.getMsg(floater.invoker(), null, me, CMMsg.NO_EFFECT, null, CMMsg.NO_EFFECT, null, CMMsg.MSG_GRAVITY, null);
+					gmsg.setValue((int)Math.round(lastEThrust));
+				}
+				else
+					gmsg=null;
 				boolean cancelled = false;
 				for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 				{
@@ -616,9 +652,20 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 					{
 						if(!R.okMessage(msg.source(), msg))
 							cancelled=true;
+						if((gmsg != null) && (!R.okMessage(gmsg.source(), gmsg)))
+							gmsg = null;
 					}
 				}
 				setShipFlag(ShipFlag.NO_GRAVITY, !gravExistsNow);
+				if(gmsg != null)
+				{
+					for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
+					{
+						final Room R=r.nextElement();
+						if(R!=null)
+							R.send(gmsg.source(), gmsg);
+					}
+				}
 				if(cancelled)
 				{
 					return;
@@ -651,7 +698,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			}
 		}
 	}
-	
+
 	protected void doAtmosphereChanges()
 	{
 		final Set<Room> doneRooms=new HashSet<Room>();
@@ -667,7 +714,8 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 				moveAtmosphereOut(doneRooms,exitRoom,atmo);
 			}
 		}
-		if((System.currentTimeMillis() > nextStaleWarn)&&(staleAirList.size()>0))
+		if((System.currentTimeMillis() > nextStaleWarn)
+		&&(staleAirList.size()>0))
 		{
 			nextStaleWarn = System.currentTimeMillis() + STALE_WARN_INTERVAL;
 			for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)

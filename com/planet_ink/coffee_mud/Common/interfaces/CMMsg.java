@@ -1193,6 +1193,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_COMMANDREJECT=132;
 	/** MINOR_MASK minor action code type, denoting a completed item recipe learn activty */
 	public static final int TYP_RECIPELEARNED=133;
+	/** MINOR_MASK minor action code type, denoting a gravitic move */
+	public static final int TYP_GRAVITY=134;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1548,6 +1550,8 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_STARTUP=MASK_ALWAYS|TYP_STARTUP;
 	/** combined MAJOR and MINOR codes for useful event message type for a command msgs rejection */
 	public static final int MSG_COMMANDREJECT=MASK_ALWAYS|TYP_COMMANDREJECT;
+	/** combined MAJOR and MINOR codes for useful event message type for a activate event */
+	public static final int MSG_GRAVITY=MASK_MOVE|TYP_GRAVITY;
 	
 	/**
 	 * An enum to use for an external message check from inside 

@@ -492,7 +492,7 @@ public class DefaultLawSet implements Law
 										{
 											CMLib.commands().postChannel(channels.get(i),clanSet,
 												CMLib.lang().L("@x1 has lost the title to @x2 in "+A.Name()+" due to failure to pay "
-														+ "property taxes.",T.getOwnerName(),T.landPropertyID()),false);
+															+ "property taxes.",T.getOwnerName(),T.landPropertyID()),false);
 										}
 										if(M!=null)
 										{

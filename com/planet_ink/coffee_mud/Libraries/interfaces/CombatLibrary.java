@@ -801,4 +801,12 @@ public interface CombatLibrary extends CMLibrary
 	 * @return true if the message na or save only, false to cancel
 	 */
 	public boolean checkDamageSaves(final MOB mob, final CMMsg msg);
+	
+	/**
+	 * Handles the effects of extreme gravity and other acceleration
+	 * as from a ship.
+	 * @param mob the mob feeling the effect
+	 * @param msg the message doing the effect
+	 */
+	public void handleBeingGravitied(final MOB mob, CMMsg msg);
 }

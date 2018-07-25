@@ -2113,6 +2113,46 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
+	public void handleBeingGravitied(final MOB mob, CMMsg msg)
+	{
+		if(msg.value() >= SpaceObject.ACCELLERATION_PASSOUT)
+		{
+			final Room R=mob.location();
+			if(R==null)
+				return;
+			if(msg.value() >= SpaceObject.ACCELLERATION_INSTANTDEATH)
+			{
+				R.show(mob,null,null,CMMsg.MSG_OK_ACTION, L("<S-NAME> is crushed to jelly by accelleration!"));
+				postDeath(null, mob, msg);
+			}
+			else
+			if(msg.value() >= SpaceObject.ACCELLERATION_UNCONSCIOUSNESS)
+			{
+				Ability A=mob.fetchEffect("Fighter_Whomp");
+				if(A==null)
+					A=CMClass.getAbility("Fighter_Whomp");
+				A.startTickDown(msg.source(), mob, 30);
+				mob.recoverPhyStats();
+				if(CMLib.flags().isSleeping(mob))
+					R.show(mob,null,null,CMMsg.MSG_OK_ACTION, L("<S-NAME> fall(s) unconscious from extreme accelleration."));
+			}
+			else
+			if(msg.value() >= SpaceObject.ACCELLERATION_PASSOUT)
+			{
+				Ability A=mob.fetchEffect("Fighter_Whomp");
+				if(A==null)
+				{
+					A=CMClass.getAbility("Fighter_Whomp");
+					A.startTickDown(msg.source(), mob, 3);
+					mob.recoverPhyStats();
+					if(CMLib.flags().isSleeping(mob))
+						R.show(mob,null,null,CMMsg.MSG_OK_ACTION, L("<S-NAME> pass(es) out from high accelleration."));
+				}
+			}
+		}
+	}
+	
+	@Override
 	public void handleBeingHealed(CMMsg msg)
 	{
 		if(!(msg.target() instanceof MOB))
