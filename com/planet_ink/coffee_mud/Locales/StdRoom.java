@@ -912,6 +912,28 @@ public class StdRoom implements Room
 				break;
 			}
 		}
+		
+		if((msg.othersMinor() == CMMsg.TYP_GRAVITY)
+		&&(msg.targetMinor() == CMMsg.NO_EFFECT)
+		&&(numInhabitants()>0))
+		{
+			final CMMsg gmsg = (CMMsg)msg.copyOf();
+			gmsg.setTargetCode(msg.othersCode());
+			gmsg.setOthersCode(CMMsg.NO_EFFECT);
+			final Room me=this;
+			eachInhabitant(new EachApplicable<MOB>() 
+			{
+				final Room R=me;
+				@Override
+				public void apply(MOB M)
+				{
+					gmsg.setTarget(M);
+					if(R.okMessage(M, gmsg))
+						R.send(M, gmsg);
+				}
+			});
+		}
+		
 		if(numItems()>0)
 		{
 			eachItem(new EachApplicable<Item>()

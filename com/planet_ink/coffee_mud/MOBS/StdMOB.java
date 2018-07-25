@@ -3176,6 +3176,9 @@ public class StdMOB implements MOB
 				if(msg.target() instanceof MOB)
 					CMLib.expertises().handleBeingTaught(msg.source(), (MOB)msg.target(), msg.tool(), msg.targetMessage());
 				break;
+			case CMMsg.TYP_GRAVITY:
+				CMLib.combat().handleBeingGravitied(this, msg);
+				break;
 			default:
 				break;
 			}
@@ -3442,13 +3445,6 @@ public class StdMOB implements MOB
 				CMLib.combat().makeFollowersFight(this, (MOB) msg.target(), srcM);
 			
 			//String othersMessage = msg.othersMessage(); // see comment below
-			switch(othersMinor)
-			{
-			case CMMsg.TYP_GRAVITY:
-				CMLib.combat().handleBeingGravitied(this, msg);
-				break;
-			}
-
 			//TODO: unravel this into a switch statement somehow...
 			if(isAttributeSet(Attrib.NOBATTLESPAM)
 			&&(((msg.targetMinor()==CMMsg.TYP_DAMAGE)
