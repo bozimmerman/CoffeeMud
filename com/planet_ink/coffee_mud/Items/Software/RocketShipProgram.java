@@ -1305,6 +1305,21 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: Malfunctioning launch thrusters interface."));
 					return;
 				}
+				boolean dampenerFound = false;
+				for(TechComponent T : this.getDampeners())
+				{
+					if(T.activated()
+					&&((!T.subjectToWearAndTear()))||(T.usesRemaining()>30))
+						dampenerFound = true;
+				}
+				if(!dampenerFound)
+				{
+					super.addScreenMessage(L("No inertial dampeners found.  Limiting accelleration to 3G."));
+					this.targetAccelleration = Double.valueOf(SpaceObject.ACCELLERATION_TYPICALSPACEROCKET);
+				}
+				else
+					this.targetAccelleration = Double.valueOf(30);
+					
 				this.programEngines=new XVector<ShipEngine>(engineE);
 				if(uword.equalsIgnoreCase("ORBIT"))
 					this.rocketState = RocketShipProgram.RocketStateMachine.ORBITSEARCH;

@@ -473,6 +473,18 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		catch(final Exception e)
 		{
 		}
+		
+		C=CMClass.getCommand("Shutdown");
+		try
+		{
+			Object o = C.executeInternal(mob, 0, new Object[0]);
+			if((o instanceof String)
+			&&(((String)o).length()>0))
+				mob.tell((String)o);
+		}
+		catch(final Exception e)
+		{
+		}
 	}
 
 	@Override

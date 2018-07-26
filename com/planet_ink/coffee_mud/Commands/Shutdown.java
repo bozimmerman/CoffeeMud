@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMProps.Bool;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -54,7 +55,7 @@ public class Shutdown extends StdCommand implements Tickable
 	protected boolean	keepItDown					= true;
 	protected String	externalCommand				= null;
 
-	protected void showDisplayableShutdownTimeRemaining()
+	protected String getDisplayableShutdownTimeRemaining()
 	{
 		final long until = shuttingDownCompletes - System.currentTimeMillis();
 		String tm = CMLib.time().date2EllapsedTime(until, TimeUnit.SECONDS, false);
@@ -62,8 +63,14 @@ public class Shutdown extends StdCommand implements Tickable
 			tm = " now";
 		else
 			tm=" in "+tm;
+		return L("\n\r\n\r^Z@x1 will be @x2@x3^.^?\n\r",CMProps.getVar(CMProps.Str.MUDNAME),(keepItDown?"shutting down":"restarting"),tm);
+	}
+	
+	protected void showDisplayableShutdownTimeRemaining()
+	{
+		final String str = getDisplayableShutdownTimeRemaining();
 		for(final Session S : CMLib.sessions().allIterable())
-		  S.colorOnlyPrintln(L("\n\r\n\r^Z@x1 will be @x2@x3^.^?\n\r",CMProps.getVar(CMProps.Str.MUDNAME),(keepItDown?"shutting down":"restarting"),tm));
+		  S.colorOnlyPrintln(str);
 	}
 
 	@Override
@@ -78,6 +85,11 @@ public class Shutdown extends StdCommand implements Tickable
 		for(int i=commands.size()-1;i>=1;i--)
 		{
 			final String s=commands.get(i);
+			if(s.equalsIgnoreCase("CHECK"))
+			{
+				
+			}
+			else
 			if(s.equalsIgnoreCase("RESTART"))
 			{
 				keepItDown = false;
@@ -208,4 +220,49 @@ public class Shutdown extends StdCommand implements Tickable
 		}
 		return true;
 	}
+	
+	private final static Class<?>[][] internalParameters=new Class<?>[][]{{}, {Boolean.class}, {Long.class}};
+
+	@Override
+	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	{
+		if(!super.checkArguments(internalParameters, args))
+			return "";
+		if(args.length==1)
+		{
+			if(args[0] instanceof Boolean)
+			{
+				Boolean upDn = (Boolean)args[0];
+				if(CMProps.getBoolVar(Bool.MUDSHUTTINGDOWN))
+					return Boolean.FALSE;
+				if(CMLib.threads().isTicking(this, Tickable.TICKID_AREA))
+					CMLib.threads().deleteTick(this, Tickable.TICKID_AREA);
+				shuttingDownMob=null;
+				shuttingDownCompletes=0;
+				shuttingDownNextAnnounce=0;
+				if(upDn.booleanValue())
+					startShutdown(mob);
+				return Boolean.TRUE;
+			}
+			else
+			if(args[0] instanceof Long)
+			{
+				Long millis = (Long)args[0];
+				shuttingDownMob = mob;
+				shuttingDownCompletes = millis.longValue();
+				shuttingDownNextAnnounce = System.currentTimeMillis() + ((shuttingDownCompletes - System.currentTimeMillis())/2)-100;
+				if(!CMLib.threads().isTicking(this, Tickable.TICKID_AREA))
+					CMLib.threads().startTickDown(this, Tickable.TICKID_AREA, 1);
+				showDisplayableShutdownTimeRemaining();
+				return Boolean.TRUE;
+			}
+			
+		}
+		if((shuttingDownMob == null)
+		||(shuttingDownCompletes == 0)
+		||(shuttingDownNextAnnounce == 0))
+			return "";
+		return this.getDisplayableShutdownTimeRemaining();
+	}
+
 }
