@@ -82,8 +82,7 @@ public class StdShipDampener extends StdElecCompItem
 		}
 		return myShip.get();
 	}
-	
-	
+
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
@@ -100,8 +99,8 @@ public class StdShipDampener extends StdElecCompItem
 			if(this.subjectToWearAndTear() && this.usesRemaining()<100)
 				wearAndTear = Math.min(1.0, reliability * CMath.div(this.usesRemaining(), 100.0));
 			
-			final double amountNeeded = (msg.value()-1.0) * ship.getShipArea().numberOfProperIDedRooms();
-			final double powerUsed = amountNeeded * efficiency; // eff is from 0.5 (great) to 2.0 (terrible)
+			final double amountNeeded = (msg.value()-1.0);
+			final double powerUsed = CMath.mul(ship.getShipArea().numberOfProperIDedRooms() , efficiency ); // eff is from 0.5 (great) to 2.0 (terrible)
 			double powerFactor = 1.0;
 			if(powerUsed > this.powerRemaining())
 			{
