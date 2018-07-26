@@ -60,6 +60,7 @@ public interface ElecPanel extends Electronics
 		TechType.SHIP_ENVIRO_CONTROL,
 		TechType.SHIP_GENERATOR,
 		TechType.SHIP_DAMPENER,
+		TechType.SHIP_GRAVGEN,
 		TechType.SHIP_TRACTOR,
 	};
 	

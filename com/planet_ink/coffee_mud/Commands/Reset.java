@@ -2488,6 +2488,16 @@ public class Reset extends StdCommand
 				"Apex Ltd",
 				};
 				makeManufacturer(names, types);
+				types=new TechType[]{TechType.SHIP_GRAVGEN};
+				names=new String[]{
+				"S.H. Ltd",
+				"Malik-Ni",
+				"HsuiCorp",
+				"RiddleCorp",
+				"TotCorp",
+				"Apex Ltd",
+				};
+				makeManufacturer(names, types);
 				types=new TechType[]{TechType.SHIP_ENVIRO_CONTROL};
 				names=new String[]{
 				"YehCorp",

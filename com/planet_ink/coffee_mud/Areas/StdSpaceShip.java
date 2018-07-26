@@ -620,9 +620,11 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		}
 		final boolean gravExistsNow = 
 				getShipFlag(ShipFlag.IN_THE_AIR) 
+			|| getShipFlag(ShipFlag.ARTI_GRAV) 
 			|| (getIsDocked() != null)
 			|| (lastEThrust > 0.2);
-
+		
+		setShipFlag(ShipFlag.ARTI_GRAV, false);
 		if(gravExistsNow == getShipFlag(ShipFlag.NO_GRAVITY)) // opposite, so it needs changing
 		{
 			final Ability floater = getGravityFloat();
@@ -652,7 +654,9 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 					{
 						if(!R.okMessage(msg.source(), msg))
 							cancelled=true;
-						if((gmsg != null) && (!R.okMessage(gmsg.source(), gmsg)))
+						if((gmsg != null) 
+						&& ((!R.okMessage(gmsg.source(), gmsg))
+							||((gmsg.value() < (SpaceObject.ACCELLERATION_PASSOUT-0.49)))))
 							gmsg = null;
 					}
 				}

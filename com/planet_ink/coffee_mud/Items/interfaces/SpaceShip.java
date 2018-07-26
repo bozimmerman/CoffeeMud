@@ -45,7 +45,8 @@ public interface SpaceShip extends SpaceObject, BoardableShip
 	public enum ShipFlag
 	{
 		IN_THE_AIR,
-		NO_GRAVITY
+		NO_GRAVITY,
+		ARTI_GRAV
 	}
 
 	/**
