@@ -370,8 +370,25 @@ public class CMSecurity
 		final MaskingLibrary.CompiledZMask mask=i().compiledSysop;
 		if(mask == null)
 		{
-			Log.errOut("Compiled Archon Mask was not set! Setting default.");
-			instance().compiledSysop=CMLib.masking().maskCompile("-ANYCLASS +Archon");
+			final String maskStr = CMProps.instance().getStr("SYSOPMASK","");
+			if((maskStr != null)&&(maskStr.length()>0))
+			{
+				Log.errOut("Compiled Archon Mask was not set! Using props entry.");
+				instance().compiledSysop=CMLib.masking().maskCompile(maskStr);
+			}
+			else
+			if((secs[0] != null)
+			&&(secs[0] != i())
+			&&(secs[0].compiledSysop != null))
+			{
+				Log.errOut("Compiled Archon Mask was not set! Using base instance.");
+				instance().compiledSysop=secs[0].compiledSysop;
+			}
+			else
+			{
+				instance().compiledSysop=CMLib.masking().maskCompile("-ANYCLASS +Archon");
+				Log.errOut("Compiled Archon Mask was not set! Using core default.");
+			}
 			return isASysOp(mob);
 		}
 		return CMLib.masking().maskCheck(mask,mob,true)
@@ -392,8 +409,25 @@ public class CMSecurity
 		final MaskingLibrary.CompiledZMask mask=i().compiledSysop;
 		if(mask == null)
 		{
-			Log.errOut("Compiled Archon Mask was not set! Setting default.");
-			instance().compiledSysop=CMLib.masking().maskCompile("-ANYCLASS +Archon");
+			final String maskStr = CMProps.instance().getStr("SYSOPMASK","");
+			if((maskStr != null)&&(maskStr.length()>0))
+			{
+				Log.errOut("Compiled Archon Mask was not set! Using props entry.");
+				instance().compiledSysop=CMLib.masking().maskCompile(maskStr);
+			}
+			else
+			if((secs[0] != null)
+			&&(secs[0] != i())
+			&&(secs[0].compiledSysop != null))
+			{
+				Log.errOut("Compiled Archon Mask was not set! Using base instance.");
+				instance().compiledSysop=secs[0].compiledSysop;
+			}
+			else
+			{
+				Log.errOut("Compiled Archon Mask was not set! Setting default.");
+				instance().compiledSysop=CMLib.masking().maskCompile("-ANYCLASS +Archon");
+			}
 			return isASysOp(mob);
 		}
 		return CMLib.masking().maskCheck(mask,mob);
