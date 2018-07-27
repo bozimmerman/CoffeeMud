@@ -4171,8 +4171,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 						public String stringify(Object o)
 						{
 							String s=baseStringer.stringify(o);
-							if((s!=null)&&(s.length()>0)&&(o instanceof Behavior) && (((Behavior)o).canImprove(P)))
-								s="^w"+s+"^n";
+							if((s!=null)&&(s.length()>0)
+							&&(o instanceof Behavior) 
+							&& (((Behavior)o).canImprove(P)))
+								s="^H"+s+"^N";
 							return s;
 						}
 					};
