@@ -826,6 +826,10 @@ public class CraftingSkill extends GatheringSkill
 			if(rscs.size()==0)
 				rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 			final int material;
+			if(((rscs.get(0).intValue()&RawMaterial.RESOURCE_MASK)>0)
+			&&((rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)>0))
+				material = rscs.get(0).intValue();
+			else
 			switch(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)
 			{
 			case RawMaterial.MATERIAL_CLOTH:
