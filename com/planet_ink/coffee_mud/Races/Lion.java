@@ -115,7 +115,7 @@ public class Lion extends GreatCat
 				for(int i=0;i<4;i++)
 				{
 					resources.addElement(makeResource
-					(L("a strip of @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur")));
+					(L("a strip of @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur",name().toLowerCase())));
 				}
 				resources.addElement(makeResource
 				(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));

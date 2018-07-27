@@ -243,7 +243,7 @@ public class Monkey extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				(L("some @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur")));
+				(L("some @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur",name().toLowerCase())));
 				resources.addElement(makeResource
 				(L("some @x1 fingers",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource

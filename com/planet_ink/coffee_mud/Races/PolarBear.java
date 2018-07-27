@@ -247,7 +247,7 @@ public class PolarBear extends StdRace
 				for(int i=0;i<5;i++)
 				{
 					resources.addElement(makeResource
-					(L("a strip of white @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur")));
+					(L("a strip of white @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur",name().toLowerCase())));
 					resources.addElement(makeResource
 					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				}

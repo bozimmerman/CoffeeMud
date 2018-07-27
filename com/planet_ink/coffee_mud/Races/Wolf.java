@@ -291,7 +291,7 @@ public class Wolf extends StdRace
 				resources.addElement(makeResource
 				(L("some @x1 claws",name().toLowerCase()),RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource
-				(L("some @x1 hair",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur")));
+				(L("some @x1 hair",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur",name().toLowerCase())));
 				resources.addElement(makeResource
 				(L("a pound of @x1 meat",name().toLowerCase()),RawMaterial.RESOURCE_MEAT));
 				resources.addElement(makeResource

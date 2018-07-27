@@ -257,7 +257,7 @@ public class Beaver extends StdRace
 		{
 			if (resources.size() == 0)
 			{
-				resources.addElement(makeResource(L("some @x1 hair", name().toLowerCase()), RawMaterial.RESOURCE_FUR,L("@x1 fur")));
+				resources.addElement(makeResource(L("some @x1 hair", name().toLowerCase()), RawMaterial.RESOURCE_FUR,L("@x1 fur",name().toLowerCase())));
 				resources.addElement(makeResource(L("a pair of @x1 teeth", name().toLowerCase()), RawMaterial.RESOURCE_BONE));
 				resources.addElement(makeResource(L("some @x1 blood", name().toLowerCase()), RawMaterial.RESOURCE_BLOOD));
 			}

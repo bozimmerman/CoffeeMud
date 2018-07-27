@@ -170,7 +170,7 @@ public class Cub extends Bear
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				(L("a @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur")));
+				(L("a @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur",name().toLowerCase())));
 				resources.addElement(makeResource
 				(L("a @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 				resources.addElement(makeResource

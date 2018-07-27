@@ -266,7 +266,7 @@ public class Dwarf extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource
-				(L("a @x1 beard",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 beard")));
+				(L("a @x1 beard",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 beard",name().toLowerCase())));
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));
 				resources.addElement(makeResource

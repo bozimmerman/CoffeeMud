@@ -191,7 +191,7 @@ public class WereWolf extends GiantWolf
 					resources.addElement(makeResource
 					(L("a strip of @x1 hide",name().toLowerCase()),RawMaterial.RESOURCE_HIDE));
 					resources.addElement(makeResource
-					(L("a strip of @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur")));
+					(L("a strip of @x1 fur",name().toLowerCase()),RawMaterial.RESOURCE_FUR,L("@x1 fur",name().toLowerCase())));
 				}
 				for(int i=0;i<2;i++)
 				{

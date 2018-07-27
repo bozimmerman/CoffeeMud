@@ -3701,6 +3701,10 @@ public class StdMOB implements MOB
 								if(mobReport.startsWith("*"))
 								{
 									Log.warnOut("Killing: "+mobReport);
+									Log.debugOut("Start Room: "+CMLib.map().getExtendedRoomID(getStartRoom())
+											+", Curr Room: "+CMLib.map().getExtendedRoomID(location()));
+									if(location()!=null)
+										Log.debugOut("Occupant: "+location().isInhabitant(this)+", Dead     : "+amDead);
 									this.killMeDead(false);
 								}
 								else

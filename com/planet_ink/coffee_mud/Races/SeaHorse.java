@@ -312,7 +312,7 @@ public class SeaHorse extends StdRace
 				for(int i=0;i<2;i++)
 				{
 					resources.addElement(makeResource
-					(L("a @x1 bone",name().toLowerCase()),RawMaterial.RESOURCE_BONE,L("@x1 bones")));
+					(L("a @x1 bone",name().toLowerCase()),RawMaterial.RESOURCE_BONE,L("@x1 bones",name().toLowerCase())));
 				}
 				resources.addElement(makeResource
 				(L("some @x1 blood",name().toLowerCase()),RawMaterial.RESOURCE_BLOOD));

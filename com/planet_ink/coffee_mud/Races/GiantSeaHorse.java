@@ -127,7 +127,7 @@ public class GiantSeaHorse extends SeaHorse
 				for(int i=0;i<10;i++)
 				{
 					resources.addElement(makeResource
-					(L("a @x1 bone",name().toLowerCase()),RawMaterial.RESOURCE_BONE,L("@x1 bones")));
+					(L("a @x1 bone",name().toLowerCase()),RawMaterial.RESOURCE_BONE,L("@x1 bones",name().toLowerCase())));
 				}
 				for(int i=0;i<3;i++)
 				{

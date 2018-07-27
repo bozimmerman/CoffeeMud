@@ -249,7 +249,7 @@ public class Wyvern extends StdRace
 				for(int i=0;i<50;i++)
 				{
 					resources.addElement(makeResource
-					(L("a strip of @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES,L("@x1 scale")));
+					(L("a strip of @x1 scales",name().toLowerCase()),RawMaterial.RESOURCE_SCALES,L("@x1 scale",name().toLowerCase())));
 				}
 				for(int i=0;i<20;i++)
 				{
