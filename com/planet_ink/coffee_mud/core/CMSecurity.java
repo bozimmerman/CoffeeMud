@@ -377,11 +377,19 @@ public class CMSecurity
 				instance().compiledSysop=CMLib.masking().maskCompile(maskStr);
 			}
 			else
+			if((secs['0'] != null)
+			&&(secs['0'] != i())
+			&&(secs['0'].compiledSysop != null))
+			{
+				Log.errOut("Compiled Archon Mask was not set! Using base instance.");
+				instance().compiledSysop=secs['0'].compiledSysop;
+			}
+			else
 			if((secs[0] != null)
 			&&(secs[0] != i())
 			&&(secs[0].compiledSysop != null))
 			{
-				Log.errOut("Compiled Archon Mask was not set! Using base instance.");
+				Log.errOut("Compiled Archon Mask was not set! Using 0th instance.");
 				instance().compiledSysop=secs[0].compiledSysop;
 			}
 			else
@@ -416,12 +424,20 @@ public class CMSecurity
 				instance().compiledSysop=CMLib.masking().maskCompile(maskStr);
 			}
 			else
+			if((secs['0'] != null)
+			&&(secs['0'] != i())
+			&&(secs['0'].compiledSysop != null))
+			{
+				Log.errOut("Compiled Archon Mask was not set! Using base instance.");
+				instance().compiledSysop=secs['0'].compiledSysop;
+			}
+			else
 			if((secs[0] != null)
 			&&(secs[0] != i())
 			&&(secs[0].compiledSysop != null))
 			{
-				Log.errOut("Compiled Archon Mask was not set! Using base instance.");
-				instance().compiledSysop=secs[0].compiledSysop;
+				Log.errOut("Compiled Archon Mask was not set! Using 0th instance.");
+				instance().compiledSysop=secs['0'].compiledSysop;
 			}
 			else
 			{
