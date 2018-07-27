@@ -110,7 +110,7 @@ public class Where extends StdCommand
 						final Room R=mob2.location();
 						if(CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.WHERE))
 						{
-							lines.append("^!"+CMStrings.padRight(mob2.Name(),firstColWidth)+"^N| ");
+							lines.append("^N^!"+CMStrings.padRight(mob2.Name(),firstColWidth)+"^N| ");
 							if(R != null )
 							{
 								lines.append(R.displayText(mob));
@@ -118,14 +118,14 @@ public class Where extends StdCommand
 							}
 							else
 								lines.append("^!(no location)^?");
-							lines.append("\n\r");
+							lines.append("^N\n\r");
 						}
 					}
 					else
 					{
 						lines.append(CMStrings.padRight(L("NAMELESS"),firstColWidth)+"| ");
 						lines.append("NOWHERE");
-						lines.append("\n\r");
+						lines.append("^N\n\r");
 					}
 				}
 			}
