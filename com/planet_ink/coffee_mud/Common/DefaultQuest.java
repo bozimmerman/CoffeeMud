@@ -2575,12 +2575,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"',No mobs loaded: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
 							break;
 						}
-						for(MOB M : q.loadedMobs)
+						for(final MOB M : q.loadedMobs)
 						{
 							M.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 							M.basePhyStats().setDisposition(M.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
 							M.recoverPhyStats();
 							M.text();
+							CMLib.threads().deleteAllTicks(M);
 						}
 					}
 					else

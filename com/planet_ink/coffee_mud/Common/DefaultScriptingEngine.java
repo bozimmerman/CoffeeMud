@@ -964,6 +964,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					return null;
 				}
 				Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
+				for(final Object O : monsters)
+				{
+					if(O instanceof MOB)
+						CMLib.threads().deleteAllTicks((MOB)O);
+				}
 			}
 			else
 			{
@@ -1094,6 +1099,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					logError(scripted,"XMLLOAD","?","Empty XML file: '"+filename+"'");
 					return null;
+				}
+				for(final Object O : items)
+				{
+					if(O instanceof Item)
+						CMLib.threads().deleteTick((Item)O, -1);
 				}
 				Resources.submitResource("RANDOMITEMS-"+filename,items);
 			}
