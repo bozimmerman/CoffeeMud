@@ -682,7 +682,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				}
 				case ADVNCRAFT:
 				{
-					if(stage > 0)
+					if(stage >= 0)
 					{
 						applyName(item,def.getData()[stage], hide);
 						item.basePhyStats().setLevel(item.basePhyStats().level()+stage+1);
