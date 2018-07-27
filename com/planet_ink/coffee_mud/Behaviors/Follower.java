@@ -88,8 +88,8 @@ public class Follower extends ActiveTicker
 
 	private class QuickFollowClass implements Runnable
 	{
-		private boolean			scheduled	= false;
-		private final MOB				mob;
+		private boolean				scheduled	= false;
+		private final MOB			mob;
 		private final Environmental	affecting;
 
 		public QuickFollowClass(final MOB mob, final Environmental affecting)
@@ -109,16 +109,18 @@ public class Follower extends ActiveTicker
 			else
 			{
 				final Room R=CMLib.map().roomLocation(affecting);
-				if(mob.location() != R)
+				final Room mobR = mob.location();
+				if(mobR != R)
 				{
-					direction = CMLib.map().getRoomDir(R, mob.location());
-					if(direction<0)
+					direction = CMLib.map().getRoomDir(R, mobR);
+					if((direction<0)
+					&&(mobR!=null))
 					{
 						if(affecting instanceof MOB)
-							mob.location().bringMobHere((MOB)affecting, true);
+							mobR.bringMobHere((MOB)affecting, true);
 						else
 						if(affecting instanceof Item)
-							mob.location().moveItemTo((Item)affecting);
+							mobR.moveItemTo((Item)affecting);
 						
 					}
 				}
