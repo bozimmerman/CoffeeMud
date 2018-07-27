@@ -379,35 +379,40 @@ public class RocketShipProgram extends GenShipProgram
 			for(final TechComponent sensor : sensors)
 			{
 				str.append("^H").append(CMStrings.padRight(L("SENSOR@x1",""+sensorNumber),9));
-				str.append(CMStrings.padRight(sensor.activated()?L("^gACTIVE"):L("^rINACTIVE"),9));
-				str.append("^H").append(CMStrings.padRight(sensor.Name(),34));
+				str.append(CMStrings.padRight(sensor.activated()?L("^gA"):L("^rI"),2));
+				str.append("^H").append(CMStrings.padRight(L("Pow."),5));
+				str.append("^N").append(CMStrings.padRight(Long.toString(sensor.powerRemaining()),11));
+				str.append("^H").append(CMStrings.padRight(sensor.Name(),31));
 				str.append("^.^N\n\r");
-				final List<SpaceObject> localSensorReport=takeSensorReport(sensor);
-				if(localSensorReport.size()==0)
-					str.append("^R").append(L("No Report"));
-				else
-				for(Object o : localSensorReport)
+				if(sensor.activated())
 				{
-					if(o == spaceObject)
-						continue;
-					if(o instanceof SpaceObject)
+					final List<SpaceObject> localSensorReport=takeSensorReport(sensor);
+					if(localSensorReport.size()==0)
+						str.append("^R").append(L("No Report"));
+					else
+					for(Object o : localSensorReport)
 					{
-						final SpaceObject spaceMe = ship;
-						final SpaceObject obj = (SpaceObject)o;
-						final long distance = CMLib.map().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
-						final double[] direction = CMLib.map().getDirection(spaceMe, obj);
-						final String mass = CMath.abbreviateLong(obj.getMass());
-						final String dirStr = CMLib.english().directionDescShortest(direction);
-						final String distStr = CMLib.english().distanceDescShort(distance);
-						str.append("^W").append(obj.name()).append("^N/^WMass: ^N"+mass+"/^WDir: ^N"+dirStr+"/^WDist: ^N"+distStr);
+						if(o == spaceObject)
+							continue;
+						if(o instanceof SpaceObject)
+						{
+							final SpaceObject spaceMe = ship;
+							final SpaceObject obj = (SpaceObject)o;
+							final long distance = CMLib.map().getDistanceFrom(spaceMe.coordinates(), obj.coordinates()) - spaceMe.radius() - obj.radius();
+							final double[] direction = CMLib.map().getDirection(spaceMe, obj);
+							final String mass = CMath.abbreviateLong(obj.getMass());
+							final String dirStr = CMLib.english().directionDescShortest(direction);
+							final String distStr = CMLib.english().distanceDescShort(distance);
+							str.append("^W").append(obj.name()).append("^N/^WMass: ^N"+mass+"/^WDir: ^N"+dirStr+"/^WDist: ^N"+distStr);
+						}
+						else
+						if(o instanceof CMObject)
+							str.append("^W").append(L("Found: ")).append("^N").append(((CMObject)o).name());
+						else
+						if(o instanceof String)
+							str.append("^W").append(L("Found: ")).append("^N").append(o.toString());
+						str.append("^.^N\n\r");
 					}
-					else
-					if(o instanceof CMObject)
-						str.append("^W").append(L("Found: ")).append("^N").append(((CMObject)o).name());
-					else
-					if(o instanceof String)
-						str.append("^W").append(L("Found: ")).append("^N").append(o.toString());
-					str.append("^.^N\n\r");
 				}
 				str.append("^.^N\n\r");
 				sensorNumber++;
@@ -426,10 +431,10 @@ public class RocketShipProgram extends GenShipProgram
 				&&(!sensors.contains(component)))
 				{
 					str.append("^H").append(CMStrings.padRight(L("SYSTEM@x1",""+systemNumber),9));
-					str.append(CMStrings.padRight(component.activated()?L("^gACTIVE"):L("^rINACTIVE"),9));
-					str.append("^H").append(CMStrings.padRight(L("Power"),6));
+					str.append(CMStrings.padRight(component.activated()?L("^gA"):L("^rI"),2));
+					str.append("^H").append(CMStrings.padRight(L("Pow."),5));
 					str.append("^N").append(CMStrings.padRight(Long.toString(component.powerRemaining()),11));
-					str.append("^H").append(CMStrings.padRight(component.Name(),24));
+					str.append("^H").append(CMStrings.padRight(component.Name(),31));
 					str.append("^.^N\n\r");
 					systemNumber++;
 				}
@@ -446,7 +451,7 @@ public class RocketShipProgram extends GenShipProgram
 			for(final ShipEngine engine : engines)
 			{
 				str.append("^H").append(CMStrings.padRight(L("ENGINE@x1",""+engineNumber),9));
-				str.append(CMStrings.padRight(engine.activated()?L("^gACTIVE"):L("^rINACTIVE"),9));
+				str.append(CMStrings.padRight(engine.activated()?L("^gAC"):L("^rI"),2));
 				if(engine instanceof FuelConsumer)
 				{
 					str.append("^H").append(CMStrings.padRight(L("Fuel"),5));
@@ -454,17 +459,17 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				else
 				{
-					str.append("^H").append(CMStrings.padRight(L("Pwr"),5));
+					str.append("^H").append(CMStrings.padRight(L("Pow."),5));
 					str.append("^N").append(CMStrings.padRight(Long.toString(engine.powerRemaining()),11));
 				}
-				str.append("^H").append(CMStrings.padRight(engine.Name(),24));
+				str.append("^H").append(CMStrings.padRight(engine.Name(),31));
 				str.append("^.^N\n\r");
 				engineNumber++;
 			}
 			str.append("^N\n\r");
 			str.append("^X").append(CMStrings.centerPreserve(L(" -- Commands -- "),60)).append("^.^N\n\r");
-			str.append("^H").append(CMStrings.padRight(L("[HELP] : Get help."),60)).append("\n\r");
-			str.append("^H").append(CMStrings.padRight(L("[INFO] [SYSTEMNAME] : Get Details"),60)).append("\n\r");
+			str.append("^H").append(CMStrings.padRight(L("TYPE HELP INTO CONSOLE : Get help."),60)).append("\n\r");
+			str.append("^H").append(CMStrings.padRight(L("* Try setting at a console to shorten to TYPE HELP *"),60)).append("\n\r");
 			str.append("^X").append(CMStrings.centerPreserve("",60)).append("^.^N\n\r");
 			str.append("^N\n\r");
 		}
@@ -1140,13 +1145,12 @@ public class RocketShipProgram extends GenShipProgram
 				if(parsed.size()==1)
 				{
 					super.addScreenMessage(L("^HHELP:^N\n\r^N"
-						+ "The ACTIVATE command can be used to turn on any engine, "
-						+ "sensor, or other system in your ship.  "
-						+ "The DEACTIVATE command will turn off any system specified. \n\r"
-						+ "LAUNCH and ORBIT will take your ship off away from the planet.\n\r"
-						+ "STOP will attempt to negate all velocity.\n\r"
-						+ "LAND will land your ship on the nearest planet. \n\r"
-						+ "HELP ENGINE/SYSTEM/SENSOR/WEAPON for more info."));
+						+ "ACTIVATE [SYSTEM/ALL]  : turn on specified system\n\r"
+						+ "DEACTIVATE [SYSTEM/ALL]: turn off any system specified\n\r"
+						+ "LAUNCH / ORBIT         : take your ship off the planet\n\r"
+						+ "STOP   : negate all velocity\n\r"
+						+ "LAND   : land your ship on the nearest planet. \n\r"
+						+ "HELP [ENGINE/SYSTEM/SENSOR/WEAPON/...] : more info"));
 					return;
 				}
 				String secondWord = CMParms.combine(parsed,1).toUpperCase();
@@ -1220,7 +1224,8 @@ public class RocketShipProgram extends GenShipProgram
 					final List<TechComponent> others = new ArrayList<TechComponent>();
 					for(TechComponent component : getTechComponents())
 					{
-						if((!getEngines().contains(component))&&(!getShipSensors().contains(component)))
+						if((!getEngines().contains(component))
+						&&(!getShipSensors().contains(component)))
 							others.add(component);
 					}
 					E=findComponentByName(others,"SYSTEM",secondWord);
@@ -1249,31 +1254,115 @@ public class RocketShipProgram extends GenShipProgram
 				}
 			}
 			CMMsg msg = null;
-			if(uword.equalsIgnoreCase("ACTIVATE") || uword.equalsIgnoreCase("DEACTIVATE"))
+			if(uword.equalsIgnoreCase("ACTIVATE"))
 			{
 				final String rest = CMParms.combine(parsed,1).toUpperCase();
-				String code = null;
-				E=findEngineByName(rest);
-				if(E!=null)
-					code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(.0000001));
-				else
-					E=findSensorByName(rest);
-				if(E==null)
+				if(rest.equalsIgnoreCase("ALL"))
 				{
-					final List<TechComponent> others = new ArrayList<TechComponent>();
-					for(TechComponent component : getTechComponents())
+					int num=0;
+					for(final TechComponent component : getTechComponents())
 					{
-						if((!getEngines().contains(component))&&(!getShipSensors().contains(component)))
-							others.add(component);
+						if((!getEngines().contains(component))
+						&&(component.getTechType()!=TechType.SHIP_WEAPON)
+						&&(component.getTechType()!=TechType.SHIP_TRACTOR)
+						&&(!component.activated()))
+						{
+							msg=CMClass.getMsg(mob, component, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+							if(component.owner() instanceof Room)
+							{
+								if(((Room)component.owner()).okMessage(mob, msg))
+									((Room)component.owner()).send(mob, msg);
+							}
+							else
+							if(component.okMessage(mob, msg))
+								component.executeMsg(mob, msg);
+							if(component.activated())
+								num++;
+						}
 					}
-					E=findComponentByName(others,"SYSTEM",rest);
+					super.addScreenMessage(L("@x1 systems activated..",""+num));
+					return;
 				}
-				if(E!=null)
+				else
 				{
-					if(uword.equalsIgnoreCase("ACTIVATE"))
+					String code = null;
+					E=findEngineByName(rest);
+					if(E!=null)
+						code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(.0000001));
+					else
+						E=findSensorByName(rest);
+					if(E==null)
+					{
+						final List<TechComponent> others = new ArrayList<TechComponent>();
+						for(TechComponent component : getTechComponents())
+						{
+							if((!getEngines().contains(component))
+							&&(!getShipSensors().contains(component)))
+								others.add(component);
+						}
+						E=findComponentByName(others,"SYSTEM",rest);
+					}
+					if(E!=null)
 						msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 					else
+					{
+						super.addScreenMessage(L("Error: Unknown system to deactivate '"+rest+"'."));
+						return;
+					}
+				}
+			}
+			else
+			if(uword.equalsIgnoreCase("DEACTIVATE"))
+			{
+				final String rest = CMParms.combine(parsed,1).toUpperCase();
+				if(rest.equalsIgnoreCase("ALL"))
+				{
+					int num=0;
+					for(final TechComponent component : getTechComponents())
+					{
+						if((!getEngines().contains(component))
+						&&(component.getTechType()!=TechType.SHIP_WEAPON)
+						&&(component.getTechType()!=TechType.SHIP_TRACTOR)
+						&&(component.activated()))
+						{
+							msg=CMClass.getMsg(mob, component, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+							if(component.owner() instanceof Room)
+							{
+								if(((Room)component.owner()).okMessage(mob, msg))
+									((Room)component.owner()).send(mob, msg);
+							}
+							else
+							if(component.okMessage(mob, msg))
+								component.executeMsg(mob, msg);
+							if(!component.activated())
+								num++;
+						}
+					}
+					super.addScreenMessage(L("@x1 systems de-activated..",""+num));
+					return;
+				}
+				else
+				{
+					E=findEngineByName(rest);
+					if(E==null)
+						E=findSensorByName(rest);
+					if(E==null)
+					{
+						final List<TechComponent> others = new ArrayList<TechComponent>();
+						for(TechComponent component : getTechComponents())
+						{
+							if((!getEngines().contains(component))&&(!getShipSensors().contains(component)))
+								others.add(component);
+						}
+						E=findComponentByName(others,"SYSTEM",rest);
+					}
+					if(E!=null)
 						msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+					else
+					{
+						super.addScreenMessage(L("Error: Unknown system to deactivate '"+rest+"'."));
+						return;
+					}
 				}
 			}
 			else

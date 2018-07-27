@@ -346,7 +346,8 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 		}
 		for(final Rider R : riders)
 		{
-			if(R instanceof MOB)
+			if((R instanceof MOB)
+			&&(!readers.contains(R)))
 				readers.add((MOB)R);
 		}
 		return readers;
@@ -665,8 +666,10 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 				{
 					final List<MOB> readers=getCurrentReaders();
 					for(final MOB M : readers)
+					{
 						if(CMLib.flags().canBeSeenBy(this, M))
 							M.location().show(M, this, null, CMMsg.MASK_ALWAYS|CMMsg.TYP_OK_VISUAL, CMMsg.NO_EFFECT, CMMsg.NO_EFFECT, L("<T-NAME> says '^N\n\r@x1\n\r^.^N'",newMsgs.toString()));
+					}
 				}
 			}
 		}
