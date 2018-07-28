@@ -265,7 +265,7 @@ public class Chant_CallMate extends Chant
 		newMOB.basePhyStats().setDamage((int)CMath.mul(CMLib.leveler().getLevelMOBDamage(newMOB),0.9));
 		newMOB.basePhyStats().setSpeed((int)CMath.mul(CMLib.leveler().getLevelMOBSpeed(newMOB),0.9));
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
-		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'N');
+		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER, mobGender);
 		newMOB.basePhyStats().setSensesMask(newMOB.basePhyStats().sensesMask()|PhyStats.CAN_SEE_DARK);
 		newMOB.setLocation(caster.location());
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
