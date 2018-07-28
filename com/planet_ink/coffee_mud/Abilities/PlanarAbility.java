@@ -1053,7 +1053,7 @@ public class PlanarAbility extends StdAbility
 	{
 		if(planeA != null)
 		{
-			for(final Enumeration<Room> r=planeA.getProperMap();r.hasMoreElements();)
+			for(final Enumeration<Room> r=planeA.getFilledProperMap();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
 				if(R!=null)
