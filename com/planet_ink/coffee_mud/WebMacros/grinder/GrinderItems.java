@@ -730,7 +730,7 @@ public class GrinderItems
 					break;
 				case RSCSUBTYPE:
 					if(I instanceof RawMaterial)
-						((RawMaterial)I).setSubType(old);
+						((RawMaterial)I).setSubType(old.toUpperCase().trim());
 					break;
 				case ISRIDEABLE:
 					break;

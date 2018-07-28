@@ -150,7 +150,7 @@ public class Spell_Pocket extends Spell
 					Item pocketItem;
 					int level=target.phyStats().level();
 					String realName=target.name();
-					String name=CMLib.english().cleanArticles(target.name());
+					String name=CMLib.english().removeArticleLead(target.name());
 					if(target instanceof Item)
 					{
 						final PackagedItems packageItem=(PackagedItems)CMClass.getItem("GenPackagedVariety");

@@ -610,7 +610,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	@Override
 	protected String cleanBuildingNameForXP(MOB mob, String name)
 	{
-		name=" "+CMLib.english().cleanArticles(name)+" ";
+		name=" "+CMLib.english().removeArticleLead(name)+" ";
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,CMParms.parse(name));
 		if(enhancedTypes != null)
 		{

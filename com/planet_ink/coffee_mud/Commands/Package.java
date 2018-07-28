@@ -138,7 +138,7 @@ public class Package extends StdCommand
 		}
 		if(getThis==null)
 			return false;
-		final String name=CMLib.english().cleanArticles(getThis.name());
+		final String name=CMLib.english().removeArticleLead(getThis.name());
 		final CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> package(s) up @x1 <T-NAMENOART>(s).",""+V.size()));
 		if(mob.location().okMessage(mob,msg))
 		{

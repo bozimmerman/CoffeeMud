@@ -406,7 +406,7 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 		}
 		if(matchedCG!=null)
 			return matchedCG;
-		matchedCG=matchChatGroup(forMe,CMLib.english().cleanArticles(CMStrings.removeColors(myOldName.toUpperCase())),chatGroups);
+		matchedCG=matchChatGroup(forMe,CMLib.english().removeArticleLead(CMStrings.removeColors(myOldName.toUpperCase())),chatGroups);
 		if(matchedCG!=null)
 			return matchedCG;
 		matchedCG=matchChatGroup(forMe,forMe.charStats().raceName(),chatGroups);

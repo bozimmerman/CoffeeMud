@@ -324,7 +324,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				final List<Environmental> bundle=new XVector<Environmental>();
 				for(int x=0;x<number;x+=bundleSize)
 				{
-					E=makeResource(I.material(),null,true,I.rawSecretIdentity());
+					E=makeResource(I.material(),null,true,I.rawSecretIdentity(), "");
 					if(E instanceof Item)
 					{
 						((Item)E).setContainer(C);
@@ -494,7 +494,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public PhysicalAgent makeResource(int myResource, String localeCode, boolean noAnimals, String fullName)
+	public PhysicalAgent makeResource(int myResource, String localeCode, boolean noAnimals, String fullName, String subType)
 	{
 		if(myResource<0)
 			return null;
@@ -697,6 +697,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			I.setDomainSource(localeCode);
 			adjustResourceName(I);
 			I.setDescription("");
+			if(subType != null)
+				I.setSubType(subType.toUpperCase().trim());
 			addEffectsToResource(I);
 			I.recoverPhyStats();
 			return I;
@@ -812,6 +814,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	public void adjustResourceName(Item I)
 	{
 		String name=RawMaterial.CODES.NAME(I.material()).toLowerCase();
+		I.setDescription(L("It's just @x1.",name));
 		final int iMat=I.material()&RawMaterial.MATERIAL_MASK;
 		if((I instanceof RawMaterial)
 		&&(((RawMaterial)I).getSubType().length()>0))
@@ -821,8 +824,15 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			&& ((iMat==RawMaterial.MATERIAL_CLOTH)||(iMat==RawMaterial.MATERIAL_PAPER)))
 				name=L("@x1 bolt", name);
 			else
+			{
 				name=subType;
+				I.setDescription(L("'@x1' is a special type of @x2 that retains its uniqueness.",name,RawMaterial.CODES.NAME(I.material()).toLowerCase()));
+			}
 		}
+		else
+		if((I.rawSecretIdentity()!=null)
+		&&(I.rawSecretIdentity().length()>0))
+			name = CMLib.english().removeArticleLead(I.rawSecretIdentity().toLowerCase());
 		else
 		if((iMat==RawMaterial.MATERIAL_MITHRIL)
 		||(iMat==RawMaterial.MATERIAL_METAL))
@@ -883,11 +893,10 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 			I=CMClass.getItem("GenLiquidResource");
 		else
 			I=CMClass.getItem("GenResource");
-		((RawMaterial)I).setSubType(subType);
+		((RawMaterial)I).setSubType(subType.toUpperCase().trim());
 		I.basePhyStats().setWeight(1);
 		I.setMaterial(type);
 		adjustResourceName(I);
-		I.setDescription("");
 		I.setBaseValue(RawMaterial.CODES.VALUE(type));
 		addEffectsToResource(I);
 		I.recoverPhyStats();

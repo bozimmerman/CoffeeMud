@@ -37,7 +37,7 @@ import java.util.*;
 public interface EnglishParsing extends CMLibrary
 {
 	public boolean isAnArticle(String s);
-	public String cleanArticles(String s);
+	public String removeArticleLead(String s);
 	public String cleanPrepositions(String s);
 	public boolean startsWithAnArticle(String s);
 	public String stripPunctuation(String str);

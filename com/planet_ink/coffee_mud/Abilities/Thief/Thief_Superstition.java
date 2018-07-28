@@ -167,7 +167,7 @@ public class Thief_Superstition extends ThiefSkill
 						boolean found=false;
 						for(Item I : items)
 						{
-							if(CMLib.english().cleanArticles(I.Name()).equalsIgnoreCase(itemname)
+							if(CMLib.english().removeArticleLead(I.Name()).equalsIgnoreCase(itemname)
 							&&(!I.amWearingAt(Item.IN_INVENTORY)))
 							{
 								found=true;
@@ -336,7 +336,7 @@ public class Thief_Superstition extends ThiefSkill
 				return false;
 			}
 			Item I=choices.get(CMLib.dice().roll(1, choices.size(), -1));
-			String wearName=CMLib.english().cleanArticles(I.Name());
+			String wearName=CMLib.english().removeArticleLead(I.Name());
 			Language langA = CMLib.utensils().getLanguageSpoken(mob);
 			String langID = ((langA==null)||(langA.ID().equals("Common"))) ? "" : langA.ID();
 			StringBuilder newXml=new StringBuilder("<SAY>").append(CMLib.xml().parseOutAngleBrackets(newSay)).append("</SAY>")

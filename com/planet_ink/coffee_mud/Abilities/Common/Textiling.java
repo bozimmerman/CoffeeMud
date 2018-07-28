@@ -399,7 +399,7 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 			addSpells(buildingI,spell,deadMats.lostProps,deadComps.lostProps);
 			if(buildingI instanceof RawMaterial)
 			{
-				((RawMaterial)buildingI).setSubType(subType);
+				((RawMaterial)buildingI).setSubType(subType.toUpperCase().trim());
 				buildingI.setSecretIdentity(itemName);
 			}
 			else

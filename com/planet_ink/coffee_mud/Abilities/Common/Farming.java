@@ -437,7 +437,7 @@ public class Farming extends GatheringSkill
 		if((proficiencyCheck(mob,0,auto))
 		&&(isPotentialCrop(R,code)))
 		{
-			found=(Item)CMLib.materials().makeResource(code,Integer.toString(R.domainType()),false,null);
+			found=(Item)CMLib.materials().makeResource(code,Integer.toString(R.domainType()),false,null, "");
 			if((found!=null)
 			&&(found.material()==RawMaterial.RESOURCE_HERBS)
 			&&(mine.material()==found.material()))

@@ -1142,10 +1142,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				{
 					final String oldName=I.Name();
 					if(I.material()==RawMaterial.RESOURCE_GLASS)
-						return CMLib.english().cleanArticles(oldName);
+						return CMLib.english().removeArticleLead(oldName);
 
 					String newName=oldName;
-					final List<String> V=CMParms.parseSpaces( oldName,true);
+					final List<String> V=CMParms.parseSpaces(oldName,true);
 					for(int i=0;i<V.size();i++)
 					{
 						final String s=V.get(i);

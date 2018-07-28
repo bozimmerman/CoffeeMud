@@ -209,7 +209,7 @@ public class Fishing extends GatheringSkill
 		&&(foundFish>0)
 		&&(fishRoom!=null))
 		{
-			found=(Item)CMLib.materials().makeResource(foundFish,Integer.toString(fishRoom.domainType()),false,null);
+			found=(Item)CMLib.materials().makeResource(foundFish,Integer.toString(fishRoom.domainType()),false,null, "");
 			foundShortName="nothing";
 			if(found!=null)
 			{

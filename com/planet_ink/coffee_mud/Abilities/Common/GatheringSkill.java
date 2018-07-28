@@ -187,17 +187,29 @@ public class GatheringSkill extends CommonSkill
 		final Room R=mob.location();
 		if(R==null)
 			return false;
-		final String name=CMParms.combine(what,2);
+		String name=CMParms.combine(what,2);
 		int foundResource=-1;
+		String foundSubType=null;
+		String foundSecret=null;
 		Item foundAnyway=null;
+		List<RawMaterial> allFound=new ArrayList<RawMaterial>();
 		final List<Integer> maskV=myResources();
 		final Hashtable<String,Ability> foundAblesH=new Hashtable<String,Ability>();
 		Ability A=null;
 		long lowestNonZeroFoodNumber=Long.MAX_VALUE;
+		int count=name.lastIndexOf('.');
+		if(count > 0)
+		{
+			int x=count;
+			count=CMath.s_int(name.substring(count+1))-1;
+			if(count>=0)
+				name=name.substring(0, x);
+		}
 		for(int i=0;i<R.numItems();i++)
 		{
 			final Item I=R.getItem(i);
-			if(CMLib.english().containsString(I.Name(),name))
+			if(CMLib.english().containsString(I.Name(),name)
+			&&(count--<=0))
 			{
 				if(foundAnyway==null)
 					foundAnyway=I;
@@ -205,6 +217,10 @@ public class GatheringSkill extends CommonSkill
 				&&(!CMLib.flags().isOnFire(I))
 				&&(!CMLib.flags().isEnchanted(I))
 				&&(I.container()==null)
+				&&((foundSubType==null)
+					||(((RawMaterial)I).getSubType().equals(foundSubType)))
+				&&((foundSecret==null)
+					||(((RawMaterial)I).rawSecretIdentity().equals(foundSecret)))
 				&&((I.material()==foundResource)
 					||((foundResource<0)&&maskV.contains(Integer.valueOf(I.material())))))
 				{
@@ -222,6 +238,9 @@ public class GatheringSkill extends CommonSkill
 					}
 					foundResource=I.material();
 					numHere+=I.phyStats().weight();
+					foundSubType=((RawMaterial)I).getSubType();
+					foundSecret=I.rawSecretIdentity();
+					allFound.add((RawMaterial)I);
 				}
 			}
 		}
@@ -240,9 +259,14 @@ public class GatheringSkill extends CommonSkill
 			commonTell(mob,L("You only see @x1 pounds of @x2 on the ground here.",""+numHere,name));
 			return false;
 		}
+		if(allFound.size()==1)
+		{
+			commonTell(mob,L("It appears that @x1 is already bundled as much as it can be.",allFound.get(0).Name()));
+			return false;
+		}
 		if(lowestNonZeroFoodNumber==Long.MAX_VALUE)
 			lowestNonZeroFoodNumber=0;
-		final Item I=(Item)CMLib.materials().makeResource(foundResource,Integer.toString(mob.location().domainType()),true,null);
+		final Item I=(Item)CMLib.materials().makeResource(foundResource,Integer.toString(mob.location().domainType()),true,foundSecret,foundSubType);
 		if(I==null)
 		{
 			commonTell(mob,L("You could not bundle @x1 due to @x2 being an invalid resource code.  Bug it!",name,""+foundResource));
@@ -253,12 +277,8 @@ public class GatheringSkill extends CommonSkill
 		I.setDisplayText(L("@x1 is here.",I.name()));
 		if(R.show(mob,null,I,getActivityMessageType(),L("<S-NAME> create(s) <O-NAME>.")))
 		{
-			final int lostValue=CMLib.materials().destroyResourcesValue(R,amount,foundResource,-1,I);
-			I.setBaseValue(lostValue);
-			if(I instanceof Food)
-				((Food)I).setNourishment(((Food)I).nourishment()*amount);
-			if(I instanceof Drink)
-				((Drink)I).setLiquidHeld(((Drink)I).liquidHeld()*amount);
+			for(final RawMaterial I2 : allFound)
+				I2.destroy();
 			if((!I.amDestroyed())&&(!R.isContent(I)))
 				R.addItem(I,ItemPossessor.Expire.Player_Drop);
 		}

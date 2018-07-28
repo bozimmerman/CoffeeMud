@@ -194,7 +194,7 @@ public class Chopping extends GatheringSkill
 		{
 			if((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
 			{
-				found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
+				found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null, "");
 				foundShortName="nothing";
 				if(found!=null)
 					foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();
@@ -202,7 +202,7 @@ public class Chopping extends GatheringSkill
 			else
 			if(CMParms.contains(RawMaterial.CODES.WOODIES(), resourceType))
 			{
-				found=(Item)CMLib.materials().makeResource(RawMaterial.RESOURCE_WOOD,Integer.toString(mob.location().domainType()),false,null);
+				found=(Item)CMLib.materials().makeResource(RawMaterial.RESOURCE_WOOD,Integer.toString(mob.location().domainType()),false,null, "");
 				foundShortName="nothing";
 				if(found!=null)
 					foundShortName=L("@x1 tree wood",CMLib.english().makeSingular(RawMaterial.CODES.NAME(resourceType).toLowerCase()));

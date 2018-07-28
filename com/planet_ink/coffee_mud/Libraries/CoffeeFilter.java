@@ -1206,9 +1206,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 										replacement=((regarding instanceof MOB)?"someone":"something");
 									else
 									if(regarding instanceof PhysicalAgent)
-										replacement=CMLib.english().cleanArticles(((PhysicalAgent)regarding).name(mob));
+										replacement=CMLib.english().removeArticleLead(((PhysicalAgent)regarding).name(mob));
 									else
-										replacement=CMLib.english().cleanArticles(regarding.name());
+										replacement=CMLib.english().removeArticleLead(regarding.name());
 								}
 								break;
 							case NAMESELF:

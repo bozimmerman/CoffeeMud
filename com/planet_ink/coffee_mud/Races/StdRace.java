@@ -928,7 +928,7 @@ public class StdRace implements Race
 
 	protected RawMaterial makeResource(final String name, final int type, final String subType)
 	{
-		final PhysicalAgent A = CMLib.materials().makeResource(type,ID(),true,name);
+		final PhysicalAgent A = CMLib.materials().makeResource(type,ID(),true,name, "");
 		if(A instanceof RawMaterial)
 		{
 			((RawMaterial) A).setSubType(subType.toUpperCase().trim());

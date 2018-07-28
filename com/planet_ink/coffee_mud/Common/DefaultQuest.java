@@ -4675,10 +4675,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 						replace=CMStrings.capitalizeAndLower(replace);
 						break;
 					case '&':
-						replace=CMLib.english().cleanArticles(replace);
+						replace=CMLib.english().removeArticleLead(replace);
 						break;
 					case '|':
-						replace=CMLib.english().cleanArticles(replace).trim().replace(' ','|');
+						replace=CMLib.english().removeArticleLead(replace).trim().replace(' ','|');
 						break;
 					}
 					s=s.substring(0,x)+replace+s.substring(y);

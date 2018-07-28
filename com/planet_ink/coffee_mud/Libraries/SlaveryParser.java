@@ -454,7 +454,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 					{
 						final String s=V.get(v);
 						if(s.startsWith("%"))
-							V.set(v,CMLib.english().cleanArticles(map.get(s.trim())));
+							V.set(v,CMLib.english().removeArticleLead(map.get(s.trim())));
 					}
 				}
 				geasSteps.add(g);

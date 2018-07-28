@@ -51,7 +51,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 																	"near", "of", "off", "on", "onto", "opposite", "outside", "over", "past", "per", "plus", 
 																	"regarding", "round", "save", "since", "than", "through", "to", "toward", "towards", "under", 
 																	"underneath", "unlike", "until", "up", "upon", "versus", "via", "with", "within", "without" };
-	private final static String[]			ARTICLES			= { "a", "an", "all of", "some one", "a pair of", "one of", "all", "the", "some", "each" };
+	private final static String[]			ARTICLES			= { "a", "an", "all of", "some one", "a pair of", "a pile of", "one of", "all", "the", "some", "each" };
 	public static boolean[]					PUNCTUATION_TABLE	= null;
 	public final static char[]				ALL_CHRS			= "ALL".toCharArray();
 	public final static String[]			fwords				= { "calf", "half", "knife", "life", "wife", "elf", "self", "shelf", "leaf", "sheaf", "thief", "loaf", "wolf" };
@@ -190,18 +190,6 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return str;
 	}
 	
-	@Override
-	public String cleanArticles(String s)
-	{
-		final String lowStr=s.toLowerCase();
-		for (final String article : ARTICLES)
-		{
-			if(lowStr.startsWith(article+" "))
-				return s.substring(article.length()+1);
-		}
-		return s;
-	}
-
 	@Override
 	public String cleanPrepositions(String s)
 	{
@@ -404,57 +392,59 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		int i=0;
 		int start=-1;
 		for(;i<str.length();i++)
-		switch(str.charAt(i))
 		{
-		case '^':
-		{
-			i++;
-			if(i<str.length())
+			switch(str.charAt(i))
 			{
-				switch(str.charAt(i))
+			case '^':
+			{
+				i++;
+				if(i<str.length())
 				{
-				case ColorLibrary.COLORCODE_FANSI256:
-					i += 3;
-					break;
-				case ColorLibrary.COLORCODE_BANSI256:
-					i += 3;
-					break;
-				case ColorLibrary.COLORCODE_BACKGROUND:
-					i++;
-					break;
-				case '<':
-					while(i<str.length()-1)
+					switch(str.charAt(i))
 					{
-						if((str.charAt(i)!='^')||(str.charAt(i+1)!='>'))
-							i++;
-						else
+					case ColorLibrary.COLORCODE_FANSI256:
+						i += 3;
+						break;
+					case ColorLibrary.COLORCODE_BANSI256:
+						i += 3;
+						break;
+					case ColorLibrary.COLORCODE_BACKGROUND:
+						i++;
+						break;
+					case '<':
+						while(i<str.length()-1)
 						{
-							i++;
-							break;
+							if((str.charAt(i)!='^')||(str.charAt(i+1)!='>'))
+								i++;
+							else
+							{
+								i++;
+								break;
+							}
 						}
+						break;
+					case '&':
+						while(i<str.length())
+						{
+							if(str.charAt(i)!=';')
+								i++;
+							else
+								break;
+						}
+						break;
 					}
-					break;
-				case '&':
-					while(i<str.length())
-					{
-						if(str.charAt(i)!=';')
-							i++;
-						else
-							break;
-					}
-					break;
 				}
+				break;
 			}
-			break;
-		}
-		case ' ':
-			if(start>=0)
-				return str.substring(start,i);
-			break;
-		default:
-			if(Character.isLetter(str.charAt(i)) && (start<0))
-				start=i;
-			break;
+			case ' ':
+				if(start>=0)
+					return str.substring(start,i);
+				break;
+			default:
+				if(Character.isLetter(str.charAt(i)) && (start<0))
+					start=i;
+				break;
+			}
 		}
 		return str;
 	}
@@ -476,7 +466,21 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		return isAnArticle(getFirstWord(s));
 	}
-	
+
+	@Override
+	public String removeArticleLead(String s)
+	{
+		final String firstWord=getFirstWord(s);
+		final int x=s.indexOf(firstWord);
+		final String slower=(x>0) ? s.substring(x).toLowerCase() : s.toLowerCase();;
+		for (final String article : ARTICLES)
+		{
+			if(slower.startsWith(article+" "))
+				return slower.substring(article.length()).trim();
+		}
+		return s;
+	}
+
 	@Override
 	public String insertUnColoredAdjective(String str, String adjective)
 	{

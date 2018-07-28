@@ -154,7 +154,7 @@ public class Organizing extends CommonSkill
 									result=new Integer(o1.phyStats().level()).compareTo(new Integer(o2.phyStats().level()));
 									break;
 								case NAME:
-									result=CMLib.english().cleanArticles(o1.Name()).compareTo(CMLib.english().cleanArticles(o2.Name()));
+									result=CMLib.english().removeArticleLead(o1.Name()).compareTo(CMLib.english().removeArticleLead(o2.Name()));
 									break;
 								case TAG:
 									result=Labeling.getCurrentTag(o1).compareTo(Labeling.getCurrentTag(o2));
@@ -172,7 +172,7 @@ public class Organizing extends CommonSkill
 									break;
 								}
 								if((result == 0)&&(orgaT != OrganizeBy.NAME))
-									result=CMLib.english().cleanArticles(o1.Name()).compareTo(CMLib.english().cleanArticles(o2.Name()));
+									result=CMLib.english().removeArticleLead(o1.Name()).compareTo(CMLib.english().removeArticleLead(o2.Name()));
 								if(me.descending)
 									result = (result == 0) ? 0 : (result < 0) ? 1 : -1;
 								return result;

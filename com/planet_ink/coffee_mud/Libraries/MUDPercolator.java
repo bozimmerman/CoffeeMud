@@ -3128,7 +3128,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			if(V.toCapitalized)
 				val=CMStrings.capitalizeAndLower(val.toString());
 			if(killArticles)
-				val=CMLib.english().cleanArticles(val.toString());
+				val=CMLib.english().removeArticleLead(val.toString());
 			str=str.substring(0,V.outerStart)+val.toString()+str.substring(V.outerEnd);
 			if(vars.size()==0)
 				vars=parseVariables(str);

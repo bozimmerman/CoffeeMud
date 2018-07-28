@@ -3755,7 +3755,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
 	protected void genMaterialSubType(MOB mob, RawMaterial E, int showNumber, int showFlag) throws IOException
 	{
-		E.setSubType(prompt(mob, E.getSubType(), showNumber, showFlag, "Rsc Sub-Type", true, false));
+		E.setSubType(prompt(mob, E.getSubType(), showNumber, showFlag, "Rsc Sub-Type", true, false).toUpperCase().trim());
 	}
 
 	protected void genNourishment(MOB mob, Food E, int showNumber, int showFlag) throws IOException

@@ -207,7 +207,7 @@ public class Trawling extends GatheringSkill
 		if((proficiencyCheck(mob,0,auto))
 		&&(foundFish>0))
 		{
-			found=(Item)CMLib.materials().makeResource(foundFish,Integer.toString(fishRoom.domainType()),false,null);
+			found=(Item)CMLib.materials().makeResource(foundFish,Integer.toString(fishRoom.domainType()),false,null, "");
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=RawMaterial.CODES.NAME(found.material()).toLowerCase();

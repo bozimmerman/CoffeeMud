@@ -105,7 +105,7 @@ public class GroundWired extends StdLibrary implements TechLibrary
 			else
 				I.setTechLevel(getRandomGlobalTechLevel());
 			final String oldName=I.Name();
-			String newName=CMLib.english().startWithAorAn(I.getFinalManufacturer().name()+" "+CMLib.english().cleanArticles(oldName));
+			String newName=CMLib.english().startWithAorAn(I.getFinalManufacturer().name()+" "+CMLib.english().removeArticleLead(oldName));
 			I.setName(newName);
 			final String[] marks=CMProps.getListFileStringList(CMProps.ListFile.TECH_LEVEL_NAMES);
 			if(marks.length>0)
