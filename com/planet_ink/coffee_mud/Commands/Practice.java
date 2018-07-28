@@ -60,26 +60,40 @@ public class Practice extends StdCommand
 
 		MOB teacher=null;
 		boolean triedTeacher=false;
+		String abilityName= CMParms.combine(commands,0);
 		if(commands.size()>1)
 		{
-			teacher=mob.location().fetchInhabitant(commands.get(commands.size()-1));
-			if(teacher!=null)
+			for(int i=0;i<mob.location().numInhabitants();i++)
 			{
-				triedTeacher=true;
-				commands.remove(commands.size()-1);
+				final MOB possTeach=mob.location().fetchInhabitant(i);
+				if((possTeach!=null)&&(possTeach.findAbility(abilityName)!=null)&&(possTeach!=mob))
+				{
+					teacher=possTeach;
+					break;
+				}
+			}
+			if(teacher == null)
+			{
+				teacher=mob.location().fetchInhabitant(commands.get(commands.size()-1));
+				if(teacher!=null)
+				{
+					triedTeacher=true;
+					commands.remove(commands.size()-1);
+					abilityName=CMParms.combine(commands,0);
+				}
 			}
 		}
 
-		final String abilityName=CMParms.combine(commands,0);
-
 		if(teacher==null)
-		for(int i=0;i<mob.location().numInhabitants();i++)
 		{
-			final MOB possTeach=mob.location().fetchInhabitant(i);
-			if((possTeach!=null)&&(possTeach.findAbility(abilityName)!=null)&&(possTeach!=mob))
+			for(int i=0;i<mob.location().numInhabitants();i++)
 			{
-				teacher=possTeach;
-				break;
+				final MOB possTeach=mob.location().fetchInhabitant(i);
+				if((possTeach!=null)&&(possTeach.findAbility(abilityName)!=null)&&(possTeach!=mob))
+				{
+					teacher=possTeach;
+					break;
+				}
 			}
 		}
 

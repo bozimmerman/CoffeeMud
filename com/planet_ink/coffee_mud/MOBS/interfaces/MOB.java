@@ -41,7 +41,7 @@ import java.util.Vector;
  * @author Bo Zimmerman
  *
  */
-public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor, AbilityContainer, 
+public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor, AbilityContainer,
 							 Tattooable, FactionMember, MUDCmdProcessor, Followable<MOB>, Combatant
 {
 	public static long AGE_MILLIS_THRESHOLD = 120000;
@@ -53,7 +53,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the raw numeric attributes bitmap
 	 */
 	public int getAttributesBitmap();
-	
+
 	/**
 	 * Sets the raw numeric attributes bitmap
 	 * @see MOB.Attrib
@@ -61,7 +61,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param bitmap the raw numeric attributes bitmap
 	 */
 	public void setAttributesBitmap(int bitmap);
-	
+
 	/**
 	 * Changes the value of a specific attribute
 	 * @see MOB#isAttributeSet(Attrib)
@@ -69,7 +69,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param set true to set it, false to clear it
 	 */
 	public void setAttribute(MOB.Attrib attrib, boolean set);
-	
+
 	/**
 	 * Returns whether the given attribute is set.
 	 * @see MOB#setAttribute(Attrib, boolean)
@@ -77,7 +77,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return true if it is set, false otherwise
 	 */
 	public boolean isAttributeSet(MOB.Attrib attrib);
-	
+
 	/**
 	 * If this player is using a title, this method returns
 	 * the players Name() with the title.  If not using a
@@ -87,7 +87,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the name with a title, or not
 	 */
 	public String titledName();
-	
+
 	/**
 	 * Returns the age-range and race of this mob, as if it were someone
 	 * spotted on the street that you didn't know.
@@ -96,7 +96,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public String genericName();
 
 	/* Some general statistics about MOBs.  See the CharStats class (in interfaces) for more info. */
-	
+
 	/**
 	 * Returns whether this mob represents a player.  It basically checks for a PlayerStats object.
 	 * @see MOB#isMonster()
@@ -104,7 +104,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return whether this mob represents a player
 	 */
 	public boolean isPlayer();
-	
+
 	/**
 	 * Returns the PlayerStats object for this mob.  A null response indicated definitively
 	 * that this is a Player and not an NPC, even if there is no session attached.
@@ -113,7 +113,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the PlayerStats object or NULL for an NPC
 	 */
 	public PlayerStats playerStats();
-	
+
 	/**
 	 * Sets the PlayerStats object for this mob.  A null value indicated definitively
 	 * that this is a Player and not an NPC, even if there is no session attached.
@@ -122,7 +122,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param newStats the PlayerStats object or null for an NPC
 	 */
 	public void setPlayerStats(PlayerStats newStats);
-	
+
 	/**
 	 * Gets the Base CharStats object for this mob, which are the stats like saves and strength.
 	 * The Base CharStats are those stats before modification by equipment or spell effects.
@@ -132,7 +132,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the CharStats object for this mob
 	 */
 	public CharStats baseCharStats();
-	
+
 	/**
 	 * Gets the Current CharStats object for this mob, which are the stats like saves and strength.
 	 * The Current CharStats are the Base stats after modification by equipment or spell effects.
@@ -142,7 +142,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the CharStats object for this mob
 	 */
 	public CharStats charStats();
-	
+
 	/**
 	 * Causes this mob to recalculate its current char stats by copying the base stats
 	 * over and then calling all equipment and spell effects to modify them.
@@ -151,7 +151,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @see MOB#setBaseCharStats(CharStats)
 	 */
 	public void recoverCharStats();
-	
+
 	/**
 	 * Sets the Base CharStats object for this mob, which are the stats like saves and strength.
 	 * The Base CharStats are those stats before modification by equipment or spell effects.
@@ -161,28 +161,28 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param newBaseCharStats the CharStats object for this mob
 	 */
 	public void setBaseCharStats(CharStats newBaseCharStats);
-	
+
 	/**
 	 * Returns the maximum total weight in pounds that this mob can carry.
 	 * @see MOB#maxItems()
 	 * @return the maximum total weight in pounds that this mob can carry.
 	 */
 	public int maxCarry();
-	
+
 	/**
 	 * Returns the maximum total number of items that this mob can carry.
 	 * @see MOB#maxCarry()
 	 * @return the maximum total number of items that this mob can carry.
 	 */
 	public int maxItems();
-	
+
 	/**
 	 * Returns the base weight of this mob, which includes any char stat
 	 * adjustments, and adjustments from race.
 	 * @return the base weight of this mob
 	 */
 	public int baseWeight();
-	
+
 	/**
 	 * Returns the friendly viewable description of this mobs health status,
 	 * from the given viewer mobs point of view.
@@ -200,7 +200,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return true if this mob is dead, false otherwise
 	 */
 	public boolean amDead();
-	
+
 	/**
 	 * Puts this mob in a dead state, removes all temporary effects,
 	 * creates a corpse, ends combat, and sends players to their graveyard.
@@ -223,7 +223,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param resetStats true to bring all char state stats to max
 	 */
 	public void bringToLife(Room newLocation, boolean resetStats);
-	
+
 	/**
 	 * Flags this mob as being alive, and restarts the mob tick.
 	 * @see MOB#bringToLife(Room, boolean)
@@ -231,7 +231,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @see MOB#removeFromGame(boolean, boolean)
 	 */
 	public void bringToLife();
-	
+
 	/**
 	 * Removes this mob from the game.  Principally used for player mobs,
 	 * this method optionally copies the follower mobs, stops the session
@@ -243,7 +243,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param killSession true to end the session connected to this mob, if any
 	 */
 	public void removeFromGame(boolean preserveFollowers, boolean killSession);
-	
+
 	/**
 	 * Returns whether this mob has been removed from the game.  It only
 	 * checks the flag set by removeFromGame.
@@ -253,7 +253,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return true if the removeFromGame flag is set, false otherwise
 	 */
 	public boolean amActive();
-	
+
 	/**
 	 * If this mob is in combat, this returns the mob that this mob is
 	 * targeting. If this method returns null, the mob is not in combat.
@@ -265,10 +265,10 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the combat target, or null for a peace state
 	 */
 	public MOB getVictim();
-	
+
 	/**
 	 * Sets the mob that this mob is targeting for combat, which
-	 * either puts them into, or clears their combat state. 
+	 * either puts them into, or clears their combat state.
 	 * If a null value, the mob is no longer fighting.
 	 * @see Combatant#isInCombat()
 	 * @see MOB#getVictim()
@@ -280,7 +280,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public void setVictim(MOB other);
 
 	/* Primary mob communication */
-	
+
 	/**
 	 * Basic communication to a session attached to this mob, if any.
 	 * This version allows the basic naming tags to be used by providing
@@ -292,16 +292,16 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param msg the string message with naming tags
 	 */
 	public void tell(MOB source, Environmental target, Environmental tool, String msg);
-	
+
 	/**
 	 * Basic communication to a session attached to this mob, if any.
 	 * @see MOB#tell(MOB, Environmental, Environmental, String)
 	 * @param msg the string message to send to the session.
 	 */
 	public void tell(String msg);
-	
+
 	/* Session related stuff */
-	
+
 	/**
 	 * Returns any Telnet Session object attached to this mob.  Without one, this
 	 * mob has nowhere to send messages, or receive input from a keyboard
@@ -312,7 +312,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the Telnet Session attached to this mob
 	 */
 	public Session session();
-	
+
 	/**
 	 * Sets any Telnet Session object attached to this mob.  Without one, this
 	 * mob has nowhere to send messages, or receive input from a keyboard
@@ -323,7 +323,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param newSession the Telnet Session attached to this mob
 	 */
 	public void setSession(Session newSession);
-	
+
 	/**
 	 * Returns whether this mob has a real telnet session attached to it.
 	 * @see MOB#session()
@@ -344,7 +344,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return true if this mobs session is possessing another mob
 	 */
 	public boolean isPossessing();
-	
+
 	/**
 	 * Returns the player mob that is possessing this mob by loaning
 	 * it its session.
@@ -355,7 +355,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the mob that is possessing this mob
 	 */
 	public MOB soulMate();
-	
+
 	/**
 	 * Sets the player mob that is possessing this mob by loaning
 	 * it its session.
@@ -366,7 +366,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param mob the mob that is possessing this mob
 	 */
 	public void setSoulMate(MOB mob);
-	
+
 	/**
 	 * If this mob is being possessed by a player, this method can be
 	 * called to return this mobs borrowed session to the player,
@@ -389,7 +389,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the total number of experience points earned by this mob.
 	 */
 	public int getExperience();
-	
+
 	/**
 	 * Sets the total number of experience points earned by this mob.
 	 * @see MOB#getExperience()
@@ -400,14 +400,14 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param newVal the total number of experience points earned by this mob.
 	 */
 	public void setExperience(int newVal);
-	
+
 	/**
 	 * Returns the number of ms (in tick increments)
-	 * that this mob has NOT been in combat. 
+	 * that this mob has NOT been in combat.
 	 * @return the ms of peace enjoyed by this mob.
 	 */
 	public long getPeaceTime();
-	
+
 	/**
 	 * Gets the total number of experience points this mob needs to earn
 	 * their next level.
@@ -432,7 +432,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return how much more xp needed
 	 */
 	public int getExpNeededLevel();
-	
+
 	/**
 	 * Returns the number of experience points gained since the player
 	 * got their current level, thus also telling you how much xp can
@@ -446,64 +446,64 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return how much more xp gained
 	 */
 	public int getExpNeededDelevel();
-	
+
 	/**
 	 * Gets the total number of experience points the mob acquired to
 	 * reach their current level, making it the baseline for this
-	 * levels experience. 
+	 * levels experience.
 	 * @return the experience point level baseline
 	 */
 	public int getExpPrevLevel();
-	
+
 	/* gained attributes */
-	
+
 	/**
 	 * Returns the total number of rl minutes this player has ever played.
 	 * @see MOB#setAgeMinutes(long)
 	 * @return the total number of rl minutes this player has ever played.
 	 */
 	public long getAgeMinutes();
-	
+
 	/**
 	 * Returns the total number of rl minutes this player has ever played.
 	 * @see MOB#getAgeMinutes()
 	 * @param newVal the total number of rl minutes this player has ever played.
 	 */
 	public void setAgeMinutes(long newVal);
-	
+
 	/**
 	 * Returns the number of practice points this mob has
 	 * @see MOB#setPractices(int)
 	 * @return the number of practice points this mob has
 	 */
 	public int getPractices();
-	
+
 	/**
 	 * Sets the number of practice points this mob has
 	 * @see MOB#getPractices()
 	 * @param newVal the number of practice points this mob has
 	 */
 	public void setPractices(int newVal);
-	
+
 	/**
 	 * Returns the number of training points this mob has
 	 * @see MOB#setTrains(int)
 	 * @return the number of training points this mob has
 	 */
 	public int getTrains();
-	
+
 	/**
 	 * Sets the number of training points this mob has
 	 * @see MOB#getTrains()
 	 * @param newVal the number of training points this mob has
 	 */
 	public void setTrains(int newVal);
-	
+
 	/**
 	 * Only somewhat deprecated, this method returns the internal
 	 * money counter.  Technically money is supposed to be stored
 	 * as Coin items, but these methods are still used as shortcuts
-	 * to give NPCs their initial money.  This number is also a 
+	 * to give NPCs their initial money.  This number is also a
 	 * baseline value that can be modified with the money variation
 	 * methods.
 	 * @see MOB#setMoney(int)
@@ -512,12 +512,12 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the mob npc money
 	 */
 	public int getMoney();
-	
+
 	/**
 	 * Only somewhat deprecated, this method sets the internal
 	 * money counter.  Technically money is supposed to be stored
 	 * as Coin items, but these methods are still used as shortcuts
-	 * to give NPCs their initial money.  This number is also a 
+	 * to give NPCs their initial money.  This number is also a
 	 * baseline value that can be modified with the money variation
 	 * methods.
 	 * @see MOB#getMoney()
@@ -526,22 +526,22 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param newVal the mob npc money
 	 */
 	public void setMoney(int newVal);
-	
+
 	/**
 	 * Returns a positive or negative range from 0-&gt;this number
 	 * that represents the amount of money added or removed from
-	 * this mob when the mob-as-NPC does and is ready to be looted. 
+	 * this mob when the mob-as-NPC does and is ready to be looted.
 	 * @see MOB#getMoney()
 	 * @see MOB#setMoney(int)
 	 * @see MOB#setMoneyVariation(double)
 	 * @return the amount of money to vary for looting money
 	 */
 	public double getMoneyVariation();
-	
+
 	/**
 	 * Sets a positive or negative range from 0-&gt;this number
 	 * that represents the amount of money added or removed from
-	 * this mob when the mob-as-NPC does and is ready to be looted. 
+	 * this mob when the mob-as-NPC does and is ready to be looted.
 	 * @see MOB#getMoney()
 	 * @see MOB#getMoneyVariation()
 	 * @see MOB#setMoneyVariation(double)
@@ -550,7 +550,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public void setMoneyVariation(double newVal);
 
 	/* the core state values */
-	
+
 	/**
 	 * Gets the Base CharState object for this mob, which are the stats like health and mana.
 	 * The Base CharState are those stats before modification by equipment or spell effects.
@@ -563,7 +563,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the base CharState object for this mob
 	 */
 	public CharState baseState();
-	
+
 	/**
 	 * Sets the Base CharState object for this mob, which are the stats like health and mana.
 	 * The Base CharState are those stats before modification by equipment or spell effects.
@@ -576,7 +576,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param newState the base CharState object for this mob
 	 */
 	public void setBaseState(CharState newState);
-	
+
 	/**
 	 * Gets the Current CharState object for this mob, which are the temp stats like health and mana.
 	 * The Current CharState are the max state after modification by casting, damage, and running around.
@@ -589,7 +589,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the Current charState object for this mob
 	 */
 	public CharState curState();
-	
+
 	/**
 	 * Gets the Max CharState object for this mob, which are the stats like health and mana.
 	 * The Max CharState are those stats after modification by equipment or spell effects, but
@@ -603,7 +603,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the base CharState object for this mob
 	 */
 	public CharState maxState();
-	
+
 	/**
 	 * Causes this mob to recalculate its max char state by copying the base state
 	 * over and then calling all equipment and spell effects to modify them.
@@ -614,7 +614,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @see MOB#resetToMaxState()
 	 */
 	public void recoverMaxState();
-	
+
 	/**
 	 * Causes this mob to copy the max state object to the current state object,
 	 * effectively healing and rejuvinating the mob.
@@ -625,7 +625,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @see MOB#recoverMaxState()
 	 */
 	public void resetToMaxState();
-	
+
 	/**
 	 * Returns the Weapon object that this mob attacks with when attacking
 	 * otherwise unarmed.  This is like claws and teeth for animals and
@@ -635,7 +635,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public Weapon getNaturalWeapon();
 
 	/* misc characteristics */
-	
+
 	/**
 	 * Returns the liege to which this mob owes loyalty.  Because this
 	 * field doubles for spouse, a player can have a liege or a spouse,
@@ -645,7 +645,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the name of the player to which this mob owes loyalty
 	 */
 	public String getLiegeID();
-	
+
 	/**
 	 * Sets the liege to which this mob owes loyalty.  Because this
 	 * field doubles for spouse, a player can have a liege or a spouse,
@@ -655,7 +655,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param newVal the name of the player to which this mob owes loyalty
 	 */
 	public void setLiegeID(String newVal);
-	
+
 	/**
 	 * Returns whether this mob/player is married to their liege, or whether
 	 * they are a simple liege.
@@ -676,7 +676,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the name of the Deity mob that this player/mob worships.
 	 */
 	public String getWorshipCharID();
-	
+
 	/**
 	 * Sets the name of the Deity mob that this player/mob worships.
 	 * Empty string means they are an atheist. :) The name here should
@@ -688,10 +688,10 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param newVal the name of the Deity mob that this player/mob worships.
 	 */
 	public void setWorshipCharID(String newVal);
-	
+
 	/**
 	 * Returns the Deity object of the mob that this player/mob worships.
-	 * A null return means they are an atheist.  Very important for Clerics. 
+	 * A null return means they are an atheist.  Very important for Clerics.
 	 * @see MOB#getWorshipCharID()
 	 * @see MOB#setWorshipCharID(String)
 	 * @return the Deity object of the mob that this player/mob worships
@@ -705,7 +705,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the wimpy hit point number
 	 */
 	public int getWimpHitPoint();
-	
+
 	/**
 	 * Sets the number of hit points below which this mob will
 	 * automatically flee combat.
@@ -720,7 +720,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the number of quest points that this mob has earned.
 	 */
 	public int getQuestPoint();
-	
+
 	/**
 	 * Sets the number of quest points that this mob has earned.
 	 * @see MOB#getQuestPoint()
@@ -743,7 +743,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return an iterable set of the Clans that this mob/player belongs
 	 */
 	public Iterable<Pair<Clan,Integer>> clans();
-	
+
 	/**
 	 * Given a precise clanID (name), this method returns the Clan object and
 	 * this players rank in the clan, if they belong.  Otherwise it
@@ -754,7 +754,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the Clan object + Rank, or null
 	 */
 	public Pair<Clan,Integer> getClanRole(String clanID);
-	
+
 	/**
 	 * Adds or alters the rank of this player/mob in the given clan.
 	 * @see MOB#clans()
@@ -765,7 +765,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public void setClan(String clanID, int role);
 
 	/* location! */
-	
+
 	/**
 	 * Gets the stored Start Room for this mob.  This is where the mob/player
 	 * goes when they recall.  Can also return null, of course, which for a mob
@@ -774,7 +774,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return  the stored Start Room for this mob
 	 */
 	public Room getStartRoom();
-	
+
 	/**
 	 * Sets the stored Start Room for this mob.  This is where the mob/player
 	 * goes when they recall.  Can also set to null, of course, which for a mob
@@ -783,7 +783,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param newRoom  the stored Start Room for this mob
 	 */
 	public void setStartRoom(Room newRoom);
-	
+
 	/**
 	 * Returns the room in which this mob/player is currently standing. It can
 	 * also refer to the room in which this mob/player WOULD be standing if they
@@ -793,7 +793,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the room in which this mob/player is currently standing
 	 */
 	public Room location();
-	
+
 	/**
 	 * Sets the room in which this mob/player is currently standing. It can
 	 * also refer to the room in which this mob/player WOULD be standing if they
@@ -811,7 +811,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * equipment changes, or for shopkeepers to fill out tech/electronics variables.
 	 */
 	public void flagVariableEq();
-	
+
 	/**
 	 * Returns a best match for the given itemName in this mob/players base inventory.
 	 * The filter must be non-null, but can be Wearable.FILTER_ANY or one of the other
@@ -827,7 +827,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return a best match for the given itemName
 	 */
 	public Item fetchItem(Item goodLocation, Filterer<Environmental> filter, String itemName);
-	
+
 	/**
 	 * Returns the collection of items worn by this mob/player at the given specific worn
 	 * code, at or above the given Layer code, and having the given layerAttributes.
@@ -842,7 +842,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the list of items worn at the given worn code
 	 */
 	public List<Item> fetchWornItems(long wornCode, short aboveOrAroundLayer, short layerAttributes);
-	
+
 	/**
 	 * Returns the first item encountered on this player/mob at the given worn code, or
 	 * null if nothing found.
@@ -854,7 +854,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the first item encountered at that worn code.
 	 */
 	public Item fetchFirstWornItem(long wornCode);
-	
+
 	/**
 	 * Returns the item being wielded in the WIELD position by this player/mob.  Its a really
 	 * quick way to get the mobs main weapon.
@@ -864,7 +864,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the item being wielded in the WIELD position by this player/mob
 	 */
 	public Item fetchWieldedItem();
-	
+
 	/**
 	 * Returns the item being wielded in the HELD position by this player/mob.  Its a really
 	 * quick way to get the mobs secondary weapon or shield.
@@ -874,7 +874,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the item being wielded in the HELD position by this player/mob
 	 */
 	public Item fetchHeldItem();
-	
+
 	/**
 	 * Returns whether this mob is only carrying money, meaning their main inventory
 	 * is essentially empty.  Also returns true if they are broke.
@@ -894,7 +894,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the number of free spaces the player/mob has at the given worn location
 	 */
 	public int freeWearPositions(long wornCode, short belowLayer, short layerAttributes);
-	
+
 	/**
 	 * Returns the total number of worn locations this mob/player has at the given
 	 * worn code location.
@@ -907,13 +907,13 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 
 	/**
 	 * Returns whether the given environmental is possessed by this mob.
-	 * Whether the object is an exact Ability or effect Ability, a 
+	 * Whether the object is an exact Ability or effect Ability, a
 	 * Follower MOB, or an inventory Item.
 	 * @param env the mob, item, or Ability to look for
 	 * @return true if this is presently mine
 	 */
 	public boolean isMine(Environmental env);
-	
+
 	/**
 	 * Returns the total number of effects this mob/player is under, including
 	 * Racial and Clan effects.  This is as opposed to the normal numEffects,
@@ -924,10 +924,10 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the total number of effects this mob/player is under
 	 */
 	public int numAllEffects();
-	
+
 	/**
 	 * Adds the given Ability as a new effect, also putting it on the top of
-	 * the list to ensure that it is processed first for messaging and 
+	 * the list to ensure that it is processed first for messaging and
 	 * stat effect purposes.
 	 * @see MOB#numAllEffects()
 	 * @see MOB#personalEffects()
@@ -936,7 +936,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @param to the Ability to add as an effect
 	 */
 	public void addPriorityEffect(Ability to);
-	
+
 	/**
 	 * Returns an enumeration only of the effects that are personally owned
 	 * by this mob, which means it will skip any Clan or Racial effects.
@@ -949,7 +949,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	public Enumeration<Ability> personalEffects();
 
 	/* Manipulation of followers */
-	
+
 	/**
 	 * This method recursively returns whoever this mob is riding, and
 	 * if they are a rideable, who all is riding with him.
@@ -959,7 +959,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the same list sent in
 	 */
 	public Set<MOB> getRideBuddies(Set<MOB> list);
-	
+
 	/**
 	 * Returns whether the given mob has the authority to give Orders
 	 * to this mob, whether from security status, or clan rank.
@@ -967,7 +967,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return true if you'll follow the mobs orders, false otherwise
 	 */
 	public boolean willFollowOrdersOf(MOB mob);
-	
+
 	/**
 	 * Returns the maximum number of followers that this Followable can
 	 * have.
@@ -975,9 +975,9 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the maximum number of followers
 	 */
 	public int maxFollowers();
-	
+
 	/* Extra functions on ability objects, which includes spells, traits, skills, etc.*/
-	
+
 	/**
 	 * Returns the best match ability/skill/spell of this mob to the given search
 	 * name string.  This also searches racial and clan abilities.
@@ -985,11 +985,11 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	 * @return the best match ability/skill to the search string
 	 */
 	public Ability findAbility(String name);
-	
+
 	/**
-	 * Because of certain variables, mobs are required to cache the calculation of the 
+	 * Because of certain variables, mobs are required to cache the calculation of the
 	 * costs of using their Abilities.  The array's first dimension is the type of
-	 * cost, indexed by the CACHEINDEX constants.  The second dimension is the 
+	 * cost, indexed by the CACHEINDEX constants.  The second dimension is the
 	 * resource type, which is indexed by the USAGEINDEX constants.  Therefore
 	 * by default, the array is CACHEINDEX_TOTAL x 3.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#CACHEINDEX_TOTAL
@@ -1109,30 +1109,30 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		private final int bitCode;
 		private final boolean autoReverse;
 		private final String desc;
-		
-		private Attrib(boolean reversed, String desc)
+
+		private Attrib(final boolean reversed, final String desc)
 		{
 			this.autoReverse=reversed;
 			this.desc=desc;
 			this.bitCode=(int)Math.round(Math.pow(2,this.ordinal()));
 		}
 
-		private Attrib(boolean reversed)
+		private Attrib(final boolean reversed)
 		{
 			this.autoReverse=reversed;
 			this.desc=this.name();
 			this.bitCode=(int)Math.round(Math.pow(2,this.ordinal()));
 		}
-		
+
 		/**
-		 * Returns the bitmap mask of this attribute 
+		 * Returns the bitmap mask of this attribute
 		 * @return the bitmap mask of this attribute
 		 */
 		public int getBitCode()
 		{
 			return bitCode;
 		}
-		
+
 		/**
 		 * Returns true if the attribute is intuitively reversed, meaning
 		 * that setting it turns it off, while clearing it turns it on.
@@ -1142,7 +1142,7 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 		{
 			return autoReverse;
 		}
-		
+
 		/**
 		 * The more official description code name of this attribute.
 		 * @return more official description code name of this attribute.
@@ -1154,13 +1154,13 @@ public interface MOB extends Rider, DBIdentifiable, PhysicalAgent, ItemPossessor
 	}
 
 	/**
-	 * The number of ticks out of combat this mob should be before trying to sheath their weapon, assuming 
+	 * The number of ticks out of combat this mob should be before trying to sheath their weapon, assuming
 	 * the appropriate attribute is set.
 	 */
 	public static final long START_SHEATH_TIME=3*CMProps.getTickMillis();
-	
+
 	/**
-	 * The number of ticks out of combat this mob will try to sheath their weapon, assuming 
+	 * The number of ticks out of combat this mob will try to sheath their weapon, assuming
 	 * the appropriate attribute is set.
 	 */
 	public static final long END_SHEATH_TIME=6*CMProps.getTickMillis();

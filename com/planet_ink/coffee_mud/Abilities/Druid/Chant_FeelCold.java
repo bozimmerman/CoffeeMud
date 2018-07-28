@@ -108,14 +108,14 @@ public class Chant_FeelCold extends Chant
 		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		   &&(msg.sourceMinor()==CMMsg.TYP_COLD))
 		{
-			final int recovery=(int)Math.round(CMath.mul((msg.value()),2.0));
+			final int recovery=(int)Math.round(CMath.mul((msg.value()),1.3));
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectedStats)
 	{
 		super.affectCharStats(affectedMOB,affectedStats);
 		affectedStats.setStat(CharStats.STAT_SAVE_COLD,affectedStats.getStat(CharStats.STAT_SAVE_COLD)-100);
@@ -173,7 +173,7 @@ public class Chant_FeelCold extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

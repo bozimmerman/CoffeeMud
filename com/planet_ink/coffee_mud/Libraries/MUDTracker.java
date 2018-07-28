@@ -753,7 +753,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		{
 			if((!mob.amDead())&&(!mob.amDestroyed()))
 			{
-				if(mob.isPlayer() && (mob.getStartRoom()!=null))
+				if(mob.isPlayer() 
+				&& (mob.getStartRoom()!=null))
 					mob.getStartRoom().bringMobHere(mob, true);
 				else
 					mob.killMeDead(false);
