@@ -950,6 +950,7 @@ public class StdRace implements Race
 			&&((!mob.amFollowing().isMonster())||(!mob.amUltimatelyFollowing().isMonster())))
 			{
 				final MOB M=(MOB)mob.copyOf();
+				CMLib.threads().deleteAllTicks(M);
 				M.setStartRoom(null);
 				bodyI.setSavedMOB(M, false);
 			}
@@ -993,7 +994,7 @@ public class StdRace implements Race
 			}
 		}
 
-		final List<Item> items=new ArrayList<Item>();
+		//final List<Item> items=new ArrayList<Item>();
 		final HashMap<Item,Container> containerMap=new HashMap<Item,Container>();
 		final HashMap<Item,Container> itemMap=new HashMap<Item,Container>();
 		final LinkedList<Item> itemsToGo=new LinkedList<Item>();
@@ -1013,7 +1014,7 @@ public class StdRace implements Race
 					Item newItem=CMLib.utensils().isRuinedLoot(mob,thisItem);
 					if(newItem==null)
 						continue;
-					if(newItem==thisItem)
+					if(newItem==thisItem) // why are mob items copied if they are restored anyway?
 						newItem=(Item)thisItem.copyOf();
 					if(newItem != null)
 					{
@@ -1035,7 +1036,7 @@ public class StdRace implements Race
 					thisItem.setContainer(bodyI);
 				if(room!=null)
 					room.addItem(thisItem);
-				items.add(thisItem);
+				//items.add(thisItem);
 			}
 			else
 			{
@@ -1052,7 +1053,7 @@ public class StdRace implements Race
 				dropItem.setContainer(bodyI);
 			if(room!=null)
 				room.addItem(dropItem);
-			items.add(dropItem);
+			//items.add(dropItem);
 		}
 
 		for(final Item oldItem : itemMap.keySet())
