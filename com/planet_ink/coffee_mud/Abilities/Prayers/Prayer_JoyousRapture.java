@@ -96,7 +96,7 @@ public class Prayer_JoyousRapture extends Prayer
 	{
 		// undo the affects of this spell
 		final MOB mob=(MOB)affected;
-		if(canBeUninvoked())
+		if(canBeUninvoked() && (mob != null))
 			mob.tell(L("Your joyous rapture is lifted."));
 		super.unInvoke();
 	}
