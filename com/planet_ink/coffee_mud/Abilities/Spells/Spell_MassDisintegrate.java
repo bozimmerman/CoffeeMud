@@ -99,7 +99,6 @@ public class Spell_MassDisintegrate extends Spell
 		}
 		if(h.size()>0)
 			avgLevel=avgLevel/h.size();
-
 		int levelDiff=avgLevel-(mob.phyStats().level()+(2*getXLEVELLevel(mob)));
 		if(levelDiff<0)
 			levelDiff=0;
@@ -117,7 +116,8 @@ public class Spell_MassDisintegrate extends Spell
 				for (final Object element : h)
 				{
 					final MOB target=(MOB)element;
-					if((target.phyStats().level()/avgLevel)<2)
+					if((CMath.div(target.phyStats().level(),avgLevel)<2.0)
+					&&((target.phyStats().level()-avgLevel)<CMProps.getIntVar(CMProps.Int.EXPRATE)))
 					{
 						final CMMsg msg=CMClass.getMsg(mob,target,this,somanticCastCode(mob,target,auto),null);
 						if(mob.location().okMessage(mob,msg))
@@ -136,10 +136,12 @@ public class Spell_MassDisintegrate extends Spell
 							}
 						}
 					}
+					else
+						CMLib.combat().postDamage(mob,target,this,1,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,("^SThe spell <DAMAGE> <T-NAME>!^?")+CMLib.protocol().msp("spelldam2.wav",40));
 				}
 			}
 			mob.location().recoverRoomStats();
-			final Vector<Item> V=new Vector<Item>();
+			final List<Item> V=new ArrayList<Item>();
 			for(int i=mob.location().numItems()-1;i>=0;i--)
 			{
 				final Item I=mob.location().getItem(i);
@@ -156,12 +158,12 @@ public class Spell_MassDisintegrate extends Spell
 							ok=false;
 					}
 					if(ok)
-						V.addElement(I);
+						V.add(I);
 				}
 			}
 			for(int i=0;i<V.size();i++)
 			{
-				final Item I=V.elementAt(i);
+				final Item I=V.get(i);
 				if((!(I instanceof DeadBody))
 				||(!((DeadBody)I).isPlayerCorpse())
 				||(((DeadBody)I).getMobName().equals(mob.Name())))
