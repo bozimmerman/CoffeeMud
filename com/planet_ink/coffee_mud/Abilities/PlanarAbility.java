@@ -1062,14 +1062,22 @@ public class PlanarAbility extends StdAbility
 						R.showHappens(CMMsg.MSG_OK_ACTION, L("This plane is fading away..."));
 					for(final Enumeration<MOB> i=R.inhabitants();i.hasMoreElements();)
 					{
-						MOB M=i.nextElement();
-						if((M!=null)&&(M.isPlayer()))
+						final MOB M=i.nextElement();
+						if((M!=null)
+						&&(M.isPlayer()))
 						{
 							Room oldRoom = (this.oldRoom!=null) ? CMLib.map().getRoom(this.oldRoom.get()) : null;
-							if((oldRoom==null)||(oldRoom.amDestroyed())||(oldRoom.getArea()==null)||(!oldRoom.getArea().isRoom(oldRoom)))
+							if((oldRoom==null)
+							||(oldRoom.amDestroyed())
+							||(oldRoom.getArea()==null)
+							||(!oldRoom.getArea().isRoom(oldRoom)))
 								oldRoom=M.getStartRoom();
-							oldRoom.bringMobHere(M, true);
-							CMLib.commands().postLook(M,true);
+							for(int i1=0; (i1<50) && (oldRoom != R) && (R.isInhabitant(M) || M.location()==R);i1++)
+							{
+								oldRoom.bringMobHere(M, true);
+								CMLib.commands().postLook(M,true);
+								R.delInhabitant(M);
+							}
 						}
 					}
 				}
