@@ -1,18 +1,18 @@
 spoiled dough	FOOD		1	wheat	1	water	1										
-infested flour	FOOD		1	Wheat	1												
-moldy cheese	FOOD		2	milk	5	water	1										
-maggoty cheese	FOOD		2	milk	5												
-turned yeast	FOOD		4	infested flour		Sugar		Water									
-maggoty bread	FOOD		1	spoiled dough	1	milk	1										
-stale bread	FOOD		1	spoiled dough	1												
-moldy bread	FOOD		1	spoiled dough	1	water	1										
-maggot pie	FOOD		6	spoiled dough	1	turned yeast	1										
-spoiled butter	FOOD		9	milk	3												
-putrid cream	FOOD		10	milk	2												
-slimey pasta	FOOD		11	wheat	1	water	1	eggs	1								
-maggot-egg sandwich	FOOD		22	eggs	1	maggoty bread	1										
-moldy cheese sandwich	FOOD		23	moldy cheese	1	moldy bread	1										
-maggoty cheese sandwich	FOOD		23	maggoty cheese	1	maggoty bread	1										
-rotting fish sandwich	FOOD		27	fish	1	moldy bread	1	greens	-1	tomatoes	-1						
-rancid beef sandwich	FOOD		28	beef	1	stale bread	1	greens	-1	tomatoes	-1						
-fetid pork sandwich	FOOD		29	Pork	1	stale bread	1	greens	-1	tomatoes	-1						
+infested flour	FOOD		2	Wheat	1												
+moldy cheese	FOOD		4	milk	5	water	1										
+maggoty cheese	FOOD		5	milk	5												
+turned yeast	FOOD		7	infested flour		Sugar		Water									
+maggoty bread	FOOD		8	spoiled dough	1	milk	1										
+stale bread	FOOD		10	spoiled dough	1												
+moldy bread	FOOD		11	spoiled dough	1	water	1										
+maggot pie	FOOD		13	spoiled dough	1	turned yeast	1										
+spoiled butter	FOOD		14	milk	3												
+putrid cream	FOOD		16	milk	2												
+slimey pasta	FOOD		17	wheat	1	water	1	eggs	1								
+maggot-egg sandwich	FOOD		19	eggs	1	maggoty bread	1										
+moldy cheese sandwich	FOOD		20	moldy cheese	1	moldy bread	1										
+maggoty cheese sandwich	FOOD		22	maggoty cheese	1	maggoty bread	1										
+rotting fish sandwich	FOOD		24	fish	1	moldy bread	1	greens	-1	tomatoes	-1						
+rancid beef sandwich	FOOD		26	beef	1	stale bread	1	greens	-1	tomatoes	-1						
+fetid pork sandwich	FOOD		28	Pork	1	stale bread	1	greens	-1	tomatoes	-1						
