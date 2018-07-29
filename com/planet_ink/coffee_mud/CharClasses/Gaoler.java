@@ -105,7 +105,7 @@ public class Gaoler extends StdCharClass
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -141,6 +141,7 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Baking",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"FoodPrep",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Butchering",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"GaolFood",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"BodyPiercing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Searching",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Blacksmithing",true);
@@ -312,7 +313,7 @@ public class Gaoler extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
