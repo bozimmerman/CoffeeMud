@@ -64,7 +64,7 @@ public class VeryAggressive extends Aggressive
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
@@ -72,13 +72,15 @@ public class VeryAggressive extends Aggressive
 	}
 
 	@Override
-	public boolean grantsAggressivenessTo(MOB M)
+	public boolean grantsAggressivenessTo(final MOB M)
 	{
 		return CMLib.masking().maskCheck(getParms(),M,false);
 	}
 
-	public void tickVeryAggressively(Tickable ticking, int tickID, boolean wander, boolean mobKiller, boolean misBehave, 
-									boolean levelCheck, MaskingLibrary.CompiledZMask mask, String attackMsg)
+	public void tickVeryAggressively(final Tickable ticking, final int tickID,
+									 final boolean wander, final boolean mobKiller,
+									 final boolean misBehave, final boolean levelCheck,
+									 final MaskingLibrary.CompiledZMask mask, final String attackMsg)
 	{
 		if(tickID!=Tickable.TICKID_MOB)
 			return;
@@ -103,24 +105,27 @@ public class VeryAggressive extends Aggressive
 		if(CMLib.dice().rollPercentage()>15)
 			return;
 
-		final Room thisRoom=mob.location();
-		for(int m=0;m<thisRoom.numInhabitants();m++)
+		final Room R=mob.location();
+		if((R.getArea()!=null)
+		&&(R.getArea().getAreaState()!=Area.State.ACTIVE))
+			return;
+		for(int m=0;m<R.numInhabitants();m++)
 		{
-			final MOB inhab=thisRoom.fetchInhabitant(m);
+			final MOB inhab=R.fetchInhabitant(m);
 			if((inhab!=null)
-			&&(CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.ORDER))
-			&&(CMSecurity.isAllowed(inhab,thisRoom,CMSecurity.SecFlag.CMDROOMS)))
+			&&(CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.ORDER))
+			&&(CMSecurity.isAllowed(inhab,R,CMSecurity.SecFlag.CMDROOMS)))
 				return;
 		}
 
 		int dirCode=-1;
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			final Room room=thisRoom.getRoomInDir(d);
-			final Exit exit=thisRoom.getExitInDir(d);
+			final Room room=R.getRoomInDir(d);
+			final Exit exit=R.getExitInDir(d);
 			if((room!=null)
 			&&(exit!=null)
-			&&(wander||room.getArea().Name().equals(thisRoom.getArea().Name())))
+			&&(wander||room.getArea().Name().equals(R.getArea().Name())))
 			{
 				if(exit.isOpen())
 				{
