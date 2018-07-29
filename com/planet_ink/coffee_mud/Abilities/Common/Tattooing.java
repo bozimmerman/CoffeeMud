@@ -130,7 +130,7 @@ public class Tattooing extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<3)
 		{
@@ -182,6 +182,13 @@ public class Tattooing extends CommonSkill
 		final MOB target=super.getTarget(mob,commands,givenTarget);
 		if(target==null)
 			return false;
+
+		if((!mob.getGroupMembers(new HashSet<MOB>()).contains(target))
+		&&(!CMLib.flags().isBoundOrHeld(target)))
+		{
+			commonTell(mob,target,null,L("<T-NAME> seem(s) unwilling to cooperate."));
+			return false;
+		}
 
 		if(target.getWearPositions(wornCode)<=0)
 		{
@@ -253,7 +260,7 @@ public class Tattooing extends CommonSkill
 			else
 			{
 				//target.curState().adjHitPoints(-percentOff, target.maxState());
-				List<Integer> bodyPartNums = new ArrayList<Integer>();
+				final List<Integer> bodyPartNums = new ArrayList<Integer>();
 				for(int i=0;i<Race.BODY_WEARVECTOR.length;i++)
 				{
 					if((Race.BODY_WEARVECTOR[i] == wornCode)
@@ -263,7 +270,7 @@ public class Tattooing extends CommonSkill
 				String bodyPartName="";
 				if(bodyPartNums.size()>0)
 				{
-					Integer pNum=bodyPartNums.get(CMLib.dice().roll(1, bodyPartNums.size(), -1));
+					final Integer pNum=bodyPartNums.get(CMLib.dice().roll(1, bodyPartNums.size(), -1));
 					bodyPartName=Race.BODYPARTSTR[pNum.intValue()].toLowerCase();
 				}
 				beneficialAffect(mob,mob,asLevel,duration);
