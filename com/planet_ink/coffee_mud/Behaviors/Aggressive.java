@@ -67,7 +67,7 @@ public class Aggressive extends StdBehavior
 	}
 
 	@Override
-	public boolean grantsAggressivenessTo(MOB M)
+	public boolean grantsAggressivenessTo(final MOB M)
 	{
 		if(M==null)
 			return true;
@@ -84,7 +84,7 @@ public class Aggressive extends StdBehavior
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
@@ -98,7 +98,7 @@ public class Aggressive extends StdBehavior
 		this.mask=CMLib.masking().getPreCompiledMask(newParms);
 	}
 
-	public static boolean startFight(MOB monster, MOB mob, boolean fightMOBs, boolean misBehave, String attackMsg)
+	public static boolean startFight(final MOB monster, final MOB mob, final boolean fightMOBs, final boolean misBehave, final String attackMsg)
 	{
 		if((mob!=null)&&(monster!=null)&&(mob!=monster))
 		{
@@ -135,12 +135,13 @@ public class Aggressive extends StdBehavior
 		return false;
 	}
 
-	public boolean pickAFight(MOB observer, MaskingLibrary.CompiledZMask mask, boolean mobKiller, boolean misBehave, boolean levelCheck, String attackMsg)
+	public boolean pickAFight(final MOB observer, final MaskingLibrary.CompiledZMask mask, final boolean mobKiller, final boolean misBehave, final boolean levelCheck, final String attackMsg)
 	{
 		if(!canFreelyBehaveNormal(observer))
 			return false;
 		final Room R=observer.location();
-		if((R!=null)&&(R.getArea().getAreaState()==Area.State.ACTIVE))
+		if((R!=null)
+		&&(R.getArea().getAreaState()==Area.State.ACTIVE))
 		{
 			if((R!=lastRoom)||(lastRoomInhabCount!=R.numInhabitants()))
 			{
@@ -164,7 +165,7 @@ public class Aggressive extends StdBehavior
 		return false;
 	}
 
-	public void tickAggressively(Tickable ticking, int tickID, boolean mobKiller, boolean misBehave, boolean levelCheck, MaskingLibrary.CompiledZMask mask, String attackMsg)
+	public void tickAggressively(final Tickable ticking, final int tickID, final boolean mobKiller, final boolean misBehave, final boolean levelCheck, final MaskingLibrary.CompiledZMask mask, final String attackMsg)
 	{
 		if(tickID!=Tickable.TICKID_MOB)
 			return;
