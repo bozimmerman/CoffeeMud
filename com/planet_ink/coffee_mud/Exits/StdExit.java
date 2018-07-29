@@ -59,7 +59,7 @@ public class StdExit implements Exit
 	protected Exit					me			= this;
 
 	protected ApplyAffectPhyStats<Ability>	affectPhyStats = new ApplyAffectPhyStats<Ability>(this);
-	
+
 	public StdExit()
 	{
 		super();
@@ -123,7 +123,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public String description(MOB viewerMob)
+	public String description(final MOB viewerMob)
 	{
 		return description();
 	}
@@ -153,13 +153,13 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public String displayText(MOB viewerMob)
+	public String displayText(final MOB viewerMob)
 	{
 		return displayText();
 	}
 
 	@Override
-	public String name(MOB viewerMob)
+	public String name(final MOB viewerMob)
 	{
 		return name();
 	}
@@ -171,7 +171,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public short exitUsage(short change)
+	public short exitUsage(final short change)
 	{
 		if(change<0)
 		{
@@ -187,7 +187,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 	}
 
@@ -198,7 +198,7 @@ public class StdExit implements Exit
 			return phyStats().newName();
 		return Name();
 	}
-	
+
 	@Override
 	public PhyStats phyStats()
 	{
@@ -219,7 +219,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void setBasePhyStats(PhyStats newStats)
+	public void setBasePhyStats(final PhyStats newStats)
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
@@ -251,7 +251,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void setSavable(boolean truefalse)
+	public void setSavable(final boolean truefalse)
 	{
 		CMLib.flags().setSavable(this, truefalse);
 	}
@@ -278,7 +278,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void setImage(String newImage)
+	public void setImage(final String newImage)
 	{
 		if((newImage==null)||(newImage.trim().length()==0))
 			rawImageName=null;
@@ -308,14 +308,14 @@ public class StdExit implements Exit
 		return false;
 	}
 
-	protected void cloneFix(Exit X)
+	protected void cloneFix(final Exit X)
 	{
 		me=this;
 		basePhyStats=(PhyStats)X.basePhyStats().copyOf();
 		phyStats=(PhyStats)X.phyStats().copyOf();
 
 		affectPhyStats = new ApplyAffectPhyStats<Ability>(this);
-		
+
 		affects=null;
 		behaviors=null;
 		scripts=null;
@@ -351,7 +351,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		miscText = newMiscText;
 	}
@@ -375,17 +375,17 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void setExpirationDate(long time)
+	public void setExpirationDate(final long time)
 	{
 	}
 
 	@Override
-	public void setDisplayText(String newDisplayText)
+	public void setDisplayText(final String newDisplayText)
 	{
 	}
 
 	@Override
-	public void setDescription(String newDescription)
+	public void setDescription(final String newDescription)
 	{
 	}
 
@@ -626,7 +626,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public StringBuilder viewableText(MOB mob, Room room)
+	public StringBuilder viewableText(final MOB mob, final Room room)
 	{
 		final StringBuilder viewMsg=new StringBuilder("");
 		final CMFlagLibrary flags=CMLib.flags();
@@ -675,29 +675,29 @@ public class StdExit implements Exit
 		if(numBehaviors()>0)
 		{
 			eachBehavior(new EachApplicable<Behavior>()
-			{ 
+			{
 				@Override
 				public final void apply(final Behavior B)
 				{
 					B.executeMsg(me, msg);
-				} 
+				}
 			});
 		}
 		if(numScripts()>0)
 		{
 			eachScript(new EachApplicable<ScriptingEngine>()
-			{ 
+			{
 				@Override
 				public final void apply(final ScriptingEngine S)
 				{
 					S.executeMsg(me, msg);
-				} 
+				}
 			});
 		}
 		if(numEffects()>0)
 		{
 			eachEffect(new EachApplicable<Ability>()
-			{ 
+			{
 				@Override
 				public final void apply(final Ability A)
 				{
@@ -789,23 +789,23 @@ public class StdExit implements Exit
 			if(numBehaviors()>0)
 			{
 				eachBehavior(new EachApplicable<Behavior>()
-				{ 
+				{
 					@Override
 					public final void apply(final Behavior B)
 					{
 						B.tick(ticking, tickID);
-					} 
+					}
 				});
 			}
 			if(numScripts()>0)
 			{
 				eachScript(new EachApplicable<ScriptingEngine>()
-				{ 
+				{
 					@Override
 					public final void apply(final ScriptingEngine S)
 					{
 						S.tick(ticking, tickID);
-					} 
+					}
 				});
 			}
 			return !amDestroyed();
@@ -815,7 +815,7 @@ public class StdExit implements Exit
 			if(numEffects()>0)
 			{
 				eachEffect(new EachApplicable<Ability>()
-				{ 
+				{
 					@Override
 					public final void apply(final Ability A)
 					{
@@ -841,12 +841,12 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void setDoorsNLocks(boolean newHasADoor,
-								  boolean newIsOpen,
-								  boolean newDefaultsClosed,
-								  boolean newHasALock,
-								  boolean newIsLocked,
-								  boolean newDefaultsLocked)
+	public void setDoorsNLocks(final boolean newHasADoor,
+								  final boolean newIsOpen,
+								  final boolean newDefaultsClosed,
+								  final boolean newHasALock,
+								  final boolean newIsLocked,
+								  final boolean newDefaultsLocked)
 	{
 		isOpen=newIsOpen;
 		isLocked=newIsLocked;
@@ -865,18 +865,18 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void setReadable(boolean isTrue)
+	public void setReadable(final boolean isTrue)
 	{
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		miscText = temporaryDoorLink() + text;
 	}
 
 	@Override
-	public void setExitParams(String newDoorName, String newCloseWord, String newOpenWord, String newClosedText)
+	public void setExitParams(final String newDoorName, final String newCloseWord, final String newOpenWord, final String newClosedText)
 	{
 	}
 
@@ -887,13 +887,13 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void setKeyName(String newKeyName)
+	public void setKeyName(final String newKeyName)
 	{
 		miscText = temporaryDoorLink() + newKeyName;
 	}
 
 	@Override
-	public Room lastRoomUsedFrom(Room fromRoom)
+	public Room lastRoomUsedFrom(final Room fromRoom)
 	{
 		return CMLib.map().getRoom(lastRoomID);
 	}
@@ -909,7 +909,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{// exits will never be asked this, so this method should always do NOTHING
 	}
 
@@ -926,7 +926,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void setTemporaryDoorLink(String link)
+	public void setTemporaryDoorLink(final String link)
 	{
 		if(link.startsWith("{{#"))
 		{
@@ -946,7 +946,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void addNonUninvokableEffect(Ability to)
+	public void addNonUninvokableEffect(final Ability to)
 	{
 		if(to==null)
 			return;
@@ -961,7 +961,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void addEffect(Ability to)
+	public void addEffect(final Ability to)
 	{
 		if(to==null)
 			return;
@@ -974,7 +974,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void delEffect(Ability to)
+	public void delEffect(final Ability to)
 	{
 		if(affects==null)
 			return;
@@ -1003,7 +1003,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void delAllEffects(boolean unInvoke)
+	public void delAllEffects(final boolean unInvoke)
 	{
 		final CList<Ability> affects=this.affects;
 		if(affects==null)
@@ -1035,9 +1035,9 @@ public class StdExit implements Exit
 			return 0;
 		return affects.size();
 	}
-	
+
 	@Override
-	public Ability fetchEffect(int index)
+	public Ability fetchEffect(final int index)
 	{
 		if(affects==null)
 			return null;
@@ -1052,7 +1052,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public Ability fetchEffect(String ID)
+	public Ability fetchEffect(final String ID)
 	{
 		if(affects==null)
 			return null;
@@ -1068,7 +1068,7 @@ public class StdExit implements Exit
 	/** Manipulation of Behavior objects, which includes
 	 * movement, speech, spellcasting, etc, etc.*/
 	@Override
-	public void addBehavior(Behavior to)
+	public void addBehavior(final Behavior to)
 	{
 		if(behaviors==null)
 			behaviors=new SVector<Behavior>(1);
@@ -1087,7 +1087,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void delBehavior(Behavior to)
+	public void delBehavior(final Behavior to)
 	{
 		if(behaviors==null)
 			return;
@@ -1123,7 +1123,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public Behavior fetchBehavior(int index)
+	public Behavior fetchBehavior(final int index)
 	{
 		if(behaviors==null)
 			return null;
@@ -1138,7 +1138,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public Behavior fetchBehavior(String ID)
+	public Behavior fetchBehavior(final String ID)
 	{
 		if(behaviors==null)
 			return null;
@@ -1171,7 +1171,7 @@ public class StdExit implements Exit
 
 	/** Manipulation of the scripts list */
 	@Override
-	public void addScript(ScriptingEngine S)
+	public void addScript(final ScriptingEngine S)
 	{
 		if(scripts==null)
 			scripts=new SVector<ScriptingEngine>(1);
@@ -1193,7 +1193,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void delScript(ScriptingEngine S)
+	public void delScript(final ScriptingEngine S)
 	{
 		if(scripts!=null)
 		{
@@ -1232,7 +1232,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public ScriptingEngine fetchScript(int x)
+	public ScriptingEngine fetchScript(final int x)
 	{
 		try
 		{
@@ -1270,7 +1270,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void setOpenDelayTicks(int numTicks)
+	public void setOpenDelayTicks(final int numTicks)
 	{
 	}
 
@@ -1311,7 +1311,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{
@@ -1324,7 +1324,7 @@ public class StdExit implements Exit
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{

@@ -49,7 +49,7 @@ public class CMStrings
 	public final static String[] emptyStringArray=new String[0];
 
 	private static CMStrings inst=new CMStrings();
-	
+
 	/**
 	 * Returns a static instance of this singleton
 	 * @return a static instance of this singleton
@@ -272,7 +272,7 @@ public class CMStrings
 
 	/**
 	 * Converts the given byte array back into a string using the current
-	 * threads CHARSETINPUT string encoding from the system properties. 
+	 * threads CHARSETINPUT string encoding from the system properties.
 	 * @param b the byte array to decode
 	 * @return the string representation of the byte array
 	 */
@@ -294,7 +294,7 @@ public class CMStrings
 	 * Converts the given string to bytes using the current threads CHARSETINPUT
 	 * string encoding from the system properties.
 	 * @param str the string to encode
-	 * @return the string, encoded into bytes from the 
+	 * @return the string, encoded into bytes from the
 	 */
 	public final static byte[] strToBytes(final String str)
 	{
@@ -321,12 +321,12 @@ public class CMStrings
 
 	/**
 	 * Returns the next index in the given string of an end-of-word character,
-	 * such as space,.;? or !.  It returns that index. 
+	 * such as space,.;? or !.  It returns that index.
 	 * @param s the string to look inside of
 	 * @param startWith the starting index for the search
 	 * @return the index of the end-of-word char, or string length for no more
 	 */
-	public final static int indexOfEndOfWord(String s, int startWith)
+	public final static int indexOfEndOfWord(final String s, final int startWith)
 	{
 		if((s==null)||(startWith>=s.length())||(startWith<0))
 			return -1;
@@ -374,7 +374,7 @@ public class CMStrings
 	 * @param len the maximum length of the string
 	 * @return the scrunches string, or the whole string, if &lt;= len
 	 */
-	
+
 	public final static String scrunchWord(String s, final int len)
 	{
 		if(s.length()<=len)
@@ -403,7 +403,7 @@ public class CMStrings
 	 * @param s the string to look for digits at the end of
 	 * @return the value of any trailing digits, or -1
 	 */
-	public final static int finalDigits(String s)
+	public final static int finalDigits(final String s)
 	{
 		if((s==null)||(s.length()==0))
 			return -1;
@@ -428,7 +428,7 @@ public class CMStrings
 	 * @return an array of all key/delimiters and the preceiding characters.
 	 */
 	@SuppressWarnings("unchecked")
-	public final static Map.Entry<Character,String>[] splitMulti(final String str, char[] splitters)
+	public final static Map.Entry<Character,String>[] splitMulti(final String str, final char[] splitters)
 	{
 		final List<Map.Entry<Character,String>> list=new ArrayList<Map.Entry<Character,String>>();
 		char curC='\0';
@@ -454,7 +454,7 @@ public class CMStrings
 					}
 
 					@Override
-					public String setValue(String value)
+					public String setValue(final String value)
 					{
 						return finalStr;
 					}
@@ -482,7 +482,7 @@ public class CMStrings
 			}
 
 			@Override
-			public String setValue(String value)
+			public String setValue(final String value)
 			{
 				return finalStr;
 			}
@@ -582,7 +582,7 @@ public class CMStrings
 		final char[] newChars = str.toCharArray();
 		for(int i=str.length()-1;i>=0;i--)
 		{
-			int x=indexOf(theseChars,str.charAt(i));
+			final int x=indexOf(theseChars,str.charAt(i));
 			if((x>=0)&&(x<withThese.length))
 			{
 				newChars[i]=withThese[x];
@@ -642,7 +642,7 @@ public class CMStrings
 
 	/**
 	 * Finds all instances of the second parameter string in the first string,
-	 * replaces them with the third word.  Returns the string with or without changes. 
+	 * replaces them with the third word.  Returns the string with or without changes.
 	 * The search is case sensitive
 	 * @param str the string to look inside of
 	 * @param thisStr the string to look for inside the first string
@@ -679,7 +679,7 @@ public class CMStrings
 	 * @param str the string to de-escape
 	 * @return the string, de-escaped
 	 */
-	public final static String deEscape(String str)
+	public final static String deEscape(final String str)
 	{
 		if(str==null)
 			return str;
@@ -687,30 +687,30 @@ public class CMStrings
 			return str;
 		return replaceAll(replaceAll(str,"\\\"","\""),"\\\\","\\");
 	}
-	
+
 	/**
 	 * This methods replaces any escapes to double-escape characters, and any
 	 *  double-quotes to escaped double-quotes
 	 * @param str the string to escape
 	 * @return the string, escaped
 	 */
-	public final static String escape(String str)
+	public final static String escape(final String str)
 	{
 		if(str==null)
 			return str;
 		return replaceAll(replaceAll(str,"\\","\\\\"),"\"","\\\"");
 	}
-	
+
 	/**
 	 * Finds all instances of the second parameter string in the first StringBuffer,
-	 * replaces them with the third word.  Returns the StringBuffer with or without changes. 
+	 * replaces them with the third word.  Returns the StringBuffer with or without changes.
 	 * The search is case sensitive
 	 * @param str the StringBuffer to look inside of
 	 * @param thisStr the string to look for inside the first string
 	 * @param withThisStr the string to replace the second string with, where found.
 	 * @return the StringBuffer modified, or not modified if no replacements were made.
 	 */
-	public final static StringBuffer replaceAll(StringBuffer str, final String thisStr, final String withThisStr)
+	public final static StringBuffer replaceAll(final StringBuffer str, final String thisStr, final String withThisStr)
 	{
 		if((str==null)
 		||(thisStr==null)
@@ -733,17 +733,17 @@ public class CMStrings
 		}
 		return str;
 	}
-	
+
 	/**
 	 * Finds all instances of the second parameter string in each of the strings in the array,
-	 * replaces them with the third word.  Returns the string array with or without changes. 
+	 * replaces them with the third word.  Returns the string array with or without changes.
 	 * The search is case sensitive
 	 * @param strs the string array to look inside of
 	 * @param thisStr the string to look for inside the array strings
 	 * @param withThisStr the string to replace the second string with, where found.
 	 * @return the string array modified, or not modified if no replacements were made.
 	 */
-	public final static String[] replaceInAll(String[] strs, final String thisStr, final String withThisStr)
+	public final static String[] replaceInAll(final String[] strs, final String thisStr, final String withThisStr)
 	{
 		if((strs==null)
 		||(thisStr==null)
@@ -772,14 +772,14 @@ public class CMStrings
 
 	/**
 	 * Builds a new version of the given string by replacing all instances of the first string
-	 * in each pair with the second string.  The pairs should be allocated String[N][2] where 
+	 * in each pair with the second string.  The pairs should be allocated String[N][2] where
 	 * N is any number of pairs, and 0 index string is the one to replace with the string in the
 	 * 1 index.  This method is case-sensitive!
 	 * @param str the string to rebuild
 	 * @param pairs the string pairs for search/replace duties
 	 * @return the rebuilt string
 	 */
-	public final static String replaceAlls(String str, final String pairs[][])
+	public final static String replaceAlls(final String str, final String pairs[][])
 	{
 		if((str==null)
 		||(pairs==null)
@@ -902,7 +902,7 @@ public class CMStrings
 
 	/**
 	 * Finds the first and only the first instance of the second parameter string in the first string,
-	 * and replaces it with the third string.  Returns the first string with or without changes. 
+	 * and replaces it with the third string.  Returns the first string with or without changes.
 	 * This method is case sensitive.
 	 * @param str the string to look inside of
 	 * @param thisStr the string to look for inside the first string
@@ -936,7 +936,7 @@ public class CMStrings
 	 * This method respects special CoffeeMUD color codes, skipping over
 	 * them to find that elusive first letter.
 	 * @param name the string to capitalize and lowercase
-	 * @return the string, capitalized, with other letters lowercased 
+	 * @return the string, capitalized, with other letters lowercased
 	 */
 	public final static String capitalizeAndLower(final String name)
 	{
@@ -1156,7 +1156,7 @@ public class CMStrings
 		}
 		return c.toString().trim();
 	}
-	
+
 	/**
 	 * Capitalizes the first letter in the given string, if one is found.
 	 * This method respects special CoffeeMUD color codes, skipping over
@@ -1252,7 +1252,7 @@ public class CMStrings
 			return msg.substring(start+1,end);
 		return null;
 	}
-	
+
 	/**
 	 * This method replaces the string between the first and last ' characters in the
 	 * first string with the second string.
@@ -1338,7 +1338,7 @@ public class CMStrings
 	 * This method is case-sensitive!
 	 * @param anycs the character array to look in
 	 * @param c the character to look for
-	 * @return true if the array contained the character, false otherwise 
+	 * @return true if the array contained the character, false otherwise
 	 */
 	public final static boolean contains(final char[] anycs, final char c)
 	{
@@ -1356,7 +1356,7 @@ public class CMStrings
 	 * This method is case-sensitive!
 	 * @param anycs the character array to look in
 	 * @param c the character to look for
-	 * @return the index of the character in the array, or -1 
+	 * @return the index of the character in the array, or -1
 	 */
 	public final static int indexOf(final char[] anycs, final char c)
 	{
@@ -1367,7 +1367,7 @@ public class CMStrings
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Checks whether the given string contains any of the given characters.
 	 * This method is case sensitive!
@@ -1427,7 +1427,7 @@ public class CMStrings
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Replaces @x1 type variables inside a stringbuffer with an actual value
 	 * Not used in the main expression system, this is a stand alone function
@@ -1445,8 +1445,8 @@ public class CMStrings
 		short safety=100;
 		for(int i=firstIndex;(i<str.length()-(1+valueLen));i++)
 		{
-			if((str.charAt(i)=='@') 
-			&& (str.charAt(i+1)=='x') 
+			if((str.charAt(i)=='@')
+			&& (str.charAt(i+1)=='x')
 			&& (Character.isDigit(str.charAt(i+2)))
 			&&((--safety)>0))
 			{
@@ -1495,7 +1495,7 @@ public class CMStrings
 		}
 		return str.toString();
 	}
-	
+
 	/**
 	 * Strips colors, of both the ansi, and cm code variety
 	 * @param s the string to strip
@@ -1710,12 +1710,12 @@ public class CMStrings
 		final class TagStacker
 		{
 			private Stack<Object[]> tagStack=new Stack<Object[]>();
-			public void push(String tag, int index)
+			public void push(final String tag, final int index)
 			{
 				tagStack.push(new Object[]{tag,Integer.valueOf(index)});
 			}
 			@SuppressWarnings("unchecked")
-			public int pop(String tag)
+			public int pop(final String tag)
 			{
 				if(tagStack.size()==0)
 					return -1;
@@ -1842,7 +1842,7 @@ public class CMStrings
 					else
 						start=-1;
 					break;
-				} 
+				}
 				break;
 			case 1: // eval start tag
 				if(c=='>')
@@ -1936,16 +1936,16 @@ public class CMStrings
 					finalData.delete(start, i+1);
 					if(code.equals("nbsp"))
 						finalData.insert(start,' ');
-					else 
+					else
 					if (code.equals("amp"))
 						finalData.insert(start, '&');
-					else 
+					else
 					if (code.equals("lt"))
 						finalData.insert(start, '<');
-					else 
+					else
 					if (code.equals("gt"))
 						finalData.insert(start, '>');
-					else 
+					else
 					if (code.equals("quot"))
 						finalData.insert(start, '"');
 					i=start-1;
@@ -1963,7 +1963,7 @@ public class CMStrings
 	/**
 	 * Returns the apparent end of line string used by the given
 	 * string.  Returns the default if it can't be determined.
-	 * 
+	 *
 	 * @param str the string to check
 	 * @param defaultEOL eol string to use if undetermined
 	 * @return the end of line string
@@ -2005,7 +2005,7 @@ public class CMStrings
 		}
 		return defaultEOL;
 	}
-	
+
 	/**
 	 * Strips the leading and trailing &lt;HTML&gt;, &lt;HEAD&gt;, and &lt;BODY&gt; tags from
 	 * the given StringBuilder.
@@ -2190,10 +2190,10 @@ public class CMStrings
 			H.put(obj[i],Integer.valueOf(i+firstInt));
 		return H;
 	}
-	
+
 	/**
-	 * Pads the string equally to the left and right with spaces until it is the 
-	 * length of the given number. If the string is already larger than the given 
+	 * Pads the string equally to the left and right with spaces until it is the
+	 * length of the given number. If the string is already larger than the given
 	 * number, no spaces are added, and the string is truncated.  Color codes are
 	 * removed if truncation is necessary.
 	 * This method removes any special CoffeeMud/ANSI color codes before calculating
@@ -2213,10 +2213,10 @@ public class CMStrings
 			rest=0;
 		return SPACES.substring(0,size)+thisStr+SPACES.substring(0,rest);
 	}
-	
+
 	/**
-	 * Pads the string to the left with spaces until it is the length 
-	 * of the given number. If the string is already larger than the given number, the 
+	 * Pads the string to the left with spaces until it is the length
+	 * of the given number. If the string is already larger than the given number, the
 	 * string is truncated at the end until it is the given length.  If the string
 	 * must be truncated, any color codes are also removed.
 	 * This method removes any special CoffeeMud/ANSI color codes before calculating
@@ -2232,10 +2232,10 @@ public class CMStrings
 			return removeColors(thisStr).substring(0,thisMuch);
 		return SPACES.substring(0,thisMuch-lenMinusColors)+thisStr;
 	}
-	
+
 	/**
-	 * Pads the string to the left with the given character until it is the length 
-	 * of the given number. If the string is already larger than the given number, the 
+	 * Pads the string to the left with the given character until it is the length
+	 * of the given number. If the string is already larger than the given number, the
 	 * string is truncated at the end until it is the given length.  If the string
 	 * must be truncated, any color codes are also removed.
 	 * This method removes any special CoffeeMud/ANSI color codes before calculating
@@ -2256,9 +2256,9 @@ public class CMStrings
 		str.append(thisStr);
 		return str.toString();
 	}
-	
+
 	/**
-	 * Pads the string to the left with spaces until it is the length of the given 
+	 * Pads the string to the left with spaces until it is the length of the given
 	 * number. If the string is already larger than the given number, the string is
 	 * truncated at the end until it is the given length.
 	 * This method always prepends the given colorSuffix string to the beginning of the string
@@ -2277,9 +2277,9 @@ public class CMStrings
 			return colorPrefix+removeColors(thisStr).substring(0,thisMuch);
 		return SPACES.substring(0,thisMuch-lenMinusColors)+colorPrefix+thisStr;
 	}
-	
+
 	/**
-	 * Truncates the given string if the string is larger than the given number, 
+	 * Truncates the given string if the string is larger than the given number,
 	 * or returns it unchanged otherwise.
 	 * NO special color codes are removed or evaluated -- this is simple string truncation.
 	 * @param thisStr the string to pad or truncate
@@ -2292,9 +2292,9 @@ public class CMStrings
 			return thisStr;
 		return thisStr.substring(0,thisMuch);
 	}
-	
+
 	/**
-	 * Truncates the given string if the string is larger than the given number, 
+	 * Truncates the given string if the string is larger than the given number,
 	 * or returns it unchanged otherwise.
 	 * NO special color codes are removed or evaluated -- this is simple string truncation.
 	 * @param thisStr the string to pad or truncate
@@ -2307,7 +2307,7 @@ public class CMStrings
 			return thisStr;
 		return thisStr.substring(0,thisMuch);
 	}
-	
+
 	/**
 	 * If the given string both begins and ends with double-quotes ",
 	 * then this method removes them before returning the string, and
@@ -2321,10 +2321,10 @@ public class CMStrings
 			return thisStr.substring(1,thisStr.length()-1);
 		return thisStr;
 	}
-	
+
 	/**
-	 * Pads the string to the right with spaces until it is the length 
-	 * of the given number. If the string is already larger than the given number, the 
+	 * Pads the string to the right with spaces until it is the length
+	 * of the given number. If the string is already larger than the given number, the
 	 * string is truncated at the end until it is the given length.  If the string
 	 * must be truncated, any color codes are also removed.
 	 * This method removes any special CoffeeMud/ANSI color codes before calculating
@@ -2346,8 +2346,8 @@ public class CMStrings
 	}
 
 	/**
-	 * Pads the string to the right with spaces until it is the length 
-	 * of the given number. If the string is already larger than the given number, the 
+	 * Pads the string to the right with spaces until it is the length
+	 * of the given number. If the string is already larger than the given number, the
 	 * string is truncated at the end until it is the given length.  If the string
 	 * must be truncated, any color codes are also removed.
 	 * This method removes any special CoffeeMud/ANSI color codes before calculating
@@ -2369,10 +2369,10 @@ public class CMStrings
 			return prefixColorStr + thisStr + suffixColorStr + SPACES;
 		return prefixColorStr + thisStr + suffixColorStr + SPACES.substring(0,thisMuch-lenMinusColors);
 	}
-	
+
 	/**
-	 * Pads the string to the right with the given character until it is the length 
-	 * of the given number. If the string is already larger than the given number, the 
+	 * Pads the string to the right with the given character until it is the length
+	 * of the given number. If the string is already larger than the given number, the
 	 * string is truncated at the end until it is the given length.  If the string
 	 * must be truncated, any color codes are also removed.
 	 * This method removes any special CoffeeMud/ANSI color codes before calculating
@@ -2394,10 +2394,10 @@ public class CMStrings
 			str.append(c);
 		return str.toString();
 	}
-	
+
 	/**
-	 * Truncates the given string if the string is larger than the given number, 
-	 * or returns it unchanged otherwise. If the string is larger than the given 
+	 * Truncates the given string if the string is larger than the given number,
+	 * or returns it unchanged otherwise. If the string is larger than the given
 	 * number, color codes are removed.
 	 * This method removes any special CoffeeMud/ANSI color codes before calculating
 	 * length.
@@ -2414,10 +2414,10 @@ public class CMStrings
 			return prefixColorStr+removeColors(thisStr).substring(0,thisMuch)+suffixColorStr;
 		return prefixColorStr+thisStr+suffixColorStr;
 	}
-	
+
 	/**
-	 * Truncates the given string if the string is larger than the given number, 
-	 * or returns it unchanged otherwise. If the string is larger than the given 
+	 * Truncates the given string if the string is larger than the given number,
+	 * or returns it unchanged otherwise. If the string is larger than the given
 	 * number, color codes are removed.
 	 * This method removes any special CoffeeMud/ANSI color codes before calculating
 	 * length.
@@ -2432,10 +2432,10 @@ public class CMStrings
 			return removeColors(thisStr).substring(0,thisMuch);
 		return thisStr;
 	}
-	
+
 	/**
 	 * Pads the string to the right with three dots if the string is larger than
-	 * the given number, or returns it unchanged otherwise. If the string is 
+	 * the given number, or returns it unchanged otherwise. If the string is
 	 * larger than the given number, the string is truncated at the end, color codes
 	 * removed, until it is the given length, and the ellipse added.
 	 * This method removes any special CoffeeMud/ANSI color codes before calculating
@@ -2451,9 +2451,9 @@ public class CMStrings
 			return removeColors(thisStr).substring(0,thisMuch)+"...";
 		return thisStr;
 	}
-	
+
 	/**
-	 * Pads the string to the right with spaces until it is the length of the given 
+	 * Pads the string to the right with spaces until it is the length of the given
 	 * number. If the string is already larger than the given number, the string is
 	 * truncated at the end until it is the given length.
 	 * This method always adds the given colorSuffix string to the end of the string
@@ -2474,11 +2474,11 @@ public class CMStrings
 			return thisStr+colorSuffix+SPACES;
 		return thisStr+colorSuffix+SPACES.substring(0,thisMuch-lenMinusColors);
 	}
-	
+
 	/**
-	 * Pads the string to the right with spaces until it is the length of the given 
+	 * Pads the string to the right with spaces until it is the length of the given
 	 * number. If the string is already larger than the given number, no spaces are
-	 * added, and the string is returned unchanged.  
+	 * added, and the string is returned unchanged.
 	 * This method removes any special CoffeeMud/ANSI color codes before calculating
 	 * length.
 	 * @param thisStr the string to pad
@@ -2494,11 +2494,11 @@ public class CMStrings
 			return thisStr+SPACES;
 		return thisStr+SPACES.substring(0,thisMuch-lenMinusColors);
 	}
-	
+
 	/**
-	 * Pads the string equally to the left and right with spaces until it is the 
-	 * length of the given number. If the string is already larger than the given 
-	 * number, no spaces are added, and the string is returned unchanged.  
+	 * Pads the string equally to the left and right with spaces until it is the
+	 * length of the given number. If the string is already larger than the given
+	 * number, no spaces are added, and the string is returned unchanged.
 	 * This method removes any special CoffeeMud/ANSI color codes before calculating
 	 * length.
 	 * @param thisStr the string to pad
@@ -2518,9 +2518,9 @@ public class CMStrings
 	}
 
 	/**
-	 * Pads the string to the left with spaces until it is the length of the given 
+	 * Pads the string to the left with spaces until it is the length of the given
 	 * number. If the string is already larger than the given number, no spaces are
-	 * added, and the string is returned unchanged.  
+	 * added, and the string is returned unchanged.
 	 * This method removes any special CoffeeMud/ANSI color codes before calculating
 	 * length.
 	 * @param thisStr the string to pad
@@ -2597,7 +2597,7 @@ public class CMStrings
 	}
 
 	/**
-	 * Main token class for the string expression parser and evaluator.  
+	 * Main token class for the string expression parser and evaluator.
 	 * @see CMStrings#parseStringExpression(String, Map, boolean)
 	 * @author Bo Zimmerman
 	 */
@@ -2656,7 +2656,7 @@ public class CMStrings
 	 * @param variables the string to string map of $variables for substitution
 	 * @param emptyVars true if missing variables are evaluated as "", or false to throw an exception
 	 * @return the valid token object
-	 * @throws Exception thrown if emptyVars is false and a $variable is referenced but not found 
+	 * @throws Exception thrown if emptyVars is false and a $variable is referenced but not found
 	 */
 	private static StringExpToken makeTokenType(String token, final Map<String,Object> variables, final boolean emptyVars) throws Exception
 	{
@@ -2664,65 +2664,80 @@ public class CMStrings
 			return null;
 		switch(token.charAt(0))
 		{
-			case '\"':
-				return StringExpToken.token(StringExpTokenType.STRCONST, token.substring(1, token.length() - 1));
-			case '\'':
-				return StringExpToken.token(StringExpTokenType.STRCONST, token.substring(1, token.length() - 1));
-			case '`':
-				return StringExpToken.token(StringExpTokenType.STRCONST, token.substring(1, token.length() - 1));
-			case '(':
-				if(token.length()==1)
-					return StringExpToken.token(StringExpTokenType.OPENPAREN, token);
-				break;
-			case ')':
-				if(token.length()==1)
-					return StringExpToken.token(StringExpTokenType.CLOSEPAREN, token);
-				break;
-			case 'I':
-				if (token.equalsIgnoreCase("IN"))
-					return StringExpToken.token(StringExpTokenType.EVALUATOR, token);
-				break;
-			case '+': case '-': case '*': case '/': case '?':
-				if(token.length()==1)
-					return StringExpToken.token(StringExpTokenType.COMBINER, token);
-				break;
-			case '!':
-				if(token.length()==1)
-					return StringExpToken.token(StringExpTokenType.NOT, token);
-				break;
-			case 'N':
-				if (token.equalsIgnoreCase("NOT"))
-					return StringExpToken.token(StringExpTokenType.NOT, token);
-				break;
-			case '0': case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9':  
-				return StringExpToken.token(StringExpTokenType.NUMCONST, token);
-			case '$':
-			{
-				token = token.substring(1);
-				Object value = variables.get(token);
-				if(!(value instanceof String))
-					value = variables.get(token.toUpperCase().trim());
-				if((value == null)&&(emptyVars))
-					value="";
-				else
-				if(!(value instanceof String))
-					throw new Exception("Undefined variable found: $" + token);
-				if((value.toString().length()>0)&&(!CMath.isNumber(value.toString())))
-					return StringExpToken.token(StringExpTokenType.STRCONST, value.toString());
-				return StringExpToken.token(StringExpTokenType.UKNCONST, value.toString());
-			}
-			case '_': case '|': case '&':
+		case '\"':
+			return StringExpToken.token(StringExpTokenType.STRCONST, token.substring(1, token.length() - 1));
+		case '\'':
+			return StringExpToken.token(StringExpTokenType.STRCONST, token.substring(1, token.length() - 1));
+		case '`':
+			return StringExpToken.token(StringExpTokenType.STRCONST, token.substring(1, token.length() - 1));
+		case '(':
+			if(token.length()==1)
+				return StringExpToken.token(StringExpTokenType.OPENPAREN, token);
+			break;
+		case ')':
+			if(token.length()==1)
+				return StringExpToken.token(StringExpTokenType.CLOSEPAREN, token);
+			break;
+		case 'I':
+			if (token.equalsIgnoreCase("IN"))
+				return StringExpToken.token(StringExpTokenType.EVALUATOR, token);
+			break;
+		case '+':
+		case '-':
+		case '*':
+		case '/':
+		case '?':
+			if(token.length()==1)
+				return StringExpToken.token(StringExpTokenType.COMBINER, token);
+			break;
+		case '!':
+			if(token.length()==1)
+				return StringExpToken.token(StringExpTokenType.NOT, token);
+			break;
+		case 'N':
+			if (token.equalsIgnoreCase("NOT"))
+				return StringExpToken.token(StringExpTokenType.NOT, token);
+			break;
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
+			return StringExpToken.token(StringExpTokenType.NUMCONST, token);
+		case '$':
+		{
+			token = token.substring(1);
+			Object value = variables.get(token);
+			if(!(value instanceof String))
+				value = variables.get(token.toUpperCase().trim());
+			if((value == null)&&(emptyVars))
+				value="";
+			else
+			if(!(value instanceof String))
+				throw new Exception("Undefined variable found: $" + token);
+			if((value.toString().length()>0)&&(!CMath.isNumber(value.toString())))
+				return StringExpToken.token(StringExpTokenType.STRCONST, value.toString());
+			return StringExpToken.token(StringExpTokenType.UKNCONST, value.toString());
+		}
+		case '_':
+		case '|':
+		case '&':
+			return StringExpToken.token(StringExpTokenType.WORD, token);
+		default:
+			if (Character.isLetterOrDigit(token.charAt(0)))
 				return StringExpToken.token(StringExpTokenType.WORD, token);
-			default:
-				if (Character.isLetterOrDigit(token.charAt(0)))
-					return StringExpToken.token(StringExpTokenType.WORD, token);
-				break;
+			break;
 		}
 		return StringExpToken.token(StringExpTokenType.EVALUATOR, token);
 	}
 
 	/**
-	 * This is the main string expression evaluator Scanner/Tokenizer. 
+	 * This is the main string expression evaluator Scanner/Tokenizer.
 	 * Given a full string expression, this method returns the next valid token in the string from
 	 * the given index.  Variables are evaluated at parse time, and missing variables are evaluated
 	 * as "" if emptyVars is true, and throw and expression otherwise.  The index into the expression
@@ -2817,7 +2832,7 @@ public class CMStrings
 	}
 
 	/**
-	 * Given a set of pre-parsed tokens from an Expression, this method returns a literal value token 
+	 * Given a set of pre-parsed tokens from an Expression, this method returns a literal value token
 	 * begining with the token at the given index, which may be modified.  Variables are substituted
 	 * at evaluation time.  Parsing errors throw an exception
 	 * @see CMStrings#parseStringExpression(String, Map, boolean)
@@ -2842,7 +2857,7 @@ public class CMStrings
 	}
 
 	/**
-	 * Given a set of pre-parsed tokens from an Expression, this method returns a literal or combined token 
+	 * Given a set of pre-parsed tokens from an Expression, this method returns a literal or combined token
 	 * begining with the token at the given index, which may be modified.  Variables are substituted
 	 * at evaluation time.  Parsing errors throw an exception
 	 * @see CMStrings#parseStringExpression(String, Map, boolean)
@@ -2941,7 +2956,7 @@ public class CMStrings
 	}
 
 	/**
-	 * Given a set of pre-parsed tokens from an Expression, this method evaluates the operator expression, 
+	 * Given a set of pre-parsed tokens from an Expression, this method evaluates the operator expression,
 	 * begining with the token at the given index, which may be modified.  Variables are substituted
 	 * at evaluation time.  Parsing errors throw an exception
 	 * @see CMStrings#parseStringExpression(String, Map, boolean)
@@ -3017,7 +3032,7 @@ public class CMStrings
 		case '>':
 			if(token.value.length()==1)
 				result = new Boolean(compare > 0);
-			else 
+			else
 			switch(token.value.charAt(1))
 			{
 			case '=':
@@ -3033,7 +3048,7 @@ public class CMStrings
 		case '<':
 			if(token.value.length()==1)
 				result = new Boolean(compare < 0);
-			else 
+			else
 			switch(token.value.charAt(1))
 			{
 			case '=':
@@ -3084,7 +3099,8 @@ public class CMStrings
 				return null;
 			}
 			break;
-		case 'I': case 'i':
+		case 'I':
+		case 'i':
 			if (token.value.equalsIgnoreCase("IN"))
 				result = new Boolean(rightValue.value.toUpperCase().indexOf(leftValue.value.toUpperCase())>=0);
 			else
@@ -3098,7 +3114,7 @@ public class CMStrings
 	}
 
 	/**
-	 * Given a set of pre-parsed tokens from an Expression, this method evaluates the expression, 
+	 * Given a set of pre-parsed tokens from an Expression, this method evaluates the expression,
 	 * begining with the token at the given index, which may be modified.  Variables are substituted
 	 * at evaluation time.  Parsing errors throw an exception
 	 * @see CMStrings#parseStringExpression(String, Map, boolean)
@@ -3157,7 +3173,8 @@ public class CMStrings
 		final Boolean result;
 		switch(token.value.charAt(0))
 		{
-		case 'a': case 'A':
+		case 'a':
+		case 'A':
 			if (token.value.equalsIgnoreCase("AND"))
 				result = new Boolean(leftExpression.booleanValue() && rightExpression.booleanValue());
 			else
@@ -3169,13 +3186,15 @@ public class CMStrings
 		case '|':
 			result = new Boolean(leftExpression.booleanValue() || rightExpression.booleanValue());
 			break;
-		case 'O': case 'o':
+		case 'O':
+		case 'o':
 			if (token.value.equalsIgnoreCase("OR"))
 				result = new Boolean(leftExpression.booleanValue() || rightExpression.booleanValue());
 			else
 				throw new Exception("Parse Exception: Illegal expression evaluation combiner: " + token.value);
 			break;
-		case 'X': case 'x':
+		case 'X':
+		case 'x':
 			if (token.value.equalsIgnoreCase("XOR"))
 				result = new Boolean(leftExpression.booleanValue() != rightExpression.booleanValue());
 			else
@@ -3189,19 +3208,19 @@ public class CMStrings
 	}
 
 	/**
-	 * Parses a string comparison expression and returns the result of the evaluation.  
-	 * Basic comparison operators include = &gt; &lt; &gt;= &lt;= != and IN.  
+	 * Parses a string comparison expression and returns the result of the evaluation.
+	 * Basic comparison operators include = &gt; &lt; &gt;= &lt;= != and IN.
 	 * The IN operator is a substring check.
 	 * Comparisons may be between string literals/variables, or numeric literals/variables.
 	 * Numeric literals and variables may be combined using +, -, *, /, and ?, where ? is
 	 * a special operator for random-number generation, which separates the lowest and highest
-	 * number in a range, inclusive. 
+	 * number in a range, inclusive.
 	 * Conjunctions include AND &amp; OR | and XOR. Parenthesis () may be used to group expressions.
 	 * NOT is a valid prefix to negate an evaluation. All checks are always case-insensitive.
-	 * Variables may be included, which are substituted at evaluation time. Variables are 
+	 * Variables may be included, which are substituted at evaluation time. Variables are
 	 * designated in the expression by prefix with $.  Variables are checked case-sensitive
 	 * first, and then as uppercase.  If not found, an exception is thrown, unless the
-	 * emptyVarsOk field was set to true. The value of variables should always be a String obj.  
+	 * emptyVarsOk field was set to true. The value of variables should always be a String obj.
 	 * @param expression the string expression to evaluate
 	 * @param variables the map of variable names to String objects
 	 * @param emptyVarsOK true if missing variables are "", and false otherwise.
@@ -3222,7 +3241,7 @@ public class CMStrings
 			return true;
 		i = new int[]{ 0 };
 		final Boolean value = matchExpression(tokens, i, variables);
-		if (value == null) 
+		if (value == null)
 			throw new Exception("Parse error on following statement: " + expression);
 		return value.booleanValue();
 	}
@@ -3320,13 +3339,13 @@ public class CMStrings
 	 * Other less paranoid languages just use a three-element array.
 	 * @author fraser@google.com (Neil Fraser)
 	 */
-	private static class LinesToCharsResult 
+	private static class LinesToCharsResult
 	{
 		protected String chars1;
 		protected String chars2;
 		protected List<String> lineArray;
 
-		protected LinesToCharsResult(String chars1, String chars2, List<String> lineArray)
+		protected LinesToCharsResult(final String chars1, final String chars2, final List<String> lineArray)
 		{
 			this.chars1 = chars1;
 			this.chars2 = chars2;
@@ -3354,7 +3373,7 @@ public class CMStrings
 	 * @param text2 New string to be diffed.
 	 * @return Linked List of Diff objects.
 	 */
-	public static LinkedList<Diff> diff_main(String text1, String text2)
+	public static LinkedList<Diff> diff_main(final String text1, final String text2)
 	{
 		return diff_main(text1, text2, true);
 	}
@@ -3369,7 +3388,7 @@ public class CMStrings
 	 *		 If true, then run a faster slightly less optimal diff.
 	 * @return Linked List of Diff objects.
 	 */
-	public static LinkedList<Diff> diff_main(String text1, String text2, boolean checklines)
+	public static LinkedList<Diff> diff_main(final String text1, final String text2, final boolean checklines)
 	{
 		// Set a deadline by which time the diff must be complete.
 		long deadline;
@@ -3397,7 +3416,7 @@ public class CMStrings
 	 *		 internally for recursive calls.	Users should set DiffTimeout instead.
 	 * @return Linked List of Diff objects.
 	 */
-	private static LinkedList<Diff> diff_main(String text1, String text2, boolean checklines, long deadline)
+	private static LinkedList<Diff> diff_main(String text1, String text2, final boolean checklines, final long deadline)
 	{
 		// Check for null inputs.
 		if (text1 == null || text2 == null)
@@ -3458,7 +3477,7 @@ public class CMStrings
 	 * @param deadline Time when the diff should be complete by.
 	 * @return Linked List of Diff objects.
 	 */
-	private static LinkedList<Diff> diff_compute(String text1, String text2, boolean checklines, long deadline)
+	private static LinkedList<Diff> diff_compute(final String text1, final String text2, final boolean checklines, final long deadline)
 	{
 		LinkedList<Diff> diffs = new LinkedList<Diff>();
 
@@ -3536,7 +3555,7 @@ public class CMStrings
 	 * @param deadline Time when the diff should be complete by.
 	 * @return Linked List of Diff objects.
 	 */
-	private static LinkedList<Diff> diff_lineMode(String text1, String text2, long deadline)
+	private static LinkedList<Diff> diff_lineMode(String text1, String text2, final long deadline)
 	{
 		// Scan the text on a line-by-line basis first.
 		final LinesToCharsResult b = diff_linesToChars(text1, text2);
@@ -3611,7 +3630,7 @@ public class CMStrings
 	 * @param deadline Time at which to bail if not yet complete.
 	 * @return LinkedList of Diff objects.
 	 */
-	private static LinkedList<Diff> diff_bisect(String text1, String text2, long deadline)
+	private static LinkedList<Diff> diff_bisect(final String text1, final String text2, final long deadline)
 	{
 		// Cache the text lengths to prevent multiple calls.
 		final int text1_length = text1.length();
@@ -3672,13 +3691,13 @@ public class CMStrings
 					// Ran off the right of the graph.
 					k1end += 2;
 				}
-				else 
+				else
 				if (y1 > text2_length)
 				{
 					// Ran off the bottom of the graph.
 					k1start += 2;
 				}
-				else 
+				else
 				if (front)
 				{
 					final int k2_offset = v_offset + delta - k1;
@@ -3721,13 +3740,13 @@ public class CMStrings
 					// Ran off the left of the graph.
 					k2end += 2;
 				}
-				else 
+				else
 				if (y2 > text2_length)
 				{
 					// Ran off the top of the graph.
 					k2start += 2;
 				}
-				else 
+				else
 				if (!front)
 				{
 					final int k1_offset = v_offset + delta - k2;
@@ -3765,7 +3784,7 @@ public class CMStrings
 	 * @param deadline Time at which to bail if not yet complete.
 	 * @return LinkedList of Diff objects.
 	 */
-	private static LinkedList<Diff> diff_bisectSplit(String text1, String text2, int x, int y, long deadline)
+	private static LinkedList<Diff> diff_bisectSplit(final String text1, final String text2, final int x, final int y, final long deadline)
 	{
 		final String text1a = text1.substring(0, x);
 		final String text2a = text2.substring(0, y);
@@ -3790,7 +3809,7 @@ public class CMStrings
 	 *		 the List of unique strings.	The zeroth element of the List of
 	 *		 unique strings is intentionally blank.
 	 */
-	private static LinesToCharsResult diff_linesToChars(String text1, String text2)
+	private static LinesToCharsResult diff_linesToChars(final String text1, final String text2)
 	{
 		final List<String> lineArray = new ArrayList<String>();
 		final Map<String, Integer> lineHash = new HashMap<String, Integer>();
@@ -3815,7 +3834,7 @@ public class CMStrings
 	 * @param lineHash Map of strings to indices.
 	 * @return Encoded string.
 	 */
-	private static String diff_linesToCharsMunge(String text, List<String> lineArray, Map<String, Integer> lineHash)
+	private static String diff_linesToCharsMunge(final String text, final List<String> lineArray, final Map<String, Integer> lineHash)
 	{
 		int lineStart = 0;
 		int lineEnd = -1;
@@ -3855,7 +3874,7 @@ public class CMStrings
 	 * @param diffs LinkedList of Diff objects.
 	 * @param lineArray List of unique strings.
 	 */
-	private static void diff_charsToLines(LinkedList<Diff> diffs, List<String> lineArray)
+	private static void diff_charsToLines(final LinkedList<Diff> diffs, final List<String> lineArray)
 	{
 		StringBuilder text;
 		for (final Diff diff : diffs)
@@ -3876,7 +3895,7 @@ public class CMStrings
 	 * @param text2 Second string.
 	 * @return The number of characters common to the start of each string.
 	 */
-	private static int diff_commonPrefix(String text1, String text2)
+	private static int diff_commonPrefix(final String text1, final String text2)
 	{
 		// Performance analysis: http://neil.fraser.name/news/2007/10/09/
 		final int n = Math.min(text1.length(), text2.length());
@@ -3897,7 +3916,7 @@ public class CMStrings
 	 * @param text2 Second string.
 	 * @return The number of characters common to the end of each string.
 	 */
-	private static int diff_commonSuffix(String text1, String text2)
+	private static int diff_commonSuffix(final String text1, final String text2)
 	{
 		// Performance analysis: http://neil.fraser.name/news/2007/10/09/
 		final int text1_length = text1.length();
@@ -3936,7 +3955,7 @@ public class CMStrings
 		{
 			text1 = text1.substring(text1_length - text2_length);
 		}
-		else 
+		else
 		if (text1_length < text2_length)
 		{
 			text2 = text2.substring(0, text1_length);
@@ -3981,7 +4000,7 @@ public class CMStrings
 	 *		 suffix of text1, the prefix of text2, the suffix of text2 and the
 	 *		 common middle.	Or null if there was no match.
 	 */
-	private static String[] diff_halfMatch(String text1, String text2)
+	private static String[] diff_halfMatch(final String text1, final String text2)
 	{
 		if (Diff_Timeout <= 0)
 		{
@@ -4004,12 +4023,12 @@ public class CMStrings
 		{
 			return null;
 		}
-		else 
+		else
 		if (hm2 == null)
 		{
 			hm = hm1;
 		}
-		else 
+		else
 		if (hm1 == null)
 		{
 			hm = hm2;
@@ -4026,7 +4045,7 @@ public class CMStrings
 			return hm;
 			//return new String[]{hm[0], hm[1], hm[2], hm[3], hm[4]};
 		}
-		else 
+		else
 		if(hm!=null)
 		{
 			return new String[]{hm[2], hm[3], hm[0], hm[1], hm[4]};
@@ -4048,7 +4067,7 @@ public class CMStrings
 	 *		 suffix of longtext, the prefix of shorttext, the suffix of shorttext
 	 *		 and the common middle.	Or null if there was no match.
 	 */
-	private static String[] diff_halfMatchI(String longtext, String shorttext, int i)
+	private static String[] diff_halfMatchI(final String longtext, final String shorttext, final int i)
 	{
 		// Start with a 1/4 length substring at position i as a seed.
 		final String seed = longtext.substring(i, i + longtext.length() / 4);
@@ -4084,7 +4103,7 @@ public class CMStrings
 	 * @author fraser@google.com (Neil Fraser)
 	 * @param diffs LinkedList of Diff objects.
 	 */
-	private static void diff_cleanupSemantic(LinkedList<Diff> diffs)
+	private static void diff_cleanupSemantic(final LinkedList<Diff> diffs)
 	{
 		if (diffs.isEmpty())
 		{
@@ -4251,7 +4270,7 @@ public class CMStrings
 	 * @author fraser@google.com (Neil Fraser)
 	 * @param diffs LinkedList of Diff objects.
 	 */
-	private static void diff_cleanupSemanticLossless(LinkedList<Diff> diffs)
+	private static void diff_cleanupSemanticLossless(final LinkedList<Diff> diffs)
 	{
 		String equality1, edit, equality2;
 		String commonString;
@@ -4349,7 +4368,7 @@ public class CMStrings
 	 * @param two Second string.
 	 * @return The score.
 	 */
-	private static int diff_cleanupSemanticScore(String one, String two)
+	private static int diff_cleanupSemanticScore(final String one, final String two)
 	{
 		if (one.length() == 0 || two.length() == 0)
 		{
@@ -4378,25 +4397,25 @@ public class CMStrings
 			// Five points for blank lines.
 			return 5;
 		}
-		else 
+		else
 		if (lineBreak1 || lineBreak2)
 		{
 			// Four points for line breaks.
 			return 4;
 		}
-		else 
+		else
 		if (nonAlphaNumeric1 && !whitespace1 && whitespace2)
 		{
 			// Three points for end of sentences.
 			return 3;
 		}
-		else 
+		else
 		if (whitespace1 || whitespace2)
 		{
 			// Two points for whitespace.
 			return 2;
 		}
-		else 
+		else
 		if (nonAlphaNumeric1 || nonAlphaNumeric2)
 		{
 			// One point for non-alphanumeric.
@@ -4414,7 +4433,7 @@ public class CMStrings
 	 * Any edit section can move as long as it doesn't cross an equality.
 	 * @param diffs LinkedList of Diff objects.
 	 */
-	private static void diff_cleanupMerge(LinkedList<Diff> diffs)
+	private static void diff_cleanupMerge(final LinkedList<Diff> diffs)
 	{
 		diffs.add(new Diff(DiffOperation.EQUAL, ""));	// Add a dummy entry at the end.
 		ListIterator<Diff> pointer = diffs.listIterator();
@@ -4498,7 +4517,7 @@ public class CMStrings
 					// Step forward to the equality.
 					thisDiff = pointer.hasNext() ? pointer.next() : null;
 				}
-				else 
+				else
 				if (prevEqual != null)
 				{
 					// Merge this equality with the previous one.
@@ -4578,7 +4597,7 @@ public class CMStrings
 	/**
 	 * Class representing one diff operation.
 	 */
-	public static class Diff 
+	public static class Diff
 	{
 		/**
 		 * One of: INSERT, DELETE or EQUAL.
@@ -4594,7 +4613,7 @@ public class CMStrings
 		 * @param operation One of INSERT, DELETE or EQUAL.
 		 * @param text The text being applied.
 		 */
-		public Diff(DiffOperation operation, String text)
+		public Diff(final DiffOperation operation, final String text)
 		{
 			// Construct a diff with the specified operation and text.
 			this.operation = operation;
@@ -4632,7 +4651,7 @@ public class CMStrings
 		 * @return true or false.
 		 */
 		@Override
-		public boolean equals(Object obj)
+		public boolean equals(final Object obj)
 		{
 			if (this == obj)
 			{
@@ -4658,7 +4677,7 @@ public class CMStrings
 					return false;
 				}
 			}
-			else 
+			else
 			if (!text.equals(other.text))
 			{
 				return false;
@@ -4668,7 +4687,7 @@ public class CMStrings
 	}
 
 	/**
-	 * Does traditional filename type matching, where ? substitutes for a 
+	 * Does traditional filename type matching, where ? substitutes for a
 	 * single character, and * for a bunch.  This check is case sensitive!
 	 * You need to upper or lower both strings before calling to make
 	 * it insensitive

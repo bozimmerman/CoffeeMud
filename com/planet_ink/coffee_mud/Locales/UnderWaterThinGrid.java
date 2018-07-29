@@ -107,8 +107,10 @@ public class UnderWaterThinGrid extends StdThinGrid
 	{
 		switch(UnderWater.isOkUnderWaterAffect(this,msg))
 		{
-		case -1: return false;
-		case 1: return true;
+		case -1:
+			return false;
+		case 1:
+			return true;
 		}
 		return super.okMessage(myHost,msg);
 	}
@@ -121,7 +123,7 @@ public class UnderWaterThinGrid extends StdThinGrid
 	}
 
 	@Override
-	protected void fillExitsOfGridRoom(Room R, int x, int y)
+	protected void fillExitsOfGridRoom(final Room R, final int x, final int y)
 	{
 		super.fillExitsOfGridRoom(R,x,y);
 

@@ -86,13 +86,13 @@ public class StdItem implements Item
 		basePhyStats().setArmor(0);
 		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
-	
+
 	protected boolean abilityImbuesMagic()
 	{
 		return true;
 	}
 
-	// protected void finalize() 
+	// protected void finalize()
 	// {
 	// CMClass.unbumpCounter(this,CMClass.CMObjectType.ITEM); }//removed for mem
 	// & perf
@@ -122,7 +122,7 @@ public class StdItem implements Item
 	@Override
 	public String name()
 	{
-		if(phyStats().newName()!=null) 
+		if(phyStats().newName()!=null)
 			return phyStats().newName();
 		return Name();
 	}
@@ -169,7 +169,7 @@ public class StdItem implements Item
 		}
 		return cachedImageName;
 	}
-	
+
 	@Override
 	public String rawImage()
 	{
@@ -177,7 +177,7 @@ public class StdItem implements Item
 			return "";
 		return rawImageName;
 	}
-	
+
 	@Override
 	public void setImage(final String newImage)
 	{
@@ -233,20 +233,20 @@ public class StdItem implements Item
 		}
 		return new StdItem();
 	}
-	
+
 	@Override
 	public boolean subjectToWearAndTear()
 	{
 		return false;
 	}
-	
+
 	protected void cloneFix(final Item I)
 	{
 		destroyed=false;
 		me=this;
 		basePhyStats=(PhyStats)I.basePhyStats().copyOf();
 		phyStats=(PhyStats)I.phyStats().copyOf();
-		
+
 		affectPhyStats = new ApplyAffectPhyStats(this);
 
 		affects=null;
@@ -281,7 +281,7 @@ public class StdItem implements Item
 			}
 		}
 	}
-	
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -301,12 +301,12 @@ public class StdItem implements Item
 		}
 	}
 
-	@Override 
+	@Override
 	public Rideable riding()
 	{
 		return riding;
 	}
-	
+
 	@Override
 	public void setRiding(final Rideable ride)
 	{
@@ -319,12 +319,12 @@ public class StdItem implements Item
 			riding().addRider(this);
 	}
 
-	@Override 
+	@Override
 	public ItemPossessor owner()
 	{
 		return owner;
 	}
-	
+
 	@Override
 	public void setOwner(final ItemPossessor E)
 	{
@@ -372,7 +372,7 @@ public class StdItem implements Item
 		else
 			return (this.properWornBitmap & this.myWornCode) != 0;
 	}
-	
+
 	@Override
 	public boolean fitsOn(final long wornCode)
 	{
@@ -454,7 +454,7 @@ public class StdItem implements Item
 	}
 
 	@Override
-	public void setRawLogicalAnd(boolean newAnd)
+	public void setRawLogicalAnd(final boolean newAnd)
 	{
 		wornLogicalAnd=newAnd;
 	}
@@ -731,7 +731,7 @@ public class StdItem implements Item
 				return false;
 			}
 		}
-		
+
 		switch(tickID)
 		{
 		case Tickable.TICKID_ITEM_BEHAVIOR:
@@ -740,24 +740,24 @@ public class StdItem implements Item
 			if(numBehaviors()>0)
 			{
 				eachBehavior(new EachApplicable<Behavior>()
-				{ 
+				{
 					@Override
 					public final void apply(final Behavior B)
 					{
 						B.tick(ticking,tickID);
-					} 
+					}
 				});
 			}
 			tickStatus=Tickable.STATUS_SCRIPT;
 			if(numScripts()>0)
 			{
 				eachScript(new EachApplicable<ScriptingEngine>()
-				{ 
+				{
 					@Override
 					public final void apply(final ScriptingEngine S)
 					{
 						S.tick(ticking,tickID);
-					} 
+					}
 				});
 			}
 			if((numBehaviors()==0)&&(numScripts()==0))
@@ -775,13 +775,13 @@ public class StdItem implements Item
 			if(numEffects()>0)
 			{
 				eachEffect(new EachApplicable<Ability>()
-				{ 
+				{
 					@Override
 					public final void apply(final Ability A)
 					{
 						if(!A.tick(ticking,tickID))
 							A.unInvoke();
-					} 
+					}
 				});
 			}
 			break;
@@ -869,11 +869,11 @@ public class StdItem implements Item
 		else
 			return (String)description;
 	}
-	
-	@Override 
-	public String description(final MOB viewerMob) 
-	{ 
-		return description(); 
+
+	@Override
+	public String description(final MOB viewerMob)
+	{
+		return description();
 	}
 
 	@Override
@@ -924,9 +924,9 @@ public class StdItem implements Item
 		return true;
 	}
 
-	@Override 
+	@Override
 	public void setSavable(final boolean truefalse)
-	{ 
+	{
 		CMLib.flags().setSavable(this, truefalse);
 	}
 
@@ -1536,29 +1536,29 @@ public class StdItem implements Item
 		if(numBehaviors()>0)
 		{
 			eachBehavior(new EachApplicable<Behavior>()
-			{ 
+			{
 				@Override
 				public final void apply(final Behavior B)
 				{
 					B.executeMsg(me,msg);
-				} 
+				}
 			});
 		}
 		if(numScripts()>0)
 		{
 			eachScript(new EachApplicable<ScriptingEngine>()
-			{ 
+			{
 				@Override
 				public final void apply(final ScriptingEngine S)
 				{
 					S.executeMsg(me,msg);
-				} 
+				}
 			});
 		}
 		if(numEffects()>0)
 		{
 			eachEffect(new EachApplicable<Ability>()
-			{ 
+			{
 				@Override
 				public final void apply(final Ability A)
 				{
@@ -1867,7 +1867,7 @@ public class StdItem implements Item
 		}
 	}
 
-	@Override 
+	@Override
 	public Enumeration<Ability> effects()
 	{
 		return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();
@@ -2121,7 +2121,7 @@ public class StdItem implements Item
 		if(numEffects()>0)
 		{
 			eachEffect(new EachApplicable<Ability>()
-			{ 
+			{
 				@Override
 				public final void apply(final Ability A)
 				{
@@ -2187,7 +2187,7 @@ public class StdItem implements Item
 			break;
 		}
 	}
-	
+
 	@Override
 	public String L(final String str, final String... xs)
 	{

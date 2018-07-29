@@ -73,8 +73,10 @@ public class UnderWaterMaze extends StdMaze
 	{
 		switch(UnderWater.isOkUnderWaterAffect(this,msg))
 		{
-		case -1: return false;
-		case 1: return true;
+		case -1:
+			return false;
+		case 1:
+			return true;
 		}
 		return super.okMessage(myHost,msg);
 	}

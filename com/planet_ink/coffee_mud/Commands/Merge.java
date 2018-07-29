@@ -50,7 +50,7 @@ public class Merge extends StdCommand
 		return access;
 	}
 
-	public static String getStat(Environmental E, String stat)
+	public static String getStat(final Environmental E, final String stat)
 	{
 		if((stat!=null)
 		&&(stat.length()>0)
@@ -64,7 +64,7 @@ public class Merge extends StdCommand
 		return ((Physical)E).getStat(stat);
 	}
 
-	public static void setStat(Environmental E, String stat, String value)
+	public static void setStat(final Environmental E, final String stat, final String value)
 	{
 		if((stat!=null)
 		&&(stat.length()>0)
@@ -75,21 +75,21 @@ public class Merge extends StdCommand
 			E.setStat(stat,value);
 	}
 
-	public static void mergedebugtell(MOB mob, String msg)
+	public static void mergedebugtell(final MOB mob, final String msg)
 	{
 		if(mob!=null)
 			mob.tell(msg);
 		Log.sysOut("MERGE",msg);
 	}
 
-	protected static boolean tryMerge(MOB mob,
-									  Room room,
-									  Environmental E,
-									  List things,
-									  List<String> changes,
-									  List<String> onfields,
-									  List<String> ignore,
-									  boolean noisy)
+	protected static boolean tryMerge(final MOB mob,
+									  final Room room,
+									  final Environmental E,
+									  final List things,
+									  final List<String> changes,
+									  final List<String> onfields,
+									  final List<String> ignore,
+									  final boolean noisy)
 	{
 		boolean didAnything=false;
 		final List<String> efields=new Vector<String>();
@@ -196,7 +196,7 @@ public class Merge extends StdCommand
 		return didAnything;
 	}
 
-	public void sortEnumeratedList(Enumeration e, List<String> allKnownFields, StringBuffer allFieldsMsg)
+	public void sortEnumeratedList(final Enumeration e, final List<String> allKnownFields, final StringBuffer allFieldsMsg)
 	{
 		for(;e.hasMoreElements();)
 		{
@@ -214,7 +214,7 @@ public class Merge extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final boolean noisy=CMSecurity.isDebugging(CMSecurity.DbgFlag.MERGE);
@@ -584,22 +584,28 @@ public class Merge extends StdCommand
 			{"ARMOR",CMClass.CMObjectType.ARMOR},
 	});
 
-	private boolean amMergingType(CMClass.CMObjectType doType, Environmental E)
+	private boolean amMergingType(final CMClass.CMObjectType doType, final Environmental E)
 	{
 		if(doType==null)
 			return true;
 		switch(doType)
 		{
-		case LOCALE: return true;
-		case MOB: return E instanceof MOB;
-		case ITEM: return E instanceof Item;
-		case WEAPON: return E instanceof Weapon;
-		case ARMOR: return E instanceof Armor;
-		default: return false;
+		case LOCALE:
+			return true;
+		case MOB:
+			return E instanceof MOB;
+		case ITEM:
+			return E instanceof Item;
+		case WEAPON:
+			return E instanceof Weapon;
+		case ARMOR:
+			return E instanceof Armor;
+		default:
+			return false;
 		}
 	}
 
-	private boolean amMerging(CMClass.CMObjectType doType, MaskingLibrary.CompiledZMask mask, Environmental E)
+	private boolean amMerging(final CMClass.CMObjectType doType, final MaskingLibrary.CompiledZMask mask, final Environmental E)
 	{
 		if(amMergingType(doType,E))
 		{
@@ -610,7 +616,7 @@ public class Merge extends StdCommand
 		return false;
 	}
 
-	public boolean dbMerge(MOB mob, String name, Modifiable dbM, Modifiable M, Set<String> ignores) throws java.io.IOException, CMException
+	public boolean dbMerge(final MOB mob, final String name, final Modifiable dbM, final Modifiable M, final Set<String> ignores) throws java.io.IOException, CMException
 	{
 		if((M instanceof Physical) && (dbM instanceof Physical))
 		{
@@ -688,7 +694,7 @@ public class Merge extends StdCommand
 		return didSomething;
 	}
 
-	public boolean doArchonDBCompare(MOB mob, String scope, String firstWord, List<String> commands) throws java.io.IOException
+	public boolean doArchonDBCompare(final MOB mob, final String scope, final String firstWord, final List<String> commands) throws java.io.IOException
 	{
 		CMClass.CMObjectType doType = OBJECT_TYPES.get(firstWord.toUpperCase());
 		if(doType==null)
@@ -769,7 +775,7 @@ public class Merge extends StdCommand
 		final Comparator<MOB> convM=new Comparator<MOB>()
 		{
 			@Override
-			public int compare(MOB arg0, MOB arg1)
+			public int compare(final MOB arg0, final MOB arg1)
 			{
 				final int x=arg0.ID().compareTo(arg1.ID());
 				return(x!=0)?x:arg0.Name().compareTo(arg1.Name());
@@ -778,7 +784,7 @@ public class Merge extends StdCommand
 		final Comparator<Item> convI=new Comparator<Item>()
 		{
 			@Override
-			public int compare(Item arg0, Item arg1)
+			public int compare(final Item arg0, final Item arg1)
 			{
 				final int x=arg0.ID().compareTo(arg1.ID());
 				return(x!=0)?x:arg0.Name().compareTo(arg1.Name());
@@ -1053,7 +1059,7 @@ public class Merge extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowedAnywhere(mob,CMSecurity.SecFlag.MERGE);
 	}

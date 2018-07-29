@@ -69,7 +69,7 @@ public class StdRideable extends StdContainer implements Rideable
 	{
 		return (rideBasis() == Rideable.RIDEABLE_WATER);
 	}
-	
+
 	@Override
 	public void destroy()
 	{
@@ -111,7 +111,7 @@ public class StdRideable extends StdContainer implements Rideable
 		}
 		return true;
 	}
-	
+
 	// common item/mob stuff
 	@Override
 	public int rideBasis()
@@ -120,7 +120,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public void setRideBasis(int basis)
+	public void setRideBasis(final int basis)
 	{
 		rideBasis = basis;
 	}
@@ -132,7 +132,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public void setRiderCapacity(int newCapacity)
+	public void setRiderCapacity(final int newCapacity)
 	{
 		riderCapacity = newCapacity;
 	}
@@ -144,7 +144,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public Rider fetchRider(int which)
+	public Rider fetchRider(final int which)
 	{
 		try
 		{
@@ -157,7 +157,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public void addRider(Rider mob)
+	public void addRider(final Rider mob)
 	{
 		if((mob!=null)&&(!riders.contains(mob)))
 			riders.add(mob);
@@ -170,7 +170,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public void delRider(Rider mob)
+	public void delRider(final Rider mob)
 	{
 		if(mob!=null)
 			while(riders.remove(mob))
@@ -179,14 +179,14 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	protected void cloneFix(Item E)
+	protected void cloneFix(final Item E)
 	{
 		super.cloneFix(E);
 		riders=new SVector();
 	}
 
 	@Override
-	public Set<MOB> getRideBuddies(Set<MOB> list)
+	public Set<MOB> getRideBuddies(final Set<MOB> list)
 	{
 		if(list==null)
 			return list;
@@ -215,7 +215,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public String stateString(Rider R)
+	public String stateString(final Rider R)
 	{
 		if((R==null)||(stateString.length()==0))
 		{
@@ -249,7 +249,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public void setStateString(String str)
+	public void setStateString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			stateString="";
@@ -263,7 +263,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public String putString(Rider R)
+	public String putString(final Rider R)
 	{
 		if((R==null)||(putString.length()==0))
 		{
@@ -293,7 +293,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public void setPutString(String str)
+	public void setPutString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			putString="";
@@ -307,7 +307,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public String rideString(Rider R)
+	public String rideString(final Rider R)
 	{
 		if((R==null)||(rideString.length()==0))
 			return "ride(s)";
@@ -321,7 +321,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public void setRideString(String str)
+	public void setRideString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			rideString="";
@@ -341,7 +341,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public String mountString(int commandType, Rider R)
+	public String mountString(final int commandType, final Rider R)
 	{
 		if((R==null)||(mountString.length()==0))
 		{
@@ -371,7 +371,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public void setMountString(String str)
+	public void setMountString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			mountString="";
@@ -385,7 +385,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public String dismountString(Rider R)
+	public String dismountString(final Rider R)
 	{
 		if((R==null)||(dismountString.length()==0))
 		{
@@ -415,9 +415,9 @@ public class StdRideable extends StdContainer implements Rideable
 	{
 		return dismountString;
 	}
-	
+
 	@Override
-	public void setDismountString(String str)
+	public void setDismountString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			dismountString="";
@@ -429,9 +429,9 @@ public class StdRideable extends StdContainer implements Rideable
 				dismountString=str.trim();
 		}
 	}
-	
+
 	@Override
-	public String stateStringSubject(Rider R)
+	public String stateStringSubject(final Rider R)
 	{
 		if((R==null)||(stateSubjectStr.length()==0))
 		{
@@ -444,10 +444,14 @@ public class StdRideable extends StdContainer implements Rideable
 				return "being ridden by";
 			case Rideable.RIDEABLE_TABLE:
 				return "occupied by";
-			case Rideable.RIDEABLE_SIT:	return "";
-			case Rideable.RIDEABLE_SLEEP: return "";
-			case Rideable.RIDEABLE_ENTERIN: return "occupied by";
-			case Rideable.RIDEABLE_LADDER: return "occupied by";
+			case Rideable.RIDEABLE_SIT:
+				return "";
+			case Rideable.RIDEABLE_SLEEP:
+				return "";
+			case Rideable.RIDEABLE_ENTERIN:
+				return "occupied by";
+			case Rideable.RIDEABLE_LADDER:
+				return "occupied by";
 			}
 			return "";
 		}
@@ -461,7 +465,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public void setStateStringSubject(String str)
+	public void setStateStringSubject(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			this.stateSubjectStr="";
@@ -519,7 +523,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public String displayText(MOB mob)
+	public String displayText(final MOB mob)
 	{
  		if((numRiders()>0)
  		&&(stateStringSubject(this).length()>0)
@@ -550,7 +554,7 @@ public class StdRideable extends StdContainer implements Rideable
 	}
 
 	@Override
-	public boolean amRiding(Rider mob)
+	public boolean amRiding(final Rider mob)
 	{
 		return riders.contains(mob);
 	}
@@ -943,12 +947,12 @@ public class StdRideable extends StdContainer implements Rideable
 				if((weapon!=null)&&(msg.source().riding()!=null))
 				{
 					final boolean isHit=msg.value()>0;
-					if(isHit && CMLib.combat().isAShipSiegeWeapon(weapon) 
+					if(isHit && CMLib.combat().isAShipSiegeWeapon(weapon)
 					&& (((AmmunitionWeapon)weapon).ammunitionCapacity() > 1))
 					{
 						int shotsRemaining = ((AmmunitionWeapon)weapon).ammunitionRemaining() + 1;
 						((AmmunitionWeapon)weapon).setAmmoRemaining(0);
-						ArrayList<Pair<MOB,Room>> targets = new ArrayList<Pair<MOB,Room>>(5);
+						final ArrayList<Pair<MOB,Room>> targets = new ArrayList<Pair<MOB,Room>>(5);
 						final Room R=CMLib.map().roomLocation(this);
 						if((R!=null)&&((R.domainType()&Room.INDOORS)==0))
 						{
@@ -969,8 +973,8 @@ public class StdRideable extends StdContainer implements Rideable
 								if((CMLib.dice().rollPercentage() < chanceToHit)&&(randomPair != null))
 								{
 									msg.source().setLocation(randomPair.second);
-									double pctLoss = CMath.div(msg.value(), phyStats().level());
-									int pointsLost = (int)Math.round(pctLoss * msg.source().maxState().getHitPoints());
+									final double pctLoss = CMath.div(msg.value(), phyStats().level());
+									final int pointsLost = (int)Math.round(pctLoss * msg.source().maxState().getHitPoints());
 									CMLib.combat().postWeaponDamage(msg.source(), randomPair.first, weapon, pointsLost);
 								}
 								else
@@ -1004,11 +1008,11 @@ public class StdRideable extends StdContainer implements Rideable
 				int level = phyStats().level();
 				if(level < 10)
 					level = 10;
-				double pctLoss = CMath.div(msg.value(), level) * 10.0; // siege weapons against rideables is harsh
-				int pointsLost = (int)Math.round(pctLoss * level);
+				final double pctLoss = CMath.div(msg.value(), level) * 10.0; // siege weapons against rideables is harsh
+				final int pointsLost = (int)Math.round(pctLoss * level);
 				if(pointsLost > 0)
 				{
-					int weaponType = (msg.tool() instanceof Weapon) ? ((Weapon)msg.tool()).weaponDamageType() : Weapon.TYPE_BASHING;
+					final int weaponType = (msg.tool() instanceof Weapon) ? ((Weapon)msg.tool()).weaponDamageType() : Weapon.TYPE_BASHING;
 					final String hitWord = CMLib.combat().standardHitWord(weaponType, pctLoss);
 					final String msgStr = (msg.targetMessage() == null) ? L("<O-NAME> fired from <S-NAME> hits and @x1 the ship.",hitWord) : msg.targetMessage();
 					final CMMsg deckHitMsg=CMClass.getMsg(msg.source(), this, msg.tool(),CMMsg.MSG_OK_ACTION, msgStr);
@@ -1055,5 +1059,5 @@ public class StdRideable extends StdContainer implements Rideable
 			break;
 		}
 	}
-	
+
 }

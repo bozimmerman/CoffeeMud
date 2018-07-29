@@ -102,7 +102,8 @@ public class StdCage extends StdContainer
 						CMLib.threads().startTickDown(this,Tickable.TICKID_EXIT_REOPEN,30);
 				}
 				break;
-			case CMMsg.TYP_LOOK: case CMMsg.TYP_EXAMINE:
+			case CMMsg.TYP_LOOK:
+			case CMMsg.TYP_EXAMINE:
 			{
 				synchronized(this)
 				{

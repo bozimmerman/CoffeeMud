@@ -115,7 +115,7 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	protected boolean doLearnRecipe(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		fireRequired=false;
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
@@ -202,34 +202,45 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	protected int spellLevel(MOB mob, Ability A)
+	protected int spellLevel(final MOB mob, final Ability A)
 	{
 		int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
 		if(lvl<0)
 			lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 		switch(lvl)
 		{
-		case 0: return lvl;
-		case 1: return lvl;
-		case 2: return lvl+1;
-		case 3: return lvl+1;
-		case 4: return lvl+2;
-		case 5: return lvl+2;
-		case 6: return lvl+3;
-		case 7: return lvl+3;
-		case 8: return lvl+4;
-		case 9: return lvl+4;
-		default: return lvl+5;
+		case 0:
+			return lvl;
+		case 1:
+			return lvl;
+		case 2:
+			return lvl + 1;
+		case 3:
+			return lvl + 1;
+		case 4:
+			return lvl + 2;
+		case 5:
+			return lvl + 2;
+		case 6:
+			return lvl + 3;
+		case 7:
+			return lvl + 3;
+		case 8:
+			return lvl + 4;
+		case 9:
+			return lvl + 4;
+		default:
+			return lvl + 5;
 		}
 	}
 
 	@Override
-	public ItemKeyPair craftItem(String recipe)
+	public ItemKeyPair craftItem(final String recipe)
 	{
 		return craftItem(recipe,0,false, false);
 	}
 
-	protected Item buildItem(Ability theSpell, int level)
+	protected Item buildItem(final Ability theSpell, final int level)
 	{
 		buildingI=CMClass.getItem("GenPotion");
 		((Potion)buildingI).setSpellList(theSpell.ID());
@@ -244,13 +255,13 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(1));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(autoGenerate>0)
 		{

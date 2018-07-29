@@ -230,7 +230,7 @@ public class Song_Ode extends Song
 	}
 
 	@Override
-	public void affectCharState(MOB affected, CharState affectableStats)
+	public void affectCharState(final MOB affected, final CharState affectableStats)
 	{
 		if((whom!=null)&&(song!=null))
 		{
@@ -248,16 +248,21 @@ public class Song_Ode extends Song
 						ticks=1;
 					switch(chk[2].charAt(0))
 					{
-					case 'h': affectableStats.setHunger(affectableStats.getHunger()+ticks+getXLEVELLevel(invoker()));
-							  break;
-					case 't': affectableStats.setThirst(affectableStats.getThirst()+ticks+getXLEVELLevel(invoker()));
-							  break;
-					case 'v': affectableStats.setMovement(affectableStats.getMovement()+ticks+getXLEVELLevel(invoker()));
-							  break;
-					case 'm': affectableStats.setMana(affectableStats.getMana()+ticks+getXLEVELLevel(invoker()));
-							  break;
-					case 'i': affectableStats.setHitPoints(affectableStats.getHitPoints()+ticks+getXLEVELLevel(invoker()));
-							  break;
+					case 'h':
+						affectableStats.setHunger(affectableStats.getHunger() + ticks + getXLEVELLevel(invoker()));
+						break;
+					case 't':
+						affectableStats.setThirst(affectableStats.getThirst() + ticks + getXLEVELLevel(invoker()));
+						break;
+					case 'v':
+						affectableStats.setMovement(affectableStats.getMovement() + ticks + getXLEVELLevel(invoker()));
+						break;
+					case 'm':
+						affectableStats.setMana(affectableStats.getMana() + ticks + getXLEVELLevel(invoker()));
+						break;
+					case 'i':
+						affectableStats.setHitPoints(affectableStats.getHitPoints() + ticks + getXLEVELLevel(invoker()));
+						break;
 					}
 				}
 			}
@@ -294,7 +299,7 @@ public class Song_Ode extends Song
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -400,7 +405,7 @@ public class Song_Ode extends Song
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		timeOut=0;
 		if(auto)

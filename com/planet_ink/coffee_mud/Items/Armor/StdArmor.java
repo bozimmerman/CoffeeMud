@@ -79,7 +79,7 @@ public class StdArmor extends StdContainer implements Armor
 	}
 
 	@Override
-	public void setClothingLayer(short newLayer)
+	public void setClothingLayer(final short newLayer)
 	{
 		layer = newLayer;
 	}
@@ -91,13 +91,13 @@ public class StdArmor extends StdContainer implements Armor
 	}
 
 	@Override
-	public void setLayerAttributes(short newAttributes)
+	public void setLayerAttributes(final short newAttributes)
 	{
 		layerAttributes = newAttributes;
 	}
 
 	@Override
-	public boolean canWear(MOB mob, long where)
+	public boolean canWear(final MOB mob, final long where)
 	{
 		if(where==0)
 			return (whereCantWear(mob)==0);
@@ -122,27 +122,27 @@ public class StdArmor extends StdContainer implements Armor
 		switch(material()&RawMaterial.MATERIAL_MASK)
 		{
 		case RawMaterial.MATERIAL_PAPER:
-		case RawMaterial.MATERIAL_CLOTH: 
+		case RawMaterial.MATERIAL_CLOTH:
 			message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_CONDITION_CLOTH, ordinal);
 			break;
 		case RawMaterial.MATERIAL_ROCK:
 		case RawMaterial.MATERIAL_PRECIOUS:
 		case RawMaterial.MATERIAL_SYNTHETIC:
-		case RawMaterial.MATERIAL_GLASS: 
+		case RawMaterial.MATERIAL_GLASS:
 			message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_CONDITION_GLASS, ordinal);
 			break;
 		case RawMaterial.MATERIAL_FLESH:
-		case RawMaterial.MATERIAL_LEATHER: 
+		case RawMaterial.MATERIAL_LEATHER:
 			message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_CONDITION_LEATHER, ordinal);
 			break;
 		case RawMaterial.MATERIAL_METAL:
-		case RawMaterial.MATERIAL_MITHRIL: 
+		case RawMaterial.MATERIAL_MITHRIL:
 			message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_CONDITION_METAL, ordinal);
 			break;
-		case RawMaterial.MATERIAL_WOODEN: 
+		case RawMaterial.MATERIAL_WOODEN:
 			message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_CONDITION_WOODEN, ordinal);
 			break;
-		default: 
+		default:
 			message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.ARMOR_CONDITION_OTHER, ordinal);
 			break;
 		}
@@ -155,7 +155,7 @@ public class StdArmor extends StdContainer implements Armor
 		Wearable.WORN_EYES|
 		Wearable.WORN_EARS|
 		Wearable.WORN_NECK;
-	
+
 	protected final static long SMALL_DEVIATION_WEAR_LOCS=
 		Wearable.WORN_TORSO|
 		Wearable.WORN_LEGS|
@@ -165,11 +165,11 @@ public class StdArmor extends StdContainer implements Armor
 		Wearable.WORN_FEET;
 
 	@Override
-	public SizeDeviation getSizingDeviation(MOB mob)
+	public SizeDeviation getSizingDeviation(final MOB mob)
 	{
 		if(mob == null)
 			return SizeDeviation.FITS;
-		
+
 		if((phyStats().height()>0)
 		&&(mob.phyStats().height()>0))
 		{
@@ -183,19 +183,19 @@ public class StdArmor extends StdContainer implements Armor
 
 				if(CMath.bset(wcode,Wearable.WORN_HELD))
 					wcode=wcode-Wearable.WORN_HELD;
-				if(wcode==Wearable.WORN_FLOATING_NEARBY) 
+				if(wcode==Wearable.WORN_FLOATING_NEARBY)
 					devianceAllowed=-1;
 				else
-				if(wcode==Wearable.WORN_MOUTH) 
+				if(wcode==Wearable.WORN_MOUTH)
 					devianceAllowed=-1;
 				else
-				if(wcode==Wearable.WORN_EYES) 
+				if(wcode==Wearable.WORN_EYES)
 					devianceAllowed=1000;
 				else
-				if(wcode==Wearable.WORN_EARS) 
+				if(wcode==Wearable.WORN_EARS)
 					devianceAllowed=1000;
 				else
-				if(wcode==Wearable.WORN_NECK) 
+				if(wcode==Wearable.WORN_NECK)
 					devianceAllowed=5000;
 			}
 			if((devianceAllowed>0)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.EQUIPSIZE)))
@@ -208,7 +208,7 @@ public class StdArmor extends StdContainer implements Armor
 		}
 		return SizeDeviation.FITS;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -217,7 +217,7 @@ public class StdArmor extends StdContainer implements Armor
 		if((msg.amITarget(this))
 		&&(msg.targetMinor()==CMMsg.TYP_WEAR))
 		{
-			Armor.SizeDeviation deviation = getSizingDeviation(msg.source());
+			final Armor.SizeDeviation deviation = getSizingDeviation(msg.source());
 			if(deviation != Armor.SizeDeviation.FITS)
 			{
 				if(deviation == Armor.SizeDeviation.TOO_LARGE)

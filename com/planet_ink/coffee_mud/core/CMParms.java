@@ -25,9 +25,9 @@ import com.planet_ink.coffee_mud.core.interfaces.Environmental;
 /**
  * This singleton contains methods for parsing user input and arguments to
  * behaviors and properties.  This library also has methods for reconstructing
- * parseable user input from previously parsed input.  It is: the Parameter 
+ * parseable user input from previously parsed input.  It is: the Parameter
  * Parsing Library for CoffeeMud.
- * 
+ *
  * @author Bo Zimmerman
  */
 public class CMParms
@@ -43,11 +43,11 @@ public class CMParms
 	{
 		return inst;
 	}
-	
+
 	public static boolean[] PUNCTUATION_TABLE=null;
-	
+
 	private static final DelimiterChecker spaceDelimiter=new DelimiterChecker();
-	
+
 	/**
 	 * An overrideable class for supplying a delimiter determination tool
 	 * @see CMParms#createDelimiter(char[])
@@ -62,7 +62,7 @@ public class CMParms
 			return Character.isWhitespace(c);
 		}
 	}
-	
+
 	/**
 	 * Create a DelimiterChecker from the given set of characters that will
 	 * be the delimiters.
@@ -74,7 +74,7 @@ public class CMParms
 	public final static DelimiterChecker createDelimiter(final char[] chars)
 	{
 		final boolean[] delims=new boolean[256];
-		for(char c : chars)
+		for(final char c : chars)
 			delims[(byte)c]=true;
 		return new DelimiterChecker()
 		{
@@ -85,7 +85,7 @@ public class CMParms
 			}
 		};
 	}
-	
+
 	/**
 	 * Combine two string arrays into a single one.
 	 * @param strs1 the first array
@@ -101,7 +101,7 @@ public class CMParms
 		System.arraycopy(strs2, 0, array, strs1Len, strs2Len);
 		return array;
 	}
-	
+
 	/**
 	 * Combine object arrays into a single one.
 	 * @param objs the arrays
@@ -110,11 +110,11 @@ public class CMParms
 	public final static Object[] combine(final Object[]... objs)
 	{
 		int len=0;
-		for(Object[] obj : objs)
+		for(final Object[] obj : objs)
 			len+=obj.length;
 		final Object[] array= new Object[len];
 		int x=0;
-		for(Object[] obj : objs)
+		for(final Object[] obj : objs)
 		{
 			System.arraycopy(obj, 0, array, x, obj.length);
 			x+=obj.length;
@@ -153,7 +153,7 @@ public class CMParms
 		System.arraycopy(strs2, 0, array, strs1Len, strs2Len);
 		return array;
 	}
-	
+
 	/**
 	 * Returns the given string, unless it contains a space, in which case
 	 * it returns the string with double-quotes around it.
@@ -162,7 +162,7 @@ public class CMParms
 	 */
 	public final static String quoteIfNecessary(final String str)
 	{
-		if(str==null) 
+		if(str==null)
 			return str;
 		if(str.indexOf(' ')>=0)
 			return "\""+str+"\"";
@@ -272,7 +272,7 @@ public class CMParms
 		final StringBuilder combined=new StringBuilder("");
 		if(commands!=null)
 		{
-			for(Object o : commands)
+			for(final Object o : commands)
 				combined.append(withChar).append(o.toString());
 		}
 		if(combined.length()==0)
@@ -292,14 +292,14 @@ public class CMParms
 		final StringBuilder combined=new StringBuilder("");
 		if(commands!=null)
 		{
-			for(Object o : commands)
+			for(final Object o : commands)
 				combined.append(withChar).append(o.toString());
 		}
 		if(combined.length()==0)
 			return "";
 		return combined.substring(1);
 	}
-	
+
 	/**
 	 * Returns a string containing the given objects, with toString()
 	 * called, and now space delimited.  If any toString() calls
@@ -340,7 +340,7 @@ public class CMParms
 		final StringBuilder combined=new StringBuilder("");
 		if((commands!=null)&&(commands.size()>0))
 		{
-			for(Object o : commands)
+			for(final Object o : commands)
 				combined.append(withSeparator).append(o.toString());
 			return combined.substring(withSeparator.length());
 		}
@@ -359,7 +359,7 @@ public class CMParms
 		final StringBuilder combined=new StringBuilder("");
 		if((commands!=null)&&(commands.size()>0))
 		{
-			for(Object o : commands)
+			for(final Object o : commands)
 				combined.append(withSeparator).append(o.toString());
 			return combined.substring(withSeparator.length());
 		}
@@ -513,14 +513,14 @@ public class CMParms
 
 	/**
 	 * Parses the given string space-delimited, with respect for quoted
-	 * strings.  
+	 * strings.
 	 * @param str the string to parse
 	 * @return the list of parsed strings
 	 */
 	public final static Vector<String> parse(final String str)
 	{
 		final Vector<String> commands=new Vector<String>();
-		if(str==null) 
+		if(str==null)
 			return commands;
 		final StringBuilder s=new StringBuilder();
 		final char[] cs=str.toCharArray();
@@ -592,7 +592,7 @@ public class CMParms
 	 */
 	public final static List<String> parseCommandFlags(final String s, final String[] flags)
 	{
-		if((s==null)||(s.isEmpty())) 
+		if((s==null)||(s.isEmpty()))
 			return new Vector<String>(1);
 		final List<String> V=parseCommas(s,true);
 		final Vector<String> finalV=new Vector<String>(V.size());
@@ -627,7 +627,7 @@ public class CMParms
 	public final static List<String> parseAny(final String s, final String delimeter, final boolean ignoreNulls)
 	{
 		final Vector<String> V=new Vector<String>(1);
-		if((s==null)||(s.isEmpty())) 
+		if((s==null)||(s.isEmpty()))
 			return V;
 		if((delimeter==null)||(delimeter.isEmpty()))
 		{
@@ -643,7 +643,7 @@ public class CMParms
 		}
 		while(next >=0)
 		{
-			final String sub=s.substring(last,next).trim(); 
+			final String sub=s.substring(last,next).trim();
 			if(!ignoreNulls||(sub.length()>0))
 				V.add(sub);
 			last=next+delimeter.length();
@@ -665,7 +665,7 @@ public class CMParms
 	public final static List<String> parseAnyIgnoreCase(final String s, final String delimeter, final boolean ignoreNulls)
 	{
 		final Vector<String> V=new Vector<String>(1);
-		if((s==null)||(s.isEmpty())) 
+		if((s==null)||(s.isEmpty()))
 			return V;
 		if((delimeter==null)||(delimeter.isEmpty()))
 		{
@@ -683,7 +683,7 @@ public class CMParms
 		}
 		while(next >=0)
 		{
-			final String sub=s.substring(last,next).trim(); 
+			final String sub=s.substring(last,next).trim();
 			if(!ignoreNulls||(sub.length()>0))
 				V.add(sub);
 			last=next+delimeter.length();
@@ -705,7 +705,7 @@ public class CMParms
 	public final static List<String> parseAny(final String s, final char delimiter, final boolean ignoreNulls)
 	{
 		final Vector<String> V=new Vector<String>(1);
-		if((s==null)||(s.isEmpty())) 
+		if((s==null)||(s.isEmpty()))
 			return V;
 		int last=0;
 		String sub;
@@ -744,7 +744,7 @@ public class CMParms
 	 * @return the list of parsed enums
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public final static List<Enum<? extends Enum>> parseEnumList(final Class<? extends Enum> c, final String s, char delim)
+	public final static List<Enum<? extends Enum>> parseEnumList(final Class<? extends Enum> c, final String s, final char delim)
 	{
 		final List<String> lst = parseAny(s,delim,true);
 		final List<Enum<? extends Enum>> finalLst=new ArrayList<Enum<? extends Enum>>(lst.size());
@@ -767,7 +767,7 @@ public class CMParms
 	 * @param delim the delimiter to use
 	 * @return the list of parsed ints
 	 */
-	public final static int[] parseIntList(final String s, char delim)
+	public final static int[] parseIntList(final String s, final char delim)
 	{
 		final List<String> lst = parseAny(s,delim,true);
 		final List<Integer> finalLst=new ArrayList<Integer>(lst.size());
@@ -796,7 +796,7 @@ public class CMParms
 	public final static List<String> parseSentences(final String s)
 	{
 		final Vector<String> V=new Vector<String>(1);
-		if((s==null)||(s.isEmpty())) 
+		if((s==null)||(s.isEmpty()))
 			return V;
 		int last=0;
 		String sub;
@@ -965,9 +965,13 @@ public class CMParms
 			case -1:
 				switch(cs[c])
 				{
-				case ' ': case '\t': case '\n': case '\r':
+				case ' ':
+				case '\t':
+				case '\n':
+				case '\r':
 					break;
-				case '\'': case '`':
+				case '\'':
+				case '`':
 					q=cs[c];
 					start=c;
 					break;
@@ -1073,7 +1077,7 @@ public class CMParms
 		return PUNCTUATION_TABLE[b];
 	}
 
-	private static boolean hasPunctuation(String str)
+	private static boolean hasPunctuation(final String str)
 	{
 		if((str==null)||(str.length()==0))
 			return false;
@@ -1089,7 +1093,7 @@ public class CMParms
 		}
 		return puncFound;
 	}
-	
+
 	/**
 	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
 	 * Returns the value of the given key when the parameter is formatted in the given text
@@ -1107,7 +1111,7 @@ public class CMParms
 	 * @param defaultVal the value to return if the key is not found
 	 * @return the value
 	 */
-	public final static String getParmStr(String text, final String key, final String defaultVal)
+	public final static String getParmStr(final String text, final String key, final String defaultVal)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
 		while(x>=0)
@@ -1141,7 +1145,7 @@ public class CMParms
 					}
 					if(x<text.length())
 					{
-						int valStart=x;
+						final int valStart=x;
 						if(endWithQuote)
 						{
 							while(x<text.length())
@@ -1185,7 +1189,7 @@ public class CMParms
 	 * @param key the key to search for, case insensitive
 	 * @return the string without the pair, if found
 	 */
-	public final static String delParmStr(String text, final String key)
+	public final static String delParmStr(final String text, final String key)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
 		while(x>=0)
@@ -1268,7 +1272,7 @@ public class CMParms
 	/**
 	 * This method is a sloppy, forgiving method doing KEY&gt;=[VALUE] value searches in a string.
 	 * Searches and finds the numeric value of the given key when the parameter is formatted in the given text
-	 * in the format [KEY]=[VALUE] where = may be ==,=,!=,&gt;,&gt;=,&lt;,or &lt;=.  The key is case insensitive, 
+	 * in the format [KEY]=[VALUE] where = may be ==,=,!=,&gt;,&gt;=,&lt;,or &lt;=.  The key is case insensitive,
 	 * and start-partial.  For example, a key of NAME will match NAMEY or NAME12.
 	 * It will then do the given comparison against the value passed in, populate the comparator found array
 	 * with the comparator found, and the method returns the result of the compare.
@@ -1281,7 +1285,7 @@ public class CMParms
 	 * @param comparatorFound a one-dimensional array to contain the found comparator
 	 * @return the result of comparing the found value with the given value
 	 */
-	public final static boolean getParmCompare(String text, final String key, final int value, char[] comparatorFound)
+	public final static boolean getParmCompare(String text, final String key, final int value, final char[] comparatorFound)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
 		while(x>=0)
@@ -1306,8 +1310,8 @@ public class CMParms
 					final char comp=text.charAt(x);
 					boolean andEqual=(text.charAt(x)=='=');
 					if(text.charAt(x+1)=='=')
-					{ 
-						x++; 
+					{
+						x++;
 						andEqual=true;
 					}
 					if(x<text.length()-1)
@@ -1352,11 +1356,11 @@ public class CMParms
 
 	/**
 	 * Parses the given string for [PARAM]=[VALUE] or [PARAM]="[VALUE]" formatted key/pair
-	 * values, relying on the given parmList to provide possible [PARAM] values. 
+	 * values, relying on the given parmList to provide possible [PARAM] values.
 	 * Returns a map of the found parameters and their values.
 	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
 	 * The key is case insensitive, and start-partial.  For example, a key of NAME will match NAMEY or NAME12.
-	 * The value ends when the next parameter is encountered.  If it's not on the parmList, it 
+	 * The value ends when the next parameter is encountered.  If it's not on the parmList, it
 	 * is a value.
 	 * @param str the unparsed string
 	 * @param parmList exhaustive list of all parameters
@@ -1423,8 +1427,8 @@ public class CMParms
 	{
 		final Hashtable<String,String> h=new Hashtable<String,String>();
 		int state=0;
-		StringBuilder curKey=new StringBuilder("");
-		StringBuilder curVal=new StringBuilder("");
+		final StringBuilder curKey=new StringBuilder("");
+		final StringBuilder curVal=new StringBuilder("");
 		for(int x=0;x<str.length();x++)
 		{
 			final char c=Character.toUpperCase(str.charAt(x));
@@ -1506,7 +1510,7 @@ public class CMParms
 				else
 					curVal.append(str.charAt(x));
 				break;
-					
+
 			}
 		}
 		switch(state)
@@ -1561,7 +1565,7 @@ public class CMParms
 	{
 		return parseEQParms(parms,spaceDelimiter);
 	}
-	
+
 	/**
 	 * Parses the given string for [PARAM]=[VALUE] or [PARAM]="[VALUE]" formatted key/pair
 	 * values in given-delimited fashion, respecting quotes value.
@@ -1685,7 +1689,7 @@ public class CMParms
 	}
 
 	/**
-	 * Parses the given strings in the given string list for [PARAM]=[VALUE] or 
+	 * Parses the given strings in the given string list for [PARAM]=[VALUE] or
 	 * [PARAM]="[VALUE]" formatted key/pairv values in space-delimited fashion, respecting quotes value.
 	 * Returns a map of the found parameters and their values, with keys normalized to
 	 * uppercase. The map is a combine of all the strings in the given list
@@ -1743,7 +1747,7 @@ public class CMParms
 				while(yy<s.length())
 				{
 					if((s.charAt(yy)==delim2)
-					&&((yy<=0)||(s.charAt(yy-1)!='\\'))) 
+					&&((yy<=0)||(s.charAt(yy-1)!='\\')))
 					{
 						y=yy;
 						break;
@@ -1754,7 +1758,7 @@ public class CMParms
 						y=yy;
 						break;
 					}
-					else 
+					else
 						yy++;
 				}
 				String cmd="";
@@ -1790,9 +1794,9 @@ public class CMParms
 	public static final List<Pair<String,String>> parseSpaceParenList(final String list)
 	{
 		int state=0; //0=waitingfor id start,1=waiting for parenstart,2=waitingforparenend
-		StringBuilder id=new StringBuilder("");
-		StringBuilder parms=new StringBuilder("");
-		List<Pair<String,String>> pairList = new PairVector<String,String>();
+		final StringBuilder id=new StringBuilder("");
+		final StringBuilder parms=new StringBuilder("");
+		final List<Pair<String,String>> pairList = new PairVector<String,String>();
 		for(int i=0;i<list.length();i++)
 		{
 			switch(state)
@@ -1841,9 +1845,9 @@ public class CMParms
 		}
 		return pairList;
 	}
-	
+
 	/**
-	 * This method is a sloppy, forgiving method doing KEY+[INT] or KEY-[INT] value searches 
+	 * This method is a sloppy, forgiving method doing KEY+[INT] or KEY-[INT] value searches
 	 * in a string.  Returns the value of the given key.  If the key is not found, it will
 	 * return 0.  The key is case insensitive, and start-partial.  For
 	 * example, a key of NAME will match NAMEY or NAME12.
@@ -1899,7 +1903,7 @@ public class CMParms
 	}
 
 	/**
-	 * This method is a sloppy, forgiving method doing KEY+[DBL] or KEY-[DBL] value searches 
+	 * This method is a sloppy, forgiving method doing KEY+[DBL] or KEY-[DBL] value searches
 	 * in a string.  Returns the double value of the given key.  If the key is not found, it will
 	 * return 0.  The key is case insensitive, and start-partial.  For
 	 * example, a key of NAME will match NAMEY or NAME12.
@@ -1966,8 +1970,8 @@ public class CMParms
 	/**
 	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
 	 * Returns the value of the given key when the parameter is formatted in the given text
-	 * in the format [KEY]=[VALUE].  If the key is not found, it will return the given 
-	 * defaultVal.  The key is case insensitive, and start-partial.  For example, a key of 
+	 * in the format [KEY]=[VALUE].  If the key is not found, it will return the given
+	 * defaultVal.  The key is case insensitive, and start-partial.  For example, a key of
 	 * NAME will match NAMEY or NAME12.
 	 * No assumptions are made about the given text.  It could have other garbage data of
 	 * any format around it.  For example, if BOB is the key, then a text string like:
@@ -2032,8 +2036,8 @@ public class CMParms
 	/**
 	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
 	 * Returns the value of the given key when the parameter is formatted in the given text
-	 * in the format [KEY]=[VALUE].  If the key is not found, it will return the given 
-	 * defaultVal.  The key is case insensitive, and start-partial.  For example, a key of 
+	 * in the format [KEY]=[VALUE].  If the key is not found, it will return the given
+	 * defaultVal.  The key is case insensitive, and start-partial.  For example, a key of
 	 * NAME will match NAMEY or NAME12.
 	 * No assumptions are made about the given text.  It could have other garbage data of
 	 * any format around it.  For example, if BOB is the key, then a text string like:
@@ -2046,7 +2050,7 @@ public class CMParms
 	 * @param defaultValue the value to return if the key is not found
 	 * @return the value
 	 */
-	public final static int getParmInt(String text, final String key, final int defaultValue)
+	public final static int getParmInt(final String text, final String key, final int defaultValue)
 	{
 		return (int)getParmLong(text, key, defaultValue);
 	}
@@ -2054,8 +2058,8 @@ public class CMParms
 	/**
 	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
 	 * Returns the value of the given key when the parameter is formatted in the given text
-	 * in the format [KEY]=[VALUE].  If the key is not found, it will return the given 
-	 * defaultVal.  The key is case insensitive, and start-partial.  For example, a key of 
+	 * in the format [KEY]=[VALUE].  If the key is not found, it will return the given
+	 * defaultVal.  The key is case insensitive, and start-partial.  For example, a key of
 	 * NAME will match NAMEY or NAME12.
 	 * No assumptions are made about the given text.  It could have other garbage data of
 	 * any format around it.  For example, if BOB is the key, then a text string like:
@@ -2122,7 +2126,7 @@ public class CMParms
 	 * @param key the key to search for, case insensitive
 	 * @return the string without the key and value, if found.
 	 */
-	public final static String delParmLong(String text, final String key)
+	public final static String delParmLong(final String text, final String key)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
 		while(x>=0)
@@ -2172,8 +2176,8 @@ public class CMParms
 	/**
 	 * This method is a sloppy, forgiving method doing KEY=VALUE value searches in a string.
 	 * Returns the boolean value of the given key when the parameter is formatted in the given text
-	 * in the format [KEY]=[VALUE].  If the key is not found, it will return the given 
-	 * defaultVal.  The key is case insensitive, and start-partial.  For example, a key of 
+	 * in the format [KEY]=[VALUE].  If the key is not found, it will return the given
+	 * defaultVal.  The key is case insensitive, and start-partial.  For example, a key of
 	 * NAME will match NAMEY or NAME12.
 	 * No assumptions are made about the given text.  It could have other garbage data of
 	 * any format around it.  For example, if BOB is the key, then a text string like:
@@ -2186,7 +2190,7 @@ public class CMParms
 	 * @param defaultValue the value to return if the key is not found
 	 * @return the value
 	 */
-	public final static boolean getParmBool(String text, final String key, final boolean defaultValue)
+	public final static boolean getParmBool(final String text, final String key, final boolean defaultValue)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
 		String s;
@@ -2205,9 +2209,9 @@ public class CMParms
 						continue;
 					}
 					s=text.substring(x+1).trim();
-					if(Character.toUpperCase(s.charAt(0))=='T') 
+					if(Character.toUpperCase(s.charAt(0))=='T')
 						return true;
-					if(Character.toUpperCase(s.charAt(0))=='F') 
+					if(Character.toUpperCase(s.charAt(0))=='F')
 						return false;
 				}
 			}
@@ -2263,7 +2267,7 @@ public class CMParms
 	 */
 	public final static String[] toStringArray(final Object[] O)
 	{
-		if(O==null) 
+		if(O==null)
 			return new String[0];
 		final String[] s=new String[O.length];
 		for(int o=0;o<O.length;o++)
@@ -2279,7 +2283,7 @@ public class CMParms
 	 */
 	public final static String[] toStringArray(final long[] O)
 	{
-		if(O==null) 
+		if(O==null)
 			return new String[0];
 		final String[] s=new String[O.length];
 		for(int o=0;o<O.length;o++)
@@ -2295,14 +2299,14 @@ public class CMParms
 	 */
 	public final static String[] toStringArray(final int[] O)
 	{
-		if(O==null) 
+		if(O==null)
 			return new String[0];
 		final String[] s=new String[O.length];
 		for(int o=0;o<O.length;o++)
 			s[o]=Integer.toString(O[o]);
 		return s;
 	}
-	
+
 	/**
 	 * Converts the given object list to a long array by calling
 	 * "toString()" on all the objects and then converting those to longs.
@@ -2431,7 +2435,7 @@ public class CMParms
 	 */
 	public final static String toSemicolonListString(final List<?> bytes)
 	{
-		if((bytes==null)||(bytes.size()==0)) 
+		if((bytes==null)||(bytes.size()==0))
 			return "";
 		final StringBuilder str=new StringBuilder(""+bytes.get(0));
 		for(int b=1;b<bytes.size();b++)
@@ -2493,7 +2497,7 @@ public class CMParms
 	 */
 	public final static List<String> parseSafeSemicolonList(final String list, final boolean ignoreNulls)
 	{
-		if(list==null) 
+		if(list==null)
 			return new Vector<String>(0);
 		final StringBuilder buf1=new StringBuilder(list);
 		int lastDex=0;
@@ -2613,7 +2617,7 @@ public class CMParms
 	public final static List<String> toNameList(final Enumeration<? extends Environmental> V)
 	{
 		final Vector<String> s=new Vector<String>();
-		if(V==null) 
+		if(V==null)
 			return s;
 		for(;V.hasMoreElements();)
 			s.add(V.nextElement().name());
@@ -2622,29 +2626,29 @@ public class CMParms
 
 	/**
 	 * Converts the given object to a string.  If the object is null, returns "null".
-	 * If the object is a List, Array, Iterator, or Enumeration, it converts it to a 
-	 * comma-delimited list. Returns toString() on the object. 
+	 * If the object is a List, Array, Iterator, or Enumeration, it converts it to a
+	 * comma-delimited list. Returns toString() on the object.
 	 * @param o the object to convert to something stringy
 	 * @return the string representation of the object
 	 */
 	public final static String toString(final Object o)
 	{
-		if(o==null) 
+		if(o==null)
 			return "null";
-		if(o instanceof String) 
+		if(o instanceof String)
 			return (String)o;
-		if(o instanceof List) 
+		if(o instanceof List)
 			return toListString((List<?>)o);
-		if(o instanceof String[]) 
+		if(o instanceof String[])
 			return toListString((String[])o);
-		if(o instanceof Enumeration) 
+		if(o instanceof Enumeration)
 			return toListString((Enumeration<?>)o);
-		if(o instanceof Iterator) 
+		if(o instanceof Iterator)
 			return toListString((Iterator<?>)o);
 		return o.toString();
 	}
 
-	/** 
+	/**
 	 * Converts the given Array to a comma-delimited list, with
 	 * spaces after each comma.
 	 * @param V the array to convert to a string
@@ -2662,7 +2666,7 @@ public class CMParms
 		return s.toString();
 	}
 
-	/** 
+	/**
 	 * Converts the given Array to a comma-delimited list, with
 	 * spaces after each comma by calling toString() on each object.
 	 * @param V the array to convert to a string
@@ -2680,7 +2684,7 @@ public class CMParms
 		return s.toString();
 	}
 
-	/** 
+	/**
 	 * Converts the given Iterator objects to a comma-delimited list, with
 	 * spaces after each comma by calling toString() on each object.
 	 * @param e the Iterator to convert objects in to a string
@@ -2688,7 +2692,7 @@ public class CMParms
 	 */
 	public final static String toListString(final Iterator<?> e)
 	{
-		if((e==null)||(!e.hasNext())) 
+		if((e==null)||(!e.hasNext()))
 			return "";
 		final Object o=e.next();
 		final StringBuilder s=new StringBuilder(""+o);
@@ -2697,7 +2701,7 @@ public class CMParms
 		return s.toString();
 	}
 
-	/** 
+	/**
 	 * Converts the given Enumeration objects to a comma-delimited list, with
 	 * spaces after each comma by calling toString() on each object.
 	 * @param e the Enumeration to convert objects in to a string
@@ -2705,7 +2709,7 @@ public class CMParms
 	 */
 	public final static String toListString(final Enumeration<?> e)
 	{
-		if((e==null)||(!e.hasMoreElements())) 
+		if((e==null)||(!e.hasMoreElements()))
 			return "";
 		final Object o=e.nextElement();
 		final StringBuilder s=new StringBuilder(""+o);
@@ -2714,7 +2718,7 @@ public class CMParms
 		return s.toString();
 	}
 
-	/** 
+	/**
 	 * Converts the given Enumeration objects to a comma-delimited list, with
 	 * spaces after each comma by calling name() on each object.
 	 * @param e the Enumeration to convert environmentals in to a string
@@ -2722,7 +2726,7 @@ public class CMParms
 	 */
 	public final static String toEnvironmentalListString(final Enumeration<? extends Environmental> e)
 	{
-		if((e==null)||(!e.hasMoreElements())) 
+		if((e==null)||(!e.hasMoreElements()))
 			return "";
 		final Environmental o=e.nextElement();
 		final StringBuilder s=new StringBuilder(o.name());
@@ -2731,7 +2735,7 @@ public class CMParms
 		return s.toString();
 	}
 
-	/** 
+	/**
 	 * Converts the given Enumeration CMObject to a comma-delimited list, with
 	 * spaces after each comma by calling ID() on each object.
 	 * @param e the Enumeration to convert CMObjects in to a string
@@ -2739,7 +2743,7 @@ public class CMParms
 	 */
 	public final static String toCMObjectListString(final Enumeration<? extends CMObject> e)
 	{
-		if((e==null)||(!e.hasMoreElements())) 
+		if((e==null)||(!e.hasMoreElements()))
 			return "";
 		final CMObject o=e.nextElement();
 		final StringBuilder s=new StringBuilder(o.ID());
@@ -2757,12 +2761,12 @@ public class CMParms
 	public final static Map<String,Object> toObjectStringMap(final Object[] c)
 	{
 		final Hashtable<String,Object> nameHash = new Hashtable<String,Object>();
-		for(Object o : c)
+		for(final Object o : c)
 			nameHash.put(o.toString(), o);
 		return nameHash;
 	}
-	
-	/** 
+
+	/**
 	 * Converts the given Array of CMObjects to a comma-delimited list, with
 	 * spaces after each comma by calling ID() on each object.
 	 * @param e the Array to convert CMObjects in to a string
@@ -2770,15 +2774,15 @@ public class CMParms
 	 */
 	public final static String toCMObjectListString(final CMObject[] e)
 	{
-		if((e==null)||(e.length==0)) 
+		if((e==null)||(e.length==0))
 			return "";
 		final StringBuilder s=new StringBuilder();
-		for(CMObject o : e)
+		for(final CMObject o : e)
 			s.append(", "+o.ID());
 		return s.substring(2);
 	}
 
-	/** 
+	/**
 	 * Converts the given Iterator CMObject to a comma-delimited list, with
 	 * spaces after each comma by calling ID() on each object.
 	 * @param e the Iterator to convert CMObjects in to a string
@@ -2786,7 +2790,7 @@ public class CMParms
 	 */
 	public final static String toCMObjectListString(final Iterator<? extends CMObject> e)
 	{
-		if((e==null)||(!e.hasNext())) 
+		if((e==null)||(!e.hasNext()))
 			return "";
 		final CMObject o=e.next();
 		final StringBuilder s=new StringBuilder(o.ID());
@@ -3027,7 +3031,7 @@ public class CMParms
 	}
 
 	/**
-	 * Converts the given array to a comma-delimited list string, 
+	 * Converts the given array to a comma-delimited list string,
 	 * casting the characters as numbers.
 	 * @param V the array to convert into a list string
 	 * @return the numbers in a comma-delimited list
@@ -3141,11 +3145,11 @@ public class CMParms
 	 */
 	public final static String[] appendToArray(final String[] front, final String[] back)
 	{
-		if(back==null) 
+		if(back==null)
 			return front;
-		if(front==null) 
+		if(front==null)
 			return back;
-		if(back.length==0) 
+		if(back.length==0)
 			return front;
 		final String[] newa = Arrays.copyOf(front, front.length + back.length);
 		for(int i=0;i<back.length;i++)
@@ -3229,9 +3233,9 @@ public class CMParms
 	 */
 	public final static int indexOf(final String[] stringList, final String str)
 	{
-		if(stringList==null) 
+		if(stringList==null)
 			return -1;
-		if(str==null) 
+		if(str==null)
 			return -1;
 		for(int i=0;i<stringList.length;i++)
 		{
@@ -3251,9 +3255,9 @@ public class CMParms
 	 */
 	public final static int indexOf(final String[] stringList, final String str, final int startIndex)
 	{
-		if(stringList==null) 
+		if(stringList==null)
 			return -1;
-		if(str==null) 
+		if(str==null)
 			return -1;
 		for(int i=startIndex;i<stringList.length;i++)
 		{
@@ -3291,9 +3295,9 @@ public class CMParms
 	 */
 	public final static int indexOfStartsWith(final String[] stringList, final String str)
 	{
-		if(stringList==null) 
+		if(stringList==null)
 			return -1;
-		if(str==null) 
+		if(str==null)
 			return -1;
 		for(int i=0;i<stringList.length;i++)
 		{
@@ -3312,9 +3316,9 @@ public class CMParms
 	 */
 	public final static int indexOfEndsWith(final String[] stringList, final String str)
 	{
-		if(stringList==null) 
+		if(stringList==null)
 			return -1;
-		if(str==null) 
+		if(str==null)
 			return -1;
 		for(int i=0;i<stringList.length;i++)
 		{
@@ -3333,9 +3337,9 @@ public class CMParms
 	 */
 	public final static int indexOfIgnoreCase(final String[] stringList, final String str)
 	{
-		if(stringList==null) 
+		if(stringList==null)
 			return -1;
-		if(str==null) 
+		if(str==null)
 			return -1;
 		for(int i=0;i<stringList.length;i++)
 		{
@@ -3354,9 +3358,9 @@ public class CMParms
 	 */
 	public final static int indexOfIgnoreCase(final Object[] stringList, final String str)
 	{
-		if(stringList==null) 
+		if(stringList==null)
 			return -1;
-		if(str==null) 
+		if(str==null)
 			return -1;
 		for(int i=0;i<stringList.length;i++)
 		{
@@ -3374,7 +3378,7 @@ public class CMParms
 	 */
 	public final static int indexOf(final int[] theList, final int x)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return -1;
 		for(int i=0;i<theList.length;i++)
 		{
@@ -3393,7 +3397,7 @@ public class CMParms
 	 */
 	public final static int indexOf(final int[] theList, final int x, final int startIndex)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return -1;
 		for(int i=startIndex;i<theList.length;i++)
 		{
@@ -3430,7 +3434,7 @@ public class CMParms
 	 */
 	public final static int indexOfFirst(final int[] theList, final int[] xs)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return -1;
 		for(int i=0;i<theList.length;i++)
 		{
@@ -3442,7 +3446,7 @@ public class CMParms
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Returns the index of the given byte in the given array.
 	 * @param theList the byte array
@@ -3451,7 +3455,7 @@ public class CMParms
 	 */
 	public final static int indexOf(final byte[] theList, final byte x)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return -1;
 		for(int i=0;i<theList.length;i++)
 		{
@@ -3460,7 +3464,7 @@ public class CMParms
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Returns the index of the given byte in the given array.
 	 * @param theList the byte array
@@ -3470,7 +3474,7 @@ public class CMParms
 	 */
 	public final static int indexOf(final byte[] theList, final byte x, final int startIndex)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return -1;
 		for(int i=startIndex;i<theList.length;i++)
 		{
@@ -3509,7 +3513,7 @@ public class CMParms
 	 */
 	public final static boolean equals(final byte[] x, int i, final byte[] y)
 	{
-		if((x==null)||(y==null)) 
+		if((x==null)||(y==null))
 			return false;
 		for(int j=0;i<x.length && j<y.length;i++,j++)
 		{
@@ -3518,7 +3522,7 @@ public class CMParms
 		}
 		return true;
 	}
-	
+
 	/**
 	 * Returns the index of the given bytes in the given array.
 	 * @param theList the byte array
@@ -3527,7 +3531,7 @@ public class CMParms
 	 */
 	public final static int indexOf(final byte[] theList, final byte[] x)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return -1;
 		if(x.length==0)
 			return 0;
@@ -3538,7 +3542,7 @@ public class CMParms
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Returns the index of the given bytes in the given array.
 	 * @param theList the byte array
@@ -3548,7 +3552,7 @@ public class CMParms
 	 */
 	public final static int indexOf(final byte[] theList, final byte[] x, final int startIndex)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return -1;
 		if(x.length==0)
 			return 0;
@@ -3568,7 +3572,7 @@ public class CMParms
 	 */
 	public final static int indexOf(final long[] theList, final long x)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return -1;
 		for(int i=0;i<theList.length;i++)
 		{
@@ -3587,7 +3591,7 @@ public class CMParms
 	 */
 	public final static int indexOf(final long[] theList, final long x, final int startIndex)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return -1;
 		for(int i=startIndex;i<theList.length;i++)
 		{
@@ -3625,7 +3629,7 @@ public class CMParms
 	 */
 	public final static int indexOf(final Enumeration<?> e, final Object key)
 	{
-		if(e==null) 
+		if(e==null)
 			return -1;
 		int index = -1;
 		for(;e.hasMoreElements();)
@@ -3648,7 +3652,7 @@ public class CMParms
 	 */
 	public final static int indexOfIgnoreCase(final Enumeration<?> e, final String str)
 	{
-		if(e==null) 
+		if(e==null)
 			return -1;
 		int index = -1;
 		for(;e.hasMoreElements();)
@@ -3668,7 +3672,7 @@ public class CMParms
 	 */
 	public final static int indexOfFirst(final Object[] theList, final Object[] objs)
 	{
-		if((theList==null)||(objs==null)) 
+		if((theList==null)||(objs==null))
 			return -1;
 		for(int i=0;i<theList.length;i++)
 		{
@@ -3680,7 +3684,7 @@ public class CMParms
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Returns the index of the given Object appears in the given list.
 	 * @param theList the list
@@ -3689,9 +3693,9 @@ public class CMParms
 	 */
 	public final static int indexOf(final Object[] theList, final Object obj)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return -1;
-		if(obj==null) 
+		if(obj==null)
 			return -1;
 		for(int i=0;i<theList.length;i++)
 		{
@@ -3700,7 +3704,7 @@ public class CMParms
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Returns the index of the given Object appears in the given list.
 	 * @param theList the list
@@ -3710,9 +3714,9 @@ public class CMParms
 	 */
 	public final static int indexOf(final Object[] theList, final Object obj, final int startIndex)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return -1;
-		if(obj==null) 
+		if(obj==null)
 			return -1;
 		for(int i=startIndex;i<theList.length;i++)
 		{
@@ -3740,7 +3744,7 @@ public class CMParms
 		}
 		return ct;
 	}
-	
+
 	/**
 	 * Returns the index of the given Object appears in the given list.
 	 * @param theList the list
@@ -3750,9 +3754,9 @@ public class CMParms
 	 */
 	public final static int indexOf(final List<?> theList, final Object obj, final int startIndex)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return -1;
-		if(obj==null) 
+		if(obj==null)
 			return -1;
 		for(int i=startIndex;i<theList.size();i++)
 		{
@@ -3790,9 +3794,9 @@ public class CMParms
 	 */
 	public final static int indexOfAsString(final Object[] theList, final Object obj)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return -1;
-		if(obj==null) 
+		if(obj==null)
 			return -1;
 		for(int i=0;i<theList.length;i++)
 		{
@@ -3811,7 +3815,7 @@ public class CMParms
 	 */
 	public final static int indexOf(final Iterator<?> i, final Object key)
 	{
-		if(i==null) 
+		if(i==null)
 			return -1;
 		int index = -1;
 		for(;i.hasNext();)
@@ -3834,7 +3838,7 @@ public class CMParms
 	 */
 	public final static int indexOfIgnoreCase(final Iterator<?> i, final String str)
 	{
-		if(i==null) 
+		if(i==null)
 			return -1;
 		int index = -1;
 		for(;i.hasNext();)
@@ -3847,7 +3851,7 @@ public class CMParms
 	}
 
 	/**
-	 * Returns the index of the given string in the list by calling toString() 
+	 * Returns the index of the given string in the list by calling toString()
 	 * and comparing their case insensitive values.
 	 * @param theList the List of objects
 	 * @param str the String to look for
@@ -3855,9 +3859,9 @@ public class CMParms
 	 */
 	public final static int indexOfIgnoreCase(final List<?> theList, final String str)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return -1;
-		if(str==null) 
+		if(str==null)
 			return -1;
 		for(int i=0;i<theList.size();i++)
 		{
@@ -3964,7 +3968,7 @@ public class CMParms
 	}
 
 	/**
-	 * Returns whether the given Object appears in the given list, after 
+	 * Returns whether the given Object appears in the given list, after
 	 * calling toString on both the list object and the given object
 	 * @param theList the list
 	 * @param obj the Object to search for, which is a toString
@@ -4046,7 +4050,7 @@ public class CMParms
 	}
 
 	/**
-	 * Returns the index of the string in the string array that starts with 
+	 * Returns the index of the string in the string array that starts with
 	 * the given string.  The search is case sensitive
 	 * @param theList the list of strings
 	 * @param str the string to look for
@@ -4054,9 +4058,9 @@ public class CMParms
 	 */
 	public final static int startsWith(final String[] theList, final String str)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return 0;
-		if(str==null) 
+		if(str==null)
 			return -1;
 		for(int i=0;i<theList.length;i++)
 		{
@@ -4067,7 +4071,7 @@ public class CMParms
 	}
 
 	/**
-	 * Returns the index of the string in the string array that starts with 
+	 * Returns the index of the string in the string array that starts with
 	 * the given string.  The search is case insensitive
 	 * @param theList the list of strings
 	 * @param str the string to look for
@@ -4075,9 +4079,9 @@ public class CMParms
 	 */
 	public final static int startsWithIgnoreCase(final String[] theList, final String str)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return 0;
-		if(str==null) 
+		if(str==null)
 			return -1;
 		for(int i=0;i<theList.length;i++)
 		{
@@ -4088,7 +4092,7 @@ public class CMParms
 	}
 
 	/**
-	 * Returns true if any string in string array starts with 
+	 * Returns true if any string in string array starts with
 	 * the given string.  The search is case sensitive
 	 * @param theList the list of strings
 	 * @param str the string to look for
@@ -4100,7 +4104,7 @@ public class CMParms
 	}
 
 	/**
-	 * Returns true if any string in string array starts with 
+	 * Returns true if any string in string array starts with
 	 * the given string.  The search is case insensitive
 	 * @param theList the list of strings
 	 * @param str the string to look for
@@ -4112,7 +4116,7 @@ public class CMParms
 	}
 
 	/**
-	 * Returns the index of the string in the string array that ends with 
+	 * Returns the index of the string in the string array that ends with
 	 * the given string.  The search is case sensitive
 	 * @param theList the list of strings
 	 * @param str the string to look for
@@ -4120,9 +4124,9 @@ public class CMParms
 	 */
 	public final static int endsWith(final String[] theList, final String str)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return 0;
-		if(str==null) 
+		if(str==null)
 			return -1;
 		for(int i=0;i<theList.length;i++)
 		{
@@ -4133,7 +4137,7 @@ public class CMParms
 	}
 
 	/**
-	 * Returns the index of the string in the string array that ends with 
+	 * Returns the index of the string in the string array that ends with
 	 * the given string.  The search is case insensitive
 	 * @param theList the list of strings
 	 * @param str the string to look for
@@ -4141,9 +4145,9 @@ public class CMParms
 	 */
 	public final static int endsWithIgnoreCase(final String[] theList, final String str)
 	{
-		if(theList==null) 
+		if(theList==null)
 			return 0;
-		if(str==null) 
+		if(str==null)
 			return -1;
 		for(int i=0;i<theList.length;i++)
 		{
@@ -4154,7 +4158,7 @@ public class CMParms
 	}
 
 	/**
-	 * Returns true if any string in string array ends with 
+	 * Returns true if any string in string array ends with
 	 * the given string.  The search is case sensitive
 	 * @param theList the list of strings
 	 * @param str the string to look for
@@ -4166,7 +4170,7 @@ public class CMParms
 	}
 
 	/**
-	 * Returns true if any string in string array ends with 
+	 * Returns true if any string in string array ends with
 	 * the given string.  The search is case insensitive
 	 * @param theList the list of strings
 	 * @param str the string to look for

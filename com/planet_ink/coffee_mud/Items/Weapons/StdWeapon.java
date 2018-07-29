@@ -80,13 +80,13 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 	}
 
 	@Override
-	public void setWeaponDamageType(int newType)
+	public void setWeaponDamageType(final int newType)
 	{
 		weaponDamageType = newType;
 	}
 
 	@Override
-	public void setWeaponClassification(int newClassification)
+	public void setWeaponClassification(final int newClassification)
 	{
 		weaponClassification = newClassification;
 	}
@@ -309,7 +309,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 		return true;
 	}
 
-	protected boolean inventoryAmmoCheck(MOB M)
+	protected boolean inventoryAmmoCheck(final MOB M)
 	{
 		if(M==null)
 			return false;
@@ -367,7 +367,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 	}
 
 	@Override
-	public String hitString(int damageAmount)
+	public String hitString(final int damageAmount)
 	{
 		return CMLib.combat().standardHitString(weaponDamageType, weaponClassification,damageAmount,name());
 	}
@@ -389,7 +389,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 	}
 
 	@Override
-	public void setRanges(int min, int max)
+	public void setRanges(final int min, final int max)
 	{
 		minRange = min;
 		maxRange = max;
@@ -410,7 +410,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 	}
 
 	@Override
-	public void setAmmunitionType(String ammo)
+	public void setAmmunitionType(final String ammo)
 	{
 		if(!(this instanceof Wand))
 			setReadableText(ammo);
@@ -463,7 +463,7 @@ public class StdWeapon extends StdItem implements Weapon, AmmunitionWeapon
 	}
 
 	@Override
-	public void setAmmoCapacity(int amount)
+	public void setAmmoCapacity(final int amount)
 	{
 		ammoCapacity = amount;
 	}

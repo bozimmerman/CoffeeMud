@@ -93,7 +93,7 @@ public class GenExit extends StdExit implements Modifiable
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverPhyStats();
@@ -108,7 +108,7 @@ public class GenExit extends StdExit implements Modifiable
 	}
 
 	@Override
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 		name=newName;
 	}
@@ -120,7 +120,7 @@ public class GenExit extends StdExit implements Modifiable
 	}
 
 	@Override
-	public void setDisplayText(String newDisplayText)
+	public void setDisplayText(final String newDisplayText)
 	{
 		displayText=newDisplayText;
 	}
@@ -132,7 +132,7 @@ public class GenExit extends StdExit implements Modifiable
 	}
 
 	@Override
-	public void setDescription(String newDescription)
+	public void setDescription(final String newDescription)
 	{
 		description=newDescription;
 	}
@@ -162,12 +162,12 @@ public class GenExit extends StdExit implements Modifiable
 	}
 
 	@Override
-	public void setDoorsNLocks(boolean newHasADoor,
-								  boolean newIsOpen,
-								  boolean newDefaultsClosed,
-								  boolean newHasALock,
-								  boolean newIsLocked,
-								  boolean newDefaultsLocked)
+	public void setDoorsNLocks(final boolean newHasADoor,
+								  final boolean newIsOpen,
+								  final boolean newDefaultsClosed,
+								  final boolean newHasALock,
+								  final boolean newIsLocked,
+								  final boolean newDefaultsLocked)
 	{
 		isOpen=newIsOpen;
 		isLocked=newIsLocked;
@@ -208,10 +208,10 @@ public class GenExit extends StdExit implements Modifiable
 	}
 
 	@Override
-	public void setExitParams(String newDoorName,
-							  String newCloseWord,
-							  String newOpenWord,
-							  String newClosedText)
+	public void setExitParams(final String newDoorName,
+							  final String newCloseWord,
+							  final String newOpenWord,
+							  final String newClosedText)
 	{
 		doorName=newDoorName;
 		closeName=newCloseWord;
@@ -226,13 +226,13 @@ public class GenExit extends StdExit implements Modifiable
 	}
 
 	@Override
-	public void setReadable(boolean isTrue)
+	public void setReadable(final boolean isTrue)
 	{
 		isReadable=isTrue;
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		keyName=temporaryDoorLink()+text;
 	}
@@ -244,7 +244,7 @@ public class GenExit extends StdExit implements Modifiable
 	}
 
 	@Override
-	public void setKeyName(String newKeyName)
+	public void setKeyName(final String newKeyName)
 	{
 		keyName=temporaryDoorLink()+newKeyName;
 	}
@@ -256,7 +256,7 @@ public class GenExit extends StdExit implements Modifiable
 	}
 
 	@Override
-	public void setOpenDelayTicks(int numTicks)
+	public void setOpenDelayTicks(final int numTicks)
 	{
 		openDelayTicks=numTicks;
 	}
@@ -274,7 +274,7 @@ public class GenExit extends StdExit implements Modifiable
 	}
 
 	@Override
-	public void setTemporaryDoorLink(String link)
+	public void setTemporaryDoorLink(final String link)
 	{
 		if(link.startsWith("{{#"))
 		{
@@ -328,7 +328,7 @@ public class GenExit extends StdExit implements Modifiable
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{
@@ -377,7 +377,7 @@ public class GenExit extends StdExit implements Modifiable
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, String val)
 	{
 		switch(getCodeNum(code))
 		{

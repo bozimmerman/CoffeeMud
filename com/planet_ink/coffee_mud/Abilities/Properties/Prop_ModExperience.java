@@ -66,7 +66,7 @@ public class Prop_ModExperience extends Property
 		return "Modifies experience gained: " + operationFormula;
 	}
 
-	public int translateAmount(int amount, String val)
+	public int translateAmount(int amount, final String val)
 	{
 		if(amount<0)
 			amount=-amount;
@@ -75,7 +75,7 @@ public class Prop_ModExperience extends Property
 		return CMath.s_int(val);
 	}
 
-	public String translateNumber(String val)
+	public String translateNumber(final String val)
 	{
 		if(val.endsWith("%"))
 			return "( @x1 * (" + val.substring(0,val.length()-1) + " / 100) )";
@@ -83,7 +83,7 @@ public class Prop_ModExperience extends Property
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		operation = null;
@@ -103,9 +103,9 @@ public class Prop_ModExperience extends Property
 			s=s.substring(0,x)+s.substring(x+4);
 		}
 		operationFormula="Amount "+s;
-		List<String> ops = new ArrayList<String>();
+		final List<String> ops = new ArrayList<String>();
 		int paren=0;
-		StringBuilder curr=new StringBuilder("");
+		final StringBuilder curr=new StringBuilder("");
 		for(int i=0;i<s.length();i++)
 		{
 			if(paren > 0)
@@ -128,7 +128,11 @@ public class Prop_ModExperience extends Property
 			else
 			switch(s.charAt(i))
 			{
-			case '=': case '+': case '-': case '*': case '/': 
+			case '=':
+			case '+':
+			case '-':
+			case '*':
+			case '/':
 				if(curr.length()>0)
 					ops.add(curr.toString().trim());
 				curr.setLength(0);
@@ -142,7 +146,7 @@ public class Prop_ModExperience extends Property
 		if(curr.length()>0)
 			ops.add(curr.toString().trim());
 		StringBuilder finalOps = new StringBuilder("");
-		for(String op : ops)
+		for(final String op : ops)
 		{
 			if(op.startsWith("="))
 				finalOps = new StringBuilder(translateNumber(op.substring(1)).trim());

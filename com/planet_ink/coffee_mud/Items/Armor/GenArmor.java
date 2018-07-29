@@ -77,7 +77,7 @@ public class GenArmor extends StdArmor
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText=text;
 	}
@@ -89,13 +89,13 @@ public class GenArmor extends StdArmor
 	}
 
 	@Override
-	public void setKeyName(String newKeyName)
+	public void setKeyName(final String newKeyName)
 	{
 		readableText=newKeyName;
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -104,7 +104,7 @@ public class GenArmor extends StdArmor
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME","LAYER","LAYERATTRIB","DEFCLOSED","DEFLOCKED"};
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -134,7 +134,7 @@ public class GenArmor extends StdArmor
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);

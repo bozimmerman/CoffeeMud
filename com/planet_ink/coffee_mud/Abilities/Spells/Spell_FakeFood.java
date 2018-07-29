@@ -69,7 +69,7 @@ public class Spell_FakeFood extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -85,26 +85,31 @@ public class Spell_FakeFood extends Spell
 				final Food F=(Food)CMClass.getItem("GenFood");
 				switch(CMLib.dice().roll(1,5,0))
 				{
-				case 1: F.setName(L("a shiny apple"));
-						F.setDisplayText(L("A shiny red apple sits here."));
-						F.setDescription(L("It looks tasty and crisp!"));
-						break;
-				case 2: F.setName(L("a nice peach"));
-						F.setDisplayText(L("A nice peach sits here."));
-						F.setDescription(L("It looks tasty!"));
-						break;
-				case 3: F.setName(L("a big pot pie"));
-						F.setDisplayText(L("A big pot pie has been left here."));
-						F.setDescription(L("It sure looks good!"));
-						break;
-				case 4: F.setName(L("a juicy steak"));
-						F.setDisplayText(L("A juicy steak has been left here."));
-						F.setDescription(L("It sure looks good!"));
-						break;
-				case 5: F.setName(L("a bit of food"));
-						F.setDisplayText(L("A bit of food has been left here."));
-						F.setDescription(L("It sure looks good!"));
-						break;
+				case 1:
+					F.setName(L("a shiny apple"));
+					F.setDisplayText(L("A shiny red apple sits here."));
+					F.setDescription(L("It looks tasty and crisp!"));
+					break;
+				case 2:
+					F.setName(L("a nice peach"));
+					F.setDisplayText(L("A nice peach sits here."));
+					F.setDescription(L("It looks tasty!"));
+					break;
+				case 3:
+					F.setName(L("a big pot pie"));
+					F.setDisplayText(L("A big pot pie has been left here."));
+					F.setDescription(L("It sure looks good!"));
+					break;
+				case 4:
+					F.setName(L("a juicy steak"));
+					F.setDisplayText(L("A juicy steak has been left here."));
+					F.setDescription(L("It sure looks good!"));
+					break;
+				case 5:
+					F.setName(L("a bit of food"));
+					F.setDisplayText(L("A bit of food has been left here."));
+					F.setDescription(L("It sure looks good!"));
+					break;
 				}
 				F.setNourishment(0);
 				F.setBaseValue(0);

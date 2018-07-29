@@ -68,7 +68,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	private boolean		suspended			= false;
 	public DVector		internalFiles		= null;
 	private int[]		resetData			= null;
-	
+
 	protected final Map<String,Long>	stepEllapsedTimes	= new Hashtable<String,Long>();
 	protected final Map<String,Long>	winners				= new CaselessTreeMap<Long>();
 
@@ -80,7 +80,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 		name = newName;
 	}
@@ -93,7 +93,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setAuthor(String newName)
+	public void setAuthor(final String newName)
 	{
 		author = newName;
 	}
@@ -106,7 +106,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setDisplayName(String newName)
+	public void setDisplayName(final String newName)
 	{
 		displayName = newName;
 	}
@@ -132,7 +132,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setSuspended(boolean truefalse)
+	public void setSuspended(final boolean truefalse)
 	{
 		suspended = truefalse;
 	}
@@ -156,7 +156,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public Object getDesignatedObject(String named)
+	public Object getDesignatedObject(final String named)
 	{
 		int code=-1;
 		for(int i=0;i<QCODES.length;i++)
@@ -243,7 +243,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setStartDate(String newDate)
+	public void setStartDate(final String newDate)
 	{
 		final int x=newDate.indexOf('-');
 		if((x>0)
@@ -253,7 +253,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setStartMudDate(String newDate)
+	public void setStartMudDate(final String newDate)
 	{
 		setStartDate(newDate);
 		if(startDate.equals(newDate))
@@ -268,13 +268,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setDuration(int newTicks)
+	public void setDuration(final int newTicks)
 	{
 		duration = newTicks;
 	}
 
 	@Override
-	public void setCopy(boolean truefalse)
+	public void setCopy(final boolean truefalse)
 	{
 		copy = truefalse;
 	}
@@ -286,7 +286,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setSpawn(int spawnFlag)
+	public void setSpawn(final int spawnFlag)
 	{
 		spawn = (spawnFlag < 0) ? 0 : spawnFlag;
 	}
@@ -304,7 +304,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setMinPlayers(int players)
+	public void setMinPlayers(final int players)
 	{
 		minPlayers = players;
 	}
@@ -316,7 +316,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setRunLevel(int level)
+	public void setRunLevel(final int level)
 	{
 		runLevel = level;
 	}
@@ -328,7 +328,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setPlayerMask(String mask)
+	public void setPlayerMask(final String mask)
 	{
 		playerMask = mask;
 	}
@@ -336,7 +336,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	// the rest of the script.  This may be semicolon-separated instructions,
 	// or a LOAD command followed by the quest script path.
 	@Override
-	public boolean setScript(String parm, boolean showErrors)
+	public boolean setScript(final String parm, final boolean showErrors)
 	{
 		rawScriptParameter=parm;
 		name="";
@@ -360,7 +360,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			spawn=SPAWN_NO;
 		return true;
 	}
-	
+
 	@Override
 	public String script()
 	{
@@ -378,7 +378,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setVars(List<?> script, int startAtLine)
+	public void setVars(final List<?> script, final int startAtLine)
 	{
 		List<String> parsedLine=null;
 		String var=null;
@@ -398,7 +398,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public StringBuffer getResourceFileData(String named, boolean showErrors)
+	public StringBuffer getResourceFileData(final String named, final boolean showErrors)
 	{
 		int index=-1;
 		if(internalFiles!=null)
@@ -411,7 +411,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return buf;
 	}
 
-	private void questifyScriptableBehavs(PhysicalAgent E)
+	private void questifyScriptableBehavs(final PhysicalAgent E)
 	{
 		if(E==null)
 			return;
@@ -430,7 +430,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
-	private Enumeration<Room> getAppropriateRoomSet(QuestState q)
+	private Enumeration<Room> getAppropriateRoomSet(final QuestState q)
 	{
 		if(q.roomGroup!=null)
 			return new IteratorEnumeration(q.roomGroup.iterator());
@@ -456,13 +456,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return list;
 	}
 
-	private List sortSelect(Environmental E, 
-							String str,
+	private List sortSelect(final Environmental E,
+							final String str,
 							List choices,
-							List choices0,
-							List choices1,
-							List choices2,
-							List choices3)
+							final List choices0,
+							final List choices1,
+							final List choices2,
+							final List choices3)
 	{
 		final String mname=E.name().toUpperCase();
 		final String mdisp=E.displayText().toUpperCase();
@@ -523,7 +523,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return NOW;
 	}
 
-	public void parseQuestScriptWArgs(Vector script, List args)
+	public void parseQuestScriptWArgs(final Vector script, List args)
 	{
 		if(args==null)
 			args=new Vector();
@@ -571,14 +571,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
-	protected void errorOccurred(QuestState q, boolean quietFlag, String msg)
+	protected void errorOccurred(final QuestState q, final boolean quietFlag, final String msg)
 	{
 		if(!quietFlag)
 			Log.errOut("Quest",msg);
 		q.error=true;
 	}
 
-	private void sizeDownTo(List V, int num)
+	private void sizeDownTo(final List V, final int num)
 	{
 		if(num<0)
 			return;
@@ -593,7 +593,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	{
 		if((choices!=null)&&(choices.size()>0))
 		{
-			Set<String> inUseByWhom=new TreeSet<String>();
+			final Set<String> inUseByWhom=new TreeSet<String>();
 			for(int c=choices.size()-1;c>=0;c--)
 			{
 				final Environmental E=choices.get(c);
@@ -614,8 +614,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				errorOccurred(q,isQuiet,"Quest '"+name()+"', all choices were taken: '"+choicesStr+"' by: "+CMParms.toListString(inUseByWhom)+".");
 		}
 	}
-	
-	public void parseQuestScript(Vector script, List args, int startLine)
+
+	public void parseQuestScript(Vector script, final List args, final int startLine)
 	{
 		final Vector<String> finalScript=new Vector<String>();
 		for(int v=0;v<script.size();v++)
@@ -2615,7 +2615,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"',No items loaded: '"+CMParms.combine(p,2)+"' for '"+name()+"'.");
 							break;
 						}
-						for(Item I : q.loadedItems)
+						for(final Item I : q.loadedItems)
 						{
 							I.basePhyStats().setRejuv(PhyStats.NO_REJUV);
 							I.basePhyStats().setDisposition(I.basePhyStats().disposition()|PhyStats.IS_UNSAVABLE);
@@ -3290,13 +3290,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
-	public boolean spawnQuest(String script, Vector baseVars, boolean reTime)
+	public boolean spawnQuest(final String script, final Vector baseVars, final boolean reTime)
 	{
 		final DefaultQuest Q2=(DefaultQuest)CMClass.getCommon("DefaultQuest");
 		Q2.setCopy(true);
 		Q2.setVars(baseVars,0);
 		Q2.setScript(script,true);
-		
+
 		Quest Q=CMLib.quests().fetchQuest(Q2.name());
 		int append=1;
 		while((Q!=null)&&(Q!=Q2))
@@ -3617,7 +3617,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							if(O instanceof Item)
 								((Item)O).destroy();
 						}
-						catch(ArrayIndexOutOfBoundsException e)
+						catch(final ArrayIndexOutOfBoundsException e)
 						{
 							// eat it
 						}
@@ -3681,7 +3681,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void resetQuest(int firstPauseTicks)
+	public void resetQuest(final int firstPauseTicks)
 	{
 		if(stoppingQuest)
 			return;
@@ -3736,7 +3736,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public boolean resetWaitRemaining(long ellapsedTime)
+	public boolean resetWaitRemaining(final long ellapsedTime)
 	{
 
 		if(resetData!=null)
@@ -3784,7 +3784,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 				int year=Calendar.getInstance().get(Calendar.YEAR);
 				long distance=CMLib.time().string2Millis(month+"/"+day+"/"+year+" 12:00 AM");
 				final Calendar C=Calendar.getInstance();
-				long today=CMLib.time().string2Millis((C.get(Calendar.MONTH)+1)+"/"+C.get(Calendar.DAY_OF_MONTH)+"/"+C.get(Calendar.YEAR)+" 12:00 AM");
+				final long today=CMLib.time().string2Millis((C.get(Calendar.MONTH)+1)+"/"+C.get(Calendar.DAY_OF_MONTH)+"/"+C.get(Calendar.YEAR)+" 12:00 AM");
 				while(distance<today)
 					distance=CMLib.time().string2Millis(month+"/"+day+"/"+(++year)+" 12:00 AM");
 				waitRemaining=(int)((distance-today)/CMProps.getTickMillis());
@@ -3802,7 +3802,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setMinWait(int wait)
+	public void setMinWait(final int wait)
 	{
 		minWait = wait;
 	}
@@ -3814,7 +3814,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setWaitInterval(int wait)
+	public void setWaitInterval(final int wait)
 	{
 		maxWait = wait;
 	}
@@ -3886,7 +3886,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		final Quest Q=getMainQuestObject();
 		final StringBuffer list=new StringBuffer("");
 		final Map<String,Long> V=Q.getWinners();
-		for(String name : V.keySet())
+		for(final String name : V.keySet())
 		{
 			final Long time=V.get(name);
 			list.append(name+"@"+time.longValue()+";");
@@ -3895,15 +3895,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setWinners(String list)
+	public void setWinners(final String list)
 	{
 		final Quest Q=getMainQuestObject();
 		final Map<String,Long> V=Q.getWinners();
 		V.clear();
 		final List<String> parts=CMParms.parseSemicolons(list, true);
-		for(String part : parts)
+		for(final String part : parts)
 		{
-			if(part.trim().length()>0) 
+			if(part.trim().length()>0)
 			{
 				final int x=part.indexOf('@');
 				Long time=Long.valueOf(0);
@@ -3948,7 +3948,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		final Map<String,Long> V=Q.getWinners();
 		return V.get(name);
 	}
-	
+
 	// informational
 	@Override
 	public boolean running()
@@ -4071,7 +4071,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void runtimeRegisterAbility(MOB mob, String abilityID, String parms, boolean give)
+	public void runtimeRegisterAbility(final MOB mob, final String abilityID, final String parms, final boolean give)
 	{
 		if(mob==null)
 			return;
@@ -4136,7 +4136,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void runtimeRegisterEffect(PhysicalAgent affected, String abilityID, String parms, boolean give)
+	public void runtimeRegisterEffect(final PhysicalAgent affected, final String abilityID, final String parms, final boolean give)
 	{
 		if(affected==null)
 			return;
@@ -4179,7 +4179,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void runtimeRegisterBehavior(PhysicalAgent behaving, String behaviorID, String parms, boolean give)
+	public void runtimeRegisterBehavior(final PhysicalAgent behaving, final String behaviorID, final String parms, final boolean give)
 	{
 		if(behaving==null)
 			return;
@@ -4217,7 +4217,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
-	public void runtimeRegisterStat(Environmental E, String stat, String parms, boolean give)
+	public void runtimeRegisterStat(final Environmental E, String stat, final String parms, final boolean give)
 	{
 		if(E==null)
 			return;
@@ -4271,7 +4271,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
-	public int getQuestThingIndex(Iterator<? extends Environmental> i, String name, CMClass.CMObjectType type, int[] num)
+	public int getQuestThingIndex(final Iterator<? extends Environmental> i, final String name, final CMClass.CMObjectType type, final int[] num)
 	{
 		if(i==null)
 			return -1;
@@ -4299,7 +4299,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public int getQuestMobIndex(String name)
+	public int getQuestMobIndex(final String name)
 	{
 		final int[] num={1};
 		int x=-1;
@@ -4316,7 +4316,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public int getQuestRoomIndex(String roomID)
+	public int getQuestRoomIndex(final String roomID)
 	{
 		final int[] num={1};
 		int x=-1;
@@ -4338,7 +4338,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public int getQuestItemIndex(String name)
+	public int getQuestItemIndex(final String name)
 	{
 		final int[] num={1};
 		int x=-1;
@@ -4364,7 +4364,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setFlags(long flags)
+	public void setFlags(final long flags)
 	{
 		if(CMath.bset(flags,FLAG_SUSPENDED))
 		{
@@ -4372,7 +4372,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
-	public Environmental getQuestThing(Iterator<? extends Environmental> e, int dex, CMClass.CMObjectType type, int[] num)
+	public Environmental getQuestThing(final Iterator<? extends Environmental> e, final int dex, final CMClass.CMObjectType type, final int[] num)
 	{
 		if(e==null)
 			return null;
@@ -4391,7 +4391,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public MOB getQuestMob(int i)
+	public MOB getQuestMob(final int i)
 	{
 		final int[] num={1};
 		Environmental E=null;
@@ -4414,7 +4414,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public Item getQuestItem(int i)
+	public Item getQuestItem(final int i)
 	{
 		final int[] num={1};
 		Environmental E=null;
@@ -4437,7 +4437,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public Room getQuestRoom(int i)
+	public Room getQuestRoom(final int i)
 	{
 		final int[] num={1};
 		Environmental E=null;
@@ -4463,7 +4463,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public String getQuestMobName(int i)
+	public String getQuestMobName(final int i)
 	{
 		final MOB M=getQuestMob(i);
 		if(M!=null)
@@ -4472,7 +4472,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public String getQuestItemName(int i)
+	public String getQuestItemName(final int i)
 	{
 		final Item I=getQuestItem(i);
 		if(I!=null)
@@ -4481,7 +4481,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public String getQuestRoomID(int i)
+	public String getQuestRoomID(final int i)
 	{
 		final Room R=getQuestRoom(i);
 		if(R!=null)
@@ -4490,7 +4490,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public int getObjectInUseIndex(String name)
+	public int getObjectInUseIndex(final String name)
 	{
 		synchronized(questState)
 		{
@@ -4508,7 +4508,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public boolean isObjectInUse(Environmental E)
+	public boolean isObjectInUse(final Environmental E)
 	{
 		if((questState.worldObjects!=null)&&(E!=null))
 		{
@@ -4521,7 +4521,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return false;
 	}
 
-	public Vector parseLoadScripts(String text, List oldArgs, List args, boolean showErrors)
+	public Vector parseLoadScripts(String text, final List oldArgs, final List args, final boolean showErrors)
 	{
 		final Vector script=new Vector();
 		if(text.trim().toUpperCase().startsWith("LOAD="))
@@ -4596,13 +4596,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					y = yy;
 					break;
 				}
-				else 
+				else
 				if (text.charAt(yy) == '\n')
 				{
 					y = yy;
 					break;
 				}
-				else 
+				else
 				if (text.charAt(yy) == '\r')
 				{
 					y = yy;
@@ -4641,7 +4641,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
 	private static final String VALID_ASTR_CODES="_&|";
 
-	private String modifyStringFromArgs(String s, List args)
+	private String modifyStringFromArgs(String s, final List args)
 	{
 		int x=s.toUpperCase().indexOf('$');
 		while((x>=0)&&(x<s.length()-1))
@@ -4692,7 +4692,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return s;
 	}
 
-	private Object getObjectIfSpecified(List<String> parms, List args, int startp, int object0vector1)
+	private Object getObjectIfSpecified(final List<String> parms, final List args, final int startp, final int object0vector1)
 		throws CMException
 	{
 		if(parms.size()-startp==0)
@@ -4751,7 +4751,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 					if(O!=null)
 						V.removeElement(O);
 					break;
-				case '+': case ' ':
+				case '+':
+				case ' ':
 					if(O instanceof List)
 						V.addAll((List)O);
 					else
@@ -4811,7 +4812,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		return -1;
 	}
 
-	public boolean sameAs(DefaultQuest E)
+	public boolean sameAs(final DefaultQuest E)
 	{
 		final String[] CCODES=getStatCodes();
 		for(int i=0;i<CCODES.length;i++)
@@ -4823,7 +4824,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{
@@ -4999,19 +5000,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		private static Converter<PreservedQuestObject, PhysicalAgent> converter = new Converter<PreservedQuestObject, PhysicalAgent>()
 		{
 			@Override
-			public PhysicalAgent convert(PreservedQuestObject obj)
+			public PhysicalAgent convert(final PreservedQuestObject obj)
 			{
 				return obj.obj;
 			}
 		};
 
-		public PreservedQuestObject(PhysicalAgent o, int state)
+		public PreservedQuestObject(final PhysicalAgent o, final int state)
 		{
 			this.obj = o;
 			this.preserveState = state;
 		}
 
-		public static Iterator<PhysicalAgent> getPOIter(List<PreservedQuestObject> o)
+		public static Iterator<PhysicalAgent> getPOIter(final List<PreservedQuestObject> o)
 		{
 			final ConvertingIterator<PreservedQuestObject,PhysicalAgent> iter =
 				 new ConvertingIterator<PreservedQuestObject,PhysicalAgent>(o.iterator(),converter);
@@ -5178,7 +5179,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		public TimeClock			whenAt;
 		public List<TimeClock>		whenAtGroup;
 
-		public boolean isStat(String statName)
+		public boolean isStat(final String statName)
 		{
 			for (final String element : MYSTERY_QCODES)
 			{
@@ -5188,7 +5189,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			return false;
 		}
 
-		public Object getStat(String statName)
+		public Object getStat(final String statName)
 		{
 			int code=-1;
 			for(int i=0;i<MYSTERY_QCODES.length;i++)
@@ -5268,7 +5269,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 			return state;
 		}
 
-		public JScriptQuest(Quest Q, QuestState S)
+		public JScriptQuest(final Quest Q, final QuestState S)
 		{
 			quest = Q;
 			state = S;
@@ -5276,7 +5277,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
 		public static String[]	functions	= { "quest", "setupState", "toJavaString" };
 
-		public String toJavaString(Object O)
+		public String toJavaString(final Object O)
 		{
 			return Context.toString(O);
 		}

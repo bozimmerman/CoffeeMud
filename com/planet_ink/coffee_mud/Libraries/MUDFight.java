@@ -50,7 +50,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public long 		lastRes			= 0;
 	public Object[][][] hitWordIndex	= null;
 	public Object[][][] hitWordsChanged	= null;
-	
+
 	protected CMath.CompiledFormula	attackAdjustmentFormula			= null;
 	protected CMath.CompiledFormula	armorAdjustmentFormula			= null;
 	protected CMath.CompiledFormula	attackerFudgeBonusFormula		= null;
@@ -80,7 +80,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	protected CMath.CompiledFormula	stateMovesRecoverFormula		= null;
 	protected CMath.CompiledFormula totalCombatExperienceFormula	= null;
 	protected CMath.CompiledFormula individualCombatExpFormula		= null;
-	
+
 	private static final int ATTACK_ADJUSTMENT = 50;
 
 	@Override
@@ -114,7 +114,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		stateHitPointRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_HITPOINTRECOVER));
 		stateManaRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MANARECOVER));
 		stateMovesRecoverFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_MOVESRECOVER));
-		
+
 		totalCombatExperienceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_TOTALCOMBATXP));
 		individualCombatExpFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.Str.FORMULA_INDCOMBATXP));
 
@@ -133,7 +133,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public Set<MOB> allPossibleCombatants(MOB mob, boolean includePlayers)
+	public Set<MOB> allPossibleCombatants(final MOB mob, final boolean includePlayers)
 	{
 		final SHashSet<MOB> h=new SHashSet<MOB>();
 		final Room thisRoom=mob.location();
@@ -155,7 +155,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public Set<MOB> properTargets(Ability A, MOB caster, boolean includePlayers)
+	public Set<MOB> properTargets(final Ability A, final MOB caster, final boolean includePlayers)
 	{
 		Set<MOB> h=null;
 		if(A.abstractQuality()!=Ability.QUALITY_MALICIOUS)
@@ -179,7 +179,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public int adjustedAttackBonus(MOB mob, MOB target)
+	public int adjustedAttackBonus(final MOB mob, final MOB target)
 	{
 		final int maxStr = mob.charStats().getMaxStat(CharStats.STAT_STRENGTH);
 		int currStr = mob.charStats().getStat(CharStats.STAT_STRENGTH);
@@ -204,7 +204,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public int adjustedAttackBonus(int baseAttack)
+	public int adjustedAttackBonus(final int baseAttack)
 	{
 		final double[] vars = {baseAttack,
 						CharStats.VALUE_ALLSTATS_DEFAULT,
@@ -218,7 +218,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void postItemDamage(MOB mob, Item I, Environmental tool, int damageAmount, int messageType, String message)
+	public void postItemDamage(final MOB mob, final Item I, final Environmental tool, final int damageAmount, final int messageType, final String message)
 	{
 		if(mob==null)
 			return ;
@@ -306,7 +306,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public int adjustedArmor(MOB mob)
+	public int adjustedArmor(final MOB mob)
 	{
 		int currDex=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 		final int maxDex = mob.charStats().getMaxStat(CharStats.STAT_DEXTERITY);
@@ -335,7 +335,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public int adjustedArmor(int armorValue)
+	public int adjustedArmor(final int armorValue)
 	{
 		final double[] vars = {
 				armorValue,
@@ -350,9 +350,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				};
 		return (int)Math.round(CMath.parseMathExpression(armorAdjustmentFormula, vars, 0.0));
 	}
-	
+
 	@Override
-	public boolean rollToHit(MOB attacker, MOB defender)
+	public boolean rollToHit(final MOB attacker, final MOB defender)
 	{
 		if((attacker==null)||(defender==null))
 			return false;
@@ -367,7 +367,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public boolean rollToHit(int attack, int defence, int adjustment)
+	public boolean rollToHit(final int attack, final int defence, final int adjustment)
 	{
 		double myArmor= -((double)defence);
 		if(myArmor==0)
@@ -385,7 +385,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public Set<MOB> allCombatants(MOB mob)
+	public Set<MOB> allCombatants(final MOB mob)
 	{
 		final SHashSet<MOB> h=new SHashSet<MOB>();
 		final Room thisRoom=mob.location();
@@ -417,7 +417,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void makePeaceInGroup(MOB mob)
+	public void makePeaceInGroup(final MOB mob)
 	{
 		final Set<MOB> myGroup=mob.getGroupMembers(new HashSet<MOB>());
 		for (final MOB mob2 : myGroup)
@@ -428,7 +428,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void postPanic(MOB mob, CMMsg addHere)
+	public void postPanic(final MOB mob, final CMMsg addHere)
 	{
 		if(mob==null)
 			return;
@@ -451,7 +451,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void postDeath(MOB killerM, MOB deadM, CMMsg addHere)
+	public void postDeath(final MOB killerM, final MOB deadM, final CMMsg addHere)
 	{
 		if(deadM==null)
 			return;
@@ -509,7 +509,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public boolean postAttack(MOB attacker, MOB target, Item weapon)
+	public boolean postAttack(final MOB attacker, final MOB target, Item weapon)
 	{
 		if((attacker==null)||(!attacker.mayPhysicallyAttack(target)))
 			return false;
@@ -544,7 +544,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	@Override
 	public boolean mayIAttackThisVessel(final MOB mob, final PhysicalAgent defender)
 	{
-		final String defenderOwnerName = (defender instanceof PrivateProperty) ? ((PrivateProperty)defender).getOwnerName() : "";  
+		final String defenderOwnerName = (defender instanceof PrivateProperty) ? ((PrivateProperty)defender).getOwnerName() : "";
 		// is this how we determine npc ships?
 		if(((defenderOwnerName == null)||(defenderOwnerName.length()==0))&&(defender instanceof PrivateProperty))
 			return true;
@@ -580,7 +580,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			final Rideable rideableDefender=(Rideable)defender;
 			for(int i=0;i<rideableDefender.numRiders();i++)
 			{
-				Rider R=rideableDefender.fetchRider(i);
+				final Rider R=rideableDefender.fetchRider(i);
 				if((R instanceof MOB)
 				&&(!mob.mayIFight(R)))
 				{
@@ -591,17 +591,17 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		return false;
 	}
-	
+
 	@Override
-	public final int getShipHullPoints(BoardableShip ship)
+	public final int getShipHullPoints(final BoardableShip ship)
 	{
 		if(ship == null)
 			return 0;
 		return 10 * ship.getShipArea().numberOfProperIDedRooms();
 	}
-	
+
 	@Override
-	public final boolean isAShipSiegeWeapon(Item I)
+	public final boolean isAShipSiegeWeapon(final Item I)
 	{
 		if((I instanceof AmmunitionWeapon)
 		&&(I instanceof Rideable)
@@ -610,9 +610,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			return true;
 		return false;
 	}
-	
+
 	@Override
-	public boolean postShipAttack(MOB attacker, PhysicalAgent attackingShip, PhysicalAgent target, Weapon weapon, boolean wasAHit)
+	public boolean postShipAttack(final MOB attacker, final PhysicalAgent attackingShip, final PhysicalAgent target, final Weapon weapon, final boolean wasAHit)
 	{
 		// if not in combat, howd you get here? if you are, this MUST happen
 		//(!mayIAttack(attacker,attackingShip, target))
@@ -634,11 +634,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	@Override
 	public boolean postHealing(MOB healer,
-							   MOB target,
-							   Ability tool,
-							   int healing,
-							   int messageCode,
-							   String allDisplayMessage)
+							   final MOB target,
+							   final Ability tool,
+							   final int healing,
+							   final int messageCode,
+							   final String allDisplayMessage)
 	{
 		if(healer==null)
 			healer=target;
@@ -650,8 +650,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(R!=null)
 		{
 			if(R.okMessage(target,msg))
-			{ 
-				R.send(target,msg); 
+			{
+				R.send(target,msg);
 				return true;
 			}
 		}
@@ -659,7 +659,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public String replaceDamageTag(String str, int damage, int damageType, View sourceTargetSTO)
+	public String replaceDamageTag(final String str, final int damage, final int damageType, final View sourceTargetSTO)
 	{
 		if(str==null)
 			return null;
@@ -689,7 +689,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		return str;
 	}
-	
+
 	@Override
 	public void forcePeaceAllFightingAgainst(final MOB mob, final Set<MOB> exceptionSet)
 	{
@@ -706,7 +706,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				M.setVictim(null);
 		}
 	}
-	
+
 	@Override
 	public Set<MOB> getAllFightingAgainst(final MOB mob, Set<MOB> set)
 	{
@@ -723,9 +723,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		return set;
 	}
-	
+
 	@Override
-	public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage)
+	public void postDamage(final MOB attacker, final MOB target, final Environmental weapon, int damage, final int messageCode, final int damageType, String allDisplayMessage)
 	{
 		if((attacker==null)||(target==null)||(target.location()==null))
 			return;
@@ -769,7 +769,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
-	public int modifySpellDamage(MOB attacker, MOB target, int baseDamage)
+	public int modifySpellDamage(final MOB attacker, final MOB target, int baseDamage)
 	{
 		final int maxInt = attacker.charStats().getMaxStat(CharStats.STAT_INTELLIGENCE);
 		int currInt = attacker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
@@ -905,7 +905,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 											+ mob.charStats().getStat(CharStats.STAT_CRIT_CHANCE_PCT_WEAPON);
 			if((CMLib.dice().rollPercentage()<weaponCritChancePct)||(biasHigh))
 			{
-				CMath.CompiledFormula formula = isPVP?pvpWeaponCritDmgFormula:weaponCritDmgFormula;
+				final CMath.CompiledFormula formula = isPVP?pvpWeaponCritDmgFormula:weaponCritDmgFormula;
 				final int weaponCritDmgAmt;
 				if(biasHigh)
 					weaponCritDmgAmt = (int)Math.round(CMath.parseMathExpression(formula, CMath.NotRandomHigh, vars, 0.0));
@@ -933,7 +933,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public int adjustedDamage(int baseDamage, int level, boolean biasHigh)
+	public int adjustedDamage(final int baseDamage, final int level, final boolean biasHigh)
 	{
 		double damageAmount=0.0;
 		final double[] vars = {
@@ -974,7 +974,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				&&(((BoardableShip)A).getShipItem() instanceof Combatant)
 				&&(((Combatant)((BoardableShip)A).getShipItem()).isInCombat()))
 					return;
-				
+
 				final Rideable riding=mob.riding();
 				final boolean isSleeping=CMLib.flags().isSleeping(mob);
 				final boolean bedBonus=isSleeping && (riding!=null) && (riding.rideBasis()==Rideable.RIDEABLE_SLEEP);
@@ -993,19 +993,19 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					isSwimming?1.0:0.0
 				};
 				final double hpGain = CMath.parseMathExpression(stateHitPointRecoverFormula, vals, 0.0);
-	
+
 				if((hpGain>0)&&(!CMLib.flags().isGolem(mob)))
 					curState.adjHitPoints((int)Math.round(hpGain),maxState);
-	
+
 				vals[0]=((charStats.getStat(CharStats.STAT_INTELLIGENCE)+charStats.getStat(CharStats.STAT_WISDOM)));
 				final double manaGain = CMath.parseMathExpression(stateManaRecoverFormula, vals, 0.0);
-	
+
 				if(manaGain>0)
 					curState.adjMana((int)Math.round(manaGain),maxState);
-	
+
 				vals[0]=charStats.getStat(CharStats.STAT_STRENGTH);
 				final double moveGain = CMath.parseMathExpression(this.stateMovesRecoverFormula, vals, 0.0);
-	
+
 				if(moveGain>0)
 					curState.adjMovement((int)Math.round(moveGain),maxState);
 			}
@@ -1013,7 +1013,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public CMMsg postWeaponDamage(MOB source, MOB target, Item item, int damageInt)
+	public CMMsg postWeaponDamage(final MOB source, final MOB target, final Item item, int damageInt)
 	{
 		int damageType=Weapon.TYPE_BASHING;
 		Weapon weapon=null;
@@ -1074,7 +1074,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public CMMsg postWeaponAttackResult(MOB source, MOB target, Item item, boolean success)
+	public CMMsg postWeaponAttackResult(final MOB source, final MOB target, final Item item, final boolean success)
 	{
 		if(source==null)
 			return null;
@@ -1113,7 +1113,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void postShipWeaponAttackResult(MOB source, PhysicalAgent attacker, PhysicalAgent defender, Weapon weapon, boolean success)
+	public void postShipWeaponAttackResult(final MOB source, final PhysicalAgent attacker, final PhysicalAgent defender, final Weapon weapon, final boolean success)
 	{
 		if(source==null)
 			return;
@@ -1182,7 +1182,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
-	protected void processFormation(List<MOB>[] done, MOB leader, int level)
+	protected void processFormation(final List<MOB>[] done, final MOB leader, final int level)
 	{
 		for (final List<MOB> element : done)
 		{
@@ -1207,7 +1207,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public MOB getFollowedLeader(MOB mob)
+	public MOB getFollowedLeader(final MOB mob)
 	{
 		MOB leader=mob;
 		if(leader.amFollowing()!=null)
@@ -1217,7 +1217,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<MOB>[] getFormation(MOB mob)
+	public List<MOB>[] getFormation(final MOB mob)
 	{
 		MOB leader=mob;
 		if(leader.amFollowing()!=null)
@@ -1228,7 +1228,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public List<MOB> getFormationFollowed(MOB mob)
+	public List<MOB> getFormationFollowed(final MOB mob)
 	{
 		final List<MOB>[] form=getFormation(mob);
 		for(int i=1;i<form.length;i++)
@@ -1248,7 +1248,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public int getFormationAbsOrder(MOB mob)
+	public int getFormationAbsOrder(final MOB mob)
 	{
 		final List<MOB>[] form=getFormation(mob);
 		for(int i=1;i<form.length;i++)
@@ -1259,7 +1259,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return 0;
 	}
 
-	public MOB getCombatDominentKiller(MOB killer, MOB killed)
+	public MOB getCombatDominentKiller(final MOB killer, final MOB killed)
 	{
 		if((!killer.isMonster())&&(killer.charStats()!=null))
 			return killer;
@@ -1287,7 +1287,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public CharClass getCombatDominantClass(MOB killer, MOB killed)
+	public CharClass getCombatDominantClass(final MOB killer, final MOB killed)
 	{
 		CharClass C=null;
 
@@ -1312,7 +1312,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return C;
 	}
 
-	protected Set<MOB> getCombatBeneficiaries(MOB killer, MOB killed, Room deathRoom, Set<MOB> beneficiaries, CharClass combatCharClass)
+	protected Set<MOB> getCombatBeneficiaries(final MOB killer, final MOB killed, final Room deathRoom, final Set<MOB> beneficiaries, CharClass combatCharClass)
 	{
 		final Set<MOB> followers=(killer!=null)?killer.getGroupMembers(new HashSet<MOB>()):(new SHashSet<MOB>());
 		if(combatCharClass==null)
@@ -1333,7 +1333,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public Set<MOB> getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass)
+	public Set<MOB> getCombatBeneficiaries(final MOB killer, final MOB killed, final CharClass combatCharClass)
 	{
 		if((killer==null)||(killed==null))
 			return new SHashSet<MOB>();
@@ -1347,7 +1347,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return beneficiaries;
 	}
 
-	protected Set<MOB> getCombatDividers(MOB killer, MOB killed, Room deathRoom, Set<MOB> dividers, CharClass combatCharClass)
+	protected Set<MOB> getCombatDividers(final MOB killer, final MOB killed, final Room deathRoom, final Set<MOB> dividers, CharClass combatCharClass)
 	{
 		final Set<MOB> followers=(killer!=null)?killer.getGroupMembers(new HashSet<MOB>()):(new HashSet<MOB>());
 		if(combatCharClass==null)
@@ -1368,7 +1368,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public Set<MOB> getCombatDividers(MOB killer, MOB killed, CharClass combatCharClass)
+	public Set<MOB> getCombatDividers(final MOB killer, final MOB killed, final CharClass combatCharClass)
 	{
 		if((killer==null)||(killed==null))
 			return new SHashSet<MOB>();
@@ -1556,7 +1556,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public String standardHitWord(int type, double pct)
+	public String standardHitWord(int type, final double pct)
 	{
 		if((type<0)||(type>=Weapon.TYPE_DESCS.length))
 			type=Weapon.TYPE_BURSTING;
@@ -1566,8 +1566,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			damnCode = thresholds.length-1;
 		return getStandardHitWordInternal(type, damnCode);
 	}
-	
-	protected String getStandardHitWordInternal(int type, int damnCode)
+
+	protected String getStandardHitWordInternal(final int type, int damnCode)
 	{
 		damnCode++; // always add 1 because index into hitwords is type=0, annoy=1;
 		final Object[][][] hitWords = CMProps.getListFileGrid(CMProps.ListFile.DAMAGE_WORDS);
@@ -1608,9 +1608,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			damnCode=HIT_WORDS.length-1;
 		return (String)CMLib.dice().pick(HIT_WORDS[damnCode]);
 	}
-	
+
 	@Override
-	public String standardHitWord(int type, int damage)
+	public String standardHitWord(int type, final int damage)
 	{
 		if((type<0)||(type>=Weapon.TYPE_DESCS.length))
 			type=Weapon.TYPE_BURSTING;
@@ -1627,41 +1627,41 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return getStandardHitWordInternal(type, damnCode);
 	}
 
-	protected String getExtremeValue(int extreme)
+	protected String getExtremeValue(final int extreme)
 	{
 		final StringBuilder str=new StringBuilder("");
-		for(char c : CMath.convertToRoman(extreme).toCharArray())
+		for(final char c : CMath.convertToRoman(extreme).toCharArray())
 		{
 			switch(c)
 			{
-			case 'I': 
+			case 'I':
 				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,0)).append(" ");
 				break;
-			case 'V': 
+			case 'V':
 				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,1)).append(" ");
 				break;
-			case 'X': 
+			case 'X':
 				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,2)).append(" ");
 				break;
-			case 'L': 
+			case 'L':
 				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,3)).append(" ");
 				break;
-			case 'C': 
+			case 'C':
 				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,4)).append(" ");
 				break;
-			case 'D': 
+			case 'D':
 				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,5)).append(" ");
 				break;
-			case 'M': 
+			case 'M':
 				str.append(CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.EXTREME_ADVS,6)).append(" ");
 				break;
 			}
 		}
 		return str.toString();
 	}
-	
+
 	@Override
-	public String armorStr(MOB mob)
+	public String armorStr(final MOB mob)
 	{
 		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
 		if(CMProps.Int.Prowesses.NONE.is(prowessCode))
@@ -1709,7 +1709,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public String fightingProwessStr(MOB mob)
+	public String fightingProwessStr(final MOB mob)
 	{
 		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
 		if(CMProps.Int.Prowesses.NONE.is(prowessCode))
@@ -1766,7 +1766,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public String damageProwessStr(MOB mob)
+	public String damageProwessStr(final MOB mob)
 	{
 		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
 		if(CMProps.Int.Prowesses.NONE.is(prowessCode))
@@ -1869,7 +1869,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public String standardMobCondition(MOB viewer,MOB mob)
+	public String standardMobCondition(final MOB viewer,final MOB mob)
 	{
 		int pct=(int)Math.round(Math.floor((CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))*10));
 		if(pct<0)
@@ -1881,7 +1881,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void resistanceMsgs(MOB source, MOB target, CMMsg msg)
+	public void resistanceMsgs(MOB source, final MOB target, final CMMsg msg)
 	{
 		if((msg.value()>0)||(msg.sourceMinor()==CMMsg.TYP_TEACH))
 			return;
@@ -1901,7 +1901,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		else
 		if(msg.tool() instanceof Ability)
 			tool=((Ability)msg.tool()).name();
-		
+
 		String tackOn=null;
 		switch(msg.targetMinor())
 		{
@@ -2043,7 +2043,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 							+mob.charStats().getSave(CharStats.STAT_SAVE_MAGIC);
 				break;
 			}
-			int charStatCode = CharStats.CODES.RVSCMMSGMAP(msg.sourceMinor());
+			final int charStatCode = CharStats.CODES.RVSCMMSGMAP(msg.sourceMinor());
 			if(charStatCode >= 0)
 				chanceToFail += mob.charStats().getSave(charStatCode);
 		}
@@ -2113,7 +2113,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void handleBeingGravitied(final MOB mob, CMMsg msg)
+	public void handleBeingGravitied(final MOB mob, final CMMsg msg)
 	{
 		if(msg.value() >= SpaceObject.ACCELLERATION_PASSOUT)
 		{
@@ -2151,9 +2151,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			}
 		}
 	}
-	
+
 	@Override
-	public void handleBeingHealed(CMMsg msg)
+	public void handleBeingHealed(final CMMsg msg)
 	{
 		if(!(msg.target() instanceof MOB))
 			return;
@@ -2163,7 +2163,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			target.curState().adjHitPoints(amt,target.maxState());
 	}
 
-	protected boolean bleedableWeapon(Environmental E)
+	protected boolean bleedableWeapon(final Environmental E)
 	{
 		if(E==null)
 			return false;
@@ -2188,7 +2188,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void handleBeingDamaged(CMMsg msg)
+	public void handleBeingDamaged(final CMMsg msg)
 	{
 		if(!(msg.target() instanceof MOB))
 			return;
@@ -2246,7 +2246,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void handleDeath(CMMsg msg)
+	public void handleDeath(final CMMsg msg)
 	{
 		final MOB deadmob=msg.source();
 		if(!deadmob.amDead())
@@ -2291,9 +2291,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				CMLib.catalog().bumpDeathPickup(deadmob);
 		}
 	}
-	
+
 	@Override
-	public boolean handleDamageSpam(MOB observerM, final Physical target, int amount)
+	public boolean handleDamageSpam(final MOB observerM, final Physical target, final int amount)
 	{
 		if((observerM!=null)
 		&&(observerM.playerStats()!=null)
@@ -2314,7 +2314,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void doDeathPostProcessing(CMMsg msg)
+	public void doDeathPostProcessing(final CMMsg msg)
 	{
 		final MOB deadmob=msg.source();
 		if(msg.tool() instanceof MOB)
@@ -2366,7 +2366,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
-	protected void pickNextVictim(MOB observer, MOB deadmob, Set<MOB> deadGroupH)
+	protected void pickNextVictim(final MOB observer, final MOB deadmob, final Set<MOB> deadGroupH)
 	{
 		final Room R=observer.location();
 		if(R!=null)
@@ -2414,11 +2414,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void handleObserveDeath(MOB observer, MOB fighting, CMMsg msg)
+	public void handleObserveDeath(final MOB observer, final MOB fighting, final CMMsg msg)
 	{
 		// no longer does a damn thing
 	}
-	
+
 	@Override
 	public void handleDamageSpamSummary(final MOB mob)
 	{
@@ -2433,8 +2433,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if((M!=null)&&(M!=mob)&&(M.getVictim()==mob))
 					numEnemies++;
 			}
-			Map<String,int[]> combatSpam = mob.playerStats().getCombatSpams();
-			final StringBuilder msg=new StringBuilder(""); 
+			final Map<String,int[]> combatSpam = mob.playerStats().getCombatSpams();
+			final StringBuilder msg=new StringBuilder("");
 			synchronized(combatSpam)
 			{
 				if(numEnemies>1)
@@ -2444,7 +2444,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				else
 				{
 					msg.append("^<FIGHT^>"+L("New combat damage: "));
-					for(String str : combatSpam.keySet())
+					for(final String str : combatSpam.keySet())
 					{
 						msg.append(str).append(" ").append(combatSpam.get(str)[0]).append(" points. ");
 					}
@@ -2457,7 +2457,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void handleBeingAssaulted(CMMsg msg)
+	public void handleBeingAssaulted(final CMMsg msg)
 	{
 		if(!(msg.target() instanceof MOB))
 			return;
@@ -2513,7 +2513,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void makeFollowersFight(MOB observerM, MOB defenderM, MOB attackerM)
+	public void makeFollowersFight(final MOB observerM, final MOB defenderM, final MOB attackerM)
 	{
 		if((attackerM==null)||(defenderM==null)||observerM==null)
 			return;
@@ -2548,7 +2548,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
-	public List<MOB> getAllInProximity(MOB to, int distance)
+	public List<MOB> getAllInProximity(final MOB to, final int distance)
 	{
 		final Room R=to.location();
 		final Vector<MOB> V=new Vector<MOB>();
@@ -2586,9 +2586,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			return tool.minRange();
 		return mob.minRange();
 	}
-	
+
 	@Override
-	public void establishRange(MOB source, MOB target, Environmental tool)
+	public void establishRange(final MOB source, final MOB target, final Environmental tool)
 	{
 		// establish and enforce range
 		if((source.rangeToTarget()<0))
@@ -2661,7 +2661,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
-	protected void subtickAttack(MOB fighter, Item weapon, int folrange)
+	protected void subtickAttack(final MOB fighter, Item weapon, final int folrange)
 	{
 		if((weapon!=null)
 		&&(weapon.amWearingAt(Wearable.IN_INVENTORY)))
@@ -2727,7 +2727,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			}
 	}
 
-	protected void subtickAfterAttack(MOB fighter)
+	protected void subtickAfterAttack(final MOB fighter)
 	{
 		// this code is for auto-retargeting of players
 		// is mostly not handled by combatabilities in a smarter way
@@ -2758,7 +2758,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void dispenseExperience(Set<MOB> killers, Set<MOB> dividers, MOB killed)
+	public void dispenseExperience(final Set<MOB> killers, final Set<MOB> dividers, final MOB killed)
 	{
 		int totalLevels=0;
 		int totalSquaredLevels=0;
@@ -2776,7 +2776,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			killers.size()
 		};
 		final double expAmount = CMath.parseMathExpression(this.totalCombatExperienceFormula, totalVars, 0.0);
-		
+
 		final double[] indiVars = {
 			expAmount,
 			0.0,
@@ -2795,7 +2795,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public void tickCombat(MOB fighter)
+	public void tickCombat(final MOB fighter)
 	{
 		Item weapon=fighter.fetchWieldedItem();
 
@@ -2847,7 +2847,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public boolean isKnockedOutUponDeath(MOB deadM, MOB killerM)
+	public boolean isKnockedOutUponDeath(final MOB deadM, final MOB killerM)
 	{
 		String whatToDo=null;
 		if(((deadM.isMonster())||(deadM.soulMate()!=null)))
@@ -2947,7 +2947,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public boolean handleCombatLossConsequences(MOB deadM, MOB killerM, String[] consequences, int[] lostExperience, String message)
+	public boolean handleCombatLossConsequences(final MOB deadM, final MOB killerM, final String[] consequences, int[] lostExperience, String message)
 	{
 		if((consequences==null)||(consequences.length==0))
 			return false;
@@ -3076,7 +3076,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	@Override
-	public boolean postRevengeAttack(MOB attacker, MOB defender)
+	public boolean postRevengeAttack(final MOB attacker, final MOB defender)
 	{
 		if((attacker!=null)
 		&&(!attacker.isInCombat())
@@ -3091,7 +3091,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			return postAttack(attacker,defender,attacker.fetchWieldedItem());
 		return false;
 	}
-	
+
 	@Override
 	public int getTickStatus()
 	{
@@ -3111,13 +3111,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			ship.tick(ship, Tickable.TICKID_SPECIALCOMBAT);
 		}
 	}
-	
+
 	protected void runSpecialCombat()
 	{
 		tickAllShips();
 	}
-	
-	@Override 
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		try
@@ -3173,7 +3173,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		return (victimKiller == null) ? victim : victimKiller;
 	}
-	
+
 	@Override
 	public boolean shutdown()
 	{

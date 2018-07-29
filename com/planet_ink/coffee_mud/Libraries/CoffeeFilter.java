@@ -64,7 +64,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	}
 
 	@Override
-	public String simpleOutFilter(String msg)
+	public String simpleOutFilter(final String msg)
 	{
 		if(msg==null)
 			return null;
@@ -109,7 +109,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	}
 
 	@Override
-	public String[] wrapOnlyFilter(String msg, int wrap)
+	public String[] wrapOnlyFilter(final String msg, final int wrap)
 	{
 		int loop=0;
 		final StringBuilder buf=new StringBuilder(msg);
@@ -267,7 +267,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 								loop+=3;
 							}
 							break;
-						case '<': 
+						case '<':
 						case '&':
 						{
 							len++;
@@ -345,7 +345,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	{
 		return CMStrings.replaceAlls(s,finalFilter);
 	}
-	
+
 	protected int convertEscape(final Session S, final StringBuffer str, final int index)
 	{
 		int enDex = index + 1;
@@ -566,8 +566,16 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		case '"':
 			str.delete(index, index+1);
 			return index;
-		case '0': case '1': case '2': case '3': case '4':
-		case '5': case '6': case '7': case '8': case '9':
+		case '0':
+		case '1':
+		case '2':
+		case '3':
+		case '4':
+		case '5':
+		case '6':
+		case '7':
+		case '8':
+		case '9':
 			if((S==null)||(S.getClientTelnetMode(Session.TELNET_MSP)))
 			{
 				final int escOrd=CMProps.Str.ESC0.ordinal() + (c - ('0'));
@@ -630,7 +638,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 
 	// no word-wrapping, text filtering or ('\','n') -> '\n' translations
 	@Override
-	public String colorOnlyFilter(String msg, Session S)
+	public String colorOnlyFilter(final String msg, final Session S)
 	{
 		if(msg==null)
 			return null;
@@ -723,7 +731,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 
 	// no word-wrapping, text filtering or ('\','n') -> '\n' translations
 	@Override
-	public String mxpSafetyFilter(String msg, Session S)
+	public String mxpSafetyFilter(final String msg, final Session S)
 	{
 		if(msg==null)
 			return null;
@@ -798,7 +806,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	}
 
 	@Override
-	public String getLastWord(StringBuffer buf, int lastSp, int lastSpace)
+	public String getLastWord(final StringBuffer buf, final int lastSp, final int lastSpace)
 	{
 		String lastWord="";
 		if(lastSp>lastSpace)
@@ -827,13 +835,13 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	}
 
 	@Override
-	public String fullOutFilter(Session S,
-								MOB mob,
-								Physical source,
-								Environmental target,
-								Environmental tool,
+	public String fullOutFilter(final Session S,
+								final MOB mob,
+								final Physical source,
+								final Environmental target,
+								final Environmental tool,
 								final String msg,
-								boolean wrapOnly)
+								final boolean wrapOnly)
 	{
 		if(msg==null)
 			return null;
@@ -860,9 +868,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		{
 			if(loop==lastLoop)
 			{
-				//BZ: delete when this is fixed. 
+				//BZ: delete when this is fixed.
 				//BZ: 11/2015 - this might be fixed now!
-				if(++loopDebugCtr>5) 
+				if(++loopDebugCtr>5)
 				{
 					Log.debugOut("CoffeeFilter","LOOP: "+loop+"/"+wrap+"/!"+(buf.charAt(loop)=='\033')+"!/"+lastSpace+"/"+firstAlpha+"/"+amperStop+"/"+doSagain+"/"+firstSdone+"/"+buf.length()+"/"+loopDebugCtr);
 					Log.debugOut("CoffeeFilter",buf.toString());
@@ -1434,7 +1442,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 					{
 						if((S!=null)&&(!S.getClientTelnetMode(Session.TELNET_ANSI)))
 						{
-							int oldLoop=loop;
+							final int oldLoop=loop;
 							if((loop < buf.length()-1) && (buf.charAt(loop+1)=='['))
 							{
 								loop++; // added 2013, see comment below
@@ -1481,7 +1489,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 						break;
 					}
 				case '.':
-					capitalize=(loop < buf.length()-3) 
+					capitalize=(loop < buf.length()-3)
 					&& (buf.charAt(loop+1)==' ')
 					&& ((buf.charAt(loop+2)==' ')||(buf.charAt(loop+2)=='<'));
 					break;
@@ -1577,13 +1585,13 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	}
 
 	@Override
-	public String simpleInFilter(StringBuilder input)
+	public String simpleInFilter(final StringBuilder input)
 	{
 		return simpleInFilter(input, false);
 	}
 
 	@Override
-	public String simpleInFilter(StringBuilder input, boolean permitMXPTags)
+	public String simpleInFilter(StringBuilder input, final boolean permitMXPTags)
 	{
 		if(input==null)
 			return null;
@@ -1646,7 +1654,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	}
 
 	@Override
-	public String fullInFilter(String input)
+	public String fullInFilter(final String input)
 	{
 		if(input==null)
 			return null;
@@ -1669,7 +1677,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 	}
 
 	@Override
-	public String safetyFilter(String s)
+	public String safetyFilter(final String s)
 	{
 		final StringBuffer s1=new StringBuffer(s);
 

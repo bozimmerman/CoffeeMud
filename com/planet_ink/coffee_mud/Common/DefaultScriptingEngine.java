@@ -563,8 +563,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return "";
 		return getVar(Resources.instance(),host,var,"");
 	}
-	
-	public String getVar(final Resources resources, final String host, String var, String defaultVal)
+
+	public String getVar(final Resources resources, final String host, String var, final String defaultVal)
 	{
 		if(host.equalsIgnoreCase("*"))
 		{
@@ -613,7 +613,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 			}
 		}
-		if(val==null) 
+		if(val==null)
 			return defaultVal;
 		return val;
 	}
@@ -751,7 +751,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 		}
 	}
-	
+
 	protected Vector<DVector> parseScripts(String text)
 	{
 		buildHashes();
@@ -1424,7 +1424,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					return scripted;
 				case 'T':
 				case 't':
-					return ((target == backupMOB) && (backupMOB != null) && (monster != scripted)) 
+					return ((target == backupMOB) && (backupMOB != null) && (monster != scripted))
 							? scripted : (target instanceof PhysicalAgent) ? (PhysicalAgent) target : null;
 				case 'O':
 				case 'o':
@@ -1505,11 +1505,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		{
 			str=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,str);
 			Environmental E=lastKnownLocation.fetchFromRoomFavorMOBs(null,str);
-			if(E==null) 
+			if(E==null)
 				E=lastKnownLocation.fetchFromMOBRoomFavorsItems(monster,null,str,Wearable.FILTER_ANY);
-			if(E==null) 
+			if(E==null)
 				E=lastKnownLocation.findItem(str);
-			if((E==null)&&(monster!=null)) 
+			if((E==null)&&(monster!=null))
 				E=monster.findItem(str);
 			if(E==null)
 				E=CMLib.players().getPlayerAllHosts(str);
@@ -2081,7 +2081,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if(element != null)
 			{
 				val=CMLib.coffeeMaker().getGenMobStat((MOB)E,element.name());
-				found=true; 
+				found=true;
 			}
 			if(!found)
 			{
@@ -2186,7 +2186,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			if(code != null)
 			{
 				val=CMLib.coffeeMaker().getGenItemStat((Item)E,code.name());
-				found=true; 
+				found=true;
 			}
 		}
 		if(found)
@@ -2432,7 +2432,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				{
 					switch(evalC[c])
 					{
-					case '=': case '>': case '<': case '!':
+					case '=':
+					case '>':
+					case '<':
+					case '!':
 					{
 						if(c==evalC.length-1)
 							throw new ScriptParseException("Bad Syntax on last "+evalC[c]);
@@ -2573,7 +2576,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		return CMParms.toStringArray(V);
 	}
 
-	public void pushEvalBoolean(Vector<Object> stack, boolean trueFalse)
+	public void pushEvalBoolean(final Vector<Object> stack, boolean trueFalse)
 	{
 		if(stack.size()>0)
 		{
@@ -2640,10 +2643,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	 */
 	private static int strIndex(final Vector<String> V, final String str, final int start)
 	{
-		if(str.indexOf(' ')<0) 
+		if(str.indexOf(' ')<0)
 			return V.indexOf(str,start);
 		final List<String> V2=CMParms.parse(str);
-		if(V2.size()==0) 
+		if(V2.size()==0)
 			return -1;
 		int x=V.indexOf(V2.get(0),start);
 		boolean found=false;
@@ -2653,25 +2656,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			for(int v2=1;v2<V2.size();v2++)
 			{
 				if(!V.get(x+v2).equals(V2.get(v2)))
-				{ 
-					found=false; 
+				{
+					found=false;
 					break;
 				}
 			}
-			if(!found) 
+			if(!found)
 				x=V.indexOf(V2.get(0),x+1);
 		}
-		if(found) 
+		if(found)
 			return x;
 		return -1;
 	}
 
 	/**
-	 * Weird method.  Accepts a string list, a combiner (see below), a string buffer to search for, 
+	 * Weird method.  Accepts a string list, a combiner (see below), a string buffer to search for,
 	 * and a previously found index. The stringbuffer is always cleared during this call.
-	 * If the stringbuffer was empty, the previous found index is returned. Otherwise: 
-	 * If the combiner is '&', the first index of the given stringbuffer in the string list is returned (or -1).  
-	 * If the combiner is '|', the previous index is returned if it was found, otherwise the first index 
+	 * If the stringbuffer was empty, the previous found index is returned. Otherwise:
+	 * If the combiner is '&', the first index of the given stringbuffer in the string list is returned (or -1).
+	 * If the combiner is '|', the previous index is returned if it was found, otherwise the first index
 	 * of the given stringbuffer in the string list is returned (or -1).
 	 * If the combiner is '&gt;', then the previous index is returned if it was not found (-1), otherwise the
 	 * next highest found stringbuffer since the last string list search is returned, or (-1) if no more found.
@@ -2687,7 +2690,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	private static int stringContains(final Vector<String> V, final char combiner, final StringBuffer buf, int lastIndex)
 	{
 		final String str=buf.toString().trim();
-		if(str.length()==0) 
+		if(str.length()==0)
 			return lastIndex;
 		buf.setLength(0);
 		switch (combiner)
@@ -2715,7 +2718,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Main workhorse of the stringcontains mobprog function.
 	 * @param V parsed string to search
@@ -2918,7 +2921,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 2: // has
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -3146,7 +3149,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 58: // isable
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -3273,7 +3276,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 95: // isspeaking
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -3311,7 +3314,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 7: // isname
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -3324,7 +3327,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 56: // name
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -3338,7 +3341,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 75: // currency
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -3352,7 +3355,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 61: // strin
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -3362,7 +3365,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 62: // callfunc
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -3414,7 +3417,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 14: // affected
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -3432,7 +3435,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 69: // isbehave
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -3450,7 +3453,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 70: // ipaddress
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -3464,7 +3467,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 28: // questwinner
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
@@ -3482,7 +3485,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 93: // questscripted
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final PhysicalAgent E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				final String arg2=tt[t+1];
@@ -3544,7 +3547,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 94: // questroom
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
@@ -3557,7 +3560,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 29: // questmob
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
@@ -3599,7 +3602,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 31: // isquestmobalive
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
@@ -3638,7 +3641,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							M=Q.getQuestMob(Q.getQuestMobIndex(arg1));
 						if(M==null)
 							returnable=false;
-						else 
+						else
 							returnable=!M.amDead();
 					}
 				}
@@ -3646,7 +3649,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 32: // nummobsinarea
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
 				final String arg2=tt[t+1];
@@ -3687,7 +3690,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 33: // nummobs
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
 				final String arg2=tt[t+1];
@@ -3729,7 +3732,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 34: // numracesinarea
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
 				final String arg2=tt[t+1];
@@ -3752,7 +3755,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 35: // numraces
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase();
 				final String arg2=tt[t+1];
@@ -3779,7 +3782,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 30: // questobj
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
@@ -3821,7 +3824,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 85: // islike
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -3834,7 +3837,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 86: // strcontains
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -3854,7 +3857,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 16: // hitprcnt
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -4033,7 +4036,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 63: // numpcsroom
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -4053,7 +4056,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 79: // numpcsarea
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -4071,7 +4074,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 77: // explored
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
 				final String whom=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String where=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -4111,7 +4114,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 72: // faction
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
 				final String whom=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -4153,7 +4156,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 46: // numitemsroom
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -4172,7 +4175,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 47: //mobitem
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -4213,7 +4216,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 49: // hastattoo
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -4232,7 +4235,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 99: // hasacctattoo
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -4251,7 +4254,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 48: // numitemsmob
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -4279,7 +4282,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 101: // numitemsshop
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -4308,7 +4311,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
 					if(shopHere!=null)
 					{
-						CoffeeShop shop = shopHere.getShop();
+						final CoffeeShop shop = shopHere.getShop();
 						if(shop != null)
 						{
 							for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
@@ -4323,7 +4326,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 100: // shopitem
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -4353,12 +4356,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
 					if(shopHere!=null)
 					{
-						CoffeeShop shop = shopHere.getShop();
+						final CoffeeShop shop = shopHere.getShop();
 						if(shop != null)
 						{
 							for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();)
 							{
-								Environmental E=i.next();
+								final Environmental E=i.next();
 								if(ct==CMath.s_int(arg2.trim()))
 								{
 									which = E;
@@ -4385,7 +4388,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 102: // shophas
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -4413,7 +4416,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
 					if(shopHere!=null)
 					{
-						CoffeeShop shop = shopHere.getShop();
+						final CoffeeShop shop = shopHere.getShop();
 						if(shop != null)
 						{
 							final Environmental E=shop.getStock(arg2.trim(), null);
@@ -4449,7 +4452,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 44: // roomitem
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -4592,7 +4595,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				&&(CMath.bset(lastKnownLocation.getArea().flags(),Area.FLAG_INSTANCE_CHILD))
 				&&(CMLib.map().getModelArea(lastKnownLocation.getArea())==R.getArea()))
 					R=lastKnownLocation;
-					
+
 				if(E==null)
 					returnable=false;
 				else
@@ -4690,7 +4693,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 18: // sex
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"CcR"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
@@ -4736,7 +4739,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 91: // datetime
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"Ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -4772,7 +4775,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 13: // stat
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -4807,7 +4810,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 52: // gstat
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -4842,7 +4845,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 19: // position
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -4878,7 +4881,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 20: // level
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -4900,7 +4903,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 80: // questpoints
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -4922,7 +4925,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 83: // qvar
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -4942,7 +4945,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 84: // math
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg2=tt[t+1];
@@ -4962,7 +4965,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 81: // trains
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -4984,7 +4987,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 82: // pracs
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -5006,7 +5009,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 66: // clanrank
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -5033,7 +5036,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 64: // deity
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -5064,7 +5067,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 68: // clandata
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -5114,7 +5117,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 98: // clanqualifies
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
@@ -5149,7 +5152,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 65: // clan
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -5191,7 +5194,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 88: // mood
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -5226,7 +5229,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 21: // class
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -5257,7 +5260,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 22: // baseclass
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -5288,7 +5291,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 23: // race
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -5319,7 +5322,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 24: //racecat
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -5350,7 +5353,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 25: // goldamt
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -5386,7 +5389,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 78: // exp
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -5408,7 +5411,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 76: // value
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -5453,7 +5456,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 26: // objtype
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccR"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -5484,7 +5487,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 27: // var
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cCcr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final String arg2=tt[t+1];
@@ -5523,7 +5526,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 41: // eval
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
 				final String arg3=tt[t+1];
@@ -5574,7 +5577,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 42: // randnum
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase().trim();
 				int arg1=0;
@@ -5595,7 +5598,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 71: // rand0num
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]).toUpperCase().trim();
 				int arg1=0;
@@ -5616,7 +5619,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 53: // incontainer
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -5652,7 +5655,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 96: // iscontents
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"cr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -5680,7 +5683,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 97: // wornon
 			{
-				if(tlen==1) 
+				if(tlen==1)
 					tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
 				final String arg1=tt[t+0];
 				final PhysicalAgent E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
@@ -5731,7 +5734,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		if(shopHere instanceof MOB)
 		{
-			ShopKeeper.ShopPrice price = CMLib.coffeeShops().sellingPrice((MOB)shopHere, null, E, shopHere, shopHere.getShop(), true);
+			final ShopKeeper.ShopPrice price = CMLib.coffeeShops().sellingPrice((MOB)shopHere, null, E, shopHere, shopHere.getShop(), true);
 			if(price.experiencePrice>0)
 				tmp[SPECIAL_9SHOPHASPRICE] = price.experiencePrice+"xp";
 			else
@@ -5741,7 +5744,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				tmp[SPECIAL_9SHOPHASPRICE] = CMLib.beanCounter().abbreviatedPrice((MOB)shopHere,price.absoluteGoldPrice);
 		}
 	}
-	
+
 	@Override
 	public String functify(final PhysicalAgent scripted,
 						   final MOB source,
@@ -6795,12 +6798,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
 					if(shopHere!=null)
 					{
-						CoffeeShop shop = shopHere.getShop();
+						final CoffeeShop shop = shopHere.getShop();
 						if(shop != null)
 						{
 							for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();ct++)
 							{
-								Environmental E=i.next();
+								final Environmental E=i.next();
 								if(ct==CMath.s_int(arg2.trim()))
 								{
 									which = E;
@@ -6817,7 +6820,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			}
 			case 101: // numitemsshop
 			{
-				String arg1raw = CMParms.cleanBit(funcParms);
+				final String arg1raw = CMParms.cleanBit(funcParms);
 				final String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,arg1raw);
 				PhysicalAgent which=null;
 				if(lastKnownLocation!=null)
@@ -6843,7 +6846,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
 					if(shopHere!=null)
 					{
-						CoffeeShop shop = shopHere.getShop();
+						final CoffeeShop shop = shopHere.getShop();
 						if(shop != null)
 						{
 							for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
@@ -6883,13 +6886,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						shopHere=CMLib.coffeeShops().getShopKeeper(lastKnownLocation);
 					if(shopHere!=null)
 					{
-						CoffeeShop shop = shopHere.getShop();
+						final CoffeeShop shop = shopHere.getShop();
 						if(shop != null)
 						{
 							int ct=0;
 							for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();i.next())
 								ct++;
-							int which=CMLib.dice().roll(1, ct, -1);
+							final int which=CMLib.dice().roll(1, ct, -1);
 							ct=0;
 							for(final Iterator<Environmental> i=shop.getStoreInventory();i.hasNext();ct++)
 							{
@@ -8200,7 +8203,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					setSavable(CMath.s_bool(arg3));
 				else
 				if(arg2.equals("PASSIVE"))
-					this.runInPassiveAreas = CMath.s_bool(arg3); 
+					this.runInPassiveAreas = CMath.s_bool(arg3);
 				else
 					logError(scripted,"MPSETINTERNAL","Syntax","Unknown stat: "+arg2);
 				break;
@@ -8223,7 +8226,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						final String value=((MOB)newTarget).session().prompt(promptStr,120000);
 						setVar(newTarget.Name(),var,value);
 					}
-					catch(final Exception e) 
+					catch(final Exception e)
 					{
 						return "";
 					}
@@ -8286,13 +8289,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								{
 									session.promptPrint(promptStrMsg);
 								}
-	
+
 								@Override
 								public void timedOut()
 								{
 									event.executeEvent(lastScript, lineNum+1);
 								}
-								
+
 								@Override
 								public void callBack()
 								{
@@ -8304,7 +8307,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								}
 							});
 						}
-						catch(final Exception e) 
+						catch(final Exception e)
 						{
 							return "";
 						}
@@ -8622,7 +8625,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							if(arg3.equals("--"))
 								arg3=""+(CMath.s_int(newTarget.getStat(newTarget.getStatCodes()[i]))-1);
 							newTarget.setStat(newTarget.getStatCodes()[i],arg3);
-							found=true; 
+							found=true;
 							break;
 						}
 					}
@@ -8768,7 +8771,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					if(newTarget instanceof Item)
 					{
-						
+
 						final GenericBuilder.GenItemCode element = (GenericBuilder.GenItemCode)CMath.s_valueOf(GenericBuilder.GenItemCode.class,arg2.toUpperCase().trim());
 						if(element != null)
 						{
@@ -9329,7 +9332,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 						int price=-1;
 						if((price = name.indexOf(" PRICE="))>=0)
 						{
-							String rest = name.substring(price+7).trim();
+							final String rest = name.substring(price+7).trim();
 							name=name.substring(0,price).trim();
 							if(CMath.isInteger(rest))
 								price=CMath.s_int(rest);
@@ -9349,10 +9352,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								{
 									I=(Item)I.copyOf();
 									I.recoverPhyStats();
-									CoffeeShop shop = addHere.getShop();
+									final CoffeeShop shop = addHere.getShop();
 									if(shop != null)
 									{
-										Environmental E=shop.addStoreInventory(I,1,price);
+										final Environmental E=shop.addStoreInventory(I,1,price);
 										if(E!=null)
 											setShopPrice(addHere, E, tmp);
 									}
@@ -9387,7 +9390,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					int price=-1;
 					if((price = name.indexOf(" PRICE="))>=0)
 					{
-						String rest = name.substring(price+7).trim();
+						final String rest = name.substring(price+7).trim();
 						name=name.substring(0,price).trim();
 						if(CMath.isInteger(rest))
 							price=CMath.s_int(rest);
@@ -9409,10 +9412,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
 								m.recoverPhyStats();
 								m.recoverCharStats();
 								m.resetToMaxState();
-								CoffeeShop shop = addHere.getShop();
+								final CoffeeShop shop = addHere.getShop();
 								if(shop != null)
 								{
-									Environmental E=shop.addStoreInventory(m,1,price);
+									final Environmental E=shop.addStoreInventory(m,1,price);
 									if(E!=null)
 										setShopPrice(addHere, E, tmp);
 								}
@@ -10142,7 +10145,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 					if(CMath.isInteger(range))
 						themob.tell(L("Your faction with @x1 is now @x2.",F.name(),""+CMath.s_int(range.trim())));
-					
+
 					if(CMath.isInteger(range))
 						themob.addFaction(F.factionID(),CMath.s_int(range.trim()));
 					else
@@ -11468,13 +11471,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if((!(host instanceof PhysicalAgent))||(msg.source()==null)||(recurseCounter.get()>2))
 			return true;
 
-		try 
+		try
 		{
 			// atomic recurse counter
 			recurseCounter.addAndGet(1);
-	
+
 			final PhysicalAgent affecting = (PhysicalAgent)host;
-	
+
 			final List<DVector> scripts=getScripts();
 			DVector script=null;
 			boolean tryIt=false;
@@ -11488,7 +11491,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				script=scripts.get(v);
 				if(script.size()<1)
 					continue;
-	
+
 				trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
 				t=(String[])script.elementAt(0,2);
 				triggerCode=getTriggerCode(trigger,t);
@@ -11515,30 +11518,30 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									{
 									case 'S':
 										if(majorOnly)
-											chk=chk&&msg.isSourceMajor(command.substring(x+1)); 
+											chk=chk&&msg.isSourceMajor(command.substring(x+1));
 										else
 										if(minorOnly)
-											chk=chk&&msg.isSourceMinor(command.substring(x+1)); 
+											chk=chk&&msg.isSourceMinor(command.substring(x+1));
 										else
-											chk=chk&&msg.isSource(command.substring(x+1)); 
+											chk=chk&&msg.isSource(command.substring(x+1));
 										break;
-									case 'T': 
+									case 'T':
 										if(majorOnly)
-											chk=chk&&msg.isTargetMajor(command.substring(x+1)); 
+											chk=chk&&msg.isTargetMajor(command.substring(x+1));
 										else
 										if(minorOnly)
-											chk=chk&&msg.isTargetMinor(command.substring(x+1)); 
+											chk=chk&&msg.isTargetMinor(command.substring(x+1));
 										else
-											chk=chk&&msg.isTarget(command.substring(x+1)); 
+											chk=chk&&msg.isTarget(command.substring(x+1));
 										break;
-									case 'O': 
+									case 'O':
 										if(majorOnly)
-											chk=chk&&msg.isOthersMajor(command.substring(x+1)); 
+											chk=chk&&msg.isOthersMajor(command.substring(x+1));
 										else
 										if(minorOnly)
-											chk=chk&&msg.isOthersMinor(command.substring(x+1)); 
+											chk=chk&&msg.isOthersMinor(command.substring(x+1));
 										else
-											chk=chk&&msg.isOthers(command.substring(x+1)); 
+											chk=chk&&msg.isOthers(command.substring(x+1));
 										break;
 									case '<':
 										minorOnly=true;
@@ -11552,8 +11555,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 										majorOnly=false;
 										minorOnly=false;
 										break;
-									default: 
-										chk=false; 
+									default:
+										chk=false;
 										break;
 									}
 								}
@@ -11561,19 +11564,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							else
 							if(command.startsWith(">"))
 							{
-								String cmd=command.substring(1);
+								final String cmd=command.substring(1);
 								chk=msg.isSourceMajor(cmd)||msg.isTargetMajor(cmd)||msg.isOthersMajor(cmd);
 							}
 							else
 							if(command.startsWith("<"))
 							{
-								String cmd=command.substring(1);
+								final String cmd=command.substring(1);
 								chk=msg.isSourceMinor(cmd)||msg.isTargetMinor(cmd)||msg.isOthersMinor(cmd);
 							}
 							else
 							if(command.startsWith("?"))
 							{
-								String cmd=command.substring(1);
+								final String cmd=command.substring(1);
 								chk=msg.isSource(cmd)||msg.isTarget(cmd)||msg.isOthers(cmd);
 							}
 							else
@@ -11632,9 +11635,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 			}
 		}
-		finally 
-		{ 
-			recurseCounter.addAndGet(-1); 
+		finally
+		{
+			recurseCounter.addAndGet(-1);
 		}
 		return true;
 	}
@@ -11678,27 +11681,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
 		if((!(host instanceof PhysicalAgent))||(msg.source()==null)||(recurseCounter.get() > 2))
 			return;
 
-		try 
-		{ 
+		try
+		{
 			// atomic recurse counter
 			recurseCounter.addAndGet(1);
-	
+
 			final PhysicalAgent affecting = (PhysicalAgent)host;
-	
+
 			final MOB monster=getMakeMOB(affecting);
-	
+
 			if(lastKnownLocation==null)
 				lastKnownLocation=msg.source().location();
 			if((monster==null)||(monster.amDead())||(lastKnownLocation==null))
 				return;
-	
+
 			final Item defaultItem=(affecting instanceof Item)?(Item)affecting:null;
 			MOB eventMob=monster;
 			if((defaultItem!=null)&&(defaultItem.owner() instanceof MOB))
 				eventMob=(MOB)defaultItem.owner();
-	
+
 			final List<DVector> scripts=getScripts();
-	
+
 			if(msg.amITarget(eventMob)
 			&&(!msg.amISource(monster))
 			&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
@@ -11712,7 +11715,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				script=scripts.get(v);
 				if(script.size()<1)
 					continue;
-	
+
 				trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
 				t=(String[])script.elementAt(0,2);
 				final int triggerCode=getTriggerCode(trigger,t);
@@ -11890,30 +11893,30 @@ public class DefaultScriptingEngine implements ScriptingEngine
 									{
 										case 'S':
 											if(majorOnly)
-												chk=chk&&msg.isSourceMajor(command.substring(x+1)); 
+												chk=chk&&msg.isSourceMajor(command.substring(x+1));
 											else
 											if(minorOnly)
-												chk=chk&&msg.isSourceMinor(command.substring(x+1)); 
+												chk=chk&&msg.isSourceMinor(command.substring(x+1));
 											else
-												chk=chk&&msg.isSource(command.substring(x+1)); 
+												chk=chk&&msg.isSource(command.substring(x+1));
 											break;
-										case 'T': 
+										case 'T':
 											if(majorOnly)
-												chk=chk&&msg.isTargetMajor(command.substring(x+1)); 
+												chk=chk&&msg.isTargetMajor(command.substring(x+1));
 											else
 											if(minorOnly)
-												chk=chk&&msg.isTargetMinor(command.substring(x+1)); 
+												chk=chk&&msg.isTargetMinor(command.substring(x+1));
 											else
-												chk=chk&&msg.isTarget(command.substring(x+1)); 
+												chk=chk&&msg.isTarget(command.substring(x+1));
 											break;
-										case 'O': 
+										case 'O':
 											if(majorOnly)
-												chk=chk&&msg.isOthersMajor(command.substring(x+1)); 
+												chk=chk&&msg.isOthersMajor(command.substring(x+1));
 											else
 											if(minorOnly)
-												chk=chk&&msg.isOthersMinor(command.substring(x+1)); 
+												chk=chk&&msg.isOthersMinor(command.substring(x+1));
 											else
-												chk=chk&&msg.isOthers(command.substring(x+1)); 
+												chk=chk&&msg.isOthers(command.substring(x+1));
 											break;
 										case '<':
 											minorOnly=true;
@@ -11927,8 +11930,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
 											majorOnly=false;
 											minorOnly=false;
 											break;
-										default: 
-											chk=false; 
+										default:
+											chk=false;
 											break;
 									}
 								}
@@ -11936,19 +11939,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							else
 							if(command.startsWith(">"))
 							{
-								String cmd=command.substring(1);
+								final String cmd=command.substring(1);
 								chk=msg.isSourceMajor(cmd)||msg.isTargetMajor(cmd)||msg.isOthersMajor(cmd);
 							}
 							else
 							if(command.startsWith("<"))
 							{
-								String cmd=command.substring(1);
+								final String cmd=command.substring(1);
 								chk=msg.isSourceMinor(cmd)||msg.isTargetMinor(cmd)||msg.isOthersMinor(cmd);
 							}
 							else
 							if(command.startsWith("?"))
 							{
-								String cmd=command.substring(1);
+								final String cmd=command.substring(1);
 								chk=msg.isSource(cmd)||msg.isTarget(cmd)||msg.isOthers(cmd);
 							}
 							else
@@ -12643,9 +12646,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				}
 			}
 		}
-		finally 
-		{ 
-			recurseCounter.addAndGet(-1); 
+		finally
+		{
+			recurseCounter.addAndGet(-1);
 		}
 	}
 
@@ -13020,7 +13023,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							  final Item secondaryItem,
 							  final DVector script,
 							  final int ticks,
-							  final String msg, 
+							  final String msg,
 							  final String[] triggerStr)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -13090,7 +13093,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 	{
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
-	
+
 	protected static class JScriptEvent extends ScriptableObject
 	{
 		@Override
@@ -13146,23 +13149,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			return message;
 		}
 
-		public void setVar(String host, String var, String value)
+		public void setVar(final String host, final String var, final String value)
 		{
 			c.setVar(host,var.toUpperCase(),value);
 		}
 
-		public String getVar(String host, String var)
+		public String getVar(final String host, final String var)
 		{
 			return c.getVar(host, var);
 		}
 
-		public String toJavaString(Object O)
+		public String toJavaString(final Object O)
 		{
 			return Context.toString(O);
 		}
 
 		@Override
-		public Object get(final String name, Scriptable start)
+		public Object get(final String name, final Scriptable start)
 		{
 			if (super.has(name, start))
 				return super.get(name, start);
@@ -13172,7 +13175,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 				return new Function()
 				{
 					@Override
-					public Object call(Context cx, Scriptable scope, Scriptable thisObj, Object[] args)
+					public Object call(final Context cx, final Scriptable scope, final Scriptable thisObj, final Object[] args)
 					{
 						if(methH.containsKey(name))
 						{
@@ -13219,23 +13222,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 
 					@Override
-					public void delete(String arg0)
+					public void delete(final String arg0)
 					{
 					}
 
 					@Override
-					public void delete(int arg0)
+					public void delete(final int arg0)
 					{
 					}
 
 					@Override
-					public Object get(String arg0, Scriptable arg1)
+					public Object get(final String arg0, final Scriptable arg1)
 					{
 						return null;
 					}
 
 					@Override
-					public Object get(int arg0, Scriptable arg1)
+					public Object get(final int arg0, final Scriptable arg1)
 					{
 						return null;
 					}
@@ -13247,7 +13250,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 
 					@Override
-					public Object getDefaultValue(Class<?> arg0)
+					public Object getDefaultValue(final Class<?> arg0)
 					{
 						return null;
 					}
@@ -13271,45 +13274,45 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					}
 
 					@Override
-					public boolean has(String arg0, Scriptable arg1)
+					public boolean has(final String arg0, final Scriptable arg1)
 					{
 						return false;
 					}
 
 					@Override
-					public boolean has(int arg0, Scriptable arg1)
+					public boolean has(final int arg0, final Scriptable arg1)
 					{
 						return false;
 					}
 
 					@Override
-					public boolean hasInstance(Scriptable arg0)
+					public boolean hasInstance(final Scriptable arg0)
 					{
 						return false;
 					}
 
 					@Override
-					public void put(String arg0, Scriptable arg1, Object arg2)
+					public void put(final String arg0, final Scriptable arg1, final Object arg2)
 					{
 					}
 
 					@Override
-					public void put(int arg0, Scriptable arg1, Object arg2)
+					public void put(final int arg0, final Scriptable arg1, final Object arg2)
 					{
 					}
 
 					@Override
-					public void setParentScope(Scriptable arg0)
+					public void setParentScope(final Scriptable arg0)
 					{
 					}
 
 					@Override
-					public void setPrototype(Scriptable arg0)
+					public void setPrototype(final Scriptable arg0)
 					{
 					}
 
 					@Override
-					public Scriptable construct(Context arg0, Scriptable arg1, Object[] arg2)
+					public Scriptable construct(final Context arg0, final Scriptable arg1, final Object[] arg2)
 					{
 						return null;
 					}
@@ -13323,15 +13326,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			c.execute(h, s, t, m, pi, si, script, message, objs, lineNum);
 		}
 
-		public JScriptEvent(DefaultScriptingEngine scrpt,
-							PhysicalAgent host,
-							MOB source,
-							Environmental target,
-							MOB monster,
-							Item primaryItem,
-							Item secondaryItem,
-							String msg,
-							Object[] tmp)
+		public JScriptEvent(final DefaultScriptingEngine scrpt,
+							final PhysicalAgent host,
+							final MOB source,
+							final Environmental target,
+							final MOB monster,
+							final Item primaryItem,
+							final Item secondaryItem,
+							final String msg,
+							final Object[] tmp)
 		{
 			c=scrpt;
 			h=host;

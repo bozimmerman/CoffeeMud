@@ -54,7 +54,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	protected DVector rawDefinitions=new DVector(7);
 
 	@Override
-	public ExpertiseLibrary.ExpertiseDefinition addDefinition(String ID, String name, String baseName, String listMask, String finalMask, String[] costs, String[] data)
+	public ExpertiseLibrary.ExpertiseDefinition addDefinition(final String ID, final String name, final String baseName, final String listMask, final String finalMask, final String[] costs, final String[] data)
 	{
 		ExpertiseLibrary.ExpertiseDefinition def=getDefinition(ID);
 		if(def!=null)
@@ -92,7 +92,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public String getExpertiseHelp(String ID, boolean exact)
+	public String getExpertiseHelp(String ID, final boolean exact)
 	{
 		if(ID==null)
 			return null;
@@ -115,7 +115,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public void delDefinition(String ID)
+	public void delDefinition(final String ID)
 	{
 		completeEduMap.remove(ID);
 		baseEduSetLists.clear();
@@ -128,7 +128,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public ExpertiseDefinition getDefinition(String ID)
+	public ExpertiseDefinition getDefinition(final String ID)
 	{
 		if(ID!=null)
 			return completeEduMap.get(ID.trim().toUpperCase());
@@ -136,7 +136,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public ExpertiseDefinition findDefinition(String ID, boolean exactOnly)
+	public ExpertiseDefinition findDefinition(final String ID, final boolean exactOnly)
 	{
 		ExpertiseDefinition D=getDefinition(ID);
 		if(D!=null)
@@ -165,7 +165,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public List<ExpertiseDefinition> myQualifiedExpertises(MOB mob)
+	public List<ExpertiseDefinition> myQualifiedExpertises(final MOB mob)
 	{
 		ExpertiseDefinition D=null;
 		final List<ExpertiseDefinition> V=new Vector<ExpertiseDefinition>();
@@ -237,7 +237,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		{
 			final int[] xFlagCache=new int[ExpertiseLibrary.Flag.values().length];
 			final CharClass charClass = mob.baseCharStats().getCurrentClass();
-			for(ExpertiseLibrary.Flag flag : ExpertiseLibrary.Flag.values())
+			for(final ExpertiseLibrary.Flag flag : ExpertiseLibrary.Flag.values())
 			{
 				xFlagCache[flag.ordinal()]=CMLib.expertises().getApplicableExpertiseLevel(abilityID,flag,mob)
 											+charClass.addedExpertise(mob, flag, abilityID);
@@ -247,8 +247,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		return expertiseLvl;
 	}
-	
-	private int getStageNumber(ExpertiseDefinition D)
+
+	private int getStageNumber(final ExpertiseDefinition D)
 	{
 		if(D.ID().startsWith(D.getBaseName()))
 		{
@@ -260,11 +260,11 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		return 0;
 	}
-	
+
 	@Override
-	public int getHighestListableStageBySkill(final MOB mob, String ableID, ExpertiseLibrary.Flag flag)
+	public int getHighestListableStageBySkill(final MOB mob, final String ableID, final ExpertiseLibrary.Flag flag)
 	{
-		String expertiseID = completeUsageMap[flag.ordinal()].get(ableID);
+		final String expertiseID = completeUsageMap[flag.ordinal()].get(ableID);
 		if(expertiseID == null)
 			return 0;
 		ExpertiseDefinition D=null;
@@ -276,7 +276,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			{
 				if((D.compiledListMask()==null)||(CMLib.masking().maskCheck(D.compiledListMask(),mob,true)))
 				{
-					int stage=getStageNumber(D);
+					final int stage=getStageNumber(D);
 					if(stage > max)
 						max=stage;
 				}
@@ -291,7 +291,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				{
 					if((def.compiledListMask()==null)||(CMLib.masking().maskCheck(def.compiledListMask(),mob,true)))
 					{
-						int stage=getStageNumber(def);
+						final int stage=getStageNumber(def);
 						if(stage > max)
 							max=stage;
 					}
@@ -307,7 +307,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		return completeEduMap.size();
 	}
 
-	private String expertMath(String s,int l)
+	private String expertMath(String s,final int l)
 	{
 		int x=s.indexOf('{');
 		while(x>=0)
@@ -350,7 +350,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public int getStages(String baseExpertiseCode)
+	public int getStages(final String baseExpertiseCode)
 	{
 		return getStageCodes(baseExpertiseCode).size();
 	}
@@ -374,19 +374,19 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public String getApplicableExpertise(String ID, Flag code)
+	public String getApplicableExpertise(final String ID, final Flag code)
 	{
 		return completeUsageMap[code.ordinal()].get(ID);
 	}
 
 	@Override
-	public String[] getApplicableExpertises(String ID, Flag code)
+	public String[] getApplicableExpertises(final String ID, final Flag code)
 	{
 		return completeUsageMaps[code.ordinal()].get(ID);
 	}
 
 	@Override
-	public int getApplicableExpertiseLevel(String ID, Flag code, MOB mob)
+	public int getApplicableExpertiseLevel(final String ID, final Flag code, final MOB mob)
 	{
 		final String[] applicableExpIDs = getApplicableExpertises(ID, code);
 		if((applicableExpIDs==null)||(applicableExpIDs.length<1))
@@ -447,17 +447,19 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			{
 				switch(costType)
 				{
-				case XP: return value.intValue()+" XP";
-				case QP: return value.intValue()+" quest pts";
+				case XP:
+					return value.intValue() + " XP";
+				case QP:
+					return value.intValue() + " quest pts";
 				case GOLD:
-					if(mob==null)
+				{
+					if (mob == null)
 						return CMLib.beanCounter().abbreviatedPrice("", value.doubleValue());
 					else
 						return CMLib.beanCounter().abbreviatedPrice(mob, value.doubleValue());
-				default: return value.intValue()+" "
-							   +((value.intValue()==1)
-									   ?costType.name().toLowerCase()
-									   :CMLib.english().makePlural(costType.name().toLowerCase()));
+				}
+				default:
+					return value.intValue() + " " + ((value.intValue() == 1) ? costType.name().toLowerCase() : CMLib.english().makePlural(costType.name().toLowerCase()));
 				}
 			}
 
@@ -513,9 +515,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			}
 		};
 	}
-	
+
 	@Override
-	public String confirmExpertiseLine(String row, String ID, boolean addIfPossible)
+	public String confirmExpertiseLine(String row, String ID, final boolean addIfPossible)
 	{
 		int levels=0;
 		final HashSet<String> flags=new HashSet<String>();
@@ -700,8 +702,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 						completeUsageMaps[u].put(skid, new String[]{ID});
 					else
 					{
-						String[] oldSet=completeUsageMaps[u].get(skid);
-						String[] newSet=Arrays.copyOf(oldSet, oldSet.length+1);
+						final String[] oldSet=completeUsageMaps[u].get(skid);
+						final String[] newSet=Arrays.copyOf(oldSet, oldSet.length+1);
 						newSet[newSet.length-1]=ID;
 						completeUsageMaps[u].put(skid, newSet);
 					}
@@ -735,13 +737,13 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public Iterator<String> filterUniqueExpertiseIDList(Iterator<String> i)
+	public Iterator<String> filterUniqueExpertiseIDList(final Iterator<String> i)
 	{
 		final Set<String> ids=new HashSet<String>();
 		for(;i.hasNext();)
 		{
 			final String id=i.next();
-			ExpertiseDefinition def=CMLib.expertises().getDefinition(id);
+			final ExpertiseDefinition def=CMLib.expertises().getDefinition(id);
 			if((def != null)
 			&&(!(def.ID().equals(def.getBaseName()+"1")||def.ID().equals(def.getBaseName()+"I")||(def.ID().equals(def.getBaseName())))))
 			{
@@ -751,7 +753,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		}
 		return ids.iterator();
 	}
-	
+
 	protected Object parseLearnID(final String msg)
 	{
 		if(msg==null)
@@ -779,7 +781,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public boolean canBeTaught(MOB teacher, MOB student, Environmental item, String msg)
+	public boolean canBeTaught(final MOB teacher, final MOB student, final Environmental item, final String msg)
 	{
 		if(teacher.isAttributeSet(MOB.Attrib.NOTEACH))
 		{
@@ -892,7 +894,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public void handleBeingTaught(MOB teacher, MOB student, Environmental item, String msg)
+	public void handleBeingTaught(final MOB teacher, final MOB student, final Environmental item, final String msg)
 	{
 		Object learnThis=item;
 		if(learnThis==null)
@@ -926,7 +928,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 	}
 
 	@Override
-	public boolean postTeach(MOB teacher, MOB student, CMObject teachObj)
+	public boolean postTeach(final MOB teacher, final MOB student, final CMObject teachObj)
 	{
 		CMMsg msg=CMClass.getMsg(teacher,student,null,CMMsg.MSG_SPEAK,null);
 		if(!teacher.location().okMessage(teacher,msg))
@@ -940,8 +942,8 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 		teacher.location().send(teacher,msg);
 		return true;
 	}
-	
-	protected ExpertiseDefinition createNewExpertiseDefinition(String ID, String name, String baseName)
+
+	protected ExpertiseDefinition createNewExpertiseDefinition(final String ID, final String name, final String baseName)
 	{
 		final ExpertiseDefinition definition = new ExpertiseDefinition()
 		{
@@ -962,43 +964,43 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			{
 				return baseName;
 			}
-			
+
 			@Override
-			public void setBaseName(String baseName)
+			public void setBaseName(final String baseName)
 			{
 				this.baseName = baseName;
 			}
-			
+
 			@Override
-			public void setName(String name)
+			public void setName(final String name)
 			{
 				this.name = name;
 			}
-			
+
 			@Override
-			public void setID(String ID)
+			public void setID(final String ID)
 			{
 				this.ID = ID;
 			}
-			
+
 			@Override
-			public void setData(String[] data)
+			public void setData(final String[] data)
 			{
 				this.data = data;
 			}
-			
+
 			@Override
 			public ExpertiseDefinition getParent()
 			{
 				return parent;
 			}
-			
+
 			@Override
 			public String name()
 			{
 				return name;
 			}
-			
+
 			@Override
 			public int getMinimumLevel()
 			{
@@ -1006,13 +1008,13 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 					minLevel=CMLib.masking().minMaskLevel(allRequirements(),0);
 				return minLevel;
 			}
-			
+
 			@Override
 			public String[] getData()
 			{
 				return data;
 			}
-			
+
 			@Override
 			public MaskingLibrary.CompiledZMask compiledListMask()
 			{
@@ -1023,7 +1025,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				}
 				return this.compiledListMask;
 			}
-			
+
 			@Override
 			public MaskingLibrary.CompiledZMask compiledFinalMask()
 			{
@@ -1034,7 +1036,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				}
 				return this.compiledFinalMask;
 			}
-			
+
 			@Override
 			public String allRequirements()
 			{
@@ -1045,7 +1047,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 					req=req+" "+uncompiledFinalMask;
 				return req.trim();
 			}
-			
+
 			@Override
 			public String listRequirements()
 			{
@@ -1059,7 +1061,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			}
 
 			@Override
-			public void addListMask(String mask)
+			public void addListMask(final String mask)
 			{
 				if((mask==null)||(mask.length()==0))
 					return;
@@ -1071,7 +1073,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			}
 
 			@Override
-			public void addFinalMask(String mask)
+			public void addFinalMask(final String mask)
 			{
 				if((mask==null)||(mask.length()==0))
 					return;
@@ -1084,11 +1086,11 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 			}
 
 			@Override
-			public void addCost(CostType type, Double value)
+			public void addCost(final CostType type, final Double value)
 			{
 				costs.add(createNewSkillCost(type,value));
 			}
-			
+
 			@Override
 			public String costDescription()
 			{
@@ -1099,9 +1101,9 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 					return "";
 				return costStr.substring(0,costStr.length()-2);
 			}
-			
+
 			@Override
-			public boolean meetsCostRequirements(MOB mob)
+			public boolean meetsCostRequirements(final MOB mob)
 			{
 				for(final SkillCost cost : costs)
 				{
@@ -1110,14 +1112,14 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 				}
 				return true;
 			}
-			
+
 			@Override
-			public void spendCostRequirements(MOB mob)
+			public void spendCostRequirements(final MOB mob)
 			{
 				for(final SkillCost cost : costs)
 					cost.spendSkillCost(mob);
 			}
-			
+
 			@Override
 			public int compareTo(final CMObject o)
 			{

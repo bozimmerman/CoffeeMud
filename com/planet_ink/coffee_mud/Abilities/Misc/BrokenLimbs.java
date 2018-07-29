@@ -235,7 +235,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 				affectableState.setMovement(affectableState.getMovement()/2);
 		}
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
@@ -254,7 +254,8 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 					}
 					break;
 				}
-			case CMMsg.TYP_ADVANCE: case CMMsg.TYP_RETREAT:
+			case CMMsg.TYP_ADVANCE:
+			case CMMsg.TYP_RETREAT:
 			{
 				final MOB mob=msg.source();
 				if((brokenParts[Race.BODY_LEG]<0)&&(!CMLib.flags().isSleeping(mob)))
@@ -288,7 +289,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 			}
 		return true;
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -307,7 +308,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-YOUPOSS> broken limbs have been healed."));
 	}
 
-	public MOB getTarget(MOB mob, List<String> commands, Environmental givenTarget, boolean quiet)
+	public MOB getTarget(final MOB mob, final List<String> commands, final Environmental givenTarget, final boolean quiet)
 	{
 		String targetName=CMParms.combine(commands,0);
 		MOB target=null;
@@ -354,13 +355,13 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 
 	protected void startAllLimbsHealing()
 	{
-		for(String limb : affectedLimbNameSet())
+		for(final String limb : affectedLimbNameSet())
 			if(!setBones.containsKey(limb))
 				setBones.put(limb, new int[]{HEALING_TICKS});
 	}
-	
+
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		if(text.toUpperCase().startsWith("+"))
 		{
@@ -403,7 +404,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 		return brokenLimbsList;
 	}
 
-	public List<String> completeBrokenLimbNameSet(Environmental E)
+	public List<String> completeBrokenLimbNameSet(final Environmental E)
 	{
 		final Vector<String> V=new Vector<String>();
 		if(!(E instanceof MOB))
@@ -444,7 +445,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -499,14 +500,14 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 		if(A!=null)
 		{
 			final List<String> missing=A.affectedLimbNameSet();
-			for(String limb : missing)
+			for(final String limb : missing)
 				remains.remove(limb);
 		}
 		return remains;
 	}
 
 	@Override
-	public void restoreLimb(String gone)
+	public void restoreLimb(final String gone)
 	{
 		if (affected != null)
 		{
@@ -534,13 +535,13 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 	}
 
 	@Override
-	public Item damageLimb(String brokenLimbName)
+	public Item damageLimb(final String brokenLimbName)
 	{
 		if(affected!=null)
 		{
 			if(affected instanceof MOB)
 			{
-				boolean success=((MOB)affected).location().show(((MOB)affected),this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 breaks!^?",brokenLimbName));
+				final boolean success=((MOB)affected).location().show(((MOB)affected),this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 breaks!^?",brokenLimbName));
 				if(!success)
 					return null;
 			}
@@ -557,7 +558,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String choice="";
 		if(givenTarget!=null)
@@ -629,13 +630,13 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			LimbDamage ampuA=(LimbDamage)target.fetchEffect("Amputation");
+			final LimbDamage ampuA=(LimbDamage)target.fetchEffect("Amputation");
 			final List<String> missingLimbs;
 			if(ampuA != null)
 				missingLimbs=ampuA.affectedLimbNameSet();
 			else
 				missingLimbs=new ArrayList<String>(1);
-			
+
 			BrokenLimbs brokenA=(BrokenLimbs)target.fetchEffect(ID());
 			boolean newOne=false;
 			if(brokenA==null)
@@ -647,7 +648,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 
 			String brokeStr=null;
 			final List<String> healthyLimbSet=brokenA.unaffectedLimbSet();
-			for(String missingLimb : missingLimbs)
+			for(final String missingLimb : missingLimbs)
 				healthyLimbSet.remove(missingLimb);
 			if(healthyLimbSet.size()==0)
 			{
@@ -655,14 +656,14 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 					mob.tell(L("There is nothing left on @x1 that is unbroken!",target.name(mob)));
 				return false;
 			}
-			
+
 			if(choice.length()>0)
 			{
 				for(int i=0;i<healthyLimbSet.size();i++)
 				{
 					if(CMLib.english().containsString(healthyLimbSet.get(i),choice))
-					{ 
-						brokeStr=healthyLimbSet.get(i); 
+					{
+						brokeStr=healthyLimbSet.get(i);
 						break;
 					}
 				}
@@ -676,7 +677,7 @@ public class BrokenLimbs extends StdAbility implements LimbDamage, HealthConditi
 
 			if(brokeStr==null)
 				brokeStr=healthyLimbSet.get(CMLib.dice().roll(1,healthyLimbSet.size(),-1));
-			
+
 			final String brokeName = brokeStr;
 
 			final String str=auto?"":L("^F^<FIGHT^><S-NAME> break(s) <T-YOUPOSS> @x1!^</FIGHT^>^?",brokeName);
