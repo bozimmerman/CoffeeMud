@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Behaviors;
+package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2018 Bo Zimmerman
+   Copyright 2018-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,68 +32,61 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Sounder extends StdBehavior
+public class Prop_Sounder extends Property
 {
 	@Override
 	public String ID()
 	{
-		return "Sounder";
+		return "Prop_Sounder";
 	}
 
-	protected int	minTicks	= 23;
-	protected int	maxTicks	= 23;
-	protected int	tickDown	= (int) Math.round(Math.random() * (maxTicks - minTicks)) + minTicks;
+	@Override
+	public String name()
+	{
+		return "Reactive Noise";
+	}
 
 	@Override
-	protected int canImproveCode()
+	protected int canAffectCode()
 	{
-		return Behavior.CAN_ITEMS|Behavior.CAN_MOBS|Behavior.CAN_ROOMS|Behavior.CAN_EXITS|Behavior.CAN_AREAS;
+		return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_MOBS|Ability.CAN_ITEMS;
+	}
+
+	@Override
+	public long flags()
+	{
+		return 0;
 	}
 
 	protected int[]			triggers		= null;
 	protected String[]		strings			= null;
 	protected static int	UNDER_MASK		= 1023;
-	protected static int	TICK_MASK		= 65536;
 	protected static int	ROOM_MASK		= 32768;
 	protected CMMsg			lastMsg			= null;
 	protected boolean		oncePerRound1	= false;
 
-	public Sounder()
+	public Prop_Sounder()
 	{
 		super();
-		minTicks=23;
-		maxTicks=23;
-		tickReset();
 	}
 
 	@Override
 	public String accountForYourself()
 	{
-		return "triggered emoting";
-	}
-
-	protected void tickReset()
-	{
-		tickDown=(int)Math.round(Math.random()*(maxTicks-minTicks))+minTicks;
+		return "reactive emoting";
 	}
 
 	@Override
-	public void setParms(final String newParms)
+	public void setMiscText(final String newMiscText)
 	{
-		super.setParms(newParms);
-		final List<String> emote=CMParms.parseSemicolons(newParms,true);
+		super.setMiscText(newMiscText);
+		final List<String> emote=CMParms.parseSemicolons(newMiscText,true);
 		triggers=new int[emote.size()];
 		strings=new String[emote.size()];
 
 		if(emote.size()>0)
 		{
-			String s=emote.get(0);
-			minTicks=23;
-			minTicks=CMParms.getParmInt(newParms,"min",minTicks);
-			maxTicks=23;
-			maxTicks=CMParms.getParmInt(newParms,"max",maxTicks);
-			if((minTicks!=23)||(maxTicks!=23))
-				emote.remove(0);
+			String s;
 			for(int v=0;v<emote.size();v++)
 			{
 				s=emote.get(v).trim();
@@ -103,20 +96,6 @@ public class Sounder extends StdBehavior
 				s=CMStrings.replaceAll(s,"$E","<S-HE-SHE>");
 				s=CMStrings.replaceAll(s,"$s","<S-HIS-HER>");
 				s=CMStrings.replaceAll(s,"$S","<S-HIS-HER>");
-				if(s.toUpperCase().startsWith("SOUND "))
-				{
-					s=s.substring(6).trim();
-					final int x=s.indexOf(' ');
-					if(x<0)
-						continue;
-					final String y=s.substring(0,x);
-					if(!CMath.isNumber(y))
-						continue;
-					triggers[v]=TICK_MASK+CMath.s_int(y);
-					s="^E"+s.substring(x+1).trim()+"^?";
-					strings[v]=s;
-				}
-				else
 				if((s.toUpperCase().startsWith("GET ")))
 				{
 					triggers[v]=CMMsg.TYP_GET;
@@ -334,7 +313,6 @@ public class Sounder extends StdBehavior
 				}
 			}
 		}
-		tickReset();
 	}
 
 	protected void emoteHere(final Room room, final MOB emoter, final String emote)
@@ -390,7 +368,7 @@ public class Sounder extends StdBehavior
 		if(ticking instanceof MOB)
 		{
 			emoter=(MOB)ticking;
-			if(!canFreelyBehaveNormal(ticking))
+			if(!CMLib.flags().canFreelyBehaveNormal(ticking))
 				return;
 			emoteHere(((MOB)ticking).location(),emoter,emote);
 		}
@@ -398,7 +376,7 @@ public class Sounder extends StdBehavior
 		{
 			if((ticking instanceof Item)&&(!CMLib.flags().isInTheGame((Item)ticking,false)))
 				return;
-			final Room R=getBehaversRoom(ticking);
+			final Room R=CMLib.map().roomLocation((Environmental)ticking);
 			if(R!=null)
 			{
 				emoter=CMClass.getMOB("StdMOB");
@@ -408,28 +386,6 @@ public class Sounder extends StdBehavior
 				emoter.destroy();
 			}
 		}
-	}
-
-	@Override
-	public boolean tick(final Tickable ticking, final int tickID)
-	{
-		if(!super.tick(ticking,tickID))
-			return false;
-		if(((--tickDown)<=0)
-		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.EMOTERS))
-		&&((!(ticking instanceof MOB))||(canFreelyBehaveNormal(ticking))))
-		{
-			tickReset();
-			for(int v=0;v<triggers.length;v++)
-			if((CMath.bset(triggers[v],TICK_MASK))
-			&&(CMLib.dice().rollPercentage()<(triggers[v]&UNDER_MASK)))
-			{
-				doEmote(ticking,strings[v]);
-				break;
-			}
-		}
-		oncePerRound1=false;
-		return true;
 	}
 
 	@Override
@@ -469,12 +425,14 @@ public class Sounder extends StdBehavior
 			break;
 		case CMMsg.TYP_ENTER:
 			if((msg.target()!=null)
-			&&(msg.target()==getBehaversRoom(host)))
+			&&((msg.target()==CMLib.map().roomLocation(host))
+				||((host instanceof Exit)&&(msg.tool()==host))))
 				lookFor=CMMsg.TYP_ENTER;
 			break;
 		case CMMsg.TYP_LEAVE:
 			if((msg.target()!=null)
-			&&(msg.target()==getBehaversRoom(host)))
+			&&((msg.target()==CMLib.map().roomLocation(host))
+				||((host instanceof Exit)&&(msg.tool()==host))))
 				lookFor=CMMsg.TYP_LEAVE;
 			break;
 		case CMMsg.TYP_WEAPONATTACK:
@@ -497,12 +455,11 @@ public class Sounder extends StdBehavior
 		&&(room!=null)
 		&&((!(host instanceof MOB))||(lookFor==CMMsg.TYP_WEAPONATTACK)
 								||(lookFor==CMMsg.TYP_DAMAGE)
-								||(canFreelyBehaveNormal(host))))
+								||(CMLib.flags().canFreelyBehaveNormal(host))))
 		{
 			for(int v=0;v<triggers.length;v++)
 			{
-				if(((triggers[v]&UNDER_MASK)==lookFor)
-				&&(!CMath.bset(triggers[v],TICK_MASK)))
+				if((triggers[v]&UNDER_MASK)==lookFor)
 				{
 					if(CMath.bset(triggers[v],ROOM_MASK))
 					{

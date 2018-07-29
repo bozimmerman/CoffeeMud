@@ -77,6 +77,7 @@
   75. Common skills now support dot-selection and list armor wear loc, list weapon class/type
   76. Building skills now support INFO, and xp to Artisans.
   77. Standardized email disclaimers, and there's now an unsubscribe link and account unsubscribe.
+  78. New Property: Prop_Sounder, like Sounder behavior, but without tick triggers.
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
    1. Hunger and Thirst system can now be tweeked.  See coffeemud.ini file
