@@ -71,7 +71,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 
 	@Override
 	public String parametersFormat()
-	{ 
+	{
 		return "";
 		//"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		//+"ITEM_CLASS_ID\tRIDE_BASIS\tRIDE_CAPACITY\tCONTAINER_CAPACITY\t"
@@ -81,7 +81,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	private int					doorDir			= -1;
 	private String				reTitle			= null;
 	private String				reDesc			= null;
-	
+
 	//protected static final int RCP_FINALNAME=0;
 	//protected static final int RCP_LEVEL=1;
 	//protected static final int RCP_TICKS=2;
@@ -118,24 +118,24 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				shipPrototypes=new Vector<Item>();
 				CMLib.coffeeMaker().addItemsFromXML(F.textUnformatted().toString(), shipPrototypes, null);
 				for(final Item I : shipPrototypes)
-					CMLib.threads().deleteTick(I, -1);
+					CMLib.threads().deleteAllTicks(I);
 				if(shipPrototypes.size()>0)
 					Resources.submitResource(allItemID, shipPrototypes);
 			}
 		}
 		return shipPrototypes;
 	}
-	
+
 	@Override
 	public String parametersFile()
 	{
 		final CMFile F=new CMFile(Resources.makeFileResourceName("::skills/shipwright.txt"),null);
 		if(F.exists())
 			return "shipwright.txt";
-		List<Item> ships = getShips();
+		final List<Item> ships = getShips();
 		if(ships == null)
 			return "";
-		StringBuilder recipes = new StringBuilder("");
+		final StringBuilder recipes = new StringBuilder("");
 		int x=0;
 		for(final Item I : getShips())
 		{
@@ -156,7 +156,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		return super.loadRecipes(parametersFile());
 	}
 
-	protected void buildDoor(Room room, int dir)
+	protected void buildDoor(Room room, final int dir)
 	{
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
@@ -164,7 +164,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			String closeWord=null;
 			String openWord=null;
 			String closedWord=null;
-			String displayText="";
+			final String displayText="";
 			//if(closeWord == null)
 				closeWord="close";
 			//if(openWord == null)
@@ -302,7 +302,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 									try
 									{
 										((ShopKeeper)shopKeeper).setWhatIsSoldMask(ShopKeeper.DEAL_SHIPSELLER);
-										CMMsg msg=CMClass.getMsg(buyer,buildingI,shopKeeper,CMMsg.MSG_GET,null);
+										final CMMsg msg=CMClass.getMsg(buyer,buildingI,shopKeeper,CMMsg.MSG_GET,null);
 										buildingI.executeMsg(buyer, msg);
 									}
 									finally
@@ -345,13 +345,13 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	}
 
 	@Override
-	public boolean supportsMending(Physical item)
+	public boolean supportsMending(final Physical item)
 	{
 		return canMend(null, item, true);
 	}
 
 	@Override
-	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
@@ -375,21 +375,21 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		@SuppressWarnings("unused")
 		int recipeLevel=1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -439,7 +439,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				{
 					final String item=replacePercent(V.get(RCP_FINALNAME),"");
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
-					String wood=getComponentDescription(mob,V,RCP_WOOD);
+					final String wood=getComponentDescription(mob,V,RCP_WOOD);
 					if((level<=xlevel(mob))||allFlag)
 					{
 						buf.append(CMStrings.padRight(item,cols[0])
@@ -590,7 +590,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			}
 
 			final String dirName=commands.get(commands.size()-1);
-			int dir=CMLib.directions().getGoodShipDirectionCode(dirName);
+			final int dir=CMLib.directions().getGoodShipDirectionCode(dirName);
 			if(dir <0)
 			{
 				commonTell(mob,L("You must specify a direction in which to build the door."));
@@ -603,15 +603,15 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				commonTell(mob,L("A valid direction in which to build the door must be specified."));
 				return false;
 			}
-			
+
 			if((R.domainType()&Room.INDOORS)==0)
 			{
 				commonTell(mob,L("You can only build a door below decks."));
 				return false;
 			}
-			
-			Room R1=R.getRoomInDir(dir);
-			Exit E1=R.getExitInDir(dir);
+
+			final Room R1=R.getRoomInDir(dir);
+			final Exit E1=R.getExitInDir(dir);
 			if((R1==null)||(E1==null))
 			{
 				commonTell(mob,L("There is nowhere to build a door that way."));
@@ -622,7 +622,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				commonTell(mob,L("There is already a door that way."));
 				return false;
 			}
-			
+
 			int woodRequired=125 ;
 			woodRequired=adjustWoodRequired(woodRequired,mob);
 			final int[] pm={RawMaterial.MATERIAL_WOODEN};
@@ -639,7 +639,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				return false;
 			if(autoGenerate<=0)
 				CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);
-			
+
 			doorDir = dir;
 			activity = CraftingActivity.DOORING;
 			activityRoom=R;
@@ -667,7 +667,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			}
 
 			final String dirName=commands.get(commands.size()-1);
-			int dir=CMLib.directions().getGoodShipDirectionCode(dirName);
+			final int dir=CMLib.directions().getGoodShipDirectionCode(dirName);
 			if(dir <0)
 			{
 				commonTell(mob,L("You must specify a direction in which to demolish a door."));
@@ -680,15 +680,15 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				commonTell(mob,L("A valid direction in which to demolish a door must be specified."));
 				return false;
 			}
-			
+
 			if((R.domainType()&Room.INDOORS)==0)
 			{
 				commonTell(mob,L("You can only demolish a door below decks."));
 				return false;
 			}
-			
-			Room R1=R.getRoomInDir(dir);
-			Exit E1=R.getExitInDir(dir);
+
+			final Room R1=R.getRoomInDir(dir);
+			final Exit E1=R.getExitInDir(dir);
 			if((R1==null)||(E1==null))
 			{
 				commonTell(mob,L("There is nowhere to demolish a door that way."));
@@ -699,7 +699,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 				commonTell(mob,L("There is not a door that way to demolish."));
 				return false;
 			}
-			
+
 			doorDir = dir;
 			activity = CraftingActivity.DEMOLISH;
 			activityRoom=R;
@@ -774,18 +774,18 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			final MaterialLibrary.DeadResourceRecord deadComps = CMLib.ableComponents().destroyAbilityComponents(componentsFoundList);
 			final int lostValue=autoGenerate>0?0:(deadMats.lostValue + deadComps.lostValue);
 			final String shipIndexStr = foundRecipe.get(RCP_SHIPINDEX);
-			List<Item> shipPrototypes = getShips();
+			final List<Item> shipPrototypes = getShips();
 			if(shipPrototypes != null)
 			{
 				if(CMath.isInteger(shipIndexStr))
 				{
-					int dex=CMath.s_int(shipIndexStr);
+					final int dex=CMath.s_int(shipIndexStr);
 					if((dex>=0)&&(dex<shipPrototypes.size()))
 						buildingI=shipPrototypes.get(dex);
 				}
 				else
 				{
-					for(Item I : shipPrototypes)
+					for(final Item I : shipPrototypes)
 					{
 						if(CMLib.english().containsString(I.Name(), super.replacePercent(foundRecipe.get(RCP_FINALNAME), "")))
 						{
@@ -858,7 +858,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			displayText=L("You are @x1",verb);
 		}
 
-		if((autoGenerate>0) 
+		if((autoGenerate>0)
 		&& (activity != CraftingActivity.RETITLING)
 		&& (activity != CraftingActivity.DOORING)
 		&& (activity != CraftingActivity.DEMOLISH))
