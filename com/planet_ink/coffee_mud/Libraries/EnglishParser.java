@@ -472,7 +472,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		final String firstWord=getFirstWord(s);
 		final int x=s.indexOf(firstWord);
-		final String slower=(x>0) ? s.substring(x).toLowerCase() : s.toLowerCase();;
+		final String slower=(x>0) ? s.substring(x).toLowerCase() : s.toLowerCase();
 		for (final String article : ARTICLES)
 		{
 			if(slower.startsWith(article+" "))

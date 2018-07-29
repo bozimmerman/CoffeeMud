@@ -584,7 +584,7 @@ public class RocketShipProgram extends GenShipProgram
 		{
 			for(final ShipEngine engineE : programEngines)
 				performSimpleThrust(engineE,newInject, true);
-			if((CMath.abs(targetAccelleration)-this.lastAccelleration)<.01)
+			if((CMath.abs(targetAccelleration)-this.lastAccelleration.doubleValue())<.01)
 				break;
 			newInject = this.calculateMarginalTargetInjection(this.lastInject, targetAccelleration);
 		}

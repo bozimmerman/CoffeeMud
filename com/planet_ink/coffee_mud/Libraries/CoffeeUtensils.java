@@ -1729,10 +1729,10 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							if(pct.length()>0)
 							{
 								buf.append(pct);
-								break;
 							}
 						}
 					}
+					break;
 				}
 				case 'Y':
 				{
@@ -1752,6 +1752,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							}
 						}
 					}
+					break;
 				}
 				case 'z':
 				{
