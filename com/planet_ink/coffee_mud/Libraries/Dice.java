@@ -100,7 +100,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	{
 		Collections.shuffle(objs, randomizer);
 	}
-	
+
 	@Override
 	public void scramble(final int[] objs)
 	{
@@ -110,30 +110,44 @@ public class Dice extends StdLibrary implements DiceLibrary
 		for(int i=0;i<sz;i++)
 		{
 			final int k=i+randomizer.nextInt(sz-i);
-			int o=objs[k];
+			final int o=objs[k];
 			objs[k]=objs[i];
 			objs[i]=o;
 		}
 	}
-	
+
 	@Override
     public long plusOrMinus(final long range)
 	{
 		final long l=randomizer.nextLong() % range;
 		return randomizer.nextBoolean()?l:-l;
 	}
-	
+
 	@Override
     public int plusOrMinus(final int range)
 	{
 		final int l=randomizer.nextInt() % range;
 		return randomizer.nextBoolean()?l:-l;
 	}
-	
+
+	@Override
+    public double plusOrMinus(final double range)
+	{
+		final double l=randomizer.nextDouble() * range;
+		return randomizer.nextBoolean()?l:-l;
+	}
+
+	@Override
+	public float plusOrMinus(final float range)
+	{
+		final float l=randomizer.nextFloat() * range;
+		return randomizer.nextBoolean()?l:-l;
+	}
+
 	@Override
 	public int rollInRange(final int min, final int max)
 	{
-		if(max<=min) 
+		if(max<=min)
 			return min;
 		final int l= randomizer.nextInt();
 		if(l < 0)
@@ -141,11 +155,11 @@ public class Dice extends StdLibrary implements DiceLibrary
 		else
 			return min + (l % ((max-min)+1));
 	}
-	
+
 	@Override
 	public long rollInRange(final long min, final long max)
 	{
-		if(max<=min) 
+		if(max<=min)
 			return min;
 		final long l= randomizer.nextLong();
 		if(l < 0)
@@ -153,7 +167,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 		else
 			return min + (l % ((max-min)+1));
 	}
-	
+
 	@Override
 	public Object doublePick(final Object[][] set)
 	{
@@ -182,7 +196,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 				return set[0];
 		}
 		final List<Object> newList = new ArrayList<Object>(set.length);
-		for(Object O : set)
+		for(final Object O : set)
 			newList.add(O);
 		newList.remove( not );
 		return pick(newList.toArray(new Object[0]));
@@ -199,7 +213,7 @@ public class Dice extends StdLibrary implements DiceLibrary
 	@Override
 	public int pick(final int[] set, final int not)
 	{
-		
+
 		boolean found=false;
 		for(int i=0;i<set.length;i++)
 		{

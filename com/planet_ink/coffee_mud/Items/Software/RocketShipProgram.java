@@ -55,7 +55,7 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile List<TechComponent>	sensors		= null;
 	protected volatile List<TechComponent>	components	= null;
 	protected volatile List<TechComponent>	dampers		= null;
-	
+
 	protected volatile Double				lastAccelleration	= null;
 	protected volatile Double				lastAngle			= null;
 	protected volatile Double				lastInject			= null;
@@ -67,7 +67,7 @@ public class RocketShipProgram extends GenShipProgram
 
 	protected final PairSLinkedList<Long,List<SpaceObject>>	sensorReports	= new PairSLinkedList<Long,List<SpaceObject>>();
 	protected volatile Map<ShipEngine,Double[]> 			primeInjects	= new HashMap<ShipEngine,Double[]>();
-	
+
 	protected enum RocketStateMachine
 	{
 		LAUNCHSEARCH,
@@ -199,13 +199,13 @@ public class RocketShipProgram extends GenShipProgram
 	}
 
 	@Override
-	public boolean isActivationString(String word)
+	public boolean isActivationString(final String word)
 	{
 		return isCommandString(word, false);
 	}
 
 	@Override
-	public boolean isDeActivationString(String word)
+	public boolean isDeActivationString(final String word)
 	{
 		return isCommandString(word, false);
 	}
@@ -231,18 +231,18 @@ public class RocketShipProgram extends GenShipProgram
 		return E;
 	}
 
-	protected ShipEngine findEngineByName(String name)
+	protected ShipEngine findEngineByName(final String name)
 	{
 		return (ShipEngine)findComponentByName(getEngines(), "ENGINE", name);
 	}
 
-	protected TechComponent findSensorByName(String name)
+	protected TechComponent findSensorByName(final String name)
 	{
 		return findComponentByName(getShipSensors(), "SENSOR", name);
 	}
 
-	@Override 
-	public boolean isCommandString(String word, boolean isActive)
+	@Override
+	public boolean isCommandString(final String word, final boolean isActive)
 	{
 		final Vector<String> parsed=CMParms.parse(word);
 		if(parsed.size()==0)
@@ -297,7 +297,7 @@ public class RocketShipProgram extends GenShipProgram
 		}
 		return localSensorReport;
 	}
-	
+
 	@Override
 	public String getActivationMenu()
 	{
@@ -390,7 +390,7 @@ public class RocketShipProgram extends GenShipProgram
 					if(localSensorReport.size()==0)
 						str.append("^R").append(L("No Report"));
 					else
-					for(Object o : localSensorReport)
+					for(final Object o : localSensorReport)
 					{
 						if(o == spaceObject)
 							continue;
@@ -418,7 +418,7 @@ public class RocketShipProgram extends GenShipProgram
 				sensorNumber++;
 			}
 		}
-		
+
 		final List<ShipEngine> engines = getEngines();
 		final List<TechComponent> components = getTechComponents();
 		if(components.size()> engines.size() + sensors.size())
@@ -441,7 +441,7 @@ public class RocketShipProgram extends GenShipProgram
 			}
 			str.append("^.^N\n\r");
 		}
-		
+
 		if(engines.size()==0)
 			str.append(noActivationMenu);
 		else
@@ -451,7 +451,7 @@ public class RocketShipProgram extends GenShipProgram
 			for(final ShipEngine engine : engines)
 			{
 				str.append("^H").append(CMStrings.padRight(L("ENGINE@x1",""+engineNumber),9));
-				str.append(CMStrings.padRight(engine.activated()?L("^gAC"):L("^rI"),2));
+				str.append(CMStrings.padRight(engine.activated()?L("^gA"):L("^rI"),2));
 				if(engine instanceof FuelConsumer)
 				{
 					str.append("^H").append(CMStrings.padRight(L("Fuel"),5));
@@ -477,24 +477,24 @@ public class RocketShipProgram extends GenShipProgram
 	}
 
 	@Override
-	public boolean checkActivate(MOB mob, String message)
+	public boolean checkActivate(final MOB mob, final String message)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean checkDeactivate(MOB mob, String message)
+	public boolean checkDeactivate(final MOB mob, final String message)
 	{
 		return true;
 	}
 
 	@Override
-	public boolean checkTyping(MOB mob, String message)
+	public boolean checkTyping(final MOB mob, final String message)
 	{
 		return true;
 	}
 
-	protected void trySendMsgToItem(final MOB mob, Item engineE, CMMsg msg)
+	protected void trySendMsgToItem(final MOB mob, final Item engineE, final CMMsg msg)
 	{
 		if(engineE.owner() instanceof Room)
 		{
@@ -564,7 +564,7 @@ public class RocketShipProgram extends GenShipProgram
 			newInject=lastInject;
 		return newInject;
 	}
-	
+
 	protected Double calculateMarginalTargetInjection(Double newInject, final double targetAccelleration)
 	{
 		//force/mass is the Gs felt by the occupants.. not force-mass
@@ -592,7 +592,7 @@ public class RocketShipProgram extends GenShipProgram
 		return newInject;
 	}
 
-	protected void performSimpleThrust(final ShipEngine engineE, final Double thrustInject, boolean alwaysThrust)
+	protected void performSimpleThrust(final ShipEngine engineE, final Double thrustInject, final boolean alwaysThrust)
 	{
 		final MOB mob=CMClass.getFactoryMOB();
 		try
@@ -604,7 +604,7 @@ public class RocketShipProgram extends GenShipProgram
 				||(!engineE.isConstantThruster())
 				||((thrustInject.doubleValue()>0.0)&&(engineE.getThrust()==0.0)))
 				{
-					CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
+					final CMMsg msg=CMClass.getMsg(mob, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
 					final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(thrustInject.doubleValue()));
 					msg.setTargetMessage(code);
 					this.trySendMsgToItem(mob, engineE, msg);
@@ -617,7 +617,7 @@ public class RocketShipProgram extends GenShipProgram
 			mob.destroy();
 		}
 	}
-	
+
 	@Override
 	public boolean checkPowerCurrent(final int value)
 	{
@@ -668,7 +668,7 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			if(programPlanet==null)
 			{
-				String reason = "no planetary information";
+				final String reason = "no planetary information";
 				this.rocketState=null;
 				this.programEngines=null;
 				this.lastInject=null;
@@ -710,7 +710,7 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			{
 				final double[] stopFacing = CMLib.map().getOppositeDir(ship.direction());
-				double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
+				final double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), stopFacing); // starboard is -, port is +
 				if((Math.abs(angleDelta[0])+Math.abs(angleDelta[1]))>.02)
 				{
 					if(!flipForAllStop(ship))
@@ -742,7 +742,7 @@ public class RocketShipProgram extends GenShipProgram
 		{
 			if(programPlanet==null)
 			{
-				String reason = "no planetary information";
+				final String reason = "no planetary information";
 				this.rocketState = null;
 				this.programEngines = null;
 				this.lastInject = null;
@@ -811,13 +811,13 @@ public class RocketShipProgram extends GenShipProgram
 		case LANDING_APPROACH:
 		{
 			final double[] dirToPlanet = CMLib.map().getDirection(ship, programPlanet);
-			//final long distance=CMLib.map().getDistanceFrom(ship, programPlanet) 
-			//		- Math.round(CMath.mul(programPlanet.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS)) 
+			//final long distance=CMLib.map().getDistanceFrom(ship, programPlanet)
+			//		- Math.round(CMath.mul(programPlanet.radius(),SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS))
 			//		- ship.radius();
 			final double atmoWidth = CMath.mul(programPlanet.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS) - programPlanet.radius();
 			final long critRadius = Math.round(programPlanet.radius() + (atmoWidth / 2.0));
-			final long distanceToCritRadius=CMLib.map().getDistanceFrom(ship, programPlanet) 
-					- critRadius 
+			final long distanceToCritRadius=CMLib.map().getDistanceFrom(ship, programPlanet)
+					- critRadius
 					- ship.radius();
 			if(distanceToCritRadius <= 0)
 				this.rocketState = RocketStateMachine.LANDING;
@@ -826,7 +826,7 @@ public class RocketShipProgram extends GenShipProgram
 				//final double angleDiff = CMLib.map().getAngleDelta(ship.direction(), dirToPlanet);
 				for(final ShipEngine engineE : programEngines)
 				{
-					double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(this.targetAccelleration.doubleValue(),2.0));
+					final double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(this.targetAccelleration.doubleValue(),2.0));
 					final double ticksToDestinationAtCurrentSpeed = CMath.div(distanceToCritRadius, ship.speed());
 					final double diff = Math.abs(ticksToDecellerate-ticksToDestinationAtCurrentSpeed);
 					if((diff < 1) || (diff < Math.sqrt(ticksToDecellerate)))
@@ -880,17 +880,17 @@ public class RocketShipProgram extends GenShipProgram
 			}
 			else
 			{
-				final long distance=CMLib.map().getDistanceFrom(ship, programPlanet) 
-						- programPlanet.radius() 
+				final long distance=CMLib.map().getDistanceFrom(ship, programPlanet)
+						- programPlanet.radius()
 						- ship.radius()
 						-10; // margin for soft landing
 				final double atmoWidth = CMath.mul(programPlanet.radius(), SpaceObject.MULTIPLIER_GRAVITY_EFFECT_RADIUS) - programPlanet.radius();
 				final long critRadius = Math.round(programPlanet.radius() + (atmoWidth / 2.0));
-				final long distanceToCritRadius=CMLib.map().getDistanceFrom(ship, programPlanet) 
-						- critRadius 
+				final long distanceToCritRadius=CMLib.map().getDistanceFrom(ship, programPlanet)
+						- critRadius
 						- ship.radius();
 				final double ticksToDestinationAtCurrentSpeed = Math.abs(CMath.div(distance, ship.speed()));
-				double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(this.targetAccelleration.doubleValue(), 2.0));
+				final double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(this.targetAccelleration.doubleValue(), 2.0));
 				if((ticksToDecellerate > ticksToDestinationAtCurrentSpeed)
 				||(distance < ship.speed() * 20))
 				{
@@ -927,7 +927,7 @@ public class RocketShipProgram extends GenShipProgram
 					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 						Log.debugOut("Landing Accelerating because " +  distance +" > "+distanceToCritRadius+" and "+ship.speed()+"<"+Math.sqrt(distance));
 					this.changeFacing(ship, dirToPlanet);
-					double targetAccelleration = this.targetAccelleration.doubleValue();
+					final double targetAccelleration = this.targetAccelleration.doubleValue();
 					newInject=calculateMarginalTargetInjection(this.lastInject, targetAccelleration);
 					if((targetAccelleration >= 1.0) && (newInject.doubleValue()==0.0))
 					{
@@ -951,7 +951,7 @@ public class RocketShipProgram extends GenShipProgram
 		default:
 			break;
 		}
-		
+
 		return true;
 	}
 
@@ -961,7 +961,7 @@ public class RocketShipProgram extends GenShipProgram
 		return changeFacing(ship, stopFacing);
 	}
 
-	public boolean changeFacing(final SpaceShip ship, double[] newFacing)
+	public boolean changeFacing(final SpaceShip ship, final double[] newFacing)
 	{
 		CMMsg msg;
 		final List<ShipEngine> engines = getEngines();
@@ -991,14 +991,14 @@ public class RocketShipProgram extends GenShipProgram
 						break;
 					if(isDebugging)
 						Log.debugOut("Thrusting 1 to PORT to achieve DELTA, and got a delta of "+this.lastAngle.doubleValue());
-					double angleAchievedPerPt = Math.abs(this.lastAngle.doubleValue()); //
+					final double angleAchievedPerPt = Math.abs(this.lastAngle.doubleValue()); //
 					double[] angleDelta = CMLib.map().getFacingAngleDiff(ship.facing(), newFacing); // starboard is -, port is +
 					for(int i=0;i<100;i++)
 					{
 						if(Math.abs(angleDelta[0]) > 0.00001)
 						{
 							final TechComponent.ShipDir dir = angleDelta[0] < 0 ? ShipDir.PORT : ShipDir.STARBOARD;
-							Double thrust = new Double(Math.abs(angleDelta[0]) / angleAchievedPerPt);
+							final Double thrust = new Double(Math.abs(angleDelta[0]) / angleAchievedPerPt);
 							if(isDebugging)
 							{
 								Log.debugOut("Delta0="+angleDelta[0]);
@@ -1024,7 +1024,7 @@ public class RocketShipProgram extends GenShipProgram
 						if(Math.abs(angleDelta[1]) > 0.00001)
 						{
 							final TechComponent.ShipDir dir = angleDelta[1] < 0 ? ShipDir.VENTRAL : ShipDir.DORSEL;
-							Double thrust = new Double(Math.abs(angleDelta[1]) / angleAchievedPerPt);
+							final Double thrust = new Double(Math.abs(angleDelta[1]) / angleAchievedPerPt);
 							if(isDebugging)
 							{
 								Log.debugOut("Delta1="+angleDelta[1]);
@@ -1053,7 +1053,7 @@ public class RocketShipProgram extends GenShipProgram
 		}
 		return false;
 	}
-	
+
 	public ShipEngine primeMainThrusters(final SpaceShip ship)
 	{
 		CMMsg msg;
@@ -1090,7 +1090,7 @@ public class RocketShipProgram extends GenShipProgram
 						final Double thisLastAccel=this.lastAccelleration ;
 						if(thisLastAccel!=null)
 						{
-							final double ratio = targetAccelleration/thisLastAccel.doubleValue(); 
+							final double ratio = targetAccelleration/thisLastAccel.doubleValue();
 							if((thisLastAccel.doubleValue() >= targetAccelleration)
 							&&((!isDocked)||(ship.getIsDocked()==null)))
 							{
@@ -1126,9 +1126,9 @@ public class RocketShipProgram extends GenShipProgram
 		}
 		return null;
 	}
-	
+
 	@Override
-	public void onTyping(MOB mob, String message)
+	public void onTyping(final MOB mob, final String message)
 	{
 		synchronized(this)
 		{
@@ -1153,7 +1153,7 @@ public class RocketShipProgram extends GenShipProgram
 						+ "HELP [ENGINE/SYSTEM/SENSOR/WEAPON/...] : more info"));
 					return;
 				}
-				String secondWord = CMParms.combine(parsed,1).toUpperCase();
+				final String secondWord = CMParms.combine(parsed,1).toUpperCase();
 				if(secondWord.startsWith("ENGINE"))
 				{
 					E=findEngineByName(secondWord);
@@ -1222,7 +1222,7 @@ public class RocketShipProgram extends GenShipProgram
 				if(secondWord.startsWith("SYSTEM"))
 				{
 					final List<TechComponent> others = new ArrayList<TechComponent>();
-					for(TechComponent component : getTechComponents())
+					for(final TechComponent component : getTechComponents())
 					{
 						if((!getEngines().contains(component))
 						&&(!getShipSensors().contains(component)))
@@ -1294,7 +1294,7 @@ public class RocketShipProgram extends GenShipProgram
 					if(E==null)
 					{
 						final List<TechComponent> others = new ArrayList<TechComponent>();
-						for(TechComponent component : getTechComponents())
+						for(final TechComponent component : getTechComponents())
 						{
 							if((!getEngines().contains(component))
 							&&(!getShipSensors().contains(component)))
@@ -1349,7 +1349,7 @@ public class RocketShipProgram extends GenShipProgram
 					if(E==null)
 					{
 						final List<TechComponent> others = new ArrayList<TechComponent>();
-						for(TechComponent component : getTechComponents())
+						for(final TechComponent component : getTechComponents())
 						{
 							if((!getEngines().contains(component))&&(!getShipSensors().contains(component)))
 								others.add(component);
@@ -1387,7 +1387,7 @@ public class RocketShipProgram extends GenShipProgram
 					this.programEngines=null;
 				}
 				this.programPlanet=CMLib.map().getSpaceObject(ship.getIsDocked(), true);
-				ShipEngine engineE =this.primeMainThrusters(ship);
+				final ShipEngine engineE =this.primeMainThrusters(ship);
 				if(engineE==null)
 				{
 					this.programEngines = null;
@@ -1395,7 +1395,7 @@ public class RocketShipProgram extends GenShipProgram
 					return;
 				}
 				boolean dampenerFound = false;
-				for(TechComponent T : this.getDampeners())
+				for(final TechComponent T : this.getDampeners())
 				{
 					if(T.activated()
 					&&((!T.subjectToWearAndTear()))||(T.usesRemaining()>30))
@@ -1408,7 +1408,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				else
 					this.targetAccelleration = Double.valueOf(30);
-					
+
 				this.programEngines=new XVector<ShipEngine>(engineE);
 				if(uword.equalsIgnoreCase("ORBIT"))
 					this.rocketState = RocketShipProgram.RocketStateMachine.ORBITSEARCH;
@@ -1489,7 +1489,7 @@ public class RocketShipProgram extends GenShipProgram
 				Collections.sort(allObjects, new Comparator<SpaceObject>()
 				{
 					@Override
-					public int compare(SpaceObject o1, SpaceObject o2)
+					public int compare(final SpaceObject o1, final SpaceObject o2)
 					{
 						if(o1 == null)
 							return (o2 == null) ? 0 : 1;
@@ -1509,11 +1509,11 @@ public class RocketShipProgram extends GenShipProgram
 					}
 				});
 				SpaceObject landingPlanet = null;
-				for(SpaceObject O : allObjects)
+				for(final SpaceObject O : allObjects)
 				{
 					if((O.coordinates()!=null)&&(O.radius()!=0))
 					{
-						List<LocationRoom> rooms=CMLib.map().getLandingPoints(ship, O);
+						final List<LocationRoom> rooms=CMLib.map().getLandingPoints(ship, O);
 						if(rooms.size()>0)
 						{
 							landingPlanet=O;
@@ -1523,7 +1523,7 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				if(landingPlanet == null)
 				{
-					for(SpaceObject O : allObjects)
+					for(final SpaceObject O : allObjects)
 					{
 						if((O.coordinates()!=null)&&(O.radius()!=0))
 						{
@@ -1535,13 +1535,13 @@ public class RocketShipProgram extends GenShipProgram
 						}
 					}
 				}
-				
+
 				if(landingPlanet == null)
 				{
 					super.addScreenMessage(L("No suitable landing target found within near sensor range."));
 					return;
 				}
-				
+
 				if(this.rocketState!=null)
 				{
 					super.addScreenMessage(L("Warning. Previous program cancelled."));
@@ -1582,7 +1582,7 @@ public class RocketShipProgram extends GenShipProgram
 			else
 			if(!uword.equalsIgnoreCase("HELP"))
 			{
-				ShipEngine engineE=findEngineByName(uword);
+				final ShipEngine engineE=findEngineByName(uword);
 				if(engineE==null)
 				{
 					super.addScreenMessage(L("Error: Unknown engine name or command word '"+uword+"'.   Try HELP."));
@@ -1610,8 +1610,8 @@ public class RocketShipProgram extends GenShipProgram
 				if(parsed.size()==3)
 				{
 					portDir=(TechComponent.ShipDir)CMath.s_valueOf(TechComponent.ShipDir.class, parsed.get(1).toUpperCase().trim());
-					if(portDir!=null) 
-					{ 
+					if(portDir!=null)
+					{
 						if(!CMParms.contains(engineE.getAvailPorts(), portDir))
 						{
 							super.addScreenMessage(L("Error: '@x1' is not a valid direction for that engine.  Try: @x2.",parsed.get(1),CMParms.toListString(engineE.getAvailPorts())));
@@ -1666,13 +1666,13 @@ public class RocketShipProgram extends GenShipProgram
 	}
 
 	@Override
-	public void onActivate(MOB mob, String message)
+	public void onActivate(final MOB mob, final String message)
 	{
 		onTyping(mob,message);
 	}
 
 	@Override
-	public void onDeactivate(MOB mob, String message)
+	public void onDeactivate(final MOB mob, final String message)
 	{
 		final Vector<String> parsed=CMParms.parse(message);
 		if(parsed.size()==0)
@@ -1707,7 +1707,7 @@ public class RocketShipProgram extends GenShipProgram
 	}
 
 	@Override
-	public void onPowerCurrent(int value)
+	public void onPowerCurrent(final int value)
 	{
 		if (System.currentTimeMillis() > nextPowerCycleTmr)
 		{
@@ -1736,7 +1736,7 @@ public class RocketShipProgram extends GenShipProgram
 				{
 					final String[] parts=msg.targetMessage().split(" ");
 					final TechCommand command=TechCommand.findCommand(parts);
-					if((command == TechCommand.SENSE) 
+					if((command == TechCommand.SENSE)
 					&& (msg.tool() instanceof SpaceObject)) // this is a sensor report
 					{
 						this.sensorReport.add((SpaceObject)msg.tool());

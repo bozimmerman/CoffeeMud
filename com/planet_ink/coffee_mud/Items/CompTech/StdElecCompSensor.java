@@ -51,21 +51,21 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 	private static final Filterer<SpaceObject> acceptEverythingFilter = new Filterer<SpaceObject>()
 	{
 		@Override
-		public boolean passesFilter(SpaceObject obj)
+		public boolean passesFilter(final SpaceObject obj)
 		{
 			return true;
 		}
 	};
-	
+
 	private static final Converter<SpaceObject, Environmental> directConverter = new Converter<SpaceObject, Environmental>()
 	{
 		@Override
-		public Environmental convert(SpaceObject obj)
+		public Environmental convert(final SpaceObject obj)
 		{
 			return obj;
 		}
 	};
-	
+
 	/**
 	 * The maximum range of objects that this sensor can detect
 	 * @return maximum range of objects that this sensor can detect
@@ -74,7 +74,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 	{
 		return SpaceObject.Distance.Parsec.dm;
 	}
-	
+
 	/**
 	 * Filter to pick out which objects this sensor can actually pick up.
 	 * @see com.planet_ink.coffee_mud.core.collections.Filterer
@@ -96,10 +96,10 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 		return directConverter;
 	}
 
-	protected boolean doSensing(MOB mob, Software controlI)
+	protected boolean doSensing(final MOB mob, final Software controlI)
 	{
 		final SpaceObject O=CMLib.map().getSpaceObject(this, true);
-		if((O!=null)&&(this.powerRemaining() > this.powerNeeds())) 
+		if((O!=null)&&(this.powerRemaining() > this.powerNeeds()))
 		{
 			final long maxRange = Math.round(getSensorMaxRange() * this.getComputedEfficiency());
 			final List<SpaceObject> found = CMLib.map().getSpaceObjectsWithin(O, O.radius()+1, maxRange);
@@ -126,7 +126,7 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 				{
 					if(filter.passesFilter(obj))
 					{
-						Environmental sensedObject = converter.convert(obj);
+						final Environmental sensedObject = converter.convert(obj);
 						final String code=Technical.TechCommand.SENSE.makeCommand();
 						final CMMsg msg=CMClass.getMsg(mob, controlI, sensedObject, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 						if(controlI.owner() instanceof Room)
@@ -154,27 +154,34 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 			{
 			case CMMsg.TYP_ACTIVATE:
 			{
-				final LanguageLibrary lang=CMLib.lang();
-				final String[] parts=msg.targetMessage().split(" ");
-				final TechCommand command=TechCommand.findCommand(parts);
-				final Software controlI=(msg.tool() instanceof Software)?((Software)msg.tool()):null;
-				final MOB mob=msg.source();
-				if(command==null)
-					reportError(this, controlI, mob, lang.L("@x1 does not respond.",me.name(mob)), lang.L("Failure: @x1: control failure.",me.name(mob)));
+				if(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
+				{
+					final LanguageLibrary lang=CMLib.lang();
+					final String[] parts=msg.targetMessage().split(" ");
+					final TechCommand command=TechCommand.findCommand(parts);
+					final Software controlI=(msg.tool() instanceof Software)?((Software)msg.tool()):null;
+					final MOB mob=msg.source();
+					if(command==null)
+						reportError(this, controlI, mob, lang.L("@x1 does not respond.",me.name(mob)), lang.L("Failure: @x1: control failure.",me.name(mob)));
+					else
+					{
+						final Object[] parms=command.confirmAndTranslate(parts);
+						if(parms==null)
+							reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
+						else
+						if(command == TechCommand.SENSE)
+						{
+							if(doSensing(mob, controlI))
+								this.activate(true);
+
+						}
+						else
+							reportError(this, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
+					}
+				}
 				else
 				{
-					final Object[] parms=command.confirmAndTranslate(parts);
-					if(parms==null)
-						reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control syntax failure.",me.name(mob)));
-					else
-					if(command == TechCommand.SENSE)
-					{
-						if(doSensing(mob, controlI))
-							this.activate(true);
-						
-					}
-					else
-						reportError(this, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));
+					this.activate(true);
 				}
 				break;
 			}

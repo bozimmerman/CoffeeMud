@@ -19,7 +19,7 @@ import java.util.*;
  * The Dice library governs random numbers in various ranges,
  * various hit point generation algorithms, and selecting objects
  * from various lists at random.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -39,7 +39,7 @@ public interface DiceLibrary extends CMLibrary
 	/**
 	 * Takes a score from 0-100, normalizes it to
 	 * between 5 and 95.
-	 * 
+	 *
 	 * @param score the number from 0-100
 	 * @return the number from 5-95
 	 */
@@ -47,59 +47,59 @@ public interface DiceLibrary extends CMLibrary
 
 	/**
 	 * Generates hit points for an NPC based on bizarre
-	 * rules.  
-	 * 
-	 * If the code given is > 32768, then the 
-	 * bits above 23 are number of roles, bits 15-23 
+	 * rules.
+	 *
+	 * If the code given is > 32768, then the
+	 * bits above 23 are number of roles, bits 15-23
 	 * are the die type, and low bits added. The
 	 * level is not used at all.
-	 * 
+	 *
 	 * If the code is < 32768, then the level is
 	 * used in the basic npc formula from the properties.
-	 * The code is then the die-base for the formula. 
-	 * 
+	 * The code is then the die-base for the formula.
+	 *
 	 * @see DiceLibrary#getHPCode(String)
 	 * @see DiceLibrary#getHPCode(int, int, int)
 	 * @see DiceLibrary#getHPBreakup(int, int)
-	 * 
+	 *
 	 * @param level the level of the npc
 	 * @param code the die type, or a bitmap
 	 * @return the hit points to give to the npc
 	 */
 	public int rollHP(int level, int code);
 
-	/** 
+	/**
 	 * This function takes a friendly-ish hit point
 	 * die roll formula and generates a bitmap
 	 * that can be given to the rollHP method.
-	 * The bits above 23 are number of roles, bits 15-23 
-	 * are the die type, and low bits added. 
-	 * 
+	 * The bits above 23 are number of roles, bits 15-23
+	 * are the die type, and low bits added.
+	 *
 	 * The dice roll formula type is, for example
 	 * 4d6+2 which means to roll a six sided die
 	 * 4 times and then add 2.
-	 * 
+	 *
 	 * @see DiceLibrary#getHPCode(int, int, int)
 	 * @see DiceLibrary#rollHP(int, int)
 	 * @see DiceLibrary#getHPBreakup(int, int)
-	 * 
+	 *
 	 * @param str the string to evaluate
 	 * @return the encoded hit points bitmap
 	 */
 	public int getHPCode(String str);
 
 	/**
-	 * This function generates an encoded 32 bit 
+	 * This function generates an encoded 32 bit
 	 * bitmap to represent a die roll for a mob
 	 * hitpoints.
-	 * 
-	 * The bits above 23 are number of roles, bits 15-23 
-	 * are the die type, and low bits added. 
-	 * 
+	 *
+	 * The bits above 23 are number of roles, bits 15-23
+	 * are the die type, and low bits added.
+	 *
 	 * @see DiceLibrary#getHPCode(String)
 	 * @see DiceLibrary#rollHP(int, int)
 	 * @see DiceLibrary#getHPBreakup(int, int)
-	 * 
+	 *
 	 * @param roll the number of die rolls
 	 * @param dice the sides on the die
 	 * @param plus the amount to add to the result
@@ -115,20 +115,20 @@ public interface DiceLibrary extends CMLibrary
 	 * [0] the number of rolls
 	 * [1] the sides of the die
 	 * [2] an amount to add to the total
-	 * 
-	 * If the code given is > 32768, then the 
-	 * bits above 23 are number of roles, bits 15-23 
+	 *
+	 * If the code given is > 32768, then the
+	 * bits above 23 are number of roles, bits 15-23
 	 * are the die type, and low bits added. The
 	 * level is not used at all.
-	 * 
+	 *
 	 * If the code is < 32768, then the level is
-	 * the number of rolls, the code is the sides 
+	 * the number of rolls, the code is the sides
 	 * of the die, and the add is level * level * 0.85.
-	 * 
+	 *
 	 * @see DiceLibrary#getHPCode(String)
 	 * @see DiceLibrary#getHPCode(int, int, int)
 	 * @see DiceLibrary#rollHP(int, int)
-	 * 
+	 *
 	 * @param level the level of the npc
 	 * @param code the die type, or a bitmap
 	 * @return the hit points to give to the npc
@@ -144,13 +144,13 @@ public interface DiceLibrary extends CMLibrary
 	 * @see DiceLibrary#pick(List)
 	 * @see DiceLibrary#pick(int[], int)
 	 * @see DiceLibrary#doublePick(Object[][])
-	 * 
+	 *
 	 * @param set the set to choose from
 	 * @param not null, or a member to not select
 	 * @return an object from the set, except not
 	 */
 	public Object pick(Object[] set, Object not);
-	
+
 	/**
 	 * Selects and returns one of the objects from
 	 * the set.
@@ -160,12 +160,12 @@ public interface DiceLibrary extends CMLibrary
 	 * @see DiceLibrary#pick(List)
 	 * @see DiceLibrary#pick(int[], int)
 	 * @see DiceLibrary#doublePick(Object[][])
-	 * 
+	 *
 	 * @param set the set to choose from
 	 * @return an object from the set
 	 */
 	public Object pick(Object[] set);
-	
+
 	/**
 	 * Selects and returns one of the ints from
 	 * the set, except for the "not" one given
@@ -175,7 +175,7 @@ public interface DiceLibrary extends CMLibrary
 	 * @see DiceLibrary#pick(int[])
 	 * @see DiceLibrary#pick(List)
 	 * @see DiceLibrary#doublePick(Object[][])
-	 * 
+	 *
 	 * @param set the set to choose from
 	 * @param not null, or a member to not select
 	 * @return an int from the set, except not
@@ -191,13 +191,13 @@ public interface DiceLibrary extends CMLibrary
 	 * @see DiceLibrary#pick(List)
 	 * @see DiceLibrary#pick(int[], int)
 	 * @see DiceLibrary#doublePick(Object[][])
-	 * 
+	 *
 	 * @param set the set to choose from
 	 * @return an int from the set
 	 */
 	public int pick(int[] set);
-	
-	
+
+
 	/**
 	 * Selects and returns one of the objects from
 	 * the list.
@@ -207,12 +207,12 @@ public interface DiceLibrary extends CMLibrary
 	 * @see DiceLibrary#pick(int[])
 	 * @see DiceLibrary#pick(int[], int)
 	 * @see DiceLibrary#doublePick(Object[][])
-	 * 
+	 *
 	 * @param set the list to choose from
 	 * @return an object from the list
 	 */
 	public Object pick(List<? extends Object> set);
-	
+
 	/**
 	 * Selects and returns one of the objects from
 	 * the one of the object lists in the set.
@@ -222,7 +222,7 @@ public interface DiceLibrary extends CMLibrary
 	 * @see DiceLibrary#pick(int[])
 	 * @see DiceLibrary#pick(List)
 	 * @see DiceLibrary#pick(int[], int)
-	 * 
+	 *
 	 * @param set the sets to choose from
 	 * @return an object from the sets
 	 */
@@ -230,7 +230,7 @@ public interface DiceLibrary extends CMLibrary
 
 	/**
 	 * Returns a random number from 1-100
-	 *  
+	 *
 	 * @return the random percent number
 	 */
 	public int rollPercentage();
@@ -239,12 +239,12 @@ public interface DiceLibrary extends CMLibrary
 	 * The great workhorse that rolls dice.  It will
 	 * roll a die-sided die number times, and then
 	 * add modifier.
-	 * 
+	 *
 	 * @see DiceLibrary#rollNormalDistribution(int, int, int)
 	 * @see DiceLibrary#rollLowBiased(int, int, int)
 	 * @see DiceLibrary#rollInRange(long, long)
 	 * @see DiceLibrary#rollInRange(int, int)
-	 * 
+	 *
 	 * @param number the number of times to roll
 	 * @param die the sides of the die
 	 * @param modifier the amount to add
@@ -255,12 +255,12 @@ public interface DiceLibrary extends CMLibrary
 	/**
 	 * Returns a random number within the given
 	 * min and max range.
-	 * 
+	 *
 	 * @see DiceLibrary#rollInRange(long, long)
 	 * @see DiceLibrary#roll(int, int, int)
 	 * @see DiceLibrary#rollLowBiased(int, int, int)
 	 * @see DiceLibrary#rollNormalDistribution(int, int, int)
-	 * 
+	 *
 	 * @param min the minimum of the range
 	 * @param max the maximum of the range
 	 * @return a number in the range
@@ -270,12 +270,12 @@ public interface DiceLibrary extends CMLibrary
 	/**
 	 * Returns a random number within the given
 	 * min and max range.
-	 * 
+	 *
 	 * @see DiceLibrary#rollInRange(int, int)
 	 * @see DiceLibrary#roll(int, int, int)
 	 * @see DiceLibrary#rollLowBiased(int, int, int)
 	 * @see DiceLibrary#rollNormalDistribution(int, int, int)
-	 * 
+	 *
 	 * @param min the minimum of the range
 	 * @param max the maximum of the range
 	 * @return a number in the range
@@ -285,48 +285,48 @@ public interface DiceLibrary extends CMLibrary
 	/**
 	 * Rolls dice to generate a random number, but
 	 * in a way that ensures a more balanced distribution.
-	 * 
+	 *
 	 * @see DiceLibrary#roll(int, int, int)
 	 * @see DiceLibrary#rollLowBiased(int, int, int)
 	 * @see DiceLibrary#rollInRange(int, int)
 	 * @see DiceLibrary#rollInRange(long, long)
-	 * 
+	 *
 	 * @param number the number of times to roll
 	 * @param die the sides of the die
 	 * @param modifier the amount to add
 	 * @return the randomly rolled result
 	 */
 	public int rollNormalDistribution(int number, int die, int modifier);
-	
+
 
 	/**
 	 * Rolls dice to generate a random number, but
 	 * in a way that biases the lower numbers.
-	 * 
+	 *
 	 * @see DiceLibrary#roll(int, int, int)
 	 * @see DiceLibrary#rollNormalDistribution(int, int, int)
 	 * @see DiceLibrary#rollInRange(int, int)
 	 * @see DiceLibrary#rollInRange(long, long)
-	 * 
+	 *
 	 * @param number the number of times to roll
 	 * @param die the sides of the die
 	 * @param modifier the amount to add
 	 * @return the randomly rolled result
 	 */
 	public int rollLowBiased(int number, int die, int modifier);
-	
+
 	/**
 	 * Returns the seeded randomizer used by this lib.
-	 * 
+	 *
 	 * @return the randomizer
 	 */
 	public Random getRandomizer();
 
 	/**
 	 * Returns a long from -(range-1) to (range-1)
-	 * 
+	 *
 	 * @see DiceLibrary#plusOrMinus(int)
-	 * 
+	 *
 	 * @param range the range of the random long
 	 * @return the random long
 	 */
@@ -336,26 +336,46 @@ public interface DiceLibrary extends CMLibrary
 	 * Returns an int from -(range-1) to (range-1)
 	 *
 	 * @see DiceLibrary#plusOrMinus(long)
-	 * 
+	 *
 	 * @param range the range of the random int
 	 * @return the random int
 	 */
 	public int plusOrMinus(final int range);
 
 	/**
+	 * Returns a double from -(range) to (range)
+	 *
+	 * @see DiceLibrary#plusOrMinus(long)
+	 *
+	 * @param range the range of the random double
+	 * @return the random double
+	 */
+	public double plusOrMinus(final double range);
+
+	/**
+	 * Returns a float from -(range) to (range)
+	 *
+	 * @see DiceLibrary#plusOrMinus(long)
+	 *
+	 * @param range the range of the random float
+	 * @return the random float
+	 */
+	public float plusOrMinus(final float range);
+
+	/**
 	 * Randomizes the contents of the list.
-	 * 
+	 *
 	 * @see DiceLibrary#scramble(int)
-	 * 
+	 *
 	 * @param objs the list to scramble
 	 */
 	public void scramble(List<?> objs);
-	
+
 	/**
 	 * Randomizes the contents of the set
-	 * 
+	 *
 	 * @see DiceLibrary#scramble(List)
-	 * 
+	 *
 	 * @param objs the set to randomize
 	 */
 	public void scramble(int[] objs);
