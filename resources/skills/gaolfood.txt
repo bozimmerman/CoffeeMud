@@ -2,18 +2,13 @@ spoiled dough	FOOD		1	wheat	1	water	1
 infested flour	FOOD		1	Wheat	1												
 moldy cheese	FOOD		2	milk	5	water	1										
 maggoty cheese	FOOD		2	milk	5												
-soured fruit preserves	FOOD		3	fruit	1												
-rotten berry preserves	FOOD		4	berries	1												
 turned yeast	FOOD		4	infested flour		Sugar		Water									
 maggoty bread	FOOD		1	spoiled dough	1	milk	1										
 stale bread	FOOD		1	spoiled dough	1												
 moldy bread	FOOD		1	spoiled dough	1	water	1										
-putrid orange preserves	FOOD		5	oranges	1												
-gross lemon preserves	FOOD	*Spell_ShrinkMouth;__DELETE__	6	lemons	1												
-maggot pie	FOOD		6	spoiled dough	1	wheat	1										
-sour grape jelly	FOOD		8	grapes	1	sugar	1										
+maggot pie	FOOD		6	spoiled dough	1	turned yeast	1										
 spoiled butter	FOOD		9	milk	3												
-spoiled cream	FOOD		10	milk	2												
+putrid cream	FOOD		10	milk	2												
 slimey pasta	FOOD		11	wheat	1	water	1	eggs	1								
 maggot-egg sandwich	FOOD		22	eggs	1	maggoty bread	1										
 moldy cheese sandwich	FOOD		23	moldy cheese	1	moldy bread	1										
