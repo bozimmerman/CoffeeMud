@@ -184,7 +184,8 @@ public class Tattooing extends CommonSkill
 			return false;
 
 		if((!mob.getGroupMembers(new HashSet<MOB>()).contains(target))
-		&&(!CMLib.flags().isBoundOrHeld(target)))
+		&&(!CMLib.flags().isBoundOrHeld(target))
+		&&(!CMLib.flags().isSleeping(target)))
 		{
 			commonTell(mob,target,null,L("<T-NAME> seem(s) unwilling to cooperate."));
 			return false;
