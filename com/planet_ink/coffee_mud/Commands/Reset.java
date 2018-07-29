@@ -55,7 +55,7 @@ public class Reset extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob, mob.location(), CMSecurity.SecFlag.RESET);
 	}
@@ -65,7 +65,7 @@ public class Reset extends StdCommand
 		SKILLS("/resources/help/skill_help.ini", new Filterer<Ability>()
 		{
 			@Override
-			public boolean passesFilter(Ability A)
+			public boolean passesFilter(final Ability A)
 			{
 				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
 				if(((classCode == Ability.ACODE_SKILL)
@@ -80,7 +80,7 @@ public class Reset extends StdCommand
 		CHANTS("/resources/help/chant_help.ini", new Filterer<Ability>()
 		{
 			@Override
-			public boolean passesFilter(Ability A)
+			public boolean passesFilter(final Ability A)
 			{
 				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
 				if((classCode == Ability.ACODE_CHANT)
@@ -92,7 +92,7 @@ public class Reset extends StdCommand
 		COMMON("/resources/help/common_help.ini", new Filterer<Ability>()
 		{
 			@Override
-			public boolean passesFilter(Ability A)
+			public boolean passesFilter(final Ability A)
 			{
 				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
 				if(classCode == Ability.ACODE_COMMON_SKILL)
@@ -103,7 +103,7 @@ public class Reset extends StdCommand
 		PRAYERS("/resources/help/prayer_help.ini", new Filterer<Ability>()
 		{
 			@Override
-			public boolean passesFilter(Ability A)
+			public boolean passesFilter(final Ability A)
 			{
 				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
 				if((classCode == Ability.ACODE_PRAYER)
@@ -115,7 +115,7 @@ public class Reset extends StdCommand
 		SONGS("/resources/help/songs_help.ini", new Filterer<Ability>()
 		{
 			@Override
-			public boolean passesFilter(Ability A)
+			public boolean passesFilter(final Ability A)
 			{
 				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
 				if((classCode == Ability.ACODE_SONG)
@@ -129,7 +129,7 @@ public class Reset extends StdCommand
 		SPELLS("/resources/help/spell_help.ini", new Filterer<Ability>()
 		{
 			@Override
-			public boolean passesFilter(Ability A)
+			public boolean passesFilter(final Ability A)
 			{
 				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
 				if((classCode == Ability.ACODE_SPELL)
@@ -141,7 +141,7 @@ public class Reset extends StdCommand
 		TRAPS("/resources/help/traps.ini", new Filterer<Ability>()
 		{
 			@Override
-			public boolean passesFilter(Ability A)
+			public boolean passesFilter(final Ability A)
 			{
 				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
 				if((classCode == Ability.ACODE_TRAP)
@@ -153,7 +153,7 @@ public class Reset extends StdCommand
 		POISONS("/resources/help/poisons.ini", new Filterer<Ability>()
 		{
 			@Override
-			public boolean passesFilter(Ability A)
+			public boolean passesFilter(final Ability A)
 			{
 				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
 				if((classCode == Ability.ACODE_POISON)
@@ -165,7 +165,7 @@ public class Reset extends StdCommand
 		DISEASES("/resources/help/diseases.ini", new Filterer<Ability>()
 		{
 			@Override
-			public boolean passesFilter(Ability A)
+			public boolean passesFilter(final Ability A)
 			{
 				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
 				if((classCode == Ability.ACODE_DISEASE)
@@ -177,7 +177,7 @@ public class Reset extends StdCommand
 		PROPERTIES("/resources/help/arc_properties.ini", false, new Filterer<Ability>()
 		{
 			@Override
-			public boolean passesFilter(Ability A)
+			public boolean passesFilter(final Ability A)
 			{
 				final int classCode=A.classificationCode()&Ability.ALL_ACODES;
 				if((classCode == Ability.ACODE_PROPERTY)
@@ -190,20 +190,20 @@ public class Reset extends StdCommand
 		public String file;
 		public Filterer<Ability> filter;
 		public boolean useName;
-		private helpSets(String filePath, Filterer<Ability> filter)
+		private helpSets(final String filePath, final Filterer<Ability> filter)
 		{
 			this(filePath,true,filter);
 		}
 
-		private helpSets(String filePath, boolean useName, Filterer<Ability> filter)
+		private helpSets(final String filePath, final boolean useName, final Filterer<Ability> filter)
 		{
 			file=filePath;
 			this.useName=useName;
 			this.filter=filter;
 		}
 	}
-	
-	public int resetAreaOramaManaI(MOB mob, Item I, Hashtable<String,Integer> rememberI, String lead)
+
+	public int resetAreaOramaManaI(final MOB mob, final Item I, final Hashtable<String,Integer> rememberI, final String lead)
 		throws java.io.IOException
 	{
 		int nochange=0;
@@ -288,7 +288,7 @@ public class Reset extends StdCommand
 		return nochange;
 	}
 
-	public void makeManufacturer(String[] names, TechType[] types)
+	public void makeManufacturer(final String[] names, final TechType[] types)
 	{
 		if(names.length%3!=0)
 			Log.errOut("Test: Not /3 names: "+CMParms.toListString(names));
@@ -329,7 +329,7 @@ public class Reset extends StdCommand
 		}
 	}
 
-	protected int rightImportMat(MOB mob, Item I, boolean openOnly)
+	protected int rightImportMat(final MOB mob, final Item I, final boolean openOnly)
 		throws java.io.IOException
 	{
 		if((I!=null)&&(I.description().trim().length()>0))
@@ -395,7 +395,7 @@ public class Reset extends StdCommand
 		return -1;
 	}
 
-	public String resetWarning(MOB mob, Area A)
+	public String resetWarning(final MOB mob, final Area A)
 	{
 		Room R=null;
 		final StringBuffer warning=new StringBuffer("");
@@ -412,7 +412,7 @@ public class Reset extends StdCommand
 		return warning.toString();
 	}
 
-	public String resetWarning(MOB mob, Room R)
+	public String resetWarning(final MOB mob, final Room R)
 	{
 		if((mob==null)||(R==null))
 			return null;
@@ -449,7 +449,7 @@ public class Reset extends StdCommand
 		return warning.toString();
 	}
 
-	private void reportChangesDestroyNewM(MOB oldM, MOB newM, StringBuffer changes)
+	private void reportChangesDestroyNewM(final MOB oldM, final MOB newM, final StringBuffer changes)
 	{
 		if((changes == null)||(oldM==null))
 			return;
@@ -463,7 +463,7 @@ public class Reset extends StdCommand
 		newM.destroy(); // this was a copy
 	}
 
-	public boolean fixMob(MOB M, StringBuffer recordedChanges)
+	public boolean fixMob(MOB M, final StringBuffer recordedChanges)
 	{
 		final MOB M2 = CMLib.leveler().fillOutMOB(M.baseCharStats().getCurrentClass(),M.basePhyStats().level());
 		if((M.basePhyStats().attackAdjustment() != M2.basePhyStats().attackAdjustment())
@@ -488,13 +488,13 @@ public class Reset extends StdCommand
 		}
 		return false;
 	}
-	
-	public boolean fixWeaponMob(MOB M, StringBuffer recordedChanges)
+
+	public boolean fixWeaponMob(MOB M, final StringBuffer recordedChanges)
 	{
 		final Item W=M.fetchWieldedItem();
 		if(!(W instanceof Weapon))
 			return false;
-		MOB oldM=M;
+		final MOB oldM=M;
 		if(recordedChanges!=null)
 			M=(MOB)M.copyOf();
 		if(M.basePhyStats().damage()>W.basePhyStats().damage())
@@ -509,18 +509,18 @@ public class Reset extends StdCommand
 		}
 		return true;
 	}
-	
-	public boolean compareRaces(String usefulID, Race race1, Race race2, MOB tellM)
+
+	public boolean compareRaces(final String usefulID, final Race race1, final Race race2, final MOB tellM)
 	{
 		boolean same = true;
-		for(String stat : race1.getStatCodes())
+		for(final String stat : race1.getStatCodes())
 		{
 			if(stat.equals("ID")||stat.equals("NAME"))
 				continue;
 			try
 			{
-				String val1=race1.getStat(stat);
-				String val2=race2.getStat(stat);
+				final String val1=race1.getStat(stat);
+				final String val2=race2.getStat(stat);
 				if(!val1.equals(val2))
 				{
 					same=false;
@@ -528,7 +528,7 @@ public class Reset extends StdCommand
 						tellM.tell(usefulID+" "+stat+": '"+val1+"' != '"+val2+"'");
 				}
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				e.printStackTrace();
 			}
@@ -537,7 +537,7 @@ public class Reset extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		commands.remove(0);
@@ -605,7 +605,7 @@ public class Reset extends StdCommand
 				return false;
 			}
 			rest=(commands.size()>0)?CMParms.combine(commands,0):"";
-			int x=rest.indexOf('-');
+			final int x=rest.indexOf('-');
 			if(x<0)
 			{
 				mob.tell(L("You need to specify a new level range X - Y."));
@@ -624,6 +624,7 @@ public class Reset extends StdCommand
 			{
 				if(sess!=null)
 					sess.print(L("Working..."));
+				Log.infoOut(mob.Name()+" RESET RELEVELED "+A.name()+" to "+levelLow+"->"+levelHigh);
 				final int[] stats = A.getAreaIStats();
 				final int oldMinLevel = stats[Area.Stats.MIN_LEVEL.ordinal()];
 				final int oldMaxLevel = stats[Area.Stats.MAX_LEVEL.ordinal()];
@@ -659,7 +660,7 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("sorthelp"))
 		{
-			List<helpSets> sets = new ArrayList<helpSets>();
+			final List<helpSets> sets = new ArrayList<helpSets>();
 			if((rest==null)||(rest.length()==0))
 			{
 				mob.tell("Which? "+CMParms.toListString(helpSets.values())+", ALL");
@@ -692,20 +693,21 @@ public class Reset extends StdCommand
 				}
 				sets.add(help);
 			}
-			
+
+			Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 			for(final helpSets help : sets)
 			{
 				mob.tell("Processing: "+help.file);
-				CMFile F=new CMFile(help.file,mob);
-				
-				List<String> batch=Resources.getFileLineVector(F.text());
-				List<StringBuilder> batches = new ArrayList<StringBuilder>();
-				Map<String,StringBuilder> ids=new Hashtable<String,StringBuilder>();
+				final CMFile F=new CMFile(help.file,mob);
+
+				final List<String> batch=Resources.getFileLineVector(F.text());
+				final List<StringBuilder> batches = new ArrayList<StringBuilder>();
+				final Map<String,StringBuilder> ids=new Hashtable<String,StringBuilder>();
 				StringBuilder currentBatch = null;
 				boolean continueLine = false;
-				for(String s1 : batch)
+				for(final String s1 : batch)
 				{
-					int x=s1.indexOf('=');
+					final int x=s1.indexOf('=');
 					if(currentBatch == null)
 					{
 						if(s1.trim().length()==0)
@@ -745,17 +747,17 @@ public class Reset extends StdCommand
 						}
 					}
 				}
-				PairList<String,StringBuilder> skills=new PairVector<String,StringBuilder>();
+				final PairList<String,StringBuilder> skills=new PairVector<String,StringBuilder>();
 				for(final Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 				{
 					final Ability A=e.nextElement();
 					if(help.filter.passesFilter(A))
 					{
-						StringBuilder[] bup=new StringBuilder[10];
+						final StringBuilder[] bup=new StringBuilder[10];
 						bup[0]=ids.get(A.Name().toUpperCase().replace(' ','_'));
 						if(bup[0]==null)
 						{
-							int xx=A.ID().indexOf('_');
+							final int xx=A.ID().indexOf('_');
 							if(xx>0)
 								bup[0]=ids.get((A.ID().substring(0,xx)+"_"+A.Name()).toUpperCase().replace(' ','_'));
 						}
@@ -778,11 +780,11 @@ public class Reset extends StdCommand
 							if(bp==null)
 							{
 								bp=bup[0];
-								int xx=bp.toString().indexOf("=<ABILITY>");
+								final int xx=bp.toString().indexOf("=<ABILITY>");
 								if(xx>0)
 								{
 									ids.put(A.ID().toUpperCase(), bp);
-									int yy=bp.toString().lastIndexOf('\r',xx);
+									final int yy=bp.toString().lastIndexOf('\r',xx);
 									if(yy>0)
 									{
 										bp.insert(0, A.ID().toUpperCase()+"="+bp.toString().substring(yy+1,xx)+"\n\r");
@@ -809,9 +811,9 @@ public class Reset extends StdCommand
 						}
 					}
 				}
-				for(StringBuilder b : batches)
+				for(final StringBuilder b : batches)
 				{
-					int x=b.toString().indexOf('=');
+					final int x=b.toString().indexOf('=');
 					if(x<0)
 					{
 						mob.tell("Error: Unused: "+CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(CMStrings.replaceAll(b.substring(0,30),"\n"," "),"\r"," "),"\\n"," "),"\\r"," "));
@@ -826,13 +828,13 @@ public class Reset extends StdCommand
 				Collections.sort(skills,new Comparator<Pair<String,StringBuilder>>()
 				{
 					@Override
-					public int compare(Pair<String, StringBuilder> o1, Pair<String, StringBuilder> o2)
+					public int compare(final Pair<String, StringBuilder> o1, final Pair<String, StringBuilder> o2)
 					{
 						return o1.first.compareTo(o2.first);
 					}
 				});
-				StringBuilder finalTxt = new StringBuilder("");
-				for(Pair<String,StringBuilder> p : skills)
+				final StringBuilder finalTxt = new StringBuilder("");
+				for(final Pair<String,StringBuilder> p : skills)
 				{
 					finalTxt.append(p.second);
 					finalTxt.append("\n\r");
@@ -869,7 +871,7 @@ public class Reset extends StdCommand
 				mob.tell(L("Cancelled."));
 		}
 		else
-		if(s.equalsIgnoreCase("password") 
+		if(s.equalsIgnoreCase("password")
 		&&(CMSecurity.isAllowedEverywhere(mob, CMSecurity.SecFlag.CMDPLAYERS)))
 		{
 			commands.remove(0);
@@ -922,13 +924,14 @@ public class Reset extends StdCommand
 			{
 				if((mob.session()==null)||(mob.session().confirm(L("Generate a random password for '@x1' and email to '@x2' (Y/n)?",finalName,stat.getEmail()),"Y")))
 				{
-					String password=CMLib.encoder().generateRandomPassword();
+					Log.infoOut(mob.Name()+" did: RESET PASSWORD "+name);
+					final String password=CMLib.encoder().generateRandomPassword();
 					stat.setPassword(password);
 					if(stat instanceof PlayerAccount)
 						CMLib.database().DBUpdateAccount((PlayerAccount)stat);
 					if(M!=null)
 						CMLib.database().DBUpdatePassword(M.Name(),stat.getPasswordStr());
-					CMLib.smtp().emailOrJournal(finalName, "noreply", 
+					CMLib.smtp().emailOrJournal(finalName, "noreply",
 							stat.getEmail(), L("Password for @x1",finalName),
 							L("Your password for @x1 at @x2 has been reset by @x3.  ",finalName,CMProps.getVar(CMProps.Str.MUDDOMAIN),mob.Name())+
 							L("It is now: '@x1'.",password));
@@ -939,13 +942,13 @@ public class Reset extends StdCommand
 			else
 			if((mob.session()==null)||(mob.session().confirm(L("Would you like to set the password for '@x1' to '@x2' (Y/n)?",finalName,finalName.toLowerCase()),"Y")))
 			{
-				String password=finalName.toLowerCase();
+				final String password=finalName.toLowerCase();
 				stat.setPassword(password);
 				if(stat instanceof PlayerAccount)
 					CMLib.database().DBUpdateAccount((PlayerAccount)stat);
 				if(M!=null)
 					CMLib.database().DBUpdatePassword(M.Name(),stat.getPasswordStr());
-				CMLib.smtp().emailOrJournal(finalName, "noreply", 
+				CMLib.smtp().emailOrJournal(finalName, "noreply",
 						stat.getEmail(), L("Password for @x1",finalName),
 						L("Your password for @x1 at @x2 has been reset by @x3. ",finalName,CMProps.getVar(CMProps.Str.MUDDOMAIN),mob.Name())+
 						L("It is now: '@x1'.",password));
@@ -1016,6 +1019,7 @@ public class Reset extends StdCommand
 					break;
 				}
 			}
+			Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 			number=0;
 			if(!somethingDone)
 			for(final Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
@@ -1066,6 +1070,7 @@ public class Reset extends StdCommand
 		{
 			final Area A=mob.location().getArea();
 			boolean somethingDone=false;
+			Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 			for(final Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
 			{
 				Room R=e.nextElement();
@@ -1122,6 +1127,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session().confirm(L("Reset all unowned property to default room descriptions?"), L("N")))
 			{
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				Room R=null;
 				LandTitle T=null;
 				for(final Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
@@ -1147,6 +1153,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session().confirm(L("Alter the stat gains every generic race automatically?"), L("N")))
 			{
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 				{
 					final Race R=e.nextElement();
@@ -1180,6 +1187,7 @@ public class Reset extends StdCommand
 		{
 			if(mob.session().confirm(L("Alter the aging charts of every race automatically?"), L("N")))
 			{
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 				{
 					final Race R=e.nextElement();
@@ -1231,11 +1239,12 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("genmixedracebuilds")&&(CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDRACES)))
 		{
-			List<Race> racesToDo = new ArrayList<Race>();
+			final List<Race> racesToDo = new ArrayList<Race>();
 			if(rest.length()==0)
 			{
 				if(mob.session().confirm(L("Recreate all the gen-mixed-races?!"), L("N")))
 				{
+					Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 					for(final Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 					{
 						final Race R=e.nextElement();
@@ -1258,29 +1267,29 @@ public class Reset extends StdCommand
 				else
 					racesToDo.add(R);
 			}
-				
+
 			if(racesToDo.size()>0)
 			{
-				for(Race R : racesToDo)
+				for(final Race R : racesToDo)
 				{
 					CMLib.database().DBDeleteRace(R.ID());
 					CMClass.delRace(R);
 				}
-				for(Race R : racesToDo)
+				for(final Race R : racesToDo)
 				{
 					final List<Race> racesToBaseFrom=CMLib.utensils().getConstituantRaces(R.ID());
 					Race R1=racesToBaseFrom.get(0);
 					for(int r=1;r<racesToBaseFrom.size();r++)
 					{
-						Race R2=racesToBaseFrom.get(r);
-						Race R3=CMLib.utensils().getMixedRace(R1.ID(),R2.ID(), false);
+						final Race R2=racesToBaseFrom.get(r);
+						final Race R3=CMLib.utensils().getMixedRace(R1.ID(),R2.ID(), false);
 						R1=R3;
 					}
 					if(!R1.ID().equals(R.ID()))
 					{
 						if(R1.ID().equalsIgnoreCase(R.ID()))
 						{
-							String oldID = R.ID();
+							final String oldID = R.ID();
 							R1.setStat("ID", R.ID());
 							mob.tell("Name Fixed: "+oldID+" into "+R1.ID());
 							CMLib.database().DBDeleteRace(oldID);
@@ -1288,7 +1297,7 @@ public class Reset extends StdCommand
 						}
 						else
 						{
-							Race R1R=(Race)R1.copyOf();
+							final Race R1R=(Race)R1.copyOf();
 							R1R.setStat("ID", R.ID());
 							if(R.ID().length()!=R1R.ID().length())
 							{
@@ -1296,8 +1305,8 @@ public class Reset extends StdCommand
 								R1=racesToBaseFrom.get(0);
 								for(int r=1;r<racesToBaseFrom.size();r++)
 								{
-									Race R2=racesToBaseFrom.get(r);
-									Race R3=CMLib.utensils().getMixedRace(R1.ID(),R2.ID(), true);
+									final Race R2=racesToBaseFrom.get(r);
+									final Race R3=CMLib.utensils().getMixedRace(R1.ID(),R2.ID(), true);
 									R1=R3;
 								}
 								if(!R1.ID().equals(R.ID()))
@@ -1331,6 +1340,7 @@ public class Reset extends StdCommand
 			}
 			if(mob.session().confirm(L("Inspect and update all COIN objects in player bank accounts?"), L("N")))
 			{
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				final List<JournalEntry> V=CMLib.database().DBReadJournalMsgsByUpdateDate(bank, true);
 				for(int v=0;v<V.size();v++)
 				{
@@ -1349,7 +1359,7 @@ public class Reset extends StdCommand
 			}
 		}
 		else
-		if(s.equalsIgnoreCase("mobstats")&&(CMSecurity.isASysOp(mob)))
+		if(s.equalsIgnoreCase("mobcombatstats")&&(CMSecurity.isASysOp(mob)))
 		{
 			s="room";
 			if(commands.size()>1)
@@ -1358,6 +1368,7 @@ public class Reset extends StdCommand
 				return false;
 			if(mob.session().confirm(L("Alter every mobs combat stats to system defaults?!"), L("N")))
 			{
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				mob.session().print(L("working..."));
 				StringBuffer recordedChanges=null;
 				for(int i=1;i<commands.size();i++)
@@ -1487,6 +1498,7 @@ public class Reset extends StdCommand
 				return false;
 			if(mob.session().confirm(L("Alter weapon bearing mobs damage stat to damage-weapon or 0?!"), L("N")))
 			{
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				mob.session().print(L("working..."));
 				StringBuffer recordedChanges=null;
 				for(int i=1;i<commands.size();i++)
@@ -1614,6 +1626,7 @@ public class Reset extends StdCommand
 			if(mob.session().confirm(L("Alter every door called 'the ground'?!"), L("N")))
 			{
 				mob.session().print(L("working..."));
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				try
 				{
 					for(final Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
@@ -1653,6 +1666,7 @@ public class Reset extends StdCommand
 			if(mob.session().confirm(L("Change all mobs armor to the codebase defaults?"), L("N")))
 			{
 				mob.session().print(L("working..."));
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
 					final Area A=a.nextElement();
@@ -1702,6 +1716,7 @@ public class Reset extends StdCommand
 			if(mob.session().confirm(L("Alter every mobs money to system defaults?!"), L("N")))
 			{
 				mob.session().print(L("working..."));
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
 					final Area A=a.nextElement();
@@ -1762,6 +1777,7 @@ public class Reset extends StdCommand
 			if(mob.session().confirm(L("Add this behavior/property to every Area?"), L("N")))
 			{
 				mob.session().print(L("working..."));
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
 					final Area A=a.nextElement();
@@ -1818,6 +1834,7 @@ public class Reset extends StdCommand
 			if(mob.session().confirm(L("Begin scanning and altering the material type of all items?"), L("N")))
 			{
 				mob.session().print(L("working..."));
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				for(final Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
 					final Area A=a.nextElement();
@@ -1884,118 +1901,125 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("mixedraces")&&(CMSecurity.isASysOp(mob)))
 		{
-			List<List<Race>> raceSets=new ArrayList<List<Race>>();
-			for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+			if(mob.session()==null)
+				return false;
+			if(mob.session().confirm(L("Begin scanning mixed generic races for descrepencies?"), L("N")))
 			{
-				Race R=r.nextElement();
-				if(R.isGeneric())
+				mob.session().print(L("working..."));
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
+				final List<List<Race>> raceSets=new ArrayList<List<Race>>();
+				for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
-					Set<String> genericOnlyFound=new TreeSet<String>();
-					List<String> raceParts = new ArrayList<String>();
-					String name=R.name();
-					if(name.startsWith("Half "))
+					final Race R=r.nextElement();
+					if(R.isGeneric())
 					{
-						name=name.substring(5);
-						raceParts.add("Human");
-					}
-					raceParts.addAll(Arrays.asList(name.split("-")));
-					for(int i=0;i<raceParts.size();i++)
-					{
-						if(raceParts.get(i).equalsIgnoreCase("Man")
-						&&(i<raceParts.size()-1)
-						&&raceParts.get(i+1).equalsIgnoreCase("Scorpion"))
+						final Set<String> genericOnlyFound=new TreeSet<String>();
+						final List<String> raceParts = new ArrayList<String>();
+						String name=R.name();
+						if(name.startsWith("Half "))
 						{
-							raceParts.set(i, "Man-Scorpion");
-							raceParts.remove(i+1);
+							name=name.substring(5);
+							raceParts.add("Human");
 						}
-					}
-					List<Race> races = new ArrayList<Race>();
-					raceSets.add(races);
-					for(int i=0;i<raceParts.size();i++)
-					{
-						final String racePart=raceParts.get(i);
-						Race R1=CMClass.findRace(racePart);
-						if(R1!=null)
+						raceParts.addAll(Arrays.asList(name.split("-")));
+						for(int i=0;i<raceParts.size();i++)
 						{
-							if(!R1.isGeneric())
-								races.add(R1);
-							else
+							if(raceParts.get(i).equalsIgnoreCase("Man")
+							&&(i<raceParts.size()-1)
+							&&raceParts.get(i+1).equalsIgnoreCase("Scorpion"))
 							{
-								String lastPart=raceParts.get(i);
-								if(lastPart.equals("Whelpling"))
-									races.add(R1);
-								else
-								if(!lastPart.endsWith("ling"))
-									races.add(R1);
-								else
-								if(CMClass.findRace(lastPart.substring(0,lastPart.length()-4))!=null)
-									races.add(R1);
-								else
-									genericOnlyFound.add(R1.ID());
+								raceParts.set(i, "Man-Scorpion");
+								raceParts.remove(i+1);
 							}
 						}
-						else
+						final List<Race> races = new ArrayList<Race>();
+						raceSets.add(races);
+						for(int i=0;i<raceParts.size();i++)
 						{
-							mob.tell("No race: "+racePart +" from "+R.name()+"("+R.ID()+")");
-						}
-					}
-					if(genericOnlyFound.size()>0)
-						mob.tell("Found generic races not handled: "+CMParms.toListString(genericOnlyFound));
-				}
-			}
-			for(int i=raceSets.size()-1;i>=0;i--)
-			{
-				List<Race> races=raceSets.get(i);
-				if(races.size()==1)
-				{
-					Race originalRace = races.get(0);
-					Race race2=races.get(0);
-					if((race2.ID().endsWith("ling"))
-					&&(!race2.ID().equals("Whelpling"))
-					&&race2.isGeneric())
-					{
-						final Race race1=CMClass.getRace(race2.ID().substring(0,race2.ID().length()-4));
-						if(race1!=null)
-						{
-							race2=CMClass.getRace("Halfling");
-							Race finalR=race1.mixRace(race2,originalRace.ID(),originalRace.name());
-							if(finalR.isGeneric())
+							final String racePart=raceParts.get(i);
+							final Race R1=CMClass.findRace(racePart);
+							if(R1!=null)
 							{
-								compareRaces(originalRace.ID(),originalRace,finalR,mob);
+								if(!R1.isGeneric())
+									races.add(R1);
+								else
+								{
+									final String lastPart=raceParts.get(i);
+									if(lastPart.equals("Whelpling"))
+										races.add(R1);
+									else
+									if(!lastPart.endsWith("ling"))
+										races.add(R1);
+									else
+									if(CMClass.findRace(lastPart.substring(0,lastPart.length()-4))!=null)
+										races.add(R1);
+									else
+										genericOnlyFound.add(R1.ID());
+								}
 							}
 							else
-								mob.tell("Failed single race:"+race2.ID());
+							{
+								mob.tell("No race: "+racePart +" from "+R.name()+"("+R.ID()+")");
+							}
+						}
+						if(genericOnlyFound.size()>0)
+							mob.tell("Found generic races not handled: "+CMParms.toListString(genericOnlyFound));
+					}
+				}
+				for(int i=raceSets.size()-1;i>=0;i--)
+				{
+					final List<Race> races=raceSets.get(i);
+					if(races.size()==1)
+					{
+						final Race originalRace = races.get(0);
+						Race race2=races.get(0);
+						if((race2.ID().endsWith("ling"))
+						&&(!race2.ID().equals("Whelpling"))
+						&&race2.isGeneric())
+						{
+							final Race race1=CMClass.getRace(race2.ID().substring(0,race2.ID().length()-4));
+							if(race1!=null)
+							{
+								race2=CMClass.getRace("Halfling");
+								final Race finalR=race1.mixRace(race2,originalRace.ID(),originalRace.name());
+								if(finalR.isGeneric())
+								{
+									compareRaces(originalRace.ID(),originalRace,finalR,mob);
+								}
+								else
+									mob.tell("Failed single race:"+race2.ID());
+							}
+							else
+								mob.tell("Undoable single race:"+race2.ID());
+						}
+						raceSets.remove(i);
+					}
+				}
+				for(int i=0;i<raceSets.size();i++)
+				{
+					final List<Race> races=raceSets.get(i);
+					final Race lastRace=races.get(races.size()-1);
+					for(int r=races.size()-2;r>=0;r--)
+					{
+						final Race race2=lastRace;
+						final Race race1=races.get(r);
+						final Race finalR=race1.mixRace(race2,"TempID","TempName");
+						if(finalR.isGeneric())
+						{
+							Race compareR=CMClass.getRace(race1.ID()+race2.ID());
+							if(compareR==null)
+								compareR=CMClass.getRace(race2.ID()+race1.ID());
+							if(compareR==null)
+								mob.tell("Can't find "+race1.ID()+"-"+race2.ID());
+							else
+								compareRaces(race1.ID()+race2.ID(),compareR,finalR,mob);
 						}
 						else
-							mob.tell("Undoable single race:"+race2.ID());
+							mob.tell("Failed single race:"+race2.ID());
 					}
-					raceSets.remove(i);
 				}
+				//Race R1=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID());
 			}
-			for(int i=0;i<raceSets.size();i++)
-			{
-				List<Race> races=raceSets.get(i);
-				Race lastRace=races.get(races.size()-1);
-				for(int r=races.size()-2;r>=0;r--)
-				{
-					Race race2=lastRace;
-					Race race1=races.get(r);
-					Race finalR=race1.mixRace(race2,"TempID","TempName");
-					if(finalR.isGeneric())
-					{
-						Race compareR=CMClass.getRace(race1.ID()+race2.ID());
-						if(compareR==null)
-							compareR=CMClass.getRace(race2.ID()+race1.ID());
-						if(compareR==null)
-							mob.tell("Can't find "+race1.ID()+"-"+race2.ID());
-						else
-							compareRaces(race1.ID()+race2.ID(),compareR,finalR,mob);
-					}
-					else
-						mob.tell("Failed single race:"+race2.ID());
-				}
-			}
-			//Race R1=CMLib.utensils().getMixedRace(firstR.ID(),secondR.ID());
 		}
 		else
 		if(s.equalsIgnoreCase("itemstats")&&(CMSecurity.isASysOp(mob)))
@@ -2009,6 +2033,7 @@ public class Reset extends StdCommand
 			if(mob.session().confirm(L("Begin scanning and altering all items to system defaults?"), L("N")))
 			{
 				mob.session().print(L("working..."));
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				StringBuffer recordedChanges=null;
 				for(int i=1;i<commands.size();i++)
 				{
@@ -2018,7 +2043,7 @@ public class Reset extends StdCommand
 						break;
 					}
 				}
-	
+
 				final ArrayList<Room> rooms=new ArrayList<Room>();
 				if(s.toUpperCase().startsWith("ROOM"))
 					rooms.add(mob.location());
@@ -2102,7 +2127,7 @@ public class Reset extends StdCommand
 					}
 					synchronized(("SYNC"+R.roomID()).intern())
 					{
-	
+
 						R=CMLib.map().getRoom(R);
 						CMLib.map().resetRoom(R, true);
 						boolean changedMOBS=false;
@@ -2180,6 +2205,7 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("VISITATION"))
 		{
+			Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 			try
 			{
 				if(commands.size()>1)
@@ -2190,6 +2216,11 @@ public class Reset extends StdCommand
 					area=true;
 					if(commands.size()>2)
 						s=commands.get(2);
+				}
+				if(s.length()==0)
+				{
+					mob.tell("Reset whose visitation?");
+					return false;
 				}
 				final MOB M=CMLib.players().getLoadPlayer(s);
 				if((M!=null)&&(M.playerStats()!=null))
@@ -2211,6 +2242,7 @@ public class Reset extends StdCommand
 			{
 				// this is just utility code and will change frequently
 				final Area A=mob.location().getArea();
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				CMLib.map().resetArea(A);
 				A.setAreaState(Area.State.FROZEN);
 				final Hashtable<String,Integer> rememberI=new Hashtable<String,Integer>();
@@ -2425,6 +2457,7 @@ public class Reset extends StdCommand
 			String[] names;
 			if(mob.session().confirm(L("Re-create all the manufacturers?"), L("N")))
 			{
+				Log.infoOut(mob.Name()+" did: RESET "+CMParms.combine(commands));
 				final List<Manufacturer> m=new XVector<Manufacturer>(CMLib.tech().manufacterers());
 				for(final Manufacturer M : m)
 					CMLib.tech().delManufacturer(M);
