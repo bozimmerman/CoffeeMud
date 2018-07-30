@@ -101,6 +101,7 @@ public class DefaultLawSet implements Law
 	private List<String>chitChat	= new Vector<String>();
 	private List<String>chitChat2	= new Vector<String>();
 	private List<String>chitChat3	= new Vector<String>();
+	private List<String>chitChat4	= new Vector<String>();
 	private List<String>jailRooms	= new Vector<String>();
 	private List<String>releaseRooms= new Vector<String>();
 	private List<String>officerNames= new Vector<String>();
@@ -123,7 +124,7 @@ public class DefaultLawSet implements Law
 	private final Integer[] jailTimes=new Integer[4];
 
 	@Override
-	public void initialize(LegalBehavior details, Properties laws, boolean modifiableNames, boolean modifiableLaws)
+	public void initialize(final LegalBehavior details, final Properties laws, final boolean modifiableNames, final boolean modifiableLaws)
 	{
 		legalDetails=details;
 		namesModifiable=modifiableNames;
@@ -131,43 +132,43 @@ public class DefaultLawSet implements Law
 		resetLaw(laws);
 	}
 
-	@Override 
-	public List<List<String>> otherCrimes() 
-	{ 
+	@Override
+	public List<List<String>> otherCrimes()
+	{
 		return otherCrimes;
 	}
-	
-	@Override 
-	public List<String[]> otherBits() 
-	{ 
+
+	@Override
+	public List<String[]> otherBits()
+	{
 		return otherBits;
 	}
-	
-	@Override 
-	public List<List<String>> bannedSubstances() 
-	{ 
+
+	@Override
+	public List<List<String>> bannedSubstances()
+	{
 		return bannedSubstances;
 	}
-	
-	@Override 
-	public List<String[]> bannedBits() 
-	{ 
+
+	@Override
+	public List<String[]> bannedBits()
+	{
 		return bannedBits;
 	}
-	
-	@Override 
+
+	@Override
 	public Map<String,String[]> abilityCrimes()
-	{ 
+	{
 		return abilityCrimes;
 	}
-	
-	@Override 
+
+	@Override
 	public Map<String,String[]> basicCrimes()
-	{ 
+	{
 		return basicCrimes;
 	}
-	
-	@Override 
+
+	@Override
 	public Map<String, Object> taxLaws()
 	{
 		return taxLaws;
@@ -178,105 +179,111 @@ public class DefaultLawSet implements Law
 	{
 		return namesModifiable;
 	}
-	
-	@Override 
+
+	@Override
 	public boolean hasModifiableLaws()
 	{
 		return lawsModifiable;
 	}
 
-	@Override 
+	@Override
 	public List<String> chitChat()
-	{ 
+	{
 		return chitChat;
 	}
-	
-	@Override 
+
+	@Override
 	public List<String> chitChat2()
-	{ 
+	{
 		return chitChat2;
 	}
-	
-	@Override 
+
+	@Override
 	public List<String> chitChat3()
-	{ 
+	{
 		return chitChat3;
 	}
-	
-	@Override 
+
+	@Override
+	public List<String> chitChat4()
+	{
+		return chitChat4;
+	}
+
+	@Override
 	public List<String> jailRooms()
-	{ 
+	{
 		return jailRooms;
 	}
-	
-	@Override 
+
+	@Override
 	public List<String> releaseRooms()
-	{ 
+	{
 		return releaseRooms;
 	}
-	
-	@Override 
+
+	@Override
 	public List<String> officerNames()
-	{ 
+	{
 		return officerNames;
 	}
-	
-	@Override 
+
+	@Override
 	public List<String> judgeNames()
-	{ 
+	{
 		return judgeNames;
 	}
-	
-	@Override 
+
+	@Override
 	public String[] messages()
-	{ 
+	{
 		return messages;
 	}
 
-	@Override 
+	@Override
 	public List<LegalWarrant> oldWarrants()
-	{ 
+	{
 		return oldWarrants;
 	}
-	
-	@Override 
+
+	@Override
 	public List<LegalWarrant> warrants()
-	{ 
+	{
 		return warrants;
 	}
 
-	@Override 
+	@Override
 	public boolean arrestMobs()
-	{ 
+	{
 		return arrestMobs;
 	}
 
-	@Override 
+	@Override
 	public String[] paroleMessages()
-	{ 
+	{
 		return paroleMessages;
 	}
-	
-	@Override 
+
+	@Override
 	public Integer[] paroleTimes()
-	{ 
+	{
 		return paroleTimes;
 	}
 
-	@Override 
+	@Override
 	public String[] jailMessages()
-	{ 
+	{
 		return jailMessages;
 	}
-	
-	@Override 
+
+	@Override
 	public Integer[] jailTimes()
-	{ 
+	{
 		return jailTimes;
 	}
 
 	@Override
-	public void changeStates(LegalWarrant W, int state)
+	public void changeStates(final LegalWarrant W, final int state)
 	{
 		if((W==null)||(W.criminal()==null))
 			return;
@@ -292,7 +299,7 @@ public class DefaultLawSet implements Law
 	}
 
 	@Override
-	public TreasurySet getTreasuryNSafe(Area A)
+	public TreasurySet getTreasuryNSafe(final Area A)
 	{
 		Room treasuryR=null;
 		Container container=null;
@@ -338,13 +345,13 @@ public class DefaultLawSet implements Law
 		return new Law.TreasurySet(treasuryR,container);
 	}
 
-	protected boolean sendGameMail(final String mailBox, final String subject, String message)
+	protected boolean sendGameMail(final String mailBox, final String subject, final String message)
 	{
 		CMLib.smtp().emailOrJournal(mailBox,mailBox, mailBox, subject, message);
 		return true;
 	}
 
-	protected boolean notifyPlayer(final String ownerName, String owerName, final double owed, final String fourWord, final String subject, String message)
+	protected boolean notifyPlayer(final String ownerName, String owerName, final double owed, final String fourWord, final String subject, final String message)
 	{
 		MOB M=CMLib.players().getPlayerAllHosts(ownerName);
 		if((M!=null)&&(CMLib.flags().isInTheGame(M, true)))
@@ -370,13 +377,13 @@ public class DefaultLawSet implements Law
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void propertyTaxTick(final Area A, final boolean debugging)
 	{
 		if(!Resources.isResource("SYSTEM_TAXES_LASTCHECK"))
 			Resources.submitResource("SYSTEM_TAXES_LASTCHECK", Integer.valueOf(A.getTimeObj().getMonth()));
-		int lastMonthChecked = ((Integer)Resources.getResource("SYSTEM_TAXES_LASTCHECK")).intValue();
+		final int lastMonthChecked = ((Integer)Resources.getResource("SYSTEM_TAXES_LASTCHECK")).intValue();
 		if(lastMonthChecked!=A.getTimeObj().getMonth())
 		{
 			Resources.submitResource("SYSTEM_TAXES_LASTCHECK", Integer.valueOf(A.getTimeObj().getMonth()));
@@ -477,7 +484,7 @@ public class DefaultLawSet implements Law
 							owedOnThisLand-=(paid/particulars.size());
 							if(owedOnThisLand>0)
 							{
-								int oldBackTaxes = T.backTaxes();
+								final int oldBackTaxes = T.backTaxes();
 								T.setBackTaxes((int)Math.round(oldBackTaxes+owedOnThisLand));
 								if(CMath.div(T.getPrice(),T.backTaxes())<2.0)
 								{
@@ -602,7 +609,7 @@ public class DefaultLawSet implements Law
 	}
 
 	@Override
-	public String getMessage(int which)
+	public String getMessage(final int which)
 	{
 		if((which>=0)&&(which<messages.length)&&(messages[which]!=null))
 			return messages[which];
@@ -610,7 +617,7 @@ public class DefaultLawSet implements Law
 	}
 
 	@Override
-	public String paroleMessages(int which)
+	public String paroleMessages(final int which)
 	{
 		if((which>=0)
 		&&(which<paroleMessages.length)
@@ -620,7 +627,7 @@ public class DefaultLawSet implements Law
 	}
 
 	@Override
-	public int paroleTimes(int which)
+	public int paroleTimes(final int which)
 	{
 		if((which>=0)
 		&&(which<paroleTimes.length)
@@ -630,7 +637,7 @@ public class DefaultLawSet implements Law
 	}
 
 	@Override
-	public String jailMessages(int which)
+	public String jailMessages(final int which)
 	{
 		if((which>=0)
 		&&(which<jailMessages.length)
@@ -640,7 +647,7 @@ public class DefaultLawSet implements Law
 	}
 
 	@Override
-	public int jailTimes(int which)
+	public int jailTimes(final int which)
 	{
 		if((which>=0)
 		&&(which<jailTimes.length)
@@ -650,7 +657,7 @@ public class DefaultLawSet implements Law
 	}
 
 	@Override
-	public String getInternalStr(String msg)
+	public String getInternalStr(final String msg)
 	{
 		if((theLaws!=null)&&(theLaws.get(msg)!=null))
 			return (String)theLaws.get(msg);
@@ -658,7 +665,7 @@ public class DefaultLawSet implements Law
 	}
 
 	@Override
-	public boolean isInternalStr(String msg)
+	public boolean isInternalStr(final String msg)
 	{
 		if((theLaws!=null)&&(theLaws.get(msg)!=null))
 			return true;
@@ -666,7 +673,7 @@ public class DefaultLawSet implements Law
 	}
 
 	@Override
-	public void setInternalStr(String tag, String value)
+	public void setInternalStr(final String tag, final String value)
 	{
 		if(theLaws!=null)
 		{
@@ -676,9 +683,9 @@ public class DefaultLawSet implements Law
 		}
 	}
 
-	@Override 
+	@Override
 	public boolean lawIsActivated()
-	{ 
+	{
 		return activated;
 	}
 
@@ -689,7 +696,7 @@ public class DefaultLawSet implements Law
 			resetLaw(theLaws);
 	}
 
-	private void resetLaw(Properties laws)
+	private void resetLaw(final Properties laws)
 	{
 		theLaws=laws;
 		activated=(!getInternalStr("ACTIVATED").equalsIgnoreCase("FALSE"));
@@ -697,6 +704,7 @@ public class DefaultLawSet implements Law
 		chitChat=CMParms.parse(getInternalStr("CHITCHAT"));
 		chitChat2=CMParms.parse(getInternalStr("CHITCHAT2"));
 		chitChat3=CMParms.parse(getInternalStr("CHITCHAT3"));
+		chitChat4=CMParms.parse(getInternalStr("CHITCHAT4"));
 		judgeNames=CMParms.parse(getInternalStr("JUDGE"));
 
 		arrestMobs=getInternalStr("ARRESTMOBS").equalsIgnoreCase("true");
@@ -863,7 +871,7 @@ public class DefaultLawSet implements Law
 		return "";
 	}
 
-	private String[] getInternalBits(String bitStr)
+	private String[] getInternalBits(final String bitStr)
 	{
 		final String[] bits=new String[Law.BIT_NUMBITS];
 		final List<String> parsed=CMParms.parseSemicolons(bitStr,false);
@@ -877,10 +885,10 @@ public class DefaultLawSet implements Law
 		return bits;
 	}
 
-	public LegalWarrant getWarrant(MOB criminal,
-								   String crime,
-								   boolean pull,
-								   boolean debugging)
+	public LegalWarrant getWarrant(final MOB criminal,
+								   final String crime,
+								   final boolean pull,
+								   final boolean debugging)
 	{
 		LegalWarrant W=null;
 		for(int i=0;i<warrants.size();i++)
@@ -900,7 +908,7 @@ public class DefaultLawSet implements Law
 	}
 
 	@Override
-	public LegalWarrant getCopkiller(Area A, LegalBehavior behav, MOB mob)
+	public LegalWarrant getCopkiller(final Area A, final LegalBehavior behav, final MOB mob)
 	{
 		final String[] copKillerInfo=basicCrimes().get("MURDER");
 		if(copKillerInfo!=null)
@@ -921,7 +929,7 @@ public class DefaultLawSet implements Law
 	}
 
 	@Override
-	public LegalWarrant getLawResister(Area A, LegalBehavior behav, MOB mob)
+	public LegalWarrant getLawResister(final Area A, final LegalBehavior behav, final MOB mob)
 	{
 		final String[] lawResistInfo=basicCrimes().get("RESISTINGARREST");
 		if(lawResistInfo!=null)
@@ -939,7 +947,7 @@ public class DefaultLawSet implements Law
 	}
 
 	@Override
-	public LegalWarrant getWarrant(MOB mob, int which)
+	public LegalWarrant getWarrant(final MOB mob, final int which)
 	{
 		int one=0;
 		for(int i=0;i<warrants.size();i++)
@@ -956,7 +964,7 @@ public class DefaultLawSet implements Law
 	}
 
 	@Override
-	public LegalWarrant getOldWarrant(MOB criminal, String crime, boolean pull)
+	public LegalWarrant getOldWarrant(final MOB criminal, final String crime, final boolean pull)
 	{
 		LegalWarrant W=null;
 		for(int i=0;i<oldWarrants.size();i++)

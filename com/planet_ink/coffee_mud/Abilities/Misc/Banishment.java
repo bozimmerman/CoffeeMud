@@ -82,7 +82,7 @@ public class Banishment extends StdAbility
 	{
 		if(banishedFromAs.size() == 0)
 			return false;
-		
+
 		synchronized(banishedFromAs)
 		{
 			for(final Area fromA : banishedFromAs)
@@ -95,16 +95,16 @@ public class Banishment extends StdAbility
 		}
 		return false;
 	}
-	
+
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		//super.setMiscText(newMiscText);
 		if(newMiscText.length()>0)
 		{
 			for(final String areaName : CMParms.parseSemicolons(newMiscText, true))
 			{
-				Area newArea=CMLib.map().findArea(areaName);
+				final Area newArea=CMLib.map().findArea(areaName);
 				synchronized(banishedFromAs)
 				{
 					if((newArea!=null)&&(!banishedFromAs.contains(newArea)))
@@ -118,11 +118,11 @@ public class Banishment extends StdAbility
 			banishedFromAs.clear();
 		}
 	}
-	
+
 	@Override
 	public String text()
 	{
-		StringBuilder names=new StringBuilder("");
+		final StringBuilder names=new StringBuilder("");
 		synchronized(banishedFromAs)
 		{
 			for(final Area fromA : banishedFromAs)
@@ -132,13 +132,13 @@ public class Banishment extends StdAbility
 		}
 		return names.toString();
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(banishedFromAs.size() == 0)
 			return super.okMessage(myHost, msg);
-		
+
 		if((affected instanceof MOB)&&(msg.amISource((MOB)affected)))
 		{
 			if(msg.sourceMinor()==CMMsg.TYP_RECALL)
@@ -150,17 +150,21 @@ public class Banishment extends StdAbility
 					mob.setStartRoom(CMLib.login().getDefaultStartRoom(mob));
 					recallRoom=CMLib.map().getStartRoom(mob);
 				}
-				if(this.badDestination(mob, recallRoom))
+				if((recallRoom.getArea() != mob.location().getArea()))
 				{
-					if(msg.source().location()!=null)
-						msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to recall, but a geas prevents <S-HIM-HER>."));
-					return false;
+					if(this.badDestination(mob, recallRoom))
+					{
+						if(msg.source().location()!=null)
+							msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to recall, but a geas prevents <S-HIM-HER>."));
+						return false;
+					}
 				}
 			}
 			else
 			if(msg.sourceMinor()==CMMsg.TYP_FLEE)
 			{
 				if((msg.target() instanceof Room)
+				&&(((Room)msg.target()).getArea() != msg.source().location().getArea())
 				&&(badDestination(msg.source(), (Room)msg.target())))
 				{
 					msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to flee, but a geas prevents <S-HIM-HER>."));
@@ -170,6 +174,7 @@ public class Banishment extends StdAbility
 			else
 			if((msg.targetMinor()==CMMsg.TYP_ENTER)
 			&&(msg.target() instanceof Room)
+			&&(((Room)msg.target()).getArea() != msg.source().location().getArea())
 			&&(badDestination(msg.source(), (Room)msg.target())))
 			{
 				msg.source().location().show(msg.source(),null,CMMsg.MSG_OK_ACTION,L("<S-NAME> attempt(s) to defy <S-HIS-HER> exile, but a geas prevents <S-HIM-HER>."));
@@ -192,9 +197,9 @@ public class Banishment extends StdAbility
 		if(canBeUninvoked())
 			mob.tell(L("Your exile has been lifted."));
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((givenTarget instanceof Area)&&(auto))
 		{
@@ -213,10 +218,20 @@ public class Banishment extends StdAbility
 		{
 			if(givenTarget instanceof MOB)
 			{
-				if(commands.size()==0)
+				if((commands.size()==0)
+				||((commands.size()==1)&&commands.contains(givenTarget.Name())))
 				{
-					commands.add(givenTarget.Name());
-					commands.add(mob.location().getArea().Name());
+					if(commands.size()==0)
+						commands.add(givenTarget.Name());
+					Area A=mob.location().getArea();
+					final LegalBehavior B=CMLib.law().getLegalBehavior(A);
+					if(B!=null)
+					{
+						final Area A2=CMLib.law().getLegalObject(A);
+						if(A2 != null)
+							A=A2;
+					}
+					commands.add(A.Name());
 				}
 				else
 					commands.add(0,givenTarget.Name());
@@ -226,7 +241,15 @@ public class Banishment extends StdAbility
 				if(commands.size()==0)
 				{
 					commands.add(mob.Name());
-					commands.add(mob.location().getArea().Name());
+					Area A=mob.location().getArea();
+					final LegalBehavior B=CMLib.law().getLegalBehavior(A);
+					if(B!=null)
+					{
+						final Area A2=CMLib.law().getLegalObject(A);
+						if(A2 != null)
+							A=A2;
+					}
+					commands.add(A.Name());
 				}
 				else
 					commands.add(0,mob.Name());
@@ -237,7 +260,7 @@ public class Banishment extends StdAbility
 			mob.tell(L("Banish whom from where?"));
 			return false;
 		}
-		
+
 		final MOB target = getTarget(mob, new XVector<String>(commands.get(0)), givenTarget);
 		if (target == null)
 			return false;

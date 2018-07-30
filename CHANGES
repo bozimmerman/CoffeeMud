@@ -79,6 +79,7 @@
   77. Standardized email disclaimers, and there's now an unsubscribe link and account unsubscribe.
   78. New Property: Prop_Sounder, like Sounder behavior, but without tick triggers.
   79. New Archon Skill: Shame, with new Property: Shaming.
+  80. Laws now include banishment, public shaming -- see laws.ini
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
    1. Hunger and Thirst system can now be tweeked.  See coffeemud.ini file

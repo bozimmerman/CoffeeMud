@@ -86,7 +86,7 @@ public class Prayer_Heresy extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		LegalBehavior B=null;
 		if(mob.location()!=null)
@@ -135,8 +135,8 @@ public class Prayer_Heresy extends Prayer
 					int lvl=(me-low)/5;
 					if(lvl<0)
 						lvl=0;
-					if(lvl>Law.PUNISHMENT_HIGHEST)
-						lvl=Law.PUNISHMENT_HIGHEST;
+					if((lvl&Law.PUNISHMENT_MASK)>Law.PUNISHMENT_HIGHEST)
+						lvl=Law.PUNISHMENT_HIGHEST | (lvl - (lvl&Law.PUNISHMENT_MASK));
 					final String sentence=Law.PUNISHMENT_DESCS[lvl];
 					B.addWarrant(CMLib.law().getLegalObject(mob.location()),target,D,crimeLocs,crimeFlags,crime,sentence,desc);
 				}

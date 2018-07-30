@@ -350,6 +350,14 @@ public interface Law extends CMCommon
 	public List<String> chitChat3();
 
 	/**
+	 * A list of strings denoting random things an officer will
+	 * say while taking an arrested criminal to banishment.
+	 *
+	 * @return a list of cute sayings.
+	 */
+	public List<String> chitChat4();
+
+	/**
 	 * A list of strings denoting which rooms are considered jails.
 	 * They better have a locked door somewhere!
 	 *
@@ -579,7 +587,7 @@ public interface Law extends CMCommon
 		public Room room;
 		public Container container;
 
-		public TreasurySet(Room R, Container C)
+		public TreasurySet(final Room R, final Container C)
 		{
 			room = R;
 			container = C;
@@ -640,6 +648,10 @@ public interface Law extends CMCommon
 	public static final int PUNISHMENTMASK_NORELEASE=4096;
 	/** a bitmask, added to a base punishment type, denoting maximum adjusted punishment */
 	public static final int PUNISHMENTMASK_PUNISHCAP=8192;
+	/** a bitmask, added to a base punishment type, denoting a public shaming */
+	public static final int PUNISHMENTMASK_SHAME=16384;
+	/** a bitmask, added to a base punishment type, denoting a public shaming */
+	public static final int PUNISHMENTMASK_BANISH=32768;
 	/** a string array for each of the punishment bitmasks */
 	public static final String[] PUNISHMENTMASK_DESCS={
 		"SEPARATE",
@@ -647,7 +659,9 @@ public interface Law extends CMCommon
 		"DETAIN=",
 		"FINE=",
 		"NORELEASE",
-		"PUNISHCAP="
+		"PUNISHCAP=",
+		"SHAME=",
+		"BANISH="
 	};
 	/** an array of the various bitmask values added to punishment codes */
 	public static final int[] PUNISHMENTMASK_CODES={
@@ -656,7 +670,9 @@ public interface Law extends CMCommon
 		PUNISHMENTMASK_DETAIN,
 		PUNISHMENTMASK_FINE,
 		PUNISHMENTMASK_NORELEASE,
-		PUNISHMENTMASK_PUNISHCAP
+		PUNISHMENTMASK_PUNISHCAP,
+		PUNISHMENTMASK_SHAME,
+		PUNISHMENTMASK_BANISH
 	};
 
 	/** a state of adjudication meaning officer has not yet found the criminal */
@@ -685,6 +701,10 @@ public interface Law extends CMCommon
 	public static final int STATE_MOVING3=11;
 	/** a state of adjudication meaning officer is taking the criminal to detension */
 	public static final int STATE_DETAINING=12;
+	/** a state of adjudication meaning judge is banishing the criminal */
+	public static final int STATE_BANISHING=13;
+	/** a state of adjudication meaning officer is taking the criminal to banishment */
+	public static final int STATE_MOVING4=14;
 
 	/** an index to crime-definition flags denoting types of places the law applies to */
 	public static final int BIT_CRIMELOCS=0;
@@ -751,6 +771,7 @@ public interface Law extends CMCommon
 		"CHITCHAT="+CMLib.lang().L("\"You didn't really think you could get away with it did you?\" \"You are REALLY in for it!\" \"Convicts like you are a dime a dozen.\" \"MAKE WAY! DEAD MAN WALKING!\" \"You are gonna GET it.\" \"I love my job.\"")+"\n"+
 		"CHITCHAT2="+CMLib.lang().L("\"You didn't really think you would get away with it did you?\" \"I hope you aren't claustrophobic!\" \"Remember not to drop your soap in there.\" \"MAKE WAY! DEAD MAN WALKING!\" \"I recommend you hold your breath while you're in there -- I always do.  It stinks!\" \"Putting away scum like you makes it all worthwhile\"")+"\n"+
 		"CHITCHAT3="+CMLib.lang().L("\"This is for your own good, so please don't resist.\" \"You understand that your detention is mandatory I hope.\" \"Just doing my job.\" \"Been a nice day, don't ya think?\" \"We're almost there, don't worry.\" \"Not much farther now.\"")+"\n"+
+		"CHITCHAT4="+CMLib.lang().L("\"This is for your own good, so please don't resist.\" \"You understand that your exile is mandatory I hope.\" \"Just doing my job.\" \"Been a nice day, don't ya think?\" \"We're almost there, don't worry.\" \"Not much farther now.\"")+"\n"+
 		"RESISTWARNMSG="+CMLib.lang().L("I said SIT DOWN! NOW!")+"\n"+
 		"NORESISTMSG="+CMLib.lang().L("Good.  Now hold still.")+"\n"+
 		"ACTIVATED=FALSE\n"+

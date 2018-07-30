@@ -199,7 +199,7 @@ public class StdLawBook extends StdItem
 		super.executeMsg(myHost,msg);
 	}
 
-	public String getFromTOC(String tag)
+	public String getFromTOC(final String tag)
 	{
 		Properties lawProps=(Properties)Resources.getResource("LAWBOOKTOC");
 		try
@@ -222,19 +222,19 @@ public class StdLawBook extends StdItem
 		return "";
 	}
 
-	public void changeTheLaw(Environmental A,
-							 LegalBehavior B,
-							 MOB mob,
-							 Law theLaw,
-							 String tag,
-							 String newValue)
+	public void changeTheLaw(final Environmental A,
+							 final LegalBehavior B,
+							 final MOB mob,
+							 final Law theLaw,
+							 final String tag,
+							 final String newValue)
 	{
 		theLaw.setInternalStr(tag,newValue);
 		if(A instanceof Area)
 			B.updateLaw((Area)A);
 	}
 
-	public String shortLawDesc(String[] bits)
+	public String shortLawDesc(final String[] bits)
 	{
 		if((bits==null)||(bits.length<Law.BIT_NUMBITS))
 			return "Not illegal.";
@@ -277,7 +277,7 @@ public class StdLawBook extends StdItem
 	};
 
 	//	@SupressWarnings
-	public String[] modifyLaw(Area A, LegalBehavior B, Law theLaw, MOB mob, String[] oldLaw)
+	public String[] modifyLaw(final Area A, final LegalBehavior B, final Law theLaw, final MOB mob, String[] oldLaw)
 		throws IOException
 	{
 		if(mob.session()==null)
@@ -461,6 +461,30 @@ public class StdLawBook extends StdItem
 											parm=fine;
 										break;
 									}
+									case Law.PUNISHMENTMASK_SHAME:
+									{
+										final String fine=mob.session().prompt(L("Enter the number of mud days to shame them for (256=forever): "),"");
+										if((fine.length()==0)||(!CMath.isNumber(fine))||(CMath.s_int(fine)<0))
+										{
+											mob.tell(L("Invalid entry.  Aborted."));
+											abort=true;
+										}
+										else
+											parm=fine;
+										break;
+									}
+									case Law.PUNISHMENTMASK_BANISH:
+									{
+										final String fine=mob.session().prompt(L("Enter the number of mud days to banish them for (256=forever): "),"");
+										if((fine.length()==0)||(!CMath.isNumber(fine))||(CMath.s_int(fine)<0))
+										{
+											mob.tell(L("Invalid entry.  Aborted."));
+											abort=true;
+										}
+										else
+											parm=fine;
+										break;
+									}
 									}
 									if(!abort)
 									{
@@ -577,7 +601,7 @@ public class StdLawBook extends StdItem
 		return oldLaw;
 	}
 
-	public void doIllegalEmotation(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
+	public void doIllegalEmotation(final Area A, final LegalBehavior B, final Law theLaw, final MOB mob, final boolean allowedToModify)
 		throws IOException
 	{
 		if(mob.session()==null)
@@ -667,7 +691,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doBannedSubstances(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
+	public void doBannedSubstances(final Area A, final LegalBehavior B, final Law theLaw, final MOB mob, final boolean allowedToModify)
 	throws IOException
 	{
 		if(mob.session()==null)
@@ -765,7 +789,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doIllegalSkill(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
+	public void doIllegalSkill(final Area A, final LegalBehavior B, final Law theLaw, final MOB mob, final boolean allowedToModify)
 		throws IOException
 	{
 		if(mob.session()==null)
@@ -888,7 +912,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doTaxLaw(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
+	public void doTaxLaw(final Area A, final LegalBehavior B, final Law theLaw, final MOB mob, final boolean allowedToModify)
 	throws IOException
 	{
 		if(mob.session()==null)
@@ -999,7 +1023,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doIllegalInfluence(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
+	public void doIllegalInfluence(final Area A, final LegalBehavior B, final Law theLaw, final MOB mob, final boolean allowedToModify)
 		throws IOException
 	{
 		if(mob.session()==null)
@@ -1020,7 +1044,7 @@ public class StdLawBook extends StdItem
 					&&(CMLib.flags().getAbilityType_(key.substring(1))<0)
 					&&(CMLib.flags().getAbilityDomain(key.substring(1))<0))
 				||(set==null)
-				||(set.length<Law.BIT_NUMBITS)) 
+				||(set.length<Law.BIT_NUMBITS))
 					continue;
 				filteredTable.put(key,set);
 			}
@@ -1122,7 +1146,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doBasicLaw(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
+	public void doBasicLaw(final Area A, final LegalBehavior B, final Law theLaw, final MOB mob, final boolean allowedToModify)
 		throws IOException
 	{
 		if(mob.session()==null)
@@ -1194,7 +1218,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doParoleAndRelease(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
+	public void doParoleAndRelease(final Area A, final LegalBehavior B, final Law theLaw, final MOB mob, final boolean allowedToModify)
 		throws IOException
 	{
 		if(mob.session()==null)
@@ -1282,7 +1306,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doJailPolicy(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
+	public void doJailPolicy(final Area A, final LegalBehavior B, final Law theLaw, final MOB mob, final boolean allowedToModify)
 		throws IOException
 	{
 		if(mob.session()==null)
@@ -1370,7 +1394,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doTresspassingLaw(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
+	public void doTresspassingLaw(final Area A, final LegalBehavior B, final Law theLaw, final MOB mob, final boolean allowedToModify)
 		throws IOException
 	{
 		if(mob.session()==null)
@@ -1426,7 +1450,7 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doVictimsOfCrime(Area A, LegalBehavior B, Law theLaw, MOB mob, boolean allowedToModify)
+	public void doVictimsOfCrime(final Area A, final LegalBehavior B, final Law theLaw, final MOB mob, final boolean allowedToModify)
 		throws IOException
 	{
 		if(mob.session()==null)
@@ -1451,12 +1475,12 @@ public class StdLawBook extends StdItem
 		}
 	}
 
-	public void doOfficersAndJudges(Area A,
-									LegalBehavior B,
-									Area legalO,
-									Law theLaw,
-									MOB mob,
-									boolean allowedToModify)
+	public void doOfficersAndJudges(final Area A,
+									final LegalBehavior B,
+									final Area legalO,
+									final Law theLaw,
+									final MOB mob,
+									final boolean allowedToModify)
 		throws IOException
 	{
 		if(mob.session()==null)

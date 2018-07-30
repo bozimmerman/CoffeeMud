@@ -80,7 +80,7 @@ public class Prayer_Forgive extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		LegalBehavior B=null;
 		if(mob.location()!=null)
@@ -112,18 +112,34 @@ public class Prayer_Forgive extends Prayer
 
 		final boolean success=proficiencyCheck(mob,0,auto);
 
+		MOB criminalM=null;
+		for(final LegalWarrant W : warrants)
+		{
+			if((W.criminal()!=null)
+			&&((criminalM==null)||(W.criminal().isPlayer())))
+				criminalM=W.criminal();
+		}
+		if(criminalM == null)
+			criminalM=CMLib.players().getPlayerAllHosts(name);
+
 		if(success)
 		{
-			if(warrants.size()==0)
+			final List<Ability> badAs=new ArrayList<Ability>(3);
+			if(criminalM != null)
+			{
+				Ability badA=criminalM.fetchEffect("Prisoner");
+				if(badA!=null)
+					badAs.add(badA);
+				badA=criminalM.fetchEffect("Shaming");
+				if(badA!=null)
+					badAs.add(badA);
+				badA=criminalM.fetchEffect("Banishment");
+				if(badA!=null)
+					badAs.add(badA);
+			}
+			if((warrants.size()==0)&&(badAs.size()==0))
 			{
 				beneficialWordsFizzle(mob,null,L("<S-NAME> @x1 to forgive @x2 for no reason at all.",prayForWord(mob),name));
-				final MOB M=CMLib.players().getPlayerAllHosts(name);
-				if(M != null)
-				{
-					final Ability A=M.fetchEffect("Prisoner");
-					if(A!=null)
-						A.unInvoke();
-				}
 			}
 			else
 			{
@@ -136,6 +152,11 @@ public class Prayer_Forgive extends Prayer
 						final LegalWarrant W=warrants.get(i);
 						W.setCrime("pardoned");
 						W.setOffenses(0);
+					}
+					for(final Ability A : badAs)
+					{
+						A.unInvoke();
+						criminalM.delEffect(A);
 					}
 				}
 			}

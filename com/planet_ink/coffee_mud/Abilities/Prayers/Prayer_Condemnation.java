@@ -80,7 +80,7 @@ public class Prayer_Condemnation extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		LegalBehavior B=null;
 		if(mob.location()!=null)
@@ -108,7 +108,7 @@ public class Prayer_Condemnation extends Prayer
 				for(int i=0;i<warrants.size();i++)
 				{
 					final LegalWarrant W=warrants.get(i);
-					if(W.punishment()<Law.PUNISHMENT_HIGHEST)
+					if((W.punishment()&Law.PUNISHMENT_MASK)<Law.PUNISHMENT_HIGHEST)
 						W.setPunishment(W.punishment()+1);
 				}
 			}
