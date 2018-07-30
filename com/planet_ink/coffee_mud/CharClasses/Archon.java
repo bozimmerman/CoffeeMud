@@ -94,6 +94,7 @@ public class Archon extends StdCharClass implements ArchonOnly
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Infect",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Stinkify",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Banish",100,"",true,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Shame",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Accuse",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Metacraft",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Injure",100,"",true,true);
@@ -116,7 +117,7 @@ public class Archon extends StdCharClass implements ArchonOnly
 	}
 
 	@Override
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
+	public boolean qualifiesForThisClass(final MOB mob, final boolean quiet)
 	{
 		if(!quiet)
 			mob.tell(L("This class cannot be learned."));
@@ -164,12 +165,12 @@ public class Archon extends StdCharClass implements ArchonOnly
 				return false;
 			}
 		}
-		
+
 		return super.okMessage(myHost, msg);
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -183,7 +184,7 @@ public class Archon extends StdCharClass implements ArchonOnly
 	}
 
 	@Override
-	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
+	public void startCharacter(final MOB mob, final boolean isBorrowedClass, final boolean verifyOnly)
 
 	{
 		// archons ALWAYS use borrowed abilities
@@ -193,7 +194,7 @@ public class Archon extends StdCharClass implements ArchonOnly
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		final boolean allowed=CMSecurity.isAllowedEverywhere(mob,CMSecurity.SecFlag.ALLSKILLS);
 		if((!allowed)&&(mob.playerStats()!=null)&&(!mob.playerStats().getSecurityFlags().contains(CMSecurity.SecFlag.ALLSKILLS,false)))
