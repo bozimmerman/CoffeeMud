@@ -80,7 +80,11 @@ public class Tattooing extends CommonSkill
 	{
 		if(canBeUninvoked())
 		{
-			if((affected!=null)&&(affected instanceof MOB)&&(!aborted)&&(!helping)&&(target!=null))
+			if((affected!=null)
+			&&(affected instanceof MOB)
+			&&(!aborted)
+			&&(!helping)
+			&&(target!=null))
 			{
 				final MOB mob=(MOB)affected;
 				if(writing.length()==0)
@@ -266,7 +270,8 @@ public class Tattooing extends CommonSkill
 				for(int i=0;i<Race.BODY_WEARVECTOR.length;i++)
 				{
 					if((Race.BODY_WEARVECTOR[i] == wornCode)
-					&&(!bodyPartNums.contains(Integer.valueOf(i))))
+					&&(!bodyPartNums.contains(Integer.valueOf(i)))
+					&&(target.charStats().getBodyPart(i)>0))
 						bodyPartNums.add(Integer.valueOf(i));
 				}
 				String bodyPartName="";
