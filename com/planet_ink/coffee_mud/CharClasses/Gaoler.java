@@ -116,8 +116,6 @@ public class Gaoler extends StdCharClass
 		return Area.THEME_FANTASY;
 	}
 
-	public Hashtable<String, int[]> mudHourMOBXPMap = new Hashtable<String, int[]>();
-
 	public Gaoler()
 	{
 		super();
@@ -146,6 +144,7 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Groin",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Searching",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Blacksmithing",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_Nippletwist",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Carpentry",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Tattooing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"LockSmith",false);
@@ -374,8 +373,17 @@ public class Gaoler extends StdCharClass
 				final CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!@x1",CMLib.protocol().msp("scream.wav",40)));
 				if(((MOB)msg.target()).location().okMessage(msg.target(),msg2))
 				{
+					final MOB mob=(MOB)host;
 					final int baseAmt = 10 + CMLib.ableMapper().qualifyingLevel(msg.source(), (Ability)msg.tool());
 					final int xp=(int)Math.round(baseAmt*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
+					@SuppressWarnings("unchecked")
+					Map<String, int[]> mudHourMOBXPMap = (Map<String, int[]>)((mob.playerStats()==null)?null:mob.playerStats().getClassVariableMap(this).get("MUDHOURMOBXPMAP"));
+					if(mudHourMOBXPMap == null)
+					{
+						mudHourMOBXPMap = new Hashtable<String, int[]>();
+						if(mob.playerStats() != null)
+							mob.playerStats().getClassVariableMap(this).put("MUDHOURMOBXPMAP",mudHourMOBXPMap);
+					}
 					int[] done=mudHourMOBXPMap.get(host.Name()+"/"+msg.tool().ID());
 					if (done == null)
 					{
@@ -390,7 +398,7 @@ public class Gaoler extends StdCharClass
 						done[0]=clock.getHourOfDay();
 						done[2]=Calendar.getInstance().get(Calendar.SECOND);
 
-						if(done[1]<(90+(10*((MOB)host).phyStats().level())))
+						if(done[1]<(90+(50*((MOB)host).phyStats().level())))
 						{
 							done[1]+=xp;
 							CMLib.leveler().postExperience((MOB)host,null,null,xp,true);

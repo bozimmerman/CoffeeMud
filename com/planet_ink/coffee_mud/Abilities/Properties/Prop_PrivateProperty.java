@@ -1,7 +1,9 @@
 package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.MiniJSON.MJSONException;
 import com.planet_ink.coffee_mud.core.collections.*;
+import com.planet_ink.coffee_mud.Abilities.Common.Publishing;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -59,7 +61,7 @@ public class Prop_PrivateProperty extends Property implements PrivateProperty
 	protected MOB		lastCheckM	= null;
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if(newMiscText!=null)
@@ -69,7 +71,7 @@ public class Prop_PrivateProperty extends Property implements PrivateProperty
 			expiresec = CMParms.getParmLong(newMiscText, "EXPIRESEC", 0L);
 		}
 	}
-	
+
 	@Override
 	public int getPrice()
 	{
@@ -81,7 +83,7 @@ public class Prop_PrivateProperty extends Property implements PrivateProperty
 	}
 
 	@Override
-	public void setPrice(int price)
+	public void setPrice(final int price)
 	{
 		this.price=price;
 	}
@@ -93,7 +95,7 @@ public class Prop_PrivateProperty extends Property implements PrivateProperty
 	}
 
 	@Override
-	public void setOwnerName(String owner)
+	public void setOwnerName(final String owner)
 	{
 		if(owner==null)
 			this.owner="";
@@ -186,19 +188,32 @@ public class Prop_PrivateProperty extends Property implements PrivateProperty
 			}
 		}
 	}
-	
+
 	@Override
-	public void affectPhyStats(Physical affectedOne, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedOne, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affectedOne, affectableStats);
 		checkExpiration();
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
 		return true;
+	}
+
+	@Override
+	public void executeMsg(final Environmental host, final CMMsg msg)
+	{
+		super.executeMsg(host, msg);
+		/*
+		if((msg.tool() == affected)
+		&&(msg.targetMinor()==CMMsg.TYP_BUY))
+		{
+			setOwnerName(msg.source().Name());
+		}
+		*/
 	}
 }

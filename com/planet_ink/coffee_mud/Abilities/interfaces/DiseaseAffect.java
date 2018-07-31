@@ -50,12 +50,20 @@ public interface DiseaseAffect extends HealthCondition
 	public final static int SPREAD_DAMAGE=16;
 	/** denotes a diseases spread by touching or making contact with someone who is infected. @see Ability#abilityCode() */
 	public final static int SPREAD_GET=32;
+	/** denotes a diseases spread by hearing someone who is infected. @see Ability#abilityCode() */
+	public final static int SPREAD_HEARING=64;
 
 	/**
 	 * Descriptions of the SPREAD_ constants
 	 */
 	public final static String[] SPREAD_DESCS = {
-		"sexual contact", "direct contact", "proximity", "ingestion", "blood contact", "picking up"
+		"sexual contact",
+		"direct contact",
+		"proximity",
+		"ingestion",
+		"blood contact",
+		"picking up",
+		"hearing"
 	};
 
 	/**
@@ -74,7 +82,7 @@ public interface DiseaseAffect extends HealthCondition
 	 * @return the bitmap denoting how spread
 	 */
 	public int spreadBitmap();
-	
+
 	/**
 	 * This method returns whether this disease, specifically it's spreading,
 	 * is a malicious act.  Usually that's a NO, but sometimes...

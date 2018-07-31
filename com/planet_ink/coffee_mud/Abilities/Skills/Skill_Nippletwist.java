@@ -35,15 +35,15 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Skill_Groin extends StdSkill implements HealthCondition
+public class Skill_Nippletwist extends StdSkill
 {
 	@Override
 	public String ID()
 	{
-		return "Skill_Groin";
+		return "Skill_Nippletwist";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Groin");
+	private final static String localizedName = CMLib.lang().L("Nipple Twist");
 
 	@Override
 	public String name()
@@ -51,15 +51,8 @@ public class Skill_Groin extends StdSkill implements HealthCondition
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(dazed and in pain)");
 
-	@Override
-	public String displayText()
-	{
-		return localizedStaticDisplay;
-	}
-
-	private static final String[] triggerStrings =I(new String[] {"GROIN"});
+	private static final String[] triggerStrings =I(new String[] {"NIPPLETWIST"});
 	@Override
 	public int abstractQuality()
 	{
@@ -75,7 +68,7 @@ public class Skill_Groin extends StdSkill implements HealthCondition
 	@Override
 	protected int canAffectCode()
 	{
-		return Ability.CAN_MOBS;
+		return 0;
 	}
 
 	@Override
@@ -97,75 +90,9 @@ public class Skill_Groin extends StdSkill implements HealthCondition
 	}
 
 	@Override
-	public String getHealthConditionDesc()
-	{
-		return "Dazed and in pain";
-	}
-
-	@Override
 	public long flags()
 	{
 		return super.flags() | Ability.FLAG_TORTURING;
-	}
-
-	@Override
-	public boolean okMessage(final Environmental myHost, final CMMsg msg)
-	{
-		if(!(affected instanceof MOB))
-			return true;
-
-		final MOB mob=(MOB)affected;
-
-		// when this spell is on a MOBs Affected list,
-		// it should consistantly prevent the mob
-		// from trying to do ANYTHING except sleep
-		if((msg.amISource(mob))&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS)))
-		{
-			if((msg.sourceMajor(CMMsg.MASK_EYES))
-			||(msg.sourceMajor(CMMsg.MASK_HANDS))
-			||(msg.sourceMajor(CMMsg.MASK_MOUTH))
-			||(msg.sourceMajor(CMMsg.MASK_MOVE)))
-			{
-				if(msg.sourceMessage()!=null)
-					mob.tell(L("You are way too dazed."));
-				return false;
-			}
-		}
-		return super.okMessage(myHost,msg);
-	}
-
-	@Override
-	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
-	{
-		super.affectPhyStats(affected,affectableStats);
-		// when this spell is on a MOBs Affected list,
-		// it should consistantly put the mob into
-		// a sleeping state, so that nothing they do
-		// can get them out of it.
-		affectableStats.setDisposition((affectableStats.disposition()|PhyStats.IS_SITTING) & ~PhyStats.IS_SLEEPING );
-	}
-
-	@Override
-	public void unInvoke()
-	{
-		// undo the affects of this spell
-		if(!(affected instanceof MOB))
-			return;
-		final MOB mob=(MOB)affected;
-
-		super.unInvoke();
-
-		if(canBeUninvoked())
-		{
-			if(!mob.amDead())
-			{
-				if(mob.location()!=null)
-					mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> seem(s) less dazed."));
-				else
-					mob.tell(L("You feel less dazed."));
-				CMLib.commands().postStand(mob,true, false);
-			}
-		}
 	}
 
 	@Override
@@ -175,13 +102,15 @@ public class Skill_Groin extends StdSkill implements HealthCondition
 		{
 			if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 				return Ability.QUALITY_INDIFFERENT;
-			if(target.fetchEffect(ID())!=null)
-				return Ability.QUALITY_INDIFFERENT;
+			if(target instanceof MOB)
+			{
+				final MOB tMOB=(MOB)target;
+				if(tMOB.fetchWornItems(Wearable.WORN_TORSO, (short)-2048, (short)0).size()>0)
+					return Ability.QUALITY_INDIFFERENT;
+			}
 		}
 		return super.castingQuality(mob,target);
 	}
-
-	protected volatile Reference<MOB> lastHit = new WeakReference<MOB>(null);
 
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
@@ -196,6 +125,25 @@ public class Skill_Groin extends StdSkill implements HealthCondition
 			return false;
 		}
 
+		if(target.fetchWornItems(Wearable.WORN_TORSO, (short)-2048, (short)0).size()>0)
+		{
+			mob.tell(L("@x1 is wearing something on the torso that prevents you.",target.name(mob)));
+			return false;
+		}
+
+		final List<Item> wornsNWields=mob.fetchWornItems(Wearable.WORN_WIELD, (short)-2048, (short)0);
+		for(final Item I : mob.fetchWornItems(Wearable.WORN_HELD, (short)-2048, (short)0))
+		{
+			if(!wornsNWields.contains(I))
+				wornsNWields.add(I);
+		}
+
+		if(wornsNWields.size() >= (mob.charStats().getBodyPart(Race.BODY_HAND)))
+		{
+			mob.tell(L("You need at least one free hand to do that."));
+			return false;
+		}
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -207,41 +155,36 @@ public class Skill_Groin extends StdSkill implements HealthCondition
 
 		// now see if it worked
 		final boolean hit=(auto)||CMLib.combat().rollToHit(mob,target);
-		boolean success=proficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_DEXTERITY)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto)&&(hit);
-
-		if(lastHit.get() == target)
-		{
-			final Room R=mob.location();
-			if(R!=null)
-				R.show(target, mob, CMMsg.MSG_QUIETMOVEMENT, L("<S-NAME> push(es) <S-HIS-HER> legs together and cover(s) <S-HIS-HER> groin!"));
-			success=false;
-		}
+		final boolean success=proficiencyCheck(mob,(-levelDiff)+(-((target.charStats().getStat(CharStats.STAT_DEXTERITY)-mob.charStats().getStat(CharStats.STAT_STRENGTH)))),auto)&&(hit);
 
 		if(success)
 		{
 			invoker=mob;
 			final CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),
-					L(auto?"<T-NAME> clutch(es) <T-HIS-HER> groin area in obvious pain!":
-						"^F<S-NAME> kick(s) <T-NAMESELF> in the groin!^?"));
+					L(auto?"<T-NAME> <T-IS-ARE> in obvious pain!":
+						"^F<S-NAME> grab(s) <T-YOUPOSS> nipples and give(s) them a sharp TWIST!^?"));
 			CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				final int topDamage=(adjustedLevel(mob,asLevel)/3)+2;
+				int topDamage=(adjustedLevel(mob,asLevel)/10)+2;
+				if(target.findTattooStartsWith("left nipple:")!=null)
+					topDamage *= 2;
+				if(target.findTattooStartsWith("right nipple:")!=null)
+					topDamage *= 2;
+				if(target.findTattooStartsWith("nipples:")!=null)
+					topDamage *= 5;
 				int damage=CMLib.dice().roll(1,topDamage,0);
 				if(msg.value()>0)
 					damage = (int)Math.round(CMath.div(damage,2.0));
 				if(damage >= target.curState().getHitPoints())
 					damage=target.curState().getHitPoints()-1;
 				CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_MOVE|CMMsg.TYP_JUSTICE,Weapon.TYPE_BASHING,
-						L("^F^<FIGHT^>The crotch blow <DAMAGES> <T-NAME>!^</FIGHT^>^?@x1",CMLib.protocol().msp("bashed1.wav",30)));
-				if(target.charStats().getStat(CharStats.STAT_GENDER) == 'M')
-					success=maliciousAffect(mob,target,asLevel,2+super.getXLEVELLevel(mob),-1)!=null;
-				this.lastHit=new WeakReference<MOB>(target);
+						L("^F^<FIGHT^>The nipple twist <DAMAGES> <T-NAME>!^</FIGHT^>^?@x1",CMLib.protocol().msp("bashed1.wav",30)));
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to kick <T-NAMESELF> in the groin, but fail(s)."));
+			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to twist <T-YOUPOSS> nipples, but fail(s) to get a good grip."));
 
 		// return whether it worked
 		return success;

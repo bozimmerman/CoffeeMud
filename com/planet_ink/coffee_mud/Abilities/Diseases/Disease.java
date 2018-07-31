@@ -159,7 +159,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 
 	protected int		diseaseTick	= DISEASE_DELAY();
 
-	protected boolean catchIt(MOB mob, Physical target)
+	protected boolean catchIt(final MOB mob, final Physical target)
 	{
 		MOB diseased=invoker;
 		if(invoker==target)
@@ -198,7 +198,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 		return false;
 	}
 
-	protected boolean catchIt(MOB mob)
+	protected boolean catchIt(final MOB mob)
 	{
 		if(mob==null)
 			return false;
@@ -268,6 +268,13 @@ public class Disease extends StdAbility implements DiseaseAffect
 			&&(msg.tool().Name().equals("MATE <T-NAME>")
 				||msg.tool().Name().equals("SEX <T-NAME>")))
 				catchIt(mob,msg.amITarget(mob)?msg.source():(MOB)msg.target());
+			else
+			if((CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_HEARING))
+			&&(msg.amISource(mob))
+			&&(msg.target() instanceof MOB)
+			&&(msg.sourceMinor()==CMMsg.TYP_SPEAK)
+			&&(CMLib.flags().canBeHeardSpeakingBy(mob, (MOB)msg.target())))
+				catchIt(mob,msg.amITarget(mob)?msg.source():(MOB)msg.target());
 		}
 		else
 		if(affected instanceof Item)
@@ -295,7 +302,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 						if((CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONSUMPTION))
 						||(CMath.bset(spreadBitmap(),DiseaseAffect.SPREAD_CONTACT)))
 						{
-	
+
 							if((myItem instanceof Food)
 							&&(msg.amITarget(myItem)))
 								catchIt(msg.source(),msg.source());
@@ -325,7 +332,7 @@ public class Disease extends StdAbility implements DiseaseAffect
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
