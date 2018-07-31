@@ -94,13 +94,29 @@ public class Skill_JailKey extends StdSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code=newCode;
 	}
 
+	public boolean isRightOutsideACell(final Room R, final LegalBehavior legalBehavior, final Area legalArea)
+	{
+		if(R==null)
+			return false;
+		final List<Room> rooms=new ArrayList<Room>(3);
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		{
+			final Room R2=R.getRoomInDir(d);
+			final Exit E2=R.getExitInDir(d);
+			if((R2!=null)
+			&&(E2!=null))
+				rooms.add(R2);
+		}
+		return legalBehavior.isJailRoom(legalArea, rooms);
+	}
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final String whatTounlock=CMParms.combine(commands,0);
 		Exit unlockThis=null;
@@ -121,7 +137,10 @@ public class Skill_JailKey extends StdSkill
 				if(B==null)
 					unlockThis=null;
 				else
-				if(!B.isJailRoom(legalA,new XVector<Room>(mob.location())))
+				if((!B.isJailRoom(legalA,new XVector<Room>(mob.location())))
+				&&(!B.isJailRoom(legalA,new XVector<Room>(unlockThat)))
+				&&(!isRightOutsideACell(mob.location(), B, legalA))
+				&&(!isRightOutsideACell(unlockThat, B, legalA)))
 					unlockThis=null;
 			}
 		}

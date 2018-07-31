@@ -238,9 +238,104 @@ public class Gaoler extends StdCharClass
 				}
 				if(exp>0)
 					CMLib.leveler().postExperience(mob,null,null,exp,true);
+
+				if((CMLib.flags().isSleeping(mob))
+				&&(mob.playerStats()!=null)
+				&&(CMLib.dice().roll(1, 10, 0)==1))
+				{
+					final Room R=mob.location();
+					final LegalBehavior legalBehavior=CMLib.law().getLegalBehavior(R);
+					final Area legalArea=CMLib.law().getLegalObject(R);
+					if(this.isRightOutsideAnOccupiedCell(R, legalBehavior, legalArea))
+						CMLib.leveler().postExperience(mob,null,null,5,true);
+				}
 			}
 		}
 		return super.tick(ticking,tickID);
+	}
+
+	public boolean isRightOutsideACell(final Room R, final LegalBehavior legalBehavior, final Area legalArea)
+	{
+		if(R==null)
+			return false;
+		final List<Room> rooms=new ArrayList<Room>(3);
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		{
+			final Room R2=R.getRoomInDir(d);
+			final Exit E2=R.getExitInDir(d);
+			if((R2!=null)
+			&&(E2!=null))
+				rooms.add(R2);
+		}
+		return legalBehavior.isJailRoom(legalArea, rooms);
+	}
+
+	public boolean isRightOutsideAnOccupiedCell(final Room R, final LegalBehavior legalBehavior, final Area legalArea)
+	{
+		if(R==null)
+			return false;
+		final List<Room> rooms=new ArrayList<Room>(3);
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+		{
+			final Room R2=R.getRoomInDir(d);
+			final Exit E2=R.getExitInDir(d);
+			if((R2!=null)
+			&&(E2!=null)
+			&&(R2.numInhabitants()>0))
+				rooms.add(R2);
+		}
+		if(rooms.size()==0)
+			return false;
+		return legalBehavior.isJailRoom(legalArea, rooms);
+	}
+
+	protected boolean isAnOfficerOfTheCourt(final MOB mob, final LegalBehavior legalBehavior, final Area legalArea)
+	{
+		if(mob.isMonster())
+		{
+			if(legalBehavior.isAnyOfficer(legalArea, mob)
+			||legalBehavior.isJudge(legalArea, mob))
+				return true;
+			final Room R=mob.location();
+			if(R!=null)
+			{
+				if((mob.getStartRoom()==R)
+				&&(isRightOutsideACell(R,legalBehavior,legalArea)))
+					return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean okMessage(final Environmental host, final CMMsg msg)
+	{
+		if(!super.okMessage(host, msg))
+			return false;
+		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
+		&&(msg.amITarget(host))
+		&&(msg.source().isMonster())
+		&&(host instanceof MOB)
+		&&(!((MOB)host).isInCombat())
+		&&(msg.source().getVictim()!=host))
+		{
+			final LegalBehavior legalBehavior=CMLib.law().getLegalBehavior(msg.source().location());
+			final Area legalArea=CMLib.law().getLegalObject(msg.source().location());
+			if((legalBehavior != null)
+			&&(isAnOfficerOfTheCourt(msg.source(),legalBehavior, legalArea))
+			&&((!legalBehavior.hasWarrant(legalArea, (MOB)host))))
+			{
+				msg.source().tell(L("You may not assault this fellow officer of the court."));
+				final MOB mob=(MOB)host;
+				if(mob.getVictim()==msg.source())
+				{
+					mob.makePeace(true);
+					mob.setVictim(null);
+				}
+				return false;
+			}
+		}
+		return true;
 	}
 
 	@Override
@@ -334,6 +429,6 @@ public class Gaoler extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Gains experience when using certain skills.  Screams of flayed, amputated, tattooed, body pierced, or chirguried victims grants xp/hr.");
+		return L("Gains experience when using certain skills. Screams of victims from certain skills grants xp/hr. Sleeping by an occupied cell grants xp.");
 	}
 }
