@@ -3463,7 +3463,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				&&(CMLib.flags().isAliveAwakeMobile(officer,true))
 				&&(W.jail()!=null))
 				{
-System.out.println("Moving to "+CMLib.map().getExtendedRoomID(W.jail())+"/"+W.jail().displayText());
 					if(W.criminal().curState().getMovement()<50)
 						W.criminal().curState().setMovement(50);
 					if(officer.curState().getMovement()<50)
@@ -3471,6 +3470,15 @@ System.out.println("Moving to "+CMLib.map().getExtendedRoomID(W.jail())+"/"+W.ja
 					makePeace(officer.location());
 					if(officer.isMonster())
 						CMLib.commands().postLook(officer,true);
+					if(W.crime().equalsIgnoreCase("pardoned"))
+					{
+						fileAllWarrants(laws,W,W.criminal());
+						unCuff(W.criminal());
+						W.setArrestingOfficer(myArea,null);
+						W.setState(Law.STATE_SEEKING);
+						W.setTravelAttemptTime(0);
+					}
+					else
 					if(W.jail()==W.criminal().location())
 					{
 						unCuff(W.criminal());
@@ -3614,7 +3622,8 @@ System.out.println("Moving to "+CMLib.map().getExtendedRoomID(W.jail())+"/"+W.ja
 			break;
 		case Law.STATE_RELEASE:
 			{
-				if(((W.criminal().fetchEffect("Prisoner")==null)||(W.crime().equalsIgnoreCase("pardoned")))
+				if(((W.criminal().fetchEffect("Prisoner")==null)
+					||(W.crime().equalsIgnoreCase("pardoned")))
 				&&(!W.criminal().amDead())
 				&&(W.jail()!=null))
 				{
@@ -3755,6 +3764,34 @@ System.out.println("Moving to "+CMLib.map().getExtendedRoomID(W.jail())+"/"+W.ja
 						unCuff(W.criminal());
 						if(W.arrestingOfficer()!=null)
 							dismissOfficer(W.arrestingOfficer());
+					}
+				}
+				else
+				if(((W.criminal().fetchEffect("Prisoner")!=null)
+					&&(!W.crime().equalsIgnoreCase("pardoned")))
+				&&(!W.criminal().amDead())
+				&&(W.jail()!=null))
+				if((!W.criminal().amDead())
+				&&(W.jail()!=null)
+				&&(!W.jail().isInhabitant(W.criminal())))
+				{
+					W.setState(Law.STATE_SEEKING);
+					W.setTravelAttemptTime(0);
+					final Ability A=W.criminal().fetchEffect("Prisoner");
+					if(A!=null)
+						W.criminal().delEffect(A);
+					if(laws.basicCrimes().containsKey("PRISONBREAK"))
+					{
+						final String[] info=laws.basicCrimes().get("PRISONBREAK");
+						fillOutWarrant(W.criminal(),
+										laws,
+										myArea,
+										null,
+										info[Law.BIT_CRIMELOCS],
+										info[Law.BIT_CRIMEFLAGS],
+										info[Law.BIT_CRIMENAME],
+										info[Law.BIT_SENTENCE],
+										info[Law.BIT_WARNMSG]);
 					}
 				}
 			}

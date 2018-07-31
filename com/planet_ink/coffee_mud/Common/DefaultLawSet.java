@@ -769,6 +769,9 @@ public class DefaultLawSet implements Law
 		basicLaw=getInternalStr("RESISTINGARREST");
 		if(basicLaw.length()>0)
 			basicCrimes.put("RESISTINGARREST",getInternalBits(basicLaw));
+		basicLaw=getInternalStr("PRISONBREAK");
+		if(basicLaw.length()>0)
+			basicCrimes.put("PRISONBREAK",getInternalBits(basicLaw));
 		basicLaw=getInternalStr("NUDITY");
 		if(basicLaw.length()>0)
 			basicCrimes.put("NUDITY",getInternalBits(basicLaw));

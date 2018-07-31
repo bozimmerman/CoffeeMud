@@ -79,7 +79,7 @@ public class Prayer_LowerLaw extends Prayer
 		return Ability.ACODE_PRAYER|Ability.DOMAIN_COMMUNING;
 	}
 
-	public void possiblyAddLaw(Law L, Vector<String> V, String code)
+	public void possiblyAddLaw(final Law L, final Vector<String> V, final String code)
 	{
 		if(L.basicCrimes().containsKey(code))
 		{
@@ -90,7 +90,7 @@ public class Prayer_LowerLaw extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -120,6 +120,7 @@ public class Prayer_LowerLaw extends Prayer
 					possiblyAddLaw(L,crimes,"ARMED");
 					possiblyAddLaw(L,crimes,"RESISTINGARREST");
 					possiblyAddLaw(L,crimes,"PROPERTYROB");
+					possiblyAddLaw(L,crimes,"PRISONBREAK");
 					for(final String key : L.abilityCrimes().keySet())
 					{
 						if(key.startsWith("$"))

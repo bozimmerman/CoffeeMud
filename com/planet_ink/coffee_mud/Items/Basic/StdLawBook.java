@@ -1162,6 +1162,7 @@ public class StdLawBook extends StdItem
 			str.append(L("4. ARMED             @x1\n\r",""+shortLawDesc(theLaw.basicCrimes().get("ARMED"))));
 			str.append(L("5. RESISTING ARREST  @x1\n\r",""+shortLawDesc(theLaw.basicCrimes().get("RESISTINGARREST"))));
 			str.append(L("6. ROBBING HOMES     @x1\n\r",""+shortLawDesc(theLaw.basicCrimes().get("PROPERTYROB"))));
+			str.append(L("7. PRISON BREAKING   @x1\n\r",""+shortLawDesc(theLaw.basicCrimes().get("PRISONBREAK"))));
 			str.append("\n\r");
 			mob.session().colorOnlyPrintln(str.toString());
 			if((!theLaw.hasModifiableLaws())||(!allowedToModify))
@@ -1169,7 +1170,7 @@ public class StdLawBook extends StdItem
 			final String s=mob.session().prompt(L("\n\rEnter number to modify or RETURN: "),"");
 			final int x=CMath.s_int(s);
 			String crimeName="";
-			if((x>0)&&(x<=6))
+			if((x>0)&&(x<=7))
 			{
 				switch(x)
 				{
@@ -1190,6 +1191,9 @@ public class StdLawBook extends StdItem
 					break;
 				case 6:
 					crimeName = "PROPERTYROB";
+					break;
+				case 7:
+					crimeName = "PRISONBREAK";
 					break;
 				}
 			}

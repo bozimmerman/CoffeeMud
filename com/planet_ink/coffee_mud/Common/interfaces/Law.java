@@ -797,6 +797,7 @@ public interface Law extends CMCommon
 		"MURDER=;;"+CMLib.lang().L("murdering <T-NAME>")+";death;"+CMLib.lang().L("Murder is a barbarous offense.")+"\n"+
 		"PROPERTYROB=;;"+CMLib.lang().L("robbing the property of <T-NAME>")+";jail3;"+CMLib.lang().L("Robbery violates our high moral code.")+"\n"+
 		"TAXEVASION=;;"+CMLib.lang().L("evading taxes")+";jail1;"+CMLib.lang().L("Paying taxes and dieing are our solemn duties to the state.")+"\n"+
+		"PRISONBREAK=;!witness;"+CMLib.lang().L("breaking out of prison")+";jail1;"+CMLib.lang().L("You are required to serve your time.")+"\n"+
 		"TREASURY=\n"+
 		"PROPERTYTAX=0\n"+
 		"SALESTAX=0\n"+

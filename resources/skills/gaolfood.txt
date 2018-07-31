@@ -1,5 +1,6 @@
 spoiled dough	FOOD		1	wheat	1	water	1										
 infested flour	FOOD		2	Wheat	1												
+stale water	DRINK		3	water	1												
 moldy cheese	FOOD		4	milk	5	water	1										
 maggoty cheese	FOOD		5	milk	5												
 turned yeast	FOOD		7	infested flour		Sugar		Water									
