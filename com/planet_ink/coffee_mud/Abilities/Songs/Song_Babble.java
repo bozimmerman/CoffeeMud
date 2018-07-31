@@ -76,7 +76,13 @@ public class Song_Babble extends Song
 		return true;
 	}
 
-	protected int numChars(String words)
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
+	protected int numChars(final String words)
 	{
 		int num=0;
 		for(int i=0;i<words.length();i++)
@@ -87,14 +93,14 @@ public class Song_Babble extends Song
 		return num;
 	}
 
-	protected char fixCase(char like,char make)
+	protected char fixCase(final char like,final char make)
 	{
 		if(Character.isUpperCase(like))
 			return Character.toUpperCase(make);
 		return Character.toLowerCase(make);
 	}
 
-	protected String messChars(String words, int numToMess)
+	protected String messChars(final String words, int numToMess)
 	{
 		numToMess=numToMess/2;
 		if(numToMess==0)
@@ -155,7 +161,7 @@ public class Song_Babble extends Song
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -166,7 +172,7 @@ public class Song_Babble extends Song
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

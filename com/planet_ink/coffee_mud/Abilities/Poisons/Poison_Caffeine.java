@@ -128,6 +128,12 @@ public class Poison_Caffeine extends Poison {
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))

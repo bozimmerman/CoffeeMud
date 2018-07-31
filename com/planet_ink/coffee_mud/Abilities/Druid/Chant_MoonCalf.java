@@ -76,6 +76,12 @@ public class Chant_MoonCalf extends Chant
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
+	@Override
 	protected int canTargetCode()
 	{
 		return 0;
@@ -145,7 +151,7 @@ public class Chant_MoonCalf extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -167,7 +173,7 @@ public class Chant_MoonCalf extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room target=mob.location();
 		if(target==null)

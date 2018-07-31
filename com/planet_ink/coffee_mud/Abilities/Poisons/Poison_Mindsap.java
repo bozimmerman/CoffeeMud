@@ -105,6 +105,12 @@ public class Poison_Mindsap extends Poison
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
+	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-1);

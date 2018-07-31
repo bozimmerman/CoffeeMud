@@ -75,6 +75,12 @@ public class Chant_Hippieness extends Chant
 		return CAN_MOBS;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
 	protected List<Pair<Clan,Integer>> oldClans=null;
 
 	@Override
@@ -200,7 +206,7 @@ public class Chant_Hippieness extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -216,7 +222,7 @@ public class Chant_Hippieness extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)

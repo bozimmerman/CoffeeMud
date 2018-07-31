@@ -55,6 +55,12 @@ public class Song_Inebriation extends Song
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
+	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affected,affectableStats);
@@ -79,7 +85,7 @@ public class Song_Inebriation extends Song
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,(affectableStats.getStat(CharStats.STAT_DEXTERITY)-(3+getXLEVELLevel(invoker()))));
 	}
 
-	public void show(MOB mob, int code, String text)
+	public void show(final MOB mob, final int code, final String text)
 	{
 		final CMMsg msg=CMClass.getMsg(mob,null,this,code,code,code,text);
 		if((mob.location()!=null)&&(mob.location().okMessage(mob,msg)))

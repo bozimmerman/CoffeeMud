@@ -64,7 +64,7 @@ public class Prayer_CurseMinds extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_UNHOLY;
+		return Ability.FLAG_UNHOLY| Ability.FLAG_MINDALTERING;
 	}
 
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Cursed Mind)");
@@ -117,7 +117,7 @@ public class Prayer_CurseMinds extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

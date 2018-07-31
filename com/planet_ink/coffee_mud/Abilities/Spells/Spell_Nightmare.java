@@ -82,6 +82,12 @@ public class Spell_Nightmare extends Spell
 		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
 	public int amountRemaining=0;
 	boolean notAgainThisRound=false;
 
@@ -165,34 +171,34 @@ public class Spell_Nightmare extends Spell
 					switch(CMLib.dice().roll(1,10,0))
 					{
 					case 1:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						L("<S-NAME> struggle(s) with an imaginary foe.")); 
+						L("<S-NAME> struggle(s) with an imaginary foe."));
 						break;
 					case 2:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						L("<S-NAME> scream(s) in horror!")); 
+						L("<S-NAME> scream(s) in horror!"));
 						break;
 					case 3:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						L("<S-NAME> beg(s) for mercy.")); 
+						L("<S-NAME> beg(s) for mercy."));
 						break;
 					case 4:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						L("<S-NAME> grab(s) <S-HIS-HER> head and cr(ys).")); 
+						L("<S-NAME> grab(s) <S-HIS-HER> head and cr(ys)."));
 						break;
 					case 5:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						L("<S-NAME> whimper(s).")); 
+						L("<S-NAME> whimper(s)."));
 						break;
 					case 6:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						L("<S-NAME> look(s) terrified!")); 
+						L("<S-NAME> look(s) terrified!"));
 						break;
 					case 7:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						L("<S-NAME> swipe(s) at <S-HIS-HER> feet and arms.")); 
+						L("<S-NAME> swipe(s) at <S-HIS-HER> feet and arms."));
 						break;
 					case 8:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						L("<S-NAME> claw(s) at the air.")); 
+						L("<S-NAME> claw(s) at the air."));
 						break;
 					case 9:	mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						L("<S-NAME> shiver(s) in fear.")); 
+						L("<S-NAME> shiver(s) in fear."));
 						break;
 					case 10:mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
-						L("<S-NAME> shake(s) in anticipation of horror!")); 
+						L("<S-NAME> shake(s) in anticipation of horror!"));
 						break;
 					}
 					amountRemaining-=(int)Math.round(CMath.mul(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE),2.5));
@@ -229,7 +235,7 @@ public class Spell_Nightmare extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

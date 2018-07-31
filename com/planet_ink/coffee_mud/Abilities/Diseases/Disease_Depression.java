@@ -124,6 +124,12 @@ public class Disease_Depression extends Disease
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -148,13 +154,13 @@ public class Disease_Depression extends Disease
 	}
 
 	@Override
-	public void affectPhyStats(Physical E, PhyStats stats)
+	public void affectPhyStats(final Physical E, final PhyStats stats)
 	{
 		super.affectPhyStats(E,stats);
 		stats.setAttackAdjustment(stats.attackAdjustment()-10);
 	}
 
-	public void affectChatStats(MOB E, CharStats stats)
+	public void affectChatStats(final MOB E, final CharStats stats)
 	{
 		super.affectCharStats(E,stats);
 		stats.setStat(CharStats.STAT_SAVE_JUSTICE,stats.getStat(CharStats.STAT_SAVE_JUSTICE)-20);

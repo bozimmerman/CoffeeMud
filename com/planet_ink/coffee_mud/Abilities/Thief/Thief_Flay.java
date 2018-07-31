@@ -117,7 +117,7 @@ public class Thief_Flay extends ThiefSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -137,7 +137,7 @@ public class Thief_Flay extends ThiefSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isInCombat())
 		{
@@ -155,7 +155,10 @@ public class Thief_Flay extends ThiefSkill
 		}
 		if(!CMLib.flags().isAliveAwakeMobileUnbound(mob,false))
 			return false;
-		if((!auto)&&(!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
+
+		if((!auto)
+		&&(!CMLib.flags().isBoundOrHeld(target))
+		&&(!CMLib.flags().isSleeping(target)))
 		{
 			mob.tell(L("@x1 must be prone or bound first.",target.name(mob)));
 			return false;

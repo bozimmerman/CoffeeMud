@@ -90,7 +90,7 @@ public class Chant_SummonAnimal extends Chant
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_SUMMONING|Ability.FLAG_CHARMING;
+		return Ability.FLAG_SUMMONING|Ability.FLAG_CHARMING|Ability.FLAG_MINDALTERING;
 	}
 
 	@Override
@@ -123,7 +123,7 @@ public class Chant_SummonAnimal extends Chant
 		}
 	}
 
-	public Vector<Integer> outdoorChoices(Room R)
+	public Vector<Integer> outdoorChoices(final Room R)
 	{
 		final Vector<Integer> choices=new Vector<Integer>();
 		if(R==null)
@@ -144,7 +144,7 @@ public class Chant_SummonAnimal extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -162,7 +162,7 @@ public class Chant_SummonAnimal extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)
 		{
@@ -230,7 +230,7 @@ public class Chant_SummonAnimal extends Chant
 		return success;
 	}
 
-	public MOB determineMonster(MOB caster, int level)
+	public MOB determineMonster(final MOB caster, int level)
 	{
 		MOB newMOB=null;
 		if(level>5)
@@ -380,9 +380,9 @@ public class Chant_SummonAnimal extends Chant
 		newMOB.recoverPhyStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
-		
-		MOB genM = CMClass.getMOB("GenMob");
-		for(String stat : genM.getStatCodes())
+
+		final MOB genM = CMClass.getMOB("GenMob");
+		for(final String stat : genM.getStatCodes())
 			genM.setStat(stat, CMLib.coffeeMaker().getGenMobStat(newMOB,stat));
 		genM.setBaseCharStats((CharStats)newMOB.baseCharStats().copyOf());
 		genM.setBasePhyStats((PhyStats)newMOB.basePhyStats().copyOf());

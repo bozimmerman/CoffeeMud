@@ -931,12 +931,14 @@ public interface Ability extends Environmental
 	public static final long FLAG_POTENTIALLY_DEADLY=67108864L;
 	/** constant mask for the flags() method designating that the thing with this ability might kill you @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_AGGROFYING=134217728L;
-	/** constant mask for the flags() method designating that the thing with this ability alters the tides @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	/** constant mask for the flags() method designating that this ability alters the tides @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_TIDEALTERING=268435456L;
-	/** constant mask for the flags() method designating that the thing with this ability summons a sun @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	/** constant mask for the flags() method designating that this ability summons a sun @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_SUNSUMMONING=536870912L;
-	/** constant mask for the flags() method designating that the thing with this ability cannot be autouninvoked @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	/** constant mask for the flags() method designating that this ability cannot be autouninvoked @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_NOUNINVOKING=1073741824L;
+	/** constant mask for the flags() method designating that this ability alters the mind in some way @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_MINDALTERING=2147483648L;
 
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS=
@@ -970,7 +972,8 @@ public interface Ability extends Environmental
 		"DEADLY",
 		"AGGROING",
 		"TIDEALTERING",
-		"SUNSUMMONING"
+		"SUNSUMMONING",
+		"MINDALTERING"
 	};
 
 	/** constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()}*/

@@ -67,6 +67,12 @@ public class Play_Blues extends Play
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -125,7 +131,7 @@ public class Play_Blues extends Play
 	}
 
 	@Override
-	public void affectCharStats(MOB mob, CharStats stats)
+	public void affectCharStats(final MOB mob, final CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
 		if((invoker()!=null)&&(invoker()!=mob))

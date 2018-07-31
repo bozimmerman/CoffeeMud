@@ -79,7 +79,7 @@ public class Spell_Laughter extends Spell
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_PARALYZING;
+		return Ability.FLAG_PARALYZING | Ability.FLAG_MINDALTERING;
 	}
 
 	@Override
@@ -119,7 +119,7 @@ public class Spell_Laughter extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

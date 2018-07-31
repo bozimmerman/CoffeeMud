@@ -102,11 +102,17 @@ public class Skill_Shush extends StdSkill
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(msg.source()==affected)
 		{
-			
+
 			if((msg.sourceMinor()==CMMsg.TYP_SPEAK)
 			&&(msg.sourceMessage()!=null)
 			&&(msg.sourceMessage().indexOf(L(" whisper(s) "))<0))
@@ -136,7 +142,7 @@ public class Skill_Shush extends StdSkill
 				msg.source().tell(L("You don't feel comfortable making loud noises right now."));
 				return false;
 			}
-			
+
 		}
 		return super.okMessage(myHost, msg);
 	}
@@ -166,7 +172,7 @@ public class Skill_Shush extends StdSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if((mob!=null)&&(target!=null))
 		{
@@ -177,7 +183,7 @@ public class Skill_Shush extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room R=mob.location();
 		final MOB target=this.getTarget(mob,commands,givenTarget);

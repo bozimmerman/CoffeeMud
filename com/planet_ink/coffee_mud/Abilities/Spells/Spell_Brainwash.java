@@ -75,6 +75,12 @@ public class Spell_Brainwash extends Spell
 		return Ability.ACODE_SPELL | Ability.DOMAIN_ENCHANTMENT;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
 	public Vector<String> limbsToRemove = new Vector<String>();
 
 	@Override
@@ -134,7 +140,7 @@ public class Spell_Brainwash extends Spell
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -150,7 +156,7 @@ public class Spell_Brainwash extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String message="";
 		if(givenTarget==null)

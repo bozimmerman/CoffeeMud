@@ -54,6 +54,12 @@ public class Song_SingleMindedness extends Song
 		return Ability.QUALITY_MALICIOUS;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
 	protected CMMsg themsg=null;
 
 	@Override

@@ -123,6 +123,12 @@ public class Disease_Alzheimers extends Disease
 		return 0;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
 	protected int everyTick=0;
 
 	@Override

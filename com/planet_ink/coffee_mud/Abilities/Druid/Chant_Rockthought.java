@@ -80,6 +80,13 @@ public class Chant_Rockthought extends Chant
 	{
 		return Ability.CAN_MOBS;
 	}
+
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
 	CMMsg stubb=null;
 
 	@Override
@@ -122,7 +129,7 @@ public class Chant_Rockthought extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

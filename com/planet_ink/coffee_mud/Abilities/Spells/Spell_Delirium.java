@@ -75,6 +75,13 @@ public class Spell_Delirium extends Spell
 	{
 		return CAN_MOBS;
 	}
+
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
 	int amountRemaining=0;
 
 	@Override
@@ -83,7 +90,7 @@ public class Spell_Delirium extends Spell
 		return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;
 	}
 
-	protected Environmental getRandomOtherName(Environmental likeThisOne)
+	protected Environmental getRandomOtherName(final Environmental likeThisOne)
 	{
 		if((invoker==null)||(invoker.location()==null))
 			return likeThisOne;
@@ -156,7 +163,7 @@ public class Spell_Delirium extends Spell
 		return null;
 	}
 
-	protected String getRand(Environmental likeThis)
+	protected String getRand(final Environmental likeThis)
 	{
 		final Environmental E=this.getRandomOtherName(likeThis);
 		if(E==null)
@@ -168,7 +175,7 @@ public class Spell_Delirium extends Spell
 		return E.name();
 	}
 
-	protected String process(MOB mob, String str, Environmental obj)
+	protected String process(final MOB mob, String str, final Environmental obj)
 	{
 		if(obj==null)
 			return str;
@@ -262,7 +269,7 @@ public class Spell_Delirium extends Spell
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -276,7 +283,7 @@ public class Spell_Delirium extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

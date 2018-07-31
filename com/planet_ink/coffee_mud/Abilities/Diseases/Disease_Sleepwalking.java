@@ -124,6 +124,12 @@ public class Disease_Sleepwalking extends Disease
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost, msg))
@@ -138,7 +144,7 @@ public class Disease_Sleepwalking extends Disease
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -155,15 +161,15 @@ public class Disease_Sleepwalking extends Disease
 			final Room R=mob.location();
 			if((R!=null)&&(CMLib.flags().isInTheGame(mob, true))&&(!CMLib.flags().isBoundOrHeld(mob)))
 			{
-				List<Integer> dirs=new ArrayList<Integer>(1);
-				for(int d : Directions.CODES())
+				final List<Integer> dirs=new ArrayList<Integer>(1);
+				for(final int d : Directions.CODES())
 				{
 					if((R.getRoomInDir(d)!=null)&&(R.getExitInDir(d)!=null)&&(R.getExitInDir(d).isOpen()))
 						dirs.add(Integer.valueOf(d));
 				}
 				if(dirs.size()>0)
 				{
-					int dir=dirs.get(CMLib.dice().roll(1, dirs.size(), -1)).intValue();
+					final int dir=dirs.get(CMLib.dice().roll(1, dirs.size(), -1)).intValue();
 					CMLib.tracking().walk(mob, dir, false, true, true, true);
 				}
 			}

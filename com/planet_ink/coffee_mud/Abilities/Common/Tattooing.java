@@ -187,6 +187,9 @@ public class Tattooing extends CommonSkill
 		if(target==null)
 			return false;
 
+		if((!auto)&&(CMLib.flags().isSleeping(target)))
+			CMLib.commands().postStand(target, true, true);
+
 		if((!mob.getGroupMembers(new HashSet<MOB>()).contains(target))
 		&&(mob!=target)
 		&&(!CMLib.flags().isBoundOrHeld(target))

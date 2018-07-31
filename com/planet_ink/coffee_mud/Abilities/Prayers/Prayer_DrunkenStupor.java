@@ -64,7 +64,7 @@ public class Prayer_DrunkenStupor extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_NEUTRAL|Ability.FLAG_INTOXICATING;
+		return Ability.FLAG_NEUTRAL|Ability.FLAG_INTOXICATING | Ability.FLAG_MINDALTERING;
 	}
 
 	private final static String localizedStaticDisplay = CMLib.lang().L("(Drunken Stupor)");
@@ -177,7 +177,7 @@ public class Prayer_DrunkenStupor extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

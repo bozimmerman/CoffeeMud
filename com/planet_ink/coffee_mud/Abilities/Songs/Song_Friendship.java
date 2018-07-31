@@ -70,7 +70,7 @@ public class Song_Friendship extends Song
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_CHARMING;
+		return Ability.FLAG_CHARMING|Ability.FLAG_MINDALTERING;
 	}
 
 	@Override
@@ -187,7 +187,7 @@ public class Song_Friendship extends Song
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

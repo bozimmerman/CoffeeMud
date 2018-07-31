@@ -118,6 +118,12 @@ public class Disease_Blahs extends Disease
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
+	@Override
 	public int spreadBitmap()
 	{
 		return DiseaseAffect.SPREAD_CONSUMPTION;

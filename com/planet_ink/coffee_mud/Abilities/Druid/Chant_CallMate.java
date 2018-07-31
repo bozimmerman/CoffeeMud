@@ -91,7 +91,7 @@ public class Chant_CallMate extends Chant
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_SUMMONING|Ability.FLAG_CHARMING;
+		return Ability.FLAG_SUMMONING|Ability.FLAG_CHARMING|Ability.FLAG_MINDALTERING;
 	}
 
 	@Override
@@ -162,7 +162,7 @@ public class Chant_CallMate extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob==null)
 			return false;
@@ -174,14 +174,14 @@ public class Chant_CallMate extends Chant
 			mob.tell(L("You must be in your animal form to call a mate."));
 			return false;
 		}
-		
+
 		if((mob.location().domainType()==Room.DOMAIN_OUTDOORS_CITY)
 		||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
 		{
 			mob.tell(L("You must be in the wild to call a mate."));
 			return false;
 		}
-		
+
 		/*
 		String raceCat = mob.charStats().getMyRace().racialCategory();
 		if((raceCat.equalsIgnoreCase("Fish"))||(raceCat.equalsIgnoreCase("Sea Mammal")))
@@ -198,13 +198,13 @@ public class Chant_CallMate extends Chant
 			return false;
 		}
 		*/
-		
+
 		if(mob.getGroupMembers(new HashSet<MOB>()).size()>1)
 		{
 			mob.tell(L("You already have companions, so a mate would not come to you."));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -235,7 +235,7 @@ public class Chant_CallMate extends Chant
 		return success;
 	}
 
-	public MOB determineMonster(MOB caster, Race R)
+	public MOB determineMonster(final MOB caster, final Race R)
 	{
 		final MOB victim=caster.getVictim();
 		final MOB newMOB=CMClass.getMOB("GenMOB");
@@ -244,8 +244,8 @@ public class Chant_CallMate extends Chant
 			level=1;
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.baseCharStats().setMyRace(R);
-		char casterGender = (char)caster.charStats().getStat(CharStats.STAT_GENDER);
-		char mobGender = casterGender == 'M' ? 'F' : 'M';
+		final char casterGender = (char)caster.charStats().getStat(CharStats.STAT_GENDER);
+		final char mobGender = casterGender == 'M' ? 'F' : 'M';
 		final int oldCat=caster.baseCharStats().ageCategory();
 		String name=R.makeMobName(mobGender, R.getAgingChart()[oldCat]);
 		name=CMLib.english().startWithAorAn(name).toLowerCase();

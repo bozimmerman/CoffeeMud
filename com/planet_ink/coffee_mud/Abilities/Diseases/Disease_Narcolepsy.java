@@ -126,6 +126,12 @@ public class Disease_Narcolepsy extends Disease
 	protected int attDown=1;
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 

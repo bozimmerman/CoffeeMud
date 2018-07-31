@@ -143,6 +143,7 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Butchering",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"GaolFood",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"BodyPiercing",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_Groin",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Searching",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Blacksmithing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Carpentry",false);
@@ -164,6 +165,7 @@ public class Gaoler extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Fighter_Behead",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Stoning",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"SlaveTrading",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_Lobotomizing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Skill_Enslave",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_JailKey",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_Chirgury",false,CMParms.parseSemicolons("Butchering",true));
@@ -255,6 +257,8 @@ public class Gaoler extends StdCharClass
 			||msg.tool().ID().equals("Tattooing")
 			||msg.tool().ID().equals("Thief_TarAndFeather")
 			||msg.tool().ID().equals("BodyPiercing")
+			||msg.tool().ID().equals("Skill_Groin")
+			||msg.tool().ID().equals("Skill_Lobotomizing")
 			||msg.tool().ID().equals("Amputation"))
 		&&(CMLib.map().getStartArea(host)!=null)
 		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
@@ -263,7 +267,8 @@ public class Gaoler extends StdCharClass
 			final CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!@x1",CMLib.protocol().msp("scream.wav",40)));
 			if(((MOB)msg.target()).location().okMessage(msg.target(),msg2))
 			{
-				final int xp=(int)Math.round(10.0*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
+				final int baseAmt = 10 + CMLib.ableMapper().qualifyingLevel(msg.source(), (Ability)msg.tool());
+				final int xp=(int)Math.round(baseAmt*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
 				int[] done=mudHourMOBXPMap.get(host.Name()+"/"+msg.tool().ID());
 				if (done == null)
 				{

@@ -78,7 +78,7 @@ public class Prayer_Sermon extends Prayer
 	@Override
 	public long flags()
 	{
-		return Ability.FLAG_CHARMING|Ability.FLAG_NEUTRAL;
+		return Ability.FLAG_CHARMING|Ability.FLAG_NEUTRAL|Ability.FLAG_MINDALTERING;
 	}
 
 	@Override
@@ -169,7 +169,7 @@ public class Prayer_Sermon extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 
 		final Hashtable<MOB,MOB> h=new Hashtable<MOB,MOB>();

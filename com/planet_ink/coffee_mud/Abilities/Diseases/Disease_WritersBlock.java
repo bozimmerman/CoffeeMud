@@ -126,6 +126,12 @@ public class Disease_WritersBlock extends Disease
 		return 7;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_MINDALTERING;
+	}
+
 	protected boolean ringing=false;
 
 	@Override
