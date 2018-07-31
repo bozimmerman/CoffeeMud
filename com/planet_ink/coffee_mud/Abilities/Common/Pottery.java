@@ -89,6 +89,12 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 	protected static final int	RCP_SPELL		= 8;
 
 	@Override
+	public List<List<String>> fetchMyRecipes(final MOB mob)
+	{
+		return this.addRecipes(mob, loadRecipes());
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -117,7 +123,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	protected boolean doLearnRecipe(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		fireRequired=false;
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
@@ -218,14 +224,14 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		final List<String> originalCommands = new XVector<String>(commands);
 		if(super.checkStop(mob, commands))
@@ -235,7 +241,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		@SuppressWarnings("unused")
 		int recipeLevel=1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -361,7 +367,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		if(data==null)
 			return false;
 		woodRequired=data[0][FOUND_AMT];
-		
+
 		final Session session=mob.session();
 		if((misctype.equalsIgnoreCase("statue"))
 		&&(session!=null)

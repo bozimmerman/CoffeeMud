@@ -71,7 +71,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	@Override
 	public String parametersFormat()
 	{
-		return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t" 
+		return "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 			+ "ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tLID_LOCK||STATUE\tRES_SUBTYPE||\tCONTAINER_CAPACITY||PAGES_CHARS\tCODED_SPELL_LIST";
 	}
 
@@ -85,6 +85,12 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	protected static final int	RCP_MISCTYPE	= 7;
 	protected static final int	RCP_CAPACITY	= 8;
 	protected static final int	RCP_SPELL		= 9;
+
+	@Override
+	public List<List<String>> fetchMyRecipes(final MOB mob)
+	{
+		return this.addRecipes(mob, loadRecipes());
+	}
 
 	@Override
 	public boolean supportsDeconstruction()
@@ -155,14 +161,14 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		final List<String> originalCommands = new XVector<String>(commands);
 		if(super.checkStop(mob, commands))
@@ -375,7 +381,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		{
 			capacity=0;
 			final String pgs=foundRecipe.get(RCP_CAPACITY);
-			int x=pgs.indexOf('/');
+			final int x=pgs.indexOf('/');
 			if(x<0)
 				((Book)buildingI).setMaxPages(CMath.s_int(pgs));
 			else

@@ -79,7 +79,13 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 
 	protected Ability	theSpell		= null;
 	protected Scroll	fromTheScroll	= null;
-	
+
+	@Override
+	public List<List<String>> fetchMyRecipes(final MOB mob)
+	{
+		return this.addRecipes(mob, loadRecipes());
+	}
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -124,7 +130,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 					}
 					else
 					{
-						int theSpellLevel=spellLevel(mob,theSpell);
+						final int theSpellLevel=spellLevel(mob,theSpell);
 						if(fromTheScroll != null)
 							eraseFromScrollItem(fromTheScroll,theSpell,theSpellLevel);
 						buildingI=buildScrollItem((Scroll)buildingI, theSpell, theSpellLevel);
@@ -139,7 +145,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	protected int spellLevel(MOB mob, Ability A)
+	protected int spellLevel(final MOB mob, final Ability A)
 	{
 		int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
 		if(lvl<0)
@@ -178,17 +184,17 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public ItemKeyPair craftItem(String recipe)
+	public ItemKeyPair craftItem(final String recipe)
 	{
 		return craftItem(recipe, 0, false, false);
 	}
 
-	protected void eraseFromScrollItem(Scroll buildingI, Ability theSpell, int level)
+	protected void eraseFromScrollItem(final Scroll buildingI, final Ability theSpell, final int level)
 	{
 		if(buildingI == null)
 			return;
-		StringBuilder newList=new StringBuilder();
-		for(Ability A : buildingI.getSpells())
+		final StringBuilder newList=new StringBuilder();
+		for(final Ability A : buildingI.getSpells())
 		{
 			if(!A.ID().equalsIgnoreCase(theSpell.ID()))
 				newList.append(A.ID()).append(";");
@@ -213,20 +219,20 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			buildingI.setUsesRemaining(buildingI.usesRemaining()-1);
 		buildingI.text();
 	}
-	
-	protected Scroll buildScrollItem(Scroll buildingI, Ability theSpell, int level)
+
+	protected Scroll buildScrollItem(Scroll buildingI, final Ability theSpell, final int level)
 	{
 		if(buildingI == null)
 			buildingI=(Scroll)CMClass.getItem("GenScroll");
-		StringBuilder newList=new StringBuilder();
+		final StringBuilder newList=new StringBuilder();
 		if(buildingI.usesRemaining()==0)
 		{
-			for(Ability A : buildingI.getSpells())
+			for(final Ability A : buildingI.getSpells())
 				this.eraseFromScrollItem(buildingI, A, -1);
 		}
 		else
 		{
-			for(Ability A : buildingI.getSpells())
+			for(final Ability A : buildingI.getSpells())
 			{
 				newList.append(A.ID()).append(";");
 				final String testName=L(" OF @x1",A.Name().toUpperCase());
@@ -265,14 +271,14 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -280,7 +286,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 		if(autoGenerate>0)
 		{
 			final Ability theSpell=super.getCraftableSpellRecipeSpell(commands);
-			if(theSpell==null) 
+			if(theSpell==null)
 				return false;
 			final int level=spellLevel(mob,theSpell);
 			buildingI=buildScrollItem(null, theSpell, level);
@@ -407,12 +413,12 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 			int experienceToLose=0;
 			if(theSpell==null)
 			{
-				int x=CMParms.indexOfIgnoreCase(commands, "from");
+				final int x=CMParms.indexOfIgnoreCase(commands, "from");
 				if((x>0)&&(x<commands.size()-1))
 				{
 					recipeName=CMParms.combine(commands,0,x);
-					String otherScrollName=CMParms.combine(commands,x+1,commands.size());
-					Item scrollFromI=getTarget(mob,null,givenTarget,CMParms.parse(otherScrollName),Wearable.FILTER_UNWORNONLY);
+					final String otherScrollName=CMParms.combine(commands,x+1,commands.size());
+					final Item scrollFromI=getTarget(mob,null,givenTarget,CMParms.parse(otherScrollName),Wearable.FILTER_UNWORNONLY);
 					if(scrollFromI==null)
 						return false;
 					if(!mob.isMine(scrollFromI))
@@ -436,7 +442,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 						return false;
 					}
 					ingredient="";
-					for(Ability A : ((Scroll)scrollFromI).getSpells())
+					for(final Ability A : ((Scroll)scrollFromI).getSpells())
 					{
 						if((A!=null)
 						&&(xlevel(mob)>=spellLevel(mob,A))
@@ -467,7 +473,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				if(experienceToLose < CMLib.ableMapper().qualifyingLevel(mob,theSpell))
 					experienceToLose = CMLib.ableMapper().qualifyingLevel(mob,theSpell);
 			}
-			
+
 			if(buildingI!=null)
 			{
 				if(((Scroll)buildingI).usesRemaining()>0)
@@ -500,20 +506,20 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 											bundling,
 											-1,
 											null);
-				if(data==null) 
+				if(data==null)
 					return false;
 			}
-			if(manaToLose<10) 
+			if(manaToLose<10)
 				manaToLose=10;
 
 			if(mob.curState().getMana()<manaToLose)
 			{
 				commonTell(mob,L("You need at least @x1 mana to accomplish that.",""+manaToLose));
 			}
-			
+
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
-			
+
 			mob.curState().adjMana(-manaToLose, mob.maxState());
 
 			if((resourceType>0)&&(data != null))
@@ -526,7 +532,7 @@ public class ScrollScribing extends SpellCraftingSkill implements ItemCraftor
 				CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 				commonTell(mob,L("You lose @x1 experience points for the effort.",""+experienceToLose));
 			}
-			
+
 			int duration=getDuration(CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5,mob,CMLib.ableMapper().lowestQualifyingLevel(theSpell.ID()),10);
 			if(duration<10)
 				duration=10;

@@ -69,7 +69,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	{
 		return "";
 	}
-	
+
 	protected String getMainResourceName()
 	{
 		return "Wood";
@@ -90,14 +90,20 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		super();
 	}
 
+	@Override
+	public List<List<String>> fetchMyRecipes(final MOB mob)
+	{
+		return this.addRecipes(mob, loadRecipes());
+	}
+
 	protected boolean canBeDoneSittingDown = false;
-	
+
 	@Override
 	public boolean canBeDoneSittingDown()
 	{
 		return canBeDoneSittingDown;
 	}
-	
+
 	protected enum Building
 	{
 		WALL,
@@ -113,7 +119,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		EXITEFFECT,
 		DELEFFECT
 	}
-	
+
 	protected enum Flag
 	{
 		DIR,
@@ -136,8 +142,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	protected String[]	recipe				= null;
 	protected int		poundsOfMatsUsed	= 0;
 	protected String	designTitle			= "";
-	protected String	designDescription	= "";	
-	
+	protected String	designDescription	= "";
+
 	//protected static final int	RCP_FINALNAME		= 0;
 	//protected static final int	RCP_LEVEL			= 1;
 	//protected static final int	RCP_TICKS			= 2;
@@ -151,7 +157,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	protected final static int	DAT_DESC			= 10;
 	protected final static int	DAT_BUILDERMASK		= 11;
 	protected final static int	DAT_DESCRIPTION		= 12;
-	
+
 	@Override
 	public String parametersFormat()
 	{
@@ -159,14 +165,14 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		{
 			final String[] codes = CMParms.toStringArray(Building.values());
 			final String[] flags = CMParms.toStringArray(Flag.values());
-			Pair<String[],String[]> codesFlags = new Pair<String[],String[]>(codes, flags);
+			final Pair<String[],String[]> codesFlags = new Pair<String[],String[]>(codes, flags);
 			Resources.submitResource("BUILDING_SKILL_CODES_FLAGS", codesFlags);
 		}
 		return"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tOPTIONAL_BUILDING_RESOURCE_OR_MATERIAL\t"
 			+ "BUILDING_FLAGS\tBUILDING_CODE\tROOM_CLASS_ID||EXIT_CLASS_ID||ALLITEM_CLASS_ID||ROOM_CLASS_ID_OR_NONE\t"
 			+ "BUILDING_GRID_SIZE||EXIT_NAMES||STAIRS_DESC\tPCODED_SPELL_LIST\tBUILDING_NOUN\tBUILDER_MASK\tBUILDER_DESC";
 	}
-	
+
 	@Override
 	public String parametersFile()
 	{
@@ -174,7 +180,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	}
 
 	@Override
-	public String getDecodedComponentsDescription(MOB mob, List<String> recipe)
+	public String getDecodedComponentsDescription(final MOB mob, final List<String> recipe)
 	{
 		// TODO Auto-generated method stub
 		return null;
@@ -222,7 +228,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		super.unInvoke();
 	}
 
-	protected int[][] getBasicMaterials(final MOB mob, int woodRequired, String miscType)
+	protected int[][] getBasicMaterials(final MOB mob, final int woodRequired, String miscType)
 	{
 		if(miscType.length()==0)
 			miscType="rock";
@@ -233,17 +239,17 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 													0,null);
 		return idata;
 	}
-	
+
 	public String[][] getRecipeData(final MOB mob)
 	{
-		List<List<String>> recipeData = addRecipes(mob,loadRecipes(parametersFile()));
-		String[][] finalDat = new String[recipeData.size()][];
+		final List<List<String>> recipeData = addRecipes(mob,loadRecipes(parametersFile()));
+		final String[][] finalDat = new String[recipeData.size()][];
 		for(int i=0;i<recipeData.size();i++)
 			finalDat[i] = recipeData.get(i).toArray(new String[recipeData.get(i).size()]);
 		return finalDat;
 	}
 
-	public Exit generify(Exit X)
+	public Exit generify(final Exit X)
 	{
 		final Exit E2=CMClass.getExit("GenExit");
 		E2.setName(X.name());
@@ -265,8 +271,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 	{
 		commonTell(mob,L("You've ruined the "+recipe[DAT_DESC]+"!",CMLib.directions().getDirectionName(dir)));
 	}
-	
-	protected void demolishRoom(MOB mob, Room room)
+
+	protected void demolishRoom(final MOB mob, final Room room)
 	{
 		final LandTitle title=CMLib.law().getLandTitle(room);
 		if(title==null)
@@ -305,7 +311,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		room.eachInhabitant(new EachApplicable<MOB>()
 		{
 			@Override
-			public void apply(MOB a)
+			public void apply(final MOB a)
 			{
 				theRoomToReturnTo.bringMobHere(a, false);
 			}
@@ -313,7 +319,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		room.eachItem(new EachApplicable<Item>()
 		{
 			@Override
-			public void apply(Item a)
+			public void apply(final Item a)
 			{
 				theRoomToReturnTo.addItem(a,Expire.Player_Drop);
 			}
@@ -329,16 +335,16 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		}
 		CMLib.map().obliterateMapRoom(room);
 	}
-	
-	private void removeEffects(PhysicalAgent E, String extraProp)
+
+	private void removeEffects(final PhysicalAgent E, String extraProp)
 	{
 		extraProp=extraProp.trim();
 		if(extraProp.length()>0)
 		{
-			List<String> spells = CMParms.parseAny(extraProp, ")", true);
+			final List<String> spells = CMParms.parseAny(extraProp, ")", true);
 			for(String spellName : spells)
 			{
-				int x=spellName.indexOf('(');
+				final int x=spellName.indexOf('(');
 				if(x>0)
 					spellName=spellName.substring(0,x);
 				final Ability A=E.fetchEffect(spellName);
@@ -356,17 +362,17 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			}
 		}
 	}
-	
-	private void addEffects(PhysicalAgent E, Room R2, String extraProp)
+
+	private void addEffects(final PhysicalAgent E, final Room R2, String extraProp)
 	{
 		extraProp=extraProp.trim();
 		if(extraProp.length()>0)
 		{
-			List<String> spells = CMParms.parseAny(extraProp, ")", true);
+			final List<String> spells = CMParms.parseAny(extraProp, ")", true);
 			for(String spellName : spells)
 			{
 				String parms="";
-				int x=spellName.indexOf('(');
+				final int x=spellName.indexOf('(');
 				if(x>0)
 				{
 					parms=spellName.substring(x+1);
@@ -391,7 +397,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				final Ability A=CMClass.getAbility(spellName);
 				if(A!=null)
 				{
-					
+
 					if(parms.length()>0)
 						A.setMiscText(parms);
 					else
@@ -410,7 +416,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		}
 	}
 
-	protected Room buildRoomAbility(Room R, int dir, String extraProp)
+	protected Room buildRoomAbility(Room R, final int dir, String extraProp)
 	{
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
@@ -421,7 +427,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		return R;
 	}
 
-	protected Exit buildExitAbility(Room R, int dir, String extraProp)
+	protected Exit buildExitAbility(Room R, final int dir, final String extraProp)
 	{
 		Exit E=null;
 		synchronized(("SYNC"+R.roomID()).intern())
@@ -433,7 +439,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		return E;
 	}
 
-	protected Room removeRoomAbility(Room R, int dir, String extraProp)
+	protected Room removeRoomAbility(Room R, final int dir, String extraProp)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
@@ -444,7 +450,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		return R;
 	}
 
-	protected Exit removeExitAbility(Room R, int dir, String extraProp)
+	protected Exit removeExitAbility(Room R, final int dir, final String extraProp)
 	{
 		Exit E=null;
 		synchronized(("SYNC"+R.roomID()).intern())
@@ -456,7 +462,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		return E;
 	}
 
-	protected Room buildNewRoomType(Room room, String newLocale, String extraProp, int dimension)
+	protected Room buildNewRoomType(Room room, String newLocale, final String extraProp, int dimension)
 	{
 		Room R=null;
 		synchronized(("SYNC"+room.roomID()).intern())
@@ -527,7 +533,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 						R.setRawExit(d, (Exit)room.getRawExit(d).copyOf());
 				}
 			}
-			LandTitle title = CMLib.law().getLandTitle(room);
+			final LandTitle title = CMLib.law().getLandTitle(room);
 			if((title!=null)&&(title.gridLayout()))
 			{
 				final PairVector<Room,int[]> rooms=CMLib.tracking().buildGridList(R, title.getOwnerName(), 100);
@@ -548,7 +554,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					}
 				}
 			}
-			
+
 			R.clearSky();
 			R.startItemRejuv();
 			try
@@ -632,14 +638,14 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		}
 		return R;
 	}
-	
-	protected void buildDoor(String[] recipe, Room room, int dir)
+
+	protected void buildDoor(final String[] recipe, Room room, final int dir)
 	{
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
-			String localeName = recipe[DAT_CLASS];
+			final String localeName = recipe[DAT_CLASS];
 			String doorName = recipe[DAT_MISC];
-			String spells = recipe[DAT_PROPERTIES];
+			final String spells = recipe[DAT_PROPERTIES];
 			//int size = CMath.s_int(recipe[DAT_MISC]);
 			String closeWord=null;
 			String openWord=null;
@@ -647,7 +653,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			String displayText="";
 			if(doorName.indexOf("|")>0)
 			{
-				List<String> split=CMParms.parseAny(doorName, '|',false);
+				final List<String> split=CMParms.parseAny(doorName, '|',false);
 				if(split.get(0).length()>0)
 					doorName=split.get(0);
 				if((split.size()>1)&&(split.get(1).length()>0))
@@ -690,33 +696,33 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		}
 	}
 
-	protected int findFloorNumber(Room room, Set<Room> done, int floor)
+	protected int findFloorNumber(final Room room, final Set<Room> done, final int floor)
 	{
-		LandTitle title = CMLib.law().getLandTitle(room);
+		final LandTitle title = CMLib.law().getLandTitle(room);
 		if(title == null)
 			return floor;
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
-			Room R=room.getRoomInDir(d);
+			final Room R=room.getRoomInDir(d);
 			if((R!=null)&&(!done.contains(R)))
 			{
 				done.add(R);
 				if(d==Directions.UP)
 				{
-					int f=findFloorNumber(R,done,floor-1);
+					final int f=findFloorNumber(R,done,floor-1);
 					if(f != Integer.MIN_VALUE)
 						return f;
 				}
 				else
 				if(d==Directions.DOWN)
 				{
-					int f=findFloorNumber(R,done,floor+1);
+					final int f=findFloorNumber(R,done,floor+1);
 					if(f != Integer.MIN_VALUE)
 						return f;
 				}
 				else
 				{
-					int f=findFloorNumber(R,done,floor);
+					final int f=findFloorNumber(R,done,floor);
 					if(f != Integer.MIN_VALUE)
 						return f;
 				}
@@ -724,21 +730,21 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		}
 		return Integer.MIN_VALUE;
 	}
-	
-	protected Room buildStairs(final MOB mob, Room room, int dir, String[] recipe)
+
+	protected Room buildStairs(final MOB mob, Room room, final int dir, final String[] recipe)
 	{
 		Room newRoom;
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
 			String desc = recipe[DAT_MISC];
-			String addParms = recipe[DAT_PROPERTIES];
-			String localeClass = recipe[DAT_CLASS];
+			final String addParms = recipe[DAT_PROPERTIES];
+			final String localeClass = recipe[DAT_CLASS];
 			if(desc.equals("0"))
 				desc="";
-			
-			int opDir = Directions.getOpDirectionCode(dir);
+
+			final int opDir = Directions.getOpDirectionCode(dir);
 			room=CMLib.map().getRoom(room);
-			int floor=findFloorNumber(room, new HashSet<Room>(), 1);
+			final int floor=findFloorNumber(room, new HashSet<Room>(), 1);
 			if(localeClass.length()==0)
 				newRoom=CMClass.getLocale(CMClass.classID(room));
 			else
@@ -746,7 +752,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			newRoom.setRoomID(room.getArea().getNewRoomID(room,dir));
 			if(newRoom.roomID().length()==0)
 			{
-				String verbDesc = recipe[DAT_DESC];
+				final String verbDesc = recipe[DAT_DESC];
 				commonTell(mob,L("You've failed to build the "+verbDesc+"!",CMLib.directions().getDirectionName(dir)));
 				return null;
 			}
@@ -757,7 +763,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				final List<Room> allRooms = newTitle.getConnectedPropertyRooms();
 				if(allRooms.size()>0)
 				{
-					Ability cap = allRooms.get(0).fetchEffect("Prop_ReqCapacity");
+					final Ability cap = allRooms.get(0).fetchEffect("Prop_ReqCapacity");
 					if(cap != null)
 					{
 						newRoom.addNonUninvokableEffect((Ability)cap.copyOf());
@@ -767,7 +773,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				newTitle.setLandPropertyID(newRoom.roomID());
 				newRoom.addNonUninvokableEffect((Ability)newTitle);
 			}
-			
+
 			int newFloorNum = (floor+1);
 			int curFloorNum = floor;
 			if(dir == Directions.DOWN)
@@ -832,7 +838,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		return newRoom;
 	}
 
-	protected void buildWall(Room room, int dir)
+	protected void buildWall(Room room, final int dir)
 	{
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
@@ -850,7 +856,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		}
 	}
 
-	protected void buildTitle(Room room, String designTitle)
+	protected void buildTitle(Room room, final String designTitle)
 	{
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
@@ -868,13 +874,13 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				((GridLocale)room).clearGrid(returnRoom);
 				((GridLocale)room).buildGrid();
 			}
-			LandTitle T=CMLib.law().getLandTitle(room);
+			final LandTitle T=CMLib.law().getLandTitle(room);
 			if(T != null)
 				T.updateLot(null);
 		}
 	}
 
-	protected void buildDesc(Room room, int dir, String designDescription)
+	protected void buildDesc(Room room, final int dir, final String designDescription)
 	{
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
@@ -905,14 +911,14 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					((GridLocale)room).buildGrid();
 				}
 				CMLib.database().DBUpdateRoom(room);
-				LandTitle T=CMLib.law().getLandTitle(room);
+				final LandTitle T=CMLib.law().getLandTitle(room);
 				if(T != null)
 					T.updateLot(null);
 			}
 		}
 	}
 
-	protected void demolish(final MOB mob, Room room, int dir, String[] recipe)
+	protected void demolish(final MOB mob, Room room, final int dir, final String[] recipe)
 	{
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
@@ -940,8 +946,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			}
 		}
 	}
-	
-	protected void buildComplete(final MOB mob, final String[] recipe, Room room, int dir, String designTitle, String designDescription)
+
+	protected void buildComplete(final MOB mob, final String[] recipe, final Room room, final int dir, final String designTitle, final String designDescription)
 	{
 		final Building doingCode = Building.valueOf(recipe[DAT_BUILDCODE]);
 		switch(doingCode)
@@ -970,15 +976,15 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		}
 		case ROOM:
 		{
-			String localeName = recipe[DAT_CLASS];
-			String spells = recipe[DAT_PROPERTIES];
-			int size = CMath.s_int(recipe[DAT_MISC]);
+			final String localeName = recipe[DAT_CLASS];
+			final String spells = recipe[DAT_PROPERTIES];
+			final int size = CMath.s_int(recipe[DAT_MISC]);
 			this.buildNewRoomType(room, localeName, spells, size);
 			break;
 		}
 		case DELEFFECT:
 		{
-			String spells = recipe[DAT_PROPERTIES];
+			final String spells = recipe[DAT_PROPERTIES];
 			if(dir >=0)
 				this.removeExitAbility(room, dir, spells);
 			else
@@ -987,13 +993,13 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		}
 		case ROOMEFFECT:
 		{
-			String spells = recipe[DAT_PROPERTIES];
+			final String spells = recipe[DAT_PROPERTIES];
 			this.buildRoomAbility(room, dir, spells);
 			break;
 		}
 		case EXITEFFECT:
 		{
-			String spells = recipe[DAT_PROPERTIES];
+			final String spells = recipe[DAT_PROPERTIES];
 			this.buildExitAbility(room, dir, spells);
 			break;
 		}
@@ -1015,8 +1021,8 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		}
 		}
 	}
-	
-	protected Room convertToPlains(Room room, String localeID)
+
+	protected Room convertToPlains(final Room room, final String localeID)
 	{
 		final Room R=CMClass.getLocale(localeID);
 		R.setRoomID(room.roomID());
@@ -1086,12 +1092,12 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		return R;
 	}
 
-	public boolean isHomePeerRoom(Room R)
+	public boolean isHomePeerRoom(final Room R)
 	{
 		return ifHomePeerLandTitle(R)!=null;
 	}
 
-	public boolean isHomePeerTitledRoom(Room R)
+	public boolean isHomePeerTitledRoom(final Room R)
 	{
 		final LandTitle title = ifHomePeerLandTitle(R);
 		if(title == null)
@@ -1099,7 +1105,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		return title.getOwnerName().length()>0;
 	}
 
-	public LandTitle ifHomePeerLandTitle(Room R)
+	public LandTitle ifHomePeerLandTitle(final Room R)
 	{
 		if((R!=null)
 		&&(R.ID().length()>0)
@@ -1107,7 +1113,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			return CMLib.law().getLandTitle(R);
 		return null;
 	}
-	
+
 	public String establishVerb(final MOB mob, final String[] recipe)
 	{
 		String verb="";
@@ -1116,9 +1122,9 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		{
 			if(dir<0)
 			{
-				Room R=mob.location();
+				final Room R=mob.location();
 				boolean roomClassFound = false;
-				for(List<String> recipeChk : loadRecipes(parametersFile()))
+				for(final List<String> recipeChk : loadRecipes(parametersFile()))
 				{
 					if(R.ID().equalsIgnoreCase(recipeChk.get(DAT_CLASS)))
 						roomClassFound=true;
@@ -1153,27 +1159,27 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		return verb;
 	}
 
-	private Set<Flag> makeFlags(String[] recipe)
+	private Set<Flag> makeFlags(final String[] recipe)
 	{
 		final Set<Flag> flags = new HashSet<Flag>();
-		String[] flagStrs = CMParms.parse(recipe[DAT_FLAG].toUpperCase()).toArray(new String[0]);
-		for(String flag : flagStrs)
+		final String[] flagStrs = CMParms.parse(recipe[DAT_FLAG].toUpperCase()).toArray(new String[0]);
+		for(final String flag : flagStrs)
 		{
-			Flag F=(Flag)CMath.s_valueOf(Flag.class, flag);
+			final Flag F=(Flag)CMath.s_valueOf(Flag.class, flag);
 			if(F!=null)
 				flags.add(F);
 		}
 		return flags;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(checkStop(mob, commands))
 			return true;
-		
+
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes(parametersFile())),commands,0);
-		
+
 		if(commands.size()==0)
 		{
 			commonTell(mob,L("What kind of @x1, where? Try @x2 list.",name(),CMStrings.capitalizeAndLower(this.triggerStrings()[0])));
@@ -1183,9 +1189,9 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		canBeDoneSittingDown = false;
 		final String str=commands.get(0);
 		final String[][] data=getRecipeData(mob);
-		LandTitle title = CMLib.law().getLandTitle(mob.location());
-		double landValue = ((title == null) ? 0 : title.getPrice()) / 100.0;
-		String landCurrency = CMLib.beanCounter().getCurrency(mob.location());
+		final LandTitle title = CMLib.law().getLandTitle(mob.location());
+		final double landValue = ((title == null) ? 0 : title.getPrice()) / 100.0;
+		final String landCurrency = CMLib.beanCounter().getCurrency(mob.location());
 		final boolean getInfo = ("INFO").startsWith(str.toUpperCase());
 		if(("LIST").startsWith(str.toUpperCase())||getInfo)
 		{
@@ -1353,7 +1359,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		}
 		final String dirName=commands.get(commands.size()-1);
 		dir=CMLib.directions().getGoodDirectionCode(dirName);
-		
+
 		if((doingCode == Building.DEMOLISH)&&(dirName.equalsIgnoreCase("roof"))||(dirName.equalsIgnoreCase("ceiling")))
 		{
 			this.canBeDoneSittingDown = true;
@@ -1464,7 +1470,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				return false;
 			}
 		}
-		
+
 		if(doingCode == Building.EXCAVATE)
 		{
 			if(dir==Directions.DOWN)
@@ -1475,7 +1481,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				case Room.DOMAIN_INDOORS_STONE:
 				case Room.DOMAIN_INDOORS_WOOD:
 				{
-					int floorNumber = this.findFloorNumber(mob.location(), new HashSet<Room>(), 1);
+					final int floorNumber = this.findFloorNumber(mob.location(), new HashSet<Room>(), 1);
 					if(floorNumber > 1)
 					{
 						commonTell(mob,L("You cannot excavate from above the ground."));
@@ -1495,7 +1501,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				flags.remove(Flag.CAVEONLY);  // caveonly only matters if complex DOWN rules don't apply.
 			}
 		}
-		
+
 		if((doingCode == Building.STAIRS)||(doingCode == Building.EXCAVATE))
 		{
 			if((title==null)||(!title.allowsExpansionConstruction()))
@@ -1520,14 +1526,14 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 					commonTell(mob,L("There is already something over there."));
 				return false;
 			}
-			
+
 			final List<Room> allRooms = title.getConnectedPropertyRooms();
 			if(allRooms.size()>0)
 			{
-				Ability cap = allRooms.get(0).fetchEffect("Prop_ReqCapacity");
+				final Ability cap = allRooms.get(0).fetchEffect("Prop_ReqCapacity");
 				if(cap != null)
 				{
-					int roomLimit = CMParms.getParmInt(cap.text(),"rooms",Integer.MAX_VALUE);
+					final int roomLimit = CMParms.getParmInt(cap.text(),"rooms",Integer.MAX_VALUE);
 					if(allRooms.size() >= roomLimit)
 					{
 						commonTell(mob,L("You are not allowed to add more rooms."));
@@ -1562,7 +1568,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				return false;
 			}
 		}
-		
+
 		if(flags.contains(Flag.DOWNONLY))
 		{
 			final Room nextRoom=mob.location().getRoomInDir(Directions.DOWN);
@@ -1574,7 +1580,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			}
 			dir=Directions.DOWN;
 		}
-		
+
 		if(flags.contains(Flag.CAVEONLY))
 		{
 			if((mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
@@ -1584,7 +1590,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				return false;
 			}
 		}
-		
+
 		if(flags.contains(Flag.WATERONLY))
 		{
 			if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
@@ -1596,7 +1602,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				return false;
 			}
 		}
-		
+
 		if(flags.contains(Flag.WATERSURFACEONLY))
 		{
 			if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)
@@ -1606,7 +1612,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				return false;
 			}
 		}
-		
+
 		if(flags.contains(Flag.UNDERWATERONLY))
 		{
 			if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_UNDERWATER)
@@ -1616,7 +1622,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				return false;
 			}
 		}
-		
+
 		if(flags.contains(Flag.SALTWATER))
 		{
 			if((mob.location().getAtmosphere()!=RawMaterial.RESOURCE_SALTWATER)
@@ -1626,7 +1632,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				return false;
 			}
 		}
-		
+
 		if(flags.contains(Flag.FRESHWATER))
 		{
 			if((mob.location().getAtmosphere()!=RawMaterial.RESOURCE_FRESHWATER)
@@ -1636,7 +1642,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 				return false;
 			}
 		}
-		
+
 		if(doingCode == Building.TITLE)
 		{
 			if(!canDescTitleHere(mob.location()))
@@ -1735,7 +1741,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 			idata=null;
 			int wood=CMath.s_int(recipe[DAT_WOOD]);
 			wood=adjustWoodRequired(wood,mob);
-			double roomValue = landValue * wood;
+			final double roomValue = landValue * wood;
 			if(CMLib.beanCounter().getTotalAbsoluteValue(mob, landCurrency) < roomValue)
 			{
 				commonTell(mob,L("You'll need @x1 to do that.",CMLib.beanCounter().nameCurrencyLong(landCurrency, roomValue)));
@@ -1773,7 +1779,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		room=mob.location();
 		if(room.getGridParent() != null)
 			room = room.getGridParent();
-		
+
 		if((woodRequired>0)&&(idata!=null))
 			CMLib.materials().destroyResourcesValue(mob.location(),woodRequired,idata[0][FOUND_CODE],0,null);
 		else
@@ -1781,7 +1787,7 @@ public class BuildingSkill extends CraftingSkill implements CraftorAbility
 		{
 			int wood=CMath.s_int(recipe[DAT_WOOD]);
 			wood=adjustWoodRequired(wood,mob);
-			double roomValue = landValue * wood;
+			final double roomValue = landValue * wood;
 			CMLib.beanCounter().subtractMoney(mob, landCurrency, roomValue);
 		}
 		else

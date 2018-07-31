@@ -68,7 +68,13 @@ public class Scalp extends CommonSkill
 	{
 		return L("Scalped");
 	}
-	
+
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_TORTURING;
+	}
+
 	private DeadBody	body	= null;
 	protected boolean	failed	= false;
 
@@ -134,7 +140,7 @@ public class Scalp extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;

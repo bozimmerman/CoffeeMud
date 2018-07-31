@@ -98,6 +98,12 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 	protected static final int	RCP_SPELL		= 10;
 
 	@Override
+	public List<List<String>> fetchMyRecipes(final MOB mob)
+	{
+		return this.addRecipes(mob, loadRecipes());
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -127,7 +133,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 	}
 
 	@Override
-	public double getItemWeightMultiplier(boolean bundling)
+	public double getItemWeightMultiplier(final boolean bundling)
 	{
 		return bundling ? 1.0 : 0.5;
 	}
@@ -202,12 +208,12 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 		&&(mob.location().okMessage(mob, msg)))
 		{
 			mob.location().send(mob, msg);
-			StringBuilder str=new StringBuilder("");
+			final StringBuilder str=new StringBuilder("");
 			str.append(I.Name()).append("\t");
 			str.append(I.basePhyStats().level()).append("\t");
 			str.append(5+(I.basePhyStats().level()/5)).append("\t");
 			int wood=0;
-			for(long code : Wearable.CODES.ALL())
+			for(final long code : Wearable.CODES.ALL())
 			{
 				if(I.fitsOn(code))
 				{
@@ -231,9 +237,9 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 			if(I instanceof Armor)
 			{
 				str.append(((Armor)I).getClothingLayer()+10).append(":");
-				String connector = ((Armor)I).rawLogicalAnd() ? "&&" : "||";
+				final String connector = ((Armor)I).rawLogicalAnd() ? "&&" : "||";
 				boolean didAny=false;
-				for(long code : Wearable.CODES.ALL())
+				for(final long code : Wearable.CODES.ALL())
 				{
 					if(I.fitsOn(code))
 					{
@@ -256,7 +262,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 		return false;
 	}
 
-	
+
 	protected boolean masterCraftCheck(final Item I)
 	{
 		if(I.basePhyStats().level()>31)
@@ -299,13 +305,13 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 	}
 
 	@Override
-	public boolean supportsMending(Physical item)
+	public boolean supportsMending(final Physical item)
 	{
 		return canMend(null, item, true);
 	}
 
 	@Override
-	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
@@ -325,21 +331,21 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 	final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 	final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{

@@ -99,6 +99,12 @@ public class Thief_Flay extends ThiefSkill
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_TORTURING;
+	}
+
+	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if(!super.okMessage(host,msg))

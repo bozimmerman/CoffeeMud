@@ -65,7 +65,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 
 	protected final static int HIDE_MASK=1<<30;
 	protected final static int STAGE_MASK=~(1<<30);
-	
+
 	protected int materialAdjustments = 0;
 
 	@Override
@@ -87,14 +87,20 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	protected int[][] fetchFoundResourceData(MOB mob,
+	public List<List<String>> fetchMyRecipes(final MOB mob)
+	{
+		return this.addRecipes(mob, loadRecipes());
+	}
+
+	@Override
+	protected int[][] fetchFoundResourceData(final MOB mob,
 											 int req1Required,
-											 String req1Desc, int[] req1,
+											 final String req1Desc, final int[] req1,
 											 int req2Required,
-											 String req2Desc, int[] req2,
-											 boolean bundle,
-											 int autoGeneration,
-											 PairVector<EnhancedExpertise,Integer> expMods)
+											 final String req2Desc, final int[] req2,
+											 final boolean bundle,
+											 final int autoGeneration,
+											 final PairVector<EnhancedExpertise,Integer> expMods)
 	{
 		if(expMods!=null)
 		{
@@ -208,7 +214,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 				bundle,autoGeneration,expMods);
 	}
 
-	public void fixDataForComponents(int[][] data, String woodRequiredStr, boolean autoGeneration, List<Object> componentsFoundList, int amount)
+	public void fixDataForComponents(final int[][] data, final String woodRequiredStr, final boolean autoGeneration, List<Object> componentsFoundList, final int amount)
 	{
 		boolean emptyComponents=false;
 		if((componentsFoundList==null)||(componentsFoundList.size()==0))
@@ -227,7 +233,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 
 		if(autoGeneration)
 		{
-			List<Integer> compInts=new ArrayList<Integer>();
+			final List<Integer> compInts=new ArrayList<Integer>();
 			for(final Object o : componentsFoundList)
 			{
 				if(o instanceof Item)
@@ -262,7 +268,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			}
 			if(data[0][FOUND_CODE]==0)
 			{
-				List<Integer> compInts=new ArrayList<Integer>();
+				final List<Integer> compInts=new ArrayList<Integer>();
 				for(final Object o : componentsFoundList)
 				{
 					if(o instanceof Item)
@@ -293,7 +299,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		}
 	}
 
-	private final static int atLeast1(int value, double pct)
+	private final static int atLeast1(int value, final double pct)
 	{
 		int change=(int)Math.round(CMath.mul(value,pct));
 		if(pct<0.0)
@@ -342,7 +348,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		return CMParms.combineQuoted(V,0);
 	}
 
-	protected void applyName(final Item item, final String word, boolean hide)
+	protected void applyName(final Item item, final String word, final boolean hide)
 	{
 		final String oldName=item.Name();
 		if(!hide)
@@ -359,12 +365,12 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	public List<String> getThisSkillsExpertises()
 	{
 		final List<String> V=new ArrayList<String>(3);
-		for(EnhancedExpertise expertise : EnhancedExpertise.values())
+		for(final EnhancedExpertise expertise : EnhancedExpertise.values())
 		{
 			final String[] ss=CMLib.expertises().getApplicableExpertises(ID(),expertise.flag);
 			if(ss!=null)
 			{
-				for(String sid : ss)
+				for(final String sid : ss)
 				{
 					if(!V.contains(sid))
 						V.add(sid);
@@ -375,7 +381,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	protected List<List<String>> loadList(StringBuffer str)
+	protected List<List<String>> loadList(final StringBuffer str)
 	{
 		final List<List<String>> lists=super.loadList(str);
 		final List<String> parmNames=CMParms.parseTabs(parametersFormat(), true);
@@ -411,7 +417,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		return sortedLists;
 	}
 
-	public void enhanceList(MOB mob)
+	public void enhanceList(final MOB mob)
 	{
 		final StringBuffer extras=new StringBuffer("");
 		String stage=null;
@@ -587,7 +593,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 			WA.setMiscText((WA.text()+" "+stat+adjustment).trim());
 	}
 
-	public void addSpellAdjustment(Item item, String spell, String parm)
+	public void addSpellAdjustment(final Item item, final String spell, final String parm)
 	{
 		Ability WA=item.fetchEffect("Prop_WearSpellCast");
 		if(WA==null)
@@ -608,7 +614,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	protected String cleanBuildingNameForXP(MOB mob, String name)
+	protected String cleanBuildingNameForXP(final MOB mob, String name)
 	{
 		name=" "+CMLib.english().removeArticleLead(name)+" ";
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,CMParms.parse(name));
@@ -632,7 +638,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		return name.trim();
 	}
 
-	public void enhanceItem(MOB mob, Item item, int recipeLevel, PairVector<EnhancedExpertise,Integer> types)
+	public void enhanceItem(final MOB mob, final Item item, int recipeLevel, final PairVector<EnhancedExpertise,Integer> types)
 	{
 		if(types==null)
 			return;
@@ -868,7 +874,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 					Ability propA = item.fetchEffect("Prop_UseAdjuster");
 					if(propA == null)
 					{
-						String statName=CharState.STAT_DESCS[addToStat];
+						final String statName=CharState.STAT_DESCS[addToStat];
 						propA=CMClass.getAbility("Prop_UseAdjuster");
 						if(recipeLevel == 0)
 							recipeLevel = 1;

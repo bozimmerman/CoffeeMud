@@ -71,7 +71,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 
 	@Override
 	public String parametersFormat()
-	{ 
+	{
 		return
 		"ITEM_NAME\tRESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED\tRESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED\t"
 		+"CLAN_ITEM_CODENUMBER\tITEM_LEVEL\tBUILD_TIME_TICKS\tCLAN_EXPERIENCE_COST_AMOUNT\t"
@@ -94,6 +94,12 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_CONTAINMASK=12;
 	protected static final int RCP_SPELL=13;
 	protected static final int RCP_REQUIREDSKILL=14;
+
+	@Override
+	public List<List<String>> fetchMyRecipes(final MOB mob)
+	{
+		return this.addRecipes(mob, loadRecipes());
+	}
 
 	public Hashtable<String, String> parametersFields()
 	{
@@ -151,7 +157,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean canBeLearnedBy(MOB teacher, MOB student)
+	public boolean canBeLearnedBy(final MOB teacher, final MOB student)
 	{
 		if(!super.canBeLearnedBy(teacher,student))
 			return false;
@@ -182,14 +188,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -444,7 +450,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				((ClanItem)buildingI).setClanItemType(ClanItem.ClanItemType.values()[CMath.s_int(type)]);
 			else
 			{
-				ClanItem.ClanItemType cType = (ClanItem.ClanItemType)CMath.s_valueOf(ClanItem.ClanItemType.class, type.toUpperCase().trim());
+				final ClanItem.ClanItemType cType = (ClanItem.ClanItemType)CMath.s_valueOf(ClanItem.ClanItemType.class, type.toUpperCase().trim());
 				if(cType != null)
 					((ClanItem)buildingI).setClanItemType(cType);
 			}

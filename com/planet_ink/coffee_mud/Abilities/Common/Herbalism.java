@@ -68,7 +68,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 
 	@Override
 	public String parametersFormat()
-	{ 
+	{
 		return
 		"SPELL_ID\tITEM_LEVEL\t"
 		+"RESOURCE_NAME_OR_HERB_NAME\t"
@@ -77,6 +77,12 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		+"RESOURCE_NAME_OR_HERB_NAME\t"
 		+"RESOURCE_NAME_OR_HERB_NAME\t"
 		+"RESOURCE_NAME_OR_HERB_NAME";
+	}
+
+	@Override
+	public List<List<String>> fetchMyRecipes(final MOB mob)
+	{
+		return this.addRecipes(mob, loadRecipes());
 	}
 
 	String oldName="";
@@ -119,7 +125,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public ItemKeyPair craftItem(String recipe)
+	public ItemKeyPair craftItem(final String recipe)
 	{
 		return craftItem(recipe,0,false, false);
 	}
@@ -234,7 +240,7 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	protected Item buildItem(Ability theSpell, int level)
+	protected Item buildItem(final Ability theSpell, final int level)
 	{
 		buildingI=CMClass.getItem("GenMultiPotion");
 		((Potion)buildingI).setSpellList(theSpell.ID());
@@ -251,14 +257,14 @@ public class Herbalism extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;

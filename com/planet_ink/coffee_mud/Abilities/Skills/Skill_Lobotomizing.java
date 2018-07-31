@@ -81,6 +81,12 @@ public class Skill_Lobotomizing extends StdSkill
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_TORTURING;
+	}
+
+	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(mob.isInCombat())

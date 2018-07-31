@@ -80,6 +80,12 @@ public class Skill_Chirgury extends StdSkill
 		return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_TORTURING;
+	}
+
 	public static final Object[][] parts={{"FETUS"},
 										  {"BLOOD"},
 										  {"HEART",Integer.valueOf(Race.BODY_TORSO)},
@@ -99,7 +105,7 @@ public class Skill_Chirgury extends StdSkill
 											  "Stone Golem", "Unknown"};
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()==0)
 		{
@@ -129,13 +135,13 @@ public class Skill_Chirgury extends StdSkill
 			return false;
 		}
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_UNWORNONLY,false,true);
-		if(target==null) 
+		if(target==null)
 			return false;
 
 		CharStats C=null;
-		if(target instanceof MOB) 
+		if(target instanceof MOB)
 			C=((MOB)target).charStats();
-		if(target instanceof DeadBody) 
+		if(target instanceof DeadBody)
 			C=((DeadBody)target).charStats();
 
 		if((partSet.length>0)

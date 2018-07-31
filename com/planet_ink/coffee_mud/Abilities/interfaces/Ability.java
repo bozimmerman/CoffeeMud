@@ -939,6 +939,8 @@ public interface Ability extends Environmental
 	public static final long FLAG_NOUNINVOKING=1073741824L;
 	/** constant mask for the flags() method designating that this ability alters the mind in some way @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
 	public static final long FLAG_MINDALTERING=2147483648L;
+	/** constant mask for the flags() method designating that this ability tortures in some way @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#flags() */
+	public static final long FLAG_TORTURING=4294967296L;
 
 	/** array of string describtions for the FLAG_* constants, indexed by their values */
 	public static final String[] FLAG_DESCS=
@@ -973,7 +975,8 @@ public interface Ability extends Environmental
 		"AGGROING",
 		"TIDEALTERING",
 		"SUNSUMMONING",
-		"MINDALTERING"
+		"MINDALTERING",
+		"TORTURING"
 	};
 
 	/** constant for the abstractQuality and other methods.  Means that this skill would not make the target happy. see {@link com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abstractQuality()}*/

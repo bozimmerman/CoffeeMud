@@ -247,7 +247,7 @@ public class Gaoler extends StdCharClass
 					final LegalBehavior legalBehavior=CMLib.law().getLegalBehavior(R);
 					final Area legalArea=CMLib.law().getLegalObject(R);
 					if(this.isRightOutsideAnOccupiedCell(R, legalBehavior, legalArea))
-						CMLib.leveler().postExperience(mob,null,null,5,true);
+						CMLib.leveler().postExperience(mob,null,null,5,false);
 				}
 			}
 		}
@@ -307,6 +307,23 @@ public class Gaoler extends StdCharClass
 		return false;
 	}
 
+	public boolean isInACell(final MOB M)
+	{
+		if(M==null)
+			return false;
+		final Room R=M.location();
+		if(R==null)
+			return false;
+		final LegalBehavior legalBehavior=CMLib.law().getLegalBehavior(R);
+		final Area legalArea=CMLib.law().getLegalObject(R);
+		if((legalBehavior != null)
+		&&(legalArea != null)
+		&&(legalBehavior.isJailRoom(legalArea, new XVector<Room>(R)))
+		&&(legalBehavior.hasWarrant(legalArea, M)))
+			return true;
+		return false;
+	}
+
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
@@ -316,6 +333,7 @@ public class Gaoler extends StdCharClass
 		&&(msg.amITarget(host))
 		&&(msg.source().isMonster())
 		&&(host instanceof MOB)
+		&&(((MOB)host).charStats().getCurrentClass().ID().equals(ID()))
 		&&(!((MOB)host).isInCombat())
 		&&(msg.source().getVictim()!=host))
 		{
@@ -344,49 +362,97 @@ public class Gaoler extends StdCharClass
 		if((msg.source()==host)
 		&&(msg.target() instanceof MOB)
 		&&(msg.target()!=msg.source())
-		&&(((MOB)host).charStats().getCurrentClass().ID().equals(ID()))
-		&&(msg.tool() instanceof Ability)
-		&&((MOB)host).isMine(msg.tool())
-		&&(msg.tool().ID().equals("Thief_Flay")
-			||msg.tool().ID().equals("Skill_Chirgury")
-			||msg.tool().ID().equals("Tattooing")
-			||msg.tool().ID().equals("Thief_TarAndFeather")
-			||msg.tool().ID().equals("BodyPiercing")
-			||msg.tool().ID().equals("Skill_Groin")
-			||msg.tool().ID().equals("Skill_Lobotomizing")
-			||msg.tool().ID().equals("Amputation"))
-		&&(CMLib.map().getStartArea(host)!=null)
-		&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
-		&&(((MOB)host).charStats().getClassLevel(this)>0))
+		&&(((MOB)host).charStats().getCurrentClass().ID().equals(ID())))
 		{
-			final CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!@x1",CMLib.protocol().msp("scream.wav",40)));
-			if(((MOB)msg.target()).location().okMessage(msg.target(),msg2))
+			if((msg.tool() instanceof Ability)
+			&&(CMath.bset(((Ability)msg.tool()).flags(), Ability.FLAG_TORTURING))
+			&&((MOB)host).isMine(msg.tool())
+			&&(CMLib.map().getStartArea(host)!=null)
+			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
+			&&(((MOB)host).charStats().getClassLevel(this)>0))
 			{
-				final int baseAmt = 10 + CMLib.ableMapper().qualifyingLevel(msg.source(), (Ability)msg.tool());
-				final int xp=(int)Math.round(baseAmt*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
-				int[] done=mudHourMOBXPMap.get(host.Name()+"/"+msg.tool().ID());
-				if (done == null)
+				final CMMsg msg2=CMClass.getMsg((MOB)msg.target(),null,null,CMMsg.MSG_NOISE,L("<S-NAME> scream(s) in agony, AAAAAAARRRRGGGHHH!!@x1",CMLib.protocol().msp("scream.wav",40)));
+				if(((MOB)msg.target()).location().okMessage(msg.target(),msg2))
 				{
-					done = new int[3];
-					mudHourMOBXPMap.put(host.Name() + "/" + msg.tool().ID(), done);
-				}
-				if(Calendar.getInstance().get(Calendar.SECOND)!=done[2])
-				{
-					final TimeClock clock =CMLib.map().getStartArea(host).getTimeObj();
-					if(done[0]!=clock.getHourOfDay())
-						done[1]=0;
-					done[0]=clock.getHourOfDay();
-					done[2]=Calendar.getInstance().get(Calendar.SECOND);
-
-					if(done[1]<(90+(10*((MOB)host).phyStats().level())))
+					final int baseAmt = 10 + CMLib.ableMapper().qualifyingLevel(msg.source(), (Ability)msg.tool());
+					final int xp=(int)Math.round(baseAmt*CMath.div(((MOB)msg.target()).phyStats().level(),((MOB)host).charStats().getClassLevel(this)));
+					int[] done=mudHourMOBXPMap.get(host.Name()+"/"+msg.tool().ID());
+					if (done == null)
 					{
-						done[1]+=xp;
-						CMLib.leveler().postExperience((MOB)host,null,null,xp,true);
-						msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The sweet screams of your victim earns you @x1 experience points.",""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						done = new int[3];
+						mudHourMOBXPMap.put(host.Name() + "/" + msg.tool().ID(), done);
 					}
-					else
-						msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The screams of this victim bore you now."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-					msg.addTrailerMsg(msg2);
+					if(Calendar.getInstance().get(Calendar.SECOND)!=done[2])
+					{
+						final TimeClock clock =CMLib.map().getStartArea(host).getTimeObj();
+						if(done[0]!=clock.getHourOfDay())
+							done[1]=0;
+						done[0]=clock.getHourOfDay();
+						done[2]=Calendar.getInstance().get(Calendar.SECOND);
+
+						if(done[1]<(90+(10*((MOB)host).phyStats().level())))
+						{
+							done[1]+=xp;
+							CMLib.leveler().postExperience((MOB)host,null,null,xp,true);
+							msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The sweet screams of your victim earns you @x1 experience points.",""+xp),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						}
+						else
+							msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,L("The screams of this victim bore you now."),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+						msg.addTrailerMsg(msg2);
+					}
+				}
+			}
+			else
+			if((msg.sourceMinor()==CMMsg.TYP_GIVE)
+			&&(msg.tool() instanceof Food)
+			&&(msg.target() instanceof MOB)
+			&&(isInACell((MOB)msg.target())))
+			{
+				boolean qualifyingFood=false;
+				if(((Food)msg.tool()).fetchEffect("Poison_Rotten")!=null)
+					qualifyingFood=true;
+				else
+				{
+					final ItemCraftor foodChkA=(ItemCraftor)msg.source().fetchAbility("GaolFood");
+					if(foodChkA != null)
+					{
+						final List<List<String>> V = foodChkA.fetchMyRecipes(msg.source());
+						for(final List<String> item : V)
+						{
+							if(item.get(0).toLowerCase().indexOf(foodChkA.name().toLowerCase())>0)
+								qualifyingFood=true;
+						}
+					}
+				}
+				if(qualifyingFood)
+				{
+					if(msg.source().playerStats()!=null)
+					{
+						@SuppressWarnings("unchecked")
+						Map<String,Long> map=(Map<String,Long>)msg.source().playerStats().getClassVariableMap(this).get("GAOLER_FEEDS");
+						if(map == null)
+						{
+							map=new TreeMap<String,Long>();
+							msg.source().playerStats().getClassVariableMap(this).put("GAOLER_FEEDS", map);
+						}
+						for(final Iterator<String> i=map.keySet().iterator();i.hasNext();)
+						{
+							final Long L=map.get(i.next());
+							if(System.currentTimeMillis() > L.longValue())
+								i.remove();
+						}
+						if(map.containsKey(""+msg.target()))
+							qualifyingFood=false;
+						else
+						{
+							TimeClock C=CMLib.time().localClock(msg.source());
+							if(C==null)
+								C=CMLib.time().globalClock();
+							map.put(""+msg.target(), new Long(System.currentTimeMillis() + (CMProps.getMillisPerMudHour() * C.getHoursInDay())));
+						}
+					}
+					if(qualifyingFood)
+						CMLib.leveler().postExperience((MOB)host,null,null,msg.source().phyStats().level(),false);
 				}
 			}
 		}
@@ -401,7 +467,8 @@ public class Gaoler extends StdCharClass
 	}
 
 	@SuppressWarnings("unchecked")
-	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]{
+	private final Pair<String,Integer>[] minimumStatRequirements=new Pair[]
+	{
 		new Pair<String,Integer>("Strength",Integer.valueOf(5)),
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(5))
 	};
@@ -429,6 +496,6 @@ public class Gaoler extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Gains experience when using certain skills. Screams of victims from certain skills grants xp/hr. Sleeping by an occupied cell grants xp.");
+		return L("Gains experience when using certain skills, the screams of victims from certain skills per hr, sleeping by an occupied cell, feeding innamtes bad food.");
 	}
 }

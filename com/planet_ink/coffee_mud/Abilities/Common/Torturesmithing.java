@@ -101,6 +101,12 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
+	public List<List<String>> fetchMyRecipes(final MOB mob)
+	{
+		return this.addRecipes(mob, loadRecipes());
+	}
+
+	@Override
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -168,13 +174,13 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		return (isANativeItem(I.Name()));
 	}
 
-	public boolean supportsMending(Physical I)
+	public boolean supportsMending(final Physical I)
 	{
 		return canMend(null, I, true);
 	}
 
 	@Override
-	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
@@ -195,21 +201,21 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
 		if(commands.size()==0)
 		{

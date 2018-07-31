@@ -68,7 +68,7 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 
 	@Override
 	public String parametersFormat()
-	{ 
+	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
 		+"ITEM_CLASS_ID\tRIDE_BASIS\tRIDE_CAPACITY\tCONTAINER_CAPACITY\t"
@@ -88,6 +88,12 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 	protected static final int	RCP_SPELL		= 10;
 
 	protected Item key=null;
+
+	@Override
+	public List<List<String>> fetchMyRecipes(final MOB mob)
+	{
+		return this.addRecipes(mob, loadRecipes());
+	}
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -112,7 +118,7 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 		return super.loadRecipes(parametersFile());
 	}
 
-	protected void buildDoor(Room room, int dir)
+	protected void buildDoor(Room room, final int dir)
 	{
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
@@ -120,7 +126,7 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 			String closeWord=null;
 			String openWord=null;
 			String closedWord=null;
-			String displayText="";
+			final String displayText="";
 			//if(closeWord == null)
 				closeWord="close";
 			//if(openWord == null)
@@ -242,13 +248,13 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 	}
 
 	@Override
-	public boolean supportsMending(Physical item)
+	public boolean supportsMending(final Physical item)
 	{
 		return canMend(null, item, true);
 	}
 
 	@Override
-	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
@@ -268,21 +274,21 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		@SuppressWarnings("unused")
 		int recipeLevel=1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -465,10 +471,10 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			setBrand(mob, buildingI);
-			String strstr=foundRecipe.get(RCP_STRINGS);
+			final String strstr=foundRecipe.get(RCP_STRINGS);
 			if((strstr!=null)&&(strstr.length()>0)&&(buildingI instanceof Rideable))
 			{
-				List<String> strstrl=CMParms.parseSemicolons(strstr, false);
+				final List<String> strstrl=CMParms.parseSemicolons(strstr, false);
 				if((strstrl.size()>0)&&(strstrl.get(0).trim().length()>0))
 					((Rideable)buildingI).setStateString(strstrl.get(0).trim());
 				if((strstrl.size()>1)&&(strstrl.get(1).trim().length()>0))
@@ -520,7 +526,7 @@ public class Boatwright extends CraftingSkill implements ItemCraftor, MendingSki
 			displayText=L("You are @x1",verb);
 		}
 
-		if(autoGenerate>0) 
+		if(autoGenerate>0)
 		{
 			crafted.add(buildingI);
 			return true;

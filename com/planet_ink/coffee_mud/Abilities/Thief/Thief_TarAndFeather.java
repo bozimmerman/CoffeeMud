@@ -73,6 +73,12 @@ public class Thief_TarAndFeather extends ThiefSkill
 		return Ability.QUALITY_MALICIOUS;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_TORTURING;
+	}
+
 	private static final String[] triggerStrings = I(new String[] { "TARANDFEATHER", "TAR" });
 
 	@Override

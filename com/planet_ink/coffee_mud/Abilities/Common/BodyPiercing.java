@@ -63,6 +63,12 @@ public class BodyPiercing extends CommonSkill
 		return Ability.ACODE_COMMON_SKILL | Ability.DOMAIN_ARTISTIC;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_TORTURING;
+	}
+
 	protected String	writing	= "";
 	protected MOB		target	= null;
 	protected int		oldHP	= 1;
@@ -130,7 +136,7 @@ public class BodyPiercing extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -165,19 +171,19 @@ public class BodyPiercing extends CommonSkill
 
 		int partNum=-1;
 		final StringBuffer allParts=new StringBuffer("");
-		
+
 		final String[][] piercables={
 										{"lip", "nose"},
 										{"left ear","right ear", "ears"},
 										{"eyebrows"},
 										{"left nipple","right nipple","belly button","nipples"}
 									};
-		
+
 		final long[] piercable={Wearable.WORN_HEAD,
 								Wearable.WORN_EARS,
 								Wearable.WORN_EYES,
 								Wearable.WORN_TORSO};
-		
+
 		String fullPartName=null;
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		String wearLocName=null;
@@ -242,7 +248,7 @@ public class BodyPiercing extends CommonSkill
 			commonTell(mob,L("That location is already decorated."));
 			return false;
 		}
-		
+
 		if("REMOVE".equals(command) && (wornName != null))
 		{
 			if(wornName.toLowerCase().endsWith("s"))
@@ -274,7 +280,7 @@ public class BodyPiercing extends CommonSkill
 			verb=L("piercing @x1 on the @x2",target.name(),wornName);
 		}
 		displayText=L("You are @x1",verb);
-		if(!proficiencyCheck(mob,0,auto)) 
+		if(!proficiencyCheck(mob,0,auto))
 			writing="";
 		final int duration=getDuration(30,mob,1,6);
 		String msgStr=L("<S-NAME> start(s) piercing <T-NAMESELF> on the @x1.",wornName.toLowerCase());
@@ -294,7 +300,7 @@ public class BodyPiercing extends CommonSkill
 				target.delTattoo(target.findTattoo(writing));
 			else
 			{
-				List<Integer> bodyPartNums = new ArrayList<Integer>();
+				final List<Integer> bodyPartNums = new ArrayList<Integer>();
 				for(int i=0;i<Race.BODY_WEARVECTOR.length;i++)
 				{
 					if((Race.BODY_WEARVECTOR[i] == wornCode)
@@ -304,12 +310,12 @@ public class BodyPiercing extends CommonSkill
 				String bodyPartName="";
 				if(bodyPartNums.size()>0)
 				{
-					Integer pNum=bodyPartNums.get(CMLib.dice().roll(1, bodyPartNums.size(), -1));
+					final Integer pNum=bodyPartNums.get(CMLib.dice().roll(1, bodyPartNums.size(), -1));
 					bodyPartName=Race.BODYPARTSTR[pNum.intValue()].toLowerCase();
 				}
 				beneficialAffect(mob,mob,asLevel,duration);
 				final BodyPiercing A=(BodyPiercing)mob.fetchEffect(ID());
-				if(A!=null) 
+				if(A!=null)
 				{
 					A.target=target;
 					A.oldHP=target.curState().getHitPoints();

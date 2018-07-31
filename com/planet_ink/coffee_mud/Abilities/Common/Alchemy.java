@@ -72,6 +72,12 @@ public class Alchemy extends SpellCraftingSkill implements ItemCraftor
 	}
 
 	@Override
+	public List<List<String>> fetchMyRecipes(final MOB mob)
+	{
+		return this.addRecipes(mob, loadRecipes());
+	}
+
+	@Override
 	protected ExpertiseLibrary.SkillCostDefinition getRawTrainingCost()
 	{
 		return CMProps.getNormalSkillGainCost(ID());

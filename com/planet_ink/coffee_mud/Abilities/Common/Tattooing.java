@@ -63,6 +63,12 @@ public class Tattooing extends CommonSkill
 		return triggerStrings;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_TORTURING;
+	}
+
 	protected String	writing	= "";
 	protected MOB		target	= null;
 	protected int		oldHP	= 1;

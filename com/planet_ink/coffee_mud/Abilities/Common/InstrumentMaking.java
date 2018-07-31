@@ -88,6 +88,12 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 	protected static final int	RCP_TYPE		= 9;
 
 	@Override
+	public List<List<String>> fetchMyRecipes(final MOB mob)
+	{
+		return this.addRecipes(mob, loadRecipes());
+	}
+
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -175,21 +181,21 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		@SuppressWarnings("unused")
 		int recipeLevel=1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -353,7 +359,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		if(buildingI.basePhyStats().level()<1)
 			buildingI.basePhyStats().setLevel(1);
 		final String type=foundRecipe.get(RCP_TYPE);
-		for(InstrumentType iType : InstrumentType.values())
+		for(final InstrumentType iType : InstrumentType.values())
 		{
 			if(type.equalsIgnoreCase(iType.name()))
 				((MusicalInstrument)buildingI).setInstrumentType(iType);

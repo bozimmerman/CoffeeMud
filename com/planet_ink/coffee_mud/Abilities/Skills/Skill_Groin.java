@@ -103,6 +103,12 @@ public class Skill_Groin extends StdSkill implements HealthCondition
 	}
 
 	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_TORTURING;
+	}
+
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!(affected instanceof MOB))

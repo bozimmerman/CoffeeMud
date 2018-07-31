@@ -57,7 +57,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 			return "";
 		return "(Missing your "+CMLib.english().toEnglishStringList(affectedLimbNameSet())+")";
 	}
-	
+
 	@Override
 	public String getHealthConditionDesc()
 	{
@@ -114,10 +114,16 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 		return USAGE_MOVEMENT | USAGE_MANA;
 	}
 
+	@Override
+	public long flags()
+	{
+		return super.flags() | Ability.FLAG_TORTURING;
+	}
+
 	protected List<String>			missingLimbs		= null;
 	private int[]					amputations			= new int[Race.BODY_PARTS];
 	private long					badWearLocations	= 0;
-	
+
 	private static final long[]		LEFT_LOCS			= { Wearable.WORN_LEFT_FINGER, Wearable.WORN_LEFT_WRIST };
 	private static final long[]		RIGHT_LOCS			= { Wearable.WORN_RIGHT_FINGER, Wearable.WORN_RIGHT_WRIST };
 
@@ -229,7 +235,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				affectableState.setMovement(affectableState.getMovement()/2);
 		}
 	}
-	
+
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
@@ -263,7 +269,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 		}
 	}
 
-	public MOB getTarget(MOB mob, List<String> commands, Environmental givenTarget, boolean quiet)
+	public MOB getTarget(final MOB mob, final List<String> commands, final Environmental givenTarget, final boolean quiet)
 	{
 		String targetName=CMParms.combine(commands,0);
 		MOB target=null;
@@ -309,7 +315,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 	}
 
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
 		missingLimbs=null;
@@ -352,7 +358,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 		return missingLimbs;
 	}
 
-	public List<String> completeLimbNameSet(Environmental E)
+	public List<String> completeLimbNameSet(final Environmental E)
 	{
 		final Vector<String> V=new Vector<String>();
 		if(!(E instanceof MOB))
@@ -430,7 +436,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 // Reason:  Easy single limb amputation removal
 // ****************************************************************************
 	@Override
-	public void restoreLimb(String gone)
+	public void restoreLimb(final String gone)
 	{
 		if (affected != null)
 		{
@@ -457,7 +463,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 		}
 	}
 
-	public static int getRacialCode(String name)
+	public static int getRacialCode(final String name)
 	{
 		final Integer code = Race.BODYPARTHASH_RL_LOWER.get(name.toLowerCase().trim());
 		if(code != null)
@@ -466,7 +472,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 	}
 
 	@Override
-	public Item damageLimb(String gone)
+	public Item damageLimb(final String gone)
 	{
 		Race R=null;
 		if(affected!=null)
@@ -608,7 +614,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 				}
 			}
 		}
-		
+
 		if((affected instanceof MOB)
 		&&(CMLib.dice().roll(1,100,0)<=CMProps.getIntVar(CMProps.Int.INJBLEEDPCTCHANCE)))
 		{
@@ -619,7 +625,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 		return limb;
 	}
 
-	private Item findFakeLimb(MOB tmob, String named)
+	private Item findFakeLimb(final MOB tmob, String named)
 	{
 		if(named.length()>0)
 		{
@@ -644,7 +650,7 @@ public class Amputation extends StdAbility implements LimbDamage, HealthConditio
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		String choice="";
 		if(givenTarget!=null)

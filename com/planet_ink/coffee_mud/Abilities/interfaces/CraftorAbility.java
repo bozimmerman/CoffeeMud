@@ -51,6 +51,15 @@ public interface CraftorAbility extends Ability
 	public List<List<String>> fetchRecipes();
 
 	/**
+	 * A list containing an entry for each craftable recipe
+	 * both standard, and extra recipes from given mob
+	 * Each craftable recipe is also a list of strings.
+	 * @param mob the mob to check for extra recipes
+	 * @return a vector of vectors
+	 */
+	public List<List<String>> fetchMyRecipes(final MOB mob);
+
+	/**
 	 * A String containing the format of each entry in the parameter file
 	 * in a recipe.
 	 * @return a String showing the format of each entry in the parameter file
