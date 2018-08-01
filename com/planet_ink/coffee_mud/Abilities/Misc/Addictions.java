@@ -95,7 +95,7 @@ public class Addictions extends StdAbility
 	}
 
 	private Item puffCredit=null;
-	
+
 	private final static long CRAVE_TIME=TimeManager.MILI_HOUR;
 	private final static long WITHDRAW_TIME=TimeManager.MILI_DAY;
 
@@ -187,7 +187,10 @@ public class Addictions extends StdAbility
 			if(msg.source()==affected)
 			{
 				if(((msg.targetMinor()==CMMsg.TYP_EAT)||(msg.targetMinor()==CMMsg.TYP_DRINK))
-				&&((msg.target() instanceof Food)||(msg.target() instanceof Drink))
+				&&((msg.target() instanceof Food)
+					||(msg.target() instanceof Drink)
+					||(msg.target() instanceof Pill)
+					||(msg.target() instanceof Potion))
 				&&(msg.target() instanceof Item)
 				&&(CMLib.english().containsString(msg.target().Name(),text())))
 					lastFix=System.currentTimeMillis();
@@ -207,7 +210,7 @@ public class Addictions extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=givenTarget;
 

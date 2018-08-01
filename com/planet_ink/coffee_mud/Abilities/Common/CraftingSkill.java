@@ -441,6 +441,17 @@ public class CraftingSkill extends GatheringSkill
 						((Wand)P).setSpell(A);
 				}
 				else
+				if(P instanceof SpellHolder)
+				{
+					if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
+						P.addNonUninvokableEffect(A);
+					else
+					if(((SpellHolder)P).getSpells().size()==0)
+						((SpellHolder)P).setSpellList(A.ID()+((A.text().length()==0)?"":("("+A.text()+")")));
+					else
+						((SpellHolder)P).setSpellList(((SpellHolder)P).getSpellList()+";"+A.ID()+((A.text().length()==0)?"":("("+A.text()+")")));
+				}
+				else
 					P.addNonUninvokableEffect(A);
 			}
 		}
