@@ -76,6 +76,7 @@ public class NOMXP extends StdCommand
 					mob.tell(L("MXP codes are already disabled.\n\r"));
 				final Session session = mob.session();
 				session.setClientTelnetMode(Session.TELNET_MXP,false);
+				session.setServerTelnetMode(Session.TELNET_MXP,false);
 			}
 		}
 		return false;
