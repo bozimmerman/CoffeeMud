@@ -47,7 +47,7 @@ public class NOMXP extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(!mob.isMonster())
@@ -71,7 +71,12 @@ public class NOMXP extends StdCommand
 					mob.tell(L("MXP codes are disabled.\n\r"));
 			}
 			else
-				mob.tell(L("MXP codes are already disabled.\n\r"));
+			{
+				if(!quiet)
+					mob.tell(L("MXP codes are already disabled.\n\r"));
+				final Session session = mob.session();
+				session.setClientTelnetMode(Session.TELNET_MXP,false);
+			}
 		}
 		return false;
 	}
@@ -83,7 +88,7 @@ public class NOMXP extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return super.securityCheck(mob)&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MXP));
 	}
