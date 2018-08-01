@@ -54,7 +54,7 @@ public class Deviations extends StdCommand
 		return true;
 	}
 
-	protected String mobHeader(Faction useFaction)
+	protected String mobHeader(final Faction useFaction)
 	{
 		final StringBuffer str=new StringBuffer();
 		str.append("\n\r");
@@ -79,19 +79,19 @@ public class Deviations extends StdCommand
 		str.append("\n\r");
 		str.append(CMStrings.padRight(L("Name"),20)+" ");
 		str.append(CMStrings.padRight(L("Type"),10)+" ");
-		str.append(CMStrings.padRight(L("Lvl"),4)+" ");
+		str.append(CMStrings.padRight(L("Lvl"),3)+"--");
+		str.append(CMStrings.padRight(L("Pwr"),4)+" ");
 		str.append(CMStrings.padRight(L("Att"),5)+" ");
 		str.append(CMStrings.padRight(L("Dmg"),5)+" ");
 		str.append(CMStrings.padRight(L("Armor"),5)+" ");
 		str.append(CMStrings.padRight(L("Value"),5)+" ");
 		str.append(CMStrings.padRight(L("Rejuv"),5)+" ");
-		str.append(CMStrings.padRight(L("Wght."),4)+" ");
-		str.append(CMStrings.padRight(L("Size"),4));
+		str.append(CMStrings.padRight(L("Wght."),4));;
 		str.append("\n\r");
 		return str.toString();
 	}
 
-	public boolean alreadyDone(Environmental E, Vector<Environmental> itemsDone)
+	public boolean alreadyDone(final Environmental E, final Vector<Environmental> itemsDone)
 	{
 		for(int i=0;i<itemsDone.size();i++)
 		{
@@ -101,7 +101,7 @@ public class Deviations extends StdCommand
 		return false;
 	}
 
-	private void fillCheckDeviations(Room R, String type, Vector<Environmental> check)
+	private void fillCheckDeviations(final Room R, final String type, final Vector<Environmental> check)
 	{
 		if(type.equalsIgnoreCase("mobs")||type.equalsIgnoreCase("both"))
 		{
@@ -155,15 +155,15 @@ public class Deviations extends StdCommand
 		}
 	}
 
-	protected String getDeviation(int val, Map<String, String> vals, String key)
+	protected String getDeviation(final int val, final Map<String, String> vals, final String key)
 	{
 		if(!vals.containsKey(key))
 			return " - ";
 		final int val2=CMath.s_int(vals.get(key));
 		return getDeviation(val,val2);
 	}
-	
-	protected String getDeviation(double val, double val2)
+
+	protected String getDeviation(final double val, final double val2)
 	{
 		if(val==val2)
 			return "0%";
@@ -174,7 +174,7 @@ public class Deviations extends StdCommand
 		return "+"+pval+"%";
 	}
 
-	public StringBuffer deviations(MOB mob, String rest)
+	public StringBuffer deviations(final MOB mob, final String rest)
 	{
 		final Vector<String> V=CMParms.parse(rest);
 		if((V.size()==0)
@@ -258,6 +258,7 @@ public class Deviations extends StdCommand
 				itemResults.append(CMStrings.padRight(I.name(),20)+" ");
 				itemResults.append(CMStrings.padRight(I.ID(),10)+" ");
 				itemResults.append(CMStrings.padRight(""+I.phyStats().level(),4)+" ");
+				itemResults.append(CMStrings.padRight(""+CMLib.itemBuilder().timsLevelCalculator(I),4)+" ");
 				itemResults.append(CMStrings.padRight(""+getDeviation(
 												I.basePhyStats().attackAdjustment(),
 												vals,"ATTACK"),5)+" ");
@@ -270,17 +271,20 @@ public class Deviations extends StdCommand
 				itemResults.append(CMStrings.padRight(""+getDeviation(
 												I.baseGoldValue(),
 												vals,"VALUE"),5)+" ");
-				itemResults.append(CMStrings.padRight(""+((I.phyStats().rejuv()==PhyStats.NO_REJUV)?" MAX":""+I.phyStats().rejuv()),5)+" ");
+				itemResults.append(CMStrings.padRight(
+						""+(((I.phyStats().rejuv()==PhyStats.NO_REJUV)||(I.phyStats().rejuv()==0))?" -  ":""+I.phyStats().rejuv()),5)+" ");
 				if(I instanceof Weapon)
 					itemResults.append(CMStrings.padRight(""+I.basePhyStats().weight(),4));
 				else
 					itemResults.append(CMStrings.padRight(""+getDeviation(
 													I.basePhyStats().weight(),
-													vals, "WEIGHT"), 4)+" ");
+													vals, "WEIGHT"), 4));
+				/*
 				if(I instanceof Armor)
 					itemResults.append(CMStrings.padRight(""+((Armor)I).phyStats().height(),4));
 				else
 					itemResults.append(CMStrings.padRight(" - ",4)+" ");
+				*/
 				itemResults.append("\n\r");
 			}
 			else
@@ -300,11 +304,11 @@ public class Deviations extends StdCommand
 				mobResults.append(CMStrings.padRight(""+getDeviation(
 												M.basePhyStats().speed(),
 												CMLib.leveler().getLevelMOBSpeed(M)),5)+" ");
-				mobResults.append(CMStrings.padRight(""+((M.phyStats().rejuv()==PhyStats.NO_REJUV)?" MAX":""+M.phyStats().rejuv()) ,5)+" ");
+				mobResults.append(CMStrings.padRight(""+(((M.phyStats().rejuv()==PhyStats.NO_REJUV)||(M.phyStats().rejuv()==0))?" -  ":""+M.phyStats().rejuv()) ,5)+" ");
 				if(useFaction!=null)
 					mobResults.append(CMStrings.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.factionID())),7)+" ");
-				double value = CMLib.beanCounter().getTotalAbsoluteNativeValue(M);
-				double[] range = CMLib.leveler().getLevelMoneyRange(M);
+				final double value = CMLib.beanCounter().getTotalAbsoluteNativeValue(M);
+				final double[] range = CMLib.leveler().getLevelMoneyRange(M);
 				if(value < range[0])
 					mobResults.append(CMStrings.padRight(""+getDeviation(value,range[0]),5)+" ");
 				else
@@ -323,7 +327,7 @@ public class Deviations extends StdCommand
 				mobResults.append("\n\r");
 			}
 		}
-		if(itemResults.length()>0) 
+		if(itemResults.length()>0)
 			str.append(itemHeader()+itemResults.toString());
 		if(mobResults.length()>0)
 			str.append(mobHeader(useFaction)+mobResults.toString());
@@ -331,7 +335,7 @@ public class Deviations extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		mob.tell(deviations(mob,CMParms.combine(commands,1)).toString());
@@ -339,7 +343,7 @@ public class Deviations extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDITEMS)
 			|| CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.LISTADMIN)
