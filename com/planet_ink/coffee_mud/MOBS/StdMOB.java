@@ -3707,7 +3707,7 @@ public class StdMOB implements MOB
 								}
 								else
 								{
-									Log.warnOut("Destroy: "+mobReport+"/"+this);
+									Log.warnOut("Destroy: "+mobReport);
 									this.destroy();
 									return false;
 								}

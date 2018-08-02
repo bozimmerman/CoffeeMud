@@ -58,13 +58,16 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		return true;
 	}
 
-	protected CharStats						adjCharStats		= null;
-	protected String						maskString			= "";
-	protected final Map<String, Integer>	prots				= new TreeMap<String, Integer>();
-	protected boolean						ignoreCharStats		= true;
-	protected long							lastProtection		= 0;
-	protected int							remainingProtection	= 0;
-	protected boolean						alwaysWeapProt		= false;
+	protected CharStats			adjCharStats		= null;
+	protected String			maskString			= "";
+	protected boolean			ignoreCharStats		= true;
+	protected long				lastProtection		= 0;
+	protected int				remainingProtection	= 0;
+	protected boolean			alwaysWeapProt		= false;
+	protected volatile short	lastEffectCount		= 0;
+	protected boolean			hasEffectDuration	= false;
+
+	protected final Map<String, Integer> prots = new TreeMap<String, Integer>();
 
 	@Override
 	public long flags()
@@ -79,7 +82,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		adjCharStats=(CharStats)CMClass.getCommon("DefaultCharStats");
@@ -91,7 +94,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 			maskString=newText.substring(maskindex+5).trim();
 			parmString=newText.substring(0,maskindex).trim();
 		}
-		
+
 		parmString = parmString.toUpperCase();
 		final List<String> parmParts = CMParms.parseSpaces(parmString.toUpperCase(), true);
 		final List<String> previousSet = new LinkedList<String>();
@@ -110,7 +113,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 			else
 			if(CMath.isNumber(parts))
 			{
-				double d = CMath.s_double(parts);
+				final double d = CMath.s_double(parts);
 				if((d > 1.0) || (d < -1.0))
 					newPct = Integer.valueOf((int)Math.round(d));
 				else
@@ -125,12 +128,14 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 			}
 			if(newPct != null)
 			{
-				for(String previousKey : previousSet)
+				for(final String previousKey : previousSet)
 					this.prots.put(previousKey, newPct);
 				previousSet.clear();
 			}
 		}
-		
+
+		hasEffectDuration = this.prots.containsKey("DEBUF-DURATION");
+
 		for(final int i : CharStats.CODES.SAVING_THROWS())
 		{
 			if(parmString.toUpperCase().indexOf(CharStats.CODES.NAME(i))>=0)
@@ -149,7 +154,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)
+	public void affectCharStats(final MOB affectedMOB, final CharStats affectedStats)
 	{
 		ensureStarted();
 		if((!ignoreCharStats)
@@ -162,9 +167,9 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		super.affectCharStats(affectedMOB,affectedStats);
 	}
 
-	public boolean checkProtection(String protType)
+	public boolean checkProtection(final String protType)
 	{
-		return this.prots.containsKey(protType.toUpperCase());
+		return this.prots.containsKey(protType);
 	}
 
 	public int getProtection(String protType)
@@ -175,11 +180,11 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		return this.prots.get(protType).intValue();
 	}
 
-	protected int weaponProtection(String kind, int damage, int myLevel, int hisLevel)
+	protected int weaponProtection(final String kind, final int damage, final int myLevel, final int hisLevel)
 	{
 		if(this.alwaysWeapProt)
 		{
-			int protection = getProtection(kind);
+			final int protection = getProtection(kind);
 			return (int)Math.round(CMath.mul(damage,1.0-CMath.div(protection,100.0)));
 		}
 		int protection=remainingProtection;
@@ -198,7 +203,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		return (int)Math.round(CMath.mul(damage,1.0-CMath.div(protection,100.0)));
 	}
 
-	public void resistAffect(CMMsg msg, MOB mob, Ability me, String maskString)
+	public void resistAffect(final CMMsg msg, final MOB mob, final Ability me, final String maskString)
 	{
 		if(mob.location()==null)
 			return;
@@ -252,7 +257,35 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		return "The owner gains resistances: " + describeResistance(text());
 	}
 
-	public boolean isOk(CMMsg msg, Ability me, MOB mob, String maskString)
+	@Override
+	public boolean tick(final Tickable ticking, final int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		if(hasEffectDuration)
+		{
+			final Physical affected=this.affected;
+			if((affected instanceof MOB)
+			&&(((MOB)affected).numEffects() != lastEffectCount))
+			{
+				lastEffectCount = (short)((MOB)affected).numEffects();
+				int maxTicks = getProtection("DEBUF-DURATION");
+				if(maxTicks <= 0)
+					maxTicks = 1;
+				for(int i=((MOB)affected).numEffects()-1;i>=0;i--)
+				{
+					final Ability A=((MOB)affected).fetchEffect(i);
+					if((A.invoker() != affected)
+					&&(A.abstractQuality() == Ability.QUALITY_MALICIOUS)
+					&&((CMath.s_int(A.getStat("TICKDOWN"))>maxTicks)))
+						A.setStat("TICKDOWN",""+maxTicks);
+				}
+			}
+		}
+		return true;
+	}
+
+	public boolean isOk(final CMMsg msg, final Ability me, final MOB mob, final String maskString)
 	{
 		if(CMath.bset(msg.targetMajor(),CMMsg.MASK_MAGIC))
 		{
@@ -337,9 +370,9 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 							return false;
 						}
 						else
-						if((checkProtection(A.ID()))
+						if((checkProtection(A.ID().toUpperCase()))
 						&&((maskString.length()==0)||(CMLib.masking().maskCheck(maskString,mob,false)))
-						&&(CMLib.dice().rollPercentage() <= getProtection(abilityDomain)))
+						&&(CMLib.dice().rollPercentage() <= getProtection(A.ID().toUpperCase())))
 						{
 							mob.location().show(msg.source(),mob,CMMsg.MSG_OK_VISUAL,L("<T-NAME> repell(s) @x1 from <S-NAME>.",abilityDomain.toLowerCase().replace('_',' ')));
 							return false;
@@ -351,10 +384,10 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		return true;
 	}
 
-	public String describeResistance(String text)
+	public String describeResistance(final String text)
 	{
 		final StringBuilder parmString=new StringBuilder("");
-		for(String parmKey : this.prots.keySet())
+		for(final String parmKey : this.prots.keySet())
 			parmString.append(parmKey.toLowerCase()).append(" ").append(this.prots.get(parmKey)).append("% ");
 		String id=parmString.toString().trim()+".";
 		if(maskString.length()>0)
@@ -362,7 +395,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		return id;
 	}
 
-	public boolean canResist(Environmental E)
+	public boolean canResist(final Environmental E)
 	{
 		if((affected instanceof Item)
 		&&(E instanceof MOB)
@@ -385,7 +418,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 		}
 		return true;
 	}
-	
+
 	@Override
 	public String getStat(String statVar)
 	{
@@ -397,7 +430,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 				String parmText = text().toUpperCase();
 				if(statVar.startsWith("TIDBITS="))
 					parmText = statVar.substring(8).toUpperCase().trim();
-				StringBuilder str=new StringBuilder("");
+				final StringBuilder str=new StringBuilder("");
 				final List<String> parmParts = CMParms.parseSpaces(parmText, true);
 				final List<String> previousSet = new LinkedList<String>();
 				for(String parts : parmParts)
@@ -414,7 +447,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 					else
 					if(CMath.isNumber(parts))
 					{
-						double d = CMath.s_double(parts);
+						final double d = CMath.s_double(parts);
 						if((d > 1.0) || (d < -1.0))
 						{
 							newPct = Integer.valueOf((int)Math.round(d));
@@ -435,7 +468,7 @@ public class Prop_HaveResister extends Property implements TriggeredAffect
 					}
 					if(newPct != null)
 					{
-						for(String previousKey : previousSet)
+						for(final String previousKey : previousSet)
 						{
 							if(newPct.intValue() < 0)
 							{
