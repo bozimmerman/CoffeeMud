@@ -150,9 +150,9 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 	}
 
 	@Override
-	public double getItemWeightMultiplier(boolean bundling)
+	public double getItemWeightMultiplier(final boolean bundling)
 	{
-		return bundling ? 1.0 : 0.5;
+		return 1.0;
 	}
 
 	protected boolean masterCraftCheck(final Item I)
@@ -184,13 +184,13 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 	}
 
 	@Override
-	public boolean supportsMending(Physical item)
+	public boolean supportsMending(final Physical item)
 	{
 		return canMend(null, item, true);
 	}
 
 	@Override
-	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
@@ -210,21 +210,21 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -278,7 +278,7 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 						wood=L("@x1 pounds of metal",wood);
 					if(wood.length()>cols[2])
 					{
-						int x=wood.lastIndexOf(' ',cols[2]);
+						final int x=wood.lastIndexOf(' ',cols[2]);
 						wood=wood.substring(0,x)+"\n\r"+CMStrings.repeat(' ',cols[0]+cols[1]+2)+wood.substring(x+1);
 					}
 					if((level<=xlevel(mob))||allFlag)
@@ -401,7 +401,7 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			buildingI.setName(itemName);
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
-			buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
+			buildingI.basePhyStats().setWeight(getStandardWeight(compData[CF_AMOUNT],bundling));
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";
