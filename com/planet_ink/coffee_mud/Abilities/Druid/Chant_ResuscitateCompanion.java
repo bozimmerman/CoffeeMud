@@ -80,7 +80,19 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 	{
 		return Ability.CAN_ITEMS;
 	}
-	
+
+	@Override
+	public boolean isAutoInvoked()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean canBeUninvoked()
+	{
+		return false;
+	}
+
 	private final List<WeakReference<DeadBody>> companionMobs=new LinkedList<WeakReference<DeadBody>>();
 
 	private boolean isCompanionBody(final DeadBody body)
@@ -93,9 +105,9 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 		}
 		return false;
 	}
-	
+
 	@Override
-	public boolean supportsMending(Physical item)
+	public boolean supportsMending(final Physical item)
 	{
 		return (item instanceof DeadBody)
 				&&(((DeadBody)item).getSavedMOB()!=null)
@@ -157,13 +169,13 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 		}
 		return true;
 	}
-	
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		Physical body=null;
 		body=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
-		if(body==null) 
+		if(body==null)
 			return false;
 		if((!(body instanceof DeadBody))
 		||(((DeadBody)body).getMobName().length()==0)
@@ -172,7 +184,7 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 			mob.tell(L("@x1 can not be resuscitated.",body.Name()));
 			return false;
 		}
-		boolean playerCorpse=((DeadBody)body).isPlayerCorpse();
+		final boolean playerCorpse=((DeadBody)body).isPlayerCorpse();
 		if(playerCorpse)
 		{
 			mob.tell(L("You can't resuscitate @x1.",((DeadBody)body).charStats().himher()));
@@ -208,7 +220,7 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 					final MOB rejuvedMOB=((DeadBody)body).getSavedMOB();
 					for(final Iterator<WeakReference<DeadBody>> m=companionMobs.iterator();m.hasNext();)
 					{
-						WeakReference<DeadBody> wM=m.next();
+						final WeakReference<DeadBody> wM=m.next();
 						if(wM.get()==body)
 							m.remove();
 					}
