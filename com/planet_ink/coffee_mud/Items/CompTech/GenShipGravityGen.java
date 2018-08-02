@@ -61,7 +61,7 @@ public class GenShipGravityGen extends StdShipGravityGen
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -69,9 +69,9 @@ public class GenShipGravityGen extends StdShipGravityGen
 	}
 
 	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT","RECHRATE"};
-	
+
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -95,7 +95,7 @@ public class GenShipGravityGen extends StdShipGravityGen
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
@@ -125,7 +125,7 @@ public class GenShipGravityGen extends StdShipGravityGen
 			break;
 		}
 	}
-	
+
 	@Override
 	protected int getCodeNum(final String code)
 	{
@@ -136,9 +136,9 @@ public class GenShipGravityGen extends StdShipGravityGen
 		}
 		return -1;
 	}
-	
+
 	private static String[] codes=null;
-	
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -154,11 +154,11 @@ public class GenShipGravityGen extends StdShipGravityGen
 			codes[i]=MYCODES[x];
 		return codes;
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{
-		if(!(E instanceof GenShipDampener))
+		if(!(E instanceof GenShipGravityGen))
 			return false;
 		final String[] theCodes=getStatCodes();
 		for(int i=0;i<theCodes.length;i++)

@@ -44,7 +44,7 @@ public class MobData extends StdWebMacro
 		return "MobData";
 	}
 
-	public static int getShopCardinality(ShopKeeper SK, Environmental O)
+	public static int getShopCardinality(final ShopKeeper SK, final Environmental O)
 	{
 		int x=0;
 		for(final Iterator<Environmental> i=SK.getShop().getStoreInventory();i.hasNext();x++)
@@ -55,10 +55,10 @@ public class MobData extends StdWebMacro
 		return -1;
 	}
 
-	public static String senses(Physical P,
-								boolean firstTime,
-								HTTPRequest httpReq,
-								java.util.Map<String,String> parms)
+	public static String senses(final Physical P,
+								final boolean firstTime,
+								final HTTPRequest httpReq,
+								final java.util.Map<String,String> parms)
 	{
 		final StringBuffer str=new StringBuffer("");
 		for(int d=0;d<PhyStats.CAN_SEE_CODES.length;d++)
@@ -76,7 +76,7 @@ public class MobData extends StdWebMacro
 	}
 
 	@SuppressWarnings("unchecked")
-	public static Enumeration<Race> sortedRaces(HTTPRequest httpReq)
+	public static Enumeration<Race> sortedRaces(final HTTPRequest httpReq)
 	{
 		if(httpReq.getRequestObjects() != null)
 		{
@@ -100,8 +100,8 @@ public class MobData extends StdWebMacro
 		}
 		return V.elements();
 	}
-	
-	public static StringBuffer abilities(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+
+	public static StringBuffer abilities(final MOB E, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ABILITIES"))
@@ -203,7 +203,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer expertiseList(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static StringBuffer expertiseList(final MOB E, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("EXPERTISELIST"))
@@ -253,7 +253,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer clans(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer clans(final MOB E, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CLANS"))
@@ -316,7 +316,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer blessings(Deity E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer blessings(final Deity E, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BLESSINGS"))
@@ -382,7 +382,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer curses(Deity E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer curses(final Deity E, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CURSES"))
@@ -448,7 +448,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer factions(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer factions(final MOB E, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("FACTIONS"))
@@ -483,7 +483,7 @@ public class MobData extends StdWebMacro
 					final Faction F=f.nextElement();
 					if(F.showInEditor() && (!E.hasFaction(F.factionID())))
 					{
-						int autoDefault = F.findAutoDefault(E);
+						final int autoDefault = F.findAutoDefault(E);
 						if(autoDefault != Integer.MAX_VALUE)
 							E.addFaction(F.factionID(), autoDefault);
 					}
@@ -519,16 +519,16 @@ public class MobData extends StdWebMacro
 				final Faction.FRange FR=CMLib.factions().getRange(F.factionID(),CMath.s_int(theparm));
 				if(FR==null)
 					str.append("<OPTION VALUE=\""+CMath.s_int(theparm)+"\">"+CMath.s_int(theparm));
-				List<Faction.FRange> sortedRanges = new XVector<Faction.FRange>(F.ranges());
+				final List<Faction.FRange> sortedRanges = new XVector<Faction.FRange>(F.ranges());
 				Collections.sort(sortedRanges, new Comparator<Faction.FRange>()
 				{
 					@Override
-					public int compare(FRange o1, FRange o2)
+					public int compare(final FRange o1, final FRange o2)
 					{
 						return Integer.valueOf((o1.low()+o1.high())/2).compareTo(Integer.valueOf((o2.low()+o2.high())/2));
 					}
 				});
-				
+
 				for(final Iterator<Faction.FRange> e=sortedRanges.iterator();e.hasNext();)
 				{
 					final Faction.FRange FR2=e.next();
@@ -575,7 +575,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer classList(MOB E, HTTPRequest httpReq, java.util.Map<String,String> parms)
+	public static StringBuffer classList(final MOB E, final HTTPRequest httpReq, final java.util.Map<String,String> parms)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CLASSLIST"))
@@ -656,7 +656,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer powers(Deity E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer powers(final Deity E, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("POWERS"))
@@ -711,7 +711,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer priceFactors(Economics E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer priceFactors(final Economics E, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("PRICEFACTORS"))
@@ -776,7 +776,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer shopkeeper(Room R, ShopKeeper E, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer shopkeeper(final Room R, final ShopKeeper E, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final int theme = (R!=null) ? R.getArea().getTheme() : CMProps.getIntVar(CMProps.Int.MUDTHEME);
 		final StringBuffer str=new StringBuffer("");
@@ -879,6 +879,7 @@ public class MobData extends StdWebMacro
 						mobClasses.add((MOB)O);
 					if(O instanceof Physical)
 						CMLib.catalog().updateCatalogIntegrity((Physical)O);
+					CMLib.threads().deleteAllTicks(O);
 					theclasses.add(O);
 					theparms.add(""+shop.numberInStock(O));
 					theprices.add(""+shop.stockPrice(O));
@@ -983,7 +984,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer itemList(Room R, MOB oldM, MOB M, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer itemList(final Room R, final MOB oldM, final MOB M, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final int theme = (R!=null) ? R.getArea().getTheme() : CMProps.getIntVar(CMProps.Int.MUDTHEME);
 		final StringBuffer str=new StringBuffer("");
@@ -1110,7 +1111,7 @@ public class MobData extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String last=httpReq.getUrlParameter("ROOM");
@@ -1221,7 +1222,7 @@ public class MobData extends StdWebMacro
 		}
 
 		final StringBuffer str=new StringBuffer("");
-		for(MOBDataField o : MOBDataField.values())
+		for(final MOBDataField o : MOBDataField.values())
 		{
 			final String parmName=o.name();
 			if(parms.containsKey(parmName))
