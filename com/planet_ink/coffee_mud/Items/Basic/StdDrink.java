@@ -68,7 +68,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 	}
 
 	@Override
-	public void setDecayTime(long time)
+	public void setDecayTime(final long time)
 	{
 		decayTime = time;
 	}
@@ -106,25 +106,25 @@ public class StdDrink extends StdContainer implements Drink,Item
 	}
 
 	@Override
-	public void setLiquidType(int newLiquidType)
+	public void setLiquidType(final int newLiquidType)
 	{
 		liquidType = newLiquidType;
 	}
 
 	@Override
-	public void setThirstQuenched(int amount)
+	public void setThirstQuenched(final int amount)
 	{
 		amountOfThirstQuenched = amount;
 	}
 
 	@Override
-	public void setLiquidHeld(int amount)
+	public void setLiquidHeld(final int amount)
 	{
 		amountOfLiquidHeld = amount;
 	}
 
 	@Override
-	public void setLiquidRemaining(int amount)
+	public void setLiquidRemaining(final int amount)
 	{
 		amountOfLiquidRemaining = amount;
 	}
@@ -200,6 +200,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 					mob.tell(L("@x1 is full.",name()));
 					return false;
 				}
+				// why is this here, it's really a stupid rule, you can fill a container from a container in a container?
+				// added the material mask check to make this slightly less dumb.
 				if((msg.tool() instanceof Container)
 				&&((!(msg.tool() instanceof Drink))||((Drink)msg.tool()).liquidRemaining()<=0)
 				&&(msg.tool()!=msg.target()))
@@ -209,7 +211,8 @@ public class StdDrink extends StdContainer implements Drink,Item
 					for(int i=0;i<V.size();i++)
 					{
 						I=V.get(i);
-						if(I instanceof Drink)
+						if((I instanceof Drink)
+						&&((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 							break;
 					}
 					if(I instanceof Drink)
@@ -252,7 +255,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 	}
 
 	@Override
-	public int amountTakenToFillMe(Drink theSource)
+	public int amountTakenToFillMe(final Drink theSource)
 	{
 		int amountToTake=amountOfLiquidHeld-totalDrinkContained();
 		if(amountOfLiquidHeld>=500000)
