@@ -44,7 +44,7 @@ public class JournalFunction extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
@@ -289,7 +289,7 @@ public class JournalFunction extends StdWebMacro
 				{
 					if((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.REPLY)))
 						return "Email not submitted -- Unauthorized.";
-					String replyMsg=httpReq.getUrlParameter("NEWTEXT"+fieldSuffix);
+					final String replyMsg=httpReq.getUrlParameter("NEWTEXT"+fieldSuffix);
 					if(replyMsg.length()==0)
 						messages.append("Email to #"+cardinalNumber+" not submitted -- No text!<BR>");
 					else
@@ -316,9 +316,11 @@ public class JournalFunction extends StdWebMacro
 				{
 					if((forum!=null)&&(!forum.authorizationCheck(M, ForumJournalFlags.ADMIN)))
 						return "Delete not authorized.";
-					CMLib.database().DBDeleteJournal(journalName,entry.key());
-					if(parms.containsKey("DELETEREPLY")&&(entry.parent()!=null)&&(entry.parent().length()>0))
+					if(parms.containsKey("DELETEREPLY")
+					&&(entry.parent()!=null)
+					&&(entry.parent().length()>0))
 					{
+						CMLib.database().DBDeleteJournal(journalName,entry.key());
 						// this constitutes a threaded reply -- update the counter
 						final JournalEntry parentEntry=CMLib.database().DBReadJournalEntry(journalName, entry.parent());
 						if(parentEntry!=null)
@@ -335,6 +337,16 @@ public class JournalFunction extends StdWebMacro
 					}
 					else
 					{
+						JournalEntry nextEntry = null;
+						if(doThemAll && keepProcessing)
+						{
+							cardinalNumber++;
+							nextEntry = JournalInfo.getNextEntry(msgs, msgKey);
+							while((nextEntry!=null) && (!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
+								nextEntry = JournalInfo.getNextEntry(msgs, nextEntry.key());
+							cardinalNumber--;
+						}
+						CMLib.database().DBDeleteJournal(journalName,entry.key());
 						if(cardinalNumber==0)
 							cardinalNumber=entry.cardinal();
 						if(cardinalNumber==0)
@@ -343,6 +355,13 @@ public class JournalFunction extends StdWebMacro
 							messages.append("Message #"+cardinalNumber+" deleted.<BR>");
 						JournalInfo.clearJournalCache(httpReq, journalName);
 						httpReq.addFakeUrlParameter("JOURNALMESSAGE","");
+						if(nextEntry != null)
+						{
+							cardinalNumber++;
+							msgKey=nextEntry.key();
+							CMLib.journals().clearJournalSummaryStats(forum);
+							continue;
+						}
 					}
 					CMLib.journals().clearJournalSummaryStats(forum);
 				}
@@ -387,7 +406,7 @@ public class JournalFunction extends StdWebMacro
 						}
 					}
 					else
-						return "Delete not authorized.";
+						return "Edit not authorized.";
 				}
 				else
 				if(CMSecurity.isAllowedAnywhere(M,CMSecurity.SecFlag.JOURNALS))
@@ -399,11 +418,11 @@ public class JournalFunction extends StdWebMacro
 						String journal=httpReq.getUrlParameter("NEWJOURNAL"+fieldSuffix);
 						if((journal==null) || (journal.length()==0))
 							messages.append("Transfer #"+cardinalNumber+" not completed -- No journal!<BR>");
-						
+
 						String realName=null;
 						if(journal!=null)
 						{
-							List<String> users=new ArrayList<String>();
+							final List<String> users=new ArrayList<String>();
 							//if(forum != null)
 							//	users.addAll(CMParms.parseAny(forum.getFlag(ForumJournalFlags.ASSIGN),':',true));
 							if(!users.contains("ALL"))
@@ -480,7 +499,7 @@ public class JournalFunction extends StdWebMacro
 		return messages.toString();
 	}
 
-	public String fixForumString(String s)
+	public String fixForumString(final String s)
 	{
 		if(s==null)
 			return "";
