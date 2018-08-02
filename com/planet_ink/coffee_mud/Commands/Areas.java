@@ -49,7 +49,7 @@ public class Areas extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String expression=null;
@@ -76,7 +76,7 @@ public class Areas extends StdCommand
 				Collections.sort(levelSorted, new Comparator<Area>()
 				{
 					@Override
-					public int compare(Area arg0, Area arg1)
+					public int compare(final Area arg0, final Area arg1)
 					{
 						return arg1.Name().compareTo(arg0.Name());
 					}
@@ -94,7 +94,7 @@ public class Areas extends StdCommand
 				Collections.sort(levelSorted, new Comparator<Area>()
 				{
 					@Override
-					public int compare(Area arg0, Area arg1)
+					public int compare(final Area arg0, final Area arg1)
 					{
 						final int lvl1=arg0.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
 						final int lvl2=arg1.getAreaIStats()[Stats.MED_LEVEL.ordinal()];
@@ -117,7 +117,7 @@ public class Areas extends StdCommand
 				Collections.sort(levelSorted, new Comparator<Area>()
 				{
 					@Override
-					public int compare(Area arg0, Area arg1)
+					public int compare(final Area arg0, final Area arg1)
 					{
 						return arg0.getAuthorID().compareTo(arg1.getAuthorID());
 					}
@@ -150,12 +150,12 @@ public class Areas extends StdCommand
 				Collections.sort(levelSorted, new Comparator<Area>()
 				{
 					@Override
-					public int compare(Area arg0, Area arg1)
+					public int compare(final Area arg0, final Area arg1)
 					{
 						final int lvl1=arg0.getAreaIStats()[sortStat];
 						final int lvl2=arg1.getAreaIStats()[sortStat];
 						if(lvl1==lvl2)
-							return 1;
+							return 0;
 						return Integer.valueOf(lvl1).compareTo(Integer.valueOf(lvl2));
 					}
 				});
