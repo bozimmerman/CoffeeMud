@@ -105,7 +105,7 @@ public class Artisan extends StdCharClass
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -153,7 +153,7 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",false,CMParms.parseSemicolons("Proficiency_EdgedWeapon(100);Drilling(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Speculate",false,CMParms.parseSemicolons("Foraging(75);Drilling(75);Hunting(75);Fishing(75);Chopping(75);Mining(75);Digging(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Sculpting",false,CMParms.parseSemicolons("Mining(75)",true));
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Smelting",false,CMParms.parseSemicolons("FireBuilding(75);Mining(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Pottery",false,CMParms.parseSemicolons("Digging(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Masonry",false,CMParms.parseSemicolons("Mining(75);Digging(75)",true));
@@ -227,7 +227,7 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Embroidering",false,CMParms.parseSemicolons("Skill_Write(50);Tailoring(75);Leatherworking(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterFloristry",false,CMParms.parseSemicolons("Floristry(100);Painting(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterHerbology",false,CMParms.parseSemicolons("Herbology(100);MasterCooking(75);MasterFoodPrep(75)",true));
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Lore",false,CMParms.parseSemicolons("AnimalHusbandry(75)",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Thief_Lore",false,CMParms.parseSemicolons("Writing(75);PaperMaking(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Proficiency_Ranged",false,CMParms.parseSemicolons("Fletching(100)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Familiarity_Ranged",false,CMParms.parseSemicolons("Proficiency_Ranged(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Fighter_CoverDefence",false,CMParms.parseSemicolons("Proficiency_Ranged(75)",true));
@@ -295,7 +295,7 @@ public class Artisan extends StdCharClass
 		&&(msg.value() > 0))
 			CMLib.leveler().postExperience(msg.source(),null,null,msg.value(),false);
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -348,7 +348,7 @@ public class Artisan extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{

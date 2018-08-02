@@ -512,7 +512,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			final MaterialLibrary.DeadResourceRecord deadMats;
-			if(componentsFoundList.size() > 0)
+			if((componentsFoundList.size() > 0)||(autoGenerate>0))
 				deadMats = new MaterialLibrary.DeadResourceRecord();
 			else
 				deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],data[1][FOUND_CODE],null,null);

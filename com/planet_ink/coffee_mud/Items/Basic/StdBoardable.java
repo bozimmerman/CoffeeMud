@@ -79,33 +79,33 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		ship.getShipArea();
 		return ship;
 	}
-	
-	@Override 
+
+	@Override
 	public boolean subjectToWearAndTear()
 	{
 		return true;
 	}
-	
+
 	@Override
 	public Item getShipItem()
 	{
 		return this;
 	}
-	
+
 	protected String getAreaClassType()
 	{
 		return "StdBoardableShip";
 	}
-	
+
 	protected Room createFirstRoom()
 	{
 		final Room R=CMClass.getLocale("StdRoom");
 		R.setDisplayText(L("The First Room"));
 		return R;
 	}
-	
+
 	@Override
-	public void setDockableItem(Item dockableItem)
+	public void setDockableItem(final Item dockableItem)
 	{
 		if(area instanceof BoardableShip)
 			((BoardableShip)area).setDockableItem(dockableItem);
@@ -137,7 +137,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	}
 
 	@Override
-	public void setShipArea(String xml)
+	public void setShipArea(final String xml)
 	{
 		try
 		{
@@ -182,7 +182,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			Log.warnOut("Unable to parse boardable xml for some reason.");
 		}
 	}
-	
+
 	@Override
 	public void dockHere(final Room R)
 	{
@@ -223,38 +223,38 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		return null;
 	}
 
-	@Override 
-	public String getHomePortID() 
-	{ 
-		return this.homePortID; 
+	@Override
+	public String getHomePortID()
+	{
+		return this.homePortID;
 	}
-	
-	@Override 
-	public void setHomePortID(String portID) 
-	{ 
+
+	@Override
+	public void setHomePortID(final String portID)
+	{
 		this.homePortID = portID;
 	}
 
-	@Override 
-	public String keyName() 
-	{ 
+	@Override
+	public String keyName()
+	{
 		return readableText;
 	}
-	
-	@Override 
-	public void setKeyName(String newKeyName) 
-	{ 
+
+	@Override
+	public void setKeyName(final String newKeyName)
+	{
 		// don't do this, as MUDGrinder mucks it up
 	}
 
-	@Override 
+	@Override
 	public String readableText()
 	{
 		return readableText;
 	}
-	
-	@Override 
-	public void setReadableText(String text)
+
+	@Override
+	public void setReadableText(final String text)
 	{
 		if((text!=null)&&(text.length()>0))
 			readableText=text;
@@ -267,7 +267,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -318,7 +318,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	}
 
 	@Override
-	protected Room getDestinationRoom(Room fromRoom)
+	protected Room getDestinationRoom(final Room fromRoom)
 	{
 		getShipArea();
 		Room R=null;
@@ -327,8 +327,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			R=getShipArea().getRoom(V.get(CMLib.dice().roll(1,V.size(),-1)));
 		return R;
 	}
-	
-	protected void renameDestinationRooms(String from, String to)
+
+	protected void renameDestinationRooms(String from, final String to)
 	{
 		getShipArea();
 		final List<String> V=CMParms.parseSemicolons(readableText().toUpperCase(),true);
@@ -358,37 +358,37 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		super.destroy();
 	}
 
-	@Override 
-	public int getPrice() 
-	{ 
-		return price; 
-	}
-	
-	@Override 
-	public void setPrice(int price) 
-	{ 
-		this.price=price; 
+	@Override
+	public int getPrice()
+	{
+		return price;
 	}
 
-	@Override 
-	public int value() 
-	{ 
+	@Override
+	public void setPrice(final int price)
+	{
+		this.price=price;
+	}
+
+	@Override
+	public int value()
+	{
 		int value = baseGoldValue();
 		if(price > 0)
 			value += price;
 		getShipArea();
 		return value + internalPrice;
 	}
-	
-	@Override 
-	public String getOwnerName() 
-	{ 
-		return ownerName; 
+
+	@Override
+	public String getOwnerName()
+	{
+		return ownerName;
 	}
-	
-	@Override 
-	public void setOwnerName(String owner) 
-	{ 
+
+	@Override
+	public void setOwnerName(final String owner)
+	{
 		this.ownerName=owner;
 	}
 
@@ -399,39 +399,39 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	}
 
 	@Override
-	public void setExpirationDate(long time)
+	public void setExpirationDate(final long time)
 	{
 		if((time>0)&&(owner() instanceof Room))
 			super.setExpirationDate(0);
 		else
 			super.setExpirationDate(time);
 	}
-		
+
 	@Override
 	public CMObject getOwnerObject()
 	{
 		final String owner=getOwnerName();
-		if(owner.length()==0) 
+		if(owner.length()==0)
 			return null;
 		final Clan C=CMLib.clans().getClan(owner);
-		if(C!=null) 
+		if(C!=null)
 			return C;
 		return CMLib.players().getLoadPlayer(owner);
 	}
-	
-	@Override 
-	public String getTitleID() 
-	{ 
-		return this.toString(); 
+
+	@Override
+	public String getTitleID()
+	{
+		return this.toString();
 	}
 
 	@Override
-	public void renameShip(String newName)
+	public void renameShip(final String newName)
 	{
 		final Area area=getShipArea();
 		if(area instanceof BoardableShip)
 		{
-			String oldName=area.Name();
+			final String oldName=area.Name();
 			((BoardableShip)area).renameShip(newName);
 			renameDestinationRooms(oldName,area.Name());
 			setShipArea(CMLib.coffeeMaker().getAreaObjectXML(area, null, null, null, true).toString());
@@ -450,7 +450,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -458,7 +458,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		{
 			if(amDestroyed())
 				return false;
-			
+
 			return true;
 		}
 		return super.tick(ticking, tickID);
@@ -511,8 +511,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		}
 		destroy();
 	}
-	
-	protected boolean okAreaMessage(final CMMsg msg, boolean outdoorOnly)
+
+	protected boolean okAreaMessage(final CMMsg msg, final boolean outdoorOnly)
 	{
 		boolean failed = false;
 		final Area ship=getShipArea();
@@ -531,7 +531,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		}
 		return failed;
 	}
-	
+
 	protected boolean securityCheck(final MOB mob)
 	{
 		if(mob==null)
@@ -561,8 +561,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			mob.destroy();
 		}
 	}
-	
-	protected void sendAreaMessage(final CMMsg msg, boolean outdoorOnly)
+
+	protected void sendAreaMessage(final CMMsg msg, final boolean outdoorOnly)
 	{
 		final Area ship=getShipArea();
 		if(ship!=null)
@@ -576,8 +576,8 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			}
 		}
 	}
-	
-	protected boolean confirmAreaMessage(final CMMsg msg, boolean outdoorOnly)
+
+	protected boolean confirmAreaMessage(final CMMsg msg, final boolean outdoorOnly)
 	{
 		final Area itemArea=CMLib.map().areaLocation(this.getShipItem());
 		final Area shipArea=getShipArea();
@@ -600,7 +600,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		}
 		return true;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -609,9 +609,9 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		&&(msg.tool() instanceof ShopKeeper))
 		{
 			final ShopKeeper shop=(ShopKeeper)msg.tool();
-			final boolean clanSale = 
-					   shop.isSold(ShopKeeper.DEAL_CLANPOSTMAN) 
-					|| shop.isSold(ShopKeeper.DEAL_CSHIPSELLER) 
+			final boolean clanSale =
+					   shop.isSold(ShopKeeper.DEAL_CLANPOSTMAN)
+					|| shop.isSold(ShopKeeper.DEAL_CSHIPSELLER)
 					|| shop.isSold(ShopKeeper.DEAL_CLANDSELLER);
 			CMLib.map().registerWorldObjectLoaded(null, null, this);
 			transferOwnership(msg.source(),clanSale);
@@ -641,7 +641,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -654,9 +654,9 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				if(msg.tool() instanceof ShopKeeper)
 				{
 					final ShopKeeper shop=(ShopKeeper)msg.tool();
-					final boolean clanSale = 
-							   shop.isSold(ShopKeeper.DEAL_CLANPOSTMAN) 
-							|| shop.isSold(ShopKeeper.DEAL_CSHIPSELLER) 
+					final boolean clanSale =
+							   shop.isSold(ShopKeeper.DEAL_CLANPOSTMAN)
+							|| shop.isSold(ShopKeeper.DEAL_CSHIPSELLER)
 							|| shop.isSold(ShopKeeper.DEAL_CLANDSELLER);
 					CMLib.map().registerWorldObjectLoaded(null, null, this);
 					transferOwnership(msg.source(),clanSale);
@@ -689,7 +689,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			break;
 		}
 	}
-	
+
 	protected void transferOwnership(final MOB buyer, final boolean clanSale)
 	{
 		if((getOwnerName().length()>0)&&(!getOwnerName().startsWith("#")))
@@ -741,7 +741,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				{
 				}
 
-				@Override 
+				@Override
 				public void callBack()
 				{
 					for(final Enumeration<BoardableShip> s=CMLib.map().ships();s.hasMoreElements();)
@@ -832,13 +832,13 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		}
 	}
 
-	protected Room findNearestDocks(Room R)
+	protected Room findNearestDocks(final Room R)
 	{
 		return R;
 	}
-	
+
 	@Override
-	public String putString(Rider R)
+	public String putString(final Rider R)
 	{
 		if((R==null)||(putString.length()==0))
 			return "load(s)";
@@ -846,7 +846,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	}
 
 	@Override
-	public String mountString(int commandType, Rider R)
+	public String mountString(final int commandType, final Rider R)
 	{
 		if((R==null)||(mountString.length()==0))
 			return "board(s)";
@@ -854,7 +854,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	}
 
 	@Override
-	public String dismountString(Rider R)
+	public String dismountString(final Rider R)
 	{
 		if((R==null)||(dismountString.length()==0))
 			return "disembark(s) from";

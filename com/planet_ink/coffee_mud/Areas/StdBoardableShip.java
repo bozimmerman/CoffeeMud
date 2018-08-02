@@ -91,7 +91,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		CMClass.unbumpCounter(this, CMClass.CMObjectType.AREA);
 	}// removed for mem & perf
 	*/
-	
+
 	@Override
 	public Room getIsDocked()
 	{
@@ -99,7 +99,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setClimateObj(Climate obj)
+	public void setClimateObj(final Climate obj)
 	{
 	}
 
@@ -107,23 +107,23 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		return (shipItem != null) ? CMLib.map().areaLocation(shipItem) : null;
 	}
-	
+
 	protected Room getShipItemRoom()
 	{
 		return (shipItem != null) ? CMLib.map().roomLocation(shipItem) : null;
 	}
-	
+
 	@Override
 	public Climate getClimateObj()
 	{
 		final Area shipItemArea = getShipItemArea();
-		return ((shipItemArea != null) && (shipItemArea != this)) 
-				? shipItemArea.getClimateObj() 
+		return ((shipItemArea != null) && (shipItemArea != this))
+				? shipItemArea.getClimateObj()
 				: CMLib.map().areas().nextElement().getClimateObj();
 	}
 
 	@Override
-	public void setAuthorID(String authorID)
+	public void setAuthorID(final String authorID)
 	{
 		author = authorID;
 	}
@@ -134,29 +134,29 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return author;
 	}
 
-	@Override 
+	@Override
 	public TimeClock getTimeObj()
 	{
 		final Area shipItemArea = getShipItemArea();
-		return ((shipItemArea != null) && (shipItemArea != this)) 
-				? shipItemArea.getTimeObj() 
+		return ((shipItemArea != null) && (shipItemArea != this))
+				? shipItemArea.getTimeObj()
 				: CMLib.time().globalClock();
 	}
 
 	@Override
-	public void setDockableItem(Item dockableItem)
+	public void setDockableItem(final Item dockableItem)
 	{
 		if(dockableItem instanceof BoardableShip)
 			shipItem=(BoardableShip)dockableItem;
 	}
 
 	@Override
-	public void setTimeObj(TimeClock obj)
+	public void setTimeObj(final TimeClock obj)
 	{
 	}
 
 	@Override
-	public void setCurrency(String newCurrency)
+	public void setCurrency(final String newCurrency)
 	{
 		currency = newCurrency;
 	}
@@ -174,22 +174,22 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setExpirationDate(long time)
+	public void setExpirationDate(final long time)
 	{
 		expirationDate = time;
 	}
 
-	@Override 
-	public int getAtmosphereCode() 
+	@Override
+	public int getAtmosphereCode()
 	{
 		final Room shipItemRoom = getShipItemRoom();
-		return ((shipItemRoom != null)&&(shipItemRoom.getArea()!=this)) 
-				? shipItemRoom.getAtmosphereCode() 
+		return ((shipItemRoom != null)&&(shipItemRoom.getArea()!=this))
+				? shipItemRoom.getAtmosphereCode()
 				: RawMaterial.RESOURCE_AIR;
 	}
-	
+
 	@Override
-	public void setAtmosphere(int resourceCode)
+	public void setAtmosphere(final int resourceCode)
 	{
 	}
 
@@ -198,16 +198,16 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		return (shipItem instanceof Item) ? (Item)shipItem : null;
 	}
-	
-	@Override 
+
+	@Override
 	public int getAtmosphere()
 	{
 		final Room shipItemRoom = getShipItemRoom();
 		return ((shipItemRoom != null)&&(shipItemRoom.getArea()!=this))
-				? shipItemRoom.getAtmosphere() 
+				? shipItemRoom.getAtmosphere()
 				: RawMaterial.RESOURCE_AIR;
 	}
-	
+
 	@Override
 	public long flags()
 	{
@@ -230,7 +230,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		parents=new SLinkedList<Area>();
 		amDestroyed=true;
 	}
-	
+
 	@Override
 	public boolean amDestroyed()
 	{
@@ -244,33 +244,33 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 				&& (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
 				&& (CMLib.flags().isSavable(this)));
 	}
-	
+
 	@Override
-	public void setSavable(boolean truefalse)
+	public void setSavable(final boolean truefalse)
 	{
 		CMLib.flags().setSavable(this, truefalse);
 	}
 
-	@Override 
+	@Override
 	public int getClimateTypeCode()
 	{
 		final Room shipItemRoom = getShipItemRoom();
 		return ((shipItemRoom != null)&&(shipItemRoom.getArea()!=this))
-				? shipItemRoom.getClimateTypeCode() 
+				? shipItemRoom.getClimateTypeCode()
 				: CLIMASK_NORMAL;
 	}
-	
-	@Override 
-	public int getClimateType() 
+
+	@Override
+	public int getClimateType()
 	{
 		final Room shipItemRoom = getShipItemRoom();
 		return ((shipItemRoom != null)&&(shipItemRoom.getArea()!=this))
-				? shipItemRoom.getClimateType() 
+				? shipItemRoom.getClimateType()
 				: CLIMASK_NORMAL;
 	}
-	
+
 	@Override
-	public void setClimateType(int newClimateType)
+	public void setClimateType(final int newClimateType)
 	{
 	}
 
@@ -283,7 +283,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 		name=newName;
 		CMLib.map().renamedArea(this);
@@ -296,7 +296,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void renameShip(String newName)
+	public void renameShip(final String newName)
 	{
 		final String oldName=Name();
 		setName(newName);
@@ -321,7 +321,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		basePhyStats.copyInto(phyStats);
 		eachEffect(new EachApplicable<Ability>()
-		{ 
+		{
 			@Override
 			public final void apply(final Ability A)
 			{
@@ -338,36 +338,36 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setShipArea(String xml)
+	public void setShipArea(final String xml)
 	{
 	}
 
 	@Override
-	public void setBasePhyStats(PhyStats newStats)
+	public void setBasePhyStats(final PhyStats newStats)
 	{
 		basePhyStats=(PhyStats)newStats.copyOf();
 	}
-	
-	@Override 
-	public int getThemeCode() 
+
+	@Override
+	public int getThemeCode()
 	{
 		final Area shipItemArea = getShipItemArea();
-		return ((shipItemArea != null) && (shipItemArea != this)) 
-				? shipItemArea.getThemeCode() 
+		return ((shipItemArea != null) && (shipItemArea != this))
+				? shipItemArea.getThemeCode()
 				: Area.THEME_ALLTHEMES;
 	}
-	
+
 	@Override
 	public int getTheme()
 	{
 		final Area shipItemArea = getShipItemArea();
 		return ((shipItemArea != null) && (shipItemArea != this))
-				? shipItemArea.getTheme() 
+				? shipItemArea.getTheme()
 				: Area.THEME_ALLTHEMES;
 	}
-	
+
 	@Override
-	public void setTheme(int level)
+	public void setTheme(final int level)
 	{
 	}
 
@@ -384,24 +384,24 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setImage(String newImage)
+	public void setImage(final String newImage)
 	{
 		imageName = newImage;
 	}
 
-	@Override 
-	public String getHomePortID() 
-	{ 
-		return this.shipItem != null ? shipItem.getHomePortID() : ""; 
+	@Override
+	public String getHomePortID()
+	{
+		return this.shipItem != null ? shipItem.getHomePortID() : "";
 	}
 
-	@Override 
-	public void setHomePortID(String portID) 
-	{ 
+	@Override
+	public void setHomePortID(final String portID)
+	{
 		if(this.shipItem != null)
 			this.shipItem.setHomePortID(portID);
 	}
-	
+
 	@Override
 	public String getArchivePath()
 	{
@@ -409,12 +409,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setArchivePath(String pathFile)
+	public void setArchivePath(final String pathFile)
 	{
 	}
 
 	@Override
-	public void setAreaState(State newState)
+	public void setAreaState(final State newState)
 	{
 		if((newState==State.ACTIVE)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
 			CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
@@ -431,7 +431,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public boolean amISubOp(String username)
+	public boolean amISubOp(final String username)
 	{
 		return false;
 	}
@@ -443,17 +443,17 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setSubOpList(String list)
+	public void setSubOpList(final String list)
 	{
 	}
 
 	@Override
-	public void addSubOp(String username)
+	public void addSubOp(final String username)
 	{
 	}
 
 	@Override
-	public void delSubOp(String username)
+	public void delSubOp(final String username)
 	{
 	}
 
@@ -476,8 +476,8 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		return false;
 	}
-	
-	protected void cloneFix(StdBoardableShip ship)
+
+	protected void cloneFix(final StdBoardableShip ship)
 	{
 		me=this;
 		basePhyStats=(PhyStats)ship.basePhyStats().copyOf();
@@ -534,19 +534,19 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setDisplayText(String newDisplayText)
+	public void setDisplayText(final String newDisplayText)
 	{
 		displayText = newDisplayText;
 	}
 
 	@Override
-	public String displayText(MOB viewerMob)
+	public String displayText(final MOB viewerMob)
 	{
 		return displayText();
 	}
 
 	@Override
-	public String name(MOB viewerMob)
+	public String name(final MOB viewerMob)
 	{
 		return name();
 	}
@@ -570,7 +570,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		miscText="";
 		if(newMiscText.trim().length()>0)
@@ -584,13 +584,13 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setDescription(String newDescription)
+	public void setDescription(final String newDescription)
 	{
 		description = newDescription;
 	}
 
 	@Override
-	public String description(MOB viewerMob)
+	public String description(final MOB viewerMob)
 	{
 		return description();
 	}
@@ -711,7 +711,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public String getBlurbFlag(String flag)
+	public String getBlurbFlag(final String flag)
 	{
 		if((flag==null)||(flag.trim().length()==0))
 			return null;
@@ -792,7 +792,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			}
 		});
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -886,7 +886,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 				break;
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -894,7 +894,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	{
 		return getProperMap();
 	}
-	
+
 	@Override
 	public Enumeration<Room> getFilledCompleteMap()
 	{
@@ -982,12 +982,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 	}
 
 	@Override
-	public void addNonUninvokableEffect(Ability to)
+	public void addNonUninvokableEffect(final Ability to)
 	{
 		if(to==null)
 			return;
@@ -1000,7 +1000,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void addEffect(Ability to)
+	public void addEffect(final Ability to)
 	{
 		if(to==null)
 			return;
@@ -1011,7 +1011,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void delEffect(Ability to)
+	public void delEffect(final Ability to)
 	{
 		final int size=affects.size();
 		affects.removeElement(to);
@@ -1040,7 +1040,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void delAllEffects(boolean unInvoke)
+	public void delAllEffects(final boolean unInvoke)
 	{
 		for(int a=numEffects()-1;a>=0;a--)
 		{
@@ -1061,14 +1061,14 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return (affects==null)?0:affects.size();
 	}
 
-	@Override 
+	@Override
 	public Enumeration<Ability> effects()
 	{
 		return (affects==null)?EmptyEnumeration.INSTANCE:affects.elements();
 	}
 
 	@Override
-	public Ability fetchEffect(int index)
+	public Ability fetchEffect(final int index)
 	{
 		try
 		{
@@ -1081,7 +1081,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public Ability fetchEffect(String ID)
+	public Ability fetchEffect(final String ID)
 	{
 		for(final Enumeration<Ability> a=effects();a.hasMoreElements();)
 		{
@@ -1098,20 +1098,20 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public boolean inMyMetroArea(Area A)
+	public boolean inMyMetroArea(final Area A)
 	{
 		if(A==this)
 			return true;
 		return false;
 	}
-	
+
 	@Override
-	public void fillInAreaRoom(Room R)
+	public void fillInAreaRoom(final Room R)
 	{
 	}
 
 	@Override
-	public void dockHere(Room roomR)
+	public void dockHere(final Room roomR)
 	{
 		if(roomR==null)
 			return;
@@ -1135,7 +1135,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public Room unDock(boolean moveToOutside)
+	public Room unDock(final boolean moveToOutside)
 	{
 		final Room dock=getIsDocked();
 		Room exitRoom = null;
@@ -1189,7 +1189,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public String getNewRoomID(Room startRoom, int direction)
+	public String getNewRoomID(final Room startRoom, final int direction)
 	{
 		int highest=Integer.MIN_VALUE;
 		int lowest=Integer.MAX_VALUE;
@@ -1287,7 +1287,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	/** Manipulation of Behavior objects, which includes
 	 * movement, speech, spellcasting, etc, etc.*/
 	@Override
-	public void addBehavior(Behavior to)
+	public void addBehavior(final Behavior to)
 	{
 		if(to==null)
 			return;
@@ -1303,7 +1303,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void delBehavior(Behavior to)
+	public void delBehavior(final Behavior to)
 	{
 		if(behaviors!=null)
 			behaviors.removeElement(to);
@@ -1313,7 +1313,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	public void delAllBehaviors()
 	{
 		final boolean didSomething=(behaviors!=null)&&(behaviors.size()>0);
-		if(didSomething) 
+		if(didSomething)
 			behaviors.clear();
 		behaviors=null;
 		if(didSomething && ((scripts==null)||(scripts.size()==0)))
@@ -1326,9 +1326,9 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 		return (behaviors==null)?0:behaviors.size();
 	}
 
-	@Override 
-	public Enumeration<Behavior> behaviors() 
-	{ 
+	@Override
+	public Enumeration<Behavior> behaviors()
+	{
 		return (behaviors!=null)?behaviors.elements():EmptyEnumeration.INSTANCE;
 	}
 
@@ -1363,12 +1363,12 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setPlayerLevel(int level)
+	public void setPlayerLevel(final int level)
 	{
 	}
 
 	@Override
-	public Behavior fetchBehavior(int index)
+	public Behavior fetchBehavior(final int index)
 	{
 		try
 		{
@@ -1381,7 +1381,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public Behavior fetchBehavior(String ID)
+	public Behavior fetchBehavior(final String ID)
 	{
 		for(int b=0;b<numBehaviors();b++)
 		{
@@ -1415,7 +1415,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 
 	/** Manipulation of the scripts list */
 	@Override
-	public void addScript(ScriptingEngine S)
+	public void addScript(final ScriptingEngine S)
 	{
 		if(S==null)
 			return;
@@ -1431,7 +1431,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void delScript(ScriptingEngine S)
+	public void delScript(final ScriptingEngine S)
 	{
 		scripts.removeElement(S);
 	}
@@ -1460,7 +1460,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public ScriptingEngine fetchScript(int x)
+	public ScriptingEngine fetchScript(final int x)
 	{
 		try
 		{
@@ -1494,7 +1494,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void addProperRoom(Room R)
+	public void addProperRoom(final Room R)
 	{
 		if(R==null)
 			return;
@@ -1529,7 +1529,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void delProperRoom(Room R)
+	public void delProperRoom(final Room R)
 	{
 		if(R==null)
 			return;
@@ -1543,21 +1543,21 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void addProperRoomnumber(String roomID)
+	public void addProperRoomnumber(final String roomID)
 	{
 		if((roomID!=null)&&(roomID.length()>0))
 			getProperRoomnumbers().add(roomID);
 	}
 
 	@Override
-	public void delProperRoomnumber(String roomID)
+	public void delProperRoomnumber(final String roomID)
 	{
 		if((roomID!=null)&&(roomID.length()>0))
 			getProperRoomnumbers().remove(roomID);
 	}
 
 	@Override
-	public boolean isRoom(Room R)
+	public boolean isRoom(final Room R)
 	{
 		if(R==null)
 			return false;
@@ -1565,7 +1565,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public Room getRoom(String roomID)
+	public Room getRoom(final String roomID)
 	{
 		if(myRooms.size()==0)
 			return null;
@@ -1649,7 +1649,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setProperRoomnumbers(RoomnumberSet set)
+	public void setProperRoomnumbers(final RoomnumberSet set)
 	{
 		properRoomIDSet = set;
 	}
@@ -1666,22 +1666,22 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void addMetroRoomnumber(String roomID)
+	public void addMetroRoomnumber(final String roomID)
 	{
 	}
 
 	@Override
-	public void delMetroRoomnumber(String roomID)
+	public void delMetroRoomnumber(final String roomID)
 	{
 	}
 
 	@Override
-	public void addMetroRoom(Room R)
+	public void addMetroRoom(final Room R)
 	{
 	}
 
 	@Override
-	public void delMetroRoom(Room R)
+	public void delMetroRoom(final Room R)
 	{
 	}
 
@@ -1714,40 +1714,40 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public Area getChild(String named)
+	public Area getChild(final String named)
 	{
 		return null;
 	}
 
 	@Override
-	public boolean isChild(Area named)
+	public boolean isChild(final Area named)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean isChild(String named)
+	public boolean isChild(final String named)
 	{
 		return false;
 	}
 
 	@Override
-	public void addChild(Area area)
+	public void addChild(final Area area)
 	{
 	}
 
 	@Override
-	public void removeChild(Area area)
+	public void removeChild(final Area area)
 	{
 	}
 
 	@Override
-	public boolean canChild(Area area)
+	public boolean canChild(final Area area)
 	{
 		return false;
 	}
 
-	public SLinkedList<Area> loadAreas(Collection<String> loadableSet)
+	public SLinkedList<Area> loadAreas(final Collection<String> loadableSet)
 	{
 		final SLinkedList<Area> finalSet = new SLinkedList<Area>();
 		for (final String areaName : loadableSet)
@@ -1790,7 +1790,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public Area getParent(String named)
+	public Area getParent(final String named)
 	{
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
@@ -1803,7 +1803,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public boolean isParent(Area area)
+	public boolean isParent(final Area area)
 	{
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
@@ -1815,7 +1815,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public boolean isParent(String named)
+	public boolean isParent(final String named)
 	{
 		for(final Iterator<Area> a=getParentsIterator();a.hasNext();)
 		{
@@ -1828,7 +1828,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void addParent(Area area)
+	public void addParent(final Area area)
 	{
 		if(!canParent(area))
 			return;
@@ -1845,14 +1845,14 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void removeParent(Area area)
+	public void removeParent(final Area area)
 	{
 		if(isParent(area))
 			parents.remove(area);
 	}
 
 	@Override
-	public boolean canParent(Area area)
+	public boolean canParent(final Area area)
 	{
 		return true;
 	}
@@ -1864,7 +1864,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setPrejudiceFactors(String factors)
+	public void setPrejudiceFactors(final String factors)
 	{
 	}
 
@@ -1877,7 +1877,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setItemPricingAdjustments(String[] factors)
+	public void setItemPricingAdjustments(final String[] factors)
 	{
 	}
 
@@ -1888,7 +1888,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setIgnoreMask(String factors)
+	public void setIgnoreMask(final String factors)
 	{
 	}
 
@@ -1899,7 +1899,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setBudget(String factors)
+	public void setBudget(final String factors)
 	{
 	}
 
@@ -1910,7 +1910,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setDevalueRate(String factors)
+	public void setDevalueRate(final String factors)
 	{
 	}
 
@@ -1921,7 +1921,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setInvResetRate(int ticks)
+	public void setInvResetRate(final int ticks)
 	{
 	}
 
@@ -1999,7 +1999,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{
@@ -2026,7 +2026,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{
@@ -2098,7 +2098,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public int getPrice() 
+	public int getPrice()
 	{
 		if( getShipItem() instanceof PrivateProperty)
 			return ((PrivateProperty)getShipItem()).getPrice();
@@ -2106,14 +2106,14 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setPrice(int price) 
+	public void setPrice(final int price)
 	{
 		if( getShipItem() instanceof PrivateProperty)
 			((PrivateProperty)getShipItem()).setPrice(price);
 	}
 
 	@Override
-	public String getOwnerName() 
+	public String getOwnerName()
 	{
 		if( getShipItem() instanceof PrivateProperty)
 			return ((PrivateProperty)getShipItem()).getOwnerName();
@@ -2121,14 +2121,14 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public void setOwnerName(String owner) 
+	public void setOwnerName(final String owner)
 	{
 		if( getShipItem() instanceof PrivateProperty)
 			((PrivateProperty)getShipItem()).setOwnerName(owner);
 	}
 
 	@Override
-	public CMObject getOwnerObject() 
+	public CMObject getOwnerObject()
 	{
 		if( getShipItem() instanceof PrivateProperty)
 			return ((PrivateProperty)getShipItem()).getOwnerObject();
@@ -2136,7 +2136,7 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 	}
 
 	@Override
-	public String getTitleID() 
+	public String getTitleID()
 	{
 		if( getShipItem() instanceof PrivateProperty)
 			return ((PrivateProperty)getShipItem()).getTitleID();

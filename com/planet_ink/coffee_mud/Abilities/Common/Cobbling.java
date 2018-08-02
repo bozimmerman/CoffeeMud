@@ -423,7 +423,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			final MaterialLibrary.DeadResourceRecord deadMats;
-			if(componentsFoundList.size() > 0)
+			if((componentsFoundList.size() > 0)||(autoGenerate>0))
 				deadMats = new MaterialLibrary.DeadResourceRecord();
 			else
 				deadMats = CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null,null);

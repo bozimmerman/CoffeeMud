@@ -68,7 +68,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 
 	@Override
 	public String parametersFormat()
-	{ 
+	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+ "ITEM_BASE_VALUE\tITEM_CLASS_ID\tCODED_WEAR_LOCATION\tCONTAINER_CAPACITY\t"
@@ -108,20 +108,20 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		return super.tick(ticking,tickID);
 	}
 
-	@Override 
+	@Override
 	public String parametersFile()
 	{
 		return "armorsmith.txt";
 	}
-	
-	@Override 
+
+	@Override
 	protected List<List<String>> loadRecipes()
 	{
 		return super.loadRecipes(parametersFile());
 	}
 
 	@Override
-	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	protected boolean doLearnRecipe(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		fireRequired=false;
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
@@ -227,13 +227,13 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 	}
 
 	@Override
-	public boolean supportsMending(Physical I)
+	public boolean supportsMending(final Physical I)
 	{
 		return canMend(null, I, true);
 	}
 
 	@Override
-	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
@@ -254,20 +254,20 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		fireRequired=true;
 
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
@@ -474,7 +474,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 			final MaterialLibrary.DeadResourceRecord deadMats;
-			if(componentsFoundList.size() > 0)
+			if((componentsFoundList.size() > 0)||(autoGenerate>0))
 				deadMats = new MaterialLibrary.DeadResourceRecord();
 			else
 				deadMats = CMLib.materials().destroyResources(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],0,null,null);

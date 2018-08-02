@@ -67,7 +67,7 @@ public class GenShopkeeper extends StdShopKeeper
 	}
 
 	@Override
-	public void setPrejudiceFactors(String factors)
+	public void setPrejudiceFactors(final String factors)
 	{
 		prejudiceFactors = factors;
 	}
@@ -79,7 +79,7 @@ public class GenShopkeeper extends StdShopKeeper
 	}
 
 	@Override
-	public void setIgnoreMask(String factors)
+	public void setIgnoreMask(final String factors)
 	{
 		ignoreMask = factors;
 	}
@@ -95,18 +95,18 @@ public class GenShopkeeper extends StdShopKeeper
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this, newText);
 	}
 
-	private final static String[]	MYCODES	= { "WHATISELL", "PREJUDICE", "BUDGET", "DEVALRATE", 
+	private final static String[]	MYCODES	= { "WHATISELL", "PREJUDICE", "BUDGET", "DEVALRATE",
 												"INVRESETRATE", "IGNOREMASK", "PRICEMASKS",
 												"ITEMMASK"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if (CMLib.coffeeMaker().getGenMobCodeNum(code) >= 0)
 			return CMLib.coffeeMaker().getGenMobStat(this, code);
@@ -134,7 +134,7 @@ public class GenShopkeeper extends StdShopKeeper
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if (CMLib.coffeeMaker().getGenMobCodeNum(code) >= 0)
 			CMLib.coffeeMaker().setGenMobStat(this, code, val);
