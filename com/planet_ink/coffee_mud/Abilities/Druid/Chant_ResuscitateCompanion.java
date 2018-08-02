@@ -230,6 +230,7 @@ public class Chant_ResuscitateCompanion extends Chant implements MendingSkill
 					body.destroy();
 					rejuvedMOB.bringToLife(mob.location(),true);
 					rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> get(s) up!"));
+					CMLib.commands().postFollow(rejuvedMOB, mob, true);
 				}
 			}
 		}
