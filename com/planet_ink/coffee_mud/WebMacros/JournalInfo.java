@@ -45,7 +45,7 @@ public class JournalInfo extends StdWebMacro
 		return "JournalInfo";
 	}
 
-	public static JournalEntry getEntry(List<JournalEntry> msgs, String key)
+	public static JournalEntry getEntry(final List<JournalEntry> msgs, final String key)
 	{
 		if(msgs==null)
 			return null;
@@ -55,10 +55,13 @@ public class JournalInfo extends StdWebMacro
 		for(int i=0;i<msgs.size();i++)
 		{
 			final JournalEntry E=msgs.get(i);
-			if(E.key().equals(key))
+			if(E != null)
 			{
-				index=i;
-				break;
+				if(E.key().equals(key))
+				{
+					index=i;
+					break;
+				}
 			}
 		}
 		if(index >=0)
@@ -69,14 +72,16 @@ public class JournalInfo extends StdWebMacro
 		}
 		for (final JournalEntry entry : msgs)
 		{
-			if(entry.key().equalsIgnoreCase(key))
+
+			if((entry != null)
+			&&(entry.key().equalsIgnoreCase(key)))
 				return entry;
 		}
 		return null;
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<JournalEntry> getMessages(String journalName, JournalsLibrary.ForumJournal forumJournal, String page, String mpage, String parent, String dbsearch, Map<String,Object> objs)
+	public static List<JournalEntry> getMessages(final String journalName, final JournalsLibrary.ForumJournal forumJournal, String page, final String mpage, String parent, String dbsearch, final Map<String,Object> objs)
 	{
 		if((parent!=null)&&(parent.length()>0))
 		{
@@ -135,7 +140,7 @@ public class JournalInfo extends StdWebMacro
 		return msgs;
 	}
 
-	public static void clearJournalCache(HTTPRequest httpReq, String journalName)
+	public static void clearJournalCache(final HTTPRequest httpReq, final String journalName)
 	{
 		final List<String> h = new XVector<String>(httpReq.getRequestObjects().keySet());
 		for(final String o : h)
@@ -145,7 +150,7 @@ public class JournalInfo extends StdWebMacro
 		}
 	}
 
-	public static JournalEntry getNextEntry(List<JournalEntry> info, String key)
+	public static JournalEntry getNextEntry(final List<JournalEntry> info, final String key)
 	{
 		if(info==null)
 			return null;
@@ -155,10 +160,13 @@ public class JournalInfo extends StdWebMacro
 			for(int i=0;i<info.size();i++)
 			{
 				final JournalEntry E=info.get(i);
-				if(E.key().equals(key))
+				if(E!= null)
 				{
-					index=i;
-					break;
+					if(E.key().equals(key))
+					{
+						index=i;
+						break;
+					}
 				}
 			}
 			if(index >=0)
@@ -171,6 +179,8 @@ public class JournalInfo extends StdWebMacro
 		for(final Iterator<JournalEntry> e=info.iterator();e.hasNext();)
 		{
 			final JournalEntry entry = e.next();
+			if(entry == null)
+				continue;
 			if((key == null)||(key.length()==0))
 				return entry;
 			if(entry.key().equalsIgnoreCase(key))
@@ -184,7 +194,7 @@ public class JournalInfo extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String journalName=httpReq.getUrlParameter("JOURNAL");
@@ -196,7 +206,7 @@ public class JournalInfo extends StdWebMacro
 
 		if(parms.containsKey("JOURNALLIMIT"))
 			return ""+CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
-		
+
 		if(parms.containsKey("ASSIGN"))
 		{
 			CommandJournal CJ=CMLib.journals().getCommandJournal(journalName);
@@ -204,14 +214,14 @@ public class JournalInfo extends StdWebMacro
 				CJ=CMLib.journals().getCommandJournal(journalName.substring(7));
 			if((CJ==null)&&(journalName.startsWith("SYSTEM_"))&&(journalName.endsWith("S")))
 				CJ=CMLib.journals().getCommandJournal(journalName.substring(7,journalName.length()-1));
-			List<String> assigns=new ArrayList<String>();
+			final List<String> assigns=new ArrayList<String>();
 			if(CJ!=null)
 				assigns.addAll(CMParms.parseAny(CJ.getFlag(CommandJournalFlags.ASSIGN), ':', true));
 			if(!assigns.contains("ALL"))
 				assigns.add("ALL");
 			if(!assigns.contains("FROM"))
 				assigns.add("FROM");
-			
+
 			if(parms.containsKey("NEXT")||parms.containsKey("RESET"))
 			{
 				String last=httpReq.getUrlParameter("JOURNALASSIGN");
