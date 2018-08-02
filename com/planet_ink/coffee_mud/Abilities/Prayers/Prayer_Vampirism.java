@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Prayers;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -168,7 +169,7 @@ public class Prayer_Vampirism extends Prayer
 		}
 	}
 
-	public boolean raceWithBlood(Race R)
+	public boolean raceWithBlood(final Race R)
 	{
 		final List<RawMaterial> V=R.myResources();
 		if(V!=null)
@@ -250,7 +251,7 @@ public class Prayer_Vampirism extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -269,8 +270,10 @@ public class Prayer_Vampirism extends Prayer
 				if(msg.value()<=0)
 				{
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> <S-IS-ARE> inflicted with vampiric hunger!"));
-					target.curState().setHunger(0);
-					target.curState().setThirst(0);
+					if(!CMSecurity.isDisabled(DisFlag.HUNGER))
+						target.curState().setHunger(0);
+					if(!CMSecurity.isDisabled(DisFlag.THIRST))
+						target.curState().setThirst(0);
 					maliciousAffect(mob,target,asLevel,0,-1);
 				}
 			}

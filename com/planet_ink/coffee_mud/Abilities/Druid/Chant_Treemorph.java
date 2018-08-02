@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Druid;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.CMSecurity.DisFlag;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -213,14 +214,16 @@ public class Chant_Treemorph extends Chant
 			mob.curState().setHitPoints(1);
 			mob.curState().setMana(0);
 			mob.curState().setMovement(0);
-			mob.curState().setHunger(0);
-			mob.curState().setThirst(0);
+			if(!CMSecurity.isDisabled(DisFlag.HUNGER))
+				mob.curState().setHunger(0);
+			if(!CMSecurity.isDisabled(DisFlag.THIRST))
+				mob.curState().setThirst(0);
 			CMLib.commands().postStand(mob,true, false);
 		}
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
