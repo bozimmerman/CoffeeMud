@@ -1619,7 +1619,7 @@ public class CraftingSkill extends GatheringSkill
 			commonTell(mob,L("You've failed to specify which item to deconstruct and learn."));
 			return false;
 		}
-		buildingI=getTarget(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
+		buildingI=getTargetItemFavorMOB(mob,mob.location(),givenTarget,commands,Wearable.FILTER_UNWORNONLY);
 		if(buildingI == null)
 			return false;
 		if(buildingI.owner() instanceof Room)
