@@ -137,6 +137,14 @@ public class Manticore extends GreatCat
 		return parts;
 	}
 
+	private final int[]	agingChart	= { 0, 1, 3, 15, 35, 53, 70, 74, 78 };
+
+	@Override
+	public int[] getAgingChart()
+	{
+		return agingChart;
+	}
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override
