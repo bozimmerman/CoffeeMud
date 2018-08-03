@@ -47,7 +47,7 @@ public class GModify extends StdCommand
 	{
 		return access;
 	}
-	
+
 	private static final int	FLAG_CASESENSITIVE	= 1;
 	private static final int	FLAG_SUBSTRING		= 2;
 	private static final int	FLAG_OR				= 4;
@@ -59,10 +59,10 @@ public class GModify extends StdCommand
 	private static final int	EQUATOR_LT			= 4;
 	private static final int	EQUATOR_LTEQ		= 5;
 	private static final int	EQUATOR_GTEQ		= 6;
-	
+
 	private static final Map<Object,Integer> EQUATORS=CMStrings.makeNumericHash(new String[]{"$","=","!=",">","<","<=",">="});
 
-	public static String getStat(Environmental E, String stat)
+	public static String getStat(final Environmental E, final String stat)
 	{
 		if((stat!=null)&&(stat.length()>0))
 		{
@@ -88,12 +88,12 @@ public class GModify extends StdCommand
 		}
 		return "";
 	}
-	
-	public static String[] splitClassParms(String value)
+
+	public static String[] splitClassParms(final String value)
 	{
 		if(value.endsWith(")"))
 		{
-			int x=value.indexOf('(');
+			final int x=value.indexOf('(');
 			if(x>0)
 			{
 				return new String[]{value.substring(0, x),value.substring(x+1,value.length()-1)};
@@ -102,7 +102,7 @@ public class GModify extends StdCommand
 		return new String[]{value,""};
 	}
 
-	public static Environmental setStat(Environmental E, String stat, String value)
+	public static Environmental setStat(final Environmental E, final String stat, final String value)
 	{
 		if((stat!=null)&&(stat.length()>0))
 		{
@@ -207,14 +207,14 @@ public class GModify extends StdCommand
 		return E;
 	}
 
-	public static void gmodifydebugtell(MOB mob, String msg)
+	public static void gmodifydebugtell(final MOB mob, final String msg)
 	{
 		if(mob!=null)
 			mob.tell(msg);
 		Log.sysOut("GMODIFY",msg);
 	}
 
-	private static Environmental tryModfy(MOB mob, Room room, Environmental E, DVector changes, DVector onfields, boolean noisy)
+	private static Environmental tryModfy(final MOB mob, final Room room, Environmental E, final DVector changes, final DVector onfields, final boolean noisy)
 	{
 		if((mob.session()==null)||(mob.session().isStopped()))
 			return null;
@@ -462,7 +462,7 @@ public class GModify extends StdCommand
 		return didAnything?E:null;
 	}
 
-	public void addEnumeratedStatCodes(Enumeration<? extends Modifiable> e, Set<String> allKnownFields, StringBuffer allFieldsMsg)
+	public void addEnumeratedStatCodes(final Enumeration<? extends Modifiable> e, final Set<String> allKnownFields, final StringBuffer allFieldsMsg)
 	{
 		for(;e.hasMoreElements();)
 		{
@@ -480,11 +480,11 @@ public class GModify extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final boolean noisy=CMSecurity.isDebugging(CMSecurity.DbgFlag.GMODIFY);
-		Vector<Places> placesToDo=new Vector<Places>();
+		List<Places> placesToDo=new ArrayList<Places>();
 		final String whole=CMParms.combine(commands,0);
 		commands.remove(0);
 		if(commands.size()==0)
@@ -513,7 +513,7 @@ public class GModify extends StdCommand
 			mob.tell(L("Valid field names are @x1",allFieldsMsg.toString()));
 			return false;
 		}
-		
+
 		if((commands.size()>0)&&
 			commands.get(0).equalsIgnoreCase("room"))
 		{
@@ -566,7 +566,7 @@ public class GModify extends StdCommand
 		addEnumeratedStatCodes(CMClass.locales(),allKnownFields,allFieldsMsg);
 		allFieldsMsg.append("CLASSTYPE REJUV DESTROY ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT ");
 		allKnownFields.addAll(Arrays.asList(new String[]{"CLASSTYPE","REJUV","GENDER","DESTROY","ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT"}));
-		
+
 		use=onfields;
 		final Vector<String> newSet=new Vector<String>();
 		StringBuffer s=new StringBuffer("");
@@ -735,7 +735,7 @@ public class GModify extends StdCommand
 			if(placesToDo.get(i) instanceof Area)
 			{
 				final Area A=(Area)placesToDo.get(i);
-				placesToDo.removeElement(A);
+				placesToDo.remove(A);
 				for(final Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					final Room R=r.nextElement();
@@ -853,7 +853,7 @@ public class GModify extends StdCommand
 							final ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 							if(SK!=null)
 							{
-								List<CoffeeShop.ShelfProduct> removeThese=new ArrayList<CoffeeShop.ShelfProduct>();
+								final List<CoffeeShop.ShelfProduct> removeThese=new ArrayList<CoffeeShop.ShelfProduct>();
 								final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
 								for(final Iterator<CoffeeShop.ShelfProduct> i=shop.getStoreShelves();i.hasNext();)
 								{
@@ -909,12 +909,15 @@ public class GModify extends StdCommand
 
 		if(mob.session()!=null)
 			mob.session().rawPrintln(L("!\n\rDone!"));
-		Area A=null;
 		for(int i=0;i<placesToDo.size();i++)
 		{
-			A=((Room)placesToDo.get(i)).getArea();
-			if((A!=null)&&(A.getAreaState()!=Area.State.ACTIVE))
-				A.setAreaState(Area.State.ACTIVE);
+			final Room R=(Room)placesToDo.get(i);
+			if(R!=null)
+			{
+				final Area A=R.getArea();
+				if((A!=null)&&(A.getAreaState()!=Area.State.ACTIVE))
+					A.setAreaState(Area.State.ACTIVE);
+			}
 		}
 		return false;
 	}
@@ -926,7 +929,7 @@ public class GModify extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowedAnywhere(mob, CMSecurity.SecFlag.GMODIFY);
 	}
