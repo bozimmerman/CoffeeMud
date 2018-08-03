@@ -93,8 +93,8 @@ public class Spell_FindFamiliar extends Spell
 	{
 		return Ability.COST_ALL;
 	}
-	
-	public int castingQuality(MOB mob, MOB target)
+
+	public int castingQuality(final MOB mob, final MOB target)
 	{
 		if((target!=null)&&(mob!=target))
 			return Ability.QUALITY_INDIFFERENT;
@@ -106,7 +106,7 @@ public class Spell_FindFamiliar extends Spell
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -120,7 +120,7 @@ public class Spell_FindFamiliar extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((mob.numFollowers()>0)||(mob.isMonster()))
 		{
@@ -160,7 +160,7 @@ public class Spell_FindFamiliar extends Spell
 		return success;
 	}
 
-	public MOB determineMonster(MOB caster, int level)
+	public MOB determineMonster(final MOB caster, final int level)
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenMOB");
