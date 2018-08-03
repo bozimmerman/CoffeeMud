@@ -4006,7 +4006,8 @@ public class StdMOB implements MOB
 	@Override
 	public void delAllItems(final boolean destroy)
 	{
-		if (destroy)
+		if((destroy)
+		&&(numItems()>0))
 		{
 			final LinkedList<Item> items=new LinkedList<Item>();
 			items.addAll(inventory);
