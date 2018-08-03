@@ -345,7 +345,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				final CMMsg msg=CMClass.getMsg(accuser, W.criminal(), W.victim(),
 						CMMsg.MASK_ALWAYS|CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, CMMsg.MSG_LEGALWARRANT, W.crime());
 				if(R.okMessage(W.criminal(),msg))
+				{
 					R.send(W.criminal(), msg);
+					CMLib.map().sendGlobalMessage(accuser, CMMsg.TYP_LEGALWARRANT, msg);
+				}
 				else
 					return false;
 			}
@@ -1191,17 +1194,16 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		return modifiers.toString();
 	}
 
-	public boolean trackTheJudge(final MOB officer, final Area myArea, final Law laws)
+	public boolean startTracking(final MOB officer, final Room R)
 	{
 		CMLib.tracking().stopTracking(officer);
-		final Ability A=CMClass.getAbility("Skill_Track");
-		if(A!=null)
+		if(R!=null)
 		{
-			final Room R=findTheJudge(laws,myArea);
-			if(R!=null)
+			final Ability A=CMClass.getAbility("Skill_Track");
+			if(A!=null)
 			{
 				A.invoke(officer,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\" "+trackingModifiers(officer)),R,true,0);
-				return true;
+				return officer.fetchEffect("Skill_Track") !=null;
 			}
 		}
 		return false;
@@ -2853,6 +2855,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					{
 						makePeace(officer.location());
 						// cuff him!
+						final Room destR=findTheJudge(laws,myArea);
+						W.setJail(destR);
 						if(CMLib.flags().isAnimalIntelligence(W.criminal()))
 							W.setState(Law.STATE_JAILING);
 						else
@@ -2879,7 +2883,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						makePeace(officer.location());
 						CMLib.commands().postStand(W.criminal(),true, false);
 						W.setTravelAttemptTime(System.currentTimeMillis());
-						if(trackTheJudge(officer,myArea,laws))
+						if(startTracking(officer,W.jail()))
 							makePeace(officer.location());
 						else
 						{
@@ -2938,7 +2942,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					else
 					if(!CMLib.flags().isTracking(officer))
 					{
-						if(!trackTheJudge(officer,myArea,laws))
+						if(!startTracking(officer,W.jail()))
 						{
 							CMLib.commands().postSay(officer,null,L("Now where was that court?."),false,false);
 							W.setTravelAttemptTime(0);
@@ -2978,8 +2982,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					final MOB judge=getTheJudgeHere(laws,officer.location());
 					if(judge==null)
 					{
+						final Room destR=findTheJudge(laws,myArea);
+						W.setJail(destR);
 						W.setState(Law.STATE_MOVING);
-						if(!trackTheJudge(officer,myArea,laws))
+						if(!startTracking(officer,W.jail()))
 						{
 							CMLib.commands().postSay(officer,null,L("Where was that darn court!"),false,false);
 							W.setTravelAttemptTime(0);
@@ -3050,8 +3056,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					final MOB judge=getTheJudgeHere(laws,officer.location());
 					if(judge==null)
 					{
+						final Room destR=findTheJudge(laws,myArea);
+						W.setJail(destR);
 						W.setState(Law.STATE_MOVING);
-						if(!trackTheJudge(officer,myArea,laws))
+						if(!startTracking(officer,W.jail()))
 						{
 							CMLib.commands().postSay(officer,null,L("Where was that darn court?!"),false,false);
 							W.setTravelAttemptTime(0);
@@ -3412,7 +3420,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(W.criminal().fetchEffect("Prisoner")==null)
 						{
 							fileAllWarrants(laws,W,W.criminal());
-							unCuff(W.criminal());
+							if(isJailRoom(myArea, new XVector<Room>(W.jail())))
+								unCuff(W.criminal());
 						}
 						else
 							W.setState(Law.STATE_RELEASE);

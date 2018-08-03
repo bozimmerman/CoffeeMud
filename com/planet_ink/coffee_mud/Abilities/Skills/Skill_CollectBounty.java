@@ -86,12 +86,12 @@ public class Skill_CollectBounty extends StdSkill
 		return USAGE_MANA;
 	}
 
-	public List<LegalWarrant> getWarrantsOf(MOB target, Room R)
+	public List<LegalWarrant> getWarrantsOf(final MOB target, final Room R)
 	{
 		return getWarrantsOf(target,CMLib.law().getLegalObject(R));
 	}
 
-	public List<LegalWarrant> getWarrantsOf(MOB target, Area legalA)
+	public List<LegalWarrant> getWarrantsOf(final MOB target, final Area legalA)
 	{
 		LegalBehavior B=null;
 		if(legalA!=null)
@@ -110,7 +110,7 @@ public class Skill_CollectBounty extends StdSkill
 		return warrants;
 	}
 
-	public MOB findElligibleOfficer(Area myArea, Area legalA)
+	public MOB findElligibleOfficer(final Area myArea, final Area legalA)
 	{
 		LegalBehavior B=null;
 		if(legalA!=null)
@@ -142,7 +142,7 @@ public class Skill_CollectBounty extends StdSkill
 		return null;
 	}
 
-	public MOB getJudgeIfHere(MOB mob, MOB target, Room R)
+	public MOB getJudgeIfHere(final MOB mob, final MOB target, final Room R)
 	{
 		LegalBehavior B=null;
 		if(R!=null)
@@ -161,7 +161,7 @@ public class Skill_CollectBounty extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -245,7 +245,7 @@ public class Skill_CollectBounty extends StdSkill
 			}
 		}
 		else
-			return maliciousFizzle(mob,target,L("<S-NAME> attempt(s) to turn in <T-NAMESELF> to @x1 for the bounty, but can't get @x2 attention.",judge.name(),judge.charStats().hisher()));
+			return beneficialWordsFizzle(mob,target,L("<S-NAME> attempt(s) to turn in <T-NAMESELF> to @x1 for the bounty, but can't get @x2 attention.",judge.name(),judge.charStats().hisher()));
 
 		return success;
 	}

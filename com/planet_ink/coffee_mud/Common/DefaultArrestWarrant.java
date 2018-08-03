@@ -107,16 +107,16 @@ public class DefaultArrestWarrant implements LegalWarrant
 	private String			warnMsg				= null;
 
 	@Override
-	public void setArrestingOfficer(Area legalArea, MOB mob)
+	public void setArrestingOfficer(final Area legalArea, final MOB mob)
 	{
-		if ((arrestingOfficer != null) 
-		&& (arrestingOfficer.getStartRoom() != null) 
-		&& (arrestingOfficer.location() != null) 
+		if ((arrestingOfficer != null)
+		&& (arrestingOfficer.getStartRoom() != null)
+		&& (arrestingOfficer.location() != null)
 		&& (legalArea != null)
-		&& (arrestingOfficer.getStartRoom().getArea() != arrestingOfficer.location().getArea()) 
+		&& (arrestingOfficer.getStartRoom().getArea() != arrestingOfficer.location().getArea())
 		&& (!legalArea.inMyMetroArea(arrestingOfficer.location().getArea())))
 			CMLib.tracking().wanderAway(arrestingOfficer, true, true);
-		
+
 		if ((mob == null) && (arrestingOfficer != null))
 			CMLib.tracking().stopTracking(arrestingOfficer);
 		arrestingOfficer = mob;
@@ -171,7 +171,7 @@ public class DefaultArrestWarrant implements LegalWarrant
 	}
 
 	@Override
-	public String getPunishmentParm(int code)
+	public String getPunishmentParm(final int code)
 	{
 		final int index = punishmentParms.indexOf(Integer.valueOf(code));
 		if (index < 0)
@@ -180,7 +180,7 @@ public class DefaultArrestWarrant implements LegalWarrant
 	}
 
 	@Override
-	public void addPunishmentParm(int code, String parm)
+	public void addPunishmentParm(final int code, final String parm)
 	{
 		final int index = punishmentParms.indexOf(Integer.valueOf(code));
 		if (index >= 0)
@@ -225,58 +225,76 @@ public class DefaultArrestWarrant implements LegalWarrant
 	}
 
 	@Override
-	public void setCriminal(MOB mob)
+	public void setCriminal(final MOB mob)
 	{
 		criminal = mob;
 	}
 
 	@Override
-	public void setVictim(MOB mob)
+	public void setVictim(final MOB mob)
 	{
 		victim = mob;
 	}
 
 	@Override
-	public void setWitness(MOB mob)
+	public void setWitness(final MOB mob)
 	{
 		witness = mob;
 	}
 
 	@Override
-	public void setJail(Room R)
+	public void setJail(final Room R)
 	{
 		jail = R;
 	}
 
 	@Override
-	public void setReleaseRoom(Room R)
+	public void setReleaseRoom(final Room R)
 	{
 		releaseRoom = R;
 	}
 
 	@Override
-	public void setCrime(String newcrime)
+	public void setCrime(final String newcrime)
 	{
 		crime = newcrime;
 	}
 
 	@Override
-	public void setPunishment(int code)
+	public void setPunishment(final int code)
 	{
 		punishment = code;
 	}
 
 	@Override
-	public void setJailTime(int time)
+	public void setJailTime(final int time)
 	{
 		jailTime = time;
 	}
 
 	@Override
-	public void setState(int newstate)
+	public void setState(final int newstate)
 	{
 		lastStateChangeTime=System.currentTimeMillis();
-		state = newstate;
+		if(newstate != state)
+		{
+			if(criminal() != null)
+			{
+				final Room R=criminal().location();
+				if(R!=null)
+				{
+					final CMMsg msg=CMClass.getMsg(criminal(), victim(), arrestingOfficer(),
+							CMMsg.MASK_ALWAYS|CMMsg.MSG_LEGALSTATE, CMMsg.MSG_LEGALSTATE, CMMsg.MSG_LEGALSTATE, crime());
+					msg.setValue(newstate);
+					if(R.okMessage(criminal(),msg))
+					{
+						R.send(criminal(), msg);
+						CMLib.map().sendGlobalMessage(criminal(), CMMsg.TYP_LEGALSTATE, msg);
+					}
+				}
+			}
+			state = newstate;
+		}
 	}
 
 	@Override
@@ -284,27 +302,27 @@ public class DefaultArrestWarrant implements LegalWarrant
 	{
 		return lastStateChangeTime;
 	}
-	
+
 	@Override
-	public void setOffenses(int num)
+	public void setOffenses(final int num)
 	{
 		offenses = num;
 	}
 
 	@Override
-	public void setLastOffense(long last)
+	public void setLastOffense(final long last)
 	{
 		lastOffense = last;
 	}
 
 	@Override
-	public void setTravelAttemptTime(long time)
+	public void setTravelAttemptTime(final long time)
 	{
 		travelAttemptTime = time;
 	}
 
 	@Override
-	public void setWarnMsg(String msg)
+	public void setWarnMsg(final String msg)
 	{
 		warnMsg = msg;
 	}
@@ -316,7 +334,7 @@ public class DefaultArrestWarrant implements LegalWarrant
 	}
 
 	@Override
-	public void setIgnoreUntilTime(long time)
+	public void setIgnoreUntilTime(final long time)
 	{
 		this.ignoreUntilTime = time;
 	}

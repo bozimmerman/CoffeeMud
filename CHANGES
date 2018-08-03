@@ -80,7 +80,7 @@
   78. New Property: Prop_Sounder, like Sounder behavior, but without tick triggers.
   79. New Archon Skill: Shame, with new Property: Shaming.
   80. Laws now include banishment, public shaming, prison breaks -- see laws.ini
-  81. New skills: Lobotomizing, Groin, Nippletwist
+  81. New skills: Lobotomizing, Groin, Nippletwist, Prisoner Transfer
   82. Prop_*Resist* can now limit debuf durations.
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)

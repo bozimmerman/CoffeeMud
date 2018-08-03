@@ -74,7 +74,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  *
  * Target Code
  * This is an encoded integer which represents what is happening to the target.
- * If there is no target, this number will typically have the value of 0 (CMMsg.NOEFFECT).
+ * If there is no target, this number will typically have the value of 0 (NOEFFECT).
  * Codes are separable into major and minor codes, with the major code being a bitmask
  * and the minor code being a constant integer representing the event type.  See below.
  *
@@ -86,7 +86,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * This is an encoded integer which represents how any other objects (such as MOBs,
  * Items, Rooms, Exits) other than the source and target, in the same room, perceive
  * the event. If the event is completely imperceptible by anything other than the
- * source, it may be 0 (CMMsg.NOEFFECT) Codes are separable into major and minor
+ * source, it may be 0 (NOEFFECT) Codes are separable into major and minor
  * codes, with the major code being a bitmask and the minor code being a constant
  * integer representing the event type.  See below.
  *
@@ -760,7 +760,7 @@ public interface CMMsg extends CMCommon
 						final String targetMessage,
 						final int newOthersCode,
 						final String othersMessage);
-	
+
 	/**
 	 * Modifies one of more fields in this event.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
@@ -833,14 +833,14 @@ public interface CMMsg extends CMCommon
 	public CMMsg addTrailerMsg(final CMMsg msg);
 
 	/**
-	 * Returns a List of other Runnables which are slated to be 
+	 * Returns a List of other Runnables which are slated to be
 	 * and executed AFTER this current message is handled.  This is implemented
 	 * by the Room object
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#send(MOB, CMMsg)
 	 * @return a List of Runnable objects
 	 */
 	public List<Runnable> trailerRunnables();
-	
+
 	/**
 	 * Appends to the list of Runnable objects which are slated to be confirmed
 	 * and executed AFTER this current message is handled.  This is implemented
@@ -858,7 +858,7 @@ public interface CMMsg extends CMCommon
 	 * @param flat the serialized message
 	 */
 	public void parseFlatString(final String flat);
-	
+
 	/**
 	 * Serializes this message as well as it reasonably can.
 	 * It skips any trailer messages and runnables.
@@ -885,7 +885,7 @@ public interface CMMsg extends CMCommon
 		TARGET,
 		OTHERS
 	}
-	
+
 	// 0-1999 are message types
 	// 2000-2047 are channels
 	// flags are 2048, 4096, 8192, 16384,
@@ -1195,6 +1195,8 @@ public interface CMMsg extends CMCommon
 	public static final int TYP_RECIPELEARNED=133;
 	/** MINOR_MASK minor action code type, denoting a gravitic move */
 	public static final int TYP_GRAVITY=134;
+	/** MINOR_MASK minor action code type, denoting a legal state change */
+	public static final int TYP_LEGALSTATE=135;
 
 	/** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -1207,7 +1209,7 @@ public interface CMMsg extends CMCommon
 	/** Index string descriptions of all the MINOR_MASK action code TYP_s */
 	public static final String[] TYPE_DESCS={"NOTHING",
 		"AREAAFFECT", "PUSH", "PULL", "RECALL", "OPEN", "CLOSE", "PUT", "GET",
-		"UNLOCK", "LOCK", "WIELD", "GIVE", "BUY", "SELL", "DROP", "WEAR", 
+		"UNLOCK", "LOCK", "WIELD", "GIVE", "BUY", "SELL", "DROP", "WEAR",
 		"FILL",	"DELICATE_HANDS_ACT", "VALUE", "HOLD", "NOISYMOVEMENT", "QUIETMOVEMENT",
 		"WEAPONATTACK", "LOOK", "READ", "NOISE", "SPEAK", "CAST_SPELL","LIST",
 		"EAT", "ENTER", "FOLLOW", "LEAVE", "SLEEP", "SIT", "STAND", "FLEE",
@@ -1224,7 +1226,7 @@ public interface CMMsg extends CMCommon
 		"LASER","SONIC","REPAIR","ENHANCE","INSTALL","COLLISION","AROMA","DUELLOSS",
 		"COMMANDFAIL","METACOMMAND", "ITEMGENERATED", "ATTACKMISS", "WEATHER","ITEMSGENERATED",
 		"WROTE", "REWRITE", "WASREAD", "PREMOVE", "THINK", "STARTUP", "RPXPCHANGE",
-		"COMMANDREJECT","RECIPELEARNED"
+		"COMMANDREJECT","RECIPELEARNED", "GRAVITY", "LEGALSTATE"
 	};
 
 	/** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1260,7 +1262,7 @@ public interface CMMsg extends CMCommon
 					MSGTYPE_DESCS.put(TYPE_DESCS[i],Integer.valueOf(i));
 				for(int i=0;i<MASK_DESCS.length;i++)
 					MSGTYPE_DESCS.put(MASK_DESCS[i],Integer.valueOf((int)CMath.pow(2,11+i)));
-				for(int i=0;i<CMMsg.MISC_DESCS.length;i++)
+				for(int i=0;i<MISC_DESCS.length;i++)
 				{
 					for(int i2=((Integer)MISC_DESCS[i][1]).intValue(); i2 < ((Integer)MISC_DESCS[i][2]).intValue(); i2++)
 						MSGTYPE_DESCS.put((String)MISC_DESCS[i][0],Integer.valueOf(i2));
@@ -1281,11 +1283,11 @@ public interface CMMsg extends CMCommon
 			{
 				if(MSGDESC_TYPES.size()!=0)
 					return MSGDESC_TYPES;
-				for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
-					MSGDESC_TYPES.put(Integer.valueOf(i),CMMsg.TYPE_DESCS[i]);
-				for(int i=0;i<CMMsg.MASK_DESCS.length;i++)
-					MSGDESC_TYPES.put(Integer.valueOf((int)CMath.pow(2,11+i)),CMMsg.MASK_DESCS[i]);
-				for(int i=0;i<CMMsg.MISC_DESCS.length;i++)
+				for(int i=0;i<TYPE_DESCS.length;i++)
+					MSGDESC_TYPES.put(Integer.valueOf(i),TYPE_DESCS[i]);
+				for(int i=0;i<MASK_DESCS.length;i++)
+					MSGDESC_TYPES.put(Integer.valueOf((int)CMath.pow(2,11+i)),MASK_DESCS[i]);
+				for(int i=0;i<MISC_DESCS.length;i++)
 					for(int i2=((Integer)MISC_DESCS[i][1]).intValue(); i2 < ((Integer)MISC_DESCS[i][2]).intValue(); i2++)
 						MSGDESC_TYPES.put(Integer.valueOf(i2),(String)MISC_DESCS[i][0]);
 			}
@@ -1511,9 +1513,9 @@ public interface CMMsg extends CMCommon
 	/** combined MAJOR and MINOR codes for useful event message type for a un-possession*/
 	public static final int MSG_DISPOSSESS=TYP_DISPOSSESS;
 	/** combined MAJOR and MINOR codes for useful event message type for power current flow*/
-	public static final int MSG_POWERCURRENT=CMMsg.MASK_ALWAYS|TYP_POWERCURRENT;
+	public static final int MSG_POWERCURRENT=MASK_ALWAYS|TYP_POWERCURRENT;
 	/** combined MAJOR and MINOR codes for useful event message type for power current flow*/
-	public static final int MSG_CONTEMPLATE=CMMsg.MASK_ALWAYS|TYP_CONTEMPLATE;
+	public static final int MSG_CONTEMPLATE=MASK_ALWAYS|TYP_CONTEMPLATE;
 	/** combined MAJOR and MINOR codes for useful event message type for a pour onto event*/
 	public static final int MSG_POUR=MASK_HANDS|MASK_MOVE|MASK_SOUND|TYP_POUR;
 	/** combined MAJOR and MINOR codes for useful event message type for looking around at exits*/
@@ -1531,7 +1533,7 @@ public interface CMMsg extends CMCommon
 	/** combined MAJOR and MINOR codes for useful event message type for a fail to target in a command */
 	public static final int MSG_COMMANDFAIL=MASK_ALWAYS|TYP_COMMANDFAIL;
 	/** combined MAJOR and MINOR codes for useful event message type for a fail to target in a command */
-	public static final int MSG_COMMAND=MASK_ALWAYS|CMMsg.MASK_CNTRLMSG|TYP_COMMAND;
+	public static final int MSG_COMMAND=MASK_ALWAYS|MASK_CNTRLMSG|TYP_COMMAND;
 	/** combined MAJOR and MINOR codes for useful event message type for a failed combat attack */
 	public static final int MSG_ATTACKMISS=MASK_HANDS|MASK_SOUND|MASK_MOVE|TYP_ATTACKMISS;
 	/** combined MAJOR and MINOR codes for useful event message type for weather effects */
@@ -1552,9 +1554,11 @@ public interface CMMsg extends CMCommon
 	public static final int MSG_COMMANDREJECT=MASK_ALWAYS|TYP_COMMANDREJECT;
 	/** combined MAJOR and MINOR codes for useful event message type for a activate event */
 	public static final int MSG_GRAVITY=MASK_MOVE|TYP_GRAVITY;
-	
+	/** combined MAJOR and MINOR codes for useful event message type for a lega state change*/
+	public static final int MSG_LEGALSTATE=MASK_CNTRLMSG|TYP_LEGALSTATE;
+
 	/**
-	 * An enum to use for an external message check from inside 
+	 * An enum to use for an external message check from inside
 	 * an okMessage method.  Can force the caller to either immediate
 	 * return true, false, or check the parent.
 	 * @author Bo Zimmerman

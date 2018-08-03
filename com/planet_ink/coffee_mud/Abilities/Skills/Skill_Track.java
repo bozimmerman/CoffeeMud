@@ -115,7 +115,7 @@ public class Skill_Track extends StdSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		cacheCode = newCode;
 	}
@@ -127,7 +127,7 @@ public class Skill_Track extends StdSkill
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
@@ -141,7 +141,7 @@ public class Skill_Track extends StdSkill
 		}
 		super.unInvoke();
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -286,7 +286,7 @@ public class Skill_Track extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		tickStatus=Tickable.STATUS_MISC6;
 		if((!CMLib.flags().isAliveAwakeMobile(mob,false))||(mob.location()==null)||(!CMLib.flags().isInTheGame(mob,true)))
@@ -298,7 +298,7 @@ public class Skill_Track extends StdSkill
 		final Room thisRoom=mob.location();
 
 		final List<Ability> V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
-		for(final Ability A : V) 
+		for(final Ability A : V)
 			A.unInvoke();
 		if(V.size()>0)
 		{
