@@ -84,6 +84,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected String		 poofout		= "";
 	protected String		 tranpoofin		= "";
 	protected String		 tranpoofout	= "";
+	protected String		 deathPoof		= "";
 	protected String		 announceMsg	= "";
 	protected String		 savedPose		= "";
 	protected String		 notes			= "";
@@ -122,9 +123,9 @@ public class DefaultPlayerStats implements PlayerStats
 	protected Map<String, AbilityMapping>		ableMap		= new SHashtable<String, AbilityMapping>();
 	protected Map<String, ExpertiseDefinition>	experMap	= new SHashtable<String, ExpertiseDefinition>();
 	protected Map<CharClass,Map<String,Object>>	classMap	= new STreeMap<CharClass,Map<String,Object>>();
-	
+
 	protected QuadVector<Integer, Long, String, Long>		levelInfo	= new QuadVector<Integer, Long, String, Long>();
-	
+
 	public DefaultPlayerStats()
 	{
 		super();
@@ -187,7 +188,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setLastIP(String ip)
+	public void setLastIP(final String ip)
 	{
 		lastIP=ip;
 		if(account != null)
@@ -205,7 +206,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setEmail(String newAdd)
+	public void setEmail(final String newAdd)
 	{
 		email=newAdd;
 		if(account != null)
@@ -219,7 +220,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setTheme(int theme)
+	public void setTheme(final int theme)
 	{
 		this.theme=theme;
 	}
@@ -231,7 +232,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setLastUpdated(long time)
+	public void setLastUpdated(final long time)
 	{
 		lastUpdated=time;
 		if(account != null)
@@ -245,7 +246,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setLastDateTime(long C)
+	public void setLastDateTime(final long C)
 	{
 		lLastDateTime=C;
 		if(account != null)
@@ -259,7 +260,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setPassword(String newPassword)
+	public void setPassword(final String newPassword)
 	{
 		if(CMProps.getBoolVar(CMProps.Bool.HASHPASSWORDS)
 		&&(!CMLib.encoder().isARandomHashString(newPassword)))
@@ -271,7 +272,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public boolean matchesPassword(String checkPass)
+	public boolean matchesPassword(final String checkPass)
 	{
 		if(account!=null)
 			return account.matchesPassword(checkPass);
@@ -299,7 +300,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setPageBreak(int newBreak)
+	public void setPageBreak(final int newBreak)
 	{
 		pageBreak=newBreak;
 	}
@@ -311,13 +312,13 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setNotes(String newnotes)
+	public void setNotes(final String newnotes)
 	{
 		notes=newnotes;
 	}
 
 	@Override
-	public void setChannelMask(int newMask)
+	public void setChannelMask(final int newMask)
 	{
 		channelMask=newMask;
 	}
@@ -347,14 +348,14 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setReplyTo(MOB mob, int replyType)
+	public void setReplyTo(final MOB mob, final int replyType)
 	{
 		replyTo=mob;
 		this.replyType=replyType;
 	}
 
 	@Override
-	public void setPrompt(String newPrompt)
+	public void setPrompt(final String newPrompt)
 	{
 		prompt=newPrompt;
 	}
@@ -366,7 +367,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setColorStr(String newColors)
+	public void setColorStr(final String newColors)
 	{
 		colorStr=newColors;
 	}
@@ -378,7 +379,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setAnnounceMessage(String msg)
+	public void setAnnounceMessage(final String msg)
 	{
 		announceMsg=msg;
 	}
@@ -390,7 +391,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setSavedPose(String msg)
+	public void setSavedPose(final String msg)
 	{
 		savedPose=msg;
 	}
@@ -408,13 +409,13 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public boolean isIntroducedTo(String name)
+	public boolean isIntroducedTo(final String name)
 	{
 		return introductions.contains(name.toUpperCase().trim());
 	}
 
 	@Override
-	public void introduceTo(String name)
+	public void introduceTo(final String name)
 	{
 		if((!isIntroducedTo(name))&&(name.trim().length()>0))
 			introductions.add(name.toUpperCase().trim());
@@ -446,7 +447,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void addTellStack(String msg)
+	public void addTellStack(final String msg)
 	{
 		if(tellStack.size()>TELL_STACK_MAX_SIZE)
 			tellStack.remove(0);
@@ -467,7 +468,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void addGTellStack(String msg)
+	public void addGTellStack(final String msg)
 	{
 		if(gtellStack.size()>GTELL_STACK_MAX_SIZE)
 			gtellStack.remove(0);
@@ -495,7 +496,7 @@ public class DefaultPlayerStats implements PlayerStats
 			return account.getIgnored();
 		return ignored;
 	}
-	
+
 	@Override
 	public boolean isIgnored(MOB mob)
 	{
@@ -517,7 +518,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public boolean isIgnored(String name)
+	public boolean isIgnored(final String name)
 	{
 		if(name==null)
 			return false;
@@ -544,7 +545,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public String getAlias(String named)
+	public String getAlias(final String named)
 	{
 		if(alias.containsKey(named.toUpperCase().trim()))
 			return alias.get(named.toUpperCase().trim());
@@ -560,13 +561,13 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void delAliasName(String named)
+	public void delAliasName(final String named)
 	{
 		alias.remove(named.toUpperCase().trim());
 	}
 
 	@Override
-	public void setAlias(String named, String value)
+	public void setAlias(final String named, final String value)
 	{
 		alias.put(named.toUpperCase().trim(),value);
 	}
@@ -629,6 +630,19 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
+	public String getDeathPoof()
+	{
+		return deathPoof;
+	}
+
+	@Override
+	public void setDeathPoof(final String poof)
+	{
+		if(poof != null)
+			this.deathPoof=poof.trim();
+	}
+
+	@Override
 	public String getPoofIn()
 	{
 		return poofin;
@@ -659,7 +673,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public int initializeBirthday(TimeClock clock, int ageHours, Race R)
+	public int initializeBirthday(TimeClock clock, int ageHours, final Race R)
 	{
 		if(clock == null)
 			clock=CMLib.time().globalClock();
@@ -743,7 +757,7 @@ public class DefaultPlayerStats implements PlayerStats
 		for(final TimeClock.TimePeriod period : TimeClock.TimePeriod.values())
 			rest.append(CMParms.toTightListString(prideStats[period.ordinal()])).append(";");
 		rest.append("</PRIDESTATS>");
-		
+
 		rest.append("<ACHIEVEMENTS");
 		for(final Iterator<Tracker> i=achievementers.values().iterator();i.hasNext();)
 		{
@@ -760,7 +774,7 @@ public class DefaultPlayerStats implements PlayerStats
 			.append(bonusLanguages).append(';')
 			.append(bonusCharStatPt).append(';')
 			.append("</PCCSTATS>");
-		
+
 		return ((friendsStr.length()>0)?"<FRIENDS>"+friendsStr+"</FRIENDS>":"")
 			+((ignoredStr.length()>0)?"<IGNORED>"+ignoredStr+"</IGNORED>":"")
 			+((privateListStr.length()>0)?"<INTROS>"+privateListStr+"</INTROS>":"")
@@ -773,6 +787,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+getLegacyXML()
 			+"<ACCTEXP>"+accountExpires+"</ACCTEXP>"
 			+((birthday!=null)?"<BIRTHDAY>"+CMParms.toListString(birthday)+"</BIRTHDAY>":"")
+			+((deathPoof.length()>0)?"<DEATHPOOF>"+CMLib.xml().parseOutAngleBrackets(deathPoof)+"</DEATHPOOF>":"")
 			+((poofin.length()>0)?"<POOFIN>"+CMLib.xml().parseOutAngleBrackets(poofin)+"</POOFIN>":"")
 			+((notes.length()>0)?"<NOTES>"+CMLib.xml().parseOutAngleBrackets(notes)+"</NOTES>":"")
 			+((poofout.length()>0)?"<POOFOUT>"+CMLib.xml().parseOutAngleBrackets(poofout)+"</POOFOUT>":"")
@@ -789,7 +804,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+rest.toString();
 	}
 
-	private void setBirthday(String bday)
+	private void setBirthday(final String bday)
 	{
 		if((bday!=null)&&(bday.length()>0))
 		{
@@ -805,7 +820,7 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 	}
 
-	private void setAliasXML(List<XMLTag> xml)
+	private void setAliasXML(final List<XMLTag> xml)
 	{
 		alias.clear();
 		for (final XMLTag piece : xml)
@@ -829,7 +844,7 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 	}
 
-	private void setLegacyXML(List<XMLTag> xml)
+	private void setLegacyXML(final List<XMLTag> xml)
 	{
 		legacy.clear();
 		for (final XMLTag piece : xml)
@@ -844,7 +859,7 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 	}
 
-	private void setTitleXML(List<XMLTag> xml)
+	private void setTitleXML(final List<XMLTag> xml)
 	{
 		titles.clear();
 		for (final XMLTag piece : xml)
@@ -868,9 +883,9 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		return ableMap;
 	}
-	
+
 	@Override
-	public void setXML(String xmlStr)
+	public void setXML(final String xmlStr)
 	{
 		account = null;
 		if(xmlStr==null)
@@ -934,6 +949,13 @@ public class DefaultPlayerStats implements PlayerStats
 		if(debug)
 			Log.debugOut("BIRTHDAY="+str);
 		setBirthday(str);
+
+		deathPoof=xmlLib.getValFromPieces(xml,"DEATHPOOF");
+		if(debug)
+			Log.debugOut("POOFIN="+deathPoof);
+		if(deathPoof==null)
+			deathPoof="";
+		deathPoof=xmlLib.restoreAngleBrackets(deathPoof);
 
 		poofin=xmlLib.getValFromPieces(xml,"POOFIN");
 		if(debug)
@@ -1030,7 +1052,7 @@ public class DefaultPlayerStats implements PlayerStats
 			else
 				achievementers.put(A.getTattoo(), A.getTracker(0));
 		}
-		
+
 		final String[] codes=getStatCodes();
 		for(int i=getSaveStatIndex();i<codes.length;i++)
 		{
@@ -1059,7 +1081,7 @@ public class DefaultPlayerStats implements PlayerStats
 			if((str != null)&&(str.length()>0))
 				account = CMLib.players().getLoadAccount(str);
 		}
-		
+
 		final String[] allAccStats=xmlLib.getValFromPieces(xml, "PCCSTATS").split(";");
 		if(allAccStats.length>=5)
 		{
@@ -1069,9 +1091,9 @@ public class DefaultPlayerStats implements PlayerStats
 			bonusLanguages=CMath.s_int(allAccStats[3]);
 			bonusCharStatPt=CMath.s_int(allAccStats[4]);
 		}
-		
+
 		setStat("AUTOINVSET",CMLib.xml().restoreAngleBrackets(xmlLib.getValFromPieces(xml,"AUTOINVSET")));
-		
+
 		final XMLLibrary.XMLTag xpPiece = CMLib.xml().getPieceFromPieces(xml, "XP");
 		if(xpPiece != null)
 		{
@@ -1099,7 +1121,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public String getSetSecurityFlags(String newFlags)
+	public String getSetSecurityFlags(final String newFlags)
 	{
 		if(newFlags != null)
 		{
@@ -1116,7 +1138,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setPoofs(String poofIn, String poofOut, String tranPoofIn, String tranPoofOut)
+	public void setPoofs(final String poofIn, final String poofOut, final String tranPoofIn, final String tranPoofOut)
 	{
 		poofin=poofIn;
 		poofout=poofOut;
@@ -1131,13 +1153,13 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setHygiene(long newVal)
+	public void setHygiene(final long newVal)
 	{
 		hygiene=newVal;
 	}
 
 	@Override
-	public boolean adjHygiene(long byThisMuch)
+	public boolean adjHygiene(final long byThisMuch)
 	{
 		hygiene+=byThisMuch;
 		if(hygiene<1)
@@ -1162,7 +1184,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setAccountExpiration(long newVal)
+	public void setAccountExpiration(final long newVal)
 	{
 		if(account != null)
 			account.setAccountExpiration(newVal);
@@ -1170,7 +1192,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public boolean addRoomVisit(Room R)
+	public boolean addRoomVisit(final Room R)
 	{
 		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.ROOMVISITS))
 		&&(R!=null)
@@ -1186,13 +1208,13 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public boolean hasVisited(Room R)
+	public boolean hasVisited(final Room R)
 	{
 		return roomSet().contains(CMLib.map().getExtendedRoomID(R));
 	}
 
 	@Override
-	public boolean hasVisited(Area A)
+	public boolean hasVisited(final Area A)
 	{
 		final int numRooms=A.getAreaIStats()[Area.Stats.VISITABLE_ROOMS.ordinal()];
 		if(numRooms<=0)
@@ -1201,7 +1223,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void unVisit(Room R)
+	public void unVisit(final Room R)
 	{
 		if(R != null)
 		{
@@ -1211,7 +1233,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void unVisit(Area A)
+	public void unVisit(final Area A)
 	{
 		if(A != null)
 		{
@@ -1226,7 +1248,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public int percentVisited(MOB mob, Area A)
+	public int percentVisited(final MOB mob, Area A)
 	{
 		if(A==null)
 		{
@@ -1270,7 +1292,7 @@ public class DefaultPlayerStats implements PlayerStats
 			}
 		}
 	}
-	
+
 	@Override
 	public Tracker getAchievementTracker(final Achievement A, final MOB mob)
 	{
@@ -1288,9 +1310,9 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void rebuildAchievementTracker(final MOB mob, String achievementTattoo)
+	public void rebuildAchievementTracker(final MOB mob, final String achievementTattoo)
 	{
-		Achievement A=CMLib.achievements().getAchievement(achievementTattoo);
+		final Achievement A=CMLib.achievements().getAchievement(achievementTattoo);
 		if(A!=null)
 		{
 			if(achievementers.containsKey(A.getTattoo()))
@@ -1301,9 +1323,9 @@ public class DefaultPlayerStats implements PlayerStats
 		else
 			achievementers.remove(achievementTattoo);
 	}
-	
+
 	@Override
-	public long leveledDateTime(int level)
+	public long leveledDateTime(final int level)
 	{
 		if(levelInfo.size()==0)
 			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"",Long.valueOf(0));
@@ -1321,7 +1343,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public String leveledRoomID(int level)
+	public String leveledRoomID(final int level)
 	{
 		if(levelInfo.size()==0)
 			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"",Long.valueOf(0));
@@ -1337,7 +1359,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public long leveledMinutesPlayed(int level)
+	public long leveledMinutesPlayed(final int level)
 	{
 		if(levelInfo.size()==0)
 			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"",Long.valueOf(0));
@@ -1352,7 +1374,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setLeveledDateTime(int level, long ageHours, Room R)
+	public void setLeveledDateTime(final int level, final long ageHours, final Room R)
 	{
 		if(levelInfo.size()==0)
 			levelInfo.add(Integer.valueOf(0),Long.valueOf(System.currentTimeMillis()),"",Long.valueOf(0));
@@ -1397,7 +1419,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void addLegacyLevel(String category)
+	public void addLegacyLevel(final String category)
 	{
 		final Integer level=legacy.get(category);
 		if(level != null)
@@ -1407,7 +1429,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public int getLegacyLevel(String category)
+	public int getLegacyLevel(final String category)
 	{
 		final Integer level=legacy.get(category);
 		if(level != null)
@@ -1420,7 +1442,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		return experMap;
 	}
-	
+
 	@Override
 	public PlayerAccount getAccount()
 	{
@@ -1428,7 +1450,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setAccount(PlayerAccount account)
+	public void setAccount(final PlayerAccount account)
 	{
 		this.account = account;
 	}
@@ -1446,7 +1468,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setBonusCharStatPoints(int bonus)
+	public void setBonusCharStatPoints(final int bonus)
 	{
 		this.bonusCharStatPt = bonus;
 	}
@@ -1458,7 +1480,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setBonusCommonSkillLimits(int bonus)
+	public void setBonusCommonSkillLimits(final int bonus)
 	{
 		this.bonusCommonSk = bonus;
 	}
@@ -1470,7 +1492,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setBonusCraftingSkillLimits(int bonus)
+	public void setBonusCraftingSkillLimits(final int bonus)
 	{
 		this.bonusCraftSk = bonus;
 	}
@@ -1482,7 +1504,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setBonusNonCraftingSkillLimits(int bonus)
+	public void setBonusNonCraftingSkillLimits(final int bonus)
 	{
 		this.bonusNonCraftSk = bonus;
 	}
@@ -1494,7 +1516,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setBonusLanguageLimits(int bonus)
+	public void setBonusLanguageLimits(final int bonus)
 	{
 		this.bonusLanguages = bonus;
 	}
@@ -1506,7 +1528,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setMaxRolePlayXP(int amt)
+	public void setMaxRolePlayXP(final int amt)
 	{
 		this.maxRolePlayXP = amt;
 	}
@@ -1518,7 +1540,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setRolePlayXP(int amt)
+	public void setRolePlayXP(final int amt)
 	{
 		if(amt < 0)
 			return;
@@ -1547,7 +1569,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setMaxDeferredXP(int amt)
+	public void setMaxDeferredXP(final int amt)
 	{
 		this.maxDeferredXP = amt;
 	}
@@ -1559,7 +1581,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setDeferredXP(int amt)
+	public void setDeferredXP(final int amt)
 	{
 		if(amt > getMaxDeferredXP())
 			this.deferredXP = this.getMaxDeferredXP();
@@ -1574,7 +1596,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setLastXPAwardMillis(long time)
+	public void setLastXPAwardMillis(final long time)
 	{
 		this.lastXPDateTime = time;
 	}
@@ -1594,7 +1616,7 @@ public class DefaultPlayerStats implements PlayerStats
 									 "LASTXPAWARD"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{
@@ -1672,9 +1694,9 @@ public class DefaultPlayerStats implements PlayerStats
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
-	
+
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{
@@ -1797,7 +1819,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public boolean isOnAutoInvokeList(String abilityID)
+	public boolean isOnAutoInvokeList(final String abilityID)
 	{
 		if(abilityID != null)
 		{
@@ -1807,19 +1829,19 @@ public class DefaultPlayerStats implements PlayerStats
 		}
 		return false;
 	}
-	
+
 	@Override
-	public void addAutoInvokeList(String abilityID)
+	public void addAutoInvokeList(final String abilityID)
 	{
 		this.autoInvokeSet.add(abilityID);
 	}
-	
+
 	@Override
-	public void removeAutoInvokeList(String abilityID)
+	public void removeAutoInvokeList(final String abilityID)
 	{
 		this.autoInvokeSet.remove(abilityID);
 	}
-	
+
 	@Override
 	public int getSaveStatIndex()
 	{
@@ -1853,7 +1875,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public boolean sameAs(PlayerStats E)
+	public boolean sameAs(final PlayerStats E)
 	{
 		if(!(E instanceof DefaultPlayerStats))
 			return false;
@@ -1906,7 +1928,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 
 	@Override
-	public void setSavable(boolean truefalse)
+	public void setSavable(final boolean truefalse)
 	{
 		synchronized(this)
 		{

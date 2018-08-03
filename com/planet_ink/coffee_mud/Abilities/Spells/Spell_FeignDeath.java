@@ -96,7 +96,7 @@ public class Spell_FeignDeath extends Spell
 		super.unInvoke();
 	}
 
-	public void peaceAt(MOB mob)
+	public void peaceAt(final MOB mob)
 	{
 		final Room room=mob.location();
 		if(room==null)
@@ -159,7 +159,7 @@ public class Spell_FeignDeath extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -193,10 +193,19 @@ public class Spell_FeignDeath extends Spell
 					follower.setFollowing(null);
 			}
 			final String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,4,0)+".wav",50);
+			String sPoof=L("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp);
+			String oPoof=L("^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r@x1",msp);
+			if((target.playerStats()!=null)
+			&&(target.playerStats().getDeathPoof().length()>0))
+			{
+				final String dpoof=target.playerStats().getDeathPoof();
+				sPoof="^f^*^<FIGHT^>"+dpoof+"^</FIGHT^>^?^.\n\r"+msp;
+				oPoof="^F^<FIGHT^>"+dpoof+"</FIGHT^>^?\n\r@x1"+msp;
+			}
 			msg=CMClass.getMsg(target,null,null,
-					CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
+					CMMsg.MSG_OK_VISUAL,sPoof,
 					CMMsg.MSG_OK_VISUAL,null,
-					CMMsg.MSG_OK_VISUAL,L("^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r@x1",msp));
+					CMMsg.MSG_OK_VISUAL,oPoof);
 			if(deathRoom.okMessage(target,msg))
 			{
 				deathRoom.send(target,msg);

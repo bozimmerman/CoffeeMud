@@ -475,19 +475,29 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 		final String msp=CMLib.protocol().msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
 		CMMsg msg=null;
+		if((deadM.playerStats()!=null)
+		&&(deadM.playerStats().getDeathPoof().length()>0))
+		{
+			final String dpoof=deadM.playerStats().getDeathPoof();
+			msg=CMClass.getMsg(deadM,null,killerM,
+					CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>"+dpoof+"^</FIGHT^>^?^.\n\r"+msp,
+					CMMsg.MSG_OK_VISUAL,null,
+					CMMsg.MSG_DEATH,"^F^<FIGHT^>"+dpoof+"</FIGHT^>^?\n\r@x1"+msp);
+		}
+		else
 		if(isKnockedOutUponDeath(deadM,killerM))
 		{
 			msg=CMClass.getMsg(deadM,null,killerM,
-					CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
+					CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
 					CMMsg.MSG_OK_VISUAL,null,
 					CMMsg.MSG_DEATH,L("^F^<FIGHT^><S-NAME> is DEFEATED!!!^</FIGHT^>^?\n\r@x1",msp));
 		}
 		else
 		{
 			msg=CMClass.getMsg(deadM,null,killerM,
-				CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
-				CMMsg.MSG_OK_VISUAL,null,
-				CMMsg.MSG_DEATH,L("^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r@x1",msp));
+					CMMsg.MSG_OK_VISUAL,L("^f^*^<FIGHT^>!!!!!!!!!!!!!!YOU ARE DEAD!!!!!!!!!!!!!!^</FIGHT^>^?^.\n\r@x1",msp),
+					CMMsg.MSG_OK_VISUAL,null,
+					CMMsg.MSG_DEATH,L("^F^<FIGHT^><S-NAME> is DEAD!!!^</FIGHT^>^?\n\r@x1",msp));
 		}
 		CMLib.map().sendGlobalMessage(deadM,CMMsg.TYP_DEATH, CMClass.getMsg(deadM,null,killerM, CMMsg.TYP_DEATH,null, CMMsg.TYP_DEATH,null, CMMsg.TYP_DEATH,null));
 		final CMMsg msg2=CMClass.getMsg(deadM,null,killerM, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,null, CMMsg.MSG_DEATH,null);

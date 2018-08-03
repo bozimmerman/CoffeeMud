@@ -78,7 +78,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 
 	/**
 	 * The roomID that the player gained the given level
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setLeveledDateTime(int, long, Room)
 	 *
 	 * @param level  the level to check for
@@ -343,6 +343,24 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	public void setPoofs(String poofIn, String poofOut, String tranPoofIn, String tranPoofOut);
 
 	/**
+	 * This is the message seen by all when the player dies.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setDeathPoof(String)
+	 *
+	 * @return the death poof-message
+	 */
+	public String getDeathPoof();
+
+	/**
+	 * This is the message seen by all when the player dies.
+	 *
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getDeathPoof()
+	 *
+	 * @param poof the death poof-message
+	 */
+	public void setDeathPoof(String poof);
+
+	/**
 	 * For players with the ANNOUNCE command, this is the message used to
 	 * prefix the announcements proclaimed.
 	 *
@@ -582,13 +600,13 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * Returns a personal miscellaneous object map, to be used
 	 * for non-core-system attributes, such as transient
 	 * class variables.
-	 *  
+	 *
 	 * @param charClass the Character Class for the variables
-	 * 
+	 *
 	 * @return a personal miscellaneous object map
 	 */
 	public Map<String,Object> getClassVariableMap(CharClass charClass);
-	
+
 	/**
 	 * Returns the string array set of defined alias commands
 	 * for this player.
@@ -750,7 +768,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @return true if it is on the list, false otherwise
 	 */
 	public boolean isOnAutoInvokeList(String abilityID);
-	
+
 	/**
 	 * Adds the given ability ID is on the list of those skills
 	 * whose autoInvocation should be suppressed.
@@ -758,7 +776,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @param abilityID the ability ID() to add
 	 */
 	public void addAutoInvokeList(String abilityID);
-	
+
 	/**
 	 * Removes the given ability ID is on the list of those skills
 	 * whose autoInvocation should be suppressed.
@@ -766,7 +784,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @param abilityID the ability ID() to remove
 	 */
 	public void removeAutoInvokeList(String abilityID);
-	
+
 	/**
 	 * Returns the legacy levels for this player, in the given categories
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#addLegacyLevel(String)
@@ -794,7 +812,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 
 	/**
 	 * If the player has NoCombatSpam turned on, then these player
-	 * settings are used to hold accumulated information about 
+	 * settings are used to hold accumulated information about
 	 * combat results for summarizing later.  The map is between
 	 * the name of the combatant and the amount of damage taken.
 	 * @return a combat damage map
@@ -809,7 +827,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see PlayerStats#setRolePlayXP(int)
 	 * @see PlayerStats#setLastDateTime(long)
 	 * @see PlayerStats#getLastRolePlayXPTime()
-	 * 
+	 *
 	 * @return the maximum amount of role playing xp
 	 */
 	public int getMaxRolePlayXP();
@@ -822,7 +840,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see PlayerStats#setRolePlayXP(int)
 	 * @see PlayerStats#setLastDateTime(long)
 	 * @see PlayerStats#getLastRolePlayXPTime()
-	 * 
+	 *
 	 * @param amt the maximum amount of role playing xp
 	 */
 	public void setMaxRolePlayXP(int amt);
@@ -835,7 +853,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see PlayerStats#setRolePlayXP(int)
 	 * @see PlayerStats#setLastDateTime(long)
 	 * @see PlayerStats#getLastRolePlayXPTime()
-	 * 
+	 *
 	 * @return the maximum amount of role playing xp
 	 */
 	public int getRolePlayXP();
@@ -848,7 +866,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see PlayerStats#setMaxRolePlayXP(int)
 	 * @see PlayerStats#setLastDateTime(long)
 	 * @see PlayerStats#getLastRolePlayXPTime()
-	 * 
+	 *
 	 * @param amt the maximum amount of role playing xp
 	 */
 	public void setRolePlayXP(int amt);
@@ -861,7 +879,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see PlayerStats#setRolePlayXP(int)
 	 * @see PlayerStats#getRolePlayXP()
 	 * @see PlayerStats#setLastDateTime(long)
-	 * 
+	 *
 	 * @return the last time roleplay xp
 	 */
 	public long getLastRolePlayXPTime();
@@ -874,7 +892,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see PlayerStats#setRolePlayXP(int)
 	 * @see PlayerStats#setMaxRolePlayXP(int)
 	 * @see PlayerStats#getLastRolePlayXPTime()
-	 * 
+	 *
 	 * @param tm the last time roleplay xp
 	 */
 	public void setLastRolePlayXPTime(long tm);
@@ -885,7 +903,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see PlayerStats#setMaxXP(int)
 	 * @see PlayerStats#getXP()
 	 * @see PlayerStats#setXP(int)
-	 * 
+	 *
 	 * @return the maximum amount of deferred xp
 	 */
 	public int getMaxDeferredXP();
@@ -896,7 +914,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see PlayerStats#getMaxDeferredXP()
 	 * @see PlayerStats#getDeferredXP()
 	 * @see PlayerStats#setDeferredXP(int)
-	 * 
+	 *
 	 * @param amt the maximum amount of deferred xp
 	 */
 	public void setMaxDeferredXP(int amt);
@@ -907,7 +925,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see PlayerStats#setMaxDeferredXP(int)
 	 * @see PlayerStats#getMaxDeferredXP()
 	 * @see PlayerStats#setDeferredXP(int)
-	 * 
+	 *
 	 * @return the maximum amount of deferred xp
 	 */
 	public int getDeferredXP();
@@ -918,7 +936,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * @see PlayerStats#getMaxDeferredXP()
 	 * @see PlayerStats#getDeferredXP()
 	 * @see PlayerStats#setMaxDeferredXP(int)
-	 * 
+	 *
 	 * @param amt the maximum amount of deferred xp
 	 */
 	public void setDeferredXP(int amt);
@@ -927,7 +945,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * Returns the last time this player has been awarded
 	 * XP.  This is used for the guildmaster exception, where
 	 * XP is only awarded under certain conditions.
-	 * 
+	 *
 	 * @return
 	 */
 	public long getLastXPAwardMillis();
@@ -936,11 +954,11 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * Sets the last time this player has been awarded
 	 * XP.  This is used for the guildmaster exception, where
 	 * XP is only awarded under certain conditions.
-	 * 
+	 *
 	 * @param time the time xp was awarded in millis
 	 */
 	public void setLastXPAwardMillis(long time);
-	
+
 	/** Constant for day of birthday, as from {@link PlayerStats#getBirthday()} */
 	public static final int BIRTHDEX_DAY = 0;
 	/** Constant for month of birthday, as from {@link PlayerStats#getBirthday()} */
