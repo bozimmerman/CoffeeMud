@@ -2306,11 +2306,14 @@ public class StdRoom implements Room
 	@Override
 	public void delAllItems(final boolean destroy)
 	{
-		if(destroy)
+		if((destroy)
+		&&(numItems()>0))
 		{
-			for(int i=numItems()-1;i>=0;i--)
+			final List<Item> delThese = new LinkedList<Item>();
+			delThese.addAll(contents);
+			contents.clear();
+			for(final Item I : delThese)
 			{
-				final Item I=getItem(i);
 				if(I!=null)
 				{
 					// since were deleting you AND all your peers, no need for Item to do it.
