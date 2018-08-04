@@ -4503,16 +4503,12 @@ public class ListCmd extends StdCommand
 
 	public void listBehaviors(final MOB mob, final Session s, final List<String> commands, String title)
 	{
-		final int domain=0;
 		final WikiFlag wiki = this.getWikiFlagRemoved(commands);
 		if(wiki == WikiFlag.WIKILIST)
 		{
 			if(title.length()==0)
 				title="Behaviors";
-			if(domain == 0)
-				s.println("==="+title+"s===");
-			else
-				s.println("==="+title+"===");
+			s.println("==="+title+"s===");
 			s.wraplessPrintln(CMLib.lister().reallyWikiList(mob, CMClass.behaviors(), 0).toString());
 		}
 		else
