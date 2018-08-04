@@ -1084,7 +1084,7 @@ public class RocketShipProgram extends GenShipProgram
 					while(--tries>0)
 					{
 						this.lastAccelleration =null;
-						final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(lastTryAmt));
+						final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT, Double.valueOf(lastTryAmt));
 						msg.setTargetMessage(code);
 						this.trySendMsgToItem(M, engineE, msg);
 						final Double thisLastAccel=this.lastAccelleration ;

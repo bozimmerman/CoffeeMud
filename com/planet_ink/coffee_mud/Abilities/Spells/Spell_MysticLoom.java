@@ -144,7 +144,7 @@ public class Spell_MysticLoom extends Spell
 		}
 	}
 
-	protected String removePercent(String thisStr)
+	protected String removePercent(final String thisStr)
 	{
 		int x=thisStr.indexOf("% ");
 		if(x>=0)
@@ -218,7 +218,7 @@ public class Spell_MysticLoom extends Spell
 				}
 				if(skill != null)
 					CMLib.threads().deleteTick(skill, Tickable.TICKID_MOB);
-				Ability skill=CMClass.getAbility("Textiling");
+				final Ability skill=CMClass.getAbility("Textiling");
 				if(skill != null)
 				{
 					theLoomer.setLocation(R);
@@ -235,7 +235,7 @@ public class Spell_MysticLoom extends Spell
 						final Ability A=this.skill=theLoomer.fetchEffect(skill.ID());
 						if(A!=null)
 						{
-							System.out.println("GO: "+recipe.get(0));
+							//System.out.println("GO: "+recipe.get(0));//BZ:DELME
 							int tickDown = CMath.s_int(A.getStat("TICKDOWN"));
 							if(tickDown > 0)
 							{
@@ -249,7 +249,9 @@ public class Spell_MysticLoom extends Spell
 							break;
 						}
 						else
-							System.out.println("FAIL: "+recipe.get(0));
+						{
+							//System.out.println("FAIL: "+recipe.get(0));//BZ:DELME
+						}
 					}
 				}
 				final List<Item> spares=new LinkedList<Item>();
@@ -306,7 +308,7 @@ public class Spell_MysticLoom extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		for(int i=0;i<mob.location().numItems();i++)
 		{

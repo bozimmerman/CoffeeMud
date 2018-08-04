@@ -49,7 +49,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	protected double		fuelEfficiency	= 0.33;
 	protected boolean		constantThrust	= true;
 	protected volatile double		thrust	= 0;
-	
+
 	protected TechComponent.ShipDir[] ports	= TechComponent.ShipDir.values();
 
 	public StdShipThruster()
@@ -74,9 +74,9 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		return super.sameAs(E);
 	}
 
-	protected static double getFuelDivisor() 
-	{ 
-		return 100.0; 
+	protected static double getFuelDivisor()
+	{
+		return 100.0;
 	}
 
 	@Override
@@ -86,7 +86,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	}
 
 	@Override
-	public void setFuelEfficiency(double amt)
+	public void setFuelEfficiency(final double amt)
 	{
 		fuelEfficiency = amt;
 	}
@@ -98,7 +98,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	}
 
 	@Override
-	public void setMaxThrust(int max)
+	public void setMaxThrust(final int max)
 	{
 		maxThrust = max;
 	}
@@ -110,7 +110,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	}
 
 	@Override
-	public void setThrust(double current)
+	public void setThrust(final double current)
 	{
 		thrust = current;
 	}
@@ -126,9 +126,9 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	{
 		return super.getComputedEfficiency() * this.getInstalledFactor();
 	}
-	
+
 	@Override
-	public void setSpecificImpulse(long amt)
+	public void setSpecificImpulse(final long amt)
 	{
 		if(amt > 0)
 			specificImpulse = amt;
@@ -153,7 +153,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	}
 
 	@Override
-	public void setMinThrust(int min)
+	public void setMinThrust(final int min)
 	{
 		this.minThrust = min;
 	}
@@ -163,13 +163,13 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	{
 		return constantThrust;
 	}
-	
+
 	@Override
-	public void setConstantThruster(boolean isConstant)
+	public void setConstantThruster(final boolean isConstant)
 	{
 		constantThrust = isConstant;
 	}
-	
+
 	/**
 	 * Gets set of available thrust ports on this engine.
 	 * @see ShipEngine#setAvailPorts(TechComponent.ShipDir[])
@@ -187,7 +187,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 	 * @param ports the set of available thrust ports.
 	 */
 	@Override
-	public void setAvailPorts(TechComponent.ShipDir[] ports)
+	public void setAvailPorts(final TechComponent.ShipDir[] ports)
 	{
 		this.ports = ports;
 	}
@@ -245,8 +245,8 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			}
 		}
 	}
-	
-	private static int getFuelToConsume(final ShipEngine me, final Manufacturer manufacturer, ShipDir portDir, double thrust)
+
+	private static int getFuelToConsume(final ShipEngine me, final Manufacturer manufacturer, final ShipDir portDir, double thrust)
 	{
 		if((portDir != ShipDir.AFT)&&(portDir != ShipDir.FORWARD))
 			thrust = 1.0;
@@ -254,7 +254,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			CMath.ceiling(
 				thrust
 				*me.getFuelEfficiency()
-				*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct())) 
+				*Math.max(.33, Math.abs(2.0-manufacturer.getEfficiencyPct()))
 				/ getFuelDivisor()
 			)
 		);
@@ -262,7 +262,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			return 1;
 		return fuel;
 	}
-	
+
 	public static boolean executeThrust(final ShipEngine me, final String circuitKey, final MOB mob, final Software controlI, final TechComponent.ShipDir portDir, final double amount)
 	{
 		final LanguageLibrary lang=CMLib.lang();
@@ -309,9 +309,9 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 			}
 			me.setThrust(amount); // also, its always the intended amount, not the adjusted amount
 		}
-		
+
 		final int fuelToConsume=getFuelToConsume(me, manufacturer, portDir, thrust);
-		
+
 		final double accelleration;
 		if(portDir==TechComponent.ShipDir.AFT) // when thrusting aft, there's a smidgeon more power
 		{
@@ -321,7 +321,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		}
 		else
 			accelleration = thrust;
-		
+
 		//if((amount > 1)&&((portDir!=TechComponent.ShipDir.AFT) || (me.getThrust() > (oldThrust * 10))))
 		//	tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a "+rumbleWord+" and hear the blast of @x1.",me.name(mob)));
 		if(accelleration == 0.0)
@@ -376,7 +376,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		}
 	}
 
-	public static void executeThrusterMsg(ShipEngine me, Environmental myHost, String circuitKey, CMMsg msg)
+	public static void executeThrusterMsg(final ShipEngine me, final Environmental myHost, final String circuitKey, final CMMsg msg)
 	{
 		if(msg.amITarget(me))
 		{
@@ -436,7 +436,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 					}
 					else
 					{
-						CMMsg msg2=CMClass.getMsg(msg.source(), me, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
+						final CMMsg msg2=CMClass.getMsg(msg.source(), me, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
 						if(me.owner() instanceof Room)
 						{
 							if(((Room)me.owner()).okMessage(msg.source(), msg2))

@@ -884,11 +884,7 @@ public class GModify extends StdCommand
 				if(saveitems)
 					CMLib.database().DBUpdateItems(R);
 				if(savemobs)
-				{
-					for(final Enumeration<MOB> r1=R.inhabitants();r1.hasMoreElements();)
-						System.out.println(r1.nextElement().fetchBehavior("VeryAggressive"));
 					CMLib.database().DBUpdateMOBs(R);
-				}
 				if((mob.session()!=null)&&(changes.size()>0))
 					mob.session().rawPrint(".");
 				A.setAreaState(oldFlag);

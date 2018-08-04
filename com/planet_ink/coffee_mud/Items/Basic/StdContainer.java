@@ -34,12 +34,12 @@ import java.util.*;
 */
 public class StdContainer extends StdItem implements Container
 {
-	@Override 
+	@Override
 	public String ID()
-	{	
+	{
 		return "StdContainer";
 	}
-	
+
 	protected boolean	isLocked		= false;
 	protected boolean	hasALock		= false;
 	protected boolean	isOpen			= true;
@@ -69,7 +69,7 @@ public class StdContainer extends StdItem implements Container
 	}
 
 	@Override
-	public void setCapacity(int newValue)
+	public void setCapacity(final int newValue)
 	{
 		capacity=newValue;
 	}
@@ -79,13 +79,13 @@ public class StdContainer extends StdItem implements Container
 	{
 		return openDelayTicks;
 	}
-	
+
 	@Override
-	public void setOpenDelayTicks(int ticksToReset)
+	public void setOpenDelayTicks(final int ticksToReset)
 	{
 		openDelayTicks = ticksToReset;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -442,20 +442,20 @@ public class StdContainer extends StdItem implements Container
 		super.executeMsg(myHost,msg);
 	}
 
-	@Override 
+	@Override
 	public long containTypes()
 	{
 		return containType;
 	}
 
-	@Override 
-	public void setContainTypes(long containTypes)
+	@Override
+	public void setContainTypes(final long containTypes)
 	{
 		containType=containTypes;
 	}
 
 	@Override
-	public boolean canContain(Item I)
+	public boolean canContain(final Item I)
 	{
 		if(containType==0)
 			return true;
@@ -556,44 +556,44 @@ public class StdContainer extends StdItem implements Container
 		return false;
 	}
 
-	@Override 
+	@Override
 	public boolean isLocked()
 	{
 		return isLocked;
 	}
 
-	@Override 
+	@Override
 	public boolean hasALock()
 	{
 		return hasALock;
 	}
 
-	@Override 
+	@Override
 	public boolean isOpen()
 	{
 		return isOpen;
 	}
 
-	@Override 
+	@Override
 	public boolean hasADoor()
 	{
 		return hasALid;
 	}
 
-	@Override 
+	@Override
 	public boolean defaultsClosed()
 	{
 		return defaultsClosed;
 	}
 
-	@Override 
+	@Override
 	public boolean defaultsLocked()
 	{
 		return defaultsLocked;
 	}
 
 	@Override
-	public void setDoorsNLocks(boolean newHasALid, boolean newIsOpen, boolean newDefaultsClosed, boolean newHasALock, boolean newIsLocked, boolean newDefaultsLocked)
+	public void setDoorsNLocks(final boolean newHasALid, final boolean newIsOpen, final boolean newDefaultsClosed, final boolean newHasALock, final boolean newIsLocked, final boolean newDefaultsLocked)
 	{
 		this.hasALid=newHasALid;
 		this.isOpen=newIsOpen;
@@ -604,7 +604,7 @@ public class StdContainer extends StdItem implements Container
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		miscText=newMiscText;
 		if(!isGeneric())
@@ -618,13 +618,13 @@ public class StdContainer extends StdItem implements Container
 	}
 
 	@Override
-	public void setKeyName(String newKeyName)
+	public void setKeyName(final String newKeyName)
 	{
 		miscText=newKeyName;
 	}
 
 	@Override
-	public void emptyPlease(boolean flatten)
+	public void emptyPlease(final boolean flatten)
 	{
 		final ItemPossessor C=owner();
 		if(C!=null)
@@ -674,7 +674,7 @@ public class StdContainer extends StdItem implements Container
 	public int recursiveWeight()
 	{
 		int weight=phyStats().weight();
-		if(owner()==null) 
+		if(owner()==null)
 			return weight;
 		if(owner() instanceof MOB)
 		{
@@ -719,11 +719,11 @@ public class StdContainer extends StdItem implements Container
 		}
 		return new ReadOnlyList<Item>(V);
 	}
-	
+
 	@Override
 	public ReadOnlyList<Item> getContents()
 	{
-		final List<Item> V=new Vector<Item>();
+		final List<Item> V=new ArrayList<Item>();
 		if(owner()!=null)
 		{
 			Item I;
@@ -736,7 +736,7 @@ public class StdContainer extends StdItem implements Container
 		}
 		return new ReadOnlyList<Item>(V);
 	}
-	
+
 	@Override
 	public boolean hasContent()
 	{
