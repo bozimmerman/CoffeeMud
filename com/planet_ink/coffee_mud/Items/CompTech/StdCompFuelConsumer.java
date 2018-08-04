@@ -40,9 +40,9 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements FuelCon
 		return "StdCompFuelConsumer";
 	}
 
-	protected int[] generatedFuelTypes;
-	protected int   ticksPerFuelConsume = 10;
-	protected volatile int fuelTickDown	= 0;
+	protected int[]			generatedFuelTypes;
+	protected int			ticksPerFuelConsume	= 10;
+	protected volatile int	fuelTickDown		= 0;
 
 	public StdCompFuelConsumer()
 	{
@@ -71,7 +71,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements FuelCon
 	{
 		return true;
 	}
-	
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -88,7 +88,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements FuelCon
 	}
 
 	@Override
-	public void setContainTypes(long containTypes)
+	public void setContainTypes(final long containTypes)
 	{
 		containType = CONTAIN_RAWMATERIALS;
 	}
@@ -100,7 +100,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements FuelCon
 	}
 
 	@Override
-	public void setTicksPerFuelConsume(int tick)
+	public void setTicksPerFuelConsume(final int tick)
 	{
 		ticksPerFuelConsume = tick;
 	}
@@ -112,7 +112,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements FuelCon
 	}
 
 	@Override
-	public void setConsumedFuelType(int[] resources)
+	public void setConsumedFuelType(final int[] resources)
 	{
 		generatedFuelTypes = resources;
 	}
@@ -136,7 +136,7 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements FuelCon
 	}
 
 	@Override
-	public boolean canContain(Item I)
+	public boolean canContain(final Item I)
 	{
 		if(!super.canContain(I))
 			return false;
@@ -168,6 +168,13 @@ public class StdCompFuelConsumer extends StdElecCompContainer implements FuelCon
 	protected synchronized void clearFuelCache()
 	{
 		fuelCache=null;
+	}
+
+	@Override
+	public void setOwner(final ItemPossessor newOwner)
+	{
+		super.setOwner(newOwner);
+		clearFuelCache();
 	}
 
 	@Override
