@@ -11,8 +11,10 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechCommand;
 import com.planet_ink.coffee_mud.Items.interfaces.Technical.TechType;
 import com.planet_ink.coffee_mud.Libraries.interfaces.GenericBuilder;
+import com.planet_ink.coffee_mud.Libraries.interfaces.LanguageLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -43,7 +45,8 @@ public class GenCompEnviroSystem extends GenElecCompItem
 	}
 
 	protected final static int ENVIRO_TICKS=7;
-	
+	protected final static int ENVIRO_POWER_CONSUMED=10;
+
 	protected int	tickDown	= ENVIRO_TICKS;
 	protected int	airResource	= RawMaterial.RESOURCE_AIR;
 
@@ -76,6 +79,14 @@ public class GenCompEnviroSystem extends GenElecCompItem
 			case CMMsg.TYP_POWERCURRENT:
 				if(activated())
 				{
+					if(this.powerRemaining() < ENVIRO_POWER_CONSUMED)
+					{
+						setPowerRemaining(0);
+						final CMMsg newMsg=CMClass.getMsg(msg.source(),this,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.MSG_DEACTIVATE,null,CMMsg.MSG_DEACTIVATE,null);
+						super.sendLocalMessage(newMsg);
+					}
+					else
+						setPowerRemaining(this.powerRemaining()-1);
 					if(--tickDown <=0)
 					{
 						tickDown=ENVIRO_TICKS;
@@ -100,7 +111,7 @@ public class GenCompEnviroSystem extends GenElecCompItem
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

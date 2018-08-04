@@ -44,7 +44,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	private static final long STALE_AIR_INTERVAL = 5 * 60 * 1000;
 
 	private static final long STALE_WARN_INTERVAL = 5 * 30 * 1000;
-	
+
 	protected static Climate		climateObj	= null;
 	protected volatile ShipEngine	lastEngine	= null;
 	protected volatile double		lastEThrust	= 0.0;
@@ -59,8 +59,8 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	protected volatile long	nextStaleWarn	= System.currentTimeMillis() + STALE_WARN_INTERVAL;
 	protected Set<String> 	staleAirList	= new HashSet<String>();
 	protected Ability 		gravityFloaterA = null;
-	
-	
+
+
 	@Override
 	public String ID()
 	{
@@ -79,7 +79,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setClimateObj(Climate obj)
+	public void setClimateObj(final Climate obj)
 	{
 		climateObj = obj;
 	}
@@ -103,7 +103,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setOMLCoeff(double coeff)
+	public void setOMLCoeff(final double coeff)
 	{
 		omlCoeff = coeff;
 	}
@@ -115,7 +115,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setTimeObj(TimeClock obj)
+	public void setTimeObj(final TimeClock obj)
 	{
 		localClock = obj;
 	}
@@ -127,7 +127,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setAtmosphere(int resourceCode)
+	public void setAtmosphere(final int resourceCode)
 	{
 		atmosphere = resourceCode;
 	}
@@ -145,7 +145,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setRadius(long radius)
+	public void setRadius(final long radius)
 	{
 		this.radius = radius;
 	}
@@ -163,7 +163,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setKnownSource(SpaceObject O)
+	public void setKnownSource(final SpaceObject O)
 	{
 		spaceSource = O;
 	}
@@ -175,7 +175,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setCoords(long[] coords)
+	public void setCoords(final long[] coords)
 	{
 		if (shipItem instanceof SpaceShip)
 			((SpaceShip) shipItem).setCoords(coords);
@@ -194,14 +194,14 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setRoll(double dir)
+	public void setRoll(final double dir)
 	{
 		if (shipItem instanceof SpaceShip)
 			((SpaceShip) shipItem).setRoll(dir);
 	}
 
 	@Override
-	public void setDirection(double[] dir)
+	public void setDirection(final double[] dir)
 	{
 		if (shipItem instanceof SpaceShip)
 			((SpaceShip) shipItem).setDirection(dir);
@@ -214,7 +214,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setFacing(double[] dir)
+	public void setFacing(final double[] dir)
 	{
 		if (shipItem instanceof SpaceShip)
 			((SpaceShip) shipItem).setFacing(dir);
@@ -227,7 +227,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setSpeed(double v)
+	public void setSpeed(final double v)
 	{
 		if (shipItem instanceof SpaceShip)
 			((SpaceShip) shipItem).setSpeed(v);
@@ -240,7 +240,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setKnownTarget(SpaceObject O)
+	public void setKnownTarget(final SpaceObject O)
 	{
 		if (shipItem instanceof SpaceShip)
 			((SpaceShip) shipItem).setKnownTarget(O);
@@ -249,7 +249,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	@Override
 	public void setShipFlag(final ShipFlag flag, final boolean setShipFlag)
 	{
-		if(shipItem instanceof SpaceShip) 
+		if(shipItem instanceof SpaceShip)
 			((SpaceShip) shipItem).setShipFlag(flag,setShipFlag);
 	}
 
@@ -260,7 +260,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setDockableItem(Item dockableItem)
+	public void setDockableItem(final Item dockableItem)
 	{
 		if(dockableItem instanceof SpaceShip)
 			shipItem=(SpaceShip)dockableItem;
@@ -311,7 +311,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		spaceSource=null;
 		climateObj=null;
 	}
-	
+
 	@Override
 	public int getClimateTypeCode()
 	{
@@ -325,7 +325,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setClimateType(int newClimateType)
+	public void setClimateType(final int newClimateType)
 	{
 	}
 
@@ -334,9 +334,9 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		super();
 		setName("a space ship");
 	}
-	
+
 	@Override
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 		super.setName(newName);
 		localClock.setLoadName(newName);
@@ -355,7 +355,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setTheme(int level)
+	public void setTheme(final int level)
 	{
 	}
 
@@ -378,14 +378,14 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	{
 		return false;
 	}
-	
+
 	@Override
-	protected void cloneFix(StdBoardableShip ship)
+	protected void cloneFix(final StdBoardableShip ship)
 	{
 		super.cloneFix(ship);
 		setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
 	}
-	
+
 	@Override
 	public CMObject copyOf()
 	{
@@ -508,7 +508,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		}
 	}
 
-	public int[] addMaskAndReturn(int[] one, int[] two)
+	public int[] addMaskAndReturn(final int[] one, final int[] two)
 	{
 		if(one.length!=two.length)
 			return one;
@@ -518,7 +518,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		return returnable;
 	}
 
-	protected boolean changeRoomAir(Room R, Room notifyRoom, int atmoResource)
+	protected boolean changeRoomAir(final Room R, final Room notifyRoom, final int atmoResource)
 	{
 		if(R==null)
 			return false;
@@ -545,7 +545,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		return false;
 	}
 
-	protected void moveAtmosphereOut(Set<Room> doneRooms, Room startRoom, int atmo)
+	protected void moveAtmosphereOut(final Set<Room> doneRooms, final Room startRoom, final int atmo)
 	{
 		final LinkedList<Room> toDoRooms=new LinkedList<Room>();
 		toDoRooms.add(startRoom);
@@ -553,32 +553,47 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		{
 			final Room R=toDoRooms.removeFirst();
 			doneRooms.add(R);
-			staleAirList.remove(R.roomID());
+			if(atmo == RawMaterial.RESOURCE_NOTHING)
+			{
+				if((R.roomID().length()>0)
+				&&(!staleAirList.contains(R.roomID())))
+					staleAirList.add(R.roomID());
+			}
+			else
+			if(atmo == RawMaterial.RESOURCE_AIR)
+				staleAirList.remove(R.roomID());
 			if(changeRoomAir(R,startRoom,atmo))
 				break;
 			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 			{
 				final Room R2=R.getRoomInDir(d);
 				final Exit E2=R.getExitInDir(d);
-				if((R2!=null)&&(R2.getArea()==R.getArea())&&(E2!=null)&&(E2.isOpen())&&(!doneRooms.contains(R2)))
+				if((R2!=null)
+				&&(R2.getArea()==R.getArea())
+				&&(E2!=null)
+				&&(E2.isOpen())
+				&&(!doneRooms.contains(R2)))
 					toDoRooms.add(R2);
 			}
 		}
 	}
-	
+
 	protected void doStaleCheck()
 	{
 		nextStaleCheck=System.currentTimeMillis()+STALE_AIR_INTERVAL;
 		for(final Enumeration<Room> r=getProperMap();r.hasMoreElements();)
 		{
 			final Room R=r.nextElement();
-			if((!staleAirList.contains(R.roomID()))&&(R.numInhabitants()>0))
-				staleAirList.add(R.roomID());
+			if(!staleAirList.contains(R.roomID()))
+			{
+				if(R.numInhabitants()>0)
+					staleAirList.add(R.roomID());
+			}
 			else
 				R.setAtmosphere(RawMaterial.RESOURCE_NOTHING); // WE NOW HAVE A VACUUM HERE!!!
 		}
 	}
-	
+
 	protected Ability getGravityFloat()
 	{
 		if(gravityFloaterA == null)
@@ -586,7 +601,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			gravityFloaterA=CMClass.getAbility("GravityFloat");
 			if(gravityFloaterA != null)
 			{
-				MOB M=CMClass.getMOB("StdMOB");
+				final MOB M=CMClass.getMOB("StdMOB");
 				M.setName(Name());
 				M.setLocation(this.getRandomProperRoom());
 				gravityFloaterA.setInvoker(M);
@@ -618,12 +633,12 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 			}
 			lastEThrust =  (lastEngine == null) ? 0.0 : lastEngine.getThrust();
 		}
-		final boolean gravExistsNow = 
-				getShipFlag(ShipFlag.IN_THE_AIR) 
-			|| getShipFlag(ShipFlag.ARTI_GRAV) 
+		final boolean gravExistsNow =
+				getShipFlag(ShipFlag.IN_THE_AIR)
+			|| getShipFlag(ShipFlag.ARTI_GRAV)
 			|| (getIsDocked() != null)
 			|| (lastEThrust > 0.2);
-		
+
 		setShipFlag(ShipFlag.ARTI_GRAV, false);
 		if(gravExistsNow == getShipFlag(ShipFlag.NO_GRAVITY)) // opposite, so it needs changing
 		{
@@ -654,7 +669,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 					{
 						if(!R.okMessage(msg.source(), msg))
 							cancelled=true;
-						if((gmsg != null) 
+						if((gmsg != null)
 						&& ((!R.okMessage(gmsg.source(), gmsg))
 							||((gmsg.value() < (SpaceObject.ACCELLERATION_PASSOUT-0.49)))))
 							gmsg = null;
@@ -744,13 +759,13 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 		}
 		if(System.currentTimeMillis() >= nextStaleCheck)
 		{
-			int numStaleRooms = staleAirList.size();
+			final int numStaleRooms = staleAirList.size();
 			doStaleCheck();
 			if(staleAirList.size()>numStaleRooms)
 				nextStaleWarn = System.currentTimeMillis() + STALE_WARN_INTERVAL;
 			if(CMSecurity.isDebugging(DbgFlag.SPACESHIP) && (staleAirList.size()>0))
 				Log.debugOut("Used up the air in "+Name()+", stale rooms: "+staleAirList.size());
-			
+
 		}
 	}
 
@@ -773,7 +788,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void dockHere(Room roomR)
+	public void dockHere(final Room roomR)
 	{
 		super.dockHere(roomR);
 		if(roomR==null)
@@ -812,7 +827,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(getCodeNum(code) < super.getStatCodes().length)
 			return super.getStat(code);
@@ -827,7 +842,7 @@ public class StdSpaceShip extends StdBoardableShip implements SpaceShip
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(getCodeNum(code) < super.getStatCodes().length)
 			super.setStat(code, val);

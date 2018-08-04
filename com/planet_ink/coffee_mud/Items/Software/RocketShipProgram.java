@@ -469,7 +469,9 @@ public class RocketShipProgram extends GenShipProgram
 			str.append("^N\n\r");
 			str.append("^X").append(CMStrings.centerPreserve(L(" -- Commands -- "),60)).append("^.^N\n\r");
 			str.append("^H").append(CMStrings.padRight(L("TYPE HELP INTO CONSOLE : Get help."),60)).append("\n\r");
-			str.append("^H").append(CMStrings.padRight(L("* Try setting at a console to shorten to TYPE HELP *"),60)).append("\n\r");
+			if((container() instanceof Rideable)
+			&&(((Rideable)container()).rideBasis()==Rideable.RIDEABLE_TABLE))
+				str.append("^H").append(CMStrings.padRight(L("* Sit at "+container().name()+" to shorten commands *"),60)).append("\n\r");
 			str.append("^X").append(CMStrings.centerPreserve("",60)).append("^.^N\n\r");
 			str.append("^N\n\r");
 		}
@@ -1306,7 +1308,7 @@ public class RocketShipProgram extends GenShipProgram
 						msg=CMClass.getMsg(mob, E, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 					else
 					{
-						super.addScreenMessage(L("Error: Unknown system to deactivate '"+rest+"'."));
+						super.addScreenMessage(L("Error: Unknown system to activate '"+rest+"'."));
 						return;
 					}
 				}

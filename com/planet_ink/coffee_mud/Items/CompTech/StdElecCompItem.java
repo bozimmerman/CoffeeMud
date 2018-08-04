@@ -68,13 +68,13 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 	}
 
 	@Override
-	public void setInstalledFactor(float pct)
+	public void setInstalledFactor(final float pct)
 	{
 		installedFactor = pct;
 	}
 
 	@Override
-	public void setRechargeRate(float pctCapPer)
+	public void setRechargeRate(final float pctCapPer)
 	{
 		this.maxRechargePer = pctCapPer;
 	}
@@ -84,7 +84,7 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 	{
 		return maxRechargePer;
 	}
-	
+
 	@Override
 	public int powerNeeds()
 	{
@@ -96,7 +96,7 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 	{
 		return super.getComputedEfficiency() * this.getInstalledFactor();
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{
@@ -117,7 +117,7 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 		return false;
 	}
 
-	protected static final boolean isThisPanelActivated(ElecPanel E)
+	protected static final boolean isThisPanelActivated(final ElecPanel E)
 	{
 		if (!E.activated())
 			return false;
@@ -126,7 +126,7 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 		return true;
 	}
 
-	public static final boolean isAllWiringHot(Electronics E)
+	public static final boolean isAllWiringHot(final Electronics E)
 	{
 		if (E instanceof ElecPanel)
 			return isThisPanelActivated((ElecPanel) E);
@@ -147,7 +147,7 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 	}
 
 	@Override
-	public void setOwner(ItemPossessor newOwner)
+	public void setOwner(final ItemPossessor newOwner)
 	{
 		final ItemPossessor prevOwner=super.owner;
 		super.setOwner(newOwner);
@@ -163,7 +163,7 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 		}
 	}
 
-	protected void sendLocalMessage(CMMsg msg)
+	protected void sendLocalMessage(final CMMsg msg)
 	{
 		if(owner() instanceof Room)
 		{
@@ -174,7 +174,7 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 		if(okMessage(msg.source(), msg))
 			executeMsg(msg.source(), msg);
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
@@ -255,7 +255,6 @@ public class StdElecCompItem extends StdElecItem implements TechComponent
 					{
 						this.setUsesRemaining(this.usesRemaining()-msg.value());
 					}
-						
 				}
 				break;
 			case CMMsg.TYP_LOOK:

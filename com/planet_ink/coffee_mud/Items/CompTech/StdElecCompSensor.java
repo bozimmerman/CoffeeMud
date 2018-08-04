@@ -154,7 +154,8 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 			{
 			case CMMsg.TYP_ACTIVATE:
 			{
-				if(CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
+				if((CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG))
+				&&(msg.targetMessage()!=null))
 				{
 					final LanguageLibrary lang=CMLib.lang();
 					final String[] parts=msg.targetMessage().split(" ");
