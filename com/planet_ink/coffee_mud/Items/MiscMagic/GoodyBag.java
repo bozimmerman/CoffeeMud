@@ -53,7 +53,7 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 		recoverPhyStats();
 	}
 
-	private void putInBag(Item I)
+	private void putInBag(final Item I)
 	{
 		I.setContainer(this);
 		if(owner() instanceof Room)
@@ -64,7 +64,7 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 		I.recoverPhyStats();
 	}
 
-	public void addMoney(double value)
+	public void addMoney(final double value)
 	{
 	}
 
@@ -150,7 +150,7 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 				putInBag(I);
 				I=CMClass.getItem("GenSuperPill");
 				I.setName(L("a constitution pill"));
-				I.setDisplayText(L("A nutricious little pill has been left here."));
+				I.setDisplayText(L("A nutritious little pill has been left here."));
 				((Pill)I).setSpellList("con+1");
 				putInBag(I);
 				I=CMClass.getItem("GenSuperPill");

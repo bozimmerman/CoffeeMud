@@ -1747,7 +1747,7 @@
   Fixed are bugs related to the Player Purging system, and bugs that caused all food resources to go "bad" almost immediately.
 # Build 4.6.12 - Released Jan 07, 2005
    1. Age is now relevant to fertility.
-   2. Uncooked foods now rot over time -- meat becomes poisonous, vegies unnutricious and yucky.
+   2. Uncooked foods now rot over time -- meat becomes poisonous, vegies unnutritious and yucky.
    3. Potions, Pills, etc now forbidden to hold Archon-only skills.
    4. New Spells: DayDream, Flagportaion, Enchant Arrows, Repairing Aura, Spider Climb, Mystic Shine, Wizards Chest
    5. New Chant: Strike Barren
