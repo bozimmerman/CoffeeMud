@@ -68,7 +68,7 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 	}
 
 	@Override
-	public void setInstalledFactor(float pct)
+	public void setInstalledFactor(final float pct)
 	{
 		if ((pct >= 0.0) && (pct <= 2.0))
 			installedFactor = pct;
@@ -89,7 +89,7 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 	}
 
 	@Override
-	public void setRechargeRate(float pctCapPer)
+	public void setRechargeRate(final float pctCapPer)
 	{
 		this.maxRechargePer = pctCapPer;
 	}
@@ -99,7 +99,7 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 	{
 		return maxRechargePer;
 	}
-	
+
 	@Override
 	public int powerNeeds()
 	{
@@ -118,7 +118,7 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 	}
 
 	@Override
-	public void setOwner(ItemPossessor newOwner)
+	public void setOwner(final ItemPossessor newOwner)
 	{
 		final ItemPossessor prevOwner=super.owner;
 		super.setOwner(newOwner);
@@ -139,7 +139,7 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 	{
 		return super.getComputedEfficiency() * this.getInstalledFactor();
 	}
-	
+
 	protected static boolean reportError(final Electronics me, final Software controlI, final MOB mob, final String literalMessage, final String controlMessage)
 	{
 		if((mob!=null) && (mob.location()==CMLib.map().roomLocation(me)) && (literalMessage!=null))
@@ -155,7 +155,7 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 		return false;
 	}
 
-	protected static final boolean isThisPanelActivated(ElecPanel E)
+	protected static final boolean isThisPanelActivated(final ElecPanel E)
 	{
 		if(!E.activated())
 			return false;
@@ -164,13 +164,13 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 		return true;
 	}
 
-	public static final boolean isAllWiringHot(Electronics E)
+	public static final boolean isAllWiringHot(final Electronics E)
 	{
 		if(E instanceof ElecPanel)
 			return isThisPanelActivated((ElecPanel)E);
 		if(E.container() instanceof ElecPanel)
 			return isThisPanelActivated((ElecPanel)E.container());
-		return false;
+		return E instanceof ShipEngine; // the only thing allowed to be non-paneled
 	}
 
 	@Override
@@ -292,5 +292,5 @@ public class StdElecCompContainer extends StdElecContainer implements TechCompon
 		}
 		super.executeMsg(host, msg);
 	}
-	
+
 }
