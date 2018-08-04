@@ -436,7 +436,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			renameDestinationRooms(oldName,area.Name());
 			setShipArea(CMLib.coffeeMaker().getAreaObjectXML(area, null, null, null, true).toString());
 		}
-		for(final String word : new String[]{"NAME","NEWNAME","SHIPNAME","SHIP"})
+		for(final String word : new String[]{"NAME","NEWNAME","SHIPNAME","SHIP","name","newname","shipname","ship"})
 		{
 			for(final String rubs : new String[]{"<>","[]","{}","()"})
 			{
@@ -777,6 +777,20 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 					{
 						me.dockHere(finalR);
 						buyer.tell(L("You'll find your ship docked at '@x1'.",finalR.displayText(buyer)));
+					}
+					// re-register all electronics by re-settings its owners.  That should do it.
+					for(final Enumeration<Room> r=me.getShipArea().getProperMap();r.hasMoreElements();)
+					{
+						final Room R=r.nextElement();
+						if(R!=null)
+						{
+							for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+							{
+								final Item I=i.nextElement();
+								if(I instanceof Electronics)
+									I.setOwner(R);
+							}
+						}
 					}
 					Clan C;
 					if(clanSale && ((C=CMLib.clans().getClan(me.getOwnerName()))!=null))
