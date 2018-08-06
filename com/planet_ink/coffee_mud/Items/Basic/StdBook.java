@@ -115,7 +115,7 @@ public class StdBook extends StdItem implements Book
 				}
 				if(this.getMaxPages() != 0)
 				{
-					int numPages = this.getChapterCount("ALL");
+					final int numPages = this.getChapterCount("ALL");
 					if(numPages >= this.getMaxPages())
 					{
 						msg.source().tell(L("All the available pages in @x1 are used.",name()));
@@ -137,7 +137,7 @@ public class StdBook extends StdItem implements Book
 				}
 				if(CMath.isInteger(msg.targetMessage()))
 				{
-					int msgNum=CMath.s_int(msg.targetMessage());
+					final int msgNum=CMath.s_int(msg.targetMessage());
 					if((msgNum <1)||(msgNum>this.getChapterCount("ALL")))
 					{
 						msg.source().tell(L("There is no Chapter @x1",""+(msgNum)));
@@ -146,7 +146,7 @@ public class StdBook extends StdItem implements Book
 					if((!admin)
 					&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
 					{
-						JournalEntry entry = this.readChaptersByCreateDate().get(msgNum-1);
+						final JournalEntry entry = this.readChaptersByCreateDate().get(msgNum-1);
 						if(!entry.from().equalsIgnoreCase(msg.source().Name()))
 						{
 							msg.source().tell(L("You need permission to edit that chapter."));
@@ -157,10 +157,10 @@ public class StdBook extends StdItem implements Book
 				else
 				if(msg.targetMessage().toUpperCase().startsWith("EDIT "))
 				{
-					int x=msg.targetMessage().indexOf(' ',5);
+					final int x=msg.targetMessage().indexOf(' ',5);
 					if(x>5)
 					{
-						int msgNum=CMath.s_int(msg.targetMessage().substring(5,x).trim());
+						final int msgNum=CMath.s_int(msg.targetMessage().substring(5,x).trim());
 						if((msgNum <1)||(msgNum>this.getChapterCount("ALL")))
 						{
 							msg.source().tell(L("There is no Chapter @x1",""+(msgNum)));
@@ -169,7 +169,7 @@ public class StdBook extends StdItem implements Book
 						if((!admin)
 						&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
 						{
-							JournalEntry entry = this.readChaptersByCreateDate().get(msgNum-1);
+							final JournalEntry entry = this.readChaptersByCreateDate().get(msgNum-1);
 							if(!entry.from().equalsIgnoreCase(msg.source().Name()))
 							{
 								msg.source().tell(L("You need permission to edit that chapter."));
@@ -181,9 +181,9 @@ public class StdBook extends StdItem implements Book
 				else
 				if(msg.targetMessage().toUpperCase().startsWith("DELETE "))
 				{
-					String entryStr=msg.targetMessage().substring(7).trim();
-					int entryNum=CMath.s_int(entryStr);
-					int numEntries = this.getChapterCount("ALL");
+					final String entryStr=msg.targetMessage().substring(7).trim();
+					final int entryNum=CMath.s_int(entryStr);
+					final int numEntries = this.getChapterCount("ALL");
 					if((entryNum < 1)||(numEntries>numEntries)||(!CMath.isInteger(entryStr)))
 					{
 						msg.source().tell(L("There is no Chapter @x1",""+(entryNum)));
@@ -192,7 +192,7 @@ public class StdBook extends StdItem implements Book
 					if((!admin)
 					&&(!(CMSecurity.isAllowed(msg.source(),msg.source().location(),CMSecurity.SecFlag.JOURNALS))))
 					{
-						JournalEntry entry = this.readChaptersByCreateDate().get(entryNum-1);
+						final JournalEntry entry = this.readChaptersByCreateDate().get(entryNum-1);
 						if(!entry.from().equalsIgnoreCase(msg.source().Name()))
 						{
 							msg.source().tell(L("You need permission to remove that chapter."));
@@ -223,29 +223,29 @@ public class StdBook extends StdItem implements Book
 				if(numBehaviors()>0)
 				{
 					eachBehavior(new EachApplicable<Behavior>()
-					{ 
+					{
 						@Override
 						public final void apply(final Behavior B)
 						{
 							B.executeMsg(me,msg);
-						} 
+						}
 					});
 				}
 				if(numScripts()>0)
 				{
 					eachScript(new EachApplicable<ScriptingEngine>()
-					{ 
+					{
 						@Override
 						public final void apply(final ScriptingEngine S)
 						{
 							S.executeMsg(me,msg);
-						} 
+						}
 					});
 				}
 				if(numEffects()>0)
 				{
 					eachEffect(new EachApplicable<Ability>()
-					{ 
+					{
 						@Override
 						public final void apply(final Ability A)
 						{
@@ -306,9 +306,9 @@ public class StdBook extends StdItem implements Book
 					else
 					if((newOnly)&&(msg.value()>0))
 						return;
-					CMMsg readMsg=CMClass.getMsg(msg.source(), msg.target(), msg.tool(), 
+					final CMMsg readMsg=CMClass.getMsg(msg.source(), msg.target(), msg.tool(),
 							 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, L("It says '@x1'.\n\r",entry.toString()),
-							 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, entry.toString(), 
+							 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, entry.toString(),
 							 CMMsg.NO_EFFECT, null);
 					//mob.tell(entry.toString()+"\n\r");
 					if((entry.toString().trim().length()>0)
@@ -338,7 +338,7 @@ public class StdBook extends StdItem implements Book
 				final int maxCharsPerPage = this.getMaxCharsPerPage() > 0 ? this.getMaxCharsPerPage() : Integer.MAX_VALUE;
 				if(!mob.isMonster())
 				{
-					final Runnable addComplete=new Runnable() 
+					final Runnable addComplete=new Runnable()
 					{
 						final String to="ALL";
 						final MOB mob=M;
@@ -386,8 +386,8 @@ public class StdBook extends StdItem implements Book
 					if((msg.targetMinor()==CMMsg.TYP_REWRITE)
 					&&(msg.targetMessage().toUpperCase().startsWith("DELETE ")))
 					{
-						int entryNum=CMath.s_int(msg.targetMessage().substring(7).trim());
-						JournalEntry entry = this.readChaptersByCreateDate().get(entryNum-1);
+						final int entryNum=CMath.s_int(msg.targetMessage().substring(7).trim());
+						final JournalEntry entry = this.readChaptersByCreateDate().get(entryNum-1);
 						delOldChapter(mob.Name(),"ALL",entry.key());
 						mob.tell(L("Chapter removed."));
 					}
@@ -398,10 +398,10 @@ public class StdBook extends StdItem implements Book
 						int x=msg.targetMessage().indexOf(' ',5);
 						if(x>5)
 						{
-							int msgNum=CMath.s_int(msg.targetMessage().substring(5,x).trim());
+							final int msgNum=CMath.s_int(msg.targetMessage().substring(5,x).trim());
 							subject[0]=L("Chapter @x1",""+(msgNum));
 							message[0]=msg.targetMessage().substring(x+1).trim();
-							JournalEntry entry = this.readChaptersByCreateDate().get(msgNum-1);
+							final JournalEntry entry = this.readChaptersByCreateDate().get(msgNum-1);
 							editKey[0] = entry.key();
 							if(message[0].startsWith("::"))
 							{
@@ -421,11 +421,11 @@ public class StdBook extends StdItem implements Book
 					&&(!CMath.isInteger(msg.targetMessage())))
 					{
 						message[0]=msg.targetMessage();
-						int numMessages=getChapterCount("ALL");
+						final int numMessages=getChapterCount("ALL");
 						subject[0]=L("Chapter @x1",""+(numMessages+1));
 						if(message[0].startsWith("::"))
 						{
-							int x=message[0].indexOf("::",2);
+							final int x=message[0].indexOf("::",2);
 							if(x>1)
 							{
 								subject[0]=message[0].substring(2,x);
@@ -439,7 +439,7 @@ public class StdBook extends StdItem implements Book
 						final InputCallback contentCallBack = new InputCallback(InputCallback.Type.PROMPT,"",0)
 						{
 							final MOB mob=M;
-							final Runnable completer=addComplete; 
+							final Runnable completer=addComplete;
 							@Override
 							public void showPrompt()
 							{
@@ -461,7 +461,7 @@ public class StdBook extends StdItem implements Book
 								if((subj.trim().length()==0)
 								&&((subject[0]==null)||(subject[0].length()==0)))
 									subj=subject[0];
-								if(subj.trim().length()==0)
+								if((subj == null) || (subj.trim().length()==0))
 								{
 									mob.tell(L("Aborted."));
 									return;
@@ -475,7 +475,7 @@ public class StdBook extends StdItem implements Book
 								CMLib.journals().makeMessageASync(mob, messageTitle, vbuf, true, new JournalsLibrary.MsgMkrCallback()
 								{
 									@Override
-									public void callBack(MOB mob, Session sess, MsgMkrResolution res)
+									public void callBack(final MOB mob, final Session sess, final MsgMkrResolution res)
 									{
 										if(res ==JournalsLibrary.MsgMkrResolution.CANCELFILE)
 										{
@@ -493,7 +493,7 @@ public class StdBook extends StdItem implements Book
 						{
 							try
 							{
-								JournalEntry entry = this.readChaptersByCreateDate().get(CMath.s_int(msg.targetMessage())-1);
+								final JournalEntry entry = this.readChaptersByCreateDate().get(CMath.s_int(msg.targetMessage())-1);
 								if(entry != null)
 								{
 									subject[0]=entry.subj();
@@ -502,7 +502,7 @@ public class StdBook extends StdItem implements Book
 									msg.setTargetMessage("");
 								}
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 							}
 						}
@@ -522,22 +522,22 @@ public class StdBook extends StdItem implements Book
 	{
 		return L("\n\rTable of Contents\n\r");
 	}
-	
+
 	protected String getJournalName()
 	{
 		return Name();
 	}
-	
+
 	protected int getChapterCount(final String to)
 	{
 		return CMLib.database().DBCountJournal(getJournalName(), null, to);
 	}
-	
+
 	protected List<JournalEntry> readChaptersByCreateDate()
 	{
 		return CMLib.database().DBReadJournalMsgsByCreateDate(getJournalName(), true);
 	}
-	
+
 	protected void addNewChapter(final String from, final String to, final String subject, final String message)
 	{
 		CMLib.database().DBWriteJournal(getJournalName(),from,to,subject,message);
@@ -545,7 +545,7 @@ public class StdBook extends StdItem implements Book
 
 	protected void editOldChapter(final String from, final String to, final String key, final String subject, final String message)
 	{
-		JournalEntry entry = CMLib.database().DBReadJournalEntry(getJournalName(), key);
+		final JournalEntry entry = CMLib.database().DBReadJournalEntry(getJournalName(), key);
 		entry.from(from);
 		entry.to(to);
 		entry.subj(subject);
@@ -558,7 +558,7 @@ public class StdBook extends StdItem implements Book
 		CMLib.database().DBDeleteJournal(getJournalName(), key);
 	}
 
-	public Triad<String,String,StringBuffer> DBRead(MOB readerMOB, int which, long lastTimeDate, boolean newOnly, boolean all)
+	public Triad<String,String,StringBuffer> DBRead(final MOB readerMOB, final int which, final long lastTimeDate, final boolean newOnly, final boolean all)
 	{
 		final StringBuffer buf=new StringBuffer("");
 		final Triad<String,String,StringBuffer> reply=new Triad<String,String,StringBuffer>("","",new StringBuffer(""));
@@ -657,7 +657,7 @@ public class StdBook extends StdItem implements Book
 							||from.equalsIgnoreCase(readerMOB.Name());
 			else
 				mineAble=true;
-			
+
 			if(mineAble)
 				buf.append("*");
 			else
@@ -684,19 +684,19 @@ public class StdBook extends StdItem implements Book
 	{
 		return this.getChapterCount("ALL");
 	}
-	
+
 	@Override
 	public int getMaxPages()
 	{
 		return this.maxPages;
 	}
-	
+
 	@Override
-	public void setMaxPages(int max)
+	public void setMaxPages(final int max)
 	{
 		this.maxPages=max;
 	}
-	
+
 
 	@Override
 	public int getMaxCharsPerPage()
@@ -705,43 +705,43 @@ public class StdBook extends StdItem implements Book
 	}
 
 	@Override
-	public void setMaxCharsPerPage(int max)
+	public void setMaxCharsPerPage(final int max)
 	{
 		this.maxCharsPage=max;
 	}
 
 	@Override
-	public String getRawContent(int page)
+	public String getRawContent(final int page)
 	{
 		final List<JournalEntry> journal=this.readChaptersByCreateDate();
 		if((page < 1)||(page>journal.size()))
 			return "";
 		else
 		{
-			JournalEntry J=journal.get(page-1);
+			final JournalEntry J=journal.get(page-1);
 			if((J.subj()!=null)&&(J.subj().length()>0))
 				return "::"+J.subj()+"::"+J.msg();
 			else
 				return "::"+J.subj()+"::"+J.msg();
 		}
 	}
-	
+
 	@Override
-	public String getContent(int page)
+	public String getContent(final int page)
 	{
-		Triad<String,String,StringBuffer> t=this.DBRead(null, page-1, 0, false, false);
+		final Triad<String,String,StringBuffer> t=this.DBRead(null, page-1, 0, false, false);
 		if((t.second!=null)&&(t.second.length()>0))
 			return "::"+t.second+"::"+t.third.toString();
 		else
 			return t.third.toString();
 	}
-	
+
 	@Override
-	public void addRawContent(String authorName, String content)
+	public void addRawContent(final String authorName, final String content)
 	{
 		if(content.startsWith("::")&&(content.length()>2)&&(content.charAt(2)!=':'))
 		{
-			int x=content.indexOf("::",2);
+			final int x=content.indexOf("::",2);
 			if(x>2)
 				addNewChapter(authorName,"ALL",content.substring(2,x),content.substring(x+2));
 			else
@@ -750,14 +750,14 @@ public class StdBook extends StdItem implements Book
 		else
 			addNewChapter(authorName,"ALL","",content);
 	}
-	
+
 	@Override
 	public boolean isJournal()
 	{
 		return false;
 	}
 
-	protected String getParm(String parmName)
+	protected String getParm(final String parmName)
 	{
 		if(readableText().length()==0)
 			return "";
