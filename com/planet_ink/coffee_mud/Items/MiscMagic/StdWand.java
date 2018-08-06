@@ -67,11 +67,11 @@ public class StdWand extends StdItem implements Wand
 	}
 
 	@Override
-	public void setMaxUses(int newMaxUses)
+	public void setMaxUses(final int newMaxUses)
 	{
 	}
 
-	public static boolean useTheWand(Ability A, MOB mob, int level)
+	public static boolean useTheWand(final Ability A, final MOB mob, final int level)
 	{
 		int manaRequired=5;
 		final int q=CMLib.ableMapper().qualifyingLevel(mob,A);
@@ -105,7 +105,7 @@ public class StdWand extends StdItem implements Wand
 		return super.value();
 	}
 
-	public static String getWandWord(String from)
+	public static String getWandWord(final String from)
 	{
 		int hash=from.hashCode();
 		if(hash<0)
@@ -114,7 +114,7 @@ public class StdWand extends StdItem implements Wand
 	}
 
 	@Override
-	public void setSpell(Ability theSpell)
+	public void setSpell(final Ability theSpell)
 	{
 		miscText="";
 		if(theSpell!=null)
@@ -123,7 +123,7 @@ public class StdWand extends StdItem implements Wand
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		secretWord=StdWand.getWandWord(newText);
@@ -153,26 +153,26 @@ public class StdWand extends StdItem implements Wand
 	}
 
 	@Override
-	public boolean checkWave(MOB mob, String message)
+	public boolean checkWave(final MOB mob, final String message)
 	{
 		return StdWand.checkWave(mob, message, this);
 	}
 
 	@Override
-	public void waveIfAble(MOB mob, Physical afftarget, String message)
+	public void waveIfAble(final MOB mob, final Physical afftarget, final String message)
 	{
 		StdWand.waveIfAble(mob, afftarget, message, this);
 	}
 
-	public static boolean checkWave(MOB mob, String message, Wand me)
+	public static boolean checkWave(final MOB mob, final String message, final Wand me)
 	{
-		return (mob.isMine(me)) 
-				&& (message!=null) 
-				&& (me.amBeingWornProperly()) 
+		return (mob.isMine(me))
+				&& (message!=null)
+				&& (me.amBeingWornProperly())
 				&& (message.toUpperCase().indexOf(me.magicWord().toUpperCase()) >= 0);
 	}
 
-	public static void waveIfAble(MOB mob, Physical afftarget, String message, Wand me)
+	public static void waveIfAble(final MOB mob, final Physical afftarget, String message, final Wand me)
 	{
 		if((mob.isMine(me)) &&(message!=null) &&(!me.amWearingAt(Wearable.IN_INVENTORY)))
 		{
@@ -210,7 +210,7 @@ public class StdWand extends StdItem implements Wand
 							V.addAll(CMParms.parse(message));
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,CMLib.lang().L("@x1 glows brightly.",me.name()));
 							me.setUsesRemaining(me.usesRemaining()-1);
-							int level=me.phyStats().level() 
+							int level=me.phyStats().level()
 									+ CMLib.expertises().getExpertiseLevel(mob, "Skill_WandUse", ExpertiseLibrary.Flag.LEVEL);
 							final int lowest=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
 							if(level<lowest)
@@ -271,7 +271,7 @@ public class StdWand extends StdItem implements Wand
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{
@@ -288,7 +288,7 @@ public class StdWand extends StdItem implements Wand
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{
