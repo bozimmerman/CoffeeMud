@@ -50,7 +50,7 @@ public class Go extends StdCommand
 	protected Command		stander		= null;
 	protected List<String>	ifneccvec	= null;
 
-	public boolean standIfNecessary(MOB mob, List<String> commands, int metaFlags, boolean giveMsg)
+	public boolean standIfNecessary(final MOB mob, final List<String> commands, final int metaFlags, final boolean giveMsg)
 		throws java.io.IOException
 	{
 		if(CMLib.flags().isFlying(mob))
@@ -81,10 +81,10 @@ public class Go extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		if(!standIfNecessary(mob,commands, metaFlags, true))
 			return false;
 
@@ -146,8 +146,8 @@ public class Go extends StdCommand
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					if(R.getExitInDir(d)==E)
-					{ 
-						direction=d; 
+					{
+						direction=d;
 						break;
 					}
 				}
@@ -156,10 +156,13 @@ public class Go extends StdCommand
 		final String doing=commands.get(0);
 		if(direction>=0)
 		{
+			final boolean success;
 			if(running)
-				CMLib.tracking().run(mob,direction,false,false,false,false);
+				success=CMLib.tracking().run(mob,direction,false,false,false,false);
 			else
-				CMLib.tracking().walk(mob,direction,false,false,false,false);
+				success=CMLib.tracking().walk(mob,direction,false,false,false,false);
+			if(!success)
+				mob.clearCommandQueue();
 		}
 		else
 		{
@@ -168,7 +171,7 @@ public class Go extends StdCommand
 				return CMLib.commands().forceStandardCommand(mob, "Enter", commands);
 
 			boolean doneAnything=false;
-			List<List<String>> prequeCommands=new ArrayList<List<String>>();
+			final List<List<String>> prequeCommands=new ArrayList<List<String>>();
 			for(int v=1;v<commands.size();v++)
 			{
 				int num=1;
