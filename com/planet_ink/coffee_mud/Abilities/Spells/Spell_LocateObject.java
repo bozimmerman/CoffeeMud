@@ -68,13 +68,19 @@ public class Spell_LocateObject extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<1)
 		{
 			mob.tell(L("Locate what?"));
 			return false;
 		}
+
+		if((givenTarget!=null)
+		&&(auto)
+		&&(commands.size()>1)
+		&&(commands.get(0).equalsIgnoreCase(givenTarget.Name())))
+			commands.remove(0);
 
 		int minLevel=Integer.MIN_VALUE;
 		int maxLevel=Integer.MAX_VALUE;
@@ -149,7 +155,7 @@ public class Spell_LocateObject extends Spell
 				Room room=null;
 				ShopKeeper SK=null;
 				final TrackingLibrary.TrackingFlags flags=CMLib.tracking().newFlags();
-				int range=50 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
+				final int range=50 + (2*super.getXLEVELLevel(mob))+(10*super.getXMAXRANGELevel(mob));
 				final List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,range);
 				for (final Room room2 : checkSet)
 				{
