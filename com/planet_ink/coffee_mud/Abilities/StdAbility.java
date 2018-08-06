@@ -726,12 +726,18 @@ public class StdAbility implements Ability
 	@Override
 	public boolean canTarget(final int can_code)
 	{
+		final int canTarget=canTargetCode();
+		if((can_code==0)||(canTarget==0))
+			return can_code == canTarget;
 		return CMath.bset(canTargetCode(),can_code);
 	}
 
 	@Override
 	public boolean canAffect(final int can_code)
 	{
+		final int canAffect=canAffectCode();
+		if((can_code==0)||(canAffect==0))
+			return can_code == canAffect;
 		return CMath.bset(canAffectCode(),can_code);
 	}
 
