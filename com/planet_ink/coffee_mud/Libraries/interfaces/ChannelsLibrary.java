@@ -32,17 +32,17 @@ import java.util.*;
    limitations under the License.
 */
 /**
- * The main chat channels management library.  This is one of the 
+ * The main chat channels management library.  This is one of the
  * older libraries in the system, and as such, still reflects the
  * use of indexed vectors that was common.  It still makes sense
  * given the way those numbers are used in CMMsg message codes to
- * identify the channels.  
- * 
+ * identify the channels.
+ *
  * Over the years, the ability to filter the channels by user
  * was added, along with flags to automatically insert information
  * or enable other parts of the system to generate channel
  * messages.
- * 
+ *
  * @author Bo Zimmerman
  */
 public interface ChannelsLibrary extends CMLibrary
@@ -78,7 +78,7 @@ public interface ChannelsLibrary extends CMLibrary
 	public List<ChannelMsg> getChannelQue(int channelNumber, int numNewToSkip, int numToReturn);
 
 	/**
-	 * Returns whether the given Mob can read a channel message from the given sender, on 
+	 * Returns whether the given Mob can read a channel message from the given sender, on
 	 * a particular channel.
 	 * @see ChannelsLibrary#getNumChannels()
 	 * @see ChannelsLibrary#mayReadThisChannel(MOB, int, boolean)
@@ -93,7 +93,7 @@ public interface ChannelsLibrary extends CMLibrary
 	public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int channelNumber);
 
 	/**
-	 * Returns whether the given Mob can read a channel message from the given sender, on 
+	 * Returns whether the given Mob can read a channel message from the given sender, on
 	 * a particular channel.
 	 * @see ChannelsLibrary#getChannelIndex(String)
 	 * @see ChannelsLibrary#mayReadThisChannel(MOB, int, boolean)
@@ -109,7 +109,7 @@ public interface ChannelsLibrary extends CMLibrary
 	public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int channelNumber, boolean offlineOK);
 
 	/**
-	 * Returns whether the given Mob can read a channel message from the given sender, on 
+	 * Returns whether the given Mob can read a channel message from the given sender, on
 	 * a particular channel.
 	 * @see ChannelsLibrary#getNumChannels()
 	 * @see ChannelsLibrary#mayReadThisChannel(MOB, int, boolean)
@@ -124,7 +124,7 @@ public interface ChannelsLibrary extends CMLibrary
 	public boolean mayReadThisChannel(MOB sender, boolean areaReq, Session ses, int channelNumber);
 
 	/**
-	 * Returns whether the given Mob can read a channel message from the given sender, on 
+	 * Returns whether the given Mob can read a channel message from the given sender, on
 	 * a particular channel.
 	 * @see ChannelsLibrary#getChannelIndex(String)
 	 * @see ChannelsLibrary#mayReadThisChannel(MOB, boolean, MOB, int)
@@ -150,7 +150,7 @@ public interface ChannelsLibrary extends CMLibrary
 	/**
 	 * Returns the official index number of the channel with the
 	 * given name or which starts with the given name.  It is
-	 * case insensitive search. 
+	 * case insensitive search.
 	 * @see ChannelsLibrary#getNumChannels()
 	 * @param channelName the channel string to search for
 	 * @return the official index number of the channel
@@ -174,7 +174,7 @@ public interface ChannelsLibrary extends CMLibrary
 	 * @return the list of channel names with the flag set.
 	 */
 	public List<String> getFlaggedChannelNames(ChannelFlag flag);
-	
+
 	/**
 	 * Returns the friendly readable description of the channel
 	 * with the given name, or which starts with the given string.
@@ -208,7 +208,7 @@ public interface ChannelsLibrary extends CMLibrary
 	/**
 	 * Returns the official channel name of the channel with the
 	 * given name or which starts with the given name.  It is
-	 * case insensitive search. 
+	 * case insensitive search.
 	 * @see ChannelsLibrary#getNumChannels()
 	 * @param channelName the channel string to search for
 	 * @return the official channel name of the channel
@@ -227,7 +227,7 @@ public interface ChannelsLibrary extends CMLibrary
 	 * @return all the offending sessions
 	 */
 	public List<Session> clearInvalidSnoopers(Session mySession, int channelNumber);
-	
+
 	/**
 	 * Iterates through the given list of sessions and forces them all to snoop on
 	 * the given session.  This makes sense if you check the clearInvalidSnoopers
@@ -250,7 +250,7 @@ public interface ChannelsLibrary extends CMLibrary
 
 	/**
 	 * Sends the given channel message from the given sender to the given session on the
-	 * given channelNumbered channel.  
+	 * given channelNumbered channel.
 	 * @see ChannelsLibrary#getNumChannels()
 	 * @see ChannelsLibrary#createAndSendChannelMessage(MOB, String, String, boolean)
 	 * @param ses the session to send the channel message to
@@ -272,7 +272,7 @@ public interface ChannelsLibrary extends CMLibrary
 	 * @param systemMsg true to format as a system message, false for a normal chat message
 	 */
 	public void createAndSendChannelMessage(MOB mob, String channelName, String message, boolean systemMsg);
-	
+
 	/**
 	 * Creates a new channel object.
 	 * @see ChannelsLibrary.CMChannel
@@ -286,8 +286,8 @@ public interface ChannelsLibrary extends CMLibrary
 	 * @param colorOverrideWords empty string for default, or the color code for this channel
 	 * @return the newly created channel object
 	 */
-	public CMChannel createNewChannel(final String name, final String i3Name, final String imc2Name, 
-									  final String mask, final Set<ChannelFlag> flags, 
+	public CMChannel createNewChannel(final String name, final String i3Name, final String imc2Name,
+									  final String mask, final Set<ChannelFlag> flags,
 									  final String colorOverrideANSI, final String colorOverrideWords);
 
 	/**
@@ -301,21 +301,21 @@ public interface ChannelsLibrary extends CMLibrary
 		 * @return name of the channel
 		 */
 		public String name();
-		
+
 		/**
 		 * An empty string, or the name of the I3 channel that
 		 * this channel is mapped to.
 		 * @return the name of the I3 channel or ""
 		 */
 		public String i3name();
-		
+
 		/**
 		 * An empty string, or the name of the IMC2 channel that
 		 * this channel is mapped to.
 		 * @return the name of the IMC2 channel or ""
 		 */
 		public String imc2Name();
-		
+
 		/**
 		 * The zapper mask to filter in those who may read this
 		 * channel.
@@ -323,7 +323,7 @@ public interface ChannelsLibrary extends CMLibrary
 		 * @return the zapper mask for who may read
 		 */
 		public String mask();
-		
+
 		/**
 		 * Empty string, or a color ansi codes to override the
 		 * default channel color
@@ -331,7 +331,7 @@ public interface ChannelsLibrary extends CMLibrary
 		 * @return Empty string, or a color ansi codes to override
 		 */
 		public String colorOverrideANSICodes();
-		
+
 		/**
 		 * Empty string, or a color code words to override the
 		 * default channel color
@@ -339,16 +339,16 @@ public interface ChannelsLibrary extends CMLibrary
 		 * @return Empty string, or a color code words to override
 		 */
 		public String colorOverrideWords();
-		
+
 		/**
 		 * The channel flags for this channel.
 		 * @see ChannelsLibrary.ChannelFlag
 		 * @return channel flags for this channel.
 		 */
 		public Set<ChannelFlag> flags();
-		
+
 		/**
-		 * The internal cached queue of previous 
+		 * The internal cached queue of previous
 		 * channel messages.
 		 * @see ChannelsLibrary.ChannelMsg
 		 * Always trimmed when it gets too large/
@@ -371,7 +371,7 @@ public interface ChannelsLibrary extends CMLibrary
 		 * @return CMMsg object that was sent as the original message
 		 */
 		public CMMsg msg();
-		
+
 		/**
 		 * The timestamp of when the message was sent
 		 * @return timestamp of when the message was sent
@@ -422,6 +422,7 @@ public interface ChannelsLibrary extends CMLibrary
 		ADDAREA,
 		ADDACCOUNT,
 		REALNAMEOOC,
-		REALNAMEOOCNOADMIN
+		REALNAMEOOCNOADMIN,
+		NOLANG
 	}
 }

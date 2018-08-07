@@ -1,13 +1,11 @@
 BUGS
 
 TECH
-   *. make ship dampeners, 
-   *. make fake gravity generators
    *. test phaser and missile targeting systems 
    *. test ship phaser, laser systems against shield types - murder motel 
    *. make ship torpedo launchers and torpedo containers-- see tech doc
    *. make ship impulse and warp engines -- see tech doc
-   *. make more ship sensors
+   *. make more ship sensors, giant window for seeing in front, targeted scaling windows for st view screens
    *. make tractor beam system -- esp important for pirates!
    *. make communication system
    *. When it's time to make the Real Software, good categories in tech docs
@@ -21,7 +19,7 @@ TECH
    *. make message bouey launcher
    *. personal scanner/tricorder software: mineral scanner, computer interface (with ship perhaps?)!
    *. make transporter systems
-   *. make shuttle system
+   *. make shuttle system, ship items areas have landing zones... might require opening if exit has door?
    *. damaged systems should sometimes require random parts, from particular manufacturers, that repair respects
    *. add electronics to guides, how to make a ship, how to build space, etc, details about tech
    *. add electronics to MG
