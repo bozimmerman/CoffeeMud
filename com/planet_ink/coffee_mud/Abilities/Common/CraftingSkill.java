@@ -1089,7 +1089,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			final List<List<String>> newMatches=new Vector<List<String>>();
 			if(selNum<=matches.size())
-				newMatches.add(matches.get(selNum));
+				newMatches.add(matches.get(selNum-1));
 			return newMatches;
 		}
 		return matches;
