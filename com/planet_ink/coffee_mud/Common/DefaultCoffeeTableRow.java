@@ -55,7 +55,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	}
 
 	public Map<String, long[]> stats= new SHashtable<String, long[]>();
-	
+
 	public long	highestOnline		= 0;
 	public long	numberOnlineTotal	= 0;
 	public long	numberOnlineCounter	= 0;
@@ -63,13 +63,13 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	public long	endTime				= 0;
 
 	@Override
-	public void setStartTime(long time)
+	public void setStartTime(final long time)
 	{
 		startTime = time;
 	}
 
 	@Override
-	public void setEndTime(long time)
+	public void setEndTime(final long time)
 	{
 		endTime = time;
 	}
@@ -108,22 +108,29 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	public String data()
 	{
 		final StringBuffer data=new StringBuffer("");
-		data.append(CMLib.xml().convertXMLtoTag("HIGH",highestOnline));
-		data.append(CMLib.xml().convertXMLtoTag("NUMONLINE",numberOnlineTotal));
-		data.append(CMLib.xml().convertXMLtoTag("NUMCOUNT",numberOnlineCounter));
-		data.append("<STATS>");
-		for(final Iterator<String> e=stats.keySet().iterator();e.hasNext();)
+		final XMLLibrary xml=CMLib.xml();
+		if(xml != null)
 		{
-			final String s=e.next();
-			final long[] l=stats.get(s);
-			data.append(CMLib.xml().convertXMLtoTag(s,CMParms.toListString(l)));
+			data.append(xml.convertXMLtoTag("HIGH",highestOnline));
+			data.append(xml.convertXMLtoTag("NUMONLINE",numberOnlineTotal));
+			data.append(xml.convertXMLtoTag("NUMCOUNT",numberOnlineCounter));
+			data.append("<STATS>");
+			final Map<String,long[]> stats=this.stats;
+			if(stats == null)
+				return "";
+			for(final Iterator<String> e=stats.keySet().iterator();e.hasNext();)
+			{
+				final String s=e.next();
+				final long[] l=stats.get(s);
+				data.append(xml.convertXMLtoTag(s,CMParms.toListString(l)));
+			}
+			data.append("</STATS>");
 		}
-		data.append("</STATS>");
 		return data.toString();
 	}
 
 	@Override
-	public void bumpVal(String s, int type)
+	public void bumpVal(final String s, final int type)
 	{
 		long[] stat=null;
 		synchronized(stats)
@@ -140,7 +147,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	}
 
 	@Override
-	public void totalUp(String code, long[] tot)
+	public void totalUp(String code, final long[] tot)
 	{
 		code=tagFix(code);
 		for(final Iterator<String> e=stats.keySet().iterator();e.hasNext();)
@@ -157,13 +164,13 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	}
 
 	@Override
-	public String tagFix(String s)
+	public String tagFix(final String s)
 	{
 		return s.trim().replaceAll(" ","_").toUpperCase();
 	}
 
 	@Override
-	public void bumpVal(CMObject E, int type)
+	public void bumpVal(final CMObject E, final int type)
 	{
 		if((E instanceof MOB)&&(((MOB)E).isMonster()))
 			return;
@@ -221,7 +228,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
 	}
 
 	@Override
-	public void populate(long start, long end, String data)
+	public void populate(final long start, final long end, final String data)
 	{
 		synchronized(stats)
 		{

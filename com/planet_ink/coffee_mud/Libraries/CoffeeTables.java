@@ -48,11 +48,15 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.STATS))
 			return;
 		if(todays!=null)
-			CMLib.database().DBUpdateStat(todays.startTime(),todays.data());
+		{
+			final String data=todays.data();
+			if(data.length()>0)
+				CMLib.database().DBUpdateStat(todays.startTime(),data);
+		}
 	}
 
 	@Override
-	public void bump(CMObject E, int type)
+	public void bump(final CMObject E, final int type)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return;
@@ -135,7 +139,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 		return true;
 	}
 
-	@Override 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		try
