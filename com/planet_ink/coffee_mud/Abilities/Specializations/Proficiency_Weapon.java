@@ -103,13 +103,13 @@ public class Proficiency_Weapon extends StdAbility
 	{
 		return "Weapon";
 	}
-	
+
 	protected String getWeaponMask()
 	{
 		if(weaponZappermask == null)
 		{
-			final StringBuilder str=new StringBuilder("-CLASSTYPE +"+getSpecificWeaponType()+" ");
-			
+			final StringBuilder str=new StringBuilder("-WEAPONCLASS +"+getSpecificWeaponType()+" ");
+
 			if(weaponClass >=0)
 				str.append("+WEAPONCLASS -"+Weapon.CLASS_DESCS[weaponClass]+" ");
 			if(secondWeaponClass >=0)
@@ -131,7 +131,7 @@ public class Proficiency_Weapon extends StdAbility
 				final MaskingLibrary.CompiledZMask mask = CMLib.masking().maskCompile(zapMask);
 
 				@Override
-				public com.planet_ink.coffee_mud.core.collections.DoubleFilterer.Result getFilterResult(Item obj)
+				public com.planet_ink.coffee_mud.core.collections.DoubleFilterer.Result getFilterResult(final Item obj)
 				{
 					return CMLib.masking().maskCheck(mask, obj, true) ? DoubleFilterer.Result.ALLOWED : DoubleFilterer.Result.NOTAPPLICABLE;
 				}
