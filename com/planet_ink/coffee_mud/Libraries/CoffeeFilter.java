@@ -413,7 +413,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				if((num>=0)&&(num<=5))
 				{
 					buildNum+=(num*6);
-					num=str.charAt(enDex)-'0';
+					num=str.charAt(enDex+2)-'0';
 					if((num>=0)&&(num<=5))
 					{
 						finalNum=buildNum + num + 16;
