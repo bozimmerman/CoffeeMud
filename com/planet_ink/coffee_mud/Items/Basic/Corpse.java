@@ -71,7 +71,20 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setOwner(final ItemPossessor newOwner)
+	{
+		if((newOwner instanceof MOB)
+		&&(!((MOB)newOwner).isPlayer()))
+		{
+			final String oldOwnerStr=owner == null ? "null" : owner.name();
+			final String newOwnerStr=newOwner.name();
+			Log.debugOut("CORPSE GOING FROM "+oldOwnerStr+" to "+newOwnerStr, new Exception());//BZ:DELME
+		}
+		super.setOwner(newOwner);
+	}
+
+	@Override
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		if(newText.length()>0)
@@ -87,7 +100,7 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setCharStats(CharStats newStats)
+	public void setCharStats(final CharStats newStats)
 	{
 		charStats=newStats;
 		if(charStats!=null)
@@ -95,7 +108,7 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setSecretIdentity(String newIdentity)
+	public void setSecretIdentity(final String newIdentity)
 	{
 		if(newIdentity.indexOf('/')>0)
 		{
@@ -131,7 +144,7 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setMobName(String newName)
+	public void setMobName(final String newName)
 	{
 		mobName=newName;
 	}
@@ -143,7 +156,7 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setMobDescription(String newDescription)
+	public void setMobDescription(final String newDescription)
 	{
 		mobDesc=newDescription;
 	}
@@ -155,7 +168,7 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setMobPKFlag(boolean truefalse)
+	public void setMobPKFlag(final boolean truefalse)
 	{
 		mobPKFlag=truefalse;
 	}
@@ -167,7 +180,7 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setMobHash(int newHash)
+	public void setMobHash(final int newHash)
 	{
 		deadMobHash = newHash;
 	}
@@ -179,7 +192,7 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setKillerName(String newName)
+	public void setKillerName(final String newName)
 	{
 		killerName=newName;
 	}
@@ -191,7 +204,7 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setIsKillerPlayer(boolean trueFalse)
+	public void setIsKillerPlayer(final boolean trueFalse)
 	{
 		killerPlayer=trueFalse;
 	}
@@ -203,7 +216,7 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setIsPlayerCorpse(boolean truefalse)
+	public void setIsPlayerCorpse(final boolean truefalse)
 	{
 		playerCorpse=truefalse;
 	}
@@ -215,7 +228,7 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setLastMessage(String lastMsg)
+	public void setLastMessage(final String lastMsg)
 	{
 		lastMessage=lastMsg;
 	}
@@ -227,7 +240,7 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setKillerTool(Environmental tool)
+	public void setKillerTool(final Environmental tool)
 	{
 		killingTool=tool;
 	}
@@ -239,7 +252,7 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setIsDestroyAfterLooting(boolean truefalse)
+	public void setIsDestroyAfterLooting(final boolean truefalse)
 	{
 		lootDestroy=truefalse;
 	}
@@ -251,13 +264,13 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setTimeOfDeath(long time)
+	public void setTimeOfDeath(final long time)
 	{
 		timeOfDeath=time;
 	}
 
 	@Override
-	public void setSavedMOB(MOB mob, boolean preserve)
+	public void setSavedMOB(final MOB mob, final boolean preserve)
 	{
 		savedMOB=mob;
 		saveSavedMOB=preserve;
