@@ -51,7 +51,7 @@ public interface MaskingLibrary extends CMLibrary
 	public int minMaskLevel(final String text, final int minMinLevel);
 	public String[] separateMaskStrs(final String newText);
 	public CompiledZMask createEmptyMask();
-	
+
 	public enum ZapperKey
 	{
 		_PLAYER("-PLAYER"),
@@ -62,9 +62,9 @@ public interface MaskingLibrary extends CMLibrary
 		_BASECLASS("-BASECLASSES"),
 		BASECLASS("+BASECLASSES"),
 		_CLASSTYPE("-CLASSTYPE"),
-		CLASSTYPE("CLASSTYPE"),
+		CLASSTYPE("+CLASSTYPE"),
 		_RACE("-RACES"),
-		RACE("RACES"),
+		RACE("+RACES"),
 		_ALIGNMENT("-ALIGNMENTS","-ALIGN"),
 		ALIGNMENT,
 		_GENDER("-GENDERS"),
@@ -203,12 +203,15 @@ public interface MaskingLibrary extends CMLibrary
 		LOCATION
 		;
 		private final String[] keys;
-		private ZapperKey(String... exts)
+		private ZapperKey(final String... exts)
 		{
 			final List<String> k = new ArrayList<String>();
 			k.add(name().startsWith("_") ? ("-"+name().substring(1)) : ("+"+name()));
-			for(String x : exts)
-				k.add(x);
+			for(final String x : exts)
+			{
+				if(!k.contains(x))
+					k.add(x);
+			}
 			keys = k.toArray(new String[0]);
 		}
 
@@ -217,13 +220,13 @@ public interface MaskingLibrary extends CMLibrary
 			return keys;
 		}
 	}
-	
+
 	public static interface CompiledZMaskEntry
 	{
 		public ZapperKey maskType();
 		public Object[] parms();
 	}
-	
+
 	public static interface CompiledZMask
 	{
 		public boolean[] flags();

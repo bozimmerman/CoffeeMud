@@ -143,7 +143,8 @@ public class Chant_Reincarnation extends Chant
 			}
 			if(!super.canBeUninvoked) // called during bring-to-life, which is why its down here
 			{
-				if(CMLib.flags().isInTheGame(affected, true))
+				if((CMLib.flags().isInTheGame(affected, true))
+				&&(!((MOB)affected).amDead()))
 					super.canBeUninvoked=true;
 				else
 					tickDown--;
@@ -152,7 +153,7 @@ public class Chant_Reincarnation extends Chant
 		return true;
 	}
 
-	public boolean isGolem(Race R)
+	public boolean isGolem(final Race R)
 	{
 		final MOB M=CMClass.getFactoryMOB();
 		R.affectPhyStats(M,M.phyStats());
@@ -191,7 +192,7 @@ public class Chant_Reincarnation extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget,false,true);
 		if(target==null)

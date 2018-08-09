@@ -1,22 +1,22 @@
 ^HMOVEMENT^N                        ^HCOMMUNICATION^?
-north south east west up down       say tell reply channels
-recall ride crawl climb swim        quiet emote socials yell ask
-sleep wake rest stand enter         gossip ooc gratz auction music
+north south east west up down       say tell reply channels socials
+recall mount crawl climb swim go    quiet emote yell ask whisper
+sleep wake rest stand enter run     gossip ooc gratz auction music
 
 ^HCOMBAT/SPELLS/SKILLS^?            ^HINFORMATION^?
-kill backstab flee wimpy rescue     help credits commands where
-spells skills prayers songs         look exits topics time who
-pray practice cast sing chant       areas score gods topics helplist
-sweep bash disarm dirt trip
+kill flee wimpy practice train      help credits commands where
+pray cast sing chant play           look exits topics time who
+chants spells skills spells         areas score gods topics helplist
+prayers languages quality
                                     ^HGROUPS^?
 ^HOBJECTS^?                         follow group gtell split
 inventory equipment look compare
-get put drop give wear wield        ^HOTHER^?
-hold eat drink fill sniff           ! quit password train learn ansi
-lock unlock open close pick         qualify logout prompt colorset
-list buy sell value examine         bug assist
+get put drop give wear wield hold   ^HOTHER^?
+eat drink fill sniff examine push   ! quit password switch config ansi
+pull lock unlock open close list    autoinvoke logout prompt colorset
+buy sell deposit withdraw value     typo bug assist
 
 ^HBASE CLASSES^?
-fighter bard druid mage thief cleric artisan
+fighter bard druid mage thief cleric commoner/artisan
 ** enter ^HHELP 'command name'^?, ^HCOMMANDS^? or ^HTOPICS^? for more help!
 

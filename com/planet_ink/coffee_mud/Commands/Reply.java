@@ -40,6 +40,7 @@ public class Reply extends StdCommand
 	}
 
 	private final String[] access=I(new String[]{"REPLY","REP","RE"});
+
 	@Override
 	public String[] getAccessWords()
 	{
@@ -47,7 +48,7 @@ public class Reply extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob==null)
@@ -57,7 +58,7 @@ public class Reply extends StdCommand
 			CMLib.commands().postCommandFail(mob,commands,L("You have QUIET mode on.  You must turn it off first."));
 			return false;
 		}
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null)
 			return false;

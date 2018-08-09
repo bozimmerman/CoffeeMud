@@ -108,12 +108,12 @@ public class Proficiency_Weapon extends StdAbility
 	{
 		if(weaponZappermask == null)
 		{
-			final StringBuilder str=new StringBuilder("-WEAPONCLASS +"+getSpecificWeaponType()+" ");
+			final StringBuilder str=new StringBuilder("-CLASSTYPE +"+getSpecificWeaponType()+" ");
 
 			if(weaponClass >=0)
-				str.append("+WEAPONCLASS -"+Weapon.CLASS_DESCS[weaponClass]+" ");
+				str.append("-WEAPONCLASS +"+Weapon.CLASS_DESCS[weaponClass]+" ");
 			if(secondWeaponClass >=0)
-				str.append("+WEAPONCLASS -"+Weapon.CLASS_DESCS[secondWeaponClass]+" ");
+				str.append("+"+Weapon.CLASS_DESCS[secondWeaponClass]+" ");
 			weaponZappermask = str.toString();
 		}
 		return weaponZappermask;
@@ -158,7 +158,7 @@ public class Proficiency_Weapon extends StdAbility
 		if((myFilter!=null)
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
-		&&((msg.sourceMinor()==CMMsg.TYP_THROW)||(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK))
+		&&((msg.sourceMinor()==CMMsg.TYP_THROW)||(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK))
 		&&(msg.tool() instanceof Weapon)
 		&&(msg.target() instanceof MOB)
 		&&(CMLib.dice().rollPercentage()<5)
