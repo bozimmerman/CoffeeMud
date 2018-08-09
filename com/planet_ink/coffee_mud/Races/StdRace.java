@@ -65,7 +65,7 @@ public class StdRace implements Race
 	protected List<Weapon>	naturalWeaponChoices	= null;
 	protected Set<String>	naturalAbilImmunities	= new HashSet<String>();
 	protected int			usageCount				= 0;
-	
+
 	protected Map<Integer,SearchIDList<Ability>> racialAbilityMap	= null;
 	protected Map<Integer,SearchIDList<Ability>> racialEffectMap	= null;
 
@@ -277,12 +277,12 @@ public class StdRace implements Race
 	public void initializeClass()
 	{
 	}
-	
+
 	public boolean fertile()
 	{
 		return true;
 	}
-	
+
 	public boolean infatigueable()
 	{
 		return false;
@@ -650,12 +650,12 @@ public class StdRace implements Race
 		return CMLib.lang().fullSessionTranslation(str, xs);
 	}
 
-	protected boolean giveMobAbility(MOB mob, Ability A, int proficiency, String defaultParm, boolean isBorrowedRace)
+	protected boolean giveMobAbility(final MOB mob, final Ability A, final int proficiency, final String defaultParm, final boolean isBorrowedRace)
 	{
 		return giveMobAbility(mob,A,proficiency,defaultParm,isBorrowedRace,true);
 	}
 
-	protected boolean giveMobAbility(MOB mob, Ability A, int proficiency, String defaultParm, boolean isBorrowedRace, boolean autoInvoke)
+	protected boolean giveMobAbility(final MOB mob, Ability A, final int proficiency, final String defaultParm, final boolean isBorrowedRace, final boolean autoInvoke)
 	{
 		if(mob.fetchAbility(A.ID())==null)
 		{
@@ -697,12 +697,12 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedRace)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedRace)
 	{
 		grantAbilities(mob,isBorrowedRace,false);
 	}
-	
-	protected void grantAbilities(MOB mob, boolean isBorrowedRace, boolean skipCultural)
+
+	protected void grantAbilities(final MOB mob, final boolean isBorrowedRace, final boolean skipCultural)
 	{
 		final String[] alreadyAbilitied = (racialAbilityNames()==null)?new String[0]:racialAbilityNames();
 		final Map<String,AbilityMapping> ableMap=CMLib.ableMapper().getAbleMapping(ID());
@@ -744,7 +744,7 @@ public class StdRace implements Race
 			}
 		}
 	}
-	
+
 	protected void mapCulturalAbilities()
 	{
 		if((!mappedCulturalAbilities)
@@ -759,7 +759,7 @@ public class StdRace implements Race
 				int prof = 0;
 				if((culturalAbilityProficiencies() != null) && (culturalAbilityProficiencies().length>a))
 					prof = culturalAbilityProficiencies()[a];
-				
+
 				CMLib.ableMapper().addCharAbilityMapping(ID(),lvl,culturalAbilityNames()[a],prof,"",gain);
 			}
 			mappedCulturalAbilities=true;
@@ -811,7 +811,7 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		return outfitChoices;
 	}
@@ -938,7 +938,7 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	public DeadBody getCorpseContainer(final MOB mob, Room room)
 	{
 		if(room==null)
 			room=mob.location();
@@ -957,7 +957,7 @@ public class StdRace implements Race
 			else
 				bodyI.setSavedMOB(mob, true);
 		}
-		
+
 		bodyI.setCharStats((CharStats)mob.baseCharStats().copyOf());
 		bodyI.basePhyStats().setLevel(mob.basePhyStats().level());
 		bodyI.basePhyStats().setWeight(mob.basePhyStats().weight());
@@ -1006,7 +1006,7 @@ public class StdRace implements Race
 		}
 		for(Item thisItem : itemsToGo)
 		{
-			if(thisItem.isSavable() 
+			if(thisItem.isSavable()
 			|| (thisItem.fetchEffect("QuestBound")!=null)) // a quest-item drop must be preserved, even unsavable ones!
 			{
 				if(mob.isMonster())
@@ -1112,7 +1112,7 @@ public class StdRace implements Race
 		final List<Ability> finalV=new Vector<Ability>(myList.size());
 		for(final Ability A : myList)
 		{
-			Ability A2=(Ability)A.copyOf();
+			final Ability A2=(Ability)A.copyOf();
 			A2.setMiscText(A.text());
 			A2.makeNonUninvokable();
 			A2.setSavable(false); // must come AFTER the above
@@ -1286,7 +1286,7 @@ public class StdRace implements Race
 
 		final PhyStats RS=(PhyStats)CMClass.getCommon("DefaultPhyStats");
 		RS.setAllValues(0);
-		
+
 		final MOB fakeMOB=CMClass.getFactoryMOB();
 		final Session fakeSession = (Session)CMClass.getCommon("DefaultSession");
 		fakeMOB.setSession(fakeSession);
@@ -1297,18 +1297,18 @@ public class StdRace implements Race
 		final CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S1.setAllValues(0);
 		S1.setStat(CharStats.STAT_GENDER, 'M');
-		
+
 		final CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S2.setAllValues(10);
 		S2.setStat(CharStats.STAT_GENDER, 'N');
-		
+
 		final CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats");
 		S3.setAllValues(14);
 		S3.setStat(CharStats.STAT_GENDER, 'F');
-		
+
 		final CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
 		SETSTAT.setAllValues(0);
-		
+
 		final CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
 		ADJSTAT.setAllValues(0);
 		affectCharStats(fakeMOB,S1);
@@ -1419,9 +1419,9 @@ public class StdRace implements Race
 			{
 				GR.setStat("GETCABLE"+i,culturalAbilityNames()[i]);
 				GR.setStat("GETCABLEPROF"+i,""+culturalAbilityProficiencies()[i]);
-				int lvl = (culturalAbilityLevels() != null) ? culturalAbilityLevels()[i] : 0;
+				final int lvl = (culturalAbilityLevels() != null) ? culturalAbilityLevels()[i] : 0;
 				GR.setStat("GETCABLELVL"+i,""+lvl);
-				boolean gain = (culturalAbilityAutoGains() != null) ? culturalAbilityAutoGains()[i] : true;
+				final boolean gain = (culturalAbilityAutoGains() != null) ? culturalAbilityAutoGains()[i] : true;
 				GR.setStat("GETCABLEGAIN"+i,""+gain);
 			}
 		}
@@ -1540,7 +1540,7 @@ public class StdRace implements Race
 			{
 				if(((race1.bodyMask()[i]%2)==0) && ((race2.bodyMask()[i]%2)==0))
 				{
-					int newVal = ((race1.bodyMask()[i]+race2.bodyMask()[i])/2);
+					final int newVal = ((race1.bodyMask()[i]+race2.bodyMask()[i])/2);
 					if((newVal % 2)==0)
 						GR.bodyMask()[i]=newVal;
 					else
@@ -1603,8 +1603,8 @@ public class StdRace implements Race
 		{
 			if(i==CharStats.STAT_GENDER)
 			{
-				int setStat1=SETSTAT1.getStat(i);
-				int setStat2=SETSTAT2.getStat(i);
+				final int setStat1=SETSTAT1.getStat(i);
+				final int setStat2=SETSTAT2.getStat(i);
 				if((setStat1>0)&&(setStat2>0)&&(setStat1==setStat2))
 					SETSTAT.setStat(i,setStat1);
 			}
@@ -1696,7 +1696,7 @@ public class StdRace implements Race
 		final Converter<String,Boolean> isLanguage = new Converter<String,Boolean>()
 		{
 			@Override
-			public Boolean convert(String obj)
+			public Boolean convert(final String obj)
 			{
 				final Ability A=CMClass.getAbility(obj);
 				return Boolean.valueOf((A instanceof Language) && ((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE));
@@ -1711,7 +1711,7 @@ public class StdRace implements Race
 				if(i.hasNext())
 				{
 					final AbilityMapping r1 = i.next();
-					if((r1 != null) && 
+					if((r1 != null) &&
 					((!foundLanguage[0]) || (!isLanguage.convert(r1.abilityID()).booleanValue())))
 					{
 						foundLanguage[0] = foundLanguage[0] || isLanguage.convert(r1.abilityID()).booleanValue();
@@ -1775,8 +1775,8 @@ public class StdRace implements Race
 		}
 
 		final TriadVector<String,Integer,Integer> dataa=new TriadVector<String,Integer,Integer>();
-		int numReff1 = CMath.s_int(race1.getStat("NUMREFF"));
-		int numReff2 = CMath.s_int(race2.getStat("NUMREFF"));
+		final int numReff1 = CMath.s_int(race1.getStat("NUMREFF"));
+		final int numReff2 = CMath.s_int(race2.getStat("NUMREFF"));
 		for(int a=0; (a<numReff1) || (a<numReff2); a++)
 		{
 			if(a<numReff1)
@@ -1809,7 +1809,7 @@ public class StdRace implements Race
 			GR.setStat("GETREFFLVL"+i,dataa.getSecond(i).toString());
 			GR.setStat("GETREFFPARM"+i,dataa.getThird(i).toString());
 		}
-		
+
 		final List<String> imms=new XVector<String>();
 		for(int i=0;(i<race1.abilityImmunities().length) || (i<race2.abilityImmunities().length);i++)
 		{
@@ -1820,7 +1820,7 @@ public class StdRace implements Race
 		}
 		for(int i=4;i<imms.size();i++)
 			imms.remove(i);
-		
+
 		GR.setStat("NUMIABLE",""+imms.size());
 		for(int i=0;i<imms.size();i++)
 		{
@@ -1839,7 +1839,7 @@ public class StdRace implements Race
 		{
 			for(int i=0;i<culturalAbilityNames().length;i++)
 			{
-				final Integer level = Integer.valueOf((culturalAbilityLevels() != null) ? culturalAbilityLevels()[i] : 0); 
+				final Integer level = Integer.valueOf((culturalAbilityLevels() != null) ? culturalAbilityLevels()[i] : 0);
 				final Integer prof = Integer.valueOf(culturalAbilityProficiencies()[i]);
 				final Boolean autoGain = Boolean.valueOf((culturalAbilityAutoGains() != null) ? culturalAbilityAutoGains()[i] : true);
 				ables.addElement(culturalAbilityNames()[i],prof,level,autoGain);
@@ -1974,14 +1974,14 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public int usageCount(int alter)
+	public int usageCount(final int alter)
 	{
 		usageCount += alter;
 		return usageCount;
 	}
 
 	@Override
-	public void setRacialParms(String parms)
+	public void setRacialParms(final String parms)
 	{
 	}
 
@@ -2093,7 +2093,7 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{
@@ -2106,7 +2106,7 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{
@@ -2117,7 +2117,7 @@ public class StdRace implements Race
 			break;
 		}
 	}
-	
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -2140,7 +2140,7 @@ public class StdRace implements Race
 		return -1;
 	}
 
-	public boolean sameAs(Race E)
+	public boolean sameAs(final Race E)
 	{
 		if(!(E instanceof StdRace))
 			return false;
