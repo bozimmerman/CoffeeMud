@@ -955,7 +955,9 @@ public class StdRace implements Race
 				bodyI.setSavedMOB(M, false);
 			}
 			else
+			{
 				bodyI.setSavedMOB(mob, true);
+			}
 		}
 
 		bodyI.setCharStats((CharStats)mob.baseCharStats().copyOf());

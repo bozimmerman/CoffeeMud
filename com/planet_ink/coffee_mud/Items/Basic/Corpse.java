@@ -71,19 +71,6 @@ public class Corpse extends GenContainer implements DeadBody
 	}
 
 	@Override
-	public void setOwner(final ItemPossessor newOwner)
-	{
-		if((newOwner instanceof MOB)
-		&&(!((MOB)newOwner).isPlayer()))
-		{
-			final String oldOwnerStr=owner == null ? "null" : owner.name();
-			final String newOwnerStr=newOwner.name();
-			Log.debugOut("CORPSE GOING FROM "+oldOwnerStr+" to "+newOwnerStr, new Exception());//BZ:DELME
-		}
-		super.setOwner(newOwner);
-	}
-
-	@Override
 	public void setMiscText(final String newText)
 	{
 		miscText="";
