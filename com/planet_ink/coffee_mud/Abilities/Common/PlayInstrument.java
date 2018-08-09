@@ -80,7 +80,7 @@ public class PlayInstrument extends CommonSkill
 		displayText=L("You are playing...");
 		verb=L("playing");
 	}
-	
+
 	protected volatile String				lastInstrType	= "";
 	protected volatile MusicalInstrument	instrument		= null;
 
@@ -109,15 +109,15 @@ public class PlayInstrument extends CommonSkill
 		final String sound=(playSound!=null)?CMLib.protocol().msp(playSound,10):"";
 		return L("<S-NAME> continue(s) @x1.@x2",verb,sound);
 	}
-	
+
 	protected Map<String,int[]> proficiencies = new Hashtable<String,int[]>();
-	
+
 	@Override
 	public void setMiscText(final String text)
 	{
 		proficiencies.clear();
 		final Map<String,String> map= CMParms.parseStrictEQParms(text);
-		for(String key : map.keySet())
+		for(final String key : map.keySet())
 			proficiencies.put(key, new int[] {CMath.s_int(map.get(key))});
 	}
 
@@ -170,8 +170,8 @@ public class PlayInstrument extends CommonSkill
 			affectableStats.addAmbiance("playing "+instrument.name());
 		super.affectPhyStats(affected, affectableStats);
 	}
-	
-	public static boolean usingInstrument(MusicalInstrument I, MOB mob)
+
+	public static boolean usingInstrument(final MusicalInstrument I, final MOB mob)
 	{
 		if((I==null)||(mob==null))
 			return false;
@@ -193,7 +193,7 @@ public class PlayInstrument extends CommonSkill
 		if(tickID==Tickable.TICKID_MOB)
 		{
 			final MOB mob=(MOB)affected;
-			if(!usingInstrument((MusicalInstrument)this.instrument,mob))
+			if(!usingInstrument(this.instrument,mob))
 			{
 				aborted=true;
 				unInvoke();
@@ -205,17 +205,34 @@ public class PlayInstrument extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
-		
+
+		if((commands.size()>0)&&(commands.get(0).equalsIgnoreCase("LIST")))
+		{
+			final StringBuilder str = new StringBuilder(L("You have some musical proficiency with: "));
+			if(proficiencies.size()==0)
+				str.append(L("Nothing!"));
+			else
+			{
+				for(final String s : proficiencies.keySet())
+				{
+					str.append(CMStrings.capitalizeAndLower(s)+" ("+proficiencies.get(s)[0]+"%), ");
+				}
+				str.delete(str.length()-2,str.length());
+			}
+			commonTell(mob,str.toString());
+			return false;
+		}
+
 		if(mob.fetchEffect(ID())!=null)
 		{
 			commonTell(mob,L("You are already playing an instrument.  Use PLAYINSTRUMENT STOP to stop."));
 			return false;
 		}
-		
+
 		MusicalInstrument target=null;
 		if((mob.riding()!=null)&&(mob.riding() instanceof MusicalInstrument))
 		{
@@ -246,7 +263,7 @@ public class PlayInstrument extends CommonSkill
 			commonTell(mob,L("You need an instrument to play one!"));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		this.instrument=target; // necc for the proficiency checks
