@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Items.CompTech;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -62,7 +63,325 @@ public class StdElecCompSensor extends StdElecCompItem implements TechComponent
 		@Override
 		public Environmental convert(final SpaceObject obj)
 		{
-			return obj;
+			final SpaceObject me=obj;
+			return new SpaceObject()
+			{
+				final SpaceObject obj = me;
+
+				@Override
+				public String ID()
+				{
+					return ""+obj;
+				}
+
+				@Override
+				public String Name()
+				{
+					return obj.Name();
+				}
+
+				@Override
+				public void setName(final String newName)
+				{
+				}
+
+				@Override
+				public String displayText()
+				{
+					return obj.displayText();
+				}
+
+				@Override
+				public void setDisplayText(final String newDisplayText)
+				{
+				}
+
+				@Override
+				public String description()
+				{
+					return obj.description();
+				}
+
+				@Override
+				public void setDescription(final String newDescription)
+				{
+				}
+
+				@Override
+				public String image()
+				{
+					return obj.image();
+				}
+
+				@Override
+				public String rawImage()
+				{
+					return obj.rawImage();
+				}
+
+				@Override
+				public void setImage(final String newImage)
+				{
+				}
+
+				@Override
+				public boolean isGeneric()
+				{
+					return obj.isGeneric();
+				}
+
+				@Override
+				public void setMiscText(final String newMiscText)
+				{
+				}
+
+				@Override
+				public String text()
+				{
+					return obj.text();
+				}
+
+				@Override
+				public String miscTextFormat()
+				{
+					return obj.miscTextFormat();
+				}
+
+				@Override
+				public boolean sameAs(final Environmental E)
+				{
+					return E.ID().equals(ID()) || (ID().equals(""+E)) || obj.sameAs(E);
+				}
+
+				@Override
+				public long expirationDate()
+				{
+					return obj.expirationDate();
+				}
+
+				@Override
+				public void setExpirationDate(final long dateTime)
+				{
+				}
+
+				@Override
+				public int maxRange()
+				{
+					return obj.maxRange();
+				}
+
+				@Override
+				public int minRange()
+				{
+					return obj.minRange();
+				}
+
+				@Override
+				public String L(final String str, final String... xs)
+				{
+					return obj.L(str, xs);
+				}
+
+				@Override
+				public String name()
+				{
+					return obj.name();
+				}
+
+				@Override
+				public int getTickStatus()
+				{
+					return obj.getTickStatus();
+				}
+
+				@Override
+				public boolean tick(final Tickable ticking, final int tickID)
+				{
+					return false;
+				}
+
+				@Override
+				public CMObject newInstance()
+				{
+					return obj.newInstance();
+				}
+
+				@Override
+				public CMObject copyOf()
+				{
+					return obj.copyOf();
+				}
+
+				@Override
+				public void initializeClass()
+				{
+				}
+
+				@Override
+				public int compareTo(final CMObject o)
+				{
+					if((o != null)
+					&&((o.ID().equals(ID())||(ID().equals(""+o)))))
+						return 0;
+					return obj.compareTo(o);
+				}
+
+				@Override
+				public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
+				{
+				}
+
+				@Override
+				public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
+				{
+				}
+
+				@Override
+				public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
+				{
+				}
+
+				@Override
+				public void executeMsg(final Environmental myHost, final CMMsg msg)
+				{
+				}
+
+				@Override
+				public boolean okMessage(final Environmental myHost, final CMMsg msg)
+				{
+					return true;
+				}
+
+				@Override
+				public void destroy()
+				{
+					// Nope!
+				}
+
+				@Override
+				public boolean isSavable()
+				{
+					return obj.isSavable();
+				}
+
+				@Override
+				public boolean amDestroyed()
+				{
+					return obj.amDestroyed();
+				}
+
+				@Override
+				public void setSavable(final boolean truefalse)
+				{
+				}
+
+				@Override
+				public String[] getStatCodes()
+				{
+					return obj.getStatCodes();
+				}
+
+				@Override
+				public int getSaveStatIndex()
+				{
+					return obj.getSaveStatIndex();
+				}
+
+				@Override
+				public String getStat(final String code)
+				{
+					return obj.getStat(code);
+				}
+
+				@Override
+				public boolean isStat(final String code)
+				{
+					return obj.isStat(code);
+				}
+
+				@Override
+				public void setStat(final String code, final String val)
+				{
+				}
+
+				@Override
+				public BoundedCube getBounds()
+				{
+					return obj.getBounds();
+				}
+
+				@Override
+				public long[] coordinates()
+				{
+					return Arrays.copyOf(obj.coordinates(), obj.coordinates().length);
+				}
+
+				@Override
+				public void setCoords(final long[] coords)
+				{
+				}
+
+				@Override
+				public long radius()
+				{
+					return obj.radius();
+				}
+
+				@Override
+				public void setRadius(final long radius)
+				{
+				}
+
+				@Override
+				public double[] direction()
+				{
+					return obj.direction();
+				}
+
+				@Override
+				public void setDirection(final double[] dir)
+				{
+				}
+
+				@Override
+				public double speed()
+				{
+					return obj.speed();
+				}
+
+				@Override
+				public void setSpeed(final double v)
+				{
+				}
+
+				@Override
+				public SpaceObject knownTarget()
+				{
+					return obj.knownTarget();
+				}
+
+				@Override
+				public void setKnownTarget(final SpaceObject O)
+				{
+				}
+
+				@Override
+				public SpaceObject knownSource()
+				{
+					return obj.knownSource();
+				}
+
+				@Override
+				public void setKnownSource(final SpaceObject O)
+				{
+				}
+
+				@Override
+				public long getMass()
+				{
+					return obj.getMass();
+				}
+			};
 		}
 	};
 

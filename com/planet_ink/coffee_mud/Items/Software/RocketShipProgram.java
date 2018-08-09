@@ -61,12 +61,15 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile Double				lastInject			= null;
 	protected volatile Double				targetAccelleration	= Double.valueOf(SpaceObject.ACCELLERATION_TYPICALSPACEROCKET);
 	protected volatile RocketStateMachine	rocketState			= null;
+	protected volatile SpaceObject			currentTarget		= null;
+	protected volatile Double				targetLeadPct		= null;
 	protected volatile SpaceObject			programPlanet		= null;
 	protected volatile List<ShipEngine>		programEngines		= null;
 	protected final	   List<SpaceObject>	sensorReport		= new LinkedList<SpaceObject>();
 
-	protected final PairSLinkedList<Long,List<SpaceObject>>	sensorReports	= new PairSLinkedList<Long,List<SpaceObject>>();
-	protected volatile Map<ShipEngine,Double[]> 			primeInjects	= new HashMap<ShipEngine,Double[]>();
+	protected final PairSLinkedList<Long, List<SpaceObject>>	sensorReports		= new PairSLinkedList<Long, List<SpaceObject>>();
+	protected final Map<ShipWarComponent, Double>				weaponEmissionPct	= new Hashtable<ShipWarComponent, Double>();
+	protected volatile Map<ShipEngine, Double[]>				primeInjects		= new Hashtable<ShipEngine, Double[]>();
 
 	protected enum RocketStateMachine
 	{
@@ -241,6 +244,16 @@ public class RocketShipProgram extends GenShipProgram
 		return findComponentByName(getShipSensors(), "SENSOR", name);
 	}
 
+	protected ShipWarComponent findWeaponByName(final String name)
+	{
+		return (ShipWarComponent)findComponentByName(getEngines(), "WEAPON", name);
+	}
+
+	protected ShipWarComponent findShieldByName(final String name)
+	{
+		return (ShipWarComponent)findComponentByName(getEngines(), "SHIELD", name);
+	}
+
 	@Override
 	public boolean isCommandString(final String word, final boolean isActive)
 	{
@@ -254,6 +267,9 @@ public class RocketShipProgram extends GenShipProgram
 		||uword.equals("LAUNCH")
 		||uword.equals("ACTIVATE")
 		||uword.equals("DEACTIVATE")
+		||uword.equals("TARGET")
+		||uword.equals("FIRE")
+		||(uword.startsWith("WEAPON")&&(CMath.isInteger(uword.substring(6))))
 		||(uword.startsWith("ENGINE")&&(CMath.isInteger(uword.substring(6))))
 		||(uword.startsWith("SENSOR")&&(CMath.isInteger(uword.substring(6))))
 		||(uword.startsWith("SYSTEM")&&(CMath.isInteger(uword.substring(6))))
@@ -1150,6 +1166,8 @@ public class RocketShipProgram extends GenShipProgram
 						+ "ACTIVATE [SYSTEM/ALL]  : turn on specified system\n\r"
 						+ "DEACTIVATE [SYSTEM/ALL]: turn off any system specified\n\r"
 						+ "LAUNCH / ORBIT         : take your ship off the planet\n\r"
+						+ "TARGET [NAME] [PCT]    : target a sensor object\n\r"
+						+ "FIRE [WEAPON]          : fire weapon at target\n\r"
 						+ "STOP   : negate all velocity\n\r"
 						+ "LAND   : land your ship on the nearest planet. \n\r"
 						+ "HELP [ENGINE/SYSTEM/SENSOR/WEAPON/...] : more info"));
@@ -1195,7 +1213,7 @@ public class RocketShipProgram extends GenShipProgram
 				{
 					super.addScreenMessage(
 						L("^HHELP:^N\n\r"
-						+"^H[WEAPON#/NAME] ([TARGETNAME]) [AMT]\n\r"));
+						+"^H[WEAPON#/NAME] [AMT]\n\r"));
 					return;
 				}
 				else
@@ -1579,6 +1597,56 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Landing approach procedure initialized."));
 				else
 					super.addScreenMessage(L("Landing procedure initialized."));
+				return;
+			}
+			else
+			if(uword.equalsIgnoreCase("TARGET"))
+			{
+				if(parsed.size()<3)
+				{
+					super.addScreenMessage(L("Error: TARGET requires the name of the target, and a percentage of the targets speed to lead it by.   Try HELP."));
+					return;
+				}
+				Double leadPct = new Double(0.0);
+				if((parsed.get(parsed.size()-1).indexOf('%')>0)
+				||(CMath.isPct(parsed.get(parsed.size()-1))))
+					leadPct=CMath.s_pct(parsed.remove(parsed.size()-1));
+
+				//TODO: target sensorname/num lead% of speed
+			}
+			else
+			if(uword.equalsIgnoreCase("FIRE"))
+			{
+				//TODO: fire weaponname --- at target, at power amount set
+			}
+			else
+			if(uword.startsWith("WEAPON"))
+			{
+				final ShipWarComponent weapon = this.findWeaponByName(uword);
+				if(weapon == null)
+				{
+					super.addScreenMessage(L("Error: Unknown weapon name or command word '"+uword+"'.   Try HELP."));
+					return;
+				}
+				if(parsed.size()==1)
+				{
+					super.addScreenMessage(L("Error: No emission percentage given."));
+					return;
+				}
+				final String emission=parsed.get(1);
+				if(!CMath.isPct(emission))
+				{
+					super.addScreenMessage(L("Error: Invalid emission percentage given."));
+					return;
+				}
+				final double pct=CMath.s_pct(emission);
+				if((pct < 0)||(pct > 1))
+				{
+					super.addScreenMessage(L("Error: Invalid emission percentage given."));
+					return;
+				}
+				this.weaponEmissionPct.put(weapon, new Double(pct));
+				super.addScreenMessage(L("Emission for @x1 locked in.",weapon.name()));
 				return;
 			}
 			else

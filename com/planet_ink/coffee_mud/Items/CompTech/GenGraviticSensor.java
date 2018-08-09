@@ -47,7 +47,7 @@ public class GenGraviticSensor extends GenElecCompSensor
 		setDisplayText("a gravitic sensor sits here.");
 		setDescription("");
 	}
-	
+
 	@Override
 	protected long getSensorMaxRange()
 	{
@@ -62,317 +62,317 @@ public class GenGraviticSensor extends GenElecCompSensor
 			@Override
 			public Environmental convert(final SpaceObject obj)
 			{
-				return new SpaceObject() 
+				return new SpaceObject()
 				{
 					final String name = L("Unknown");
 					final String displayText = "";
 					final String description = "";
-					
+
+					@Override
+					public String ID()
+					{
+						return ""+obj;
+					}
+
 					@Override
 					public String Name()
 					{
 						return name;
 					}
-	
+
 					@Override
-					public void setName(String newName)
+					public void setName(final String newName)
 					{
 					}
-	
+
 					@Override
 					public String displayText()
 					{
 						return displayText;
 					}
-	
+
 					@Override
-					public void setDisplayText(String newDisplayText)
+					public void setDisplayText(final String newDisplayText)
 					{
 					}
-	
+
 					@Override
 					public String description()
 					{
 						return description;
 					}
-	
+
 					@Override
-					public void setDescription(String newDescription)
+					public void setDescription(final String newDescription)
 					{
 					}
-	
+
 					@Override
 					public String image()
 					{
 						return null;
 					}
-	
+
 					@Override
 					public String rawImage()
 					{
 						return null;
 					}
-	
+
 					@Override
-					public void setImage(String newImage)
+					public void setImage(final String newImage)
 					{
 					}
-	
+
 					@Override
 					public boolean isGeneric()
 					{
 						return false;
 					}
-	
+
 					@Override
-					public void setMiscText(String newMiscText)
+					public void setMiscText(final String newMiscText)
 					{
 					}
-	
+
 					@Override
 					public String text()
 					{
 						return "";
 					}
-	
+
 					@Override
 					public String miscTextFormat()
 					{
 						return null;
 					}
-	
+
 					@Override
 					public boolean sameAs(final Environmental E)
 					{
 						return E==this || E==obj;
 					}
-	
+
 					@Override
 					public long expirationDate()
 					{
 						return 0;
 					}
-	
+
 					@Override
-					public void setExpirationDate(long dateTime)
+					public void setExpirationDate(final long dateTime)
 					{
 					}
-	
+
 					@Override
 					public int maxRange()
 					{
 						return 0;
 					}
-	
+
 					@Override
 					public int minRange()
 					{
 						return 0;
 					}
-	
+
 					@Override
-					public String L(String str, String... xs)
+					public String L(final String str, final String... xs)
 					{
 						return str;
 					}
-	
+
 					@Override
 					public String name()
 					{
 						return Name();
 					}
-	
+
 					@Override
 					public int getTickStatus()
 					{
 						return 0;
 					}
-	
+
 					@Override
 					public boolean tick(final Tickable ticking, final int tickID)
 					{
 						return false;
 					}
-	
-					@Override
-					public String ID()
-					{
-						return obj.ID();
-					}
-	
+
 					@Override
 					public CMObject newInstance()
 					{
 						return obj.newInstance();
 					}
-	
+
 					@Override
 					public CMObject copyOf()
 					{
 						return obj.copyOf();
 					}
-	
+
 					@Override
 					public void initializeClass()
 					{
 					}
-	
+
 					@Override
 					public int compareTo(final CMObject o)
 					{
 						return obj.compareTo(o);
 					}
-	
+
 					@Override
 					public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 					{
 					}
-	
+
 					@Override
 					public void affectCharStats(final MOB affectedMob, final CharStats affectableStats)
 					{
 					}
-	
+
 					@Override
-					public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+					public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 					{
 					}
-	
+
 					@Override
 					public void executeMsg(final Environmental myHost, final CMMsg msg)
 					{
 					}
-	
+
 					@Override
 					public boolean okMessage(final Environmental myHost, final CMMsg msg)
 					{
 						return true;
 					}
-	
+
 					@Override
 					public void destroy()
 					{
 						// Nope!
 					}
-	
+
 					@Override
 					public boolean isSavable()
 					{
 						return false;
 					}
-	
+
 					@Override
 					public boolean amDestroyed()
 					{
 						return obj.amDestroyed();
 					}
-	
+
 					@Override
-					public void setSavable(boolean truefalse)
+					public void setSavable(final boolean truefalse)
 					{
 					}
-	
+
 					@Override
 					public String[] getStatCodes()
 					{
 						return new String[0];
 					}
-	
+
 					@Override
 					public int getSaveStatIndex()
 					{
 						return 0;
 					}
-	
+
 					@Override
-					public String getStat(String code)
+					public String getStat(final String code)
 					{
 						return "";
 					}
-	
+
 					@Override
 					public boolean isStat(final String code)
 					{
 						return false;
 					}
-	
+
 					@Override
-					public void setStat(String code, String val)
+					public void setStat(final String code, final String val)
 					{
 					}
-	
+
 					@Override
 					public BoundedCube getBounds()
 					{
 						return obj.getBounds();
 					}
-	
+
 					@Override
 					public long[] coordinates()
 					{
 						return Arrays.copyOf(obj.coordinates(), obj.coordinates().length);
 					}
-	
+
 					@Override
-					public void setCoords(long[] coords)
+					public void setCoords(final long[] coords)
 					{
 					}
-	
+
 					@Override
 					public long radius()
 					{
 						return obj.radius();
 					}
-	
+
 					@Override
-					public void setRadius(long radius)
+					public void setRadius(final long radius)
 					{
 					}
-	
+
 					@Override
 					public double[] direction()
 					{
 						return new double[]{0,0};
 					}
-	
+
 					@Override
-					public void setDirection(double[] dir)
+					public void setDirection(final double[] dir)
 					{
 					}
-	
+
 					@Override
 					public double speed()
 					{
 						return 0;
 					}
-	
+
 					@Override
-					public void setSpeed(double v)
+					public void setSpeed(final double v)
 					{
 					}
-	
+
 					@Override
 					public SpaceObject knownTarget()
 					{
 						return null;
 					}
-	
+
 					@Override
-					public void setKnownTarget(SpaceObject O)
+					public void setKnownTarget(final SpaceObject O)
 					{
 					}
-	
+
 					@Override
 					public SpaceObject knownSource()
 					{
 						return obj;
 					}
-	
+
 					@Override
-					public void setKnownSource(SpaceObject O)
+					public void setKnownSource(final SpaceObject O)
 					{
 					}
-	
+
 					@Override
 					public long getMass()
 					{
@@ -382,9 +382,9 @@ public class GenGraviticSensor extends GenElecCompSensor
 			}
 		};
 	}
-	
+
 	protected static SpaceObject star = null;
-	
+
 	protected long getMassDetected()
 	{
 		if(star == null)
@@ -402,14 +402,14 @@ public class GenGraviticSensor extends GenElecCompSensor
 			final SpaceObject spaceMe = CMLib.map().getSpaceObject(me, true);
 
 			@Override
-			public boolean passesFilter(SpaceObject obj)
+			public boolean passesFilter(final SpaceObject obj)
 			{
 				if((spaceMe == null)||(me == obj)||(spaceMe == obj))
 					return false;
 				final long distance = CMLib.map().getDistanceFrom(spaceMe.coordinates(), obj.coordinates());
 				final long adjustedMax = Math.round(obj.getMass() * (1.0 - CMath.div(distance, getSensorMaxRange())));
 				// tiny objects are not detected, nor ships at great distance, nor things inside us
-				return (adjustedMax > 100) && (distance > obj.radius() + spaceMe.radius()); 
+				return (adjustedMax > 100) && (distance > obj.radius() + spaceMe.radius());
 			}
 		};
 	}
