@@ -75,7 +75,7 @@ public class Spell_Disintegrate extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Physical target=getAnyTarget(mob,commands,givenTarget,Wearable.FILTER_ANY);
 		if(target==null)
@@ -97,7 +97,7 @@ public class Spell_Disintegrate extends Spell
 			mob.tell(L("You are not powerful enough to disintegrate @x1.",target.name(mob)));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
