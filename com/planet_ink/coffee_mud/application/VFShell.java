@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import com.planet_ink.coffee_mud.Commands.Shell;
@@ -45,14 +46,14 @@ public class VFShell
 {
 	public static void main(final String[] args)
 	{
-		ThreadGroup g=new ThreadGroup("0");
-		Thread t=new Thread(g,new Runnable()
+		final ThreadGroup g=new ThreadGroup("0");
+		final Thread t=new Thread(g,new Runnable()
 		{
 			@Override
 			public void run()
 			{
 				CMProps page=null;
-				
+
 				CMLib.initialize(); // forces this thread to HAVE a library
 				Log.instance().configureLogFile(null,1);
 				Log.instance().configureLog(Log.Type.info, "ON");
@@ -89,9 +90,9 @@ public class VFShell
 					System.exit(-1);
 					return;
 				}
-				
+
 				DBConnector currentDBconnector=null;
-				String dbClass=page.getStr("DBCLASS");
+				final String dbClass=page.getStr("DBCLASS");
 				if(dbClass.length()>0)
 				{
 					final String dbService=page.getStr("DBSERVICE");
@@ -105,10 +106,11 @@ public class VFShell
 						System.exit(-1);
 					}
 					final boolean dbReuse=page.getBoolean("DBREUSE");
+					final Map<String,String> dbParms=CMParms.parseEQParms(page.getStr("DBPARMS"));
 					final boolean useQue=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUE);
 					final boolean useQueStart=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUESTART);
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: connecting to database");
-					currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbPingIntMins,dbReuse,useQue,useQueStart);
+					currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbParms,dbConns,dbPingIntMins,dbReuse,useQue,useQueStart);
 					currentDBconnector.reconnect();
 					CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*")));
 
@@ -147,7 +149,7 @@ public class VFShell
 					Log.errOut("Database error! Panic shutdown!");
 					System.exit(-1);
 				}
-				
+
 				CMClass.initialize();
 				Resources.initialize();
 				CMSecurity.instance();
@@ -179,9 +181,9 @@ public class VFShell
 				CMClass.addClass(CMObjectType.COMMON, new com.planet_ink.coffee_mud.Common.DefaultCharState());
 				CMClass.addClass(CMObjectType.COMMON, new com.planet_ink.coffee_mud.Common.DefaultCharStats());
 				CMClass.addClass(CMObjectType.COMMON, new com.planet_ink.coffee_mud.Common.DefaultPhyStats());
-				
+
 				final MOB fakeMob = new StdMOB();
-				
+
 				final Session session = new Session()
 				{
 					protected OutputStream bout=System.out;
@@ -232,7 +234,7 @@ public class VFShell
 					}
 
 					@Override
-					public void initializeSession(Socket s, String groupName, String introTextStr)
+					public void initializeSession(final Socket s, final String groupName, final String introTextStr)
 					{
 					}
 
@@ -243,7 +245,7 @@ public class VFShell
 					}
 
 					@Override
-					public void setGroupName(String group)
+					public void setGroupName(final String group)
 					{
 					}
 
@@ -288,7 +290,7 @@ public class VFShell
 					}
 
 					@Override
-					public void logout(boolean b1)
+					public void logout(final boolean b1)
 					{
 					}
 
@@ -299,12 +301,12 @@ public class VFShell
 					}
 
 					@Override
-					public void negotiateTelnetMode(int code)
+					public void negotiateTelnetMode(final int code)
 					{
 					}
 
 					@Override
-					public boolean isAllowedMxp(String tag)
+					public boolean isAllowedMxp(final String tag)
 					{
 						return false;
 					}
@@ -327,18 +329,18 @@ public class VFShell
 					}
 
 					@Override
-					public void setFakeInput(String input)
+					public void setFakeInput(final String input)
 					{
 					}
 
 					@Override
-					public boolean isAllowedMcp(String packageName, float version)
+					public boolean isAllowedMcp(final String packageName, final float version)
 					{
 						return false;
 					}
 
 					@Override
-					public boolean sendMcpCommand(String packageCommand, String parms)
+					public boolean sendMcpCommand(final String packageCommand, final String parms)
 					{
 						return false;
 					}
@@ -350,7 +352,7 @@ public class VFShell
 					}
 
 					@Override
-					public void onlyPrint(String msg, boolean noCache)
+					public void onlyPrint(final String msg, final boolean noCache)
 					{
 						if (bout != null)
 						{
@@ -369,150 +371,150 @@ public class VFShell
 					}
 
 					@Override
-					public void onlyPrint(String msg)
+					public void onlyPrint(final String msg)
 					{
 						onlyPrint(msg, false);
 					}
 
 					@Override
-					public void rawOut(String msg)
+					public void rawOut(final String msg)
 					{
 						onlyPrint(msg, false);
 					}
 
 					@Override
-					public void rawPrintln(String msg)
+					public void rawPrintln(final String msg)
 					{
 						onlyPrint(msg + "\n", false);
 					}
 
 					@Override
-					public void rawPrint(String msg)
+					public void rawPrint(final String msg)
 					{
 						onlyPrint(msg, false);
 					}
 
 					@Override
-					public void safeRawPrintln(String msg)
+					public void safeRawPrintln(final String msg)
 					{
 						onlyPrint(msg + "\n", false);
 					}
 
 					@Override
-					public void safeRawPrint(String msg)
+					public void safeRawPrint(final String msg)
 					{
 						onlyPrint(msg, false);
 					}
 
 					@Override
-					public void stdPrint(String msg)
+					public void stdPrint(final String msg)
 					{
 						onlyPrint(msg, false);
 					}
 
 					@Override
-					public void stdPrint(Physical Source, Environmental Target, Environmental Tool, String msg)
+					public void stdPrint(final Physical Source, final Environmental Target, final Environmental Tool, final String msg)
 					{
 						onlyPrint(msg, false);
 					}
 
 					@Override
-					public void stdPrintln(String msg)
+					public void stdPrintln(final String msg)
 					{
 						onlyPrint(msg + "\n", false);
 					}
 
 					@Override
-					public void stdPrintln(Physical Source, Environmental Target, Environmental Tool, String msg)
+					public void stdPrintln(final Physical Source, final Environmental Target, final Environmental Tool, final String msg)
 					{
 						onlyPrint(msg + "\n", false);
 					}
 
 					@Override
-					public void rawCharsOut(char[] c)
+					public void rawCharsOut(final char[] c)
 					{
 						onlyPrint(new String(c), false);
 					}
 
 					@Override
-					public void print(String msg)
+					public void print(final String msg)
 					{
 						onlyPrint(msg, false);
 					}
 
 					@Override
-					public void promptPrint(String msg)
+					public void promptPrint(final String msg)
 					{
 						onlyPrint(msg, false);
 					}
 
 					@Override
-					public void print(Physical Source, Environmental Target, Environmental Tool, String msg)
+					public void print(final Physical Source, final Environmental Target, final Environmental Tool, final String msg)
 					{
 						onlyPrint(msg, false);
 					}
 
 					@Override
-					public void println(String msg)
+					public void println(final String msg)
 					{
 						onlyPrint(msg + "\n", false);
 					}
 
 					@Override
-					public void println(Physical Source, Environmental Target, Environmental Tool, String msg)
+					public void println(final Physical Source, final Environmental Target, final Environmental Tool, final String msg)
 					{
 						onlyPrint(msg + "\n", false);
 					}
 
 					@Override
-					public void wraplessPrintln(String msg)
+					public void wraplessPrintln(final String msg)
 					{
 						onlyPrint(msg + "\n", false);
 					}
 
 					@Override
-					public void wraplessPrint(String msg)
+					public void wraplessPrint(final String msg)
 					{
 						onlyPrint(msg, false);
 					}
 
 					@Override
-					public void colorOnlyPrintln(String msg, boolean noCache)
+					public void colorOnlyPrintln(final String msg, final boolean noCache)
 					{
 						onlyPrint(msg + "\n", false);
 					}
 
 					@Override
-					public void colorOnlyPrint(String msg, boolean noCache)
+					public void colorOnlyPrint(final String msg, final boolean noCache)
 					{
 						onlyPrint(msg, false);
 					}
 
 					@Override
-					public void colorOnlyPrintln(String msg)
+					public void colorOnlyPrintln(final String msg)
 					{
 						onlyPrint(msg + "\n", false);
 					}
 
 					@Override
-					public void colorOnlyPrint(String msg)
+					public void colorOnlyPrint(final String msg)
 					{
 						onlyPrint(msg, false);
 					}
 
 					@Override
-					public void setPromptFlag(boolean truefalse)
+					public void setPromptFlag(final boolean truefalse)
 					{
 					}
 
 					@Override
-					public char hotkey(long maxWait)
+					public char hotkey(final long maxWait)
 					{
 						return ' ';
 					}
 
 					@Override
-					public String prompt(String Message, String Default)
+					public String prompt(final String Message, final String Default)
 					{
 						onlyPrint(Message, false);
 						final String msg = readlineContinue();
@@ -522,7 +524,7 @@ public class VFShell
 					}
 
 					@Override
-					public void prompt(InputCallback callBack)
+					public void prompt(final InputCallback callBack)
 					{
 						callBack.showPrompt();
 						callBack.setInput(readlineContinue());
@@ -530,25 +532,25 @@ public class VFShell
 					}
 
 					@Override
-					public String prompt(String Message, String Default, long maxTime)
+					public String prompt(final String Message, final String Default, final long maxTime)
 					{
 						return prompt(Message, Default);
 					}
 
 					@Override
-					public String prompt(String Message)
+					public String prompt(final String Message)
 					{
 						return prompt(Message, "");
 					}
 
 					@Override
-					public String prompt(String Message, long maxTime)
+					public String prompt(final String Message, final long maxTime)
 					{
 						return prompt(Message, "");
 					}
 
 					@Override
-					public boolean confirm(String Message, String Default)
+					public boolean confirm(final String Message, String Default)
 					{
 						if (Default.toUpperCase().startsWith("T"))
 							Default = "Y";
@@ -557,13 +559,13 @@ public class VFShell
 					}
 
 					@Override
-					public boolean confirm(String Message, String Default, long maxTime)
+					public boolean confirm(final String Message, final String Default, final long maxTime)
 					{
 						return confirm(Message, Default, 0);
 					}
 
 					@Override
-					public String choose(String Message, String Choices, String Default)
+					public String choose(final String Message, final String Choices, final String Default)
 					{
 						onlyPrint(Message, false);
 						final String msg = readlineContinue();
@@ -575,19 +577,19 @@ public class VFShell
 					}
 
 					@Override
-					public String choose(final String Message, final String Choices, final String Default, long maxTime, List<String> paramsOut) throws IOException
+					public String choose(final String Message, final String Choices, final String Default, final long maxTime, final List<String> paramsOut) throws IOException
 					{
 						return choose(Message, Choices, Default);
 					}
 
 					@Override
-					public String choose(String Message, String Choices, String Default, long maxTime)
+					public String choose(final String Message, final String Choices, final String Default, final long maxTime)
 					{
 						return choose(Message, Choices, Default);
 					}
 
 					@Override
-					public String blockingIn(long timeoutMillis, boolean filter)
+					public String blockingIn(final long timeoutMillis, final boolean filter)
 					{
 						return readlineContinue();
 					}
@@ -599,7 +601,7 @@ public class VFShell
 						{
 							return new BufferedReader(new InputStreamReader(System.in)).readLine();
 						}
-						catch (Exception e)
+						catch (final Exception e)
 						{
 							System.exit(-1);
 							return "";
@@ -607,24 +609,24 @@ public class VFShell
 					}
 
 					@Override
-					public void setBeingSnoopedBy(Session session, boolean onOff)
+					public void setBeingSnoopedBy(final Session session, final boolean onOff)
 					{
 					}
 
 					@Override
-					public boolean isBeingSnoopedBy(Session S)
+					public boolean isBeingSnoopedBy(final Session S)
 					{
 						return S == this;
 					}
 
 					@Override
-					public int snoopSuspension(int x)
+					public int snoopSuspension(final int x)
 					{
 						return 0;
 					}
 
 					@Override
-					public void stopSession(boolean t1, boolean t2, boolean t3)
+					public void stopSession(final boolean t1, final boolean t2, final boolean t3)
 					{
 					}
 
@@ -641,7 +643,7 @@ public class VFShell
 					}
 
 					@Override
-					public void setAfkFlag(boolean truefalse)
+					public void setAfkFlag(final boolean truefalse)
 					{
 					}
 
@@ -652,7 +654,7 @@ public class VFShell
 					}
 
 					@Override
-					public void setAFKMessage(String str)
+					public void setAFKMessage(final String str)
 					{
 					}
 
@@ -669,23 +671,23 @@ public class VFShell
 					}
 
 					@Override
-					public void setMob(MOB newmob)
+					public void setMob(final MOB newmob)
 					{
 						mob = newmob;
 					}
 
 					@Override
-					public void setAccount(PlayerAccount account)
+					public void setAccount(final PlayerAccount account)
 					{
 					}
 
 					@Override
-					public void setCurrentColor(ColorState newcolor)
+					public void setCurrentColor(final ColorState newcolor)
 					{
 					}
 
 					@Override
-					public void setLastColor(ColorState newColor)
+					public void setLastColor(final ColorState newColor)
 					{
 					}
 
@@ -720,7 +722,7 @@ public class VFShell
 					}
 
 					@Override
-					public void setStatus(SessionStatus newStatus)
+					public void setStatus(final SessionStatus newStatus)
 					{
 					}
 
@@ -794,34 +796,34 @@ public class VFShell
 					}
 
 					@Override
-					public void setServerTelnetMode(int telnetCode, boolean onOff)
+					public void setServerTelnetMode(final int telnetCode, final boolean onOff)
 					{
 					}
 
 					@Override
-					public boolean getServerTelnetMode(int telnetCode)
-					{
-						return false;
-					}
-
-					@Override
-					public void setClientTelnetMode(int telnetCode, boolean onOff)
-					{
-					}
-
-					@Override
-					public boolean getClientTelnetMode(int telnetCode)
+					public boolean getServerTelnetMode(final int telnetCode)
 					{
 						return false;
 					}
 
 					@Override
-					public void changeTelnetMode(int telnetCode, boolean onOff)
+					public void setClientTelnetMode(final int telnetCode, final boolean onOff)
 					{
 					}
 
 					@Override
-					public void initTelnetMode(int mobbitmap)
+					public boolean getClientTelnetMode(final int telnetCode)
+					{
+						return false;
+					}
+
+					@Override
+					public void changeTelnetMode(final int telnetCode, final boolean onOff)
+					{
+					}
+
+					@Override
+					public void initTelnetMode(final int mobbitmap)
 					{
 					}
 
@@ -832,7 +834,7 @@ public class VFShell
 					}
 
 					@Override
-					public String getStat(String code)
+					public String getStat(final String code)
 					{
 						return null;
 					}
@@ -850,7 +852,7 @@ public class VFShell
 					}
 
 					@Override
-					public void setStat(String code, String val)
+					public void setStat(final String code, final String val)
 					{
 					}
 
@@ -861,7 +863,7 @@ public class VFShell
 					}
 
 					@Override
-					public boolean autoLogin(String name, String password)
+					public boolean autoLogin(final String name, final String password)
 					{
 						return false;
 					}
@@ -869,7 +871,7 @@ public class VFShell
 				fakeMob.setSession(session);
 				fakeMob.setSoulMate(fakeMob);
 				fakeMob.setAttribute(MOB.Attrib.SYSOPMSGS, true);
-				Shell shell = new Shell();
+				final Shell shell = new Shell();
 				String command="";
 				String pwd="";
 				System.out.println("CoffeeMud VFShell started. Use 'exit' to quit.");
@@ -883,14 +885,14 @@ public class VFShell
 						command=new BufferedReader(new InputStreamReader(System.in)).readLine();
 						if((command!=null)&&(command.trim().length()>0)&&(!command.trim().toLowerCase().startsWith("exit")))
 							shell.execute(fakeMob, CMParms.parse("SHELL "+command), 0);
-					} 
-					catch (Exception e)
+					}
+					catch (final Exception e)
 					{
 						e.printStackTrace();
 						break;
 					}
 				}
-				
+
 				currentDBconnector.killConnections();
 			}
 		});
@@ -898,8 +900,8 @@ public class VFShell
 		{
 			t.start();
 			t.join();
-		} 
-		catch (InterruptedException e)
+		}
+		catch (final InterruptedException e)
 		{
 			e.printStackTrace();
 		}

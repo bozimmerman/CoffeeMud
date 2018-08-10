@@ -90,44 +90,49 @@ public class DBConnection
 	 *
 	 * Usage: DBConnection("","","");
 	 * @param parent 	the parent connections object
-	 * @param DBClass    JDBC Class
-	 * @param DBService    ODBC SERVICE
-	 * @param DBUser	ODBC LOGIN USERNAME
-	 * @param DBPass	ODBC LOGIN PASSWORD
-	 * @param DBReuse   Whether the connection can be reused.
+	 * @param dbClass    JDBC Class
+	 * @param dbService    ODBC SERVICE
+	 * @param dbUser	ODBC LOGIN USERNAME
+	 * @param dbPass	ODBC LOGIN PASSWORD
+	 * @param dbParms	JDBC extra arguments
+	 * @param dbReuse   Whether the connection can be reused.
 	 * @throws SQLException a sql error
 	 */
-	public DBConnection(DBConnections parent,
-						String DBClass,
-						String DBService,
-						String DBUser,
-						String DBPass,
-						boolean DBReuse)
+	public DBConnection(final DBConnections parent,
+						String dbClass,
+						final String dbService,
+						final String dbUser,
+						final String dbPass,
+						final Map<String, String> dbParms,
+						final boolean dbReuse)
 		throws SQLException
 	{
 		myParent=parent;
-		if((DBClass==null)||(DBClass.length()==0))
-			DBClass="sun.jdbc.odbc.JdbcOdbcDriver";
+		if((dbClass==null)||(dbClass.length()==0))
+			dbClass="sun.jdbc.odbc.JdbcOdbcDriver";
 		try
 		{
-			Class.forName(DBClass);
+			Class.forName(dbClass);
 		}
 		catch(final ClassNotFoundException ce)
 		{
 			ce.printStackTrace();
 		}
 		sqlserver=true;
-		isReusable=DBReuse;
+		isReusable=dbReuse;
 		final java.util.Properties p = new java.util.Properties();
-		if((DBUser!=null)&&(DBUser.length()>0))
+		if((dbUser!=null)
+		&&(dbUser.length()>0))
 		{
-			p.put("user",DBUser);
-			p.put("password",DBPass);
+			p.put("user",dbUser);
+			p.put("password",dbPass);
 		}
+		for(final String key : dbParms.keySet())
+			p.put(key, dbParms.get(key));
 		p.put("SetBigStringTryClob", "true");
-		myConnection=DriverManager.getConnection(DBService,p);
+		myConnection=DriverManager.getConnection(dbService,p);
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
-			Log.debugOut("New connection made to :"+DBService+" using "+DBClass);
+			Log.debugOut("New connection made to :"+dbService+" using "+dbClass);
 		sqlserver=false;
 		inUse=false;
 	}
@@ -211,7 +216,7 @@ public class DBConnection
 	 * @param openerSQL    Any SQL string you'd like to send
 	 * @return boolean    The connection being used
 	 */
-	public synchronized boolean use(String openerSQL)
+	public synchronized boolean use(final String openerSQL)
 	{
 		if((!inUse)&&(ready())&&(!isProbablyDead()))
 		{
@@ -289,7 +294,7 @@ public class DBConnection
 	 * @param SQL    Any SQL string you'd like to use
 	 * @return boolean    The connection being used
 	 */
-	public synchronized boolean usePrepared(String SQL)
+	public synchronized boolean usePrepared(final String SQL)
 	{
 		if((!inUse)&&(ready()))
 		{
@@ -334,7 +339,7 @@ public class DBConnection
 	 * @param SQL    Any SQL string you'd like to use
 	 * @return boolean    The connection being used
 	 */
-	public synchronized boolean rePrepare(String SQL)
+	public synchronized boolean rePrepare(final String SQL)
 	{
 		if(inUse)
 		{
@@ -375,7 +380,7 @@ public class DBConnection
 		return false;
 	}
 
-	protected void closeStatements(String Closer)
+	protected void closeStatements(final String Closer)
 	{
 		try
 		{
@@ -425,7 +430,7 @@ public class DBConnection
 	 * Usage: doneUsing("roll back");
 	 * @param Closer	Any SQL string you'd like to send
 	 */
-	protected void doneUsing(String Closer)
+	protected void doneUsing(final String Closer)
 	{
 		closeStatements(Closer);
 		if(!isReusable)
@@ -451,7 +456,7 @@ public class DBConnection
 	 * @return ResultSet	The results of the query
 	 * @throws SQLException a sql error
 	 */
-	public ResultSet query(String queryString)
+	public ResultSet query(final String queryString)
 		throws SQLException
 	{
 		lastSQL=queryString;
@@ -510,7 +515,7 @@ public class DBConnection
 	 * @param vals the strings, in order
 	 * @throws SQLException a sql error
 	 */
-	public void setPreparedClobs(String[] vals) throws SQLException
+	public void setPreparedClobs(final String[] vals) throws SQLException
 	{
 		if(getPreparedStatement()==null)
 		{
@@ -534,7 +539,7 @@ public class DBConnection
 	 * @return int    The status of the update
 	 * @throws SQLException a sql error
 	 */
-	public int update(String updateString, int retryNum)
+	public int update(final String updateString, final int retryNum)
 		throws SQLException
 	{
 		lastSQL=updateString;
@@ -617,7 +622,7 @@ public class DBConnection
 	 * @param R the result set
 	 * @return the number of records
 	 */
-	public int getRecordCount(ResultSet R)
+	public int getRecordCount(final ResultSet R)
 	{
 		int recordCount=0;
 		try
@@ -632,7 +637,7 @@ public class DBConnection
 		}
 		return recordCount;
 	}
-	
+
 	/**
 	 * known errors should not be a reason to report a dead state
 	 *

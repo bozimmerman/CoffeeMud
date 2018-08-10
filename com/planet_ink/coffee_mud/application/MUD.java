@@ -95,61 +95,61 @@ public class MUD extends Thread implements MudHost
 	private static List<CM1Server>		cm1Servers			= new Vector<CM1Server>();
 	private static final ServiceEngine	serviceEngine		= new ServiceEngine();
 
-	public MUD(String name)
+	public MUD(final String name)
 	{
 		super(name);
 		threadGroup=Thread.currentThread().getThreadGroup();
 	}
 
 	@Override
-	public void acceptConnection(Socket sock) throws SocketException, IOException
+	public void acceptConnection(final Socket sock) throws SocketException, IOException
 	{
 		setState(MudState.ACCEPTING);
 		serviceEngine.executeRunnable(threadGroup.getName(),new ConnectionAcceptor(sock));
 	}
-	
+
 	@Override
 	public ThreadGroup threadGroup()
 	{
 		return threadGroup;
 	}
 
-	private static boolean checkedSleep(long millis)
+	private static boolean checkedSleep(final long millis)
 	{
 		try
 		{
 			Thread.sleep(millis);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 			return false;
 		}
 		return true;
 	}
-	
+
 	private class ConnectionAcceptor implements CMRunnable
 	{
 		Socket sock;
 		long startTime=0;
 
-		public ConnectionAcceptor(Socket sock) throws SocketException, IOException
+		public ConnectionAcceptor(final Socket sock) throws SocketException, IOException
 		{
 			this.sock=sock;
 			sock.setSoLinger(true,3);
 		}
 
-		@Override 
+		@Override
 		public long getStartTime()
-		{ 
-			return startTime; 
+		{
+			return startTime;
 		}
-		
-		@Override 
-		public int getGroupID() 
-		{ 
-			return Thread.currentThread().getThreadGroup().getName().charAt(0); 
+
+		@Override
+		public int getGroupID()
+		{
+			return Thread.currentThread().getThreadGroup().getName().charAt(0);
 		}
-		
+
 		@Override
 		public void run()
 		{
@@ -310,12 +310,12 @@ public class MUD extends Thread implements MudHost
 				{
 					StringBuffer rejectText;
 
-					try 
-					{ 
+					try
+					{
 						rejectText = Resources.getFileResource("text/offline.txt",true);
 					}
-					catch(final java.lang.NullPointerException npe) 
-					{ 
+					catch(final java.lang.NullPointerException npe)
+					{
 						rejectText=new StringBuffer("");
 					}
 
@@ -374,7 +374,7 @@ public class MUD extends Thread implements MudHost
 		return "English";
 	}
 
-	public void setState(MudState st)
+	public void setState(final MudState st)
 	{
 		if(st!=state)
 			state=st;
@@ -458,7 +458,7 @@ public class MUD extends Thread implements MudHost
 	}
 
 	@Override
-	public void shutdown(Session S, boolean keepItDown, String externalCommand)
+	public void shutdown(final Session S, final boolean keepItDown, final String externalCommand)
 	{
 		globalShutdown(S,keepItDown,externalCommand);
 		interrupt(); // kill the damn archon thread.
@@ -468,17 +468,17 @@ public class MUD extends Thread implements MudHost
 	{
 		globalShutdown(null,true,null);
 	}
-	
-	private static void shutdownMemReport(String blockName)
+
+	private static void shutdownMemReport(final String blockName)
 	{
 		try
 		{
 			Object obj = new Object();
-			WeakReference<Object> ref = new WeakReference<Object>(obj);
+			final WeakReference<Object> ref = new WeakReference<Object>(obj);
 			obj = null;
 			System.gc();
 			System.runFinalization();
-			while(ref.get() != null) 
+			while(ref.get() != null)
 			{
 				System.gc();
 			}
@@ -603,7 +603,7 @@ public class MUD extends Thread implements MudHost
 		if(S!=null)
 			S.println(CMLib.lang().L("done"));
 		Log.sysOut(Thread.currentThread().getName(),"Stats saved.");
-		if(debugMem) 
+		if(debugMem)
 			shutdownMemReport("Saves");
 
 		shutdownStateTime.set(System.currentTimeMillis());
@@ -678,7 +678,7 @@ public class MUD extends Thread implements MudHost
 					if(debugMem) shutdownMemReport(library.ID());
 					shutdownStateTime.set(System.currentTimeMillis());
 				}
-				catch(Throwable t)
+				catch(final Throwable t)
 				{
 					Log.errOut(t);
 				}
@@ -877,7 +877,7 @@ public class MUD extends Thread implements MudHost
 					library.shutdown();
 					if(S!=null)
 						S.println("shut down.");
-					if(debugMem) 
+					if(debugMem)
 						shutdownMemReport(library.ID());
 				}
 				catch (final Throwable ex)
@@ -906,7 +906,7 @@ public class MUD extends Thread implements MudHost
 						library.shutdown();
 						if(S!=null)
 							S.println("shut down.");
-						if(debugMem) 
+						if(debugMem)
 							shutdownMemReport(library.ID());
 					}
 					catch (final Throwable ex)
@@ -1013,7 +1013,7 @@ public class MUD extends Thread implements MudHost
 		Log.debugOut("Used memory = "+(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
 	}
 
-	private static boolean startWebServer(final CMProps page, String serverName)
+	private static boolean startWebServer(final CMProps page, final String serverName)
 	{
 		try
 		{
@@ -1039,7 +1039,7 @@ public class MUD extends Thread implements MudHost
 			return false;
 		}
 	}
-	
+
 	private static boolean stopWebServer(final String serverName)
 	{
 		try
@@ -1066,7 +1066,7 @@ public class MUD extends Thread implements MudHost
 		}
 		return false;
 	}
-	
+
 	private static void startIntermud3()
 	{
 		final char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
@@ -1209,7 +1209,7 @@ public class MUD extends Thread implements MudHost
 		super.interrupt();
 	}
 
-	public static int activeThreadCount(ThreadGroup tGroup, boolean nonDaemonsOnly)
+	public static int activeThreadCount(final ThreadGroup tGroup, final boolean nonDaemonsOnly)
 	{
 		int realAC=0;
 		final int ac = tGroup.activeCount();
@@ -1223,7 +1223,7 @@ public class MUD extends Thread implements MudHost
 		return realAC;
 	}
 
-	private static int killCount(ThreadGroup tGroup, boolean nonDaemonsOnly)
+	private static int killCount(final ThreadGroup tGroup, final boolean nonDaemonsOnly)
 	{
 		int killed=0;
 
@@ -1241,7 +1241,7 @@ public class MUD extends Thread implements MudHost
 		return killed;
 	}
 
-	private static void threadList(ThreadGroup tGroup, boolean nonDaemonsOnly)
+	private static void threadList(final ThreadGroup tGroup, final boolean nonDaemonsOnly)
 	{
 		if(tGroup==null)
 			return;
@@ -1328,7 +1328,7 @@ public class MUD extends Thread implements MudHost
 		private boolean		  failedStart=false;
 		//protected ThreadGroup threadGroup;
 
-		public HostGroup(ThreadGroup G, String mudName, String iniFileName)
+		public HostGroup(final ThreadGroup G, final String mudName, final String iniFileName)
 		{
 			super(G,"HOST"+grpid);
 			//threadGroup=G;
@@ -1353,7 +1353,7 @@ public class MUD extends Thread implements MudHost
 			return failedStart;
 		}
 
-		public void fatalStartupError(Thread t, int type)
+		public void fatalStartupError(final Thread t, final int type)
 		{
 			String errorInternal=null;
 			switch(type)
@@ -1441,6 +1441,7 @@ public class MUD extends Thread implements MudHost
 				final String dbPass=page.getStr("DBPASS");
 				final int dbConns=page.getInt("DBCONNECTIONS");
 				final int dbPingIntMins=page.getInt("DBPINGINTERVALMINS");
+				final Map<String,String> dbParms=CMParms.parseEQParms(page.getStr("DBPARMS"));
 				if(dbConns == 0)
 				{
 					Log.errOut(Thread.currentThread().getName(),"Fatal error: DBCONNECTIONS in INI file is "+dbConns);
@@ -1450,7 +1451,7 @@ public class MUD extends Thread implements MudHost
 				final boolean useQue=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUE);
 				final boolean useQueStart=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUESTART);
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: connecting to database");
-				currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbPingIntMins,dbReuse,useQue,useQueStart);
+				currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbParms,dbConns,dbPingIntMins,dbReuse,useQue,useQueStart);
 				currentDBconnector.reconnect();
 				CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*")));
 
@@ -1571,7 +1572,7 @@ public class MUD extends Thread implements MudHost
 			final Map<String,Clan> clanPostLoads=new TreeMap<String,Clan>();
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("CLANS")))
 			{
-				List<Clan> clans = CMLib.database().DBReadAllClans();
+				final List<Clan> clans = CMLib.database().DBReadAllClans();
 				for(final Clan C : clans)
 				{
 					CMLib.clans().addClan(C);
@@ -1632,7 +1633,7 @@ public class MUD extends Thread implements MudHost
 					}
 					mob.destroy();
 				}
-				
+
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: Map Load Complete.");
 				Log.sysOut(Thread.currentThread().getName(),"Mapped rooms      : "+CMLib.map().numRooms()+" in "+CMLib.map().numAreas()+" areas");
 				if(CMLib.map().numSpaceObjects()>0)
@@ -1666,11 +1667,11 @@ public class MUD extends Thread implements MudHost
 			{
 				CMLib.database().DBReadClanItems(clanPostLoads);
 			}
-			
+
 			if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("QUESTS")))
 			{
 				CMLib.quests().shutdown();
-				for(Quest Q : CMLib.database().DBReadQuests())
+				for(final Quest Q : CMLib.database().DBReadQuests())
 					CMLib.quests().addQuest(Q);
 				if(CMLib.quests().numQuests()>0)
 					Log.sysOut(Thread.currentThread().getName(),"Quests loaded     : "+CMLib.quests().numQuests());
@@ -1903,7 +1904,7 @@ public class MUD extends Thread implements MudHost
 		return V;
 	}
 
-	public static void main(String a[])
+	public static void main(final String a[])
 	{
 		String nameID="";
 		Thread.currentThread().setName(("MUD"));
@@ -2067,7 +2068,7 @@ public class MUD extends Thread implements MudHost
 					}
 					catch(final Exception e)
 					{
-						e.printStackTrace(); Log.errOut(Thread.currentThread().getName(),e); 
+						e.printStackTrace(); Log.errOut(Thread.currentThread().getName(),e);
 					}
 					Runtime.getRuntime().removeShutdownHook(shutdownHook);
 				}
@@ -2102,7 +2103,7 @@ public class MUD extends Thread implements MudHost
 			}
 		}
 	}
-	
+
 	public static void execExternalRestart()
 	{
 		final Runtime r=Runtime.getRuntime();
@@ -2120,14 +2121,14 @@ public class MUD extends Thread implements MudHost
 				Log.sysOut("Attempted to execute 'restart.bat' in "+new File(".").getCanonicalPath());
 			}
 		}
-		catch (IOException e)
+		catch (final IOException e)
 		{
 			Log.errOut(e);
 		}
 	}
 
 	@Override
-	public void setAcceptConnections(boolean truefalse)
+	public void setAcceptConnections(final boolean truefalse)
 	{
 		acceptConns=truefalse;
 	}
@@ -2145,7 +2146,7 @@ public class MUD extends Thread implements MudHost
 	}
 
 	@Override
-	public String executeCommand(String cmd) throws Exception
+	public String executeCommand(final String cmd) throws Exception
 	{
 		final List<String> V=CMParms.parse(cmd);
 		if(V.size()==0)
@@ -2208,9 +2209,9 @@ public class MUD extends Thread implements MudHost
 		else
 		if(word.equalsIgnoreCase("WEBSERVER")&&(V.size()>2))
 		{
-			String var = V.get(2);
+			final String var = V.get(2);
 			WebServer server=null;
-			for(WebServer serv : webServers)
+			for(final WebServer serv : webServers)
 			{
 				if(serv.getName().equalsIgnoreCase(V.get(1)))
 				{
@@ -2239,7 +2240,7 @@ public class MUD extends Thread implements MudHost
 				throw new CMException("Unknown server: "+var);
 			if(var.equalsIgnoreCase("PORT"))
 			{
-				int[] ports = server.getConfig().getHttpListenPorts();
+				final int[] ports = server.getConfig().getHttpListenPorts();
 				if(ports.length==0)
 					return "";
 				return Integer.toString(ports[0]);

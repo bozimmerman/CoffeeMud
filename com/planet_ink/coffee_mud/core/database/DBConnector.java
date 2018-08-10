@@ -19,6 +19,8 @@ import java.sql.ResultSet;
 import java.io.PrintStream;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
+import java.util.Hashtable;
 /*
    Copyright 2001-2018 Bo Zimmerman
 
@@ -36,16 +38,17 @@ import java.util.List;
 */
 public class DBConnector
 {
-	private DBConnections	dbConnections		= null;
-	private String			dbClass				= "";
-	private String			dbService			= "";
-	private String			dbUser				= "";
-	private String			dbPass				= "";
-	private boolean			dbReuse				= false;
-	private int				numConnections		= 0;
-	private int				dbPingIntMins		= 0;
-	private boolean			doErrorQueueing		= false;
-	private boolean			newErrorQueueing	= false;
+	private DBConnections		dbConnections		= null;
+	private String				dbClass				= "";
+	private String				dbService			= "";
+	private String				dbUser				= "";
+	private String				dbPass				= "";
+	private Map<String, String>	dbParms				= new Hashtable<String, String>();
+	private boolean				dbReuse				= false;
+	private int					numConnections		= 0;
+	private int					dbPingIntMins		= 0;
+	private boolean				doErrorQueueing		= false;
+	private boolean				newErrorQueueing	= false;
 
 	public static final class DBPreparedBatchEntry
 	{
@@ -82,21 +85,23 @@ public class DBConnector
 		super();
 	}
 
-	public DBConnector (String dbClass,
-						String dbService,
-						String dbUser,
-						String dbPass,
-						int numConnections,
-						int dbPingIntMins,
-						boolean reuse,
-						boolean doErrorQueueing,
-						boolean retryErrorQueue)
+	public DBConnector (final String dbClass,
+						final String dbService,
+						final String dbUser,
+						final String dbPass,
+						final Map<String,String> dbParms,
+						final int numConnections,
+						final int dbPingIntMins,
+						final boolean reuse,
+						final boolean doErrorQueueing,
+						final boolean retryErrorQueue)
 	{
 		super();
 		this.dbClass=dbClass;
 		this.dbService=dbService;
 		this.dbUser=dbUser;
 		this.dbPass=dbPass;
+		this.dbParms=dbParms;
 		this.numConnections=numConnections;
 		this.doErrorQueueing=doErrorQueueing;
 		this.newErrorQueueing=retryErrorQueue;
@@ -113,7 +118,7 @@ public class DBConnector
 			dbConnections.deregisterDriver();
 			dbConnections.killConnections();
 		}
-		dbConnections=new DBConnections(dbClass,dbService,dbUser,dbPass,numConnections,dbReuse,doErrorQueueing);
+		dbConnections=new DBConnections(dbClass,dbService,dbUser,dbPass,dbParms,numConnections,dbReuse,doErrorQueueing);
 		if(dbConnections.amIOk()&&newErrorQueueing)
 			dbConnections.retryQueuedErrors();
 	}
@@ -123,7 +128,7 @@ public class DBConnector
 		return dbService;
 	}
 
-	public int getRecordCount(DBConnection D, ResultSet R)
+	public int getRecordCount(final DBConnection D, final ResultSet R)
 	{
 		if(D!=null)
 			return D.getRecordCount(R);
@@ -163,7 +168,7 @@ public class DBConnector
 		return (dbConnections != null) ? dbConnections.update(new String[] { updateString }) : 0;
 	}
 
-	public int updateWithClobs(String[] updateStrings, String[][][] values)
+	public int updateWithClobs(final String[] updateStrings, final String[][][] values)
 	{
 		return (dbConnections != null) ? dbConnections.updateWithClobs(updateStrings, values) : 0;
 	}
@@ -188,7 +193,7 @@ public class DBConnector
 		return (dbConnections != null) ? dbConnections.updateWithClobs(updateString, values) : 0;
 	}
 
-	public int queryRows(String queryString)
+	public int queryRows(final String queryString)
 	{
 		return (dbConnections != null) ? dbConnections.queryRows(queryString) : 0;
 	}
@@ -219,7 +224,7 @@ public class DBConnector
 	{
 		return (dbConnections != null) ? dbConnections.DBFetchTest() : null;
 	}
-	
+
 	/**
 	 * Fetch a single, not in use DBConnection object.  Must be rePrepared afterwards
 	 * You can then call DBConnection.query and DBConnection.update on this object.
@@ -252,7 +257,7 @@ public class DBConnector
 	 * @param SQL    The prepared statement SQL
 	 * @return DBConnection    The DBConnection to use
 	 */
-	public DBConnection DBFetchPrepared(String SQL)
+	public DBConnection DBFetchPrepared(final String SQL)
 	{
 		return (dbConnections != null) ? dbConnections.DBFetchPrepared(SQL) : null;
 	}
@@ -263,7 +268,7 @@ public class DBConnector
 	 * Usage:
 	 * @param D    The Database connection to return to the pool
 	 */
-	public void DBDone(DBConnection D)
+	public void DBDone(final DBConnection D)
 	{
 		if (dbConnections != null)
 			dbConnections.DBDone(D);
@@ -279,17 +284,17 @@ public class DBConnector
 	 * @param Field 	   Field name to return
 	 * @return String    The value of the field being returned
 	 */
-	public String getRes(ResultSet Results, String Field)
+	public String getRes(final ResultSet Results, final String Field)
 	{
 		return DBConnections.getRes(Results, Field);
 	}
 
-	public String getResQuietly(ResultSet Results, String Field)
+	public String getResQuietly(final ResultSet Results, final String Field)
 	{
 		return DBConnections.getResQuietly(Results, Field);
 	}
 
-	public String injectionClean(String s)
+	public String injectionClean(final String s)
 	{
 		if(s==null)
 			return null;
@@ -306,7 +311,7 @@ public class DBConnector
 	 * @param Field 	   Field name to return
 	 * @return String    The value of the field being returned
 	 */
-	public long getLongRes(ResultSet Results, String Field)
+	public long getLongRes(final ResultSet Results, final String Field)
 	{
 		return DBConnections.getLongRes(Results, Field);
 	}
@@ -321,7 +326,7 @@ public class DBConnector
 	 * @param One   	 Field number to return
 	 * @return String    The value of the field being returned
 	 */
-	public String getRes(ResultSet Results, int One)
+	public String getRes(final ResultSet Results, final int One)
 	{
 		return DBConnections.getRes(Results, One);
 	}
@@ -377,7 +382,7 @@ public class DBConnector
 	 * @param SQLError    The error message being reported
 	 * @param count    The number of tries so far
 	 */
-	public void enQueueError(String SQLString, String SQLError, String count)
+	public void enQueueError(final String SQLString, final String SQLError, final String count)
 	{
 		if (dbConnections != null)
 			dbConnections.enQueueError(SQLString, SQLError, count);
@@ -399,7 +404,7 @@ public class DBConnector
 	 * Usage: listConnections(out);
 	 * @param out    place to send the list out to
 	 */
-	public void listConnections(PrintStream out)
+	public void listConnections(final PrintStream out)
 	{
 		if (dbConnections != null)
 			dbConnections.listConnections(out);

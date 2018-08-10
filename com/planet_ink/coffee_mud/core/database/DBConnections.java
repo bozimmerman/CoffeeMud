@@ -46,6 +46,8 @@ public class DBConnections
 	protected String			dbUser				= "";
 	/** the odbc password */
 	protected String			dbPass				= "";
+	/** the jdbc args */
+	protected Map<String,String>dbParms				= new Hashtable<String,String>();
 	/** number of connections to make */
 	protected int				maxConnections		= 0;
 	/** the disconnected flag */
@@ -74,30 +76,33 @@ public class DBConnections
 	 * and after any killConnections() calls.
 	 *
 	 * Usage: Initialize("ODBCSERVICE","USER","PASSWORD",10);
-	 * @param NEWDBClass	the odbc service
-	 * @param NEWDBService    the odbc service
-	 * @param NEWDBUser    the odbc user login
-	 * @param NEWDBPass    the odbc user password
-	 * @param NEWnumConnections    Connections to maintain
-	 * @param NEWreuse    Whether to reuse connections
-	 * @param DoErrorQueueing    whether to save errors to a file
+	 * @param dbClass	the odbc service
+	 * @param dbService    the odbc service
+	 * @param dbUser    the odbc user login
+	 * @param dbPass    the odbc user password
+	 * @param dbParms	extra jdbc parameters
+	 * @param numConnections    Connections to maintain
+	 * @param reuse    Whether to reuse connections
+	 * @param doErrorQueueing    whether to save errors to a file
 	 */
-	public DBConnections(String NEWDBClass,
-						 String NEWDBService,
-						 String NEWDBUser,
-						 String NEWDBPass,
-						 int NEWnumConnections,
-						 boolean NEWreuse,
-						 boolean DoErrorQueueing)
+	public DBConnections(final String dbClass,
+						 final String dbService,
+						 final String dbUser,
+						 final String dbPass,
+						 final Map<String,String> dbParms,
+						 final int numConnections,
+						 final boolean reuse,
+						 final boolean doErrorQueueing)
 	{
-		dbClass=NEWDBClass;
-		dbService=NEWDBService;
-		dbUser=NEWDBUser;
-		dbPass=NEWDBPass;
-		reuse=NEWreuse;
-		maxConnections=NEWnumConnections;
-		connections = new SVector<DBConnection>();
-		errorQueingEnabled=DoErrorQueueing;
+		this.dbClass=dbClass;
+		this.dbService=dbService;
+		this.dbUser=dbUser;
+		this.dbPass=dbPass;
+		this.dbParms=dbParms;
+		this.reuse=reuse;
+		this.maxConnections=numConnections;
+		this.connections = new SVector<DBConnection>();
+		this.errorQueingEnabled=doErrorQueueing;
 	}
 
 	/**
@@ -105,7 +110,7 @@ public class DBConnections
 	 * @param updateStrings    the update SQL commands
 	 * @return int    the responseCode, or -1
 	 */
-	public int update(String[] updateStrings)
+	public int update(final String[] updateStrings)
 	{
 		DBConnection DBToUse=null;
 		int Result=-1;
@@ -222,7 +227,7 @@ public class DBConnections
 	 * @param values	the update SQL command values
 	 * @return int    the responseCode, or -1
 	 */
-	public int updateWithClobs(String[] updateStrings, String[][][] values)
+	public int updateWithClobs(final String[] updateStrings, final String[][][] values)
 	{
 		final LinkedList<DBPreparedBatchEntry> entries = new LinkedList<DBPreparedBatchEntry>();
 		for(int i=0;i<updateStrings.length;i++)
@@ -236,7 +241,7 @@ public class DBConnections
 	 * @param values	the update SQL values
 	 * @return int    the responseCode, or -1
 	 */
-	public int updateWithClobs(String updateString, String[][] values)
+	public int updateWithClobs(final String updateString, final String[][] values)
 	{
 		return updateWithClobs(Arrays.asList(new DBPreparedBatchEntry(updateString,values)));
 	}
@@ -360,7 +365,7 @@ public class DBConnections
 			{
 				try
 				{
-					newConn=new DBConnection(this,dbClass,dbService,dbUser,dbPass,reuse);
+					newConn=new DBConnection(this,dbClass,dbService,dbUser,dbPass,dbParms,reuse);
 					connections.add(newConn);
 				}
 				catch(final Exception e)
@@ -528,7 +533,7 @@ public class DBConnections
 		return false;
 	}
 
-	public DBConnection DBFetchPrepared(String SQL)
+	public DBConnection DBFetchPrepared(final String SQL)
 	{
 		return DBFetchAny(SQL,DBConnection.FetchType.PREPAREDSTATEMENT);
 	}
@@ -544,7 +549,7 @@ public class DBConnections
 	 * Usage:
 	 * @param D    The Database connection to return to the pool
 	 */
-	public void DBDone(DBConnection D)
+	public void DBDone(final DBConnection D)
 	{
 		if(D==null)
 			return;
@@ -563,7 +568,7 @@ public class DBConnections
 	 * @param Field 	   Field name to return
 	 * @return String    The value of the field being returned
 	 */
-	public static String getRes(ResultSet Results, String Field)
+	public static String getRes(final ResultSet Results, final String Field)
 	{
 		try
 		{
@@ -576,7 +581,7 @@ public class DBConnections
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 			{
-				
+
 				Log.errOut("DBConnections","getString: "+Field);
 				Log.errOut("DBConnections",sqle);
 			}
@@ -596,7 +601,7 @@ public class DBConnections
 	 * @param Field 	   Field name to return
 	 * @return String    The value of the field being returned
 	 */
-	public static long getLongRes(ResultSet Results, String Field)
+	public static long getLongRes(final ResultSet Results, final String Field)
 	{
 		try
 		{
@@ -613,7 +618,7 @@ public class DBConnections
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 			{
-				
+
 				Log.errOut("DBConnections","getLong: "+Field);
 				Log.errOut("DBConnections",sqle);
 			}
@@ -637,7 +642,7 @@ public class DBConnections
 	 * @param One   	 Field number to return
 	 * @return String    The value of the field being returned
 	 */
-	public static String getRes(ResultSet Results, int One)
+	public static String getRes(final ResultSet Results, final int One)
 	{
 		try
 		{
@@ -650,7 +655,7 @@ public class DBConnections
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 			{
-				
+
 				Log.errOut("DBConnections","getRes: "+One);
 				Log.errOut("DBConnections",sqle);
 			}
@@ -660,7 +665,7 @@ public class DBConnections
 		}
 	}
 
-	public static String getResQuietly(ResultSet Results, String Field)
+	public static String getResQuietly(final ResultSet Results, final String Field)
 	{
 		try
 		{
@@ -673,7 +678,7 @@ public class DBConnections
 		{
 			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 			{
-				
+
 				Log.errOut("DBConnections","getStringQ: "+Field);
 				Log.errOut("DBConnections",sqle);
 			}
@@ -748,7 +753,7 @@ public class DBConnections
 	 * @param SQLError    The error message being reported
 	 * @param tries    The number of tries to redo it so far
 	 */
-	public void enQueueError(String SQLString, String SQLError, String tries)
+	public void enQueueError(final String SQLString, final String SQLError, final String tries)
 	{
 		if(!errorQueingEnabled)
 		{
@@ -923,7 +928,7 @@ public class DBConnections
 	 * @param queryString    the update SQL command
 	 * @return int    the responseCode, or -1
 	 */
-	public int queryRows(String queryString)
+	public int queryRows(final String queryString)
 	{
 		DBConnection DBToUse=null;
 		int Result=0;
@@ -967,7 +972,7 @@ public class DBConnections
 	 * Usage: listConnections(out);
 	 * @param out    place to send the list out to
 	 */
-	public void listConnections(PrintStream out)
+	public void listConnections(final PrintStream out)
 	{
 		out.println("\nDatabase connections:");
 		if((lockedUp)||(disconnected))
