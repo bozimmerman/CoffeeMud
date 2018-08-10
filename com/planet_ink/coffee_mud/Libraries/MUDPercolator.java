@@ -130,8 +130,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								else
 								if(parm.equalsIgnoreCase("REQUIRES"))
 								{
-									final Map<String,String> srcParms=CMParms.parseEQParms(srcParmVal, REQUIRES_DELIMITERS);
-									final Map<String,String> tgtParms=CMParms.parseEQParms(tgtParmVal, REQUIRES_DELIMITERS);
+									final Map<String,String> srcParms=CMParms.parseEQParms(srcParmVal, REQUIRES_DELIMITERS, true);
+									final Map<String,String> tgtParms=CMParms.parseEQParms(tgtParmVal, REQUIRES_DELIMITERS, true);
 									for(final String srcKey : srcParms.keySet())
 									{
 										final String srcVal=srcParms.get(srcKey);

@@ -106,7 +106,7 @@ public class VFShell
 						System.exit(-1);
 					}
 					final boolean dbReuse=page.getBoolean("DBREUSE");
-					final Map<String,String> dbParms=CMParms.parseEQParms(page.getStr("DBPARMS"));
+					final Map<String,String> dbParms=CMParms.parseEQParms(page.getStr("DBPARMS"),CMParms.spaceDelimiter,false);
 					final boolean useQue=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUE);
 					final boolean useQueStart=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUESTART);
 					CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: connecting to database");

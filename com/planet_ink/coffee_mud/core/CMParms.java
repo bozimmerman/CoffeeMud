@@ -46,7 +46,10 @@ public class CMParms
 
 	public static boolean[] PUNCTUATION_TABLE=null;
 
-	private static final DelimiterChecker spaceDelimiter=new DelimiterChecker();
+	/**
+	 * Example delimeter checker for spaces
+	 */
+	public static final DelimiterChecker spaceDelimiter=new DelimiterChecker();
 
 	/**
 	 * An overrideable class for supplying a delimiter determination tool
@@ -1563,7 +1566,7 @@ public class CMParms
 	 */
 	public final static Map<String,String> parseEQParms(final String parms)
 	{
-		return parseEQParms(parms,spaceDelimiter);
+		return parseEQParms(parms,spaceDelimiter,true);
 	}
 
 	/**
@@ -1573,9 +1576,10 @@ public class CMParms
 	 * uppercase.
 	 * @param parms the string to parse
 	 * @param delimiterCheck the checker to determine if a character is the given delimiter
+	 * @param upperCase make the keys uppercase
 	 * @return the map of key/value pairs found.
 	 */
-	public final static Map<String,String> parseEQParms(final String parms, final DelimiterChecker delimiterCheck)
+	public final static Map<String,String> parseEQParms(final String parms, final DelimiterChecker delimiterCheck, final boolean upperCase)
 	{
 		final Map<String,String> h=new Hashtable<String,String>();
 		int state=0;
@@ -1589,7 +1593,7 @@ public class CMParms
 			final char c=(x==str.length())?'\n':str.charAt(x);
 			switch(state)
 			{
-			case 0:
+			case 0: //start state
 				if((c=='_')||(Character.isLetter(c)))
 				{
 					start=x;
@@ -1597,10 +1601,26 @@ public class CMParms
 					parmName=null;
 				}
 				break;
-			case 1:
+			case 5: // got parm and then delimeter
+				if((c=='_')||(Character.isLetter(c)))
+				{
+					if((parmName!=null)&&(parmName.length()>0))
+						h.put(parmName, "");
+					start=x;
+					state=1;
+					parmName=null;
+				}
+				else
+				if(c=='=')
+					state=2;
+				break;
+			case 1: // getting parm
 				if(c=='=')
 				{
-					parmName=str.substring(start,x).toUpperCase().trim();
+					if(upperCase)
+						parmName=str.substring(start,x).toUpperCase().trim();
+					else
+						parmName=str.substring(start,x).trim();
 					state=2;
 				}
 				else
@@ -1608,11 +1628,15 @@ public class CMParms
 				{
 					if((!Character.isWhitespace(c))&&(x<str.length()))
 						str.setCharAt(x,' '); // has to be trimmable
-					parmName=str.substring(start,x).toUpperCase().trim();
+					if(upperCase)
+						parmName=str.substring(start,x).toUpperCase().trim();
+					else
+						parmName=str.substring(start,x).trim();
+					state=5;
 					start=x;
 				}
 				break;
-			case 2:
+			case 2: // got parm and equal
 				if((c=='\"')||(c=='\n'))
 				{
 					state=3;
@@ -1646,7 +1670,7 @@ public class CMParms
 					parmName=null;
 				}
 				break;
-			case 4:
+			case 4://got parm, and equal, and non-delimiter.. in value
 				if(c=='\\')
 					str.deleteCharAt(x);
 				else
@@ -1658,7 +1682,10 @@ public class CMParms
 					else
 					{
 						h.put(parmName,str.substring(start,lastPossibleStart).trim());
-						parmName=str.substring(lastPossibleStart,x).toUpperCase().trim();
+						if(upperCase)
+							parmName=str.substring(lastPossibleStart,x).toUpperCase().trim();
+						else
+							parmName=str.substring(lastPossibleStart,x).trim();
 						state=2;
 					}
 				}

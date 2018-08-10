@@ -710,7 +710,7 @@ public class Merge extends StdCommand
 		final String dbService=CMParms.getParmStr(theRest,"DBSERVICE","");
 		final String dbUser=CMParms.getParmStr(theRest,"DBUSER","");
 		final String dbPass=CMParms.getParmStr(theRest,"DBPASS","");
-		final Map<String,String> dbParms=CMParms.parseEQParms(CMParms.getParmStr(theRest, "DBPARMS",""));
+		final Map<String,String> dbParms=CMParms.parseEQParms(CMParms.getParmStr(theRest, "DBPARMS",""),CMParms.spaceDelimiter,false);
 		final int dbConns=CMParms.getParmInt(theRest,"DBCONNECTIONS",3);
 		final int dbPingIntMins=CMParms.getParmInt(theRest,"DBPINGINTERVALMINS",30);
 		final boolean dbReuse=CMParms.getParmBool(theRest,"DBREUSE",true);

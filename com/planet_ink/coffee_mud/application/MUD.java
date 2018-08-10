@@ -1441,7 +1441,7 @@ public class MUD extends Thread implements MudHost
 				final String dbPass=page.getStr("DBPASS");
 				final int dbConns=page.getInt("DBCONNECTIONS");
 				final int dbPingIntMins=page.getInt("DBPINGINTERVALMINS");
-				final Map<String,String> dbParms=CMParms.parseEQParms(page.getStr("DBPARMS"));
+				final Map<String,String> dbParms=CMParms.parseEQParms(page.getStr("DBPARMS"),CMParms.spaceDelimiter,false);
 				if(dbConns == 0)
 				{
 					Log.errOut(Thread.currentThread().getName(),"Fatal error: DBCONNECTIONS in INI file is "+dbConns);
