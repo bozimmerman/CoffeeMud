@@ -178,7 +178,7 @@ public class Chant_Earthpocket extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -211,7 +211,7 @@ public class Chant_Earthpocket extends Chant
 				mob.location().send(mob,msg);
 				pocket=(Container)CMClass.getItem("GenContainer");
 				pocket.setCapacity(Integer.MAX_VALUE);
-				pocket.basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOTGET);
+				pocket.basePhyStats().setSensesMask(PhyStats.SENSE_ITEMNOTGET|PhyStats.SENSE_ALWAYSCOMPRESSED);
 				pocket.basePhyStats().setWeight(0);
 				pocket.setMaterial(RawMaterial.RESOURCE_NOTHING);
 				pocket.setName(L("an earthpocket"));
