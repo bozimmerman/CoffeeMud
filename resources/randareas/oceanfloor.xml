@@ -26,16 +26,16 @@ See guides/RandomAreas.html for information about documents of this type.
 <STRING load="/resources/randareas/inc_common.xml" />
 <STRING load="/resources/randareas/inc_adjectives.xml" />
 
-<AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=ocean">
+<AREA id="maze_dungeon" merge=true layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=oceanfloor">
 	<NAME merge=false>$areaname</NAME><SIZE merge=false>$areasize</SIZE>
 	<CLASS merge=false select="any-1"><CLASS condition="$areatype!=''">$areatype</CLASS><CLASS condition="$areatype=''">StdArea</CLASS></CLASS>
 	<ROOM merge=false insert="hallway_rooms,interior_rooms,leaf_rooms" />
 </AREA>
-<AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=ocean" />
-<AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=ocean" />
-<AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=ocean" />
-<AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=ocean" />
-<AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=ocean" />
+<AREA id="grid_dungeon" merge=true like="maze_dungeon" layout="GRIDCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=oceanfloor" />
+<AREA id="square_dungeon" merge=true like="maze_dungeon" layout="BOXCITYSQUARE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=oceanfloor" />
+<AREA id="box_dungeon" merge=true like="maze_dungeon" layout="BOXCITY" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=oceanfloor" />
+<AREA id="cross_dungeon" merge=true like="maze_dungeon" layout="CROSS" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=oceanfloor" />
+<AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=oceanfloor" />
 
 <ROOM id="hallway_rooms" merge=true select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
 	<ROOM class="UnderSaltWater" id="oceanfloor_street_room" condition="$theme='oceanfloor' or $theme='random'">
@@ -72,9 +72,6 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING>Openings in the $noun_oceanfloor_plants can be seen $roomexits_desc_long.</STRING>
 				<STRING>You can $verb_oceanfloor_tread on through $roomexits_desc_long.</STRING>
 				<STRING>You can continue $roomexits_desc_long.</STRING>
-				<STRING condition="$roomtag_nodetype='leaf'">Some $noun_oceanfloor_fishes $verb_oceanfloor_tread $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
-				<STRING condition="$roomtag_nodetype='leaf'">It looks like you might pick your way $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
-				<STRING condition="$roomtag_nodetype='leaf'">You can $verb_oceanfloor_tread on through $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
 			</STRING>
 		</STRING>
 		<EXIT class="Open" />
@@ -84,23 +81,23 @@ See guides/RandomAreas.html for information about documents of this type.
 </ROOM>
 
 <ROOM id="interior_rooms" merge=true select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
-	<ROOM class="UnderSaltWater" like="oceanfloor_street_room" condition="$theme='ocean' or $theme='random'" />
+	<ROOM class="UnderSaltWater" like="oceanfloor_street_room" condition="$theme='oceanfloor' or $theme='random'" />
 </ROOM>
 
 <ROOM id="leaf_rooms" merge=true select="any-1" condition="$roomtag_nodetype='leaf'">
-	<ROOM class="UnderSaltWater" id="oceanfloor_interior_room" condition="$theme='ocean' or $theme='random'">
+	<ROOM class="UnderSaltWater" id="oceanfloor_interior_room" condition="$theme='oceanfloor' or $theme='random'">
 		<TITLE>
 			<TITLE>$oceanfloor_path_prefix $oceanfloor_nouns</TITLE>
 		</TITLE>
 		<DESCRIPTION>$oceanfloor_interior_desc</DESCRIPTION>
-			<STRING id="oceanfloor_interior_desc" select="all">
+		<STRING id="oceanfloor_interior_desc" select="all">
 			<STRING select="any-1" action="PREPEND">
-				<STRING>You are ${l:_verb_oceanfloor_tread} along (a(n)) ${l:_oceanfloor_path_name}. </STRING>
+				<STRING>You are ${l:verb_oceanfloor_tread} along (a(n)) ${l:_oceanfloor_path_name}. </STRING>
 				<STRING>You are on (a(n)) ${l:_oceanfloor_path_name}.</STRING>
 				<STRING>The ${l:_oceanfloor_path_name} ${l:_oceanfloor_path_verb} through the $oceanfloor_nouns. </STRING>
 				<STRING>(A(n)) ${l:_oceanfloor_path_name} ${l:_oceanfloor_path_verb} through the $oceanfloor_nouns. </STRING>
-				<STRING>You are ${l:_verb_oceanfloor_tread} your way through (a(n)) ${l:_oceanfloor_path_name}. </STRING>
-				<STRING>You are ${l:_oceanfloor_youare_in} in (a(n)) ${l:_oceanfloor_path_name}. </STRING>
+				<STRING>You are ${l:verb_oceanfloor_tread} your way through (a(n)) ${l:_oceanfloor_path_name}. </STRING>
+				<STRING>You are ${l:oceanfloor_youare_in} in (a(n)) ${l:_oceanfloor_path_name}. </STRING>
 				<STRING>The ${l:_oceanfloor_path_name} surrounds you.</STRING>
 				<STRING>The ${l:_oceanfloor_path_name} is all around you. </STRING>
 			</STRING>
@@ -118,7 +115,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING condition="$roomtag_nodetype='leaf'">It looks like you might pick your way $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
 				<STRING condition="$roomtag_nodetype='leaf'">You can $verb_oceanfloor_tread on through $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
 			</STRING>
-		</DESCRIPTION>
+		</STRING>
 		<EXIT select="pick-1">
 			<EXIT pickweight="5" class="Open" />
 			<EXIT pickweight="1" class="HiddenWalkway" />
@@ -184,7 +181,7 @@ See guides/RandomAreas.html for information about documents of this type.
 <MOB id="oceanfloor_bigmob" select="any-1" requires="level_range=int,aggrochance=int">
 	<MOB id="oceanfloor_bigmobs" select="any-1" requires="level_range=int,aggrochance=int">
 		<MOB class="GenMob" level="$level_range" race="greatfish" gender="$anygender" hpmod="30">
-			<NAME select="all">
+			<NAME select="any-1">
 				<NAME>a large fish</NAME>
 				<NAME>a very large fish</NAME>
 				<NAME>an impressive fish</NAME>
@@ -414,6 +411,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<NAME condition="$mob_level&lt;10">a small angelfish</NAME>
 				<NAME condition="$mob_level&lt;40 and $mob_level&gt;=10">a tiny angelfish</NAME>
 				<NAME condition="$mob_level&lt;80 and $mob_level&gt;=40">an angelfish</NAME>
+				<NAME condition="$mob_level&gt;=80">a mighty angelfish</NAME>
 			</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name swims around you.</DISPLAY>
@@ -436,6 +434,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<NAME condition="$mob_level&lt;10">a small clown fish</NAME>
 				<NAME condition="$mob_level&lt;40 and $mob_level&gt;=10">a silly clown fish</NAME>
 				<NAME condition="$mob_level&lt;80 and $mob_level&gt;=40">a clown fish</NAME>
+				<NAME condition="$mob_level&gt;=80">a mighty clown fish</NAME>
 			</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name jets towards you.</DISPLAY>
@@ -454,7 +453,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</ABILITY>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" race="crab" gender="$anygender" hpmod="15">
-			<NAME select="all">
+			<NAME select="any-1">
 				<NAME>a dark crab</NAME>
 				<NAME>a large crab</NAME>
 				<NAME>an evil-looking crab</NAME>
@@ -484,7 +483,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</ABILITY>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" race="fish" gender="$anygender" hpmod="11">
-			<NAME select="all">
+			<NAME select="any-1">
 				<NAME>a round fish</NAME>
 				<NAME>an ugly fish</NAME>
 				<NAME>a colorful fish</NAME>
@@ -499,7 +498,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 		</MOB>
 		<MOB class="GenMob" level="$level_range" race="giantfish" gender="$anygender" hpmod="20">
-			<NAME select="all">
+			<NAME select="any-1">
 				<NAME>a large fish</NAME>
 				<NAME>a very large fish</NAME>
 				<NAME>a big fish</NAME>
@@ -538,7 +537,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 		</MOB>
 		<MOB class="GenMob" level="$level_range" race="greatfish" gender="$anygender" hpmod="30">
-			<NAME select="all">
+			<NAME select="any-1">
 				<NAME>a large fish</NAME>
 				<NAME>a very large fish</NAME>
 				<NAME>an impressive fish</NAME>
