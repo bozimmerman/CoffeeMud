@@ -46,6 +46,15 @@ public interface ClanManager extends CMLibrary
 	 * @return a list of all available clans names in the game,
 	 */
 	public Enumeration<String> clansNames();
+
+	/**
+	 * Returns a list of all available clan names for all clan
+	 * managers that share a single map.  This is for multi-host
+	 * muds.
+	 * @return all clan names across all shared map hosts.
+	 */
+	public Enumeration<String> clansNamesAllHosts();
+
 	/**
 	 * Returns the number of clans in the game.
 	 * @return the number of clans in the game.
@@ -215,13 +224,13 @@ public interface ClanManager extends CMLibrary
 	/**
 	 * Returns the Clan object associated with the given clan name
 	 * from any host sharing the same map as the caller.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @param id the clan name
 	 * @return the Clan object associated with the given clan name
 	 */
 	public Clan getClanAnyHost(String id);
-	
+
 	/**
 	 * Returns the Clan object associated with the given clan name, or
 	 * if the name is not found, the name that most closely matches it.

@@ -3797,7 +3797,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		setThreadStatus(serviceClient,"title sweeping");
 		final LegalLibrary law=CMLib.law();
 		final List<String> playerList=CMLib.players().getPlayerListsAllHosts();
-		for(final Enumeration<String> cn=CMLib.clans().clansNames();cn.hasMoreElements();)
+		for(final Enumeration<String> cn=CMLib.clans().clansNamesAllHosts();cn.hasMoreElements();)
 			playerList.add(cn.nextElement());
 		try
 		{
