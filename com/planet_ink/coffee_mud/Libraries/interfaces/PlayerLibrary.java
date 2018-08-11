@@ -39,6 +39,8 @@ public interface PlayerLibrary extends CMLibrary
 	public MOB getPlayerAllHosts(String calledThis);
 	public MOB getLoadPlayer(String last);
 	public MOB getLoadPlayerByEmail(String email);
+	public List<String> getPlayerLists();
+	public List<String> getPlayerListsAllHosts();
 	public MOB findPlayerOnline(final String srchStr, final boolean exactOnly);
 	public PlayerAccount getLoadAccount(String calledThis);
 	public PlayerAccount getLoadAccountByEmail(String email);
@@ -98,7 +100,7 @@ public interface PlayerLibrary extends CMLibrary
 		public String email="";
 		public MOB loadedMOB=null;
 
-		public boolean matchesPassword(String checkPass)
+		public boolean matchesPassword(final String checkPass)
 		{
 			return CMLib.encoder().passwordCheck(checkPass, password);
 		}

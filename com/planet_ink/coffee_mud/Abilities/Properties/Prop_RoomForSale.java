@@ -71,7 +71,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 	}
@@ -102,7 +102,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return getAllTitledRooms();
 	}
 
-	protected void saveData(String owner, int price, boolean rental, int backTaxes, boolean grid)
+	protected void saveData(final String owner, final int price, final boolean rental, final int backTaxes, final boolean grid)
 	{
 		setMiscText(owner+"/"
 				+(rental?"RENTAL ":"")
@@ -110,9 +110,9 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				+((backTaxes>0)?"TAX"+backTaxes+"X ":"")
 				+price);
 	}
-	
+
 	@Override
-	public void setPrice(int price)
+	public void setPrice(final int price)
 	{
 		saveData(getOwnerName(), price, rentalProperty(), backTaxes(), gridLayout());
 	}
@@ -139,7 +139,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	@Override
-	public void setOwnerName(String owner)
+	public void setOwnerName(final String owner)
 	{
 		if((owner.length()==0)&&(getOwnerName().length()>0))
 			scheduleReset=true;
@@ -158,9 +158,9 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		final String s=CMParms.parse(text().substring(x+3)).firstElement();
 		return CMath.s_int(s.substring(0,s.length()-1)); // last char always X, so eat it
 	}
-	
+
 	@Override
-	public void setBackTaxes(int tax)
+	public void setBackTaxes(final int tax)
 	{
 		saveData(getOwnerName(), getPrice(), rentalProperty(), tax, gridLayout());
 	}
@@ -176,7 +176,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	@Override
-	public void setRentalProperty(boolean truefalse)
+	public void setRentalProperty(final boolean truefalse)
 	{
 		saveData(getOwnerName(), getPrice(), truefalse, backTaxes(), gridLayout());
 	}
@@ -192,7 +192,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	@Override
-	public void setGridLayout(boolean layout)
+	public void setGridLayout(final boolean layout)
 	{
 		saveData(getOwnerName(), getPrice(), rentalProperty(), backTaxes(), layout);
 	}
@@ -240,7 +240,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	@Override
-	public void setLandPropertyID(String landID)
+	public void setLandPropertyID(final String landID)
 	{
 	}
 
@@ -315,10 +315,10 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	public static int updateLotWithThisData(Room R,
-											LandTitle T,
-											boolean resetRoomName,
-											boolean clearAllItems,
-											List<String> optPlayerList,
+											final LandTitle T,
+											final boolean resetRoomName,
+											final boolean clearAllItems,
+											final List<String> optPlayerList,
 											int lastNumItems)
 	{
 		boolean updateItems=false;
@@ -407,22 +407,17 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			}
 
 			if((lastNumItems<0)
-			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PROPERTYOWNERCHECKS))
-			&&(optPlayerList!=null))
+			&&(T.getOwnerName().length()>0)
+			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PROPERTYOWNERCHECKS)))
 			{
-				boolean playerExists=(CMLib.players().playerExistsAllHosts(T.getOwnerName()));
-				if(!playerExists)
-					playerExists=(CMLib.clans().getClanAnyHost(T.getOwnerName())!=null);
-				if(!playerExists)
+				boolean playerExists=false;
+				if(optPlayerList!=null)
 					playerExists=optPlayerList.contains(T.getOwnerName());
-				if(!playerExists)
-				for(int i=0;i<optPlayerList.size();i++)
+				else
 				{
-					if(optPlayerList.get(i).equalsIgnoreCase(T.getOwnerName()))
-					{
-						playerExists=true;
-						break;
-					}
+					playerExists=(CMLib.players().playerExistsAllHosts(T.getOwnerName()));
+					if(!playerExists)
+						playerExists=(CMLib.clans().getClanAnyHost(T.getOwnerName())!=null);
 				}
 				if(!playerExists)
 				{
@@ -480,7 +475,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	@SuppressWarnings("unchecked")
-	public static boolean doRentalProperty(Area A, String ID, String owner, int rent)
+	public static boolean doRentalProperty(final Area A, final String ID, final String owner, final int rent)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return false;
@@ -583,7 +578,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	// update lot, since its called by the savethread, ONLY worries about itself
 	@Override
-	public void updateLot(List<String> optPlayerList)
+	public void updateLot(final List<String> optPlayerList)
 	{
 		if(affected instanceof Room)
 		{

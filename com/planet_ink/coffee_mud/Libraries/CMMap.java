@@ -55,7 +55,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	public static final BigDecimal TWO 					= BigDecimal.valueOf(2L);
-	
+
 	public final double			ZERO_ALMOST				= 0.000001;
 	public final double			PI_ALMOST				= Math.PI-ZERO_ALMOST;
 	public final double			PI_TIMES_2				= Math.PI*2.0;
@@ -75,8 +75,8 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	protected static final Comparator<Area>	areaComparator = new Comparator<Area>()
 	{
-		@Override 
-		public int compare(Area o1, Area o2)
+		@Override
+		public int compare(final Area o1, final Area o2)
 		{
 			if(o1==null)
 				return (o2==null)?0:-1;
@@ -100,8 +100,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		final WeakReference<Room> roomW;
 		final WeakReference<PhysicalAgent> objW;
-		
-		private LocatedPairImpl(Room room, PhysicalAgent host)
+
+		private LocatedPairImpl(final Room room, final PhysicalAgent host)
 		{
 			roomW = new WeakReference<Room>(room);
 			objW = new WeakReference<PhysicalAgent>(host);
@@ -119,11 +119,11 @@ public class CMMap extends StdLibrary implements WorldMap
 			return objW.get();
 		}
 	}
-	
+
 	private static Filterer<Area> planetsAreaFilter=new Filterer<Area>()
 	{
 		@Override
-		public boolean passesFilter(Area obj)
+		public boolean passesFilter(final Area obj)
 		{
 			return (obj instanceof SpaceObject) && (!(obj instanceof SpaceShip));
 		}
@@ -132,13 +132,13 @@ public class CMMap extends StdLibrary implements WorldMap
 	private static Filterer<Area> mundaneAreaFilter=new Filterer<Area>()
 	{
 		@Override
-		public boolean passesFilter(Area obj)
+		public boolean passesFilter(final Area obj)
 		{
 			return !(obj instanceof SpaceObject);
 		}
 	};
-	
-	protected int getGlobalIndex(List<Environmental> list, String name)
+
+	protected int getGlobalIndex(final List<Environmental> list, final String name)
 	{
 		if(list.size()==0)
 			return -1;
@@ -161,20 +161,20 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void renamedArea(Area theA)
+	public void renamedArea(final Area theA)
 	{
 		areasList.reSort(theA);
 	}
 
 	// areas
 	@Override
-	public int numAreas() 
+	public int numAreas()
 	{
 		return areasList.size();
 	}
 
 	@Override
-	public void addArea(Area newOne)
+	public void addArea(final Area newOne)
 	{
 		areasList.add(newOne);
 		if((newOne instanceof SpaceObject)&&(!space.contains((SpaceObject)newOne)))
@@ -182,7 +182,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void delArea(Area oneToDel)
+	public void delArea(final Area oneToDel)
 	{
 		areasList.remove(oneToDel);
 		if((oneToDel instanceof SpaceObject)&&(space.contains((SpaceObject)oneToDel)))
@@ -191,7 +191,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Area getModelArea(Area A)
+	public Area getModelArea(final Area A)
 	{
 		if(A!=null)
 		{
@@ -201,7 +201,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				if((x>0)
 				&&(CMath.isInteger(A.Name().substring(0,x))))
 				{
-					Area A2=getArea(A.Name().substring(x+1));
+					final Area A2=getArea(A.Name().substring(x+1));
 					if(A2!=null)
 						return A2;
 				}
@@ -209,9 +209,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return A;
 	}
-	
+
 	@Override
-	public Area getArea(String calledThis)
+	public Area getArea(final String calledThis)
 	{
 		final Map<String,Area> finder=getAreaFinder();
 		Area A=finder.get(calledThis.toLowerCase());
@@ -226,9 +226,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return null;
 	}
-	
+
 	@Override
-	public Area findAreaStartsWith(String calledThis)
+	public Area findAreaStartsWith(final String calledThis)
 	{
 		final boolean disableCaching=CMProps.getBoolVar(CMProps.Bool.MAPFINDSNOCACHE);
 		Area A=getArea(calledThis);
@@ -252,7 +252,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Area findArea(String calledThis)
+	public Area findArea(final String calledThis)
 	{
 		final boolean disableCaching=CMProps.getBoolVar(CMProps.Bool.MAPFINDSNOCACHE);
 		Area A=findAreaStartsWith(calledThis);
@@ -274,41 +274,41 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return null;
 	}
-	
-	@Override 
-	public Enumeration<Area> areas() 
+
+	@Override
+	public Enumeration<Area> areas()
 	{
 		return new IteratorEnumeration<Area>(areasList.iterator());
 	}
-	
+
 	@Override
-    public Enumeration<Area> areasPlusShips() 
+    public Enumeration<Area> areasPlusShips()
 	{
 		final MultiEnumeration<Area> m=new MultiEnumeration<Area>(new IteratorEnumeration<Area>(areasList.iterator()));
 		m.addEnumeration(shipAreaEnumerator(null));
 		return m;
 	}
-	
-	@Override 
-	public Enumeration<Area> mundaneAreas() 
+
+	@Override
+	public Enumeration<Area> mundaneAreas()
 	{
 		return new FilteredEnumeration<Area>(areas(),mundaneAreaFilter);
 	}
-	
-	@Override 
-	public Enumeration<Area> spaceAreas() 
+
+	@Override
+	public Enumeration<Area> spaceAreas()
 	{
 		return new FilteredEnumeration<Area>(areas(),planetsAreaFilter);
 	}
 
-	@Override 
+	@Override
 	public Enumeration<String> roomIDs()
 	{
 		return new Enumeration<String>()
 		{
 			private volatile Enumeration<String> roomIDEnumerator=null;
 			private volatile Enumeration<Area> areaEnumerator=areasPlusShips();
-			
+
 			@Override
 			public boolean hasMoreElements()
 			{
@@ -335,7 +335,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 		};
 	}
-	
+
 	@Override
 	public Area getFirstArea()
 	{
@@ -343,7 +343,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return areas().nextElement();
 		return null;
 	}
-	
+
 	@Override
 	public Area getDefaultParentArea()
 	{
@@ -352,7 +352,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return getArea(defaultParentAreaName.trim());
 		return null;
 	}
-	
+
 	@Override
 	public Area getRandomArea()
 	{
@@ -371,7 +371,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void addGlobalHandler(MsgListener E, int category)
+	public void addGlobalHandler(final MsgListener E, final int category)
 	{
 		if(E==null)
 			return;
@@ -393,7 +393,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void delGlobalHandler(MsgListener E, int category)
+	public void delGlobalHandler(final MsgListener E, final int category)
 	{
 		final List<WeakReference<MsgListener>> V=globalHandlers.get(Integer.valueOf(category));
 		if((E==null)||(V==null))
@@ -436,7 +436,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public MOB getFactoryMOB(Room R)
+	public MOB getFactoryMOB(final Room R)
 	{
 		final MOB everywhereMOB=CMClass.getFactoryMOB();
 		everywhereMOB.setName(L("somebody"));
@@ -445,7 +445,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public boolean isObjectInSpace(SpaceObject O)
+	public boolean isObjectInSpace(final SpaceObject O)
 	{
 		synchronized(space)
 		{
@@ -454,7 +454,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void delObjectInSpace(SpaceObject O)
+	public void delObjectInSpace(final SpaceObject O)
 	{
 		synchronized(space)
 		{
@@ -463,7 +463,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void addObjectToSpace(SpaceObject O, long[] coords)
+	public void addObjectToSpace(final SpaceObject O, final long[] coords)
 	{
 		synchronized(space)
 		{
@@ -481,28 +481,28 @@ public class CMMap extends StdLibrary implements WorldMap
 									+CMath.mul((coord1[1]-coord2[1]),(coord1[1]-coord2[1]))
 									+CMath.mul((coord1[2]-coord2[2]),(coord1[2]-coord2[2]))));
 	}
-	
+
 	@Override
-	public long getDistanceFrom(SpaceObject O1, SpaceObject O2)
+	public long getDistanceFrom(final SpaceObject O1, final SpaceObject O2)
 	{
 		return getDistanceFrom(O1.coordinates(),O2.coordinates());
 	}
 
 	@Override
-	public String getSectorName(long[] coordinates)
+	public String getSectorName(final long[] coordinates)
 	{
 		final String[] xsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_X_NAMES);
 		final String[] ysecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Y_NAMES);
 		final String[] zsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Z_NAMES);
-		
+
 		final long dmsPerXSector = SpaceObject.Distance.GalaxyRadius.dm / xsecs.length;
 		final long dmsPerYSector = SpaceObject.Distance.GalaxyRadius.dm / ysecs.length;
 		final long dmsPerZSector = SpaceObject.Distance.GalaxyRadius.dm / zsecs.length;
-		
+
 		final int secDeX = (int)((coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerXSector / 2);
 		final int secDeY = (int)((coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerYSector / 2);
 		final int secDeZ = (int)((coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerZSector / 2);
-		
+
 		final StringBuilder sectorName = new StringBuilder("");
 		sectorName.append(xsecs[(secDeX < 0)?(xsecs.length+secDeX):secDeX]).append(" ");
 		sectorName.append(ysecs[(secDeY < 0)?(ysecs.length+secDeY):secDeY]).append(" ");
@@ -511,21 +511,21 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public long[] getInSectorCoords(long[] coordinates)
+	public long[] getInSectorCoords(final long[] coordinates)
 	{
 		final String[] xsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_X_NAMES);
 		final String[] ysecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Y_NAMES);
 		final String[] zsecs=CMProps.getListFileStringList(CMProps.ListFile.TECH_SECTOR_Z_NAMES);
-		
+
 		final long dmsPerXSector = SpaceObject.Distance.GalaxyRadius.dm / xsecs.length;
 		final long dmsPerYSector = SpaceObject.Distance.GalaxyRadius.dm / ysecs.length;
 		final long dmsPerZSector = SpaceObject.Distance.GalaxyRadius.dm / zsecs.length;
-		
+
 		final int secDeX = (int)((coordinates[0] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerXSector / (2 * (coordinates[0]<0?-1:1)));
 		final int secDeY = (int)((coordinates[1] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerYSector / (2 * (coordinates[0]<0?-1:1)));
 		final int secDeZ = (int)((coordinates[2] % SpaceObject.Distance.GalaxyRadius.dm) / dmsPerZSector / (2 * (coordinates[0]<0?-1:1)));
-		
-		long[] sectorCoords = Arrays.copyOf(coordinates, 3);
+
+		final long[] sectorCoords = Arrays.copyOf(coordinates, 3);
 		for(int i=0;i<sectorCoords.length;i++)
 		{
 			if(sectorCoords[i]<0)
@@ -554,7 +554,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		final double y2=Math.sin(toAngle[1])*Math.sin(toAngle[0]);
 		final double z2=Math.cos(toAngle[1]);
 		double pitchDOTyaw=x1*x2+y1*y2+z1*z2;
-		if(pitchDOTyaw>1) 
+		if(pitchDOTyaw>1)
 			pitchDOTyaw=(2-pitchDOTyaw);
 		if(pitchDOTyaw<-1)
 			pitchDOTyaw=(-1*pitchDOTyaw)-2;
@@ -622,7 +622,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			pitchDelta=Math.PI-pitchDelta;
 		if(Math.abs(pitchDelta-Math.PI)<ZERO_ALMOST)
 			yawDelta=0.0;
-		
+
 		final double anglesDelta =  getAngleDelta(curDirection, accelDirection);
 		final double accelerationMultiplier = acceleration / currentSpeed;
 		double newDirectionYaw;
@@ -643,7 +643,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			newDirectionPitch = curDirectionPitch + ((curDirectionPitch > accelDirectionPitch) ? -(accelerationMultiplier * Math.sin(pitchDelta)) : (accelerationMultiplier * Math.sin(pitchDelta)));
 		if (newDirectionPitch < 0.0)
 			newDirectionPitch = PI_TIMES_2 + newDirectionPitch;
-	
+
 		double newSpeed = currentSpeed + (acceleration * Math.cos(anglesDelta));
 		if(newSpeed < 0)
 		{
@@ -671,9 +671,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			newDir[0] -= PI_TIMES_2;
 		return newDir;
 	}
-	
+
 	@Override
-	public TechComponent.ShipDir getDirectionFromDir(double[] facing, double roll, double[] direction)
+	public TechComponent.ShipDir getDirectionFromDir(final double[] facing, final double roll, final double[] direction)
 	{
 
 		double yD = ((Math.toDegrees(facing[0]) % 360.0) - (Math.toDegrees(facing[0]) % 360.0)) % 360.0;
@@ -704,7 +704,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public double[] getDirection(SpaceObject FROM, SpaceObject TO)
+	public double[] getDirection(final SpaceObject FROM, final SpaceObject TO)
 	{
 		final double[] dir=new double[2];
 		final double x=TO.coordinates()[0]-FROM.coordinates()[0];
@@ -724,7 +724,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return dir;
 	}
 
-	protected void moveSpaceObject(SpaceObject O, long x, long y, long z)
+	protected void moveSpaceObject(final SpaceObject O, final long x, final long y, final long z)
 	{
 		synchronized(space)
 		{
@@ -740,13 +740,13 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void moveSpaceObject(SpaceObject O, long[] coords)
+	public void moveSpaceObject(final SpaceObject O, final long[] coords)
 	{
 		moveSpaceObject(O, coords[0], coords[1], coords[2]);
 	}
 
 	@Override
-	public void moveSpaceObject(SpaceObject O)
+	public void moveSpaceObject(final SpaceObject O)
 	{
 		if(O.speed()>0)
 		{
@@ -760,7 +760,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public long[] moveSpaceObject(final long[] coordinates, final double[] direction, long speed)
+	public long[] moveSpaceObject(final long[] coordinates, final double[] direction, final long speed)
 	{
 		if(speed>0)
 		{
@@ -775,7 +775,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public long[] getLocation(long[] oldLocation, double[] direction, long distance)
+	public long[] getLocation(final long[] oldLocation, final double[] direction, final long distance)
 	{
 		final double x1=Math.cos(direction[0])*Math.sin(direction[1]);
 		final double y1=Math.sin(direction[0])*Math.sin(direction[1]);
@@ -788,7 +788,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public long getRelativeSpeed(SpaceObject O1, SpaceObject O2)
+	public long getRelativeSpeed(final SpaceObject O1, final SpaceObject O2)
 	{
 		return Math.round(Math.sqrt(( CMath.bigMultiply(O1.speed(),O1.coordinates()[0])
 										.subtract(CMath.bigMultiply(O2.speed(),O2.coordinates()[0]).multiply(CMath.bigMultiply(O1.speed(),O1.coordinates()[0])))
@@ -802,7 +802,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public SpaceObject findSpaceObject(String s, boolean exactOnly)
+	public SpaceObject findSpaceObject(final String s, final boolean exactOnly)
 	{
 		final Iterable<SpaceObject> i=new Iterable<SpaceObject>()
 		{
@@ -811,13 +811,13 @@ public class CMMap extends StdLibrary implements WorldMap
 			{
 				return new EnumerationIterator<SpaceObject>(space.objects());
 			}
-			
+
 		};
 		return (SpaceObject)CMLib.english().fetchEnvironmental(i, s, exactOnly);
 	}
-	
+
 	@Override
-	public SpaceObject getSpaceObject(CMObject o, boolean ignoreMobs)
+	public SpaceObject getSpaceObject(final CMObject o, final boolean ignoreMobs)
 	{
 		if(o instanceof SpaceObject)
 		{
@@ -852,20 +852,20 @@ public class CMMap extends StdLibrary implements WorldMap
 		return null;
 	}
 
-	@Override 
-	public Enumeration<SpaceObject> getSpaceObjects() 
-	{ 
-		return this.space.objects(); 
-	}
-
-	@Override 
-	public Enumeration<Entry<SpaceObject, List<WeakReference<TrackingVector<SpaceObject>>>>>  getSpaceObjectEntries() 
-	{ 
-		return this.space.objectEntries(); 
+	@Override
+	public Enumeration<SpaceObject> getSpaceObjects()
+	{
+		return this.space.objects();
 	}
 
 	@Override
-	public List<SpaceObject> getSpaceObjectsByCenterpointWithin(final long[] centerCoordinates, long minDistance, long maxDistance)
+	public Enumeration<Entry<SpaceObject, List<WeakReference<TrackingVector<SpaceObject>>>>>  getSpaceObjectEntries()
+	{
+		return this.space.objectEntries();
+	}
+
+	@Override
+	public List<SpaceObject> getSpaceObjectsByCenterpointWithin(final long[] centerCoordinates, final long minDistance, final long maxDistance)
 	{
 		final List<SpaceObject> within=new ArrayList<SpaceObject>(1);
 		if((centerCoordinates==null)||(centerCoordinates.length!=3))
@@ -878,16 +878,16 @@ public class CMMap extends StdLibrary implements WorldMap
 			return within;
 		for (final Iterator<SpaceObject> o=within.iterator();o.hasNext();)
 		{
-			SpaceObject O=o.next();
+			final SpaceObject O=o.next();
 			final long dist=getDistanceFrom(O.coordinates(),centerCoordinates);
 			if((dist<minDistance)||(dist>maxDistance))
 				o.remove();
 		}
 		return within;
 	}
-	
+
 	@Override
-	public List<SpaceObject> getSpaceObjectsWithin(final SpaceObject ofObj, long minDistance, long maxDistance)
+	public List<SpaceObject> getSpaceObjectsWithin(final SpaceObject ofObj, final long minDistance, final long maxDistance)
 	{
 		final List<SpaceObject> within=new ArrayList<SpaceObject>(1);
 		if(ofObj==null)
@@ -898,7 +898,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		for (final Iterator<SpaceObject> o=within.iterator();o.hasNext();)
 		{
-			SpaceObject O=o.next();
+			final SpaceObject O=o.next();
 			if(O!=ofObj)
 			{
 				final long dist=Math.round(Math.abs(getDistanceFrom(O,ofObj) - O.radius() - ofObj.radius()));
@@ -910,8 +910,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			return within;
 		Collections.sort(within, new Comparator<SpaceObject>()
 		{
-			@Override 
-			public int compare(SpaceObject o1, SpaceObject o2)
+			@Override
+			public int compare(final SpaceObject o1, final SpaceObject o2)
 			{
 				final long distTo1=getDistanceFrom(o1,ofObj);
 				final long distTo2=getDistanceFrom(o2,ofObj);
@@ -949,7 +949,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		Collections.sort(rooms,new Comparator<LocationRoom>()
 		{
 			@Override
-			public int compare(LocationRoom o1, LocationRoom o2)
+			public int compare(final LocationRoom o1, final LocationRoom o2)
 			{
 				if(o1.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 				{
@@ -959,11 +959,11 @@ public class CMMap extends StdLibrary implements WorldMap
 				else
 				if(o2.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
 					return 1;
-				long distanceFrom=0;
+				final long distanceFrom=0;
 				if(ship != null)
 				{
-					long distanceFrom1=CMLib.map().getDistanceFrom(ship.coordinates(), o1.coordinates());
-					long distanceFrom2=CMLib.map().getDistanceFrom(ship.coordinates(), o1.coordinates());
+					final long distanceFrom1=CMLib.map().getDistanceFrom(ship.coordinates(), o1.coordinates());
+					final long distanceFrom2=CMLib.map().getDistanceFrom(ship.coordinates(), o1.coordinates());
 					if(distanceFrom1 > distanceFrom2)
 						return -1;
 					if(distanceFrom < distanceFrom2)
@@ -978,7 +978,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public String createNewExit(Room from, Room room, int direction)
+	public String createNewExit(Room from, Room room, final int direction)
 	{
 		Room opRoom=from.rawDoors()[direction];
 		if((opRoom!=null)&&(opRoom.roomID().length()==0))
@@ -1029,7 +1029,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public boolean sendGlobalMessage(MOB host, int category, CMMsg msg)
+	public boolean sendGlobalMessage(final MOB host, final int category, final CMMsg msg)
 	{
 		final List<WeakReference<MsgListener>> V=globalHandlers.get(Integer.valueOf(category));
 		if(V==null)
@@ -1127,7 +1127,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			return "";
 		return area.Name()+"#?";
 	}
-	
+
 	@Override
 	public String getExtendedTwinRoomIDs(final Room R1,final Room R2)
 	{
@@ -1140,7 +1140,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Room getRoom(Enumeration<Room> roomSet, String calledThis)
+	public Room getRoom(final Enumeration<Room> roomSet, final String calledThis)
 	{
 		try
 		{
@@ -1204,7 +1204,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public List<Room> findRooms(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
+	public List<Room> findRooms(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final boolean displayOnly, final int timePct)
 	{
 		final Vector<Room> roomsV=new Vector<Room>();
 		if((srchStr.charAt(0)=='#')&&(mob!=null)&&(mob.location()!=null))
@@ -1216,22 +1216,22 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Room findFirstRoom(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
+	public Room findFirstRoom(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final boolean displayOnly, final int timePct)
 	{
 		final Vector<Room> roomsV=new Vector<Room>();
 		if((srchStr.charAt(0)=='#')&&(mob!=null)&&(mob.location()!=null))
 			addWorldRoomsLiberally(roomsV,getRoom(mob.location().getArea().Name()+srchStr));
 		else
 			addWorldRoomsLiberally(roomsV,getRoom(srchStr));
-		if(roomsV.size()>0) 
+		if(roomsV.size()>0)
 			return roomsV.firstElement();
 		addWorldRoomsLiberally(roomsV,findRooms(rooms,mob,srchStr,displayOnly,true,timePct));
-		if(roomsV.size()>0) 
+		if(roomsV.size()>0)
 			return roomsV.firstElement();
 		return null;
 	}
 
-	public List<Room> findRooms(Enumeration<Room> rooms, MOB mob, String srchStr, boolean displayOnly, boolean returnFirst, int timePct)
+	public List<Room> findRooms(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final boolean displayOnly, final boolean returnFirst, final int timePct)
 	{
 		final List<Room> foundRooms=new Vector<Room>();
 		Vector<Room> completeRooms=null;
@@ -1269,7 +1269,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return foundRooms;
 	}
 
-	protected void findRoomsByDisplay(MOB mob, Enumeration<Room> rooms, List<Room> foundRooms, String srchStr, boolean returnFirst, long maxTime)
+	protected void findRoomsByDisplay(final MOB mob, final Enumeration<Room> rooms, final List<Room> foundRooms, String srchStr, final boolean returnFirst, final long maxTime)
 	{
 		final long startTime=System.currentTimeMillis();
 		try
@@ -1292,7 +1292,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	}
 
-	protected void findRoomsByDesc(MOB mob, Enumeration<Room> rooms, List<Room> foundRooms, String srchStr, boolean returnFirst, long maxTime)
+	protected void findRoomsByDesc(final MOB mob, final Enumeration<Room> rooms, final List<Room> foundRooms, String srchStr, final boolean returnFirst, final long maxTime)
 	{
 		final long startTime=System.currentTimeMillis();
 		try
@@ -1315,21 +1315,21 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public List<MOB> findInhabitants(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
-	{ 
+	public List<MOB> findInhabitants(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final int timePct)
+	{
 		return findInhabitants(rooms,mob,srchStr,false,timePct);
 	}
-	
+
 	@Override
-	public MOB findFirstInhabitant(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
+	public MOB findFirstInhabitant(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final int timePct)
 	{
 		final List<MOB> found=findInhabitants(rooms,mob,srchStr,true,timePct);
 		if(found.size()>0)
 			return found.get(0);
 		return null;
 	}
-	
-	public List<MOB> findInhabitants(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
+
+	public List<MOB> findInhabitants(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final boolean returnFirst, final int timePct)
 	{
 		final Vector<MOB> found=new Vector<MOB>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
@@ -1350,7 +1350,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
 			{
-				CMLib.s_sleep(1000 - delay); 
+				CMLib.s_sleep(1000 - delay);
 				startTime=System.currentTimeMillis();
 			}
 		}
@@ -1358,7 +1358,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public List<MOB> findInhabitantsFavorExact(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
+	public List<MOB> findInhabitantsFavorExact(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final boolean returnFirst, final int timePct)
 	{
 		final Vector<MOB> found=new Vector<MOB>();
 		final Vector<MOB> exact=new Vector<MOB>();
@@ -1385,7 +1385,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
 			{
-				CMLib.s_sleep(1000 - delay); 
+				CMLib.s_sleep(1000 - delay);
 				startTime=System.currentTimeMillis();
 			}
 		}
@@ -1400,21 +1400,21 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public List<Item> findInventory(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
-	{ 
+	public List<Item> findInventory(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final int timePct)
+	{
 		return findInventory(rooms,mob,srchStr,false,timePct);
 	}
-	
+
 	@Override
-	public Item findFirstInventory(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
+	public Item findFirstInventory(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final int timePct)
 	{
 		final List<Item> found=findInventory(rooms,mob,srchStr,true,timePct);
 		if(found.size()>0)
 			return found.get(0);
 		return null;
 	}
-	
-	public List<Item> findInventory(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, int timePct)
+
+	public List<Item> findInventory(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final boolean returnFirst, final int timePct)
 	{
 		final List<Item> found=new Vector<Item>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
@@ -1452,44 +1452,44 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
 			{
-				CMLib.s_sleep(1000 - delay); 
+				CMLib.s_sleep(1000 - delay);
 				startTime=System.currentTimeMillis();
 			}
 		}
 		return found;
 	}
-	
+
 	@Override
-	public List<Environmental> findShopStock(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
-	{ 
+	public List<Environmental> findShopStock(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final int timePct)
+	{
 		return findShopStock(rooms,mob,srchStr,false,false,timePct);
 	}
-	
+
 	@Override
-	public Environmental findFirstShopStock(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
+	public Environmental findFirstShopStock(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final int timePct)
 	{
 		final List<Environmental> found=findShopStock(rooms,mob,srchStr,true,false,timePct);
 		if(found.size()>0)
 			return found.get(0);
 		return null;
 	}
-	
+
 	@Override
-	public List<Environmental> findShopStockers(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
-	{ 
+	public List<Environmental> findShopStockers(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final int timePct)
+	{
 		return findShopStock(rooms,mob,srchStr,false,true,timePct);
 	}
-	
+
 	@Override
-	public Environmental findFirstShopStocker(Enumeration<Room> rooms, MOB mob, String srchStr, int timePct)
+	public Environmental findFirstShopStocker(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final int timePct)
 	{
 		final List<Environmental> found=findShopStock(rooms,mob,srchStr,true,true,timePct);
 		if(found.size()>0)
 			return found.get(0);
 		return null;
 	}
-	
-	public List<Environmental> findShopStock(Enumeration<Room> rooms, MOB mob, String srchStr, boolean returnFirst, boolean returnStockers, int timePct)
+
+	public List<Environmental> findShopStock(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final boolean returnFirst, final boolean returnStockers, final int timePct)
 	{
 		final XVector<Environmental> found=new XVector<Environmental>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
@@ -1631,7 +1631,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
 			{
-				CMLib.s_sleep(1000 - delay); 
+				CMLib.s_sleep(1000 - delay);
 				startTime=System.currentTimeMillis();
 			}
 		}
@@ -1657,21 +1657,21 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public List<Item> findRoomItems(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, int timePct)
-	{ 
+	public List<Item> findRoomItems(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final boolean anyItems, final int timePct)
+	{
 		return findRoomItems(rooms,mob,srchStr,anyItems,false,timePct);
 	}
-	
+
 	@Override
-	public Item findFirstRoomItem(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, int timePct)
+	public Item findFirstRoomItem(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final boolean anyItems, final int timePct)
 	{
 		final List<Item> found=findRoomItems(rooms,mob,srchStr,anyItems,true,timePct);
 		if(found.size()>0)
 			return found.get(0);
 		return null;
 	}
-	
-	public List<Item> findRoomItems(Enumeration<Room> rooms, MOB mob, String srchStr, boolean anyItems, boolean returnFirst, int timePct)
+
+	public List<Item> findRoomItems(final Enumeration<Room> rooms, final MOB mob, final String srchStr, final boolean anyItems, final boolean returnFirst, final int timePct)
 	{
 		final Vector<Item> found=new Vector<Item>();
 		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
@@ -1692,7 +1692,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 			if((useTimer)&&((System.currentTimeMillis()-startTime)>delay))
 			{
-				CMLib.s_sleep(1000 - delay); 
+				CMLib.s_sleep(1000 - delay);
 				startTime=System.currentTimeMillis();
 			}
 		}
@@ -1709,22 +1709,22 @@ public class CMMap extends StdLibrary implements WorldMap
 		return room;
 	}
 
-	@Override 
-	public Room getRoom(String calledThis)
+	@Override
+	public Room getRoom(final String calledThis)
 	{
 		return getRoom(null,calledThis);
 	}
 
-	@Override 
+	@Override
 	public Enumeration<Room> rooms()
 	{
-		return new AllAreasRoomEnumerator(false); 
+		return new AllAreasRoomEnumerator(false);
 	}
 
-	@Override 
+	@Override
 	public Enumeration<Room> roomsFilled()
 	{
-		return new AllAreasRoomEnumerator(true); 
+		return new AllAreasRoomEnumerator(true);
 	}
 
 	@Override
@@ -1761,19 +1761,19 @@ public class CMMap extends StdLibrary implements WorldMap
 		return deitiesList.size();
 	}
 
-	protected void addDeity(Deity newOne)
+	protected void addDeity(final Deity newOne)
 	{
 		if (!deitiesList.contains(newOne))
 			deitiesList.add(newOne);
 	}
 
-	protected void delDeity(Deity oneToDel)
+	protected void delDeity(final Deity oneToDel)
 	{
 		deitiesList.remove(oneToDel);
 	}
 
 	@Override
-	public Deity getDeity(String calledThis)
+	public Deity getDeity(final String calledThis)
 	{
 		for (final Deity D : deitiesList)
 		{
@@ -1782,20 +1782,20 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return null;
 	}
-	
-	@Override 
-	public Enumeration<Deity> deities() 
+
+	@Override
+	public Enumeration<Deity> deities()
 	{
-		return new IteratorEnumeration<Deity>(deitiesList.iterator()); 
+		return new IteratorEnumeration<Deity>(deitiesList.iterator());
 	}
 
-	@Override 
-	public int numShips() 
-	{ 
-		return shipList.size(); 
+	@Override
+	public int numShips()
+	{
+		return shipList.size();
 	}
 
-	protected void addShip(BoardableShip newOne)
+	protected void addShip(final BoardableShip newOne)
 	{
 		if (!shipList.contains(newOne))
 		{
@@ -1806,7 +1806,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	}
 
-	protected void delShip(BoardableShip oneToDel)
+	protected void delShip(final BoardableShip oneToDel)
 	{
 		shipList.remove(oneToDel);
 		if(oneToDel!=null)
@@ -1818,7 +1818,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public BoardableShip getShip(String calledThis)
+	public BoardableShip getShip(final String calledThis)
 	{
 		for (final BoardableShip S : shipList)
 		{
@@ -1827,20 +1827,20 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return null;
 	}
-	
-	@Override 
-	public Enumeration<BoardableShip> ships() 
-	{ 
-		return new IteratorEnumeration<BoardableShip>(shipList.iterator()); 
+
+	@Override
+	public Enumeration<BoardableShip> ships()
+	{
+		return new IteratorEnumeration<BoardableShip>(shipList.iterator());
 	}
-	
+
 	public Enumeration<Room> shipsRoomEnumerator(final Area inA)
 	{
-		return new Enumeration<Room>() 
+		return new Enumeration<Room>()
 		{
 			private Enumeration<Room> cur = null;
 			private Enumeration<Area> cA = shipAreaEnumerator(inA);
-			
+
 			@Override
 			public boolean hasMoreElements()
 			{
@@ -1868,10 +1868,10 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 		};
 	}
-	
+
 	public Enumeration<Area> shipAreaEnumerator(final Area inA)
 	{
-		return new Enumeration<Area>() 
+		return new Enumeration<Area>()
 		{
 			private volatile Area nextArea=null;
 			private volatile Enumeration<BoardableShip> shipsEnum=ships();
@@ -1895,7 +1895,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				}
 				return (nextArea != null);
 			}
-			
+
 			@Override
 			public Area nextElement()
 			{
@@ -1913,19 +1913,19 @@ public class CMMap extends StdLibrary implements WorldMap
 		return postOfficeList.size();
 	}
 
-	protected void addPostOffice(PostOffice newOne)
+	protected void addPostOffice(final PostOffice newOne)
 	{
 		if(!postOfficeList.contains(newOne))
 			postOfficeList.add(newOne);
 	}
 
-	protected void delPostOffice(PostOffice oneToDel)
+	protected void delPostOffice(final PostOffice oneToDel)
 	{
 		postOfficeList.remove(oneToDel);
 	}
 
 	@Override
-	public PostOffice getPostOffice(String chain, String areaNameOrBranch)
+	public PostOffice getPostOffice(final String chain, final String areaNameOrBranch)
 	{
 		for (final PostOffice P : postOfficeList)
 		{
@@ -1964,7 +1964,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return auctionHouseList.size();
 	}
 
-	protected void addAuctionHouse(Auctioneer newOne)
+	protected void addAuctionHouse(final Auctioneer newOne)
 	{
 		if (!auctionHouseList.contains(newOne))
 		{
@@ -1972,13 +1972,13 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	}
 
-	protected void delAuctionHouse(Auctioneer oneToDel)
+	protected void delAuctionHouse(final Auctioneer oneToDel)
 	{
 		auctionHouseList.remove(oneToDel);
 	}
 
 	@Override
-	public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch)
+	public Auctioneer getAuctionHouse(final String chain, final String areaNameOrBranch)
 	{
 		for (final Auctioneer C : auctionHouseList)
 		{
@@ -2006,19 +2006,19 @@ public class CMMap extends StdLibrary implements WorldMap
 		return bankList.size();
 	}
 
-	protected void addBank(Banker newOne)
+	protected void addBank(final Banker newOne)
 	{
 		if (!bankList.contains(newOne))
 			bankList.add(newOne);
 	}
 
-	protected void delBank(Banker oneToDel)
+	protected void delBank(final Banker oneToDel)
 	{
 		bankList.remove(oneToDel);
 	}
 
 	@Override
-	public Banker getBank(String chain, String areaNameOrBranch)
+	public Banker getBank(final String chain, final String areaNameOrBranch)
 	{
 		for (final Banker B : bankList)
 		{
@@ -2047,7 +2047,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Iterator<String> bankChains(Area AreaOrNull)
+	public Iterator<String> bankChains(final Area AreaOrNull)
 	{
 		final HashSet<String> H=new HashSet<String>();
 		for (final Banker B : bankList)
@@ -2067,19 +2067,19 @@ public class CMMap extends StdLibrary implements WorldMap
 		return libraryList.size();
 	}
 
-	protected void addLibrary(Librarian newOne)
+	protected void addLibrary(final Librarian newOne)
 	{
 		if (!libraryList.contains(newOne))
 			libraryList.add(newOne);
 	}
 
-	protected void delLibrary(Librarian oneToDel)
+	protected void delLibrary(final Librarian oneToDel)
 	{
 		libraryList.remove(oneToDel);
 	}
 
 	@Override
-	public Librarian getLibrary(String chain, String areaNameOrBranch)
+	public Librarian getLibrary(final String chain, final String areaNameOrBranch)
 	{
 		for (final Librarian B : libraryList)
 		{
@@ -2108,7 +2108,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Iterator<String> libraryChains(Area AreaOrNull)
+	public Iterator<String> libraryChains(final Area AreaOrNull)
 	{
 		final HashSet<String> H=new HashSet<String>();
 		for (final Librarian B : libraryList)
@@ -2123,7 +2123,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void renameRooms(Area A, String oldName, List<Room> allMyDamnRooms)
+	public void renameRooms(final Area A, final String oldName, final List<Room> allMyDamnRooms)
 	{
 		final List<Room> onesToRenumber=new Vector<Room>();
 		for(Room R : allMyDamnRooms)
@@ -2165,7 +2165,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public int getRoomDir(Room from, Room to)
+	public int getRoomDir(final Room from, final Room to)
 	{
 		if((from==null)||(to==null))
 			return -1;
@@ -2178,16 +2178,16 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Area getTargetArea(Room from, Exit to)
+	public Area getTargetArea(final Room from, final Exit to)
 	{
 		final Room R=getTargetRoom(from, to);
 		if(R==null)
 			return null;
 		return R.getArea();
 	}
-	
+
 	@Override
-	public Room getTargetRoom(Room from, Exit to)
+	public Room getTargetRoom(final Room from, final Exit to)
 	{
 		if((from==null)||(to==null))
 			return null;
@@ -2196,9 +2196,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			return null;
 		return from.getRoomInDir(d);
 	}
-	
+
 	@Override
-	public int getExitDir(Room from, Exit to)
+	public int getExitDir(final Room from, final Exit to)
 	{
 		if((from==null)||(to==null))
 			return -1;
@@ -2215,7 +2215,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Room findConnectingRoom(Room room)
+	public Room findConnectingRoom(final Room room)
 	{
 		if(room==null)
 			return null;
@@ -2258,7 +2258,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public boolean isClearableRoom(Room R)
+	public boolean isClearableRoom(final Room R)
 	{
 		if((R==null)||(R.amDestroyed()))
 			return true;
@@ -2296,7 +2296,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public boolean explored(Room R)
+	public boolean explored(final Room R)
 	{
 		if((R==null)
 		||(CMath.bset(R.phyStats().sensesMask(),PhyStats.SENSE_ROOMUNEXPLORABLE))
@@ -2310,7 +2310,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		private Enumeration<Area> curAreaEnumeration=areasPlusShips();
 		private Enumeration<Room> curRoomEnumeration=null;
 		private boolean addSkys = false;
-		public AllAreasRoomEnumerator(boolean includeSkys)
+		public AllAreasRoomEnumerator(final boolean includeSkys)
 		{
 			addSkys = includeSkys;
 		}
@@ -2350,13 +2350,13 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		obliterateRoom(deadRoom,true);
 	}
-	
+
 	@Override
 	public void destroyRoomObject(final Room deadRoom)
 	{
 		obliterateRoom(deadRoom,false);
 	}
-	
+
 	protected void obliterateRoom(final Room deadRoom, final boolean includeDB)
 	{
 		for(final Enumeration<Ability> a=deadRoom.effects();a.hasMoreElements();)
@@ -2387,7 +2387,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			for(final Pair<Room,Integer> p : roomsToDo)
 			{
 				final Room R=p.first;
-				int d=p.second.intValue();
+				final int d=p.second.intValue();
 				synchronized(("SYNC"+R.roomID()).intern())
 				{
 					R.rawDoors()[d]=null;
@@ -2413,7 +2413,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void emptyAreaAndDestroyRooms(Area area)
+	public void emptyAreaAndDestroyRooms(final Area area)
 	{
 		for(final Enumeration<Ability> a=area.effects();a.hasMoreElements();)
 		{
@@ -2433,7 +2433,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Room roomLocation(Environmental E)
+	public Room roomLocation(final Environmental E)
 	{
 		if(E==null)
 			return null;
@@ -2461,7 +2461,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Area getStartArea(Environmental E)
+	public Area getStartArea(final Environmental E)
 	{
 		if(E instanceof Area)
 			return (Area)E;
@@ -2472,7 +2472,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Room getStartRoom(Environmental E)
+	public Room getStartRoom(final Environmental E)
 	{
 		if(E ==null)
 			return null;
@@ -2495,7 +2495,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public ThreadGroup getOwnedThreadGroup(CMObject E)
+	public ThreadGroup getOwnedThreadGroup(final CMObject E)
 	{
 		final Area area=areaLocation(E);
 		if(area != null)
@@ -2508,7 +2508,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Area areaLocation(CMObject E)
+	public Area areaLocation(final CMObject E)
 	{
 		if(E==null)
 			return null;
@@ -2531,9 +2531,9 @@ public class CMMap extends StdLibrary implements WorldMap
 			return areaLocation(((Exit)E).lastRoomUsedFrom(null));
 		return null;
 	}
-	
+
 	@Override
-	public Room getSafeRoomToMovePropertyTo(Room room, PrivateProperty I)
+	public Room getSafeRoomToMovePropertyTo(final Room room, final PrivateProperty I)
 	{
 		if(I instanceof BoardableShip)
 		{
@@ -2586,9 +2586,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void emptyRoom(Room room, Room toRoom, boolean clearPlayers)
+	public void emptyRoom(final Room room, final Room toRoom, final boolean clearPlayers)
 	{
-		if(room==null) 
+		if(room==null)
 			return;
 		// this will empty grid rooms so that
 		// the code below can delete them or whatever.
@@ -2640,7 +2640,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					M.getStartRoom().bringMobHere(M,false);
 			}
 		}
-		
+
 		Item I=null;
 		if(toRoom != null)
 		{
@@ -2681,11 +2681,11 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void obliterateMapArea(Area A)
+	public void obliterateMapArea(final Area A)
 	{
 		obliterateArea(A,true);
 	}
-	
+
 	@Override
 	public void destroyAreaObject(final Area A)
 	{
@@ -2699,7 +2699,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		A.setAreaState(Area.State.STOPPED);
 		if(A instanceof SpaceShip)
 			CMLib.tech().unregisterAllElectronics(CMLib.tech().getElectronicsKey(A));
-		List<Room> allRooms=new LinkedList<Room>();
+		final List<Room> allRooms=new LinkedList<Room>();
 		for(int i=0;i<2;i++)
 		{
 			for(final Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
@@ -2724,13 +2724,13 @@ public class CMMap extends StdLibrary implements WorldMap
 	public CMMsg resetMsg=null;
 
 	@Override
-	public void resetRoom(Room room)
+	public void resetRoom(final Room room)
 	{
 		resetRoom(room,false);
 	}
 
 	@Override
-	public void resetRoom(Room room, boolean rebuildGrids)
+	public void resetRoom(Room room, final boolean rebuildGrids)
 	{
 		if(room==null)
 			return;
@@ -2773,7 +2773,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, long maxMillis)
+	public Room findWorldRoomLiberally(final MOB mob, final String cmd, final String srchWhatAERIPMVK, final int timePct, final long maxMillis)
 	{
 		final List<Room> rooms=findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,null,true,timePct, maxMillis);
 		if((rooms!=null)&&(rooms.size()!=0))
@@ -2782,13 +2782,13 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public List<Room> findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct, long maxMillis)
+	public List<Room> findWorldRoomsLiberally(final MOB mob, final String cmd, final String srchWhatAERIPMVK, final int timePct, final long maxMillis)
 	{
 		return findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,null,false,timePct,maxMillis);
 	}
 
 	@Override
-	public Room findAreaRoomLiberally(MOB mob, Area A,String cmd, String srchWhatAERIPMVK, int timePct)
+	public Room findAreaRoomLiberally(final MOB mob, final Area A,final String cmd, final String srchWhatAERIPMVK, final int timePct)
 	{
 		final List<Room> rooms=findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,A,true,timePct,120);
 		if((rooms!=null)&&(rooms.size()!=0))
@@ -2797,12 +2797,12 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public List<Room> findAreaRoomsLiberally(MOB mob, Area A,String cmd, String srchWhatAERIPMVK, int timePct)
+	public List<Room> findAreaRoomsLiberally(final MOB mob, final Area A,final String cmd, final String srchWhatAERIPMVK, final int timePct)
 	{
 		return findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,A,false,timePct,120);
 	}
 
-	protected Room addWorldRoomsLiberally(List<Room> rooms, List<? extends Environmental> choicesV)
+	protected Room addWorldRoomsLiberally(final List<Room> rooms, final List<? extends Environmental> choicesV)
 	{
 		if(choicesV==null)
 			return null;
@@ -2822,7 +2822,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	}
 
-	protected Room addWorldRoomsLiberally(List<Room> rooms, Room room)
+	protected Room addWorldRoomsLiberally(final List<Room> rooms, final Room room)
 	{
 		if(room==null)
 			return null;
@@ -2835,14 +2835,14 @@ public class CMMap extends StdLibrary implements WorldMap
 		return room;
 	}
 
-	protected Room addWorldRoomsLiberally(List<Room>rooms, Area area)
+	protected Room addWorldRoomsLiberally(final List<Room>rooms, final Area area)
 	{
 		if((area==null)||(area.isProperlyEmpty()))
 			return null;
 		return addWorldRoomsLiberally(rooms,area.getRandomProperRoom());
 	}
 
-	protected List<Room> returnResponse(List<Room> rooms, Room room)
+	protected List<Room> returnResponse(final List<Room> rooms, final Room room)
 	{
 		if(rooms!=null)
 			return rooms;
@@ -2858,7 +2858,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return ((System.currentTimeMillis() - startTime)) > maxMillis;
 	}
 
-	protected List<MOB> checkMOBCachedList(List<MOB> list)
+	protected List<MOB> checkMOBCachedList(final List<MOB> list)
 	{
 		if (list != null)
 		{
@@ -2869,7 +2869,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return list;
 	}
 
-	protected List<Item> checkInvCachedList(List<Item> list)
+	protected List<Item> checkInvCachedList(final List<Item> list)
 	{
 		if (list != null)
 		{
@@ -2880,7 +2880,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return list;
 	}
 
-	protected List<Item> checkRoomItemCachedList(List<Item> list)
+	protected List<Item> checkRoomItemCachedList(final List<Item> list)
 	{
 		if (list != null)
 		{
@@ -2962,13 +2962,13 @@ public class CMMap extends StdLibrary implements WorldMap
 		return finder;
 	}
 
-	protected List<Room> findWorldRoomsLiberally(MOB mob,
-												 String cmd,
-												 String srchWhatAERIPMVK,
+	protected List<Room> findWorldRoomsLiberally(final MOB mob,
+												 final String cmd,
+												 final String srchWhatAERIPMVK,
 												 Area area,
-												 boolean returnFirst,
-												 int timePct,
-												 long maxMillis)
+												 final boolean returnFirst,
+												 final int timePct,
+												 final long maxMillis)
 	{
 		Room room=null;
 		// wish this stuff could be cached, even temporarily, however,
@@ -3203,7 +3203,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				// search areas weakly
 				if(searchWeakAreas && (room==null) && (A==null))
 				{
-					Area A2=findArea(srchStr);
+					final Area A2=findArea(srchStr);
 					if((A2!=null) &&(A2.properSize()>0) &&(A2.getProperRoomnumbers().roomCountAllAreas()>0))
 						room=addWorldRoomsLiberally(rooms,A2);
 				}
@@ -3214,7 +3214,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public boolean isHere(CMObject E2, Room here)
+	public boolean isHere(final CMObject E2, final Room here)
 	{
 		if(E2==null)
 			return false;
@@ -3246,7 +3246,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public boolean isHere(CMObject E2, Area here)
+	public boolean isHere(final CMObject E2, final Area here)
 	{
 		if(E2==null)
 			return false;
@@ -3265,7 +3265,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return false;
 	}
 
-	protected PairVector<MOB,String> getAllPlayersHere(Area area, boolean includeLocalFollowers)
+	protected PairVector<MOB,String> getAllPlayersHere(final Area area, final boolean includeLocalFollowers)
 	{
 		final PairVector<MOB,String> playersHere=new PairVector<MOB,String>();
 		MOB M=null;
@@ -3295,7 +3295,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void resetArea(Area area)
+	public void resetArea(final Area area)
 	{
 		final Area.State oldFlag=area.getAreaState();
 		area.setAreaState(Area.State.FROZEN);
@@ -3321,7 +3321,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				propertyHere.add((PrivateProperty)ship,CMLib.map().getExtendedRoomID(R));
 			}
 		}
-			
+
 		for(final Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
 			resetRoom(r.nextElement());
 		area.fillInAreaRooms();
@@ -3350,7 +3350,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public boolean hasASky(Room room)
+	public boolean hasASky(final Room room)
 	{
 		if((room==null)
 		||(room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
@@ -3360,7 +3360,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void registerWorldObjectDestroyed(Area area, Room room, CMObject o)
+	public void registerWorldObjectDestroyed(Area area, final Room room, final CMObject o)
 	{
 		if(o instanceof Deity)
 			delDeity((Deity)o);
@@ -3507,7 +3507,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return semaphore;
 	}
 
-	protected void addScriptHost(Area area, Room room, PhysicalAgent host)
+	protected void addScriptHost(final Area area, final Room room, final PhysicalAgent host)
 	{
 		if((area==null) || (host == null))
 			return;
@@ -3608,7 +3608,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return true;
 	}
 
-	@Override 
+	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
 		try
@@ -3637,34 +3637,34 @@ public class CMMap extends StdLibrary implements WorldMap
 		final boolean debugMem = CMSecurity.isDebugging(CMSecurity.DbgFlag.SHUTDOWN);
 		for(final Enumeration<Area> a=areasList.elements();a.hasMoreElements();)
 		{
-			try 
+			try
 			{
 				final Area A = a.nextElement();
 				if(A!=null)
 				{
 					CMProps.setUpAllLowVar(CMProps.Str.MUDSTATUS,"Shutting down Map area '"+A.Name()+"'...");
-					LinkedList<Room> rooms=new LinkedList<Room>();
+					final LinkedList<Room> rooms=new LinkedList<Room>();
 					for(final Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 					{
-						try 
+						try
 						{
 							final Room R=r.nextElement();
 							if(R!=null)
 								rooms.add(R);
-						} 
-						catch(Exception e) 
+						}
+						catch(final Exception e)
 						{
 						}
 					}
 					for(final Iterator<Room> r=rooms.iterator();r.hasNext();)
 					{
-						try 
+						try
 						{
 							final Room R=r.next();
 							A.delProperRoom(R);
 							R.destroy();
-						} 
-						catch(Exception e) 
+						}
+						catch(final Exception e)
 						{
 						}
 					}
@@ -3674,11 +3674,11 @@ public class CMMap extends StdLibrary implements WorldMap
 					try
 					{
 						Object obj = new Object();
-						WeakReference<Object> ref = new WeakReference<Object>(obj);
+						final WeakReference<Object> ref = new WeakReference<Object>(obj);
 						obj = null;
 						System.gc();
 						System.runFinalization();
-						while(ref.get() != null) 
+						while(ref.get() != null)
 						{
 							System.gc();
 						}
@@ -3693,7 +3693,7 @@ public class CMMap extends StdLibrary implements WorldMap
 						Log.debugOut("Memory: CMMap: "+A.Name()+": "+(total-free)+"/"+total);
 				}
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 			}
 		}
@@ -3720,15 +3720,12 @@ public class CMMap extends StdLibrary implements WorldMap
 		final MOB expireM=getFactoryMOB(null);
 		try
 		{
-			final List<Environmental> stuffToGo=new ArrayList<Environmental>();
-			Item I=null;
-			MOB M=null;
-			Room R=null;
-			final List<Room> roomsToGo=new ArrayList<Room>();
-			final CMMsg expireMsg=CMClass.getMsg(expireM,R,null,CMMsg.MSG_EXPIRE,null);
+			final List<Environmental> stuffToGo=new LinkedList<Environmental>();
+			final List<Room> roomsToGo=new LinkedList<Room>();
+			final CMMsg expireMsg=CMClass.getMsg(expireM,null,null,CMMsg.MSG_EXPIRE,null);
 			for(final Enumeration<Room> r=roomsFilled();r.hasMoreElements();)
 			{
-				R=r.nextElement();
+				final Room R=r.nextElement();
 				expireM.setLocation(R);
 				expireMsg.setTarget(R);
 				if((R.expirationDate()!=0)
@@ -3741,7 +3738,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					stuffToGo.clear();
 					for(int i=0;i<R.numItems();i++)
 					{
-						I=R.getItem(i);
+						final Item I=R.getItem(i);
 						if((I!=null)
 						&&((!corpsesOnly)||(I instanceof DeadBody))
 						&&(I.expirationDate()!=0)
@@ -3749,22 +3746,23 @@ public class CMMap extends StdLibrary implements WorldMap
 						&&(currentTime>I.expirationDate()))
 							stuffToGo.add(I);
 					}
-					for(int i=0;i<R.numInhabitants();i++)
+					if(!noMobs)
 					{
-						M=R.fetchInhabitant(i);
-						if((M!=null)
-						&&(!noMobs)
-						&&(M.expirationDate()!=0)
-						&&(currentTime>M.expirationDate()))
-							stuffToGo.add(M);
+						for(int i=0;i<R.numInhabitants();i++)
+						{
+							final MOB M=R.fetchInhabitant(i);
+							if((M!=null)
+							&&(M.expirationDate()!=0)
+							&&(currentTime>M.expirationDate()))
+								stuffToGo.add(M);
+						}
 					}
 				}
 				if(stuffToGo.size()>0)
 				{
 					boolean success=true;
-					for(int s=0;s<stuffToGo.size();s++)
+					for(final Environmental E : stuffToGo)
 					{
-						final Environmental E=stuffToGo.get(s);
 						setThreadStatus(serviceClient,"expiring "+E.Name());
 						expireMsg.setTarget(E);
 						if(R.okMessage(expireM,expireMsg))
@@ -3777,9 +3775,8 @@ public class CMMap extends StdLibrary implements WorldMap
 					stuffToGo.clear();
 				}
 			}
-			for(int r=0;r<roomsToGo.size();r++)
+			for(final Room R : roomsToGo)
 			{
-				R=roomsToGo.get(r);
 				expireM.setLocation(R);
 				expireMsg.setTarget(R);
 				setThreadStatus(serviceClient,"expirating room "+getExtendedRoomID(R));
@@ -3798,19 +3795,19 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 		}
 		setThreadStatus(serviceClient,"title sweeping");
-		final List<String> playerList=CMLib.database().getUserList();
+		final LegalLibrary law=CMLib.law();
+		final List<String> playerList=CMLib.players().getPlayerListsAllHosts();
+		for(final Enumeration<String> cn=CMLib.clans().clansNames();cn.hasMoreElements();)
+			playerList.add(cn.nextElement());
 		try
 		{
 			for(final Enumeration<Room> r=rooms();r.hasMoreElements();)
 			{
 				final Room R=r.nextElement();
-				final LandTitle T=CMLib.law().getLandTitle(R);
+				// roomid > 0? these are unfilled...
+				final LandTitle T=law.getLandTitle(R);
 				if(T!=null)
-				{
-					setThreadStatus(serviceClient,"checking title in "+R.roomID()+": "+Runtime.getRuntime().freeMemory());
 					T.updateLot(playerList);
-					setThreadStatus(serviceClient,"title sweeping");
-				}
 			}
 		}
 		catch(final NoSuchElementException nse)
@@ -3838,7 +3835,8 @@ public class CMMap extends StdLibrary implements WorldMap
 						R.delInhabitant(mob);
 						continue;
 					}
-					if((mob.lastTickedDateTime()>0)&&(mob.lastTickedDateTime()<lastDateTime))
+					if((mob.lastTickedDateTime()>0)
+					&&(mob.lastTickedDateTime()<lastDateTime))
 					{
 						final boolean ticked=CMLib.threads().isTicking(mob,Tickable.TICKID_MOB);
 						final boolean isDead=mob.amDead();
@@ -3886,7 +3884,7 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	protected final static char[] cmfsFilenameifyChars=new char[]{'/','\\',' '};
 
-	protected String cmfsFilenameify(String str)
+	protected String cmfsFilenameify(final String str)
 	{
 		return CMStrings.replaceAllofAny(str, cmfsFilenameifyChars, '_').toLowerCase().trim();
 	}
@@ -3896,7 +3894,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		rootFiles.add(new CMFile.CMVFSDir(root,root.getPath()+"stats/")
 		{
-			@Override 
+			@Override
 			protected CMFile.CMVFSFile[] getFiles()
 			{
 				final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
@@ -3907,8 +3905,8 @@ public class CMMap extends StdLibrary implements WorldMap
 					final String statValue=E.getStat(statName);
 					myFiles.add(new CMFile.CMVFSFile(this.getPath()+statName,256,System.currentTimeMillis(),"SYS")
 					{
-						@Override 
-						public int getMaskBits(MOB accessor)
+						@Override
+						public int getMaskBits(final MOB accessor)
 						{
 							if(accessor==null)
 								return this.mask;
@@ -3926,14 +3924,14 @@ public class CMMap extends StdLibrary implements WorldMap
 							return this.mask|48;
 						}
 
-						@Override 
+						@Override
 						public Object readData()
 						{
 							return statValue;
 						}
 
-						@Override 
-						public void saveData(String filename, int vfsBits, String author, Object O)
+						@Override
+						public void saveData(final String filename, final int vfsBits, final String author, final Object O)
 						{
 							E.setStat(statName, O.toString());
 							if(E instanceof Area)
@@ -3961,7 +3959,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		return new CMFile.CMVFSDir(root,root.getPath()+"map/")
 		{
-			@Override 
+			@Override
 			protected CMFile.CMVFSFile[] getFiles()
 			{
 				final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>(numAreas());
@@ -3970,7 +3968,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					final Area A=a.nextElement();
 					myFiles.add(new CMFile.CMVFSFile(this.getPath()+cmfsFilenameify(A.Name())+".cmare",48,System.currentTimeMillis(),"SYS")
 					{
-						@Override 
+						@Override
 						public Object readData()
 						{
 							return CMLib.coffeeMaker().getAreaXML(A, null, null, null, true);
@@ -3978,7 +3976,7 @@ public class CMMap extends StdLibrary implements WorldMap
 					});
 					myFiles.add(new CMFile.CMVFSDir(this,this.getPath()+cmfsFilenameify(A.Name())+"/")
 					{
-						@Override 
+						@Override
 						protected CMFile.CMVFSFile[] getFiles()
 						{
 							final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
@@ -3992,7 +3990,7 @@ public class CMMap extends StdLibrary implements WorldMap
 										roomID=roomID.substring(A.Name().length()+1);
 									myFiles.add(new CMFile.CMVFSFile(this.getPath()+cmfsFilenameify(R.roomID())+".cmare",48,System.currentTimeMillis(),"SYS")
 									{
-										@Override 
+										@Override
 										public Object readData()
 										{
 											return CMLib.coffeeMaker().getRoomXML(R, null, null, true);
@@ -4000,13 +3998,13 @@ public class CMMap extends StdLibrary implements WorldMap
 									});
 									myFiles.add(new CMFile.CMVFSDir(this,this.getPath()+cmfsFilenameify(roomID).toLowerCase()+"/")
 									{
-										@Override 
+										@Override
 										protected CMFile.CMVFSFile[] getFiles()
 										{
 											final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
 											myFiles.add(new CMFile.CMVFSFile(this.getPath()+"items.cmare",48,System.currentTimeMillis(),"SYS")
 											{
-												@Override 
+												@Override
 												public Object readData()
 												{
 													return CMLib.coffeeMaker().getRoomItems(R, new TreeMap<String,List<Item>>(), null, null);
@@ -4014,7 +4012,7 @@ public class CMMap extends StdLibrary implements WorldMap
 											});
 											myFiles.add(new CMFile.CMVFSFile(this.path+"mobs.cmare",48,System.currentTimeMillis(),"SYS")
 											{
-												@Override 
+												@Override
 												public Object readData()
 												{
 													return CMLib.coffeeMaker().getRoomMobs(R, null, null, new TreeMap<String,List<MOB>>());
@@ -4022,7 +4020,7 @@ public class CMMap extends StdLibrary implements WorldMap
 											});
 											myFiles.add(new CMFile.CMVFSDir(this,this.path+"mobs/")
 											{
-												@Override 
+												@Override
 												protected CMFile.CMVFSFile[] getFiles()
 												{
 													final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
@@ -4034,7 +4032,7 @@ public class CMMap extends StdLibrary implements WorldMap
 															final MOB M=R2.fetchInhabitant(i);
 															myFiles.add(new CMFile.CMVFSFile(this.path+cmfsFilenameify(R2.getContextName(M))+".cmare",48,System.currentTimeMillis(),"SYS")
 															{
-																@Override 
+																@Override
 																public Object readData()
 																{
 																	return CMLib.coffeeMaker().getMobXML(M);
@@ -4042,7 +4040,7 @@ public class CMMap extends StdLibrary implements WorldMap
 															});
 															myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(R2.getContextName(M))+"/")
 															{
-																@Override 
+																@Override
 																protected CMFile.CMVFSFile[] getFiles()
 																{
 																	final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
@@ -4059,7 +4057,7 @@ public class CMMap extends StdLibrary implements WorldMap
 											});
 											myFiles.add(new CMFile.CMVFSDir(this,this.path+"items/")
 											{
-												@Override 
+												@Override
 												protected CMFile.CMVFSFile[] getFiles()
 												{
 													final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
@@ -4071,7 +4069,7 @@ public class CMMap extends StdLibrary implements WorldMap
 															final Item I=R2.getItem(i);
 															myFiles.add(new CMFile.CMVFSFile(this.path+cmfsFilenameify(R2.getContextName(I))+".cmare",48,System.currentTimeMillis(),"SYS")
 															{
-																@Override 
+																@Override
 																public Object readData()
 																{
 																	return CMLib.coffeeMaker().getItemXML(I);
@@ -4079,7 +4077,7 @@ public class CMMap extends StdLibrary implements WorldMap
 															});
 															myFiles.add(new CMFile.CMVFSDir(this,this.path+cmfsFilenameify(R2.getContextName(I))+"/")
 															{
-																@Override 
+																@Override
 																protected CMFile.CMVFSFile[] getFiles()
 																{
 																	final List<CMFile.CMVFSFile> myFiles=new Vector<CMFile.CMVFSFile>();
@@ -4115,7 +4113,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public double getMinDistanceFrom(SpaceObject FROM, long prevDistance, SpaceObject TO)
+	public double getMinDistanceFrom(final SpaceObject FROM, final long prevDistance, final SpaceObject TO)
 	{
 		final long curDistance = getDistanceFrom(FROM.coordinates(), TO.coordinates());
 		final double baseDistance=FROM.speed();
@@ -4153,7 +4151,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				BigDecimal area = aa.divide(TWO, mc);
 				boolean done = false;
 				final int maxIterations = mc.getPrecision() + 1;
-				for (int i = 0; !done && i < maxIterations; i++) 
+				for (int i = 0; !done && i < maxIterations; i++)
 				{
 					BigDecimal r = aa.divide(area, mc);
 					r = r.add(area);
@@ -4164,7 +4162,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				final double height=2.0 * (area.doubleValue()/baseDistance);
 				minDistance=Math.round(height);
 			}
-			catch(Throwable t)
+			catch(final Throwable t)
 			{
 				Log.errOut("Bad Math: "+curDistance+","+prevDistance+","+baseDistance+"  -- " + FROM.speed());
 				return (prevDistance + curDistance) / 2.0;

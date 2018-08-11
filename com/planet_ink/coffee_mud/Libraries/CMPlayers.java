@@ -130,7 +130,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		}
 		return null;
 	}
-	
+
 	@Override
 	public void unloadOfflinePlayer(final MOB mob)
 	{
@@ -154,7 +154,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					}
 				}
 			}
-			
+
 		}
 	}
 
@@ -167,7 +167,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			return false;
 		return player1.playerStats().getAccount()==player2.playerStats().getAccount();
 	}
-	
+
 	@Override
 	public boolean isSameAccountIP(final MOB player1, final MOB player2)
 	{
@@ -183,7 +183,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			return true;
 		return false;
 	}
-	
+
 	@Override
 	public PlayerAccount getLoadAccount(final String calledThis)
 	{
@@ -274,7 +274,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		this.playerLibList = list.toArray(this.playerLibList);
 		return this.playerLibList;
 	}
-	
+
 	@Override
 	public PlayerAccount getAccountAllHosts(final String calledThis)
 	{
@@ -285,6 +285,23 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				return pA2;
 		}
 		return null;
+	}
+
+	@Override
+	public List<String> getPlayerLists()
+	{
+		return CMLib.database().getUserList();
+	}
+
+	@Override
+	public List<String> getPlayerListsAllHosts()
+	{
+		final List<String> finalList = new Vector<String>();
+		for(final PlayerLibrary pLib2 : getOtherPlayerLibAllHosts())
+		{
+			finalList.addAll(pLib2.getPlayerLists());
+		}
+		return finalList;
 	}
 
 	@Override
@@ -360,7 +377,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return false;
 	}
 
-	
+
 	@Override
 	public boolean playerExists(String name)
 	{
@@ -401,7 +418,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public List<Pair<String,Integer>> getTopPridePlayers(TimeClock.TimePeriod period, AccountStats.PrideStat stat)
+	public List<Pair<String,Integer>> getTopPridePlayers(final TimeClock.TimePeriod period, final AccountStats.PrideStat stat)
 	{
 		List<Pair<String,Integer>> top=topPlayers[period.ordinal()][stat.ordinal()];
 		if(top == null)
@@ -410,7 +427,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public List<Pair<String,Integer>> getTopPrideAccounts(TimeClock.TimePeriod period, AccountStats.PrideStat stat)
+	public List<Pair<String,Integer>> getTopPrideAccounts(final TimeClock.TimePeriod period, final AccountStats.PrideStat stat)
 	{
 		List<Pair<String,Integer>> top=topAccounts[period.ordinal()][stat.ordinal()];
 		if(top == null)
@@ -418,7 +435,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return top;
 	}
 
-	private void removePrideStat(List<Pair<String,Integer>> top, String name, int start)
+	private void removePrideStat(final List<Pair<String,Integer>> top, final String name, final int start)
 	{
 		for(int i=start;i<top.size();i++)
 		{
@@ -491,7 +508,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public void renamePlayer(MOB mob, String oldName)
+	public void renamePlayer(final MOB mob, final String oldName)
 	{
 		final String newName = mob.Name();
 		CMLib.database().DBPlayerNameChange(oldName, newName);
@@ -573,7 +590,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public void obliteratePlayer(MOB deadMOB, boolean deleteAssets, boolean quiet)
+	public void obliteratePlayer(MOB deadMOB, final boolean deleteAssets, final boolean quiet)
 	{
 		if(deadMOB==null)
 			return;
@@ -637,7 +654,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				Resources.updateFileResource("::protectedplayers.ini",newNoPurge);
 		}
 
-		PlayerStats pStats = deadMOB.playerStats();
+		final PlayerStats pStats = deadMOB.playerStats();
 		if(pStats != null)
 			pStats.getExtItems().delAllItems(true);
 		final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
@@ -650,7 +667,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			CMLib.commands().postChannel(channels.get(i),deadMOB.clans(),CMLib.lang().fullSessionTranslation("@x1 has just been deleted.",name),true);
 		}
 		CMLib.coffeeTables().bump(deadMOB,CoffeeTableRow.STAT_PURGES);
-		
+
 		CMLib.database().DBDeletePlayerOnly(deadMOB.Name());
 		deadMOB.delAllItems(false);
 		for(int i=0;i<deadMOB.numItems();i++)
@@ -698,7 +715,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					Q.declareWinner("-"+deadMOB.Name());
 			}
 		}
-		
+
 		if(deadMOB.session()!=null)
 			deadMOB.session().stopSession(false,false,false);
 		Log.sysOut(deadMOB.name()+" has been deleted.");
@@ -739,7 +756,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	{
 		int processed=0;
 		final boolean noCachePlayers=CMProps.getBoolVar(CMProps.Bool.PLAYERSNOCACHE);
-		int threadId = CMLib.getLibraryThreadID(Library.PLAYERS, this);
+		final int threadId = CMLib.getLibraryThreadID(Library.PLAYERS, this);
 		final CMLib lib=CMLib.get(threadId);
 		for(final MOB mob : playersList)
 		{
@@ -794,7 +811,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					}
 				}
 			}
-			catch(Throwable t)
+			catch(final Throwable t)
 			{
 				Log.errOut(mob.Name(),t);
 			}
@@ -803,7 +820,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public String getThinSortValue(ThinPlayer player, int code)
+	public String getThinSortValue(final ThinPlayer player, final int code)
 	{
 		switch(code)
 		{
@@ -827,7 +844,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return player.name();
 	}
 
-	public String getThinSortValue(PlayerAccount account, int code)
+	public String getThinSortValue(final PlayerAccount account, final int code)
 	{
 		switch(code)
 		{
@@ -848,7 +865,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	}
 
 	@Override
-	public int getCharThinSortCode(String codeName, boolean loose)
+	public int getCharThinSortCode(final String codeName, final boolean loose)
 	{
 		int x=CMParms.indexOf(CHAR_THIN_SORT_CODES,codeName);
 		if(x<0)
@@ -874,7 +891,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return x;
 	}
 
-	public int getAccountThinSortCode(String codeName, boolean loose)
+	public int getAccountThinSortCode(final String codeName, final boolean loose)
 	{
 		if((codeName == null)||(codeName.length()==0))
 			return -1;
@@ -894,7 +911,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Enumeration<ThinPlayer> thinPlayers(String sort, Map<String, Object> cache)
+	public Enumeration<ThinPlayer> thinPlayers(final String sort, final Map<String, Object> cache)
 	{
 		Vector<PlayerLibrary.ThinPlayer> V=(cache==null)?null:(Vector<PlayerLibrary.ThinPlayer>)cache.get("PLAYERLISTVECTOR"+sort);
 		if(V==null)
@@ -1013,7 +1030,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Enumeration<PlayerAccount> accounts(String sort, Map<String, Object> cache)
+	public Enumeration<PlayerAccount> accounts(final String sort, final Map<String, Object> cache)
 	{
 		Vector<PlayerAccount> V=(cache==null)?null:(Vector<PlayerAccount>)cache.get("ACCOUNTLISTVECTOR"+sort);
 		if(V==null)
@@ -1076,7 +1093,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return V.elements();
 	}
 
-	private boolean isProtected(List<String> protectedOnes, String name)
+	private boolean isProtected(final List<String> protectedOnes, final String name)
 	{
 		boolean protectedOne=false;
 		for(int p=0;p<protectedOnes.size();p++)
@@ -1147,7 +1164,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		final List<String> warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.AUTOPURGE))
 			Log.debugOut(serviceClient.getName(),"Autopurge process start. "+allUsers.size()+" users loaded, "+protectedOnes.size()+" protected, and "+warnedOnes.size()+" previously warned.");
-		
+
 		final StringBuilder warnStr=new StringBuilder("");
 		final Map<String,Long> warnMap=new TreeMap<String,Long>();
 		boolean warnChanged=false;
@@ -1162,7 +1179,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					final String warnedName=codedWarnStr.substring(0, firstSpace).toUpperCase().trim();
 					final int lastSpace=codedWarnStr.lastIndexOf(' ');
 					final long warningDateTime=CMath.s_long(codedWarnStr.substring(lastSpace+1).trim());
-					if((warningDateTime > 0) 
+					if((warningDateTime > 0)
 					&& (System.currentTimeMillis() < (warningDateTime + (10 * TimeManager.MILI_DAY))))
 					{
 						warnStr.append(codedWarnStr+"\n");
@@ -1231,7 +1248,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 							+" and purged on "+CMLib.time().date2String(purgeDateTime)
 							+((foundWarningDateTime<0)?" never warned":(" last warned on "+CMLib.time().date2String(foundWarningDateTime))));
 				}
-				
+
 				if((foundWarningDateTime<0)
 				&&(System.currentTimeMillis()>warnDateTime))
 				{
@@ -1294,7 +1311,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return true;
 	}
 
-	private void warnPrePurge(MOB mob, long timeLeft)
+	private void warnPrePurge(final MOB mob, long timeLeft)
 	{
 		// check for valid recipient
 		if(mob==null)
@@ -1308,7 +1325,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 			return;
 		}
 
-		final boolean canReceiveRealEmail = 
+		final boolean canReceiveRealEmail =
 				(mob.playerStats()!=null)
 				&&(mob.playerStats().getEmail().length()>0)
 				&&(mob.isAttributeSet(MOB.Attrib.AUTOFORWARD))
@@ -1326,7 +1343,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				Log.debugOut(serviceClient.getName(),"Unable to warn "+mob.Name()+" due to smtp disable.");
 			return;
 		}
-		
+
 		//  timeLeft is in millis
 		final String from="AutoPurgeWarning";
 		final String to=mob.Name();
@@ -1410,7 +1427,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 							{
 								//boolean didSomething =
 								CMLib.titles().evaluateAutoTitles(M);
-								//didSomething = 
+								//didSomething =
 								CMLib.achievements().evaluateAchievements(M);// || didSomething;
 								//if(didSomething)&&(!CMLib.flags().isInTheGame(M,true)))
 								//	CMLib.database().DBUpdatePlayerMOBOnly(M);
