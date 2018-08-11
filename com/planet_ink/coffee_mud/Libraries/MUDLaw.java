@@ -45,7 +45,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public Law getTheLaw(Room R, MOB mob)
+	public Law getTheLaw(final Room R, final MOB mob)
 	{
 		final LegalBehavior B=getLegalBehavior(R);
 		if(B!=null)
@@ -57,7 +57,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public LegalBehavior getLegalBehavior(Area A)
+	public LegalBehavior getLegalBehavior(final Area A)
 	{
 		if(A==null)
 			return null;
@@ -75,7 +75,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public LegalBehavior getLegalBehavior(Room R)
+	public LegalBehavior getLegalBehavior(final Room R)
 	{
 		if(R==null)
 			return null;
@@ -86,7 +86,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public Area getLegalObject(Area A)
+	public Area getLegalObject(final Area A)
 	{
 		if(A==null)
 			return null;
@@ -106,7 +106,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public Area getLegalObject(Room R)
+	public Area getLegalObject(final Room R)
 	{
 		if(R==null)
 			return null;
@@ -114,7 +114,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean isACity(Area A)
+	public boolean isACity(final Area A)
 	{
 		int other=0;
 		int streets=0;
@@ -141,7 +141,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public List<LandTitle> getAllUniqueLandTitles(Enumeration<Room> e, String owner, boolean includeRentals)
+	public List<LandTitle> getAllUniqueLandTitles(final Enumeration<Room> e, final String owner, final boolean includeRentals)
 	{
 		final Vector<LandTitle> V=new Vector<LandTitle>();
 		final HashSet<Room> roomsDone=new HashSet<Room>();
@@ -188,7 +188,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public LandTitle getLandTitle(Area area)
+	public LandTitle getLandTitle(final Area area)
 	{
 		if(area==null)
 			return null;
@@ -204,7 +204,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public PrivateProperty getPropertyRecord(Area area)
+	public PrivateProperty getPropertyRecord(final Area area)
 	{
 		if(area==null)
 			return null;
@@ -220,7 +220,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public LandTitle getLandTitle(Room room)
+	public LandTitle getLandTitle(final Room room)
 	{
 		if(room==null)
 			return null;
@@ -237,7 +237,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public PrivateProperty getPropertyRecord(Room room)
+	public PrivateProperty getPropertyRecord(final Room room)
 	{
 		if(room==null)
 			return null;
@@ -256,7 +256,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean isHomeRoomUpstairs(Room room)
+	public boolean isHomeRoomUpstairs(final Room room)
 	{
 		final Room dR=room.getRoomInDir(Directions.DOWN);
 		if((dR!=null)
@@ -279,12 +279,12 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return false;
 	}
 
-	public boolean isHomePeerRoom(Room R)
+	public boolean isHomePeerRoom(final Room R)
 	{
 		return ifHomePeerLandTitle(R)!=null;
 	}
 
-	public LandTitle ifHomePeerLandTitle(Room R)
+	public LandTitle ifHomePeerLandTitle(final Room R)
 	{
 		if((R!=null)
 		&&(R.ID().length()>0)
@@ -293,7 +293,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		return null;
 	}
 
-	public LandTitle ifLandTitle(Room R)
+	public LandTitle ifLandTitle(final Room R)
 	{
 		if((R!=null)
 		&&(R.ID().length()>0))
@@ -302,7 +302,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean isRoomSimilarlyTitled(LandTitle title, Room R)
+	public boolean isRoomSimilarlyTitled(final LandTitle title, final Room R)
 	{
 		final LandTitle ptitle = ifLandTitle(R);
 		if(ptitle ==null)
@@ -323,7 +323,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public Set<Room> getHomePeersOnThisFloor(Room room, Set<Room> doneRooms)
+	public Set<Room> getHomePeersOnThisFloor(final Room room, final Set<Room> doneRooms)
 	{
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 		{
@@ -341,7 +341,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean isHomeRoomDownstairs(Room room)
+	public boolean isHomeRoomDownstairs(final Room room)
 	{
 		if(room==null)
 			return false;
@@ -357,7 +357,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean doesHavePriviledgesInThisDirection(MOB mob, Room room, Exit exit)
+	public boolean doesHavePriviledgesInThisDirection(final MOB mob, final Room room, final Exit exit)
 	{
 		final int dirCode=CMLib.map().getExitDir(room,exit);
 		if(dirCode<0)
@@ -380,7 +380,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return true;
 		return false;
 	}
-	
+
 	@Override
 	public boolean doesHaveWeakPrivilegesWith(final MOB mob, final PrivateProperty record)
 	{
@@ -399,9 +399,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return true;
 		return false;
 	}
-	
+
 	@Override
-	public boolean doesHavePriviledgesHere(MOB mob, Room room)
+	public boolean doesHavePriviledgesHere(final MOB mob, final Room room)
 	{
 		final PrivateProperty record=getPropertyRecord(room);
 		if((record==null)||(mob==null))
@@ -414,7 +414,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean doesHaveWeakPriviledgesHere(MOB mob, Room room)
+	public boolean doesHaveWeakPriviledgesHere(final MOB mob, final Room room)
 	{
 		final PrivateProperty record=getPropertyRecord(room);
 		if((record==null)||(mob==null))
@@ -427,7 +427,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean doesAnyoneHavePrivilegesHere(MOB mob, String overrideID, Room R)
+	public boolean doesAnyoneHavePrivilegesHere(final MOB mob, final String overrideID, final Room R)
 	{
 		if((mob==null)||(R==null))
 			return false;
@@ -457,7 +457,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public String getPropertyOwnerName(Room room)
+	public String getPropertyOwnerName(final Room room)
 	{
 		final PrivateProperty record=getPropertyRecord(room);
 		if(record==null)
@@ -468,7 +468,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public String getLandOwnerName(Room room)
+	public String getLandOwnerName(final Room room)
 	{
 		final LandTitle title=getLandTitle(room);
 		if(title==null)
@@ -479,7 +479,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean isLandOwnable(Room room)
+	public boolean isLandOwnable(final Room room)
 	{
 		final LandTitle title=getLandTitle(room);
 		if(title==null)
@@ -488,7 +488,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean doesOwnThisLand(String name, Room room)
+	public boolean doesOwnThisLand(final String name, final Room room)
 	{
 		final LandTitle title=getLandTitle(room);
 		if(title==null)
@@ -503,7 +503,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean doesOwnThisProperty(String name, Room room)
+	public boolean doesOwnThisProperty(final String name, final Room room)
 	{
 		final PrivateProperty record=getPropertyRecord(room);
 		if(record==null)
@@ -518,7 +518,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean doesOwnThisProperty(MOB mob, Room room)
+	public boolean doesOwnThisProperty(final MOB mob, final Room room)
 	{
 		final PrivateProperty record=getPropertyRecord(room);
 		if(record==null)
@@ -527,7 +527,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean doesOwnThisProperty(MOB mob, PrivateProperty record)
+	public boolean doesOwnThisProperty(final MOB mob, final PrivateProperty record)
 	{
 		if(record.getOwnerName()==null)
 			return false;
@@ -546,7 +546,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public MOB getPropertyOwner(PrivateProperty record)
+	public MOB getPropertyOwner(final PrivateProperty record)
 	{
 		if(record.getOwnerName()==null)
 			return null;
@@ -562,9 +562,9 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			return CMLib.players().getLoadPlayer(record.getOwnerName());
 		return M;
 	}
-	
+
 	@Override
-	public boolean canAttackThisProperty(MOB mob, PrivateProperty record)
+	public boolean canAttackThisProperty(final MOB mob, final PrivateProperty record)
 	{
 		if(record.getOwnerName()==null)
 			return true;
@@ -598,7 +598,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public Ability getClericInfusion(Physical room)
+	public Ability getClericInfusion(final Physical room)
 	{
 		if(room==null)
 			return null;
@@ -612,7 +612,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public Deity getClericInfused(Room room)
+	public Deity getClericInfused(final Room room)
 	{
 		final Ability A=getClericInfusion(room);
 		if(A==null)
@@ -621,7 +621,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean doesOwnThisLand(MOB mob, Room room)
+	public boolean doesOwnThisLand(final MOB mob, final Room room)
 	{
 		final LandTitle title=getLandTitle(room);
 		if(title==null)
@@ -643,7 +643,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean isLegalOfficerHere(MOB mob)
+	public boolean isLegalOfficerHere(final MOB mob)
 	{
 		if((mob==null)||(mob.location()==null))
 			return false;
@@ -657,7 +657,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean isLegalJudgeHere(MOB mob)
+	public boolean isLegalJudgeHere(final MOB mob)
 	{
 		if((mob==null)||(mob.location()==null))
 			return false;
@@ -671,13 +671,13 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean isLegalOfficialHere(MOB mob)
+	public boolean isLegalOfficialHere(final MOB mob)
 	{
 		return isLegalOfficerHere(mob) || isLegalJudgeHere(mob);
 	}
-	
+
 	@Override
-	public void colorRoomForSale(Room R, LandTitle title, boolean reset)
+	public void colorRoomForSale(Room R, final LandTitle title, final boolean reset)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
@@ -722,12 +722,12 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				I=CMClass.getItem("GenWallpaper");
 				CMLib.flags().setReadable(I,true);
 				I.setName(("id"));
-				StringBuilder txt = new StringBuilder("");
-				int size = title.getAllTitledRooms().size();
+				final StringBuilder txt = new StringBuilder("");
+				final int size = title.getAllTitledRooms().size();
 				txt.append(CMLib.lang().L("This room is @x1.  ",CMLib.map().getExtendedRoomID(R)));
 				if(size > 1)
 					txt.append(CMLib.lang().L("There are @x1 rooms in this lot.  ",""+size));
-				if(!title.allowsExpansionConstruction()) 
+				if(!title.allowsExpansionConstruction())
 					txt.append(L("The size of this lot is not expandable."));
 				I.setReadableText(txt.toString());
 				I.setDescription(txt.toString());
@@ -737,7 +737,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		}
 	}
 
-	protected boolean shopkeeperMobPresent(Room R)
+	protected boolean shopkeeperMobPresent(final Room R)
 	{
 		if(R==null)
 			return false;
@@ -754,7 +754,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	}
 
 	@Override
-	public boolean robberyCheck(PrivateProperty record, CMMsg msg, boolean quiet)
+	public boolean robberyCheck(final PrivateProperty record, final CMMsg msg, final boolean quiet)
 	{
 		if(((msg.targetMinor()==CMMsg.TYP_GET)&&(!msg.isTarget(CMMsg.MASK_INTERMSG)))
 		||(msg.targetMinor()==CMMsg.TYP_PUSH)
@@ -772,7 +772,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			&&(!shopkeeperMobPresent(R))
 			&&(!doesHavePriviledgesHere(msg.source(),R)))
 			{
-				if((!CMLib.law().canAttackThisProperty(msg.source(), record))
+				if((!canAttackThisProperty(msg.source(), record))
 				&&(!msg.source().isAttributeSet(Attrib.PLAYERKILL)))
 				{
 					if(!quiet)
@@ -782,12 +782,12 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 				final LegalBehavior B=getLegalBehavior(R);
 				if(B!=null)
 				{
-					final MOB D=CMLib.law().getPropertyOwner(record);
+					final MOB D=getPropertyOwner(record);
 					if((D!=null)&&(D!=msg.source()))
 					{
 						// now check for witnesses
 						boolean witnessFound=false;
-						List<Room> rooms=new LinkedList<Room>();
+						final List<Room> rooms=new LinkedList<Room>();
 						rooms.add(R);
 						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 						{
@@ -848,7 +848,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		{
 			if(doesHaveWeakPrivilegesWith(mob,record))
 				return true;
-			MOB following=mob.amFollowing();
+			final MOB following=mob.amFollowing();
 			while((following!=null)&&(following!=mob))
 			{
 				if(doesHaveWeakPrivilegesWith(following,record))
