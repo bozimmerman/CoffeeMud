@@ -308,7 +308,7 @@ public class Prop_AreaForSale extends Property implements LandTitle
 
 	// update lot, since its called by the savethread, ONLY worries about itself
 	@Override
-	public void updateLot(List<String> optPlayerList)
+	public void updateLot(Set<String> optPlayerList)
 	{
 		if(((System.currentTimeMillis()-lastCall)>360000)
 		&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))

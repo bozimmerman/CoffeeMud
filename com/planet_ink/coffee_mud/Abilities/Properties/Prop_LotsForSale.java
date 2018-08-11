@@ -371,7 +371,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	}
 	
 	@Override
-	public void updateLot(List<String> optPlayerList)
+	public void updateLot(Set<String> optPlayerList)
 	{
 		final Environmental EV=affected;
 		if(!(EV instanceof Room))

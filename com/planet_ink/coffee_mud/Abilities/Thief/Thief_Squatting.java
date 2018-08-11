@@ -172,14 +172,14 @@ public class Thief_Squatting extends ThiefSkill
 				mob.tell(L("Your squat has succeeded.  This property now belongs to you."));
 				title.setOwnerName(mob.Name());
 				title.updateTitle();
-				title.updateLot(new XVector<String>(mob.name()));
+				title.updateLot(new XTreeSet<String>(mob.name()));
 			}
 		}
 		failed=false;
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

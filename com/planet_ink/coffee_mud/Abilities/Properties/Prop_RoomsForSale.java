@@ -146,7 +146,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 
 	// update lot, since its called by the savethread, ONLY worries about itself
 	@Override
-	public void updateLot(List<String> optPlayerList)
+	public void updateLot(Set<String> optPlayerList)
 	{
 		if(affected instanceof Room)
 		{

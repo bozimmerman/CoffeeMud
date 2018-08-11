@@ -1142,7 +1142,7 @@ public class Reset extends StdCommand
 						{
 							T.setOwnerName(mob.Name());
 							T.setOwnerName("");
-							T.updateLot(new XVector<String>(mob.name()));
+							T.updateLot(new XTreeSet<String>(mob.name()));
 						}
 					}
 				}

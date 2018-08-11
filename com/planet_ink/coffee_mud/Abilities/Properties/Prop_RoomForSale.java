@@ -318,7 +318,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 											final LandTitle T,
 											final boolean resetRoomName,
 											final boolean clearAllItems,
-											final List<String> optPlayerList,
+											final Set<String> optPlayerList,
 											int lastNumItems)
 	{
 		boolean updateItems=false;
@@ -578,7 +578,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 
 	// update lot, since its called by the savethread, ONLY worries about itself
 	@Override
-	public void updateLot(final List<String> optPlayerList)
+	public void updateLot(final Set<String> optPlayerList)
 	{
 		if(affected instanceof Room)
 		{
