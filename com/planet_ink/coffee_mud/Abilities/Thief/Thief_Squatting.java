@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB.Attrib;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
@@ -244,6 +245,12 @@ public class Thief_Squatting extends ThiefSkill
 		if(!CMLib.flags().isSitting(mob))
 		{
 			mob.tell(L("You must be sitting!"));
+			return false;
+		}
+		if((!CMLib.law().canAttackThisProperty(mob, T))
+		&&(!mob.isAttributeSet(Attrib.PLAYERKILL)))
+		{
+			mob.tell(L("You either need to turn on your PK flag, or be in a clan war to squat this property."));
 			return false;
 		}
 
