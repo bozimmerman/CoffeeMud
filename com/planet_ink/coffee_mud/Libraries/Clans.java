@@ -500,7 +500,14 @@ public class Clans extends StdLibrary implements ClanManager
 	@Override
 	public Enumeration<String> clansNames()
 	{
-		return all.keys();
+		return new ConvertingEnumeration<Clan, String>(clans(), new Converter<Clan, String>()
+		{
+			@Override
+			public String convert(final Clan obj)
+			{
+				return obj != null ? obj.getName() : "?";
+			}
+		});
 	}
 
 	@Override
@@ -508,7 +515,7 @@ public class Clans extends StdLibrary implements ClanManager
 	{
 		final ClanManager[] managers = getOtherClanLibAllHosts();
 		if(managers.length<2)
-			return all.keys();
+			return clansNames();
 		final MultiEnumeration<String> enums = new MultiEnumeration<String>(all.keys());
 		for(final ClanManager manager : managers)
 		{
