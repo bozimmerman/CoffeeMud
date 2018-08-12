@@ -52,9 +52,11 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 		return Ability.CAN_ITEMS;
 	}
 
-	protected boolean actual=false;
-	protected int percent=100;
-	protected String msgStr="";
+	protected boolean	actual	= false;
+	protected boolean	contents= false;
+	protected int		percent	= 100;
+	protected String	msgStr	= "";
+
 	protected MaskingLibrary.CompiledZMask mask=null;
 
 	protected String defaultMessage()
@@ -78,9 +80,27 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		actual=(text.toUpperCase()+" ").startsWith("ACTUAL ");
-		if(actual)
+		actual=false;
+		contents=false;
+		final String txtUpp=text.toUpperCase()+" ";
+		if(txtUpp.startsWith("CONTENT ACTUAL ") || txtUpp.startsWith("ACTUAL CONTENT "))
+		{
+			actual=true;
+			contents=true;
+			text=text.substring(15).trim();
+		}
+		else
+		if(txtUpp.startsWith("ACTUAL "))
+		{
+			actual=true;
 			text=text.substring(7);
+		}
+		else
+		if(txtUpp.startsWith("CONTENT "))
+		{
+			contents=true;
+			text=text.substring(8);
+		}
 		percent=100;
 		int x=text.indexOf('%');
 		if(x>0)
@@ -118,6 +138,7 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 			return true;
 
 		if(msg.amITarget(affected))
+		{
 			switch(msg.targetMinor())
 			{
 			case CMMsg.TYP_HOLD:
@@ -127,7 +148,10 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 			case CMMsg.TYP_WIELD:
 				break;
 			case CMMsg.TYP_GET:
-				if((!CMLib.masking().maskCheck(mask,mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
+				if((!CMLib.masking().maskCheck(mask,mob,actual))
+				&&(CMLib.dice().rollPercentage()<=percent)
+				&&((!(affected instanceof Container)||(!(msg.tool() instanceof Item))))
+				)
 				{
 					mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,msgStr);
 					return false;
@@ -135,7 +159,8 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 				break;
 			case CMMsg.TYP_EAT:
 			case CMMsg.TYP_DRINK:
-				if((!CMLib.masking().maskCheck(mask,mob,actual))&&(CMLib.dice().rollPercentage()<=percent))
+				if((!CMLib.masking().maskCheck(mask,mob,actual))
+				&&(CMLib.dice().rollPercentage()<=percent))
 				{
 					mob.location().show(mob,null,affected,CMMsg.MSG_OK_ACTION,msgStr);
 					return false;
@@ -144,6 +169,7 @@ public class Prop_HaveZapper extends Property implements TriggeredAffect
 			default:
 				break;
 			}
+		}
 		return true;
 	}
 }
