@@ -410,14 +410,16 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			&&(T.getOwnerName().length()>0)
 			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.PROPERTYOWNERCHECKS)))
 			{
-				boolean playerExists=false;
-				if(optPlayerList!=null)
+				boolean playerExists = false;
+				if(optPlayerList != null)
 					playerExists=optPlayerList.contains(T.getOwnerName());
-				else
+				if(!playerExists)
 				{
 					playerExists=(CMLib.players().playerExistsAllHosts(T.getOwnerName()));
 					if(!playerExists)
 						playerExists=(CMLib.clans().getClanAnyHost(T.getOwnerName())!=null);
+					if(playerExists && (optPlayerList != null))
+						optPlayerList.add(T.getOwnerName()); // dynamic updating, whee!
 				}
 				if(!playerExists)
 				{
