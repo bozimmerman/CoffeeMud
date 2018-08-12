@@ -41,6 +41,8 @@ public interface PlayerLibrary extends CMLibrary
 	public MOB getLoadPlayerByEmail(String email);
 	public List<String> getPlayerLists();
 	public List<String> getPlayerListsAllHosts();
+	public boolean isLoadedPlayer(final MOB M);
+	public boolean isLoadedPlayer(final String mobName);
 	public MOB findPlayerOnline(final String srchStr, final boolean exactOnly);
 	public PlayerAccount getLoadAccount(String calledThis);
 	public PlayerAccount getLoadAccountByEmail(String email);
