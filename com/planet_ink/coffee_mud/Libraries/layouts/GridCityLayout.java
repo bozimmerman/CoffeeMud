@@ -33,7 +33,7 @@ public class GridCityLayout extends AbstractLayout
 	}
 
 	@Override
-	public List<LayoutNode> generate(int num, int dir)
+	public List<LayoutNode> generate(final int num, final int dir)
 	{
 		final Vector<LayoutNode> set = new Vector<LayoutNode>();
 		final int diameter = (int)Math.round(Math.sqrt(num));
@@ -134,6 +134,11 @@ public class GridCityLayout extends AbstractLayout
 			}
 		}
 		lSet.fillInFlags();
+		if(firstNode == null)
+		{
+			if(set.size()>0)
+				firstNode=set.get(0);
+		}
 		if(firstNode != null)
 		{
 			set.remove(firstNode);
