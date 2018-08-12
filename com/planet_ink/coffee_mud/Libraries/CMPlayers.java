@@ -377,6 +377,25 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 		return false;
 	}
 
+	@Override
+	public boolean isLoadedPlayer(final MOB M)
+	{
+		return playersList.contains(M);
+	}
+
+	@Override
+	public boolean isLoadedPlayer(final String mobName)
+	{
+		if(name==null)
+			return false;
+		name=CMStrings.capitalizeAndLower(name);
+		for(final MOB M: playersList)
+		{
+			if(M.Name().equals(name))
+				return true;
+		}
+		return false;
+	}
 
 	@Override
 	public boolean playerExists(String name)
