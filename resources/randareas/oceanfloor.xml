@@ -18,7 +18,7 @@ See guides/RandomAreas.html for information about documents of this type.
 
 -->
 <!--  include file full of ocean-specific tags -->
-<string id="randomtheme" merge=true select="any-1">
+<string id="randomwatertheme" merge=true select="any-1">
 	<string condition="$theme=''">oceanfloor</string>
 </string>
 
@@ -53,12 +53,12 @@ See guides/RandomAreas.html for information about documents of this type.
 				<STRING>You are deep in (a(n)) ${l:_oceanfloor_path_name}. </STRING>
 				<STRING>The ${l:_oceanfloor_path_name} surrounds you. </STRING>
 				<STRING>The ${l:_oceanfloor_path_name} is all around you. </STRING>
-				<STRING>The $(l:_oceanfloor_path_name} is full of $oceanfloor_nouns.</STRING>
-				<STRING>(A(n)) $(l:_oceanfloor_path_name} is full of $oceanfloor_nouns.</STRING>
-				<STRING>The $oceanfloor_nouns make traveling through the $(l:_oceanfloor_path_name} more difficult.</STRING>
-				<STRING>The $(l:_oceanfloor_path_name} causes your mind to drift as you travel through the $oceanfloor_nouns.</STRING>
-				<STRING>The $oceanfloor_nouns cover the $(l:_oceanfloor_path_name} you are traveling along.</STRING>
-				<STRING>You notice several $oceanfloor_nouns as you continue $verb_oceanfloor_tread through the $(l:_oceanfloor_path_name}.</STRING>
+				<STRING>The ${l:_oceanfloor_path_name} is full of $oceanfloor_nouns.</STRING>
+				<STRING>(A(n)) ${l:_oceanfloor_path_name} is full of $oceanfloor_nouns.</STRING>
+				<STRING>The $oceanfloor_nouns makes traveling through the ${l:_oceanfloor_path_name} more difficult.</STRING>
+				<STRING>The ${l:_oceanfloor_path_name} causes your mind to drift as you travel through the $oceanfloor_nouns.</STRING>
+				<STRING>The $oceanfloor_nouns cover the ${l:_oceanfloor_path_name} you are traveling along.</STRING>
+				<STRING>You notice several $oceanfloor_nouns as you continue $verb_oceanfloor_tread through the ${l:_oceanfloor_path_name}.</STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>The $adj_large $noun_oceanfloor_rocks of $areaname are $adj_cramped around you in $adj_impassable walls. </STRING>
@@ -103,13 +103,13 @@ See guides/RandomAreas.html for information about documents of this type.
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>The $adj_large dunes of $areaname are $adj_cramped around you in $adj_impassable walls. </STRING>
-				<STRING>You $verb_oceanfloor_tread your way through the $noun_oceanfloor_brush of the ocean. </STRING>
+				<STRING>You $verb_oceanfloor_tread your way through the $noun_oceanfloor_plants of the ocean. </STRING>
 				<STRING>The ocean surrounds you, ${adj_phys_size_tall} $adj_cramped dunes making some directions $adj_impassable. </STRING>
-				<STRING>You feel a $noun_oceanfloor_wind blow over the $adj_phys_size_tall dunes of the $noun_oceanfloor_wind_adj ocean. </STRING>
+				<STRING>You feel a $noun_oceanfloor_currents blow over the $adj_phys_size_tall dunes of the $noun_oceanfloor_currents_adj ocean. </STRING>
 			</STRING>
 			<STRING select="any-1" action="APPEND">
 				<STRING>It looks like you might pick your way $roomexits_desc_long.</STRING>
-				<STRING>Openings in the $noun_oceanfloor_brush can be seen $roomexits_desc_long.</STRING>
+				<STRING>Openings in the $noun_oceanfloor_plants can be seen $roomexits_desc_long.</STRING>
 				<STRING>You can $verb_oceanfloor_tread on through $roomexits_desc_long.</STRING>
 				<STRING>You can continue $roomexits_desc_long.</STRING>
 				<STRING condition="$roomtag_nodetype='leaf'">It looks like you might pick your way $roomexits_desc_long to ${l:STAT:ANYROOM:DISPLAY}.</STRING>
@@ -120,10 +120,10 @@ See guides/RandomAreas.html for information about documents of this type.
 			<EXIT pickweight="5" class="Open" />
 			<EXIT pickweight="1" class="HiddenWalkway" />
 			<EXIT pickweight="2" class="GenCurtain">
-				<NAME>$noun_oceanfloor_brush</NAME>
-				<DESCRIPTION>$noun_oceanfloor_brush blocks your view of the $roomexits_desc_long.</DESCRIPTION>
-				<CLOSEDTEXT>$noun_oceanfloor_brush</CLOSEDTEXT>
-				<DOORNAME>$noun_oceanfloor_brush</DOORNAME>
+				<NAME>$noun_oceanfloor_plants</NAME>
+				<DESCRIPTION>$noun_oceanfloor_plants blocks your view of the $roomexits_desc_long.</DESCRIPTION>
+				<CLOSEDTEXT>$noun_oceanfloor_plants</CLOSEDTEXT>
+				<DOORNAME>$noun_oceanfloor_plants</DOORNAME>
 				<OPENWORD>part</OPENWORD>
 				<CLOSEWORD>gather</CLOSEWORD>
 			</EXIT>
@@ -141,7 +141,7 @@ See guides/RandomAreas.html for information about documents of this type.
 	</ROOM>
 </ROOM>
 
-<MOB class="GenMob" level="$level_range" id="oceanfloor_dragon_mob" race="Dragon" gender="$anygender" hpmod="15">
+<MOB class="GenMob" level="$level_range" id="oceanfloor_dragon_mob" race="Dragon" gender="$anygender" hpmod="45">
 	<NAME select="all">
 		<NAME condition="$mob_level&lt;10">a hatchling blue dragon</NAME>
 		<NAME condition="$mob_level&lt;20 and $mob_level&gt;=10">a very young blue dragon</NAME>
@@ -253,7 +253,8 @@ See guides/RandomAreas.html for information about documents of this type.
 				<DISPLAY pickweight="5">$mob_name swims here.</DISPLAY>
 			</DISPLAY>
 			<DESCRIPTION>$mob_name looks like a fish from the waist down, and humanoid above the waistline.</DESCRIPTION>
-			<BEHAVIOR select="any">
+			<BEHAVIOR class="ObjectGuardian" parms="" />
+			<BEHAVIOR select="pick-1">
 				<BEHAVIOR pickweight="5" class="CombatAbilities" parms="" />
 				<BEHAVIOR class="Bardness" parms="Bard" />
 				<BEHAVIOR class="Bardness" parms="Dancer" />
@@ -301,26 +302,26 @@ See guides/RandomAreas.html for information about documents of this type.
 			</ABILITY>
 			<ITEM select="any-1?4">
 				<ITEM class="GenArmor" LEVEL="$mob_level">
-					<NAME select="any-1">
+					<NAME select="pick-1">
 						<NAME>a bracer</NAME>
 						<NAME>a vambrace</NAME>
 					</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
-					<MATERIAL select="any-1">
+					<MATERIAL select="pick-1">
 						<MATERIAL>COTTON</MATERIAL>
 						<MATERIAL>HIDE</MATERIAL>
 						<MATERIAL>SEAWEED</MATERIAL>
 					</MATERIAL>
-					<PROPERWORN>LEFTWRIST||RIGHTWRIST</PROPERWORN>
+					<PROPERWORN>LEFTWRIST,RIGHTWRIST</PROPERWORN>
 					<WORNAND>false</WORNAND>
 				</ITEM>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
-					<NAME select="any-1">
+					<NAME select="pick-1">
 						<NAME>a helmet</NAME>
 						<NAME>a hood</NAME>
 					</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
-					<MATERIAL select="any-1">
+					<MATERIAL select="pick-1">
 						<MATERIAL>COTTON</MATERIAL>
 						<MATERIAL>HIDE</MATERIAL>
 						<MATERIAL>SEAWEED</MATERIAL>
@@ -329,13 +330,13 @@ See guides/RandomAreas.html for information about documents of this type.
 					<WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
-					<NAME select="any-1">
+					<NAME select="pick-1">
 						<NAME>an armband</NAME>
 						<NAME>some spaulders</NAME>
 						<NAME>some sleeves</NAME>
 					</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
-					<MATERIAL select="any-1">
+					<MATERIAL select="pick-1">
 						<MATERIAL>COTTON</MATERIAL>
 						<MATERIAL>HIDE</MATERIAL>
 						<MATERIAL>SEAWEED</MATERIAL>
@@ -344,12 +345,12 @@ See guides/RandomAreas.html for information about documents of this type.
 					<WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
-					<NAME select="any-1">
+					<NAME select="pick-1">
 						<NAME>a belt</NAME>
 						<NAME>a girdle</NAME>
 					</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
-					<MATERIAL select="any-1">
+					<MATERIAL select="pick-1">
 						<MATERIAL>COTTON</MATERIAL>
 						<MATERIAL>HIDE</MATERIAL>
 						<MATERIAL>SEAWEED</MATERIAL>
@@ -358,12 +359,12 @@ See guides/RandomAreas.html for information about documents of this type.
 					<WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
-					<NAME select="any-1">
+					<NAME select="pick-1">
 						<NAME>a shirt</NAME>
 						<NAME>a halter top</NAME>
 					</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
-					<MATERIAL select="any-1">
+					<MATERIAL select="pick-1">
 						<MATERIAL>COTTON</MATERIAL>
 						<MATERIAL>HIDE</MATERIAL>
 						<MATERIAL>SEAWEED</MATERIAL>
@@ -372,12 +373,12 @@ See guides/RandomAreas.html for information about documents of this type.
 					<WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
-					<NAME select="any-1">
+					<NAME select="pick-1">
 						<NAME>some gloves</NAME>
 						<NAME>a pair of gauntlets</NAME>
 					</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
-					<MATERIAL select="any-1">
+					<MATERIAL select="pick-1">
 						<MATERIAL>COTTON</MATERIAL>
 						<MATERIAL>HIDE</MATERIAL>
 						<MATERIAL>SEAWEED</MATERIAL>
@@ -386,12 +387,12 @@ See guides/RandomAreas.html for information about documents of this type.
 					<WORNAND>true</WORNAND>
 				</ITEM>
 				<ITEM class="GenArmor" LEVEL="$mob_level">
-					<NAME select="any-1">
+					<NAME select="pick-1">
 						<NAME>a gorget</NAME>
 						<NAME>a scarf</NAME>
 					</NAME>
 					<DISPLAY>$item_name has been left here</DISPLAY>
-					<MATERIAL select="any-1">
+					<MATERIAL select="pick-1">
 						<MATERIAL>COTTON</MATERIAL>
 						<MATERIAL>HIDE</MATERIAL>
 						<MATERIAL>SEAWEED</MATERIAL>
@@ -698,17 +699,20 @@ See guides/RandomAreas.html for information about documents of this type.
 </STRING>
 
 
-<STRING id="oceanfloor_path_verb" select="any-1">
-	<STRING>goes</STRING>
-	<STRING>runs</STRING>
-	<STRING>travels</STRING>
-	<STRING>pushes</STRING>
-	<STRING>approaches</STRING>
-	<STRING>reaches</STRING>
-	<STRING>stretches</STRING>
-	<STRING>advances</STRING>
-	<STRING>passes</STRING>
+<STRING id="_oceanfloor_path_verb" define="_oceanfloor_path_verb">
+	<STRING id="oceanfloor_path_verb" select="any-1">
+		<STRING>goes</STRING>
+		<STRING>runs</STRING>
+		<STRING>travels</STRING>
+		<STRING>pushes</STRING>
+		<STRING>approaches</STRING>
+		<STRING>reaches</STRING>
+		<STRING>stretches</STRING>
+		<STRING>advances</STRING>
+		<STRING>passes</STRING>
+	</STRING>
 </STRING>
+
 <STRING id="oceanfloor_youare_in" select="any-1">
 	<STRING>lost</STRING>
 	<STRING>standing</STRING>
