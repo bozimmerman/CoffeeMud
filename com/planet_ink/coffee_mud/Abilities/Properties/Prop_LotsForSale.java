@@ -55,7 +55,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		return true;
 	}
 
-	protected void fillCluster(Room R, List<Room> V)
+	protected void fillCluster(final Room R, final List<Room> V)
 	{
 		V.add(R);
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -106,7 +106,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 
 	}
 
-	protected boolean isRetractableLink(Map<Room,Boolean> recurseChkRooms, Room fromRoom, Room theRoom)
+	protected boolean isRetractableLink(final Map<Room,Boolean> recurseChkRooms, final Room fromRoom, final Room theRoom)
 	{
 		if(theRoom==null)
 			return true;
@@ -167,13 +167,13 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		newTitle.setBackTaxes(0);
 		return newTitle;
 	}
-	
-	protected boolean canGenerateAdjacentRooms(Room R)
+
+	protected boolean canGenerateAdjacentRooms(final Room R)
 	{
 		return getOwnerName().length()>0;
 	}
 
-	protected boolean retractRooms(final Room R, List<Runnable> postWork)
+	protected boolean retractRooms(final Room R, final List<Runnable> postWork)
 	{
 		boolean updateExits=false;
 		boolean foundOne=false;
@@ -258,7 +258,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		}
 		return didAnything;
 	}
-	
+
 	public boolean expandRooms(final Room R, final List<Runnable> postWork)
 	{
 		int numberOfPeers = -1;//getConnectedPropertyRooms().size();
@@ -293,7 +293,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				if(R2.roomID().length()==0)
 					continue;
 				R2.setArea(R.getArea());
-				LandTitle oldTitle=CMLib.law().getLandTitle(R);
+				final LandTitle oldTitle=CMLib.law().getLandTitle(R);
 				final LandTitle newTitle;
 				if((oldTitle!=null)&&(CMLib.law().getLandTitle(R2)==null))
 				{
@@ -360,7 +360,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				@Override
 				public void run()
 				{
-					for(Room xR : updateExits2)
+					for(final Room xR : updateExits2)
 					{
 						CMLib.database().DBUpdateExits(xR);
 					}
@@ -369,9 +369,9 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		}
 		return didAnything;
 	}
-	
+
 	@Override
-	public void updateLot(Set<String> optPlayerList)
+	public void updateLot(final Set<String> optPlayerList)
 	{
 		final Environmental EV=affected;
 		if(!(EV instanceof Room))
@@ -380,7 +380,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 		boolean didAnything=false;
 		try
 		{
-			List<Runnable> postWork=new ArrayList<Runnable>();
+			final List<Runnable> postWork=new ArrayList<Runnable>();
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
 				R=CMLib.map().getRoom(R);
@@ -396,7 +396,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					didAnything = expandRooms(R,postWork) || didAnything;
 				}
 			}
-			for(Runnable run : postWork)
+			for(final Runnable run : postWork)
 				run.run();
 			scheduleReset=false;
 		}
