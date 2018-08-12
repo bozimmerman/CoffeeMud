@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 
 import java.util.*;
 
+import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.Directions;
 import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
@@ -33,7 +34,7 @@ public class BoxCityLayout extends AbstractLayout
 		return "BOXCITY";
 	}
 
-	public void halfLineN(LayoutSet lSet, int startX, int endX, int height, TreeSet<Integer> xposUsed)
+	public void halfLineN(final LayoutSet lSet, final int startX, final int endX, final int height, final TreeSet<Integer> xposUsed)
 	{
 		final int x = startX + ((endX - startX)/2);
 		if((x-startX)<3)
@@ -59,7 +60,7 @@ public class BoxCityLayout extends AbstractLayout
 		halfLineN(lSet,x,endX,height,xposUsed);
 	}
 
-	public void halfLineE(LayoutSet lSet, int startY, int endY, int width, TreeSet<Integer> yposUsed)
+	public void halfLineE(final LayoutSet lSet, final int startY, final int endY, final int width, final TreeSet<Integer> yposUsed)
 	{
 		final int y = startY + ((endY - startY)/2);
 		if((startY-y)<3)
@@ -85,7 +86,7 @@ public class BoxCityLayout extends AbstractLayout
 		halfLineE(lSet,y,endY,width,yposUsed);
 	}
 
-	public boolean fillMaze(LayoutSet lSet, LayoutNode p, int dir)
+	public boolean fillMaze(final LayoutSet lSet, final LayoutNode p, final int dir)
 	{
 		LayoutNode n = lSet.getNextNode(p, dir);
 		if(n != null)
@@ -96,13 +97,13 @@ public class BoxCityLayout extends AbstractLayout
 		return lSet.fillMaze(n);
 	}
 
-	protected void drawABox(LayoutSet lSet, int width, int height)
+	protected void drawABox(final LayoutSet lSet, final int width, final int height)
 	{
 		lSet.drawABox(width, height);
 	}
 
 	@Override
-	public List<LayoutNode> generate(int num, int dir)
+	public List<LayoutNode> generate(final int num, int dir)
 	{
 		final Vector<LayoutNode> set = new Vector<LayoutNode>();
 		final int diameter = (int)Math.round(Math.sqrt(num));
@@ -168,6 +169,9 @@ public class BoxCityLayout extends AbstractLayout
 			case Directions.WEST:
 				n = lSet.getNode(new long[] { diameter + plusX - 1, ((-diameter + 1) / 2) + tryDiff });
 				break;
+			default:
+				dir=CMLib.dice().pick(Directions.CODES());
+				break;
 			}
 			if((n!=null)&&(n.type()==LayoutTypes.leaf))
 				n=null;
@@ -175,8 +179,11 @@ public class BoxCityLayout extends AbstractLayout
 			{
 				if(tryDiff>0)
 					tryDiff=-tryDiff;
-				else if(tryDiff<0) tryDiff=(-tryDiff)+1;
-				else tryDiff++;
+				else
+				if(tryDiff<0)
+					tryDiff=(-tryDiff)+1;
+				else
+					tryDiff++;
 			}
 		}
 		if(n!=null)

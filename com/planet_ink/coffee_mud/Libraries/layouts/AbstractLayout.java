@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.*;
 
+import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMStrings;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
@@ -37,7 +38,7 @@ public abstract class AbstractLayout implements LayoutManager
 {
 	Random r = new Random();
 
-	public int diff(int width, int height, int num) 
+	public int diff(final int width, final int height, final int num)
 	{
 		final int x = width * height;
 		return (x<num) ? (num - x) : (x - num);
@@ -49,7 +50,7 @@ public abstract class AbstractLayout implements LayoutManager
 	@Override
 	public abstract List<LayoutNode> generate(int num, int dir);
 
-	public static int getDirection(LayoutNode from, LayoutNode to)
+	public static int getDirection(final LayoutNode from, final LayoutNode to)
 	{
 		if(to.coord()[1]<from.coord()[1])
 			return Directions.NORTH;
@@ -59,10 +60,10 @@ public abstract class AbstractLayout implements LayoutManager
 			return Directions.WEST;
 		if(to.coord()[0]>from.coord()[0])
 			return Directions.EAST;
-		return -1;
+		return CMLib.dice().pick(Directions.CODES()); // picks one of the above, and only one of the above
 	}
 
-	public static LayoutRuns getRunDirection(int dirCode)
+	public static LayoutRuns getRunDirection(final int dirCode)
 	{
 		switch(dirCode)
 		{

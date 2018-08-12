@@ -3,6 +3,8 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.awt.List;
 import java.util.ArrayList;
 import java.util.Vector;
+
+import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.Directions;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
@@ -33,7 +35,7 @@ public class ApartmentLayout extends AbstractLayout
 		return "APARTMENT";
 	}
 
-	public void setRunFromDirection(LayoutNode node, int dir)
+	public void setRunFromDirection(final LayoutNode node, final int dir)
 	{
 		switch(dir)
 		{
@@ -46,10 +48,11 @@ public class ApartmentLayout extends AbstractLayout
 			node.flagRun(LayoutRuns.ew);
 			break;
 		}
+		setRunFromDirection(node,CMLib.dice().pick(Directions.CODES())); // picks one of the above, and only one of the above
 	}
 
 	@Override
-	public java.util.List<LayoutNode> generate(int num, int dir)
+	public java.util.List<LayoutNode> generate(final int num, final int dir)
 	{
 		final Vector<LayoutNode> set = new Vector<LayoutNode>();
 		int hallwayLength=num/3;

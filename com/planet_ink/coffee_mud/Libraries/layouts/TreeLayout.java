@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.*;
 
+import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.Directions;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
@@ -37,19 +38,19 @@ public class TreeLayout extends AbstractLayout
 		public LayoutNode currNode = null;
 		private int dir = Directions.NORTH;
 		private LayoutSet lSet = null;
-		public TreeStem(long[] coord, int dir, LayoutSet d)
+		public TreeStem(final long[] coord, final int dir, final LayoutSet d)
 		{
 			this.dir = dir;
 			this.lSet = d;
 			currNode = new DefaultLayoutNode(coord);
 		}
 
-		private long[] getCoord(long[] curr, int dir)
+		private long[] getCoord(final long[] curr, final int dir)
 		{
 			return lSet.makeNextCoord(curr, dir);
 		}
 
-		private int[] getTurns(int dir)
+		private int[] getTurns(final int dir)
 		{
 			switch(dir)
 			{
@@ -67,8 +68,9 @@ public class TreeLayout extends AbstractLayout
 				if (originalDirection == Directions.SOUTH)
 					return new int[] { Directions.SOUTH };
 				return new int[] { Directions.NORTH, Directions.SOUTH };
+			default:
+				return getTurns(CMLib.dice().pick(Directions.CODES())); // pick one of the above, and only those.
 			}
-			return null;
 		}
 
 		public TreeStem nextNode()
@@ -82,7 +84,7 @@ public class TreeLayout extends AbstractLayout
 			return stem;
 		}
 
-		private void patchRun(LayoutNode from, LayoutNode to)
+		private void patchRun(final LayoutNode from, final LayoutNode to)
 		{
 			to.flagRun(AbstractLayout.getRunDirection(getDirection(from,to)));
 		}
@@ -118,7 +120,7 @@ public class TreeLayout extends AbstractLayout
 	}
 
 	@Override
-	public List<LayoutNode> generate(int num, int dir)
+	public List<LayoutNode> generate(final int num, final int dir)
 	{
 		final Vector<LayoutNode> set = new Vector<LayoutNode>();
 		Vector<TreeStem> progress = new Vector<TreeStem>();

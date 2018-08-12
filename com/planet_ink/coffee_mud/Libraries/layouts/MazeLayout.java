@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 
 import java.util.List;
 import java.util.Vector;
+
+import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.Directions;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
@@ -31,7 +33,7 @@ public class MazeLayout extends AbstractLayout
 		return "MAZE";
 	}
 
-	public void fillMaze(LayoutSet lSet, LayoutNode p, int width, int height)
+	public void fillMaze(final LayoutSet lSet, final LayoutNode p, final int width, final int height)
 	{
 		final Vector<Integer> dirs = new Vector<Integer>();
 		for(int i=0;i<4;i++)
@@ -63,7 +65,7 @@ public class MazeLayout extends AbstractLayout
 	}
 
 	@Override
-	public List<LayoutNode> generate(int num, int dir)
+	public List<LayoutNode> generate(final int num, final int dir)
 	{
 		final Vector<LayoutNode> set = new Vector<LayoutNode>();
 		final int diameter = (int)Math.round(Math.sqrt(num));
@@ -97,6 +99,8 @@ public class MazeLayout extends AbstractLayout
 		case Directions.SOUTHWEST:
 			n = new DefaultLayoutNode(new long[] { diameter + plusX - 1, (-diameter + 1) / 2 });
 			break;
+		default:
+			return generate(num,CMLib.dice().pick(Directions.CODES())); // pick one of the above, and only those.
 		}
 		if(n!=null)
 		{

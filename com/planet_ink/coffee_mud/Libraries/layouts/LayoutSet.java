@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.Layo
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutRuns;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTypes;
+import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.Directions;
 
 /*
@@ -38,7 +39,7 @@ public class LayoutSet
 	private final Map<Long, LayoutNode> used = new Hashtable<Long, LayoutNode>();
 	private List<LayoutNode> set = null;
 
-	public LayoutSet(List<LayoutNode> V, long total)
+	public LayoutSet(final List<LayoutNode> V, final long total)
 	{
 		this.total = total;
 		this.set = V;
@@ -49,33 +50,33 @@ public class LayoutSet
 		return set;
 	}
 
-	public Long getHashCode(long x, long y)
+	public Long getHashCode(final long x, final long y)
 	{
 		return (Long.valueOf((x * total) + y));
 	}
 
-	public boolean isUsed(long[] xy)
+	public boolean isUsed(final long[] xy)
 	{
 		return isUsed(xy[0], xy[1]);
 	}
 
-	public boolean isUsed(long x, long y)
+	public boolean isUsed(final long x, final long y)
 	{
 		return used.containsKey(getHashCode(x, y));
 	}
 
-	public boolean isUsed(LayoutNode n)
+	public boolean isUsed(final LayoutNode n)
 	{
 		return isUsed(n.coord()) && set.contains(n);
 	}
 
-	public void unUse(LayoutNode n)
+	public void unUse(final LayoutNode n)
 	{
 		used.remove(getHashCode(n.coord()[0],n.coord()[1]));
 		set.remove(n);
 	}
 
-	public boolean use(LayoutNode n, LayoutTypes nodeType)
+	public boolean use(final LayoutNode n, final LayoutTypes nodeType)
 	{
 		if(isUsed(n.coord()))
 			return false;
@@ -86,12 +87,12 @@ public class LayoutSet
 		return true;
 	}
 
-	public LayoutNode getNode(long[] xy)
+	public LayoutNode getNode(final long[] xy)
 	{
 		return getNode(xy[0], xy[1]);
 	}
 
-	public LayoutNode getNode(long x, long y)
+	public LayoutNode getNode(final long x, final long y)
 	{
 		return used.get(getHashCode(x, y));
 	}
@@ -101,7 +102,7 @@ public class LayoutSet
 		return set.size() < total;
 	}
 
-	public long[] makeNextCoord(long[] n, int dir)
+	public long[] makeNextCoord(final long[] n, final int dir)
 	{
 		switch(dir)
 		{
@@ -113,11 +114,12 @@ public class LayoutSet
 			return new long[]{n[0]+1,n[1]};
 		case Directions.WEST:
 			return new long[]{n[0]-1,n[1]};
+		default:
+			return makeNextCoord(n,CMLib.dice().pick(Directions.CODES())); // picks one of the above, and only one of the above
 		}
-		return null;
 	}
 
-	public LayoutNode makeNextNode(LayoutNode n, int dir)
+	public LayoutNode makeNextNode(final LayoutNode n, final int dir)
 	{
 		final long[] l = makeNextCoord(n.coord(),dir);
 		if(l!=null)
@@ -125,13 +127,13 @@ public class LayoutSet
 		return null;
 	}
 
-	public LayoutNode getNextNode(LayoutNode n, int dir)
+	public LayoutNode getNextNode(final LayoutNode n, final int dir)
 	{
 		final LayoutNode next = makeNextNode(n,dir);
 		return getNode(next.coord());
 	}
 
-	public void drawABox(int width, int height)
+	public void drawABox(final int width, final int height)
 	{
 		LayoutNode n = new DefaultLayoutNode(new long[]{0,0});
 		n.flag(LayoutFlags.corner);
@@ -191,7 +193,7 @@ public class LayoutSet
 		use(n,LayoutTypes.surround);
 	}
 
-	public boolean fillMaze(LayoutNode p)
+	public boolean fillMaze(final LayoutNode p)
 	{
 		final Vector<Integer> dirs = new Vector<Integer>();
 		for(int i=0;i<4;i++)
