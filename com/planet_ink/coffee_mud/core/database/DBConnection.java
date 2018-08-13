@@ -104,6 +104,7 @@ public class DBConnection
 						final String dbUser,
 						final String dbPass,
 						final Map<String, String> dbParms,
+						final boolean useTransactions,
 						final boolean dbReuse)
 		throws SQLException
 	{
@@ -131,6 +132,8 @@ public class DBConnection
 			p.put(key, dbParms.get(key));
 		p.put("SetBigStringTryClob", "true");
 		myConnection=DriverManager.getConnection(dbService,p);
+		if(useTransactions)
+			myConnection.setAutoCommit(false);
 		if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 			Log.debugOut("New connection made to :"+dbService+" using "+dbClass);
 		sqlserver=false;
@@ -398,6 +401,11 @@ public class DBConnection
 				myResultSet.close();
 				myResultSet=null;
 			}
+			if(myConnection!=null)
+			{
+				if(!myConnection.getAutoCommit())
+					myConnection.commit();
+			}
 			if(myPreparedStatement!=null)
 			{
 				myPreparedStatement.close();
@@ -407,11 +415,6 @@ public class DBConnection
 			{
 				myStatement.close();
 				myStatement=null;
-			}
-			if(myConnection!=null)
-			{
-				if(!myConnection.getAutoCommit())
-					myConnection.commit();
 			}
 		}
 		catch(final SQLException e)

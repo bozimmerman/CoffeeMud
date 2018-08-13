@@ -83,7 +83,7 @@
   81. New skills: Lobotomizing, Groin, Nippletwist, Prisoner Transfer, Prison Assignment
   82. Prop_*Resist* can now limit debuf durations.
   83. New Tech components: Inertial Dampeners, Gravity Generators
-  84. Can now send misc JDBC properties using DBPARMS in ini file.
+  84. Can now send misc JDBC properties using DBPARMS in ini file, and also DBTRANSACT is new.
 # Build 5.9.6 Release 12/31/2017
    *. Sections in the default coffeemud.ini file were moved around.  Don't be alarmed. :)
    1. Hunger and Thirst system can now be tweeked.  See coffeemud.ini file

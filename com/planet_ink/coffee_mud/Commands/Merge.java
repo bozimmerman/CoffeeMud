@@ -714,6 +714,7 @@ public class Merge extends StdCommand
 		final int dbConns=CMParms.getParmInt(theRest,"DBCONNECTIONS",3);
 		final int dbPingIntMins=CMParms.getParmInt(theRest,"DBPINGINTERVALMINS",30);
 		final boolean dbReuse=CMParms.getParmBool(theRest,"DBREUSE",true);
+		final boolean dbTransact=CMParms.getParmBool(theRest,"DBTRANSACT", false);
 		final String ignore=CMParms.getParmStr(theRest,"IGNORE","");
 		final String maskStr=CMParms.getParmStr(theRest,"MASK","");
 		final Set<String> ignores=new SHashSet(CMParms.parseCommas(ignore.toUpperCase(),true));
@@ -739,7 +740,7 @@ public class Merge extends StdCommand
 			return false;
 		}
 
-		dbConnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbParms,dbConns,dbPingIntMins,dbReuse,false,false);
+		dbConnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbParms,dbConns,dbPingIntMins,dbReuse,dbTransact,false,false);
 		dbConnector.reconnect();
 		final DBInterface dbInterface = new DBInterface(dbConnector,null);
 

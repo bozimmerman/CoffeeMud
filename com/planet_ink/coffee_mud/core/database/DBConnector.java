@@ -45,6 +45,7 @@ public class DBConnector
 	private String				dbPass				= "";
 	private Map<String, String>	dbParms				= new Hashtable<String, String>();
 	private boolean				dbReuse				= false;
+	private boolean				dbTransact			= false;
 	private int					numConnections		= 0;
 	private int					dbPingIntMins		= 0;
 	private boolean				doErrorQueueing		= false;
@@ -93,6 +94,7 @@ public class DBConnector
 						final int numConnections,
 						final int dbPingIntMins,
 						final boolean reuse,
+						final boolean transact,
 						final boolean doErrorQueueing,
 						final boolean retryErrorQueue)
 	{
@@ -106,6 +108,7 @@ public class DBConnector
 		this.doErrorQueueing=doErrorQueueing;
 		this.newErrorQueueing=retryErrorQueue;
 		this.dbReuse=reuse;
+		this.dbTransact=transact;
 		this.dbPingIntMins=dbPingIntMins;
 		if(this.dbPingIntMins<=0)
 			this.dbPingIntMins=Integer.MAX_VALUE;
@@ -118,7 +121,7 @@ public class DBConnector
 			dbConnections.deregisterDriver();
 			dbConnections.killConnections();
 		}
-		dbConnections=new DBConnections(dbClass,dbService,dbUser,dbPass,dbParms,numConnections,dbReuse,doErrorQueueing);
+		dbConnections=new DBConnections(dbClass,dbService,dbUser,dbPass,dbParms,numConnections,dbReuse,dbTransact,doErrorQueueing);
 		if(dbConnections.amIOk()&&newErrorQueueing)
 			dbConnections.retryQueuedErrors();
 	}

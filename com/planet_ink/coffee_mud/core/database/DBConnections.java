@@ -66,6 +66,8 @@ public class DBConnections
 	protected boolean			shutdown			= false;
 	/** whether to reuse connections */
 	protected boolean			reuse				= false;
+	/** whether to reuse connections */
+	protected boolean			transact			= false;
 	/** last time resetconnections called (or resetconnections) */
 	private long				lastReset			= 0;
 	/** check for whether these connections are fakedb */
@@ -92,6 +94,7 @@ public class DBConnections
 						 final Map<String,String> dbParms,
 						 final int numConnections,
 						 final boolean reuse,
+						 final boolean transact,
 						 final boolean doErrorQueueing)
 	{
 		this.dbClass=dbClass;
@@ -100,6 +103,7 @@ public class DBConnections
 		this.dbPass=dbPass;
 		this.dbParms=dbParms;
 		this.reuse=reuse;
+		this.transact=transact;
 		this.maxConnections=numConnections;
 		this.connections = new SVector<DBConnection>();
 		this.errorQueingEnabled=doErrorQueueing;
@@ -365,7 +369,7 @@ public class DBConnections
 			{
 				try
 				{
-					newConn=new DBConnection(this,dbClass,dbService,dbUser,dbPass,dbParms,reuse);
+					newConn=new DBConnection(this,dbClass,dbService,dbUser,dbPass,dbParms,transact,reuse);
 					connections.add(newConn);
 				}
 				catch(final Exception e)

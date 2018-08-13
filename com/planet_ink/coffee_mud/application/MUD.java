@@ -1448,10 +1448,11 @@ public class MUD extends Thread implements MudHost
 					System.exit(-1);
 				}
 				final boolean dbReuse=page.getBoolean("DBREUSE");
+				final boolean dbTransact=page.getBoolean("DBTRANSACT");
 				final boolean useQue=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUE);
 				final boolean useQueStart=!CMSecurity.isDisabled(CMSecurity.DisFlag.DBERRORQUESTART);
 				CMProps.setUpLowVar(CMProps.Str.MUDSTATUS,"Booting: connecting to database");
-				currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbParms,dbConns,dbPingIntMins,dbReuse,useQue,useQueStart);
+				currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbParms,dbConns,dbPingIntMins,dbReuse,dbTransact,useQue,useQueStart);
 				currentDBconnector.reconnect();
 				CMLib.registerLibrary(new DBInterface(currentDBconnector,CMProps.getPrivateSubSet("DB.*")));
 
