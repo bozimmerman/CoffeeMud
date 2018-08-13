@@ -1203,8 +1203,8 @@ public class MOBloader
 		final String container=((thisItem.container()!=null)?(""+thisItem.container()):"");
 		final String name=DB.injectionClean(mob.Name());
 		return "INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
-		+"CMITUR, CMITLV, CMITAB, CMHEIT"
-		+") values ('"+name+"','"+(thisItem)+"','"+thisItem.ID()+"',?,'"+container+"',"+thisItem.rawWornCode()+","
+			+"CMITUR, CMITLV, CMITAB, CMHEIT"
+			+") values ('"+name+"','"+(thisItem)+"','"+thisItem.ID()+"',?,'"+container+"',"+thisItem.rawWornCode()+","
 		+thisItem.usesRemaining()+","+thisItem.basePhyStats().level()+","+thisItem.basePhyStats().ability()+","
 		+thisItem.basePhyStats().height()+")";
 	}
