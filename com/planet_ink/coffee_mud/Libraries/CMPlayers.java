@@ -1425,9 +1425,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		try
+		if(!CMSecurity.isDisabled(CMSecurity.DisFlag.PLAYERTHREAD)
+		&&(tickStatus == Tickable.STATUS_NOT))
 		{
-			if(!CMSecurity.isDisabled(CMSecurity.DisFlag.PLAYERTHREAD))
+			try
 			{
 				tickStatus=Tickable.STATUS_ALIVE;
 				isDebugging=CMSecurity.isDebugging(DbgFlag.PLAYERTHREAD);
@@ -1492,13 +1493,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 					setThreadStatus(serviceClient,"not doing anything");
 				}
 			}
+			finally
+			{
+				tickStatus=Tickable.STATUS_NOT;
+				setThreadStatus(serviceClient,"sleeping");
+			}
 		}
-		finally
-		{
-			tickStatus=Tickable.STATUS_NOT;
-			setThreadStatus(serviceClient,"sleeping");
-		}
-
 		return true;
 	}
 
