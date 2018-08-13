@@ -112,25 +112,25 @@ public class DBConnections
 	 */
 	public int update(final String[] updateStrings)
 	{
-		DBConnection DBToUse=null;
-		int Result=-1;
+		DBConnection dbConnection=null;
+		int result=-1;
 		String updateString=null;
 		try
 		{
-			DBToUse=DBFetch();
+			dbConnection=DBFetch();
 			for (final String updateString2 : updateStrings)
 			{
 				updateString=updateString2;
 				try
 				{
-					Result=DBToUse.update(updateString,0);
+					result=dbConnection.update(updateString,0);
 				}
 				catch(final Exception sqle)
 				{
 					if(sqle instanceof java.io.EOFException)
 					{
 						Log.errOut("DBConnections",""+sqle);
-						DBDone(DBToUse);
+						DBDone(dbConnection);
 						return -1;
 					}
 					if(sqle instanceof SQLException)
@@ -138,9 +138,9 @@ public class DBConnections
 						// queued by the connection for retry
 					}
 				}
-				if(Result<0)
+				if(result<0)
 				{
-					Log.errOut("DBConnections",""+DBToUse.getLastError()+"/"+updateString);
+					Log.errOut("DBConnections",""+dbConnection.getLastError()+"/"+updateString);
 				}
 			}
 		}
@@ -152,10 +152,10 @@ public class DBConnections
 		}
 		finally
 		{
-			if(DBToUse!=null)
-				DBDone(DBToUse);
+			if(dbConnection!=null)
+				DBDone(dbConnection);
 		}
-		return Result;
+		return result;
 	}
 
 	/**
@@ -165,27 +165,27 @@ public class DBConnections
 	 */
 	public int updateWithClobs(final List<DBPreparedBatchEntry> entries)
 	{
-		DBConnection DBToUse=null;
-		int Result=-1;
+		DBConnection dbConnection=null;
+		int result=-1;
 		try
 		{
-			DBToUse=DBFetchEmpty();
+			dbConnection=DBFetchEmpty();
 			for(final DBPreparedBatchEntry entry : entries)
 			{
 				try
 				{
 					if((entry.clobs==null)||(entry.clobs.length==0))
 					{
-						DBToUse.closeStatements("");
-						Result=DBToUse.update(entry.sql,0);
+						dbConnection.closeStatements("");
+						result=dbConnection.update(entry.sql,0);
 					}
 					else
 					{
-						DBToUse.rePrepare(entry.sql);
+						dbConnection.rePrepare(entry.sql);
 						for (final String[] clob : entry.clobs)
 						{
-							DBToUse.setPreparedClobs(clob);
-							Result=DBToUse.update("",0);
+							dbConnection.setPreparedClobs(clob);
+							result=dbConnection.update("",0);
 						}
 					}
 				}
@@ -194,7 +194,7 @@ public class DBConnections
 					if(sqle instanceof java.io.EOFException)
 					{
 						Log.errOut("DBConnections",""+sqle);
-						DBDone(DBToUse);
+						DBDone(dbConnection);
 						return -1;
 					}
 					if(sqle instanceof SQLException)
@@ -202,9 +202,9 @@ public class DBConnections
 						// queued by the connection for retry
 					}
 				}
-				if(Result<0)
+				if(result<0)
 				{
-					Log.errOut("DBConnections",""+DBToUse.getLastError()+"/"+entry.sql);
+					Log.errOut("DBConnections",""+dbConnection.getLastError()+"/"+entry.sql);
 				}
 			}
 		}
@@ -215,10 +215,10 @@ public class DBConnections
 		}
 		finally
 		{
-			if(DBToUse!=null)
-				DBDone(DBToUse);
+			if(dbConnection!=null)
+				DBDone(dbConnection);
 		}
-		return Result;
+		return result;
 	}
 
 	/**
@@ -291,15 +291,15 @@ public class DBConnections
 		int numPinged=0;
 		while(numAvailable()>0)
 		{
-			final DBConnection DB=DBFetch();
-			if(DB!=null)
+			final DBConnection dbConnection=DBFetch();
+			if(dbConnection!=null)
 			{
-				fetched.add(DB);
-				if((System.currentTimeMillis()-DB.getLastQueryTime())> usageTimeoutMillis)
+				fetched.add(dbConnection);
+				if((System.currentTimeMillis()-dbConnection.getLastQueryTime())> usageTimeoutMillis)
 				{
 					try
 					{
-						DB.query(querySql);
+						dbConnection.query(querySql);
 						numPinged++;
 					}
 					catch (final SQLException e)
@@ -309,8 +309,8 @@ public class DBConnections
 				}
 			}
 		}
-		for(final DBConnection DB : fetched)
-			DBDone(DB);
+		for(final DBConnection dbConnection : fetched)
+			DBDone(dbConnection);
 		return numPinged;
 	}
 
@@ -869,7 +869,7 @@ public class DBConnections
 					secondTab=queueLine.indexOf("\t!|!\t",firstTab+5);
 				if((firstTab>0)&&(secondTab>firstTab))
 				{
-					DBConnection DB=null;
+					DBConnection dbConnection=null;
 					final String retrySQL=queueLine.substring(0,firstTab);
 					final int oldAttempts=CMath.s_int(queueLine.substring(secondTab+5));
 					if(oldAttempts>20)
@@ -881,10 +881,10 @@ public class DBConnections
 					{
 						try
 						{
-							DB=DBFetch();
+							dbConnection=DBFetch();
 							try
 							{
-								DB.update(retrySQL,oldAttempts);
+								dbConnection.update(retrySQL,oldAttempts);
 								successes++;
 								if(CMSecurity.isDebugging(CMSecurity.DbgFlag.SQLERRORS))
 									Log.sysOut("DBConnections","Successful retry: "+queueLine);
@@ -903,10 +903,10 @@ public class DBConnections
 							unsuccesses++;
 							enQueueError(retrySQL,e.getMessage(),""+(oldAttempts+1));
 						}
-						if(DB!=null)
+						if(dbConnection!=null)
 						{
-							DB.clearFailures();
-							DBDone(DB);
+							dbConnection.clearFailures();
+							DBDone(dbConnection);
 							CMLib.s_sleep(1000);
 						}
 					}
@@ -930,26 +930,26 @@ public class DBConnections
 	 */
 	public int queryRows(final String queryString)
 	{
-		DBConnection DBToUse=null;
-		int Result=0;
+		DBConnection dbConnection=null;
+		int result=0;
 		try
 		{
-			DBToUse=DBFetch();
+			dbConnection=DBFetch();
 			try
 			{
-				final ResultSet R=DBToUse.query(queryString);
+				final ResultSet R=dbConnection.query(queryString);
 				if(R==null)
-					Result=0;
+					result=0;
 				else
 				while(R.next())
-					Result++;
+					result++;
 			}
 			catch(final Exception sqle)
 			{
 				if(sqle instanceof java.io.EOFException)
 				{
 					Log.errOut("DBConnections",""+sqle);
-					DBDone(DBToUse);
+					DBDone(dbConnection);
 					return -1;
 				}
 				if(sqle instanceof SQLException)
@@ -962,9 +962,9 @@ public class DBConnections
 		{
 			Log.errOut("DBConnections",""+e);
 		}
-		if(DBToUse!=null)
-			DBDone(DBToUse);
-		return Result;
+		if(dbConnection!=null)
+			DBDone(dbConnection);
+		return result;
 	}
 
 	/** list the connections

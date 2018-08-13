@@ -41,30 +41,30 @@ public class DBConnection
 	private Connection			myConnection		= null;
 
 	/** (new) resultset being used currently */
-	private ResultSet			myResultSet			= null;
+	private volatile ResultSet	myResultSet			= null;
 
 	/** (new) statement object being used currently */
-	private Statement			myStatement			= null;
+	private volatile Statement	myStatement			= null;
 
 	/** (new) statement object being used currently */
-	private PreparedStatement	myPreparedStatement	= null;
+	private volatile PreparedStatement	myPreparedStatement	= null;
 
 	/** Whether this dbconnection is being used */
-	protected boolean			inUse;
+	protected volatile boolean	inUse;
 
 	/** if any SQL errors occur, they are here. **/
 	protected String			lastError			= null;
 
 	/** last time the connection was queried/executed. **/
-	private long				lastQueryTime		= System.currentTimeMillis();
+	private volatile long		lastQueryTime		= System.currentTimeMillis();
 
 	/** when this connection was put into use **/
-	private long				lastPutInUseTime	= System.currentTimeMillis();
+	private volatile long		lastPutInUseTime	= System.currentTimeMillis();
 
 	/** number of failures in a row */
-	protected int				failuresInARow		= 0;
+	protected volatile int		failuresInARow		= 0;
 
-	protected boolean			sqlserver			= false;
+	protected volatile boolean	sqlserver			= false;
 
 	protected boolean			isReusable			= false;
 
@@ -72,7 +72,7 @@ public class DBConnection
 	private DBConnections		myParent			= null;
 
 	/** for tracking the last sql statement made */
-	protected String			lastSQL				= "";
+	protected volatile String	lastSQL				= "";
 
 	/** for remembering whether this is a fakeDB connection */
 	private Boolean				isFakeDB			= null;
