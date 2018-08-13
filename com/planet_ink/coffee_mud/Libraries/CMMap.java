@@ -3611,22 +3611,24 @@ public class CMMap extends StdLibrary implements WorldMap
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		try
+		if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
+		&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAPTHREAD))
+		&&(tickStatus == Tickable.STATUS_NOT))
 		{
-			if((!CMSecurity.isDisabled(CMSecurity.DisFlag.SAVETHREAD))
-			&&(!CMSecurity.isDisabled(CMSecurity.DisFlag.MAPTHREAD)))
+			try
 			{
-				isDebugging=CMSecurity.isDebugging(DbgFlag.MAPTHREAD);
 				tickStatus=Tickable.STATUS_ALIVE;
+				isDebugging=CMSecurity.isDebugging(DbgFlag.MAPTHREAD);
 				if(checkDatabase())
 					roomMaintSweep();
+				setThreadStatus(serviceClient,"saving props");
+				Resources.savePropResources();
 			}
-			Resources.savePropResources();
-		}
-		finally
-		{
-			tickStatus=Tickable.STATUS_NOT;
-			setThreadStatus(serviceClient,"sleeping");
+			finally
+			{
+				tickStatus=Tickable.STATUS_NOT;
+				setThreadStatus(serviceClient,"sleeping");
+			}
 		}
 		return true;
 	}

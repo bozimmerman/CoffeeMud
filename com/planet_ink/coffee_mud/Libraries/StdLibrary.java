@@ -37,7 +37,7 @@ public class StdLibrary implements CMLibrary, Tickable
 		return name;
 	}
 
-	protected int			tickStatus		= Tickable.STATUS_NOT;
+	protected volatile int	tickStatus		= Tickable.STATUS_NOT;
 	protected TickClient	serviceClient	= null;
 	protected boolean		isDebugging		= false;
 
@@ -108,7 +108,7 @@ public class StdLibrary implements CMLibrary, Tickable
 		return serviceClient;
 	}
 
-	public void setThreadStatus(TickClient C, String msg)
+	public void setThreadStatus(final TickClient C, final String msg)
 	{
 		if(C!=null)
 		{
