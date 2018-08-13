@@ -47,8 +47,10 @@ public class ApartmentLayout extends AbstractLayout
 		case Directions.WEST:
 			node.flagRun(LayoutRuns.ew);
 			break;
+		default:
+			setRunFromDirection(node,CMLib.dice().pick(Directions.CODES())); // picks one of the above, and only one of the above
+			break;
 		}
-		setRunFromDirection(node,CMLib.dice().pick(Directions.CODES())); // picks one of the above, and only one of the above
 	}
 
 	@Override
