@@ -45,19 +45,19 @@ public class Qualify  extends Skills
 	{
 		return access;
 	}
-	
+
 	protected final static int SKILL_ANY=-1;
 	protected final static int SKILL_CRAFTING_ONLY=-2;
 	protected final static int SKILL_BUILDING_ONLY=-3;
 	protected final static int SKILL_GATHERING_ONLY=-4;
 	protected final static int SKILL_EPICUREAN_ONLY=-5;
 
-	public StringBuffer getQualifiedAbilities(MOB viewerM,
-											  MOB ableM,
-											  int ofType,
-											  int ofDomain,
-											  String prefix,
-											  boolean shortOnly)
+	public StringBuffer getQualifiedAbilities(final MOB viewerM,
+											  final MOB ableM,
+											  final int ofType,
+											  final int ofDomain,
+											  final String prefix,
+											  final boolean shortOnly)
 	{
 		/*
 		final HashSet<Integer> V=new HashSet<Integer>();
@@ -70,7 +70,7 @@ public class Qualify  extends Skills
 		V.add(Integer.valueOf(ofType));
 		&&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask)))
 		*/
-		
+
 		final int checkCode = ofType;
 		final int badDomain;
 		final int checkDomain;
@@ -102,11 +102,11 @@ public class Qualify  extends Skills
 			checkDomain = ofDomain;
 			break;
 		}
-		
+
 		final Filterer<Ability> newFilter=new Filterer<Ability>()
 		{
 			@Override
-			public boolean passesFilter(Ability A) 
+			public boolean passesFilter(final Ability A)
 			{
 				if(((checkDomain < 0) && (A.classificationCode() & Ability.ALL_ACODES) != checkCode))
 					return false;
@@ -120,7 +120,7 @@ public class Qualify  extends Skills
 		return getQualifiedAbilities(viewerM,ableM,newFilter,prefix,shortOnly);
 	}
 
-	protected Set<Integer> getQualifiedTypes(MOB ableM)
+	protected Set<Integer> getQualifiedTypes(final MOB ableM)
 	{
 		final Set<Integer> set=new TreeSet<Integer>();
 		final boolean checkUnMet=ableM.charStats().getCurrentClass().showThinQualifyList();
@@ -133,8 +133,8 @@ public class Qualify  extends Skills
 			&&(CMLib.ableComponents().getSpecialSkillRemainder(ableM, A).specificSkillLimit() > 0)
 			&&(!checkUnMet || CMLib.ableMapper().getUnmetPreRequisites(ableM,A).size()==0))
 			{
-				Integer acode =Integer.valueOf(A.classificationCode() & Ability.ALL_ACODES);
-				Integer dcode =Integer.valueOf(A.classificationCode() & Ability.ALL_DOMAINS);
+				final Integer acode =Integer.valueOf(A.classificationCode() & Ability.ALL_ACODES);
+				final Integer dcode =Integer.valueOf(A.classificationCode() & Ability.ALL_DOMAINS);
 				if(!set.contains(acode))
 					set.add(acode);
 				if(!set.contains(dcode))
@@ -143,12 +143,12 @@ public class Qualify  extends Skills
 		}
 		return set;
 	}
-	
-	public StringBuffer getQualifiedAbilities(MOB viewerM,
-											  MOB ableM,
-											  Filterer<Ability> filter,
-											  String prefix,
-											  boolean shortOnly)
+
+	public StringBuffer getQualifiedAbilities(final MOB viewerM,
+											  final MOB ableM,
+											  final Filterer<Ability> filter,
+											  final String prefix,
+											  final boolean shortOnly)
 	{
 		int highestLevel=0;
 		final StringBuffer msg=new StringBuffer("");
@@ -211,12 +211,15 @@ public class Qualify  extends Skills
 		}
 		if(msg.length()==0)
 			return msg;
+		else
+		if(!msg.toString().endsWith("\n\r"))
+			msg.append("\n\r");
 		msg.insert(0,prefix);
 		return msg;
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final StringBuffer msg=new StringBuffer("");
@@ -235,25 +238,25 @@ public class Qualify  extends Skills
 			acode=Ability.ACODE_COMMON_SKILL;
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_ANY,"\n\r^HCommon Skills:^? ",shortOnly));
 		}
-		else 
+		else
 		if ("CRAFTING SKILLS".startsWith(qual))
 		{
 			domain=Ability.DOMAIN_CRAFTINGSKILL;
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_CRAFTING_ONLY,"\n\r^HCrafting Skills:^? ",shortOnly));
 		}
-		else 
+		else
 		if ("EPICUREAN SKILLS".startsWith(qual))
 		{
 			domain=Ability.DOMAIN_EPICUREAN;
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_EPICUREAN_ONLY,"\n\r^HEpicurean Skills:^? ",shortOnly));
 		}
-		else 
+		else
 		if ("BUILDING SKILLS".startsWith(qual))
 		{
 			domain=Ability.DOMAIN_BUILDINGSKILL;
 			msg.append(getQualifiedAbilities(mob,mob,Ability.ACODE_COMMON_SKILL,SKILL_BUILDING_ONLY,"\n\r^HBuilding Skills:^? ",shortOnly));
 		}
-		else 
+		else
 		if ("GATHERING SKILLS".startsWith(qual)
 		||"NON CRAFTING SKILLS".startsWith(qual)||"NON-CRAFTING SKILLS".startsWith(qual)||"NONCRAFTING SKILLS".startsWith(qual))
 		{
@@ -303,8 +306,8 @@ public class Qualify  extends Skills
 		String domainName="";
 		if((!showAll)&&(domain<0))
 		{
-			String uqual=qual.toUpperCase();
-			String qual2=uqual.replace(' ','_');
+			final String uqual=qual.toUpperCase();
+			final String qual2=uqual.replace(' ','_');
 			for(int i=1;i<Ability.DOMAIN_DESCS.length;i++)
 			{
 				if (Ability.DOMAIN_DESCS[i].startsWith(uqual)
@@ -313,10 +316,10 @@ public class Qualify  extends Skills
 					domain = i << 5;
 					break;
 				}
-				else 
+				else
 				{
-					int x=Ability.DOMAIN_DESCS[i].indexOf('/');
-					if ((x >= 0) 
+					final int x=Ability.DOMAIN_DESCS[i].indexOf('/');
+					if ((x >= 0)
 					&& (Ability.DOMAIN_DESCS[i].substring(x + 1).startsWith(uqual)
 						||Ability.DOMAIN_DESCS[i].substring(x + 1).startsWith(qual2)))
 					{
@@ -396,31 +399,25 @@ public class Qualify  extends Skills
 				if(showAll)
 				{
 					msg.append(L("\n\r^HExpertises:^?\n\r"));
+					msg.append("^w"+CMStrings.padRight(L("Name"), COL_LEN2+COL_LEN1+3)+" ")
+					.append("^w"+CMStrings.padRight(L("Requires"),COL_LEN3)+" ")
+					.append("^w"+CMStrings.padRight(L("Name"),COL_LEN2+COL_LEN1+3)+" ")
+					.append("^w"+L("Requires")+"^N\n\r");
 					ExpertiseLibrary.ExpertiseDefinition def=null;
 					int col=0;
-					final int COL_LEN=CMLib.lister().fixColWidth(25.0,mob);
 					for(int e=0;e<V.size();e++)
 					{
 						def=V.get(e);
-						if(def.name().length()>=COL_LEN)
-						{
-							if(col>=2)
-							{
-								msg.append("\n\r");
-								col=0;
-							}
-							msg.append(CMStrings.padRightPreserve("^<HELP^>"+def.name()+"^</HELP^>",COL_LEN));
-							final int spaces=(COL_LEN*2)-def.name().length();
-							for(int i=0;i<spaces;i++) msg.append(" ");
-							col++;
-						}
-						else
-							msg.append(CMStrings.padRight("^<HELP^>"+def.name()+"^</HELP^>",COL_LEN));
-						if((++col)>=3)
+						if(col>=2)
 						{
 							msg.append("\n\r");
 							col=0;
 						}
+						msg.append(CMStrings.padRightPreserve("^<HELP^>"+def.name()+"^</HELP^>",COL_LEN2+COL_LEN1+3)+" ");
+						msg.append(CMStrings.padRightPreserve(def.costDescription(),COL_LEN3));
+						col++;
+						if(col < 2)
+							msg.append(" ");
 					}
 					if(!msg.toString().endsWith("\n\r"))
 						msg.append("\n\r");
@@ -464,7 +461,7 @@ public class Qualify  extends Skills
 			if(msg.length()==0)
 			{
 				StringBuilder list = new StringBuilder("");
-				Set<Integer> qSet = this.getQualifiedTypes(mob);
+				final Set<Integer> qSet = this.getQualifiedTypes(mob);
 				for(int i=1;i<Ability.ACODE_DESCS.length;i++)
 				{
 					if(qSet.contains(Integer.valueOf(i)))
@@ -510,7 +507,7 @@ public class Qualify  extends Skills
 					limits.languageSkills(0);
 				if(limits.languageSkills() < Integer.MAX_VALUE/2)
 					msg.append(L("\n\r^HYou may learn ^w@x1^H more languages.^N",""+limits.languageSkills()));
-				
+
 				mob.session().wraplessPrintln(L("^!You now qualify for the following unknown abilities:^?@x1",msg.toString()));
 				mob.tell(L("\n\rUse the WILLQUALIFY command to discover what you will qualify for at higher levels."));
 				mob.tell(L("\n\rUse the GAIN command with your teacher to gain new skills, spells, and expertises."));
