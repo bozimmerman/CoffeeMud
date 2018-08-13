@@ -786,13 +786,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 				if((!mob.isMonster()) && (pStats.isSavable()))
 				{
 					lib._factions().updatePlayerFactions(mob,mob.location(), false);
-					if(noCachePlayers && (!lib._flags().isInTheGame(mob, true)))
-						mob.delAllEffects(true);
 					//setThreadStatus(serviceClient,"just saving "+mob.Name());
 					lib._database().DBUpdatePlayerMOBOnly(mob);
 					if(mob.Name().length()==0)
 						continue;
-					Log.sysOut("Item1 saving for "+mob.Name());
 					//setThreadStatus(serviceClient,"saving "+mob.Name()+", "+mob.numItems()+" items");
 					lib._database().DBUpdatePlayerItems(mob);
 					//setThreadStatus(serviceClient,"saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
@@ -806,13 +803,6 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 						//setThreadStatus(serviceClient,"saving account "+account.getAccountName()+" for "+mob.Name());
 						lib._database().DBUpdateAccount(account);
 						account.setLastUpdated(System.currentTimeMillis());
-					}
-					if(noCachePlayers && (!lib._flags().isInTheGame(mob, true)))
-					{
-						if(pStats != null)
-							pStats.getExtItems().delAllItems(true);
-						delPlayer(mob);
-						mob.destroy();
 					}
 				}
 				else
@@ -828,7 +818,6 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 						lib._database().DBUpdatePlayerMOBOnly(mob);
 						if(mob.Name().length()==0)
 							continue;
-						Log.sysOut("Item2 saving for "+mob.Name());
 						//setThreadStatus(serviceClient,"just saving "+mob.Name()+", "+mob.numItems()+" items");
 						lib._database().DBUpdatePlayerItems(mob);
 						//setThreadStatus(serviceClient,"just saving "+mob.Name()+", "+mob.numAbilities()+" abilities");
