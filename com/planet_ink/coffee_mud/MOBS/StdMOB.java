@@ -3700,10 +3700,13 @@ public class StdMOB implements MOB
 							{
 								if(mobReport.startsWith("*"))
 								{
-									Log.warnOut("Killing: "+mobReport);
-									if(location()!=null)
-										Log.debugOut("Occupant: "+location().isInhabitant(this)+", Dead     : "+amDead);
-									killMeDead(false);
+									CMLib.s_sleep(1);
+									final Room locR=location();
+									if((locR==null)||(amDead)||(!locR.isInhabitant(this)))
+									{
+										Log.warnOut("Killing: "+mobReport);
+										killMeDead(false);
+									}
 								}
 								else
 								{
