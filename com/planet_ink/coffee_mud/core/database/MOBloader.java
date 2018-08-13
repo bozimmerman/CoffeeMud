@@ -44,7 +44,7 @@ public class MOBloader
 {
 	protected DBConnector DB=null;
 
-	public MOBloader(DBConnector newDB)
+	public MOBloader(final DBConnector newDB)
 	{
 		DB=newDB;
 	}
@@ -53,7 +53,7 @@ public class MOBloader
 
 	public MOB DBReadUserOnly(String name, final String[] locationID)
 	{
-		if((name==null)||(name.length()==0)) 
+		if((name==null)||(name.length()==0))
 			return null;
 		DBConnection D=null;
 		MOB mob=null;
@@ -62,7 +62,7 @@ public class MOBloader
 		try
 		{
 			D=DB.DBFetch();
-			
+
 			ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMUSERID='"+name+"'");
 			if(R.next())
 			{
@@ -77,7 +77,7 @@ public class MOBloader
 				mob.basePhyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
 				mob.phyStats().setDisposition(PhyStats.IS_NOT_SEEN|PhyStats.IS_SNEAKING);
 				mob.setDisplayText(""); // for centaur
-				
+
 				final CharStats stats=mob.baseCharStats();
 				final CharState state=mob.baseState();
 				final PlayerStats pstats=(PlayerStats)CMClass.getCommon("DefaultPlayerStats");
@@ -138,7 +138,7 @@ public class MOBloader
 				mob.basePhyStats().setWeight((int)DBConnections.getLongRes(R,"CMWEIT"));
 				pstats.setPrompt(DBConnections.getRes(R,"CMPRPT"));
 				final String colorStr=DBConnections.getRes(R,"CMCOLR");
-				if((colorStr!=null)&&(colorStr.length()>0)&&(!colorStr.equalsIgnoreCase("NULL"))) 
+				if((colorStr!=null)&&(colorStr.length()>0)&&(!colorStr.equalsIgnoreCase("NULL")))
 					pstats.setColorStr(colorStr);
 				pstats.setLastIP(DBConnections.getRes(R,"CMLSIP"));
 				mob.setClan("", Integer.MIN_VALUE); // delete all sequence
@@ -149,20 +149,20 @@ public class MOBloader
 				List<String> V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
 				for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
 					mob.delTattoo(e.nextElement());
-				for(String tatt : V9)
+				for(final String tatt : V9)
 					mob.addTattoo(((Tattoo)CMClass.getCommon("DefaultTattoo")).parse(tatt));
 				V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
 				mob.delAllExpertises();
 				for(int v=0;v<V9.size();v++)
 					mob.addExpertise(V9.get(v));
-				
+
 				// check for a non-existant birthday and fix it
 				if(pstats.getBirthday()==null)
 				{
 					stats.setStat(CharStats.STAT_AGE,
 						pstats.initializeBirthday(CMLib.time().localClock(mob.getStartRoom()),(int)Math.round(CMath.div(mob.getAgeMinutes(),60.0)),stats.getMyRace()));
 				}
-				
+
 				final TimeClock C=CMLib.time().localClock(mob.getStartRoom());
 				// check for a messed up/reset birthday and fix it
 				if((pstats.getBirthday()[PlayerStats.BIRTHDEX_YEAR]==1)
@@ -210,7 +210,7 @@ public class MOBloader
 				final String clanID=DBConnections.getRes(R,"CMCLAN");
 				final int clanRole = this.BuildClanMemberRole(R);
 				final Clan C=CMLib.clans().getClan(clanID);
-				if(C!=null) 
+				if(C!=null)
 					mob.setClan(C.clanID(), clanRole);
 			}
 		}
@@ -232,9 +232,9 @@ public class MOBloader
 
 	public MOB DBRead(final String name)
 	{
-		if((name==null)||(name.length()==0)) 
+		if((name==null)||(name.length()==0))
 			return null;
-		if(emptyRoom==null) 
+		if(emptyRoom==null)
 			emptyRoom=CMClass.getLocale("StdRoom");
 		final String[] oldLocID=new String[1];
 		if(CMLib.players().getPlayer(name)!=null) // super important to stay this t-group
@@ -250,7 +250,7 @@ public class MOBloader
 		mob.recoverCharStats();
 		Room oldLoc=mob.location();
 		boolean inhab=false;
-		if(oldLoc!=null) 
+		if(oldLoc!=null)
 			inhab=oldLoc.isInhabitant(mob);
 		mob.setLocation(mob.getStartRoom());
 		DBConnection D=null;
@@ -502,7 +502,7 @@ public class MOBloader
 		return V;
 	}
 
-	protected PlayerLibrary.ThinPlayer parseThinUser(ResultSet R)
+	protected PlayerLibrary.ThinPlayer parseThinUser(final ResultSet R)
 	{
 		try
 		{
@@ -664,7 +664,7 @@ public class MOBloader
 	public List<PlayerLibrary.ThinPlayer> vassals(String liegeName)
 	{
 		DBConnection D=null;
-		List<PlayerLibrary.ThinPlayer> list=new ArrayList<PlayerLibrary.ThinPlayer>();
+		final List<PlayerLibrary.ThinPlayer> list=new ArrayList<PlayerLibrary.ThinPlayer>();
 		liegeName=DB.injectionClean(liegeName);
 		try
 		{
@@ -753,7 +753,7 @@ public class MOBloader
 		return V;
 	}
 
-	public void DBReadFollowers(MOB mob, boolean bringToLife)
+	public void DBReadFollowers(final MOB mob, final boolean bringToLife)
 	{
 		Room location=mob.location();
 		if(location==null)
@@ -781,22 +781,22 @@ public class MOBloader
 		}
 	}
 
-	public void DBUpdateEmail(MOB mob)
+	public void DBUpdateEmail(final MOB mob)
 	{
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null)
 			return;
-		String name=DB.injectionClean(mob.Name());
-		String email=DB.injectionClean(pstats.getEmail());
+		final String name=DB.injectionClean(mob.Name());
+		final String email=DB.injectionClean(pstats.getEmail());
 		DB.update("UPDATE CMCHAR SET CMEMAL='"+email+"' WHERE CMUSERID='"+name+"'");
 	}
 
-	private int BuildClanMemberRole(ResultSet R)
+	private int BuildClanMemberRole(final ResultSet R)
 	{
 		return (int)DBConnections.getLongRes(R,"CMCLRO");
 	}
 
-	private MemberRecord BuildClanMemberRecord(ResultSet R)
+	private MemberRecord BuildClanMemberRecord(final ResultSet R)
 	{
 		final String username=DB.getRes(R,"CMUSERID");
 		final int clanRole = BuildClanMemberRole(R);
@@ -875,7 +875,7 @@ public class MOBloader
 		return members;
 	}
 
-	public void DBUpdateClanMembership(String name, String clan, int role)
+	public void DBUpdateClanMembership(String name, String clan, final int role)
 	{
 		final MOB M=CMLib.players().getPlayer(name);
 		if(M!=null)
@@ -925,7 +925,7 @@ public class MOBloader
 		}
 	}
 
-	public void DBUpdateClanKills(String clan, String name, int adjMobKills, int adjPlayerKills)
+	public void DBUpdateClanKills(String clan, String name, final int adjMobKills, final int adjPlayerKills)
 	{
 		if(((adjMobKills==0)&&(adjPlayerKills==0))
 		||(clan==null)
@@ -963,7 +963,7 @@ public class MOBloader
 		}
 	}
 
-	public void DBUpdateClanDonates(String clan, String name, double adjGold, int adjXP)
+	public void DBUpdateClanDonates(String clan, String name, final double adjGold, final int adjXP)
 	{
 		if(((adjGold==0)&&(adjXP==0))
 		||(clan==null)
@@ -1001,7 +1001,7 @@ public class MOBloader
 		}
 	}
 
-	public void DBUpdate(MOB mob)
+	public void DBUpdate(final MOB mob)
 	{
 		final PlayerStats pStats = mob.playerStats();
 		if((pStats==null)||(!pStats.isSavable()))
@@ -1027,7 +1027,7 @@ public class MOBloader
 		DB.update("UPDATE CMCHAR SET CMPASS='"+password+"' WHERE CMUSERID='"+name+"'");
 	}
 
-	private String getPlayerStatsXML(MOB mob)
+	private String getPlayerStatsXML(final MOB mob)
 	{
 		final PlayerStats pstats=mob.playerStats();
 		if(pstats==null)
@@ -1051,7 +1051,7 @@ public class MOBloader
 		return pfxml.toString();
 	}
 
-	public void DBUpdateJustPlayerStats(MOB mob)
+	public void DBUpdateJustPlayerStats(final MOB mob)
 	{
 		if(mob.Name().length()==0)
 		{
@@ -1062,11 +1062,11 @@ public class MOBloader
 		if((pstats==null)||(!pstats.isSavable()))
 			return;
 		final String pfxml=getPlayerStatsXML(mob);
-		String name=DB.injectionClean(mob.Name());
+		final String name=DB.injectionClean(mob.Name());
 		DB.updateWithClobs("UPDATE CMCHAR SET CMPFIL=? WHERE CMUSERID='"+name+"'", pfxml.toString());
 	}
 
-	public void DBUpdateJustMOB(MOB mob)
+	public void DBUpdateJustMOB(final MOB mob)
 	{
 		if(mob.Name().length()==0)
 		{
@@ -1208,7 +1208,7 @@ public class MOBloader
 		+thisItem.basePhyStats().height()+")";
 	}
 
-	private List<DBPreparedBatchEntry> getDBItemUpdateStrings(MOB mob)
+	private List<DBPreparedBatchEntry> getDBItemUpdateStrings(final MOB mob)
 	{
 		final HashSet<String> done=new HashSet<String>();
 		final List<DBPreparedBatchEntry> strings=new LinkedList<DBPreparedBatchEntry>();
@@ -1288,18 +1288,18 @@ public class MOBloader
 		return strings;
 	}
 
-	public void DBUpdateItems(MOB mob)
+	public void DBUpdateItems(final MOB mob)
 	{
 		if(mob.Name().length()==0)
 			return;
 		final List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
-		String name=DB.injectionClean(mob.Name());
+		final String name=DB.injectionClean(mob.Name());
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHIT WHERE CMUSERID='"+name+"'"));
 		statements.addAll(getDBItemUpdateStrings(mob));
 		DB.updateWithClobs(statements);
 	}
 
-	protected List<Pair<String,Integer>>[][] DBFindPrideWinners(int topThisMany, short scanCPUPercent, boolean players)
+	protected List<Pair<String,Integer>>[][] DBFindPrideWinners(final int topThisMany, final short scanCPUPercent, final boolean players)
 	{
 		@SuppressWarnings("unchecked")
 		final List<Pair<String,Integer>>[][] top=new Vector[TimeClock.TimePeriod.values().length][AccountStats.PrideStat.values().length];
@@ -1390,18 +1390,18 @@ public class MOBloader
 		return top;
 	}
 
-	public List<Pair<String,Integer>>[][] DBScanPridePlayerWinners(int topThisMany, short scanCPUPercent)
+	public List<Pair<String,Integer>>[][] DBScanPridePlayerWinners(final int topThisMany, final short scanCPUPercent)
 	{
 		return DBFindPrideWinners(topThisMany,scanCPUPercent,true);
 	}
 
-	public List<Pair<String,Integer>>[][] DBScanPrideAccountWinners(int topThisMany, short scanCPUPercent)
+	public List<Pair<String,Integer>>[][] DBScanPrideAccountWinners(final int topThisMany, final short scanCPUPercent)
 	{
 		return DBFindPrideWinners(topThisMany,scanCPUPercent,false);
 	}
 
 	// this method is unused, but is a good idea of how to collect riders, followers, carts, etc.
-	protected void addFollowerDependent(PhysicalAgent P, PairList<PhysicalAgent,String> list, String parent)
+	protected void addFollowerDependent(final PhysicalAgent P, final PairList<PhysicalAgent,String> list, final String parent)
 	{
 		if(P==null)
 			return;
@@ -1428,15 +1428,15 @@ public class MOBloader
 		}
 	}
 
-	public void DBUpdateFollowers(MOB mob)
+	public void DBUpdateFollowers(final MOB mob)
 	{
 		if((mob==null)||(mob.Name().length()==0))
 			return;
 		final List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
-		String name=DB.injectionClean(mob.Name());
+		final String name=DB.injectionClean(mob.Name());
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHFO WHERE CMUSERID='"+name+"'"));
-		
-		// prevent rejuving map mobs from getting text() called and wiping 
+
+		// prevent rejuving map mobs from getting text() called and wiping
 		// out their original specs
 		for(int f=0;f<mob.numFollowers();f++)
 		{
@@ -1464,7 +1464,7 @@ public class MOBloader
 					newFol.bringToLife(loc, false);
 			}
 		}
-		
+
 		for(int f=0;f<mob.numFollowers();f++)
 		{
 			final MOB thisMOB=mob.fetchFollower(f);
@@ -1512,7 +1512,7 @@ public class MOBloader
 		DB.update("DELETE FROM CMCHCL WHERE CMUSERID='"+mobName+"'");
 	}
 
-	public void DBUpdateAbilities(MOB mob)
+	public void DBUpdateAbilities(final MOB mob)
 	{
 		if(mob.Name().length()==0)
 			return;
@@ -1570,7 +1570,7 @@ public class MOBloader
 		DB.updateWithClobs(statements);
 	}
 
-	public void DBCreateCharacter(MOB mob)
+	public void DBCreateCharacter(final MOB mob)
 	{
 		if(mob.Name().length()==0)
 			return;
@@ -1590,7 +1590,7 @@ public class MOBloader
 		}
 	}
 
-	public void DBUpdateAccount(PlayerAccount account)
+	public void DBUpdateAccount(final PlayerAccount account)
 	{
 		if(account == null)
 			return;
@@ -1599,26 +1599,26 @@ public class MOBloader
 				new String[][]{{characters,account.getXML()}});
 	}
 
-	public void DBDeleteAccount(PlayerAccount account)
+	public void DBDeleteAccount(final PlayerAccount account)
 	{
 		if(account == null)
 			return;
-		String login=DB.injectionClean(account.getAccountName());
+		final String login=DB.injectionClean(account.getAccountName());
 		DB.update("DELETE FROM CMACCT WHERE CMANAM='"+login+"'");
 	}
 
-	public void DBCreateAccount(PlayerAccount account)
+	public void DBCreateAccount(final PlayerAccount account)
 	{
 		if(account == null)
 			return;
 		account.setAccountName(CMStrings.capitalizeAndLower(account.getAccountName()));
 		final String characters = CMParms.toSemicolonListString(account.getPlayers());
-		String login=DB.injectionClean(account.getAccountName());
+		final String login=DB.injectionClean(account.getAccountName());
 		DB.updateWithClobs("INSERT INTO CMACCT (CMANAM, CMPASS, CMCHRS, CMAXML) "
 				+"VALUES ('"+login+"','"+account.getPasswordStr()+"',?,?)",new String[][]{{characters,account.getXML()}});
 	}
 
-	public PlayerAccount MakeAccount(String username, ResultSet R) throws SQLException
+	public PlayerAccount MakeAccount(final String username, final ResultSet R) throws SQLException
 	{
 		PlayerAccount account = null;
 		account = (PlayerAccount)CMClass.getCommon("DefaultPlayerAccount");
@@ -1702,7 +1702,7 @@ public class MOBloader
 		return accounts;
 	}
 
-	public List<String> DBExpiredCharNameSearch(Set<String> skipNames)
+	public List<String> DBExpiredCharNameSearch(final Set<String> skipNames)
 	{
 		DBConnection D=null;
 		String buf=null;
@@ -1809,7 +1809,7 @@ public class MOBloader
 			final MOB M=e.nextElement();
 			if((M.Name().equalsIgnoreCase(name))&&(M.playerStats()!=null))
 			{
-				final boolean canReceiveRealEmail = 
+				final boolean canReceiveRealEmail =
 					(M.playerStats()!=null)
 					&&(M.isAttributeSet(MOB.Attrib.AUTOFORWARD))
 					&&((M.playerStats().getAccount()==null)
