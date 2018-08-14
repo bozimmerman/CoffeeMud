@@ -232,13 +232,27 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 	@Override
 	public void setHomePortID(final String portID)
 	{
-		this.homePortID = portID;
+		if(portID != null)
+			this.homePortID = portID;
 	}
 
 	@Override
 	public String keyName()
 	{
 		return readableText;
+	}
+
+	@Override
+	public void setDatabaseID(final String id)
+	{
+		super.setDatabaseID(id);
+		if((owner instanceof Room)
+		&&(homePortID.length()==0))
+		{
+			final String rid=CMLib.map().getExtendedRoomID((Room)owner);
+			if(rid != null)
+				this.homePortID=rid;
+		}
 	}
 
 	@Override

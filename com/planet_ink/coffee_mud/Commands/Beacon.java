@@ -47,7 +47,7 @@ public class Beacon extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		commands.remove(0);
@@ -69,21 +69,46 @@ public class Beacon extends StdCommand
 				M=CMLib.sessions().findPlayerOnline(name,false);
 			if(M==null)
 			{
-				mob.tell(L("No one is online called '@x1'!",name));
-				return false;
+				final BoardableShip bI=CMLib.map().getShip(name);
+				if(bI==null)
+				{
+					mob.tell(L("No one  is / no ships are: online called '@x1'!",name));
+					return false;
+				}
+				final Room biR=CMLib.map().roomLocation(bI);
+				if(biR==null)
+				{
+					mob.tell(L("@x1 is nowhere that can be beaconed to.",bI.name()));
+					return false;
+				}
+				if(!CMSecurity.isAllowed(mob,biR,CMSecurity.SecFlag.BEACON))
+				{
+					mob.tell(L("You cannot beacon @x1 there.",biR.name()));
+					return false;
+				}
+				if(bI.getHomePortID().equalsIgnoreCase(CMLib.map().getExtendedRoomID(biR)))
+				{
+					mob.tell(L("@x1 is already at their home port.",bI.name()));
+					return false;
+				}
+				bI.setHomePortID(CMLib.map().getExtendedRoomID(biR));
+				mob.tell(L("You have modified @x1's beacon.",bI.name()));
 			}
-			if(M.getStartRoom()==M.location())
+			else
 			{
-				mob.tell(L("@x1 is already at their beacon.",M.name(mob)));
-				return false;
+				if(M.getStartRoom()==M.location())
+				{
+					mob.tell(L("@x1 is already at their beacon.",M.name(mob)));
+					return false;
+				}
+				if(!CMSecurity.isAllowed(mob,M.location(),CMSecurity.SecFlag.BEACON))
+				{
+					mob.tell(L("You cannot beacon @x1 there.",M.name(mob)));
+					return false;
+				}
+				M.setStartRoom(M.location());
+				mob.tell(L("You have modified @x1's beacon.",M.name(mob)));
 			}
-			if(!CMSecurity.isAllowed(mob,M.location(),CMSecurity.SecFlag.BEACON))
-			{
-				mob.tell(L("You cannot beacon @x1 there.",M.name(mob)));
-				return false;
-			}
-			M.setStartRoom(M.location());
-			mob.tell(L("You have modified @x1's beacon.",M.name(mob)));
 		}
 		return false;
 	}
@@ -95,7 +120,7 @@ public class Beacon extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.BEACON);
 	}
