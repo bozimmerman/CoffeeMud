@@ -608,6 +608,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			if(srcR != null)
 			{
 				Log.errOut("Ship "+name()+", owned by "+getOwnerName()+" is inside itself?! Not sure what to do.");
+				return false;
 			}
 		}
 		if(shipArea!=null)
