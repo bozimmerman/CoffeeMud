@@ -583,7 +583,13 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		final Area shipArea=getShipArea();
 		if(itemArea == shipArea)
 		{
-			Log.errOut("Ship "+name()+" is inside itself?!");
+			if((this.getOwnerName().length()==0)||(this.getOwnerName().startsWith("#")))
+			{
+				Log.errOut("Ship "+name()+" is inside itself?! It's unowned, so destroying!");
+				this.destroyThisShip();
+			}
+			else
+				Log.errOut("Ship "+name()+" is inside itself?! Not sure what to do.");
 			return false;
 		}
 		if(shipArea!=null)
