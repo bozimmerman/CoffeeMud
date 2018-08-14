@@ -47,7 +47,7 @@ public class INIModify extends StdWebMacro
 		return true;
 	}
 
-	public void updateINIFile(List<String> page)
+	public void updateINIFile(final List<String> page)
 	{
 		final StringBuffer buf=new StringBuffer("");
 		for(int p=0;p<page.size();p++)
@@ -55,7 +55,7 @@ public class INIModify extends StdWebMacro
 		new CMFile(CMProps.getVar(CMProps.Str.INIPATH),null,CMFile.FLAG_FORCEALLOW).saveText(buf);
 	}
 
-	public boolean modified(Set<String> H, String s)
+	public boolean modified(final Set<String> H, final String s)
 	{
 		if(s.endsWith("*"))
 		{
@@ -69,7 +69,7 @@ public class INIModify extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final MOB authM=Authenticate.getAuthenticatedMob(httpReq);
 		if((authM==null)||(!CMSecurity.isASysOp(authM)))
@@ -273,7 +273,10 @@ public class INIModify extends StdWebMacro
 				||(modified(modified,"FORUMJOURNALS"))
 				||(modified(modified,"IMC2CHANNELS")))
 				{
-					CMLib.channels().loadChannels(ipage.getStr("CHANNELS"),ipage.getStr("ICHANNELS"),ipage.getStr("IMC2CHANNELS"));
+					final String normalChannels=ipage.getStr("CHANNELS");
+					final String i3Channels=ipage.getBoolean("RUNI3SERVER") ? ipage.getStr("ICHANNELS") : "";
+					final String imc2Channels=ipage.getBoolean("RUNIMC2CLIENT") ? ipage.getStr("IMC2CHANNELS") : "";
+					CMLib.channels().loadChannels(normalChannels,i3Channels,imc2Channels);
 					CMLib.journals().loadCommandJournals(ipage.getStr("COMMANDJOURNALS"));
 					CMLib.journals().loadForumJournals(ipage.getStr("FORUMJOURNALS"));
 				}
@@ -352,7 +355,7 @@ public class INIModify extends StdWebMacro
 		}
 	}
 
-	protected String buildIChannelsVar(HTTPRequest httpReq)
+	protected String buildIChannelsVar(final HTTPRequest httpReq)
 	{
 		final StringBuilder str=new StringBuilder("");
 		for(int index=0;httpReq.isUrlParameter("CHANNEL_"+index+"_NAME");index++)
@@ -376,7 +379,7 @@ public class INIModify extends StdWebMacro
 		}
 	}
 
-	protected String buildIMC2ChannelsVar(HTTPRequest httpReq)
+	protected String buildIMC2ChannelsVar(final HTTPRequest httpReq)
 	{
 		final StringBuilder str=new StringBuilder("");
 		for(int index=0;httpReq.isUrlParameter("CHANNEL_"+index+"_NAME");index++)
@@ -407,7 +410,7 @@ public class INIModify extends StdWebMacro
 		}
 	}
 
-	protected String buildCommandJournalsVar(HTTPRequest httpReq)
+	protected String buildCommandJournalsVar(final HTTPRequest httpReq)
 	{
 		final StringBuilder str=new StringBuilder("");
 		for(int index=0;httpReq.isUrlParameter("COMMANDJOURNAL_"+index+"_NAME");index++)
@@ -436,7 +439,7 @@ public class INIModify extends StdWebMacro
 		}
 	}
 
-	protected String buildForumJournalsVar(HTTPRequest httpReq)
+	protected String buildForumJournalsVar(final HTTPRequest httpReq)
 	{
 		final StringBuilder str=new StringBuilder("");
 		for(int index=0;httpReq.isUrlParameter("FORUMJOURNAL_"+index+"_NAME");index++)

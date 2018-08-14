@@ -1539,9 +1539,12 @@ public class MUD extends Thread implements MudHost
 				int numChannelsLoaded=0;
 				int numJournalsLoaded=0;
 				if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("CHANNELS")))
-					numChannelsLoaded=CMLib.channels().loadChannels(page.getStr("CHANNELS"),
-																	page.getStr("ICHANNELS"),
-																	page.getStr("IMC2CHANNELS"));
+				{
+					final String normalChannels=page.getStr("CHANNELS");
+					final String i3Channels=page.getBoolean("RUNI3SERVER") ? page.getStr("ICHANNELS") : "";
+					final String imc2Channels=page.getBoolean("RUNIMC2CLIENT") ? page.getStr("IMC2CHANNELS") : "";
+					numChannelsLoaded=CMLib.channels().loadChannels(normalChannels, i3Channels, imc2Channels);
+				}
 				if((tCode==MAIN_HOST)||(checkPrivate&&CMProps.isPrivateToMe("JOURNALS")))
 				{
 					numJournalsLoaded=CMLib.journals().loadCommandJournals(page.getStr("COMMANDJOURNALS"));
