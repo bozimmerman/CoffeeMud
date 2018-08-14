@@ -198,7 +198,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</BEHAVIOR>
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 			<ABILITY class="Fighter_Intimidate" />
-			<ABILITY select="pick-1">
+			<ABILITY select="pick-1" condition="$mob_level&gt;=10">
 				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
 				<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
 				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />
@@ -472,7 +472,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</BEHAVIOR>
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 			<AFFECT class="Prop_CombatAdjuster" parms="ARMOR+$[2*$mob_level]" />
-			<ABILITY select="pick-1">
+			<ABILITY select="pick-1" condition="$mob_level&gt;=10">
 				<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="thief_scratch" parms="" />
 				<ABILITY pickweight="3" condition="$mob_level&gt;=10" class="thief_lure" parms="" />
 				<ABILITY pickweight="1" condition="$mob_level&gt;=10" class="thief_hide" parms="" />
@@ -515,7 +515,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<BEHAVIOR condition="$mob_level&gt;=40" class="CombatAbilities" parms="" />
 			</BEHAVIOR>
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
-			<ABILITY select="pick-1">
+			<ABILITY select="pick-1" condition="$mob_level&gt;=10">
 				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
 				<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
 				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />
@@ -555,7 +555,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</BEHAVIOR>
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 			<ABILITY class="Fighter_Intimidate" />
-			<ABILITY select="pick-1">
+			<ABILITY select="pick-1" condition="$mob_level&gt;=10">
 				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
 				<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
 				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />
@@ -643,7 +643,7 @@ See guides/RandomAreas.html for information about documents of this type.
 				<BEHAVIOR condition="$mob_level&gt;=40" class="CombatAbilities" parms="" />
 			</BEHAVIOR>
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
-			<ABILITY select="pick-1">
+			<ABILITY select="pick-1" condition="$mob_level&gt;=40">
 				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
 				<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
 				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />
