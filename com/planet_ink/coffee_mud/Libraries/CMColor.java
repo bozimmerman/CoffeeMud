@@ -45,7 +45,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	public String[] htlookup=null;
 
 	private final static Map<Integer,ColorState> cache=new SHashtable<Integer,ColorState>();
-	
+
 	private final Map<String, SpecialColor> nameMap = new Hashtable<String, SpecialColor>();
 
 	private static class ColorStateImpl implements ColorState
@@ -58,7 +58,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		{
 			return foregroundCode;
 		}
-		
+
 		@Override
 		public char backgroundCode()
 		{
@@ -72,7 +72,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		}
 
 		@Override
-		public boolean equals(Object cs)
+		public boolean equals(final Object cs)
 		{
 			if(!(cs instanceof ColorState))
 				return false;
@@ -87,9 +87,9 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		}
 
 	}
-	
+
 	private static final ColorState COLORSTATE_NORMAL=new ColorStateImpl('N','.');
-	
+
 	@Override
 	public final ColorState getNormalColor()
 	{
@@ -106,8 +106,8 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		cache.put(keyI,newColorState);
 		return newColorState;
 	}
-	
-	protected int translateSingleCMCodeToANSIOffSet(String code)
+
+	protected int translateSingleCMCodeToANSIOffSet(final String code)
 	{
 		if(code.length()==0)
 			return -1;
@@ -143,7 +143,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	}
 
 	@Override
-	public String translateCMCodeToANSI(String code)
+	public String translateCMCodeToANSI(final String code)
 	{
 		if(code.length()==0)
 			return code;
@@ -165,8 +165,10 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	}
 
 	@Override
-	public String translateANSItoCMCode(String code)
+	public String translateANSItoCMCode(final String code)
 	{
+		if(code == null)
+			return "";
 		if(code.length()==0)
 			return code;
 		if(code.indexOf('^')==0)
@@ -196,7 +198,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	}
 
 	@Override
-	public String mixHTMLCodes(String code1, String code2)
+	public String mixHTMLCodes(final String code1, final String code2)
 	{
 		String html=null;
 		if((code1==null)||(code1.length()==0))
@@ -224,7 +226,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	}
 
 	@Override
-	public String mixColorCodes(String code1, String code2)
+	public String mixColorCodes(final String code1, String code2)
 	{
 		if((code1==null)||(code1.length()==0))
 			return code2;
@@ -238,7 +240,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 	}
 
 	@Override
-	public CMMsg fixSourceFightColor(CMMsg msg)
+	public CMMsg fixSourceFightColor(final CMMsg msg)
 	{
 		if(msg.sourceMessage()!=null)
 			msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(),"^F","^f"));
@@ -247,11 +249,11 @@ public class CMColor extends StdLibrary implements ColorLibrary
 		return msg;
 	}
 
-	protected final SpecialColor findCodeColor(String name)
+	protected final SpecialColor findCodeColor(final String name)
 	{
 		if(this.nameMap.size()==0)
 		{
-			for(SpecialColor code : SpecialColor.values())
+			for(final SpecialColor code : SpecialColor.values())
 			{
 				nameMap.put(code.getCodeString(), code);
 			}
@@ -260,15 +262,15 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			return this.nameMap.get(name);
 		return (SpecialColor)CMath.s_valueOf(SpecialColor.class, name);
 	}
-	
-	protected final char findCodeChar(String name)
+
+	protected final char findCodeChar(final String name)
 	{
 		final SpecialColor code = findCodeColor(name);
 		if(code != null)
 			return code.getCodeChar();
 		return ' ';
 	}
-	
+
 	@Override
 	public String[] standardHTMLlookups()
 	{
@@ -286,7 +288,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			htlookup['"']="\""; 						// mxp escape
 			htlookup['>']=">";  						// mxp escape
 			htlookup['&']="&";  						// mxp escape
-			for(Color C : Color.values())
+			for(final Color C : Color.values())
 			{
 				if(C.isBasicColor())
 					htlookup[C.getCodeChar()] = C.getHtmlTag();
@@ -327,7 +329,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 				{
 					final String key=s.substring(0,x).trim();
 					String value=s.substring(x+1).trim();
-					char codeChar=this.findCodeChar(key.toUpperCase());
+					final char codeChar=this.findCodeChar(key.toUpperCase());
 					if(codeChar!=' ')
 					{
 						String newVal=null;
@@ -347,7 +349,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 								value=value.substring(x+1).trim();
 							}
 							addCode=null;
-							for(Color C : Color.values())
+							for(final Color C : Color.values())
 							{
 								if(C.name().equalsIgnoreCase(addColor))
 								{
@@ -405,8 +407,8 @@ public class CMColor extends StdLibrary implements ColorLibrary
 			clookup[COLORCODE_BACKGROUND]=null;			  // ** special background color code
 			clookup[COLORCODE_FANSI256]=null;  			  // ** special foreground 256 color code
 			clookup[COLORCODE_BANSI256]=null;  			  // ** special background 256 color code
-			
-			for(Color C : Color.values())
+
+			for(final Color C : Color.values())
 			{
 				if(C.isBasicColor())
 					clookup[C.getCodeChar()]=C.getANSICode();
@@ -448,7 +450,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 				{
 					final String key=s.substring(0,x).trim();
 					String value=s.substring(x+1).trim();
-					char codeChar=this.findCodeChar(key.toUpperCase());
+					final char codeChar=this.findCodeChar(key.toUpperCase());
 					if(codeChar!=' ')
 					{
 						String newVal=null;
@@ -470,7 +472,7 @@ public class CMColor extends StdLibrary implements ColorLibrary
 							if(addColor!=null)
 							{
 								addCode=null;
-								for(Color C : Color.values())
+								for(final Color C : Color.values())
 								{
 									if(C.name().equalsIgnoreCase(addColor))
 									{
