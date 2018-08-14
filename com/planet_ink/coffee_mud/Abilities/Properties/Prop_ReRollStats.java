@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AchievementLibrary.AchievementLoadFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -64,7 +65,7 @@ public class Prop_ReRollStats extends Property
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		bonusPointsPerStat=CMParms.getParmInt(newMiscText, "BONUSPOINTS", 0);
@@ -99,6 +100,16 @@ public class Prop_ReRollStats extends Property
 							M.recoverCharStats();
 							M.delEffect(me);
 							M.baseCharStats().getCurrentClass().grantAbilities(M, false);
+							M.recoverCharStats();
+							CMLib.threads().scheduleRunnable(new Runnable()
+							{
+								@Override
+								public void run()
+								{
+									CMLib.achievements().loadAccountAchievements(M,AchievementLoadFlag.REMORT_POSTLOAD);
+									M.recoverCharStats();
+								}
+							},1000);
 						}
 						catch (final IOException e)
 						{

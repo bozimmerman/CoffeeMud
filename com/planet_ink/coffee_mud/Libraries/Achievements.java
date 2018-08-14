@@ -46,23 +46,23 @@ import java.util.*;
 */
 public class Achievements extends StdLibrary implements AchievementLibrary
 {
-	@Override 
+	@Override
 	public String ID()
 	{
 		return "Achievements";
 	}
-	
+
 	// order is now significant, so they are Lists
 	private List<Achievement> 			playerAchievements	= null;
 	private List<Achievement> 			accountAchievements = null;
 	private Map<Event,List<Achievement>>eventMap			= null;
-	
+
 	private final static String achievementFilename  = "achievements.ini";
 
 	private static CMEval CMEVAL_INSTANCE = new CMEval()
 	{
 		@Override
-		public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException
+		public Object eval(final Object val, final Object[] choices, final boolean emptyOK) throws CMException
 		{
 			if(choices.length==0)
 				return "";
@@ -75,9 +75,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			throw new CMException("That was not one of your choices.");
 		}
 	};
-	
+
 	@Override
-	public String evaluateAchievement(final Agent agent, String row, boolean addIfPossible)
+	public String evaluateAchievement(final Agent agent, final String row, final boolean addIfPossible)
 	{
 		if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
 			return null;
@@ -92,15 +92,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if(Character.isDigit(tattoo.charAt(0)))
 			return "Error: Invalid achievement tattoo: "+tattoo+"!";
 		final String params=row.substring(x+1).trim();
-		String eventStr=CMParms.getParmStr(params, "EVENT", "");
+		final String eventStr=CMParms.getParmStr(params, "EVENT", "");
 		final Event eventType = (Event)CMath.s_valueOf(Event.class, eventStr.toUpperCase().trim());
 		if(eventType == null)
 			return "Error: Blank or unknown achievement type: "+eventStr+"!";
 		final String displayStr=CMStrings.deEscape(CMParms.getParmStr(params, "DISPLAY", ""));
 		final String titleStr=CMStrings.deEscape(CMParms.getParmStr(params, "TITLE", ""));
-		String rewardStr=CMStrings.deEscape(CMParms.getParmStr(params, "REWARDS", ""));
-		String[] awardSet = CMParms.parse(rewardStr).toArray(new String[0]);
-		List<Award> awardsList = new ArrayList<Award>();
+		final String rewardStr=CMStrings.deEscape(CMParms.getParmStr(params, "REWARDS", ""));
+		final String[] awardSet = CMParms.parse(rewardStr).toArray(new String[0]);
+		final List<Award> awardsList = new ArrayList<Award>();
 		if(titleStr.length()>0)
 		{
 			awardsList.add(new TitleAward()
@@ -215,7 +215,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return L("@x1 Quest Points",""+getAmount());
 							}
-							
+
 							@Override
 							public boolean isNotAwardedOnRemort()
 							{
@@ -225,20 +225,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					}
 					else
 					{
-						int y=thing.indexOf('(');
+						final int y=thing.indexOf('(');
 						String parms="";
 						if((y>0) && thing.endsWith(")"))
 						{
 							parms=thing.substring(y+1,thing.length()-1);
 							thing=thing.substring(0,y);
 						}
-						Ability A=CMClass.getAbility(thing);
+						final Ability A=CMClass.getAbility(thing);
 						if(A!=null)
 						{
-							String ableParms = CMStrings.deEscape(CMParms.getParmStr(parms, "PARMS", ""));
-							String mask = CMStrings.deEscape(CMParms.getParmStr(parms, "MASK", ""));
-							String preReqs = CMStrings.deEscape(CMParms.getParmStr(parms, "PREREQS", ""));
-							boolean autoGain = CMParms.getParmBool(parms, "AUTOGAIN", true);
+							final String ableParms = CMStrings.deEscape(CMParms.getParmStr(parms, "PARMS", ""));
+							final String mask = CMStrings.deEscape(CMParms.getParmStr(parms, "MASK", ""));
+							final String preReqs = CMStrings.deEscape(CMParms.getParmStr(parms, "PREREQS", ""));
+							final boolean autoGain = CMParms.getParmBool(parms, "AUTOGAIN", true);
 							final AbilityMapper.AbilityMapping mapp=CMLib.ableMapper().newAbilityMapping();
 							mapp.abilityID(A.ID())
 								.qualLevel(number)
@@ -262,13 +262,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								{
 									return mapp;
 								}
-								
+
 								@Override
 								public boolean isPreAwarded()
 								{
 									return false;
 								}
-								
+
 								@Override
 								public String getDescription()
 								{
@@ -302,7 +302,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									ExpertiseDefinition curDef = ref.get();
 									if(curDef == null)
 									{
-										curDef = CMLib.expertises().findDefinition(ID, true); 
+										curDef = CMLib.expertises().findDefinition(ID, true);
 										if(curDef==null)
 										{
 											ref = null;
@@ -312,7 +312,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									}
 									return curDef;
 								}
-								
+
 								@Override
 								public String ID()
 								{
@@ -358,22 +358,22 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 
 								@Override
-								public void setBaseName(String baseName)
+								public void setBaseName(final String baseName)
 								{
 								}
 
 								@Override
-								public void setName(String name)
+								public void setName(final String name)
 								{
 								}
 
 								@Override
-								public void setID(String ID)
+								public void setID(final String ID)
 								{
 								}
 
 								@Override
-								public void setData(String[] data)
+								public void setData(final String[] data)
 								{
 								}
 
@@ -428,17 +428,17 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 
 								@Override
-								public void addListMask(String mask)
+								public void addListMask(final String mask)
 								{
 								}
 
 								@Override
-								public void addFinalMask(String mask)
+								public void addFinalMask(final String mask)
 								{
 								}
 
 								@Override
-								public void addCost(CostType type, Double value)
+								public void addCost(final CostType type, final Double value)
 								{
 								}
 
@@ -452,7 +452,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 
 								@Override
-								public boolean meetsCostRequirements(MOB mob)
+								public boolean meetsCostRequirements(final MOB mob)
 								{
 									if(isAutoGained)
 										return true;
@@ -461,7 +461,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								}
 
 								@Override
-								public void spendCostRequirements(MOB mob)
+								public void spendCostRequirements(final MOB mob)
 								{
 									if(isAutoGained)
 										return;
@@ -489,7 +489,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								{
 									return def;
 								}
-								
+
 								@Override
 								public boolean isPreAwarded()
 								{
@@ -517,13 +517,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						if(CMLib.coffeeMaker().isAnyGenStat(CMClass.samplePlayer(), thing))
 						{
 							final String stat1 = thing.toUpperCase().trim();
-							String astat=CMLib.coffeeMaker().getFinalStatName(stat1);
+							final String astat=CMLib.coffeeMaker().getFinalStatName(stat1);
 							boolean isSave = false;
-							for(int t : CharStats.CODES.SAVING_THROWS())
+							for(final int t : CharStats.CODES.SAVING_THROWS())
 								isSave  = isSave  || CharStats.CODES.NAME(t).equals(astat.toUpperCase());
 							final boolean isSavingThrow = isSave;
 							final boolean isPreAwarded=
-								(astat.startsWith("MAX") 
+								(astat.startsWith("MAX")
 									&& (CharStats.CODES.findWhole(astat,true) >=0)
 									&& (CMParms.contains(CharStats.CODES.MAXCODES(),CharStats.CODES.findWhole(astat,true))))
 								|| astat.endsWith("BONUSCHARSTATS");
@@ -582,13 +582,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						&&CMLib.coffeeMaker().isAnyGenStat(CMClass.samplePlayer(), thing.substring(8)))
 						{
 							final String stat1 = thing.toUpperCase().trim();
-							String astat=CMLib.coffeeMaker().getFinalStatName(stat1);
+							final String astat=CMLib.coffeeMaker().getFinalStatName(stat1);
 							boolean isSave = false;
-							for(int t : CharStats.CODES.SAVING_THROWS())
+							for(final int t : CharStats.CODES.SAVING_THROWS())
 								isSave  = isSave  || CharStats.CODES.NAME(t).equals(astat.toUpperCase());
 							final boolean isSavingThrow = isSave;
 							final boolean isPreAwarded=
-								(astat.startsWith("MAX") 
+								(astat.startsWith("MAX")
 									&& (CharStats.CODES.findWhole(astat,true) >=0)
 									&& (CMParms.contains(CharStats.CODES.MAXCODES(),CharStats.CODES.findWhole(astat,true))))
 								|| astat.endsWith("BONUSCHARSTATS");
@@ -599,7 +599,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								final boolean savingThrow = isSavingThrow;
 								final boolean preAwarded = isPreAwarded;
 								final boolean noRemort = isNotPremortAwarded;
-								
+
 								@Override
 								public AwardType getType()
 								{
@@ -639,12 +639,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 						else
 						{
-							String currency = CMLib.english().matchAnyCurrencySet(thing);
+							final String currency = CMLib.english().matchAnyCurrencySet(thing);
 							if(currency == null)
 								Log.debugOut("Achievement", "Unknown award type: "+thing);
 							else
 							{
-								double denomination = CMLib.english().matchAnyDenomination(currency, thing);
+								final double denomination = CMLib.english().matchAnyDenomination(currency, thing);
 								if(denomination == 0.0)
 									Log.debugOut("Achievement", "Unknown award type: "+thing);
 								else
@@ -695,7 +695,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 			}
 		}
-		final Award[] rewardList = awardsList.toArray(new Award[0]); 
+		final Award[] rewardList = awardsList.toArray(new Award[0]);
 		Achievement A;
 		switch(eventType)
 		{
@@ -705,19 +705,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int num = -1;
 				private MaskingLibrary.CompiledZMask npcMask = null;
 				private MaskingLibrary.CompiledZMask playerMask = null;
-				
+
 				@Override
 				public Event getEvent()
 				{
 					return eventType;
 				}
-				
+
 				@Override
 				public Agent getAgent()
 				{
 					return agent;
 				}
-				
+
 				@Override
 				public String getTattoo()
 				{
@@ -728,15 +728,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				public int getTargetCount()
 				{
 					return num;
-					
+
 				}
-				
+
 				@Override
 				public boolean isTargetFloor()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String getDisplayStr()
 				{
@@ -748,9 +748,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return rewardList;
 				}
-				
+
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -764,25 +764,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						private volatile int count = oldCount;
 
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return (num>=0) && (getCount(mob) >= num);
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms)
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							if((parms.length>0)
 							&&(parms[0] instanceof MOB)
@@ -794,7 +794,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -802,20 +802,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String parseParms(final String parms)
 				{
@@ -839,19 +839,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private MaskingLibrary.CompiledZMask playerMask = null;
-				
+
 				@Override
 				public Event getEvent()
 				{
 					return eventType;
 				}
-				
+
 				@Override
 				public Agent getAgent()
 				{
 					return agent;
 				}
-				
+
 				@Override
 				public String getTattoo()
 				{
@@ -863,13 +863,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return Integer.MIN_VALUE;
 				}
-				
+
 				@Override
 				public boolean isTargetFloor()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String getDisplayStr()
 				{
@@ -881,9 +881,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return rewardList;
 				}
-				
+
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -895,13 +895,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return new Tracker()
 					{
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
 								return true;
@@ -909,13 +909,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							return 0;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms)
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							if((parms.length>0)
 							&&(parms[0] instanceof MOB)
@@ -925,7 +925,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -933,24 +933,24 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
 					return false;
 				}
-				
+
 				@Override
 				public String parseParms(final String parms)
 				{
-					String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
+					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
 					if(zapperMask.trim().length()==0)
 						return "Error: Missing or invalid PLAYERMASK parameter: "+zapperMask+"!";
 					this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
@@ -964,7 +964,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private String	statName= "";
 				private int 	value	= 0;
 				private int		abelo	= 0;
-				
+
 				@Override
 				public Event getEvent()
 				{
@@ -976,7 +976,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return agent;
 				}
-				
+
 				@Override
 				public String getTattoo()
 				{
@@ -1008,7 +1008,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -1020,29 +1020,29 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return new Tracker()
 					{
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return (abelo > 0) ? (getCount(mob) > value) : (getCount(mob) < value);
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							return CMath.s_int(CMLib.coffeeMaker().getAnyGenStat(mob, statName));
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -1050,24 +1050,24 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
 					return false;
 				}
-				
+
 				@Override
 				public String parseParms(final String parms)
 				{
-					MOB mob = CMClass.getFactoryMOB();
+					final MOB mob = CMClass.getFactoryMOB();
 					final String numStr=CMParms.getParmStr(parms, "VALUE", "");
 					if(!CMath.isInteger(numStr))
 						return "Error: Missing or invalid VALUE parameter: "+numStr+"!";
@@ -1090,7 +1090,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private String	factionID	= "";
 				private int 	value		= 0;
 				private int		abelo		= 0;
-				
+
 				@Override
 				public Event getEvent()
 				{
@@ -1120,7 +1120,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return abelo > 0;
 				}
-				
+
 				@Override
 				public int getTargetCount()
 				{
@@ -1134,7 +1134,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -1146,13 +1146,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return new Tracker()
 					{
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							if(mob.fetchFaction(factionID)==Integer.MAX_VALUE)
 								return false;
@@ -1160,20 +1160,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
-							int f=mob.fetchFaction(factionID);
+							final int f=mob.fetchFaction(factionID);
 							if(f == Integer.MAX_VALUE)
 								return 0;
 							return f;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -1181,20 +1181,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
 					return false;
 				}
-				
+
 				@Override
 				public String parseParms(final String parms)
 				{
@@ -1223,7 +1223,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int 			number		= 0;
 				private int 			value		= 0;
 				private int				abelo		= 0;
-				
+
 				@Override
 				public Event getEvent()
 				{
@@ -1253,7 +1253,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return abelo > 0;
 				}
-				
+
 				@Override
 				public int getTargetCount()
 				{
@@ -1267,7 +1267,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -1279,24 +1279,24 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return new Tracker()
 					{
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return getCount(mob) >= number;
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							int num=0;
-							for(Faction F : factions)
+							for(final Faction F : factions)
 							{
-								int f = mob.fetchFaction(F.factionID());
+								final int f = mob.fetchFaction(F.factionID());
 								if((f!=Integer.MAX_VALUE)
 								&&((abelo > 0) ? (f > value) : (f < value)))
 									num++;
@@ -1305,11 +1305,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -1317,20 +1317,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
 					return false;
 				}
-				
+
 				@Override
 				public String parseParms(final String parms)
 				{
@@ -1365,7 +1365,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private String	areaID	= "";
 				private int	 	pct		= 0;
-				
+
 				@Override
 				public Event getEvent()
 				{
@@ -1409,11 +1409,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
-				
+
 				@Override
 				public Tracker getTracker(final int oldCount)
 				{
@@ -1421,19 +1421,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return new Tracker()
 					{
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return getCount(mob) >= pct;
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							final PlayerStats pstats=mob.playerStats();
 							if(pstats != null)
@@ -1459,11 +1459,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -1471,14 +1471,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
@@ -1508,7 +1508,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private int 				num 		= 0;
 				private final Set<String>	abilityIDs 	= new TreeSet<String>();
-				
+
 				@Override
 				public Event getEvent()
 				{
@@ -1552,11 +1552,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
-				
+
 				@Override
 				public Tracker getTracker(final int oldCount)
 				{
@@ -1564,27 +1564,27 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return new Tracker()
 					{
 						private volatile int count = oldCount;
-						
+
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return getCount(mob) >= num;
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							final Ability A;
 							if(parms.length>0)
@@ -1608,7 +1608,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -1616,14 +1616,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
@@ -1644,7 +1644,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					this.abilityIDs.clear();
 					for(int i=0;i<strList.length;i++)
 					{
-						String abilityID = strList[i].trim();
+						final String abilityID = strList[i].trim();
 						if(abilityID.equals("*"))
 						{
 							this.abilityIDs.add(abilityID);
@@ -1691,7 +1691,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private int 				num 		= 0;
 				private final Set<String>	abilityIDs 	= new TreeSet<String>();
-				
+
 				@Override
 				public Event getEvent()
 				{
@@ -1721,7 +1721,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return true;
 				}
-				
+
 				@Override
 				public Award[] getRewards()
 				{
@@ -1735,7 +1735,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -1747,27 +1747,27 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return new Tracker()
 					{
 						private volatile int count = oldCount;
-						
+
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return getCount(mob) >= num;
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							final Ability A;
 							if(parms.length>0)
@@ -1791,7 +1791,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -1799,14 +1799,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
@@ -1827,7 +1827,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					this.abilityIDs.clear();
 					for(int i=0;i<strList.length;i++)
 					{
-						String abilityID = strList[i].trim();
+						final String abilityID = strList[i].trim();
 						if(abilityID.equals("*"))
 						{
 							this.abilityIDs.add(abilityID);
@@ -1862,7 +1862,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private int 				num 		= 0;
 				private final Set<String>	socialIDs 	= new TreeSet<String>();
-				
+
 				@Override
 				public Event getEvent()
 				{
@@ -1892,7 +1892,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return true;
 				}
-				
+
 				@Override
 				public Award[] getRewards()
 				{
@@ -1906,7 +1906,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -1918,27 +1918,27 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return new Tracker()
 					{
 						private volatile int count = oldCount;
-						
+
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return getCount(mob) >= num;
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							final Social S;
 							if(parms.length>0)
@@ -1962,7 +1962,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -1970,14 +1970,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
@@ -2008,7 +2008,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					}
 					for(int i=0;i<strList.length;i++)
 					{
-						String socialID = strList[i].trim();
+						final String socialID = strList[i].trim();
 						if(socialID.equals("*"))
 						{
 							this.socialIDs.add(socialID);
@@ -2041,7 +2041,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int num = -1;
 				private MaskingLibrary.CompiledZMask mask = null;
 				private java.util.regex.Pattern questPattern = null;
-				
+
 				@Override
 				public Event getEvent()
 				{
@@ -2065,7 +2065,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String getDisplayStr()
 				{
@@ -2085,7 +2085,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -2097,27 +2097,27 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return new Tracker()
 					{
 						private volatile int count = oldCount;
-						
+
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return (num>=0) && getCount(mob) >= num;
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							if((mask!=null)&&(!CMLib.masking().maskCheck(mask, mob, true)))
 								return false;
@@ -2133,8 +2133,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 									else
 									if(parms[0] instanceof Quest)
 									{
-										Quest Q=(Quest)parms[0];
-										match = 
+										final Quest Q=(Quest)parms[0];
+										match =
 											questPattern.matcher(Q.name()).find()
 											|| questPattern.matcher(Q.displayName()).find();
 									}
@@ -2147,7 +2147,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -2155,14 +2155,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
@@ -2187,11 +2187,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					{
 						try
 						{
-							java.util.regex.Pattern P = java.util.regex.Pattern.compile(questMask);
+							final java.util.regex.Pattern P = java.util.regex.Pattern.compile(questMask);
 							if(P!=null)
 								questPattern = P;
 						}
-						catch(Exception e)
+						catch(final Exception e)
 						{
 							return "Error: Invalid QUESTMASK regular expression parameter: "+questMask+": "+e.getMessage()+"!";
 						}
@@ -2243,7 +2243,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return true;
 				}
-				
+
 				@Override
 				public Award[] getRewards()
 				{
@@ -2251,7 +2251,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -2263,19 +2263,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return new Tracker()
 					{
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return getCount(mob) >= achievementList.size();
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							int count = 0;
 							Tattooable other;
@@ -2284,7 +2284,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 								other=mob.playerStats().getAccount();
 							else
 								other=null;
-							for(String s : achievementList)
+							for(final String s : achievementList)
 							{
 								if(mob.findTattoo(s)!=null)
 									count++;
@@ -2296,11 +2296,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -2308,14 +2308,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
@@ -2330,7 +2330,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						return "Error: Missing or invalid ACHIEVEMENTLIST parameter: "+list+"!";
 					final String[] listArray = list.toUpperCase().trim().split(",");
 					achievementList.clear();
-					for(String s : listArray)
+					for(final String s : listArray)
 					{
 						if(s.trim().length()>0)
 							achievementList.add(s.trim());
@@ -2389,7 +2389,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -2401,22 +2401,22 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return new Tracker()
 					{
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return getCount(mob) >= roomIDs.size();
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							int count = 0;
-							for(String s : roomIDs)
+							for(final String s : roomIDs)
 							{
 								if(mob.playerStats().hasVisited(CMLib.map().getRoom(s)))
 									count++;
@@ -2425,11 +2425,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms) 
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -2437,14 +2437,14 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
@@ -2464,7 +2464,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						s=s.trim();
 						if(s.length()>0)
 						{
-							Room R=CMLib.map().getRoom(s);
+							final Room R=CMLib.map().getRoom(s);
 							if(R==null)
 							{
 								if(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -2488,7 +2488,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int num = -1;
 				private CharClass charClass = null;
 				private MaskingLibrary.CompiledZMask playerMask = null;
-				
+
 				@Override
 				public Event getEvent()
 				{
@@ -2532,7 +2532,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -2544,30 +2544,30 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return new Tracker()
 					{
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return (num>=0) && (getCount(mob) > num);
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							if(mob == null)
 								return 0;
-							int classLevel = mob.charStats().getClassLevel(charClass);
+							final int classLevel = mob.charStats().getClassLevel(charClass);
 							if(classLevel < 0)
 								return 0;
 							return classLevel + 1;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms)
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							if(((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
 							&&(mob.charStats().getCurrentClass() == charClass))
@@ -2576,7 +2576,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -2584,20 +2584,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String parseParms(final String parms)
 				{
@@ -2605,13 +2605,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(!CMath.isInteger(numStr))
 						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
 					num=CMath.s_int(numStr);
-					String charClassID=CMStrings.deEscape(CMParms.getParmStr(parms, "CLASS", ""));
+					final String charClassID=CMStrings.deEscape(CMParms.getParmStr(parms, "CLASS", ""));
 					this.charClass = CMClass.getCharClass(charClassID);
 					if(this.charClass == null)
 						this.charClass = CMClass.findCharClass(charClassID);
 					if(this.charClass == null)
 						return "Error: Missing or invalid CLASS parameter: "+charClassID+"!";
-					String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
+					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
 					if(zapperMask.trim().length()>0)
 						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
 					return "";
@@ -2625,7 +2625,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private int num = -1;
 				private MaskingLibrary.CompiledZMask playerMask = null;
-				
+
 				@Override
 				public Event getEvent()
 				{
@@ -2669,7 +2669,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -2683,25 +2683,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						private volatile int count = oldCount;
 
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return (num>=0) && (getCount(mob) >= num);
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms)
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
 							{
@@ -2710,7 +2710,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -2718,20 +2718,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String parseParms(final String parms)
 				{
@@ -2739,7 +2739,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(!CMath.isInteger(numStr))
 						return "Error: Missing or invalid NUM parameter: "+numStr+"!";
 					num=CMath.s_int(numStr);
-					String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
+					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
 					if(zapperMask.trim().length()>0)
 						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
 					return "";
@@ -2752,7 +2752,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private MaskingLibrary.CompiledZMask playerMask = null;
 				private MaskingLibrary.CompiledZMask itemMask = null;
 				private int num = 1;
-				
+
 				@Override
 				public Event getEvent()
 				{
@@ -2764,7 +2764,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return agent;
 				}
-				
+
 				@Override
 				public String getTattoo()
 				{
@@ -2776,13 +2776,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return num;
 				}
-				
+
 				@Override
 				public boolean isTargetFloor()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String getDisplayStr()
 				{
@@ -2796,7 +2796,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -2808,19 +2808,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					return new Tracker()
 					{
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return (num>=0) && (getCount(mob) >= num);
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							if(mob != null)
 							{
@@ -2841,7 +2841,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms)
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
 							{
@@ -2861,20 +2861,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
 					return false;
 				}
-				
+
 				@Override
 				public String parseParms(final String parms)
 				{
@@ -2886,12 +2886,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						return "Error: Invalid NUM parameter!";
 					else
 						num=CMath.s_int(numStr);
-					String itemZapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ITEMMASK", ""));
+					final String itemZapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "ITEMMASK", ""));
 					if(itemZapperMask.trim().length()>0)
 						this.itemMask = CMLib.masking().getPreCompiledMask(itemZapperMask);
 					else
 						return "Error: Missing or invalid ITEMMASK parameter!";
-					String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
+					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
 					if(zapperMask.trim().length()>0)
 						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
 					return "";
@@ -2903,7 +2903,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				private int seconds = 0;
 				private MaskingLibrary.CompiledZMask playerMask = null;
-				
+
 				@Override
 				public Event getEvent()
 				{
@@ -2915,7 +2915,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return agent;
 				}
-				
+
 				@Override
 				public String getTattoo()
 				{
@@ -2926,15 +2926,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				public int getTargetCount()
 				{
 					return seconds;
-					
+
 				}
-				
+
 				@Override
 				public boolean isTargetFloor()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String getDisplayStr()
 				{
@@ -2948,7 +2948,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -2962,25 +2962,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						private volatile int count = oldCount;
 
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return (getCount(mob) >= seconds);
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms)
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
 							{
@@ -2989,7 +2989,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -2997,20 +2997,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String parseParms(final String parms)
 				{
@@ -3018,7 +3018,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 					if(!CMath.isInteger(numStr))
 						return "Error: Missing or invalid SECONDS parameter: "+numStr+"!";
 					seconds=CMath.s_int(numStr);
-					String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
+					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
 					if(zapperMask.trim().length()>0)
 						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
 					return "";
@@ -3031,19 +3031,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int num = -1;
 				private MaskingLibrary.CompiledZMask npcMask = null;
 				private MaskingLibrary.CompiledZMask playerMask = null;
-				
+
 				@Override
 				public Event getEvent()
 				{
 					return eventType;
 				}
-				
+
 				@Override
 				public Agent getAgent()
 				{
 					return agent;
 				}
-				
+
 				@Override
 				public String getTattoo()
 				{
@@ -3054,15 +3054,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				public int getTargetCount()
 				{
 					return num;
-					
+
 				}
-				
+
 				@Override
 				public boolean isTargetFloor()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String getDisplayStr()
 				{
@@ -3074,9 +3074,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return rewardList;
 				}
-				
+
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -3090,25 +3090,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						private volatile int count = oldCount;
 
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return (num>=0) && (getCount(mob) >= num);
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms)
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							if((parms.length>0)
 							&&(parms[0] instanceof MOB)
@@ -3120,7 +3120,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -3128,20 +3128,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String parseParms(final String parms)
 				{
@@ -3168,19 +3168,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int num = -1;
 				private MaskingLibrary.CompiledZMask npcMask = null;
 				private MaskingLibrary.CompiledZMask playerMask = null;
-				
+
 				@Override
 				public Event getEvent()
 				{
 					return eventType;
 				}
-				
+
 				@Override
 				public Agent getAgent()
 				{
 					return agent;
 				}
-				
+
 				@Override
 				public String getTattoo()
 				{
@@ -3191,15 +3191,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				public int getTargetCount()
 				{
 					return num;
-					
+
 				}
-				
+
 				@Override
 				public boolean isTargetFloor()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String getDisplayStr()
 				{
@@ -3211,9 +3211,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return rewardList;
 				}
-				
+
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -3227,25 +3227,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						private volatile int count = oldCount;
 
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return (num>=0) && (getCount(mob) >= num);
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms)
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							if((parms.length>0)
 							&&(parms[0] instanceof MOB)
@@ -3257,7 +3257,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -3265,20 +3265,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String parseParms(final String parms)
 				{
@@ -3305,19 +3305,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int num = -1;
 				private MaskingLibrary.CompiledZMask npcMask = null;
 				private MaskingLibrary.CompiledZMask playerMask = null;
-				
+
 				@Override
 				public Event getEvent()
 				{
 					return eventType;
 				}
-				
+
 				@Override
 				public Agent getAgent()
 				{
 					return agent;
 				}
-				
+
 				@Override
 				public String getTattoo()
 				{
@@ -3328,15 +3328,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				public int getTargetCount()
 				{
 					return num;
-					
+
 				}
-				
+
 				@Override
 				public boolean isTargetFloor()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String getDisplayStr()
 				{
@@ -3348,9 +3348,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return rewardList;
 				}
-				
+
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -3364,25 +3364,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						private volatile int count = oldCount;
 
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return (num>=0) && (getCount(mob) >= num);
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms)
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							if((parms.length>0)
 							&&(parms[0] instanceof MOB)
@@ -3394,7 +3394,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -3402,20 +3402,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String parseParms(final String parms)
 				{
@@ -3439,19 +3439,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=new Achievement()
 			{
 				private MaskingLibrary.CompiledZMask playerMask = null;
-				
+
 				@Override
 				public Event getEvent()
 				{
 					return eventType;
 				}
-				
+
 				@Override
 				public Agent getAgent()
 				{
 					return agent;
 				}
-				
+
 				@Override
 				public String getTattoo()
 				{
@@ -3462,15 +3462,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				public int getTargetCount()
 				{
 					return 1;
-					
+
 				}
-				
+
 				@Override
 				public boolean isTargetFloor()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String getDisplayStr()
 				{
@@ -3482,9 +3482,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return rewardList;
 				}
-				
+
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -3498,25 +3498,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						private volatile int count = oldCount;
 
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return getCount(mob) >= 1;
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms)
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							if((playerMask==null)||(CMLib.masking().maskCheck(playerMask, mob, true)))
 							{
@@ -3525,7 +3525,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -3533,24 +3533,24 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String parseParms(final String parms)
 				{
-					String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
+					final String zapperMask=CMStrings.deEscape(CMParms.getParmStr(parms, "PLAYERMASK", ""));
 					this.playerMask = null;
 					if(zapperMask.trim().length()>0)
 						this.playerMask = CMLib.masking().getPreCompiledMask(zapperMask);
@@ -3565,19 +3565,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				private int num = -1;
 				private MaskingLibrary.CompiledZMask npcMask = null;
 				private MaskingLibrary.CompiledZMask playerMask = null;
-				
+
 				@Override
 				public Event getEvent()
 				{
 					return eventType;
 				}
-				
+
 				@Override
 				public Agent getAgent()
 				{
 					return agent;
 				}
-				
+
 				@Override
 				public String getTattoo()
 				{
@@ -3588,15 +3588,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				public int getTargetCount()
 				{
 					return num;
-					
+
 				}
-				
+
 				@Override
 				public boolean isTargetFloor()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String getDisplayStr()
 				{
@@ -3608,9 +3608,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				{
 					return rewardList;
 				}
-				
+
 				@Override
-				public String getRawParmVal(String str)
+				public String getRawParmVal(final String str)
 				{
 					return CMParms.getParmStr(params,str,"");
 				}
@@ -3624,25 +3624,25 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						private volatile int count = oldCount;
 
 						@Override
-						public Achievement getAchievement() 
+						public Achievement getAchievement()
 						{
 							return me;
 						}
 
 						@Override
-						public boolean isAchieved(MOB mob) 
+						public boolean isAchieved(final MOB mob)
 						{
 							return (num>=0) && (getCount(mob) >= num);
 						}
 
 						@Override
-						public int getCount(MOB mob)
+						public int getCount(final MOB mob)
 						{
 							return count;
 						}
 
 						@Override
-						public boolean testBump(MOB mob, int bumpNum, Object... parms)
+						public boolean testBump(final MOB mob, final int bumpNum, final Object... parms)
 						{
 							if((parms.length>0)
 							&&(parms[0] instanceof MOB)
@@ -3654,7 +3654,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							}
 							return false;
 						}
-						
+
 						@Override
 						public Tracker copyOf()
 						{
@@ -3662,20 +3662,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 							{
 								return (Tracker)this.clone();
 							}
-							catch(Exception e)
+							catch(final Exception e)
 							{
 								return this;
 							}
 						}
 					};
 				}
-				
+
 				@Override
 				public boolean isSavableTracker()
 				{
 					return true;
 				}
-				
+
 				@Override
 				public String parseParms(final String parms)
 				{
@@ -3699,18 +3699,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			A=null;
 			break;
 		}
-		
+
 		if(A==null)
 		{
 			return "Error: Unimplemented achievement type: "+eventStr+"!";
 		}
-		
+
 		final String err = A.parseParms(params);
 		if((err!=null)&&(err.length()>0))
 		{
 			return err;
 		}
-		
+
 		if(addIfPossible)
 		{
 			// the call to achievements below will ensure others are loaded.
@@ -3739,7 +3739,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return null;
 	}
-	
+
 	private void ensureAchievementsLoaded()
 	{
 		if((playerAchievements==null)||(accountAchievements==null))
@@ -3753,11 +3753,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized Enumeration<Achievement> achievements(Agent agent)
+	public synchronized Enumeration<Achievement> achievements(final Agent agent)
 	{
 		ensureAchievementsLoaded();
 		if(agent == null)
@@ -3777,7 +3777,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 	}
 
-	protected void possiblyBumpPlayerAchievement(final MOB mob, final Achievement A, final PlayerStats pStats, final Event E, int bumpNum, Object... parms)
+	protected void possiblyBumpPlayerAchievement(final MOB mob, final Achievement A, final PlayerStats pStats, final Event E, final int bumpNum, final Object... parms)
 	{
 		if(mob.findTattoo(A.getTattoo())==null)
 		{
@@ -3791,8 +3791,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 		}
 	}
-	
-	protected void possiblyBumpAccountAchievement(final MOB mob, final Achievement A, final PlayerAccount account, final Event E, int bumpNum, Object... parms)
+
+	protected void possiblyBumpAccountAchievement(final MOB mob, final Achievement A, final PlayerAccount account, final Event E, final int bumpNum, final Object... parms)
 	{
 		if(account != null)
 		{
@@ -3809,9 +3809,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 		}
 	}
-	
+
 	@Override
-	public void possiblyBumpAchievement(final MOB mob, final Event E, int bumpNum, Object... parms)
+	public void possiblyBumpAchievement(final MOB mob, final Event E, final int bumpNum, final Object... parms)
 	{
 		if((mob != null)&&(E!=null)&&(!mob.isMonster())&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 		{
@@ -3839,9 +3839,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 	}
 
-	protected List<Achievement> fakeBumpPlayerAchievement(final MOB mob, final Achievement A, final PlayerStats pStats, final Event E, int bumpNum, Object... parms)
+	protected List<Achievement> fakeBumpPlayerAchievement(final MOB mob, final Achievement A, final PlayerStats pStats, final Event E, final int bumpNum, final Object... parms)
 	{
-		List<Achievement> achievements=new ArrayList<Achievement>(1);
+		final List<Achievement> achievements=new ArrayList<Achievement>(1);
 		if(mob.findTattoo(A.getTattoo())==null)
 		{
 			Tracker T=pStats.getAchievementTracker(A, mob);
@@ -3856,10 +3856,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return achievements;
 	}
-	
-	protected List<Achievement> fakeBumpAccountAchievement(final MOB mob, final Achievement A, final PlayerAccount account, final Event E, int bumpNum, Object... parms)
+
+	protected List<Achievement> fakeBumpAccountAchievement(final MOB mob, final Achievement A, final PlayerAccount account, final Event E, final int bumpNum, final Object... parms)
 	{
-		List<Achievement> achievements=new ArrayList<Achievement>(1);
+		final List<Achievement> achievements=new ArrayList<Achievement>(1);
 		if(account != null)
 		{
 			if(account.findTattoo(A.getTattoo())==null)
@@ -3877,11 +3877,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return achievements;
 	}
-	
+
 	@Override
-	public List<Achievement> fakeBumpAchievement(final MOB mob, final Event E, int bumpNum, Object... parms)
+	public List<Achievement> fakeBumpAchievement(final MOB mob, final Event E, final int bumpNum, final Object... parms)
 	{
-		List<Achievement> achievements=new ArrayList<Achievement>(1);
+		final List<Achievement> achievements=new ArrayList<Achievement>(1);
 		if((mob != null)&&(E!=null)&&(!mob.isMonster())&&(CMProps.getBoolVar(CMProps.Bool.MUDSTARTED)))
 		{
 			ensureAchievementsLoaded();
@@ -3914,7 +3914,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if(mob == null)
 			return;
 		final PlayerStats pStats = mob.playerStats();
-		StringBuilder awardMessage = new StringBuilder("");
+		final StringBuilder awardMessage = new StringBuilder("");
 		for(final Award award : awardSet)
 		{
 			switch(flag)
@@ -3961,13 +3961,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			case CURRENCY:
 			{
 				final CurrencyAward aaward=(CurrencyAward)award;
-				String currency = CMLib.english().matchAnyCurrencySet(aaward.getCurrency());
+				final String currency = CMLib.english().matchAnyCurrencySet(aaward.getCurrency());
 				if(currency != null)
 				{
-					double denomination = CMLib.english().matchAnyDenomination(currency, aaward.getCurrency());
+					final double denomination = CMLib.english().matchAnyDenomination(currency, aaward.getCurrency());
 					if(denomination != 0.0)
 					{
-						double money=CMath.mul(aaward.getAmount(),  denomination);
+						final double money=CMath.mul(aaward.getAmount(),  denomination);
 						CMLib.beanCounter().giveSomeoneMoney(mob, money);
 						awardMessage.append(L("^HYou are awarded @x1!\n\r^?",CMLib.beanCounter().getDenominationName(currency, denomination, aaward.getAmount())));
 					}
@@ -3982,7 +3982,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				&&(aaward.getStat().startsWith("ACCOUNT ")))
 				{
 					final String stat = aaward.getStat().substring(8).trim();
-					String value = mob.playerStats().getAccount().getStat(stat);
+					final String value = mob.playerStats().getAccount().getStat(stat);
 					if(CMath.isNumber(value))
 					{
 						awardMessage.append(L("^HYour account is awarded @x1!\n\r^?",aaward.getAmount() + " " + stat));
@@ -3991,7 +3991,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 				else
 				{
-					String value = CMLib.coffeeMaker().getAnyGenStat(mob, aaward.getStat());
+					final String value = CMLib.coffeeMaker().getAnyGenStat(mob, aaward.getStat());
 					if(CMath.isNumber(value))
 					{
 						awardMessage.append(L("^HYou are awarded @x1!\n\r^?",aaward.getAmount() + " " + aaward.getStat()));
@@ -4039,20 +4039,20 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 			default:
 				break;
-			
+
 			}
 		}
 		mob.tell(awardMessage.toString());
 		grantAbilitiesAndExpertises(mob);
 	}
-	
+
 	@Override
 	public String removeAwards(final MOB mob, final Award[] awardSet, final AchievementLoadFlag flag)
 	{
 		if(mob == null)
 			return "";
 		final PlayerStats pStats = mob.playerStats();
-		StringBuilder awardMessage = new StringBuilder("");
+		final StringBuilder awardMessage = new StringBuilder("");
 		for(final Award award : awardSet)
 		{
 			switch(flag)
@@ -4109,10 +4109,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				&&(aaward.getStat().startsWith("ACCOUNT ")))
 				{
 					final String stat = aaward.getStat().substring(8).trim();
-					String value = mob.playerStats().getAccount().getStat(stat);
+					final String value = mob.playerStats().getAccount().getStat(stat);
 					if(CMath.isNumber(value))
 					{
-						int oldVal = CMath.s_int(value);
+						final int oldVal = CMath.s_int(value);
 						if(oldVal >= aaward.getAmount())
 						{
 							awardMessage.append(L("^HYour account has lost @x1!\n\r^?",aaward.getAmount() + " " + stat));
@@ -4122,10 +4122,10 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				}
 				else
 				{
-					String value = CMLib.coffeeMaker().getAnyGenStat(mob, aaward.getStat());
+					final String value = CMLib.coffeeMaker().getAnyGenStat(mob, aaward.getStat());
 					if(CMath.isNumber(value))
 					{
-						int oldVal = CMath.s_int(value);
+						final int oldVal = CMath.s_int(value);
 						if(oldVal >= aaward.getAmount())
 						{
 							awardMessage.append(L("^HYou have lost @x1!\n\r^?",aaward.getAmount() + " " + aaward.getStat()));
@@ -4175,18 +4175,18 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 			default:
 				break;
-			
+
 			}
 		}
 		return awardMessage.toString();
 	}
-	
+
 	protected boolean giveAwards(final Achievement A, final Tattooable holder, final MOB mob, final AchievementLoadFlag flag)
 	{
 		if(holder.findTattoo(A.getTattoo())==null)
 		{
 			holder.addTattoo(A.getTattoo());
-			StringBuilder awardMessage = new StringBuilder(L("^HYou have completed the '@x1' @x2 achievement!^?\n\r",A.getDisplayStr(),A.getAgent().name().toLowerCase()));
+			final StringBuilder awardMessage = new StringBuilder(L("^HYou have completed the '@x1' @x2 achievement!^?\n\r",A.getDisplayStr(),A.getAgent().name().toLowerCase()));
 			final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.ACHIEVEMENTS);
 			if(!CMLib.flags().isCloaked(mob))
 			{
@@ -4206,9 +4206,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return false;
 	}
-	
+
 	@Override
-	public Achievement getAchievement(String tattoo)
+	public Achievement getAchievement(final String tattoo)
 	{
 		for(final Enumeration<Achievement> a = achievements(null); a.hasMoreElements();)
 		{
@@ -4218,9 +4218,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return null;
 	}
-	
+
 	@Override
-	public Achievement deleteAchievement(String tattoo)
+	public Achievement deleteAchievement(final String tattoo)
 	{
 		final Achievement A=getAchievement(tattoo);
 		if(A!=null)
@@ -4240,9 +4240,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return A;
 	}
-	
+
 	@Override
-	public String getAchievementsHelpFromMap(Map<String,Map<String,String>> helpMap, Event E, String parmName)
+	public String getAchievementsHelpFromMap(final Map<String,Map<String,String>> helpMap, final Event E, final String parmName)
 	{
 		Map<String,String> entryMap;
 		if(E==null)
@@ -4253,7 +4253,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			entryMap = helpMap.get("");
 		if(entryMap == null)
 		{
-			for(Map<String,String> map : helpMap.values())
+			for(final Map<String,String> map : helpMap.values())
 			{
 				if(map.containsKey(parmName))
 				{
@@ -4266,19 +4266,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			return null;
 		if(entryMap.containsKey(parmName))
 			return entryMap.get(parmName);
-		for(Map<String,String> map : helpMap.values())
+		for(final Map<String,String> map : helpMap.values())
 		{
 			if(map.containsKey(parmName))
 				return map.get(parmName);
 		}
 		return null;
 	}
-	
+
 	@Override
 	public Map<String,Map<String,String>> getAchievementsHelpMap()
 	{
 		final Map<String,Map<String,String>> help = new TreeMap<String,Map<String,String>>();
-		
+
 		final String achievementFilename = getAchievementFilename();
 		final List<String> V=Resources.getFileLineVector(Resources.getRawFileResource(achievementFilename,true));
 		Resources.removeResource(achievementFilename);
@@ -4294,7 +4294,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			int x=s.indexOf("EVENT=\"");
 			if(x>=0)
 			{
-				int y=s.indexOf("\"",x+7);
+				final int y=s.indexOf("\"",x+7);
 				if(y>x)
 					eventName=s.substring(x+7,y);
 				if(CMath.s_valueOf(Event.class, eventName)==null)
@@ -4310,12 +4310,12 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			String value;
 			if(s.trim().startsWith("["))
 			{
-				int start=s.indexOf('[');
+				final int start=s.indexOf('[');
 				x=s.indexOf(']',start+1);
 				if(x>0)
 				{
 					keyName = s.substring(start+1,x);
-					value = s.substring(x+1); 
+					value = s.substring(x+1);
 				}
 				else
 					value="";
@@ -4324,21 +4324,21 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 				value = s;
 			if((keyName.length()>0)&&(value.length()>0))
 			{
-				String oldS=parmMap.containsKey(keyName) ? parmMap.get(keyName) : "";
+				final String oldS=parmMap.containsKey(keyName) ? parmMap.get(keyName) : "";
 				value = oldS + "\n\r" + value;
 				parmMap.put(keyName, value);
 			}
-			
+
 		}
 		return help;
 	}
 
-	public String buildRow(final Event E, Map<String,String> parmTree)
+	public String buildRow(final Event E, final Map<String,String> parmTree)
 	{
-		StringBuilder str=new StringBuilder(parmTree.get("TATTOO")+"=");
+		final StringBuilder str=new StringBuilder(parmTree.get("TATTOO")+"=");
 		for(final String parmName : E.getParameters())
 		{
-			String value = parmTree.get(parmName);
+			final String value = parmTree.get(parmName);
 			if((value != null) && (value.trim().length()>0))
 			{
 				str.append(parmName+"=");
@@ -4355,7 +4355,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	public String getAwardString(final Award[] awards)
 	{
 		final StringBuilder awardStr=new StringBuilder();
-		for(Award award : awards)
+		for(final Award award : awards)
 		{
 			switch(award.getType())
 			{
@@ -4411,29 +4411,29 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return awardStr.toString();
 	}
-	
+
 	private void fillAchievementParmTree(final Map<String,String> parmTree, final Achievement A)
 	{
 		parmTree.put("TATTOO",A.getTattoo());
 		parmTree.put("EVENT", A.getEvent().name());
 		parmTree.put("DISPLAY", A.getDisplayStr());
 		parmTree.put("TITLE", "");
-		for(Award award : A.getRewards())
+		for(final Award award : A.getRewards())
 		{
 			if(award.getType() == AwardType.TITLE)
 				parmTree.put("TITLE", ((TitleAward)award).getTitle());
 		}
-		String awardStr=getAwardString(A.getRewards());
+		final String awardStr=getAwardString(A.getRewards());
 		parmTree.put("REWARDS", awardStr);
-		for(String s : A.getEvent().getParameters())
+		for(final String s : A.getEvent().getParameters())
 		{
 			if(!CMParms.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, s))
 				parmTree.put(s, CMStrings.deEscape(A.getRawParmVal(s)));
 		}
 	}
-	
+
 	@Override
-	public boolean addModifyAchievement(final MOB mob, final Agent agent, final String tattoo, Achievement A)
+	public boolean addModifyAchievement(final MOB mob, final Agent agent, final String tattoo, final Achievement A)
 	{
 		if(mob.isMonster())
 			return false;
@@ -4444,7 +4444,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final TreeMap<String,String> parmTree=new TreeMap<String,String>();
 		for(final Event E : Event.values())
 		{
-			for(String s : E.getParameters())
+			for(final String s : E.getParameters())
 				parmTree.put(s,"");
 		}
 		final Map<String,Map<String,String>> helpMap = getAchievementsHelpMap();
@@ -4456,26 +4456,26 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			fillAchievementParmTree(parmTree,A);
 		}
 		parmTree.put("EVENT",E.name());
-		try 
+		try
 		{
 			while((mob.session()!=null)&&(!mob.session().isStopped())&&(!ok))
 			{
 				int showNumber=0;
 				String help;
-				
+
 				help=getAchievementsHelpFromMap(helpMap,null,"EVENT");
 				parmTree.put("EVENT",CMLib.genEd().prompt(mob, parmTree.get("EVENT"), ++showNumber, showFlag, L("Event Type"), false, false, help, CMEVAL_INSTANCE, Event.getEventChoices()));
 				E = (Event)CMath.s_valueOf(Event.class, parmTree.get("EVENT"));
-				
+
 				help=getAchievementsHelpFromMap(helpMap,null,"DISPLAY");
 				parmTree.put("DISPLAY",CMLib.genEd().prompt(mob, parmTree.get("DISPLAY"), ++showNumber, showFlag, L("Display Desc"), false, false, help, null, null));
-				
+
 				help=getAchievementsHelpFromMap(helpMap,null,"TITLE");
 				parmTree.put("TITLE",CMLib.genEd().prompt(mob, parmTree.get("TITLE"), ++showNumber, showFlag, L("Title Award"), true, false, help, null, null));
-				
+
 				help=getAchievementsHelpFromMap(helpMap,null,"REWARDS");
 				parmTree.put("REWARDS",CMLib.genEd().prompt(mob, parmTree.get("REWARDS"), ++showNumber, showFlag, L("Rewards List"), true, false, help, null, null));
-				
+
 				for(final String parmName : E.getParameters())
 				{
 					if(!CMStrings.contains(BASE_ACHIEVEMENT_PARAMETERS, parmName))
@@ -4484,28 +4484,28 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 						parmTree.put(parmName,CMLib.genEd().prompt(mob, parmTree.get(parmName), ++showNumber, showFlag, CMStrings.capitalizeAndLower(parmName), false, false, help, null, null));
 					}
 				}
-				
+
 				for(final String parmName : parmTree.keySet())
 				{
 					if((!parmName.equals("TATTOO"))&&(!CMStrings.contains(E.getParameters(), parmName)))
 						parmTree.put(parmName, "");
 				}
-				
-				String achievementRow = buildRow(E,parmTree);
-				String err = evaluateAchievement(agent, achievementRow, false);
+
+				final String achievementRow = buildRow(E,parmTree);
+				final String err = evaluateAchievement(agent, achievementRow, false);
 				if((err != null)&&(err.trim().length()>0)&&(mob.session()!=null))
 				{
 					mob.session().println(L("^HERRORS: ^r@x1^N",err));
 				}
 				else
 				if(showFlag<-900)
-				{ 
-					ok=true; 
+				{
+					ok=true;
 					break;
 				}
 				if(showFlag>0)
-				{ 
-					showFlag=-1; 
+				{
+					showFlag=-1;
 					continue;
 				}
 				final String promptStr=mob.session().prompt(L("Edit which (or CANCEL)? "),"");
@@ -4546,8 +4546,8 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 			this.resaveAchievements(parmTree.get("TATTOO"));
 			return true;
-		} 
-		catch (IOException e) 
+		}
+		catch (final IOException e)
 		{
 			return false;
 		}
@@ -4567,7 +4567,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		added.clear(); // reset for the next section
 	}
-	
+
 	@SuppressWarnings("unchecked")
 
 	@Override
@@ -4581,7 +4581,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final Map<String,Achievement>[] maps=new Map[Agent.values().length];
 		for(int i=0;i<Agent.values().length;i++)
 			maps[i]=new TreeMap<String,Achievement>();
-		for(Agent agent : Agent.values())
+		for(final Agent agent : Agent.values())
 		{
 			for(final Enumeration<Achievement> a=achievements(agent);a.hasMoreElements();)
 			{
@@ -4593,19 +4593,19 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		final String EOL= Resources.getEOLineMarker(buf);
 		final Set<String> added = new HashSet<String>();
 		Agent currentAgent = Agent.PLAYER;
-		for(String row : V)
+		for(final String row : V)
 		{
 			if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
 				newFileData.append(row).append(EOL);
 			else
 			{
-				int x=row.indexOf('=');
+				final int x=row.indexOf('=');
 				if(x<=0)
 				{
 					if(row.trim().startsWith("["))
 					{
-						Agent oldAgent = currentAgent;
-						for(Agent ag : Agent.values())
+						final Agent oldAgent = currentAgent;
+						for(final Agent ag : Agent.values())
 						{
 							if(row.trim().toUpperCase().equals("["+ag.name()+"]"))
 							{
@@ -4643,7 +4643,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		Resources.updateFileResource(achievementFilename, newFileData);
 		Resources.removeResource(achievementFilename);
 	}
-	
+
 	private boolean evaluatePlayerAchievement(final Achievement A, final PlayerStats pStats, final MOB mob)
 	{
 		if(mob.findTattoo(A.getTattoo())==null)
@@ -4656,7 +4656,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return false;
 	}
-	
+
 	private boolean evaluateAccountAchievement(final Achievement A, final PlayerAccount account, final MOB mob)
 	{
 		if(account != null)
@@ -4672,7 +4672,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return false;
 	}
-	
+
 	private boolean evaluateAchievement(final Achievement A, final PlayerStats pStats, final PlayerAccount aStats, final MOB mob)
 	{
 		switch(A.getAgent())
@@ -4684,7 +4684,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean evaluateAchievements(final MOB mob)
 	{
@@ -4694,7 +4694,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		if(P==null)
 			return false;
 		final PlayerAccount C=P.getAccount() != null ? P.getAccount() : null;
-		
+
 		boolean somethingDone = false;
 		for(final Enumeration<Achievement> a=achievements(null);a.hasMoreElements();)
 		{
@@ -4704,13 +4704,13 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return somethingDone;
 	}
-	
+
 	private String getAchievementFilename()
 	{
 		CMFile F = new CMFile(Resources.makeFileResourceName(achievementFilename),null);
 		if(F.exists() && (F.canRead()))
 			return achievementFilename;
-		final String oldFilename = achievementFilename.substring(0,achievementFilename.length()-4)+".txt"; 
+		final String oldFilename = achievementFilename.substring(0,achievementFilename.length()-4)+".txt";
 		F = new CMFile(Resources.makeFileResourceName(oldFilename),null);
 		if(F.exists() && (F.canRead()))
 			return oldFilename;
@@ -4737,7 +4737,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			{
 				final String upTrimRow = row.trim().toUpperCase();
 				boolean found=false;
-				for(Agent ag : Agent.values())
+				for(final Agent ag : Agent.values())
 				{
 					if(upTrimRow.equals("["+ag.name()+"]"))
 					{
@@ -4768,7 +4768,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	}
 
 	@Override
-	public void grantAbilitiesAndExpertises(MOB mob)
+	public void grantAbilitiesAndExpertises(final MOB mob)
 	{
 		final PlayerStats pStats = (mob == null) ? null : mob.playerStats();
 		if((pStats != null) && (mob!=null))
@@ -4802,9 +4802,9 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 		}
 	}
-	
+
 	@Override
-	public void loadPlayerSkillAwards(Tattooable mob, PlayerStats stats)
+	public void loadPlayerSkillAwards(final Tattooable mob, final PlayerStats stats)
 	{
 		if((mob != null) && (stats != null))
 		{
@@ -4839,7 +4839,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 	}
 
 	@Override
-	public void reloadPlayerAwards(MOB mob, AchievementLoadFlag flag)
+	public void reloadPlayerAwards(final MOB mob, final AchievementLoadFlag flag)
 	{
 		if(mob != null)
 		{
@@ -4861,7 +4861,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			}
 		}
 	}
-	
+
 	@Override
 	public void loadAccountAchievements(final MOB mob, final AchievementLoadFlag flag)
 	{
@@ -4896,7 +4896,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 	}
 
-	protected String makeAchievmentHelp(Achievement A)
+	protected String makeAchievmentHelp(final Achievement A)
 	{
 		if(A == null)
 			return null;
@@ -4907,11 +4907,11 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			helpMap = new Hashtable<String,String>();
 			Resources.submitResource("SYSTEM_ACHIEVEMENT_HELP", helpMap);
 		}
-		String help = helpMap.get(A.getTattoo());
+		final String help = helpMap.get(A.getTattoo());
 		if(help != null)
 			return help;
-		StringBuilder str = new StringBuilder("");
-		int cols = 20;
+		final StringBuilder str = new StringBuilder("");
+		final int cols = 20;
 		if(A.getAgent() == Agent.ACCOUNT)
 			str.append("\n\r").append(CMStrings.padRight(L("Account Achievement:"),cols)).append(" ").append(A.getTattoo());
 		else
@@ -4926,15 +4926,15 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 			else
 				str.append("\n\r").append(CMStrings.padRight(L("Rewards Granted:"),cols)).append(" ").append(L("Immediately"));
 		}
-		for(Award W : A.getRewards())
+		for(final Award W : A.getRewards())
 			str.append("\n\r").append(CMStrings.padRight(L("Award:"),cols)).append(" ").append(W.getDescription());
 		str.append("\n\r");
 		helpMap.put(A.getTattoo(), str.toString());
 		return str.toString();
 	}
-	
+
 	@Override
-	public String getAchievementsHelp(String ID, boolean exact)
+	public String getAchievementsHelp(String ID, final boolean exact)
 	{
 		if(ID==null)
 			return null;
@@ -4980,7 +4980,7 @@ public class Achievements extends StdLibrary implements AchievementLibrary
 		}
 		return makeAchievmentHelp(A);
 	}
-	
+
 	@Override
 	public boolean shutdown()
 	{

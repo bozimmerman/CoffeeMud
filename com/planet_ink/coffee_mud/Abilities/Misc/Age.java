@@ -82,6 +82,14 @@ public class Age extends StdAbility
 		return Ability.ACODE_PROPERTY;
 	}
 
+	private static final String[]	triggerStrings	= I(new String[] { "AGIFY" });
+
+	@Override
+	public String[] triggerStrings()
+	{
+		return triggerStrings;
+	}
+
 	@Override
 	public String accountForYourself()
 	{
@@ -109,7 +117,7 @@ public class Age extends StdAbility
 		else
 			return "("+years+" year(s) old)";
 	}
-	
+
 	protected boolean			norecurse		= false;
 	protected Race				myRace			= null;
 	protected double			divisor			= 0.0;
@@ -148,7 +156,7 @@ public class Age extends StdAbility
 		return myRace;
 	}
 
-	protected MOB getFollowing(Environmental babe)
+	protected MOB getFollowing(final Environmental babe)
 	{
 		MOB following=null;
 		if(babe instanceof MOB)
@@ -271,18 +279,18 @@ public class Age extends StdAbility
 					else
 					{
 						MOB leigeM=following;
-						Set<MOB> parents=new HashSet<MOB>();
+						final Set<MOB> parents=new HashSet<MOB>();
 						for(final Enumeration<Tattoo> t= babe.tattoos();t.hasMoreElements();)
 						{
 							final Tattoo T=t.nextElement();
 							if(T.name().startsWith("PARENT:"))
 							{
-								String parentName=T.name().substring(7).trim();
+								final String parentName=T.name().substring(7).trim();
 								if(CMLib.players().playerExists(parentName))
 									parents.add(CMLib.players().getLoadPlayer(parentName));
 								else
 								{
-									MOB M=R.fetchInhabitant("$"+parentName+"$");
+									final MOB M=R.fetchInhabitant("$"+parentName+"$");
 									if(M!=null)
 										parents.add(M);
 								}
@@ -298,6 +306,7 @@ public class Age extends StdAbility
 								leigeM=M;
 								if(M.location()==R)
 									following=M;
+								babe.setAttributesBitmap(M.getAttributesBitmap());
 							}
 						}
 						babe.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
@@ -335,7 +344,7 @@ public class Age extends StdAbility
 						babe.setFollowing(following);
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,L("<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!"));
 						I.delEffect(this);
-						Runnable run=new Runnable()
+						final Runnable run=new Runnable()
 						{
 							final Item I2=I;
 
@@ -501,6 +510,7 @@ public class Age extends StdAbility
 								final int legacyLevel=M.playerStats().getLegacyLevel(highestBaseClass);
 								if(legacyLevel>highestLegacyLevel)
 									highestLegacyLevel=legacyLevel;
+								newMan.setAttributesBitmap(M.getAttributesBitmap());
 							}
 						}
 					}
@@ -557,7 +567,7 @@ public class Age extends StdAbility
 					newMan.baseState().setMovement(CMProps.getIntVar(CMProps.Int.STARTMOVE));
 					newMan.baseCharStats().getMyRace().setHeightWeight(newMan.basePhyStats(),(char)newMan.baseCharStats().getStat(CharStats.STAT_GENDER));
 					final int baseStat=(CMProps.getIntVar(CMProps.Int.BASEMINSTAT)+CMProps.getIntVar(CMProps.Int.BASEMAXSTAT))/2;
-					for(int  i : CharStats.CODES.BASECODES())
+					for(final int  i : CharStats.CODES.BASECODES())
 						newMan.baseCharStats().setStat(i,baseStat);
 					if(highestParentLevel>=CMProps.getIntVar(CMProps.Int.LASTPLAYERLEVEL))
 					{
@@ -602,7 +612,7 @@ public class Age extends StdAbility
 						newMan.recoverMaxState();
 						newMan.resetToMaxState();
 					}
-					CMLib.achievements().loadAccountAchievements(newMan,AchievementLoadFlag.NORMAL);
+					//CMLib.achievements().loadAccountAchievements(newMan,AchievementLoadFlag.CHARCR_PRELOAD);
 					CMLib.database().DBCreateCharacter(newMan);
 					CMLib.players().addPlayer(newMan);
 
@@ -810,7 +820,7 @@ public class Age extends StdAbility
 			&&(CMLib.flags().isInTheGame((Item)affected,true)))
 			{
 				final Item baby=(Item)affected;
-				Behavior B=baby.fetchBehavior("Emoter");
+				final Behavior B=baby.fetchBehavior("Emoter");
 				if(B!=null)
 				{
 					/*
@@ -916,7 +926,7 @@ public class Age extends StdAbility
 				divisor = C.getMonthsInYear() * C.getDaysInMonth() * CMProps.getIntVar(CMProps.Int.TICKSPERMUDDAY );
 			}
 			final int age=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,CMProps.getTickMillis()),divisor)));
-			
+
 			if((age>=Short.MAX_VALUE)||(age<0))
 				Log.errOut("Age","Recorded, on "+affected.name()+", age of "+age+", from tick values (("+System.currentTimeMillis()+"-"+l+")/4000)/"+divisor);
 			else
@@ -925,5 +935,66 @@ public class Age extends StdAbility
 				affectableStats.setStat(CharStats.STAT_AGE,affected.baseCharStats().getStat(CharStats.STAT_AGE));
 			}
 		}
+	}
+
+	@Override
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
+	{
+		if(commands.size()==0)
+		{
+			mob.tell(L("You can see current age with AGE <target>, or change age category with AGE <target> <number delta>"));
+			return false;
+		}
+		int increment=0;
+		if((commands.size()>1) && (CMath.isInteger(commands.get(commands.size()-1))))
+			increment=CMath.s_int(commands.remove(commands.size()-1));
+		final Physical target = super.getAnyTarget(mob, commands, givenTarget,null,false,true);
+		if (target == null)
+			return false;
+		if (!super.invoke(mob, commands, givenTarget, auto, asLevel))
+			return false;
+		final Age A=(Age)target.fetchEffect(ID());
+		if(A==null)
+			mob.tell(L("@x1 is not yet aging.",target.Name()));
+		else
+		{
+			A.doThang();
+			final long l=CMath.s_long(A.text());
+			if(l==0)
+			{
+				mob.tell(L("Age is broken."));
+				return false;
+			}
+			final long ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,CMProps.getTickMillis()),A.divisor)));
+			int currentAgeIndex=0;
+			final Race R=A.getMyRace();
+			if(l!=0)
+			{
+				for(int i=0;i<R.getAgingChart().length;i++)
+				{
+					if(ellapsed <= R.getAgingChart()[i])
+					{
+						currentAgeIndex=i;
+						break;
+					}
+				}
+			}
+			if(increment==0)
+			{
+				mob.tell(L("@x1 is @x2.",target.Name(),A.displayText()));
+				mob.tell(L("@x1 is currently @x2.",target.Name(),Race.AGE_DESCS[currentAgeIndex]));
+				return false;
+			}
+			currentAgeIndex += increment;
+			if((currentAgeIndex < 0)||(currentAgeIndex >= R.getAgingChart().length))
+			{
+				mob.tell(L("May not continue aging @x1 that way."));
+				return false;
+			}
+			final long newEllapsed = System.currentTimeMillis() - Math.round(R.getAgingChart()[currentAgeIndex] * CMProps.getTickMillis() * A.divisor)+1;
+			A.setMiscText(""+newEllapsed);
+			mob.tell(L("@x1 is now a different age.",target.name()));
+		}
+		return false;
 	}
 }

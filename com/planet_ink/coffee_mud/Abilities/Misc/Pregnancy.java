@@ -90,7 +90,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		return -1;
 	}
 
-	protected void setPregnancyStartTime(long newTime)
+	protected void setPregnancyStartTime(final long newTime)
 	{
 		final String text = text();
 		final int x = text.indexOf('/');
@@ -114,7 +114,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 		return -1;
 	}
 
-	protected void setPregnancyEndTime(long newTime)
+	protected void setPregnancyEndTime(final long newTime)
 	{
 		final String text = text();
 		final int x = text.indexOf('/');
@@ -127,7 +127,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if (code != null && code.equalsIgnoreCase("PREGSTART"))
 			this.setPregnancyStartTime(CMath.s_long(val));
@@ -138,7 +138,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if (code != null && code.equalsIgnoreCase("PREGSTART"))
 			return "" + this.getPregnancyStartTime();
@@ -218,9 +218,9 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
-		if ((msg.target() == affected) 
-		&& ((msg.targetMinor() == CMMsg.TYP_LOOK) || (msg.targetMinor() == CMMsg.TYP_EXAMINE)) 
-		&& (CMLib.flags().canBeSeenBy(affected, msg.source())) 
+		if ((msg.target() == affected)
+		&& ((msg.targetMinor() == CMMsg.TYP_LOOK) || (msg.targetMinor() == CMMsg.TYP_EXAMINE))
+		&& (CMLib.flags().canBeSeenBy(affected, msg.source()))
 		&& (affected instanceof MOB)
 		&& ((daysRemaining > 0) && (monthsRemaining <= 3)))
 		{
@@ -379,7 +379,7 @@ public class Pregnancy extends StdAbility implements HealthCondition
 								String s=retainA.text();
 								if(CMLib.flags().isAnimalIntelligence(mob))
 								{
-									int xs=s.indexOf(';');
+									final int xs=s.indexOf(';');
 									if(xs>0)
 										s=s.substring(0,xs);
 								}
@@ -508,9 +508,9 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final MOB target = getTarget(mob, commands, givenTarget);
+		final MOB target = super.getTarget(mob, commands, givenTarget,false,true);
 		if (target == null)
 			return false;
 		if (!super.invoke(mob, commands, givenTarget, auto, asLevel))
@@ -526,6 +526,24 @@ public class Pregnancy extends StdAbility implements HealthCondition
 			birthmonths = 5;
 		final long ticksperbirthperiod = tickspermudmonth * birthmonths;
 		final long millisperbirthperiod = ticksperbirthperiod * CMProps.getTickMillis();
+
+		if(target.fetchEffect(ID())!=null)
+		{
+			final Ability A=target.fetchEffect(ID());
+			if(A!=null)
+			{
+				if(mob.location().show(mob, target, this, CMMsg.TYP_GENERAL, auto ? null : L("<S-NAME> birthifies <T-NAMESELF>.")))
+				{
+					final String[] parts=A.text().split("/");
+					final StringBuilder str=new StringBuilder((start-millisperbirthperiod) + "/" + start);
+					for(int i=2;i<parts.length;i++)
+						str.append("/").append(parts[i]);
+					A.setMiscText(str.toString());
+					return true;
+				}
+				return false;
+			}
+		}
 
 		long end = start + millisperbirthperiod;
 		if (success)
