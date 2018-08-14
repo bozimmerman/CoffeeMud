@@ -583,14 +583,32 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 		final Area shipArea=getShipArea();
 		if(itemArea == shipArea)
 		{
+			final Room srcR=(msg!=null && msg.source() != null) ? msg.source().location() : null;
+			if((srcR!=null)
+			&&(srcR != shipArea))
+			{
+				if(srcR.isContent(this.getShipItem()))
+				{
+					Log.errOut("Ship "+name()+" is inside itself?! Fixing bad owner ref.");
+					getShipItem().setOwner(srcR);
+				}
+				else
+				{
+					Log.errOut("Ship "+name()+" is inside itself?! Moving to message room...");
+					srcR.moveItemTo(this.getShipItem());
+				}
+			}
+			else
 			if((this.getOwnerName().length()==0)||(this.getOwnerName().startsWith("#")))
 			{
 				Log.errOut("Ship "+name()+" is inside itself?! It's unowned, so destroying!");
 				this.destroyThisShip();
 			}
 			else
-				Log.errOut("Ship "+name()+" is inside itself?! Not sure what to do.");
-			return false;
+			if(srcR != null)
+			{
+				Log.errOut("Ship "+name()+", owned by "+getOwnerName()+" is inside itself?! Not sure what to do.");
+			}
 		}
 		if(shipArea!=null)
 		{
