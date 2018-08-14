@@ -1829,6 +1829,12 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
+	public BoardableShip findShip(final String s, final boolean exactOnly)
+	{
+		return (BoardableShip)CMLib.english().fetchEnvironmental(shipList, s, exactOnly);
+	}
+
+	@Override
 	public Enumeration<BoardableShip> ships()
 	{
 		return new IteratorEnumeration<BoardableShip>(shipList.iterator());

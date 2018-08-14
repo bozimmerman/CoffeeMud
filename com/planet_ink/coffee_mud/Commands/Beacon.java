@@ -69,10 +69,14 @@ public class Beacon extends StdCommand
 				M=CMLib.sessions().findPlayerOnline(name,false);
 			if(M==null)
 			{
-				final BoardableShip bI=CMLib.map().getShip(name);
+				BoardableShip bI=CMLib.map().getShip(name);
+				if(bI==null)
+					bI=CMLib.map().findShip(name, true);
+				if(bI==null)
+					bI=CMLib.map().findShip(name, false);
 				if(bI==null)
 				{
-					mob.tell(L("No one  is / no ships are: online called '@x1'!",name));
+					mob.tell(L("There are no people or ships online called '@x1'!",name));
 					return false;
 				}
 				final Room biR=CMLib.map().roomLocation(bI);
