@@ -70,7 +70,7 @@ public class Lecturing extends CommonSkill
 	}
 
 	protected long lastLecture = 0;
-	
+
 	protected boolean success=false;
 	protected String lectureName="";
 	protected String lectureID="";
@@ -82,7 +82,7 @@ public class Lecturing extends CommonSkill
 		{
 			final MOB mob=(MOB)affected;
 			final Room R=mob.location();
-			List<MOB> students = this.getApplicableStudents(mob);
+			final List<MOB> students = this.getApplicableStudents(mob);
 			if(students.size()<3)
 			{
 				commonTell(mob,L("You don't have enough students to continue the lecture."));
@@ -90,7 +90,7 @@ public class Lecturing extends CommonSkill
 				unInvoke();
 				return false;
 			}
-			
+
 			if((CMLib.dice().rollPercentage()<20)
 			&&(R!=null))
 			{
@@ -129,7 +129,7 @@ public class Lecturing extends CommonSkill
 					break;
 				}
 			}
-			
+
 			if(tickUp==6)
 			{
 				if(success==false)
@@ -181,12 +181,12 @@ public class Lecturing extends CommonSkill
 				if((success)
 				&&(!aborted)
 				&&(room!=null)
-				&&(students.size()==3))
+				&&(students.size()>=3))
 				{
 					final Ability protoA=mob.fetchAbility(lectureID);
 					final int prof = protoA!=null ? protoA.proficiency() : 0;
 					int studentsWhoImproved=0;
-					for(MOB studentM : students)
+					for(final MOB studentM : students)
 					{
 						final Ability A=studentM.fetchAbility(lectureID);
 						if(A!=null)
@@ -219,7 +219,7 @@ public class Lecturing extends CommonSkill
 						else
 							studentM.tell(L("You had absolutely no idea what @x1 was talking about.",mob.Name()));
 					}
-					
+
 					if(studentsWhoImproved == 0)
 					{
 						final StringBuffer str=new StringBuffer(L("You did your best, but none of your students learned a damn thing.\n\r"));
@@ -252,7 +252,7 @@ public class Lecturing extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -260,13 +260,13 @@ public class Lecturing extends CommonSkill
 		this.lectureID="";
 		this.lectureName="";
 		success=false;
-		
+
 		final Room R=mob.location();
 		final Area areA=(R!=null)?R.getArea():null;
 		if((this.lastLecture != 0)&&(areA!=null))
 		{
 			final TimeClock C=areA.getTimeObj();
-			TimeClock lastPubC=(TimeClock)CMClass.getCommon("DefaultTimeClock");
+			final TimeClock lastPubC=(TimeClock)CMClass.getCommon("DefaultTimeClock");
 			lastPubC.setFromHoursSinceEpoc(this.lastLecture);
 			if(C.getYear() == lastPubC.getYear())
 			{
@@ -283,7 +283,7 @@ public class Lecturing extends CommonSkill
 				return false;
 			}
 		}
-		
+
 		if(commands.size()==0)
 		{
 			commonTell(mob,L("Lecture about what? Try checking yoru SKILLS, SPELLS, PRAYERS, CHANTS, etc.."));
@@ -322,7 +322,7 @@ public class Lecturing extends CommonSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			Lecturing L=(Lecturing)beneficialAffect(mob,mob,asLevel,duration);
+			final Lecturing L=(Lecturing)beneficialAffect(mob,mob,asLevel,duration);
 			if(L!=null)
 			{
 				L.lectureID=this.lectureID;
