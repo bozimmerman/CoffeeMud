@@ -36,7 +36,7 @@ public interface ProtocolLibrary extends CMLibrary
 	public String msp(final String soundName, final int priority);
 
 	public boolean mcp(final Session session, final StringBuilder str, final String[] mcpKey, Map<String,float[]> clientSupported, final Map<String,String> keyValuePairs);
-	
+
 	public String[] mxpImagePath(String fileName);
 	public String mxpImage(final Environmental E, final String parms);
 	public String mxpImage(final Environmental E, final String parms, final String pre, final String post);
@@ -49,7 +49,7 @@ public interface ProtocolLibrary extends CMLibrary
 	public byte[] buildGmcpResponse(String json);
 	public byte[] pingGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables);
 	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables);
-	
+
 	public enum GMCPCommand
 	{
 		core_hello,
@@ -70,7 +70,7 @@ public interface ProtocolLibrary extends CMLibrary
 		char_items_contents,
 		char_skills_get,
 		group,
-		room_info, // means they want room.wrongdir
+		room_info, // means they want room.wrongdir and room.enter
 		room_items_inv,
 		room_items_contents,
 		room_mobiles,
@@ -90,7 +90,7 @@ public interface ProtocolLibrary extends CMLibrary
 		client,
 		client_version
 	}
-	
+
 	/**
 	 * Interface allowing java or javascript plugins to the MCP protocol
 	 * @author Bo Zimmerman
@@ -109,13 +109,13 @@ public interface ProtocolLibrary extends CMLibrary
 		 * @return the minimum version supported here.
 		 */
 		public float minVersion();
-		
+
 		/**
 		 * Returns the maximum version supported here.
 		 * @return the maximum version supported here.
 		 */
 		public float maxVersion();
-		
+
 		/**
 		 * Execute the package
 		 * @param session the session for which the package is being executed

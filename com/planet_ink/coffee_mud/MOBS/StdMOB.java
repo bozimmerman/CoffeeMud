@@ -3461,7 +3461,11 @@ public class StdMOB implements MOB
 			{
 				if (((!asleep) || (msg.othersMinor() == CMMsg.TYP_ENTER))
 				&& (CMLib.flags().canSenseEnteringLeaving(srcM, this)))
+				{
 					tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
+					if((mySession!=null)&&(mySession.getClientTelnetMode(Session.TELNET_GMCP)))
+						mySession.sendGMCPEvent("room.enter", "\""+MiniJSON.toJSONString(srcM.Name())+"\"");
+				}
 				if((!isMonster())
 				&&(riding != null)
 				&&(riding.rideBasis()==Rideable.RIDEABLE_WATER)
