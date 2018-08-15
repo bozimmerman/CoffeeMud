@@ -636,7 +636,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		baseChannelNames=new String[channelList.size()];
 		for(int i=0;i<channelList.size();i++)
 			baseChannelNames[i]=channelList.get(i).name();
-		if(channelList.size()>0)
+		if(channelList.size()>31)
 		{
 			Log.errOut("CMChannels", "Too many channels defined: "+channelList.size()+".");
 		}
