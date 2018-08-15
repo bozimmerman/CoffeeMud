@@ -942,54 +942,6 @@ public class CraftingSkill extends GatheringSkill
 			}
 		}
 
-		if(supportsWeapons() && (matches.size()==0))
-		{
-			int x=CMParms.indexOf(Weapon.CLASS_DESCS,recipeName.toUpperCase().trim());
-			if(x>=0)
-			{
-				final String weaponClass = Weapon.CLASS_DESCS[x];
-				for(int r=0;r<recipes.size();r++)
-				{
-					final List<String> V=recipes.get(r);
-					if(V.contains(weaponClass))
-						matches.add(V);
-				}
-				return matches;
-			}
-			x=CMParms.indexOf(Weapon.TYPE_DESCS,recipeName.toUpperCase().trim());
-			if(x>=0)
-			{
-				final String weaponType = Weapon.TYPE_DESCS[x];
-				for(int r=0;r<recipes.size();r++)
-				{
-					final List<String> V=recipes.get(r);
-					if(V.contains(weaponType))
-						matches.add(V);
-				}
-			}
-		}
-
-		if(supportsArmors() && (matches.size()==0))
-		{
-			final long code=Wearable.CODES.FIND_ignoreCase(recipeName.toUpperCase().trim());
-			if(code > 0)
-			{
-				final String wearLoc = Wearable.CODES.NAMEUP(code);
-				for(int r=0;r<recipes.size();r++)
-				{
-					final List<String> V=recipes.get(r);
-					for(int v=0;v<V.size();v++)
-					{
-						if(V.get(v).toUpperCase().indexOf(wearLoc)>=0)
-						{
-							matches.add(V);
-							break;
-						}
-					}
-				}
-			}
-		}
-
 		if(matches.size()==0)
 		{
 			for(int r=0;r<recipes.size();r++)
@@ -1085,6 +1037,55 @@ public class CraftingSkill extends GatheringSkill
 				}
 			}
 		}
+
+		if(supportsWeapons() && (matches.size()==0))
+		{
+			int x=CMParms.indexOf(Weapon.CLASS_DESCS,recipeName.toUpperCase().trim());
+			if(x>=0)
+			{
+				final String weaponClass = Weapon.CLASS_DESCS[x];
+				for(int r=0;r<recipes.size();r++)
+				{
+					final List<String> V=recipes.get(r);
+					if(V.contains(weaponClass))
+						matches.add(V);
+				}
+				return matches;
+			}
+			x=CMParms.indexOf(Weapon.TYPE_DESCS,recipeName.toUpperCase().trim());
+			if(x>=0)
+			{
+				final String weaponType = Weapon.TYPE_DESCS[x];
+				for(int r=0;r<recipes.size();r++)
+				{
+					final List<String> V=recipes.get(r);
+					if(V.contains(weaponType))
+						matches.add(V);
+				}
+			}
+		}
+
+		if(supportsArmors() && (matches.size()==0))
+		{
+			final long code=Wearable.CODES.FIND_ignoreCase(recipeName.toUpperCase().trim());
+			if(code > 0)
+			{
+				final String wearLoc = Wearable.CODES.NAMEUP(code);
+				for(int r=0;r<recipes.size();r++)
+				{
+					final List<String> V=recipes.get(r);
+					for(int v=0;v<V.size();v++)
+					{
+						if(V.get(v).toUpperCase().indexOf(wearLoc)>=0)
+						{
+							matches.add(V);
+							break;
+						}
+					}
+				}
+			}
+		}
+
 		if(selNum>0)
 		{
 			final List<List<String>> newMatches=new Vector<List<String>>();
