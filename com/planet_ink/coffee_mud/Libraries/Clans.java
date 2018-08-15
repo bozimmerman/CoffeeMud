@@ -618,7 +618,8 @@ public class Clans extends StdLibrary implements ClanManager
 				mob.tell(L("This matter must be voted upon, but you already have a vote underway."));
 				return false;
 			}
-			if(CV.matter.equalsIgnoreCase(matter))
+			if((CV.matter.equalsIgnoreCase(matter)
+			&&(CV.voteStatus==Clan.VSTAT_STARTED)))
 			{
 				mob.tell(L("This matter must be voted upon, and is already BEING voted upon.  Use CLANVOTE to see."));
 				return false;
