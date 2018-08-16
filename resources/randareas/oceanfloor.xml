@@ -199,11 +199,12 @@ See guides/RandomAreas.html for information about documents of this type.
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 			<ABILITY class="Fighter_Intimidate" />
 			<ABILITY select="pick-1" condition="$mob_level&gt;=10">
+				<ABILITY pickweight="1" class="Skill_Swim" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=10" class="Fighter_WaterTactics" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=30" class="Fighter_Charge" parms="" />
 				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
 				<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
 				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />
-				<ABILITY pickweight="1" condition="$mob_level&gt;=10" class="Fighter_WaterTactics" parms="" />
-				<ABILITY pickweight="1" condition="$mob_level&gt;=30" class="Fighter_Charge" parms="" />
 				<ABILITY pickweight="1" condition="$mob_level&gt;=50" class="Fighter_CalledStrike" parms="" />
 				<ABILITY pickweight="1" condition="$mob_level&gt;=60" class="Fighter_Shrug" parms="" />
 				<ABILITY pickweight="2" condition="$mob_level&gt;=70" class="Skill_Attack2" parms="" />		
