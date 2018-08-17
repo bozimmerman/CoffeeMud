@@ -609,13 +609,15 @@ public class Clans extends StdLibrary implements ClanManager
 		if(!voteIfNecessary)
 			return true;
 		final String matter=CMParms.combine(commands,0);
+		int numFound=0;
 		for(final Enumeration<Clan.ClanVote> e=C.votes();e.hasMoreElements();)
 		{
 			final Clan.ClanVote CV=e.nextElement();
 			if((CV.voteStarter.equalsIgnoreCase(mob.Name()))
-			&&(CV.voteStatus==Clan.VSTAT_STARTED))
+			&&(CV.voteStatus==Clan.VSTAT_STARTED)
+			&&(++numFound>5))
 			{
-				mob.tell(L("This matter must be voted upon, but you already have a vote underway."));
+				mob.tell(L("This matter must be voted upon, but you already have started enough votes for one person."));
 				return false;
 			}
 			if((CV.matter.equalsIgnoreCase(matter)
