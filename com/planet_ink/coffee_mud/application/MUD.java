@@ -2008,7 +2008,10 @@ public class MUD extends Thread implements MudHost
 			public void run()
 			{
 				if(!CMProps.getBoolVar(CMProps.Bool.MUDSHUTTINGDOWN))
+				{
+					ServiceEngine.panicDumpAllThreads();
 					MUD.globalShutdown(null,true,null);
+				}
 			}
 		};
 
@@ -2021,18 +2024,22 @@ public class MUD extends Thread implements MudHost
 			Log.sysOut(Thread.currentThread().getName(),"http://www.coffeemud.org");
 			CMLib.hosts().clear();
 			final LinkedList<HostGroup> myGroups=new LinkedList<HostGroup>();
-			HostGroup mainGroup=null;
+			HostGroup mainHostGroup=null;
+			ThreadGroup mainThreadGroup = null;
 			for(int i=0;i<iniFiles.size();i++)
 			{
 				iniFile=iniFiles.elementAt(i);
 				final ThreadGroup G=new ThreadGroup(i+"-MUD");
 				final HostGroup H=new HostGroup(G,nameID,iniFile);
-				if(mainGroup==null)
-					mainGroup=H;
+				if((mainHostGroup==null)||(mainThreadGroup == null))
+				{
+					mainHostGroup=H;
+					mainThreadGroup=G;
+				}
 				myGroups.add(H);
 				H.start();
 			}
-			if(mainGroup==null)
+			if(mainHostGroup==null)
 			{
 				Log.errOut("CoffeeMud failed to start.");
 				MUD.bringDown=true;
@@ -2050,11 +2057,11 @@ public class MUD extends Thread implements MudHost
 						if(!g.failedToStart() && !g.isStarted())
 							numPending++;
 					}
-					if(mainGroup.failedToStart())
+					if(mainHostGroup.failedToStart())
 						break;
 					checkedSleep(100);
 				}
-				if(mainGroup.failedToStart())
+				if(mainHostGroup.failedToStart())
 				{
 					Log.errOut("CoffeeMud failed to start.");
 					MUD.bringDown=true;
@@ -2068,7 +2075,7 @@ public class MUD extends Thread implements MudHost
 					Log.sysOut(Thread.currentThread().getName(),"Initialization complete.");
 					try
 					{
-						mainGroup.join();
+						mainHostGroup.join();
 					}
 					catch(final Exception e)
 					{
