@@ -38,7 +38,7 @@ See guides/RandomAreas.html for information about documents of this type.
 <AREA id="tree_dungeon" merge=true like="maze_dungeon" layout="TREE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=oceanfloor" />
 
 <ROOM id="hallway_rooms" merge=true select="pick-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
-	<ROOM class="UnderSaltWater" id="oceanfloor_street_room" condition="$theme='oceanfloor' or $theme='random'">
+	<ROOM class="UnderSaltWater" id="oceanfloor_street_room" condition="$theme='oceanfloor'">
 		<TITLE>(a(n)) $_oceanfloor_path_name</TITLE>
 		<DESCRIPTION>$oceanfloor_street_desc</DESCRIPTION>
 		<STRING id="oceanfloor_street_desc" select="all">
@@ -81,11 +81,11 @@ See guides/RandomAreas.html for information about documents of this type.
 </ROOM>
 
 <ROOM id="interior_rooms" merge=true select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
-	<ROOM class="UnderSaltWater" like="oceanfloor_street_room" condition="$theme='oceanfloor' or $theme='random'" />
+	<ROOM class="UnderSaltWater" like="oceanfloor_street_room" condition="$theme='oceanfloor'" />
 </ROOM>
 
 <ROOM id="leaf_rooms" merge=true select="any-1" condition="$roomtag_nodetype='leaf'">
-	<ROOM class="UnderSaltWater" id="oceanfloor_interior_room" condition="$theme='oceanfloor' or $theme='random'">
+	<ROOM class="UnderSaltWater" id="oceanfloor_interior_room" condition="$theme='oceanfloor'">
 		<TITLE>
 			<TITLE>$oceanfloor_path_prefix $oceanfloor_nouns</TITLE>
 		</TITLE>
