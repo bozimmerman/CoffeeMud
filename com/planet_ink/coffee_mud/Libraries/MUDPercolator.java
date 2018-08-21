@@ -2012,7 +2012,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			for(int c=0;c<choices.size();c++)
 			{
 				final XMLTag valPiece = choices.get(c);
-				if(valPiece.parms().containsKey("VALIDATE") && !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
+				if(valPiece.parms().containsKey("VALIDATE")
+				&& !testCondition(E,null,null,CMLib.xml().restoreAngleBrackets(valPiece.getParmValue("VALIDATE")),valPiece, defined))
 					continue;
 				defineReward(E,null,null,valPiece.getParmValue("DEFINE"),valPiece,null,defined,true);
 				final Set<String> definedSet=getPrevouslyDefined(defined,tagName+"_");
@@ -2579,7 +2580,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
 	protected List<XMLTag> getAllChoices(final Modifiable E, final List<String> ignoreStats, final String defPrefix, final String tagName, final XMLTag piece, final Map<String,Object> defined, final boolean skipTest) throws CMException, PostProcessException
 	{
-		if((!skipTest)&&(!testCondition(E,ignoreStats,defPrefix,CMLib.xml().restoreAngleBrackets(piece.getParmValue("CONDITION")),piece,defined)))
+		if((!skipTest)
+		&&(!testCondition(E,ignoreStats,defPrefix,CMLib.xml().restoreAngleBrackets(piece.getParmValue("CONDITION")),piece,defined)))
 			return new Vector<XMLTag>(1);
 
 		defineReward(E,ignoreStats,defPrefix,piece.getParmValue("PREDEFINE"),piece,piece.value(),defined,false); // does pre-define
@@ -2643,7 +2645,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			{
 				try
 				{
-					if((defPrefix!=null)&&(defined!=null)&&(id.var.toUpperCase().startsWith(defPrefix))&&(!defined.containsKey(defPrefix)))
+					final boolean missingMobVarCondition =
+								  (defPrefix!=null)
+								&&(defined!=null)
+								&&(id.var.toUpperCase().startsWith(defPrefix))
+								&&(!defined.containsKey(id.var.toUpperCase()));
+					if(missingMobVarCondition)
 					{
 						XMLTag newPiece=piece;
 						while((newPiece.parent()!=null)&&(newPiece.tag().equals(piece.tag())))
@@ -2653,11 +2660,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					String value=findString(E,ignoreStats,defPrefix,id.var, piece, defined);
 					if(CMath.isMathExpression(value))
 					{
+						final String origValue = value;
 						final double val=CMath.parseMathExpression(value);
 						if(Math.round(val)==val)
 							value=""+Math.round(val);
 						else
 							value=""+val;
+						if((origValue.indexOf('?')>0) // random levels need to be chosen ONCE, esp when name is involved.
+						&&(missingMobVarCondition))
+							defined.put(id.var.toUpperCase(),value);
 					}
 					fixed.put(id.var.toUpperCase(),value);
 				}
@@ -2819,7 +2830,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		checkRequirements(defined,piece.getParmValue("REQUIRES"));
 	}
 
-	protected List<XMLTag> selectChoices(final Modifiable E, final String tagName, final List<String> ignoreStats, final String defPrefix, final List<XMLTag> choices, final XMLTag piece, final Map<String,Object> defined) throws CMException
+	protected List<XMLTag> selectChoices(final Modifiable E, final String tagName, final List<String> ignoreStats, final String defPrefix, final List<XMLTag> choices, final XMLTag piece, final Map<String,Object> defined) throws CMException, PostProcessException
 	{
 		String selection = piece.getParmValue("SELECT");
 		if(selection == null)

@@ -200,17 +200,15 @@ See guides/RandomAreas.html for information about documents of this type.
 			</BEHAVIOR>
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 			<ABILITY class="Fighter_Intimidate" />
-			<ABILITY condition="$mob_level&gt;=10">
-				<ABILITY select="pick-1">
-					<ABILITY pickweight="1" condition="$mob_level&gt;=10" class="Fighter_WaterTactics" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=30" class="Fighter_Charge" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
-					<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=50" class="Fighter_CalledStrike" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=60" class="Fighter_Shrug" parms="" />
-					<ABILITY pickweight="2" condition="$mob_level&gt;=70" class="Skill_Attack2" parms="" />		
-				</ABILITY>
+			<ABILITY select="limit-1" condition="$mob_level&gt;=10">
+				<ABILITY pickweight="1" condition="$mob_level&gt;=10" class="Fighter_WaterTactics" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=30" class="Fighter_Charge" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
+				<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=50" class="Fighter_CalledStrike" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=60" class="Fighter_Shrug" parms="" />
+				<ABILITY pickweight="2" condition="$mob_level&gt;=70" class="Skill_Attack2" parms="" />		
 			</ABILITY>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" race="shark" gender="$anygender" hpmod="18">
@@ -232,18 +230,16 @@ See guides/RandomAreas.html for information about documents of this type.
 			</BEHAVIOR>
 			<AFFECT class="Prop_CombatAdjuster" parms="ATTACK+$[2*$mob_level] ARMOR+$[2*$mob_level]" />
 			<AFFECT class="Prop_MODExperience" parms="*2" />
-			<ABILITY condition="$mob_level&gt;=5">
-				<ABILITY select="all">
-					<ABILITY condition="$mob_level&gt;=5" class="Fighter_WaterTactics" parms="" />
-					<ABILITY condition="$mob_level&gt;=10" class="Druid_WaterCover" parms="" />
-					<ABILITY condition="$mob_level&gt;=20" class="Fighter_Charge" parms="" />
-					<ABILITY condition="$mob_level&gt;=30" class="Fighter_BodyToss" parms="" />
-					<ABILITY condition="$mob_level&gt;=40" class="Fighter_Shrug" parms="" />
-					<ABILITY condition="$mob_level&gt;=50" class="Skill_Feint" parms="" />
-					<ABILITY condition="$mob_level&gt;=60" class="Fighter_Berzerk" parms="" />
-					<ABILITY condition="$mob_level&gt;=70" class="Fighter_BullRush" parms="" />
-					<ABILITY condition="$mob_level&gt;=80" class="Chant_BloodyWater" parms="" />		
-				</ABILITY>
+			<ABILITY select="all"  condition="$mob_level&gt;=5">
+				<ABILITY condition="$mob_level&gt;=5" class="Fighter_WaterTactics" parms="" />
+				<ABILITY condition="$mob_level&gt;=10" class="Druid_WaterCover" parms="" />
+				<ABILITY condition="$mob_level&gt;=20" class="Fighter_Charge" parms="" />
+				<ABILITY condition="$mob_level&gt;=30" class="Fighter_BodyToss" parms="" />
+				<ABILITY condition="$mob_level&gt;=40" class="Fighter_Shrug" parms="" />
+				<ABILITY condition="$mob_level&gt;=50" class="Skill_Feint" parms="" />
+				<ABILITY condition="$mob_level&gt;=60" class="Fighter_Berzerk" parms="" />
+				<ABILITY condition="$mob_level&gt;=70" class="Fighter_BullRush" parms="" />
+				<ABILITY condition="$mob_level&gt;=80" class="Chant_BloodyWater" parms="" />		
 			</ABILITY>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" race="merfolk" gender="$anygender" hpmod="11">
@@ -299,14 +295,13 @@ See guides/RandomAreas.html for information about documents of this type.
 				<BEHAVIOR class="Thiefness" parms="Thief" />
 				<BEHAVIOR class="Thiefness" parms="Trapper" />
 			</BEHAVIOR>
-			<ABILITY condition="$mob_level&gt;=5">
-				<ABILITY select="any">
-					<ABILITY condition="$mob_level&gt;=5" class="Fighter_WaterTactics" parms="" />
-					<ABILITY condition="$mob_level&gt;=10" class="Druid_WaterCover" parms="" />
-					<ABILITY condition="$mob_level&gt;=40" class="Fighter_Shrug" parms="" />
-					<ABILITY condition="$mob_level&gt;=50" class="Skill_Feint" parms="" />
-					<ABILITY condition="$mob_level&gt;=80" class="Chant_BloodyWater" parms="" />		
-				</ABILITY>
+			<ABILITY select="limit-1" condition="$mob_level&gt;=5">
+				<ABILITY condition="$mob_level&gt;=5" class="Fighter_WaterTactics" parms="" />
+				<ABILITY condition="$mob_level&gt;=10" class="Druid_WaterCover" parms="" />
+				<ABILITY condition="$mob_level&gt;=40" class="Fighter_Shrug" parms="" />
+				<ABILITY condition="$mob_level&gt;=50" class="Skill_Feint" parms="" />
+				<ABILITY condition="$mob_level&gt;=80" class="Chant_BloodyWater" parms="" />		
+			</ABILITY>
 			</ABILITY>
 			<ITEM select="any-1?4">
 				<ITEM class="GenArmor" LEVEL="$mob_level">
@@ -433,7 +428,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</BEHAVIOR>
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 			<ABILITY condition="$mob_level&gt;=40">
-				<ABILITY select="pick-1">
+				<ABILITY select="limit-1">
 					<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
 					<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
 					<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />	
@@ -458,7 +453,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</BEHAVIOR>
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 			<ABILITY condition="$mob_level&gt;=40">
-				<ABILITY select="pick-1">
+				<ABILITY select="limit-1">
 					<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
 					<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
 					<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />	
@@ -484,17 +479,15 @@ See guides/RandomAreas.html for information about documents of this type.
 			</BEHAVIOR>
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 			<AFFECT class="Prop_CombatAdjuster" parms="ARMOR+$[2*$mob_level]" />
-			<ABILITY condition="$mob_level&gt;=10">
-				<ABILITY select="pick-1">
-					<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="thief_scratch" parms="" />
-					<ABILITY pickweight="3" condition="$mob_level&gt;=10" class="thief_lure" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=10" class="thief_hide" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="Fighter_WaterTactics" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="Thief_Distract" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="Thief_DeepCut" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="Fighter_Shrug" parms="" />
-					<ABILITY pickweight="2" condition="$mob_level&gt;=20" class="Skill_Attack2" parms="" />		
-				</ABILITY>
+			<ABILITY select="limit-1" condition="$mob_level&gt;=10">
+				<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="thief_scratch" parms="" />
+				<ABILITY pickweight="3" condition="$mob_level&gt;=10" class="thief_lure" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=10" class="thief_hide" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="Fighter_WaterTactics" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="Thief_Distract" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="Thief_DeepCut" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=20" class="Fighter_Shrug" parms="" />
+				<ABILITY pickweight="2" condition="$mob_level&gt;=20" class="Skill_Attack2" parms="" />		
 			</ABILITY>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" race="fish" gender="$anygender" hpmod="11">
@@ -529,17 +522,15 @@ See guides/RandomAreas.html for information about documents of this type.
 				<BEHAVIOR condition="$mob_level&gt;=40" class="CombatAbilities" parms="" />
 			</BEHAVIOR>
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
-			<ABILITY condition="$mob_level&gt;=10">
-				<ABILITY select="pick-1">
-					<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
-					<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />
-					<ABILITY pickweight="5" condition="$mob_level&gt;=10" class="Fighter_WaterTactics" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=30" class="Fighter_Charge" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=50" class="Fighter_CalledStrike" parms="" />
-					<ABILITY pickweight="2" condition="$mob_level&gt;=60" class="Fighter_Shrug" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=70" class="Skill_Attack2" parms="" />		
-				</ABILITY>
+			<ABILITY select="limit-1" condition="$mob_level&gt;=10">
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
+				<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />
+				<ABILITY pickweight="5" condition="$mob_level&gt;=10" class="Fighter_WaterTactics" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=30" class="Fighter_Charge" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=50" class="Fighter_CalledStrike" parms="" />
+				<ABILITY pickweight="2" condition="$mob_level&gt;=60" class="Fighter_Shrug" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=70" class="Skill_Attack2" parms="" />		
 			</ABILITY>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" race="giantseahorse" gender="$anygender" hpmod="8">
@@ -571,17 +562,15 @@ See guides/RandomAreas.html for information about documents of this type.
 			</BEHAVIOR>
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 			<ABILITY class="Fighter_Intimidate" />
-			<ABILITY condition="$mob_level&gt;=10">
-				<ABILITY select="pick-1">
-					<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
-					<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=10" class="Fighter_WaterTactics" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=30" class="Fighter_Charge" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=50" class="Fighter_CalledStrike" parms="" />
-					<ABILITY pickweight="1" condition="$mob_level&gt;=60" class="Fighter_Shrug" parms="" />
-					<ABILITY pickweight="2" condition="$mob_level&gt;=70" class="Skill_Attack2" parms="" />		
-				</ABILITY>
+			<ABILITY select="limit-1" condition="$mob_level&gt;=10">
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
+				<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=10" class="Fighter_WaterTactics" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=30" class="Fighter_Charge" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=50" class="Fighter_CalledStrike" parms="" />
+				<ABILITY pickweight="1" condition="$mob_level&gt;=60" class="Fighter_Shrug" parms="" />
+				<ABILITY pickweight="2" condition="$mob_level&gt;=70" class="Skill_Attack2" parms="" />		
 			</ABILITY>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" race="merfolk" gender="$anygender" hpmod="11">
@@ -636,14 +625,12 @@ See guides/RandomAreas.html for information about documents of this type.
 				<BEHAVIOR class="Thiefness" parms="Thief" />
 				<BEHAVIOR class="Thiefness" parms="Trapper" />
 			</BEHAVIOR>
-			<ABILITY condition="$mob_level&gt;=5">
-				<ABILITY select="any">
-					<ABILITY condition="$mob_level&gt;=5" class="Fighter_WaterTactics" parms="" />
-					<ABILITY condition="$mob_level&gt;=10" class="Druid_WaterCover" parms="" />
-					<ABILITY condition="$mob_level&gt;=40" class="Fighter_Shrug" parms="" />
-					<ABILITY condition="$mob_level&gt;=50" class="Skill_Feint" parms="" />
-					<ABILITY condition="$mob_level&gt;=80" class="Chant_BloodyWater" parms="" />		
-				</ABILITY>
+			<ABILITY select="limit-1" condition="$mob_level&gt;=5">
+				<ABILITY condition="$mob_level&gt;=5" class="Fighter_WaterTactics" parms="" />
+				<ABILITY condition="$mob_level&gt;=10" class="Druid_WaterCover" parms="" />
+				<ABILITY condition="$mob_level&gt;=40" class="Fighter_Shrug" parms="" />
+				<ABILITY condition="$mob_level&gt;=50" class="Skill_Feint" parms="" />
+				<ABILITY condition="$mob_level&gt;=80" class="Chant_BloodyWater" parms="" />		
 			</ABILITY>
 		</MOB>
 		<MOB class="GenMob" level="$level_range" race="smallfish" gender="$anygender" hpmod="8">
@@ -664,7 +651,7 @@ See guides/RandomAreas.html for information about documents of this type.
 			</BEHAVIOR>
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
 			<ABILITY condition="$mob_level&gt;=40">
-				<ABILITY select="pick-1">
+				<ABILITY select="limit-1">
 					<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_feedingfrenzy" parms="" />
 					<ABILITY pickweight="3" condition="$mob_level&gt;=40" class="Druid_WaterCover" parms="" />
 					<ABILITY pickweight="1" condition="$mob_level&gt;=40" class="chant_summonschool" parms="" />
@@ -689,15 +676,13 @@ See guides/RandomAreas.html for information about documents of this type.
 				<BEHAVIOR class="WimpyAggressive" parms="" />
 			</BEHAVIOR>
 			<AFFECT class="Prop_Resistance" parms="magic 20% enchantment/charm $[$mob_level]%" />
-			<ABILITY  condition="$mob_level&gt;=10">
-				<ABILITY select="all">
-					<ABILITY condition="$mob_level&gt;=10" class="Fighter_WaterTactics" parms="" />
-					<ABILITY condition="$mob_level&gt;=20" class="Druid_WaterCover" parms="" />
-					<ABILITY condition="$mob_level&gt;=30" class="Fighter_Charge" parms="" />
-					<ABILITY condition="$mob_level&gt;=50" class="Fighter_CalledStrike" parms="" />
-					<ABILITY condition="$mob_level&gt;=60" class="Fighter_Shrug" parms="" />
-					<ABILITY condition="$mob_level&gt;=70" class="Skill_Attack2" parms="" />		
-				</ABILITY>
+			<ABILITY select="all" condition="$mob_level&gt;=10">
+				<ABILITY condition="$mob_level&gt;=10" class="Fighter_WaterTactics" parms="" />
+				<ABILITY condition="$mob_level&gt;=20" class="Druid_WaterCover" parms="" />
+				<ABILITY condition="$mob_level&gt;=30" class="Fighter_Charge" parms="" />
+				<ABILITY condition="$mob_level&gt;=50" class="Fighter_CalledStrike" parms="" />
+				<ABILITY condition="$mob_level&gt;=60" class="Fighter_Shrug" parms="" />
+				<ABILITY condition="$mob_level&gt;=70" class="Skill_Attack2" parms="" />		
 			</ABILITY>
 		</MOB>
 	</MOB>
