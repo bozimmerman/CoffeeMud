@@ -204,12 +204,12 @@ See guides/RandomAreas.html for information about documents of this type.
 			<BEHAVIOR CLASS="Mobile" />
 			<BEHAVIOR CLASS="BrotherHelper" />
 		</MOB>
-		<MOB class="genmob" copyof="Doe" level="$level_range" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+		<MOB class="genmob" copyof="Doe" gender='F' level="$level_range" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
 			<BEHAVIOR CLASS="Mobile" />
 			<BEHAVIOR CLASS="BrotherHelper" />
 		</MOB>
 		
-		<MOB class="genmob" copyof="Buck" level="$level_range" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
+		<MOB class="genmob" copyof="Buck" gender='M' level="$level_range" name="$subtheme_adjusted_name" display="$subtheme_adjusted_display">
 			<BEHAVIOR CLASS="Mobile" />
 			<BEHAVIOR CLASS="BrotherHelper" />
 			<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
