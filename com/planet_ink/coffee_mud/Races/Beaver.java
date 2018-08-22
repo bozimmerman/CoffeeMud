@@ -93,7 +93,7 @@ public class Beaver extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "RodentSpeak", "WoodChopping", "Skill_Swim" };
+	private final String[]	racialAbilityNames			= { "RodentSpeak", "Chopping", "Skill_Swim" };
 	private final int[]		racialAbilityLevels			= { 1, 9, 3 };
 	private final int[]		racialAbilityProficiencies	= { 100, 50, 75 };
 	private final boolean[]	racialAbilityQuals			= { false, false, false };
@@ -197,7 +197,7 @@ public class Beaver extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch (age)
 		{
