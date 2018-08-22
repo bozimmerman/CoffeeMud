@@ -1197,14 +1197,25 @@ public class MOBloader
 			DB.update(clanStatements.toArray(new String[0]));
 	}
 
+	protected String getShortID(final Environmental E)
+	{
+		final String classID = ""+E;
+		final int x=classID.indexOf('@');
+		if(x<0)
+			return E.ID()+"@"+classID.hashCode()+Math.random();
+		else
+			return E.ID()+classID.substring(0, x).hashCode()+classID.substring(x);
+	}
+
 	protected String getDBItemUpdateString(final MOB mob, final Item thisItem)
 	{
 		CMLib.catalog().updateCatalogIntegrity(thisItem);
 		final String container=((thisItem.container()!=null)?(""+thisItem.container()):"");
 		final String name=DB.injectionClean(mob.Name());
+		final String itemID=getShortID(thisItem);
 		return "INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
 			+"CMITUR, CMITLV, CMITAB, CMHEIT"
-			+") values ('"+name+"','"+(thisItem)+"','"+thisItem.ID()+"',?,'"+container+"',"+thisItem.rawWornCode()+","
+			+") values ('"+name+"','"+(itemID)+"','"+thisItem.ID()+"',?,'"+container+"',"+thisItem.rawWornCode()+","
 		+thisItem.usesRemaining()+","+thisItem.basePhyStats().level()+","+thisItem.basePhyStats().ability()+","
 		+thisItem.basePhyStats().height()+")";
 	}
