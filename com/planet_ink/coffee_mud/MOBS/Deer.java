@@ -56,6 +56,7 @@ public class Deer extends StdMOB
 		basePhyStats().setLevel(2);
 		basePhyStats().setArmor(90);
 		baseCharStats().setMyRace(CMClass.getRace("Deer"));
+		baseCharStats().setStat(CharStats.STAT_GENDER, 'F');
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		baseState.setHitPoints(CMLib.dice().roll(basePhyStats().level(),20,basePhyStats().level()));
