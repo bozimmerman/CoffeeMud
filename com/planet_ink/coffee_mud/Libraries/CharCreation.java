@@ -793,6 +793,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
 	public LoginResult prelimChecks(final Session session, final MOB pickedMOB, final String login, final String email)
 	{
+
 		if(CMSecurity.isBanned(login))
 		{
 			session.println(L("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r"));
@@ -3849,7 +3850,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 		final boolean resetStats;
 		Room startRoom;
 		MOB mob=CMLib.players().getPlayer(login);
-		if((mob!=null)&&(mob.session()!=null))
+		if((mob != null)
+		&&(mob.playerStats()!=null))
+		{
+			final LoginResult prelimResults = prelimChecks(session,mob,mob.Name(),mob.playerStats().getEmail());
+			if(prelimResults!=null)
+				return prelimResults;
+		}
+		if((mob!=null)
+		&&(mob.session()!=null))
 		{
 			session.setMob(mob);
 			mob.setSession(session);
