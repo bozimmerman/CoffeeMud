@@ -171,7 +171,8 @@ public class Disease_Cannibalism extends Disease
 			if (msg.targetMinor() == CMMsg.TYP_EAT)
 			{
 				final Environmental food = msg.target();
-				if ((food != null) && (food.name().toLowerCase().indexOf(mob.charStats().raceName()) < 0))
+				if((food != null)
+				&&(food.name().toLowerCase().indexOf(mob.charStats().raceName()) < 0))
 				{
 					final CMMsg newMessage = CMClass.getMsg(mob, null, this, CMMsg.MSG_OK_VISUAL, L("^S<S-NAME> attempt(s) to eat @x1, but can't stomach it....^?", food.Name()));
 					if (mob.location().okMessage(mob, newMessage))
@@ -183,7 +184,9 @@ public class Disease_Cannibalism extends Disease
 		if (affected instanceof MOB)
 		{
 			final MOB mob = (MOB) affected;
-			if (msg.amITarget(mob) && (msg.tool() != null) && (msg.tool().ID().equals("Spell_Hungerless")))
+			if(msg.amITarget(mob)
+			&&(msg.tool() != null)
+			&&(msg.tool().ID().equals("Spell_Hungerless")))
 			{
 				mob.tell(L("You don't feel any less hungry."));
 				return false;
