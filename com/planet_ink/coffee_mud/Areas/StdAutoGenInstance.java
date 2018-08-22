@@ -61,7 +61,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	protected String					filePath		= "randareas/example.xml";
 	protected Map<String, String>		varMap			= new Hashtable<String, String>(1);
 
-	protected String getStrippedRoomID(String roomID)
+	protected String getStrippedRoomID(final String roomID)
 	{
 		final int x=roomID.indexOf('#');
 		if(x<0)
@@ -69,7 +69,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		return roomID.substring(x);
 	}
 
-	protected String convertToMyArea(String roomID)
+	protected String convertToMyArea(final String roomID)
 	{
 		final String strippedID=getStrippedRoomID(roomID);
 		if(strippedID==null)
@@ -95,13 +95,13 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		return parentA;
 	}
 
-	@Override 
+	@Override
 	public int getPercentRoomsCached()
 	{
 		return (getParentArea()==null)?0:100;
 	}
 
-	@Override 
+	@Override
 	public int[] getAreaIStats()
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
@@ -111,7 +111,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		int[] statData=(int[])Resources.getResource("STATS_"+areaName.toUpperCase());
 		if(statData!=null)
 			return statData;
-		List<Area> workList = new LinkedList<Area>();
+		final List<Area> workList = new LinkedList<Area>();
 		synchronized(("STATS_"+Name()).intern())
 		{
 			if(parentArea==null)
@@ -128,7 +128,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		{
 			int ct=0;
 			statData=new int[Area.Stats.values().length];
-			for(Area childA : workList)
+			for(final Area childA : workList)
 			{
 				final int[] theseStats=childA.getAreaIStats();
 				if(theseStats != emptyStats)
@@ -158,7 +158,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 		if((--childCheckDown)<=0)
 		{
 			childCheckDown=CMProps.getMillisPerMudHour()/CMProps.getTickMillis();
-			LinkedList<AreaInstanceChild> workList = new LinkedList<AreaInstanceChild>();
+			final LinkedList<AreaInstanceChild> workList = new LinkedList<AreaInstanceChild>();
 			final List<AreaInstanceChild> children = this.instanceChildren;
 			if(children == null)
 				return true;
@@ -174,41 +174,25 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					}
 				}
 			}
-			for(AreaInstanceChild child : workList)
+			for(final AreaInstanceChild child : workList)
 			{
 				final Area childA=child.A;
-				final List<WeakReference<MOB>> V=child.mobs;
-				boolean anyInside=false;
-				for(final WeakReference<MOB> wmob : V)
-				{
-					final MOB M=wmob.get();
-					if((M!=null)
-					&&CMLib.flags().isInTheGame(M,true)
-					&&(M.location()!=null)
-					&&(M.location().getArea()==childA))
-					{
-						anyInside=true;
-						break;
-					}
-				}
+				final boolean anyInside=getAreaPlayerMOBs(child).size()>0;
 				if(!anyInside)
 				{
 					synchronized(children)
 					{
 						children.remove(child);
 					}
-					for(final WeakReference<MOB> wmob : V)
-					{
-						final MOB M=wmob.get();
-						if((M!=null)
-						&&(M.location()!=null)
-						&&(M.location().getArea()==this))
-							M.setLocation(M.getStartRoom());
-					}
 					final MOB mob=CMClass.sampleMOB();
 					final LinkedList<Room> propRooms = new LinkedList<Room>();
 					for(final Enumeration<Room> r=childA.getProperMap();r.hasMoreElements();)
 						propRooms.add(r.nextElement());
+					for(final MOB M : getAreaPlayerMOBs(child))
+					{
+						if(M!=null)
+							safePlayerMOBMove(M,childA,M.getStartRoom());
+					}
 					for(final Iterator<Room> r=propRooms.iterator();r.hasNext();)
 					{
 						final Room R=r.next();
@@ -221,6 +205,55 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			}
 		}
 		return true;
+	}
+
+	protected List<MOB> getAreaPlayerMOBs(final AreaInstanceChild rec)
+	{
+		final List<WeakReference<MOB>> V=rec.mobs;
+		final List<MOB> list=new LinkedList<MOB>();
+		list.addAll(new ConvertingList<WeakReference<MOB>,MOB>(V,new Converter<WeakReference<MOB>,MOB>() {
+			@Override
+			public MOB convert(final WeakReference<MOB> obj)
+			{
+				return obj.get();
+			}
+		}));
+		for(final Iterator<Session> s=CMLib.sessions().sessions();s.hasNext();)
+		{
+			final Session S=s.next();
+			final MOB M=(S==null) ? null : S.mob();
+			if(M != null)
+			{
+				final Room R=M.location();
+				if((R!=null)
+				&&((R.getArea()==this)||(R.getArea()==rec.A))
+				&&(!list.contains(M)))
+					list.add(M);
+			}
+		}
+		return list;
+	}
+
+	protected void safePlayerMOBMove(final MOB M, final Area A, Room returnToRoom)
+	{
+		if(M != null)
+		{
+			final Room R= M.location();
+			if(returnToRoom == null)
+				returnToRoom = CMLib.map().getRandomRoom();
+			if((R!=null)
+			&&(R!=returnToRoom)
+			&&((R.getArea()==A)||(R.getArea()==this)))
+			{
+				if(CMLib.flags().isInTheGame(M,true)||(R.isInhabitant(M)))
+				{
+					returnToRoom.bringMobHere(M, true);
+					CMLib.commands().postLook(M, true);
+				}
+				else
+					M.setLocation(returnToRoom);
+			}
+		}
 	}
 
 	@Override
@@ -270,20 +303,9 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						}
 						if(rec != null)
 						{
-							final List<WeakReference<MOB>> V=rec.mobs;
-							for(final WeakReference<MOB> wM : V)
-							{
-								final MOB M=wM.get();
-								if((M!=null)
-								&&CMLib.flags().isInTheGame(M,true)
-								&&(M.location()!=null)
-								&&(M.location()!=returnToRoom)
-								&&(M.location().getArea()==this))
-								{
-									returnToRoom.bringMobHere(M, true);
-									CMLib.commands().postLook(M, true);
-								}
-							}
+							final List<MOB> list = getAreaPlayerMOBs(rec);
+							for(final MOB M : list)
+								safePlayerMOBMove(M,rec.A,returnToRoom);
 							synchronized(parentA.instanceChildren)
 							{
 								parentA.instanceChildren.remove(rec);
@@ -438,7 +460,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 						&&(val instanceof XMLTag)
 						&&(((XMLTag)val).tag().equalsIgnoreCase("area")))
 						{
-							final XMLTag piece=(XMLTag)val; 
+							final XMLTag piece=(XMLTag)val;
 							final String inserter = piece.getParmValue("INSERT");
 							if(inserter!=null)
 							{
@@ -597,7 +619,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	private final static String[] MYCODES={"GENERATIONFILEPATH","OTHERVARS"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMParms.indexOfIgnoreCase(STDAREACODES, code)>=0)
 			return super.getStat(code);
@@ -615,7 +637,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMParms.indexOfIgnoreCase(STDAREACODES, code)>=0)
 			super.setStat(code, val);
@@ -689,19 +711,19 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 	}
 
 	@Override
-	public void setGeneratorXmlPath(String path)
+	public void setGeneratorXmlPath(final String path)
 	{
 		filePath = path;
 	}
 
 	@Override
-	public void setAutoGenVariables(Map<String, String> vars)
+	public void setAutoGenVariables(final Map<String, String> vars)
 	{
 		varMap = vars;
 	}
 
 	@Override
-	public void setAutoGenVariables(String vars)
+	public void setAutoGenVariables(final String vars)
 	{
 		setAutoGenVariables(CMParms.parseEQParms(vars));
 	}
