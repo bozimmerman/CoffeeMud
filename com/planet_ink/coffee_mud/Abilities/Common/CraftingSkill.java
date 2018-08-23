@@ -832,7 +832,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			final List<String> recipe = new XVector<String>(commands);
 			recipe.remove(0);
-			final String recipeName = CMParms.combine(commands);
+			final String recipeName = CMParms.combine(recipe);
 			List<Integer> rscs=myResources();
 			if(rscs.size()==0)
 				rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
@@ -841,37 +841,57 @@ public class CraftingSkill extends GatheringSkill
 			&&((rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)>0))
 				material = rscs.get(0).intValue();
 			else
-			switch(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)
 			{
-			case RawMaterial.MATERIAL_CLOTH:
-				material = RawMaterial.RESOURCE_COTTON;
-				break;
-			case RawMaterial.MATERIAL_METAL:
-			case RawMaterial.MATERIAL_MITHRIL:
-				material = RawMaterial.RESOURCE_IRON;
-				break;
-			case RawMaterial.MATERIAL_WOODEN:
-				material = RawMaterial.RESOURCE_WOOD;
-				break;
-			case RawMaterial.MATERIAL_ROCK:
-				material = RawMaterial.RESOURCE_STONE;
-				break;
-			default:
-				material=RawMaterial.CODES.MOST_FREQUENT(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK);
-				break;
+				switch(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK)
+				{
+				case RawMaterial.MATERIAL_CLOTH:
+					material = RawMaterial.RESOURCE_COTTON;
+					break;
+				case RawMaterial.MATERIAL_METAL:
+				case RawMaterial.MATERIAL_MITHRIL:
+					material = RawMaterial.RESOURCE_IRON;
+					break;
+				case RawMaterial.MATERIAL_WOODEN:
+					material = RawMaterial.RESOURCE_WOOD;
+					break;
+				case RawMaterial.MATERIAL_ROCK:
+					material = RawMaterial.RESOURCE_STONE;
+					break;
+				default:
+					material=RawMaterial.CODES.MOST_FREQUENT(rscs.get(0).intValue()&RawMaterial.MATERIAL_MASK);
+					break;
+				}
 			}
-			final ItemKeyPair pair = craftItem(mob,recipe,material,false);
-			if(pair == null)
+			final List<List<String>> recipes=addRecipes(mob,loadRecipes());
+			final List<List<String>> matches=matchingRecipeNames(recipes,recipeName,true);
+			if(matches.size()>0)
 			{
-				commonTell(mob,L("You don't know how to make '@x1'",recipeName));
+				for(int i=matches.size()-1;i>=0;i--)
+				{
+					final int level = CMath.s_int(matches.get(i).get(RCP_LEVEL));
+					if(level>xlevel(mob))
+						matches.remove(i);
+				}
+			}
+			if(matches.size() == 0)
+			{
+				commonTell(mob,L("You don't know how to make anything called '@x1'",recipeName));
 			}
 			else
 			{
-				final String viewDesc = CMLib.coffeeShops().getViewDescription(mob, pair.item);
-				commonTell(mob,viewDesc);
-				pair.item.destroy();
-				if(pair.key!=null)
-					pair.key.destroy();
+				final ItemKeyPair pair = craftItem(mob,recipe,material,false);
+				if(pair == null)
+				{
+					commonTell(mob,L("You don't know how to make anything called '@x1'",recipeName));
+				}
+				else
+				{
+					final String viewDesc = CMLib.coffeeShops().getViewDescription(mob, pair.item);
+					commonTell(mob,viewDesc);
+					pair.item.destroy();
+					if(pair.key!=null)
+						pair.key.destroy();
+				}
 			}
 			return true;
 		}
