@@ -1210,7 +1210,7 @@ public class MOBloader
 	protected String getDBItemUpdateString(final MOB mob, final Item thisItem)
 	{
 		CMLib.catalog().updateCatalogIntegrity(thisItem);
-		final String container=((thisItem.container()!=null)?(""+thisItem.container()):"");
+		final String container=((thisItem.container()!=null)?(""+getShortID(thisItem.container())):"");
 		final String name=DB.injectionClean(mob.Name());
 		final String itemID=getShortID(thisItem);
 		return "INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "

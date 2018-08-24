@@ -1241,7 +1241,7 @@ public class RoomLoader
 		+"'"+roomID+"',"
 		+"'"+itemID+"',"
 		+"'"+thisItem.ID()+"',"
-		+"'"+((container!=null)?(""+container):"")+"',"
+		+"'"+((container!=null)?(""+getShortID(container)):"")+"',"
 		+"?,"
 		+thisItem.basePhyStats().rejuv()+","
 		+thisItem.usesRemaining()+","
