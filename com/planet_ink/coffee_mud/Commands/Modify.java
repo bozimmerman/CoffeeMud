@@ -50,8 +50,8 @@ public class Modify extends StdCommand
 	}
 
 	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Environmental.class}};
-	
-	public void items(MOB mob, List<String> commands)
+
+	public void items(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -130,7 +130,7 @@ public class Modify extends StdCommand
 			if(SK!=null)
 			{
 				final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
-				Environmental E=shop.getStock(itemID,mob);
+				final Environmental E=shop.getStock(itemID,mob);
 				if(E instanceof Item)
 					modItem=(Item)E;
 			}
@@ -140,7 +140,7 @@ public class Modify extends StdCommand
 				if(SK!=null)
 				{
 					final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
-					Environmental E=shop.getStock(itemID,mob);
+					final Environmental E=shop.getStock(itemID,mob);
 					if(E instanceof Item)
 						modItem=(Item)E;
 				}
@@ -249,21 +249,21 @@ public class Modify extends StdCommand
 		copyItem.destroy();
 	}
 
-	protected void flunkRoomCmd(MOB mob)
+	protected void flunkRoomCmd(final MOB mob)
 	{
 		mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY ROOM [NAME, AREA, DESCRIPTION, "
 				+ "AFFECTS, BEHAVIORS, CLASS, XGRID, YGRID, ?] [TEXT]\n\r"));
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 	}
 
-	protected void flunkAreaCmd(MOB mob)
+	protected void flunkAreaCmd(final MOB mob)
 	{
 		mob.tell(L("You have failed to specify the proper fields.\n\rThe format is MODIFY AREA [NAME, DESCRIPTION, CLIMATE, "
 				+ "FILE, AFFECTS, BEHAVIORS, ADDSUB, DELSUB, XGRID, YGRID, ?] [TEXT]\n\r"));
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> flub(s) a powerful spell."));
 	}
 
-	public void rooms(MOB mob, List<String> commands)
+	public void rooms(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(mob.location().roomID().equals(""))
@@ -492,7 +492,7 @@ public class Modify extends StdCommand
 		Log.sysOut("Rooms",mob.Name()+" modified room "+mob.location().roomID()+".");
 	}
 
-	public void accounts(MOB mob, List<String> commands)
+	public void accounts(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around the heavens."));
@@ -546,7 +546,7 @@ public class Modify extends StdCommand
 		CMLib.database().DBUpdateAccount(theAccount);
 	}
 
-	public void areas(MOB mob, List<String> commands)
+	public void areas(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(mob.location()==null)
@@ -791,7 +791,7 @@ public class Modify extends StdCommand
 			CMLib.database().DBUpdateArea(oldName,myArea);
 			CMLib.map().renameRooms(myArea,oldName,allMyDamnRooms);
 		}
-		for(Area A : alsoUpdateAreas)
+		for(final Area A : alsoUpdateAreas)
 		{
 			if((A!=myArea)&&(!A.Name().equals(myArea.Name())))
 				CMLib.database().DBUpdateArea(A.Name(),A);
@@ -799,7 +799,7 @@ public class Modify extends StdCommand
 		Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
 	}
 
-	public void quests(MOB mob, List<String> commands)
+	public void quests(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -962,7 +962,7 @@ public class Modify extends StdCommand
 		}
 	}
 
-	public void updateChangedExit(MOB mob, Room baseRoom, Exit thisExit, Exit prevExit)
+	public void updateChangedExit(final MOB mob, final Room baseRoom, final Exit thisExit, final Exit prevExit)
 	{
 		thisExit.recoverPhyStats();
 		CMLib.database().DBUpdateExits(baseRoom);
@@ -1000,7 +1000,7 @@ public class Modify extends StdCommand
 		baseRoom.getArea().fillInAreaRoom(baseRoom);
 	}
 
-	public void exits(MOB mob, List<String> commands)
+	public void exits(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(mob.location().roomID().equals(""))
@@ -1077,7 +1077,7 @@ public class Modify extends StdCommand
 		updateChangedExit(mob,mob.location(),thisExit,copyExit);
 	}
 
-	public boolean races(MOB mob, List<String> commands)
+	public boolean races(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -1109,7 +1109,7 @@ public class Modify extends StdCommand
 		return true;
 	}
 
-	public void allQualify(MOB mob, List<String> commands)
+	public void allQualify(final MOB mob, final List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<4)
@@ -1149,7 +1149,7 @@ public class Modify extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The skill of the world just changed!"));
 	}
 
-	public boolean classes(MOB mob, List<String> commands)
+	public boolean classes(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -1181,7 +1181,7 @@ public class Modify extends StdCommand
 		return true;
 	}
 
-	public boolean abilities(MOB mob, List<String> commands)
+	public boolean abilities(final MOB mob, final List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<3)
@@ -1225,7 +1225,7 @@ public class Modify extends StdCommand
 		return true;
 	}
 
-	public boolean languages(MOB mob, List<String> commands)
+	public boolean languages(final MOB mob, final List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<3)
@@ -1269,7 +1269,7 @@ public class Modify extends StdCommand
 		return true;
 	}
 
-	public boolean craftSkills(MOB mob, List<String> commands)
+	public boolean craftSkills(final MOB mob, final List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<3)
@@ -1313,7 +1313,7 @@ public class Modify extends StdCommand
 		return true;
 	}
 
-	public void components(MOB mob, List<String> commands)
+	public void components(final MOB mob, final List<String> commands)
 	throws IOException
 	{
 		if(commands.size()<3)
@@ -1350,7 +1350,7 @@ public class Modify extends StdCommand
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The complication of skill usage just increased!"));
 	}
 
-	public void socials(MOB mob, List<String> commands)
+	public void socials(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(mob.isMonster())
@@ -1418,7 +1418,7 @@ public class Modify extends StdCommand
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The happiness of all mankind has just fluxuated!"));
 	}
 
-	public void players(MOB mob, List<String> commands)
+	public void players(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -1429,7 +1429,7 @@ public class Modify extends StdCommand
 		}
 
 		final String mobID=commands.get(2);
-		MOB M=CMLib.players().getLoadPlayer(mobID);
+		final MOB M=CMLib.players().getLoadPlayer(mobID);
 		if(M!=null)
 		{
 			if(M.playerStats()!=null)
@@ -1519,7 +1519,7 @@ public class Modify extends StdCommand
 		copyMOB.destroy();
 	}
 
-	public boolean achievements(MOB mob, List<String> commands)
+	public boolean achievements(final MOB mob, final List<String> commands)
 	{
 		final boolean accountSys = CMProps.isUsingAccountSystem();
 		if(commands.size()<((accountSys)?4:3))
@@ -1533,7 +1533,7 @@ public class Modify extends StdCommand
 		}
 
 		final String agentStr=accountSys?commands.get(2).toString():"PLAYER";
-		AccountStats.Agent agent=(AccountStats.Agent)CMath.s_valueOf(AccountStats.Agent.class, agentStr.toUpperCase().trim());
+		final AccountStats.Agent agent=(AccountStats.Agent)CMath.s_valueOf(AccountStats.Agent.class, agentStr.toUpperCase().trim());
 		if(agent == null)
 		{
 			mob.tell(L("'@x1' is an unknown achievement type.  Try @x2!",agentStr,CMParms.toListString(AccountStats.Agent.values())));
@@ -1553,7 +1553,7 @@ public class Modify extends StdCommand
 		return true;
 	}
 
-	public void manufacturer(MOB mob, List<String> commands) throws IOException
+	public void manufacturer(final MOB mob, final List<String> commands) throws IOException
 	{
 		if(commands.size()<3)
 		{
@@ -1578,7 +1578,7 @@ public class Modify extends StdCommand
 		Log.sysOut(mob.Name()+" modified manufacturer "+manufacturer.name()+".");
 	}
 
-	public void mobs(MOB mob, List<String> commands)
+	public void mobs(final MOB mob, final List<String> commands)
 		throws IOException
 	{
 
@@ -1675,12 +1675,12 @@ public class Modify extends StdCommand
 		copyMOB.destroy();
 	}
 
-	public boolean errorOut(MOB mob)
+	public boolean errorOut(final MOB mob)
 	{
 		mob.tell(L("You are not allowed to do that here."));
 		return false;
 	}
-	
+
 	protected String listOfThings()
 	{
 		return "ITEM, RACE, CLASS, ABILITY, LANGUAGE, CRAFTSKILL, "
@@ -1689,7 +1689,7 @@ public class Modify extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";
@@ -2284,7 +2284,7 @@ public class Modify extends StdCommand
 						return errorOut(mob);
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,L("<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>."));
 					final Exit copyExit=(Exit)thang.copyOf();
-					CMLib.genEd().genMiscText(mob,thang,1,-1);
+					CMLib.genEd().genMiscText(mob,thang,1,1);
 					updateChangedExit(mob, mob.location(), (Exit)thang, copyExit);
 				}
 				else
@@ -2338,7 +2338,7 @@ public class Modify extends StdCommand
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
@@ -2353,7 +2353,7 @@ public class Modify extends StdCommand
 		}
 		return Boolean.FALSE;
 	}
-	
+
 	@Override
 	public boolean canBeOrdered()
 	{
@@ -2361,9 +2361,9 @@ public class Modify extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowedContainsAny(mob, mob.location(), CMSecurity.SECURITY_CMD_GROUP);
 	}
-	
+
 }
