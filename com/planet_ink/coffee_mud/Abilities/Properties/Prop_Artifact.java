@@ -106,7 +106,7 @@ public class Prop_Artifact extends Property
 			waitToReload=System.currentTimeMillis()+5000;
 			return;
 		}
-		final int x=text.indexOf(';');
+		int x=text.indexOf(';');
 		if(x>=0)
 		{
 			itemID=text.substring(x+1);
@@ -115,7 +115,12 @@ public class Prop_Artifact extends Property
 		else
 		if(affected!=null)
 		{
-			itemID=""+affected+"_"+Math.random();
+			final String classID = ""+affected;
+			x=classID.indexOf('@');
+			if(x<0)
+				itemID = affected.ID()+"@"+classID.hashCode()+Math.random();
+			else
+				itemID = affected.ID()+classID.substring(0, x).hashCode()+classID.substring(x)+Math.random();
 			super.setMiscText(text+";"+itemID);
 		}
 		autodrop=CMParms.getParmBool(text,"AUTODROP",true);
