@@ -57,7 +57,7 @@ public class Prop_Artifact extends Property
 	}
 
 	protected static final Map<String, Item>	registeredArtifacts	= new Hashtable<String, Item>();
-	
+
 	private String	itemID		= null;
 	private boolean	autodrop	= true;
 	private boolean	nocast		= true;
@@ -70,13 +70,18 @@ public class Prop_Artifact extends Property
 	{
 		if(itemID==null)
 		{
-			final int x=miscText.indexOf(';');
+			int x=miscText.indexOf(';');
 			if(x>=0)
 				itemID=miscText.substring(x+1);
 			else
 			if(affected!=null)
 			{
-				itemID = affected+"_"+Math.random();
+				final String classID = ""+affected;
+				x=classID.indexOf('@');
+				if(x<0)
+					itemID = affected.ID()+"@"+classID.hashCode()+Math.random();
+				else
+					itemID = affected.ID()+classID.substring(0, x).hashCode()+classID.substring(x)+Math.random();
 				miscText += ";" + itemID;
 			}
 		}
