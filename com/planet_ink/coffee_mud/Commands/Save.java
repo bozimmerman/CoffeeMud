@@ -212,10 +212,15 @@ public class Save extends StdCommand
 						synchronized(("SYNC"+R.roomID()).intern())
 						{
 							R=CMLib.map().getRoom(R);
-							if((mob.session()==null)||(mob.session().isStopped())||(R==null)||(R.getArea()==null))
+							if((mob.session()==null)
+							||(mob.session().isStopped())
+							||(R==null)
+							||(R.getArea()==null))
 								continue;
 							final Area A=R.getArea();
 							R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
+							if(R==null)
+								continue;
 							final Area.State oldFlag=A.getAreaState();
 							A.setAreaState(Area.State.FROZEN);
 							A.setAreaState(oldFlag);
