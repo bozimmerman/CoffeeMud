@@ -56,6 +56,29 @@ public class RoomLoader
 		public Hashtable<String,Hashtable<MOB, String>> mobRides=new Hashtable<String,Hashtable<MOB, String>>();
 	}
 
+	protected DBPreparedBatchEntry doBulkInsert(final StringBuilder str, final List<String> clobs, final String sql, final String clob)
+	{
+		if(str.length()==0)
+		{
+			str.append(sql);
+			clobs.add(clob+" ");
+		}
+		else
+		if(str.length()<512000)
+		{
+			final int x=sql.indexOf(" values ");
+			str.append(", ").append(sql.substring(x+7));
+			clobs.add(clob+" ");
+		}
+		else
+		{
+			final DBPreparedBatchEntry entry = new DBPreparedBatchEntry(str.toString(),clobs.toArray(new String[0]));
+			str.setLength(0);
+			return entry;
+		}
+		return null;
+	}
+
 	public String DBIsAreaName(final String name)
 	{
 		DBConnection D=null;
@@ -1202,7 +1225,7 @@ public class RoomLoader
 			return E.ID()+classID.substring(0, x).hashCode()+classID.substring(x);
 	}
 
-	protected DBPreparedBatchEntry getDBCreateItemString(final String roomID, final Item thisItem)
+	protected Pair<String,String> getDBCreateItemString(final String roomID, final Item thisItem)
 	{
 		final boolean catalog=((roomID!=null)&&(roomID.startsWith("CATALOG_")));
 		thisItem.setExpirationDate(0); // saved items won't clear!
@@ -1225,7 +1248,7 @@ public class RoomLoader
 			if(dataI!=null)
 				text+=dataI.data(null);
 		}
-		return new DBPreparedBatchEntry(
+		return new Pair<String,String>(
 		"INSERT INTO CMROIT ("
 		+"CMROID, "
 		+"CMITNM, "
@@ -1253,13 +1276,18 @@ public class RoomLoader
 
 	public void DBCreateThisItem(final String roomID, final Item thisItem)
 	{
-		DB.updateWithClobs(getDBCreateItemString(roomID,thisItem));
+		final Pair<String,String> sql=getDBCreateItemString(roomID,thisItem);
+		final DBPreparedBatchEntry entry = new DBPreparedBatchEntry(sql.first,sql.second);
+		DB.updateWithClobs(entry);
 	}
 
 	public void DBUpdateTheseItems(final Room room, final List<Item> items)
 	{
 		if((!room.isSavable())||(room.amDestroyed()))
 			return;
+		final boolean useBulkInserts = DB.useBulkInserts();
+		final StringBuilder bulkSQL = new StringBuilder("");
+		final List<String> bulkClobs = new ArrayList<String>();
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROIT)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Start item update for room "+room.roomID());
 		final List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
@@ -1268,8 +1296,18 @@ public class RoomLoader
 		{
 			final Item thisItem=items.get(i);
 			CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisItem);
-			statements.add(getDBCreateItemString(room.roomID(),thisItem));
+			final Pair<String,String> sqlpair=getDBCreateItemString(room.roomID(),thisItem);
+			if(!useBulkInserts)
+				statements.add(new DBPreparedBatchEntry(sqlpair.first,sqlpair.second));
+			else
+			{
+				final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sqlpair.first,sqlpair.second);
+				if(entry != null)
+					statements.add(entry);
+			}
 		}
+		if((bulkSQL.length()>0) && useBulkInserts)
+			statements.add(new DBPreparedBatchEntry(bulkSQL.toString(),bulkClobs.toArray(new String[0])));
 		DB.updateWithClobs(statements);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROIT)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Finished items update for room "+room.roomID());
@@ -1290,6 +1328,9 @@ public class RoomLoader
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROEX)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Starting exit update for room "+room.roomID());
 		final List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
+		final boolean useBulkInserts = DB.useBulkInserts();
+		final StringBuilder bulkSQL = new StringBuilder("");
+		final List<String> bulkClobs = new ArrayList<String>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'"));
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
@@ -1303,20 +1344,27 @@ public class RoomLoader
 			if((thisRoom!=null)||(thisExit!=null))
 			{
 				CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisExit);
-				statements.add(new DBPreparedBatchEntry(
-				"INSERT INTO CMROEX ("
-				+"CMROID, "
-				+"CMDIRE, "
-				+"CMEXID, "
-				+"CMEXTX, "
-				+"CMNRID"
-				+") values ("
-				+"'"+room.roomID()+"',"
-				+d+","
-				+"'"+((thisExit==null)?" ":thisExit.ID())+"',"
-				+"?,"
-				+"'"+((thisRoom==null)?" ":thisRoom.roomID())+"')",
-				((thisExit==null)?" ":thisExit.text())));
+				final String fullSQL ="INSERT INTO CMROEX ("
+						+"CMROID, "
+						+"CMDIRE, "
+						+"CMEXID, "
+						+"CMEXTX, "
+						+"CMNRID"
+						+") values ("
+						+"'"+room.roomID()+"',"
+						+d+","
+						+"'"+((thisExit==null)?" ":thisExit.ID())+"',"
+						+"?,"
+						+"'"+((thisRoom==null)?" ":thisRoom.roomID())+"')";
+				final String exitText = (thisExit==null)?" ":thisExit.text();
+				if(!useBulkInserts)
+					statements.add(new DBPreparedBatchEntry(fullSQL,exitText));
+				else
+				{
+					final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,fullSQL,exitText);
+					if(entry != null)
+						statements.add(entry);
+				}
 			}
 		}
 		if(room instanceof GridLocale)
@@ -1349,7 +1397,7 @@ public class RoomLoader
 					final StringBuffer exitStr=new StringBuffer("");
 					for (final String string : oldStrs)
 						exitStr.append(string);
-					statements.add(new DBPreparedBatchEntry(
+					final String fullSQL =
 					"INSERT INTO CMROEX ("
 					+"CMROID, "
 					+"CMDIRE, "
@@ -1361,11 +1409,21 @@ public class RoomLoader
 					+(256+(++ordinal))+","
 					+"'Open',"
 					+"?,"
-					+"'"+R.roomID()+"')",
-					exitStr.toString()));
+					+"'"+R.roomID()+"')";
+					final String exitText = exitStr.toString();
+					if(!useBulkInserts)
+						statements.add(new DBPreparedBatchEntry(fullSQL,exitText));
+					else
+					{
+						final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,fullSQL,exitText);
+						if(entry != null)
+							statements.add(entry);
+					}
 				}
 			}
 		}
+		if((bulkSQL.length()>0) && useBulkInserts)
+			statements.add(new DBPreparedBatchEntry(bulkSQL.toString(),bulkClobs.toArray(new String[0])));
 		DB.updateWithClobs(statements);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROEX)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Finished exit update for room "+room.roomID());
@@ -1373,10 +1431,12 @@ public class RoomLoader
 
 	public void DBCreateThisMOB(final String roomID, final MOB thisMOB)
 	{
-		DB.updateWithClobs(getDBCreateMOBString(roomID,thisMOB));
+		final Pair<String,String> sql= getDBCreateMOBString(roomID,thisMOB);
+		final DBPreparedBatchEntry entry = new DBPreparedBatchEntry(sql.first,sql.second);
+		DB.updateWithClobs(entry);
 	}
 
-	public DBPreparedBatchEntry getDBCreateMOBString(final String roomID, final MOB thisMOB)
+	public Pair<String,String> getDBCreateMOBString(final String roomID, final MOB thisMOB)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Creating mob "+thisMOB.name()+" for room "+roomID);
@@ -1406,7 +1466,7 @@ public class RoomLoader
 			if(dataM!=null)
 				text+=dataM.data(null);
 		}
-		return new DBPreparedBatchEntry(
+		return new Pair<String,String>(
 		"INSERT INTO CMROCH ("
 		+"CMROID, "
 		+"CMCHNM, "
@@ -1433,21 +1493,33 @@ public class RoomLoader
 	{
 		if((!room.isSavable())||(room.amDestroyed()))
 			return;
+		final boolean useBulkInserts = DB.useBulkInserts();
+		final StringBuilder bulkSQL = new StringBuilder("");
+		final List<String> bulkClobs = new ArrayList<String>();
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Updating mobs for room "+room.roomID());
 		if(mobs==null)
-			mobs=new Vector<MOB>();
-		final List<DBPreparedBatchEntry> statements=new Vector<DBPreparedBatchEntry>();
+			mobs=new ArrayList<MOB>();
+		final List<DBPreparedBatchEntry> statements=new ArrayList<DBPreparedBatchEntry>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'"));
 		for(int m=0;m<mobs.size();m++)
 		{
 			final MOB thisMOB=mobs.get(m);
 			CMLib.map().registerWorldObjectLoaded(room.getArea(), room, thisMOB);
-			final DBConnector.DBPreparedBatchEntry entry=getDBCreateMOBString(room.roomID(),thisMOB);
-			statements.add(entry);
+			final Pair<String,String> sqlpair= getDBCreateMOBString(room.roomID(),thisMOB);
+			if(!useBulkInserts)
+				statements.add(new DBPreparedBatchEntry(sqlpair.first,sqlpair.second));
+			else
+			{
+				final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sqlpair.first,sqlpair.second);
+				if(entry != null)
+					statements.add(entry);
+			}
 		}
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMROCH)||CMSecurity.isDebugging(CMSecurity.DbgFlag.DBROOMS)))
 			Log.debugOut("RoomLoader","Done updating mobs for room "+room.roomID());
+		if((bulkSQL.length()>0) && useBulkInserts)
+			statements.add(new DBPreparedBatchEntry(bulkSQL.toString(),bulkClobs.toArray(new String[0])));
 		DB.updateWithClobs(statements);
 	}
 

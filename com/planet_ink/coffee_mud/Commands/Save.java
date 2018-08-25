@@ -52,13 +52,13 @@ public class Save extends StdCommand
 		ITEMS,
 		MOBS
 	}
-	
-	private int numSavableInhabitants(Room room)
+
+	private int numSavableInhabitants(final Room room)
 	{
 		int ct=0;
 		for(int i=0;i<room.numInhabitants();i++)
 		{
-			MOB M=room.fetchInhabitant(i);
+			final MOB M=room.fetchInhabitant(i);
 			if((M!=null)
 			&&(M.isSavable())
 			&&((M.amFollowing()==null)||(!M.amFollowing().isPlayer())))
@@ -66,20 +66,20 @@ public class Save extends StdCommand
 		}
 		return ct;
 	}
-	
-	private int numSavableItems(Room room)
+
+	private int numSavableItems(final Room room)
 	{
 		int ct=0;
 		for(int i=0;i<room.numItems();i++)
 		{
-			Item I=room.getItem(i);
+			final Item I=room.getItem(i);
 			if((I!=null)&&(I.isSavable()))
 				ct++;
 		}
 		return ct;
 	}
-	
-	public boolean clearSaveAndRestart(final MOB mob, Room room, SaveTask taskCode, boolean noPrompt) throws IOException
+
+	public boolean clearSaveAndRestart(final MOB mob, Room room, final SaveTask taskCode, final boolean noPrompt) throws IOException
 	{
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
@@ -87,29 +87,29 @@ public class Save extends StdCommand
 			CMLib.threads().clearDebri(room,0);
 			if((!noPrompt)&&(mob!=null)&&(mob.session()!=null))
 			{
-				int[] counts = CMLib.database().DBCountRoomMobsItems(room.roomID());
+				final int[] counts = CMLib.database().DBCountRoomMobsItems(room.roomID());
 				int mobCountDiff = 0;
 				if((taskCode == SaveTask.ALL) || (taskCode == SaveTask.MOBS))
 					mobCountDiff= counts[0] - this.numSavableInhabitants(room);
 				int itemCountDiff = 0;
 				if((taskCode == SaveTask.ALL) || (taskCode == SaveTask.ITEMS))
 					itemCountDiff= counts[1] - this.numSavableItems(room);
-				StringBuilder msg = new StringBuilder();
+				final StringBuilder msg = new StringBuilder();
 				if(mobCountDiff < 0)
 					msg.append(L("add @x1 mob(s) ",""+(-mobCountDiff)));
 				else
 				if(mobCountDiff > 0)
 					msg.append(L("delete @x1 mob(s) ",""+(mobCountDiff)));
-				
+
 				if((itemCountDiff != 0) && (mobCountDiff != 0))
 					msg.append(L("and "));
-				
+
 				if(itemCountDiff < 0)
 					msg.append(L("add @x1 item(s) ",""+(-itemCountDiff)));
 				else
 				if(itemCountDiff > 0)
 					msg.append(L("delete @x1 item(s) ",""+(itemCountDiff)));
-				
+
 				if(msg.length() > 0)
 				{
 					if((!mob.session().confirm(L("Saving @x1 will @x2. Are you sure (Y/n)?",
@@ -120,7 +120,7 @@ public class Save extends StdCommand
 					}
 				}
 			}
-			
+
 			if((taskCode == SaveTask.ALL) || (taskCode == SaveTask.ITEMS))
 			{
 				CMLib.database().DBUpdateItems(room);
@@ -133,7 +133,7 @@ public class Save extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if((commands.size()==1)&&CMSecurity.isSaveFlag(CMSecurity.SaveFlag.NOPLAYERS))
@@ -195,6 +195,41 @@ public class Save extends StdCommand
 				}
 				else
 					return false;
+			}
+			else
+			if(firstCommand.equalsIgnoreCase("REWORLD"))
+			{
+				if((mob.session()!=null)
+				&&(mob.session().confirm(L("This will load, and then re-save ever item in the world, for no reason.  Are you sure (N/y)?"),"N")))
+				{
+					for(final Enumeration<Room> r = CMLib.map().rooms();r.hasMoreElements();)
+					{
+						Room R=r.nextElement();
+						if((R==null)||(R.roomID()==null)||(R.roomID().length()==0))
+							continue;
+						if(!CMSecurity.isAllowed(mob,R,CMSecurity.SecFlag.GMODIFY))
+							continue;
+						synchronized(("SYNC"+R.roomID()).intern())
+						{
+							R=CMLib.map().getRoom(R);
+							if((mob.session()==null)||(mob.session().isStopped())||(R==null)||(R.getArea()==null))
+								continue;
+							final Area A=R.getArea();
+							R=CMLib.coffeeMaker().makeNewRoomContent(R,false);
+							final Area.State oldFlag=A.getAreaState();
+							A.setAreaState(Area.State.FROZEN);
+							A.setAreaState(oldFlag);
+							if(R.numItems()>0)
+							{
+								final ArrayList<Item> items=new ArrayList<Item>(R.numItems());
+								for(final Enumeration<Item> i=R.items();i.hasMoreElements();)
+									items.add(i.nextElement());
+								CMLib.database().DBUpdateTheseItems(R, items);
+							}
+							R.destroy();
+						}
+					}
+				}
 			}
 			else
 			{
@@ -282,7 +317,7 @@ public class Save extends StdCommand
 				mob.tell(L("You are not allowed to save factions."));
 				return false;
 			}
-			final String factionID = (commands.size()>2) ? CMParms.combine(commands,2) : ""; 
+			final String factionID = (commands.size()>2) ? CMParms.combine(commands,2) : "";
 			final Faction F=CMLib.factions().getFaction(factionID);
 			if(F==null)
 			{
@@ -343,7 +378,7 @@ public class Save extends StdCommand
 	}
 
 	@Override
-	public boolean securityCheck(MOB mob)
+	public boolean securityCheck(final MOB mob)
 	{
 		return CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDROOMS)
 			 ||CMSecurity.isAllowed(mob,mob.location(),CMSecurity.SecFlag.CMDPLAYERS)

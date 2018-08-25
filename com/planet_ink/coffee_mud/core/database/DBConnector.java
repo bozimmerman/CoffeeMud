@@ -131,6 +131,11 @@ public class DBConnector
 		return dbService;
 	}
 
+	public boolean useBulkInserts()
+	{
+		return this.dbTransact;
+	}
+
 	public int getRecordCount(final DBConnection D, final ResultSet R)
 	{
 		if(D!=null)

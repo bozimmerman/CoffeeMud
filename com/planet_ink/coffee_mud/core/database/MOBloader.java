@@ -1220,19 +1220,54 @@ public class MOBloader
 		+thisItem.basePhyStats().height()+")";
 	}
 
+	protected DBPreparedBatchEntry doBulkInsert(final StringBuilder str, final List<String> clobs, final String sql, final String clob)
+	{
+		if(str.length()==0)
+		{
+			str.append(sql);
+			clobs.add(clob+" ");
+		}
+		else
+		if(str.length()<512000)
+		{
+			final int x=sql.indexOf(" values ");
+			str.append(", ").append(sql.substring(x+7));
+			clobs.add(clob+" ");
+		}
+		else
+		{
+			final DBPreparedBatchEntry entry = new DBPreparedBatchEntry(str.toString(),clobs.toArray(new String[0]));
+			str.setLength(0);
+			return entry;
+		}
+		return null;
+	}
+
 	private List<DBPreparedBatchEntry> getDBItemUpdateStrings(final MOB mob)
 	{
-		final HashSet<String> done=new HashSet<String>();
+		final HashSet<Item> done=new HashSet<Item>();
 		final List<DBPreparedBatchEntry> strings=new LinkedList<DBPreparedBatchEntry>();
+		final StringBuilder bulkSQL=new StringBuilder("");
+		final List<String> bulkClobs=new ArrayList<String>();
+		final boolean useBulkInserts = DB.useBulkInserts();
 		for(int i=0;i<mob.numItems();i++)
 		{
 			final Item thisItem=mob.getItem(i);
-			if((thisItem!=null)&&(!done.contains(""+thisItem))&&(thisItem.isSavable()))
+			if((thisItem!=null)
+			&&(!done.contains(thisItem))
+			&&(thisItem.isSavable()))
 			{
 				CMLib.catalog().updateCatalogIntegrity(thisItem);
 				final String sql=getDBItemUpdateString(mob,thisItem);
-				strings.add(new DBPreparedBatchEntry(sql,thisItem.text()+" "));
-				done.add(""+thisItem);
+				if(!useBulkInserts)
+					strings.add(new DBPreparedBatchEntry(sql,thisItem.text()+" "));
+				else
+				{
+					final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,thisItem.text()+" ");
+					if(entry != null)
+						strings.add(entry);
+				}
+				done.add(thisItem);
 			}
 		}
 		final PlayerStats pStats=mob.playerStats();
@@ -1284,7 +1319,7 @@ public class MOBloader
 			finalCollection.addAll(extraItems);
 			for(final Item thisItem : finalCollection)
 			{
-				if(!done.contains(""+thisItem))
+				if(!done.contains(thisItem))
 				{
 					CMLib.catalog().updateCatalogIntegrity(thisItem);
 					final Item cont=thisItem.ultimateContainer(null);
@@ -1292,11 +1327,20 @@ public class MOBloader
 					final String roomID=((cont.owner()==null)&&(thisItem instanceof SpaceObject)&&(CMLib.map().isObjectInSpace((SpaceObject)thisItem)))?
 							("SPACE."+CMParms.toListString(((SpaceObject)thisItem).coordinates())):CMLib.map().getExtendedRoomID((Room)cont.owner());
 					final String text="<ROOM ID=\""+roomID+"\" EXPIRE="+thisItem.expirationDate()+" />"+thisItem.text();
-					strings.add(new DBPreparedBatchEntry(sql,text));
-					done.add(""+thisItem);
+					if(!useBulkInserts)
+						strings.add(new DBPreparedBatchEntry(sql,text+" "));
+					else
+					{
+						final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,text+" ");
+						if(entry != null)
+							strings.add(entry);
+					}
+					done.add(thisItem);
 				}
 			}
 		}
+		if((bulkSQL.length()>0) && useBulkInserts)
+			strings.add(new DBPreparedBatchEntry(bulkSQL.toString(),bulkClobs.toArray(new String[0])));
 		return strings;
 	}
 
@@ -1448,6 +1492,10 @@ public class MOBloader
 		final String name=DB.injectionClean(mob.Name());
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHFO WHERE CMUSERID='"+name+"'"));
 
+		final boolean useBulkInserts = DB.useBulkInserts();
+		final StringBuilder bulkSQL = new StringBuilder("");
+		final List<String> bulkClobs = new ArrayList<String>();
+
 		// prevent rejuving map mobs from getting text() called and wiping
 		// out their original specs
 		for(int f=0;f<mob.numFollowers();f++)
@@ -1489,9 +1537,18 @@ public class MOBloader
 				final String sql="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
 								+") values ('"+name+"',"+f+",'"+CMClass.classID(thisMOB)+"',?,"
 								+thisMOB.basePhyStats().level()+","+thisMOB.basePhyStats().ability()+")";
-								statements.add(new DBPreparedBatchEntry(sql,thisMOB.text()+" "));
+				if(!useBulkInserts)
+					statements.add(new DBPreparedBatchEntry(sql,thisMOB.text()+" "));
+				else
+				{
+					final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,thisMOB.text()+" ");
+					if(entry != null)
+						statements.add(entry);
+				}
 			}
 		}
+		if((bulkSQL.length()>0) && useBulkInserts)
+			statements.add(new DBPreparedBatchEntry(bulkSQL.toString(),bulkClobs.toArray(new String[0])));
 		DB.updateWithClobs(statements);
 	}
 
@@ -1531,6 +1588,9 @@ public class MOBloader
 		final List<DBPreparedBatchEntry> statements=new LinkedList<DBPreparedBatchEntry>();
 		statements.add(new DBPreparedBatchEntry("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'"));
 		final HashSet<String> H=new HashSet<String>();
+		final boolean useBulkInserts = DB.useBulkInserts();
+		final StringBuilder bulkSQL = new StringBuilder("");
+		final List<String> bulkClobs = new ArrayList<String>();
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			final Ability thisAbility=mob.fetchAbility(a);
@@ -1546,7 +1606,14 @@ public class MOBloader
 				H.add(thisAbility.ID());
 				final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
 				+") values ('"+mob.Name()+"','"+thisAbility.ID()+"',"+proficiency+",?)";
-				statements.add(new DBPreparedBatchEntry(sql,thisAbility.text()));
+				if(!useBulkInserts)
+					statements.add(new DBPreparedBatchEntry(sql,thisAbility.text()));
+				else
+				{
+					final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,thisAbility.text());
+					if(entry != null)
+						statements.add(entry);
+				}
 			}
 		}
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
@@ -1556,7 +1623,14 @@ public class MOBloader
 			{
 				final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
 				+") values ('"+mob.Name()+"','"+A.ID()+"',"+Integer.MAX_VALUE+",?)";
-				statements.add(new DBPreparedBatchEntry(sql,A.text()));
+				if(!useBulkInserts)
+					statements.add(new DBPreparedBatchEntry(sql,A.text()));
+				else
+				{
+					final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,A.text());
+					if(entry != null)
+						statements.add(entry);
+				}
 			}
 		}
 		for(final Enumeration<Behavior> e=mob.behaviors();e.hasMoreElements();)
@@ -1567,7 +1641,14 @@ public class MOBloader
 				final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
 				+") values ('"+mob.Name()+"','"+B.ID()+"',"+(Integer.MIN_VALUE+1)+",?"
 				+")";
-				statements.add(new DBPreparedBatchEntry(sql,B.getParms()));
+				if(!useBulkInserts)
+					statements.add(new DBPreparedBatchEntry(sql,B.getParms()));
+				else
+				{
+					final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,B.getParms());
+					if(entry != null)
+						statements.add(entry);
+				}
 			}
 		}
 		final String scriptStuff = CMLib.coffeeMaker().getGenScripts(mob,true);
@@ -1576,9 +1657,17 @@ public class MOBloader
 			final String sql="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
 			+") values ('"+mob.Name()+"','ScriptingEngine',"+(Integer.MIN_VALUE+1)+",?"
 			+")";
-			statements.add(new DBPreparedBatchEntry(sql,scriptStuff));
+			if(!useBulkInserts)
+				statements.add(new DBPreparedBatchEntry(sql,scriptStuff));
+			else
+			{
+				final DBPreparedBatchEntry entry = doBulkInsert(bulkSQL,bulkClobs,sql,scriptStuff);
+				if(entry != null)
+					statements.add(entry);
+			}
 		}
-
+		if((bulkSQL.length()>0) && useBulkInserts)
+			statements.add(new DBPreparedBatchEntry(bulkSQL.toString(),bulkClobs.toArray(new String[0])));
 		DB.updateWithClobs(statements);
 	}
 
