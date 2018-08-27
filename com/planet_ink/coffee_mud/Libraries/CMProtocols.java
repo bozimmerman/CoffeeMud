@@ -81,24 +81,24 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		FINISH_VAL
 	}
 
-	protected static String MCP_KEYSENT_KEY() 
-	{ 
+	protected static String MCP_KEYSENT_KEY()
+	{
 		return "_CMMCP_KEYSENT";
 	}
-	
-	protected static String MCP_COMMAND_KEY() 
-	{ 
+
+	protected static String MCP_COMMAND_KEY()
+	{
 		return "_CMMCP_COMMAND";
 	}
-	
+
 	protected static String MCP_DATA_TAG()
 	{
 		return "_data-tag";
 	}
 
-	protected boolean containsMcpStarTag(Map<String,String> keyValuePairs)
+	protected boolean containsMcpStarTag(final Map<String,String> keyValuePairs)
 	{
-		for(String k : keyValuePairs.keySet())
+		for(final String k : keyValuePairs.keySet())
 		{
 			if(k.endsWith("*"))
 			{
@@ -107,15 +107,15 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		return false;
 	}
-	
-	protected boolean parseMcpStart(final String s, boolean[] exec, Map<String,String> keyValuePairs)
+
+	protected boolean parseMcpStart(final String s, final boolean[] exec, final Map<String,String> keyValuePairs)
 	{
 		McpParseStartState state = McpParseStartState.START;
 		String lastKey = "";
 		int startIndex = 0;
 		for(int i=0;i<s.length();i++)
 		{
-			char c=s.charAt(i);
+			final char c=s.charAt(i);
 			switch(state)
 			{
 			case FINISH_COMMAND:
@@ -273,7 +273,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		return true;
 	}
-	
+
 	private enum McpParseContState
 	{
 		START,
@@ -285,7 +285,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		IN_LINE
 	}
 
-	protected boolean parseMcpCont(final String s, boolean[] exec, Map<String,String> keyValuePairs)
+	protected boolean parseMcpCont(final String s, final boolean[] exec, final Map<String,String> keyValuePairs)
 	{
 		McpParseContState state = McpParseContState.START;
 		String lastKey = "";
@@ -293,7 +293,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		exec[0] = false; // never end on a continue tag
 		for(int i=1;i<s.length();i++)
 		{
-			char c=s.charAt(i);
+			final char c=s.charAt(i);
 			switch(state)
 			{
 			case FINISH_CONTKEY:
@@ -379,10 +379,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		return true;
 	}
-	
-	protected boolean parseMcpEnd(final String s, boolean[] exec, Map<String,String> keyValuePairs)
+
+	protected boolean parseMcpEnd(final String s, final boolean[] exec, final Map<String,String> keyValuePairs)
 	{
-		String endKey = s.substring(1).trim();
+		final String endKey = s.substring(1).trim();
 		if((!keyValuePairs.containsKey(MCP_COMMAND_KEY()))
 		||((!keyValuePairs.get(MCP_COMMAND_KEY()).equalsIgnoreCase("mcp"))
 			&&(!endKey.equalsIgnoreCase(keyValuePairs.get(MCP_DATA_TAG())))))
@@ -393,10 +393,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		exec[0] = true;
 		return true;
 	}
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
-	public boolean mcp(final Session session, final StringBuilder str, String[] mcpKey, 
+	public boolean mcp(final Session session, final StringBuilder str, final String[] mcpKey,
 					   final Map<String,float[]> clientSupported, final Map<String,String> keyValuePairs)
 	{
 		Map<String,MCPPackage> mcpPackages = (Map<String,MCPPackage>)Resources.getResource("MCP_COMPILED_PACKAGES");
@@ -408,10 +408,10 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				if(mcpPackages == null)
 				{
 					mcpPackages = new Hashtable<String,MCPPackage>();
-					List<MCPPackage> pkgs = new ArrayList<MCPPackage>();
+					final List<MCPPackage> pkgs = new ArrayList<MCPPackage>();
 					if(CMClass.loadObjectListToObj(pkgs, "com/planet_ink/coffee_mud/Libraries/mcppkgs/", CMProps.instance().getStr("MCPPACKAGES"), "com.planet_ink.coffee_mud.Libraries.interfaces.ProtocolLibrary$MCPPackage"))
 					{
-						for(MCPPackage pkg : pkgs )
+						for(final MCPPackage pkg : pkgs )
 						{
 							mcpPackages.put(pkg.packageName(), pkg);
 						}
@@ -420,9 +420,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				}
 			}
 		}
-		
-		String s = str.substring(3).trim();
-		boolean[] execute = new boolean[1];
+
+		final String s = str.substring(3).trim();
+		final boolean[] execute = new boolean[1];
 		if(s.length()==0)
 			return false;
 		if(s.charAt(0)=='*')
@@ -456,8 +456,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				Log.errOut("Invalid MCP PROCESS -- no command or key sent: " + s);
 				return false;
 			}
-			String pkgCmd = keyValuePairs.get(MCP_COMMAND_KEY());
-			String keySent = keyValuePairs.get(MCP_KEYSENT_KEY());
+			final String pkgCmd = keyValuePairs.get(MCP_COMMAND_KEY());
+			final String keySent = keyValuePairs.get(MCP_KEYSENT_KEY());
 			if((keySent != null)&&(mcpKey[0]!=null)&&(!keySent.equals(mcpKey[0])))
 			{
 				Log.errOut("Invalid MCP PROCESS -- invalid key sent: " + keySent+": "+mcpKey[0]+": "+s);
@@ -475,9 +475,9 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					Log.errOut("Invalid MCP PROCESS -- NO key Sent: "+s);
 					return false;
 				}
-				for(String commandKey : mcpPackages.keySet())
+				for(final String commandKey : mcpPackages.keySet())
 				{
-					MCPPackage pkg = mcpPackages.get(commandKey);
+					final MCPPackage pkg = mcpPackages.get(commandKey);
 					session.rawPrintln("#$#mcp-negotiate-can "+mcpKey[0]+" package: "+pkg.packageName()+" min-version: "+pkg.minVersion()+" max-version: "+pkg.maxVersion());
 				}
 				session.rawPrintln("#$#mcp-negotiate-end "+mcpKey[0]);
@@ -487,7 +487,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				MCPPackage pkg = mcpPackages.get(pkgCmd);
 				if(pkg == null)
 				{
-					for(String commandKey : mcpPackages.keySet())
+					for(final String commandKey : mcpPackages.keySet())
 					{
 						if(pkgCmd.startsWith(commandKey+"-"))
 						{
@@ -990,7 +990,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return image;
 	}
 
-	protected Object msdpStringify(Object o)
+	protected Object msdpStringify(final Object o)
 	{
 		if(o instanceof StringBuilder)
 			return ((StringBuilder)o).toString();
@@ -1018,7 +1018,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	protected Map<String,Object> buildMsdpMap(char[] data, int dataSize)
+	protected Map<String,Object> buildMsdpMap(final char[] data, final int dataSize)
 	{
 		final Stack<Object> stack=new Stack<Object>();
 		stack.push(new HashMap<StringBuilder,Object>());
@@ -1035,7 +1035,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				var=str;
 				if(stack.peek() instanceof Map)
 					((Map)stack.peek()).put(str, "");
-				else if(stack.peek() instanceof List)
+				else
+				if(stack.peek() instanceof List)
 					((List)stack.peek()).add(str);
 				break;
 			case Session.MSDP_VAL:
@@ -1050,7 +1051,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				final Map<StringBuilder,Object> M=new HashMap<StringBuilder,Object>();
 				if((stack.peek() instanceof Map)&&(valVar!=null))
 					((Map)stack.peek()).put(valVar, M);
-				else if(stack.peek() instanceof List)
+				else
+				if(stack.peek() instanceof List)
 					((List)stack.peek()).add(M);
 				valVar=null;
 				stack.push(M);
@@ -1065,7 +1067,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 				final List<Object> M=new LinkedList<Object>();
 				if((stack.peek() instanceof Map)&&(valVar!=null))
 					((Map)stack.peek()).put(valVar, M);
-				else if(stack.peek() instanceof List)
+				else
+				if(stack.peek() instanceof List)
 					((List)stack.peek()).add(M);
 				valVar=null;
 				stack.push(M);
@@ -1078,7 +1081,8 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 			default:
 				if((stack.peek() instanceof Map)&&(valVar!=null))
 					((Map)stack.peek()).put(valVar, str);
-				else if((stack.peek() instanceof List)&&(!((List)stack.peek()).contains(str)))
+				else
+				if((stack.peek() instanceof List)&&(!((List)stack.peek()).contains(str)))
 					((List)stack.peek()).add(str);
 				valVar=null;
 				if(str!=null)
@@ -1089,20 +1093,59 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		return (Map<String,Object>)msdpStringify(stack.firstElement());
 	}
 
-	protected enum MSDPListable {
-		COMMANDS,LISTS,CONFIGURABLE_VARIABLES,REPORTABLE_VARIABLES,REPORTED_VARIABLES,SENDABLE_VARIABLES
+	protected enum MSDPListable
+	{
+		COMMANDS,
+		LISTS,
+		CONFIGURABLE_VARIABLES,
+		REPORTABLE_VARIABLES,
+		REPORTED_VARIABLES,
+		SENDABLE_VARIABLES
 	}
 
-	protected enum MSDPCommand {
-		LIST,SEND,REPORT,RESET,UNREPORT
+	protected enum MSDPCommand
+	{
+		LIST,
+		SEND,
+		REPORT,
+		RESET,
+		UNREPORT
 	}
 
-	protected enum MSDPVariable {
-		ACCOUNT_NAME,CHARACTER_NAME,SERVER_ID,SERVER_TIME,SPECIFICATION,
-		AFFECTS,ALIGNMENT,EXPERIENCE,EXPERIENCE_MAX,EXPERIENCE_TNL,EXPERIENCE_TNL_MAX,
-		HEALTH,HEALTH_MAX,LEVEL,MANA,MANA_MAX,MONEY,MOVEMENT,MOVEMENT_MAX,
-		OPPONENT_LEVEL,OPPONENT_HEALTH,OPPONENT_HEALTH_MAX,OPPONENT_NAME,OPPONENT_STRENGTH,
-		WORLD_TIME,ROOM,LOCATION,ROOM_NAME,ROOM_VNUM,ROOM_AREA,ROOM_TERRAIN,ROOM_EXITS
+	protected enum MSDPVariable
+	{
+		ACCOUNT_NAME,
+		CHARACTER_NAME,
+		SERVER_ID,
+		SERVER_TIME,
+		SPECIFICATION,
+		AFFECTS,
+		ALIGNMENT,
+		EXPERIENCE,
+		EXPERIENCE_MAX,
+		EXPERIENCE_TNL,
+		EXPERIENCE_TNL_MAX,
+		HEALTH,
+		HEALTH_MAX,
+		LEVEL,
+		MANA,
+		MANA_MAX,
+		MONEY,
+		MOVEMENT,
+		MOVEMENT_MAX,
+		OPPONENT_LEVEL,
+		OPPONENT_HEALTH,
+		OPPONENT_HEALTH_MAX,
+		OPPONENT_NAME,
+		OPPONENT_STRENGTH,
+		WORLD_TIME,
+		ROOM,
+		LOCATION,
+		ROOM_NAME,
+		ROOM_VNUM,
+		ROOM_AREA,
+		ROOM_TERRAIN,
+		ROOM_EXITS
 	}
 
 	protected enum MSDPConfigurableVar {
@@ -1526,7 +1569,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		return buf.toByteArray();
 	}
-	
+
 	protected String getAbilityGroupName(final int code)
 	{
 		return Ability.ACODE_DESCS[code&Ability.ALL_ACODES].toLowerCase()+
@@ -1732,7 +1775,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		return allMyGroups;
 	}
-	
+
 	protected String makeGMCPAttribs(final Item I)
 	{
 		final StringBuffer attribs=new StringBuffer("");
@@ -1756,7 +1799,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		{
 			final MOB mob=session.mob();
 			final String allDoc=jsonData.trim();
-			int pkgSepIndex=allDoc.indexOf(' ');
+			final int pkgSepIndex=allDoc.indexOf(' ');
 			String pkg;
 			MiniJSON.JSONObject json;
 			if(pkgSepIndex>0)
@@ -1789,7 +1832,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 					break;
 				case request:
 				{
-					StringBuilder str=new StringBuilder(allDoc);
+					final StringBuilder str=new StringBuilder(allDoc);
 					str.setCharAt(pkgSepIndex, '_');
 					return processGmcpStr(session,str.toString(),supportables);
 				}
@@ -1822,7 +1865,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						double ver=0.0;
 						if(o!=null)
 						{
-							String oStr=o.toString().trim();
+							final String oStr=o.toString().trim();
 							if(CMath.isNumber(oStr))
 								ver=CMath.s_double(oStr);
 						}
@@ -2288,7 +2331,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									if(room2ID.length()>0)
 									{
 										if(comma)
-											doc.append(","); 
+											doc.append(",");
 										comma=true;
 										doc.append("\""+CMLib.directions().getDirectionChar(d)+"\":").append(room2ID.hashCode());
 									}
@@ -2371,7 +2414,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 									doc.append("\"channels\":[");
 									for(int i=0;i<CMLib.channels().getNumChannels();i++)
 									{
-										ChannelsLibrary.CMChannel channel=CMLib.channels().getChannel(i);
+										final ChannelsLibrary.CMChannel channel=CMLib.channels().getChannel(i);
 										if(CMLib.channels().mayReadThisChannel(mob, true, M, i, false))
 											doc.append("\"").append(MiniJSON.toJSONString(channel.name().toLowerCase())).append("\",");
 									}
@@ -2401,7 +2444,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 						{
 							final Map<Integer,List<Ability>> allMyGroups=getSkillGroups(mob);
 							final StringBuilder doc=new StringBuilder("char.skills.list {");
-							for(Integer grp : allMyGroups.keySet())
+							for(final Integer grp : allMyGroups.keySet())
 							{
 								final String groupName=this.getAbilityGroupName(grp.intValue());
 								if(groupName.equals(group))
@@ -2440,7 +2483,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 							final Map<Integer,List<Ability>> allMyGroups=getSkillGroups(mob);
 							if(allMyGroups.size()>0)
 							{
-								for(Integer grp : allMyGroups.keySet())
+								for(final Integer grp : allMyGroups.keySet())
 								{
 									final String groupName=this.getAbilityGroupName(grp.intValue());
 									doc.append("\"").append(MiniJSON.toJSONString(groupName)).append("\",");
@@ -2505,7 +2548,7 @@ public class CMProtocols extends StdLibrary implements ProtocolLibrary
 		}
 		return null;
 	}
-	
+
 	@Override
 	public byte[] invokeRoomChangeGmcp(final Session session, final Map<String,Long> reporteds, final Map<String,Double> supportables)
 	{

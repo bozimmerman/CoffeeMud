@@ -64,12 +64,12 @@ public class GenTickerShield extends StdElecItem implements Armor
 		super.setPowerRemaining(100);
 	}
 
-	protected String fieldOnStr(MOB viewerM)
+	protected String fieldOnStr(final MOB viewerM)
 	{
 		return L("A field surrounds <O-NAME>.");
 	}
 
-	protected String fieldDeadStr(MOB viewerM)
+	protected String fieldDeadStr(final MOB viewerM)
 	{
 		return L("The around <S-NAME> flickers and dies out as <S-HE-SHE> fade(s) back into view.");
 	}
@@ -81,7 +81,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 	}
 
 	@Override
-	public void setOwner(ItemPossessor owner)
+	public void setOwner(final ItemPossessor owner)
 	{
 		final ItemPossessor prevOwner=super.owner;
 		super.setOwner(owner);
@@ -139,11 +139,11 @@ public class GenTickerShield extends StdElecItem implements Armor
 	}
 
 	@Override
-	public SizeDeviation getSizingDeviation(MOB mob)
+	public SizeDeviation getSizingDeviation(final MOB mob)
 	{
 		return SizeDeviation.FITS;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
@@ -194,7 +194,8 @@ public class GenTickerShield extends StdElecItem implements Armor
 			}
 			}
 		}
-		else if(msg.amITarget(owner()) && (owner() instanceof MOB) && (!amWearingAt(Wearable.IN_INVENTORY)))
+		else
+		if(msg.amITarget(owner()) && (owner() instanceof MOB) && (!amWearingAt(Wearable.IN_INVENTORY)))
 		{
 			switch(msg.targetMinor())
 			{
@@ -215,7 +216,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 	}
 
 	@Override
-	public void setClothingLayer(short newLayer)
+	public void setClothingLayer(final short newLayer)
 	{
 		layer = newLayer;
 	}
@@ -227,13 +228,13 @@ public class GenTickerShield extends StdElecItem implements Armor
 	}
 
 	@Override
-	public void setLayerAttributes(short newAttributes)
+	public void setLayerAttributes(final short newAttributes)
 	{
 		layerAttributes = newAttributes;
 	}
 
 	@Override
-	public boolean canWear(MOB mob, long where)
+	public boolean canWear(final MOB mob, final long where)
 	{
 		if(where==0)
 			return (whereCantWear(mob)==0);
@@ -261,13 +262,13 @@ public class GenTickerShield extends StdElecItem implements Armor
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText = text;
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -276,7 +277,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 
 	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","LAYER","LAYERATTRIB","TECHLEVEL"};
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -302,7 +303,7 @@ public class GenTickerShield extends StdElecItem implements Armor
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);

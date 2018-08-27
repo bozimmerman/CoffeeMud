@@ -52,11 +52,11 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	}
 
 	public PairVector<String,Integer>[] injuries=new PairVector[Race.BODY_PARTS];
-	
+
 	protected CMMsg		lastMsg			= null;
 	protected String	lastLoc			= null;
 	public int			lastHP			= -1;
-	
+
 	//public final static String[] BODYPARTSTR={
 	//    "ANTENEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
 	//    "NOSE","GILL","MOUTH","WAIST","TAIL","WING"};
@@ -87,19 +87,26 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 							final int dmg = O.second.intValue();
 							if (dmg<5)
 								wounds=("a bruised ");
-							else if (dmg<10)
+							else
+							if (dmg<10)
 								wounds=("a scratched ");
-							else if (dmg<20)
+							else
+							if (dmg<20)
 								wounds=("a cut ");
-							else if (dmg<30)
+							else
+							if (dmg<30)
 								wounds=("a sliced ");
-							else if (dmg<40)
+							else
+							if (dmg<40)
 								wounds=("a gashed ");
-							else if (dmg<60)
+							else
+							if (dmg<60)
 								wounds=("a bloody ");
-							else if ((dmg<75)||(i==Race.BODY_TORSO))
+							else
+							if ((dmg<75)||(i==Race.BODY_TORSO))
 								wounds=("a mangled ");
-							else if ((dmg<100)||(i==Race.BODY_HEAD))
+							else
+							if ((dmg<100)||(i==Race.BODY_HEAD))
 								wounds=("a dangling ");
 							else
 								wounds=("a shredded ");
@@ -125,7 +132,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 			return "";
 		return "(Injuries:"+buf+")";
 	}
-	
+
 	@Override
 	protected int canAffectCode()
 	{
@@ -231,13 +238,13 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 					return;
 				if(injuries==null)
 					injuries=new PairVector[Race.BODY_PARTS];
-				Integer chosenBodyLoc=Race.BODYPARTHASH_RL_LOWER.get(remains.get(chosenOne).toLowerCase().trim());
+				final Integer chosenBodyLoc=Race.BODYPARTHASH_RL_LOWER.get(remains.get(chosenOne).toLowerCase().trim());
 				if(chosenBodyLoc!=null)
 				{
 					PairVector<String,Integer> bodyVec=injuries[chosenBodyLoc.intValue()];
 					if(bodyVec==null)
-					{ 
-						injuries[chosenBodyLoc.intValue()]=new PairVector(); 
+					{
+						injuries[chosenBodyLoc.intValue()]=new PairVector();
 						bodyVec=injuries[chosenBodyLoc.intValue()];
 					}
 					int whichInjury=-1;
@@ -245,8 +252,8 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 					{
 						final Pair<String,Integer> O=bodyVec.get(i);
 						if(O.first.equalsIgnoreCase(remains.get(chosenOne)))
-						{ 
-							whichInjury=i; 
+						{
+							whichInjury=i;
 							break;
 						}
 					}
@@ -320,7 +327,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 		}
 		final List<String> affected=affectedLimbNameSet();
 		final List<String> checks=new ArrayList<String>(remains);
-		for(String limb : checks)
+		for(final String limb : checks)
 		{
 			if(affected.contains(limb))
 				remains.remove(limb);
@@ -329,13 +336,13 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	}
 
 	@Override
-	public Item damageLimb(String limbName)
+	public Item damageLimb(final String limbName)
 	{
 		if(affected!=null)
 		{
 			if(affected instanceof MOB)
 			{
-				boolean success=((MOB)affected).location().show(((MOB)affected),this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 is injured!^?",limbName));
+				final boolean success=((MOB)affected).location().show(((MOB)affected),this,CMMsg.MSG_OK_VISUAL,L("^G<S-YOUPOSS> @x1 is injured!^?",limbName));
 				if(!success)
 					return null;
 			}
@@ -352,7 +359,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 					parts=new PairVector<String,Integer>();
 					injuries[p]=parts;
 				}
-				for(Pair<String,Integer> part : parts)
+				for(final Pair<String,Integer> part : parts)
 				{
 					if(part.first.equalsIgnoreCase(limbName))
 					{
@@ -371,7 +378,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	@Override
 	public List<String> affectedLimbNameSet()
 	{
-		List<String> list=new Vector<String>(1);
+		final List<String> list=new Vector<String>(1);
 		PairVector<String,Integer> V=null;
 		Pair<String,Integer> O=null;
 		if(injuries!=null)
@@ -393,13 +400,13 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	}
 
 	@Override
-	public void restoreLimb(String limbName)
+	public void restoreLimb(final String limbName)
 	{
 		for(int partNum=0;partNum<Race.BODY_PARTS;partNum++)
 		{
 			if(injuries[partNum]!=null)
 			{
-				for(Pair<String,Integer> part : injuries[partNum])
+				for(final Pair<String,Integer> part : injuries[partNum])
 				{
 					if(part.first.equalsIgnoreCase(limbName))
 					{
@@ -414,7 +421,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -490,7 +497,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 			&& (CMLib.dice().rollPercentage()>(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)*4))
 			&& (!CMSecurity.isDisabled(CMSecurity.DisFlag.AUTODISEASE)))
 			{
-				Ability A=CMClass.getAbility("Disease_Infection");
+				final Ability A=CMClass.getAbility("Disease_Infection");
 				if((A!=null)&&(mob.fetchEffect(A.ID())==null)&&(injuries.length>0)&&(!CMSecurity.isAbilityDisabled(A.ID())))
 				{
 					final List<String> injuredList = affectedLimbNameSet();
@@ -498,7 +505,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 					{
 						final int which=CMLib.dice().roll(1,injuredList.size(),-1);
 						final String injuredLimb=injuredList.get(which);
-						MOB infector = CMClass.getFactoryMOB(injuredLimb, mob.phyStats().level(), mob.location());
+						final MOB infector = CMClass.getFactoryMOB(injuredLimb, mob.phyStats().level(), mob.location());
 						A.invoke(infector,mob,true,mob.phyStats().level());
 					}
 				}
@@ -514,8 +521,8 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 		{"<T-NAME>","<T-YOUPOSS>"},
 		{"<T-NAMESELF>","<T-YOUPOSS>"}
 	};
-	
-	public String fixMessageString(String message, String loc)
+
+	public String fixMessageString(String message, final String loc)
 	{
 		if(message==null)
 			return null;
@@ -575,7 +582,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 						remains.clear();
 						remains.add(remainLoc);
 					}
-					else 
+					else
 						return super.okMessage(host, msg);
 				}
 				final int[] chances=new int[remains.size()];
@@ -622,15 +629,15 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 					int LimbPct=BodyPct*CMProps.getIntVar(CMProps.Int.INJMULTIPLIER);
 					if(LimbPct<1)
 						LimbPct=1;
-					Integer chosenBodyLoc=Race.BODYPARTHASH_RL_LOWER.get(remains.get(chosenOne));
+					final Integer chosenBodyLoc=Race.BODYPARTHASH_RL_LOWER.get(remains.get(chosenOne));
 					if(chosenBodyLoc!=null)
 					{
 						lastMsg=msg;
 						lastLoc=remains.get(chosenOne);
 						PairVector<String,Integer> bodyVec=injuries[chosenBodyLoc.intValue()];
 						if(bodyVec==null)
-						{ 
-							injuries[chosenBodyLoc.intValue()]=new PairVector(); 
+						{
+							injuries[chosenBodyLoc.intValue()]=new PairVector();
 							bodyVec=injuries[chosenBodyLoc.intValue()];
 						}
 						int whichInjury=-1;
@@ -638,8 +645,8 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 						{
 							final Pair<String,Integer> O=bodyVec.get(i);
 							if(O.first.equalsIgnoreCase(remains.get(chosenOne)))
-							{ 
-								whichInjury=i; 
+							{
+								whichInjury=i;
 								break;
 							}
 						}
@@ -714,12 +721,12 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(givenTarget.fetchEffect(ID())!=null)
 			return false;
 		super.tickDown=2;
-		Ability A=(Ability)copyOf();
+		final Ability A=(Ability)copyOf();
 		A.startTickDown(mob,givenTarget,Ability.TICKS_ALMOST_FOREVER);
 		return true;
 	}

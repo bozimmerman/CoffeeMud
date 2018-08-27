@@ -505,7 +505,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			{
 				if (clookup()[c] == null)
 					escapeCodes = clookup()[currentColor];
-				else if (clookup()[currentColor] == null)
+				else
+				if (clookup()[currentColor] == null)
 					escapeCodes = clookup[c];
 				else
 					escapeCodes = clookup()[c] + clookup()[currentColor];

@@ -20,7 +20,7 @@ import com.planet_ink.coffee_mud.core.interfaces.BoundedObject.BoundedCube;
  * https://github.com/pruby/xppylons/blob/master/src/com/untamedears/xppylons/rtree/AABB.java
  * (No license found)
  */
-public class RTree<T extends BoundedObject> 
+public class RTree<T extends BoundedObject>
 {
 	private RTreeNode root;
 	private int maxSize;
@@ -28,7 +28,7 @@ public class RTree<T extends BoundedObject>
 	private SLinkedHashtable<T,List<WeakReference<TrackingVector<T>>>> trackMap;
 	private QuadraticNodeSplitter splitter;
 
-	public class RTreeNode implements BoundedObject 
+	public class RTreeNode implements BoundedObject
 	{
 		RTreeNode parent;
 		BoundedCube box;
@@ -40,14 +40,14 @@ public class RTree<T extends BoundedObject>
 		{
 		}
 
-		public RTreeNode(boolean isLeaf)	
+		public RTreeNode(final boolean isLeaf)
 		{
 			if (isLeaf)
 			{
 				data = new TrackingVector<T>(trackMap,maxSize+1,new TrackingVector.TrackBack<T>()
 				{
-					@Override 
-					public void removed(T o)
+					@Override
+					public void removed(final T o)
 					{
 						me.computeMBR(true);
 					}
@@ -69,7 +69,7 @@ public class RTree<T extends BoundedObject>
 			return parent == null;
 		}
 
-		public void addTo(RTreeNode parent)
+		public void addTo(final RTreeNode parent)
 		{
 			assert(parent.children != null);
 			parent.children.add(this);
@@ -83,7 +83,7 @@ public class RTree<T extends BoundedObject>
 			computeMBR(true);
 		}
 
-		public void computeMBR(boolean doParents)
+		public void computeMBR(final boolean doParents)
 		{
 			if (box == null)
 				box = new BoundedCube();
@@ -147,7 +147,7 @@ public class RTree<T extends BoundedObject>
 			return box;
 		}
 
-		public boolean contains(long px, long py, int pz)
+		public boolean contains(final long px, final long py, final int pz)
 		{
 			return box.contains(px, py, pz);
 		}
@@ -177,7 +177,7 @@ public class RTree<T extends BoundedObject>
 	}
 
 	private class QuadraticNodeSplitter {
-		public void split(RTreeNode n)
+		public void split(final RTreeNode n)
 		{
 			if (n.size() <= maxSize) return;
 			final boolean isleaf = n.isLeaf();
@@ -247,7 +247,7 @@ public class RTree<T extends BoundedObject>
 			split(parent);
 		}
 
-		private void distributeBranches(RTreeNode n, RTreeNode g1, RTreeNode g2)
+		private void distributeBranches(final RTreeNode n, final RTreeNode g1, final RTreeNode g2)
 		{
 			assert(!(n.isLeaf() || g1.isLeaf() || g2.isLeaf()));
 
@@ -281,7 +281,8 @@ public class RTree<T extends BoundedObject>
 				{
 					parent = g1;
 				}
-				else if (overlap2 > overlap1)
+				else
+				if (overlap2 > overlap1)
 				{
 					parent = g2;
 				}
@@ -290,13 +291,18 @@ public class RTree<T extends BoundedObject>
 					// Or the one with the lowest area
 					final long area1 = area(g1.box);
 					final long area2 = area(g2.box);
-					if (area1 > area2) parent = g2;
-					else if (area2 > area1) parent = g1;
+					if (area1 > area2)
+						parent = g2;
+					else
+					if (area2 > area1)
+						parent = g1;
 					else
 					{
 						// Or the one with the least items
-						if (g1.children.size() < g2.children.size()) parent = g1;
-						else parent = g2;
+						if (g1.children.size() < g2.children.size())
+							parent = g1;
+						else
+							parent = g2;
 					}
 				}
 				assert(parent != null);
@@ -321,7 +327,7 @@ public class RTree<T extends BoundedObject>
 			}
 		}
 
-		private void distributeLeaves(RTreeNode n, RTreeNode g1, RTreeNode g2)
+		private void distributeLeaves(final RTreeNode n, final RTreeNode g1, final RTreeNode g2)
 		{
 			// Same process as above; just different types.
 			assert(n.isLeaf() && g1.isLeaf() && g2.isLeaf());
@@ -413,7 +419,7 @@ public class RTree<T extends BoundedObject>
 	 * @param minChildren Minimum children in a node.  {@code 2 <= minChildren <= maxChildren/2}
 	 * @param maxChildren Maximum children in a node. Node splits at this number + 1
 	 */
-	public RTree(int minChildren, int maxChildren)
+	public RTree(final int minChildren, final int maxChildren)
 	{
 		trackMap = new SLinkedHashtable<T,List<WeakReference<TrackingVector<T>>>>();
 		if (minChildren < 2 || minChildren > maxChildren/2)
@@ -435,18 +441,18 @@ public class RTree<T extends BoundedObject>
 	 * Adds items whose AABB intersects the query AABB to results
 	 * @param results A collection to store the query results
 	 */
-	public void query(Collection<T> results)
+	public void query(final Collection<T> results)
 	{
 		final BoundedCube box = new BoundedCube(Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE, Long.MIN_VALUE, Long.MAX_VALUE);
 		query(results, box, root);
 	}
 
-	public void query(Collection<T> results, BoundedCube box)
+	public void query(final Collection<T> results, final BoundedCube box)
 	{
 		query(results, box, root);
 	}
 
-	private void query(Collection<T> results, BoundedCube box, RTreeNode node)
+	private void query(final Collection<T> results, final BoundedCube box, final RTreeNode node)
 	{
 		if (node == null) return;
 		if (node.isLeaf())
@@ -473,12 +479,12 @@ public class RTree<T extends BoundedObject>
 	 * @param box the area to look up
 	 * @return the first thing in that area
 	 */
-	public T queryOne(BoundedCube box)
+	public T queryOne(final BoundedCube box)
 	{
 		return queryOne(box,root);
 	}
 
-	private T queryOne(BoundedCube box, RTreeNode node)
+	private T queryOne(final BoundedCube box, final RTreeNode node)
 	{
 		if (node == null) return null;
 		if (node.isLeaf())
@@ -513,12 +519,12 @@ public class RTree<T extends BoundedObject>
 	 * @param py Point Y coordinate
 	 * @param pz Point Z coordinate
 	 */
-	public void query(Collection<T> results, long px, long py, long pz)
+	public void query(final Collection<T> results, final long px, final long py, final long pz)
 	{
 		query(results, px, py, pz, root);
 	}
 
-	private void query(Collection<T> results, long px, long py, long pz, RTreeNode node)
+	private void query(final Collection<T> results, final long px, final long py, final long pz, final RTreeNode node)
 	{
 		if (node == null) return;
 		if (node.isLeaf())
@@ -550,12 +556,12 @@ public class RTree<T extends BoundedObject>
 	 * @param pz Point Z coordinate
 	 * @return the first object in that area
 	 */
-	public T queryOne(long px, long py, long pz)
+	public T queryOne(final long px, final long py, final long pz)
 	{
 		return queryOne(px, py, pz, root);
 	}
-	
-	private T queryOne(long px, long py, long pz, RTreeNode node)
+
+	private T queryOne(final long px, final long py, final long pz, final RTreeNode node)
 	{
 		if (node == null) return null;
 		if (node.isLeaf())
@@ -588,7 +594,7 @@ public class RTree<T extends BoundedObject>
 	 * @param o the object to remove
 	 * @return true if it was there to remove, false otherwise
 	 */
-	public boolean remove(T o)
+	public boolean remove(final T o)
 	{
 		if(root==null)
 			return false;
@@ -622,7 +628,7 @@ public class RTree<T extends BoundedObject>
 	 * @param o the object to insert into the tree
 	 * @throws NullPointerException If o == null
 	 */
-	public void insert(T o)
+	public void insert(final T o)
 	{
 		if (o == null) throw new NullPointerException("Cannot store null object");
 		if (root == null)
@@ -643,7 +649,7 @@ public class RTree<T extends BoundedObject>
 	 * @param o the object to look for
 	 * @return true if it is in there, false otherwise
 	 */
-	public boolean contains(T o)
+	public boolean contains(final T o)
 	{
 		if (o == null)
 			return false;
@@ -663,7 +669,7 @@ public class RTree<T extends BoundedObject>
 		return trackMap.entries();
 	}
 
-	public boolean leafSearch(T o)
+	public boolean leafSearch(final T o)
 	{
 		if (o == null)
 			return false;
@@ -682,7 +688,7 @@ public class RTree<T extends BoundedObject>
 		return count(root);
 	}
 
-	private int count(RTreeNode n)
+	private int count(final RTreeNode n)
 	{
 		assert(n != null);
 		if (n.isLeaf())
@@ -698,7 +704,7 @@ public class RTree<T extends BoundedObject>
 		}
 	}
 
-	private RTreeNode chooseLeaf(T o, RTreeNode n)
+	private RTreeNode chooseLeaf(final T o, final RTreeNode n)
 	{
 		assert(n != null);
 		if (n.isLeaf())
@@ -729,7 +735,7 @@ public class RTree<T extends BoundedObject>
 		}
 	}
 
-	private RTreeNode firstLeafSearch(T o, RTreeNode n)
+	private RTreeNode firstLeafSearch(final T o, final RTreeNode n)
 	{
 		assert(n != null);
 		if (n.isLeaf())
@@ -754,7 +760,7 @@ public class RTree<T extends BoundedObject>
 	/**
 	 * Returns the amount that other will need to be expanded to fit this.
 	 */
-	private static int expansionNeeded(BoundedCube one, BoundedCube two)
+	private static int expansionNeeded(final BoundedCube one, final BoundedCube two)
 	{
 		int total = 0;
 
@@ -776,7 +782,7 @@ public class RTree<T extends BoundedObject>
 		return total;
 	}
 
-	private static long area(BoundedCube rect)
+	private static long area(final BoundedCube rect)
 	{
 		return rect.width() * rect.height() * rect.depth();
 	}

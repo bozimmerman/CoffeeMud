@@ -1547,11 +1547,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 					int type=0;
 					if("COMPONENT".equalsIgnoreCase(curWhich))
 						type=1;
-					else if("EMBEDDED".equalsIgnoreCase(curWhich)) type=2;
-					else if("AMOUNT".equalsIgnoreCase(curWhich)) type=0;
-					else if(CMLib.ableComponents().getAbilityComponentMap().containsKey(value.toUpperCase().trim())) type=1;
-					else if(value.startsWith("(")) type=2;
-					else type=0;
+					else
+					if("EMBEDDED".equalsIgnoreCase(curWhich))
+						type=2;
+					else
+					if("AMOUNT".equalsIgnoreCase(curWhich))
+						type=0;
+					else
+					if(CMLib.ableComponents().getAbilityComponentMap().containsKey(value.toUpperCase().trim()))
+						type=1;
+					else
+					if(value.startsWith("("))
+						type=2;
+					else
+						type=0;
 
 					List<AbilityComponent> comps=null;
 					if(type==2)

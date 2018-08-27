@@ -50,7 +50,7 @@ public class GetStat extends CM1Command
 		return "GETSTAT";
 	}
 
-	public GetStat(RequestHandler req, String parameters)
+	public GetStat(final RequestHandler req, final String parameters)
 	{
 		super(req, parameters);
 	}
@@ -64,7 +64,7 @@ public class GetStat extends CM1Command
 	protected static final String[]	ITEMSTATS	= { "ITEM" };
 	protected static final String[]	ROOMSTATS	= { "MOB" };
 
-	public char getTypeCode(Physical P)
+	public char getTypeCode(final Physical P)
 	{
 		if (P instanceof MOB)
 			return ((MOB) P).isMonster() ? 'M' : 'P';
@@ -79,7 +79,7 @@ public class GetStat extends CM1Command
 		return ' ';
 	}
 
-	public boolean isApplicableTypeCode(String type, Physical P)
+	public boolean isApplicableTypeCode(final String type, final Physical P)
 	{
 		final char c = getTypeCode(P);
 		for (int i = 0; i < STATTYPES.length; i++)
@@ -90,7 +90,7 @@ public class GetStat extends CM1Command
 		return false;
 	}
 
-	public String[] getApplicableStatCodes(Physical P)
+	public String[] getApplicableStatCodes(final Physical P)
 	{
 		final char c = getTypeCode(P);
 		final List<String> majorCodes = new LinkedList<String>();
@@ -102,7 +102,7 @@ public class GetStat extends CM1Command
 		return majorCodes.toArray(new String[0]);
 	}
 
-	public Modifiable getModifiable(String type, Physical P)
+	public Modifiable getModifiable(final String type, final Physical P)
 	{
 		final int x = CMParms.indexOf(STATTYPES, type.toUpperCase().trim());
 		if (x < 0)
@@ -144,19 +144,21 @@ public class GetStat extends CM1Command
 		return null;
 	}
 
-	public boolean UseGenBuilder(Physical P, Modifiable m)
+	public boolean UseGenBuilder(final Physical P, final Modifiable m)
 	{
 		return (P != null) && (!P.isGeneric()) && ((m instanceof MOB) || (m instanceof Item));
 	}
 
-	public String[] getStatCodes(Physical P, Modifiable m)
+	public String[] getStatCodes(final Physical P, final Modifiable m)
 	{
 		SLinkedList<String> codes;
 		if (!UseGenBuilder(P, m))
 			codes = new SLinkedList<String>(m.getStatCodes());
-		else if (m instanceof MOB)
+		else
+		if (m instanceof MOB)
 			codes = new SLinkedList<String>(CMParms.toStringArray(GenericBuilder.GenMOBCode.values()));
-		else if (m instanceof Item)
+		else
+		if (m instanceof Item)
 			codes = new SLinkedList<String>(CMParms.toStringArray(GenericBuilder.GenItemCode.values()));
 		else
 			return new String[0];
@@ -173,7 +175,7 @@ public class GetStat extends CM1Command
 		return codes.toArray(new String[0]);
 	}
 
-	public boolean isAStat(Physical P, Modifiable m, String stat)
+	public boolean isAStat(final Physical P, final Modifiable m, final String stat)
 	{
 		if (!UseGenBuilder(P, m))
 			return m.isStat(stat);
@@ -185,7 +187,7 @@ public class GetStat extends CM1Command
 		return false;
 	}
 
-	public boolean isAuthorized(MOB user, PhysicalAgent target)
+	public boolean isAuthorized(final MOB user, final PhysicalAgent target)
 	{
 		if (target instanceof MOB)
 		{
@@ -193,13 +195,17 @@ public class GetStat extends CM1Command
 				return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDPLAYERS);
 			return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDMOBS);
 		}
-		else if (target instanceof Item)
+		else
+		if (target instanceof Item)
 			return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDITEMS);
-		else if (target instanceof Room)
+		else
+		if (target instanceof Room)
 			return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDROOMS);
-		else if (target instanceof Exit)
+		else
+		if (target instanceof Exit)
 			return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDEXITS);
-		else if (target instanceof Area)
+		else
+		if (target instanceof Area)
 			return CMSecurity.isAllowed(user, user.location(), CMSecurity.SecFlag.CMDAREAS);
 		else
 			return false;
@@ -441,7 +447,8 @@ public class GetStat extends CM1Command
 					{
 						if (P instanceof MOB)
 							req.sendMsg("[OK " + CMLib.coffeeMaker().getGenMobStat((MOB) P, stat) + "]");
-						else if (P instanceof Item)
+						else
+						if (P instanceof Item)
 							req.sendMsg("[OK " + CMLib.coffeeMaker().getGenItemStat((Item) P, stat) + "]");
 					}
 				}
@@ -455,13 +462,13 @@ public class GetStat extends CM1Command
 	}
 
 	@Override
-	public boolean passesSecurityCheck(MOB user, PhysicalAgent target)
+	public boolean passesSecurityCheck(final MOB user, final PhysicalAgent target)
 	{
 		return (user != null);
 	}
 
 	@Override
-	public String getHelp(MOB user, PhysicalAgent target, String rest)
+	public String getHelp(final MOB user, final PhysicalAgent target, String rest)
 	{
 		Modifiable mod = null;
 		if ((rest != null) && (rest.trim().length() > 0))
@@ -474,7 +481,8 @@ public class GetStat extends CM1Command
 		}
 		if (mod == null)
 			return "USAGE: " + getCommandWord() + " " + CMParms.toListString(getApplicableStatCodes(target));
-		else if (rest != null)
+		else
+		if (rest != null)
 			return "USAGE: " + getCommandWord() + " " + rest.toUpperCase().trim() + " " + CMParms.toListString(getStatCodes(target, mod));
 		else
 			return "USAGE: " + getCommandWord() + " " + CMParms.toListString(getStatCodes(target, mod));

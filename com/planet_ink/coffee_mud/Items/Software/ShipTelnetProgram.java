@@ -75,26 +75,26 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	}
 
 	@Override
-	public boolean isActivationString(String word)
+	public boolean isActivationString(final String word)
 	{
 		return isCommandString(word, false);
 	}
 
 	@Override
-	public boolean isDeActivationString(String word)
+	public boolean isDeActivationString(final String word)
 	{
 		return isCommandString(word, false);
 	}
 
 	@Override
-	public void onDeactivate(MOB mob, String message)
+	public void onDeactivate(final MOB mob, final String message)
 	{
 		shutdown();
 		super.addScreenMessage("Telnet connection closed.");
 	}
 
 	@Override
-	public boolean isCommandString(String word, boolean isActive)
+	public boolean isCommandString(String word, final boolean isActive)
 	{
 		if (!isActive)
 		{
@@ -153,7 +153,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	}
 
 	@Override
-	public boolean checkActivate(MOB mob, String message)
+	public boolean checkActivate(final MOB mob, final String message)
 	{
 		final List<String> parsed = CMParms.parse(message);
 		if (parsed.size() != 3)
@@ -183,14 +183,14 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	}
 
 	@Override
-	public boolean checkDeactivate(MOB mob, String message)
+	public boolean checkDeactivate(final MOB mob, final String message)
 	{
 		shutdown();
 		return true;
 	}
 
 	@Override
-	public boolean checkTyping(MOB mob, String message)
+	public boolean checkTyping(final MOB mob, final String message)
 	{
 		synchronized (this)
 		{
@@ -204,7 +204,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	}
 
 	@Override
-	public boolean checkPowerCurrent(int value)
+	public boolean checkPowerCurrent(final int value)
 	{
 		nextPowerCycleTmr = System.currentTimeMillis() + (8 * 1000);
 		return true;
@@ -248,7 +248,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	}
 
 	@Override
-	public void onTyping(MOB mob, String message)
+	public void onTyping(final MOB mob, final String message)
 	{
 		synchronized (this)
 		{
@@ -272,7 +272,7 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 	}
 
 	@Override
-	public void onPowerCurrent(int value)
+	public void onPowerCurrent(final int value)
 	{
 		if (value > 0)
 			fillWithData();
@@ -280,7 +280,8 @@ public class ShipTelnetProgram extends GenShipProgram implements ArchonOnly
 		{
 			this.shutdown();
 		}
-		else if (System.currentTimeMillis() > nextPowerCycleTmr)
+		else
+		if (System.currentTimeMillis() > nextPowerCycleTmr)
 		{
 			this.shutdown();
 		}

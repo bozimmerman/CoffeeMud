@@ -72,7 +72,7 @@ public class GenLanguage extends StdLanguage
 		return O;
 	}
 
-	private static final Object V(String ID, int varNum)
+	private static final Object V(final String ID, final int varNum)
 	{
 		if(vars.containsKey(ID))
 			return vars.get(ID)[varNum];
@@ -81,7 +81,7 @@ public class GenLanguage extends StdLanguage
 		return O[varNum];
 	}
 
-	private static final void SV(String ID,int varNum,Object O)
+	private static final void SV(final String ID,final int varNum,final Object O)
 	{
 		if(vars.containsKey(ID))
 			vars.get(ID)[varNum]=O;
@@ -100,14 +100,14 @@ public class GenLanguage extends StdLanguage
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<String[]> translationLists(String language)
+	public List<String[]> translationLists(final String language)
 	{
 		return (List<String[]>)V(ID,V_WSETS);
 	}
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Map<String, String> translationHash(String language)
+	public Map<String, String> translationHash(final String language)
 	{
 		return (Map<String,String>)V(ID,V_HSETS);
 	}
@@ -129,7 +129,7 @@ public class GenLanguage extends StdLanguage
 	}
 
 	@Override
-	protected void cloneFix(Ability E)
+	protected void cloneFix(final Ability E)
 	{
 	}
 
@@ -205,7 +205,8 @@ public class GenLanguage extends StdLanguage
 				}
 				return str.toString();
 			}
-			else if (num <= ((List<String[]>) V(ID, V_WSETS)).size())
+			else
+			if (num <= ((List<String[]>) V(ID, V_WSETS)).size())
 				return CMParms.toListString(((List<String[]>) V(ID, V_WSETS)).get(num - 1));
 			else
 				return "";
@@ -223,7 +224,7 @@ public class GenLanguage extends StdLanguage
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public void setStat(String code, String val)
+	public void setStat(String code, final String val)
 	{
 		int num=0;
 		int numDex=code.length();
@@ -267,11 +268,14 @@ public class GenLanguage extends StdLanguage
 					wordSets.add(CMParms.parseCommas(wordList, true).toArray(new String[0]));
 				SV(ID, V_WSETS, wordSets);
 			}
-			else if ((num == ((List<String[]>) V(ID, V_WSETS)).size()) && (val.length() == 0))
+			else
+			if ((num == ((List<String[]>) V(ID, V_WSETS)).size()) && (val.length() == 0))
 				((List<String[]>) V(ID, V_WSETS)).remove(num - 1);
-			else if (num <= ((List<String[]>) V(ID, V_WSETS)).size())
+			else
+			if (num <= ((List<String[]>) V(ID, V_WSETS)).size())
 				((List<String[]>) V(ID, V_WSETS)).set(num - 1, CMParms.parseCommas(val, true).toArray(new String[0]));
-			else if ((num == ((List<String[]>) V(ID, V_WSETS)).size() + 1) && (val.length() > 0))
+			else
+			if ((num == ((List<String[]>) V(ID, V_WSETS)).size() + 1) && (val.length() > 0))
 				((List<String[]>) V(ID, V_WSETS)).add(CMParms.parseCommas(val, true).toArray(new String[0]));
 			break;
 		case 4:
@@ -299,7 +303,7 @@ public class GenLanguage extends StdLanguage
 		return true;
 	}
 
-	private void parseAllXML(String xml)
+	private void parseAllXML(final String xml)
 	{
 		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(xml);
 		if((V==null)||(V.size()==0))

@@ -77,7 +77,7 @@ public class GenBanker extends StdBanker
 	}
 
 	@Override
-	public void setPrejudiceFactors(String factors)
+	public void setPrejudiceFactors(final String factors)
 	{
 		PrejudiceFactors=factors;
 	}
@@ -89,7 +89,7 @@ public class GenBanker extends StdBanker
 	}
 
 	@Override
-	public void setIgnoreMask(String factors)
+	public void setIgnoreMask(final String factors)
 	{
 		IgnoreMask=factors;
 	}
@@ -101,13 +101,13 @@ public class GenBanker extends StdBanker
 	}
 
 	@Override
-	public void setBankChain(String name)
+	public void setBankChain(final String name)
 	{
 		bankChain=name;
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
@@ -117,7 +117,7 @@ public class GenBanker extends StdBanker
 											"ITEMINT","IGNOREMASK","LOANINT","PRICEMASKS",
 											"ITEMMASK"};
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenMobStat(this,code);
@@ -147,7 +147,7 @@ public class GenBanker extends StdBanker
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenMobStat(this,code,val);
@@ -158,7 +158,8 @@ public class GenBanker extends StdBanker
 		{
 			if ((val.length() == 0) || (CMath.isLong(val)))
 				setWhatIsSoldMask(CMath.s_long(val));
-			else if (CMParms.containsIgnoreCase(ShopKeeper.DEAL_DESCS, val))
+			else
+			if (CMParms.containsIgnoreCase(ShopKeeper.DEAL_DESCS, val))
 				setWhatIsSoldMask(CMParms.indexOfIgnoreCase(ShopKeeper.DEAL_DESCS, val));
 			break;
 		}

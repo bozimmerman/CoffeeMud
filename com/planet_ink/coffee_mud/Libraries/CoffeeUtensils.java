@@ -250,7 +250,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			final long m0 =rt.totalMemory() - rt.freeMemory() ;
 			System.gc() ;
 			Thread.sleep( 500 ) ;
-			for (int i = 0 ; i < n ; ++i) 
+			for (int i = 0 ; i < n ; ++i)
 				objs[i] = E = (Environmental)cl.copyOf();
 			System.gc() ;
 			Thread.sleep( 1000 ) ;
@@ -276,7 +276,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			for(int i=0;i<((MOB)P).numAllEffects();i++)
 			{
 				A=P.fetchEffect(i);
-				if((A instanceof Language) 
+				if((A instanceof Language)
 				&& (((Language)A).beingSpoken(A.ID())))
 					return (Language)A;
 			}
@@ -474,7 +474,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
 		}
 	}
-	
+
 	@Override
 	public int processVariableEquipment(final MOB mob)
 	{
@@ -488,8 +488,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				{
 					final MOB M=R.fetchInhabitant(i);
 					if((M!=null)&&(!M.isMonster())&&(CMSecurity.isAllowed(M,R,CMSecurity.SecFlag.CMDMOBS)))
-					{ 
-						newLastTickedDateTime=-1; 
+					{
+						newLastTickedDateTime=-1;
 						break;
 					}
 				}
@@ -510,14 +510,14 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 									final List<Item> V2=rivals.get(r);
 									final Item I2=V2.get(0);
 									if(I2.rawWornCode()==I.rawWornCode())
-									{ 
-										V=V2; 
+									{
+										V=V2;
 										break;
 									}
 								}
 								if(V==null)
-								{ 
-									V=new Vector<Item>(); 
+								{
+									V=new Vector<Item>();
 									rivals.add(V);
 								}
 								V.add(I);
@@ -635,7 +635,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			thisContainer.basePhyStats().setDisposition(thisContainer.basePhyStats().disposition()&((int)PhyStats.ALLMASK-PhyStats.IS_HIDDEN));
 		mob.delItem(thisContainer);
 		thisContainer.unWear();
-		if(!bodyFlag) 
+		if(!bodyFlag)
 			bodyFlag=(thisContainer instanceof DeadBody);
 		if(bodyFlag)
 		{
@@ -685,7 +685,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		&&(I.rawProperLocationBitmap()&CharClass.ARMOR_WEARMASK)>0)
 		{
 			DoubleFilterer.Result filterResult = DoubleFilterer.Result.NOTAPPLICABLE;
-			for(DoubleFilterer<Item> F : mob.charStats().getItemProficiencies())
+			for(final DoubleFilterer<Item> F : mob.charStats().getItemProficiencies())
 			{
 				filterResult = F.getFilterResult(I);
 				if(filterResult != DoubleFilterer.Result.NOTAPPLICABLE)
@@ -801,9 +801,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return new Vector<DeadBody>(1);
 	}
-	
+
 	@Override
-	public boolean canBePlayerDestroyed(final MOB mob, final Item I, final boolean ignoreBodies, boolean ignoreWeight)
+	public boolean canBePlayerDestroyed(final MOB mob, final Item I, final boolean ignoreBodies, final boolean ignoreWeight)
 	{
 		if((!ignoreBodies)
 		&&(I instanceof DeadBody)
@@ -1174,7 +1174,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				rejuv=rejuvedMOB.phyStats().level();
 			if(((!rejuvedMOB.isMonster())&&(rejuvedMOB.soulMate()==null)))
 				rejuv=1;
-			double[] vars=new double[] { rejuvedMOB.phyStats().level(), rejuvedMOB.phyStats().level(), rejuv };
+			final double[] vars=new double[] { rejuvedMOB.phyStats().level(), rejuvedMOB.phyStats().level(), rejuv };
 			for(int w=0;w<whatsToDo.size();w++)
 			{
 				final String whatToDo=whatsToDo.get(w);
@@ -1184,7 +1184,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				if(whatToDo.startsWith("ASTR"))
 				{
 				}
-				else if (whatToDo.startsWith("PUR"))
+				else
+				if (whatToDo.startsWith("PUR"))
 				{
 				}
 				else
@@ -1203,7 +1204,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				else
 				if(CMath.s_parseIntExpression(whatToDo,vars)>0)
 				{
-					int xp=CMath.s_parseIntExpression(whatToDo,vars);
+					final int xp=CMath.s_parseIntExpression(whatToDo,vars);
 					final int expLost=(xp+(2*XPLevel))/2;
 					rejuvedMOB.tell(L("^*You regain @x1 experience points.^?^.",""+expLost));
 					CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
@@ -1312,7 +1313,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return items;
 	}
-	
+
 	@Override
 	public String builtPrompt(final MOB mob, final String prompt)
 	{
@@ -1441,11 +1442,11 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 						}
 					}
 					break;
-				case 'a': 
-				{ 
-					buf.append(CMLib.factions().getRangePercent(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()))+"%"); 
-					c++; 
-					break; 
+				case 'a':
+				{
+					buf.append(CMLib.factions().getRangePercent(CMLib.factions().AlignID(),mob.fetchFaction(CMLib.factions().AlignID()))+"%");
+					c++;
+					break;
 				}
 				case 'A':
 				{
@@ -1506,7 +1507,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				}
 				case 'g':
 				{
-					buf.append((int) Math.round(Math.floor(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob) 
+					buf.append((int) Math.round(Math.floor(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)
 												/ CMLib.beanCounter().getLowestDenomination(CMLib.beanCounter().getCurrency(mob)))));
 					c++;
 					break;
@@ -1533,19 +1534,19 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				{
 					if ((CMLib.flags().isCloaked(mob)) && (((mob.phyStats().disposition() & PhyStats.IS_NOT_SEEN) != 0)))
 						buf.append(L("Wizinvisible"));
-					else 
+					else
 					if (CMLib.flags().isCloaked(mob))
 						buf.append("Cloaked");
-					else 
+					else
 					if (!CMLib.flags().isSeeable(mob))
 						buf.append(L("Undetectable"));
-					else 
+					else
 					if (CMLib.flags().isInvisible(mob) && CMLib.flags().isHidden(mob))
 						buf.append(L("Hidden/Invisible"));
-					else 
+					else
 					if (CMLib.flags().isInvisible(mob))
 						buf.append("Invisible");
-					else 
+					else
 					if (CMLib.flags().isHidden(mob))
 						buf.append("Hidden");
 					c++;
@@ -1555,8 +1556,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 				case 'k':
 				{
 					MOB tank = mob;
-					if ((tank.getVictim() != null) 
-					&& (tank.getVictim().getVictim() != null) 
+					if ((tank.getVictim() != null)
+					&& (tank.getVictim().getVictim() != null)
 					&& (tank.getVictim().getVictim() != mob))
 						tank = tank.getVictim().getVictim();
 					if (((c + 1) < prompt.length()) && (tank != null))
@@ -1790,7 +1791,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 		return buf.toString();
 	}
-	
+
 	protected String raceMixRuleCheck(String rule, final String urace1,final  String urace2)
 	{
 		if(rule.toUpperCase().startsWith(urace1))
@@ -1847,13 +1848,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		{
 			return hostPart+"Unsubscribe?USER="+CMStrings.capitalizeAndLower(name)+"&UNSUBKEY="+URLEncoder.encode(b64repeatedHash, "UTF-8");
 		}
-		catch (UnsupportedEncodingException e)
+		catch (final UnsupportedEncodingException e)
 		{
 			Log.errOut(e);
 			return "[ERR]";
 		}
 	}
-	
+
 	@Override
 	public List<Race> getConstituantRaces(final String raceID)
 	{
@@ -1873,7 +1874,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 					final String remainder = raceID.substring(lastStart);
 					for(final Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 					{
-						Race R3=r.nextElement();
+						final Race R3=r.nextElement();
 						if((!R3.ID().equals(raceID))
 						&&(!R3.isGeneric())
 						&&(remainder.startsWith(R3.ID()))
@@ -2039,13 +2040,13 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		else
 		if(race2.indexOf(race1)>=0)
 			return CMClass.getRace(race2);
-		
+
 		if(!ignoreRules)
 		{
-			String raceMixRules = CMProps.getVar(CMProps.Str.RACEMIXING);
+			final String raceMixRules = CMProps.getVar(CMProps.Str.RACEMIXING);
 			if(raceMixRules.trim().length()>0)
 			{
-				List<String> rules=CMParms.parseCommas(raceMixRules, true);
+				final List<String> rules=CMParms.parseCommas(raceMixRules, true);
 				final String urace1=race1.toUpperCase();
 				final String urace2=race2.toUpperCase();
 				for(String rule : rules)
@@ -2075,7 +2076,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							chk=raceMixRuleCheck(rule,urace2,urace1);
 						if((chk!=null)&&(chk.length()>0))
 						{
-							String raceID=CMStrings.replaceAll(chk, " ", "_");
+							final String raceID=CMStrings.replaceAll(chk, " ", "_");
 							Race R=CMClass.getRace(raceID);
 							if(R==null)
 								R=CMClass.findRace(raceID);

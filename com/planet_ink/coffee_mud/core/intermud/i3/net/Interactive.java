@@ -55,7 +55,7 @@ public abstract class Interactive implements ServerUser {
 	 * @return the new key
 	 * @throws InvalidNameException an error telling you to pick a new name
 	 */
-	static public String createKeyName(String nom) throws InvalidNameException 
+	static public String createKeyName(final String nom) throws InvalidNameException
 	{
 		final StringBuffer buff = new StringBuffer(nom.toLowerCase());
 		String key = "";
@@ -69,7 +69,8 @@ public abstract class Interactive implements ServerUser {
 			{
 				key = key + c;
 			}
-			else if( c != '\'' && c != '-' && c != ' ' )
+			else
+			if( c != '\'' && c != '-' && c != ' ' )
 			{
 				throw new InvalidNameException(c + " is an invalid character for names.");
 			}
@@ -78,7 +79,8 @@ public abstract class Interactive implements ServerUser {
 		{
 			throw new InvalidNameException("Your name must have at least three alphabetic characters.");
 		}
-		else if( key.length() > 29 )
+		else
+		if( key.length() > 29 )
 		{
 			throw new InvalidNameException("Your name is too long.");
 		}
@@ -198,7 +200,7 @@ public abstract class Interactive implements ServerUser {
 	 * @param cmd the command to be executed
 	 * @see #processInput
 	 */
-	protected synchronized void input(String cmd)
+	protected synchronized void input(final String cmd)
 	{
 		Input ob = null;
 
@@ -211,7 +213,8 @@ public abstract class Interactive implements ServerUser {
 		{
 			ob.input(this, cmd);
 		}
-		else if( body != null )
+		else
+		if( body != null )
 		{
 			body.executeCommand(cmd);
 		}
@@ -287,7 +290,7 @@ public abstract class Interactive implements ServerUser {
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.net.Input
 	 * @see #input
 	 */
-	public synchronized final void redirectInput(Input ob)
+	public synchronized final void redirectInput(final Input ob)
 	{
 		redirect.addElement(ob);
 	}
@@ -297,7 +300,7 @@ public abstract class Interactive implements ServerUser {
 	 * to the message.
 	 * @param msg the message to send to the client machine
 	 */
-	public final void sendMessage(String msg)
+	public final void sendMessage(final String msg)
 	{
 		if( socket == null )
 		{
@@ -312,7 +315,7 @@ public abstract class Interactive implements ServerUser {
 	 * @param msg the message to send to the client
 	 * @param nowrap if true, no newline is attached
 	 */
-	public final void sendMessage(String msg, boolean nowrap)
+	public final void sendMessage(String msg, final boolean nowrap)
 	{
 		if( !nowrap )
 		{
@@ -327,7 +330,7 @@ public abstract class Interactive implements ServerUser {
 	 * @param other the password to check
 	 * @return true if the two passwords match
 	 */
-	public final boolean validatePassword(String other)
+	public final boolean validatePassword(final String other)
 	{
 		return other.equals(password);
 	}
@@ -360,7 +363,7 @@ public abstract class Interactive implements ServerUser {
 	 * @param ob the body to which this interactive is being connected
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.net.InteractiveBody
 	 */
-	public void setBody(InteractiveBody ob)
+	public void setBody(final InteractiveBody ob)
 	{
 		body = ob;
 	}
@@ -400,7 +403,7 @@ public abstract class Interactive implements ServerUser {
 	 * name.
 	 * @param str the new display name
 	 */
-	public final void setDisplayName(String str)
+	public final void setDisplayName(final String str)
 	{
 		try
 		{
@@ -429,7 +432,7 @@ public abstract class Interactive implements ServerUser {
 	 * Sets the user's email address
 	 * @param str the new email address
 	 */
-	public final void setEmail(String str)
+	public final void setEmail(final String str)
 	{
 		email = str;
 	}
@@ -449,7 +452,7 @@ public abstract class Interactive implements ServerUser {
 	 * play on the user name to create a unique identifier for this
 	 * user that will always work.  For example, the following
 	 * command should work for a user:
-	 * 
+	 *
 	 * tell descartes hi!
 	 * tell deScartes hi!
 	 * tell des cartes hi!
@@ -470,7 +473,7 @@ public abstract class Interactive implements ServerUser {
 	 * @param str the key name being set
 	 * @see #getKeyName
 	 */
-	protected void setKeyName(String str)
+	protected void setKeyName(final String str)
 	{
 		if( key_name != null )
 		{
@@ -494,7 +497,7 @@ public abstract class Interactive implements ServerUser {
 	 * during login.
 	 * @param site the last login site
 	 */
-	public void setLastLoginSite(String site)
+	public void setLastLoginSite(final String site)
 	{
 		if( last_login_site != null )
 		{
@@ -517,7 +520,7 @@ public abstract class Interactive implements ServerUser {
 	 * time.
 	 * @param time the time the user last logged in
 	 */
-	public void setLastLoginTime(Date time)
+	public void setLastLoginTime(final Date time)
 	{
 		if( last_login_time != null )
 		{
@@ -543,7 +546,7 @@ public abstract class Interactive implements ServerUser {
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.server.ServerObject#setObjectId
 	 */
 	@Override
-	public final void setObjectId(String id)
+	public final void setObjectId(final String id)
 	{
 		if( object_id != null )
 		{
@@ -565,7 +568,7 @@ public abstract class Interactive implements ServerUser {
 	 * Sets the user's password.
 	 * @param pass the new password
 	 */
-	protected void setPassword(String pass)
+	protected void setPassword(final String pass)
 	{
 		password = pass;
 	}
@@ -593,7 +596,7 @@ public abstract class Interactive implements ServerUser {
 	 * Sets the user's real name.
 	 * @param nom the real name for the user
 	 */
-	public void setRealName(String nom)
+	public void setRealName(final String nom)
 	{
 		real_name = nom;
 	}
@@ -605,7 +608,7 @@ public abstract class Interactive implements ServerUser {
 	 * @see com.planet_ink.coffee_mud.core.intermud.i3.server.ServerUser#setSocket
 	 */
 	@Override
-	public final void setSocket(Socket s) throws java.io.IOException
+	public final void setSocket(final Socket s) throws java.io.IOException
 	{
 		socket = s;
 		input_thread = new InputThread(socket, this);
@@ -647,7 +650,7 @@ class InputThread implements Runnable
 	 * @param s the socket connected to the user's machine
 	 * @param u the Interactive attached to this thread
 	 */
-	public InputThread(Socket s, Interactive u) throws java.io.IOException {
+	public InputThread(final Socket s, final Interactive u) throws java.io.IOException {
 		destructed = false;
 		user = u;
 		input_buffer = new Vector(10);

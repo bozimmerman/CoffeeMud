@@ -51,20 +51,29 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 		return ID();
 	}
 
-	private static enum HState { PREHEAD, INHEAD, INBODY, PRECHUNK, INCHUNK, POSTINCHUNK, POSTCHUNK }
+	private static enum HState
+	{
+		PREHEAD,
+		INHEAD,
+		INBODY,
+		PRECHUNK,
+		INCHUNK,
+		POSTINCHUNK,
+		POSTCHUNK
+	}
 
-	private volatile int tickStatus=Tickable.STATUS_NOT;
-	protected Map<String,String> reqHeaders=new CaselessTreeMap<String>();
-	protected Map<String,List<String>> respHeaders=new CaselessTreeMap<List<String>>();
-	protected Socket sock = null;
-	protected OutputStream out = null;
-	protected InputStream in = null;
-	protected Method meth = Method.GET;
-	protected int connectTimeout=10000;
-	protected int readTimeout=10000;
-	protected int maxReadBytes=0;
-	protected byte[] outBody=null;
-	protected Integer respStatus=null;
+	private volatile int				tickStatus		= Tickable.STATUS_NOT;
+	protected Map<String, String>		reqHeaders		= new CaselessTreeMap<String>();
+	protected Map<String, List<String>>	respHeaders		= new CaselessTreeMap<List<String>>();
+	protected Socket					sock			= null;
+	protected OutputStream				out				= null;
+	protected InputStream				in				= null;
+	protected Method					meth			= Method.GET;
+	protected int						connectTimeout	= 10000;
+	protected int						readTimeout		= 10000;
+	protected int						maxReadBytes	= 0;
+	protected byte[]					outBody			= null;
+	protected Integer					respStatus		= null;
 
 	@Override
 	public CMObject newInstance()
@@ -85,14 +94,14 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	}
 
 	@Override
-	public HttpClient header(String key, String value)
+	public HttpClient header(final String key, final String value)
 	{
 		reqHeaders.put(key, value);
 		return this;
 	}
 
 	@Override
-	public HttpClient method(Method meth)
+	public HttpClient method(final Method meth)
 	{
 		if(meth!=null)
 		{
@@ -102,7 +111,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	}
 
 	@Override
-	public HttpClient body(String body)
+	public HttpClient body(final String body)
 	{
 		if(body!=null)
 		{
@@ -112,7 +121,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	}
 
 	@Override
-	public HttpClient body(byte[] body)
+	public HttpClient body(final byte[] body)
 	{
 		if(body!=null)
 		{
@@ -131,27 +140,27 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	}
 
 	@Override
-	public HttpClient connectTimeout(int ms)
+	public HttpClient connectTimeout(final int ms)
 	{
 		this.connectTimeout=ms;
 		return this;
 	}
 
 	@Override
-	public HttpClient readTimeout(int ms)
+	public HttpClient readTimeout(final int ms)
 	{
 		this.readTimeout=ms;
 		return this;
 	}
 
 	@Override
-	public HttpClient maxReadBytes(int bytes)
+	public HttpClient maxReadBytes(final int bytes)
 	{
 		this.maxReadBytes=bytes;
 		return this;
 	}
 
-	protected void conditionalHeader(String key, String value, List<String> clearSet)
+	protected void conditionalHeader(final String key, final String value, final List<String> clearSet)
 	{
 		if(!reqHeaders.containsKey(key))
 		{
@@ -377,7 +386,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 							state=HState.POSTCHUNK;
 						headBuilder.setLength(0);
 					}
-					else if((c!='\r')&&(c!='\n'))
+					else
+					if((c!='\r')&&(c!='\n'))
 					{
 						headBuilder.append((char)c);
 					}
@@ -433,7 +443,7 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	}
 
 	@Override
-	public byte[] getRawUrl(final String urlStr, String cookieStr)
+	public byte[] getRawUrl(final String urlStr, final String cookieStr)
 	{
 		return getRawUrl(urlStr, cookieStr, 1024*1024*10, 10000);
 	}
@@ -468,19 +478,19 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	}
 
 	@Override
-	public HttpClient doGet(String url) throws IOException
+	public HttpClient doGet(final String url) throws IOException
 	{
 		return this.method(Method.GET).doRequest(url);
 	}
 
 	@Override
-	public HttpClient doHead(String url) throws IOException
+	public HttpClient doHead(final String url) throws IOException
 	{
 		return this.method(Method.HEAD).doRequest(url);
 	}
 
 	@Override
-	public byte[] getRawUrl(final String urlStr, String cookieStr, final int maxLength, final int readTimeout)
+	public byte[] getRawUrl(final String urlStr, final String cookieStr, final int maxLength, final int readTimeout)
 	{
 		HttpClient h=null;
 		try
@@ -600,8 +610,8 @@ public class DefaultHttpClient implements HttpClient, Cloneable
 	@Override
 	public CMObject copyOf()
 	{
-		try 
-		{ 
+		try
+		{
 			return (CMObject)this.clone();
 		}
 		catch (final CloneNotSupportedException e)

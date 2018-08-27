@@ -76,7 +76,7 @@ public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedMOB, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedMOB, final PhyStats affectableStats)
 	{
 		super.affectPhyStats(affectedMOB,affectableStats);
 		if(alladj[2]!=1.0)
@@ -102,27 +102,28 @@ public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void affectCharState(MOB mob, CharState maxState)
+	public void affectCharState(final MOB mob, final CharState maxState)
 	{
 		super.affectCharState(mob,maxState);
 		if(alladj[3]!=1.0)
 			maxState.setHitPoints((int)Math.round(CMath.mul(maxState.getHitPoints(),alladj[3])));
-		else if(allset[3]>=0)
+		else
+		if(allset[3]>=0)
 			maxState.setHitPoints(allset[3]);
 		if(alladj[4]!=1.0)
 			maxState.setMana((int)Math.round(CMath.mul(maxState.getMana(),alladj[4])));
-		else 
+		else
 		if(allset[4]>=0)
 			maxState.setMana(allset[4]);
 		if(alladj[5]!=1.0)
 			maxState.setMovement((int)Math.round(CMath.mul(maxState.getMovement(),alladj[5])));
-		else 
+		else
 		if(allset[5]>=0)
 			maxState.setMovement(allset[5]);
 	}
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		if(newMiscText.length()>0)
@@ -145,7 +146,7 @@ public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if((code!=null)&&(code.equalsIgnoreCase("LEVEL")))
 		{
@@ -160,7 +161,7 @@ public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 				else
 				if(amt < 100)
 					amt = -(100-amt);
-				
+
 				switch(c)
 				{
 				case 0://PhyStats.STAT_ATTACK:
@@ -192,11 +193,11 @@ public class Prop_CombatAdjuster extends Property implements TriggeredAffect
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if((code!=null)&&(code.equalsIgnoreCase("LEVEL")))
 		{
-	
+
 		}
 		else
 			super.setStat(code, val);

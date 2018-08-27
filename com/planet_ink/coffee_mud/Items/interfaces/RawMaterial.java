@@ -47,15 +47,15 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * RawMaterial houses the complete list of raw resource types, which are used to
  * specify Item materials, and the nature of raw resources. In other words, this
  * is what other stuff is made of.
- * 
+ *
  * A resource code is divided into a material type in the upper bits, with a
  * specific resource type in the lower bits.
- * 
+ *
  * This interface includes a singleton called CODES for accessing information
  * about the various resource codes.
- * 
+ *
  * @author Bo Zimmerman
- * 
+ *
  */
 public interface RawMaterial extends Item
 {
@@ -64,7 +64,7 @@ public interface RawMaterial extends Item
 	 * source that may be of interest to the owner, here it is. For example, if
 	 * the resource is meat then this may be Cow meat, or Horse meat, making
 	 * "Cow" and "Horse" the domain source.
-	 * 
+	 *
 	 * @return the specific origin of this resource
 	 */
 	public String domainSource();
@@ -74,7 +74,7 @@ public interface RawMaterial extends Item
 	 * source that may be of interest to the owner, here it is. For example, if
 	 * the resource is meat then this may be Cow meat, or Horse meat, making
 	 * "Cow" and "Horse" the domain source.
-	 * 
+	 *
 	 * @param src the specific origin of this resource
 	 */
 	public void setDomainSource(String src);
@@ -83,7 +83,7 @@ public interface RawMaterial extends Item
 	 * Scans the owner of this item (room, mob, whatever) for other rawmaterial
 	 * resources of the exact same kind and, if found, combines with them. May
 	 * result in this item being destroyed.
-	 * 
+	 *
 	 * @return true if this item was rebundled, false otherwise.
 	 */
 	public boolean rebundle();
@@ -110,9 +110,9 @@ public interface RawMaterial extends Item
 	 */
 	public String getSubType();
 
-	/** 
+	/**
 	 * A subset of the allowed strings to denote
-	 * the subtype of a specific resource, such 
+	 * the subtype of a specific resource, such
 	 * as a resource that is still of its type,
 	 * but in an unusual form.  Such as a bolt
 	 * of cotton, or an apple seed.
@@ -213,9 +213,9 @@ public interface RawMaterial extends Item
 
 	/**
 	 * An enum of all the basic material types, allowing lookups and such
-	 * 
+	 *
 	 * @author Bo Zimmerman
-	 * 
+	 *
 	 */
 	public static enum Material
 	{
@@ -241,7 +241,7 @@ public interface RawMaterial extends Item
 		private final String			desc;
 		private final String			noun;
 
-		private Material(String noun)
+		private Material(final String noun)
 		{
 			this.mask = (ordinal() == 0) ? 0 : (ordinal() << 8);
 			this.desc = this.toString();
@@ -298,7 +298,7 @@ public interface RawMaterial extends Item
 		 * @param mask the material code to look up
 		 * @return the material enum object or null
 		 */
-		public static Material findByMask(int mask)
+		public static Material findByMask(final int mask)
 		{
 			final int maskOrdinal = (mask < size()) ? mask : (mask & MATERIAL_MASK) >> 8;
 			if (maskOrdinal < Material.values().length)
@@ -311,7 +311,7 @@ public interface RawMaterial extends Item
 		 * @param name the exact uppercase material name to look up
 		 * @return the material enum object or null
 		 */
-		public static Material find(String name)
+		public static Material find(final String name)
 		{
 			try
 			{
@@ -328,7 +328,7 @@ public interface RawMaterial extends Item
 		 * @param name the case-insensitive name
 		 * @return the material enum object or null
 		 */
-		public static Material findIgnoreCase(String name)
+		public static Material findIgnoreCase(final String name)
 		{
 			return find(name.toUpperCase().trim());
 		}
@@ -339,7 +339,7 @@ public interface RawMaterial extends Item
 		 * @param name the name to look for as a prefix
 		 * @return the first material enum matching, or null
 		 */
-		public static Material startsWith(String name)
+		public static Material startsWith(final String name)
 		{
 			for (final Material m : values())
 			{
@@ -355,12 +355,12 @@ public interface RawMaterial extends Item
 		 * @param name the name to look for as a prefix
 		 * @return the first material enum matching, or null
 		 */
-		public static Material startsWithIgnoreCase(String name)
+		public static Material startsWithIgnoreCase(final String name)
 		{
 			return startsWith(name.toUpperCase().trim());
 		}
 	}
-	
+
 	public final static int	RESOURCE_NOTHING		= MATERIAL_UNKNOWN | 0;
 	public final static int	RESOURCE_MEAT			= MATERIAL_FLESH | 1;
 	public final static int	RESOURCE_BEEF			= MATERIAL_FLESH | 2;
@@ -568,7 +568,7 @@ public interface RawMaterial extends Item
 	public final static int	RESOURCE_SPICE			= MATERIAL_VEGETATION | 204;
 	public final static int	RESOURCE_DIRT			= MATERIAL_ROCK | 205;
 	public final static int	RESOURCE_FUNGUS			= MATERIAL_VEGETATION | 206;
-	
+
 	public final static int	RESOURCE_MASK			= 255;
 
 	/**
@@ -800,7 +800,7 @@ public interface RawMaterial extends Item
 		SPICE(RESOURCE_SPICE			, 100,  5,  1, 750, "spicy smell", "", null),
 		DIRT(RESOURCE_DIRT				, 1,   50,  1, 1600, "rich earthy smell", "", null),
 		FUNGUS(RESOURCE_FUNGUS			, 1,    3,  1,  750, "", "", null),
-		
+
 		;//code, 						  v, freq, h, b, smell, effects, ResourceFlag flags
 		public final int			code, value, frequency, hardness, bouancy;
 		public final String			smell, effect, desc;
@@ -817,7 +817,7 @@ public interface RawMaterial extends Item
 		 * @param eff effects list (semicolon delimited, with parenthesis)
 		 * @param flg the ResourceFlag flags, such as berry or fish or something
 		 */
-		private DefResource(int cod, int val, int freq, int hard, int bou, String sniff, String eff, ResourceFlag flg)
+		private DefResource(final int cod, final int val, final int freq, final int hard, final int bou, final String sniff, final String eff, final ResourceFlag flg)
 		{
 			code = cod;
 			value = val;
@@ -833,7 +833,7 @@ public interface RawMaterial extends Item
 
 	/**
 	 * Global resource/raw material code data collector
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 */
 	public class CODES
@@ -858,7 +858,7 @@ public interface RawMaterial extends Item
 				Arrays.sort(defaults, new Comparator<DefResource>()
 				{
 					@Override
-					public int compare(DefResource o1, DefResource o2)
+					public int compare(final DefResource o1, final DefResource o2)
 					{
 						final int o1c = o1.code & 255;
 						final int o2c = o2.code & 255;
@@ -917,7 +917,8 @@ public interface RawMaterial extends Item
 					}
 					if (type.equalsIgnoreCase("ADD"))
 						add(material.mask(), stat, smell, value, frequ, hardness, bouancy, fish, berry, woody, abilityID);
-					else if (type.equalsIgnoreCase("REPLACE") && (oldResourceCode >= 0))
+					else
+					if (type.equalsIgnoreCase("REPLACE") && (oldResourceCode >= 0))
 						replace(oldResourceCode, material.mask(), stat, smell, value, frequ, hardness, bouancy, fish, berry, woody, abilityID);
 				}
 				final String[] sortedNames = descs.clone();
@@ -948,7 +949,7 @@ public interface RawMaterial extends Item
 		 * @param c the thread group code
 		 * @return the CODES object for the given thread group code, or null
 		 */
-		public static CODES c(byte c)
+		public static CODES c(final byte c)
 		{
 			return insts[c];
 		}
@@ -990,7 +991,7 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns an array of the numeric codes for the berry resources
-		 * 
+		 *
 		 * @return an array of the numeric codes for the berry resources
 		 */
 		public static int[] BERRIES()
@@ -1000,7 +1001,7 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns an array of the numeric codes for the berry resources
-		 * 
+		 *
 		 * @return an array of the numeric codes for the berry resources
 		 */
 		public int[] berries()
@@ -1010,7 +1011,7 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns an array of the numeric codes for the wood-choppy resources
-		 * 
+		 *
 		 * @return an array of the numeric codes for the wood-choppy resources
 		 */
 		public static int[] WOODIES()
@@ -1020,7 +1021,7 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns an array of the numeric codes for the wood-choppy resources
-		 * 
+		 *
 		 * @return an array of the numeric codes for the wood-choppy resources
 		 */
 		public int[] woodies()
@@ -1030,7 +1031,7 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns an array of the numeric codes for the fishy resources
-		 * 
+		 *
 		 * @return an array of the numeric codes for the fishy resources
 		 */
 		public static int[] FISHES()
@@ -1040,7 +1041,7 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns an array of the numeric codes for the fishy resources
-		 * 
+		 *
 		 * @return an array of the numeric codes for the fishy resources
 		 */
 		public int[] fishes()
@@ -1050,7 +1051,7 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns total number of codes 0 - this-1
-		 * 
+		 *
 		 * @return total number of codes 0 - this-1
 		 */
 		public static int TOTAL()
@@ -1060,7 +1061,7 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns total number of codes 0 - this-1
-		 * 
+		 *
 		 * @return total number of codes 0 - this-1
 		 */
 		public int total()
@@ -1070,7 +1071,7 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns an array of the numeric codes for all resources
-		 * 
+		 *
 		 * @return an array of the numeric codes for all resources
 		 */
 		public static int[] ALL_SBN()
@@ -1080,7 +1081,7 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns an array of the numeric codes for all resources
-		 * 
+		 *
 		 * @return an array of the numeric codes for all resources
 		 */
 		public static int[] ALL()
@@ -1090,7 +1091,7 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns an array of the numeric codes for all resources
-		 * 
+		 *
 		 * @return an array of the numeric codes for all resources
 		 */
 		public int[] all()
@@ -1100,33 +1101,33 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns an the numeric codes of the indexes resource code
-		 * 
+		 *
 		 * @param x the indexed resource code
 		 * @return an the numeric codes of the indexes resource code
 		 */
-		public static int GET(int x)
+		public static int GET(final int x)
 		{
 			return c().allCodes[x & RESOURCE_MASK];
 		}
 
 		/**
 		 * Returns an the numeric codes of the indexes resource code
-		 * 
+		 *
 		 * @param x the indexed resource code
 		 * @return an the numeric codes of the indexes resource code
 		 */
-		public int get(int x)
+		public int get(final int x)
 		{
 			return allCodes[x & RESOURCE_MASK];
 		}
 
 		/**
 		 * Returns the code of the names resource, or -1
-		 * 
+		 *
 		 * @param rsc the names resource
 		 * @return the code of the names resource, or -1
 		 */
-		public static int FIND_CaseSensitive(String rsc)
+		public static int FIND_CaseSensitive(final String rsc)
 		{
 			if (rsc == null)
 				return -1;
@@ -1139,11 +1140,11 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns the code of the names resource, or -1
-		 * 
+		 *
 		 * @param rsc the names resource
 		 * @return the code of the names resource, or -1
 		 */
-		public static int FIND_IgnoreCase(String rsc)
+		public static int FIND_IgnoreCase(final String rsc)
 		{
 			if (rsc == null)
 				return -1;
@@ -1156,11 +1157,11 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns the code of the names resource, or -1
-		 * 
+		 *
 		 * @param rsc the names resource
 		 * @return the code of the names resource, or -1
 		 */
-		public static int FIND_StartsWith(String rsc)
+		public static int FIND_StartsWith(final String rsc)
 		{
 			if (rsc == null)
 				return -1;
@@ -1173,18 +1174,18 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns whether the code is valid
-		 * 
+		 *
 		 * @param code the resource code
 		 * @return whether the code is valid
 		 */
-		public static boolean IS_VALID(int code)
+		public static boolean IS_VALID(final int code)
 		{
 			return (code >= 0) && ((code & RawMaterial.RESOURCE_MASK) < c().total());
 		}
 
 		/**
 		 * Returns the names of the various resources
-		 * 
+		 *
 		 * @return the names of the various resources
 		 */
 		public static String[] NAMES()
@@ -1194,7 +1195,7 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns the names of the various resources
-		 * 
+		 *
 		 * @return the names of the various resources
 		 */
 		public String[] names()
@@ -1204,29 +1205,29 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns the name of the code
-		 * 
+		 *
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public static String NAME(int code)
+		public static String NAME(final int code)
 		{
 			return c().descs[code & RESOURCE_MASK];
 		}
 
 		/**
 		 * Returns the name of the code
-		 * 
+		 *
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public String name(int code)
+		public String name(final int code)
 		{
 			return descs[code & RESOURCE_MASK];
 		}
 
 		/**
 		 * Returns the smells of the various resources
-		 * 
+		 *
 		 * @return the smells of the various resources
 		 */
 		public static String[] SMELLS()
@@ -1236,29 +1237,29 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns the description of the code smell
-		 * 
+		 *
 		 * @param code the code smell
 		 * @return the description of the code smell
 		 */
-		public static String SMELL(int code)
+		public static String SMELL(final int code)
 		{
 			return c().smells[code & RESOURCE_MASK];
 		}
 
 		/**
 		 * Returns the description of the code smell
-		 * 
+		 *
 		 * @param code the code smell
 		 * @return the description of the code smell
 		 */
-		public String smell(int code)
+		public String smell(final int code)
 		{
 			return smells[code & RESOURCE_MASK];
 		}
 
 		/**
 		 * Returns the smells of the various resources
-		 * 
+		 *
 		 * @return the smells of the various resources
 		 */
 		public static String[] EFFECTS()
@@ -1268,66 +1269,66 @@ public interface RawMaterial extends Item
 
 		/**
 		 * Returns the description of the code smell
-		 * 
+		 *
 		 * @param code the code smell
 		 * @return the description of the code smell
 		 */
-		public static String EFFECT(int code)
+		public static String EFFECT(final int code)
 		{
 			return c().effects[code & RESOURCE_MASK];
 		}
 
 		/**
 		 * Returns the description of the code smell
-		 * 
+		 *
 		 * @param code the code smell
 		 * @return the description of the code smell
 		 */
-		public String effect(int code)
+		public String effect(final int code)
 		{
 			return effects[code & RESOURCE_MASK];
 		}
 
 		/**
 		 * Returns the value of the resource
-		 * 
+		 *
 		 * @param code the resource code
 		 * @return the value of the resource
 		 */
-		public static int VALUE(int code)
+		public static int VALUE(final int code)
 		{
 			return c().data[code & RESOURCE_MASK][1];
 		}
 
 		/**
 		 * Returns the value of the resource
-		 * 
+		 *
 		 * @param code the resource code
 		 * @return the value of the resource
 		 */
-		public int value(int code)
+		public int value(final int code)
 		{
 			return data[code & RESOURCE_MASK][1];
 		}
 
 		/**
 		 * Returns the frequency of the resource, or how rare it is.
-		 * 
+		 *
 		 * @param code the resource code
 		 * @return the frequency of the resource
 		 */
-		public static int FREQUENCY(int code)
+		public static int FREQUENCY(final int code)
 		{
 			return c().data[code & RESOURCE_MASK][2];
 		}
 
 		/**
 		 * Returns the frequency of the resource, or how rare it is.
-		 * 
+		 *
 		 * @param code the resource code
 		 * @return the frequency of the resource
 		 */
-		public int frequency(int code)
+		public int frequency(final int code)
 		{
 			return data[code & RESOURCE_MASK][2];
 		}
@@ -1338,18 +1339,18 @@ public interface RawMaterial extends Item
 		 * @param material the material mask
 		 * @return the most common resource of that material
 		 */
-		public static int MOST_FREQUENT(int material)
+		public static int MOST_FREQUENT(final int material)
 		{
 			return c().mostFrequent(material);
 		}
-		
+
 		/**
 		 * Returns the resource code of the most frequently found
 		 * resource of the given material mask
 		 * @param material the material mask
 		 * @return the most common resource of that material
 		 */
-		public int mostFrequent(int material)
+		public int mostFrequent(final int material)
 		{
 			final List<Integer> all = COMPOSE_RESOURCES(material);
 			if((all==null)||(all.size()==0))
@@ -1357,10 +1358,10 @@ public interface RawMaterial extends Item
 			Collections.sort(all,new Comparator<Integer>()
 			{
 				@Override
-				public int compare(Integer o1, Integer o2)
+				public int compare(final Integer o1, final Integer o2)
 				{
-					int freq1 = frequency(o1.intValue());
-					int freq2 = frequency(o2.intValue());
+					final int freq1 = frequency(o1.intValue());
+					final int freq2 = frequency(o2.intValue());
 					if(freq1 < freq2)
 						return 1;
 					if(freq1 > freq2)
@@ -1370,47 +1371,47 @@ public interface RawMaterial extends Item
 			});
 			return all.get(0).intValue();
 		}
-		
+
 		/**
 		 * Returns the hardness of the resource, from 1-10
-		 * 
+		 *
 		 * @param code the resource code
 		 * @return the hardness of the resource
 		 */
-		public static int HARDNESS(int code)
+		public static int HARDNESS(final int code)
 		{
 			return c().data[code & RESOURCE_MASK][3];
 		}
 
 		/**
 		 * Returns the hardness of the resource, from 1-10
-		 * 
+		 *
 		 * @param code the resource code
 		 * @return the hardness of the resource
 		 */
-		public int hardness(int code)
+		public int hardness(final int code)
 		{
 			return data[code & RESOURCE_MASK][3];
 		}
 
 		/**
 		 * Returns the bouancy of the resource, from 0-20000
-		 * 
+		 *
 		 * @param code the resource code
 		 * @return the bouancy of the resource
 		 */
-		public static int BOUANCY(int code)
+		public static int BOUANCY(final int code)
 		{
 			return c().data[code & RESOURCE_MASK][4];
 		}
 
 		/**
 		 * Returns the bouancy of the resource, from 0-20000
-		 * 
+		 *
 		 * @param code the resource code
 		 * @return the bouancy of the resource
 		 */
-		public int bouancy(int code)
+		public int bouancy(final int code)
 		{
 			return data[code & RESOURCE_MASK][4];
 		}
@@ -1418,7 +1419,7 @@ public interface RawMaterial extends Item
 		/**
 		 * Search and compose a complete list of all resources of the given
 		 * material
-		 * 
+		 *
 		 * @param mat the resource code
 		 * @return a complete list of all resources of the given material
 		 */
@@ -1438,11 +1439,11 @@ public interface RawMaterial extends Item
 		/**
 		 * Parses, if necessary, EFFECT strings into ability objects, complete
 		 * with parms, ready for copying.
-		 * 
+		 *
 		 * @param code the material/resource code
 		 * @return an ability, if any.
 		 */
-		public static Ability[] EFFECTA(int code)
+		public static Ability[] EFFECTA(final int code)
 		{
 			final CODES c = c();
 			final int cd = code & RESOURCE_MASK;
@@ -1514,7 +1515,7 @@ public interface RawMaterial extends Item
 					final TreeSet<Pair<Integer, Double>> newBucket = new TreeSet<Pair<Integer, Double>>(new Comparator<Pair<Integer, Double>>()
 					{
 						@Override
-						public int compare(Pair<Integer, Double> o1, Pair<Integer, Double> o2)
+						public int compare(final Pair<Integer, Double> o1, final Pair<Integer, Double> o2)
 						{
 							return o1.second.compareTo(o2.second);
 						}
@@ -1559,7 +1560,7 @@ public interface RawMaterial extends Item
 		 * @param woody true if its a wood-choppy type
 		 * @param abilityID effects list
 		 */
-		public synchronized void add(int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry, boolean woody, String abilityID)
+		public synchronized void add(final int material, final String name, final String smell, final int value, final int frequ, final int hardness, final int bouancy, final boolean fish, final boolean berry, final boolean woody, final String abilityID)
 		{
 			final int newResourceCode = allCodes.length | material;
 			allCodes = Arrays.copyOf(allCodes, allCodes.length + 1);
@@ -1611,7 +1612,7 @@ public interface RawMaterial extends Item
 		 * @param woody true if its a wood-choppy type
 		 * @param abilityID effects list
 		 */
-		public synchronized void replace(int resourceCode, int material, String name, String smell, int value, int frequ, int hardness, int bouancy, boolean fish, boolean berry, boolean woody, String abilityID)
+		public synchronized void replace(final int resourceCode, final int material, final String name, final String smell, final int value, final int frequ, final int hardness, final int bouancy, final boolean fish, final boolean berry, final boolean woody, final String abilityID)
 		{
 			final int resourceIndex = resourceCode & RESOURCE_MASK;
 			if ((berry) && (!CMParms.contains(berries, resourceCode)))
@@ -1619,7 +1620,8 @@ public interface RawMaterial extends Item
 				berries = Arrays.copyOf(berries, berries.length + 1);
 				berries[berries.length - 1] = resourceCode;
 			}
-			else if ((!berry) && (CMParms.contains(berries, resourceCode)))
+			else
+			if ((!berry) && (CMParms.contains(berries, resourceCode)))
 			{
 				final int[] newberries = new int[berries.length - 1];
 				int n = 0;
@@ -1635,7 +1637,8 @@ public interface RawMaterial extends Item
 				woodies = Arrays.copyOf(woodies, woodies.length + 1);
 				woodies[woodies.length - 1] = resourceCode;
 			}
-			else if ((!(woody || (material==RawMaterial.MATERIAL_WOODEN))) && (CMParms.contains(woodies, resourceCode)))
+			else
+			if ((!(woody || (material==RawMaterial.MATERIAL_WOODEN))) && (CMParms.contains(woodies, resourceCode)))
 			{
 				final int[] newwoodies = new int[woodies.length - 1];
 				int n = 0;
@@ -1651,7 +1654,8 @@ public interface RawMaterial extends Item
 				fishes = Arrays.copyOf(fishes, fishes.length + 1);
 				fishes[fishes.length - 1] = resourceCode;
 			}
-			else if ((!fish) && (CMParms.contains(fishes, resourceCode)))
+			else
+			if ((!fish) && (CMParms.contains(fishes, resourceCode)))
 			{
 				final int[] newfishes = new int[fishes.length - 1];
 				int n = 0;

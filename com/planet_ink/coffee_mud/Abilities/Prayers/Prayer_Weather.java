@@ -80,7 +80,7 @@ public class Prayer_Weather extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -102,106 +102,119 @@ public class Prayer_Weather extends Prayer
 				case Climate.WEATHER_BLIZZARD:
 					if(switcher==1)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_BLIZZARD);
-					else if(switcher==2)
+					else
+					if(switcher==2)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_BLIZZARD);
 					else
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_SNOW);
+						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_SNOW);
 					break;
 				case Climate.WEATHER_CLEAR:
 					if(switcher==1)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_WINDY);
-					else if(switcher==2)
+					else
+					if(switcher==2)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_RAIN);
 					else
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLOUDY);
+						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLOUDY);
 					break;
 				case Climate.WEATHER_CLOUDY:
 					if(switcher==1)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_WINDY);
-					else if(switcher==2)
+					else
+					if(switcher==2)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_RAIN);
 					else
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLEAR);
+						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLEAR);
 					break;
 				case Climate.WEATHER_DROUGHT:
 					if(switcher==1)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_DUSTSTORM);
-					else if(switcher==2)
+					else
+					if(switcher==2)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_HEAT_WAVE);
 					else
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLEAR);
+						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLEAR);
 					break;
 				case Climate.WEATHER_DUSTSTORM:
 					if(switcher==1)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_DUSTSTORM);
-					else if(switcher==2)
+					else
+					if(switcher==2)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLOUDY);
 					else
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLEAR);
+						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLEAR);
 					break;
 				case Climate.WEATHER_HAIL:
 					if(switcher==1)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_HAIL);
-					else if(switcher==2)
+					else
+					if(switcher==2)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_SLEET);
 					else
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLOUDY);
+						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLOUDY);
 					break;
 				case Climate.WEATHER_HEAT_WAVE:
 					if(switcher==1)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_DUSTSTORM);
-					else if(switcher==2)
+					else
+					if(switcher==2)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_RAIN);
 					else
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLEAR);
+						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLEAR);
 					break;
 				case Climate.WEATHER_RAIN:
 					if(switcher==1)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_THUNDERSTORM);
-					else if(switcher==2)
+					else
+					if(switcher==2)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_THUNDERSTORM);
 					else
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLOUDY);
+						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLOUDY);
 					break;
 				case Climate.WEATHER_SLEET:
 					if(switcher==1)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_SLEET);
-					else if(switcher==2)
+					else
+					if(switcher==2)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_SLEET);
 					else
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLOUDY);
+						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLOUDY);
 					break;
 				case Climate.WEATHER_SNOW:
 					if(switcher==1)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_BLIZZARD);
-					else if(switcher==2)
+					else
+					if(switcher==2)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_SLEET);
 					else
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLOUDY);
+						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLOUDY);
 					break;
 				case Climate.WEATHER_THUNDERSTORM:
 					if(switcher==1)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_THUNDERSTORM);
-					else if(switcher==2)
+					else
+					if(switcher==2)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_THUNDERSTORM);
 					else
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_RAIN);
+						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_RAIN);
 					break;
 				case Climate.WEATHER_WINDY:
 					if(switcher==1)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_WINDY);
-					else if(switcher==2)
+					else
+					if(switcher==2)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_THUNDERSTORM);
 					else
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLEAR);
+						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLEAR);
 					break;
 				case Climate.WEATHER_WINTER_COLD:
 					if(switcher==1)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_WINDY);
-					else if(switcher==2)
+					else
+					if(switcher==2)
 						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_SNOW);
 					else
-					mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLEAR);
+						mob.location().getArea().getClimateObj().setNextWeatherType(Climate.WEATHER_CLEAR);
 					break;
 				default:
 					break;

@@ -38,13 +38,13 @@ public class MXPElement implements Cloneable
 	private Vector<String>	parsedAttributes		= null;
 	private List<String>	userParms				= new Vector<String>();
 	private boolean			basicElement			= true;
-	
+
 	private Hashtable<String,String>		attributeValues			= null;
 	private Hashtable<String,String>		alternativeAttributes	= null;
 
 	private int				bufInsert				= -1;
 
-	public MXPElement(String newName, String theDefinition, String theAttributes, String theFlag, int theBitmap)
+	public MXPElement(final String newName, final String theDefinition, final String theAttributes, final String theFlag, final int theBitmap)
 	{
 		super();
 		name = newName;
@@ -56,7 +56,7 @@ public class MXPElement implements Cloneable
 			bitmap = bitmap | BIT_NEEDTEXT;
 	}
 
-	public MXPElement(String newName, String theDefinition, String theAttributes, String theFlag, int theBitmap, String unsupported)
+	public MXPElement(final String newName, final String theDefinition, final String theAttributes, final String theFlag, final int theBitmap, final String unsupported)
 	{
 		super();
 		name = newName;
@@ -95,7 +95,7 @@ public class MXPElement implements Cloneable
 		return name;
 	}
 
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 		name = newName;
 	}
@@ -135,7 +135,7 @@ public class MXPElement implements Cloneable
 		return definition;
 	}
 
-	public void setDefinition(String defi)
+	public void setDefinition(final String defi)
 	{
 		definition = defi;
 	}
@@ -165,7 +165,7 @@ public class MXPElement implements Cloneable
 		return !Util.bset(bitmap, BIT_NOTSUPPORTED);
 	}
 
-	public void setBitmap(int newBitmap)
+	public void setBitmap(final int newBitmap)
 	{
 		bitmap = newBitmap;
 	}
@@ -182,7 +182,7 @@ public class MXPElement implements Cloneable
 		return Util.parseSpaces(unsupportedParms, true);
 	}
 
-	public void setAttributes(String newAttributes)
+	public void setAttributes(final String newAttributes)
 	{
 		attributes = newAttributes;
 		parsedAttributes = null;
@@ -199,7 +199,7 @@ public class MXPElement implements Cloneable
 		return null;
 	}
 
-	public void setAttributeValue(String tag, String value)
+	public void setAttributeValue(final String tag, final String value)
 	{
 		getParsedAttributes();
 		attributeValues.remove(tag);
@@ -254,7 +254,7 @@ public class MXPElement implements Cloneable
 			case '\'':
 				if (lastC == '\\')
 					bit.append(buf.charAt(i));
-				else 
+				else
 				if ((lastC == '=') || (quotes != '\0') || ((quotes == '\0') && ((lastC == ' ') || (lastC == '\t'))))
 				{
 					if ((quotes != '\0') && (quotes == buf.charAt(i)))
@@ -308,7 +308,7 @@ public class MXPElement implements Cloneable
 		return userParms;
 	}
 
-	public void saveSettings(int insertPoint, Vector<String> theUserParms)
+	public void saveSettings(final int insertPoint, final Vector<String> theUserParms)
 	{
 		bufInsert = insertPoint;
 		userParms = theUserParms;
@@ -319,13 +319,13 @@ public class MXPElement implements Cloneable
 		return bufInsert;
 	}
 
-	public void deleteAttribute(String name)
+	public void deleteAttribute(final String name)
 	{
 		getParsedAttributes();
 		attributeValues.remove(name.toUpperCase().trim());
 	}
 
-	public Vector<String> getCloseTags(String desc)
+	public Vector<String> getCloseTags(final String desc)
 	{
 		final StringBuffer buf = new StringBuffer(desc);
 		final Vector<String> tags = new Vector<String>();
@@ -340,7 +340,8 @@ public class MXPElement implements Cloneable
 			case '<':
 				if (quotes != '\0')
 					bit = null;
-				else if (bit != null)
+				else
+				if (bit != null)
 				{
 					if (MXP.tagDebug)
 					{
@@ -367,9 +368,11 @@ public class MXPElement implements Cloneable
 			case '\'':
 				if (lastC == '\\')
 					bit = null;
-				else if ((quotes != '\0') && (quotes == buf.charAt(i)))
+				else
+				if ((quotes != '\0') && (quotes == buf.charAt(i)))
 					quotes = '\0';
-				else if (quotes == '\0')
+				else
+				if (quotes == '\0')
 					quotes = buf.charAt(i);
 				bit = null;
 				break;
@@ -390,7 +393,7 @@ public class MXPElement implements Cloneable
 		return tags;
 	}
 
-	public String getFoldedDefinition(String text)
+	public String getFoldedDefinition(final String text)
 	{
 		final Vector<String> aV = getParsedAttributes();
 		attributeValues.remove("TEXT");

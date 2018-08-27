@@ -306,7 +306,8 @@ public class Banishment extends StdAbility
 				}
 			}
 		}
-		else if (!auto)
+		else
+		if (!auto)
 			return beneficialVisualFizzle(mob, target, L("<S-NAME> attempt(s) to banish <T-NAMESELF>, but fail(s)!"));
 		return true;
 	}

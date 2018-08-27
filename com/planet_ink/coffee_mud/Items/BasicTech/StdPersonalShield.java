@@ -62,14 +62,14 @@ public class StdPersonalShield extends StdElecItem implements Armor
 		super.setPowerRemaining(1000);
 	}
 
-	protected String fieldOnStr(MOB viewerM)
+	protected String fieldOnStr(final MOB viewerM)
 	{
 		return L((owner() instanceof MOB)?
 			"A field of energy surrounds <O-NAME>.":
 			"A field of energy surrounds <T-NAME>.");
 	}
 
-	protected String fieldDeadStr(MOB viewerM)
+	protected String fieldDeadStr(final MOB viewerM)
 	{
 		return L((owner() instanceof MOB)?"" +
 			"The field around <O-NAME> flickers and dies out.":
@@ -82,7 +82,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 		return TechType.PERSONAL_SHIELD;
 	}
 
-	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
+	protected boolean doShield(final MOB mob, final CMMsg msg, final double successFactor)
 	{
 		if(mob.location()!=null)
 		{
@@ -103,7 +103,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 		return false;
 	}
 
-	protected boolean doesShield(MOB mob, CMMsg msg, double successFactor)
+	protected boolean doesShield(final MOB mob, final CMMsg msg, final double successFactor)
 	{
 		return (Math.random() >= successFactor) && activated();
 	}
@@ -117,7 +117,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		if(CMath.isInteger(newText))
 			this.setPowerCapacity(CMath.s_int(newText));
@@ -125,11 +125,11 @@ public class StdPersonalShield extends StdElecItem implements Armor
 	}
 
 	@Override
-	public SizeDeviation getSizingDeviation(MOB mob)
+	public SizeDeviation getSizingDeviation(final MOB mob)
 	{
 		return SizeDeviation.FITS;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -239,7 +239,10 @@ public class StdPersonalShield extends StdElecItem implements Armor
 				break;
 			}
 		}
-		else if(msg.amITarget(owner()) && (owner() instanceof MOB) && (!amWearingAt(Wearable.IN_INVENTORY)))
+		else
+		if(msg.amITarget(owner())
+		&& (owner() instanceof MOB)
+		&& (!amWearingAt(Wearable.IN_INVENTORY)))
 		{
 			switch(msg.targetMinor())
 			{
@@ -260,7 +263,7 @@ public class StdPersonalShield extends StdElecItem implements Armor
 	}
 
 	@Override
-	public void setClothingLayer(short newLayer)
+	public void setClothingLayer(final short newLayer)
 	{
 		layer = newLayer;
 	}
@@ -272,13 +275,13 @@ public class StdPersonalShield extends StdElecItem implements Armor
 	}
 
 	@Override
-	public void setLayerAttributes(short newAttributes)
+	public void setLayerAttributes(final short newAttributes)
 	{
 		layerAttributes = newAttributes;
 	}
 
 	@Override
-	public boolean canWear(MOB mob, long where)
+	public boolean canWear(final MOB mob, final long where)
 	{
 		if(where==0)
 			return (whereCantWear(mob)==0);

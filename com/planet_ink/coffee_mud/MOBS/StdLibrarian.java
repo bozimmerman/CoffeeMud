@@ -119,17 +119,17 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				{
 					try
 					{
-						for (XMLLibrary.XMLTag tag : xml.parseAllXML(data.xml()))
+						for (final XMLLibrary.XMLTag tag : xml.parseAllXML(data.xml()))
 						{
 							if (tag.tag().equalsIgnoreCase("OBJECT"))
 							{
-								CheckedOutRecord r = new CheckedOutRecord();
+								final CheckedOutRecord r = new CheckedOutRecord();
 								xml.fromXMLtoPOJO(tag.contents(), r);
 								records.add(r);
 							}
 						}
 					}
-					catch (IllegalArgumentException e)
+					catch (final IllegalArgumentException e)
 					{
 						Log.errOut(getLibraryRecordKey(), e);
 					}
@@ -141,9 +141,9 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 
 	public List<CheckedOutRecord> getAllMyRecords(final String name)
 	{
-		List<CheckedOutRecord> recs = this.getCheckedOutRecords();
-		List<CheckedOutRecord> myRecs = new ArrayList<CheckedOutRecord>();
-		for (CheckedOutRecord rec : recs)
+		final List<CheckedOutRecord> recs = this.getCheckedOutRecords();
+		final List<CheckedOutRecord> myRecs = new ArrayList<CheckedOutRecord>();
+		for (final CheckedOutRecord rec : recs)
 		{
 			if (rec.playerName.equalsIgnoreCase(name))
 				myRecs.add(rec);
@@ -153,8 +153,8 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 
 	public CheckedOutRecord getRecord(final String playerName, final String itemName)
 	{
-		List<CheckedOutRecord> recs = this.getCheckedOutRecords();
-		for (CheckedOutRecord rec : recs)
+		final List<CheckedOutRecord> recs = this.getCheckedOutRecords();
+		for (final CheckedOutRecord rec : recs)
 		{
 			if (rec.playerName.equalsIgnoreCase(playerName) && (rec.itemName.equalsIgnoreCase(itemName)))
 				return rec;
@@ -164,9 +164,9 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 
 	public List<CheckedOutRecord> getItemRecords(final String itemName)
 	{
-		List<CheckedOutRecord> recs = this.getCheckedOutRecords();
-		List<CheckedOutRecord> myRecs = new ArrayList<CheckedOutRecord>();
-		for (CheckedOutRecord rec : recs)
+		final List<CheckedOutRecord> recs = this.getCheckedOutRecords();
+		final List<CheckedOutRecord> myRecs = new ArrayList<CheckedOutRecord>();
+		for (final CheckedOutRecord rec : recs)
 		{
 			if (rec.itemName.equalsIgnoreCase(itemName))
 				myRecs.add(rec);
@@ -176,7 +176,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 
 	protected double getTotalOverdueCharges(final String name)
 	{
-		List<CheckedOutRecord> recs = this.getAllMyRecords(name);
+		final List<CheckedOutRecord> recs = this.getAllMyRecords(name);
 		double totalDue = 0.0;
 		for (int i = 0; i < recs.size(); i++)
 		{
@@ -184,7 +184,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 			{
 				totalDue += recs.get(i).charges;
 			}
-			catch (java.lang.IndexOutOfBoundsException e)
+			catch (final java.lang.IndexOutOfBoundsException e)
 			{
 			}
 		}
@@ -198,7 +198,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		{
 			lastChanges[0] = System.currentTimeMillis();
 		}
-		List<CheckedOutRecord> records = this.getCheckedOutRecords();
+		final List<CheckedOutRecord> records = this.getCheckedOutRecords();
 		final StringBuilder json = new StringBuilder("");
 		final XMLLibrary xml = CMLib.xml();
 		for (int r = 0; r < records.size(); r++)
@@ -211,7 +211,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				json.append(subXML);
 				json.append("</OBJECT>");
 			}
-			catch (Exception e)
+			catch (final Exception e)
 			{
 				Log.errOut(getLibraryRecordKey(), e);
 			}
@@ -226,7 +226,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	}
 
 	@Override
-	public void setLibraryChain(String name)
+	public void setLibraryChain(final String name)
 	{
 		setMiscText(name);
 	}
@@ -238,7 +238,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	}
 
 	@Override
-	public void setOverdueCharge(double charge)
+	public void setOverdueCharge(final double charge)
 	{
 		overdueCharge = charge;
 	}
@@ -250,7 +250,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	}
 
 	@Override
-	public void setDailyOverdueCharge(double charge)
+	public void setDailyOverdueCharge(final double charge)
 	{
 		dailyOverdueCharge = charge;
 	}
@@ -262,7 +262,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	}
 
 	@Override
-	public void setOverdueChargePct(double pct)
+	public void setOverdueChargePct(final double pct)
 	{
 		overdueChargePct = pct;
 	}
@@ -274,7 +274,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	}
 
 	@Override
-	public void setDailyOverdueChargePct(double pct)
+	public void setDailyOverdueChargePct(final double pct)
 	{
 		dailyOverdueChargePct = pct;
 	}
@@ -286,7 +286,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	}
 
 	@Override
-	public void setMinOverdueDays(int days)
+	public void setMinOverdueDays(final int days)
 	{
 		minOverdueDays = days;
 	}
@@ -298,7 +298,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	}
 
 	@Override
-	public void setMaxOverdueDays(int days)
+	public void setMaxOverdueDays(final int days)
 	{
 		maxOverdueDays = days;
 	}
@@ -310,13 +310,13 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	}
 
 	@Override
-	public void setContributorMask(String mask)
+	public void setContributorMask(final String mask)
 	{
 		contributorMask = mask;
 	}
 
 	@Override
-	protected void cloneFix(MOB E)
+	protected void cloneFix(final MOB E)
 	{
 		super.cloneFix(E);
 	}
@@ -350,7 +350,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		return shop;
 	}
 
-	
+
 	@Override
 	protected void doInventoryReset()
 	{
@@ -378,11 +378,11 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				{
 					try
 					{
-						CheckedOutRecord rec = records.get(i);
+						final CheckedOutRecord rec = records.get(i);
 						if (rec.itemName.length() > 0)
 							curShop.lowerStock("$" + rec.itemName + "$");
 					}
-					catch (java.lang.IndexOutOfBoundsException e)
+					catch (final java.lang.IndexOutOfBoundsException e)
 					{
 					}
 				}
@@ -457,7 +457,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 						final boolean recordChanged = processCheckedOutRecord(rec);
 						recordsChanged = recordsChanged || recordChanged;
 					}
-					catch (IndexOutOfBoundsException e)
+					catch (final IndexOutOfBoundsException e)
 					{
 					}
 				}
@@ -489,7 +489,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				final long hrsDiff = Math.round(Math.floor((System.currentTimeMillis() - rec.mudDueDateMs)/CMProps.getMillisPerMudHour()));
 				if (hrsDiff > 0)
 				{
-					double daysPast = CMath.floor(CMath.div(hrsDiff, (double) clock.getHoursInDay()));
+					final double daysPast = CMath.floor(CMath.div(hrsDiff, (double) clock.getHoursInDay()));
 					if (daysPast > 0)
 					{
 						newCharges += (daysPast * this.getDailyOverdueCharge());
@@ -518,8 +518,8 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		}
 		return recordsChanged;
 	}
-	
-	public void autoGive(MOB src, MOB tgt, Item I)
+
+	public void autoGive(final MOB src, final MOB tgt, final Item I)
 	{
 		CMMsg msg2 = CMClass.getMsg(src, I, null, CMMsg.MSG_DROP | CMMsg.MASK_INTERMSG, null, CMMsg.MSG_DROP | CMMsg.MASK_INTERMSG, null, CMMsg.MSG_DROP | CMMsg.MASK_INTERMSG, null);
 		location().send(this, msg2);
@@ -531,9 +531,9 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
 		final MOB mob = msg.source();
-		if (msg.source().isPlayer() 
-		&& (!shopApply) 
-		&& ((msg.source().location() == location()) || (msg.sourceMinor() == CMMsg.TYP_ENTER)) 
+		if (msg.source().isPlayer()
+		&& (!shopApply)
+		&& ((msg.source().location() == location()) || (msg.sourceMinor() == CMMsg.TYP_ENTER))
 		&& (!msg.source().isAttributeSet(MOB.Attrib.SYSOPMSGS)))
 			shopApply = true;
 		if (msg.amITarget(this))
@@ -552,13 +552,13 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 						autoGive(msg.source(), this, (Item) msg.tool());
 						if (msg.tool() instanceof Coins)
 						{
-							double totalGiven = ((Coins) msg.tool()).getTotalValue();
-							double totalDue = getTotalOverdueCharges(msg.source().Name());
+							final double totalGiven = ((Coins) msg.tool()).getTotalValue();
+							final double totalDue = getTotalOverdueCharges(msg.source().Name());
 							if (totalDue > 0.0)
 							{
 								double totalPaidDown = totalDue;
 								boolean recordUpdated = false;
-								for (CheckedOutRecord rec : this.getAllMyRecords(msg.source().Name()))
+								for (final CheckedOutRecord rec : this.getAllMyRecords(msg.source().Name()))
 								{
 									if (rec.charges > 0)
 									{
@@ -570,7 +570,8 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 											if (rec.itemName.length() == 0)
 												this.getCheckedOutRecords().remove(rec);
 										}
-										else if (totalPaidDown > 0.0)
+										else
+										if (totalPaidDown > 0.0)
 										{
 											rec.charges -= totalPaidDown;
 											totalPaidDown = 0.0;
@@ -581,13 +582,14 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 								if (recordUpdated)
 									this.updateCheckedOutRecords();
 								msg.tool().destroy();
-								String totalAmount = CMLib.beanCounter().nameCurrencyShort(this, totalDue);
+								final String totalAmount = CMLib.beanCounter().nameCurrencyShort(this, totalDue);
 								CMLib.commands().postSay(this, mob, L("Your total overdue charges were @x1.", totalAmount), true, false);
 								if (totalGiven > totalDue)
 									CMLib.beanCounter().giveSomeoneMoney(this, msg.source(), totalGiven - totalDue);
-								else if (totalPaidDown > 0)
+								else
+								if (totalPaidDown > 0)
 								{
-									String totalStillDue = CMLib.beanCounter().nameCurrencyShort(this, totalPaidDown);
+									final String totalStillDue = CMLib.beanCounter().nameCurrencyShort(this, totalPaidDown);
 									CMLib.commands().postSay(this, mob, L("Your still owe @x1.", totalStillDue), true, false);
 								}
 							}
@@ -608,7 +610,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 							}
 							if (rec == null)
 							{
-								List<CheckedOutRecord> recs = this.getItemRecords(msg.tool().Name());
+								final List<CheckedOutRecord> recs = this.getItemRecords(msg.tool().Name());
 								for (int i = 0; i < recs.size(); i++)
 								{
 									if (recs.get(i).playerName.length() > 0)
@@ -629,7 +631,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 													// returned!
 							if (rec.charges > 0.0)
 							{
-								String amount = CMLib.beanCounter().nameCurrencyShort(this, rec.charges);
+								final String amount = CMLib.beanCounter().nameCurrencyShort(this, rec.charges);
 								if (CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(), this) < rec.charges)
 								{
 									if (!msg.source().Name().equalsIgnoreCase(rec.playerName))
@@ -687,13 +689,13 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 							if (shop != this.shop) // never borrow from the main
 													// library
 							{
-								List<Environmental> items = shop.removeSellableProduct("$" + old.Name() + "$", mob);
+								final List<Environmental> items = shop.removeSellableProduct("$" + old.Name() + "$", mob);
 								CMLib.commands().postSay(this, mob, L("There ya go! This is due back here by @x1!", minClock.getShortestTimeDescription()), true, false);
-								for (Environmental E : items)
+								for (final Environmental E : items)
 								{
 									if (E instanceof Item)
 									{
-										Item I = (Item) E;
+										final Item I = (Item) E;
 										if (location() != null)
 											location().addItem(I, ItemPossessor.Expire.Player_Drop);
 										final CMMsg msg2 = CMClass.getMsg(mob, I, this, CMMsg.MSG_GET, null);
@@ -727,16 +729,16 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				super.executeMsg(myHost, msg);
 				if (CMLib.flags().isAliveAwakeMobileUnbound(mob, true))
 				{
-					StringBuilder str = new StringBuilder("");
+					final StringBuilder str = new StringBuilder("");
 					final List<CheckedOutRecord> recs = this.getAllMyRecords(msg.source().Name());
 					double totalDue = 0.0;
 					final TimeClock clock = getMyClock();
 					if (clock != null)
 					{
 						boolean recordsChanged = false;
-						for (CheckedOutRecord rec : recs)
+						for (final CheckedOutRecord rec : recs)
 						{
-							boolean recordChanged = processCheckedOutRecord(rec);
+							final boolean recordChanged = processCheckedOutRecord(rec);
 							recordsChanged = recordsChanged || recordChanged;
 							totalDue += rec.charges;
 							if (rec.itemName.length() > 0)
@@ -753,7 +755,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 								str.append("\n\r");
 							}
 						}
-						
+
 					}
 					if (totalDue > 0.0)
 						str.append(L("You owe the library @x1.\n\r", CMLib.beanCounter().abbreviatedPrice(this, totalDue)));
@@ -779,7 +781,8 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 		final MOB mob = msg.source();
 		if ((msg.targetMinor() == CMMsg.TYP_EXPIRE) && (msg.target() == location()) && (CMLib.flags().isInTheGame(this, true)))
 			return false;
-		else if (msg.amITarget(this))
+		else
+		if (msg.amITarget(this))
 		{
 			switch (msg.targetMinor())
 			{
@@ -834,7 +837,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 				final double due = getTotalOverdueCharges(msg.source().Name());
 				if (due > 0.0)
 				{
-					String totalAmount = CMLib.beanCounter().nameCurrencyShort(this, due);
+					final String totalAmount = CMLib.beanCounter().nameCurrencyShort(this, due);
 					CMLib.commands().postSay(this, mob, L("I'm sorry, but you have @x1 in overdue charges and may not borrow any more.", totalAmount), true, false);
 					return false;
 				}
@@ -889,7 +892,7 @@ public class StdLibrarian extends StdShopKeeper implements Librarian
 	}
 
 	@Override
-	public void setMaxBorrowed(int items)
+	public void setMaxBorrowed(final int items)
 	{
 		maxBorrowedItems = items;
 	}

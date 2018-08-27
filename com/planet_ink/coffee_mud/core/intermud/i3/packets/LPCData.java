@@ -35,11 +35,11 @@ import java.util.Vector;
  */
 @SuppressWarnings({"unchecked","rawtypes"})
 public class LPCData {
-	static public Object getLPCData(String cmd) throws I3Exception {
+	static public Object getLPCData(final String cmd) throws I3Exception {
 		return getLPCData(cmd, false);
 	}
 
-	static public Object getLPCData(String cmd, boolean flag) throws I3Exception {
+	static public Object getLPCData(String cmd, final boolean flag) throws I3Exception {
 		final Vector data = new Vector(2);
 
 		data.addElement(null);
@@ -61,7 +61,8 @@ public class LPCData {
 			}
 			return data;
 		}
-		else if( cmd.length() == 1 )
+		else
+		if( cmd.length() == 1 )
 		{
 			try
 			{
@@ -98,7 +99,8 @@ public class LPCData {
 						{
 							throw new I3Exception("Invalid LPC Data in string: " + cmd);
 						}
-						else if( cmd.charAt(0) == ',' )
+						else
+						if( cmd.charAt(0) == ',' )
 						{
 							cmd = cmd.substring(1, cmd.length());
 							cmd = cmd.trim();
@@ -151,7 +153,8 @@ public class LPCData {
 						{
 							throw new I3Exception("Invalid mapping format2: " + cmd);
 						}
-						else if( cmd.charAt(0) != ']' )
+						else
+						if( cmd.charAt(0) != ']' )
 						{
 							cmd = cmd.substring(1, cmd.length());
 							cmd = cmd.trim();
@@ -179,7 +182,8 @@ public class LPCData {
 				throw new I3Exception("Invalid LPC Data in string: " + cmd);
 			}
 		}
-		else if( cmd.charAt(0) == '"' )
+		else
+		if( cmd.charAt(0) == '"' )
 		{
 			int x=1;
 			final StringBuffer in=new StringBuffer("");
@@ -217,7 +221,8 @@ public class LPCData {
 			data.setElementAt("",1);
 			return data;
 		}
-		else if( Character.isDigit(cmd.charAt(0)) || cmd.charAt(0) == '-' )
+		else
+		if( Character.isDigit(cmd.charAt(0)) || cmd.charAt(0) == '-' )
 		{
 			String tmp;
 			int x;
@@ -226,7 +231,8 @@ public class LPCData {
 				tmp = "0x";
 				cmd = cmd.substring(2, cmd.length());
 			}
-			else if( cmd.length() > 1 && cmd.startsWith("-") )
+			else
+			if( cmd.length() > 1 && cmd.startsWith("-") )
 			{
 				tmp = "-";
 				cmd = cmd.substring(1, cmd.length());

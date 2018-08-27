@@ -69,7 +69,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 			final long months = days / C.getDaysInMonth();
 			if (days < 1)
 				return "less than 1 day pregnant";
-			else if (months < 1)
+			else
+			if (months < 1)
 				return days + " day(s) pregnant";
 			else
 				return months + " month(s) pregnant";
@@ -131,7 +132,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	{
 		if (code != null && code.equalsIgnoreCase("PREGSTART"))
 			this.setPregnancyStartTime(CMath.s_long(val));
-		else if (code != null && code.equalsIgnoreCase("PREGEND"))
+		else
+		if (code != null && code.equalsIgnoreCase("PREGEND"))
 			this.setPregnancyEndTime(CMath.s_long(val));
 		else
 			super.setStat(code, val);
@@ -142,7 +144,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 	{
 		if (code != null && code.equalsIgnoreCase("PREGSTART"))
 			return "" + this.getPregnancyStartTime();
-		else if (code != null && code.equalsIgnoreCase("PREGEND"))
+		else
+		if (code != null && code.equalsIgnoreCase("PREGEND"))
 			return "" + this.getPregnancyEndTime();
 		else
 			return super.getStat(code);
@@ -485,15 +488,23 @@ public class Pregnancy extends StdAbility implements HealthCondition
 						// pregnant folk get fatigued more often.
 						if (mob.maxState().getFatigue() > Long.MIN_VALUE / 2)
 							mob.curState().adjFatigue(monthsRemaining * 100, mob.maxState());
-						if ((monthsRemaining <= 1) && (CMLib.dice().rollPercentage() == 1))
+						if ((monthsRemaining <= 1)
+						&& (CMLib.dice().rollPercentage() == 1))
 						{
 							if (CMLib.flags().isSleeping(mob))
 								mob.enqueCommand(CMParms.parse("WAKE"), MUDCmdProcessor.METAFLAG_FORCED, 0);
 							mob.tell(L("Oh! You had a contraction!"));
 						}
-						else if ((monthsRemaining <= 3) && (CMLib.dice().rollPercentage() == 1) && (CMLib.dice().rollPercentage() == 1))
+						else
+						if ((monthsRemaining <= 3)
+						&& (CMLib.dice().rollPercentage() == 1)
+						&& (CMLib.dice().rollPercentage() == 1))
 							mob.tell(L("You feel a kick in your gut."));
-						else if ((monthsRemaining > 8) && (mob.location() != null) && (mob.location().getArea().getTimeObj().getHourOfDay() < 2) && (CMLib.dice().rollPercentage() == 1))
+						else
+						if ((monthsRemaining > 8)
+						&& (mob.location() != null)
+						&& (mob.location().getArea().getTimeObj().getHourOfDay() < 2)
+						&& (CMLib.dice().rollPercentage() == 1))
 						{
 							if (CMLib.dice().rollPercentage() > 25)
 								mob.tell(L("You feel really sick this morning."));
@@ -562,7 +573,8 @@ public class Pregnancy extends StdAbility implements HealthCondition
 				target.addNonUninvokableEffect((Ability) copyOf());
 			}
 		}
-		else if (!auto)
+		else
+		if (!auto)
 			return beneficialVisualFizzle(mob, target, L("<S-NAME> attempt(s) to impregnate <T-NAMESELF>, but fail(s)!"));
 		return success;
 	}

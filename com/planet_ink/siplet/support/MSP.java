@@ -63,7 +63,7 @@ public class MSP
 		return s.trim();
 	}
 
-	public int process(StringBuffer buf, int i, Siplet applet, boolean useExternal)
+	public int process(final StringBuffer buf, int i, final Siplet applet, final boolean useExternal)
 	{
 		final int oldI = i;
 		if (i + 12 >= buf.length())
@@ -111,7 +111,8 @@ public class MSP
 		{
 			if (tag.equals("MUSIC"))
 				musicClip = null;
-			else if (tag.equals("SOUND"))
+			else
+			if (tag.equals("SOUND"))
 				soundClip = null;
 			currentClip = null;
 		}
@@ -135,7 +136,8 @@ public class MSP
 						s = s + "/";
 					if (tag.equals("MUSIC"))
 						defMusicPath = s;
-					else if (tag.equals("SOUND"))
+					else
+					if (tag.equals("SOUND"))
 						defSoundPath = s;
 					if (defPath == null)
 						defPath = s;
@@ -180,7 +182,8 @@ public class MSP
 			jscriptBuffer.append(currentClip.stopPlaying(currentClip.tag.equals("MUSIC") ? "musicplayer" : "soundplayer", useExternal));
 			if (tag.equals("MUSIC"))
 				musicClip = null;
-			else if (tag.equals("SOUND"))
+			else
+			if (tag.equals("SOUND"))
 				soundClip = null;
 			currentClip = null;
 		}
@@ -207,7 +210,8 @@ public class MSP
 		jscriptBuffer.append(currentClip.startPlaying(tag.equals("MUSIC") ? "musicplayer" : "soundplayer", useExternal));
 		if (tag.equals("MUSIC"))
 			musicClip = currentClip;
-		else if (tag.equals("SOUND"))
+		else
+		if (tag.equals("SOUND"))
 			soundClip = currentClip;
 		return -1;
 	}

@@ -3,7 +3,7 @@ package com.planet_ink.coffee_mud.core;
 /**
  * Encodes and decodes to and from Base64 notation.
  *
- * 
+ *
  * Change Log:
  * <ul>
  *  <li>v2.0.2 - Now specifies UTF-8 encoding in places where the code fails on systems
@@ -32,7 +32,7 @@ package com.planet_ink.coffee_mud.core;
  *  <li>v1.3.3 - Fixed I/O streams which were totally messed up.</li>
  * </ul>
  *
- * 
+ *
  * I am placing this code in the Public Domain. Do with it as you will.
  * This software comes with no guarantees or warranties but with
  * plenty of well-wishing instead!
@@ -110,7 +110,7 @@ public class B64Encoder
 	public static final byte WHITE_SPACE_ENC = -5; // Indicates white space in encoding
 	public static final byte EQUALS_SIGN_ENC = -1; // Indicates equals sign in encoding
 
-	protected static byte[] encode3to4( byte[] b4, byte[] threeBytes, int numSigBytes )
+	protected static byte[] encode3to4( final byte[] b4, final byte[] threeBytes, final int numSigBytes )
 	{
 		encode3to4( threeBytes, 0, numSigBytes, b4, 0 );
 		return b4;
@@ -131,8 +131,8 @@ public class B64Encoder
 			ALPHABET = __bytes;
 	}
 
-	protected static byte[] encode3to4(byte[] source, int srcOffset, int numSigBytes,
-									   byte[] destination, int destOffset )
+	protected static byte[] encode3to4(final byte[] source, final int srcOffset, final int numSigBytes,
+									   final byte[] destination, final int destOffset )
 	{
 		final int inBuff =   ( numSigBytes > 0 ? ((source[ srcOffset	 ] << 24) >>>  8) : 0 )
 					 | ( numSigBytes > 1 ? ((source[ srcOffset + 1 ] << 24) >>> 16) : 0 )
@@ -166,12 +166,12 @@ public class B64Encoder
 		}
 	}
 
-	public static String B64encodeObject( java.io.Serializable serializableObject )
+	public static String B64encodeObject( final java.io.Serializable serializableObject )
 	{
 		return B64encodeObject( serializableObject, NO_OPTIONS );
 	}
 
-	public static String B64encodeObject( java.io.Serializable serializableObject, int options )
+	public static String B64encodeObject( final java.io.Serializable serializableObject, final int options )
 	{
 		final java.io.ByteArrayOutputStream  baos  = new java.io.ByteArrayOutputStream();
 		java.io.OutputStream		   b64os = null;
@@ -245,22 +245,22 @@ public class B64Encoder
 		}
 	}
 
-	public static String B64encodeBytes( byte[] source )
+	public static String B64encodeBytes( final byte[] source )
 	{
 		return B64encodeBytes( source, 0, source.length, NO_OPTIONS );
 	}   // end encodeBytes
 
-	public static String B64encodeBytes( byte[] source, int options )
+	public static String B64encodeBytes( final byte[] source, final int options )
 	{
 		return B64encodeBytes( source, 0, source.length, options );
 	}   // end encodeBytes
 
-	public static String B64encodeBytes( byte[] source, int off, int len )
+	public static String B64encodeBytes( final byte[] source, final int off, final int len )
 	{
 		return B64encodeBytes( source, off, len, NO_OPTIONS );
 	}   // end encodeBytes
 
-	public static String B64encodeBytes( byte[] source, int off, int len, int options )
+	public static String B64encodeBytes( final byte[] source, final int off, final int len, final int options )
 	{
 		final int dontBreakLines = ( options & DONT_BREAK_LINES );
 		final int gzip		   = ( options & GZIP   );
@@ -358,7 +358,7 @@ public class B64Encoder
 
 	}
 
-	protected static int decode4to3( byte[] source, int srcOffset, byte[] destination, int destOffset )
+	protected static int decode4to3( final byte[] source, final int srcOffset, final byte[] destination, final int destOffset )
 	{
 		if( source[ srcOffset + 2] == EQUALS_SIGN )
 		{
@@ -368,8 +368,8 @@ public class B64Encoder
 			destination[ destOffset ] = (byte)( outBuff >>> 16 );
 			return 1;
 		}
-
-		else if( source[ srcOffset + 3 ] == EQUALS_SIGN )
+		else
+		if( source[ srcOffset + 3 ] == EQUALS_SIGN )
 		{
 			final int outBuff =   ( ( DECODABET[ source[ srcOffset	 ] ] & 0xFF ) << 18 )
 						  | ( ( DECODABET[ source[ srcOffset + 1 ] ] & 0xFF ) << 12 )
@@ -379,21 +379,20 @@ public class B64Encoder
 			destination[ destOffset + 1 ] = (byte)( outBuff >>>  8 );
 			return 2;
 		}
-
 		else
 		{
 			try
 			{
-			final int outBuff =   ( ( DECODABET[ source[ srcOffset	 ] ] & 0xFF ) << 18 )
-						  | ( ( DECODABET[ source[ srcOffset + 1 ] ] & 0xFF ) << 12 )
-						  | ( ( DECODABET[ source[ srcOffset + 2 ] ] & 0xFF ) <<  6)
-						  | ( ( DECODABET[ source[ srcOffset + 3 ] ] & 0xFF )      );
+				final int outBuff =   ( ( DECODABET[ source[ srcOffset	 ] ] & 0xFF ) << 18 )
+							  | ( ( DECODABET[ source[ srcOffset + 1 ] ] & 0xFF ) << 12 )
+							  | ( ( DECODABET[ source[ srcOffset + 2 ] ] & 0xFF ) <<  6)
+							  | ( ( DECODABET[ source[ srcOffset + 3 ] ] & 0xFF )      );
 
-			destination[ destOffset 	] = (byte)( outBuff >> 16 );
-			destination[ destOffset + 1 ] = (byte)( outBuff >>  8 );
-			destination[ destOffset + 2 ] = (byte)( outBuff 	  );
+				destination[ destOffset 	] = (byte)( outBuff >> 16 );
+				destination[ destOffset + 1 ] = (byte)( outBuff >>  8 );
+				destination[ destOffset + 2 ] = (byte)( outBuff 	  );
 
-			return 3;
+				return 3;
 			}
 			catch( final Exception e)
 			{
@@ -403,7 +402,7 @@ public class B64Encoder
 		}
 	}
 
-	public static byte[] B64decode( byte[] source, int off, int len )
+	public static byte[] B64decode( final byte[] source, final int off, final int len )
 	{
 		final int    len34   = len * 3 / 4;
 		final byte[] outBuff = new byte[ len34 ]; // Upper limit on size of output
@@ -446,7 +445,7 @@ public class B64Encoder
 		return out;
 	}
 
-	public static byte[] B64decode( String s )
+	public static byte[] B64decode( final String s )
 	{
 		byte[] bytes;
 		try
@@ -519,7 +518,7 @@ public class B64Encoder
 		return bytes;
 	}
 
-	public static Object B64decodeToObject( String encodedObject )
+	public static Object B64decodeToObject( final String encodedObject )
 	{
 		final byte[] objBytes = B64decode( encodedObject );
 
@@ -565,7 +564,7 @@ public class B64Encoder
 		return obj;
 	}
 
-	public static boolean B64encodeToFile( byte[] dataToEncode, String filename )
+	public static boolean B64encodeToFile( final byte[] dataToEncode, final String filename )
 	{
 		boolean success = false;
 		B64OutputStream bos = null;
@@ -596,7 +595,7 @@ public class B64Encoder
 		return success;
 	}
 
-	public static boolean B64decodeToFile( String dataToDecode, String filename )
+	public static boolean B64decodeToFile( final String dataToDecode, final String filename )
 	{
 		boolean success = false;
 		B64OutputStream bos = null;
@@ -626,7 +625,7 @@ public class B64Encoder
 		return success;
 	}
 
-	public static byte[] B64decodeFromFile( String filename )
+	public static byte[] B64decodeFromFile( final String filename )
 	{
 		byte[] decodedData = null;
 		B64InputStream bis = null;
@@ -674,7 +673,7 @@ public class B64Encoder
 		return decodedData;
 	}
 
-	public static String B64encodeFromFile( String filename )
+	public static String B64encodeFromFile( final String filename )
 	{
 		String encodedData = null;
 		B64InputStream bis = null;
@@ -713,15 +712,16 @@ public class B64Encoder
 
 	private static class B64InputStream extends java.io.FilterInputStream
 	{
-		private final boolean encode; 		// Encoding or decoding
-		private int 	position;   	// Current position in the buffer
-		private final byte[]  buffer; 		// Small buffer holding converted data
-		private final int 	bufferLength;   // Length of buffer (3 or 4)
-		private int 	numSigBytes;	// Number of meaningful bytes in the buffer
-		private int 	lineLength;
-		private final boolean breakLines; 	// Break lines at less than 80 characters
+		private final boolean	encode;			// Encoding or decoding
+		private int				position;		// Current position in the buffer
+		private final byte[]	buffer;			// Small buffer holding
+												// converted data
+		private final int		bufferLength;	// Length of buffer (3 or 4)
+		private int				numSigBytes;	// Number of meaningful bytes in the buffer
+		private int				lineLength;
+		private final boolean	breakLines;		// Break lines at less than 80characters
 
-		public B64InputStream( java.io.InputStream in, int options )
+		public B64InputStream( final java.io.InputStream in, final int options )
 		{
 			super( in );
 			this.breakLines   = (options & DONT_BREAK_LINES) != DONT_BREAK_LINES;
@@ -826,7 +826,7 @@ public class B64Encoder
 		}
 
 		@Override
-		public int read( byte[] dest, int off, int len ) throws java.io.IOException
+		public int read( final byte[] dest, final int off, final int len ) throws java.io.IOException
 		{
 			int i;
 			int b;
@@ -847,16 +847,16 @@ public class B64Encoder
 
 	private static class B64OutputStream extends java.io.FilterOutputStream
 	{
-		private final boolean encode;
-		private int 	position;
-		private byte[]  buffer;
-		private final int 	bufferLength;
-		private int 	lineLength;
-		private final boolean breakLines;
-		private final byte[]  b4; // Scratch used in a few places
-		private final boolean suspendEncoding;
+		private final boolean	encode;
+		private int				position;
+		private byte[]			buffer;
+		private final int		bufferLength;
+		private int				lineLength;
+		private final boolean	breakLines;
+		private final byte[]	b4;				// Scratch used in a few places
+		private final boolean	suspendEncoding;
 
-		public B64OutputStream( java.io.OutputStream out, int options )
+		public B64OutputStream( final java.io.OutputStream out, final int options )
 		{
 			super( out );
 			this.breakLines   = (options & DONT_BREAK_LINES) != DONT_BREAK_LINES;
@@ -870,7 +870,7 @@ public class B64Encoder
 		}
 
 		@Override
-		public void write(int theByte) throws java.io.IOException
+		public void write(final int theByte) throws java.io.IOException
 		{
 			if( suspendEncoding )
 			{
@@ -905,7 +905,8 @@ public class B64Encoder
 						position = 0;
 					}
 				}
-				else if( DECODABET[ theByte & 0x7f ] != WHITE_SPACE_ENC )
+				else
+				if( DECODABET[ theByte & 0x7f ] != WHITE_SPACE_ENC )
 				{
 					throw new java.io.IOException( "Invalid character in Base64 data." );
 				}
@@ -913,7 +914,7 @@ public class B64Encoder
 		}
 
 		@Override
-		public void write( byte[] theBytes, int off, int len ) throws java.io.IOException
+		public void write( final byte[] theBytes, final int off, final int len ) throws java.io.IOException
 		{
 			if( suspendEncoding )
 			{

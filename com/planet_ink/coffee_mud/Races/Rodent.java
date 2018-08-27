@@ -198,7 +198,7 @@ public class Rodent extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch (age)
 		{
@@ -229,23 +229,32 @@ public class Rodent extends StdRace
 
 		if (pct < .10)
 			return L("^r@x1^r is one unhappy little critter!^N", mob.name(viewer));
-		else if (pct < .20)
+		else
+		if (pct < .20)
 			return L("^r@x1^r is covered in blood and matted hair.^N", mob.name(viewer));
-		else if (pct < .30)
+		else
+		if (pct < .30)
 			return L("^r@x1^r is bleeding badly from lots of wounds.^N", mob.name(viewer));
-		else if (pct < .40)
+		else
+		if (pct < .40)
 			return L("^y@x1^y has large patches of bloody matted fur.^N", mob.name(viewer));
-		else if (pct < .50)
+		else
+		if (pct < .50)
 			return L("^y@x1^y has some bloody matted fur.^N", mob.name(viewer));
-		else if (pct < .60)
+		else
+		if (pct < .60)
 			return L("^p@x1^p has a lot of cuts and gashes.^N", mob.name(viewer));
-		else if (pct < .70)
+		else
+		if (pct < .70)
 			return L("^p@x1^p has a few cut patches.^N", mob.name(viewer));
-		else if (pct < .80)
+		else
+		if (pct < .80)
 			return L("^g@x1^g has a cut patch of fur.^N", mob.name(viewer));
-		else if (pct < .90)
+		else
+		if (pct < .90)
 			return L("^g@x1^g has some disheveled fur.^N", mob.name(viewer));
-		else if (pct < .99)
+		else
+		if (pct < .99)
 			return L("^g@x1^g has some misplaced hairs.^N", mob.name(viewer));
 		else
 			return L("^c@x1^c is in perfect health.^N", mob.name(viewer));

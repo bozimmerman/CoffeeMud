@@ -49,7 +49,7 @@ public class Password extends StdCommand
 	}
 
 	@Override
-	public boolean execute(final MOB mob, List<String> commands, int metaFlags) throws java.io.IOException
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags) throws java.io.IOException
 	{
 		final PlayerStats pstats = mob.playerStats();
 		if (pstats == null)
@@ -112,7 +112,8 @@ public class Password extends StdCommand
 									final String ne2 = this.input;
 									if (!pstats.matchesPassword(old))
 										mob.tell(L("Your old password was not entered correctly."));
-									else if (!nep.equals(ne2))
+									else
+									if (!nep.equals(ne2))
 										mob.tell(L("Your new password was not entered the same way twice!"));
 									else
 									{

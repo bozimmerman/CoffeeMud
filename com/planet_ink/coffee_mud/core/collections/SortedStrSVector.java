@@ -18,24 +18,24 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 		public String toString(T t);
 	}
 
-	public SortedStrSVector(Str<T> stringer, int size)
+	public SortedStrSVector(final Str<T> stringer, final int size)
 	{
 		super(size);
 		this.stringer = stringer;
 	}
 
-	public SortedStrSVector(Str<T> stringer)
+	public SortedStrSVector(final Str<T> stringer)
 	{
 		super();
 		this.stringer = stringer;
 	}
 
-	private int compareTo(T arg0, String arg1)
+	private int compareTo(final T arg0, final String arg1)
 	{
 		return stringer.toString(arg0).compareToIgnoreCase(arg1);
 	}
 
-	private int compareTo(T arg0, T arg1)
+	private int compareTo(final T arg0, final T arg1)
 	{
 		return stringer.toString(arg0).compareToIgnoreCase(stringer.toString(arg1));
 	}
@@ -46,17 +46,17 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 		return new ConvertingIterator<T,String>(this.iterator(),new Converter<T,String>()
 		{
 			@Override
-			public String convert(T obj)
+			public String convert(final T obj)
 			{
 				if(obj!=null)
-					return stringer.toString(obj); 
+					return stringer.toString(obj);
 				return null;
 			}
 		});
 	}
-	
+
 	@Override
-	public synchronized boolean add(T arg0)
+	public synchronized boolean add(final T arg0)
 	{
 		if (arg0 == null)
 			return false;
@@ -72,21 +72,23 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 			comp = compareTo(super.get(mid), arg0);
 			if (comp == 0)
 				break;
-			else if (comp > 0)
+			else
+			if (comp > 0)
 				end = mid - 1;
 			else
 				start = mid + 1;
 		}
 		if (comp == 0)
 			super.add(mid, arg0);
-		else 
+		else
 		if (comp > 0)
 		{
 			while ((mid >= 0) && (compareTo(super.get(mid), arg0) > 0))
 				mid--;
 			if (mid >= size() - 1)
 				super.add(arg0);
-			else if (mid < 0)
+			else
+			if (mid < 0)
 				super.add(0, arg0);
 			else
 				super.add(mid + 1, arg0);
@@ -104,25 +106,25 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 
 	@Override
-	public void add(int arg0, T arg1)
+	public void add(final int arg0, final T arg1)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean addAll(int arg0, Collection<? extends T> arg1)
+	public boolean addAll(final int arg0, final Collection<? extends T> arg1)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
 
 	@Override
-	public boolean contains(Object arg0)
+	public boolean contains(final Object arg0)
 	{
 		return indexOf(arg0) >= 0;
 	}
 
 	@Override
-	public boolean containsAll(Collection<?> arg0)
+	public boolean containsAll(final Collection<?> arg0)
 	{
 		for (final Object o : arg0)
 		{
@@ -133,12 +135,12 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 
 	@Override
-	public T get(int arg0)
+	public T get(final int arg0)
 	{
 		return super.get(arg0);
 	}
 
-	public synchronized void reSort(T arg0)
+	public synchronized void reSort(final T arg0)
 	{
 		if (super.contains(arg0))
 		{
@@ -150,7 +152,7 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	@SuppressWarnings("unchecked")
 
 	@Override
-	public synchronized int indexOf(Object arg0)
+	public synchronized int indexOf(final Object arg0)
 	{
 		if (arg0 == null)
 			return -1;
@@ -166,7 +168,8 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 				final int comp = compareTo(super.get(mid), (T) arg0);
 				if (comp == 0)
 					return mid;
-				else if (comp > 0)
+				else
+				if (comp > 0)
 					end = mid - 1;
 				else
 					start = mid + 1;
@@ -181,7 +184,8 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 				final int comp = compareTo(super.get(mid), (String) arg0);
 				if (comp == 0)
 					return mid;
-				else if (comp > 0)
+				else
+				if (comp > 0)
 					end = mid - 1;
 				else
 					start = mid + 1;
@@ -192,7 +196,7 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 
 	@Override
-	public synchronized T find(String arg0)
+	public synchronized T find(final String arg0)
 	{
 		if (arg0 == null)
 			return null;
@@ -206,7 +210,8 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 			final int comp = compareTo(super.get(mid), arg0);
 			if (comp == 0)
 				return super.get(mid);
-			else if (comp > 0)
+			else
+			if (comp > 0)
 				end = mid - 1;
 			else
 				start = mid + 1;
@@ -215,7 +220,7 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 
 	@Override
-	public synchronized T find(T arg0)
+	public synchronized T find(final T arg0)
 	{
 		if (arg0 == null)
 			return null;
@@ -229,7 +234,8 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 			final int comp = compareTo(super.get(mid), arg0);
 			if (comp == 0)
 				return super.get(mid);
-			else if (comp > 0)
+			else
+			if (comp > 0)
 				end = mid - 1;
 			else
 				start = mid + 1;
@@ -239,13 +245,13 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 
 	@Override
-	public synchronized int lastIndexOf(Object arg0)
+	public synchronized int lastIndexOf(final Object arg0)
 	{
 		return indexOf(arg0); // only holds one-of-a-kind, so all is well!
 	}
 
 	@Override
-	public synchronized boolean remove(Object arg0)
+	public synchronized boolean remove(final Object arg0)
 	{
 		final int index = indexOf(arg0);
 		if (index >= 0)
@@ -254,7 +260,7 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 	}
 
 	@Override
-	public T set(int arg0, T arg1)
+	public T set(final int arg0, final T arg1)
 	{
 		throw new java.lang.UnsupportedOperationException();
 	}
