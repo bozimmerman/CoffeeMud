@@ -176,7 +176,8 @@ public class SortedStrSVector<T> extends SVector<T> implements SearchIDList<T>
 
 			}
 		}
-		else if (arg0 instanceof String)
+		else
+		if (arg0 instanceof String)
 		{
 			while (start <= end)
 			{

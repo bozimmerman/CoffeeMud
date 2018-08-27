@@ -361,7 +361,8 @@ public class RTree<T extends BoundedObject>
 				{
 					g1.data.add(nmax);
 				}
-				else if (overlap2 > overlap1)
+				else
+				if (overlap2 > overlap1)
 				{
 					g2.data.add(nmax);
 				}
@@ -373,7 +374,8 @@ public class RTree<T extends BoundedObject>
 					{
 						g2.data.add(nmax);
 					}
-					else if (area2 > area1)
+					else
+					if (area2 > area1)
 					{
 						g1.data.add(nmax);
 					}

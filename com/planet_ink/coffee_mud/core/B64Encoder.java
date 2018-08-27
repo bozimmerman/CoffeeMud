@@ -795,7 +795,8 @@ public class B64Encoder
 						numSigBytes = decode4to3( b4, 0, buffer, 0 );
 						position = 0;
 					}
-					else if( i == 0 )
+					else
+					if( i == 0 )
 					{
 						return -1;
 					}
@@ -836,7 +837,8 @@ public class B64Encoder
 
 				if( b >= 0 )
 					dest[off + i] = (byte)b;
-				else if( i == 0 )
+				else
+				if( i == 0 )
 					return -1;
 				else
 					break;
