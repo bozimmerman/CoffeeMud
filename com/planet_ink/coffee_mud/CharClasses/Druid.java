@@ -272,7 +272,7 @@ public class Druid extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Chant_Feralness",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Chant_Reincarnation",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),35,"Chant_PlaneWalking",false);
 	}
 
@@ -283,7 +283,7 @@ public class Druid extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 
@@ -304,7 +304,7 @@ public class Druid extends StdCharClass
 			return;
 		}
 
-		final Vector<String> grantable=new Vector<String>();
+		final List<String> grantable=new ArrayList<String>();
 
 		final int level=mob.charStats().getClassLevel(this);
 		int numChants=2;
@@ -318,7 +318,7 @@ public class Druid extends StdCharClass
 			&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)))
 			{
 				if (!grantable.contains(A.ID()))
-					grantable.addElement(A.ID());
+					grantable.add(A.ID());
 			}
 		}
 		for(int a=0;a<mob.numAbilities();a++)
@@ -334,10 +334,10 @@ public class Druid extends StdCharClass
 		{
 			if(grantable.size()==0)
 				break;
-			final String AID=grantable.elementAt(CMLib.dice().roll(1,grantable.size(),-1));
+			final String AID=grantable.get(CMLib.dice().roll(1,grantable.size(),-1));
 			if(AID!=null)
 			{
-				grantable.removeElement(AID);
+				grantable.remove(AID);
 				giveMobAbility(mob,
 							   CMClass.getAbility(AID),
 							   CMLib.ableMapper().getDefaultProficiency(ID(),true,AID),
@@ -392,7 +392,7 @@ public class Druid extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  "
+		return L("Will gain random qualified chants. When leading animals into battle, will not divide experience among animal followers.  Can create a druidic connection with an area.  "
 				+ "Benefits from animal/plant/stone followers leveling.  Benefits from freeing animals from cities.  Benefits from balancing the weather.");
 	}
 
@@ -422,7 +422,7 @@ public class Druid extends StdCharClass
 		return true;
 	}
 
-	public static void doAnimalFollowerLevelingCheck(CharClass C, Environmental host, CMMsg msg)
+	public static void doAnimalFollowerLevelingCheck(final CharClass C, final Environmental host, final CMMsg msg)
 	{
 		if((msg.sourceMessage()==null)
 		&&(msg.sourceMinor()==CMMsg.TYP_LEVEL)
@@ -447,7 +447,7 @@ public class Druid extends StdCharClass
 		}
 	}
 
-	public static void doAnimalFreeingCheck(CharClass C, final Environmental host, CMMsg msg)
+	public static void doAnimalFreeingCheck(final CharClass C, final Environmental host, final CMMsg msg)
 	{
 		if((msg.source()!=host)
 		&&(msg.sourceMinor()==CMMsg.TYP_NOFOLLOW)
@@ -523,7 +523,7 @@ public class Druid extends StdCharClass
 				((MOB)host).tell(CMLib.lang().L("You have freed @x1 from @x2.",msg.source().name((MOB)host),(msg.source().getStartRoom().getArea().name())));
 				CMLib.leveler().postExperience((MOB)host,null,null,((Integer)stuff[1]).intValue(),false);
 				final boolean isPeace=((!msg.source().isInCombat()) && (!((MOB)host).isInCombat()));
-				for(Ability A2 : CMLib.flags().flaggedAffects(msg.source(), Ability.FLAG_CHARMING))
+				for(final Ability A2 : CMLib.flags().flaggedAffects(msg.source(), Ability.FLAG_CHARMING))
 				{
 					if(A2.canBeUninvoked())
 						A2.unInvoke();
@@ -546,7 +546,7 @@ public class Druid extends StdCharClass
 	}
 
 	@Override
-	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
+	public boolean isValidClassDivider(final MOB killer, final MOB killed, final MOB mob, final Set<MOB> followers)
 	{
 		if((mob!=null)
 		&&(mob!=killed)
@@ -560,7 +560,7 @@ public class Druid extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -574,9 +574,9 @@ public class Druid extends StdCharClass
 	}
 
 	@Override
-	public int classDurationModifier(MOB myChar,
-									 Ability skill,
-									 int duration)
+	public int classDurationModifier(final MOB myChar,
+									 final Ability skill,
+									 final int duration)
 	{
 		if(myChar==null)
 			return duration;
