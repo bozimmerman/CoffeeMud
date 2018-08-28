@@ -151,7 +151,7 @@ public class AnimalTraining extends CommonSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -160,10 +160,10 @@ public class AnimalTraining extends CommonSkill
 		taming=null;
 		Item cage=null;
 		final String[] skills={"WANDER", //0
-						 "HUNT", //1
-						 "KILL", //2
-						 "DOORGUARD" //3
-		};
+								 "HUNT", //1
+								 "KILL", //2
+								 "DOORGUARD" //3
+							};
 		String valid="Skills include:";
 		for (final String skill2 : skills)
 			valid+=" "+skill2;
@@ -186,7 +186,7 @@ public class AnimalTraining extends CommonSkill
 					skill=CMClass.getBehavior("Mobile");
 					break;
 				case 1:
-					skill=CMClass.getAbility("Hunt");
+					skill=CMClass.getAbility("Hunting");
 					break;
 				case 2:
 					skill=CMClass.getBehavior("Aggressive");
@@ -220,7 +220,8 @@ public class AnimalTraining extends CommonSkill
 				commonTell(mob,L("You can't train @x1.",M.name(mob)));
 				return false;
 			}
-			if((CMLib.flags().canMove(M))&&(!CMLib.flags().isBoundOrHeld(M)))
+			if((CMLib.flags().canMove(M))
+			&&(!CMLib.flags().isBoundOrHeld(M)))
 			{
 				commonTell(mob,L("@x1 doesn't seem willing to cooperate.",M.name(mob)));
 				return false;
