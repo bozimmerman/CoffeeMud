@@ -71,13 +71,13 @@ public class GatheringSkill extends CommonSkill
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
 	}
 
-	protected static int fixResourceRequirement(int resource, int amt)
+	protected static int fixResourceRequirement(final int resource, int amt)
 	{
 		if(amt<=0)
 			return amt;
@@ -167,7 +167,7 @@ public class GatheringSkill extends CommonSkill
 		return maskV;
 	}
 
-	public boolean bundle(MOB mob, List<String> what)
+	public boolean bundle(final MOB mob, final List<String> what)
 	{
 		if((what.size()<3)
 		||((!CMath.isNumber(what.get(1)))&&(!what.get(1).equalsIgnoreCase("ALL"))))
@@ -192,7 +192,7 @@ public class GatheringSkill extends CommonSkill
 		String foundSubType=null;
 		String foundSecret=null;
 		Item foundAnyway=null;
-		List<RawMaterial> allFound=new ArrayList<RawMaterial>();
+		final List<RawMaterial> allFound=new ArrayList<RawMaterial>();
 		final List<Integer> maskV=myResources();
 		final Hashtable<String,Ability> foundAblesH=new Hashtable<String,Ability>();
 		Ability A=null;
@@ -200,7 +200,7 @@ public class GatheringSkill extends CommonSkill
 		int count=name.lastIndexOf('.');
 		if(count > 0)
 		{
-			int x=count;
+			final int x=count;
 			count=CMath.s_int(name.substring(count+1))-1;
 			if(count>=0)
 				name=name.substring(0, x);
@@ -277,8 +277,20 @@ public class GatheringSkill extends CommonSkill
 		I.setDisplayText(L("@x1 is here.",I.name()));
 		if(R.show(mob,null,I,getActivityMessageType(),L("<S-NAME> create(s) <O-NAME>.")))
 		{
+			int amountToGo=amount;
 			for(final RawMaterial I2 : allFound)
-				I2.destroy();
+			{
+				if(I2.basePhyStats().weight()<amountToGo)
+				{
+					amountToGo-= I2.basePhyStats().weight();
+					I2.destroy();
+				}
+				else
+				{
+					I2.basePhyStats().setWeight(I2.basePhyStats().weight()-amountToGo);
+					amountToGo=0;
+				}
+			}
 			if((!I.amDestroyed())&&(!R.isContent(I)))
 				R.addItem(I,ItemPossessor.Expire.Player_Drop);
 		}
