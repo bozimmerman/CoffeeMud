@@ -120,28 +120,23 @@ public class AnimalTraining extends CommonSkill
 						commonTell(mob,L("You've failed to train @x1!",taming.name()));
 					else
 					{
-						if(animal.numBehaviors()==0)
-							commonTell(mob,L("@x1 is already tame.",taming.name()));
+						final String s=" to "+skillto;
+						mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to train @x1 @x2.",animal.name(),s));
+						if(skill instanceof Behavior)
+							animal.addBehavior((Behavior)skill);
 						else
+						if(skill instanceof Ability)
 						{
-							final String s=" to "+skillto;
-							mob.location().show(mob,null,getActivityMessageType(),L("<S-NAME> manage(s) to train @x1 @x2.",animal.name(),s));
-							if(skill instanceof Behavior)
-								animal.addBehavior((Behavior)skill);
-							else
-							if(skill instanceof Ability)
-							{
-								((Ability)skill).setProficiency(100);
-								animal.addAbility((Ability)skill);
-							}
-							animal.recoverCharStats();
-							animal.recoverPhyStats();
-							animal.recoverMaxState();
-							if(taming instanceof CagedAnimal)
-							{
-								animal.text();
-								((CagedAnimal)taming).cageMe(animal);
-							}
+							((Ability)skill).setProficiency(100);
+							animal.addAbility((Ability)skill);
+						}
+						animal.recoverCharStats();
+						animal.recoverPhyStats();
+						animal.recoverMaxState();
+						if(taming instanceof CagedAnimal)
+						{
+							animal.text();
+							((CagedAnimal)taming).cageMe(animal);
 						}
 					}
 				}
