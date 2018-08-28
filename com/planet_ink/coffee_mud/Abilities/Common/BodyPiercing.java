@@ -173,13 +173,15 @@ public class BodyPiercing extends CommonSkill
 		final StringBuffer allParts=new StringBuffer("");
 
 		final String[][] piercables={
-										{"lip", "nose"},
+										{"lip"},
+										{"nose"},
 										{"left ear","right ear", "ears"},
 										{"eyebrows"},
 										{"left nipple","right nipple","belly button","nipples"}
 									};
 
-		final long[] piercable={Wearable.WORN_HEAD,
+		final long[] piercable={Wearable.WORN_MOUTH,
+								Wearable.WORN_HEAD,
 								Wearable.WORN_EARS,
 								Wearable.WORN_EYES,
 								Wearable.WORN_TORSO};
