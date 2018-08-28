@@ -359,6 +359,15 @@ public class StdContainer extends StdItem implements Container
 	{
 		if(tickID==Tickable.TICKID_EXIT_REOPEN)
 		{
+			if(hasALock && defaultsClosed && (this.keyName().length()>0) && ((!this.isLocked)||(isOpen)))
+			{
+				for(final Item keyI : getContents())
+				{
+					if((keyI instanceof DoorKey)
+					&&(((DoorKey)keyI).getKey().equalsIgnoreCase(this.keyName())))
+						return true;
+				}
+			}
 			setDoorsNLocks(hasALid,!defaultsClosed,defaultsClosed,hasALock,hasALock && defaultsClosed && defaultsLocked,defaultsLocked);
 			return false;
 		}
