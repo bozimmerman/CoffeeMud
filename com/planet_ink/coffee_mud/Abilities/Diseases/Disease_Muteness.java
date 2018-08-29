@@ -31,15 +31,15 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    limitations under the License.
 */
 
-public class Disease_Blindness extends Disease
+public class Disease_Muteness extends Disease
 {
 	@Override
 	public String ID()
 	{
-		return "Disease_Blindness";
+		return "Disease_Muteness";
 	}
 
-	private final static String localizedName = CMLib.lang().L("Blindness");
+	private final static String localizedName = CMLib.lang().L("Muteness");
 
 	@Override
 	public String name()
@@ -47,7 +47,7 @@ public class Disease_Blindness extends Disease
 		return localizedName;
 	}
 
-	private final static String localizedStaticDisplay = CMLib.lang().L("(Blindness)");
+	private final static String localizedStaticDisplay = CMLib.lang().L("(Muteness)");
 
 	@Override
 	public String displayText()
@@ -100,13 +100,13 @@ public class Disease_Blindness extends Disease
 	@Override
 	protected String DISEASE_DONE()
 	{
-		return L("Your blindness is cured!");
+		return L("Your muteness is cured!");
 	}
 
 	@Override
 	protected String DISEASE_START()
 	{
-		return L("^G<S-NAME> can't see.^?");
+		return L("^G<S-NAME> can't speak.^?");
 	}
 
 	@Override
@@ -130,6 +130,6 @@ public class Disease_Blindness extends Disease
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SEE);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
 	}
 }
