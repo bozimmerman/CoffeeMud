@@ -137,10 +137,27 @@ public class Undead_EnergyDrain extends StdAbility
 		super.affectCharStats(affected,affectableStats);
 		if(affected==null)
 			return;
-		int newLevel=affected.basePhyStats().level()-(direction*(levelsDown-affectableStats.combinedSubLevels()));
+		int newLevel=(direction*levelsDown);
 		if(newLevel<0)
 			newLevel=0;
-		affectableStats.setClassLevel(affectableStats.getCurrentClass(),newLevel);
+		else
+		{
+			for(final CharClass C : affectableStats.getCharClasses())
+			{
+				final int classLevel = affectableStats.getClassLevel(C);
+				if(classLevel > newLevel)
+				{
+					affectableStats.setClassLevel(C, classLevel-newLevel);
+					break;
+				}
+				else
+				if(classLevel > 0)
+				{
+					affectableStats.setClassLevel(C, 0);
+					newLevel -= classLevel;
+				}
+			}
+		}
 	}
 
 	@Override
@@ -156,7 +173,7 @@ public class Undead_EnergyDrain extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=null;
 		Ability reAffect=null;

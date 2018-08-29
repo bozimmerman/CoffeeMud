@@ -78,7 +78,7 @@
   76. Building skills now support INFO, and xp to Artisans.
   77. Standardized email disclaimers, and there's now an unsubscribe link and account unsubscribe.
   78. New Property: Prop_Sounder, like Sounder behavior, but without tick triggers.
-  79. New Archon Skill: Shame, with new Property: Shaming.
+  79. New Archon Skills: Shame, with new Property: Shaming. Also Peacefully cmd.
   80. Laws now include banishment, public shaming, prison breaks -- see laws.ini
   81. New skills: Lobotomizing, Groin, Nippletwist, Prisoner Transfer, Prison Assignment
   82. Prop_*Resist* can now limit debuf durations.
