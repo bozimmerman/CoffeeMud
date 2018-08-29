@@ -216,6 +216,12 @@ public class Say extends StdCommand
 						}
 					}
 				}
+				if(toFlag
+				&&((target==null)||(!CMLib.flags().canBeSeenBy(target,mob))))
+				{
+					CMLib.commands().postCommandFail(mob,origCmds,L("you don't see @x1 here to speak to.",whom));
+					return false;
+				}
 			}
 		}
 
@@ -268,11 +274,6 @@ public class Say extends StdCommand
 		if(combinedCommands.equals(""))
 		{
 			CMLib.commands().postCommandFail(mob,origCmds,L("@x1  what?",theWord));
-			return false;
-		}
-		if(toFlag&&((target==null)||(!CMLib.flags().canBeSeenBy(target,mob))))
-		{
-			CMLib.commands().postCommandFail(mob,origCmds,L("you don't see @x1 here to speak to.",whom));
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);
