@@ -9,7 +9,7 @@
    8. New Properties: Banishment, Prop_MoveRestrictor
    9. ROMGangMember behavior messages now customizable.
   10. Scavenger behavior now allows an item zappermask to limit types of items picked up.
-  11. New Diseases: Writers Block, Apathy
+  11. New Diseases: Writers Block, Apathy, Blindness, Anosmia, Deafness, Muteness
   12. New Skills: Hammering, Find Home, Find Ship, Food Preserving, Autoswim, Autocrawl
   13. Lassos are more farmer friendly now -- can be untied after throwing, no combat starting, etc.
   14. Wands and Staffs now have their max charges settable from common skill recipes.
