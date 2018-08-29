@@ -53,9 +53,9 @@ import java.util.*;
 /**
  * Not really much point in saying a lot here.
  * This has all the methods most closely related
- * to reading from, writing to, and updating 
+ * to reading from, writing to, and updating
  * the database.  That's all there is to it.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -66,7 +66,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * These are the dividers by which different
 	 * connections to different databases can be
 	 * assigned to different tables.
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -101,7 +101,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Returns the connector object to the database, allowing
-	 * SQL statements to be run.  
+	 * SQL statements to be run.
 	 * @return the connector object to the database
 	 */
 	public DBConnector getConnector();
@@ -138,11 +138,11 @@ public interface DatabaseEngine extends CMLibrary
 	public int DBRawExecute(String sql) throws CMException;
 
 	/**
-	 * Executes an arbitrary SQL query against your 
+	 * Executes an arbitrary SQL query against your
 	 * main database and returns the results as a list of
 	 * string arrays, where each array is a row, and each
 	 * column is a column from the query.
-	 * @param sql the SQL query 
+	 * @param sql the SQL query
 	 * @return the results of the query
 	 * @throws CMException any errors that occur
 	 */
@@ -162,10 +162,10 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBMAP
-	 * This method is used to load the content (items and mobs) of the 
+	 * This method is used to load the content (items and mobs) of the
 	 * given room id into the given room object, and optionally activate
 	 * the contents to live use.  startItemRejuv() is not called, however.
-	 * 
+	 *
 	 * @param roomID the id of the room to load
 	 * @param thisRoom the room object to load the content into (required!)
 	 * @param makeLive true to bring the mobs to life, false to leave them dead.
@@ -177,12 +177,12 @@ public interface DatabaseEngine extends CMLibrary
 	 * Reloads the basic data of the given area, with a prefilled Name.
 	 * It does not load or alter rooms or anything like that, only
 	 * the internal variables of the area.
-	 * 
+	 *
 	 * @see DatabaseEngine#DBIsAreaName(String)
 	 * @see DatabaseEngine#DBReadAreaRoomList(String, boolean)
 	 * @see DatabaseEngine#DBReadAreaObject(String)
 	 * @see DatabaseEngine#DBReadAreaFull(String)
-	 * 
+	 *
 	 * @param A the area to reload
 	 */
 	public void DBReadAreaData(Area A);
@@ -191,14 +191,14 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBMAP
 	 * Reloads the basic data of the given area by exact Name.
 	 * It does not load or alter rooms or anything like that, only
-	 * the internal variables of the area. Does not add the 
+	 * the internal variables of the area. Does not add the
 	 * area to the map.
-	 * 
+	 *
 	 * @see DatabaseEngine#DBIsAreaName(String)
 	 * @see DatabaseEngine#DBReadAreaRoomList(String, boolean)
 	 * @see DatabaseEngine#DBReadAreaData(Area)
 	 * @see DatabaseEngine#DBReadAreaFull(String)
-	 * 
+	 *
 	 * @param areaName the name of the area to load
 	 */
 	public Area DBReadAreaObject(String areaName);
@@ -208,28 +208,28 @@ public interface DatabaseEngine extends CMLibrary
 	 * Reloads the given area by exact Name. This includes the
 	 * rooms, and the mobs, and the items, and it adds it to the
 	 * map.  It's complete and total and working.
-	 * 
+	 *
 	 * @see DatabaseEngine#DBIsAreaName(String)
 	 * @see DatabaseEngine#DBReadAreaRoomList(String, boolean)
 	 * @see DatabaseEngine#DBReadAreaData(Area)
 	 * @see DatabaseEngine#DBReadAreaObject(String)
-	 * 
+	 *
 	 * @param areaName the name of the area to load
 	 */
 	public boolean DBReadAreaFull(String areaName);
 
 	/**
 	 * Table category: DBMAP
-	 * 
+	 *
 	 * Checks for the database for an area with approximately the
 	 * given name, returning the correct name if found, false
 	 * otherwise.
-	 * 
+	 *
 	 * @see DatabaseEngine#DBReadAreaData(Area)
 	 * @see DatabaseEngine#DBReadAreaRoomList(String, boolean)
 	 * @see DatabaseEngine#DBReadAreaObject(String)
 	 * @see DatabaseEngine#DBReadAreaFull(String)
-	 * 
+	 *
 	 * @param name the name to search for (hopefully case insensitive)
 	 * @return the real name, case-correct, or NULL if not found
 	 */
@@ -237,16 +237,16 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBMAP
-	 * Permanently Loads and returns a single Room object, 
-	 * without populating its contents yet. This is often done in 
-	 * preparation to read the content, the exits, or both.  
-	 * It sets the area and room ID, as if the room will have a 
+	 * Permanently Loads and returns a single Room object,
+	 * without populating its contents yet. This is often done in
+	 * preparation to read the content, the exits, or both.
+	 * It sets the area and room ID, as if the room will have a
 	 * permanent home in the game.
-	 * 
+	 *
 	 * @see DatabaseEngine#DBReadContent(String, Room, boolean)
 	 * @see DatabaseEngine#DBReReadRoomData(Room)
 	 * @see DatabaseEngine#DBReadRoomObject(String, boolean)
-	 * 
+	 *
 	 * @param roomID the room id of the room object to load
 	 * @param reportStatus true to populate global status, false otherwise
 	 * @return the room loaded, or null if it could not be
@@ -255,7 +255,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBMAP
-	 * Reloads the title, description, affects, and other internal 
+	 * Reloads the title, description, affects, and other internal
 	 * fields of the given room.
 	 * @param room the room to re-read dat afor
 	 * @return true, unless something went wrong
@@ -268,7 +268,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * the object.  It does not load the contents.  The
 	 * difference between this and dbreadroom is beyond me.
 	 * I don't think this method actually adds the room
-	 * to an area or to the map. 
+	 * to an area or to the map.
 	 * @see DatabaseEngine#DBReadRoom(String, boolean)
 	 * @param roomIDtoLoad the id of the room to load
 	 * @param reportStatus true to populate global status, false otherwise
@@ -287,7 +287,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @return the rooms loaded
 	 */
 	public Room[] DBReadRoomObjects(String areaName, boolean reportStatus);
-	
+
 	/**
 	 * Table category: DBMAP
 	 * Reads the room description of the given room id and
@@ -307,14 +307,14 @@ public interface DatabaseEngine extends CMLibrary
 	 * @return the counts as a 2 entry array
 	 */
 	public int[] DBCountRoomMobsItems(String roomID);
-	
+
 	/**
 	 * Table category: DBMAP
 	 * Reads the exits of the room with the given room id
 	 * and populates them into the given room object. It
 	 * also connects each exit to the room if it can
 	 * get to it through the given rooms area object.
-	 * 
+	 *
 	 * @param roomID the room id
 	 * @param room the room object to populate
 	 * @param reportStatus true to populate global status, false otherwise
@@ -419,11 +419,11 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param room the room that needs resaving.
 	 */
 	public void DBUpdateRoom(Room room);
-	
+
 	/**
 	 * Table category: DBMAP
 	 * Reads all the room numbers for the area with the given name from the
-	 * database and returns a compressed roomnumberset object.  
+	 * database and returns a compressed roomnumberset object.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.RoomnumberSet
 	 * @param areaName the name of the area to load numbers from
 	 * @param reportStatus true to update the global status, false otherwise
@@ -473,7 +473,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBMAP
 	 * Updates all of the savable items in the given room by
 	 * removing all item records from the database and re-inserting
-	 * all of the current item records back in.  
+	 * all of the current item records back in.
 	 * @param room the room to update
 	 */
 	public void DBUpdateItems(Room room);
@@ -515,8 +515,8 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBMAP
 	 * Removes the given area record from the database.
-	 * Also removes all the proper rooms from the DB, 
-	 * along with exits, items, and characters in those 
+	 * Also removes all the proper rooms from the DB,
+	 * along with exits, items, and characters in those
 	 * rooms.
 	 * @param A the area to destroy.
 	 */
@@ -527,7 +527,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Updates the area record in the database with the
 	 * given areaID with the data from the given area
 	 * object.  The areaID and the name of the area can
-	 * be different for area renamings.  
+	 * be different for area renamings.
 	 * @param areaID the current db area name
 	 * @param A the area data to save
 	 */
@@ -560,7 +560,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
-	 * Loads an account with the given name from the 
+	 * Loads an account with the given name from the
 	 * database, populates a playeraccount object,
 	 * and returns it. Does not load players, only
 	 * the account record.
@@ -585,12 +585,12 @@ public interface DatabaseEngine extends CMLibrary
 	 * database.  It returns a two dimensional array of
 	 * lists of players and their scores, in reverse sorted
 	 * order by score.  The first dimension of the array is
-	 * the time period ordinal (month, year, whatever), and the 
-	 * second is the pridestat ordinal. 
-	 * 
+	 * the time period ordinal (month, year, whatever), and the
+	 * second is the pridestat ordinal.
+	 *
 	 * The cpu percent is the percent (0-100) of each second of work
-	 * to spend actually working.  The balance is spent sleeping. 
-	 * 
+	 * to spend actually working.  The balance is spent sleeping.
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat
 	 * @param topThisMany the number of items in each list
@@ -605,12 +605,12 @@ public interface DatabaseEngine extends CMLibrary
 	 * database.  It returns a two dimensional array of
 	 * lists of accounts and their scores, in reverse sorted
 	 * order by score.  The first dimension of the array is
-	 * the time period ordinal (month, year, whatever), and the 
-	 * second is the pridestat ordinal. 
-	 * 
+	 * the time period ordinal (month, year, whatever), and the
+	 * second is the pridestat ordinal.
+	 *
 	 * The cpu percent is the percent (0-100) of each second of work
-	 * to spend actually working.  The balance is spent sleeping. 
-	 * 
+	 * to spend actually working.  The balance is spent sleeping.
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock.TimePeriod
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.AccountStats.PrideStat
 	 * @param topThisMany the number of items in each list
@@ -686,7 +686,7 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBPLAYERS
 	 * Reads and populates a player MOB object
-	 * from the database. Does not include 
+	 * from the database. Does not include
 	 * followers, but does items and abilities.
 	 * @param name the name of the player
 	 * @return the player mob object, or null
@@ -706,7 +706,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
-	 * Updates the email address of the given player in the 
+	 * Updates the email address of the given player in the
 	 * database.  Does not update the account system.
 	 * @param mob the mob containing the email addy to change
 	 */
@@ -714,7 +714,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
-	 * Updates the password of the given player in the 
+	 * Updates the password of the given player in the
 	 * database.  Does not update the account system.
 	 * @param name the mob name containing the pw to change
 	 * @param password the new password string
@@ -752,7 +752,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERS
-	 * Returns a ThinPlayer object with information about the 
+	 * Returns a ThinPlayer object with information about the
 	 * character with the given name.
 	 * @see PlayerLibrary.ThinPlayer
 	 * @param name the name of the character to return.
@@ -840,7 +840,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBPLAYERS
 	 * Attempts to return a list of all characters who are
 	 * listed as worshippers of the deity with the given exact
-	 * name.  
+	 * name.
 	 * @param deityID the exact name of the deity to look for
 	 * @return a list containing as many thin worshipper records
 	 */
@@ -871,8 +871,8 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBQUEST
 	 * Reads all the Quest objects from the database and
-	 * returns them as a list.  The Quests are pre-parsed 
-	 * and ready to go.  
+	 * returns them as a list.  The Quests are pre-parsed
+	 * and ready to go.
 	 * @see DatabaseEngine#DBUpdateQuests(List)
 	 * @see DatabaseEngine#DBUpdateQuest(Quest)
 	 * @see Quest
@@ -922,7 +922,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBCLANS
-	 * Updates the clan-kill counts for the clan member of the given 
+	 * Updates the clan-kill counts for the clan member of the given
 	 * exact name for the given exact clan
 	 * @param clan the name of the clan to update a member for
 	 * @param name the name of the member to update
@@ -933,7 +933,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBCLANS
-	 * Updates the clan-donation counts for the clan member of the given 
+	 * Updates the clan-donation counts for the clan member of the given
 	 * exact name for the given exact clan
 	 * @param clan the name of the clan to update a member for
 	 * @param name the name of the member to update
@@ -941,11 +941,11 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param adjXP the number of ADDITIONAL (plus or minus) clan xp adjustments
 	 */
 	public void DBUpdateClanDonates(String clan, String name, double adjGold, int adjXP);
-	
+
 	/**
 	 * Table category: DBCLANS
 	 * Reads the entire list of clans, not including their stored items.
-	 * The list of clans is then returned for adding to the official 
+	 * The list of clans is then returned for adding to the official
 	 * list, or whatever.
 	 * @see Clan
 	 * @see DatabaseEngine#DBReadClanItems(Map)
@@ -973,7 +973,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param clans the map of clanids to clan objects
 	 */
 	public void DBReadClanItems(Map<String,Clan> clans);
-	
+
 	/**
 	 * Table category: DBCLANS
 	 * Updates the given clan objects record in the database.
@@ -1117,8 +1117,8 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBJOURNALS
-	 * Deletes enter a specific message, or all messages, from the given 
-	 * journal.  Deleting all messages deletes the journal.  Take care, 
+	 * Deletes enter a specific message, or all messages, from the given
+	 * journal.  Deleting all messages deletes the journal.  Take care,
 	 * because of the null thing, this method is dangerous. :)
 	 * @see DatabaseEngine#DBReadJournals()
 	 * @see DatabaseEngine#DBReadJournalEntry(String, String)
@@ -1133,7 +1133,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBJOURNALS
-	 * Updates the existing journal message record in the database. 
+	 * Updates the existing journal message record in the database.
 	 * Nothing is optional, it updates all of the given fields.
 	 * @see DatabaseEngine#DBReadJournals()
 	 * @see DatabaseEngine#DBReadJournalEntry(String, String)
@@ -1147,16 +1147,16 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param newAttributes the new message attributes bitmap
 	 */
 	public void DBUpdateJournal(String messageKey, String subject, String msg, long newAttributes);
-	
+
 	/**
 	 * Table category: DBJOURNALS
 	 * Writes a new journal entry formatted for the email system and generates
 	 * a new message key.
-	 * @see CMProps.Str#MAILBOX
+	 * @see com.planet_ink.coffee_mud.core.CMProps.Str#MAILBOX
 	 * @param mailBoxID the journal name/id of the email system MAILBOX
-	 * @param journalSource the name/id of the journal that originated the message 
+	 * @param journalSource the name/id of the journal that originated the message
 	 * @param from who the author of the email
-	 * @param to the recipient 
+	 * @param to the recipient
 	 * @param subject the subject of the message
 	 * @param message the email message
 	 */
@@ -1180,7 +1180,7 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBJOURNALS
 	 * Searches all the messages in the journal for the search string as
-	 * a (typically) case-insensitive substring of either the subject 
+	 * a (typically) case-insensitive substring of either the subject
 	 * or the message text.  Returns up to 100 journal entries that
 	 * form a match.
 	 * @param journalID the name/id of the journal to search
@@ -1214,7 +1214,7 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBJOURNALS
 	 * Primarily for forum journals, this method updates all of the given
-	 * meta data, such as the intro, and so forth by deleting the old 
+	 * meta data, such as the intro, and so forth by deleting the old
 	 * record and re-inserting it into the database.
 	 * @see DatabaseEngine#DBReadJournalMetaData(String, com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalMetaData)
 	 * @see DatabaseEngine#DBUpdateMessageReplies(String, int)
@@ -1231,8 +1231,8 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param journalID the name of the journal/forum to load from
 	 * @param parent the parent message (for getting replies), or null
 	 * @param searchStr the string to search for in the msg/subject, or null
-	 * @param newerDate 0 for all real msgs, parent for newer than timestamp, otherwise before timestamp 
-	 * @param limit the maximum number of messages to return 
+	 * @param newerDate 0 for all real msgs, parent for newer than timestamp, otherwise before timestamp
+	 * @param limit the maximum number of messages to return
 	 * @return the journal entries/messages that match this query
 	 */
 	public List<JournalEntry> DBReadJournalPageMsgs(String journalID, String parent, String searchStr, long newerDate, int limit);
@@ -1252,7 +1252,7 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBJOURNALS
 	 * Returns a limited number of messages from the given journal, optional sorted by update date,
-	 * ascending. 
+	 * ascending.
 	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean)
 	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int, String[])
 	 * @param journalID the journal to read all the messages from
@@ -1275,7 +1275,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @return the list of the messages in this journal, an empty list, or null on error
 	 */
 	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending, int limit, String[] tos);
-	
+
 	/**
 	 * Table category: DBJOURNALS
 	 * Returns all the messages in the given journal, optionally sorted by create date, ascending.
@@ -1291,7 +1291,7 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBJOURNALS
 	 * Returns a limited number of messages from the given journal, optional sorted by create date,
-	 * ascending. 
+	 * ascending.
 	 * @see DatabaseEngine#DBReadJournalMsgsByCreateDate(String, boolean)
 	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int, String[])
 	 * @param journalID the journal to read all the messages from
@@ -1317,7 +1317,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBJOURNALS
-	 * Returns all the messages optionally sent to the given user (or ALL) that 
+	 * Returns all the messages optionally sent to the given user (or ALL) that
 	 * are newer than the given date.
 	 * @see DatabaseEngine#DBReadJournalMsgsOlderThan(String, String, long)
 	 * @param journalID the name/ID of the journal/forum
@@ -1329,7 +1329,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBJOURNALS
-	 * Returns all the messages optionally sent to the given user (or ALL) that 
+	 * Returns all the messages optionally sent to the given user (or ALL) that
 	 * are older than the given date.
 	 * @see DatabaseEngine#DBReadJournalMsgsNewerThan(String, String, long)
 	 * @param journalID the name/ID of the journal/forum
@@ -1357,7 +1357,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * probably a reply to a parent message, denoted by the parentKey,
 	 * which is the message key of the parent.  This method also updates
 	 * the number of replies being tracked for the given parent message.
-	 * 
+	 *
 	 * @param journalID the name/id of the journal/forum
 	 * @param journalSource the originating name/id of an originating journal?
 	 * @param from who the message is written by, a user id
@@ -1366,7 +1366,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param subject the subject of the reply message
 	 * @param message the message text of the reply message
 	 */
-	public void DBWriteJournalChild(String journalID, String journalSource, String from, String to, 
+	public void DBWriteJournalChild(String journalID, String journalSource, String from, String to,
 									String parentKey, String subject, String message);
 
 	/**
@@ -1380,20 +1380,20 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBJOURNALS
-	 * This method returns a two dimensional array, where the first long 
-	 * is the update timestamp of the latest message in the journal, optionally 
+	 * This method returns a two dimensional array, where the first long
+	 * is the update timestamp of the latest message in the journal, optionally
 	 * to the given recipient,  and the second long is the number of messages
 	 * found that are newer than the given timestamp.
 	 * @param journalID the journal id/name to search
 	 * @param to NULL, or ALL, or the recipient name
 	 * @param olderTime the time After which to count messages
-	 * @return the array with latest update timestamp, and the number of newer msgs 
+	 * @return the array with latest update timestamp, and the number of newer msgs
 	 */
 	public long[] DBJournalLatestDateNewerThan(String journalID, String to, long olderTime);
 
 	/**
 	 * Table category: DBJOURNALS
-	 * This message deletes all private messages with the given 
+	 * This message deletes all private messages with the given
 	 * user id as a recipient.  This is all the messages TO the given
 	 * user, which might include other kinds of user documents, such as
 	 * email, bank accounts, mail, and the like.
@@ -1462,7 +1462,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * Counts the number of rows of data/entries 
+	 * Counts the number of rows of data/entries
 	 * @see DatabaseEngine#DBReadPlayerData(String, String)
 	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
 	 * @see DatabaseEngine#DBReadPlayerData(String, List)
@@ -1478,7 +1478,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBReadPlayerData(String, String)
 	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
 	 * @see DatabaseEngine#DBReadPlayerData(String, List)
-	 * 
+	 *
 	 * @param section the cross-player section of data
 	 * @return the number of entries for the given section
 	 */
@@ -1490,7 +1490,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBReadPlayerData(String, String)
 	 * @see DatabaseEngine#DBDeletePlayerData(String, String)
 	 * @see DatabaseEngine#DBReadPlayerData(String, List)
-	 * 
+	 *
 	 * @param section the cross-player section of data
 	 * @return the unique authors for a given section
 	 */
@@ -1507,7 +1507,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param section the section/type of data to delete
 	 */
 	public void DBDeletePlayerData(String playerID, String section);
-	
+
 	/**
 	 * Table category: DBPLAYERDATA
 	 * Reads in all data for the given player which also belongs to any
@@ -1524,8 +1524,8 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * Reads in all unique player names for all players for the given 
-	 * data type/section. 
+	 * Reads in all unique player names for all players for the given
+	 * data type/section.
 	 * @see DatabaseEngine#DBReadPlayerSectionData(String)
 	 * @see DatabaseEngine#DBDeletePlayerSectionData(String)
 	 * @param section the section to read player names for
@@ -1535,7 +1535,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * Reads in all player data for all players for the given 
+	 * Reads in all player data for all players for the given
 	 * data type/section. Use this sparingly!
 	 * @see DatabaseEngine.PlayerData
 	 * @see DatabaseEngine#DBReadPlayerDataPlayersBySection(String)
@@ -1547,7 +1547,7 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBPLAYERDATA
-	 * Deletes all player data of the given section/type.  
+	 * Deletes all player data of the given section/type.
 	 * @see DatabaseEngine#DBReadPlayerDataPlayersBySection(String)
 	 * @see DatabaseEngine#DBReadPlayerSectionData(String)
 	 * @param section the section, type of data to delete
@@ -1627,7 +1627,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine.PlayerData
 	 * @see DatabaseEngine#DBReCreatePlayerData(String, String, String, String)
 	 * @see DatabaseEngine#DBCreatePlayerData(String, String, String, String)
-	 * 
+	 *
 	 * @param name the userid/player id of the entry to create/update
 	 * @param section the section/type of data to create/update
 	 * @param key the key of the specific entry(s) to create/update
@@ -1643,7 +1643,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine.PlayerData
 	 * @see DatabaseEngine#DBReCreatePlayerData(String, String, String, String)
 	 * @see DatabaseEngine#DBCreatePlayerData(String, String, String, String)
-	 * 
+	 *
 	 * @param player the userid/player id of the entry to create
 	 * @param section the section/type of data to create
 	 * @param key the key of the specific entry(s) to create
@@ -1662,15 +1662,15 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBRACE
-	 * Reads all records from the CMGRAC table and returns the 
+	 * Reads all records from the CMGRAC table and returns the
 	 * AckRecord for all of them in a list, to do with as you please.
 	 * These are the generic races.
-	 * 
+	 *
 	 * @see DatabaseEngine.AckRecord
 	 * @see DatabaseEngine#DBPruneOldRaces()
 	 * @see DatabaseEngine#DBDeleteRace(String)
 	 * @see DatabaseEngine#DBCreateRace(String, String)
-	 * 
+	 *
 	 * @return the generic race records
 	 */
 	public List<AckRecord> DBReadRaces();
@@ -1679,7 +1679,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBRACE
 	 * Deletes entries in the generic race (CMGRAC) table
 	 * that are older than RACEEXPIRATIONDAYS old (see ini file).
-	 * 
+	 *
 	 * @see DatabaseEngine#DBReadRaces()
 	 * @see DatabaseEngine#DBDeleteRace(String)
 	 * @see DatabaseEngine#DBCreateRace(String, String)
@@ -1711,14 +1711,14 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBCHARCLASS
-	 * Reads all records from the CMCCAC table and returns the 
+	 * Reads all records from the CMCCAC table and returns the
 	 * AckRecord for all of them in a list, to do with as you please.
 	 * These are the generic charclasses.
-	 * 
+	 *
 	 * @see DatabaseEngine.AckRecord
 	 * @see DatabaseEngine#DBDeleteClass(String)
 	 * @see DatabaseEngine#DBCreateClass(String, String)
-	 * 
+	 *
 	 * @return the generic charclass records
 	 */
 	public List<AckRecord> DBReadClasses();
@@ -1746,14 +1746,14 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBABILITY
-	 * Reads all records from the CMGAAC table and returns the 
+	 * Reads all records from the CMGAAC table and returns the
 	 * AckRecord for all of them in a list, to do with as you please.
 	 * These are the generic abilities.
-	 * 
+	 *
 	 * @see DatabaseEngine.AckRecord
 	 * @see DatabaseEngine#DBDeleteAbility(String)
-	 * @see DatabaseEngine#DBCreateAbility(String, String)
-	 * 
+	 * @see DatabaseEngine#DBCreateAbility(String, String, String)
+	 *
 	 * @return the generic ability records
 	 */
 	public List<AckRecord> DBReadAbilities();
@@ -1761,7 +1761,7 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Removes a generic ability from the CMGAAC table.
 	 * @see DatabaseEngine#DBReadAbilities()
-	 * @see DatabaseEngine#DBCreateAbility(String, String)
+	 * @see DatabaseEngine#DBCreateAbility(String, String, String)
 	 * @param classID the ID of the ability to delete
 	 */
 	public void DBDeleteAbility(String classID);
@@ -1781,11 +1781,11 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBSTATS
-	 * Reads a days worth of stats from the CMSTAT table in 
+	 * Reads a days worth of stats from the CMSTAT table in
 	 * the database.  Returning as a CofeeTableRow object
 	 * populated with the days data. The start time has the
 	 * correct date, and an hr/min/sec/ms of 0s.
-	 * 
+	 *
 	 * @see DatabaseEngine#DBUpdateStat(long, String)
 	 * @see DatabaseEngine#DBDeleteStat(long)
 	 * @see DatabaseEngine#DBCreateStat(long, long, String)
@@ -1805,7 +1805,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBCreateStat(long, long, String)
 	 * @see DatabaseEngine#DBReadStats(long, long)
 	 * @see DatabaseEngine#DBReadStat(long)
-	 * 
+	 *
 	 * @param startTime the timestamp of the day to delete
 	 */
 	public void DBDeleteStat(long startTime);
@@ -1820,7 +1820,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBDeleteStat(long)
 	 * @see DatabaseEngine#DBReadStats(long, long)
 	 * @see DatabaseEngine#DBReadStat(long)
-	 * 
+	 *
 	 * @param startTime the timestamp of the day start
 	 * @param endTime the timestamp of the day end
 	 * @param data the xml data to insert.
@@ -1837,7 +1837,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBCreateStat(long, long, String)
 	 * @see DatabaseEngine#DBReadStats(long, long)
 	 * @see DatabaseEngine#DBReadStat(long)
-	 * 
+	 *
 	 * @param startTime the timestamp of the day start
 	 * @param data the xml data to use.
 	 * @return true if the update succeeded, false otherwise
@@ -1854,9 +1854,9 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBCreateStat(long, long, String)
 	 * @see DatabaseEngine#DBReadStat(long)
 	 * @see CoffeeTableRow
-	 * 
+	 *
 	 * @param startTime the timestamp of the first row
-	 * @param longTime 0, or the end time of the last row.
+	 * @param endTime 0, or the end time of the last row.
 	 * @return the group of statistics requested.
 	 */
 	public List<CoffeeTableRow> DBReadStats(long startTime, long endTime);
@@ -1872,9 +1872,9 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBDeletePoll(String)
 	 * @see DatabaseEngine#DBReadPollList()
 	 * @see DatabaseEngine#DBReadPoll(String)
-	 * 
+	 *
 	 * @param name the unique name of the poll
-	 * @param player the user/character id of the creator 
+	 * @param player the user/character id of the creator
 	 * @param subject the title/subject of the poll
 	 * @param description the long descriptions
 	 * @param optionXML choices format &lt;OPTIONS&gt;&lt;OPTION&gt;option text...
@@ -1883,7 +1883,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param results &lt;RESULTS&gt;&lt;RESULT&gt;&lt;USER&gt;&lt;IP&gt;&lt;ANS&gt;
 	 * @param expiration the rl date/timestamp of when the poll auto-closes
 	 */
-	public void DBCreatePoll(String name, String player, String subject, String description, String optionXML, 
+	public void DBCreatePoll(String name, String player, String subject, String description, String optionXML,
 							 int flag, String qualZapper, String results, long expiration);
 
 	/**
@@ -1897,10 +1897,10 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBDeletePoll(String)
 	 * @see DatabaseEngine#DBReadPollList()
 	 * @see DatabaseEngine#DBReadPoll(String)
-	 * 
+	 *
 	 * @param OldName required, the unique old name of the poll, or current name
 	 * @param name the unique new name of the poll, or the current one
-	 * @param player the user/character id of the creator 
+	 * @param player the user/character id of the creator
 	 * @param subject the title/subject of the poll
 	 * @param description the long descriptions
 	 * @param optionXML choices format &lt;OPTIONS&gt;&lt;OPTION&gt;option text...
@@ -1909,14 +1909,14 @@ public interface DatabaseEngine extends CMLibrary
 	 * @param results xml doc: &lt;RESULTS&gt;&lt;RESULT&gt;&lt;USER&gt;&lt;IP&gt;&lt;ANS&gt;
 	 * @param expiration the rl date/timestamp of when the poll auto-closes
 	 */
-	public void DBUpdatePoll(String OldName, String name, String player, String subject, String description, 
+	public void DBUpdatePoll(String OldName, String name, String player, String subject, String description,
 							 String optionXML, int flag, String qualZapper, String results, long expiration);
 
 	/**
 	 * Table category: DBPOLLS
 	 * Updates the results xml array for an existing poll.  Called when a new result is added, removed,
 	 * or modified.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ABSTAIN
 	 * @see DatabaseEngine#DBCreatePoll(String, String, String, String, String, int, String, String, long)
@@ -1924,7 +1924,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBDeletePoll(String)
 	 * @see DatabaseEngine#DBReadPollList()
 	 * @see DatabaseEngine#DBReadPoll(String)
-	 * 
+	 *
 	 * @param name the unique name of the poll
 	 * @param results xml doc: &lt;RESULTS&gt;&lt;RESULT&gt;&lt;USER&gt;&lt;IP&gt;&lt;ANS&gt;
 	 */
@@ -1933,7 +1933,7 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBPOLLS
 	 * Deletes a poll, and all its options and results, forever.
-	 * 
+	 *
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ABSTAIN
 	 * @see DatabaseEngine#DBCreatePoll(String, String, String, String, String, int, String, String, long)
@@ -1941,7 +1941,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBUpdatePollResults(String, String)
 	 * @see DatabaseEngine#DBReadPollList()
 	 * @see DatabaseEngine#DBReadPoll(String)
-	 * 
+	 *
 	 * @param name the unique name of the poll to kill
 	 */
 	public void DBDeletePoll(String name);
@@ -1949,7 +1949,7 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBPOLLS
 	 * Reads the raw data for all the polls from DBPOLLs table.
-	 * 
+	 *
 	 * @see PollData
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ABSTAIN
@@ -1958,7 +1958,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBUpdatePollResults(String, String)
 	 * @see DatabaseEngine#DBDeletePoll(String)
 	 * @see DatabaseEngine#DBReadPoll(String)
-	 * 
+	 *
 	 * @return the list of PollData objects
 	 */
 	public List<PollData> DBReadPollList();
@@ -1966,7 +1966,7 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBPOLLS
 	 * Reads the raw data for a specific poll of a given name.
-	 * 
+	 *
 	 * @see PollData
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ABSTAIN
@@ -1975,7 +1975,7 @@ public interface DatabaseEngine extends CMLibrary
 	 * @see DatabaseEngine#DBUpdatePollResults(String, String)
 	 * @see DatabaseEngine#DBDeletePoll(String)
 	 * @see DatabaseEngine#DBReadPoll(String)
-	 * 
+	 *
 	 * @param name the unique name of the poll to read
 	 * @return the raw poll data for that poll, as a PollData object
 	 */
@@ -1986,13 +1986,13 @@ public interface DatabaseEngine extends CMLibrary
 	 * Reads the root of the VFS (DBFS) database filesystem.
 	 * It returns the CMFile.CMVFSDir virtual object describing
 	 * the database filesystem root and its contents.
-	 * 
-	 * @see CMFile.CMVFSDir
+	 *
+	 * @see com.planet_ink.coffee_mud.core.CMFile.CMVFSDir
 	 * @see DatabaseEngine#DBReadVFSFile(String)
 	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBDeleteVFSFile(String)
-	 * 
+	 *
 	 * @return the dbfs root filesystem
 	 */
 	public CMFile.CMVFSDir DBReadVFSDirectory();
@@ -2001,13 +2001,13 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBVFS
 	 * Reads the complete DBFS file record for the given filepath.  The
 	 * path does not begin with a /.
-	 * 
-	 * @see CMFile.CMVFSFile
+	 *
+	 * @see com.planet_ink.coffee_mud.core.CMFile.CMVFSFile
 	 * @see DatabaseEngine#DBReadVFSDirectory()
 	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBDeleteVFSFile(String)
-	 * 
+	 *
 	 * @param filename the path of the file to read
 	 * @return the complete file record, including data
 	 */
@@ -2019,15 +2019,15 @@ public interface DatabaseEngine extends CMLibrary
 	 * The filename does not begin with a /.  The data may be a String,
 	 * StringBuffer, or byte array.  The bits are found in CMFile.
 	 * @see CMFile#VFS_MASK_MASKSAVABLE
-	 * 
+	 *
 	 * @see DatabaseEngine#DBReadVFSDirectory()
 	 * @see DatabaseEngine#DBReadVFSFile(String)
 	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBDeleteVFSFile(String)
-	 * 
-	 * @param filename the full name/path 
+	 *
+	 * @param filename the full name/path
 	 * @param bits toggle bits about the file
-	 * @param creator the character id of the file creator/owner 
+	 * @param creator the character id of the file creator/owner
 	 * @param updateTime the timestamp of the files creation/update time
 	 * @param data the file content, String, StringBuffer, or byte array
 	 */
@@ -2039,15 +2039,15 @@ public interface DatabaseEngine extends CMLibrary
 	 * The filename does not begin with a /.  The data may be a String,
 	 * StringBuffer, or byte array.  The bits are found in CMFile.
 	 * @see CMFile#VFS_MASK_MASKSAVABLE
-	 * 
+	 *
 	 * @see DatabaseEngine#DBReadVFSDirectory()
 	 * @see DatabaseEngine#DBReadVFSFile(String)
 	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBDeleteVFSFile(String)
-	 * 
-	 * @param filename the full name/path 
+	 *
+	 * @param filename the full name/path
 	 * @param bits toggle bits about the file
-	 * @param creator the character id of the file creator/owner 
+	 * @param creator the character id of the file creator/owner
 	 * @param updateTime the timestamp of the files creation/update time
 	 * @param data the file content, String, StringBuffer, or byte array
 	 */
@@ -2057,12 +2057,12 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBVFS
 	 * Deletes a file from the DBFS in the DBVFS table.  The
 	 * path does not begin with a /.
-	 * 
+	 *
 	 * @see DatabaseEngine#DBReadVFSDirectory()
 	 * @see DatabaseEngine#DBReadVFSFile(String)
 	 * @see DatabaseEngine#DBCreateVFSFile(String, int, String, long, Object)
 	 * @see DatabaseEngine#DBUpSertVFSFile(String, int, String, long, Object)
-	 * 
+	 *
 	 * @param filename the full path filename of the file to kill
 	 */
 	public void DBDeleteVFSFile(String filename);
@@ -2080,15 +2080,15 @@ public interface DatabaseEngine extends CMLibrary
 	/**
 	 * Table category: DBBACKLOG
 	 * Returns a list of channel messages for the given channel and criteria.
-	 * The list returned includes the message, and the timestamp of the 
+	 * The list returned includes the message, and the timestamp of the
 	 * message.  The list is date-sorted, so list returns can ge "paged"
 	 * by setting the number to skip and the number to return.
-	 * 
+	 *
 	 * @see DatabaseEngine#addBackLogEntry(String, String)
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
-	 * 
+	 *
 	 * @param channelName the unique name of the channel to return messages from
-	 * @param newestToSkip the number of "newest" messages to skip 
+	 * @param newestToSkip the number of "newest" messages to skip
 	 * @param numToReturn the number of total messages to return
 	 * @return a list of applicable messages, coded as string,timestamp
 	 */
@@ -2096,14 +2096,14 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBBACKLOG
-	 * This is a periodic maintenance method which will go through the 
+	 * This is a periodic maintenance method which will go through the
 	 * list of unique channel names, and trim them according to the maximum
 	 * number of messages to retain (absolute), and the oldest message
 	 * to return (absolute timestamp -- no 0 nonsense).  Both criteria
 	 * will be used in the trimming.
 	 * @see DatabaseEngine#getBackLogEntries(String, int, int)
 	 * @see DatabaseEngine#addBackLogEntry(String, String)
-	 * 
+	 *
 	 * @param channels the list of channels to go through.
 	 * @param maxMessages the maximum number of messages to retain
 	 * @param oldestTime the oldest message to retain
@@ -2117,14 +2117,14 @@ public interface DatabaseEngine extends CMLibrary
 	 * Since it is keyed by player, it is typically very safe to obliterate
 	 * all records belonging to a player name whenever the player
 	 * needs to go.
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
 	public static interface PlayerData
 	{
 		/**
-		 * Gets the official Name of the player that 
+		 * Gets the official Name of the player that
 		 * owns this record.
 		 * @see DatabaseEngine.PlayerData#who(String)
 		 * @return name of the player
@@ -2132,7 +2132,7 @@ public interface DatabaseEngine extends CMLibrary
 		public String who();
 
 		/**
-		 * Sets the official Name of the player that 
+		 * Sets the official Name of the player that
 		 * owns this record.
 		 * @see DatabaseEngine.PlayerData#who()
 		 * @param who name of the player
@@ -2180,7 +2180,7 @@ public interface DatabaseEngine extends CMLibrary
 
 		/**
 		 * Gets the actual data document that is the payload
-		 * of this record.  It is typically an XML 
+		 * of this record.  It is typically an XML
 		 * document.
 		 * @see DatabaseEngine.PlayerData#xml(String)
 		 * @return the xml document payload
@@ -2189,7 +2189,7 @@ public interface DatabaseEngine extends CMLibrary
 
 		/**
 		 * Sets the actual data document that is the payload
-		 * of this record.  It is typically an XML 
+		 * of this record.  It is typically an XML
 		 * document.
 		 * @see DatabaseEngine.PlayerData#xml()
 		 * @param xml the xml document payload
@@ -2203,45 +2203,45 @@ public interface DatabaseEngine extends CMLibrary
 	 * Raw record entry for the DBPOLLS table, where each
 	 * record represents an entire poll and all of its
 	 * results.
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 */
 	public static interface PollData
 	{
 		/**
 		 * The unique Name of the poll
-		 * 
+		 *
 		 * @return unique Name of the poll
 		 */
 		public String name();
 
 		/**
 		 * Special flag bitmap for this poll.
-		 * 
+		 *
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ABSTAIN
 		 * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#FLAG_ACTIVE
-		 * 
+		 *
 		 * @return flag bitmap
 		 */
 		public long flag();
 
 		/**
 		 * The player Name of the author of the poll.
-		 * 
+		 *
 		 * @return Name of the author of the poll.
 		 */
 		public String authorName();
 
 		/**
 		 * The short title of the poll.
-		 * 
+		 *
 		 * @return short title of the poll.
 		 */
 		public String subject();
 
 		/**
 		 * The long description of the poll.
-		 * 
+		 *
 		 * @return long description of the poll.
 		 */
 		public String description();
@@ -2249,7 +2249,7 @@ public interface DatabaseEngine extends CMLibrary
 		/**
 		 * The options/multiple-choices for this
 		 * poll.  In XML document format.
-		 * 
+		 *
 		 * @return the options to choose from xml
 		 */
 		public String optionsXml();
@@ -2257,7 +2257,7 @@ public interface DatabaseEngine extends CMLibrary
 		/**
 		 * The Zapper Mask to decide who may participate
 		 * in this poll.
-		 * 
+		 *
 		 * @return the qualifying zapper mask
 		 */
 		public String qualifyingMask();
@@ -2265,7 +2265,7 @@ public interface DatabaseEngine extends CMLibrary
 		/**
 		 * The player name keyed results/choices for
 		 * this poll.  In XML document format.
-		 * 
+		 *
 		 * @return the results chosen in xml
 		 */
 		public String resultsXml();
@@ -2273,7 +2273,7 @@ public interface DatabaseEngine extends CMLibrary
 		/**
 		 * The real-timestamp after which this poll
 		 * is expired.
-		 * 
+		 *
 		 * @return the expiration timestamp of the poll
 		 */
 		public long expiration();
@@ -2281,9 +2281,9 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBRACE
-	 * A record of the creation timstamp for 
+	 * A record of the creation timstamp for
 	 * a generic race
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -2291,14 +2291,14 @@ public interface DatabaseEngine extends CMLibrary
 	{
 		/**
 		 * The Race ID
-		 * 
+		 *
 		 * @return the race id
 		 */
 		public String ID();
 
 		/**
 		 * The creation timestamp
-		 * 
+		 *
 		 * @return creation timestamp
 		 */
 		public long creationDate();
@@ -2306,10 +2306,10 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBRACE, DBCHARCLASS, DBABILITY
-	 * 
+	 *
 	 * A data record for a generic race or class or
 	 * generic ability.
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -2317,7 +2317,7 @@ public interface DatabaseEngine extends CMLibrary
 	{
 		/**
 		 * The race, ability, or char class ID
-		 * 
+		 *
 		 * @return race or class ID
 		 */
 		public String ID();
@@ -2325,16 +2325,16 @@ public interface DatabaseEngine extends CMLibrary
 		/**
 		 * The XML document describing the race
 		 * or class or ability this record represents.
-		 * 
-		 * @return
+		 *
+		 * @return the xml document
 		 */
 		public String data();
 
 		/**
 		 * The base class that is used to build the object
-		 * denoted by this record.  Typically GenRace, 
+		 * denoted by this record.  Typically GenRace,
 		 * GenCharClass, or GenAbility.
-		 * 
+		 *
 		 * @return the base class
 		 */
 		public String typeClass();

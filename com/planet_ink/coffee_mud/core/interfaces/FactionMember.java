@@ -42,9 +42,9 @@ public interface FactionMember
 	 * @param start the initial rank/value in the new faction
 	 */
 	public void addFaction(String of, int start);
-	
+
 	/**
-	 * If this is already a member of the given faction, then the 
+	 * If this is already a member of the given faction, then the
 	 * value or rank in that faction will be adjusted by the given
 	 * amount.  If this is NOT yet a member of the given faction, then
 	 * the faction is added with the amount as an initial value.
@@ -89,9 +89,9 @@ public interface FactionMember
 	public int fetchFaction(String which);
 
 	/**
-	 * Returns the complete contextual faction data for this 
+	 * Returns the complete contextual faction data for this
 	 * member.
-	 * @see Faction.FData
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FData
 	 * @param which the faction id to return rank/value in
 	 * @return the faction data
 	 */

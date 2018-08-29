@@ -54,7 +54,7 @@ public class CMParms
 	/**
 	 * An overrideable class for supplying a delimiter determination tool
 	 * @see CMParms#createDelimiter(char[])
-	 * @see CMParms#parseEQParms(String, DelimiterChecker)
+	 * @see CMParms#parseEQParms(String, DelimiterChecker, boolean)
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -70,7 +70,7 @@ public class CMParms
 	 * Create a DelimiterChecker from the given set of characters that will
 	 * be the delimiters.
 	 * @see CMParms.DelimiterChecker
-	 * @see CMParms#parseEQParms(String, DelimiterChecker)
+	 * @see CMParms#parseEQParms(String, DelimiterChecker, boolean)
 	 * @param chars the delimiters as a char array
 	 * @return the class you can use to check for them fast
 	 */

@@ -202,9 +202,9 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers);
 
 	/**
-	 * Returns whether this class, for the given mob of this class, should count in the division 
-	 * of experience gained by the killer for having killed the killed.  Assumes the mob is in the 
-	 * same room, and requires the followers of the killer be passed in.  
+	 * Returns whether this class, for the given mob of this class, should count in the division
+	 * of experience gained by the killer for having killed the killed.  Assumes the mob is in the
+	 * same room, and requires the followers of the killer be passed in.
 	 * @param killer the killer mob
 	 * @param killed who the killer mob killed
 	 * @param mob the mob whose sharing capacity is being evaluated
@@ -214,10 +214,10 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public boolean canBeADivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers);
 
 	/**
-	 * Returns whether this class, for the given mob of this class, should share in the 
-	 * experience gained by the killer for having killed the killed.  Assumes the mob 
+	 * Returns whether this class, for the given mob of this class, should share in the
+	 * experience gained by the killer for having killed the killed.  Assumes the mob
 	 * is in the same room, and requires the followers of the killer be passed in.
-	 * 
+	 *
 	 * @param killer the killer mob
 	 * @param killed who the killer mob killed
 	 * @param mob the mob whose sharing capacity is being evaluated
@@ -225,7 +225,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return whether the mob shares in the exp gains
 	 */
 	public boolean canBeABenificiary(MOB killer, MOB killed, MOB mob, Set<MOB> followers);
-	
+
 	/**
 	 * Typically called when a mob gains a level in this class, to allow the class to
 	 * assign any new skills.  Can also be called just to populate a mob with class skills,
@@ -259,7 +259,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	/**
 	 * Whenever a uses a skill, this method can return any additional expertise
 	 * granted explicitly by the class.
-	 * @see ExpertiseLibrary.Flag
+	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary.Flag
 	 * @param host the player or mob whose class is being queried
 	 * @param expertiseCode the expertise code
 	 * @param abilityID the Ability ID
@@ -426,7 +426,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return a list of races, racecats, or ANY
 	 */
 	public String[] getRequiredRaceList();
-	
+
 	/**
 	 * Returns whether the given race matches the required race
 	 * list rules.

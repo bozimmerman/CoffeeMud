@@ -32,10 +32,10 @@ import java.util.*;
    limitations under the License.
 */
 /**
- * Fighting, healing, determining combatants, death, attacking, 
+ * Fighting, healing, determining combatants, death, attacking,
  * damaging, and formations.  These are all the things handled
  * by the combat library.  But I'm betting you already knew that.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -44,7 +44,7 @@ public interface CombatLibrary extends CMLibrary
 	/**
 	 * An enumeration of the several combat systems.
 	 * These are specified in the coffeemud.ini file.
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -56,22 +56,22 @@ public interface CombatLibrary extends CMLibrary
 		 * points are automatically used on basic attacks, every round.
 		 */
 		DEFAULT,
-		
+
 		/**
 		 * The queue system allows all action points to be used
 		 * by each combatant on skills.  All unused action points are
 		 * spent on basic attacks every round.
 		 */
 		QUEUE,
-		
+
 		/**
 		 * The manual system allows all action points to be used
 		 * by each combatant on skills or on basic attacks, but
 		 * all attack must be manually entered.  Any unused points
-		 * are lost every round. 
+		 * are lost every round.
 		 */
 		MANUAL,
-		
+
 		/**
 		 * The turn based system gives each combatant an amount of time
 		 * to use all their action points on skills or basic attacks,
@@ -85,9 +85,9 @@ public interface CombatLibrary extends CMLibrary
 	 * Number of normal 4-second ticks per ship combat round
 	 */
 	public static final int TICKS_PER_SHIP_COMBAT = 4;
-	
+
 	/**
-	 * Returns all the mobs in the same room as the given mob, which 
+	 * Returns all the mobs in the same room as the given mob, which
 	 * that aren't in the mobs group.  It doesn't check
 	 * combatability, and as such, is pretty loose.
 	 * @see CombatLibrary#allCombatants(MOB)
@@ -100,8 +100,8 @@ public interface CombatLibrary extends CMLibrary
 
 	/**
 	 * Returns all the potential targets for the given ability, in the same
-	 * room as the given mob.  If the skill is non-malicious, it returns 
-	 * the mobs groups members, if the mob is in combat, it returns the 
+	 * room as the given mob.  If the skill is non-malicious, it returns
+	 * the mobs groups members, if the mob is in combat, it returns the
 	 * mobs in combat with him/her, and if the skill is malicious, it returns all
 	 * potential combatants.
 	 * @see CombatLibrary#allCombatants(MOB)
@@ -149,7 +149,7 @@ public interface CombatLibrary extends CMLibrary
 	 * @return the given adjusted armor value
 	 */
 	public int adjustedArmor(int armorValue);
-	
+
 	/**
 	 * Returns the given mobs attack bonus, after adjusting for
 	 * hunger, thirst, fatigue, position, and strength.
@@ -199,7 +199,7 @@ public interface CombatLibrary extends CMLibrary
 
 	/**
 	 * Gathers the given attackers adjusted attack and the given defenders adjusted armor,
-	 * applies a fudge factor, and makes a to-hit roll.  
+	 * applies a fudge factor, and makes a to-hit roll.
 	 * @see CombatLibrary#rollToHit(int, int, int)
 	 * @param attacker the attacking mob
 	 * @param defender the mob being attacked
@@ -208,7 +208,7 @@ public interface CombatLibrary extends CMLibrary
 	public boolean rollToHit(MOB attacker, MOB defender);
 
 	/**
-	 * Given the exact attack score, against the given defense score, and 
+	 * Given the exact attack score, against the given defense score, and
 	 * the given percentage adjustment.
 	 * @see CombatLibrary#rollToHit(MOB, MOB)
 	 * @param attack the attack score
@@ -261,7 +261,7 @@ public interface CombatLibrary extends CMLibrary
 
 	/**
 	 * This method causes a mundane attack to occur by the given
-	 * attack to the given target using the given weapon.  If 
+	 * attack to the given target using the given weapon.  If
 	 * no weapon is given, it might attempt a draw first.
 	 * Generates a CMMsg message and sends it to the target room.
 	 * @param attacker the attacker mob
@@ -283,16 +283,16 @@ public interface CombatLibrary extends CMLibrary
 	 * @return true if the attack succeeded, false if it failed
 	 */
 	public boolean postShipAttack(MOB attacker, PhysicalAgent attackingShip, PhysicalAgent target, Weapon weapon, boolean wasAHit);
-	
+
 	/**
 	 * Returns whether the given attacking mob, on the given attacker ship, may attack the people and property
-	 * of the given defending ship.  
+	 * of the given defending ship.
 	 * @param mob the agent attacker
 	 * @param defender the attacked ship
 	 * @return true if an attack is authorized, false otherwise
 	 */
 	public boolean mayIAttackThisVessel(final MOB mob, final PhysicalAgent defender);
-	
+
 	/**
 	 * Posts a message of healing from the given healer to the given
 	 * target using the given optional Ability tool.  There are no
@@ -312,8 +312,8 @@ public interface CombatLibrary extends CMLibrary
 	 * Because damage messages are basically always modified in message preview (okMessage),
 	 * there is no point in putting the amount of damage into the message string.  Because of this
 	 * the string &lt;DAMAGE&gt; or &lt;DAMAGES&gt; is put as a placeholder, and then this method
-	 * is called to replace those tags with actual damage words based on the given final amount 
-	 * and the given weapon type, and a clue as to who would see the message 
+	 * is called to replace those tags with actual damage words based on the given final amount
+	 * and the given weapon type, and a clue as to who would see the message
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg.View
 	 * @see CombatLibrary#postDamage(MOB, MOB, Environmental, int, int, int, String)
 	 * @param str the original string with the appropriate tag
@@ -322,22 +322,22 @@ public interface CombatLibrary extends CMLibrary
 	 * @param sourceTargetSTO the view of the message
 	 * @return the final modified string
 	 */
-	public String replaceDamageTag(String str, int damage, int damageType, View sourceTargetSTO);
+	public String replaceDamageTag(String str, int damage, int damageType, CMMsg.View sourceTargetSTO);
 
 	/**
-	 * The official way to post damage that is happening.  
+	 * The official way to post damage that is happening.
 	 * It generates a message and sends it to the target room.
 	 * Handles MXP tagging, fight coloring, and other details on the
 	 * string message.  replaceDataTag is called to ensure a proper
-	 * damage word.  
-	 * @see CombatLibrary#replaceDamageTag(String, int, int, View)
+	 * damage word.
+	 * @see CombatLibrary#replaceDamageTag(String, int, int, CMMsg.View)
 	 * @param attacker the attacking mob
 	 * @param target the target mob being healed
 	 * @param weapon the item weapon, ability skill, or null tool used to damage
 	 * @param damage the initial amount of damage
 	 * @param messageCode msg code for the source and others code
 	 * @param damageType the weapon type code {@link com.planet_ink.coffee_mud.Items.interfaces.Weapon#TYPE_BASHING}
-	 * @param allDisplayMessage the message to send 
+	 * @param allDisplayMessage the message to send
 	 */
 	public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage);
 
@@ -348,21 +348,21 @@ public interface CombatLibrary extends CMLibrary
 	 * instead of postAttackResult when the amount of damage done is custom
 	 * instead of random.
 	 * @return the message sent to the source room, or null
-	 * @see CombatLibrary#replaceDamageTag(String, int, int, View)
+	 * @see CombatLibrary#replaceDamageTag(String, int, int, CMMsg.View)
 	 * @param source the attacker
 	 * @param target the target
 	 * @param item the weapon used
 	 * @param damageInt the amount of damage done by the weapon
 	 */
 	public CMMsg postWeaponDamage(MOB source, MOB target, Item item, int damageInt);
-	
+
 	/**
 	 * This method handles both a hit or a miss with a weapon.  The
 	 * hit, obviously, posts damage, while the miss, posts a miss.
 	 * replaceDataTag is called to ensure a proper damage word.
 	 * Generates a CMMsg message and sends it to the SOURCE room.
 	 * @return the message sent to the source room, or null
-	 * @see CombatLibrary#replaceDamageTag(String, int, int, View)
+	 * @see CombatLibrary#replaceDamageTag(String, int, int, CMMsg.View)
 	 * @param source the attacker
 	 * @param target the target
 	 * @param item the weapon used
@@ -372,10 +372,10 @@ public interface CombatLibrary extends CMLibrary
 
 	/**
 	 * This method handles both a hit or a miss with a weapon between two
-	 * ships in combat.  The hit, obviously, posts damage, while the miss, 
+	 * ships in combat.  The hit, obviously, posts damage, while the miss,
 	 * posts a miss. replaceDataTag is called to ensure a proper damage word.
 	 * Generates a CMMsg message and sends it to the common room.
-	 * @see CombatLibrary#replaceDamageTag(String, int, int, View)
+	 * @see CombatLibrary#replaceDamageTag(String, int, int, CMMsg.View)
 	 * @param source the agent of the attack
 	 * @param attacker the attacker
 	 * @param defender the target
@@ -383,7 +383,7 @@ public interface CombatLibrary extends CMLibrary
 	 * @param success true if it was a hit with damage, false if it was a miss
 	 */
 	public void postShipWeaponAttackResult(MOB source, PhysicalAgent attacker, PhysicalAgent defender, Weapon weapon, boolean success);
-	
+
 	/**
 	 * This method handles an item taking damage.  If the item is subject
 	 * to wear and tear, it will take the amount of specific damage
@@ -398,17 +398,17 @@ public interface CombatLibrary extends CMLibrary
 	 * @param message the message string
 	 */
 	public void postItemDamage(MOB mob, Item I, Environmental tool, int damageAmount, int messageType, String message);
-	
+
 	/**
 	 * Returns the front of the follower line for
 	 * this mob.  If this mob is following someone, it returns
-	 * the MOB being ultimately followed, otherwise it 
+	 * the MOB being ultimately followed, otherwise it
 	 * just returns the mob
 	 * @param mob the mob who might be following someone
 	 * @return the leader mob
 	 */
 	public MOB getFollowedLeader(MOB mob);
-	
+
 	/**
 	 * Returns this mobs combat formation an an array
 	 * of string lists, where each entry is a "row" in the
@@ -422,7 +422,7 @@ public interface CombatLibrary extends CMLibrary
 	 * @return the formation.
 	 */
 	public List<MOB>[] getFormation(MOB mob);
-	
+
 	/**
 	 * Returns the list of mobs behind the given mob in
 	 * their respective formation order.
@@ -432,7 +432,7 @@ public interface CombatLibrary extends CMLibrary
 	 * @return the list of mobs behind the given one
 	 */
 	public List<MOB> getFormationFollowed(MOB mob);
-	
+
 	/**
 	 * Returns the numeric position of the given mob
 	 * in his or her combat formation.
@@ -442,9 +442,9 @@ public interface CombatLibrary extends CMLibrary
 	 * @return the numeric order, with 0 being front.
 	 */
 	public int getFormationAbsOrder(MOB mob);
-	
+
 	/**
-	 * Returns the character class of the given killer, 
+	 * Returns the character class of the given killer,
 	 * or their leader if they are following someone
 	 * who is not a mob.
 	 * @see CombatLibrary#getCombatDividers(MOB, MOB, CharClass)
@@ -454,10 +454,10 @@ public interface CombatLibrary extends CMLibrary
 	 * @return the leaders char class
 	 */
 	public CharClass getCombatDominantClass(MOB killer, MOB killed);
-	
+
 	/**
 	 * Returns all the mobs for whom experience awards must be divided
-	 * before awarding.  This does not mean the others do not get 
+	 * before awarding.  This does not mean the others do not get
 	 * experience, just that they aren't counted for the purposes of
 	 * decreasing the experience each member wil get.  This is usually
 	 * used to exclude the mob followers of certain classes.
@@ -572,7 +572,7 @@ public interface CombatLibrary extends CMLibrary
 	public String standardMobCondition(MOB viewer, MOB mob);
 
 	/**
-	 * When the source does something to the target that the 
+	 * When the source does something to the target that the
 	 * target resists, and the given message has a targetminor
 	 * containing the type of damage that's being resisted,
 	 * this message will generate and tack on a new message
@@ -608,22 +608,22 @@ public interface CombatLibrary extends CMLibrary
 	public void makeFollowersFight(MOB observerM, MOB defenderM, MOB attackerM);
 
 	/**
-	 * When a healing message targeting a given mob is received, 
+	 * When a healing message targeting a given mob is received,
 	 * this method is called to actually do the healing.
 	 * @param msg the healing message
 	 */
 	public void handleBeingHealed(CMMsg msg);
 
 	/**
-	 * When a damaging message targeting a given mob is received, 
+	 * When a damaging message targeting a given mob is received,
 	 * this method is called to actually do the damaging.
 	 * @param msg the damaging message
 	 */
 	public void handleBeingDamaged(CMMsg msg);
 
 	/**
-	 * When an attack message targeting a given mob is received, 
-	 * this method is called to react to the attack.  If the 
+	 * When an attack message targeting a given mob is received,
+	 * this method is called to react to the attack.  If the
 	 * target is not in combat, range is established and the target
 	 * is pissed off (has their victim set).  An attack roll is
 	 * then made for the source and the results used to alter the
@@ -643,15 +643,15 @@ public interface CombatLibrary extends CMLibrary
 	 * @return true if it was counted
 	 */
 	public boolean handleDamageSpam(MOB observerM, final Physical target, int amount);
-	
+
 	/**
 	 * When a player has nobattlespam, this method is called when
-	 * damage is observed to report the totals from the last  
+	 * damage is observed to report the totals from the last
 	 * combat round.
 	 * @param mob the no spam observer.
 	 */
 	public void handleDamageSpamSummary(final MOB mob);
-	
+
 	/**
 	 * When a death message is received by a mob and the message
 	 * has the mob as a source, this method is called to kill
@@ -661,7 +661,7 @@ public interface CombatLibrary extends CMLibrary
 	 * @param msg the death message
 	 */
 	public void handleDeath(CMMsg msg);
-	
+
 	/**
 	 * When an observer observes a death, this method is called
 	 * is called to have the observer react.
@@ -693,7 +693,7 @@ public interface CombatLibrary extends CMLibrary
 
 	/**
 	 * When a player dies or flees, the system coffeemud.ini file
-	 * defines the consequences of losing the fight. 
+	 * defines the consequences of losing the fight.
 	 * @param deadM the mob who died or is fleeing
 	 * @param killerM the killer or attacker of the given mob
 	 * @param consequences the list of consequence strings from the ini file
@@ -706,21 +706,21 @@ public interface CombatLibrary extends CMLibrary
 	/**
 	 * This is the heart of the main combat engine.  Every tick that a mob
 	 * is in combat, and is permitted to use auto attacks, this method is called.
-	 * It figures out how many weapon attacks to dish out, and dishes them. 
+	 * It figures out how many weapon attacks to dish out, and dishes them.
 	 * @param fighter the attacker
 	 */
 	public void tickCombat(MOB fighter);
 
 	/**
-	 * If an NPC attacker comes under the sudden effect of a spell, and 
+	 * If an NPC attacker comes under the sudden effect of a spell, and
 	 * knows who is responsible, but are not presently in combat, this
-	 * method will start combat with them. 
+	 * method will start combat with them.
 	 * @param attacker the wronged npc party
 	 * @param defender the defender who wronged the attacker
 	 * @return true if an attack was tried, false if not.
 	 */
 	public boolean postRevengeAttack(MOB attacker, MOB defender);
-	
+
 	/**
 	 * Every tick, this method is called.  If the given mob is not
 	 * in combat, it will help the mob recover some of their hit points,
@@ -759,7 +759,7 @@ public interface CombatLibrary extends CMLibrary
 	 * @param killed the mob killed
 	 */
 	public void dispenseExperience(Set<MOB> killers, Set<MOB> dividers, MOB killed);
-	
+
 	/**
 	 * When a mob can't breathe, it actually takes some work to figure out if
 	 * anyone is to blame.  This method attempts to place the blame anywhere
@@ -768,7 +768,7 @@ public interface CombatLibrary extends CMLibrary
 	 * @return the mob to blame
 	 */
 	public MOB getBreatheKiller(MOB victim);
-	
+
 	/**
 	 * Returns whether the given item is classified as a ammunition
 	 * firing siege weapon, as used on a sailing ship.
@@ -776,32 +776,32 @@ public interface CombatLibrary extends CMLibrary
 	 * @return true if its a siege weapon, false otherwise
 	 */
 	public boolean isAShipSiegeWeapon(Item I);
-	
+
 	/**
 	 * Returns the number of base hull points that the given ship has.
 	 * @param ship the ship to get points for
 	 * @return the base hull points of the ship
 	 */
 	public int getShipHullPoints(BoardableShip ship);
-	
+
 	/**
-	 * Checks to see if the given message gets a saving throw 
+	 * Checks to see if the given message gets a saving throw
 	 * for the given mob and, if so, applies it.
 	 * @param mob the mob to save
 	 * @param msg the message that might apply
 	 * @return true if the message na or save only, false to cancel
 	 */
 	public boolean checkSavingThrows(final MOB mob, final CMMsg msg);
-	
+
 	/**
-	 * Checks to see if the given message gets a saving throw 
+	 * Checks to see if the given message gets a saving throw
 	 * for the given mob damage and, if so, adjusts it
 	 * @param mob the mob to save
 	 * @param msg the message that might apply
 	 * @return true if the message na or save only, false to cancel
 	 */
 	public boolean checkDamageSaves(final MOB mob, final CMMsg msg);
-	
+
 	/**
 	 * Handles the effects of extreme gravity and other acceleration
 	 * as from a ship.

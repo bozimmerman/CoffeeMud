@@ -434,7 +434,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 
 	/**
 	 * Adjusts the amount of experience earned by this
-	 * @param MOB member the person contributing the xp
+	 * @param memberM member the person contributing the xp
 	 * @param howMuch the experience adjustment, + or -
 	 */
 	public void adjExp(MOB memberM, int howMuch);
@@ -442,7 +442,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	/**
 	 * Adjusts the amount of base gold value deposited by this
 	 * member.
-	 * @param MOB member the person contributing
+	 * @param memberM member the person contributing
 	 * @param newValue the value adjustment, + or -
 	 */
 	public void adjDeposit(MOB memberM, double newValue);
@@ -451,7 +451,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * Adjusts the amount of experience earned by a player based
 	 * on the tax rate.  Will automatically adjust the exp of
 	 * the clan and save it.
-	 * @param MOB member the person contributing the xp
+	 * @param memberM member the person contributing the xp
 	 * @param exp the old experience
 	 * @return the exp adjusted by the clan, if at all.
 	 */
@@ -780,7 +780,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 
 	/**
 	 * Gets external items belonging to this clan, which should be destroyed with the
-	 * clan, but can still be transient.  These are items like artifacts, or ships, 
+	 * clan, but can still be transient.  These are items like artifacts, or ships,
 	 * vehicles, etc.
 	 *
 	 * @see com.planet_ink.coffee_mud.core.interfaces.ItemCollection
@@ -789,7 +789,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 	 * @return an item collection
 	 */
 	public ItemCollection getExtItems();
-	
+
 	/**
 	 * Returns whether the given user can be assigned the given role
 	 * @param mob the mob to check
@@ -849,7 +849,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		public long		donatedXP	= 0;
 		public double	donatedGold	= 0;
 
-		public MemberRecord(String name, int role)
+		public MemberRecord(final String name, final int role)
 		{
 			this.name = name;
 			this.role = role;
@@ -871,14 +871,14 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		public int level;
 		public long timestamp;
 		public boolean isAdmin;
-		public FullMemberRecord(MemberRecord M, int level, long timestamp, boolean isAdmin)
+		public FullMemberRecord(final MemberRecord M, final int level, final long timestamp, final boolean isAdmin)
 		{
-			super(M.name,M.role); 
+			super(M.name,M.role);
 			this.mobpvps=M.mobpvps;
 			this.playerpvps=M.playerpvps;
 			this.donatedGold=M.donatedGold;
 			this.donatedXP=M.donatedXP;
-			this.level=level; 
+			this.level=level;
 			this.timestamp=timestamp;
 			this.isAdmin=isAdmin;
 		}
@@ -989,7 +989,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, Modifiable
 		;
 		public final String description;
 		public final String codeString;
-		private Trophy(String desc, String codeName)
+		private Trophy(final String desc, final String codeName)
 		{
 			this.description=desc;
 			this.codeString=codeName;

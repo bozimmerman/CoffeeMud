@@ -43,25 +43,25 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface SailingShip extends BoardableShip, Item, Combatant, Rideable
 {
 	public static final int COURSE_STEER_MASK = 256;
-	
+
 	/**
 	 * Returns which direction the ship is currently facing.
-	 * @return the direction the ship is facing. 
+	 * @return the direction the ship is facing.
 	 */
 	public int getDirectionFacing();
-	
+
 	/**
 	 * Sets which direction the ship is currently facing.
-	 * @return the direction the ship is facing. 
+	 * @param dir the direction the ship is facing.
 	 */
 	public void setDirectionFacing(int dir);
-	
+
 	/**
 	 * Returns whether the anchor is down, thus holding the ship in place.
 	 * @return true if the anchor is down, holding the ship in place.
 	 */
 	public boolean isAnchorDown();
-	
+
 	/**
 	 * Returns this ships max speed, typically &gt;= 1
 	 * @return this ships max speed, typically &gt;= 1
@@ -73,14 +73,14 @@ public interface SailingShip extends BoardableShip, Item, Combatant, Rideable
 	 * @param truefalse true if the anchor is down, false if the anchor is up
 	 */
 	public void setAnchorDown(boolean truefalse);
-	
+
 	/**
 	 * Returns the mapping of this ships siege weapons to the coordinates
 	 * they are presently aimed at.  Each coordinate is int[x,y]
 	 * @return the pairings of weapons to coordinates aimed at
 	 */
 	public PairList<Weapon,int[]> getSiegeWeaponAimings();
-	
+
 	/**
 	 * Returns the future course of this ship.  A stop-course direction is
 	 * always -1, so it is typically the last entry.  Otherwise, each entry

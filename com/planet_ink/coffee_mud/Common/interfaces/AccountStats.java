@@ -189,7 +189,7 @@ public interface AccountStats extends CMCommon
 	 * during character creation.  This is independent of the account
 	 * bonus.
 	 * @see AccountStats#setBonusCharStatPoints(int)
-	 * 
+	 *
 	 * @return the number of bonus charstat points
 	 */
 	public int getBonusCharStatPoints();
@@ -199,7 +199,7 @@ public interface AccountStats extends CMCommon
 	 * during character creation.  This is independent of the account
 	 * bonus.
 	 * @see AccountStats#getBonusCharStatPoints()
-	 * 
+	 *
 	 * @param bonus the number of bonus charstat points
 	 */
 	public void setBonusCharStatPoints(int bonus);
@@ -208,9 +208,9 @@ public interface AccountStats extends CMCommon
 	 * Returns the number of bonus common skills available to
 	 * this character.  This is independent of the account
 	 * bonus.
-	 * 
+	 *
 	 * @see AccountStats#setBonusCommonSkillLimits(int)
-	 * 
+	 *
 	 * @return the number of bonus Common points
 	 */
 	public int getBonusCommonSkillLimits();
@@ -219,9 +219,9 @@ public interface AccountStats extends CMCommon
 	 * Sets the number of bonus common skills available to
 	 * this character.  This is independent of the account
 	 * bonus.
-	 * 
+	 *
 	 * @see AccountStats#getBonusCommonSkillLimits()
-	 * 
+	 *
 	 * @param bonus the number of bonus Common points
 	 */
 	public void setBonusCommonSkillLimits(int bonus);
@@ -230,9 +230,9 @@ public interface AccountStats extends CMCommon
 	 * Returns the number of bonus Crafting skills available to
 	 * this character.  This is independent of the account
 	 * bonus.
-	 * 
+	 *
 	 * @see AccountStats#setBonusCraftingSkillLimits(int)
-	 * 
+	 *
 	 * @return the number of bonus Crafting points
 	 */
 	public int getBonusCraftingSkillLimits();
@@ -241,9 +241,9 @@ public interface AccountStats extends CMCommon
 	 * Sets the number of bonus Crafting skills available to
 	 * this character.  This is independent of the account
 	 * bonus.
-	 * 
+	 *
 	 * @see AccountStats#getBonusCraftingSkillLimits()
-	 * 
+	 *
 	 * @param bonus the number of bonus Crafting points
 	 */
 	public void setBonusCraftingSkillLimits(int bonus);
@@ -252,9 +252,9 @@ public interface AccountStats extends CMCommon
 	 * Returns the number of bonus Gathering skills available to
 	 * this character.  This is independent of the account
 	 * bonus.
-	 * 
+	 *
 	 * @see AccountStats#setBonusNonCraftingSkillLimits(int)
-	 * 
+	 *
 	 * @return the number of bonus Gathering points
 	 */
 	public int getBonusNonCraftingSkillLimits();
@@ -263,9 +263,9 @@ public interface AccountStats extends CMCommon
 	 * Sets the number of bonus Gathering skills available to
 	 * this character.  This is independent of the account
 	 * bonus.
-	 * 
+	 *
 	 * @see AccountStats#getBonusNonCraftingSkillLimits()
-	 * 
+	 *
 	 * @param bonus the number of bonus Gathering points
 	 */
 	public void setBonusNonCraftingSkillLimits(int bonus);
@@ -274,9 +274,9 @@ public interface AccountStats extends CMCommon
 	 * Returns the number of bonus Language skills available to
 	 * this character.  This is independent of the account
 	 * bonus.
-	 * 
+	 *
 	 * @see AccountStats#setBonusLanguageLimits(int)
-	 * 
+	 *
 	 * @return the number of bonus Language points
 	 */
 	public int getBonusLanguageLimits();
@@ -285,9 +285,9 @@ public interface AccountStats extends CMCommon
 	 * Sets the number of bonus Language skills available to
 	 * this character.  This is independent of the account
 	 * bonus.
-	 * 
+	 *
 	 * @see AccountStats#getBonusLanguageLimits()
-	 * 
+	 *
 	 * @param bonus the number of bonus Language points
 	 */
 	public void setBonusLanguageLimits(int bonus);
@@ -303,7 +303,8 @@ public interface AccountStats extends CMCommon
 	/**
 	 * Returns a modifiable Set that contains the set of player
 	 * Names that constitutes this players ignored player list.
-	 * @see AccountStats.getIgnored()
+	 * @see AccountStats#isIgnored(String)
+	 * @see AccountStats#isIgnored(MOB)
 	 *
 	 * @return a set of player ignored player list Names
 	 */
@@ -311,7 +312,8 @@ public interface AccountStats extends CMCommon
 
 	/**
 	 * Returns whether the given player is being ignored.
-	 * @see AccountStats.getIgnored()
+	 * @see AccountStats#getIgnored()
+	 * @see AccountStats#isIgnored(String)
 	 *
 	 * @param mob the mob to check
 	 * @return true if the given mob is ignored
@@ -320,7 +322,8 @@ public interface AccountStats extends CMCommon
 
 	/**
 	 * Returns whether the given player name is being ignored.
-	 * @see AccountStats.getIgnored()
+	 * @see AccountStats#getIgnored()
+	 * @see AccountStats#isIgnored(MOB)
 	 *
 	 * @param name the name to check
 	 * @return true if the given name is ignored
@@ -356,7 +359,7 @@ public interface AccountStats extends CMCommon
 	 * @return the Tracker object that handles this achievement/mob
 	 */
 	public Tracker getAchievementTracker(Achievement A, MOB mob);
-	
+
 	/**
 	 * Deletes the tracker for the given achievement, for the given mob.
 	 * @see AccountStats#rebuildAchievementTracker(MOB, String)
@@ -376,7 +379,7 @@ public interface AccountStats extends CMCommon
 	 * @param achievementTattoo the tattoo/id of the achievement
 	 */
 	public void rebuildAchievementTracker(final MOB mob, String achievementTattoo);
-	
+
 	/**
 	 * Returns an XML representation of all the data in this object, for
 	 * persistent storage.
@@ -395,7 +398,7 @@ public interface AccountStats extends CMCommon
 	 * @param str an XML representation of all the data in this object
 	 */
 	public void setXML(String str);
-	
+
 	/**
 	 * The recorded player and account statistics.
 	 * @author Bo Zimmerman
@@ -403,12 +406,12 @@ public interface AccountStats extends CMCommon
 	 */
 	public enum PrideStat
 	{
-		PVPKILLS, 
-		AREAS_EXPLORED, 
-		ROOMS_EXPLORED, 
-		EXPERIENCE_GAINED, 
-		MINUTES_ON, 
-		QUESTS_COMPLETED, 
+		PVPKILLS,
+		AREAS_EXPLORED,
+		ROOMS_EXPLORED,
+		EXPERIENCE_GAINED,
+		MINUTES_ON,
+		QUESTS_COMPLETED,
 		QUESTPOINTS_EARNED
 	}
 
@@ -422,5 +425,5 @@ public interface AccountStats extends CMCommon
 		PLAYER,
 		ACCOUNT
 	}
-	
+
 }

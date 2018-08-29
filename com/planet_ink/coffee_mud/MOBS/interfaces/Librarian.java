@@ -36,16 +36,16 @@ import java.util.Vector;
 */
 /**
  * A Librarian is a kind of shopkeeper that belongs to a "chain" which
- * shares access to a common store of shop items.  Players can go to a 
- * librarian in a chain to borrow items available to the chain. 
- * Librarians respond to new commands such as DEPOSIT and WITHDRAW that 
+ * shares access to a common store of shop items.  Players can go to a
+ * librarian in a chain to borrow items available to the chain.
+ * Librarians respond to new commands such as DEPOSIT and WITHDRAW that
  * normal shopkeepers do not.  Borrowed items not re-deposited within
  * the proper amount of time are auto-returned, and the borrower charged
  * a penalty.
- * 
+ *
  * Since they lend and retrieve any item in the shop inventory, they
  * do not have a shopkeeper type, but respect whatever type they are.
- * 
+ *
  * @author Bo Zimmerman
  */
 public interface Librarian extends ShopKeeper
@@ -57,7 +57,7 @@ public interface Librarian extends ShopKeeper
 	public final static double	DEFAULT_MIN_OVERDUE_CHARGE	= 1.0;
 
 	/**
-	 * The default percent from 0 to 1, of the value of a 
+	 * The default percent from 0 to 1, of the value of a
 	 * withdrawn item, in base currency charge, due the moment
 	 * a withdrawn item becomes overdue.
 	 */
@@ -70,7 +70,7 @@ public interface Librarian extends ShopKeeper
 	public final static double	DEFAULT_MIN_OVERDUE_DAILY	= 1.0;
 
 	/**
-	 * The default percent from 0 to 1, of the value of a 
+	 * The default percent from 0 to 1, of the value of a
 	 * withdrawn item, in base currency charge, due every
 	 * day that a withdrawn item remains overdue.
 	 */
@@ -78,7 +78,7 @@ public interface Librarian extends ShopKeeper
 
 	/**
 	 * The default number of mud-days that an item can be checked
-	 * out before being overdue.  After this number of days, the 
+	 * out before being overdue.  After this number of days, the
 	 * item is considered overdue and charges begin accruing.
 	 */
 	public final static int		DEFAULT_MIN_OVERDUE_DAYS	= 3;
@@ -90,7 +90,7 @@ public interface Librarian extends ShopKeeper
 	 * made.
 	 */
 	public final static int		DEFAULT_MAX_OVERDUE_DAYS	= 15;
-	
+
 	/**
 	 * The default maximum number of items that one person can have
 	 * checked out at any given time.
@@ -101,9 +101,9 @@ public interface Librarian extends ShopKeeper
 	/**
 	 * Gets the minimum base currency charge due the moment
 	 * a withdrawn item becomes overdue.
-	 * 
+	 *
 	 * @see Librarian#setOverdueCharge(double)
-	 * 
+	 *
 	 * @return the base charge
 	 */
 	public double getOverdueCharge();
@@ -111,9 +111,9 @@ public interface Librarian extends ShopKeeper
 	/**
 	 * Sets the minimum base currency charge due the moment
 	 * a withdrawn item becomes overdue.
-	 * 
+	 *
 	 * @see Librarian#setOverdueCharge(double)
-	 * 
+	 *
 	 * @param charge the base charge
 	 */
 	public void setOverdueCharge(double charge);
@@ -121,9 +121,9 @@ public interface Librarian extends ShopKeeper
 	/**
 	 * Gets the daily base currency charge due every day
 	 * a withdrawn item remains overdue.
-	 * 
+	 *
 	 * @see Librarian#setDailyOverdueCharge(double)
-	 * 
+	 *
 	 * @return the daily charge from 0-1
 	 */
 	public double getDailyOverdueCharge();
@@ -131,107 +131,107 @@ public interface Librarian extends ShopKeeper
 	/**
 	 * Sets the daily base currency charge due every day
 	 * a withdrawn item remains overdue. Value 0-1.
-	 * 
+	 *
 	 * @see Librarian#setDailyOverdueCharge(double)
-	 * 
+	 *
 	 * @param charge the daily charge from 0-1
 	 */
 	public void setDailyOverdueCharge(double charge);
 
 	/**
-	 * Gets the percent from 0 to 1, of the value of a 
+	 * Gets the percent from 0 to 1, of the value of a
 	 * withdrawn item, in base currency charge, due the moment
 	 * a withdrawn item becomes overdue.
-	 * 
+	 *
 	 * @see Librarian#setOverdueChargePct(double)
-	 * 
+	 *
 	 * @return the base charge as pct of item value from 0-1
 	 */
 	public double getOverdueChargePct();
 
 	/**
-	 * Sets the percent from 0 to 1, of the value of a 
+	 * Sets the percent from 0 to 1, of the value of a
 	 * withdrawn item, in base currency charge, due the moment
 	 * a withdrawn item becomes overdue.
-	 * 
+	 *
 	 * @see Librarian#setOverdueChargePct(double)
-	 * 
+	 *
 	 * @param pct the base charge as pct of item value from 0-1
 	 */
 	public void setOverdueChargePct(double pct);
 
 	/**
-	 * Gets the percent from 0 to 1, of the value of a 
+	 * Gets the percent from 0 to 1, of the value of a
 	 * withdrawn item, in base currency charge, due every
 	 * day that a withdrawn item remains overdue.
-	 * 
+	 *
 	 * @see Librarian#setDailyOverdueChargePct(double)
-	 * 
+	 *
 	 * @return the base charge as pct of item value from 0-1
 	 */
 	public double getDailyOverdueChargePct();
 
 	/**
-	 * Sets the percent from 0 to 1, of the value of a 
+	 * Sets the percent from 0 to 1, of the value of a
 	 * withdrawn item, in base currency charge, due every
 	 * day that a withdrawn item remains overdue.
-	 * 
+	 *
 	 * @see Librarian#setDailyOverdueChargePct(double)
-	 * 
+	 *
 	 * @param pct the base charge as pct of item value from 0-1
 	 */
 	public void setDailyOverdueChargePct(double pct);
 
 	/**
 	 * Gets the number of mud-days that an item can be checked
-	 * out before being overdue.  After this number of days, the 
+	 * out before being overdue.  After this number of days, the
 	 * item is considered overdue and charges begin accruing.
-	 * 
+	 *
 	 * @see Librarian#setMinOverdueDays(int)
 	 * @see Librarian#getMaxOverdueDays()
 	 * @see Librarian#setMaxOverdueDays(int)
-	 * 
+	 *
 	 * @return mud-days before its overdue
 	 */
 	public int getMinOverdueDays();
-	
+
 	/**
 	 * Sets the number of mud-days that an item can be checked
-	 * out before being overdue.  After this number of days, the 
+	 * out before being overdue.  After this number of days, the
 	 * item is considered overdue and charges begin accruing.
-	 * 
+	 *
 	 * @see Librarian#getMinOverdueDays()
 	 * @see Librarian#getMaxOverdueDays()
 	 * @see Librarian#setMaxOverdueDays(int)
-	 * 
+	 *
 	 * @param days mud-days before its overdue
 	 */
 	public void setMinOverdueDays(int days);
-	
+
 	/**
 	 * Gets the maximum number of mud-days that an item can be
 	 * checked out.  After this number of days, the item is
 	 * automatically returned to the librarian, and the charges
 	 * made.
-	 * 
+	 *
 	 * @see Librarian#setMaxOverdueDays(int)
 	 * @see Librarian#getMinOverdueDays()
 	 * @see Librarian#setMinOverdueDays(int)
-	 * 
+	 *
 	 * @return mud-days to be overdue
 	 */
 	public int getMaxOverdueDays();
-	
+
 	/**
 	 * Sets the maximum number of mud-days that an item can be
 	 * checked out.  After this number of days, the item is
 	 * automatically returned to the librarian, and the charges
 	 * made.
-	 * 
+	 *
 	 * @see Librarian#getMaxOverdueDays()
 	 * @see Librarian#getMinOverdueDays()
 	 * @see Librarian#setMinOverdueDays(int)
-	 * 
+	 *
 	 * @param days mud-days to be overdue
 	 */
 	public void setMaxOverdueDays(int days);
@@ -239,9 +239,9 @@ public interface Librarian extends ShopKeeper
 	/**
 	 * Gets the maximum number of items that one person can have
 	 * checked out at any given time.
-	 * 
+	 *
 	 * @see Librarian#setMaxBorrowed(int)
-	 * 
+	 *
 	 * @return number of items
 	 */
 	public int getMaxBorrowed();
@@ -249,9 +249,9 @@ public interface Librarian extends ShopKeeper
 	/**
 	 * Sets the maximum number of items that one person can have
 	 * checked out at any given time.
-	 * 
+	 *
 	 * @see Librarian#getMaxBorrowed()
-	 * 
+	 *
 	 * @param items number of items
 	 */
 	public void setMaxBorrowed(int items);
@@ -273,7 +273,6 @@ public interface Librarian extends ShopKeeper
 	 * Returns the mask used to determine if a contributor is ignored by the Librarian
 	 * for contribution.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
-	 * @see Librarian#finalContributorMask()
 	 * @see Librarian#setContributorMask(String)
 	 * @return the mask used
 	 */
@@ -287,7 +286,7 @@ public interface Librarian extends ShopKeeper
 	 * @param mask the mask to use
 	 */
 	public void setContributorMask(String mask);
-	
+
 	/**
 	 * Returns the underlying basic book stock of the library, as opposed to the
 	 * current shop, which reflects only what is there at the moment.

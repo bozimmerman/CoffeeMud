@@ -900,9 +900,9 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	/**
 	 * Returns the maximum amount of deferred xp that this player
 	 * can be awarded, typically over a given level.
-	 * @see PlayerStats#setMaxXP(int)
-	 * @see PlayerStats#getXP()
-	 * @see PlayerStats#setXP(int)
+	 * @see PlayerStats#setMaxDeferredXP(int)
+	 * @see PlayerStats#getDeferredXP()
+	 * @see PlayerStats#setDeferredXP(int)
 	 *
 	 * @return the maximum amount of deferred xp
 	 */
@@ -946,7 +946,7 @@ public interface PlayerStats extends CMCommon, Modifiable, AccountStats, Conting
 	 * XP.  This is used for the guildmaster exception, where
 	 * XP is only awarded under certain conditions.
 	 *
-	 * @return
+	 * @return the last time this player has been awarded
 	 */
 	public long getLastXPAwardMillis();
 

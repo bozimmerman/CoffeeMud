@@ -432,7 +432,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @param num the number to bump
 	 */
 	public void bumpDays(int num);
-	
+
 	/**
 	 * Increase this clocks time by the given number of weeks.
 	 * Does NOT move the sky.  Use tickTock for that.
@@ -444,7 +444,7 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @param num the number to bump
 	 */
 	public void bumpWeeks(int num);
-	
+
 	/**
 	 * Increase this clocks time by the given number of months.
 	 * Does NOT move the sky.  Use tickTock for that.
@@ -475,17 +475,17 @@ public interface TimeClock extends Tickable, CMCommon
 	 * @return total hours since epoc
 	 */
 	public long toHoursSinceEpoc();
-	
+
 	/**
 	 * Sets this clock to the given number
 	 * of hours since epoc. Does NOT move the
 	 * sky, you need to call tickTock for that.
 	 * @see TimeClock#tickTock(int)
 	 * @see TimeClock#toHoursSinceEpoc()
-	 * @param the new time, in hours since epoc.
+	 * @param num the new time, in hours since epoc.
 	 */
 	public void setFromHoursSinceEpoc(long num);
-	
+
 	/**
 	 * Using the given number of milliseconds, this method will return a string
 	 * describing the number of mud days, hours, etc that is represented by
@@ -528,7 +528,7 @@ public interface TimeClock extends Tickable, CMCommon
 		ALLTIME(0)
 		;
 		private final long increment;
-		private TimePeriod(long increment)
+		private TimePeriod(final long increment)
 		{
 			this.increment=increment;
 		}
@@ -601,7 +601,7 @@ public interface TimeClock extends Tickable, CMCommon
 		private final TidePhase	highTide;
 		private final TidePhase	lowTide;
 
-		private MoonPhase(String desc, double factor, TidePhase highTide, TidePhase lowTide)
+		private MoonPhase(final String desc, final double factor, final TidePhase highTide, final TidePhase lowTide)
 		{
 			phaseDesc=desc;
 			this.factor=factor;
@@ -618,12 +618,12 @@ public interface TimeClock extends Tickable, CMCommon
 		{
 			return factor;
 		}
-		
+
 		public TidePhase getHighTide()
 		{
 			return highTide;
 		}
-		
+
 		public TidePhase getLowTide()
 		{
 			return lowTide;
@@ -647,7 +647,7 @@ public interface TimeClock extends Tickable, CMCommon
 		private final String phaseDesc;
 		private final double factor;
 
-		private TidePhase(String desc, double factor)
+		private TidePhase(final String desc, final double factor)
 		{
 			phaseDesc=desc;
 			this.factor=factor;
@@ -677,7 +677,7 @@ public interface TimeClock extends Tickable, CMCommon
 		;
 		private final String todDesc;
 
-		private TimeOfDay(String desc)
+		private TimeOfDay(final String desc)
 		{
 			todDesc=desc;
 		}

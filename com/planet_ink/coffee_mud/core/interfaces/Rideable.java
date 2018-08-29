@@ -184,7 +184,7 @@ public interface Rideable extends Rider
 	 * this Rideable from room to room.
 	 * @see Rider
 	 * @see Rideable#setRideString(String)
-	 * @see Rideable#getRideString(Rider)
+	 * @see Rideable#getRideString()
 	 * @param R The rider object to make grammatically correct.
 	 * @return a string describing  the riders verb of riding this Rideable somewhere
 	 */
@@ -205,7 +205,7 @@ public interface Rideable extends Rider
 	 * this Rideable from room to room.
 	 * @see Rider
 	 * @see Rideable#rideString(Rider)
-	 * @see Rideable#getRideString(Rider)
+	 * @see Rideable#getRideString()
 	 * @param str a string describing  the riders verb of riding this Rideable somewhere
 	 */
 	public void setRideString(String str);

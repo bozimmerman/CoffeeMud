@@ -44,7 +44,7 @@ public interface Wearable extends Environmental
 	public static final Filterer<Environmental> FILTER_WORNONLY=new Filterer<Environmental>()
 	{
 		@Override
-		public boolean passesFilter(Environmental obj)
+		public boolean passesFilter(final Environmental obj)
 		{
 			if(obj instanceof Item)
 				return !((Item)obj).amWearingAt(IN_INVENTORY);
@@ -55,7 +55,7 @@ public interface Wearable extends Environmental
 	public static final Filterer<Environmental> FILTER_UNWORNONLY=new Filterer<Environmental>()
 	{
 		@Override
-		public boolean passesFilter(Environmental obj)
+		public boolean passesFilter(final Environmental obj)
 		{
 			if(obj instanceof Item)
 				return ((Item)obj).amWearingAt(IN_INVENTORY);
@@ -66,7 +66,7 @@ public interface Wearable extends Environmental
 	public static final Filterer<Environmental> FILTER_MOBINVONLY=new Filterer<Environmental>()
 	{
 		@Override
-		public boolean passesFilter(Environmental obj)
+		public boolean passesFilter(final Environmental obj)
 		{
 			if(obj instanceof Item)
 				return ((Item)obj).amWearingAt(IN_INVENTORY) && (((Item)obj).owner() instanceof MOB);
@@ -77,7 +77,7 @@ public interface Wearable extends Environmental
 	public static final Filterer<Environmental> FILTER_ROOMONLY=new Filterer<Environmental>()
 	{
 		@Override
-		public boolean passesFilter(Environmental obj)
+		public boolean passesFilter(final Environmental obj)
 		{
 			if(obj instanceof Item)
 				return (((Item)obj).owner() instanceof Room);
@@ -164,7 +164,7 @@ public interface Wearable extends Environmental
 	 * @param wornCode the bitmap from Item interface constants used
 	 */
 	public void wearAt(long wornCode);
-	
+
 	/**
 	 * Returns whether this item is being worn properly,
 	 * regardless of layering or multi-restrictions.  If
@@ -430,7 +430,7 @@ public interface Wearable extends Environmental
 		"mouthpiece",
 		"cape"
 	};
-	
+
 	/** An array containing all of the worn codes,in the order of their numeric value. */
 	public static final long[] DEFAULT_WORN_CODES={
 		IN_INVENTORY,
@@ -569,7 +569,7 @@ public interface Wearable extends Environmental
 			return insts[Thread.currentThread().getThreadGroup().getName().charAt(0)];
 		}
 
-		public static CODES c(byte c)
+		public static CODES c(final byte c)
 		{
 			return insts[c];
 		}
@@ -582,7 +582,7 @@ public interface Wearable extends Environmental
 			return c;
 		}
 
-		public static void reset() 
+		public static void reset()
 		{
 			insts[Thread.currentThread().getThreadGroup().getName().charAt(0)]=null;
 			instance();
@@ -610,7 +610,7 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns total number of codes 0 - this-1
-		 * 
+		 *
 		 * @return total number of codes 0 - this-1
 		 */
 		public int total()
@@ -620,7 +620,7 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns an array of the numeric codes for all locations
-		 * 
+		 *
 		 * @return an array of the numeric codes for all locations
 		 */
 		public static long[] ALL_ORDERED()
@@ -630,7 +630,7 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns an array of the numeric codes for all locations
-		 * 
+		 *
 		 * @return an array of the numeric codes for all locations
 		 */
 		public long[] all_ordered()
@@ -640,7 +640,7 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns an array of the numeric codes for all locations
-		 * 
+		 *
 		 * @return an array of the numeric codes for all locations
 		 */
 		public static long[] ALL()
@@ -650,7 +650,7 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns an array of the numeric codes for all locations
-		 * 
+		 *
 		 * @return an array of the numeric codes for all locations
 		 */
 		public long[] all()
@@ -660,33 +660,33 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns an the numeric codes of the indexes locations code
-		 * 
+		 *
 		 * @param x the indexed locations code
 		 * @return an the numeric codes of the indexes locations code
 		 */
-		public static long GET(int x)
+		public static long GET(final int x)
 		{
 			return c().allCodes[x];
 		}
 
 		/**
 		 * Returns an the numeric codes of the indexes locations code
-		 * 
+		 *
 		 * @param x the indexed locations code
 		 * @return an the numeric codes of the indexes locations code
 		 */
-		public long get(int x)
+		public long get(final int x)
 		{
 			return allCodes[x];
 		}
 
 		/**
 		 * Returns the index of the names locations, or -1
-		 * 
+		 *
 		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
-		public static int FINDDEX_ignoreCase(String rsc)
+		public static int FINDDEX_ignoreCase(final String rsc)
 		{
 			return c().findDex_ignoreCase(rsc);
 		}
@@ -696,7 +696,7 @@ public interface Wearable extends Environmental
 		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
-		public int findDex_ignoreCase(String rsc)
+		public int findDex_ignoreCase(final String rsc)
 		{
 			if(rsc==null)
 				return -1;
@@ -710,7 +710,7 @@ public interface Wearable extends Environmental
 		 * @param rsc the resource name
 		 * @return the code of the names , or -1
 		 */
-		public static long FIND_ignoreCase(String rsc)
+		public static long FIND_ignoreCase(final String rsc)
 		{
 			return c().find_ignoreCase(rsc);
 		}
@@ -720,7 +720,7 @@ public interface Wearable extends Environmental
 		 * @param rsc the resource name
 		 * @return the code of the names , or -1
 		 */
-		public long find_ignoreCase(String rsc)
+		public long find_ignoreCase(final String rsc)
 		{
 			if(rsc==null)
 				return -1;
@@ -734,8 +734,8 @@ public interface Wearable extends Environmental
 		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
-		public static int FINDDEX_endsWith(String rsc) 
-		{ 
+		public static int FINDDEX_endsWith(final String rsc)
+		{
 			return c().findDex_endsWith(rsc);
 		}
 
@@ -744,7 +744,7 @@ public interface Wearable extends Environmental
 		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
-		public int findDex_endsWith(String rsc)
+		public int findDex_endsWith(final String rsc)
 		{
 			if(rsc==null)
 				return -1;
@@ -758,7 +758,7 @@ public interface Wearable extends Environmental
 		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
-		public static long FIND_endsWith(String rsc)
+		public static long FIND_endsWith(final String rsc)
 		{
 			return c().find_endsWith(rsc);
 		}
@@ -768,7 +768,7 @@ public interface Wearable extends Environmental
 		 * @param rsc the resource name
 		 * @return the index of the names locations, or -1
 		 */
-		public long find_endsWith(String rsc)
+		public long find_endsWith(final String rsc)
 		{
 			if(rsc==null)
 				return -1;
@@ -783,18 +783,18 @@ public interface Wearable extends Environmental
 		 * @param wornCode the worn code
 		 * @return the list of names
 		 */
-		public static String LISTED_CODES(long wornCode) 
-		{ 
+		public static String LISTED_CODES(final long wornCode)
+		{
 			return c().listedCodes(wornCode);
 		}
-		
+
 		/**
 		 * Returns a comma-delimited list of location names
 		 * represented by the given worn code.
 		 * @param wornCode the worn code
 		 * @return the list of names
 		 */
-		public String listedCodes(long wornCode)
+		public String listedCodes(final long wornCode)
 		{
 			final StringBuffer buf=new StringBuffer("");
 			for(int wornNum=1;wornNum<total();wornNum++)
@@ -813,7 +813,7 @@ public interface Wearable extends Environmental
 		 * @param code the resource code
 		 * @return whether the code is valid
 		 */
-		public static boolean IS_VALID(int code)
+		public static boolean IS_VALID(final int code)
 		{
 			return (code>=0) && (CMParms.indexOf(c().allCodes, code)>=0);
 		}
@@ -828,7 +828,7 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns the names of the various locations
-		 * 
+		 *
 		 * @return the names of the various locations
 		 */
 		public static String[] NAMESUP()
@@ -838,7 +838,7 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns the names of the various locations
-		 * 
+		 *
 		 * @return the names of the various locations
 		 */
 		public String[] names()
@@ -848,7 +848,7 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns the names of the various locations
-		 * 
+		 *
 		 * @return the names of the various locations
 		 */
 		public String[] namesup()
@@ -858,66 +858,66 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns the name of the locations
-		 * 
+		 *
 		 * @param code the code
 		 * @return the name of the locations
 		 */
-		public static String NAME(int code)
+		public static String NAME(final int code)
 		{
 			return c().descs[code];
 		}
 
 		/**
 		 * Returns the name of the locations
-		 * 
+		 *
 		 * @param code the code
 		 * @return the name of the locations
 		 */
-		public static String NAMEUP(int code)
+		public static String NAMEUP(final int code)
 		{
 			return c().updescs[code];
 		}
 
 		/**
 		 * Returns the name of the code
-		 * 
+		 *
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public String name(int code)
+		public String name(final int code)
 		{
 			return CMLib.lang().L(descs[code]);
 		}
 
 		/**
 		 * Returns the name of the code
-		 * 
+		 *
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public String nameup(int code)
+		public String nameup(final int code)
 		{
 			return updescs[code];
 		}
 
 		/**
 		 * Returns the name of the locations
-		 * 
+		 *
 		 * @param code the code
 		 * @return the name of the locations
 		 */
-		public static String NAME(long code)
+		public static String NAME(final long code)
 		{
 			return c().name(code);
 		}
 
 		/**
 		 * Returns the name of the locations
-		 * 
+		 *
 		 * @param code the code
 		 * @return the name of the locations
 		 */
-		public static String NAMEUP(long code)
+		public static String NAMEUP(final long code)
 		{
 			return c().nameup(code);
 		}
@@ -927,7 +927,7 @@ public interface Wearable extends Environmental
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public String name(long code) 
+		public String name(final long code)
 		{
 			final int x=CMParms.indexOf(allCodes, code);
 			if(x>=0)
@@ -940,7 +940,7 @@ public interface Wearable extends Environmental
 		 * @param code the code
 		 * @return the name of the code
 		 */
-		public String nameup(long code) 
+		public String nameup(final long code)
 		{
 			final int x=CMParms.indexOf(allCodes, code);
 			if(x>=0)
@@ -952,7 +952,7 @@ public interface Wearable extends Environmental
 		 * @param code the code
 		 * @return the name of typical equipment here
 		 */
-		public String usual(long code) 
+		public String usual(final long code)
 		{
 			final int x=CMParms.indexOf(allCodes, code);
 			if(x>=0)
@@ -962,18 +962,18 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns the name of typical equipment here
-		 * 
+		 *
 		 * @param code the code
 		 * @return the name of typical equipment here
 		 */
-		public static String USUAL(long code)
+		public static String USUAL(final long code)
 		{
 			return c().usual(code);
 		}
 
 		/**
 		 * Returns the location dependency mask (or -1) of the various locations
-		 * 
+		 *
 		 * @return the location dependency mask (or -1) of the various locations
 		 */
 		public static long[] DEPENDENCY_MASKS()
@@ -983,7 +983,7 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns the location dependency mask (or -1) of the various locations
-		 * 
+		 *
 		 * @return the location dependency mask (or -1) of the various locations
 		 */
 		public long[] dependency_masks()
@@ -996,7 +996,7 @@ public interface Wearable extends Environmental
 		 * each of the several worn locations, in the same order as their
 		 * numeric value. These weights are broken, in turn, into values for
 		 * cloth, leather, and metal armors respectively.
-		 * 
+		 *
 		 * @return the doule double array
 		 */
 		public static double[][] MATERIAL_WEIGHT_POINTS()
@@ -1009,7 +1009,7 @@ public interface Wearable extends Environmental
 		 * each of the several worn locations, in the same order as their
 		 * numeric value. These weights are broken, in turn, into values for
 		 * cloth, leather, and metal armors respectively.
-		 * 
+		 *
 		 * @return the doule double array
 		 */
 		public double[][] material_weight_points()
@@ -1019,7 +1019,7 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns an array of the protective strength of each location
-		 * 
+		 *
 		 * @return an array of the protective strength of each location
 		 */
 		public static double[] LOCATION_STRENGTH_POINTS()
@@ -1029,7 +1029,7 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Returns an array of the protective strength of each location
-		 * 
+		 *
 		 * @return an array of the protective strength of each location
 		 */
 		public double[] location_strength_points()
@@ -1039,7 +1039,7 @@ public interface Wearable extends Environmental
 
 		/**
 		 * Adds a new wear location.  I suspect this stuff works.  I also suspect
-		 * it is not used, in favor of the hard coded stuff above.  
+		 * it is not used, in favor of the hard coded stuff above.
 		 * @param desc the wear location description
 		 * @param dependencyMask the dependency locations
 		 * @param armorStrength armor strength factor
@@ -1049,9 +1049,9 @@ public interface Wearable extends Environmental
 		 * @param metalWeight the metal weight factor
 		 * @param usualName for auto-generated gear, a noun that might go here
 		 */
-		public synchronized void add(String desc, long dependencyMask, double armorStrength, int wornOrder,
-									 double clothWeight, double leatherWeight, double metalWeight,
-									 String usualName)
+		public synchronized void add(final String desc, final long dependencyMask, final double armorStrength, final int wornOrder,
+									 final double clothWeight, final double leatherWeight, final double metalWeight,
+									 final String usualName)
 		{
 			if(allCodes.length>61)
 				return;
@@ -1081,7 +1081,7 @@ public interface Wearable extends Environmental
 		 * @param newCode the worn code
 		 * @param wornOrder the worn orderr
 		 */
-		private void insertInOrder(long newCode, int wornOrder)
+		private void insertInOrder(final long newCode, final int wornOrder)
 		{
 			if(wornOrder<0)
 				return;
@@ -1101,7 +1101,7 @@ public interface Wearable extends Environmental
 
 		/**
 		 * replaces an existing wear location.  I suspect this stuff works.  I also suspect
-		 * it is not used, in favor of the hard coded stuff above.  
+		 * it is not used, in favor of the hard coded stuff above.
 		 * @param codeIndex the index of the location to replace
 		 * @param desc the wear location description
 		 * @param dependencyMask the dependency locations
@@ -1110,10 +1110,10 @@ public interface Wearable extends Environmental
 		 * @param clothWeight the cloth weight factor
 		 * @param leatherWeight the leather weight factor
 		 * @param metalWeight the metal weight factor
-		 * @param the usual equipment name
+		 * @param usualName the usual equipment name
 		 */
-		public synchronized void replace(int codeIndex, String desc, long dependencyMask, double armorStrength, int wornOrder,
-										  double clothWeight, double leatherWeight, double metalWeight, String usualName)
+		public synchronized void replace(final int codeIndex, final String desc, final long dependencyMask, final double armorStrength, final int wornOrder,
+										  final double clothWeight, final double leatherWeight, final double metalWeight, final String usualName)
 		{
 			if(codeIndex<=0)
 				return;

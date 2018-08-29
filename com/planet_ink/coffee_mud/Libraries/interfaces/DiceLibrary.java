@@ -365,7 +365,7 @@ public interface DiceLibrary extends CMLibrary
 	/**
 	 * Randomizes the contents of the list.
 	 *
-	 * @see DiceLibrary#scramble(int)
+	 * @see DiceLibrary#scramble(int[])
 	 *
 	 * @param objs the list to scramble
 	 */
