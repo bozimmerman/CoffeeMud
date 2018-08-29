@@ -154,7 +154,7 @@ public class Say extends StdCommand
 				commands.remove(1);
 			}
 			else
-			if(whom.equalsIgnoreCase("noone")||whom.equalsIgnoreCase("nobody"))
+			if(toFlag && (whom.equalsIgnoreCase("noone")||whom.equalsIgnoreCase("nobody")))
 			{
 				target=null;
 				commands.remove(1);
