@@ -143,7 +143,7 @@ public class StdMOB implements MOB
 	@SuppressWarnings("rawtypes")
 	protected	ApplyAffectCharState		affectCharState	= new ApplyAffectCharState(this);
 
-	protected	OrderedMap<String,Pair<Clan,Integer>>	clans = new OrderedMap<String,Pair<Clan,Integer>>();
+	protected	OrderedMap<String,Pair<Clan,Integer>> clans = new OrderedMap<String,Pair<Clan,Integer>>();
 
 	public StdMOB()
 	{
@@ -156,12 +156,12 @@ public class StdMOB implements MOB
 
 	private static class QMCommand
 	{
-		public Object   	commandObj = null;
-		public double   	actionCost = 0.0;
-		public long 		nextCheck=System.currentTimeMillis()-1;
-		public int  		seconds=-1;
-		public int  		metaFlags=0;
-		public List<String>	commandVector = null;
+		public Object		commandObj		= null;
+		public double		actionCost		= 0.0;
+		public long			nextCheck		= System.currentTimeMillis() - 1;
+		public int			seconds			= -1;
+		public int			metaFlags		= 0;
+		public List<String>	commandVector	= null;
 	}
 
 	private static final Converter<Pair<MOB,Short>,MOB> FollowerConverter = new Pair.FirstConverter<MOB, Short>();

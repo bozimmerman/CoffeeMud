@@ -68,7 +68,7 @@ public class Say extends StdCommand
 		"BEEN"
 	};
 
-	protected void gmcpSaySend(String sayName, MOB mob, Environmental target, CMMsg msg)
+	protected void gmcpSaySend(final String sayName, final MOB mob, final Environmental target, final CMMsg msg)
 	{
 		if((mob.session()!=null)&&(mob.session().getClientTelnetMode(Session.TELNET_GMCP)))
 		{
@@ -91,10 +91,10 @@ public class Say extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		String theWord="Say";
 		boolean toFlag=false;
 		final String theCommand=commands.get(0).toUpperCase();
@@ -154,12 +154,18 @@ public class Say extends StdCommand
 				commands.remove(1);
 			}
 			else
+			if(whom.equalsIgnoreCase("noone")||whom.equalsIgnoreCase("nobody"))
+			{
+				target=null;
+				commands.remove(1);
+			}
+			else
 			if(whom.length()>0)
 			{
 				target=R.fetchFromRoomFavorMOBs(null,whom);
 				if((toFlag)&&(target==null))
 					target=mob.findItem(null,whom);
-				
+
 				if((!toFlag)&&(target!=null))
 				{
 					if(!(target instanceof MOB))
@@ -219,7 +225,10 @@ public class Say extends StdCommand
 			// if you are the only one in the room to talk to
 			// then grab a random mob and assume that's who
 			// you are addressing.
-			if((langTarget==null)&&(target==null)&&(R.numInhabitants()==2))
+			if(!toFlag)
+			if((langTarget==null)
+			&&(target==null)
+			&&(R.numInhabitants()==2))
 			{
 				for(int r=0;r<R.numInhabitants();r++)
 				{
@@ -267,8 +276,8 @@ public class Say extends StdCommand
 			return false;
 		}
 		combinedCommands=CMProps.applyINIFilter(combinedCommands,CMProps.Str.SAYFILTER);
-		if(mob.isPlayer() 
-		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED) 
+		if(mob.isPlayer()
+		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_FORCED)
 		|| CMath.bset(metaFlags, MUDCmdProcessor.METAFLAG_ORDER))
 			combinedCommands=CMLib.coffeeFilter().secondaryUserInputFilter(combinedCommands);
 		CMMsg msg=null;
