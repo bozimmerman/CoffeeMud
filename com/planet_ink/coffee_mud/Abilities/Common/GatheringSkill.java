@@ -288,7 +288,10 @@ public class GatheringSkill extends CommonSkill
 				else
 				{
 					I2.basePhyStats().setWeight(I2.basePhyStats().weight()-amountToGo);
+					I2.recoverPhyStats();
 					amountToGo=0;
+					CMLib.materials().adjustResourceName(I2);
+					break;
 				}
 			}
 			if((!I.amDestroyed())&&(!R.isContent(I)))
