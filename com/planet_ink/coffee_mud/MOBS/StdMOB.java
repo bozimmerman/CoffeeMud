@@ -3361,7 +3361,9 @@ public class StdMOB implements MOB
 				break;
 			case CMMsg.TYP_SPEAK:
 			{
-				if ((CMProps.getBoolVar(CMProps.Bool.INTRODUCTIONSYSTEM)) && (!asleep) && (canhearsrc))
+				if ((CMProps.getBoolVar(CMProps.Bool.INTRODUCTIONSYSTEM)
+					|| CMProps.get(mySession).getBool(CMProps.Bool.INTRODUCTIONSYSTEM))
+				&& (!asleep) && (canhearsrc))
 					CMLib.commands().handleIntroductions(srcM, this, msg.targetMessage());
 				CMLib.commands().handleBeingSpokenTo(srcM, this, msg.targetMessage());
 				break;
@@ -3493,8 +3495,9 @@ public class StdMOB implements MOB
 			else
 			if ((CMath.bset(othersMajor, CMMsg.MASK_SOUND)) && (!asleep) && (canhearsrc))
 			{
-				if ((CMProps.getBoolVar(CMProps.Bool.INTRODUCTIONSYSTEM))
-				&& (msg.othersMinor() == CMMsg.TYP_SPEAK))
+				if((msg.othersMinor() == CMMsg.TYP_SPEAK)
+				&& (CMProps.getBoolVar(CMProps.Bool.INTRODUCTIONSYSTEM)
+					|| CMProps.get(mySession).getBool(CMProps.Bool.INTRODUCTIONSYSTEM)))
 					CMLib.commands().handleIntroductions(srcM, this, msg.othersMessage());
 				tell(srcM, msg.target(), msg.tool(), msg.othersMessage());
 			}
