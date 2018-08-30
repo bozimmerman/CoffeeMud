@@ -2668,7 +2668,7 @@ public class Test extends StdCommand
 								double[] curDir = new double[] {dir0, dir1};
 								double[] accelDir = new double[] {adir0, adir1};
 								//double curSpeed = 1000;
-								//long newAccelleration = 200;
+								//long newAcceleration = 200;
 								//int steps = 0;
 								double totDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
 								//System.out.print("Interesting: ");
@@ -2682,7 +2682,7 @@ public class Test extends StdCommand
 									double oldCurSpeed = curSpeed;
 									double curDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
 									double[] oldCurDir=new double[]{curDir[0],curDir[1]};
-									curSpeed = CMLib.map().moveSpaceObject(curDir,curSpeed,accelDir, newAccelleration);
+									curSpeed = CMLib.map().moveSpaceObject(curDir,curSpeed,accelDir, newAcceleration);
 									double newDirDiff = CMLib.map().getAngleDelta(curDir, accelDir);
 									if((curDirDiff > halfPI)
 									&&(newDirDiff > halfPI))
@@ -2694,7 +2694,7 @@ public class Test extends StdCommand
 													+" -> "
 													+Math.round(Math.toDegrees(accelDir[0]))+"@"+Math.round(Math.toDegrees(accelDir[1]))
 													+" (angle Diff "+curDirDiff+") went from speed "+oldCurSpeed+" to "+curSpeed);
-											//CMLib.map().moveSpaceObject(oldCurDir,oldCurSpeed,accelDir, newAccelleration);
+											//CMLib.map().moveSpaceObject(oldCurDir,oldCurSpeed,accelDir, newAcceleration);
 											//curDirDiff = CMLib.map().getAngleDelta(oldCurDir, accelDir);
 										}
 									}

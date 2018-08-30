@@ -538,9 +538,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public void moveSpaceObject(final SpaceObject O, final double[] accelDirection, final double newAccelleration)
+	public void moveSpaceObject(final SpaceObject O, final double[] accelDirection, final double newAcceleration)
 	{
-		final double newSpeed = moveSpaceObject(O.direction(),O.speed(),accelDirection,newAccelleration);
+		final double newSpeed = moveSpaceObject(O.direction(),O.speed(),accelDirection,newAcceleration);
 		O.setSpeed(newSpeed);
 	}
 
@@ -597,9 +597,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	@Override
-	public double moveSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final double newAccelleration)
+	public double moveSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final double newAcceleration)
 	{
-		if(newAccelleration <= 0.0)
+		if(newAcceleration <= 0.0)
 			return curSpeed;
 
 		final double curDirectionYaw = curDirection[0];
@@ -609,7 +609,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		final double accelDirectionPitch = (accelDirection[1] > Math.PI) ? Math.abs(Math.PI-accelDirection[1]) : accelDirection[1];
 
 		final double currentSpeed = curSpeed;
-		final double acceleration = newAccelleration;
+		final double acceleration = newAcceleration;
 
 		double yawDelta = (curDirectionYaw >  accelDirectionYaw) ? (curDirectionYaw - accelDirectionYaw) : (accelDirectionYaw - curDirectionYaw);
 		// 350 and 10, diff = 340 + -360 = 20

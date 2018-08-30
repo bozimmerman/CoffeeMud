@@ -168,8 +168,8 @@ public interface WorldMap extends CMLibrary
 	public long[] getLocation(long[] oldLocation, double[] direction, long distance);
 	public void moveSpaceObject(SpaceObject O);
 	public void moveSpaceObject(SpaceObject O, long[] coords);
-	public void moveSpaceObject(final SpaceObject O, final double[] accelDirection, final double newAccelleration);
-	public double moveSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final double newAccelleration);
+	public void moveSpaceObject(final SpaceObject O, final double[] accelDirection, final double newAcceleration);
+	public double moveSpaceObject(final double[] curDirection, final double curSpeed, final double[] accelDirection, final double newAcceleration);
 	public long[] moveSpaceObject(final long[] coordinates, final double[] direction, long speed);
 	public SpaceObject getSpaceObject(CMObject o, boolean ignoreMobs);
 	public Enumeration<SpaceObject> getSpaceObjects();

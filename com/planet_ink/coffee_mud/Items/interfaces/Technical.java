@@ -44,7 +44,7 @@ public interface Technical extends Item
 
 	/**
 	 * Standard technical item types
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 */
 	public static enum TechType
@@ -77,7 +77,7 @@ public interface Technical extends Item
 		private final String	friendlyName;
 		private final String	shortFriendlyName;
 
-		private TechType(String name, String shorter)
+		private TechType(final String name, final String shorter)
 		{
 			this.friendlyName = name;
 			this.shortFriendlyName = shorter;
@@ -140,18 +140,18 @@ public interface Technical extends Item
 	/**
 	 * A TechCommand is an internal message that is only understood between electrical
 	 * objects, typically ship components, but potentially between computer components
-	 * of all sorts.  
+	 * of all sorts.
 	 * @author Bo Zimmerman
 	 *
 	 */
 	public static enum TechCommand
 	{
 		THRUST(TechComponent.ShipDir.class, Double.class),
-		ACCELLERATED(TechComponent.ShipDir.class, Double.class),
-		ACCELLLERATION(TechComponent.ShipDir.class, Double.class, Boolean.class),
+		ACCELERATED(TechComponent.ShipDir.class, Double.class),
+		ACCELERATION(TechComponent.ShipDir.class, Double.class, Boolean.class),
 		COMPONENTFAILURE(Technical.TechType.class, String[].class),
 		SENSE(),
-		AIRREFRESH(Double.class, Integer.class), 
+		AIRREFRESH(Double.class, Integer.class),
 		POWERSET(Long.class),
 		WEAPONTARGETSET(Double.class,Double.class),
 		WEAPONFIRE(),
@@ -159,7 +159,7 @@ public interface Technical extends Item
 		GRAVITYCHANGE(Boolean.class);
 		private final Class<?>[]	parms;
 
-		private TechCommand(Class<?>... parms)
+		private TechCommand(final Class<?>... parms)
 		{
 			this.parms = parms;
 		}
@@ -180,7 +180,7 @@ public interface Technical extends Item
 		 * @param parts the parameters, which must be perfectly valid for this enum
 		 * @return the encoded tech command
 		 */
-		public String makeCommand(Object... parts)
+		public String makeCommand(final Object... parts)
 		{
 			if ((parts == null) || (parts.length != parms.length))
 				return "";
@@ -189,14 +189,14 @@ public interface Technical extends Item
 			{
 				if (parts[i] == null)
 					return "";
-				else 
+				else
 				if (parms[i] == String[].class)
 				{
 					for (; i < parms.length; i++)
 						str.append(" ").append(parts[i].toString());
 					break;
 				}
-				else 
+				else
 				if (!parms[i].isAssignableFrom(parts[i].getClass()))
 					return "";
 				else
@@ -222,7 +222,7 @@ public interface Technical extends Item
 		 * @return the command parameters as their original objects, or null
 		 */
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		public Object[] confirmAndTranslate(String[] parts)
+		public Object[] confirmAndTranslate(final String[] parts)
 		{
 			if (parts.length != parms.length + 1)
 				return null;
@@ -235,7 +235,7 @@ public interface Technical extends Item
 					if (resp[i] == null)
 						return null;
 				}
-				else 
+				else
 				if (Integer.class.isAssignableFrom(parms[i]) || Long.class.isAssignableFrom(parms[i]))
 				{
 					if (!CMath.isLong(parts[i + 1]))
@@ -245,7 +245,7 @@ public interface Technical extends Item
 					else
 						resp[i] = Long.valueOf(parts[i + 1]);
 				}
-				else 
+				else
 				if (Double.class.isAssignableFrom(parms[i]) || Float.class.isAssignableFrom(parms[i]))
 				{
 					if (!CMath.isNumber(parts[i + 1]))
@@ -255,19 +255,19 @@ public interface Technical extends Item
 					else
 						resp[i] = Double.valueOf(parts[i + 1]);
 				}
-				else 
+				else
 				if (Boolean.class.isAssignableFrom(parms[i]))
 				{
 					if (!CMath.isBool(parts[i + 1]))
 						return null;
 					resp[i] = Boolean.valueOf(parts[i + 1]);
 				}
-				else 
+				else
 				if (String.class.isAssignableFrom(parms[i]))
 				{
 					resp[i] = parts[i + 1];
 				}
-				else 
+				else
 				if (String[].class.isAssignableFrom(parms[i]))
 				{
 					final StringBuilder rebuilt = new StringBuilder(parts[i + 1]);
@@ -286,7 +286,7 @@ public interface Technical extends Item
 		 * @param parts the entire command string list
 		 * @return the techcommand that matches the first string, or null
 		 */
-		public static TechCommand findCommand(String[] parts)
+		public static TechCommand findCommand(final String[] parts)
 		{
 			if (parts.length == 0)
 				return null;

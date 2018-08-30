@@ -56,10 +56,10 @@ public class RocketShipProgram extends GenShipProgram
 	protected volatile List<TechComponent>	components	= null;
 	protected volatile List<TechComponent>	dampers		= null;
 
-	protected volatile Double				lastAccelleration	= null;
+	protected volatile Double				lastAcceleration	= null;
 	protected volatile Double				lastAngle			= null;
 	protected volatile Double				lastInject			= null;
-	protected volatile Double				targetAccelleration	= Double.valueOf(SpaceObject.ACCELLERATION_TYPICALSPACEROCKET);
+	protected volatile Double				targetAcceleration	= Double.valueOf(SpaceObject.ACCELERATION_TYPICALSPACEROCKET);
 	protected volatile RocketStateMachine	rocketState			= null;
 	protected volatile SpaceObject			currentTarget		= null;
 	protected volatile Double				targetLeadPct		= null;
@@ -524,56 +524,56 @@ public class RocketShipProgram extends GenShipProgram
 			engineE.executeMsg(mob, msg);
 	}
 
-	protected Double fixInjection(final Double lastInject, final Double lastAccelleration, final double targetAccelleration)
+	protected Double fixInjection(final Double lastInject, final Double lastAcceleration, final double targetAcceleration)
 	{
 		final Double newInject;
-		if(lastAccelleration.doubleValue() < targetAccelleration)
+		if(lastAcceleration.doubleValue() < targetAcceleration)
 		{
-			if(lastAccelleration.doubleValue() < (targetAccelleration * .00001))
+			if(lastAcceleration.doubleValue() < (targetAcceleration * .00001))
 				newInject = new Double(lastInject.doubleValue()*200.0);
 			else
-			if(lastAccelleration.doubleValue() < (targetAccelleration * .001))
+			if(lastAcceleration.doubleValue() < (targetAcceleration * .001))
 				newInject = new Double(lastInject.doubleValue()*20.0);
 			else
-			if(lastAccelleration.doubleValue() < (targetAccelleration * .1))
+			if(lastAcceleration.doubleValue() < (targetAcceleration * .1))
 				newInject = new Double(lastInject.doubleValue()*2.0);
 			else
-			if(lastAccelleration.doubleValue() < (targetAccelleration * .5))
+			if(lastAcceleration.doubleValue() < (targetAcceleration * .5))
 				newInject = new Double(lastInject.doubleValue()*1.25);
 			else
-			if(lastAccelleration.doubleValue() < (targetAccelleration * 0.9))
+			if(lastAcceleration.doubleValue() < (targetAcceleration * 0.9))
 				newInject = new Double(1.07 * lastInject.doubleValue());
 			else
-			if(lastAccelleration.doubleValue() < (targetAccelleration * 0.95))
+			if(lastAcceleration.doubleValue() < (targetAcceleration * 0.95))
 				newInject = new Double(1.02 * lastInject.doubleValue());
 			else
-			if(lastAccelleration.doubleValue() < (targetAccelleration * 0.99))
+			if(lastAcceleration.doubleValue() < (targetAcceleration * 0.99))
 				newInject = new Double(1.01 * lastInject.doubleValue());
 			else
 				newInject = new Double(1.001 * lastInject.doubleValue());
 		}
 		else
-		if(lastAccelleration.doubleValue() > targetAccelleration)
+		if(lastAcceleration.doubleValue() > targetAcceleration)
 		{
-			if(lastAccelleration.doubleValue() > (targetAccelleration * 1000000))
+			if(lastAcceleration.doubleValue() > (targetAcceleration * 1000000))
 				newInject = new Double(lastInject.doubleValue()/200.0);
 			else
-			if(lastAccelleration.doubleValue() > (targetAccelleration * 10000))
+			if(lastAcceleration.doubleValue() > (targetAcceleration * 10000))
 				newInject = new Double(lastInject.doubleValue()/20.0);
 			else
-			if(lastAccelleration.doubleValue() > (targetAccelleration * 100))
+			if(lastAcceleration.doubleValue() > (targetAcceleration * 100))
 				newInject = new Double(lastInject.doubleValue()/2.0);
 			else
-			if(lastAccelleration.doubleValue() > (targetAccelleration * 2))
+			if(lastAcceleration.doubleValue() > (targetAcceleration * 2))
 				newInject = new Double(lastInject.doubleValue()/1.25);
 			else
-			if(lastAccelleration.doubleValue() > (targetAccelleration * 1.1))
+			if(lastAcceleration.doubleValue() > (targetAcceleration * 1.1))
 				newInject = new Double(0.93 * lastInject.doubleValue());
 			else
-			if(lastAccelleration.doubleValue() > (targetAccelleration * 1.05))
+			if(lastAcceleration.doubleValue() > (targetAcceleration * 1.05))
 				newInject = new Double(0.98 * lastInject.doubleValue());
 			else
-			if(lastAccelleration.doubleValue() > (targetAccelleration * 1.01))
+			if(lastAcceleration.doubleValue() > (targetAcceleration * 1.01))
 				newInject = new Double(0.99 * lastInject.doubleValue());
 			else
 				newInject = new Double(0.999 * lastInject.doubleValue());
@@ -583,28 +583,28 @@ public class RocketShipProgram extends GenShipProgram
 		return newInject;
 	}
 
-	protected Double calculateMarginalTargetInjection(Double newInject, final double targetAccelleration)
+	protected Double calculateMarginalTargetInjection(Double newInject, final double targetAcceleration)
 	{
 		//force/mass is the Gs felt by the occupants.. not force-mass
 		//so go ahead and push it up to 3 * g forces on ship
-		if((this.lastAccelleration !=null)
+		if((this.lastAcceleration !=null)
 		&&(newInject != null)
-		&& (targetAccelleration != 0.0))
-			newInject=fixInjection(newInject,this.lastAccelleration,targetAccelleration);
+		&& (targetAcceleration != 0.0))
+			newInject=fixInjection(newInject,this.lastAcceleration,targetAcceleration);
 		return newInject;
 	}
 
-	protected Double forceAccellerationAllProgramEngines(final double targetAccelleration)
+	protected Double forceAccelerationAllProgramEngines(final double targetAcceleration)
 	{
-		Double newInject = this.calculateMarginalTargetInjection(this.lastInject, targetAccelleration);
+		Double newInject = this.calculateMarginalTargetInjection(this.lastInject, targetAcceleration);
 		int tries=100;
 		do
 		{
 			for(final ShipEngine engineE : programEngines)
 				performSimpleThrust(engineE,newInject, true);
-			if((CMath.abs(targetAccelleration)-this.lastAccelleration.doubleValue())<.01)
+			if((CMath.abs(targetAcceleration)-this.lastAcceleration.doubleValue())<.01)
 				break;
-			newInject = this.calculateMarginalTargetInjection(this.lastInject, targetAccelleration);
+			newInject = this.calculateMarginalTargetInjection(this.lastInject, targetAcceleration);
 		}
 		while((--tries)>0);
 		return newInject;
@@ -615,7 +615,7 @@ public class RocketShipProgram extends GenShipProgram
 		final MOB mob=CMClass.getFactoryMOB();
 		try
 		{
-			this.lastAccelleration =null;
+			this.lastAcceleration =null;
 			if(thrustInject != null)
 			{
 				if((thrustInject != this.lastInject)
@@ -741,10 +741,10 @@ public class RocketShipProgram extends GenShipProgram
 					}
 					if(this.lastInject != null)
 					{
-						if(ship.speed() < targetAccelleration.doubleValue())
+						if(ship.speed() < targetAcceleration.doubleValue())
 							this.lastInject = new Double(this.lastInject.doubleValue()/2.0);
 						else
-						if(ship.speed() < (targetAccelleration.doubleValue() * 2))
+						if(ship.speed() < (targetAcceleration.doubleValue() * 2))
 							this.lastInject = new Double(this.lastInject.doubleValue()/1.5);
 					}
 				}
@@ -802,10 +802,10 @@ public class RocketShipProgram extends GenShipProgram
 		case STOP:
 		case PRE_LANDING_STOP:
 		{
-			double targetAccelleration = this.targetAccelleration.doubleValue(); //
-			if(targetAccelleration > ship.speed())
-				targetAccelleration = ship.speed();
-			newInject=calculateMarginalTargetInjection(newInject, targetAccelleration);
+			double targetAcceleration = this.targetAcceleration.doubleValue(); //
+			if(targetAcceleration > ship.speed())
+				targetAcceleration = ship.speed();
+			newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 			for(final ShipEngine engineE : programEngines)
 				performSimpleThrust(engineE,newInject, false);
 			break;
@@ -815,8 +815,8 @@ public class RocketShipProgram extends GenShipProgram
 		case ORBITSEARCH:
 		case ORBITCHECK:
 		{
-			final double targetAccelleration = this.targetAccelleration.doubleValue(); //
-			newInject=calculateMarginalTargetInjection(newInject, targetAccelleration);
+			final double targetAcceleration = this.targetAcceleration.doubleValue(); //
+			newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 		}
 		//$FALL-THROUGH$
 		case LAUNCHCRUISE:
@@ -844,37 +844,37 @@ public class RocketShipProgram extends GenShipProgram
 				//final double angleDiff = CMLib.map().getAngleDelta(ship.direction(), dirToPlanet);
 				for(final ShipEngine engineE : programEngines)
 				{
-					final double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(this.targetAccelleration.doubleValue(),2.0));
+					final double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(this.targetAcceleration.doubleValue(),2.0));
 					final double ticksToDestinationAtCurrentSpeed = CMath.div(distanceToCritRadius, ship.speed());
 					final double diff = Math.abs(ticksToDecellerate-ticksToDestinationAtCurrentSpeed);
 					if((diff < 1) || (diff < Math.sqrt(ticksToDecellerate)))
 					{
 						//System.out.println("** Coast: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()+"/"+this.lastInject); //BZ:DELME
 						final Double oldInject=this.lastInject;
-						final Double oldAccel=this.lastAccelleration;
+						final Double oldAccel=this.lastAcceleration;
 						performSimpleThrust(engineE,new Double(0.0), false);
 						this.lastInject=oldInject;
-						this.lastAccelleration=oldAccel;
+						this.lastAcceleration=oldAccel;
 						break;
 					}
 					else
 					if(ticksToDecellerate > ticksToDestinationAtCurrentSpeed)
 					{
-						//System.out.println("** Decellerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
+						//System.out.println("** Decelerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
 						this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
 					}
 					else
 					if((ticksToDecellerate<50)||(diff > 10.0))
 					{
-						//System.out.println("** Accellerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
+						//System.out.println("** Accelerate: "+ticksToDecellerate+"/"+ticksToDestinationAtCurrentSpeed+"                    /"+ship.speed()); //BZ:DELME
 						this.changeFacing(ship, dirToPlanet);
 					}
-					final double targetAccelleration = this.targetAccelleration.doubleValue(); //
-					newInject=calculateMarginalTargetInjection(newInject, targetAccelleration);
-					if((targetAccelleration > 1.0) && (newInject.doubleValue()==0.0))
+					final double targetAcceleration = this.targetAcceleration.doubleValue(); //
+					newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
+					if((targetAcceleration > 1.0) && (newInject.doubleValue()==0.0))
 					{
 						primeMainThrusters(ship);
-						newInject = forceAccellerationAllProgramEngines(targetAccelleration);
+						newInject = forceAccelerationAllProgramEngines(targetAcceleration);
 					}
 					performSimpleThrust(engineE,newInject, false);
 				}
@@ -888,8 +888,8 @@ public class RocketShipProgram extends GenShipProgram
 			if(CMLib.map().getAngleDelta(dirToPlanet, ship.direction()) > 1)
 			{
 				this.changeFacing(ship, dirToPlanet);
-				if(ship.speed() > this.targetAccelleration.doubleValue())
-					newInject=calculateMarginalTargetInjection(this.lastInject, this.targetAccelleration.doubleValue());
+				if(ship.speed() > this.targetAcceleration.doubleValue())
+					newInject=calculateMarginalTargetInjection(this.lastInject, this.targetAcceleration.doubleValue());
 				else
 				if(ship.speed() > 1)
 					newInject=calculateMarginalTargetInjection(this.lastInject, ship.speed() / 2);
@@ -908,35 +908,35 @@ public class RocketShipProgram extends GenShipProgram
 						- critRadius
 						- ship.radius();
 				final double ticksToDestinationAtCurrentSpeed = Math.abs(CMath.div(distance, ship.speed()));
-				final double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(this.targetAccelleration.doubleValue(), 2.0));
+				final double ticksToDecellerate = CMath.div(ship.speed(),CMath.div(this.targetAcceleration.doubleValue(), 2.0));
 				if((ticksToDecellerate > ticksToDestinationAtCurrentSpeed)
 				||(distance < ship.speed() * 20))
 				{
-					double targetAccelleration = 0.0;
-					if(ship.speed() > this.targetAccelleration.doubleValue())
+					double targetAcceleration = 0.0;
+					if(ship.speed() > this.targetAcceleration.doubleValue())
 					{
-						if(ship.speed() < (this.targetAccelleration.doubleValue() + 1.0))
-							targetAccelleration = 1.0;
+						if(ship.speed() < (this.targetAcceleration.doubleValue() + 1.0))
+							targetAcceleration = 1.0;
 						else
-							targetAccelleration = this.targetAccelleration.doubleValue();
+							targetAcceleration = this.targetAcceleration.doubleValue();
 					}
 					else
 					if(ship.speed()>CMLib.map().getDistanceFrom(ship, programPlanet)/4)
-						targetAccelleration = ship.speed() - 1.0;
+						targetAcceleration = ship.speed() - 1.0;
 					else
 					if(ship.speed()>2.0)
-						targetAccelleration = 1.0;
+						targetAcceleration = 1.0;
 					else
-						targetAccelleration = 0.5;
+						targetAcceleration = 0.5;
 					this.changeFacing(ship, CMLib.map().getOppositeDir(dirToPlanet));
-					newInject=calculateMarginalTargetInjection(newInject, targetAccelleration);
+					newInject=calculateMarginalTargetInjection(newInject, targetAcceleration);
 					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-						Log.debugOut("Landing Deccelerating @ "+  targetAccelleration +" because "+ticksToDecellerate+">"+ticksToDestinationAtCurrentSpeed+"  or "+distance+" < "+(ship.speed()*20));
-					if((targetAccelleration >= 1.0) && (newInject.doubleValue()==0.0))
+						Log.debugOut("Landing Deccelerating @ "+  targetAcceleration +" because "+ticksToDecellerate+">"+ticksToDestinationAtCurrentSpeed+"  or "+distance+" < "+(ship.speed()*20));
+					if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
 					{
 						primeMainThrusters(ship);
-						Log.debugOut("Landing Deccelerating Check "+  Math.abs(this.lastAccelleration.doubleValue()-targetAccelleration));
-						newInject = forceAccellerationAllProgramEngines(targetAccelleration);
+						Log.debugOut("Landing Deccelerating Check "+  Math.abs(this.lastAcceleration.doubleValue()-targetAcceleration));
+						newInject = forceAccelerationAllProgramEngines(targetAcceleration);
 					}
 				}
 				else
@@ -945,13 +945,13 @@ public class RocketShipProgram extends GenShipProgram
 					if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
 						Log.debugOut("Landing Accelerating because " +  distance +" > "+distanceToCritRadius+" and "+ship.speed()+"<"+Math.sqrt(distance));
 					this.changeFacing(ship, dirToPlanet);
-					final double targetAccelleration = this.targetAccelleration.doubleValue();
-					newInject=calculateMarginalTargetInjection(this.lastInject, targetAccelleration);
-					if((targetAccelleration >= 1.0) && (newInject.doubleValue()==0.0))
+					final double targetAcceleration = this.targetAcceleration.doubleValue();
+					newInject=calculateMarginalTargetInjection(this.lastInject, targetAcceleration);
+					if((targetAcceleration >= 1.0) && (newInject.doubleValue()==0.0))
 					{
 						primeMainThrusters(ship);
-						Log.debugOut("Landing Accelerating Check "+  Math.abs(this.lastAccelleration.doubleValue()-targetAccelleration));
-						newInject = forceAccellerationAllProgramEngines(targetAccelleration);
+						Log.debugOut("Landing Accelerating Check "+  Math.abs(this.lastAcceleration.doubleValue()-targetAcceleration));
+						newInject = forceAccelerationAllProgramEngines(targetAcceleration);
 					}
 				}
 				else
@@ -1078,51 +1078,51 @@ public class RocketShipProgram extends GenShipProgram
 		final List<ShipEngine> engines = getEngines();
 		final MOB M=CMClass.getFactoryMOB();
 		final boolean isDocked = ship.getIsDocked()!=null;
-		final double targetAccelleration = SpaceObject.ACCELLERATION_G;
+		final double targetAcceleration = SpaceObject.ACCELERATION_G;
 		try
 		{
 			for(final ShipEngine engineE : engines)
 			{
 				if((CMParms.contains(engineE.getAvailPorts(),TechComponent.ShipDir.AFT))
-				&&(engineE.getMaxThrust()>SpaceObject.ACCELLERATION_G)
-				&&(engineE.getMinThrust()<SpaceObject.ACCELLERATION_PASSOUT))
+				&&(engineE.getMaxThrust()>SpaceObject.ACCELERATION_G)
+				&&(engineE.getMinThrust()<SpaceObject.ACCELERATION_PASSOUT))
 				{
 					int tries=100;
 					double lastTryAmt;
 					if(this.primeInjects.containsKey(engineE))
 					{
 						lastTryAmt = this.primeInjects.get(engineE)[0].doubleValue();
-						lastAccelleration=this.primeInjects.get(engineE)[1];
+						lastAcceleration=this.primeInjects.get(engineE)[1];
 					}
 					else
 						lastTryAmt= 0.0001;
 					final CMMsg deactMsg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE, null, CMMsg.NO_EFFECT,null);
 					msg=CMClass.getMsg(M, engineE, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, null, CMMsg.NO_EFFECT,null);
-					Double prevAccelleration = new Double(0.0);
+					Double prevAcceleration = new Double(0.0);
 					while(--tries>0)
 					{
-						this.lastAccelleration =null;
+						this.lastAcceleration =null;
 						final String code=TechCommand.THRUST.makeCommand(TechComponent.ShipDir.AFT, Double.valueOf(lastTryAmt));
 						msg.setTargetMessage(code);
 						this.trySendMsgToItem(M, engineE, msg);
-						final Double thisLastAccel=this.lastAccelleration ;
+						final Double thisLastAccel=this.lastAcceleration ;
 						if(thisLastAccel!=null)
 						{
-							final double ratio = targetAccelleration/thisLastAccel.doubleValue();
-							if((thisLastAccel.doubleValue() >= targetAccelleration)
+							final double ratio = targetAcceleration/thisLastAccel.doubleValue();
+							if((thisLastAccel.doubleValue() >= targetAcceleration)
 							&&((!isDocked)||(ship.getIsDocked()==null)))
 							{
 								this.lastInject=new Double(lastTryAmt);
-								this.primeInjects.put(engineE,new Double[] {lastInject,lastAccelleration});
+								this.primeInjects.put(engineE,new Double[] {lastInject,lastAcceleration});
 								return engineE;
 							}
 							else
 							if((thisLastAccel.doubleValue()>0.0) && (ratio>100))
 								lastTryAmt *= (Math.sqrt(ratio)/5.0);
 							else
-							if(prevAccelleration.doubleValue() == thisLastAccel.doubleValue())
+							if(prevAcceleration.doubleValue() == thisLastAccel.doubleValue())
 							{
-								this.primeInjects.put(engineE,new Double[] {lastInject,lastAccelleration});
+								this.primeInjects.put(engineE,new Double[] {lastInject,lastAcceleration});
 								break;
 							}
 							else
@@ -1130,7 +1130,7 @@ public class RocketShipProgram extends GenShipProgram
 								this.trySendMsgToItem(M, engineE, deactMsg);
 								lastTryAmt *= 1.1;
 							}
-							prevAccelleration = thisLastAccel;
+							prevAcceleration = thisLastAccel;
 						}
 						else
 							break;
@@ -1187,7 +1187,7 @@ public class RocketShipProgram extends GenShipProgram
 							"and how quickly, depends largely on the capabilities of the engine. " +
 							"Giving a direction is optional, and if not given, AFT is assumed. All "+
 							"directions result in corrected bursts, except for AFT, which will result " +
-							"in sustained accelleration."));
+							"in sustained acceleration."));
 						return;
 					}
 					final ShipEngine E1=(ShipEngine)E;
@@ -1423,11 +1423,11 @@ public class RocketShipProgram extends GenShipProgram
 				}
 				if(!dampenerFound)
 				{
-					super.addScreenMessage(L("No inertial dampeners found.  Limiting accelleration to 3G."));
-					this.targetAccelleration = Double.valueOf(SpaceObject.ACCELLERATION_TYPICALSPACEROCKET);
+					super.addScreenMessage(L("No inertial dampeners found.  Limiting acceleration to 3G."));
+					this.targetAcceleration = Double.valueOf(SpaceObject.ACCELERATION_TYPICALSPACEROCKET);
 				}
 				else
-					this.targetAccelleration = Double.valueOf(30);
+					this.targetAcceleration = Double.valueOf(30);
 
 				this.programEngines=new XVector<ShipEngine>(engineE);
 				if(uword.equalsIgnoreCase("ORBIT"))
@@ -1829,7 +1829,7 @@ public class RocketShipProgram extends GenShipProgram
 		{
 			final String[] parts=msg.targetMessage().split(" ");
 			final TechCommand command=TechCommand.findCommand(parts);
-			if(command == TechCommand.ACCELLERATED)
+			if(command == TechCommand.ACCELERATED)
 			{
 				final Object[] parms=command.confirmAndTranslate(parts);
 				if(parms != null)
@@ -1838,8 +1838,8 @@ public class RocketShipProgram extends GenShipProgram
 					{
 					case AFT:
 					case FORWARD:
-						if(this.lastAccelleration==null)
-							this.lastAccelleration =(Double)parms[1];
+						if(this.lastAcceleration==null)
+							this.lastAcceleration =(Double)parms[1];
 						break;
 					default:
 						if(lastAngle==null)

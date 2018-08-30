@@ -312,19 +312,19 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 
 		final int fuelToConsume=getFuelToConsume(me, manufacturer, portDir, thrust);
 
-		final double accelleration;
+		final double acceleration;
 		if(portDir==TechComponent.ShipDir.AFT) // when thrusting aft, there's a smidgeon more power
 		{
-			accelleration = (thrust * me.getSpecificImpulse() / ship.getMass());
-			if(accelleration < me.getMinThrust())
+			acceleration = (thrust * me.getSpecificImpulse() / ship.getMass());
+			if(acceleration < me.getMinThrust())
 				return reportError(me, controlI, mob, lang.L("@x1 "+rumbleWord+"s loudly, but nothing happens.",me.name(mob)), lang.L("Failure: @x1: insufficient thrust.",me.name(mob)));
 		}
 		else
-			accelleration = thrust;
+			acceleration = thrust;
 
 		//if((amount > 1)&&((portDir!=TechComponent.ShipDir.AFT) || (me.getThrust() > (oldThrust * 10))))
 		//	tellWholeShip(me,mob,CMMsg.MSG_NOISE,CMLib.lang().L("You feel a "+rumbleWord+" and hear the blast of @x1.",me.name(mob)));
-		if(accelleration == 0.0)
+		if(acceleration == 0.0)
 		{
 			final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_ENGINE, "Failure: "+me.name()+": insufficient_thrust_capacity.");
 			sendComputerMessage(me,circuitKey,mob,controlI,code);
@@ -334,7 +334,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 		if(me.consumeFuel(fuelToConsume))
 		{
 			final SpaceObject spaceObject=ship.getShipSpaceObject();
-			final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(portDir.opposite(),Double.valueOf(accelleration),Boolean.valueOf(me.isConstantThruster()));
+			final String code=Technical.TechCommand.ACCELERATION.makeCommand(portDir.opposite(),Double.valueOf(acceleration),Boolean.valueOf(me.isConstantThruster()));
 			final CMMsg msg=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 			if(spaceObject.okMessage(mob, msg))
 			{
@@ -396,7 +396,7 @@ public class StdShipThruster extends StdCompFuelConsumer implements ShipEngine
 						final MOB mob=msg.source();
 						final SpaceShip ship=(SpaceShip)obj;
 						final SpaceObject spaceObject=ship.getShipSpaceObject();
-						final String code=Technical.TechCommand.ACCELLLERATION.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(0),Boolean.valueOf(true));
+						final String code=Technical.TechCommand.ACCELERATION.makeCommand(TechComponent.ShipDir.AFT,Double.valueOf(0),Boolean.valueOf(true));
 						final CMMsg msg2=CMClass.getMsg(mob, spaceObject, me, CMMsg.NO_EFFECT, null, CMMsg.MSG_ACTIVATE|CMMsg.MASK_CNTRLMSG, code, CMMsg.NO_EFFECT,null);
 						if(spaceObject.okMessage(mob, msg2))
 							spaceObject.executeMsg(mob, msg2);

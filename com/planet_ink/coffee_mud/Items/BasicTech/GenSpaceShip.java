@@ -223,12 +223,12 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 						final Object[] parms=command.confirmAndTranslate(parts);
 						if(parms!=null)
 						{
-							if(command==Technical.TechCommand.ACCELLLERATION)
+							if(command==Technical.TechCommand.ACCELERATION)
 							{
 								final TechComponent.ShipDir dir=(TechComponent.ShipDir)parms[0];
 								final double amount=((Double)parms[1]).doubleValue();
 								final boolean isConst = ((Boolean)parms[2]).booleanValue();
-								double finalAccelleration = 0;
+								double finalAcceleration = 0;
 								Room dockR = getIsDocked();
 								if(amount != 0)
 								{
@@ -237,37 +237,37 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 									case STARBOARD:
 										if(dockR==null)
 										{
-											finalAccelleration = -CMath.mul(amount,0.017);
-											facing[0] += finalAccelleration;
+											finalAcceleration = -CMath.mul(amount,0.017);
+											facing[0] += finalAcceleration;
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleration)+" to "+facing[0]);
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[0]);
 										}
 										break;
 									case PORT:
 										if(dockR==null)
 										{
-											finalAccelleration = CMath.mul(amount,0.017);
-											facing[0] += finalAccelleration;
+											finalAcceleration = CMath.mul(amount,0.017);
+											facing[0] += finalAcceleration;
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleration)+" to "+facing[0]);
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[0]);
 										}
 										break;
 									case DORSEL:
 										if(dockR==null)
 										{
-											finalAccelleration = -CMath.mul(amount,0.017);
-											facing[1] += finalAccelleration;
+											finalAcceleration = -CMath.mul(amount,0.017);
+											facing[1] += finalAcceleration;
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleration)+" to "+facing[1]);
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[1]);
 										}
 										break;
 									case VENTRAL:
 										if(dockR==null)
 										{
-											finalAccelleration = CMath.mul(amount,0.017);
-											facing[1] += finalAccelleration;
+											finalAcceleration = CMath.mul(amount,0.017);
+											facing[1] += finalAcceleration;
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAccelleration)+" to "+facing[1]);
+												Log.debugOut("SpaceShip "+name()+" turns "+dir.toString()+" "+Math.toDegrees(finalAcceleration)+" to "+facing[1]);
 										}
 										break;
 									case FORWARD:
@@ -277,7 +277,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										{
 											if(dir == ShipDir.FORWARD)
 											{
-												if(amount > SpaceObject.ACCELLERATION_G)
+												if(amount > SpaceObject.ACCELERATION_G)
 												{
 													unDock(true);
 													dockR=null;
@@ -287,7 +287,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 										// this will move it, but will also update speed and direction -- all good!
 										final double inAirFactor=(shipFlags.contains(ShipFlag.IN_THE_AIR))?(1.0-getOMLCoeff()):1.0;
 										//TODO: calculate inertia gforce damage here, and send the message
-										//^^ this should be LIKE accelleration, except it can be modified by antigrav stuff
+										//^^ this should be LIKE acceleration, except it can be modified by antigrav stuff
 										if(!isConst)
 										{
 											// a non-constant thruster means the ship attains speed in one burst,
@@ -296,22 +296,22 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 											this.setSpeed(0);
 										}
 										//force/mass is the Gs felt by the occupants.. not force-mass
-										finalAccelleration = amount*inAirFactor;
-										if((dockR==null) && ((finalAccelleration-this.speedTick) > 0))
+										finalAcceleration = amount*inAirFactor;
+										if((dockR==null) && ((finalAcceleration-this.speedTick) > 0))
 										{
 											final double prevSpeed = speed();
 											final double[] moveDir = (dir == ShipDir.FORWARD) ? facing() : CMLib.map().getOppositeDir(facing());
-											CMLib.map().moveSpaceObject(this,moveDir,finalAccelleration-this.speedTick); // have to do this to know new speed
+											CMLib.map().moveSpaceObject(this,moveDir,finalAcceleration-this.speedTick); // have to do this to know new speed
 											if(CMSecurity.isDebugging(DbgFlag.SPACESHIP))
-												Log.debugOut("SpaceShip "+name()+" accellerates "+dir.toString()+" " +(finalAccelleration-this.speedTick));
-											this.speedTick += (finalAccelleration-this.speedTick);
+												Log.debugOut("SpaceShip "+name()+" accelerates "+dir.toString()+" " +(finalAcceleration-this.speedTick));
+											this.speedTick += (finalAcceleration-this.speedTick);
 											if((speed() < prevSpeed) && (this.speed() < 0.5)) // enough slowing down!
 												setSpeed(0.0);
 										}
 										break;
 									}
 									}
-									final String code=Technical.TechCommand.ACCELLERATED.makeCommand(dir,Double.valueOf(finalAccelleration));
+									final String code=Technical.TechCommand.ACCELERATED.makeCommand(dir,Double.valueOf(finalAcceleration));
 									final MOB mob=CMClass.getFactoryMOB();
 									try
 									{
@@ -431,7 +431,7 @@ public class GenSpaceShip extends StdBoardable implements Electronics, SpaceShip
 
 				// this only works because Areas don't move.
 				// the only way to hit one is to be moving towards it.
-				if((previousSpeed > (SpaceObject.ACCELLERATION_DAMAGED))
+				if((previousSpeed > (SpaceObject.ACCELERATION_DAMAGED))
 				&&(msg.tool() instanceof SpaceObject))
 				{
 					final SpaceObject O=(SpaceObject)msg.tool();

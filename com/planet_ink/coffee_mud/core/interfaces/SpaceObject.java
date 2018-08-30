@@ -220,26 +220,26 @@ public interface SpaceObject extends Environmental, BoundedObject
 	/** normal total mass of a normal total asteroid of a normal total radius */
 	public static final long ASTEROID_MASS = MOONLET_MASS / 5;
 
-	/** accelleration at which you are happy, in decameters/s */
-	public static final long ACCELLERATION_G=1;
-	/** accelleration at which you pass out, in decameters/s */
-	public static final long ACCELLERATION_PASSOUT=ACCELLERATION_G*5;
-	/** accelleration in atmosphere, in decameters/s */
-	public static final long ACCELLERATION_TYPICALROCKET=ACCELLERATION_G*2;
-	/** accelleration in space, in decameters/s */
-	public static final long ACCELLERATION_TYPICALSPACEROCKET=ACCELLERATION_G*3;
-	/** accelleration at which you are unconscious, in decameters/s */
-	public static final long ACCELLERATION_UNCONSCIOUSNESS=ACCELLERATION_G*15;
-	/** accelleration at which you are severely damaged (40" fall), in decameters/s */
-	public static final long ACCELLERATION_DAMAGED=ACCELLERATION_G*30;
-	/** accelleration at which you are devestated, in decameters/s */
-	public static final long ACCELLERATION_INSTANTDEATH=ACCELLERATION_G*60;
+	/** acceleration at which you are happy, in decameters/s */
+	public static final long ACCELERATION_G=1;
+	/** acceleration at which you pass out, in decameters/s */
+	public static final long ACCELERATION_PASSOUT=ACCELERATION_G*5;
+	/** acceleration in atmosphere, in decameters/s */
+	public static final long ACCELERATION_TYPICALROCKET=ACCELERATION_G*2;
+	/** acceleration in space, in decameters/s */
+	public static final long ACCELERATION_TYPICALSPACEROCKET=ACCELERATION_G*3;
+	/** acceleration at which you are unconscious, in decameters/s */
+	public static final long ACCELERATION_UNCONSCIOUSNESS=ACCELERATION_G*15;
+	/** acceleration at which you are severely damaged (40" fall), in decameters/s */
+	public static final long ACCELERATION_DAMAGED=ACCELERATION_G*30;
+	/** acceleration at which you are devestated, in decameters/s */
+	public static final long ACCELERATION_INSTANTDEATH=ACCELERATION_G*60;
 
-	// thrust=mass * accelleration
-	// accelleration = thrust/mass
+	// thrust=mass * acceleration
+	// acceleration = thrust/mass
 
 	// engine efficiency=specific impulse
-	// add max velocity to engines (specific impulse) -- so current velocity affects how much accelleration you'll get!
+	// add max velocity to engines (specific impulse) -- so current velocity affects how much acceleration you'll get!
 
 	// graviton drives -- you need lots of gravity for this to work
 
