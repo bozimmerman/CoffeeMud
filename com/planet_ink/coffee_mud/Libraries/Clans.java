@@ -28,7 +28,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
-/**
+/*
  * Portions Copyright (c) 2003 Jeremy Vyska
  * Portions Copyright (c) 2004-2018 Bo Zimmerman
  * Licensed under the Apache License, Version 2.0 (the "License");
