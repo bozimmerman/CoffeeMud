@@ -695,6 +695,18 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 				if(!this.shipItem.okMessage(myHost, msg))
 					return false;
 				break;
+			default:
+			{
+				final Room R=msg.source().location();
+				if((R!=null)
+				&&(R.getArea()==this))
+				{
+					final Area A=CMLib.map().areaLocation(this.shipItem);
+					if((A!=null)&&(!A.okMessage(myHost, msg)))
+						return false;
+				}
+				break;
+			}
 			}
 		}
 		if(!CMLib.law().robberyCheck(this,msg, false))
@@ -884,6 +896,18 @@ public class StdBoardableShip implements Area, BoardableShip, PrivateProperty
 			case CMMsg.TYP_COMMAND:
 				this.shipItem.executeMsg(myHost, msg);
 				break;
+			default:
+			{
+				final Room R=msg.source().location();
+				if((R!=null)
+				&&(R.getArea()==this))
+				{
+					final Area A=CMLib.map().areaLocation(this.shipItem);
+					if(A!=null)
+						A.executeMsg(myHost, msg);
+				}
+				break;
+			}
 			}
 		}
 
