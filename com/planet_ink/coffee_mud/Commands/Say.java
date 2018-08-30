@@ -139,12 +139,21 @@ public class Say extends StdCommand
 			whom=commands.get(1).toUpperCase();
 			if(!toFlag)
 			{
-				for (final String impossibleTarget : impossibleTargets)
+				final Item I=mob.fetchHeldItem();
+				if((I instanceof Wand)
+				&&(((Wand)I).magicWord().equalsIgnoreCase(whom)))
 				{
-					if(impossibleTarget.startsWith(whom))
+					whom = "";
+				}
+				else
+				{
+					for (final String impossibleTarget : impossibleTargets)
 					{
-						whom = "";
-						break;
+						if(impossibleTarget.startsWith(whom))
+						{
+							whom = "";
+							break;
+						}
 					}
 				}
 			}
@@ -250,7 +259,9 @@ public class Say extends StdCommand
 
 			// if you are addressing someone speaking a language that you
 			// can speak, then speak it.
-			if((langTarget!=null)&&(!mob.isMonster())&&(!CMLib.flags().isAnimalIntelligence(mob)))
+			if((langTarget!=null)
+			&&(!mob.isMonster())
+			&&(!CMLib.flags().isAnimalIntelligence(mob)))
 			{
 				final Language hisL=CMLib.utensils().getLanguageSpoken(langTarget);
 				final Language myL=CMLib.utensils().getLanguageSpoken(mob);
