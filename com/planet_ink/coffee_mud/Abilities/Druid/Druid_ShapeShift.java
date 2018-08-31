@@ -86,7 +86,7 @@ public class Druid_ShapeShift extends StdAbility
 	public int		myRaceLevel	= -1;
 	public Race		newRace		= null;
 	public String	raceName	= "";
-	
+
 	protected static class ShiftShapeForm
 	{
 		public String	ID;
@@ -97,8 +97,8 @@ public class Druid_ShapeShift extends StdAbility
 		public double	speedAdj	= 0.0;
 		public String[]	shapes		= new String[0];
 		public String[]	raceIDs		= new String[0];
-		
-		public ShiftShapeForm(String ID)
+
+		public ShiftShapeForm(final String ID)
 		{
 			this.ID=ID;
 		}
@@ -122,7 +122,7 @@ public class Druid_ShapeShift extends StdAbility
 		if(shapeData == null)
 		{
 			shapeData = new Vector<ShiftShapeForm>();
-			List<String> lines=Resources.getFileLineVector(Resources.getFileResource(Resources.makeFileResourceName("skills/shapeshift.txt"), true));
+			final List<String> lines=Resources.getFileLineVector(Resources.getFileResource(Resources.makeFileResourceName("skills/shapeshift.txt"), true));
 			ShiftShapeForm f=null;
 			for(String s : lines)
 			{
@@ -137,12 +137,12 @@ public class Druid_ShapeShift extends StdAbility
 					else
 					if(f!=null)
 					{
-						int x=s.indexOf('=');
+						final int x=s.indexOf('=');
 						if(x>0)
 						{
-							String fieldName = s.substring(0,x).toUpperCase().trim();
-							String fieldValue = s.substring(x+1).trim();
-							ShiftShapeField field = (ShiftShapeField)CMath.s_valueOf(ShiftShapeField.class, fieldName);
+							final String fieldName = s.substring(0,x).toUpperCase().trim();
+							final String fieldValue = s.substring(x+1).trim();
+							final ShiftShapeField field = (ShiftShapeField)CMath.s_valueOf(ShiftShapeField.class, fieldName);
 							if(field == null)
 								Log.errOut("Druid_ShapeShift","Unknown field '"+fieldName+"' in shapeshift.txt");
 							else
@@ -180,7 +180,7 @@ public class Druid_ShapeShift extends StdAbility
 		}
 		return shapeData;
 	}
-	
+
 	@Override
 	public String displayText()
 	{
@@ -190,7 +190,7 @@ public class Druid_ShapeShift extends StdAbility
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		if(newText.length()>0)
 			myRaceCode=CMath.s_int(newText);
@@ -209,7 +209,7 @@ public class Druid_ShapeShift extends StdAbility
 			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
 			final int raceCode = getRaceCode();
 			final int maxRaceLevel = getMaxCharLevel(myRaceLevel);
-			final int adjustedLevel = ((maxRaceLevel<affectableStats.level()) ? maxRaceLevel : affectableStats.level()) + xlvl; 
+			final int adjustedLevel = ((maxRaceLevel<affectableStats.level()) ? maxRaceLevel : affectableStats.level()) + xlvl;
 			newRace.setHeightWeight(stats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
 			if(oldAdd>0)
 				stats.setWeight(stats.weight()+oldAdd);
@@ -248,7 +248,7 @@ public class Druid_ShapeShift extends StdAbility
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> revert(s) to @x1 form.",mob.charStats().raceName().toLowerCase()));
 	}
 
-	public int getClassLevel(MOB mob)
+	public int getClassLevel(final MOB mob)
 	{
 		final int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 		int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
@@ -257,14 +257,14 @@ public class Druid_ShapeShift extends StdAbility
 		return classLevel;
 	}
 
-	public void setRaceName(MOB mob)
+	public void setRaceName(final MOB mob)
 	{
 		final int classLevel=getClassLevel(mob);
 		raceName=getRaceName(classLevel,myRaceCode);
 		newRace=getRace(classLevel,myRaceCode);
 	}
 
-	public int getMaxRaceLevel(int classLevel)
+	public int getMaxRaceLevel(final int classLevel)
 	{
 		if(classLevel<6)
 			return 0;
@@ -281,7 +281,7 @@ public class Druid_ShapeShift extends StdAbility
 			return 4;
 	}
 
-	public int getMaxCharLevel(int raceLevel)
+	public int getMaxCharLevel(final int raceLevel)
 	{
 		switch(raceLevel)
 		{
@@ -298,12 +298,12 @@ public class Druid_ShapeShift extends StdAbility
 		}
 	}
 
-	public int getRaceLevel(MOB mob)
+	public int getRaceLevel(final MOB mob)
 	{
 		return getRaceLevel(getClassLevel(mob));
 	}
 
-	public int getRaceLevel(int classLevel)
+	public int getRaceLevel(final int classLevel)
 	{
 		final int maxLevel=getMaxRaceLevel(classLevel);
 		if((myRaceLevel<0)||(myRaceLevel>maxLevel))
@@ -313,24 +313,24 @@ public class Druid_ShapeShift extends StdAbility
 
 	public int getRaceCode()
 	{
-		if(myRaceCode<0) 
+		if(myRaceCode<0)
 			return 0;
 		return myRaceCode;
 	}
 
-	public Race getRace(int classLevel, int raceCode)
+	public Race getRace(final int classLevel, final int raceCode)
 	{
 		final List<ShiftShapeForm> forms = Druid_ShapeShift.getShapeData();
 		return CMClass.getRace(forms.get(myRaceCode).raceIDs[getRaceLevel(classLevel)]);
 	}
-	
-	public String getRaceName(int classLevel, int raceCode)
+
+	public String getRaceName(final int classLevel, final int raceCode)
 	{
 		final List<ShiftShapeForm> forms = Druid_ShapeShift.getShapeData();
 		return forms.get(myRaceCode).shapes[getRaceLevel(classLevel)];
 	}
 
-	public static boolean isShapeShifted(MOB mob)
+	public static boolean isShapeShifted(final MOB mob)
 	{
 		if(mob==null)
 			return false;
@@ -344,7 +344,7 @@ public class Druid_ShapeShift extends StdAbility
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -366,7 +366,7 @@ public class Druid_ShapeShift extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		for(final Enumeration<Ability> a=mob.personalEffects();a.hasMoreElements();)
 		{
@@ -381,22 +381,39 @@ public class Druid_ShapeShift extends StdAbility
 		this.myRaceLevel=-1;
 		final List<ShiftShapeForm> forms = Druid_ShapeShift.getShapeData();
 		final int[] racesTaken=new int[forms.size()];
-		Vector<Ability> allShapeshifts=new Vector<Ability>();
+		final Druid_ShapeShift[] racesHandlerA=new Druid_ShapeShift[forms.size()];
+		Vector<Druid_ShapeShift> allShapeshifts=new Vector<Druid_ShapeShift>();
 		if((myRaceCode>=0)&&(myRaceCode<racesTaken.length))
 			racesTaken[myRaceCode]++;
 
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			final Ability A=mob.fetchAbility(a);
-			if((A!=null)&&(A instanceof Druid_ShapeShift))
+			if((A!=null)
+			&&(A instanceof Druid_ShapeShift))
 			{
 				final Druid_ShapeShift D=(Druid_ShapeShift)A;
 				allShapeshifts.addElement(D);
-				if((D.myRaceCode>=0)&&(D.myRaceCode<racesTaken.length))
-					racesTaken[D.myRaceCode]++;
 			}
 		}
-
+		Collections.sort(allShapeshifts,new Comparator<Druid_ShapeShift>()
+		{
+			@Override
+			public int compare(final Druid_ShapeShift o1, final Druid_ShapeShift o2)
+			{
+				return o1.ID().compareTo(o2.ID());
+			}
+		});
+		for(final Ability A : allShapeshifts)
+		{
+			final Druid_ShapeShift D=(Druid_ShapeShift)A;
+			if((D.myRaceCode>=0)
+			&&(D.myRaceCode<racesTaken.length))
+			{
+				racesTaken[D.myRaceCode]++;
+				racesHandlerA[D.myRaceCode]=D;
+			}
+		}
 		if(myRaceCode<0)
 		{
 			if(mob.isMonster())
@@ -478,7 +495,7 @@ public class Druid_ShapeShift extends StdAbility
 		String parm=CMParms.combine(commands,0);
 		if(parm.length()>0)
 		{
-			final int raceLevel=getRaceLevel(mob);
+			final int raceLevel=(racesHandlerA[myRaceCode]!=null)?racesHandlerA[myRaceCode].getRaceLevel(mob):0;
 			for(int i1=raceLevel;i1>=0;i1--)
 			{
 				final String shape=forms.get(myRaceCode).shapes[i1];
@@ -508,15 +525,15 @@ public class Druid_ShapeShift extends StdAbility
 		if((triggerStrings().length>0)
 		&&(parm.length()>0))
 		{
-			final Vector<Ability> V=allShapeshifts;
-			allShapeshifts=new Vector<Ability>();
+			final Vector<Druid_ShapeShift> V=allShapeshifts;
+			allShapeshifts=new Vector<Druid_ShapeShift>();
 			while(V.size()>0)
 			{
-				Ability choice=null;
+				Druid_ShapeShift choice=null;
 				int sortByLevel=Integer.MAX_VALUE;
 				for(int v=0;v<V.size();v++)
 				{
-					final Ability A=V.elementAt(v);
+					final Druid_ShapeShift A=V.elementAt(v);
 					int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
 					if(lvl<=0)
 						lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
@@ -535,7 +552,7 @@ public class Druid_ShapeShift extends StdAbility
 			final StringBuffer list=new StringBuffer("");
 			for(int i=0;i<allShapeshifts.size();i++)
 			{
-				final Druid_ShapeShift A=(Druid_ShapeShift)allShapeshifts.elementAt(i);
+				final Druid_ShapeShift A=allShapeshifts.elementAt(i);
 				if(A.myRaceCode>=0)
 				{
 					if((A.raceName==null)||(A.raceName.length()==0))
@@ -573,7 +590,7 @@ public class Druid_ShapeShift extends StdAbility
 			{
 				if(iparm<=allShapeshifts.size())
 				{
-					final Ability A=allShapeshifts.elementAt(iparm-1);
+					final Druid_ShapeShift A=allShapeshifts.elementAt(iparm-1);
 					return A.invoke(mob,new Vector<String>(),givenTarget,auto,asLevel);
 				}
 			}
