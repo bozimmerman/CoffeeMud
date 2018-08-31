@@ -111,7 +111,7 @@ public class Thief extends StdCharClass
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -158,6 +158,7 @@ public class Thief extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Peek",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_UsePoison",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false,CMParms.parseSemicolons("Apothecary",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_RemoveTraps",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
@@ -253,7 +254,7 @@ public class Thief extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
@@ -267,7 +268,7 @@ public class Thief extends StdCharClass
 	}
 
 	@Override
-	public void grantAbilities(MOB mob, boolean isBorrowedClass)
+	public void grantAbilities(final MOB mob, final boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
 		if(mob.playerStats()==null)

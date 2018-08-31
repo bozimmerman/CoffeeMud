@@ -63,7 +63,7 @@ public class Burglar extends Thief
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -110,6 +110,7 @@ public class Burglar extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Peek",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Observation",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false,CMParms.parseSemicolons("Apothecary",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_RemoveTraps",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
