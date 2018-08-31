@@ -94,6 +94,7 @@ public class Thief_Informant extends ThiefSkill
 		if(alreadyNames.contains(M))
 			return null;
 
+		alreadyNames.add(M);
 		if(text().equals("Warrant"))
 		{
 			final LegalBehavior B=CMLib.law().getLegalBehavior(M.location());
