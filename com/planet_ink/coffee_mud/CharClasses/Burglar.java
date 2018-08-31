@@ -83,7 +83,6 @@ public class Burglar extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_EdgedWeapon",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_BluntWeapon",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Specialization_FlailedWeapon",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Apothecary",false,"+WIS 12");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"ThievesCant",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",50,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Swim",false);
@@ -110,7 +109,7 @@ public class Burglar extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Peek",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Observation",false);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false,CMParms.parseSemicolons("Apothecary",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_Informant",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_RemoveTraps",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Disarm",false);
