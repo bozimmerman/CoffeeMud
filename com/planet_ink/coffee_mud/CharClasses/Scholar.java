@@ -111,7 +111,7 @@ public class Scholar extends StdCharClass
 	private final Set<Integer> disallowedWeapons = buildDisallowedWeaponClasses();
 
 	@Override
-	protected Set<Integer> disallowedWeaponClasses(MOB mob)
+	protected Set<Integer> disallowedWeaponClasses(final MOB mob)
 	{
 		return disallowedWeapons;
 	}
@@ -139,26 +139,26 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Floristry",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_Recall",100,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Studying",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),2,"Labeling",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"PaperMaking",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Skill_CombatLog",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Thief_Mark",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),4,"Organizing",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Dissertating",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Skill_WandUse",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Fighter_SmokeSignals",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Titling",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_MorseCode",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"BookEditing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Druid_KnowPlants",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_SeaMapping",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_DecipherScript",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_RevealText",false);
@@ -166,59 +166,59 @@ public class Scholar extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Transcribing",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Semaphore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Skill_WildernessLore",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"BookNaming",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Speculate",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Siegecraft",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Thief_Lore",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_Skillcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),11,"Skill_SecretWriting",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_HonoraryDegreeCommoner", false, CMParms.parseSemicolons("Studying",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Skill_RacialLore", true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Cataloging",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Songcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Skill_Map",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Skill_HonoraryDegreeFighter",false, CMParms.parseSemicolons("Studying",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_Observation",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Thief_AnalyzeMark",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"PlantLore",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_HonoraryDegreeBard",false, CMParms.parseSemicolons("Studying",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"AttributeTraining",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Taxidermy",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Shush",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Skill_Prayercraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Thief_Appraise",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Recollecting",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),18,"Skill_HonoraryDegreeThief",false, CMParms.parseSemicolons("Studying",true));
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"ScrollScribing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Skill_Chantcraft",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Publishing",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_HonoraryDegreeMage",false, CMParms.parseSemicolons("Studying",true));
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_PlanarLore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Skill_EncryptedWriting",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Surveying",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Skill_HonoraryDegreeDruid",false, CMParms.parseSemicolons("Studying",true));
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Lecturing",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Thief_Comprehension",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Skill_HonoraryDegreeCleric",false, CMParms.parseSemicolons("Studying",true));
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Enrolling",true);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Skill_Guildmaster",true);
 	}
 
@@ -239,13 +239,13 @@ public class Scholar extends StdCharClass
 	}
 
 	@Override
-	public boolean canBeADivider(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
+	public boolean canBeADivider(final MOB killer, final MOB killed, final MOB mob, final Set<MOB> followers)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean canBeABenificiary(MOB killer, MOB killed, MOB mob, Set<MOB> followers)
+	public boolean canBeABenificiary(final MOB killer, final MOB killed, final MOB mob, final Set<MOB> followers)
 	{
 		return false;
 	}
@@ -258,12 +258,12 @@ public class Scholar extends StdCharClass
 		return 0;
 	}
 
-	private static final int[] FAV_DOMAINS= new int[] { 
-			Ability.DOMAIN_EDUCATIONLORE, Ability.DOMAIN_ARCANELORE, 
+	private static final int[] FAV_DOMAINS= new int[] {
+			Ability.DOMAIN_EDUCATIONLORE, Ability.DOMAIN_ARCANELORE,
 			Ability.DOMAIN_NATURELORE, Ability.DOMAIN_COMBATLORE,
 			Ability.DOMAIN_CALLIGRAPHY };
-	
-	public static void visitationBonusMessage(Environmental host, CMMsg msg)
+
+	public static void visitationBonusMessage(final Environmental host, final CMMsg msg)
 	{
 		if((msg.target() instanceof Room)
 		&&(msg.source()==host)
@@ -316,7 +316,7 @@ public class Scholar extends StdCharClass
 		if(msg.source()==myHost)
 		{
 			Scholar.visitationBonusMessage(myHost,msg);
-			
+
 			if((msg.targetMinor()==CMMsg.TYP_TEACH)
 			&&(msg.target() instanceof MOB))
 				CMLib.leveler().postExperience(msg.source(), null, null, 100, false);
@@ -337,7 +337,7 @@ public class Scholar extends StdCharClass
 					final Map<String,Object> persMap = Resources.getPersonalMap(msg.source(), true);
 					if(persMap != null)
 					{
-						int xp = 10;
+						final int xp = 10;
 						long[] xpTrap = (long[])persMap.get("SCHOLAR_MAPXP");
 						if(xpTrap == null)
 						{
@@ -378,7 +378,7 @@ public class Scholar extends StdCharClass
 				else
 				{
 					final String msgStr =msg.targetMessage().trim();
-					int numChars = msgStr.length()-CMStrings.countChars(msgStr, ' ');
+					final int numChars = msgStr.length()-CMStrings.countChars(msgStr, ' ');
 					if(numChars > 10)
 					{
 						final Map<String,Object> persMap = Resources.getPersonalMap(msg.source(), true);
@@ -434,12 +434,12 @@ public class Scholar extends StdCharClass
 					if((homeL!=null)
 					&&((homeL.toHoursSinceEpoc() - lastTime[0])>homeL.getHoursInDay()))
 					{
-						lastTime[0] = homeL.toHoursSinceEpoc(); 
+						lastTime[0] = homeL.toHoursSinceEpoc();
 						CMLib.leveler().postExperience(msg.source(), null, null, 25, false);
 					}
 				}
 			}
-			
+
 			if((((MOB)myHost).getVictim()!=msg.source())
 			&&(msg.source().getVictim()!=myHost)
 			&&(CMLib.dice().rollPercentage()<25)
@@ -490,17 +490,17 @@ public class Scholar extends StdCharClass
 	}
 
 	@Override
-	public List<Item> outfit(MOB myChar)
+	public List<Item> outfit(final MOB myChar)
 	{
 		if(outfitChoices == null)
 		{
 			outfitChoices=new Vector<Item>();
-			
+
 			final Weapon w=CMClass.getWeapon("Staff");
 			if(w == null)
 				return new Vector<Item>();
 			outfitChoices.add(w);
-			
+
 			final Item I=CMClass.getBasicItem("GenJournal");
 			I.setName(L("Scholar`s Logbook"));
 			I.setDisplayText(L("A Scholar`s Logbook has been left here."));
@@ -518,6 +518,6 @@ public class Scholar extends StdCharClass
 	@Override
 	public String getOtherBonusDesc()
 	{
-		return L("Earn experience from teaching skills, making maps, writing books, visiting bookstores/libraries, and using certain skills daily. Gives bonus profficiency gains for group members.");
+		return L("Earn experience from teaching skills, making maps, writing books, visiting bookstores/libraries, and using certain skills daily. Gives bonus proficiency gains for group members.");
 	}
 }

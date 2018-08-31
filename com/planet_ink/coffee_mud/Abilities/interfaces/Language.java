@@ -63,9 +63,9 @@ public interface Language extends Ability
 	public boolean translatesLanguage(String language);
 
 	/**
-	 * Returns the understanding profficiency in the given supported language
+	 * Returns the understanding proficiency in the given supported language
 	 * @param language the language to test for (usually ID())
-	 * @return the profficiency of this ability in the language (0-100)
+	 * @return the proficiency of this ability in the language (0-100)
 	 */
 	public int getProficiency(String language);
 
