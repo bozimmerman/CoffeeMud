@@ -95,11 +95,11 @@ public class Milkable extends StdAbility implements Drink
 	protected int		milkPerDay				= 1000;
 	protected int		milkRemain				= 1000;
 	protected int		amountOfThirstQuenched	= 100;
-	
+
 	protected volatile double refill			= 0;
 
 	@Override
-	public void setMiscText(String newMiscText)
+	public void setMiscText(final String newMiscText)
 	{
 		super.setMiscText(newMiscText);
 		drinkableMilkable=CMParms.getParmBool(newMiscText, "DRINK", false);
@@ -112,7 +112,7 @@ public class Milkable extends StdAbility implements Drink
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob, boolean force)
+	public boolean autoInvocation(final MOB mob, final boolean force)
 	{
 		final boolean worked = super.autoInvocation(mob, force);
 		if(mob.isPlayer() || (!mob.isMonster()))
@@ -138,9 +138,9 @@ public class Milkable extends StdAbility implements Drink
 				{
 					final TimeClock clock=A.getTimeObj();
 					final int ticksPerMudday=(int)((clock.getHoursInDay() * CMProps.getMillisPerMudHour()) / CMProps.getTickMillis());
-					double amt=CMath.div(liquidHeld(),ticksPerMudday);
+					final double amt=CMath.div(liquidHeld(),ticksPerMudday);
 					refill += amt;
-					int amtNow=(int)CMath.round(Math.floor(refill));
+					final int amtNow=(int)CMath.round(Math.floor(refill));
 					if(amtNow > 0)
 					{
 						setLiquidRemaining(liquidRemaining() + amtNow);
@@ -160,25 +160,26 @@ public class Milkable extends StdAbility implements Drink
 		if(affected instanceof MOB)
 		{
 			if(milkingOK
-			||((affected instanceof MOB)
-				&&(CMLib.flags().isBoundOrHeld(affected)))
-			||((affected instanceof MOB)
-				&&(((MOB)affected).isMonster())
+			||(CMLib.flags().isBoundOrHeld(affected))
+			||((((MOB)affected).isMonster())
 				&&(((MOB)affected).getStartRoom()!=null)
 				&&(milkingMOB!=null)
-				&&(CMLib.law().doesHavePriviledgesHere(milkingMOB, ((MOB)affected).getStartRoom()))))
+				&&(CMLib.law().doesHavePriviledgesHere(milkingMOB, ((MOB)affected).getStartRoom())))
+			||((((MOB)affected).isMonster())
+				&&(milkingMOB!=null)
+				&&(((MOB)affected).amUltimatelyFollowing()==milkingMOB)))
 					return true;
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		switch(msg.sourceMinor())
 		{
 		case CMMsg.TYP_COMMANDREJECT:
-			if((msg.targetMessage()!=null) 
+			if((msg.targetMessage()!=null)
 			&& this.drinkableMilkable
 			&& (msg.tool()==affected))
 			{
@@ -187,7 +188,7 @@ public class Milkable extends StdAbility implements Drink
 				if(cmds.size()==0)
 					return true;
 				final String word=cmds.get(0).toUpperCase();
-				if("FILL".startsWith(word) 
+				if("FILL".startsWith(word)
 				&& (isMilkingOK(msg.source())))
 				{
 					final CMMsg fillMsg=CMClass.getMsg(mob,msg.target(),this,CMMsg.MSG_FILL,L("<S-NAME> milk(s) <O-NAME>, filling <T-NAME>."));
@@ -253,8 +254,8 @@ public class Milkable extends StdAbility implements Drink
 					final String thingToFill=CMParms.combine(commands,fromDex);
 					while(commands.size()>=(fromDex+1))
 						commands.remove(commands.size()-1);
-					String thingToFillFrom=CMParms.combine(commands,0);
-					Environmental fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Wearable.FILTER_ANY);
+					final String thingToFillFrom=CMParms.combine(commands,0);
+					final Environmental fillFromThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,thingToFillFrom,Wearable.FILTER_ANY);
 					if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 					{
 						CMLib.commands().postCommandFail(mob,origCmds,L("I don't see @x1 here.",thingToFillFrom));
@@ -293,7 +294,7 @@ public class Milkable extends StdAbility implements Drink
 			break;
 		}
 		case CMMsg.TYP_DRINK:
-			if((msg.target()==affected) 
+			if((msg.target()==affected)
 			&& this.drinkableMilkable
 			&& (isMilkingOK(msg.source())))
 				msg.setTarget(this);
@@ -371,24 +372,24 @@ public class Milkable extends StdAbility implements Drink
 	}
 
 	@Override
-	public void setLiquidType(int newLiquidType)
+	public void setLiquidType(final int newLiquidType)
 	{
 		liquidType = newLiquidType;
 	}
 
 	@Override
-	public void setThirstQuenched(int amount)
+	public void setThirstQuenched(final int amount)
 	{
 		amountOfThirstQuenched = amount;
 	}
 
 	@Override
-	public void setLiquidHeld(int amount)
+	public void setLiquidHeld(final int amount)
 	{
 	}
 
 	@Override
-	public void setLiquidRemaining(int amount)
+	public void setLiquidRemaining(final int amount)
 	{
 		milkRemain=amount;
 	}
@@ -400,7 +401,7 @@ public class Milkable extends StdAbility implements Drink
 	}
 
 	@Override
-	public int amountTakenToFillMe(Drink theSource)
+	public int amountTakenToFillMe(final Drink theSource)
 	{
 		return 0;
 	}
@@ -412,7 +413,7 @@ public class Milkable extends StdAbility implements Drink
 	}
 
 	@Override
-	public void setDecayTime(long time)
+	public void setDecayTime(final long time)
 	{
 	}
 }
