@@ -272,8 +272,14 @@ public class Thief_Informant extends ThiefSkill
 		}
 		else
 		{
-			mob.tell(L("No one would even know how to inform you about @x1. Try warrant, an amount of money, a name, a class, or a race.",reason));
-			return false;
+			final Area A=CMLib.map().areaLocation(mob);
+			final MOB M=(A!=null)?CMLib.map().findFirstInhabitant(A.getProperMap(), mob, reason, 10):null;
+			if(M==null)
+			{
+				mob.tell(L("No one would even know how to inform you about @x1. Try warrant, an amount of money, a name, a class, or a race.",reason));
+				return false;
+			}
+			reason = M.Name();
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
