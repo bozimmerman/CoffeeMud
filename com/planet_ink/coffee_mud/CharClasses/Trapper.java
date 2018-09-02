@@ -88,6 +88,7 @@ public class Trapper extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Skill_Dodge",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_UsePoison",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Skill_IdentifyPoison",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Thief_MarkTrapped",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Thief_RemoveTraps",false);
@@ -149,7 +150,7 @@ public class Trapper extends Thief
 
 		// still not sure if this skill can be gamed or not, for infinite stuff
 		//CMLib.ableMapper().addCharAbilityMapping(ID(),27,"Thief_DisassembleTrap",false);
-		
+
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_DeathTrap",true);
 	}
 
@@ -196,7 +197,7 @@ public class Trapper extends Thief
 			&&(((MOB)msg.target()).getStartRoom()!=null)
 			&&(CMLib.map().areaLocation(myChar)!=CMLib.map().getStartArea(msg.target())))
 			{
-				int xp=125;
+				final int xp=125;
 				if((xp>0)&&CMLib.leveler().postExperience(myChar,null,null,xp,true))
 					msg.addTrailerMsg(CMClass.getMsg(myChar,null,null,CMMsg.MSG_OK_VISUAL,L("You gain @x1 experience for selling @x2.",""+xp,((MOB)msg.target()).name(myChar)),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 			}
@@ -250,7 +251,7 @@ public class Trapper extends Thief
 		new Pair<String,Integer>("Dexterity",Integer.valueOf(9)),
 		new Pair<String,Integer>("Constitution",Integer.valueOf(9))
 	};
-	
+
 	@Override
 	public Pair<String, Integer>[] getMinimumStatRequirements()
 	{
