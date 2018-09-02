@@ -761,7 +761,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 		if(layoutManager == null)
 			throw new CMException("Undefined Layout "+layoutType);
 		defined.put("AREA_LAYOUT",layoutManager.name());
-		final String size = findStringNow("size",piece,defined);
+		String size = findStringNow("size",piece,defined);
+		if(CMath.isMathExpression(size))
+			size=Integer.toString(CMath.parseIntExpression(size));
 		if((!CMath.isInteger(size))||(CMath.s_int(size)<=0))
 			throw new CMException("Unable to build area of size "+size);
 		defined.put("AREA_SIZE",size);
