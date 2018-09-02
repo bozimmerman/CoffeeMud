@@ -232,7 +232,7 @@ public class Hunting extends GatheringSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -245,7 +245,12 @@ public class Hunting extends GatheringSkill
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		final int resourceType=R.myResource();
+		int resourceType=R.myResource();
+		if((resourceType&RawMaterial.RESOURCE_MASK)>=RawMaterial.CODES.NAMES().length)
+		{
+			resourceType=0;
+			Log.errOut("Hunting","Room "+CMLib.map().getExtendedRoomID(R)+" had resource code "+R.myResource());
+		}
 		final String resourceName = RawMaterial.CODES.NAME(resourceType).toUpperCase();
 		final int domainType = R.domainType()&(~Room.INDOORS);
 		final String domainName;
@@ -262,7 +267,7 @@ public class Hunting extends GatheringSkill
 			&&(recipes.size()>0))
 			{
 				int totalWeights = 0;
-				List<List<String>> subset=new ArrayList<List<String>>();
+				final List<List<String>> subset=new ArrayList<List<String>>();
 				for(final List<String> subl : recipes)
 				{
 					if(subl.size()<4)
@@ -279,7 +284,7 @@ public class Hunting extends GatheringSkill
 				List<String> winl = null;
 				if(totalWeights > 0)
 				{
-					int winner=CMLib.dice().roll(1, totalWeights, -1);
+					final int winner=CMLib.dice().roll(1, totalWeights, -1);
 					int current = 0;
 					for(final List<String> subl : subset)
 					{
@@ -295,7 +300,7 @@ public class Hunting extends GatheringSkill
 				}
 				if(winl != null)
 				{
-					String mobID = winl.get(RCP_MOB);
+					final String mobID = winl.get(RCP_MOB);
 					MOB stdM = CMClass.getMOB(mobID);
 					if(stdM == null)
 						stdM = CMLib.catalog().getCatalogMob(mobID);
@@ -317,7 +322,7 @@ public class Hunting extends GatheringSkill
 						for(final GenericBuilder.GenMOBCode stat : GenericBuilder.GenMOBCode.values())
 						{
 							if(stat != GenericBuilder.GenMOBCode.ABILITY) // because this screws up gen hit points
-								genM.setStat(stat.name(), CMLib.coffeeMaker().getGenMobStat((MOB)stdM,stat.name()));
+								genM.setStat(stat.name(), CMLib.coffeeMaker().getGenMobStat(stdM,stat.name()));
 						}
 						genM.recoverCharStats();
 						genM.recoverPhyStats();
@@ -332,7 +337,7 @@ public class Hunting extends GatheringSkill
 					genM.recoverMaxState();
 					genM.resetToMaxState();
 					CMLib.leveler().fillOutMOB(genM,genM.basePhyStats().level());
-					
+
 					found=genM;
 					foundShortName=found.name();
 					int x=0;
