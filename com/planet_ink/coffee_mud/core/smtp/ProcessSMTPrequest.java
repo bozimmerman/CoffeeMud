@@ -42,8 +42,8 @@ public class ProcessSMTPrequest implements Runnable
 {
 	private final static String	cr				= "\r\n";
 	private final static String	S_250			= "250 OK";
-	private final static long	IDLE_TIMEOUT	= 10000;	
-	
+	private final static long	IDLE_TIMEOUT	= 10000;
+
 	private static volatile AtomicInteger instanceCnt = new AtomicInteger(0);
 
 	private Socket				sock;
@@ -56,14 +56,14 @@ public class ProcessSMTPrequest implements Runnable
 	protected boolean			debug	= false;
 	protected Vector<String>	to		= null;
 
-	public ProcessSMTPrequest(Socket a_sock, SMTPserver a_Server)
+	public ProcessSMTPrequest(final Socket a_sock, final SMTPserver a_Server)
 	{
 		runnableName="SMTPrq"+(instanceCnt.addAndGet(1));
 		server = a_Server;
 		sock = a_sock;
 	}
 
-	public String validLocalAccount(String s, boolean checkFROMcase)
+	public String validLocalAccount(final String s, final boolean checkFROMcase)
 	{
 		final int x=s.indexOf('@');
 		String name=s;
@@ -103,7 +103,7 @@ public class ProcessSMTPrequest implements Runnable
 		return null;
 	}
 
-	public MOB getAccountMob(String s)
+	public MOB getAccountMob(final String s)
 	{
 		MOB M=CMLib.players().getPlayer(s);
 		if(M == null)
@@ -134,7 +134,7 @@ public class ProcessSMTPrequest implements Runnable
 		return null;
 	}
 
-	public void cleanHtml(String journal, StringBuilder finalData)
+	public void cleanHtml(final String journal, final StringBuilder finalData)
 	{
 		if(journal!= null)
 		{
@@ -995,7 +995,7 @@ public class ProcessSMTPrequest implements Runnable
 						{
 							// we should be looping through these .. why does ZD act so wierd?!
 							//final byte [] resp=respQueue.getLast();
-							for(byte[] resp : respQueue)
+							for(final byte[] resp : respQueue)
 							{
 								if(debug)
 									Log.debugOut(runnableName,"Reply: "+CMStrings.replaceAll(new String(resp),cr,"\\r\\n"));
@@ -1022,6 +1022,25 @@ public class ProcessSMTPrequest implements Runnable
 			catch(final Exception e)
 			{
 				Log.errOut(runnableName,"Exception2: " + e.getMessage() );
+			}
+		}
+		catch (final java.net.SocketException e)
+		{
+			if((e != null)
+			&&(e.getMessage() != null)
+			&&(e.getMessage().toLowerCase().indexOf("connection reset")>=0))
+				Log.debugOut(runnableName,"Exception: " + e.getMessage() );
+			else
+			{
+				final String errorMessage=e.getMessage();
+				final StringBuilder msg = new StringBuilder(errorMessage==null?"EMPTY e.getMessage()":errorMessage);
+				final StackTraceElement[] ts = e.getStackTrace();
+				if(ts != null)
+				{
+					for(final StackTraceElement t : ts)
+						msg.append(" ").append(t.getFileName()).append("(").append(t.getLineNumber()).append(")");
+				}
+				Log.errOut(runnableName,"Exception: " + msg.toString() );
 			}
 		}
 		catch (final Exception e)
