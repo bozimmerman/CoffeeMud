@@ -88,7 +88,7 @@ public class Spell_Immunity extends Spell
 			return Integer.toString(immunityCode);
 		return "";
 	}
-	
+
 	@Override
 	public void setMiscText(final String misc)
 	{
@@ -127,7 +127,7 @@ public class Spell_Immunity extends Spell
 			break;
 		}
 	}
-	
+
 	@Override
 	public void unInvoke()
 	{
@@ -162,7 +162,7 @@ public class Spell_Immunity extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -181,7 +181,7 @@ public class Spell_Immunity extends Spell
 				immunityCode=-1;
 				final Spell_Immunity A=(Spell_Immunity)beneficialAffect(mob,target,asLevel,0);
 				if(A!=null)
-					setImmunityVars(CMLib.dice().roll(1,5,0));
+					A.setImmunityVars(CMLib.dice().roll(1,5,0));
 			}
 		}
 		else
