@@ -302,7 +302,6 @@ See guides/RandomAreas.html for information about documents of this type.
 				<ABILITY condition="$mob_level&gt;=50" class="Skill_Feint" parms="" />
 				<ABILITY condition="$mob_level&gt;=80" class="Chant_BloodyWater" parms="" />		
 			</ABILITY>
-			</ABILITY>
 			<ITEM select="any-1?4">
 				<ITEM class="GenArmor" LEVEL="$mob_level">
 					<NAME select="pick-1">
