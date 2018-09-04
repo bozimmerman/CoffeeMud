@@ -231,6 +231,18 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 					list.add(M);
 			}
 		}
+		for(final Iterator<MOB> i=list.iterator();i.hasNext();)
+		{
+			final MOB M=i.next();
+			if(M==null)
+				i.remove();
+			else
+			if(M.session()==null)
+				i.remove();
+			else
+			if(M.session().isStopped())
+				i.remove();
+		}
 		return list;
 	}
 
