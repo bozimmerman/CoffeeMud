@@ -242,6 +242,16 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 			else
 			if(M.session().isStopped())
 				i.remove();
+			else
+			{
+				final Room R=M.location();
+				if(R==null)
+					i.remove();
+				else
+				if((R.getArea()!=this)
+				&&(R.getArea()!=rec.A))
+					i.remove();
+			}
 		}
 		return list;
 	}
