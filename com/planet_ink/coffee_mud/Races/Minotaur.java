@@ -168,7 +168,7 @@ public class Minotaur extends StdRace
 		return racialAbilityParms;
 	}
 
-	private final String[]	culturalAbilityNames		= { "CowSpeak" };
+	private final String[]	culturalAbilityNames		= { "Gigantic" };
 	private final int[]		culturalAbilityProficiencies= { 100 };
 	private final int[]		culturalAbilityLevels		= { 1 };
 	private final boolean[]	culturalAbilityGains		= { true };
@@ -240,9 +240,9 @@ public class Minotaur extends StdRace
 		else
 			return L("^c@x1^c is in perfect health.^N",mob.name(viewer));
 	}
-	
+
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		switch(age)
 		{
@@ -294,5 +294,5 @@ public class Minotaur extends StdRace
 		}
 		return resources;
 	}
-	
+
 }
