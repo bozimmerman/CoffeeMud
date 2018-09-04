@@ -218,7 +218,7 @@ public class StdAutoGenInstance extends StdArea implements AutoGenArea
 				return obj.get();
 			}
 		}));
-		for(final Iterator<Session> s=CMLib.sessions().sessions();s.hasNext();)
+		for(final Iterator<Session> s=CMLib.sessions().allIterableAllHosts().iterator();s.hasNext();)
 		{
 			final Session S=s.next();
 			final MOB M=(S==null) ? null : S.mob();
