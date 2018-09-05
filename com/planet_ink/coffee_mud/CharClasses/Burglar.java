@@ -158,7 +158,7 @@ public class Burglar extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Racketeer",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_StripItem",true);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_UsePoison",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_AutoSwipe",false,CMParms.parseSemicolons("Thief_Swipe",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),22,"Thief_ImprovedSteal",false,CMParms.parseSemicolons("Thief_Steal",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),23,"Spell_AnalyzeDweomer",false);

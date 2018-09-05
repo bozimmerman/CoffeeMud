@@ -95,13 +95,13 @@ public class Thief_Swipe extends ThiefSkill
 	}
 
 	@Override
-	public void setAbilityCode(int newCode)
+	public void setAbilityCode(final int newCode)
 	{
 		code=newCode;
 	}
 
 	private final PairVector<MOB,Integer> lastOnes=new PairVector<MOB,Integer>();
-	protected int timesPicked(MOB target)
+	protected int timesPicked(final MOB target)
 	{
 		int times=0;
 		for(int x=0;x<lastOnes.size();x++)
@@ -122,7 +122,7 @@ public class Thief_Swipe extends ThiefSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -138,8 +138,46 @@ public class Thief_Swipe extends ThiefSkill
 		return super.castingQuality(mob,target);
 	}
 
+	protected int getBaseLevelDiff(final MOB mob, final MOB target)
+	{
+		// higher is good for the player, lower is good for the npc
+		// leveldiff is + when npc has advantage, and - when player does.
+		return target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
+	}
+
+	protected boolean getAllowedSwipe(final MOB mob, final MOB target)
+	{
+		final int levelDiff=getBaseLevelDiff(mob,target);
+		if((!target.mayIFight(mob))||(levelDiff>15))
+			return false;
+		return true;
+	}
+
+	protected int getDiscoverChance(final MOB mob, final MOB target)
+	{
+		// higher is good for the player, lower is good for the npc
+		// leveldiff is + when npc has advantage, and - when player does.
+		final int levelDiff=getBaseLevelDiff(mob,target);
+		int discoverChance=(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*3)
+				-(target.charStats().getStat(CharStats.STAT_WISDOM)*5)
+				-(levelDiff*3)
+				+(getX1Level(mob)*5);
+		if(!CMLib.flags().isAliveAwakeMobile(target,true))
+			discoverChance=100;
+		final int times=timesPicked(target);
+		if(times>5)
+			discoverChance-=(20*(times-5));
+		if(!CMLib.flags().canBeSeenBy(mob,target))
+			discoverChance+=50;
+		if(discoverChance>95)
+			discoverChance=95;
+		if(discoverChance<5)
+			discoverChance=5;
+		return discoverChance;
+	}
+
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))
 		{
@@ -156,8 +194,7 @@ public class Thief_Swipe extends ThiefSkill
 			return false;
 		}
 
-		int levelDiff=target.phyStats().level()-(mob.phyStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
-		if((!target.mayIFight(mob))||(levelDiff>15))
+		if(!getAllowedSwipe(mob,target))
 		{
 			mob.tell(L("You cannot swipe from @x1.",target.charStats().himher()));
 			return false;
@@ -171,33 +208,16 @@ public class Thief_Swipe extends ThiefSkill
 			return false;
 
 		final String currency=CMLib.beanCounter().getCurrency(target);
-		// higher is good for the player, lower is good for the npc
-		// leveldiff is + when npc has advantage, and - when player does.
-		int discoverChance=(mob.charStats().getStat(CharStats.STAT_DEXTERITY)*3)
-							-(target.charStats().getStat(CharStats.STAT_WISDOM)*5)
-							-(levelDiff*3)
-							+(getX1Level(mob)*5);
-		final int times=timesPicked(target);
-		if(times>5)
-			discoverChance-=(20*(times-5));
-		if(!CMLib.flags().canBeSeenBy(mob,target))
-			discoverChance+=50;
-		if(discoverChance>95)
-			discoverChance=95;
-		if(discoverChance<5)
-			discoverChance=5;
+		final int discoverChance=this.getDiscoverChance(mob, target);
 
+		int levelDiff = this.getBaseLevelDiff(mob, target);
 		if(levelDiff>0)
 			levelDiff=-(levelDiff*((!CMLib.flags().canBeSeenBy(mob,target))?5:15));
 		else
 			levelDiff=-(levelDiff*((CMLib.flags().canBeSeenBy(mob,target))?1:2));
 		if(!CMLib.flags().isAliveAwakeMobile(target,true))
-		{
 			levelDiff=100;
-			discoverChance=100;
-		}
 		final boolean success=proficiencyCheck(mob,levelDiff,auto);
-
 		if(!success)
 		{
 			if(CMLib.dice().rollPercentage()>discoverChance)
