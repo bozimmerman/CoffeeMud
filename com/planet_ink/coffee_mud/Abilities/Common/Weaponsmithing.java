@@ -113,7 +113,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	protected boolean doLearnRecipe(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		fireRequired=false;
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
@@ -181,7 +181,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	protected int specClass(String weaponClass)
+	protected int specClass(final String weaponClass)
 	{
 		for(int i=0;i<Weapon.CLASS_DESCS.length;i++)
 		{
@@ -191,7 +191,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return -1;
 	}
 
-	protected int specType(String weaponDamageType)
+	protected int specType(final String weaponDamageType)
 	{
 		for(int i=0;i<Weapon.TYPE_DESCS.length;i++)
 		{
@@ -207,7 +207,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	 * and how it worked, for answering future questions, so leaving the
 	 * prototype and just not calling it
 	 */
-	protected boolean canDo(String weaponClass, MOB mob)
+	protected boolean canDo(final String weaponClass, final MOB mob)
 	{
 		if((mob.isMonster())&&(!CMLib.flags().isAnimalIntelligence(mob)))
 			return true;
@@ -284,13 +284,13 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean supportsMending(Physical I)
+	public boolean supportsMending(final Physical I)
 	{
 		return canMend(null, I, true);
 	}
 
 	@Override
-	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
@@ -311,14 +311,14 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-									final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+									final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -326,7 +326,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -450,7 +450,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				{
 					final int level=CMath.s_int(V.get(RCP_LEVEL));
 					if((autoGenerate>0)
-					||((level<=mob.phyStats().level())&&(canDo(V.get(RCP_WEAPONCLASS),mob))))
+					||((level<=xlevel(mob))&&(canDo(V.get(RCP_WEAPONCLASS),mob))))
 					{
 						foundRecipe=V;
 						recipeLevel=level;
