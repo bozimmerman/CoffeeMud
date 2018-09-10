@@ -134,11 +134,13 @@ public class Channel extends StdCommand
 		&&(CMath.isNumber(commands.get(commands.size()-1))))
 		{
 			int num=CMath.s_int(commands.get(commands.size()-1));
+			int lastNum=num;
 			final List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt, 0, num);
 			boolean showedAny=false;
-			if(que.size()>0)
+			while(que.size()>0)
 			{
-				if(num>que.size())
+				final boolean allDone=num>que.size();
+				if(allDone)
 					num=que.size();
 				final boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 				long elapsedTime=0;
@@ -150,6 +152,8 @@ public class Channel extends StdCommand
 					if(showThese.size()>num)
 						showThese.removeFirst();
 				}
+				int numSkipped = 0;
+				que.clear();
 				for(final ChannelsLibrary.ChannelMsg msg : showThese)
 				{
 					final CMMsg modMsg = (CMMsg)msg.msg().copyOf();
@@ -174,7 +178,16 @@ public class Channel extends StdCommand
 						modMsg.setTargetCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt));
 					if(CMath.bset(modMsg.othersCode(),CMMsg.MASK_CHANNEL))
 						modMsg.setOthersCode(CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt));
-					showedAny=CMLib.channels().sendChannelCMMsgTo(mob.session(),areareq,channelInt,modMsg,modMsg.source())||showedAny;
+					final boolean showedThis = CMLib.channels().sendChannelCMMsgTo(mob.session(),areareq,channelInt,modMsg,modMsg.source());
+					if(!showedThis)
+						numSkipped++;
+					showedAny=showedAny || showedThis;
+				}
+				if((!allDone) && (numSkipped > 0))
+				{
+					num = numSkipped;
+					que.addAll(CMLib.channels().getChannelQue(channelInt, lastNum, num));
+					lastNum += num;
 				}
 			}
 			if(!showedAny)
