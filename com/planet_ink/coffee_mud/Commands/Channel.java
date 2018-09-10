@@ -47,14 +47,14 @@ public class Channel extends StdCommand
 	private final static Class<?>[][] internalParameters=new Class<?>[][]{{Boolean.class,String.class,String.class}};
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		return channel(mob, commands, false);
 	}
 
 	@Override
-	public Object executeInternal(MOB mob, int metaFlags, Object... args) throws java.io.IOException
+	public Object executeInternal(final MOB mob, final int metaFlags, final Object... args) throws java.io.IOException
 	{
 		if(!super.checkArguments(internalParameters, args))
 			return Boolean.FALSE;
@@ -65,7 +65,7 @@ public class Channel extends StdCommand
 		return Boolean.TRUE;
 	}
 
-	public boolean channel(MOB mob, List<String> commands, boolean systemMsg)
+	public boolean channel(final MOB mob, final List<String> commands, final boolean systemMsg)
 	{
 		final PlayerStats pstats=mob.playerStats();
 		final String channelName=commands.get(0).toUpperCase().trim();
@@ -92,7 +92,7 @@ public class Channel extends StdCommand
 			mob.tell(L("This channel is not available to you."));
 			return false;
 		}
-		
+
 		if(commands.size()==0)
 		{
 			int size = CMLib.channels().getChannelQue(channelInt, 0, 5).size();
@@ -201,7 +201,6 @@ public class Channel extends StdCommand
 			mob.tell(L("This channel is read-only."));
 			return false;
 		}
-		
 		else
 			CMLib.channels().createAndSendChannelMessage(mob,channelName,CMParms.combine(commands,0),systemMsg);
 		return false;
