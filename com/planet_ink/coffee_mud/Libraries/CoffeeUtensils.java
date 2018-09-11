@@ -1733,6 +1733,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							}
 						}
 					}
+					c++;
 					break;
 				}
 				case 'Y':
@@ -1753,6 +1754,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 							}
 						}
 					}
+					c++;
 					break;
 				}
 				case 'z':
