@@ -896,7 +896,7 @@
 </CLANTYPE>
 <CLANTYPE TYPEID=6 NAME="ANARCHY" CATEGORY="">
     <SHORTDESC>anyone can join, anyone can do anything</SHORTDESC>
-    <LONGDESC>The most primitive and purely human of social arrangements. Anyone can join, so there is no acceptance or rejection.  Any member can perform any clan function, from moving the clan home to declaring war.</LONGDESC>
+    <LONGDESC>The most primitive and purely human of social arrangements. Anyone can join, so there is no acceptance or rejection.  Any member can perform any clan function, from moving the clan home to managing clan bank accounts.  Anarchys may not, however, declare war.</LONGDESC>
     <POSITIONS>
         <POSITION ID="FREEMAN" ROLEID=0 RANK=0 NAME="FREEMAN" PLURAL="FREEMEN" MAX=2147483647 INNERMASK="" PUBLIC="true">
             <POWER>SET_HOME</POWER>
