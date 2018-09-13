@@ -112,7 +112,7 @@ public class Spell_LightSensitivity extends Spell
 			switch(msg.sourceMinor())
 			{
 			case CMMsg.TYP_EXAMINE:
-				if(isLightBlind(msg.source()))
+				if(isLightBlind(msg.source()) && (!(msg.target() instanceof Room)))
 				{
 					msg.source().tell(L("You can't seem to make it out that well in this bright light."));
 					return false;
@@ -158,7 +158,7 @@ public class Spell_LightSensitivity extends Spell
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -179,7 +179,7 @@ public class Spell_LightSensitivity extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)
