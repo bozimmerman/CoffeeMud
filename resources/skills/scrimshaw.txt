@@ -69,7 +69,7 @@ hardened % skewer	36	40	3	481	GenWeapon	DAGGER	13
 hardened % short sword	37	90	5	1306	GenWeapon	SWORD	28	
 hardened small skull mace	38	70	12	1409	GenWeapon	BLUNT	28	
 large % twenty-sided die	39	90	2	72	GenDice		20	
-hardened  % bracers	39	40	3	100	GenArmor	S0:LEFT WRIST||RIGHT WRIST	6	
+hardened % bracers	39	40	3	100	GenArmor	S0:LEFT WRIST||RIGHT WRIST	6	
 % figurine	41	40	2	33	GenItem	STATUE		
 % thirty-sided die	42	90	1	39	GenDice		30	
 hardened % breast plate	42	60	13	780	GenArmor	S0:TORSO	26	
