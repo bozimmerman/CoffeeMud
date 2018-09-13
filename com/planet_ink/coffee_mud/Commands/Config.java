@@ -49,7 +49,7 @@ public class Config extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		String postStr="";
@@ -57,7 +57,7 @@ public class Config extends StdCommand
 		{
 			final String name=commands.get(1);
 			MOB.Attrib finalA=null;
-			for(MOB.Attrib a : MOB.Attrib.values())
+			for(final MOB.Attrib a : MOB.Attrib.values())
 			{
 				if(name.equalsIgnoreCase(a.getName()))
 					finalA=a;
@@ -120,13 +120,13 @@ public class Config extends StdCommand
 			}
 			mob.tell(postStr);
 		}
-		
+
 		final StringBuffer msg=new StringBuffer(L("^HYour configuration flags:^?\n\r"));
 		final List<MOB.Attrib> sorted = new XVector<MOB.Attrib>(MOB.Attrib.values());
 		Collections.sort(sorted,new Comparator<MOB.Attrib>()
 		{
 			@Override
-			public int compare(Attrib o1, Attrib o2)
+			public int compare(final Attrib o1, final Attrib o2)
 			{
 				return o1.getName().compareTo(o2.getName());
 			}
@@ -140,7 +140,7 @@ public class Config extends StdCommand
 
 			msg.append("^W"+CMStrings.padRight(a.getName(),15)+"^N: ");
 			boolean set=mob.isAttributeSet(a);
-			if(a.isAutoReversed()) 
+			if(a.isAutoReversed())
 				set=!set;
 			msg.append(set?L("^gON"):L("^rOFF"));
 			msg.append("\n\r");
@@ -152,10 +152,10 @@ public class Config extends StdCommand
 			msg.append("^W"+CMStrings.padRight(L("LINEWRAP"),15)+"^N: ^w"+wrap);
 			if((mob.session()!=null)&&(mob.playerStats().getWrap() != mob.session().getWrap()))
 				msg.append(" ("+mob.session().getWrap()+")");
-			msg.append("\n\r");
+			msg.append("^N^.\n\r");
 			final String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"^rDisabled";
 			msg.append("^w"+CMStrings.padRight(L("PAGEBREAK"),15)+"^N: ^w"+pageBreak);
-			msg.append("\n\r");
+			msg.append("^N^.\n\r");
 		}
 		msg.append("^N");
 		mob.tell(msg.toString());
