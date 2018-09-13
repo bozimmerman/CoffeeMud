@@ -55,7 +55,8 @@ public class Spell_LightSensitivity extends Spell
 	@Override
 	public String displayText()
 	{
-		if((affected instanceof MOB) && (this.isLightBlind((MOB)affected)))
+		final Physical P=this.affected;
+		if((P instanceof MOB) && (isLightBlind((MOB)P)))
 			return localizedStaticDisplay;
 		return "";
 	}
