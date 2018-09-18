@@ -710,6 +710,13 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				recoverPhyStats();
 			}
 			break;
+		case CMMsg.TYP_BUY:
+			if((msg.tool()==this)
+			&&(msg.target() instanceof ShopKeeper))
+			{
+				setHomePortID(""); // buying resets the home port.
+			}
+			break;
 		case CMMsg.TYP_GIVE:
 			if((msg.tool()==this)
 			&&(getOwnerName().length()>0)
