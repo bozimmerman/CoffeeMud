@@ -710,13 +710,6 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 				recoverPhyStats();
 			}
 			break;
-		case CMMsg.TYP_BUY:
-			if((msg.tool()==this)
-			&&(msg.target() instanceof ShopKeeper))
-			{
-				setHomePortID(""); // buying resets the home port.
-			}
-			break;
 		case CMMsg.TYP_GIVE:
 			if((msg.tool()==this)
 			&&(getOwnerName().length()>0)
@@ -821,6 +814,7 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 					}
 					else
 					{
+						me.setHomePortID("");
 						me.dockHere(finalR);
 						buyer.tell(L("You'll find your ship docked at '@x1'.",finalR.displayText(buyer)));
 					}
@@ -888,7 +882,10 @@ public class StdBoardable extends StdPortal implements PrivateProperty, Boardabl
 			if(finalR==null)
 				Log.errOut("Could not dock ship in area "+R.getArea().Name()+" due to lack of docks.");
 			else
+			{
+				this.setHomePortID("");
 				dockHere(finalR);
+			}
 		}
 	}
 
