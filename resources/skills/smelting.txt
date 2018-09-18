@@ -6,3 +6,5 @@ steel	15	120	(onground:consumed:1:IRON:)&&(onground:consumed:1:COAL:)	75	GenReso
 stainless steel	20	120	(onground:consumed:1:STEEL:)&&(onground:consumed:1:CHROMIUM:)	60	GenResource	STEEL	STAINLESS STEEL	
 adamantite	30	250	(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:STEEL:)	175	GenResource	ADAMANTITE		
 atlantite	40	200	(onground:consumed:1:MITHRIL:)&&(onground:consumed:1:SEAWEED:)	200	GenResource	ATLANTITE		
+white gold	25	90	(onground:consumed:1:GOLD:)&&(onground:consumed:1:PLATINUM:)	450	GenResource	WHITE GOLD		
+rose gold	22	60	(onground:consumed:1:GOLD:)&&(onground:consumed:1:COPPER:)	75	GenResource	GOLD	ROSE GOLD	
