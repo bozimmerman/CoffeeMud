@@ -1239,6 +1239,18 @@ public interface DatabaseEngine extends CMLibrary
 
 	/**
 	 * Table category: DBJOURNALS
+	 * Returns the timestamp of the message at the top of every page, given the limit.
+	 *
+	 * @param journalID the name of the journal/forum to load from
+	 * @param parent the parent message (for getting replies), or null
+	 * @param searchStr the string to search for in the msg/subject, or null
+	 * @param limit the maximum number of messages to return
+	 * @return the list of timestamps for each page
+	 */
+	public List<Long> DBReadJournalPages(String journalID, String parent, String searchStr, int limit);
+
+	/**
+	 * Table category: DBJOURNALS
 	 * Returns all the messages in the given journal, optionally sorted by update date, ascending.
 	 * This is a legacy method, and should be used with care.
 	 * @see DatabaseEngine#DBReadJournalMsgsByUpdateDate(String, boolean, int)

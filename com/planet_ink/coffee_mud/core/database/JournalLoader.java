@@ -36,14 +36,14 @@ import java.util.*;
 public class JournalLoader
 {
 	protected DBConnector DB=null;
-	public JournalLoader(DBConnector newDB)
+	public JournalLoader(final DBConnector newDB)
 	{
 		DB=newDB;
 	}
 
 	public int DBCount(String journal, String from, String to)
 	{
-		if(journal==null) 
+		if(journal==null)
 			return 0;
 
 		journal	= DB.injectionClean(journal);
@@ -112,7 +112,7 @@ public class JournalLoader
 		return realName;
 	}
 
-	public long[] DBJournalLatestDateNewerThan(String journal, String to, long olderTime)
+	public long[] DBJournalLatestDateNewerThan(String journal, String to, final long olderTime)
 	{
 		journal = DB.injectionClean(journal);
 		to		= DB.injectionClean(to);
@@ -123,7 +123,7 @@ public class JournalLoader
 		{
 			D=DB.DBFetch(); // add max and count to fakedb
 			String sql="SELECT CMUPTM FROM CMJRNL WHERE CMJRNL='"+journal+"' AND CMUPTM > " + olderTime;
-			if(to != null) 
+			if(to != null)
 				sql +=" AND CMTONM='"+to+"'";
 			final ResultSet R=D.query(sql);
 			while(R.next())
@@ -176,7 +176,7 @@ public class JournalLoader
 		return journals;
 	}
 
-	protected JournalEntry DBReadJournalEntry(ResultSet R)
+	protected JournalEntry DBReadJournalEntry(final ResultSet R)
 	{
 		final JournalEntry entry=(JournalEntry)CMClass.getCommon("DefaultJournalEntry");
 		entry.key		(DBConnections.getRes(R,"CMJKEY"));
@@ -215,20 +215,20 @@ public class JournalLoader
 			final char c=subject.charAt(3);
 			entry.subj(entry.subj().substring(4));
 			long last=entry.date();
-			if(c=='D') 
+			if(c=='D')
 				last=last+TimeManager.MILI_DAY;
 			else
-			if(c=='M') 
+			if(c=='M')
 				last=last+TimeManager.MILI_MONTH;
 			else
-			if(c=='Y') 
+			if(c=='Y')
 				last=last+TimeManager.MILI_YEAR;
 			entry.update(last);
 		}
 		return entry;
 	}
 
-	public List<JournalEntry> DBReadJournalPageMsgs(String journal, String parent, String searchStr, long newerDate, int limit)
+	public List<JournalEntry> DBReadJournalPageMsgs(String journal, String parent, String searchStr, final long newerDate, final int limit)
 	{
 		journal		= DB.injectionClean(journal);
 		parent		= DB.injectionClean(parent);
@@ -323,6 +323,86 @@ public class JournalLoader
 		return journalV;
 	}
 
+	public List<Long> DBReadJournalPages(String journal, String parent, String searchStr, final int limit)
+	{
+		journal		= DB.injectionClean(journal);
+		parent		= DB.injectionClean(parent);
+		searchStr	= DB.injectionClean(searchStr);
+
+		final boolean searching=((searchStr!=null)&&(searchStr.length()>0));
+
+		final Vector<Long> journalV=new Vector<Long>();
+		DBConnection D=null;
+		try
+		{
+			D=DB.DBFetch();
+			String sql="SELECT * FROM CMJRNL WHERE CMUPTM > 0"; // <0 are the meta msgs
+
+			if((journal!=null)&&(journal.length()>0))
+				sql += " AND CMJRNL='"+journal+"'";
+			if(parent != null)
+				sql += " AND CMPART='"+parent+"'";
+			if(searching)
+				sql += " AND (CMSUBJ LIKE '%"+searchStr+"%' OR CMMSGT LIKE '%"+searchStr+"%')";
+			sql += " ORDER BY CMUPTM";
+			if((parent==null)||(parent.length()>0))
+				sql += " ASC";
+			else
+				sql += " DESC";
+
+			final ResultSet R=D.query(sql);
+			JournalEntry entry;
+			final Map<String,JournalEntry> parentKeysDone=new HashMap<String,JournalEntry>();
+			boolean done=false;
+			while( (!done) && R.next())
+			{
+				entry = DBReadJournalEntry(R);
+				if(searching)
+				{
+					final long updated=entry.update();
+					final String parentKey=((entry.parent()!=null)&&(entry.parent().length()>0)) ? entry.parent() : entry.key();
+					if(parentKeysDone.containsKey(parentKey))
+					{
+						parentKeysDone.get(parentKey).update(updated);
+						continue;
+					}
+					if((entry.parent()!=null)&&(entry.parent().length()>0))
+					{
+						final JournalEntry oldEntry=entry;
+						entry=DBReadJournalEntry(journal, entry.parent());
+						if(entry==null)
+							entry=oldEntry;
+					}
+					parentKeysDone.put(entry.key(),entry);
+					entry.update(updated);
+				}
+				journalV.addElement(new Long(entry.update()));
+				if(limit > 0)
+				{
+					done=true;
+					for(int i=0;i<limit-1;i++)
+					{
+						done = !R.next();
+						if(done)
+							break;
+					}
+				}
+			}
+			if(CMSecurity.isDebugging(CMSecurity.DbgFlag.CMJRNL))
+				Log.debugOut("JournalLoader","Query ("+journalV.size()+"): "+sql);
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("Journal",sqle);
+			return null;
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+		return journalV;
+	}
+
 	public List<JournalEntry> DBSearchAllJournalEntries(String journal, String searchStr)
 	{
 		journal		= DB.injectionClean(journal);
@@ -350,7 +430,7 @@ public class JournalLoader
 		}
 	}
 
-	public List<JournalEntry> DBReadJournalMsgsNewerThan(String journal, String to, long olderDate)
+	public List<JournalEntry> DBReadJournalMsgsNewerThan(String journal, String to, final long olderDate)
 	{
 		journal	= DB.injectionClean(journal);
 		to		= DB.injectionClean(to);
@@ -360,7 +440,7 @@ public class JournalLoader
 		{
 			D=DB.DBFetch();
 			String sql="SELECT CMJKEY FROM CMJRNL WHERE CMUPTM > " + olderDate+" AND CMJRNL='"+journal+"'";
-			if(to != null) 
+			if(to != null)
 				sql += " AND CMTONM='"+to+"'";
 			sql += " ORDER BY CMUPTM ASC";
 			final ResultSet R=D.query(sql);
@@ -376,15 +456,15 @@ public class JournalLoader
 			DB.DBDone(D);
 		}
 	}
-	
+
 	public List<JournalEntry> makeJournalEntryList(final String journalID, final ResultSet R) throws SQLException
 	{
 		return makeJournalEntryList(journalID, R, Long.MAX_VALUE);
 	}
-	
+
 	public List<JournalEntry> makeJournalEntryList(final String journalID, final ResultSet R, long limit) throws SQLException
 	{
-		List<String> ids = new ArrayList<String>();
+		final List<String> ids = new ArrayList<String>();
 		while(R.next() && (--limit>=0))
 			ids.add(R.getString("CMJKEY"));
 		R.close();
@@ -392,7 +472,7 @@ public class JournalLoader
 		return new FullConvertingList<String,JournalEntry>(ids, new FullConverter<String,JournalEntry>()
 		{
 			@Override
-			public JournalEntry convert(int cardinal, String obj)
+			public JournalEntry convert(final int cardinal, final String obj)
 			{
 				final JournalEntry j=DBReadJournalEntry(journalID, obj);
 				if(j != null)
@@ -406,14 +486,14 @@ public class JournalLoader
 			}
 
 			@Override
-			public String reverseConvert(JournalEntry obj)
+			public String reverseConvert(final JournalEntry obj)
 			{
 				return obj==null ? "" : obj.key();
 			}
 		});
 	}
 
-	public List<JournalEntry> DBReadJournalMsgsOlderThan(String journal, String to, long newestDate)
+	public List<JournalEntry> DBReadJournalMsgsOlderThan(String journal, String to, final long newestDate)
 	{
 		journal	= DB.injectionClean(journal);
 		to		= DB.injectionClean(to);
@@ -423,7 +503,7 @@ public class JournalLoader
 		{
 			D=DB.DBFetch();
 			String sql="SELECT CMJKEY FROM CMJRNL WHERE CMUPTM < " + newestDate + " AND CMJRNL='"+journal+"'";
-			if(to != null) 
+			if(to != null)
 				sql += " AND CMTONM='"+to+"'";
 			sql += "ORDER BY CMUPTM ASC";
 			final ResultSet R=D.query(sql);
@@ -440,11 +520,11 @@ public class JournalLoader
 		}
 	}
 
-	public List<JournalEntry> DBReadJournalMsgsSorted(String journal, boolean ascending, long limit, boolean useUpdateSort)
+	public List<JournalEntry> DBReadJournalMsgsSorted(String journal, final boolean ascending, final long limit, final boolean useUpdateSort)
 	{
 		journal = DB.injectionClean(journal);
 
-		if(journal==null) 
+		if(journal==null)
 			return new Vector<JournalEntry>();
 		synchronized(journal.toUpperCase().intern())
 		{
@@ -469,11 +549,11 @@ public class JournalLoader
 		}
 	}
 
-	public List<JournalEntry> DBReadJournalMsgsSorted(String journal, boolean ascending, int limit, String[] tos, boolean useUpdateSort)
+	public List<JournalEntry> DBReadJournalMsgsSorted(String journal, final boolean ascending, final int limit, final String[] tos, final boolean useUpdateSort)
 	{
 		journal = DB.injectionClean(journal);
 
-		if(journal==null) 
+		if(journal==null)
 			return new Vector<JournalEntry>();
 		synchronized(journal.toUpperCase().intern())
 		{
@@ -485,7 +565,7 @@ public class JournalLoader
 				String sql="SELECT CMJKEY FROM CMJRNL WHERE CMJRNL='"+journal+"'";
 				if((tos != null)&&(tos.length>0))
 				{
-					StringBuilder orBox = new StringBuilder("");
+					final StringBuilder orBox = new StringBuilder("");
 					for(String to : tos)
 					{
 						if(orBox.length()>0)
@@ -519,7 +599,7 @@ public class JournalLoader
 		journal	= DB.injectionClean(journal);
 		messageKey		= DB.injectionClean(messageKey);
 
-		if(journal==null) 
+		if(journal==null)
 			return null;
 		synchronized(journal.toUpperCase().intern())
 		{
@@ -548,13 +628,13 @@ public class JournalLoader
 		}
 	}
 
-	public int getFirstMsgIndex(List<JournalEntry> journal, String from, String to, String subj)
+	public int getFirstMsgIndex(final List<JournalEntry> journal, String from, String to, String subj)
 	{
 		from	= DB.injectionClean(from);
 		to		= DB.injectionClean(to);
 		subj	= DB.injectionClean(subj);
 
-		if(journal==null) 
+		if(journal==null)
 			return -1;
 		for(int i=0;i<journal.size();i++)
 		{
@@ -570,7 +650,7 @@ public class JournalLoader
 		return -1;
 	}
 
-	public void DBUpdateJournal(String key, String subject, String msg, long newAttributes)
+	public void DBUpdateJournal(String key, String subject, String msg, final long newAttributes)
 	{
 		key = DB.injectionClean(key);
 		subject = DB.injectionClean(subject);
@@ -582,7 +662,7 @@ public class JournalLoader
 		DB.updateWithClobs(sql,subject,msg);
 	}
 
-	public void DBUpdateJournal(String journal, JournalEntry entry)
+	public void DBUpdateJournal(String journal, final JournalEntry entry)
 	{
 		journal			=DB.injectionClean(journal);
 		entry.data		(DB.injectionClean(entry.data()));
@@ -619,12 +699,12 @@ public class JournalLoader
 		DB.updateWithClobs(sql, entry.msg());
 	}
 
-	public void DBTouchJournalMessage(String key)
+	public void DBTouchJournalMessage(final String key)
 	{
 		DBTouchJournalMessage(key,System.currentTimeMillis());
 	}
 
-	public void DBTouchJournalMessage(String key, long newDate)
+	public void DBTouchJournalMessage(String key, final long newDate)
 	{
 		key = DB.injectionClean(key);
 		final String sql="UPDATE CMJRNL SET CMUPTM="+newDate+" WHERE CMJKEY='"+key+"'";
@@ -633,7 +713,7 @@ public class JournalLoader
 		DB.update(sql);
 	}
 
-	public void DBUpdateMessageReplies(String messageKey, int numReplies)
+	public void DBUpdateMessageReplies(String messageKey, final int numReplies)
 	{
 		messageKey = DB.injectionClean(messageKey);
 		final String sql="UPDATE CMJRNL SET CMUPTM="+System.currentTimeMillis()+", CMREPL="+numReplies+" WHERE CMJKEY='"+messageKey+"'";
@@ -642,7 +722,7 @@ public class JournalLoader
 		DB.update(sql);
 	}
 
-	public void DBUpdateJournalMessageViews(String key, int views)
+	public void DBUpdateJournalMessageViews(String key, final int views)
 	{
 		key = DB.injectionClean(key);
 		final String sql="UPDATE CMJRNL SET CMVIEW="+views+" WHERE CMJKEY='"+key+"'";
@@ -697,7 +777,7 @@ public class JournalLoader
 		}
 	}
 
-	public void DBUpdateJournalMetaData(String journal, JournalsLibrary.JournalMetaData metaData)
+	public void DBUpdateJournalMetaData(String journal, final JournalsLibrary.JournalMetaData metaData)
 	{
 		journal = DB.injectionClean(journal);
 		metaData.imagePath	(DB.injectionClean(metaData.imagePath()));
@@ -749,7 +829,7 @@ public class JournalLoader
 		}
 	}
 
-	public void DBReadJournalSummaryStats(String journalID, JournalsLibrary.JournalMetaData metaData)
+	public void DBReadJournalSummaryStats(final String journalID, final JournalsLibrary.JournalMetaData metaData)
 	{
 		metaData.imagePath	(DB.injectionClean(metaData.imagePath()));
 		metaData.introKey	(DB.injectionClean(metaData.introKey()));
@@ -831,7 +911,7 @@ public class JournalLoader
 		journal = DB.injectionClean(journal);
 		messageKey = DB.injectionClean(messageKey);
 
-		if(journal==null) 
+		if(journal==null)
 			return;
 		synchronized(journal.toUpperCase().intern())
 		{
@@ -859,7 +939,7 @@ public class JournalLoader
 		subject		= DB.injectionClean(subject);
 		message		= DB.injectionClean(message);
 
-		if(journal==null) 
+		if(journal==null)
 			return null;
 		synchronized(journal.toUpperCase().intern())
 		{
@@ -882,12 +962,12 @@ public class JournalLoader
 		}
 	}
 
-	public void DBWrite(String journal, String from, String to, String subject, String message)
+	public void DBWrite(final String journal, final String from, final String to, final String subject, final String message)
 	{
 		DBWrite(journal, "", from, to, subject, message);
 	}
 
-	public void DBWrite(String journal, String journalSource, String from, String to, String subject, String message)
+	public void DBWrite(final String journal, final String journalSource, final String from, final String to, final String subject, final String message)
 	{
 		DBWrite(journal,journalSource,from,to,"",subject,message);
 	}
@@ -915,7 +995,7 @@ public class JournalLoader
 		DBWrite(journal, entry);
 	}
 
-	public void DBWrite(String journal, JournalEntry entry)
+	public void DBWrite(String journal, final JournalEntry entry)
 	{
 		journal			=DB.injectionClean(journal);
 		entry.data		(DB.injectionClean(entry.data()));
@@ -927,7 +1007,7 @@ public class JournalLoader
 		entry.subj		(DB.injectionClean(entry.subj()));
 		entry.to		(DB.injectionClean(entry.to()));
 
-		if(journal==null) 
+		if(journal==null)
 			return;
 		synchronized(journal.toUpperCase().intern())
 		{

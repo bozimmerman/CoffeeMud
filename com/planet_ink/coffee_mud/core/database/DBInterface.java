@@ -70,7 +70,7 @@ public class DBInterface implements DatabaseEngine
 	BackLogLoader	BackLogLoader	= null;
 	DBConnector		DB				= null;
 
-	public DBInterface(DBConnector DB, Set<String> privacyV)
+	public DBInterface(final DBConnector DB, Set<String> privacyV)
 	{
 		this.DB=DB;
 		DBConnector oldBaseDB=DB;
@@ -79,7 +79,7 @@ public class DBInterface implements DatabaseEngine
 			privacyV = new HashSet<String>();
 		if((baseEngine!=null)&&(baseEngine.getConnector()!=DB)&&(baseEngine.isConnected()))
 			oldBaseDB=baseEngine.getConnector();
-		
+
 		this.GAbilityLoader = 	new GAbilityLoader(privacyV.contains(DatabaseTables.DBABILITY.toString()) ? DB : oldBaseDB);
 		this.GCClassLoader = 	new GCClassLoader(privacyV.contains(DatabaseTables.DBCHARCLASS.toString()) ? DB : oldBaseDB);
 		this.GRaceLoader = 		new GRaceLoader(privacyV.contains(DatabaseTables.DBRACE.toString()) ? DB : oldBaseDB);
@@ -161,13 +161,13 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<PlayerLibrary.ThinPlayer> vassals(String liegeID)
+	public List<PlayerLibrary.ThinPlayer> vassals(final String liegeID)
 	{
 		return MOBloader.vassals(liegeID);
 	}
 
 	@Override
-	public List<PlayerLibrary.ThinPlayer> worshippers(String deityID)
+	public List<PlayerLibrary.ThinPlayer> worshippers(final String deityID)
 	{
 		return MOBloader.worshippers(deityID);
 	}
@@ -191,43 +191,43 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBReadClanItems(Map<String,Clan> clans)
+	public void DBReadClanItems(final Map<String,Clan> clans)
 	{
 		ClanLoader.DBReadClanItems(clans);
 	}
 
 	@Override
-	public List<MemberRecord> DBReadClanMembers(String clan)
+	public List<MemberRecord> DBReadClanMembers(final String clan)
 	{
 		return MOBloader.DBClanMembers(clan);
 	}
 
 	@Override
-	public void DBUpdateClanMembership(String name, String clan, int role)
+	public void DBUpdateClanMembership(final String name, final String clan, final int role)
 	{
 		MOBloader.DBUpdateClanMembership(name, clan, role);
 	}
 
 	@Override
-	public void DBUpdateClanKills(String clan, String name, int adjMobKills, int adjPlayerKills)
+	public void DBUpdateClanKills(final String clan, final String name, final int adjMobKills, final int adjPlayerKills)
 	{
 		MOBloader.DBUpdateClanKills(clan, name, adjMobKills, adjPlayerKills);
 	}
 
 	@Override
-	public void DBUpdateClanDonates(String clan, String name, double adjGold, int adjXP)
+	public void DBUpdateClanDonates(final String clan, final String name, final double adjGold, final int adjXP)
 	{
 		MOBloader.DBUpdateClanDonates(clan, name, adjGold, adjXP);
 	}
 
 	@Override
-	public MemberRecord DBGetClanMember(String clan, String name)
+	public MemberRecord DBGetClanMember(final String clan, final String name)
 	{
 		return MOBloader.DBGetClanMember(clan, name);
 	}
 
 	@Override
-	public void DBUpdateClan(Clan C)
+	public void DBUpdateClan(final Clan C)
 	{
 		ClanLoader.DBUpdate(C);
 	}
@@ -239,157 +239,157 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBDeleteClan(Clan C)
+	public void DBDeleteClan(final Clan C)
 	{
 		ClanLoader.DBDelete(C);
 	}
 
 	@Override
-	public void DBCreateClan(Clan C)
+	public void DBCreateClan(final Clan C)
 	{
 		ClanLoader.DBCreate(C);
 	}
 
 	@Override
-	public void DBUpdateEmail(MOB mob)
+	public void DBUpdateEmail(final MOB mob)
 	{
 		MOBloader.DBUpdateEmail(mob);
 	}
 
 	@Override
-	public String DBPlayerEmailSearch(String email)
+	public String DBPlayerEmailSearch(final String email)
 	{
 		return MOBloader.DBPlayerEmailSearch(email);
 	}
 
 	@Override
-	public void DBUpdatePassword(String name, String password)
+	public void DBUpdatePassword(final String name, final String password)
 	{
 		MOBloader.DBUpdatePassword(name, password);
 	}
 
 	@Override
-	public Pair<String, Boolean> DBFetchEmailData(String name)
+	public Pair<String, Boolean> DBFetchEmailData(final String name)
 	{
 		return MOBloader.DBFetchEmailData(name);
 	}
 
 	@Override
-	public void DBUpdatePlayerAbilities(MOB mob)
+	public void DBUpdatePlayerAbilities(final MOB mob)
 	{
 		MOBloader.DBUpdateAbilities(mob);
 	}
 
 	@Override
-	public void DBUpdatePlayerItems(MOB mob)
+	public void DBUpdatePlayerItems(final MOB mob)
 	{
 		MOBloader.DBUpdateItems(mob);
 	}
 
 	@Override
-	public void DBUpdateFollowers(MOB mob)
+	public void DBUpdateFollowers(final MOB mob)
 	{
 		MOBloader.DBUpdateFollowers(mob);
 	}
 
 	@Override
-	public void DBUpdateAccount(PlayerAccount account)
+	public void DBUpdateAccount(final PlayerAccount account)
 	{
 		MOBloader.DBUpdateAccount(account);
 	}
 
 	@Override
-	public void DBCreateAccount(PlayerAccount account)
+	public void DBCreateAccount(final PlayerAccount account)
 	{
 		MOBloader.DBCreateAccount(account);
 	}
 
 	@Override
-	public PlayerAccount DBReadAccount(String Login)
+	public PlayerAccount DBReadAccount(final String Login)
 	{
 		return MOBloader.DBReadAccount(Login);
 	}
 
 	@Override
-	public List<PlayerAccount> DBListAccounts(String mask)
+	public List<PlayerAccount> DBListAccounts(final String mask)
 	{
 		return MOBloader.DBListAccounts(mask);
 	}
 
 	@Override
-	public List<Pair<String, Integer>>[][] DBScanPrideAccountWinners(int topThisMany, short scanCPUPercent)
+	public List<Pair<String, Integer>>[][] DBScanPrideAccountWinners(final int topThisMany, final short scanCPUPercent)
 	{
 		return MOBloader.DBScanPrideAccountWinners(topThisMany, scanCPUPercent);
 	}
 
 	@Override
-	public List<Pair<String, Integer>>[][] DBScanPridePlayerWinners(int topThisMany, short scanCPUPercent)
+	public List<Pair<String, Integer>>[][] DBScanPridePlayerWinners(final int topThisMany, final short scanCPUPercent)
 	{
 		return MOBloader.DBScanPridePlayerWinners(topThisMany, scanCPUPercent);
 	}
 
 	@Override
-	public void DBPlayerNameChange(String oldName, String newName)
+	public void DBPlayerNameChange(final String oldName, final String newName)
 	{
 		MOBloader.DBNameChange(oldName, newName);
 	}
 
 	@Override
-	public void DBReadAreaData(Area A)
+	public void DBReadAreaData(final Area A)
 	{
 		RoomLoader.DBReadArea(A);
 	}
 
 	@Override
-	public String DBIsAreaName(String name)
+	public String DBIsAreaName(final String name)
 	{
 		return RoomLoader.DBIsAreaName(name);
 	}
-	
+
 	@Override
-	public Room DBReadRoom(String roomID, boolean reportStatus)
+	public Room DBReadRoom(final String roomID, final boolean reportStatus)
 	{
 		return RoomLoader.DBReadRoomData(roomID, reportStatus);
 	}
 
 	@Override
-	public boolean DBReadAreaFull(String areaName)
+	public boolean DBReadAreaFull(final String areaName)
 	{
 		return RoomLoader.DBReadAreaFull(areaName);
 	}
-	
+
 	@Override
-	public void DBReadAllRooms(RoomnumberSet roomsToRead)
+	public void DBReadAllRooms(final RoomnumberSet roomsToRead)
 	{
 		RoomLoader.DBReadAllRooms(roomsToRead);
 	}
 
 	@Override
-	public int[] DBCountRoomMobsItems(String roomID)
+	public int[] DBCountRoomMobsItems(final String roomID)
 	{
 		return RoomLoader.DBCountRoomMobsItems(roomID);
 	}
-	
+
 	@Override
-	public Room[] DBReadRoomObjects(String areaName, boolean reportStatus)
+	public Room[] DBReadRoomObjects(final String areaName, final boolean reportStatus)
 	{
 		return RoomLoader.DBReadRoomObjects(areaName, reportStatus);
 	}
 
 	@Override
-	public Room DBReadRoomObject(String roomIDtoLoad, boolean reportStatus)
+	public Room DBReadRoomObject(final String roomIDtoLoad, final boolean reportStatus)
 	{
 		return RoomLoader.DBReadRoomObject(roomIDtoLoad, reportStatus);
 	}
 
 	@Override
-	public boolean DBReReadRoomData(Room room)
+	public boolean DBReReadRoomData(final Room room)
 	{
 		return RoomLoader.DBReReadRoomData(room);
 	}
 
 	@Override
-	public void DBReadRoomExits(String roomID, Room room, boolean reportStatus)
+	public void DBReadRoomExits(final String roomID, final Room room, final boolean reportStatus)
 	{
 		RoomLoader.DBReadRoomExits(roomID, room, reportStatus);
 	}
@@ -407,37 +407,37 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBReadContent(String roomID, Room thisRoom, boolean makeLive)
+	public void DBReadContent(final String roomID, final Room thisRoom, final boolean makeLive)
 	{
 		RoomLoader.DBReadContent(roomID, thisRoom, null, null, false, makeLive);
 	}
 
 	@Override
-	public Area DBReadAreaObject(String areaName)
+	public Area DBReadAreaObject(final String areaName)
 	{
 		return RoomLoader.DBReadAreaObject(areaName);
 	}
-	
+
 	@Override
-	public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus)
+	public RoomnumberSet DBReadAreaRoomList(final String areaName, final boolean reportStatus)
 	{
 		return RoomLoader.DBReadAreaRoomList(areaName, reportStatus);
 	}
 
 	@Override
-	public void DBCreateThisItem(String roomID, Item thisItem)
+	public void DBCreateThisItem(final String roomID, final Item thisItem)
 	{
 		RoomLoader.DBCreateThisItem(roomID, thisItem);
 	}
 
 	@Override
-	public void DBCreateThisMOB(String roomID, MOB thisMOB)
+	public void DBCreateThisMOB(final String roomID, final MOB thisMOB)
 	{
 		RoomLoader.DBCreateThisMOB(roomID, thisMOB);
 	}
 
 	@Override
-	public void DBUpdateExits(Room room)
+	public void DBUpdateExits(final Room room)
 	{
 		RoomLoader.DBUpdateExits(room);
 	}
@@ -449,79 +449,79 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBUpdateQuest(Quest Q)
+	public void DBUpdateQuest(final Quest Q)
 	{
 		QuestLoader.DBUpdateQuest(Q);
 	}
 
 	@Override
-	public void DBUpdateQuests(List<Quest> quests)
+	public void DBUpdateQuests(final List<Quest> quests)
 	{
 		QuestLoader.DBUpdateQuests(quests);
 	}
 
 	@Override
-	public String DBReadRoomMOBMiscText(String roomID, String mobID)
+	public String DBReadRoomMOBMiscText(final String roomID, final String mobID)
 	{
 		return RoomLoader.DBReadRoomMOBMiscText(roomID, mobID);
 	}
 
 	@Override
-	public String DBReadRoomDesc(String roomID)
+	public String DBReadRoomDesc(final String roomID)
 	{
 		return RoomLoader.DBReadRoomDesc(roomID);
 	}
 
 	@Override
-	public void DBUpdateTheseMOBs(Room room, List<MOB> mobs)
+	public void DBUpdateTheseMOBs(final Room room, final List<MOB> mobs)
 	{
 		RoomLoader.DBUpdateTheseMOBs(room, mobs);
 	}
 
 	@Override
-	public void DBUpdateTheseItems(Room room, List<Item> items)
+	public void DBUpdateTheseItems(final Room room, final List<Item> items)
 	{
 		RoomLoader.DBUpdateTheseItems(room, items);
 	}
 
 	@Override
-	public void DBUpdateMOBs(Room room)
+	public void DBUpdateMOBs(final Room room)
 	{
 		RoomLoader.DBUpdateMOBs(room);
 	}
 
 	@Override
-	public void DBDeletePlayerPrivateJournalEntries(String name)
+	public void DBDeletePlayerPrivateJournalEntries(final String name)
 	{
 		JournalLoader.DBDeletePlayerPrivateJournalEntries(name);
 	}
 
 	@Override
-	public void DBUpdateJournal(String journalID, JournalEntry entry)
+	public void DBUpdateJournal(final String journalID, final JournalEntry entry)
 	{
 		JournalLoader.DBUpdateJournal(journalID, entry);
 	}
 
 	@Override
-	public void DBUpdateJournalMetaData(String journalID, JournalsLibrary.JournalMetaData metaData)
+	public void DBUpdateJournalMetaData(final String journalID, final JournalsLibrary.JournalMetaData metaData)
 	{
 		JournalLoader.DBUpdateJournalMetaData(journalID, metaData);
 	}
 
 	@Override
-	public void DBReadJournalMetaData(String journalID, JournalsLibrary.JournalMetaData metaData)
+	public void DBReadJournalMetaData(final String journalID, final JournalsLibrary.JournalMetaData metaData)
 	{
 		JournalLoader.DBReadJournalSummaryStats(journalID, metaData);
 	}
 
 	@Override
-	public String DBGetRealJournalName(String possibleName)
+	public String DBGetRealJournalName(final String possibleName)
 	{
 		return JournalLoader.DBGetRealName(possibleName);
 	}
 
 	@Override
-	public void DBDeleteJournal(String journalID, String msgKeyOrNull)
+	public void DBDeleteJournal(final String journalID, final String msgKeyOrNull)
 	{
 		JournalLoader.DBDelete(journalID, msgKeyOrNull);
 	}
@@ -533,258 +533,264 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public JournalEntry DBReadJournalEntry(String journalID, String messageKey)
+	public JournalEntry DBReadJournalEntry(final String journalID, final String messageKey)
 	{
 		return JournalLoader.DBReadJournalEntry(journalID, messageKey);
 	}
 
 	@Override
-	public void DBUpdateMessageReplies(String key, int numReplies)
+	public void DBUpdateMessageReplies(final String key, final int numReplies)
 	{
 		JournalLoader.DBUpdateMessageReplies(key, numReplies);
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending)
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(final String journalID, final boolean ascending)
 	{
 		return JournalLoader.DBReadJournalMsgsSorted(journalID, ascending, Integer.MAX_VALUE, true);
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending, int limit)
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(final String journalID, final boolean ascending, final int limit)
 	{
 		return JournalLoader.DBReadJournalMsgsSorted(journalID, ascending, limit, true);
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(String journalID, boolean ascending, int limit, String[] tos)
+	public List<JournalEntry> DBReadJournalMsgsByUpdateDate(final String journalID, final boolean ascending, final int limit, final String[] tos)
 	{
 		return JournalLoader.DBReadJournalMsgsSorted(journalID, ascending, limit, tos, true);
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending)
+	public List<JournalEntry> DBReadJournalMsgsByCreateDate(final String journalID, final boolean ascending)
 	{
 		return JournalLoader.DBReadJournalMsgsSorted(journalID, ascending, Integer.MAX_VALUE, false);
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending, int limit)
+	public List<JournalEntry> DBReadJournalMsgsByCreateDate(final String journalID, final boolean ascending, final int limit)
 	{
 		return JournalLoader.DBReadJournalMsgsSorted(journalID, ascending, limit, false);
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgsByCreateDate(String journalID, boolean ascending, int limit, String[] tos)
+	public List<JournalEntry> DBReadJournalMsgsByCreateDate(final String journalID, final boolean ascending, final int limit, final String[] tos)
 	{
 		return JournalLoader.DBReadJournalMsgsSorted(journalID, ascending, limit, tos, false);
 	}
 
 	@Override
-	public List<JournalEntry> DBSearchAllJournalEntries(String journalID, String searchStr)
+	public List<JournalEntry> DBSearchAllJournalEntries(final String journalID, final String searchStr)
 	{
 		return JournalLoader.DBSearchAllJournalEntries(journalID, searchStr);
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgsNewerThan(String journalID, String to, long olderDate)
+	public List<JournalEntry> DBReadJournalMsgsNewerThan(final String journalID, final String to, final long olderDate)
 	{
 		return JournalLoader.DBReadJournalMsgsNewerThan(journalID, to, olderDate);
 	}
 
 	@Override
-	public List<JournalEntry> DBReadJournalMsgsOlderThan(String journalID, String to, long newestDate)
+	public List<JournalEntry> DBReadJournalMsgsOlderThan(final String journalID, final String to, final long newestDate)
 	{
 		return JournalLoader.DBReadJournalMsgsOlderThan(journalID, to, newestDate);
 	}
-	
+
 	@Override
-	public List<JournalEntry> DBReadJournalPageMsgs(String journalID, String parent, String searchStr, long newerDate, int limit)
+	public List<JournalEntry> DBReadJournalPageMsgs(final String journalID, final String parent, final String searchStr, final long newerDate, final int limit)
 	{
 		return JournalLoader.DBReadJournalPageMsgs(journalID, parent, searchStr, newerDate, limit);
 	}
 
 	@Override
-	public int DBCountJournal(String journalID, String from, String to)
+	public List<Long> DBReadJournalPages(final String journalID, final String parent, final String searchStr, final int limit)
+	{
+		return JournalLoader.DBReadJournalPages(journalID, parent, searchStr, limit);
+	}
+
+	@Override
+	public int DBCountJournal(final String journalID, final String from, final String to)
 	{
 		return JournalLoader.DBCount(journalID, from, to);
 	}
 
 	@Override
-	public long[] DBJournalLatestDateNewerThan(String journalID, String to, long olderTime)
+	public long[] DBJournalLatestDateNewerThan(final String journalID, final String to, final long olderTime)
 	{
 		return JournalLoader.DBJournalLatestDateNewerThan(journalID, to, olderTime);
 	}
 
 	@Override
-	public void DBWriteJournal(String journalID, JournalEntry entry)
+	public void DBWriteJournal(final String journalID, final JournalEntry entry)
 	{
 		JournalLoader.DBWrite(journalID, entry);
 	}
 
 	@Override
-	public void DBWriteJournal(String journalID, String from, String to, String subject, String message)
+	public void DBWriteJournal(final String journalID, final String from, final String to, final String subject, final String message)
 	{
 		JournalLoader.DBWrite(journalID, from, to, subject, message);
 	}
 
 	@Override
-	public void DBWriteJournalEmail(String mailBoxID, String journalSource, String from, String to, String subject, String message)
+	public void DBWriteJournalEmail(final String mailBoxID, final String journalSource, final String from, final String to, final String subject, final String message)
 	{
 		JournalLoader.DBWrite(mailBoxID, journalSource, from, to, subject, message);
 	}
 
 	@Override
-	public void DBWriteJournalChild(String journalID, String journalSource, String from, String to, String parentKey, String subject, String message)
+	public void DBWriteJournalChild(final String journalID, final String journalSource, final String from, final String to, final String parentKey, final String subject, final String message)
 	{
 		JournalLoader.DBWrite(journalID, journalSource, from, to, parentKey, subject, message);
 	}
 
-	public void DBWrite(String journalID, JournalEntry entry)
+	public void DBWrite(final String journalID, final JournalEntry entry)
 	{
 		JournalLoader.DBWrite(journalID, entry);
 	}
 
 	@Override
-	public JournalEntry DBWriteJournalReply(String journalID, String key, String from, String to, String subject, String message)
+	public JournalEntry DBWriteJournalReply(final String journalID, final String key, final String from, final String to, final String subject, final String message)
 	{
 		return JournalLoader.DBWriteJournalReply(journalID, key, from, to, subject, message);
 	}
 
 	@Override
-	public void DBUpdateJournal(String key, String subject, String msg, long newAttributes)
+	public void DBUpdateJournal(final String key, final String subject, final String msg, final long newAttributes)
 	{
 		JournalLoader.DBUpdateJournal(key, subject, msg, newAttributes);
 	}
 
 	@Override
-	public void DBUpdateJournalMessageViews(String key, int views)
+	public void DBUpdateJournalMessageViews(final String key, final int views)
 	{
 		JournalLoader.DBUpdateJournalMessageViews(key, views);
 	}
 
 	@Override
-	public void DBTouchJournalMessage(String key)
+	public void DBTouchJournalMessage(final String key)
 	{
 		JournalLoader.DBTouchJournalMessage(key);
 	}
 
 	@Override
-	public void DBTouchJournalMessage(String key, long newDate)
+	public void DBTouchJournalMessage(final String key, final long newDate)
 	{
 		JournalLoader.DBTouchJournalMessage(key, newDate);
 	}
 
 	@Override
-	public void DBCreateRoom(Room room)
+	public void DBCreateRoom(final Room room)
 	{
 		RoomLoader.DBCreate(room);
 	}
 
 	@Override
-	public void DBUpdateRoom(Room room)
+	public void DBUpdateRoom(final Room room)
 	{
 		RoomLoader.DBUpdateRoom(room);
 	}
 
 	@Override
-	public void DBUpdatePlayer(MOB mob)
+	public void DBUpdatePlayer(final MOB mob)
 	{
 		MOBloader.DBUpdate(mob);
 	}
 
 	@Override
-	public List<String> DBExpiredCharNameSearch(Set<String> skipNames)
+	public List<String> DBExpiredCharNameSearch(final Set<String> skipNames)
 	{
 		return MOBloader.DBExpiredCharNameSearch(skipNames);
 	}
 
 	@Override
-	public void DBUpdatePlayerPlayerStats(MOB mob)
+	public void DBUpdatePlayerPlayerStats(final MOB mob)
 	{
 		MOBloader.DBUpdateJustPlayerStats(mob);
 	}
 
 	@Override
-	public void DBUpdatePlayerMOBOnly(MOB mob)
+	public void DBUpdatePlayerMOBOnly(final MOB mob)
 	{
 		MOBloader.DBUpdateJustMOB(mob);
 	}
 
 	@Override
-	public void DBUpdateMOB(String roomID, MOB mob)
+	public void DBUpdateMOB(final String roomID, final MOB mob)
 	{
 		RoomLoader.DBUpdateRoomMOB(roomID, mob);
 	}
 
 	@Override
-	public void DBUpdateItem(String roomID, Item item)
+	public void DBUpdateItem(final String roomID, final Item item)
 	{
 		RoomLoader.DBUpdateRoomItem(roomID, item);
 	}
 
 	@Override
-	public void DBDeleteMOB(String roomID, MOB mob)
+	public void DBDeleteMOB(final String roomID, final MOB mob)
 	{
 		RoomLoader.DBDeleteRoomMOB(roomID, mob);
 	}
 
 	@Override
-	public void DBDeleteItem(String roomID, Item item)
+	public void DBDeleteItem(final String roomID, final Item item)
 	{
 		RoomLoader.DBDeleteRoomItem(roomID, item);
 	}
 
 	@Override
-	public void DBUpdateItems(Room room)
+	public void DBUpdateItems(final Room room)
 	{
 		RoomLoader.DBUpdateItems(room);
 	}
 
 	@Override
-	public void DBReCreate(Room room, String oldID)
+	public void DBReCreate(final Room room, final String oldID)
 	{
 		RoomLoader.DBReCreate(room, oldID);
 	}
 
 	@Override
-	public PlayerLibrary.ThinnerPlayer DBUserSearch(String Login)
+	public PlayerLibrary.ThinnerPlayer DBUserSearch(final String Login)
 	{
 		return MOBloader.DBUserSearch(Login);
 	}
 
 	@Override
-	public void DBCreateArea(Area A)
+	public void DBCreateArea(final Area A)
 	{
 		RoomLoader.DBCreate(A);
 	}
 
 	@Override
-	public void DBDeleteArea(Area A)
+	public void DBDeleteArea(final Area A)
 	{
 		RoomLoader.DBDelete(A);
 	}
 
 	@Override
-	public void DBDeleteAreaAndRooms(Area A)
+	public void DBDeleteAreaAndRooms(final Area A)
 	{
 		RoomLoader.DBDeleteAreaAndRooms(A);
 	}
 
 	@Override
-	public void DBUpdateArea(String areaID, Area A)
+	public void DBUpdateArea(final String areaID, final Area A)
 	{
 		RoomLoader.DBUpdate(areaID, A);
 	}
 
 	@Override
-	public void DBDeleteRoom(Room room)
+	public void DBDeleteRoom(final Room room)
 	{
 		RoomLoader.DBDelete(room);
 	}
 
 	@Override
-	public MOB DBReadPlayer(String name)
+	public MOB DBReadPlayer(final String name)
 	{
 		return MOBloader.DBRead(name);
 	}
@@ -796,145 +802,145 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public PlayerLibrary.ThinPlayer getThinUser(String name)
+	public PlayerLibrary.ThinPlayer getThinUser(final String name)
 	{
 		return MOBloader.getThinUser(name);
 	}
 
 	@Override
-	public void DBReadFollowers(MOB mob, boolean bringToLife)
+	public void DBReadFollowers(final MOB mob, final boolean bringToLife)
 	{
 		MOBloader.DBReadFollowers(mob, bringToLife);
 	}
 
 	@Override
-	public List<MOB> DBScanFollowers(String mobName)
+	public List<MOB> DBScanFollowers(final String mobName)
 	{
 		return MOBloader.DBScanFollowers(mobName);
 	}
 
 	@Override
-	public void DBDeletePlayerOnly(String mobName)
+	public void DBDeletePlayerOnly(final String mobName)
 	{
 		MOBloader.DBDeleteCharOnly(mobName);
 	}
 
 	@Override
-	public void DBDeleteAccount(PlayerAccount account)
+	public void DBDeleteAccount(final PlayerAccount account)
 	{
 		MOBloader.DBDeleteAccount(account);
 	}
 
 	@Override
-	public void DBCreateCharacter(MOB mob)
+	public void DBCreateCharacter(final MOB mob)
 	{
 		MOBloader.DBCreateCharacter(mob);
 	}
 
 	@Override
-	public void DBDeleteAllPlayerData(String name)
+	public void DBDeleteAllPlayerData(final String name)
 	{
 		DataLoader.DBDeletePlayer(name);
 	}
 
 	@Override
-	public List<PlayerData> DBReadAllPlayerData(String playerID)
+	public List<PlayerData> DBReadAllPlayerData(final String playerID)
 	{
 		return DataLoader.DBReadAllPlayerData(playerID);
 	}
 
 	@Override
-	public List<PlayerData> DBReadPlayerData(String playerID, String section)
+	public List<PlayerData> DBReadPlayerData(final String playerID, final String section)
 	{
 		return DataLoader.DBRead(playerID, section);
 	}
 
 	@Override
-	public List<PlayerData> DBReadPlayerDataByKeyMask(String section, String keyMask)
+	public List<PlayerData> DBReadPlayerDataByKeyMask(final String section, final String keyMask)
 	{
 		return DataLoader.DBReadByKeyMask(section, keyMask);
 	}
 
 	@Override
-	public List<PlayerData> DBReadPlayerDataEntry(String key)
+	public List<PlayerData> DBReadPlayerDataEntry(final String key)
 	{
 		return DataLoader.DBReadKey(key);
 	}
 
 	@Override
-	public int DBCountPlayerData(String playerID, String section)
+	public int DBCountPlayerData(final String playerID, final String section)
 	{
 		return DataLoader.DBCount(playerID, section);
 	}
 
 	@Override
-	public int DBCountPlayerData(String section)
+	public int DBCountPlayerData(final String section)
 	{
 		return DataLoader.DBCountBySection(section);
 	}
 
 	@Override
-	public List<String> DBReadPlayerDataAuthorsBySection(String section)
+	public List<String> DBReadPlayerDataAuthorsBySection(final String section)
 	{
 		return DataLoader.DBReadAuthorsBySection(section);
 	}
 
 	@Override
-	public List<PlayerData> DBReadPlayerData(String playerID, String section, String key)
+	public List<PlayerData> DBReadPlayerData(final String playerID, final String section, final String key)
 	{
 		return DataLoader.DBRead(playerID, section, key);
 	}
 
 	@Override
-	public List<PlayerData> DBReadPlayerSectionData(String section)
+	public List<PlayerData> DBReadPlayerSectionData(final String section)
 	{
 		return DataLoader.DBRead(section);
 	}
 
 	@Override
-	public List<String> DBReadPlayerDataPlayersBySection(String section)
+	public List<String> DBReadPlayerDataPlayersBySection(final String section)
 	{
 		return DataLoader.DBReadNames(section);
 	}
 
 	@Override
-	public List<PlayerData> DBReadPlayerData(String player, List<String> sections)
+	public List<PlayerData> DBReadPlayerData(final String player, final List<String> sections)
 	{
 		return DataLoader.DBRead(player, sections);
 	}
 
 	@Override
-	public void DBDeletePlayerData(String playerID, String section)
+	public void DBDeletePlayerData(final String playerID, final String section)
 	{
 		DataLoader.DBDelete(playerID, section);
 	}
 
 	@Override
-	public void DBDeletePlayerData(String playerID, String section, String key)
+	public void DBDeletePlayerData(final String playerID, final String section, final String key)
 	{
 		DataLoader.DBDelete(playerID, section, key);
 	}
 
 	@Override
-	public void DBDeletePlayerSectionData(String section)
+	public void DBDeletePlayerSectionData(final String section)
 	{
 		DataLoader.DBDelete(section);
 	}
 
 	@Override
-	public PlayerData DBReCreatePlayerData(String name, String section, String key, String xml)
+	public PlayerData DBReCreatePlayerData(final String name, final String section, final String key, final String xml)
 	{
 		return DataLoader.DBReCreate(name, section, key, xml);
 	}
 
 	@Override
-	public void DBUpdatePlayerData(String key, String xml)
+	public void DBUpdatePlayerData(final String key, final String xml)
 	{
 		DataLoader.DBUpdate(key, xml);
 	}
 
 	@Override
-	public PlayerData DBCreatePlayerData(String player, String section, String key, String data)
+	public PlayerData DBCreatePlayerData(final String player, final String section, final String key, final String data)
 	{
 		return DataLoader.DBCreate(player, section, key, data);
 	}
@@ -952,13 +958,13 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBDeleteRace(String raceID)
+	public void DBDeleteRace(final String raceID)
 	{
 		GRaceLoader.DBDeleteRace(raceID);
 	}
 
 	@Override
-	public void DBCreateRace(String raceID, String data)
+	public void DBCreateRace(final String raceID, final String data)
 	{
 		GRaceLoader.DBCreateRace(raceID, data);
 	}
@@ -970,13 +976,13 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBDeleteClass(String classID)
+	public void DBDeleteClass(final String classID)
 	{
 		GCClassLoader.DBDeleteClass(classID);
 	}
 
 	@Override
-	public void DBCreateClass(String classID, String data)
+	public void DBCreateClass(final String classID, final String data)
 	{
 		GCClassLoader.DBCreateClass(classID, data);
 	}
@@ -988,13 +994,13 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBDeleteAbility(String classID)
+	public void DBDeleteAbility(final String classID)
 	{
 		GAbilityLoader.DBDeleteAbility(classID);
 	}
 
 	@Override
-	public void DBCreateAbility(String classID, String typeClass, String data)
+	public void DBCreateAbility(final String classID, final String typeClass, final String data)
 	{
 		GAbilityLoader.DBCreateAbility(classID, typeClass, data);
 	}
@@ -1006,31 +1012,31 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public CoffeeTableRow DBReadStat(long startTime)
+	public CoffeeTableRow DBReadStat(final long startTime)
 	{
 		return StatLoader.DBRead(startTime);
 	}
 
 	@Override
-	public void DBDeleteStat(long startTime)
+	public void DBDeleteStat(final long startTime)
 	{
 		StatLoader.DBDelete(startTime);
 	}
 
 	@Override
-	public boolean DBCreateStat(long startTime, long endTime, String data)
+	public boolean DBCreateStat(final long startTime, final long endTime, final String data)
 	{
 		return StatLoader.DBCreate(startTime, endTime, data);
 	}
 
 	@Override
-	public boolean DBUpdateStat(long startTime, String data)
+	public boolean DBUpdateStat(final long startTime, final String data)
 	{
 		return StatLoader.DBUpdate(startTime, data);
 	}
 
 	@Override
-	public List<CoffeeTableRow> DBReadStats(long startTime, long endTime)
+	public List<CoffeeTableRow> DBReadStats(final long startTime, final long endTime)
 	{
 		return StatLoader.DBReadAfter(startTime, endTime);
 	}
@@ -1060,25 +1066,25 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void DBCreatePoll(String name, String player, String subject, String description, String optionXML, int flag, String qualZapper, String results, long expiration)
+	public void DBCreatePoll(final String name, final String player, final String subject, final String description, final String optionXML, final int flag, final String qualZapper, final String results, final long expiration)
 	{
 		PollLoader.DBCreate(name, player, subject, description, optionXML, flag, qualZapper, results, expiration);
 	}
 
 	@Override
-	public void DBUpdatePoll(String oldName, String name, String player, String subject, String description, String optionXML, int flag, String qualZapper, String results, long expiration)
+	public void DBUpdatePoll(final String oldName, final String name, final String player, final String subject, final String description, final String optionXML, final int flag, final String qualZapper, final String results, final long expiration)
 	{
 		PollLoader.DBUpdate(oldName, name, player, subject, description, optionXML, flag, qualZapper, results, expiration);
 	}
 
 	@Override
-	public void DBUpdatePollResults(String name, String results)
+	public void DBUpdatePollResults(final String name, final String results)
 	{
 		PollLoader.DBUpdate(name, results);
 	}
 
 	@Override
-	public void DBDeletePoll(String name)
+	public void DBDeletePoll(final String name)
 	{
 		PollLoader.DBDelete(name);
 	}
@@ -1090,7 +1096,7 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public PollData DBReadPoll(String name)
+	public PollData DBReadPoll(final String name)
 	{
 		return PollLoader.DBRead(name);
 	}
@@ -1102,31 +1108,31 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public CMFile.CMVFSFile DBReadVFSFile(String filename)
+	public CMFile.CMVFSFile DBReadVFSFile(final String filename)
 	{
 		return VFSLoader.DBRead(filename);
 	}
 
 	@Override
-	public void DBCreateVFSFile(String filename, int bits, String creator, long updateTime, Object data)
+	public void DBCreateVFSFile(final String filename, final int bits, final String creator, final long updateTime, final Object data)
 	{
 		VFSLoader.DBCreate(filename, bits, creator, updateTime, data);
 	}
 
 	@Override
-	public void DBUpSertVFSFile(String filename, int bits, String creator, long updateTime, Object data)
+	public void DBUpSertVFSFile(final String filename, final int bits, final String creator, final long updateTime, final Object data)
 	{
 		VFSLoader.DBUpSert(filename, bits, creator, updateTime, data);
 	}
 
 	@Override
-	public void DBDeleteVFSFile(String filename)
+	public void DBDeleteVFSFile(final String filename)
 	{
 		VFSLoader.DBDelete(filename);
 	}
 
 	@Override
-	public List<Pair<String, Long>> getBackLogEntries(String channelName, final int newestToSkip, final int numToReturn)
+	public List<Pair<String, Long>> getBackLogEntries(final String channelName, final int newestToSkip, final int numToReturn)
 	{
 		return BackLogLoader.getBackLogEntries(channelName, newestToSkip, numToReturn);
 	}
@@ -1138,13 +1144,13 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public void addBackLogEntry(String channelName, final String entry)
+	public void addBackLogEntry(final String channelName, final String entry)
 	{
 		BackLogLoader.addBackLogEntry(channelName, entry);
 	}
 
 	@Override
-	public int DBRawExecute(String sql) throws CMException
+	public int DBRawExecute(final String sql) throws CMException
 	{
 		DBConnection DBToUse=null;
 		try
@@ -1164,7 +1170,7 @@ public class DBInterface implements DatabaseEngine
 	}
 
 	@Override
-	public List<String[]> DBRawQuery(String sql) throws CMException
+	public List<String[]> DBRawQuery(final String sql) throws CMException
 	{
 		DBConnection DBToUse=null;
 		final List<String[]> results=new LinkedList<String[]>();
