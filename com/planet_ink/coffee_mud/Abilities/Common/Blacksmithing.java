@@ -70,7 +70,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 	@Override
 	public String parametersFormat()
-	{ 
+	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tSTATUE||RIDE_BASIS||CONTAINER_TYPE_OR_LIDLOCK||CODED_WEAR_LOCATION\t"
@@ -86,6 +86,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int	RCP_MISCTYPE	= 6;
 	protected static final int	RCP_CAPACITY	= 7;
 	protected static final int	RCP_SPELL		= 8;
+
+	protected DoorKey key = null;
 
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
@@ -125,7 +127,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	protected boolean doLearnRecipe(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	protected boolean doLearnRecipe(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		fireRequired=false;
 		return super.doLearnRecipe( mob, commands, givenTarget, auto, asLevel );
@@ -211,9 +213,16 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 					{
 						dropAWinner(mob,buildingI);
 						CMLib.achievements().possiblyBumpAchievement(mob, AchievementLibrary.Event.CRAFTING, 1, this);
+						if(key!=null)
+						{
+							dropAWinner(mob,key);
+							if(buildingI instanceof Container)
+								key.setContainer((Container)buildingI);
+						}
 					}
 				}
 				buildingI=null;
+				key=null;
 			}
 		}
 		super.unInvoke();
@@ -226,13 +235,13 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		final List<String> originalCommands = new XVector<String>(commands);
 		if(super.checkStop(mob, commands))
@@ -240,7 +249,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		fireRequired=true;
 
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
@@ -306,6 +315,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 		activity = CraftingActivity.CRAFTING;
 		buildingI=null;
+		key=null;
 		messedUp=false;
 		String statue=null;
 		if((commands.size()>1)&&(commands.get(commands.size()-1)).startsWith("STATUE="))
@@ -398,7 +408,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 				}
 
 				@Override
-				
+
 				public void timedOut()
 				{
 				}
@@ -496,6 +506,13 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			{
 				((Container)buildingI).setDoorsNLocks(true,false,true,true,false,true);
 				((Container)buildingI).setKeyName(Double.toString(Math.random()));
+				key=(DoorKey)CMClass.getItem("GenKey");
+				key.setKey(((Container)buildingI).keyName());
+				key.setName(L("a key"));
+				key.setDisplayText(L("a small key sits here"));
+				key.setDescription(L("looks like a key to @x1",buildingI.name()));
+				key.recoverPhyStats();
+				key.text();
 			}
 			else
 			if(misctype.indexOf("LID")>=0)
@@ -542,6 +559,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 		if(autoGenerate>0)
 		{
+			if(key!=null)
+				crafted.add(key);
 			crafted.add(buildingI);
 			return true;
 		}
