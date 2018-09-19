@@ -372,7 +372,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		buildingI.setDisplayText(L("@x1 lies here",itemName));
 		buildingI.setDescription(itemName+". ");
 		buildingI.basePhyStats().setWeight(getStandardWeight(woodRequired+compData[CF_AMOUNT],bundling));
-		buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
+		buildingI.setBaseValue((CMath.s_int(foundRecipe.get(RCP_VALUE))/4)+(woodRequired*(RawMaterial.CODES.VALUE(data[0][FOUND_CODE]))));
 		buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 		setBrand(mob, buildingI);
 		final String strstr=foundRecipe.get(RCP_STRINGS);
