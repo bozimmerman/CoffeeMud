@@ -83,3 +83,5 @@ ornate chandelier	83	150	1000	126000	GenItem			Spell_ContinualLight
 burette	85	25	1	22	GenEmptyDrink	LIQUID	3	
 Small %  storage barrel	85	60	10	510	GenContainer	LID	100	
 Large % Chest	90	150	25	3400	GenContainer	LID	500	
+pure glass	1	10	1	1	GenResource			
+stained glass	13	20	1	20	GenResource			
