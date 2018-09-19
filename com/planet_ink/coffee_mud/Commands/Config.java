@@ -64,6 +64,22 @@ public class Config extends StdCommand
 			}
 			if(finalA==null)
 			{
+				if(name.equalsIgnoreCase("TELNETGA"))
+					finalA=MOB.Attrib.TELNET_GA;
+				else
+				if(name.equalsIgnoreCase("TELNET_GA"))
+					finalA=MOB.Attrib.TELNET_GA;
+				else
+				if(name.equalsIgnoreCase("LIST"))
+				{
+					final StringBuilder str=new StringBuilder("");
+					for(final MOB.Attrib A : MOB.Attrib.values())
+						str.append(A.getName()).append(", ");
+					postStr=L("Options include: @x1.",str.substring(0,str.length()-2));
+					mob.tell(postStr);
+					return true;
+				}
+				else
 				if(name.equalsIgnoreCase("LINEWRAP"))
 				{
 					final String newWrap=(commands.size()>2)?CMParms.combine(commands,2):"";
@@ -106,7 +122,22 @@ public class Config extends StdCommand
 			{
 				postStr=L("Configuration flag toggled: "+finalA.getName());
 				final boolean newSet = !mob.isAttributeSet(finalA);
-				if(finalA == Attrib.AUTOFORWARD)
+				switch(finalA)
+				{
+				case ANSI:
+					if(mob.session() != null)
+					{
+						mob.session().setClientTelnetMode(Session.TELNET_ANSI,newSet);
+						mob.session().setServerTelnetMode(Session.TELNET_ANSI,newSet);
+					}
+					break;
+				case AUTOASSIST:
+					break;
+				case AUTODRAW:
+					break;
+				case AUTOEXITS:
+					break;
+				case AUTOFORWARD:
 				{
 					final PlayerStats pStats = mob.playerStats();
 					if((pStats != null)
@@ -115,6 +146,67 @@ public class Config extends StdCommand
 						pStats.getAccount().setFlag(AccountFlag.NOAUTOFORWARD, newSet);
 						CMLib.database().DBUpdateAccount(pStats.getAccount());
 					}
+					break;
+				}
+				case AUTOGOLD:
+					break;
+				case AUTOGUARD:
+					break;
+				case AUTOIMPROVE:
+					break;
+				case AUTOLOOT:
+					break;
+				case AUTOMAP:
+					break;
+				case AUTOMELEE:
+					break;
+				case AUTONOTIFY:
+					break;
+				case AUTORUN:
+					break;
+				case AUTOWEATHER:
+					break;
+				case BRIEF:
+					break;
+				case COMPRESS:
+					break;
+				case DAILYMESSAGE:
+					break;
+				case MXP:
+					if(mob.session() != null)
+					{
+						mob.session().changeTelnetMode(Session.TELNET_MXP,newSet);
+						mob.session().setClientTelnetMode(Session.TELNET_MXP,newSet);
+					}
+					break;
+				case NOBATTLESPAM:
+					break;
+				case NOFOLLOW:
+					break;
+				case NOTEACH:
+					break;
+				case PLAYERKILL:
+					break;
+				case QUIET:
+					break;
+				case SOUND:
+					if(mob.session() != null)
+					{
+						mob.session().changeTelnetMode(Session.TELNET_MSP,newSet);
+						mob.session().setClientTelnetMode(Session.TELNET_MSP,newSet);
+					}
+					break;
+				case SYSOPMSGS:
+					break;
+				case TELNET_GA:
+					if(mob.session() != null)
+					{
+						mob.session().changeTelnetMode(Session.TELNET_GA,newSet);
+						mob.session().setClientTelnetMode(Session.TELNET_GA,newSet);
+					}
+					break;
+				default:
+					break;
 				}
 				mob.setAttribute(finalA, newSet);
 			}
