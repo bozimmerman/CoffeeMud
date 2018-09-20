@@ -756,6 +756,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	@Override
 	public boolean robberyCheck(final PrivateProperty record, final CMMsg msg, final boolean quiet)
 	{
+		if(msg.source().isMonster())
+			return true;
 		if(((msg.targetMinor()==CMMsg.TYP_GET)&&(!msg.isTarget(CMMsg.MASK_INTERMSG)))
 		||(msg.targetMinor()==CMMsg.TYP_PUSH)
 		||(msg.targetMinor()==CMMsg.TYP_PULL))
@@ -767,8 +769,8 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 			&&(record.getOwnerName().length()>0)
 			&&(R!=null)
-			&&(msg.othersMessage()!=null)
-			&&(msg.othersMessage().length()>0)
+			//&&(msg.othersMessage()!=null) // ant train fix. Justify it next time.
+			//&&(msg.othersMessage().length()>0)
 			&&(!shopkeeperMobPresent(R))
 			&&(!doesHavePriviledgesHere(msg.source(),R)))
 			{
