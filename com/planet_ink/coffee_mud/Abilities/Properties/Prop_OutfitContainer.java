@@ -57,28 +57,27 @@ public class Prop_OutfitContainer extends Property
 	{
 		return true;
 	}
-	
+
 	protected List<Item> outfitContents = new SLinkedList<Item>();
 	protected boolean fixedYet = false;
 
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
 		fixedYet = false;
 		this.outfitContents.clear();
 	}
-	
+
 	protected void fixContentsFromText()
 	{
 		final Item affected = (this.affected instanceof Item)? (Item)this.affected : null;
 		if((!fixedYet)
-		&&(affected != null)
-		&&(affected.owner() instanceof MOB))
+		&&(affected != null))
 		{
 			this.outfitContents.clear();
-			final MOB mob=(MOB)affected.owner();
-			if(mob.numItems() > 0)
+			final ItemPossessor possessor=affected.owner();
+			if(possessor.numItems() > 0)
 			{
 				fixedYet = true;
 				if(super.miscText.length()>1)
@@ -88,10 +87,10 @@ public class Prop_OutfitContainer extends Property
 					{
 						final List<XMLTag> tags=CMLib.xml().parseAllXML(miscText.substring(xmlStart+1));
 						final List<String> itemNames = new ArrayList<String>(tags.size());
-						for(XMLTag tag : tags)
+						for(final XMLTag tag : tags)
 							itemNames.add(tag.value());
 						Collections.sort(itemNames);
-						String lastName="";
+						final String lastName="";
 						int ctr=1;
 						for(String name : itemNames)
 						{
@@ -102,7 +101,7 @@ public class Prop_OutfitContainer extends Property
 							}
 							else
 								name = "$"+name+"$";
-							Item I=mob.findItem(name);
+							final Item I=possessor.findItem(name);
 							if(I!=null)
 							{
 								if((I.container() == affected)
@@ -116,31 +115,31 @@ public class Prop_OutfitContainer extends Property
 			}
 		}
 	}
-	
+
 	@Override
 	public String text()
 	{
 		fixContentsFromText();
-		StringBuilder str=new StringBuilder(";");
-		for(Item I : this.outfitContents)
+		final StringBuilder str=new StringBuilder(";");
+		for(final Item I : this.outfitContents)
 			str.append("<I>"+CMLib.xml().parseOutAngleBrackets(I.Name())+"</I>");
 		return str.toString();
 	}
-	
+
 	@Override
 	public String accountForYourself()
 	{
-		StringBuilder str=new StringBuilder("");
+		final StringBuilder str=new StringBuilder("");
 		return str.toString();
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
 		final Item affected = (this.affected instanceof Item)? (Item)this.affected : null;
-		if((msg.target() == affected) 
+		if((msg.target() == affected)
 		&& (msg.othersMessage()!=null)
 		&& (msg.othersMessage().length()>0))
 		{
@@ -171,7 +170,7 @@ public class Prop_OutfitContainer extends Property
 			{
 				fixContentsFromText();
 				final List<Item> thingsToWear = new ArrayList<Item>(outfitContents.size());
-				for(Item I : outfitContents)
+				for(final Item I : outfitContents)
 				{
 					if(I.amWearingAt(Item.IN_INVENTORY))
 						thingsToWear.add(I);
@@ -180,12 +179,12 @@ public class Prop_OutfitContainer extends Property
 				{
 					final MOB mob=msg.source();
 					final List<Item> thingsToRemove = new ArrayList<Item>(outfitContents.size());
-					List<Item> thingsToReDo = new ArrayList<Item>(1);
-					for(Item I : thingsToWear)
+					final List<Item> thingsToReDo = new ArrayList<Item>(1);
+					for(final Item I : thingsToWear)
 					{
 						if(I.canWear(msg.source(), 0))
 							continue;
-						long cantWearAt=I.whereCantWear(mob);
+						final long cantWearAt=I.whereCantWear(mob);
 						final Item alreadyWearingI=(cantWearAt==0)?null:mob.fetchFirstWornItem(cantWearAt);
 						if((alreadyWearingI != null)
 						&&(!thingsToRemove.contains(alreadyWearingI))
@@ -194,7 +193,7 @@ public class Prop_OutfitContainer extends Property
 							thingsToRemove.add(alreadyWearingI);
 							continue;
 						}
-						
+
 						boolean done=false;
 						for(final Enumeration<Item> i=msg.source().items();i.hasMoreElements();)
 						{
@@ -206,7 +205,7 @@ public class Prop_OutfitContainer extends Property
 							||(chkI.amWearingAt(Item.IN_INVENTORY))
 							||((chkI.rawProperLocationBitmap() & I.rawProperLocationBitmap())==0))
 								continue;
-							long oldWornCode = chkI.rawWornCode();
+							final long oldWornCode = chkI.rawWornCode();
 							chkI.setRawWornCode(Item.IN_INVENTORY);
 							if(I.canWear(msg.source(), 0))
 							{
@@ -223,10 +222,10 @@ public class Prop_OutfitContainer extends Property
 					//{
 						//TODO: I have no idea .. but it will be layer related..
 					//}
-					
-					for(Item I : thingsToRemove)
+
+					for(final Item I : thingsToRemove)
 						CMLib.commands().postRemove(msg.source(), I, true);
-					for(Item I : thingsToWear)
+					for(final Item I : thingsToWear)
 					{
 						if(I.container()==affected)
 						{
@@ -263,7 +262,7 @@ public class Prop_OutfitContainer extends Property
 					public void run()
 					{
 						CMLib.commands().postPut(M, affected, I, true);
-						
+
 					}
 				});
 			}
