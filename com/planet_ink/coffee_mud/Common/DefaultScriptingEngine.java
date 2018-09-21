@@ -12739,7 +12739,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			altStatusTickable=null;
 			return true;
 		}
-
 		final PhysicalAgent affecting=(ticking instanceof PhysicalAgent)?((PhysicalAgent)ticking):null;
 
 		final List<DVector> scripts=getScripts();

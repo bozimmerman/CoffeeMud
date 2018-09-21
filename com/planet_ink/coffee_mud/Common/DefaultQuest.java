@@ -2780,7 +2780,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							errorOccurred(q,isQuiet,"Quest '"+name()+"', no item found to load '"+itemName+"'!");
 							break;
 						}
-						final List<Item> itemsToDo=new Vector<Item>();
+						final List<Item> itemsToDo=new ArrayList<Item>();
 						if(cmd.equalsIgnoreCase("ITEM"))
 							itemsToDo.add(choices.get(CMLib.dice().roll(1,choices.size(),-1)));
 						else
@@ -2933,9 +2933,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 									else
 									{
 										questifyScriptableBehavs(I3);
+										CMLib.threads().deleteTick(I3, Tickable.TICKID_ITEM_BEHAVIOR); // because it may not be used??
 										I3=(Item)I3.copyOf();
 										questifyScriptableBehavs(I3);
-										CMLib.threads().deleteTick(I3, Tickable.TICKID_ITEM_BEHAVIOR); // because it may not be used
 										I3.setOwner(null); // because the i3 copy is nowhere
 										M2.moveItemTo(I3);
 									}
@@ -3026,7 +3026,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							final Environmental E2=(Environmental)toSet.get(i);
 							if(E2 instanceof PhysicalAgent)
 								runtimeRegisterBehavior((PhysicalAgent)E2,B.ID(),CMParms.combineQuoted(p,3),true);
-							if(E2 instanceof Item)
+							if((E2 instanceof Item)
+							&&((((Item)E2).owner()==null)
+								||(!((Item)E2).owner().isContent((Item)E2))))
 								CMLib.threads().deleteTick(E2, Tickable.TICKID_ITEM_BEHAVIOR);
 						}
 					}
@@ -3124,8 +3126,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 								S.setScript(val);
 								((PhysicalAgent)E2).addScript(S);
 								runtimeRegisterObject(((PhysicalAgent)E2));
-								if(E2 instanceof Item)
-									CMLib.threads().deleteTick(E2, Tickable.TICKID_ITEM_BEHAVIOR);
+								if((E2 instanceof Item)
+								&&((((Item)E2).owner()==null)
+									||(!((Item)E2).owner().isContent((Item)E2))))
+									CMLib.threads().deleteTick(E2, Tickable.TICKID_ITEM_BEHAVIOR); //OMG WHY?!?!/????!!
 								synchronized(questState)
 								{
 									questState.addons.addElement(new XVector(E2,S),Integer.valueOf(questState.preserveState));
@@ -3239,7 +3243,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 							final Environmental E2=(Environmental)toSet.get(i);
 							if(E2 instanceof PhysicalAgent)
 								runtimeRegisterBehavior((PhysicalAgent)E2,B.ID(),CMParms.combineQuoted(p,3),false);
-							if(E2 instanceof Item)
+							if((E2 instanceof Item)
+							&&((((Item)E2).owner()==null)
+								||(!((Item)E2).owner().isContent((Item)E2))))
 								CMLib.threads().deleteTick(E2, Tickable.TICKID_ITEM_BEHAVIOR);
 						}
 					}
