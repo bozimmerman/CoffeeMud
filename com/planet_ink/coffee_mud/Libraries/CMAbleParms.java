@@ -537,7 +537,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 				//return false;
 			}
 			else
-			if((rowShow>=0)&&(!A.confirmValue((String)dataRow.elementAt(d,2))))
+			if((rowShow>=0)
+			&&(!A.confirmValue((String)dataRow.elementAt(d,2))))
 			{
 				final String data = ((String)dataRow.elementAt(d,2)).replace('@', ' ');
 				if(classModelI instanceof CMObject)

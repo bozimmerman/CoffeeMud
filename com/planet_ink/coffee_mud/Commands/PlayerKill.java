@@ -47,7 +47,7 @@ public class PlayerKill extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if(CMProps.getVar(CMProps.Str.PKILL).startsWith("ALWAYS")
@@ -62,8 +62,9 @@ public class PlayerKill extends StdCommand
 			mob.tell(L("YOU CANNOT TOGGLE THIS FLAG WHILE IN COMBAT!"));
 			return false;
 		}
-		
-		if(CMLib.law().isLandOwnable(mob.location()))
+
+		if((CMLib.law().isLandOwnable(mob.location()))
+		&&(!CMSecurity.isASysOp(mob)))
 		{
 			mob.tell(L("You cannot toggle this flag at this location."));
 			return false;
