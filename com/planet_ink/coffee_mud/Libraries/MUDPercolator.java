@@ -3053,7 +3053,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 									dirs.add(R.getRoomInDir(d));
 							}
 							if(dirs.size()==0)
-								throw new PostProcessException("No anyrooms on object "+E2.ID()+" in variable '"+V.var+"'");
+								throw new PostProcessException("No anyrooms on object "+E2.ID()+" ("+R.roomID()+") in variable '"+V.var+"'");
 							E3=dirs.get(CMLib.dice().roll(1, dirs.size(), -1));
 						}
 						else
