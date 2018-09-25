@@ -77,6 +77,7 @@ public class Spell_Polymorph extends Spell
 	}
 
 	private Race newRace=null;
+	protected volatile int newBaseWeightAdj = 0;
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
@@ -88,10 +89,10 @@ public class Spell_Polymorph extends Spell
 				affectableStats.setName(L("a @x1 called @x2",newRace.name(),affected.name()));
 			else
 				affectableStats.setName(L("@x1 the @x2",affected.name(),newRace.name()));
-			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
-			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
-			if(oldAdd>0)
-				affectableStats.setWeight(affectableStats.weight()+oldAdd);
+			//newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
+			System.out.println("<"+newBaseWeightAdj);
+			affectableStats.setWeight(affectableStats.weight()+newBaseWeightAdj);
+			System.out.println(">"+affectableStats.weight());
 		}
 	}
 
@@ -102,7 +103,10 @@ public class Spell_Polymorph extends Spell
 		if(newRace!=null)
 		{
 			final int oldCat=affected.baseCharStats().ageCategory();
+			final int oldBaseWeight = affected.baseWeight();
 			affectableStats.setMyRace(newRace);
+			if(this.newBaseWeightAdj == 0)
+				this.newBaseWeightAdj = affected.baseWeight() - oldBaseWeight;
 			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
 			if(affected.baseCharStats().getStat(CharStats.STAT_AGE)>0)
 				affectableStats.setStat(CharStats.STAT_AGE,newRace.getAgingChart()[oldCat]);
@@ -160,6 +164,7 @@ public class Spell_Polymorph extends Spell
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,L("<S-NAME> become(s) a @x1!",newRace.name()));
 					success=beneficialAffect(mob,target,asLevel,0)!=null;
 					target.recoverCharStats();
+					target.recoverPhyStats();
 					CMLib.utensils().confirmWearability(target);
 				}
 			}

@@ -2079,7 +2079,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					myDescription.append("is here.\n\r");
 			}
 			if(viewedmob.phyStats().height()>0)
-				myDescription.append(viewedmob.charStats().HeShe()+" is "+viewedmob.phyStats().height()+" inches tall and weighs "+viewedmob.basePhyStats().weight()+" pounds.\n\r");
+				myDescription.append(viewedmob.charStats().HeShe()+" is "+viewedmob.phyStats().height()+" inches tall and weighs "+viewedmob.baseWeight()+" pounds.\n\r");
 			if((longlook)&&(viewermob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>12))
 			{
 				final CharStats C=(CharStats)CMClass.getCommon("DefaultCharStats");

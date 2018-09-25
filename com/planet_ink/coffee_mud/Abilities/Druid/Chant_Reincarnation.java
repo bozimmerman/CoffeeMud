@@ -76,6 +76,7 @@ public class Chant_Reincarnation extends Chant
 	}
 
 	Race newRace=null;
+	volatile int newBaseWeightAdj = 0;
 
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
@@ -87,10 +88,7 @@ public class Chant_Reincarnation extends Chant
 				affectableStats.setName(L("@x1 called @x2",CMLib.english().startWithAorAn(newRace.name()),affected.name()));
 			else
 				affectableStats.setName(L("@x1 the @x2",affected.name(),newRace.name()));
-			final int oldAdd=affectableStats.weight()-affected.basePhyStats().weight();
-			newRace.setHeightWeight(affectableStats,'M');
-			if(oldAdd>0)
-				affectableStats.setWeight(affectableStats.weight()+oldAdd);
+			affectableStats.setWeight(affectableStats.weight()+newBaseWeightAdj);
 		}
 	}
 
@@ -100,7 +98,10 @@ public class Chant_Reincarnation extends Chant
 		super.affectCharStats(affected,affectableStats);
 		if(newRace!=null)
 		{
+			final int oldBaseWeight = affected.baseWeight();
 			affectableStats.setMyRace(newRace);
+			if(this.newBaseWeightAdj == 0)
+				this.newBaseWeightAdj = affected.baseWeight() - oldBaseWeight;
 			affectableStats.setWearableRestrictionsBitmap(affectableStats.getWearableRestrictionsBitmap()|affectableStats.getMyRace().forbiddenWornBits());
 		}
 	}
@@ -184,6 +185,7 @@ public class Chant_Reincarnation extends Chant
 				newRace=CMClass.randomRace();
 			if(newRace!=null)
 				mob.tell(L("You are being reincarnated as a @x1!!",newRace.name()));
+			this.newBaseWeightAdj=0;
 			msg.source().recoverCharStats();
 			msg.source().recoverPhyStats();
 			super.canBeUninvoked=false; // without this, bring to life removes it
