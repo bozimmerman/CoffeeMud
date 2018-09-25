@@ -277,7 +277,7 @@ RESOUNDSING@x1=Resounding Singing @x2,10,MAXRANGE,-SKILLFLAG +SINGING,-MAXCLASSL
 HELP_=<EXPERTISE>The ability to sing songs that can be heard from more rooms away.
 
 ECHOSING@x1=Echoed Singing @x2,10,TIME,-SKILLFLAG +SINGING,-MAXCLASSLEVEL +>={19+(5*@x1)},+CHA {15+@x1},0,1,0,0,0
-HELP_=<EXPERTISE>The ability to sing songs that can be heard from more rooms away.
+HELP_=<EXPERTISE>The ability to sing songs whose effects linger after the bard stops singing.
 
 RANGEDDIVINATION@x1=Ranged Divining @x2,10,MAXRANGE,-SKILLFLAG +DIVINATION,-MAXCLASSLEVEL +>={19+(5*@x1)},+DEX {9+@x1} +CON {9+@x1},0,1,0,0,0
 HELP_=<EXPERTISE>The ability to project divination magic at longer ranges from the target.
