@@ -77,6 +77,8 @@ public class Prop_OutfitContainer extends Property
 		{
 			this.outfitContents.clear();
 			final ItemPossessor possessor=affected.owner();
+			if(possessor == null)
+				return;
 			if(possessor.numItems() > 0)
 			{
 				fixedYet = true;
