@@ -72,7 +72,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	// competency characteristics
-			
+
 	protected short[]		stats				= new short[CharStats.CODES.instance().total()];
 	protected CharClass[]	myClasses			= null;
 	protected Integer[]		myLevels			= null;
@@ -86,20 +86,20 @@ public class DefaultCharStats implements CharStats
 	protected int[]			breathables			= null;
 	protected String		arriveStr			= null;
 	protected String		leaveStr			= null;
-	
+
 	protected Map<String, Integer>	profAdj			= null;
-	
+
 	@SuppressWarnings("unchecked")
-	private static final DoubleFilterer<Item>[]	emptyFiltererArray	= new DoubleFilterer[0]; 
+	private static final DoubleFilterer<Item>[]	emptyFiltererArray	= new DoubleFilterer[0];
 	protected DoubleFilterer<Item>[]			proficiencies		= emptyFiltererArray;
-	
+
 	public DefaultCharStats()
 	{
 		reset();
 	}
-	
+
 	@Override
-	public void setAllBaseValues(int def)
+	public void setAllBaseValues(final int def)
 	{
 		if((def>Short.MAX_VALUE)||(def<Short.MIN_VALUE))
 			Log.errOut("Value out of range",new CMException("Value out of range: "+def+" for all"));
@@ -108,7 +108,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setAllValues(int def)
+	public void setAllValues(final int def)
 	{
 		if((def>Short.MAX_VALUE)||(def<Short.MIN_VALUE))
 			Log.errOut("Value out of range",new CMException("Value out of range: "+def+" for all"));
@@ -141,7 +141,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void copyInto(CharStats intoStats)
+	public void copyInto(final CharStats intoStats)
 	{
 		if(intoStats instanceof DefaultCharStats)
 		{
@@ -306,12 +306,12 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setArriveLeaveStr(String arriveStr, String leaveStr)
+	public void setArriveLeaveStr(final String arriveStr, final String leaveStr)
 	{
 		this.arriveStr = arriveStr;
 		this.leaveStr=leaveStr;
 	}
-	
+
 	@Override
 	public long getWearableRestrictionsBitmap()
 	{
@@ -319,7 +319,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setWearableRestrictionsBitmap(long bitmap)
+	public void setWearableRestrictionsBitmap(final long bitmap)
 	{
 		unwearableBitmap = bitmap;
 	}
@@ -359,7 +359,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setDisplayClassName(String newName)
+	public void setDisplayClassName(final String newName)
 	{
 		displayClassName = newName;
 	}
@@ -373,13 +373,13 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setDisplayClassLevel(String newLevel)
+	public void setDisplayClassLevel(final String newLevel)
 	{
 		displayClassLevel = newLevel;
 	}
 
 	@Override
-	public String displayClassLevel(MOB mob, boolean shortForm)
+	public String displayClassLevel(final MOB mob, final boolean shortForm)
 	{
 		if(displayClassLevel!=null)
 		{
@@ -401,7 +401,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public String displayClassLevelOnly(MOB mob)
+	public String displayClassLevelOnly(final MOB mob)
 	{
 		if(mob==null)
 			return "";
@@ -430,7 +430,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setNonBaseStatsFromString(String str)
+	public void setNonBaseStatsFromString(final String str)
 	{
 		final List<String> V=CMParms.parseSemicolons(str,false);
 		final CharStats.CODES C = CharStats.CODES.instance();
@@ -447,7 +447,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setRaceName(String newRaceName)
+	public void setRaceName(final String newRaceName)
 	{
 		raceName=newRaceName;
 	}
@@ -463,7 +463,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public CharClass getMyClass(int i)
+	public CharClass getMyClass(final int i)
 	{
 		if((myClasses==null)
 		||(i<0)
@@ -473,7 +473,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public int getClassLevel(String aClass)
+	public int getClassLevel(final String aClass)
 	{
 		if(myClasses==null)
 			return -1;
@@ -488,7 +488,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public int getClassLevel(CharClass aClass)
+	public int getClassLevel(final CharClass aClass)
 	{
 		if((myClasses==null)||(aClass==null))
 			return -1;
@@ -503,7 +503,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setClassLevel(CharClass aClass, int level)
+	public void setClassLevel(final CharClass aClass, final int level)
 	{
 		if(aClass==null)
 			return;
@@ -549,7 +549,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public boolean isLevelCapped(CharClass C)
+	public boolean isLevelCapped(final CharClass C)
 	{
 		if((C==null)||(C.getLevelCap()<0)||(C.getLevelCap()==Integer.MAX_VALUE))
 			return false;
@@ -557,7 +557,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setCurrentClassLevel(int level)
+	public void setCurrentClassLevel(final int level)
 	{
 		final CharClass currentClass=getCurrentClass();
 		if(currentClass!=null)
@@ -565,12 +565,13 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setCurrentClass(CharClass aClass)
+	public void setCurrentClass(final CharClass aClass)
 	{
 		if(aClass==null)
 			return;
 		if(((myClasses==null)||(myLevels==null))
-		||((numClasses()==1)&&(myClasses[0].ID().equals("StdCharClass"))))
+		||((numClasses()==1)
+			&&((myClasses[0]==null)||(myClasses[0].ID().equals("StdCharClass")))))
 		{
 			myClasses=new CharClass[1];
 			myLevels=new Integer[1];
@@ -648,7 +649,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setMyRace(Race newVal)
+	public void setMyRace(final Race newVal)
 	{
 		if(newVal != null)
 			myRace=newVal;
@@ -661,13 +662,13 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setBreathables(int[] newArray)
+	public void setBreathables(final int[] newArray)
 	{
 		breathables=newArray;
 	}
-	
+
 	@Override
-	public int getBodyPart(int racialPartNumber)
+	public int getBodyPart(final int racialPartNumber)
 	{
 		int num=getMyRace().bodyMask()[racialPartNumber];
 		if((num<0)||(bodyAlterations==null))
@@ -688,7 +689,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setBodyPartsFromStringAfterRace(String str)
+	public void setBodyPartsFromStringAfterRace(final String str)
 	{
 		final List<String> V=CMParms.parseSemicolons(str,true);
 		bodyAlterations=null;
@@ -704,7 +705,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public int getBodypartAlteration(int racialPartNumber)
+	public int getBodypartAlteration(final int racialPartNumber)
 	{
 		if(bodyAlterations==null)
 			return 0;
@@ -712,7 +713,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void alterBodypart(int racialPartNumber, int deviation)
+	public void alterBodypart(final int racialPartNumber, final int deviation)
 	{
 		if(bodyAlterations==null)
 			bodyAlterations=new short[Race.BODY_PARTS];
@@ -749,7 +750,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public int getSave(int which)
+	public int getSave(final int which)
 	{
 		switch(which)
 		{
@@ -827,9 +828,9 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public int getAbilityAdjustment(String ableID)
+	public int getAbilityAdjustment(final String ableID)
 	{
-		
+
 		final Map<String,Integer> prof=this.profAdj;
 		if(prof == null)
 			return 0;
@@ -840,7 +841,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void adjustAbilityAdjustment(String ableID, int newValue)
+	public void adjustAbilityAdjustment(final String ableID, final int newValue)
 	{
 		Map<String,Integer> prof=this.profAdj;
 		if(prof == null)
@@ -850,9 +851,9 @@ public class DefaultCharStats implements CharStats
 		}
 		prof.put(ableID, Integer.valueOf(newValue));
 	}
-	
+
 	@Override
-	public void setGenderName(String gname)
+	public void setGenderName(final String gname)
 	{
 		genderName=gname;
 	}
@@ -877,7 +878,7 @@ public class DefaultCharStats implements CharStats
 	public String himher()
 	{
 		final char c=((genderName!=null)&&(genderName.length()>0))
-					? Character.toUpperCase(genderName.charAt(0)) 
+					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
 		switch(c)
 		{
@@ -894,7 +895,7 @@ public class DefaultCharStats implements CharStats
 	public String hisher()
 	{
 		final char c=((genderName!=null)&&(genderName.length()>0))
-					? Character.toUpperCase(genderName.charAt(0)) 
+					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
 		switch(c)
 		{
@@ -911,7 +912,7 @@ public class DefaultCharStats implements CharStats
 	public String heshe()
 	{
 		final char c=((genderName!=null)&&(genderName.length()>0))
-					? Character.toUpperCase(genderName.charAt(0)) 
+					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
 		switch(c)
 		{
@@ -928,7 +929,7 @@ public class DefaultCharStats implements CharStats
 	public String sirmadam()
 	{
 		final char c=((genderName!=null)&&(genderName.length()>0))
-					? Character.toUpperCase(genderName.charAt(0)) 
+					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
 		switch(c)
 		{
@@ -945,7 +946,7 @@ public class DefaultCharStats implements CharStats
 	public String SirMadam()
 	{
 		final char c=((genderName!=null)&&(genderName.length()>0))
-					? Character.toUpperCase(genderName.charAt(0)) 
+					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
 		switch(c)
 		{
@@ -957,12 +958,12 @@ public class DefaultCharStats implements CharStats
 			return CMLib.lang().L("Sir");
 		}
 	}
-	
+
 	@Override
 	public String MrMs()
 	{
 		final char c=((genderName!=null)&&(genderName.length()>0))
-					? Character.toUpperCase(genderName.charAt(0)) 
+					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
 		switch(c)
 		{
@@ -979,7 +980,7 @@ public class DefaultCharStats implements CharStats
 	public String MisterMadam()
 	{
 		final char c=((genderName!=null)&&(genderName.length()>0))
-					? Character.toUpperCase(genderName.charAt(0)) 
+					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
 		switch(c)
 		{
@@ -996,7 +997,7 @@ public class DefaultCharStats implements CharStats
 	public String HeShe()
 	{
 		final char c=((genderName!=null)&&(genderName.length()>0))
-					? Character.toUpperCase(genderName.charAt(0)) 
+					? Character.toUpperCase(genderName.charAt(0))
 					: (char)getStat(STAT_GENDER);
 		switch(c)
 		{
@@ -1010,7 +1011,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public int getStat(int abilityCode)
+	public int getStat(final int abilityCode)
 	{
 		if(abilityCode<stats.length)
 			return stats[abilityCode];
@@ -1018,7 +1019,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setPermanentStat(int abilityCode, int value)
+	public void setPermanentStat(final int abilityCode, final int value)
 	{
 		setStat(abilityCode,value);
 		if(CharStats.CODES.isBASE(abilityCode))
@@ -1026,14 +1027,14 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public int getMaxStat(int abilityCode)
+	public int getMaxStat(final int abilityCode)
 	{
 		final int baseMax = CMProps.getIntVar(CMProps.Int.BASEMAXSTAT);
 		return baseMax + getStat(CharStats.CODES.toMAXBASE(abilityCode));
 	}
 
 	@Override
-	public int getRacialStat(MOB mob, int statNum)
+	public int getRacialStat(final MOB mob, final int statNum)
 	{
 		final CharStats copyStats=(CharStats)copyOf();
 		getMyRace().affectCharStats(mob,copyStats);
@@ -1084,21 +1085,21 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setStat(int abilityCode, int value)
+	public void setStat(final int abilityCode, final int value)
 	{
 		if(abilityCode<stats.length)
 			stats[abilityCode]=(short)value;
 	}
-	
+
 	@Override
-	public void adjStat(int statNum, int value)
+	public void adjStat(final int statNum, final int value)
 	{
 		if(statNum<stats.length)
 			stats[statNum]+=(short)value;
 	}
 
 	@Override
-	public int getCode(String abilityName)
+	public int getCode(final String abilityName)
 	{
 		final String[] DESCS = CODES.DESCS();
 		for(final int i : CharStats.CODES.ALLCODES())
@@ -1122,7 +1123,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public String getStat(String abilityName)
+	public String getStat(final String abilityName)
 	{
 		final int dex=CMParms.indexOfIgnoreCase(getStatCodes(),abilityName);
 		if(dex>=0)
@@ -1150,7 +1151,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		final int dex=CMParms.indexOfIgnoreCase(getStatCodes(),code);
 		if(dex>=0)
@@ -1173,7 +1174,7 @@ public class DefaultCharStats implements CharStats
 	}
 
 	@Override
-	public void setItemProficiencies(DoubleFilterer<Item>[] newArray)
+	public void setItemProficiencies(final DoubleFilterer<Item>[] newArray)
 	{
 		this.proficiencies = newArray;
 	}
@@ -1185,16 +1186,16 @@ public class DefaultCharStats implements CharStats
 		newerArray[newerArray.length-1] = new DoubleFilterer<Item>()
 		{
 			final MaskingLibrary.CompiledZMask mask = CMLib.masking().getPreCompiledMask(zapperMask);
-			
+
 			@Override
-			public DoubleFilterer.Result getFilterResult(Item obj)
+			public DoubleFilterer.Result getFilterResult(final Item obj)
 			{
-				return CMLib.masking().maskCheck(mask, obj, true) ? DoubleFilterer.Result.ALLOWED : DoubleFilterer.Result.NOTAPPLICABLE; 
+				return CMLib.masking().maskCheck(mask, obj, true) ? DoubleFilterer.Result.ALLOWED : DoubleFilterer.Result.NOTAPPLICABLE;
 			}
 		};
 		this.proficiencies = newerArray;
 	}
-	
+
 	@Override
 	public void addItemDeficiency(final String zapperMask)
 	{
@@ -1202,11 +1203,11 @@ public class DefaultCharStats implements CharStats
 		newerArray[newerArray.length-1] = new DoubleFilterer<Item>()
 		{
 			final MaskingLibrary.CompiledZMask mask = CMLib.masking().getPreCompiledMask(zapperMask);
-			
+
 			@Override
-			public DoubleFilterer.Result getFilterResult(Item obj)
+			public DoubleFilterer.Result getFilterResult(final Item obj)
 			{
-				return CMLib.masking().maskCheck(mask, obj, true) ? DoubleFilterer.Result.REJECTED : DoubleFilterer.Result.NOTAPPLICABLE; 
+				return CMLib.masking().maskCheck(mask, obj, true) ? DoubleFilterer.Result.REJECTED : DoubleFilterer.Result.NOTAPPLICABLE;
 			}
 		};
 		this.proficiencies = newerArray;
