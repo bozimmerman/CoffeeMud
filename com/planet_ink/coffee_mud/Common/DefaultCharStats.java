@@ -570,7 +570,7 @@ public class DefaultCharStats implements CharStats
 		if(aClass==null)
 			return;
 		if(((myClasses==null)||(myLevels==null))
-		||((numClasses()==1)
+		||((myClasses.length==1)
 			&&((myClasses[0]==null)||(myClasses[0].ID().equals("StdCharClass")))))
 		{
 			myClasses=new CharClass[1];
