@@ -481,7 +481,8 @@ public class DefaultCharStats implements CharStats
 		{
 			if((myClasses[i]!=null)
 			&&(myClasses[i].ID().equals(aClass))
-			&&(i<myLevels.length))
+			&&(i<myLevels.length)
+			&&(myLevels[i]!=null))
 				return myLevels[i].intValue();
 		}
 		return -1;
@@ -496,7 +497,8 @@ public class DefaultCharStats implements CharStats
 		{
 			if((myClasses[i]!=null)
 			&&(myClasses[i].ID().equals(aClass.ID()))
-			&&(i<myLevels.length))
+			&&(i<myLevels.length)
+			&&(myLevels[i]!=null))
 				return myLevels[i].intValue();
 		}
 		return -1;
