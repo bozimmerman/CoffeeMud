@@ -1915,6 +1915,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			chk = ((E instanceof RawMaterial)
 				&&((((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN));
 			break;
+		case ShopKeeper.DEAL_CLOTHSPINNER:
+			chk = ((E instanceof RawMaterial)
+				&&((((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_CLOTH));
+			break;
 		case ShopKeeper.DEAL_METALSMITH:
 			chk = ((E instanceof RawMaterial)
 				&&(((((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
