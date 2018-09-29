@@ -23,7 +23,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
-
+import java.io.*;
 /*
    Copyright 2008-2018 Bo Zimmerman
 
@@ -536,6 +536,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			final LayoutNode node=roomsToLayOut.get(i);
 			if(node.type()==LayoutTypes.leaf)
 				numLeafs++;
+			if(node.links().size()==0)
+				throw new CMException("Created linkless node with "+layoutManager.name());
 		}
 		defined.put("AREA_NUMLEAFS", ""+numLeafs);
 
@@ -3049,11 +3051,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							final List<Room> dirs=new ArrayList<Room>();
 							for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 							{
-								if((R.getRoomInDir(d)!=null)&&(R.getRoomInDir(d).roomID().length()>0))
-									dirs.add(R.getRoomInDir(d));
+								final Room R2=R.getRoomInDir(d);
+								if((R2!=null)
+								&&((R2.roomID().length()>0)
+									||(R.rawDoors()[d] instanceof GridLocale)))
+									dirs.add(R2);
 							}
 							if(dirs.size()==0)
-								throw new PostProcessException("No anyrooms on object "+E2.ID()+" ("+R.roomID()+") in variable '"+V.var+"'");
+								throw new PostProcessException("No anyrooms on object "+E2.ID()+" ("+R.roomID()+"/"+R+") in variable '"+V.var+"' ");
 							E3=dirs.get(CMLib.dice().roll(1, dirs.size(), -1));
 						}
 						else
