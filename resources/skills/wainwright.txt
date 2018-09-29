@@ -4,24 +4,24 @@
 % hand trolley	4	15	25	85	GenContainer		100		0		Prop_MoveRestrictor;ONLYDOMAINS="STONE","WOODEN","CAVE","MAGIC","METAL","CITY","SEAPORT"
 % dog sled	5	15	30	90	GenRideable		100	1	0	riding;driven by;drives;mount;dismount;put	Prop_MoveRestrictor;NODOMAINS="WOODS","ROCKY","UNDERWATER","AIR","WATERSURFACE","JUNGLE","SWAMP","MOUNTAINS"
 % wheel barrow	6	20	35	115	GenContainer		500		0		Prop_MoveRestrictor;NODOMAINS="WOODS","ROCKY","UNDERWATER","AIR","WATERSURFACE","JUNGLE","SWAMP","MOUNTAINS"
-% baby carraige	7	45	10	190	GenContainer		20		0		Prop_MoveRestrictor;ONLYDOMAINS="STONE","WOODEN","CAVE","MAGIC","METAL","CITY","SEAPORT"
-all-terrain % baby carraige	37	60	15	255	GenContainer		30		0		
+% baby carriage	7	45	10	190	GenContainer		20		0		Prop_MoveRestrictor;ONLYDOMAINS="STONE","WOODEN","CAVE","MAGIC","METAL","CITY","SEAPORT"
+all-terrain % baby carriage	37	60	15	255	GenContainer		30		0		
 % tobaggon	8	30	20	140	GenRideable		0	2	0	riding;used by;steers;sit;dismount;put	Prop_MoveRestrictor;NODOMAINS="WOODS","ROCKY","UNDERWATER","AIR","WATERSURFACE","JUNGLE","SWAMP"
 % cabriolet	9	60	60	300	GenRideable		0	3	0		
 small % coach	10	70	60	340	GenRideable	LID	100	4	0		
 medium % coach	11	75	80	380	GenRideable	LID	200	6	0		
 large % coach	12	80	100	420	GenRideable	LID	300	8	0		
 small % unsprung cart	13	50	50	250	GenRideable		1000	0	0		
-small % carraige	14	75	75	375	GenRideable		500	4	0		
+small % carriage	14	75	75	375	GenRideable		500	4	0		
 small % sprung cart	15	70	80	360	GenRideable		500	2	0		
 small % storage cart	16	90	100	460	GenRideable	LOCK	1000	0	0		
 small lantern wagon	17	90	120	980	GenRideable		1000	2	0		Spell_Light
 small % wagon	18	75	150	450	GenRideable		1000	2	0		
 small covered % wagon	19	80	175	495	GenRideable	LID	1000	2	0		
 small % storage wagon	20	100	200	600	GenRideable	LOCK	1000	2	0		
-medium % carraige	22	95	125	505	GenRideable		1000	6	0		
+medium % carriage	22	95	125	505	GenRideable		1000	6	0		
 small % chariot	24	120	225	705	GenRideable		100	1	0		Prop_RideAdjuster;Speed+1
-large % carraige	26	115	175	635	GenRideable		1500	8	0		
+large % carriage	26	115	175	635	GenRideable		1500	8	0		
 % sleigh	28	90	250	610	GenRideable		2000	6	0		
 medium % unsprung cart	30	80	130	450	GenRideable		3000	0	0		
 medium % wagon	32	105	200	620	GenRideable		2500	2	0		
