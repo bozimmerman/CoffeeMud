@@ -435,7 +435,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				if(isFg)
 				{
 					escapeSequence="\033[38;5;"+finalNum+"m";
-					if((S!=null)&&(S.getCurrentColor().backgroundCode()!='.'))
+					if((S!=null)
+					&&(S.getCurrentColor().backgroundCode()!='.'))
 						escapeSequence=ColorLibrary.Color.NONE.getANSICode()+escapeSequence;
 				}
 				else
