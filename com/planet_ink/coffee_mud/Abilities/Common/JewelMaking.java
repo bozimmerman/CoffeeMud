@@ -73,7 +73,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\tITEM_BASE_VALUE\t"
-		+"ITEM_CLASS_ID\tSTATUE||CODED_WEAR_LOCATION\tN_A\tBASE_ARMOR_AMOUNT\tOPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";
+		+"ITEM_CLASS_ID\tSTATUE||CODED_WEAR_LOCATION\tN_A\tBASE_ARMOR_AMOUNT||DICE_SIDES\tOPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";
 	}
 
 	//protected static final int RCP_FINALNAME=0;
@@ -706,6 +706,10 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				if(armordmg!=0)
 					((Armor)buildingI).basePhyStats().setArmor(armordmg);
 				setWearLocation(buildingI,misctype,0);
+			}
+			if(buildingI.ID().endsWith("Dice"))
+			{
+				buildingI.basePhyStats().setAbility(armordmg);
 			}
 			if((misctype.equalsIgnoreCase("statue"))
 			&&(statue!=null)
