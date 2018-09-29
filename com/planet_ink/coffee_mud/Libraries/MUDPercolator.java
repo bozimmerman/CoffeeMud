@@ -3054,7 +3054,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 								final Room R2=R.getRoomInDir(d);
 								if((R2!=null)
 								&&((R2.roomID().length()>0)
-									||(R.rawDoors()[d] instanceof GridLocale)))
+									||((R.rawDoors()[d] instanceof GridLocale)
+									   &&(R.rawDoors()[d].roomID().length()>0))))
 									dirs.add(R2);
 							}
 							if(dirs.size()==0)
