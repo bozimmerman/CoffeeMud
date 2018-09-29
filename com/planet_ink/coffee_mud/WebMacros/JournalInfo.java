@@ -100,7 +100,11 @@ public class JournalInfo extends StdWebMacro
 			}
 		}
 		if((dbsearch!=null)&&(dbsearch.length()>0))
+		{
+			if(dbsearch.equals("*"))
+				dbsearch=null;
 			parent=null;
+		}
 		else
 		if(parent==null)
 			parent="";

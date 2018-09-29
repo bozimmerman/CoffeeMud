@@ -42,7 +42,7 @@ public class JournalMessageNext extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String journalName=httpReq.getUrlParameter("JOURNAL");
@@ -70,16 +70,63 @@ public class JournalMessageNext extends StdWebMacro
 			}
 			return "";
 		}
+		String page=httpReq.getUrlParameter("JOURNALPAGE");
+		if(page==null)
+			page=parms.get("JOURNALPAGE");
+		if(parms.containsKey("PAGECARDINAL"))
+		{
+			final int limit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
+			if(limit<=0)
+				return "0";
+			if((page!=null) && (page.length()>0))
+			{
+				final int x=CMStrings.countChars(page, ',');
+				if(x <= 0)
+					return "0";
+				return Long.toString(x*limit);
+			}
+		}
+		if(parms.containsKey("LASTPAGE") || parms.containsKey("LASTPAGECARDINAL"))
+		{
+			int limit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
+			if(limit<=0)
+				limit=Integer.MAX_VALUE;
+			@SuppressWarnings("unchecked")
+			List<Long> pages = (List<Long>)httpReq.getRequestObjects().get("JOURNAL_"+journalName+"_ALL_PAGES_MINUS_ONE");
+			if(pages == null)
+			{
+				pages = CMLib.database().DBReadJournalPages(journalName, null, null, limit);
+				for(int i=0;i<pages.size();i++)
+					pages.set(i, new Long(pages.get(i).longValue()-1));
+				httpReq.getRequestObjects().put("JOURNAL_"+journalName+"_ALL_PAGES_MINUS_ONE", pages);
+			}
+			if(pages.size()<2)
+				return "";
+			//pages.remove(pages.size()-1);
+			if(parms.containsKey("LASTPAGE"))
+			{
+				final StringBuilder str=new StringBuilder("");
+				for(final Long L : pages)
+					str.append(L.longValue()).append(",");
+				return str.substring(0,str.length()-1);
+			}
+			if(parms.containsKey("LASTPAGECARDINAL"))
+				return Long.toString((pages.size()-1)*limit);
+			return "";
+		}
 		final MOB M = Authenticate.getAuthenticatedMob(httpReq);
 		cardinal++;
 		JournalEntry entry = null;
-		final String page=httpReq.getUrlParameter("JOURNALPAGE");
-		final String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
+		String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
+		if(mpage==null)
+			mpage=parms.get("MESSAGEPAGE");
 		final String parent=httpReq.getUrlParameter("JOURNALPARENT");
 		final String dbsearch=httpReq.getUrlParameter("DBSEARCH");
 		final Clan setClan=CMLib.clans().getClan(httpReq.getUrlParameter("CLAN"));
 		final JournalsLibrary.ForumJournal journal= CMLib.journals().getForumJournal(journalName,setClan);
 		final List<JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
+		if(parms.containsKey("DESC") && ((msgs.size()>1)&&(msgs.get(0).update()>msgs.get(msgs.size()-1).update())))
+			Collections.reverse(msgs);
 		while((entry==null)||(!CMLib.journals().canReadMessage(entry,srch,M,parms.containsKey("NOPRIV"))))
 		{
 			entry = JournalInfo.getNextEntry(msgs,last);

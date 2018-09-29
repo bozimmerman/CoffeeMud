@@ -8,42 +8,69 @@
  	<link rel="grinder icon" href="/images/grinder.ico" >
 	<script language=JavaScript>
 	<!--
-		function Clicked(action)
+		function Clicked(action,message,journal,journalcardinal,page,fun)
 		{
 			document.JOURNAL.action=action;
-			document.JOURNAL.JOURNAL.value='';
-			document.JOURNAL.JOURNALMESSAGE.value='';
-			document.JOURNAL.JOURNALCARDINAL.value='';
-			document.JOURNAL.FUNCTION.value='';
+			document.JOURNAL.JOURNAL.value=journal;
+			document.JOURNAL.JOURNALMESSAGE.value=message;
+			document.JOURNAL.JOURNALCARDINAL.value=journalcardinal;
+			document.JOURNAL.JOURNALPAGE.value=page;
+			document.JOURNAL.FUNCTION.value=fun;
 			document.JOURNAL.submit();
 		}
 		function Clicked1(journal)
 		{
-			document.JOURNAL.JOURNAL.value=journal;
-			document.JOURNAL.JOURNALMESSAGE.value='';
-            document.JOURNAL.JOURNALMESSAGESEARCH.value='';
-			document.JOURNAL.JOURNALCARDINAL.value='';
-			document.JOURNAL.FUNCTION.value='';
-			document.JOURNAL.action="journal.cmvp#"+journal;
-			document.JOURNAL.submit();
+			Clicked("journal.cmvp#"+journal,'',journal,'','','');
 		}
 		function Clicked2(journal,message,cardinal)
 		{
-			document.JOURNAL.JOURNAL.value=journal;
-			document.JOURNAL.JOURNALMESSAGE.value=message;
-			document.JOURNAL.JOURNALCARDINAL.value=cardinal;
-			document.JOURNAL.FUNCTION.value='';
-			document.JOURNAL.action="journal.cmvp#"+journal;
-			document.JOURNAL.submit();
+			Clicked("journal.cmvp#"+journal,message,journal,cardinal,document.JOURNAL.JOURNALPAGE.value,'');
 		}
 		function Clicked3(journal,message,action,cardinal)
 		{
-			document.JOURNAL.JOURNAL.value=journal;
-			document.JOURNAL.JOURNALMESSAGE.value=message;
-			document.JOURNAL.JOURNALCARDINAL.value=cardinal;
-			document.JOURNAL.FUNCTION.value=action;
-			document.JOURNAL.action="journal.cmvp#"+journal;
-			document.JOURNAL.submit();
+			Clicked("journal.cmvp#"+journal,message,journal,cardinal,document.JOURNAL.JOURNALPAGE.value,action);
+		}
+		function FirstPage()
+		{
+			var journal='@RequestParameter?JOURNAL@';
+			Clicked("journal.cmvp#"+journal,'',journal,'','0','');
+		}
+		var allpages = '@JournalMessageNext?LASTPAGE@';
+		var currjournal='@RequestParameter?JOURNAL@';
+		function LastPage()
+		{
+			var journal='@RequestParameter?JOURNAL@';
+			Clicked("journal.cmvp#"+currjournal,'',currjournal,'',allpages,'');
+		}
+		function PrevPage(journal)
+		{
+			var pages=document.JOURNAL.JOURNALPAGE.value;
+			if(pages == '')
+				pages=allpages;
+			var x=pages.lastIndexOf(',');
+			if(x>0)
+				pages = pages.substr(0,x);
+			x=pages.lastIndexOf(',');
+			if(x<0)
+				Clicked("journal.cmvp#"+currjournal,'',currjournal,'','0','');
+			else
+				Clicked("journal.cmvp#"+currjournal,'',currjournal,'',pages,'');
+		}
+		function NextPage()
+		{
+			var pages=document.JOURNAL.JOURNALPAGE.value;
+			if(pages.length >= allpages.length)
+				return; // already there
+			if((pages=='')||(pages=='0'))
+			{
+				var x=allpages.indexOf(',');
+				if(x>0)
+					pages=allpages.substr(0,x);
+			}
+			var x=allpages.indexOf(',',pages.length+1);
+			if(x<0)
+				x=allpages.length;
+			Clicked("journal.cmvp#"+currjournal,'',currjournal,'',allpages.substr(0,x),'');
 		}
 		function sfideas()
 		{
@@ -72,6 +99,7 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=JOURNAL VALUE="@RequestParameter?JOURNAL@">
 <INPUT TYPE=HIDDEN NAME=JOURNALMESSAGE VALUE="@RequestParameter?JOURNALMESSAGE@">
+<INPUT TYPE=HIDDEN NAME=JOURNALPAGE VALUE="@RequestParameter?JOURNALPAGE@">
 <INPUT TYPE=HIDDEN NAME=JOURNALCARDINAL VALUE="@RequestParameter?JOURNALCARDINAL@">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <TABLE WIDTH=100% BORDER=1>
@@ -81,8 +109,10 @@
 			<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGESEARCH VALUE="@RequestParameter?JOURNALMESSAGESEARCH@">
 		@endif@
 		@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
+		@AddRequestParameter?JRNLNUM=0@
 		@JournalNext?RESET@
 		@loop@
+			@AddRequestParameter?JRNLNUM=++@
 			@JournalNext@
 		    <TR><TD WIDTH=30% VALIGN=TOP>
 			<a name="@JournalName@" href="javascript:Clicked1('@JournalName@')"><FONT COLOR=YELLOW>@JournalName?NOCOLOR@</FONT></a>
@@ -109,10 +139,18 @@
 				@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
 				@AddRequestParameter?OLDCARDINAL=@@RequestParameter?JOURNALCARDINAL@@ @
 			
+				@if?CheckReqParm?JOURNALPAGE=@
+					@AddRequestParameter?JOURNALPAGE=@@JournalMessageNext?LASTPAGE@@ @
+				@endif@
+				@AddRequestParameter?JOURNALPARENT=@
+				@AddRequestParameter?DBSEARCH=*@
 				@JournalMessageNext?RESET@
+				@if?CheckReqParm?JOURNALCARDINAL=@
+					@AddRequestParameter?JOURNALCARDINAL=@@JournalMessageNext?PAGECARDINAL@@ @
+				@endif@
 				<UL>
 				@loop@
-					@JournalMessageNext@
+					@JournalMessageNext?DESC@
 					<LI><a href="javascript:Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@','@RequestParameter?JOURNALCARDINAL@')">
 					<FONT COLOR=YELLOW>@RequestParameter?JOURNALCARDINAL@</FONT>
 					@AddRequestParameter?TEMPFROM=@@JournalInfo?FROM@@ @
@@ -130,7 +168,17 @@
 					</a>
 				@back@
 				</UL>
-				<BR><INPUT TYPE=TEXT NAME=JOURNALMESSAGESEARCH SIZE=10 VALUE="@RequestParameter?JOURNALMESSAGESEARCH@">
+				@if?!CheckReqParm?JOURNALPAGE=0&||JOURNALPAGE=@
+					<a href="javascript:FirstPage()"><FONT COLOR=WHITE>&lt;&lt;</FONT></a>&nbsp;&nbsp;
+					<a href="javascript:PrevPage()"><FONT COLOR=WHITE>&lt;</FONT></a>
+				@endif@
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				@if?!CheckReqParm?JOURNALPAGE=@@JournalMessageNext?LASTPAGE@@ @
+					<a href="javascript:NextPage()"><FONT COLOR=WHITE>&gt;</FONT></a>&nbsp;&nbsp;
+					<a href="javascript:LastPage()"><FONT COLOR=WHITE>&gt;&gt;</FONT></a>
+				@endif@
+				<BR>
+				<BR><FONT COLOR=WHITE>Search:<INPUT TYPE=TEXT NAME=JOURNALMESSAGESEARCH SIZE=10 VALUE="@RequestParameter?JOURNALMESSAGESEARCH@"></FONT>
 				<INPUT TYPE=BUTTON NAME=SEARCH VALUE="Filter" ONCLICK="Clicked2('@JournalName@','','');">
 				</TD>
 				<TD WIDTH=70% VALIGN=TOP>
