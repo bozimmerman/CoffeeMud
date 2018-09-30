@@ -293,7 +293,27 @@ public class Artisan extends StdCharClass
 		&&(msg.tool() instanceof Ability)
 		&&((((Ability)msg.tool()).classificationCode() & Ability.ALL_DOMAINS) == Ability.DOMAIN_CRAFTINGSKILL)
 		&&(msg.value() > 0))
-			CMLib.leveler().postExperience(msg.source(),null,null,msg.value(),false);
+		{
+			final Map<String,Object> persMap = msg.source().playerStats().getClassVariableMap(this);
+			if(persMap != null)
+			{
+				final String key = "LAST_DATE_FOR_"+msg.tool().ID().toUpperCase().trim();
+				long[] lastTime = (long[])persMap.get(key);
+				if(lastTime == null)
+				{
+					lastTime = new long[1];
+					persMap.put(key, lastTime);
+				}
+				final Area homeA=CMLib.map().areaLocation(msg.source().getStartRoom());
+				final TimeClock homeL = (homeA == null) ? null : homeA.getTimeObj();
+				if((homeL!=null)
+				&&((homeL.toHoursSinceEpoc() - lastTime[0])>0))
+				{
+					lastTime[0] = homeL.toHoursSinceEpoc();
+					CMLib.leveler().postExperience(msg.source(), null, null, msg.value(), false);
+				}
+			}
+		}
 	}
 
 	@Override
