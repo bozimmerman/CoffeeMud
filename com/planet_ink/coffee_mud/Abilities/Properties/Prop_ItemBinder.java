@@ -51,7 +51,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 	{
 		return Ability.CAN_ITEMS;
 	}
-	
+
 	protected enum BoundTo
 	{
 		CHARACTER,
@@ -61,7 +61,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 	}
 
 	protected BoundTo to = BoundTo.CHARACTER;
-	
+
 	protected enum BoundOn
 	{
 		PICKUP,
@@ -69,39 +69,39 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 	}
 
 	protected BoundOn on = BoundOn.PICKUP;
-	
+
 	protected String boundToName = "";
-	
+
 	protected String msgStr=defaultMessage();
-	
+
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
-		String boundTo=CMParms.getParmStr(text, "TO", "CHARACTER");
+		final String boundTo=CMParms.getParmStr(text, "TO", "CHARACTER");
 		to = (BoundTo)CMath.s_valueOf(BoundTo.class,boundTo.toUpperCase().trim());
-		for(BoundTo b : BoundTo.values())
+		for(final BoundTo b : BoundTo.values())
 		{
 			if(b.name().startsWith(boundTo.toUpperCase().trim()))
 				to=b;
 		}
 		if(to == null)
 			to = BoundTo.CHARACTER;
-		
-		String boundOn=CMParms.getParmStr(text, "ON", "PICKUP");
+
+		final String boundOn=CMParms.getParmStr(text, "ON", "PICKUP");
 		on = (BoundOn)CMath.s_valueOf(BoundOn.class,boundOn.toUpperCase().trim());
-		for(BoundOn b : BoundOn.values())
+		for(final BoundOn b : BoundOn.values())
 		{
 			if(b.name().startsWith(boundTo.toUpperCase().trim()))
 				on=b;
 		}
 		if(on == null)
 			on = BoundOn.PICKUP;
-		
+
 		boundToName = CMStrings.deEscape(CMParms.getParmStr(text, "BOUND", ""));
 		msgStr=CMParms.getParmStr(text,"MESSAGE",defaultMessage());
 		super.setMiscText(text);
 	}
-	
+
 	protected String defaultMessage()
 	{
 		return "<O-NAME> flashes and flies out of <S-HIS-HER> hands!";
@@ -201,7 +201,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 		}
 		return true;
 	}
-	
+
 	final String getBindyName(final MOB mob)
 	{
 		switch(to)
@@ -212,7 +212,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 		{
 			final Set<MOB> grp = mob.getGroupMembers(new HashSet<MOB>());
 			final List<String> grpMemberNames = new ArrayList<String>();
-			for(MOB M : grp)
+			for(final MOB M : grp)
 				grpMemberNames.add(M.Name());
 			return CMParms.combineQuoted(grpMemberNames, 0);
 		}
@@ -231,7 +231,7 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 		}
 		return "";
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -254,7 +254,8 @@ public class Prop_ItemBinder extends Property implements TriggeredAffect
 				break;
 			case CMMsg.TYP_GET:
 				if((this.boundToName.length()==0)
-				&&(on == BoundOn.PICKUP))
+				&&(on == BoundOn.PICKUP)
+				&&((!(msg.source() instanceof ShopKeeper))))
 				{
 					this.boundToName = getBindyName(msg.source());
 					if(this.boundToName.length()>0)
