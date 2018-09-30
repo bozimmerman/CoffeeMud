@@ -13,6 +13,7 @@ unlink unload visible where wizemote wizinv
 
 ^HSkills^N
 multiwatch wrath hush freeze banish record metacraft
-accuse infect injure matrixpossess stinkify
+accuse infect injure matrixpossess stinkify shame
+markooc
 
 ** enter ^HAHELP 'command name'^N or ^!ATOPICS^N for more help!
