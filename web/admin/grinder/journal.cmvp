@@ -2,6 +2,7 @@
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 @if?!CheckAuthCode?AUTH_JOURNALS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+@AddRequestParameter?JOURNALPAGELIMIT=0@
 <html>
 <head>
 	<title>Journal Browser</title>
@@ -14,9 +15,13 @@
 			document.JOURNAL.JOURNAL.value=journal;
 			document.JOURNAL.JOURNALMESSAGE.value=message;
 			document.JOURNAL.JOURNALCARDINAL.value=journalcardinal;
-			document.JOURNAL.JOURNALPAGE.value=page;
+			//document.JOURNAL.JOURNALPAGE.value=page; // for page support
 			document.JOURNAL.FUNCTION.value=fun;
 			document.JOURNAL.submit();
+		}
+		function Clicked0(action)
+		{
+			Clicked(action,'','','','','');
 		}
 		function Clicked1(journal)
 		{
@@ -92,7 +97,7 @@
 	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
 		<TABLE WIDTH=50% BORDER=1>
 		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
-		<TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+		<TR><TD><a href="javascript:Clicked0('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
 		<TR><TD><a href="javascript:Clicked2('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','@RequestParameter?JOURNALCARDINAL@');"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
 		</TABLE>
 	</TD>
@@ -118,7 +123,7 @@
 		@loop@
 			@AddRequestParameter?JRNLNUM=++@
 			@JournalNext@
-		    <TR><TD WIDTH=30% VALIGN=TOP>
+			<TR><TD WIDTH=30% VALIGN=TOP>
 			<a name="@JournalName@" href="javascript:Clicked1('@JournalName@')"><FONT COLOR=YELLOW>@JournalName?NOCOLOR@</FONT></a>
 			@if?CheckReqParm?JOURNAL=@@RequestParameter?OLDJOURNAL@@ @
 				@if?CheckReqParm?FUNCTION=DELETE@
@@ -143,17 +148,21 @@
 				@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
 				@AddRequestParameter?OLDCARDINAL=@@RequestParameter?JOURNALCARDINAL@@ @
 			
+				@<!--@ <!-- page support -->
 				@if?CheckReqParm?JOURNALPAGE=@
 					@AddRequestParameter?JOURNALPAGE=@@JournalMessageNext?LASTPAGE@@ @
 				@endif@
 				@AddRequestParameter?JOURNALPARENT=*@
+				@-->@
 				@JournalMessageNext?RESET@
+				@<!--@ <!-- page support -->
 				@if?CheckReqParm?JOURNALCARDINAL=@
 					@AddRequestParameter?JOURNALCARDINAL=@@JournalMessageNext?PAGECARDINAL@@ @
 				@endif@
+				@-->@
 				<UL>
 				@loop@
-					@JournalMessageNext?DESC&REVERSE@
+					@JournalMessageNext?REVERSE@
 					<LI><a href="javascript:Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@','@RequestParameter?JOURNALCARDINAL@')">
 					<FONT COLOR=YELLOW>@RequestParameter?JOURNALCARDINAL@</FONT>
 					@AddRequestParameter?TEMPFROM=@@JournalInfo?FROM@@ @
@@ -171,6 +180,7 @@
 					</a>
 				@back@
 				</UL>
+				@<!--@ <!-- page support -->
 				@if?!CheckReqParm?JOURNALPAGE=0&||JOURNALPAGE=@
 					<a href="javascript:FirstPage()"><FONT COLOR=WHITE>&lt;&lt;</FONT></a>&nbsp;&nbsp;
 					<a href="javascript:PrevPage()"><FONT COLOR=WHITE>&lt;</FONT></a>
@@ -181,8 +191,9 @@
 					<a href="javascript:LastPage()"><FONT COLOR=WHITE>&gt;&gt;</FONT></a>
 				@endif@
 				<BR>
-				<BR><FONT COLOR=WHITE>Search:<INPUT TYPE=TEXT NAME=DBSEARCH SIZE=10 VALUE="@RequestParameter?DBSEARCH@"></FONT>
-				<INPUT TYPE=BUTTON NAME=SEARCH VALUE="Filter" ONCLICK="ClickedSearch('@JournalName@','','');">
+				@-->@
+				<BR><INPUT TYPE=TEXT NAME=JOURNALMESSAGESEARCH SIZE=10 VALUE="@RequestParameter?JOURNALMESSAGESEARCH@">
+				<INPUT TYPE=BUTTON NAME=SEARCH VALUE="Filter" ONCLICK="Clicked2('@JournalName@','','');">
 				</TD>
 				<TD WIDTH=70% VALIGN=TOP>
 				@AddRequestParameter?JOURNALMESSAGE=@@RequestParameter?OLDMESSAGE@@ @
