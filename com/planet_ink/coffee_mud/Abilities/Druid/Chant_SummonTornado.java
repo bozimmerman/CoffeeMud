@@ -93,7 +93,7 @@ public class Chant_SummonTornado extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		 if(mob!=null)
 		 {
@@ -105,6 +105,7 @@ public class Chant_SummonTornado extends Chant
 				 final Area A=R.getArea();
 				 if((A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
 				 &&(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_BLIZZARD)
+				 &&(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_DUSTSTORM)
 				 &&(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINDY))
 					 return Ability.QUALITY_INDIFFERENT;
 				 if(R.fetchEffect(this.ID())!=null)
@@ -115,23 +116,27 @@ public class Chant_SummonTornado extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))
+		final Room R=mob.location();
+		if(R==null)
+			return false;
+		if(((R.domainType()&Room.INDOORS)>0)&&(!auto))
 		{
 			mob.tell(L("You must be outdoors for this chant to work."));
 			return false;
 		}
-		if((mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
-		&&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINDY)
-		&&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_BLIZZARD)
+		if((R.getArea().getClimateObj().weatherType(R)!=Climate.WEATHER_THUNDERSTORM)
+		&&(R.getArea().getClimateObj().weatherType(R)!=Climate.WEATHER_WINDY)
+		&&(R.getArea().getClimateObj().weatherType(R)!=Climate.WEATHER_DUSTSTORM)
+		&&(R.getArea().getClimateObj().weatherType(R)!=Climate.WEATHER_BLIZZARD)
 		&&(!auto))
 		{
 			mob.tell(L("This chant requires wind, a thunderstorm, or a blizzard!"));
 			return false;
 		}
 
-		final Physical target = mob.location();
+		final Physical target = R;
 
 		if(target.fetchEffect(this.ID())!=null)
 		{
@@ -168,11 +173,11 @@ public class Chant_SummonTornado extends Chant
 				availableRooms.addElement(mob.location());
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					final Room R=mob.location().getRoomInDir(d);
-					final Exit E=mob.location().getExitInDir(d);
-					if((R!=null)&&(E!=null)&&(E.isOpen())
-					&&((R.domainType()&Room.INDOORS)==0))
-						availableRooms.addElement(R);
+					final Room R1=mob.location().getRoomInDir(d);
+					final Exit E1=mob.location().getExitInDir(d);
+					if((R1!=null)&&(E1!=null)&&(E1.isOpen())
+					&&((R1.domainType()&Room.INDOORS)==0))
+						availableRooms.addElement(R1);
 				}
 				if(stuff.size()==0)
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,L("The tornado dissipates harmlessly."));
@@ -181,16 +186,16 @@ public class Chant_SummonTornado extends Chant
 				{
 					final Object O=stuff.elementAt(CMLib.dice().roll(1,stuff.size(),-1));
 					stuff.removeElement(O);
-					final Room R=availableRooms.elementAt(CMLib.dice().roll(1,availableRooms.size(),-1));
+					final Room pickedR=availableRooms.elementAt(CMLib.dice().roll(1,availableRooms.size(),-1));
 					if(O instanceof Item)
 					{
 						final Item I=(Item)O;
-						if(R==mob.location())
+						if(pickedR==mob.location())
 							mob.location().show(mob,null,I,CMMsg.MSG_OK_ACTION,L("The tornado picks up <O-NAME> and whisks it around."));
 						else
 						{
 							mob.location().show(mob,null,I,CMMsg.MSG_OK_ACTION,L("The tornado picks up <O-NAME> and whisks it away."));
-							R.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
+							pickedR.moveItemTo(I,ItemPossessor.Expire.Never,ItemPossessor.Move.Followers);
 						}
 						if(I.subjectToWearAndTear())
 						{
@@ -242,12 +247,12 @@ public class Chant_SummonTornado extends Chant
 						{
 							mob.location().send(mob,msg2);
 							mob.location().send(mob,msg3);
-							if(R==mob.location())
+							if(pickedR==mob.location())
 								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,L("The tornado picks <S-NAME> up and whisks <S-HIM-HER> around."));
 							else
 							{
 								mob.location().show(M,null,null,CMMsg.MSG_OK_ACTION,L("The tornado picks <S-NAME> up and whisks <S-HIM-HER> away."));
-								R.bringMobHere(M,false);
+								pickedR.bringMobHere(M,false);
 							}
 							final int maxDie=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0));
 							int damage = CMLib.dice().roll(maxDie,7,1);
