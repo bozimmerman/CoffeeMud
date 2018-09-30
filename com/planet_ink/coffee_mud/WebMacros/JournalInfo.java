@@ -81,9 +81,17 @@ public class JournalInfo extends StdWebMacro
 	}
 
 	@SuppressWarnings("unchecked")
-	public static List<JournalEntry> getMessages(final String journalName, final JournalsLibrary.ForumJournal forumJournal, String page, final String mpage, String parent, String dbsearch, final Map<String,Object> objs)
+	public static List<JournalEntry> getMessages(final String journalName, final JournalsLibrary.ForumJournal forumJournal,
+			String page, final String mpage, String parent, String dbsearch, final int msgLimit, final Map<String,Object> objs)
 	{
-		if((parent!=null)&&(parent.length()>0))
+
+		if(parent==null)
+			parent="";
+		else
+		if(parent.equals("*"))
+			parent=null;
+		else
+		if(parent.length()>0)
 		{
 			page=mpage;
 			dbsearch=null;
@@ -100,14 +108,7 @@ public class JournalInfo extends StdWebMacro
 			}
 		}
 		if((dbsearch!=null)&&(dbsearch.length()>0))
-		{
-			if(dbsearch.equals("*"))
-				dbsearch=null;
 			parent=null;
-		}
-		else
-		if(parent==null)
-			parent="";
 		final String httpkey="JOURNAL: "+journalName+": "+parent+": "+dbsearch+": "+page;
 		List<JournalEntry> msgs=(List<JournalEntry>)objs.get(httpkey);
 		if(msgs==null)
@@ -118,9 +119,6 @@ public class JournalInfo extends StdWebMacro
 			{
 				final JournalsLibrary.JournalMetaData metaData = CMLib.journals().getJournalStats(forumJournal);
 				final long pageDate = CMath.s_long(page);
-				int limit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
-				if(limit<=0)
-					limit=Integer.MAX_VALUE;
 				msgs = new Vector<JournalEntry>();
 				if((pageDate <= 0)
 				&& (metaData != null)
@@ -135,7 +133,7 @@ public class JournalInfo extends StdWebMacro
 							msgs.add(entry);
 					}
 				}
-				msgs.addAll(CMLib.database().DBReadJournalPageMsgs(journalName, parent, dbsearch, pageDate, limit));
+				msgs.addAll(CMLib.database().DBReadJournalPageMsgs(journalName, parent, dbsearch, pageDate, msgLimit));
 				//if((dbsearch!=null)&&(dbsearch.length()>0)) // parent filtering
 				//	pageDate=mergeParentMessages(journalName, msgs, pageDate);
 			}
@@ -282,9 +280,16 @@ public class JournalInfo extends StdWebMacro
 			final String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
 			final String parent=httpReq.getUrlParameter("JOURNALPARENT");
 			final String dbsearch=httpReq.getUrlParameter("DBSEARCH");
+			int pageLimit;
+			if(httpReq.isUrlParameter("JOURNALPAGELIMIT"))
+				pageLimit = CMath.s_int(httpReq.getUrlParameter("JOURNALPAGELIMIT"));
+			else
+				pageLimit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
+			if(pageLimit <= 0)
+				pageLimit=Integer.MAX_VALUE;
 			if((page!=null)&&(page.length()>0))
 			{
-				final List<JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
+				final List<JournalEntry> msgs=JournalInfo.getMessages(journalName,journal,page,mpage,parent,dbsearch,pageLimit, httpReq.getRequestObjects());
 				entry= JournalInfo.getEntry(msgs,msgKey);
 			}
 		}

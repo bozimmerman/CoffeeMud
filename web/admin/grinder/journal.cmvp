@@ -30,12 +30,16 @@
 		{
 			Clicked("journal.cmvp#"+journal,message,journal,cardinal,document.JOURNAL.JOURNALPAGE.value,action);
 		}
+		function ClickedSearch(journal)
+		{
+			Clicked("journal.cmvp#"+journal,'',journal,'','0','');
+		}
 		function FirstPage()
 		{
 			var journal='@RequestParameter?JOURNAL@';
 			Clicked("journal.cmvp#"+journal,'',journal,'','0','');
 		}
-		var allpages = '@JournalMessageNext?LASTPAGE@';
+		var allpages = @if?CheckReqParm?JOURNAL=@'';@else@'@JournalMessageNext?LASTPAGE@';@endif@
 		var currjournal='@RequestParameter?JOURNAL@';
 		function LastPage()
 		{
@@ -142,15 +146,14 @@
 				@if?CheckReqParm?JOURNALPAGE=@
 					@AddRequestParameter?JOURNALPAGE=@@JournalMessageNext?LASTPAGE@@ @
 				@endif@
-				@AddRequestParameter?JOURNALPARENT=@
-				@AddRequestParameter?DBSEARCH=*@
+				@AddRequestParameter?JOURNALPARENT=*@
 				@JournalMessageNext?RESET@
 				@if?CheckReqParm?JOURNALCARDINAL=@
 					@AddRequestParameter?JOURNALCARDINAL=@@JournalMessageNext?PAGECARDINAL@@ @
 				@endif@
 				<UL>
 				@loop@
-					@JournalMessageNext?DESC@
+					@JournalMessageNext?DESC&REVERSE@
 					<LI><a href="javascript:Clicked2('@JournalName@','@RequestParameter?JOURNALMESSAGE@','@RequestParameter?JOURNALCARDINAL@')">
 					<FONT COLOR=YELLOW>@RequestParameter?JOURNALCARDINAL@</FONT>
 					@AddRequestParameter?TEMPFROM=@@JournalInfo?FROM@@ @
@@ -178,8 +181,8 @@
 					<a href="javascript:LastPage()"><FONT COLOR=WHITE>&gt;&gt;</FONT></a>
 				@endif@
 				<BR>
-				<BR><FONT COLOR=WHITE>Search:<INPUT TYPE=TEXT NAME=JOURNALMESSAGESEARCH SIZE=10 VALUE="@RequestParameter?JOURNALMESSAGESEARCH@"></FONT>
-				<INPUT TYPE=BUTTON NAME=SEARCH VALUE="Filter" ONCLICK="Clicked2('@JournalName@','','');">
+				<BR><FONT COLOR=WHITE>Search:<INPUT TYPE=TEXT NAME=DBSEARCH SIZE=10 VALUE="@RequestParameter?DBSEARCH@"></FONT>
+				<INPUT TYPE=BUTTON NAME=SEARCH VALUE="Filter" ONCLICK="ClickedSearch('@JournalName@','','');">
 				</TD>
 				<TD WIDTH=70% VALIGN=TOP>
 				@AddRequestParameter?JOURNALMESSAGE=@@RequestParameter?OLDMESSAGE@@ @

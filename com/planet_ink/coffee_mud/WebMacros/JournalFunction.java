@@ -204,9 +204,20 @@ public class JournalFunction extends StdWebMacro
 		String dbsearch=httpReq.getUrlParameter("DBSEARCH");
 		if(dbsearch==null)
 			dbsearch="";
-		final String page=httpReq.getUrlParameter("JOURNALPAGE");
-		final String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
-		final List<JournalEntry> msgs=JournalInfo.getMessages(journalName,forum,page,mpage,parent,dbsearch,httpReq.getRequestObjects());
+		String page=httpReq.getUrlParameter("JOURNALPAGE");
+		if(page==null)
+			page=parms.get("JOURNALPAGE");
+		String mpage=httpReq.getUrlParameter("MESSAGEPAGE");
+		if(mpage==null)
+			mpage=parms.get("MESSAGEPAGE");
+		int pageLimit;
+		if(httpReq.isUrlParameter("JOURNALPAGELIMIT"))
+			pageLimit = CMath.s_int(httpReq.getUrlParameter("JOURNALPAGELIMIT"));
+		else
+			pageLimit = CMProps.getIntVar(CMProps.Int.JOURNALLIMIT);
+		if(pageLimit <= 0)
+			pageLimit=Integer.MAX_VALUE;
+		final List<JournalEntry> msgs=JournalInfo.getMessages(journalName,forum,page,mpage,parent,dbsearch,pageLimit, httpReq.getRequestObjects());
 		String msgKey=httpReq.getUrlParameter("JOURNALMESSAGE");
 		int cardinalNumber = CMath.s_int(httpReq.getUrlParameter("JOURNALCARDINAL"));
 		String srch=httpReq.getUrlParameter("JOURNALMESSAGESEARCH");
