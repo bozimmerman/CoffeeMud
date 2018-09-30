@@ -1607,10 +1607,10 @@ public class RocketShipProgram extends GenShipProgram
 					super.addScreenMessage(L("Error: TARGET requires the name of the target, and a percentage of the targets speed to lead it by.   Try HELP."));
 					return;
 				}
-				Double leadPct = new Double(0.0);
-				if((parsed.get(parsed.size()-1).indexOf('%')>0)
-				||(CMath.isPct(parsed.get(parsed.size()-1))))
-					leadPct=CMath.s_pct(parsed.remove(parsed.size()-1));
+				//Double leadPct = new Double(0.0);
+				//if((parsed.get(parsed.size()-1).indexOf('%')>0)
+				//||(CMath.isPct(parsed.get(parsed.size()-1))))
+				//	leadPct=CMath.s_pct(parsed.remove(parsed.size()-1));
 
 				//TODO: target sensorname/num lead% of speed
 			}
