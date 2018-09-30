@@ -127,7 +127,7 @@ public class Song extends StdAbility
 	protected volatile Room			originRoom		= null;
 
 	@Override
-	public int adjustedLevel(MOB mob, int asLevel)
+	public int adjustedLevel(final MOB mob, final int asLevel)
 	{
 		final int level=super.adjustedLevel(mob,asLevel);
 		final int charisma=(invoker().charStats().getStat(CharStats.STAT_CHARISMA)-10);
@@ -137,7 +137,7 @@ public class Song extends StdAbility
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		if(this.invoker()==affectedEnv)
 			affectableStats.addAmbiance("(?)singing of "+songOf().toLowerCase());
@@ -176,7 +176,7 @@ public class Song extends StdAbility
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -197,7 +197,7 @@ public class Song extends StdAbility
 		if(lyricMap==null)
 		{
 			lyricMap=new TreeMap<String,List<String>>();
-			List<String> lines=Resources.getFileLineVector(new CMFile(Resources.buildResourcePath("skills/songlyrics.txt"),null).text());
+			final List<String> lines=Resources.getFileLineVector(new CMFile(Resources.buildResourcePath("skills/songlyrics.txt"),null).text());
 			if(lines.size()>0)
 			{
 				List<String> current=null;
@@ -206,7 +206,7 @@ public class Song extends StdAbility
 					line=line.trim();
 					if(line.startsWith("[")&&(line.endsWith("]")))
 					{
-						String ID=line.substring(1,line.length()-1);
+						final String ID=line.substring(1,line.length()-1);
 						Ability A=CMClass.getAbility(ID);
 						if(A==null)
 							A=CMClass.getAbility("Song_"+ID);
@@ -229,7 +229,7 @@ public class Song extends StdAbility
 		}
 		return lyricMap.get(ID());
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -283,7 +283,7 @@ public class Song extends StdAbility
 			if(!commonRoomSet.contains(mob.location()))
 				return unsingMe(mob,null);
 		}
-		
+
 		if(invoker==affected)
 		{
 			final List<String> lyrics=this.getLyrics();
@@ -309,7 +309,7 @@ public class Song extends StdAbility
 		return true;
 	}
 
-	protected void unsingAll(MOB mob, MOB invoker)
+	protected void unsingAll(final MOB mob, final MOB invoker)
 	{
 		if(mob!=null)
 		{
@@ -323,7 +323,7 @@ public class Song extends StdAbility
 		}
 	}
 
-	protected void unsingAllByThis(MOB mob, MOB invoker)
+	protected void unsingAllByThis(final MOB mob, final MOB invoker)
 	{
 		if(mob!=null)
 		{
@@ -338,19 +338,20 @@ public class Song extends StdAbility
 		}
 	}
 
-	protected boolean unsingMe(MOB mob, MOB invoker)
+	protected boolean unsingMe(final MOB mob, final MOB invoker)
 	{
 		if(mob==null)
 			return false;
 		final Ability A=mob.fetchEffect(ID());
+		final MOB invokerM=invoker();
 		if((A instanceof Song)
-		&&((invoker==null)||(A.invoker()==null)||(A.invoker()==invoker)))
+		&&((invokerM==null)||(A.invoker()==null)||(A.invoker()==invoker)))
 		{
 			final Song S=(Song)A;
 			if(S.timeOut==0)
 			{
 				S.timeOut = System.currentTimeMillis()
-						  + (CMProps.getTickMillis() * (((invoker()!=null)&&(invoker()!=mob))?super.getXTIMELevel(invoker()):0));
+						  + (CMProps.getTickMillis() * (((invokerM!=null)&&(invokerM!=mob))?super.getXTIMELevel(invokerM):0));
 			}
 			if(System.currentTimeMillis() >= S.timeOut)
 			{
@@ -361,7 +362,7 @@ public class Song extends StdAbility
 		return true;
 	}
 
-	protected List<Room> getInvokerScopeRoomSet(MOB backupMob)
+	protected List<Room> getInvokerScopeRoomSet(final MOB backupMob)
 	{
 		if((invoker()==null)
 		||(invoker().location()==null))
@@ -386,7 +387,7 @@ public class Song extends StdAbility
 		return rooms;
 	}
 
-	protected int getCorrectDirToOriginRoom(Room R, int v)
+	protected int getCorrectDirToOriginRoom(final Room R, final int v)
 	{
 		if(v<0)
 			return -1;
@@ -411,7 +412,7 @@ public class Song extends StdAbility
 		return dir;
 	}
 
-	protected String getCorrectMsgString(Room R, String str, int v)
+	protected String getCorrectMsgString(final Room R, final String str, final int v)
 	{
 		String msgStr=null;
 		if(R==originRoom)
@@ -427,7 +428,7 @@ public class Song extends StdAbility
 		return msgStr;
 	}
 
-	public Set<MOB> sendMsgAndGetTargets(MOB mob, Room R, CMMsg msg, Environmental givenTarget, boolean auto)
+	public Set<MOB> sendMsgAndGetTargets(final MOB mob, final Room R, final CMMsg msg, final Environmental givenTarget, final boolean auto)
 	{
 		if(originRoom==R)
 			R.send(mob,msg);
@@ -454,7 +455,7 @@ public class Song extends StdAbility
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		timeOut=0;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
