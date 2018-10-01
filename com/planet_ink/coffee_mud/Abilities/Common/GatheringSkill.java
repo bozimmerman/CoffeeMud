@@ -280,7 +280,7 @@ public class GatheringSkill extends CommonSkill
 			int amountToGo=amount;
 			for(final RawMaterial I2 : allFound)
 			{
-				if(I2.basePhyStats().weight()<amountToGo)
+				if(I2.basePhyStats().weight()<=amountToGo)
 				{
 					amountToGo-= I2.basePhyStats().weight();
 					I2.destroy();
