@@ -76,7 +76,7 @@ public class Prop_AstralSpirit extends Property
 	}
 
 	@Override
-	public boolean autoInvocation(MOB mob, boolean force)
+	public boolean autoInvocation(final MOB mob, final boolean force)
 	{
 		if((mob!=null)&&(mob.fetchEffect(ID())==null))
 		{
@@ -92,7 +92,7 @@ public class Prop_AstralSpirit extends Property
 		return "an astral spirit";
 	}
 
-	public void peaceAt(MOB mob)
+	public void peaceAt(final MOB mob)
 	{
 		final Room room=mob.location();
 		if(room==null)
@@ -193,5 +193,6 @@ public class Prop_AstralSpirit extends Property
 		affectableStats.setDisposition(affectableStats.disposition()&~PhyStats.IS_CUSTOM);
 		affectableStats.setSensesMask(affectableStats.sensesMask()&~PhyStats.CAN_NOT_MOVE);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_SPEAK);
+		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_SEE_DARK);
 	}
 }
