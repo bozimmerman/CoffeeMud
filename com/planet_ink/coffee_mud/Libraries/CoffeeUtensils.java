@@ -925,6 +925,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 
 			}
 		}
+		final CMMsg wearMsg=CMClass.getMsg(mob,item,null,CMMsg.NO_EFFECT,null,0,null,CMMsg.NO_EFFECT,null);
+		final CMMsg removeMsg=CMClass.getMsg(mob,item,null,CMMsg.NO_EFFECT,null,CMMsg.TYP_REMOVE|CMMsg.MASK_ALWAYS,null,CMMsg.NO_EFFECT,null);
 		for(int r=0;r<reWearSet.size();r++)
 		{
 			item=(Item)reWearSet.elementAt(r,1);
@@ -935,12 +937,30 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			else
 			if((oldCode&Wearable.WORN_HELD)>0)
 				msgCode=CMMsg.MSG_HOLD;
-			final CMMsg msg=CMClass.getMsg(mob,item,null,CMMsg.NO_EFFECT,null,msgCode,null,CMMsg.NO_EFFECT,null);
-			if((R.okMessage(mob,msg))
-			&&(item.okMessage(item,msg))
+			wearMsg.setTarget(item);
+			wearMsg.setTargetCode(msgCode);
+			if((R.okMessage(mob,wearMsg))
+			&&(item.okMessage(item,wearMsg))
 			&&((mobUnwearableBitmap&oldCode)==0)
 			&&(item.canWear(mob,oldCode)))
 				item.wearAt(oldCode);
+			else
+			{
+				removeMsg.setTarget(item);
+				mob.executeMsg(mob, removeMsg);
+				if(removeMsg.trailerMsgs() != null)
+				{
+					for(final CMMsg msg : removeMsg.trailerMsgs())
+						mob.executeMsg(mob, msg);
+					removeMsg.trailerMsgs().clear();
+				}
+				if(removeMsg.trailerRunnables() != null)
+				{
+					for(final Runnable run : removeMsg.trailerRunnables())
+						run.run();
+					removeMsg.trailerRunnables().clear();
+				}
+			}
 		}
 		// why wasn't that here before?
 		mob.recoverPhyStats();

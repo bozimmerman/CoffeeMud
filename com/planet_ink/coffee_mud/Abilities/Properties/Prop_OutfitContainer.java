@@ -253,18 +253,23 @@ public class Prop_OutfitContainer extends Property
 		&&(outfitContents.contains(msg.target())))
 		{
 			final Item item=(Item)msg.target();
-			final MOB mob=msg.source();
 			if(item.container() == null)
 			{
+				final MOB mob=msg.source();
+				final Item me=affected;
 				msg.addTrailerRunnable(new Runnable()
 				{
 					final Item I=item;
 					final MOB M = mob;
+					final Item affected=me;
 					@Override
 					public void run()
 					{
-						CMLib.commands().postPut(M, affected, I, true);
-
+						if((M.charStats().getBodyPart(Race.BODY_ARM)==0)
+						&&(affected instanceof Container))
+							I.setContainer((Container)affected);
+						else
+							CMLib.commands().postPut(M, affected, I, true);
 					}
 				});
 			}
