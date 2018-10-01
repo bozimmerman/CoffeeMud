@@ -126,7 +126,7 @@ public class Chant_AstralProjection extends Chant
 		return super.okMessage(myHost,msg);
 	}
 
-	public void peaceAt(MOB mob)
+	public void peaceAt(final MOB mob)
 	{
 		final Room room=mob.location();
 		if(room==null)
@@ -153,7 +153,7 @@ public class Chant_AstralProjection extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -189,7 +189,7 @@ public class Chant_AstralProjection extends Chant
 			mob.location().send(mob,msg);
 			target.makePeace(true);
 			peaceAt(target);
-			final MOB spirit=CMClass.getFactoryMOB();
+			final MOB spirit=CMClass.getMOB("StdMOB");
 			spirit.setName(L("The Spirit of @x1",target.Name()));
 			spirit.baseCharStats().setMyRace(CMClass.getRace("Spirit"));
 			spirit.setPlayerStats(target.playerStats());
