@@ -478,6 +478,19 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 							continue;
 						}
 						else
+						if (foundMacro.equalsIgnoreCase("<!--"))
+						{
+							final int l = foundMacro.length() + 2;
+							final int v = myEndComment(s, i + l, lastFoundMacro);
+							if (v < 0)
+								s.replace(i, i + l, "[<!-- macro without --> macro]");
+							else
+							{
+								s.delete(i, v + l + 1);
+							}
+							continue;
+						}
+						else
 						if (foundMacro.startsWith("block?") || foundMacro.startsWith("BLOCK?"))
 						{
 							final int l = foundMacro.length() + 2;
@@ -918,6 +931,23 @@ public class WebMacroCreamer extends StdLibrary implements WebMacroLibrary, Simp
 				if ((foundMacro != null) && (foundMacro.length() > 0))
 				{
 					if (foundMacro.equalsIgnoreCase("/jscript"))
+						return i;
+				}
+			}
+		}
+		return -1;
+	}
+
+	private int myEndComment(final StringBuffer s, int i, final String[] lastFoundMacro)
+	{
+		for (; i < s.length(); i++)
+		{
+			if (s.charAt(i) == '@')
+			{
+				final String foundMacro = parseFoundMacro(s, i, lastFoundMacro, true);
+				if ((foundMacro != null) && (foundMacro.length() > 0))
+				{
+					if (foundMacro.equalsIgnoreCase("-->"))
 						return i;
 				}
 			}
