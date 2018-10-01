@@ -65,7 +65,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public boolean quickDestroy(Item I)
+	public boolean quickDestroy(final Item I)
 	{
 		if(I==null)
 			return false;
@@ -81,7 +81,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public boolean rebundle(Item item)
+	public boolean rebundle(final Item item)
 	{
 		if((item==null)||(item.amDestroyed()))
 			return false;
@@ -220,7 +220,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public Environmental splitBundle(Item I, int size, Container C)
+	public Environmental splitBundle(final Item I, final int size, final Container C)
 	{
 		final List<Environmental> set=disBundle(I,1,size,C);
 		if((set==null)||(set.size()==0))
@@ -229,7 +229,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public Environmental unbundle(Item I, int number, Container C)
+	public Environmental unbundle(final Item I, final int number, final Container C)
 	{
 		final List<Environmental> set=disBundle(I,number,1,C);
 		if((set==null)||(set.size()==0))
@@ -237,7 +237,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return set.get(0);
 	}
 
-	protected List<Environmental> disBundle(Item I, int number, int bundleSize, Container C)
+	protected List<Environmental> disBundle(Item I, int number, final int bundleSize, final Container C)
 	{
 		if((I==null)||(I.amDestroyed())||(bundleSize<1))
 			return null;
@@ -329,7 +329,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 					{
 						((Item)E).setContainer(C);
 						loseValue+=((Item)E).baseGoldValue();
-						for(Enumeration<Ability> a=I.effects();a.hasMoreElements();)
+						for(final Enumeration<Ability> a=I.effects();a.hasMoreElements();)
 						{
 							final Ability A=a.nextElement();
 							if((!A.canBeUninvoked())
@@ -425,7 +425,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public String getMaterialDesc(int MASK)
+	public String getMaterialDesc(final int MASK)
 	{
 		final RawMaterial.Material m=RawMaterial.Material.findByMask(MASK);
 		if(m!=null)
@@ -434,7 +434,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public String getResourceDesc(int MASK)
+	public String getResourceDesc(final int MASK)
 	{
 		if(RawMaterial.CODES.IS_VALID(MASK))
 			return RawMaterial.CODES.NAME(MASK);
@@ -442,7 +442,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public int getMaterialRelativeInt(String s)
+	public int getMaterialRelativeInt(final String s)
 	{
 		final RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(s);
 		if(m!=null)
@@ -451,7 +451,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public int getMaterialCode(String s, boolean exact)
+	public int getMaterialCode(String s, final boolean exact)
 	{
 		RawMaterial.Material m=RawMaterial.Material.findIgnoreCase(s);
 		if(m!=null)
@@ -466,7 +466,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public int getResourceCode(String s, boolean exact)
+	public int getResourceCode(String s, final boolean exact)
 	{
 		int code = RawMaterial.CODES.FIND_IgnoreCase(s);
 		if(code>=0)
@@ -479,7 +479,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public void addEffectsToResource(Item I)
+	public void addEffectsToResource(final Item I)
 	{
 		if(I==null)
 			return;
@@ -494,7 +494,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public PhysicalAgent makeResource(int myResource, String localeCode, boolean noAnimals, String fullName, String subType)
+	public PhysicalAgent makeResource(final int myResource, final String localeCode, final boolean noAnimals, final String fullName, final String subType)
 	{
 		if(myResource<0)
 			return null;
@@ -707,7 +707,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public String genericType(Item I)
+	public String genericType(final Item I)
 	{
 		if(I instanceof RawMaterial)
 			return CMStrings.capitalizeAndLower(getMaterialDesc(I.material()));
@@ -746,11 +746,11 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	public String makeResourceDescriptiveName(final int rscCode, String subType, final boolean plural)
 	{
 		String name=RawMaterial.CODES.NAME(rscCode).toLowerCase();
-		int iMat = rscCode&RawMaterial.MATERIAL_MASK;
+		final int iMat = rscCode&RawMaterial.MATERIAL_MASK;
 		if((subType!=null)&&(subType.length()>0))
 		{
 			subType = subType.toLowerCase();
-			if(subType.equals(name) 
+			if(subType.equals(name)
 			&& ((iMat==RawMaterial.MATERIAL_CLOTH)||(iMat==RawMaterial.MATERIAL_PAPER)))
 				name=L("@x1 bolt", name);
 			else
@@ -782,16 +782,16 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 				return L("a bundle of @x1", name);
 		}
 	}
-	
+
 	@Override
 	public String makeResourceSimpleName(final int rscCode, String subType)
 	{
 		String name=RawMaterial.CODES.NAME(rscCode).toLowerCase();
-		int iMat = rscCode&RawMaterial.MATERIAL_MASK;
+		final int iMat = rscCode&RawMaterial.MATERIAL_MASK;
 		if((subType!=null)&&(subType.length()>0))
 		{
 			subType = subType.toLowerCase();
-			if(subType.equals(name) 
+			if(subType.equals(name)
 			&& ((iMat==RawMaterial.MATERIAL_CLOTH)||(iMat==RawMaterial.MATERIAL_PAPER)))
 				name=L("@x1 bolt", name);
 			else
@@ -809,9 +809,9 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		}
 		return name;
 	}
-	
+
 	@Override
-	public void adjustResourceName(Item I)
+	public void adjustResourceName(final Item I)
 	{
 		String name=RawMaterial.CODES.NAME(I.material()).toLowerCase();
 		I.setDescription(L("It's just @x1.",name));
@@ -820,7 +820,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		&&(((RawMaterial)I).getSubType().length()>0))
 		{
 			final String subType = ((RawMaterial)I).getSubType().toLowerCase();
-			if(subType.equals(name) 
+			if(subType.equals(name)
 			&& ((iMat==RawMaterial.MATERIAL_CLOTH)||(iMat==RawMaterial.MATERIAL_PAPER)))
 				name=L("@x1 bolt", name);
 			else
@@ -904,61 +904,61 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public int destroyResourcesAmt(MOB E, int howMuch, int finalMaterial, Container C)
+	public int destroyResourcesAmt(final MOB E, final int howMuch, final int finalMaterial, final Container C)
 	{
 		return destroyResourcesAmt(getAllItems(E), howMuch, finalMaterial, C);
 	}
 
 	@Override
-	public int destroyResourcesAmt(Room E, int howMuch, int finalMaterial, Container C)
+	public int destroyResourcesAmt(final Room E, final int howMuch, final int finalMaterial, final Container C)
 	{
 		return destroyResourcesAmt(getAllItems(E), howMuch, finalMaterial, C);
 	}
 
 	@Override
-	public int destroyResourcesAmt(List<Item> V, int howMuch, int finalMaterial, Container C)
+	public int destroyResourcesAmt(final List<Item> V, final int howMuch, final int finalMaterial, final Container C)
 	{
 		return destroyResources(V, howMuch, finalMaterial, -1, null, C).lostAmt;
 	}
 
 	@Override
-	public int destroyResourcesValue(Room E, int howMuch, int finalMaterial, int otherMaterial, Item never)
+	public int destroyResourcesValue(final Room E, final int howMuch, final int finalMaterial, final int otherMaterial, final Item never)
 	{
 		return destroyResourcesValue(getAllItems(E), howMuch, finalMaterial, otherMaterial, never, null);
 	}
 
 	@Override
-	public int destroyResourcesValue(MOB E, int howMuch, int finalMaterial, int otherMaterial, Item never)
+	public int destroyResourcesValue(final MOB E, final int howMuch, final int finalMaterial, final int otherMaterial, final Item never)
 	{
 		return destroyResourcesValue(getAllItems(E), howMuch, finalMaterial, otherMaterial, never, null);
 	}
 
 	@Override
-	public int destroyResourcesValue(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
+	public int destroyResourcesValue(final List<Item> V, final int howMuch, final int finalMaterial, final int otherMaterial, final Item never, final Container C)
 	{
 		return destroyResources(V, howMuch, finalMaterial, otherMaterial, never, C).lostValue;
 	}
 
 	@Override
-	public DeadResourceRecord destroyResources(Room R, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
+	public DeadResourceRecord destroyResources(final Room R, final int howMuch, final int finalMaterial, final int otherMaterial, final Item never, final Container C)
 	{
 		return destroyResources(getAllItems(R),howMuch,finalMaterial,otherMaterial,never,C);
 	}
-	
+
 	@Override
-	public DeadResourceRecord destroyResources(MOB M, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
+	public DeadResourceRecord destroyResources(final MOB M, final int howMuch, final int finalMaterial, final int otherMaterial, final Item never, final Container C)
 	{
 		return destroyResources(getAllItems(M),howMuch,finalMaterial,otherMaterial,never,C);
 	}
-	
-	protected DeadResourceRecord destroyResources(List<Item> V, int howMuch, int finalMaterial, int otherMaterial, Item never, Container C)
+
+	protected DeadResourceRecord destroyResources(final List<Item> V, int howMuch, int finalMaterial, int otherMaterial, final Item never, final Container C)
 	{
-		DeadResourceRecord record = new DeadResourceRecord();
-		if((V==null)||(V.size()==0)) 
+		final DeadResourceRecord record = new DeadResourceRecord();
+		if((V==null)||(V.size()==0))
 			return record;
 		if((howMuch<=0)&&(otherMaterial<=0))
 			return record;
-		
+
 		final XVector<Ability> props=new XVector<Ability>();
 		record.lostProps=props;
 		final RawMaterial firstMaterialI = (finalMaterial>0)?this.findFirstResource(V, finalMaterial, C, null):null;
@@ -1053,23 +1053,23 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public RawMaterial findFirstResource(Room E, String other)
+	public RawMaterial findFirstResource(final Room E, final String other)
 	{
 		return findFirstResource(getAllItems(E), other);
 	}
 
 	@Override
-	public RawMaterial findFirstResource(MOB E, String other)
+	public RawMaterial findFirstResource(final MOB E, final String other)
 	{
 		return findFirstResource(getAllItems(E), other);
 	}
 
-	public RawMaterial findFirstResource(List<Item> V, String other)
+	public RawMaterial findFirstResource(final List<Item> V, String other)
 	{
 		if((other==null)||(other.length()==0))
 			return null;
 		String subType = "";
-		int x=other.indexOf('(');
+		final int x=other.indexOf('(');
 		if((x>0)&&(other.endsWith(")")))
 		{
 			subType=other.substring(x+1,other.length()-1).toUpperCase().trim();
@@ -1082,18 +1082,18 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public RawMaterial findFirstResource(Room E, int resource)
+	public RawMaterial findFirstResource(final Room E, final int resource)
 	{
 		return findFirstResource(getAllItems(E), resource, null, null);
 	}
 
 	@Override
-	public RawMaterial findFirstResource(MOB E, int resource)
+	public RawMaterial findFirstResource(final MOB E, final int resource)
 	{
 		return findFirstResource(getAllItems(E), resource, null, null);
 	}
 
-	protected RawMaterial findFirstResource(List<Item> V, int resource, Container C, String subType)
+	protected RawMaterial findFirstResource(final List<Item> V, final int resource, final Container C, final String subType)
 	{
 		for(int i=0;i<V.size();i++)
 		{
@@ -1110,23 +1110,23 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public RawMaterial findMostOfMaterial(Room E, String other)
+	public RawMaterial findMostOfMaterial(final Room E, final String other)
 	{
 		return findMostOfMaterial(getAllItems(E), other);
 	}
 
 	@Override
-	public RawMaterial findMostOfMaterial(MOB E, String other)
+	public RawMaterial findMostOfMaterial(final MOB E, final String other)
 	{
 		return findMostOfMaterial(getAllItems(E), other);
 	}
 
-	protected RawMaterial findMostOfMaterial(List<Item> V, String other)
+	protected RawMaterial findMostOfMaterial(final List<Item> V, String other)
 	{
 		if((other==null)||(other.length()==0))
 			return null;
 		String subType="";
-		int x=other.indexOf('(');
+		final int x=other.indexOf('(');
 		if((x>0)&&(other.endsWith(")")))
 		{
 			subType=other.substring(x+1,other.length()-1).toUpperCase().trim();
@@ -1139,18 +1139,18 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public int findNumberOfResource(Room E, RawMaterial resource)
+	public int findNumberOfResource(final Room E, final RawMaterial resource)
 	{
 		return findNumberOfResource(getAllItems(E), resource);
 	}
 
 	@Override
-	public int findNumberOfResource(MOB E, RawMaterial resource)
+	public int findNumberOfResource(final MOB E, final RawMaterial resource)
 	{
 		return findNumberOfResource(getAllItems(E), resource);
 	}
 
-	protected int findNumberOfResource(List<Item> V, RawMaterial resource)
+	protected int findNumberOfResource(final List<Item> V, final RawMaterial resource)
 	{
 		int foundWood=0;
 		for(int i=0;i<V.size();i++)
@@ -1169,18 +1169,18 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public RawMaterial findMostOfMaterial(Room E, int material)
+	public RawMaterial findMostOfMaterial(final Room E, final int material)
 	{
 		return findMostOfMaterial(getAllItems(E), material, null);
 	}
 
 	@Override
-	public RawMaterial findMostOfMaterial(MOB E, int material)
+	public RawMaterial findMostOfMaterial(final MOB E, final int material)
 	{
 		return findMostOfMaterial(getAllItems(E), material, null);
 	}
 
-	protected RawMaterial findMostOfMaterial(List<Item> V, int material, String subType)
+	protected RawMaterial findMostOfMaterial(final List<Item> V, final int material, final String subType)
 	{
 		int most=0;
 		int mostMaterial=-1;
@@ -1189,7 +1189,8 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		{
 			final Item I=V.get(i);
 			if((I instanceof RawMaterial)
-			&&((I.material()&RawMaterial.MATERIAL_MASK)==material)
+			&&(((I.material()&RawMaterial.MATERIAL_MASK)==material)
+				||(I.material()==material))
 			&&(I.material()!=mostMaterial)
 			&&((subType==null)||(((RawMaterial)I).getSubType().equalsIgnoreCase(subType)))
 			&&(!CMLib.flags().isOnFire(I))
@@ -1208,7 +1209,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return mostItem;
 	}
 
-	protected List<Item> getAllItems(Room R)
+	protected List<Item> getAllItems(final Room R)
 	{
 		final List<Item> V=new Vector<Item>();
 		Item I=null;
@@ -1222,7 +1223,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return V;
 	}
 
-	protected List<Item> getAllItems(MOB M)
+	protected List<Item> getAllItems(final MOB M)
 	{
 		final List<Item> V=new Vector<Item>();
 		Item I=null;
@@ -1237,18 +1238,18 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public RawMaterial fetchFoundOtherEncoded(Room E, String otherRequired)
+	public RawMaterial fetchFoundOtherEncoded(final Room E, final String otherRequired)
 	{
 		return fetchFoundOtherEncoded(getAllItems(E), otherRequired);
 	}
 
 	@Override
-	public RawMaterial fetchFoundOtherEncoded(MOB E, String otherRequired)
+	public RawMaterial fetchFoundOtherEncoded(final MOB E, final String otherRequired)
 	{
 		return fetchFoundOtherEncoded(getAllItems(E), otherRequired);
 	}
 
-	protected RawMaterial fetchFoundOtherEncoded(List<Item> V, String otherRequired)
+	protected RawMaterial fetchFoundOtherEncoded(final List<Item> V, String otherRequired)
 	{
 		if((otherRequired==null)||(otherRequired.trim().length()==0))
 			return null;
@@ -1264,7 +1265,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 
 	@Override
-	public int getBurnDuration(Environmental E)
+	public int getBurnDuration(final Environmental E)
 	{
 		if(E instanceof Item)
 		{
