@@ -597,6 +597,11 @@ public class StdMOB implements MOB
 		return this.amDestroyed;
 	}
 
+	protected final void setDestroyed(final boolean truefalse)
+	{
+		this.amDestroyed=truefalse;
+	}
+
 	@SuppressWarnings("rawtypes")
 	protected void cloneFix(final MOB M)
 	{
@@ -703,7 +708,7 @@ public class StdMOB implements MOB
 		}
 		try
 		{
-			amDestroyed=true;
+			setDestroyed(true);
 			for (final Enumeration<Ability> a = M.personalEffects(); a.hasMoreElements();)
 			{
 				A = a.nextElement();
@@ -721,7 +726,7 @@ public class StdMOB implements MOB
 		}
 		finally
 		{
-			amDestroyed=false;
+			setDestroyed(false);
 		}
 		for (final Enumeration<Behavior> e = M.behaviors(); e.hasMoreElements();)
 		{
@@ -1136,7 +1141,7 @@ public class StdMOB implements MOB
 		amFollowing = null;
 		soulMate = null;
 		possStartRoom = null;
-		amDestroyed = true;
+		setDestroyed(true);
 	}
 
 	@Override
@@ -1978,7 +1983,7 @@ public class StdMOB implements MOB
 	@Override
 	public boolean dequeCommand()
 	{
-		while ((!removeFromGame) && (!amDestroyed) && ((session() == null) || (!session().isStopped())))
+		while ((!removeFromGame) && (!amDestroyed()) && ((session() == null) || (!session().isStopped())))
 		{
 			QMCommand doCommand = null;
 			synchronized (commandQue)

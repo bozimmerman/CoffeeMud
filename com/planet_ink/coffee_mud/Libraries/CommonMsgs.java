@@ -264,32 +264,40 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	@Override
 	public void postChannel(final String channelName, final Iterable<Pair<Clan,Integer>> clanList, final String message, final boolean systemMsg)
 	{
-		MOB talker;
-		if(clanList != null)
+		MOB talker = null;
+		try
 		{
-			talker=CMClass.getFactoryMOB();
-			talker.setName("^</B^>");
-			talker.setLocation(CMLib.map().getRandomRoom());
-			talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
-			talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
-			for(final Pair<Clan,Integer> c : clanList)
-				talker.setClan(c.first.clanID(),c.second.intValue());
+			if(clanList != null)
+			{
+				talker=CMClass.getFactoryMOB();
+				talker.setName("^</B^>");
+				talker.setLocation(CMLib.map().getRandomRoom());
+				talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
+				talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
+				for(final Pair<Clan,Integer> c : clanList)
+					talker.setClan(c.first.clanID(),c.second.intValue());
+			}
+			else
+			if(nonClanTalker!=null)
+			{
+				talker=nonClanTalker;
+			}
+			else
+			{
+				talker=CMClass.getMOB("StdMOB"); // not factory because he lasts forever
+				talker.setName("^</B^>");
+				talker.setLocation(CMLib.map().getRandomRoom());
+				talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
+				talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
+				nonClanTalker=talker;
+			}
+			postChannel(talker,channelName,message,systemMsg);
 		}
-		else
-		if(nonClanTalker!=null)
+		finally
 		{
-			talker=nonClanTalker;
+			if ((talker != null) && (talker != nonClanTalker))
+				talker.destroy();
 		}
-		else
-		{
-			talker=CMClass.getFactoryMOB();
-			talker.setName("^</B^>");
-			talker.setLocation(CMLib.map().getRandomRoom());
-			talker.basePhyStats().setDisposition(PhyStats.IS_GOLEM);
-			talker.phyStats().setDisposition(PhyStats.IS_GOLEM);
-			nonClanTalker=talker;
-		}
-		postChannel(talker,channelName,message,systemMsg);
 	}
 
 	@Override

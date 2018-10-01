@@ -38,6 +38,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 */
 public class StdFactoryMOB extends StdMOB
 {
+	protected volatile String volatileName = "";
+
 	@Override
 	public String ID()
 	{
@@ -56,6 +58,26 @@ public class StdFactoryMOB extends StdMOB
 			Log.errOut(ID(),e);
 		}
 		return new StdFactoryMOB();
+	}
+
+	@Override
+	public String Name()
+	{
+		return volatileName;
+	}
+
+	@Override
+	public void setName(final String newName)
+	{
+		volatileName = newName;
+	}
+
+	@Override
+	public String name()
+	{
+		if (phyStats().newName() != null)
+			return phyStats().newName();
+		return volatileName;
 	}
 
 	@Override
