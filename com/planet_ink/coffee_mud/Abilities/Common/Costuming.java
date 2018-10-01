@@ -522,7 +522,7 @@ public class Costuming extends CraftingSkill implements ItemCraftor, MendingSkil
 			final int[] pm= null;
 			bundling=misctype.equalsIgnoreCase("BUNDLE");
 			final int[][] data=fetchFoundResourceData(mob,
-													  woodRequired,"paper(paper)",pm,
+													  woodRequired,"paper",pm,
 													  0,null,null,
 													  bundling,
 													  autoGenerate,
