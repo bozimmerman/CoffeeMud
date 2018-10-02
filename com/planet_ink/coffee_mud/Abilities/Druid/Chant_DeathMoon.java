@@ -126,15 +126,21 @@ public class Chant_DeathMoon extends Chant
 					final MOB M=room.fetchInhabitant(i);
 					if((M!=null)
 					&&(M!=invoker)
-					&&(invoker.mayIFight(M)))
+					&&((invoker == null) || (invoker.mayIFight(M))))
 					{
-						if(grp == null)
-							grp = invoker.getGroupMembers(new HashSet<MOB>());
-						if(!grp.contains(M))
+						final MOB agent;
+						if(invoker == null)
+							agent = M;
+						else
 						{
-							CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*getXLEVELLevel(invoker())),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The gaze of the death moon <DAMAGE> <T-NAME>!"));
-							CMLib.combat().postRevengeAttack(M, invoker);
+							agent=invoker;
+							if(grp == null)
+								grp = agent.getGroupMembers(new HashSet<MOB>());
+							if(grp.contains(M))
+								continue;
 						}
+						CMLib.combat().postDamage(agent,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*getXLEVELLevel(invoker)),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The gaze of the death moon <DAMAGE> <T-NAME>!"));
+						CMLib.combat().postRevengeAttack(M, agent);
 					}
 				}
 			}
