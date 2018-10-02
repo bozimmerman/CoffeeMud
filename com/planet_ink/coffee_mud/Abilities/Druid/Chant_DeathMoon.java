@@ -16,7 +16,9 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /*
    Copyright 2003-2018 Bo Zimmerman
@@ -113,17 +115,27 @@ public class Chant_DeathMoon extends Chant
 		if(affected instanceof Room)
 		{
 			final Room room=(Room)affected;
+			final MOB invoker=invoker();
+			Set<MOB> grp = null;
 			if(!room.getArea().getClimateObj().canSeeTheMoon(room,this))
 				unInvoke();
 			else
-			for(int i=0;i<room.numInhabitants();i++)
 			{
-				final MOB M=room.fetchInhabitant(i);
-				if((M!=null)&&(M!=invoker))
+				for(int i=0;i<room.numInhabitants();i++)
 				{
-					final MOB invoker=(invoker()!=null) ? invoker() : M;
-					CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*getXLEVELLevel(invoker())),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The gaze of the death moon <DAMAGE> <T-NAME>!"));
-					CMLib.combat().postRevengeAttack(M, invoker);
+					final MOB M=room.fetchInhabitant(i);
+					if((M!=null)
+					&&(M!=invoker)
+					&&(invoker.mayIFight(M)))
+					{
+						if(grp == null)
+							grp = invoker.getGroupMembers(new HashSet<MOB>());
+						if(!grp.contains(M))
+						{
+							CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(1,M.phyStats().level()+(2*getXLEVELLevel(invoker())),0),CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,L("The gaze of the death moon <DAMAGE> <T-NAME>!"));
+							CMLib.combat().postRevengeAttack(M, invoker);
+						}
+					}
 				}
 			}
 		}
@@ -131,7 +143,7 @@ public class Chant_DeathMoon extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -153,7 +165,7 @@ public class Chant_DeathMoon extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final Room target=mob.location();
 		if(target==null)
