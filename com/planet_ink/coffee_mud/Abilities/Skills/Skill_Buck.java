@@ -78,7 +78,7 @@ public class Skill_Buck extends StdSkill
 	@Override
 	public int classificationCode()
 	{
-		return Ability.ACODE_SKILL | Ability.DOMAIN_ANIMALAFFINITY;
+		return Ability.ACODE_SKILL | Ability.DOMAIN_RACIALABILITY;
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class Skill_Buck extends StdSkill
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -100,29 +100,29 @@ public class Skill_Buck extends StdSkill
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((!(mob instanceof Rideable))
 		||(((Rideable)mob).numRiders()==0))
 		{
-			mob.tell(L("No one and nothing is not mounted on you!"));
+			mob.tell(L("There is no one on you to buck!"));
 			return false;
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		Rideable R=(Rideable)mob;
+		final Rideable R=(Rideable)mob;
 		int avgDex=0;
 		for(int i=0;i<R.numRiders();i++)
 		{
-			Rider r=R.fetchRider(i);
+			final Rider r=R.fetchRider(i);
 			if(r instanceof MOB)
 				avgDex+=((MOB)r).charStats().getStat(CharStats.STAT_DEXTERITY);
 		}
 		avgDex = avgDex / R.numRiders();
-		
-		int adj = ((mob.charStats().getStat(CharStats.STAT_STRENGTH)*2) - (avgDex*3)) + (2*getXLEVELLevel(mob));
+
+		final int adj = ((mob.charStats().getStat(CharStats.STAT_STRENGTH)*2) - (avgDex*3)) + (2*getXLEVELLevel(mob));
 		final boolean success=proficiencyCheck(mob,adj,auto);
 
 		String str=null;
@@ -130,10 +130,10 @@ public class Skill_Buck extends StdSkill
 		{
 			str=auto?L("<T-NAME> is bucked!"):L("<S-NAME> buck(s) <T-NAME> off <S-NAMESELF>!");
 			final Room roomR=CMLib.map().roomLocation(mob);
-			List<Rider> targets=new ArrayList<Rider>(R.numRiders());
+			final List<Rider> targets=new ArrayList<Rider>(R.numRiders());
 			for(int r=0;r<R.numRiders();r++)
 				targets.add(R.fetchRider(r));
-			for(Rider target : targets)
+			for(final Rider target : targets)
 			{
 				if(target instanceof MOB)
 				{
