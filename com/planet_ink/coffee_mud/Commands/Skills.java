@@ -46,12 +46,12 @@ public class Skills extends StdCommand
 		return access;
 	}
 
-	protected boolean parsedOutIndividualSkill(MOB mob, String qual, int acode)
+	protected boolean parsedOutIndividualSkill(final MOB mob, final String qual, final int acode)
 	{
 		return parsedOutIndividualSkill(mob, qual, new XVector<Integer>(Integer.valueOf(acode)));
 	}
 
-	protected boolean parsedOutIndividualSkill(MOB mob, String qual, List<Integer> acodes)
+	protected boolean parsedOutIndividualSkill(final MOB mob, final String qual, final List<Integer> acodes)
 	{
 		if((qual==null)||(qual.length()==0)||(qual.equalsIgnoreCase("all")))
 			return false;
@@ -91,7 +91,7 @@ public class Skills extends StdCommand
 		return false;
 	}
 
-	protected int parseOutLevel(List<String> commands)
+	protected int parseOutLevel(final List<String> commands)
 	{
 		if((commands.size()>1)
 		&&(CMath.isNumber(commands.get(commands.size()-1))))
@@ -109,12 +109,12 @@ public class Skills extends StdCommand
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#abilityCode()
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#DOMAIN_DESCS
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability#ACODE_DESCS
-	 * 
-	 * @param domain the domain mask 
+	 *
+	 * @param domain the domain mask
 	 * @param acode the ability code
 	 * @return true if they meet somewhere
 	 */
-	public boolean isDomainIncludedInAnyAbility(int domain, int acode)
+	public boolean isDomainIncludedInAnyAbility(final int domain, final int acode)
 	{
 		@SuppressWarnings("unchecked")
 		Map<Integer, Set<Integer>> completeDomainMap = (Map<Integer, Set<Integer>>)Resources.getResource("SYSYETM_ABLEDOMAINMAP");
@@ -139,8 +139,8 @@ public class Skills extends StdCommand
 		}
 		return V.contains(Integer.valueOf(acode));
 	}
-	
-	protected void parseDomainInfo(MOB mob, List<String> commands, Vector<Integer> acodes, int[] level, int[] domain, String[] domainName)
+
+	protected void parseDomainInfo(final MOB mob, final List<String> commands, final Vector<Integer> acodes, final int[] level, final int[] domain, final String[] domainName)
 	{
 		level[0]=parseOutLevel(commands);
 		final String qual=CMParms.combine(commands,1).toUpperCase();
@@ -185,7 +185,7 @@ public class Skills extends StdCommand
 			domainName[0]+=" ";
 	}
 
-	protected StringBuilder getAbilities(MOB viewerM, MOB ableM, int ofType, int ofDomain, boolean addQualLine, int maxLevel)
+	protected StringBuilder getAbilities(final MOB viewerM, final MOB ableM, int ofType, final int ofDomain, final boolean addQualLine, final int maxLevel)
 	{
 		final ArrayList<Integer> V=new ArrayList<Integer>();
 		int mask=Ability.ALL_ACODES;
@@ -201,7 +201,7 @@ public class Skills extends StdCommand
 	protected final static Comparator<Ability> nameComparator=new Comparator<Ability>()
 	{
 		@Override
-		public int compare(Ability o1, Ability o2)
+		public int compare(final Ability o1, final Ability o2)
 		{
 			if(o1==null)
 				return o2==null?0:-1;
@@ -210,12 +210,14 @@ public class Skills extends StdCommand
 			return o1.Name().compareTo(o2.Name());
 		}
 	};
-	
-	protected StringBuilder getAbilities(MOB viewerM, MOB ableM, List<Integer> ofTypes, int mask, boolean addQualLine, int maxLevel)
+
+	protected StringBuilder getAbilities(final MOB viewerM, final MOB ableM, final List<Integer> ofTypes, final int mask, final boolean addQualLine, final int maxLevel)
 	{
+		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
+		final boolean useWords=CMProps.Int.Prowesses.SKILL_PROFICIENCY.is(prowessCode);
 		final int COL_LEN1=CMLib.lister().fixColWidth(3.0,viewerM);
-		final int COL_LEN2=CMLib.lister().fixColWidth(18.0,viewerM);
-		final int COL_LEN3=CMLib.lister().fixColWidth(18.0,viewerM);
+		final int COL_LEN2=useWords? CMLib.lister().fixColWidth(19.0,viewerM) : CMLib.lister().fixColWidth(18.0,viewerM);
+		final int COL_LEN3=useWords? CMLib.lister().fixColWidth(17.0,viewerM) : CMLib.lister().fixColWidth(18.0,viewerM);
 		int highestLevel=0;
 		final int lowestLevel=ableM.phyStats().level()+1;
 		final StringBuilder msg=new StringBuilder("");
@@ -233,17 +235,15 @@ public class Skills extends StdCommand
 		}
 		if((maxLevel>=0)&&(maxLevel<highestLevel))
 			highestLevel=maxLevel;
-		final int prowessCode = CMProps.getIntVar(CMProps.Int.COMBATPROWESS);
-		final boolean useWords=CMProps.Int.Prowesses.SKILL_PROFICIENCY.is(prowessCode);
 		final int[] proficiencyRanges=new int[]{5,10,20,30,40,50,60,70,75,80,85,90,95,100};
-		int MAX_COLS=useWords?2:3;
+		final int MAX_COLS=useWords?2:3;
 		final List<Ability> sortedAllAbilities = new XVector<Ability>(ableM.allAbilities());
 		Collections.sort(sortedAllAbilities,nameComparator);
 		for(int l=0;l<=highestLevel;l++)
 		{
 			final StringBuilder thisLine=new StringBuilder("");
 			int col=0;
-			
+
 			for(final Ability A : sortedAllAbilities)
 			{
 				int level=CMLib.ableMapper().qualifyingLevel(ableM,A);
@@ -254,7 +254,12 @@ public class Skills extends StdCommand
 				&&(ofTypes.contains(Integer.valueOf(A.classificationCode()&mask))))
 				{
 					if(thisLine.length()==0)
-						thisLine.append("\n\rLevel ^!"+l+"^?:\n\r");
+					{
+						if(useWords)
+							thisLine.append("\n\r^!Level ^H"+l+"^N:\n\r");
+						else
+							thisLine.append("\n\rLevel ^!"+l+"^?:\n\r");
+					}
 					col++;
 					if(!useWords)
 					{
@@ -283,7 +288,7 @@ public class Skills extends StdCommand
 						}
 						final String message=CMProps.getListFileChoiceFromIndexedList(CMProps.ListFile.SKILL_PROFICIENCY_DESC, ordinal);
 						if(col < MAX_COLS)
-							thisLine.append(CMStrings.padRight("^N(^H",message,"^?)^N",COL_LEN2));
+							thisLine.append(CMStrings.padRight("^N(^H",message,"^?)^N",COL_LEN3));
 						else
 						{
 							thisLine.append(CMStrings.limit("^N(^H",message,"^?)^N\n\r",COL_LEN3));
@@ -293,7 +298,13 @@ public class Skills extends StdCommand
 				}
 			}
 			if(thisLine.length()>0)
-				msg.append(thisLine);
+			{
+				final String line=thisLine.toString();
+				if(line.endsWith("\n\r"))
+					msg.append(line);
+				else
+					msg.append(line).append("\n\r");
+			}
 		}
 		if(msg.length()==0)
 			msg.append(L("^!None!^?"));
@@ -304,7 +315,7 @@ public class Skills extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		final StringBuilder msg=new StringBuilder("");

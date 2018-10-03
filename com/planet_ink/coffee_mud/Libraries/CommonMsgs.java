@@ -2087,7 +2087,56 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 					myDescription.append("is here.\n\r");
 			}
 			if(viewedmob.phyStats().height()>0)
-				myDescription.append(viewedmob.charStats().HeShe()+" is "+viewedmob.phyStats().height()+" inches tall and weighs "+viewedmob.baseWeight()+" pounds.\n\r");
+				myDescription.append(L("@x1 is @x2 inches tall and weighs @x3 pounds.\n\r",viewedmob.charStats().HeShe(),""+viewedmob.phyStats().height(),""+viewedmob.baseWeight()));
+			if((longlook)&&(viewermob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5))
+			{
+				myDescription.append(L("@x1 has ",viewedmob.charStats().HeShe()));
+				final int[] parts=new int[Race.BODY_PARTS];
+				for(int i=0;i<Race.BODY_PARTS;i++)
+					parts[i]=viewedmob.charStats().getBodyPart(i);
+				final List<String> partsList=new ArrayList<String>();
+				if(parts[Race.BODY_LEG]>0)
+					partsList.add(L("@x1 leg(s)",""+parts[Race.BODY_LEG]));
+				else
+					partsList.add(L("no legs"));
+				if(parts[Race.BODY_ARM]>0)
+					partsList.add(L("@x1 arm(s)",""+parts[Race.BODY_ARM]));
+				else
+					partsList.add(L("no arms"));
+				if(parts[Race.BODY_GILL] > 0)
+					partsList.add(L("gills"));
+				if(parts[Race.BODY_ANTENEA] > 0)
+					partsList.add(L("@x1 antenea",""+parts[Race.BODY_ANTENEA]));
+				if(parts[Race.BODY_HEAD]==0)
+					partsList.add(L("no head"));
+				else
+				{
+					if(parts[Race.BODY_NOSE] > 1)
+						partsList.add(L("@x1 noses",""+parts[Race.BODY_NOSE]));
+					if(parts[Race.BODY_EYE] == 1)
+						partsList.add(L("one eye"));
+					else
+					if(parts[Race.BODY_EYE] > 2)
+						partsList.add(L("@x1 eyes",""+parts[Race.BODY_EYE]));
+					if(parts[Race.BODY_EAR] == 1)
+						partsList.add(L("one ear"));
+					else
+					if(parts[Race.BODY_EAR] > 2)
+						partsList.add(L("@x1 ears",""+parts[Race.BODY_EAR]));
+					if(parts[Race.BODY_MOUTH] > 1)
+						partsList.add(L("@x1 mouth(s)",""+parts[Race.BODY_MOUTH]));
+				}
+				if(parts[Race.BODY_TAIL] > 0)
+				{
+					if(parts[Race.BODY_TAIL] > 1)
+						partsList.add(L("@x1 tails",""+parts[Race.BODY_TAIL]));
+					else
+						partsList.add(L("a tail",""+parts[Race.BODY_TAIL]));
+				}
+				if(parts[Race.BODY_WING] > 0)
+					partsList.add(L("wings"));
+				myDescription.append(CMLib.english().toEnglishStringList(partsList)).append(".\n\r");
+			}
 			if((longlook)&&(viewermob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>12))
 			{
 				final CharStats C=(CharStats)CMClass.getCommon("DefaultCharStats");

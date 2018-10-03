@@ -664,33 +664,37 @@ public class DefaultClan implements Clan
 		M.delAbility(M.fetchAbility("Spell_ClanDonate"));
 		M.delAbility(M.fetchAbility("Spell_Flagportation"));
 
-		if(M.playerStats()!=null)
-		for(final ClanPosition pos : govt().getPositions())
+		final PlayerStats pStats = M.playerStats();
+		if(pStats!=null)
 		{
-			final String title="*, "+CMStrings.capitalizeAndLower(pos.getName())+" of "+name();
-			String existingTitle=null;
-			for(final String titleCheck : M.playerStats().getTitles())
+			for(final ClanPosition pos : govt().getPositions())
 			{
-				if(titleCheck.equalsIgnoreCase(title))
-					existingTitle=titleCheck;
-			}
-			if((p!=null)
-			&&(p.second.intValue()==pos.getRoleID())
-			&&(getAuthority(p.second.intValue(),Function.CLAN_TITLES)!=Clan.Authority.CAN_NOT_DO))
-			{
-				if(!M.playerStats().getTitles().contains(title))
+				final String title="*, "+CMStrings.capitalizeAndLower(pos.getName())+" of "+name();
+				String existingTitle=null;
+				for(final String titleCheck : pStats.getTitles())
 				{
+					if(titleCheck.equalsIgnoreCase(title))
+						existingTitle=titleCheck;
+				}
+				if((p!=null)
+				&&(p.second.intValue()==pos.getRoleID())
+				&&(getAuthority(p.second.intValue(),Function.CLAN_TITLES)!=Clan.Authority.CAN_NOT_DO))
+				{
+					if(!pStats.getTitles().contains(title))
+					{
+						if(existingTitle!=null)
+							pStats.getTitles().remove(existingTitle);
+						pStats.getTitles().add(title);
+					}
+				}
+				else
+				{
+					if(pStats.getTitles().contains(title))
+						pStats.getTitles().remove(title);
 					if(existingTitle!=null)
-						M.playerStats().getTitles().remove(existingTitle);
-					M.playerStats().getTitles().add(title);
+						pStats.getTitles().remove(existingTitle);
 				}
 			}
-			else
-			if(M.playerStats().getTitles().contains(title))
-				M.playerStats().getTitles().remove(title);
-			else
-			if(existingTitle!=null)
-				M.playerStats().getTitles().remove(existingTitle);
 		}
 		if(p==null)
 		{

@@ -120,11 +120,17 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		final StringBuffer s=new StringBuffer("");
 		for(final Iterator<? extends Object> o=V.iterator();o.hasNext();)
 		{
-			if(s.length()>0)
-				s.append(", ");
 			final Object O = o.next();
 			if(!o.hasNext())
-				s.append(" and ");
+			{
+				if(V.size()==2)
+					s.append(" and ");
+				else
+					s.append(", and ");
+			}
+			else
+			if(s.length()>0)
+				s.append(", ");
 			s.append(O.toString());
 		}
 		return s.toString();
