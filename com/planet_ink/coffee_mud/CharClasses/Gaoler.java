@@ -369,6 +369,7 @@ public class Gaoler extends StdCharClass
 			&&(CMath.bset(((Ability)msg.tool()).flags(), Ability.FLAG_TORTURING))
 			&&((MOB)host).isMine(msg.tool())
 			&&(CMLib.map().getStartArea(host)!=null)
+			&&(!msg.sourceMajor(CMMsg.MASK_ALWAYS))
 			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH)
 			&&(((MOB)host).charStats().getClassLevel(this)>0))
 			{
