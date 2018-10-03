@@ -1526,13 +1526,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final Room room=(Room)msg.target();
 		int lookCode=LOOK_LONG;
 		if(msg.targetMinor()!=CMMsg.TYP_EXAMINE)
-			lookCode=(msg.sourceMessage()==null)?LOOK_BRIEFOK:LOOK_NORMAL;
+			lookCode=((msg.sourceMessage()==null)||mob.isAttributeSet(MOB.Attrib.COMPRESS))?LOOK_BRIEFOK:LOOK_NORMAL;
 
 		sess.setStat("ROOMLOOK", ""+room.hashCode()); // for gmcp/protocol notifications
 
 		final StringBuilder finalLookStr=new StringBuilder("");
 		boolean sysmsgs=mob.isAttributeSet(MOB.Attrib.SYSOPMSGS);
 		final boolean compress=mob.isAttributeSet(MOB.Attrib.COMPRESS) || (CMath.bset(room.phyStats().sensesMask(), PhyStats.SENSE_ALWAYSCOMPRESSED));
+		final boolean useName = (lookCode==LOOK_BRIEFOK) && compress && mob.isAttributeSet(MOB.Attrib.BRIEF);
 		if(sysmsgs && (!CMSecurity.isAllowed(mob,room,CMSecurity.SecFlag.SYSMSGS)))
 		{
 			mob.setAttribute(MOB.Attrib.SYSOPMSGS,false);
@@ -1685,7 +1686,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 		final boolean hadCompressedItems = ((compressedItems != null) && (compressedItems.size()>0));
 		if(hadCompressedItems)
 		{
-			final StringBuilder itemStr=CMLib.lister().lister(mob,compressedItems,false,"RItem"," \"*\"",false,true);
+			final StringBuilder itemStr=CMLib.lister().lister(mob,compressedItems,useName,"RItem"," \"*\"",false,true);
 			if(itemStr.length()>0)
 				finalLookStr.append(itemStr);
 		}
@@ -1694,7 +1695,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			||(!mob.isAttributeSet(MOB.Attrib.BRIEF))
 			||(hadCompressedItems)))
 				finalLookStr.append("^N\n\r\n\r");
-		final StringBuilder itemStr=CMLib.lister().lister(mob,viewItems,false,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
+		final StringBuilder itemStr=CMLib.lister().lister(mob,viewItems,useName,"RItem"," \"*\"",lookCode==LOOK_LONG,compress);
 		if(itemStr.length()>0)
 			finalLookStr.append(itemStr);
 
@@ -1724,7 +1725,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 						finalLookStr.append("^M^<RMob \""+CMStrings.removeColors(mob2.name())+"\"^>");
 						if(compress)
 							finalLookStr.append(CMLib.flags().getDispositionBlurbs(mob2,mob)+"^M ");
-						if(displayText.length()>0)
+						if((displayText.length()>0)&&(!useName))
 							finalLookStr.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(displayText)));
 						else
 							finalLookStr.append(CMStrings.endWithAPeriod(CMStrings.capitalizeFirstLetter(mob2.name())));
