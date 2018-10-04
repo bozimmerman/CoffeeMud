@@ -48,7 +48,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 
 	private SMTPHostAuth auth = null;
 
-	Attribute doMXLookup( String hostName )
+	Attribute doMXLookup( final String hostName )
 	{
 		try
 		{
@@ -69,14 +69,14 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	}
 
 	@Override
-	public SMTPClient getClient(String SMTPServerInfo, int port)
+	public SMTPClient getClient(final String SMTPServerInfo, final int port)
 		throws UnknownHostException,IOException
 	{
 		return new SMTPclient(SMTPServerInfo,port);
 	}
 
 	@Override
-	public SMTPClient getClient(String emailAddress)
+	public SMTPClient getClient(final String emailAddress)
 		throws IOException, BadEmailAddressException
 	{
 		return new SMTPclient(emailAddress);
@@ -94,7 +94,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	 *   @throws UnknownHostException the host was unknown
 	 *   @throws IOException a socket error
 	 */
-	public SMTPclient( String SMTPServerInfo, int port) throws UnknownHostException,IOException
+	public SMTPclient( final String SMTPServerInfo, int port) throws UnknownHostException,IOException
 	{
 		auth = new SMTPHostAuth(SMTPServerInfo);
 		final int portIndex=auth.host.lastIndexOf(':');
@@ -121,7 +121,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		}
 	}
 
-	public SMTPclient (String emailAddress) throws IOException,
+	public SMTPclient (final String emailAddress) throws IOException,
 												   BadEmailAddressException
 	{
 		int x=this.getEmailAddressError(emailAddress);
@@ -179,7 +179,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	}
 
 	@Override
-	public boolean emailIfPossible(String fromName, String toName, String subj, String msg)
+	public boolean emailIfPossible(final String fromName, final String toName, final String subj, final String msg)
 	{
 		try
 		{
@@ -212,12 +212,12 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	}
 
 	@Override
-	public boolean emailIfPossible(String SMTPServerInfo,
-								   String from,
-								   String replyTo,
-								   String to,
-								   String subject,
-								   String message)
+	public boolean emailIfPossible(final String SMTPServerInfo,
+								   final String from,
+								   final String replyTo,
+								   final String to,
+								   final String subject,
+								   final String message)
 	{
 		if(CMSecurity.isDisabled(CMSecurity.DisFlag.SMTPCLIENT))
 		{
@@ -247,7 +247,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	}
 
 	@Override
-	public void emailOrJournal(String from, String replyTo, String to, String subject, String message)
+	public void emailOrJournal(final String from, final String replyTo, final String to, final String subject, String message)
 	{
 		final String smtpServerInfo = CMProps.getVar(CMProps.Str.SMTPSERVERNAME);
 		final String fromEmail=(from.indexOf('@')>0)?makeValidEmailAddress(from):(from+'@'+CMProps.getVar(Str.MUDDOMAIN).toLowerCase());
@@ -258,7 +258,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 			unSubUrl = CMLib.utensils().getUnsubscribeURL(to);
 		else
 			unSubUrl = null;
-		message+=L("\n\r\n\rThis message was sent through the @x1 mail server at @x2, port @x3.  ",
+		message+=L("\n\r\n\rThis message was sent to "+to+" through the @x1 mail server at @x2, port @x3.  ",
 				CMProps.getVar(CMProps.Str.MUDNAME), CMProps.getVar(CMProps.Str.MUDDOMAIN), CMProps.getVar(CMProps.Str.MUDPORTS))+
 				L("Please contact the administrators regarding any abuse of this system.\n\r")+
 				((unSubUrl == null) ? "" : L("To unsubscribe, visit: @x1  \n\r",unSubUrl));
@@ -288,7 +288,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	 * @return true if all is good, false otherwise.
 	 */
 	@Override
-	public boolean isValidEmailAddress(String addy)
+	public boolean isValidEmailAddress(final String addy)
 	{
 		return getEmailAddressError(addy)<0;
 	}
@@ -300,7 +300,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	 * @param addy the email address
 	 * @return -1, or the location of the error from 0-length+1
 	 */
-	private int getEmailAddressError(String addy)
+	private int getEmailAddressError(final String addy)
 	{
 		if(addy==null)
 			return 0;
@@ -347,7 +347,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		return -1;
 	}
 
-	public String makeValidEmailAddress(String name)
+	public String makeValidEmailAddress(final String name)
 	{
 		if(!isValidEmailAddress(name))
 		{
@@ -366,7 +366,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		return name;
 	}
 
-	public void sendLine(boolean debug, String sstr)
+	public void sendLine(final boolean debug, final String sstr)
 	{
 		if(debug)
 			Log.debugOut("SMTPclient",sstr);
@@ -390,8 +390,8 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	public synchronized void sendMessage(String froaddress,
 										 String reply_address,
 										 String to_address,
-										 String mockto_address,
-										 String subject,
+										 final String mockto_address,
+										 final String subject,
 										 String message)
 		throws IOException
 	{
@@ -452,7 +452,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		rstr = reply.readLine();
 		if(debug)
 			Log.debugOut("SMTPclient",rstr);
-		if ((rstr==null)||(!rstr.startsWith("250"))) 
+		if ((rstr==null)||(!rstr.startsWith("250")))
 			throw new ProtocolException(""+rstr);
 
 		if((auth != null) && (auth.getAuthType().length()>0))
@@ -474,26 +474,26 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 			rstr = reply.readLine();
 			if(debug)
 				Log.debugOut("SMTPclient",rstr);
-			if ((rstr==null)||(!rstr.startsWith("235"))) 
+			if ((rstr==null)||(!rstr.startsWith("235")))
 				throw new ProtocolException(""+rstr);
 		}
 		sendLine(debug,"MAIL FROM:<" + froaddress+">");
 		rstr = reply.readLine();
 		if(debug)
 			Log.debugOut("SMTPclient",rstr);
-		if ((rstr==null)||(!rstr.startsWith("250"))) 
+		if ((rstr==null)||(!rstr.startsWith("250")))
 			throw new ProtocolException(""+rstr);
 		sendLine(debug,"RCPT TO:<" + to_address+">");
 		rstr = reply.readLine();
 		if(debug)
 			Log.debugOut("SMTPclient",rstr);
-		if ((rstr==null)||(!rstr.startsWith("250"))) 
+		if ((rstr==null)||(!rstr.startsWith("250")))
 			throw new ProtocolException(""+rstr);
 		sendLine(debug,"DATA");
 		rstr = reply.readLine();
 		if(debug)
 			Log.debugOut("SMTPclient",rstr);
-		if ((rstr==null)||(!rstr.startsWith("354"))) 
+		if ((rstr==null)||(!rstr.startsWith("354")))
 			throw new ProtocolException(""+rstr);
 		sendLine(debug,"MIME-Version: 1.0");
 		if((message.indexOf("<HTML>")>=0)&&(message.indexOf("</HTML>")>=0))
@@ -518,7 +518,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 		rstr = reply.readLine();
 		if(debug)
 			Log.debugOut("SMTPclient",rstr);
-		if (!rstr.startsWith("250")) 
+		if (!rstr.startsWith("250"))
 			throw new ProtocolException(rstr);
 	}
 
@@ -532,7 +532,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	* @throws IOException a socket error
 	* @throws ProtocolException an internal error
 	*/
-	public synchronized String getListMembers( String list) throws IOException, ProtocolException 
+	public synchronized String getListMembers( final String list) throws IOException, ProtocolException
 	{
 
 		String sendString;
@@ -600,7 +600,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 	* Usage:  finalize();
 	*/
 	@Override
-	protected void finalize() throws Throwable 
+	protected void finalize() throws Throwable
 	{
 		this.close();
 		super.finalize();
@@ -608,7 +608,7 @@ public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.S
 
 	private class SMTPHostAuth
 	{
-		public SMTPHostAuth(String unparsedServerInfo)
+		public SMTPHostAuth(final String unparsedServerInfo)
 		{
 			final List<String> info=CMParms.parseCommas(unparsedServerInfo,false);
 			if(info.size()==0)
