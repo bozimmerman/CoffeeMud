@@ -88,6 +88,7 @@ public class StdArea implements Area
 	protected String[] 				itemPricingAdjustments	= new String[0];
 	protected final static int[]	emptyStats				= new int[Area.Stats.values().length];
 	protected final static String[] empty					= new String[0];
+	protected static volatile Area	lastComplainer			= null;
 
 	@Override
 	public void initializeClass()
@@ -2096,8 +2097,12 @@ public class StdArea implements Area
 		final Room R=CMLib.map().getRoom(roomID);
 		if(R instanceof GridLocale)
 			return ((GridLocale)R).getRandomGridChild();
-		if(R==null)
+		if((R==null)&&(StdArea.lastComplainer != this))
+		{
+			StdArea.lastComplainer=this;
 			Log.errOut("StdArea","Unable to random-find: "+roomID);
+			Log.errOut(new Exception());
+		}
 		return R;
 	}
 
