@@ -65,7 +65,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	public String supportedResourceString()
 	{
 		return "WHEAT|VINE|SEAWEED|HEMP|FLOWERS|BAMBOO|FEATHERS|HERBS";
-		
+
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	protected Item key=null;
 
 	final static int[] pm=
-	{ 
+	{
 		RawMaterial.RESOURCE_FEATHERS,
 		RawMaterial.RESOURCE_HERBS,
 		RawMaterial.RESOURCE_HEMP,
@@ -103,7 +103,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		RawMaterial.RESOURCE_WHEAT,
 		RawMaterial.RESOURCE_SEAWEED
 	};
-	
+
 	public Weaving()
 	{
 		super();
@@ -209,7 +209,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	}
 
 	@Override
-	public double getItemWeightMultiplier(boolean bundling)
+	public double getItemWeightMultiplier(final boolean bundling)
 	{
 		return bundling ? 1.0 : 0.5;
 	}
@@ -265,13 +265,13 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	}
 
 	@Override
-	public boolean supportsMending(Physical I)
+	public boolean supportsMending(final Physical I)
 	{
 		return canMend(null, I, true);
 	}
 
 	@Override
-	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
@@ -292,21 +292,21 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -526,7 +526,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			}
 			duration=getDuration(CMath.s_int(foundRecipe.get(RCP_TICKS)),mob,CMath.s_int(foundRecipe.get(RCP_LEVEL)),4);
 			buildingI.setMaterial(super.getBuildingMaterial(woodRequired, data, compData));
-			String pctReplacement = (label.length()>0) ? label : RawMaterial.CODES.NAME(buildingI.material());
+			final String pctReplacement = (label.length()>0) ? label : RawMaterial.CODES.NAME(buildingI.material());
 			String itemName;
 			if(label.length()>0)
 				itemName=replacePercent(foundRecipe.get(RCP_FINALNAME), pctReplacement).toLowerCase();
@@ -604,6 +604,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 					key.setDisplayText(L("a small key sits here"));
 					key.setDescription(L("looks like a key to @x1",buildingI.name()));
 					key.recoverPhyStats();
+					setBrand(mob, key);
 					key.text();
 				}
 			}

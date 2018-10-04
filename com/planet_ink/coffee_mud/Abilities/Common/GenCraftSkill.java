@@ -75,11 +75,11 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	private static final int	V_CNST			= 10;	// B
 	private static final int	NUM_VS			= 11;	// S
 
-	// 
+	//
 
 	@Override
 	public String parametersFormat()
-	{ 
+	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
@@ -148,7 +148,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return (String) V(ID, V_RSCS);
 	}
 
-	private static final Object V(String ID, int varNum)
+	private static final Object V(final String ID, final int varNum)
 	{
 		if(vars.containsKey(ID))
 			return vars.get(ID)[varNum];
@@ -157,7 +157,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return O[varNum];
 	}
 
-	private static final void SV(String ID,int varNum,Object O)
+	private static final void SV(final String ID,final int varNum,final Object O)
 	{
 		if(vars.containsKey(ID))
 			vars.get(ID)[varNum]=O;
@@ -191,7 +191,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	protected void cloneFix(Ability E)
+	protected void cloneFix(final Ability E)
 	{
 	}
 
@@ -241,7 +241,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		/*
 		int num=0;
@@ -291,7 +291,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(String code, final String val)
 	{
 		int num=0;
 		int numDex=code.length();
@@ -375,7 +375,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return true;
 	}
 
-	private void parseAllXML(String xml)
+	private void parseAllXML(final String xml)
 	{
 		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(xml);
 		if((V==null)||(V.size()==0))
@@ -504,13 +504,13 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 		return false;
 	}
 
-	public boolean supportsMending(Physical I)
+	public boolean supportsMending(final Physical I)
 	{
 		return canMend(null, I, true);
 	}
 
 	@Override
-	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
 	{
 		final Boolean canMendB=(Boolean)V(ID,V_CNMN);
 		if(!canMendB.booleanValue())
@@ -538,21 +538,21 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -818,6 +818,7 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 					key.setDisplayText(L("a small key sits here"));
 					key.setDescription(L("looks like a key to @x1",buildingI.name()));
 					key.recoverPhyStats();
+					setBrand(mob, key);
 					key.text();
 				}
 			}

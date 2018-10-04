@@ -529,6 +529,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 					key.setDisplayText(L("a small key sits here"));
 					key.setDescription(L("looks like a key to @x1",buildingI.name()));
 					key.recoverPhyStats();
+					setBrand(mob, key);
 					key.text();
 				}
 				if(!(buildingI instanceof Armor))

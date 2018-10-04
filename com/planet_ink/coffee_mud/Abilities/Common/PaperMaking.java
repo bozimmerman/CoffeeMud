@@ -441,6 +441,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 				key.setDisplayText(L("a small key sits here"));
 				key.setDescription(L("looks like a key to @x1",buildingI.name()));
 				key.recoverPhyStats();
+				setBrand(mob, key);
 				key.text();
 			}
 		}

@@ -69,7 +69,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 
 	@Override
 	public String parametersFormat()
-	{ 
+	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
@@ -242,13 +242,13 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		return (isANativeItem(I.Name()));
 	}
 
-	public boolean supportsMending(Physical I)
+	public boolean supportsMending(final Physical I)
 	{
 		return canMend(null, I, true);
 	}
 
 	@Override
-	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
@@ -269,14 +269,14 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-									final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+									final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		final List<String> originalCommands = new XVector<String>(commands);
 		if(super.checkStop(mob, commands))
@@ -284,7 +284,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -605,6 +605,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 					key.setDisplayText(L("a small key sits here"));
 					key.setDescription(L("looks like a key to @x1",buildingI.name()));
 					key.recoverPhyStats();
+					setBrand(mob, key);
 					key.text();
 				}
 			}
@@ -642,7 +643,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			{
 				((Weapon)buildingI).setRawLogicalAnd((capacity>1));
 			}
-			
+
 			if(buildingI instanceof Weapon)
 			{
 				((Weapon)buildingI).setWeaponClassification(Weapon.CLASS_BLUNT);

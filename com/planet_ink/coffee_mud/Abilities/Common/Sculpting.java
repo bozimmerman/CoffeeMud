@@ -191,13 +191,13 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 	}
 
 	@Override
-	public boolean supportsMending(Physical item)
+	public boolean supportsMending(final Physical item)
 	{
 		return canMend(null, item, true);
 	}
 
 	@Override
-	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
@@ -218,14 +218,14 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-								 final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+								 final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		final List<String> originalCommands = new XVector<String>(commands);
 		if(super.checkStop(mob, commands))
@@ -233,7 +233,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -444,12 +444,12 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 							{
 								session.promptPrint(L("What is this a statue of?\n\r: "));
 							}
-	
+
 							@Override
 							public void timedOut()
 							{
 							}
-	
+
 							@Override
 							public void callBack()
 							{
@@ -505,6 +505,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 					key.setDisplayText(L("a small key sits here"));
 					key.setDescription(L("looks like a key to @x1",buildingI.name()));
 					key.recoverPhyStats();
+					setBrand(mob, key);
 					key.text();
 				}
 			}
