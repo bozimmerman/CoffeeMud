@@ -41,7 +41,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public int timsLevelCalculator(Item I)
+	public int timsLevelCalculator(final Item I)
 	{
 		final int[] castMul=new int[1];
 		final Ability[] RET=getTimsAdjResCast(I,castMul);
@@ -51,7 +51,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return timsLevelCalculator(I,ADJ,RES,CAST,castMul[0]);
 	}
 
-	protected double timsDmgModifier(int weaponClass)
+	protected double timsDmgModifier(final int weaponClass)
 	{
 		double dmgModifier=1.0;
 		switch(weaponClass)
@@ -74,8 +74,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		}
 		return dmgModifier;
 	}
-	
-	protected double timsBaseAttackModifier(int weaponClass)
+
+	protected double timsBaseAttackModifier(final int weaponClass)
 	{
 		double baseattack=0.0;
 		switch(weaponClass)
@@ -92,8 +92,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		}
 		return baseattack;
 	}
-	
-	protected double timsAttackModifier(int weaponClass)
+
+	protected double timsAttackModifier(final int weaponClass)
 	{
 		double attModifier=0.0;
 		switch(weaponClass)
@@ -113,9 +113,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		}
 		return attModifier;
 	}
-	
+
 	@Override
-	public int timsLevelCalculator(Item I, Ability ADJ, Ability RES, Ability CAST, int castMul)
+	public int timsLevelCalculator(Item I, final Ability ADJ, final Ability RES, final Ability CAST, final int castMul)
 	{
 		int level=0;
 		final Item savedI=(Item)I.copyOf();
@@ -239,7 +239,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public boolean fixRejuvItem(Item I)
+	public boolean fixRejuvItem(final Item I)
 	{
 		Ability A=I.fetchEffect("ItemRejuv");
 		if(A!=null)
@@ -254,7 +254,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public Ability[] getTimsAdjResCast(Item I, int[] castMul)
+	public Ability[] getTimsAdjResCast(final Item I, final int[] castMul)
 	{
 		Ability A;
 		final Ability[] RET=new Ability[3]; // adj, res, cast
@@ -286,7 +286,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return RET;
 	}
 
-	private void reportChangesDestroyOldI(Item oldI, Item newI, StringBuffer changes,int OTLVL, int TLVL)
+	private void reportChangesDestroyOldI(final Item oldI, final Item newI, final StringBuffer changes,final int OTLVL, final int TLVL)
 	{
 		if((changes == null)||(oldI==null))
 			return;
@@ -309,7 +309,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public boolean itemFix(Item I, int lvlOr0, StringBuffer changes)
+	public boolean itemFix(final Item I, final int lvlOr0, final StringBuffer changes)
 	{
 		final Item oldI = (changes!=null)?(Item)I.copyOf():null;
 
@@ -452,7 +452,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public boolean toneDownValue(Item I)
+	public boolean toneDownValue(final Item I)
 	{
 		int hands=0;
 		int weaponClass=0;
@@ -477,7 +477,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public void balanceItemByLevel(Item I)
+	public void balanceItemByLevel(final Item I)
 	{
 		int hands=0;
 		int weaponClass=0;
@@ -505,13 +505,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public Map<String, String> timsItemAdjustments(Item I,
+	public Map<String, String> timsItemAdjustments(final Item I,
 												 int level,
-												 int material,
-												 int hands,
-												 int wclass,
+												 final int material,
+												 final int hands,
+												 final int wclass,
 												 int reach,
-												 long worndata)
+												 final long worndata)
 	{
 		final Hashtable<String,String> vals=new Hashtable<String,String>();
 		final int materialvalue=RawMaterial.CODES.VALUE(material);
@@ -528,6 +528,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			int baseattack=(int)Math.round(this.timsBaseAttackModifier(wclass));
 			int basereach=0;
 			int maxreach=0;
+			int thrown = 0;
 			int basematerial=RawMaterial.MATERIAL_WOODEN;
 			switch(wclass)
 			{
@@ -547,6 +548,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			{
 				basereach = 1;
 				maxreach = 5;
+				thrown = 1;
 				break;
 			}
 			case Weapon.CLASS_EDGED:
@@ -565,7 +567,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				break;
 			}
 			}
-			double dmgModifier = this.timsDmgModifier(wclass);
+			final double dmgModifier = this.timsDmgModifier(wclass);
 			int weight = I.basePhyStats().weight();
 			if(weight<1)
 				weight=8;
@@ -584,7 +586,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				basereach=reach;
 
 			int damage=(int)Math.round((((level-1.0)/(((double)reach/(double)weight)+2.0) + ((double)weight-(double)baseattack)/5.0 -reach)*(((hands*2.0)+1.0)/2.0))*dmgModifier);
-			final int cost=(int)Math.round(2.0*(((double)weight*(double)materialvalue)+((2.0*damage)+baseattack+(reach*10.0))*damage)/(hands+1.0));
+			final int cost=(int)Math.round(2.0*(((double)weight*(double)materialvalue)+((2.0*damage)+baseattack+(reach*10.0))*damage)/((hands+1.0)*(thrown+1.0)));
 			baseattack += (int)Math.round(level * this.timsAttackModifier(wclass));
 			if(basematerial==RawMaterial.MATERIAL_METAL)
 			{
@@ -829,7 +831,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public void toneDownWeapon(Weapon W, Ability ADJ)
+	public void toneDownWeapon(final Weapon W, final Ability ADJ)
 	{
 		if(ADJ!=null)
 		{
@@ -853,9 +855,9 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			W.basePhyStats().setAttackAdjustment(W.basePhyStats().attackAdjustment()-1);
 		W.recoverPhyStats();
 	}
-	
+
 	@Override
-	public void toneDownArmor(Armor A, Ability ADJ)
+	public void toneDownArmor(final Armor A, final Ability ADJ)
 	{
 		boolean fixit=true;
 		if(ADJ!=null)
@@ -873,7 +875,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		A.recoverPhyStats();
 	}
 
-	public int[] getItemLevels(Item I, Ability ADJ, Ability RES, Ability CAST)
+	public int[] getItemLevels(final Item I, final Ability ADJ, final Ability RES, final Ability CAST)
 	{
 		final int[] LVLS=new int[4];
 		LVLS[0]=timsBaseLevel(I,ADJ);
@@ -883,7 +885,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return LVLS;
 	}
 
-	public int totalLevels(int[] levels)
+	public int totalLevels(final int[] levels)
 	{
 		int lvl=levels[0];
 		for(int i=1;i<levels.length;i++)
@@ -892,13 +894,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public int timsBaseLevel(Item I)
+	public int timsBaseLevel(final Item I)
 	{
 		final Ability[] RET=getTimsAdjResCast(I,new int[1]);
 		return timsBaseLevel(I,RET[0]);
 	}
 
-	public int timsBaseLevel(Item I, Ability ADJ)
+	public int timsBaseLevel(final Item I, final Ability ADJ)
 	{
 		int level=0;
 		int otherDam=0;
@@ -983,13 +985,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public int levelsFromAbility(Item savedI)
+	public int levelsFromAbility(final Item savedI)
 	{
 		return savedI.basePhyStats().ability() * 5;
 	}
 
 	@Override
-	public int levelsFromAdjuster(Item savedI, Ability ADJ)
+	public int levelsFromAdjuster(final Item savedI, final Ability ADJ)
 	{
 		int level=0;
 		if(ADJ!=null)
@@ -1000,7 +1002,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public int levelsFromCaster(Item savedI, Ability CAST)
+	public int levelsFromCaster(final Item savedI, final Ability CAST)
 	{
 		int level=0;
 		if(CAST instanceof AbilityContainer)
@@ -1044,7 +1046,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return spellSet;
 	}
 
-	public Ability getCombatSpell(boolean malicious)
+	public Ability getCombatSpell(final boolean malicious)
 	{
 		final List<Ability> spellSet=getCombatSpellSet();
 		int tries=0;
@@ -1063,7 +1065,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	}
 
 	@Override
-	public Item enchant(Item I, int pct)
+	public Item enchant(final Item I, final int pct)
 	{
 		if(CMLib.dice().rollPercentage()>pct)
 			return I;

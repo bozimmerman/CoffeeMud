@@ -335,11 +335,11 @@ public interface Wearable extends Environmental
 		0.25, //ON_LEFT_FINGER
 		0.25, //ON_RIGHT_FINGER
 		0.5, //ON_FEET
-		1.5, //HELD
-		0.5, //WIELD
+		2.0, //HELD
+		1.0, //WIELD
 		0.5, //ON_HANDS
 		0.01, //FLOATING_NEARBY
-		1.0, //ON_WAIST
+		0.5, //ON_WAIST
 		2.0, //ON_LEGS
 		0.25, //ON_EYES
 		0.25, //ON_EARS
@@ -355,21 +355,21 @@ public interface Wearable extends Environmental
 	 */
 	public static final double[][] DEFAULT_WORN_WEIGHT_POINTS={ // cloth, leather, metal
 		{0.0,    0.0,    0.0}, //inventory
-		{1.0,    2.0,    3.0}, //ON_HEAD
-		{0.5,    1.0,    1.5}, //ON_NECK
-		{3.0,    6.0,    9.0}, //ON_TORSO
-		{1.5,    3.0,    4.5}, //ON_ARMS
-		{0.5,    1.0,    1.5}, //ON_LEFT_WRIST
-		{0.5,    1.0,    1.5}, //ON_RIGHT_WRIST
+		{2.0,    6.0,   10.0}, //ON_HEAD
+		{1.0,    3.0,    5.0}, //ON_NECK
+		{6.0,   18.0,   30.0}, //ON_TORSO
+		{3.0,    9.0,   15.0}, //ON_ARMS
+		{1.0,    2.0,    3.0}, //ON_LEFT_WRIST
+		{1.0,    2.0,    3.0}, //ON_RIGHT_WRIST
 		{0.1,    0.2,    0.25},//ON_LEFT_FINGER
 		{0.1,    0.2,    0.25},//ON_RIGHT_FINGER
-		{1.0,    2.0,    3.0}, //ON_FEET
-		{1.5,    3.0,    4.5}, //HELD
-		{1.5,    3.0,    4.5}, //WIELD
-		{0.5,    1.0,    1.5}, //ON_HANDS
+		{2.0,    6.0,   10.0}, //ON_FEET
+		{3.0,    9.0,   15.0}, //HELD
+		{3.0,    9.0,   15.0}, //WIELD
+		{1.0,    3.0,    5.0}, //ON_HANDS
 		{0.0,    0.0,    0.0}, //FLOATING_NEARBY
-		{0.5,    1.0,    1.5}, //ON_WAIST
-		{1.5,    3.0,    4.5}, //ON_LEGS
+		{1.0,    3.0,    5.0}, //ON_WAIST
+		{3.0,    9.0,   15.0}, //ON_LEGS
 		{0.1,    0.2,    0.25},//ON_EYES
 		{0.1,    0.2,    0.25},//ON_EARS
 		{1.0,    2.0,    3.0}, //ABOUT_BODY
