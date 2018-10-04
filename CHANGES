@@ -3,6 +3,7 @@
   2. New wainwrighting & smelting recipes
   3. Longlook to mobs now shows interesting body part info.
   4. Combining BRIEF and COMPRESS now results in SUPERBRIEF!
+  5. Added new GMODIFY fields: RESOURCE (string substitute for MATERIAL), and MATERIALTYPE
 
 # Build 5.9.7 Release 08/29/2018
    1. Scholars gain XP from visiting bookstores, and can study dissertations.

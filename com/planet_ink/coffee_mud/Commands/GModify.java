@@ -74,6 +74,24 @@ public class GModify extends StdCommand
 				return ""+((Physical)E).basePhyStats().rejuv();
 			}
 			else
+			if((stat.equalsIgnoreCase("RESOURCE"))
+			&&(E instanceof Item))
+			{
+				final int mat=((Item)E).material();
+				if(mat >=0)
+					return RawMaterial.CODES.NAME(mat);
+				return "";
+			}
+			else
+			if((stat.equalsIgnoreCase("MATERIALTYPE"))
+			&&(E instanceof Item))
+			{
+				final int mat=((Item)E).material() & RawMaterial.MATERIAL_MASK;
+				if((mat >=0)&&(mat<RawMaterial.Material.names().length))
+					return RawMaterial.Material.names()[mat];
+				return "";
+			}
+			else
 			if((stat.equalsIgnoreCase("GENDER"))
 			&&(E instanceof MOB))
 			{
@@ -143,6 +161,44 @@ public class GModify extends StdCommand
 			if((stat.equalsIgnoreCase("REJUV"))
 			&&(E instanceof Physical))
 				((Physical)E).basePhyStats().setRejuv(CMath.s_int(value));
+			else
+			if((stat.equalsIgnoreCase("RESOURCE"))
+			&&(E instanceof Item))
+				((Item)E).setStat("MATERIAL", value);
+			else
+			if((stat.equalsIgnoreCase("MATERIALTYPE"))
+			&&(E instanceof Item))
+			{
+				int mat;
+				if(CMath.isInteger(value))
+					mat=CMath.s_int(value);
+				else
+				{
+					RawMaterial.Material M = RawMaterial.Material.find(value);
+					if(M == null)
+						M = RawMaterial.Material.findIgnoreCase(value);
+					if(M == null)
+						M = RawMaterial.Material.startsWith(value);
+					if(M == null)
+						M = RawMaterial.Material.startsWithIgnoreCase(value);
+					if(M!=null)
+						mat=M.mask();
+					else
+					{
+						mat = RawMaterial.CODES.FIND_CaseSensitive(value);
+						if(mat < 0)
+							mat = RawMaterial.CODES.FIND_IgnoreCase(value);
+						if(mat < 0)
+							mat = RawMaterial.CODES.FIND_StartsWith(value);
+						if(mat < 0)
+							return E;
+					}
+				}
+				if((mat&RawMaterial.MATERIAL_MASK) != mat)
+					((Item)E).setStat("MATERIAL", ""+mat);
+				else
+					((Item)E).setStat("MATERIAL", RawMaterial.CODES.NAME(RawMaterial.CODES.MOST_FREQUENT(mat)));
+			}
 			else
 			if((stat.equalsIgnoreCase("GENDER"))
 			&&(E instanceof MOB))
@@ -509,7 +565,7 @@ public class GModify extends StdCommand
 			addEnumeratedStatCodes(CMClass.clanItems(),allKnownFields,allFieldsMsg);
 			addEnumeratedStatCodes(CMClass.miscMagic(),allKnownFields,allFieldsMsg);
 			addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
-			allFieldsMsg.append("CLASSTYPE ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT REJUV GENDER DESTROY ");
+			allFieldsMsg.append("CLASSTYPE ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT REJUV GENDER DESTROY RESOURCE MATERIALTYPE ");
 			mob.tell(L("Valid field names are @x1",allFieldsMsg.toString()));
 			return false;
 		}
