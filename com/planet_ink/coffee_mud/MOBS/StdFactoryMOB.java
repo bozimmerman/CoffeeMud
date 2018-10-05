@@ -98,7 +98,12 @@ public class StdFactoryMOB extends StdMOB
 	{
 		try
 		{
-			CharStats savedCStats=charStats;
+			CharStats savedCStats;
+			synchronized(this)
+			{
+				// according to some reports, synchronizing an object ensures cross-cpu cache problems go away.
+				savedCStats=charStats;
+			}
 			if(charStats==baseCharStats)
 				savedCStats=(CharStats)CMClass.getCommon("DefaultCharStats");
 			PhyStats savedPStats=phyStats;
@@ -108,6 +113,8 @@ public class StdFactoryMOB extends StdMOB
 			if((curState==baseState)||(curState==maxState))
 				curState=(CharState)CMClass.getCommon("DefaultCharState");
 			super.destroy();
+			this.username="";
+			this.displayText="";
 			removeFromGame=false;
 			charStats=savedCStats;
 			phyStats=savedPStats;
