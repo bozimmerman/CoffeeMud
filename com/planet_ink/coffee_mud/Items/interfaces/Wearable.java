@@ -361,8 +361,8 @@ public interface Wearable extends Environmental
 		{3.0,    9.0,   15.0}, //ON_ARMS
 		{1.0,    2.0,    3.0}, //ON_LEFT_WRIST
 		{1.0,    2.0,    3.0}, //ON_RIGHT_WRIST
-		{0.1,    0.2,    0.25},//ON_LEFT_FINGER
-		{0.1,    0.2,    0.25},//ON_RIGHT_FINGER
+		{1.0,    1.0,    2.0},//ON_LEFT_FINGER
+		{1.0,    1.0,    1.0},//ON_RIGHT_FINGER
 		{2.0,    6.0,   10.0}, //ON_FEET
 		{3.0,    9.0,   15.0}, //HELD
 		{3.0,    9.0,   15.0}, //WIELD
@@ -370,10 +370,10 @@ public interface Wearable extends Environmental
 		{0.0,    0.0,    0.0}, //FLOATING_NEARBY
 		{1.0,    3.0,    5.0}, //ON_WAIST
 		{3.0,    9.0,   15.0}, //ON_LEGS
-		{0.1,    0.2,    0.25},//ON_EYES
-		{0.1,    0.2,    0.25},//ON_EARS
+		{1.0,    1.0,    2.0},//ON_EYES
+		{1.0,    1.0,    2.0},//ON_EARS
 		{1.0,    2.0,    3.0}, //ABOUT_BODY
-		{0.1,    0.2,    0.25},//ON_MOUTH
+		{1.0,    1.0,    2.0},//ON_MOUTH
 		{1.0,    2.0,    3.0}  //ON_BACK
 	};
 
@@ -593,7 +593,7 @@ public interface Wearable extends Environmental
 		private long[]		allCodes			= new long[0];
 		private long[]		allCodesInOrder		= new long[0];
 		private long[]		dependencyMasks		= new long[0];
-		private double[][]	wornWeightPoints	= new double[0][0];
+		private double[][]	wornWeight			= new double[0][0];
 		private double[]	armorWeights		= new double[0];
 		private String[]	descs				= new String[0];
 		private String[]	updescs				= new String[0];
@@ -999,9 +999,9 @@ public interface Wearable extends Environmental
 		 *
 		 * @return the doule double array
 		 */
-		public static double[][] MATERIAL_WEIGHT_POINTS()
+		public static double[][] MATERIAL_WEIGHT_ITEM()
 		{
-			return c().wornWeightPoints;
+			return c().wornWeight;
 		}
 
 		/**
@@ -1012,9 +1012,9 @@ public interface Wearable extends Environmental
 		 *
 		 * @return the doule double array
 		 */
-		public double[][] material_weight_points()
+		public double[][] material_weight_item()
 		{
-			return wornWeightPoints;
+			return wornWeight;
 		}
 
 		/**
@@ -1070,9 +1070,9 @@ public interface Wearable extends Environmental
 			dependencyMasks[dependencyMasks.length-1]=dependencyMask;
 			armorWeights=Arrays.copyOf(armorWeights, armorWeights.length+1);
 			armorWeights[armorWeights.length-1]=armorStrength;
-			wornWeightPoints=Arrays.copyOf(wornWeightPoints, wornWeightPoints.length+1);
+			wornWeight=Arrays.copyOf(wornWeight, wornWeight.length+1);
 			final double[] newRow={clothWeight,leatherWeight,metalWeight};
-			wornWeightPoints[wornWeightPoints.length-1]=newRow;
+			wornWeight[wornWeight.length-1]=newRow;
 			insertInOrder(newCode,wornOrder);
 		}
 
@@ -1122,7 +1122,7 @@ public interface Wearable extends Environmental
 			dependencyMasks[codeIndex]=dependencyMask;
 			armorWeights[codeIndex]=armorStrength;
 			final double[] newRow={clothWeight,leatherWeight,metalWeight};
-			wornWeightPoints[codeIndex]=newRow;
+			wornWeight[codeIndex]=newRow;
 			insertInOrder(allCodes[codeIndex],wornOrder);
 			usualNames[codeIndex]=usualName;
 		}

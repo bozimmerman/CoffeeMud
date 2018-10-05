@@ -765,40 +765,37 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 
 			double totalpts=0.0;
 			double weightpts=0.0;
-			double wornweights=0.0;
 			final Wearable.CODES codes = Wearable.CODES.instance();
 			for(int i=0;i<codes.location_strength_points().length-1;i++)
 			{
 				if(CMath.isSet(worndata,i))
 				{
 					totalpts+=(pts*codes.location_strength_points()[i+1]);
-					wornweights+=codes.location_strength_points()[i+1];
 					switch(materialCode)
 					{
 					case RawMaterial.MATERIAL_METAL:
 					case RawMaterial.MATERIAL_MITHRIL:
 					case RawMaterial.MATERIAL_PRECIOUS:
-						weightpts+=codes.material_weight_points()[i+1][2];
+						weightpts+=codes.material_weight_item()[i+1][2];
 						break;
 					case RawMaterial.MATERIAL_LEATHER:
 					case RawMaterial.MATERIAL_GLASS:
 					case RawMaterial.MATERIAL_SYNTHETIC:
 					case RawMaterial.MATERIAL_ROCK:
 					case RawMaterial.MATERIAL_WOODEN:
-						weightpts+=codes.material_weight_points()[i+1][1];
+						weightpts+=codes.material_weight_item()[i+1][1];
 						break;
 					case RawMaterial.MATERIAL_ENERGY:
 						break;
 					default:
-						weightpts+=codes.material_weight_points()[i+1][0];
+						weightpts+=codes.material_weight_item()[i+1][0];
 						break;
 					}
 					if(hands==1)
 						break;
 				}
 			}
-			final int cost=(int)Math.round(((pts*pts) + materialvalue)
-									 * ( weightpts / 2.0));
+			final int cost=(int)Math.round(((pts*pts) + materialvalue) * ( weightpts / 2.0));
 			int armor=(int)Math.round(totalpts);
 			switch(material)
 			{
@@ -825,7 +822,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			}
 			vals.put("ARMOR",""+armor);
 			vals.put("VALUE",""+cost);
-			vals.put("WEIGHT",""+(int)Math.round((armor)/wornweights*weightpts));
+			vals.put("WEIGHT",""+(int)Math.round(weightpts));
 		}
 		return vals;
 	}

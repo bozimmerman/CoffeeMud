@@ -42,7 +42,7 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	}
 
 	private InstrumentType type = InstrumentType.OTHER_INSTRUMENT_TYPE;
-	
+
 	public GenInstrument()
 	{
 		super();
@@ -74,9 +74,9 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	{
 		return type.name();
 	}
-	
+
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		super.setReadableText(text);
 		if(CMath.isInteger(text))
@@ -84,7 +84,7 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	}
 
 	@Override
-	public void setInstrumentType(int typeOrdinal)
+	public void setInstrumentType(final int typeOrdinal)
 	{
 		if(typeOrdinal < InstrumentType.values().length)
 			type = InstrumentType.values()[typeOrdinal];
@@ -92,7 +92,7 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	}
 
 	@Override
-	public void setInstrumentType(InstrumentType newType)
+	public void setInstrumentType(final InstrumentType newType)
 	{
 		if(newType != null)
 			type = newType;
@@ -100,7 +100,7 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 	}
 
 	@Override
-	public void setInstrumentType(String newType)
+	public void setInstrumentType(final String newType)
 	{
 		if(newType != null)
 		{
@@ -110,7 +110,7 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 		}
 		readableText = ("" + type.ordinal());
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
@@ -128,7 +128,6 @@ public class GenInstrument extends GenItem implements MusicalInstrument
 			msg.source().location().show(msg.source(), null, this, CMMsg.MSG_NOISYMOVEMENT, L("<S-NAME> play(s) <O-NAME>."));
 			return false;
 		}
-
 		return true;
 	}
 }
