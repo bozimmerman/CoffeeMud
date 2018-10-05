@@ -231,8 +231,8 @@ public class Artisan extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Proficiency_Ranged",false,CMParms.parseSemicolons("Fletching(100)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Familiarity_Ranged",false,CMParms.parseSemicolons("Proficiency_Ranged(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Fighter_CoverDefence",false,CMParms.parseSemicolons("Proficiency_Ranged(75)",true));
-		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",false,CMParms.parseSemicolons("Speculating(75)",true));
-		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterDrilling",false,CMParms.parseSemicolons("Drilling(100);Speculating(75)",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Skill_WandUse",false,CMParms.parseSemicolons("Speculate(75)",true));
+		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"MasterDrilling",false,CMParms.parseSemicolons("Drilling(100);Speculate(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"StaffMaking",false,CMParms.parseSemicolons("Familiarity_Staff(75);Thief_Lore(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"WandMaking",false,CMParms.parseSemicolons("Skill_WandUse(75);Thief_Lore(75)",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Rodsmithing",false,CMParms.parseSemicolons("Skill_WandUse(75);Thief_Lore(75)",true));
