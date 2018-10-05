@@ -43,7 +43,7 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 	}
 
 	private InstrumentType type = InstrumentType.PIANOS;
-	
+
 	public GenPiano()
 	{
 		super();
@@ -79,7 +79,7 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		super.setReadableText(text);
 		if(CMath.isInteger(text))
@@ -87,7 +87,7 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 	}
 
 	@Override
-	public void setInstrumentType(int typeOrdinal)
+	public void setInstrumentType(final int typeOrdinal)
 	{
 		if(typeOrdinal < InstrumentType.values().length)
 			type = InstrumentType.values()[typeOrdinal];
@@ -95,7 +95,7 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 	}
 
 	@Override
-	public void setInstrumentType(InstrumentType newType)
+	public void setInstrumentType(final InstrumentType newType)
 	{
 		if(newType != null)
 			type = newType;
@@ -103,7 +103,7 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 	}
 
 	@Override
-	public void setInstrumentType(String newType)
+	public void setInstrumentType(final String newType)
 	{
 		if(newType != null)
 		{
@@ -113,5 +113,72 @@ public class GenPiano extends GenRideable implements MusicalInstrument
 		}
 		readableText = ("" + type.ordinal());
 	}
-	
+
+	@Override
+	public boolean okMessage(final Environmental myHost, final CMMsg msg)
+	{
+		if(((msg.targetMajor()&CMMsg.MASK_MALICIOUS)>0)
+		&&(this.numRiders()>0))
+		{
+			final Rider R=this.fetchRider(0);
+			if((R instanceof MOB)
+			&&((((MOB)R).numFollowers()>0)||(((MOB)R).numFollowers()>0)))
+			{
+				final MOB riderM=(MOB)R;
+				if(msg.amISource(riderM))
+				{
+					if((msg.target() instanceof MOB)
+					&&(CMLib.flags().matchedAffects(riderM, (Physical)msg.target(),-1,-1,-1).size()>0))
+					{
+						final MOB target=(MOB)msg.target();
+						if(target.getVictim()==msg.source())
+							target.setVictim(null);
+						if(msg.source().getVictim()==target)
+							msg.source().setVictim(null);
+						msg.source().tell(L("Not while you are playing!"));
+						return false;
+					}
+				}
+				else
+				if(msg.amITarget(riderM)
+				&&(CMLib.flags().matchedAffects(riderM, (Physical)msg.target(),-1,-1,-1).size()>0))
+				{
+					final Set<MOB> riderG=riderM.getGroupMembers(new HashSet<MOB>());
+					riderG.remove(riderM);
+					if(riderG.size()>0)
+					{
+						final MOB target=riderM;
+						final int x=CMLib.dice().roll(1, riderG.size(), -1);
+						MOB newTarget=null;
+						int i=0;
+						final Iterator<MOB> r=riderG.iterator();
+						while((r.hasNext())&&(i<=x))
+						{
+							newTarget=r.next();
+							i++;
+						}
+						if(newTarget != null)
+						{
+							if(target.getVictim()==msg.source())
+								target.setVictim(null);
+							if(msg.source().getVictim()==target)
+								msg.source().setVictim(newTarget);
+							msg.setTarget(newTarget);
+						}
+					}
+					return false;
+				}
+				else
+				{
+					final Set<MOB> riderG=riderM.getGroupMembers(new HashSet<MOB>());
+					if(riderG.contains(msg.target())||riderG.contains(msg.source()))
+					{
+						if(riderM.getVictim()!=null)
+							riderM.makePeace(false);
+					}
+				}
+			}
+		}
+		return super.okMessage(myHost,msg);
+	}
 }

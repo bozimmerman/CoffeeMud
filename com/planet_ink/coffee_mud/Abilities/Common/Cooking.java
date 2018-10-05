@@ -134,12 +134,12 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		verb=cookWord();
 	}
 
-	protected int getDuration(MOB mob, int level)
+	protected int getDuration(final MOB mob, final int level)
 	{
 		return getDuration(40,mob,level,5);
 	}
 
-	public boolean isMineForCooking(MOB mob, Container cooking)
+	public boolean isMineForCooking(final MOB mob, final Container cooking)
 	{
 		for(int a=0;a<mob.numEffects();a++)
 		{
@@ -157,7 +157,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return false;
 	}
 
-	public boolean meetsLidRequirements(MOB mob, Container cooking)
+	public boolean meetsLidRequirements(final MOB mob, final Container cooking)
 	{
 		if(!requireLid())
 			return true;
@@ -184,7 +184,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		}
 		return super.okMessage(myHost, msg);
 	}
-	
+
 	public void stirThePot(final MOB mob)
 	{
 		if(buildingI!=null)
@@ -264,9 +264,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 			if(affected instanceof MOB)
 			{
 				final MOB mob=(MOB)affected;
-				final Container cookingPot=(Container)this.cookingPot;
+				final Container cookingPot=this.cookingPot;
 				final List<String> finalRecipe = this.finalRecipe;
-				final Item buildingI=(Item)this.buildingI;
+				final Item buildingI=this.buildingI;
 				if((cookingPot!=null)
 				&&(finalRecipe!=null)
 				&&(buildingI!=null)
@@ -309,11 +309,11 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	public boolean contentsSame(Map<String,Integer> h1, Map<String,Integer> h2)
+	public boolean contentsSame(final Map<String,Integer> h1, final Map<String,Integer> h2)
 	{
 		if(h1.size()!=h2.size())
 			return false;
-		for(String key : h1.keySet())
+		for(final String key : h1.keySet())
 		{
 			final Integer INT1=h1.get(key);
 			final Integer INT2=h2.get(key);
@@ -325,7 +325,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return true;
 	}
 
-	public Map<String,Integer> potContents(Container pot)
+	public Map<String,Integer> potContents(final Container pot)
 	{
 		final Map<String,Integer> h=new Hashtable<String,Integer>();
 		if((pot instanceof Drink)&&(((Drink)pot).liquidRemaining()>0))
@@ -368,12 +368,12 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return h;
 	}
 
-	public Vector<Object> countIngredients(List<String> Vr)
+	public Vector<Object> countIngredients(final List<String> Vr)
 	{
 		final String[] contents=new String[oldPotContents.size()];
 		final int[] amounts=new int[oldPotContents.size()];
 		int numIngredients=0;
-		for(String ingr  : oldPotContents.keySet())
+		for(final String ingr  : oldPotContents.keySet())
 		{
 			contents[numIngredients]=ingr;
 			amounts[numIngredients]=oldPotContents.get(contents[numIngredients]).intValue();
@@ -456,7 +456,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return codedList;
 	}
 
-	public Vector<String> extraIngredientsInOldContents(List<String> Vr, boolean perfectOnly)
+	public Vector<String> extraIngredientsInOldContents(final List<String> Vr, final boolean perfectOnly)
 	{
 		final Vector<String> extra=new Vector<String>();
 		for(final String ingredient : oldPotContents.keySet())
@@ -486,7 +486,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return extra;
 	}
 
-	public Vector<String> missingIngredientsFromOldContents(List<String> Vr, boolean perfectOnly)
+	public Vector<String> missingIngredientsFromOldContents(final List<String> Vr, final boolean perfectOnly)
 	{
 		final Vector<String> missing=new Vector<String>();
 
@@ -533,13 +533,13 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 		return missing;
 	}
 
-	public int homeCookValue(MOB mob, int multiplyer)
+	public int homeCookValue(final MOB mob, final int multiplyer)
 	{
 		final int hc=getX1Level(mob);
 		return hc*hc*multiplyer;
 	}
 
-	public Item buildItem(MOB mob, List<String> finalRecipe, List<Item> contents)
+	public Item buildItem(final MOB mob, final List<String> finalRecipe, final List<Item> contents)
 	{
 		String replaceName=(finalRecipe.get(RCP_MAININGR));
 		boolean rotten = false;
@@ -628,9 +628,9 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 							int amount=1;
 							if(vr<finalRecipe.size()-1)
 								amount=CMath.s_int(finalRecipe.get(vr+1));
-							if(amount==0) 
+							if(amount==0)
 								amount=1;
-							if(amount<0) 
+							if(amount<0)
 								amount=amount*-1;
 							if(ingredient.equalsIgnoreCase("water")||ingredient.equalsIgnoreCase("milk"))
 								continue;
@@ -639,7 +639,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 								timesTwo=true;
 								continue;
 							}
-							int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
+							final int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
 							if((resourceCode >0)&&((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID))
 								continue;
 							food.setNourishment(food.nourishment()+(100*amount));
@@ -655,7 +655,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				final String ingredient=finalRecipe.get(vr).toUpperCase();
 				if(ingredient.length()>0)
 				{
-					int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
+					final int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
 					if(resourceCode >0)
 					{
 						if(((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
@@ -770,7 +770,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 				final String ingredient=finalRecipe.get(vr).toUpperCase();
 				if(ingredient.length()>0)
 				{
-					int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
+					final int resourceCode=RawMaterial.CODES.FIND_IgnoreCase(ingredient);
 					if(resourceCode >0)
 					{
 						if((resourceCode&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
@@ -904,13 +904,13 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
 
 	@Override
-	protected void applyName(Item item, String word, boolean hide)
+	protected void applyName(final Item item, final String word, final boolean hide)
 	{
 		super.applyName(item, word, hide);
 		if(!buildingI.description().contains(L("rotten")))
@@ -918,8 +918,8 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	protected boolean autoGenInvoke(final MOB mob, List<String> commands, Physical givenTarget, final boolean auto, 
-									final int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto,
+									final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
@@ -1185,7 +1185,7 @@ public class Cooking extends EnhancedCraftingSkill implements ItemCraftor
 						else
 						if(i==missing.size()-1)
 							buf.append(L(", and @x1",missing.elementAt(i).toLowerCase()));
-						else 
+						else
 							buf.append(", "+missing.elementAt(i).toLowerCase());
 					}
 					commonTell(mob,buf.toString()+".");
