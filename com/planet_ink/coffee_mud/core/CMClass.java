@@ -68,14 +68,14 @@ public class CMClass extends ClassLoader
 		if(clss[c]==null)
 			clss[c]=this;
 	}
-	
+
 	/**
 	 * Creates and returns a new CMClass object for the current calling thread
 	 * @return a new CMClass object for the current calling thread
 	 */
 	public static final CMClass initialize()
-	{ 
-		return new CMClass(); 
+	{
+		return new CMClass();
 	}
 
 	/**
@@ -83,20 +83,20 @@ public class CMClass extends ClassLoader
 	 * @return the CMClass instance tied to this particular thread group, or null if not yet created.
 	 */
 	private static CMClass c()
-	{ 
+	{
 		return clss[Thread.currentThread().getThreadGroup().getName().charAt(0)];
 	}
-	
+
 	/**
 	 * Returns the CMClass instance tied to the given thread group, or null if not yet created.
 	 * @param c the code for the thread group to return (0-255)
 	 * @return the CMClass instance tied to the given thread group, or null if not yet created.
 	 */
-	public static CMClass c(byte c)
+	public static CMClass c(final byte c)
 	{
 		return clss[c];
 	}
-	
+
 	/**
 	 * Returns the CMClass instance tied to this particular thread group, or null if not yet created.
 	 * @return the CMClass instance tied to this particular thread group, or null if not yet created.
@@ -154,7 +154,7 @@ public class CMClass extends ClassLoader
 	LIBRARY("com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary");
 
 		public final String ancestorName; // in meters
-		CMObjectType(String ancestorName)
+		CMObjectType(final String ancestorName)
 		{
 			this.ancestorName = ancestorName;
 		}
@@ -268,7 +268,7 @@ public class CMClass extends ClassLoader
 	 * @param className a fully qualified java class name.
 	 * @return whether the given class exists in the vm
 	 */
-	public final static boolean exists(String className)
+	public final static boolean exists(final String className)
 	{
 		try
 		{
@@ -292,47 +292,47 @@ public class CMClass extends ClassLoader
 	{
 		switch(type)
 		{
-			case RACE: 
+			case RACE:
 				return O instanceof Race;
-			case CHARCLASS: 
+			case CHARCLASS:
 				return O instanceof CharClass;
-			case MOB: 
+			case MOB:
 				return O instanceof MOB;
-			case ABILITY: 
+			case ABILITY:
 				return O instanceof Ability;
-			case LOCALE: 
+			case LOCALE:
 				return O instanceof Room;
-			case EXIT: 
+			case EXIT:
 				return O instanceof Exit;
-			case ITEM: 
+			case ITEM:
 				return O instanceof Item;
-			case BEHAVIOR: 
+			case BEHAVIOR:
 				return O instanceof Behavior;
-			case CLAN: 
+			case CLAN:
 				return O instanceof Clan;
-			case WEAPON: 
+			case WEAPON:
 				return O instanceof Weapon;
-			case ARMOR: 
+			case ARMOR:
 				return O instanceof Armor;
-			case MISCMAGIC: 
+			case MISCMAGIC:
 				return O instanceof MiscMagic;
-			case AREA: 
+			case AREA:
 				return O instanceof Area;
-			case COMMAND: 
+			case COMMAND:
 				return O instanceof Command;
-			case CLANITEM: 
+			case CLANITEM:
 				return O instanceof ClanItem;
-			case TECH: 
+			case TECH:
 				return O instanceof Electronics;
-			case WEBMACRO: 
+			case WEBMACRO:
 				return O instanceof WebMacro;
-			case COMMON: 
+			case COMMON:
 				return O instanceof CMCommon;
-			case LIBRARY: 
+			case LIBRARY:
 				return O instanceof CMLibrary;
-			case SOFTWARE: 
+			case SOFTWARE:
 				return O instanceof Software;
-			case COMPTECH: 
+			case COMPTECH:
 				return O instanceof TechComponent;
 		}
 		return false;
@@ -349,47 +349,47 @@ public class CMClass extends ClassLoader
 	{
 		switch(type)
 		{
-			case RACE: 
+			case RACE:
 				return CMClass.getRace(ID);
-			case CHARCLASS: 
+			case CHARCLASS:
 				return CMClass.getCharClass(ID);
-			case MOB: 
+			case MOB:
 				return CMClass.getMOB(ID);
-			case ABILITY: 
+			case ABILITY:
 				return CMClass.getAbility(ID);
-			case LOCALE: 
+			case LOCALE:
 				return CMClass.getLocale(ID);
-			case EXIT: 
+			case EXIT:
 				return CMClass.getExit(ID);
-			case ITEM: 
+			case ITEM:
 				return CMClass.getBasicItem(ID);
-			case BEHAVIOR: 
+			case BEHAVIOR:
 				return CMClass.getBehavior(ID);
-			case CLAN: 
+			case CLAN:
 				return CMClass.getCommon(ID);
-			case WEAPON: 
+			case WEAPON:
 				return CMClass.getWeapon(ID);
-			case ARMOR: 
+			case ARMOR:
 				return CMClass.getAreaType(ID);
-			case MISCMAGIC: 
+			case MISCMAGIC:
 				return CMClass.getMiscMagic(ID);
-			case AREA: 
+			case AREA:
 				return CMClass.getAreaType(ID);
-			case COMMAND: 
+			case COMMAND:
 				return CMClass.getCommand(ID);
-			case CLANITEM: 
+			case CLANITEM:
 				return CMClass.getClanItem(ID);
-			case TECH: 
+			case TECH:
 				return CMClass.getTech(ID);
-			case WEBMACRO: 
+			case WEBMACRO:
 				return CMClass.getWebMacro(ID);
-			case COMMON: 
+			case COMMON:
 				return CMClass.getCommon(ID);
-			case LIBRARY: 
+			case LIBRARY:
 				return CMClass.getLibrary(ID);
-			case COMPTECH: 
+			case COMPTECH:
 				return CMClass.getTech(ID);
-			case SOFTWARE: 
+			case SOFTWARE:
 				return CMClass.getTech(ID);
 		}
 		return null;
@@ -490,56 +490,56 @@ public class CMClass extends ClassLoader
 		}
 	}
 
-	protected static final Object getClassSet(final String type) 
-	{ 
+	protected static final Object getClassSet(final String type)
+	{
 		return getClassSet(findObjectType(type));
 	}
-	
+
 	protected static final Object getClassSet(final CMObjectType code)
 	{
 		switch(code)
 		{
-		case RACE: 
+		case RACE:
 			return c().races;
-		case CHARCLASS: 
+		case CHARCLASS:
 			return c().charClasses;
-		case MOB: 
+		case MOB:
 			return c().MOBs;
-		case ABILITY: 
+		case ABILITY:
 			return c().abilities;
-		case LOCALE: 
+		case LOCALE:
 			return c().locales;
-		case EXIT: 
+		case EXIT:
 			return c().exits;
-		case ITEM: 
+		case ITEM:
 			return c().items;
-		case BEHAVIOR: 
+		case BEHAVIOR:
 			return c().behaviors;
-		case CLAN: 
+		case CLAN:
 			return null;
-		case WEAPON: 
+		case WEAPON:
 			return c().weapons;
-		case ARMOR: 
+		case ARMOR:
 			return c().armor;
-		case MISCMAGIC: 
+		case MISCMAGIC:
 			return c().miscMagic;
-		case AREA: 
+		case AREA:
 			return c().areaTypes;
-		case COMMAND: 
+		case COMMAND:
 			return c().commands;
-		case CLANITEM: 
+		case CLANITEM:
 			return c().clanItems;
-		case TECH: 
+		case TECH:
 			return c().tech;
-		case WEBMACRO: 
+		case WEBMACRO:
 			return c().webMacros;
-		case COMMON: 
+		case COMMON:
 			return c().common;
-		case LIBRARY: 
+		case LIBRARY:
 			return c().libraries;
-		case COMPTECH: 
+		case COMPTECH:
 			return c().tech;
-		case SOFTWARE: 
+		case SOFTWARE:
 			return c().tech;
 		}
 		return null;
@@ -582,7 +582,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored common Objects in this classloader for
 	 * this thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored common Objects in this
 	 *         classloader for this thread
 	 */
@@ -594,7 +594,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored char Classes in this classloader for
 	 * this thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored char Classes in this classloader
 	 *         for this thread
 	 */
@@ -606,7 +606,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored mob Types in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored mob Types in this classloader
 	 *         for this thread
 	 */
@@ -618,7 +618,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored races in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored races in this classloader for
 	 *         this thread
 	 */
@@ -630,7 +630,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored locales in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored locales in this classloader for
 	 *         this thread
 	 */
@@ -642,7 +642,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored exits in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored exits in this classloader for
 	 *         this thread
 	 */
@@ -654,7 +654,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored behaviors in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored behaviors in this classloader
 	 *         for this thread
 	 */
@@ -666,7 +666,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored basic Items in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored basic Items in this classloader
 	 *         for this thread
 	 */
@@ -678,7 +678,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored weapons in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored weapons in this classloader for
 	 *         this thread
 	 */
@@ -690,7 +690,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored armor in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored armor in this classloader for
 	 *         this thread
 	 */
@@ -702,7 +702,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored misc Magic in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored misc Magic in this classloader
 	 *         for this thread
 	 */
@@ -714,12 +714,12 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored misc Magic in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @param f the filterer to help select which ones you want
 	 * @return an enumeration of all the stored misc Magic in this classloader
 	 *         for this thread
 	 */
-	public static final Enumeration<MiscMagic> miscMagic(Filterer<MiscMagic> f)
+	public static final Enumeration<MiscMagic> miscMagic(final Filterer<MiscMagic> f)
 	{
 		return new FilteredEnumeration<MiscMagic>(c().miscMagic.elements(), f);
 	}
@@ -727,7 +727,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored misc Tech in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored misc Tech in this classloader
 	 *         for this thread
 	 */
@@ -739,12 +739,12 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored misc Tech in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @param f the filterer to help select which ones you want
 	 * @return an enumeration of all the stored misc Tech in this classloader
 	 *         for this thread
 	 */
-	public static final Enumeration<Technical> tech(Filterer<Technical> f)
+	public static final Enumeration<Technical> tech(final Filterer<Technical> f)
 	{
 		return new FilteredEnumeration<Technical>(c().tech.elements(), f);
 	}
@@ -752,7 +752,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored clan Items in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored clan Items in this classloader
 	 *         for this thread
 	 */
@@ -764,7 +764,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored area Types in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored area Types in this classloader
 	 *         for this thread
 	 */
@@ -776,7 +776,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored commands in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored commands in this classloader for
 	 *         this thread
 	 */
@@ -788,7 +788,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored abilities in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored abilities in this classloader
 	 *         for this thread
 	 */
@@ -800,12 +800,12 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored abilities in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @param f the filterer to help select which ones you want
 	 * @return an enumeration of all the stored abilities in this classloader
 	 *         for this thread
 	 */
-	public static final Enumeration<Ability> abilities(Filterer<Ability> f)
+	public static final Enumeration<Ability> abilities(final Filterer<Ability> f)
 	{
 		return new FilteredEnumeration<Ability>(c().abilities.elements(), f);
 	}
@@ -813,7 +813,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * An enumeration of all the stored webmacros in this classloader for this
 	 * thread
-	 * 
+	 *
 	 * @return an enumeration of all the stored webmacros in this classloader
 	 *         for this thread
 	 */
@@ -824,7 +824,7 @@ public class CMClass extends ClassLoader
 
 	/**
 	 * Returns a random available race prototype from your classloader
-	 * 
+	 *
 	 * @return a random available race prototype
 	 */
 	public static final Race randomRace()
@@ -834,7 +834,7 @@ public class CMClass extends ClassLoader
 
 	/**
 	 * Returns a random available char class prototype from your classloader
-	 * 
+	 *
 	 * @return a random available char class prototype
 	 */
 	public static final CharClass randomCharClass()
@@ -844,7 +844,7 @@ public class CMClass extends ClassLoader
 
 	/**
 	 * Returns a random available ability prototype from your classloader
-	 * 
+	 *
 	 * @return a random available ability prototype
 	 */
 	public static final Ability randomAbility()
@@ -854,7 +854,7 @@ public class CMClass extends ClassLoader
 
 	/**
 	 * Returns a random available area prototype from your classloader
-	 * 
+	 *
 	 * @return a random available area prototype
 	 */
 	public static final Area randomArea()
@@ -865,7 +865,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a new instance of a locale object of the given ID from your
 	 * classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a locale object of the given ID
 	 */
@@ -877,7 +877,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns the prototype instance of a locale object of the given ID from your
 	 * classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return the prototype instance of a locale object of the given ID
 	 */
@@ -889,7 +889,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a reference to the prototype for the library of the given ID from
 	 * your classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a reference to the prototype for the library of the given ID
 	 */
@@ -901,7 +901,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a new instance of a area object of the given ID from your
 	 * classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a area object of the given ID
 	 */
@@ -913,7 +913,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a new instance of a exit object of the given ID from your
 	 * classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a exit object of the given ID
 	 */
@@ -925,7 +925,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a new instance of a MOB object of the given ID from your
 	 * classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a MOB object of the given ID
 	 */
@@ -937,7 +937,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a new instance of a weapon object of the given ID from your
 	 * classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a weapon object of the given ID
 	 */
@@ -949,7 +949,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a new instance of a clan item object of the given ID from your
 	 * classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a clan item object of the given ID
 	 */
@@ -961,7 +961,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a new instance of a misc magic object of the given ID from your
 	 * classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a misc magic object of the given ID
 	 */
@@ -973,7 +973,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a new instance of a misc tech object of the given ID from your
 	 * classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a misc tech object of the given ID
 	 */
@@ -985,7 +985,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a new instance of a armor object of the given ID from your
 	 * classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a armor object of the given ID
 	 */
@@ -997,7 +997,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a new instance of a basic item object of the given ID from your
 	 * classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a basic item object of the given ID
 	 */
@@ -1009,7 +1009,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a new instance of a behavior object of the given ID from your
 	 * classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a behavior object of the given ID
 	 */
@@ -1021,7 +1021,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a new instance of a ability object of the given ID from your
 	 * classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a ability object of the given ID
 	 */
@@ -1033,7 +1033,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns the prototype instance of the ability object of the given ID from
 	 * your classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return the prototype instance of a ability object of the given ID
 	 */
@@ -1045,7 +1045,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a reference to the prototype for the char class of the given ID
 	 * from your classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a reference to the prototype for the char class of the given ID
 	 */
@@ -1057,7 +1057,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a new instance of a common object of the given ID from your
 	 * classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a new instance of a common object of the given ID
 	 */
@@ -1069,7 +1069,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns the prototype instance of a common object of the given ID from
 	 * your classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return the prototype instance of a common object of the given ID
 	 */
@@ -1081,7 +1081,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a reference to the prototype for the command of the given ID from
 	 * your classloader
-	 * 
+	 *
 	 * @param word the ID() of the object to return
 	 * @return a reference to the prototype for the command of the given ID
 	 */
@@ -1093,7 +1093,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a reference to the prototype for the web macro of the given ID
 	 * from your classloader
-	 * 
+	 *
 	 * @param macroName the ID() of the object to return
 	 * @return a reference to the prototype for the web macro of the given ID
 	 */
@@ -1105,7 +1105,7 @@ public class CMClass extends ClassLoader
 	/**
 	 * Returns a reference to the prototype for the race of the given ID from
 	 * your classloader
-	 * 
+	 *
 	 * @param calledThis the ID() of the object to return
 	 * @return a reference to the prototype for the race of the given ID
 	 */
@@ -1928,7 +1928,7 @@ public class CMClass extends ClassLoader
 		for(final Enumeration<Ability> a=mob.allAbilities();a.hasMoreElements();)
 		{
 			A=a.nextElement();
-			if(A!=null) 
+			if(A!=null)
 				As.add(A);
 		}
 		A=(Ability)CMLib.english().fetchEnvironmental(As,calledThis,true);
@@ -2051,7 +2051,7 @@ public class CMClass extends ClassLoader
 		Collections.sort(V,new Comparator<CMObject>()
 		{
 			@Override
-			public int compare(CMObject o1, CMObject o2)
+			public int compare(final CMObject o1, final CMObject o2)
 			{
 				if(o1 == null)
 				{
@@ -2076,7 +2076,7 @@ public class CMClass extends ClassLoader
 		Collections.sort(V,new Comparator<Environmental>()
 		{
 			@Override
-			public int compare(Environmental o1, Environmental o2)
+			public int compare(final Environmental o1, final Environmental o2)
 			{
 				if(o1 == null)
 				{
@@ -2408,7 +2408,7 @@ public class CMClass extends ClassLoader
 	 * @param E the environmenal to make a unique name for
 	 * @return the unique name
 	 */
-	public static final String getObjInstanceStr(Environmental E)
+	public static final String getObjInstanceStr(final Environmental E)
 	{
 		if(E==null)
 			return "NULL";
@@ -2601,10 +2601,10 @@ public class CMClass extends ClassLoader
 		{
 			resolveClass(result);
 		}
-		
+
 		if(debugging)
 			Log.debugOut("CMClass","Loaded: "+result.getName());
-		
+
 		classes.put(className, result);
 		return result;
 	}
@@ -2626,7 +2626,7 @@ public class CMClass extends ClassLoader
 		throws ClassNotFoundException
 	{
 		String pathName=null;
-		if(className.endsWith(".class")) 
+		if(className.endsWith(".class"))
 			className=className.substring(0,className.length()-6);
 		if(className.toUpperCase().endsWith(".JS"))
 		{
@@ -2726,7 +2726,7 @@ public class CMClass extends ClassLoader
 			if(implementsClasses.size()>0)
 			{
 				final Class[] CS=new Class[implementsClasses.size()];
-				for(int i=0;i<implementsClasses.size();i++) 
+				for(int i=0;i<implementsClasses.size();i++)
 					CS[i]=implementsClasses.elementAt(i);
 				cc.setTargetImplements(CS);
 			}
@@ -2734,7 +2734,7 @@ public class CMClass extends ClassLoader
 			for (int i=0;i<objs.length;i+=2)
 			{
 				final Class<?> C=finishDefineClass((String)objs[i],(byte[])objs[i+1],overPackage,resolveIt);
-				if(mainClass==null) 
+				if(mainClass==null)
 					mainClass=C;
 			}
 			Context.exit();
@@ -2789,7 +2789,7 @@ public class CMClass extends ClassLoader
 				Thread.sleep(500);
 			}
 			catch(final Exception e)
-			{ 
+			{
 				break;
 			}
 		}
@@ -2799,7 +2799,7 @@ public class CMClass extends ClassLoader
 			debugging=CMSecurity.isDebugging(CMSecurity.DbgFlag.CLASSLOADER);
 
 			c.libraries=loadVectorListToObj(prefix+"Libraries/",page.getStr("LIBRARY"),CMObjectType.LIBRARY.ancestorName);
-			if(c.libraries.size()==0) 
+			if(c.libraries.size()==0)
 				return false;
 			CMLib.registerLibraries(c.libraries.elements());
 			if(CMLib.unregistered().length()>0)
@@ -2837,7 +2837,7 @@ public class CMClass extends ClassLoader
 				c.races=loadVectorListToObj(prefix+"Races/",page.getStr("RACES"),CMObjectType.RACE.ancestorName);
 				//Log.sysOut(Thread.currentThread().getName(),"Races loaded      : "+c.races.size());
 			}
-			if(c.races.size()==0) 
+			if(c.races.size()==0)
 				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("CHARCLASS")))
@@ -2847,7 +2847,7 @@ public class CMClass extends ClassLoader
 				c.charClasses=loadVectorListToObj(prefix+"CharClasses/",page.getStr("CHARCLASSES"),CMObjectType.CHARCLASS.ancestorName);
 				//Log.sysOut(Thread.currentThread().getName(),"Classes loaded    : "+c.charClasses.size());
 			}
-			if(c.charClasses.size()==0) 
+			if(c.charClasses.size()==0)
 				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("MOB")))
@@ -2857,7 +2857,7 @@ public class CMClass extends ClassLoader
 				c.MOBs=loadVectorListToObj(prefix+"MOBS/",page.getStr("MOBS"),CMObjectType.MOB.ancestorName);
 				Log.sysOut(Thread.currentThread().getName(),"MOB Types loaded  : "+c.MOBs.size());
 			}
-			if(c.MOBs.size()==0) 
+			if(c.MOBs.size()==0)
 				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("EXIT")))
@@ -2877,7 +2877,7 @@ public class CMClass extends ClassLoader
 				c.areaTypes=loadVectorListToObj(prefix+"Areas/",page.getStr("AREAS"),CMObjectType.AREA.ancestorName);
 				Log.sysOut(Thread.currentThread().getName(),"Area Types loaded : "+c.areaTypes.size());
 			}
-			if(c.areaTypes.size()==0) 
+			if(c.areaTypes.size()==0)
 				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("LOCALE")))
@@ -2887,7 +2887,7 @@ public class CMClass extends ClassLoader
 				c.locales=loadVectorListToObj(prefix+"Locales/",page.getStr("LOCALES"),CMObjectType.LOCALE.ancestorName);
 				Log.sysOut(Thread.currentThread().getName(),"Locales loaded    : "+c.locales.size());
 			}
-			if(c.locales.size()==0) 
+			if(c.locales.size()==0)
 				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("ABILITY")))
@@ -2895,7 +2895,7 @@ public class CMClass extends ClassLoader
 			else
 			{
 				c.abilities=loadVectorListToObj(prefix+"Abilities/",page.getStr("ABILITIES"),CMObjectType.ABILITY.ancestorName);
-				if(c.abilities.size()==0) 
+				if(c.abilities.size()==0)
 					return false;
 				if((page.getStr("ABILITIES")!=null)
 				&&(page.getStr("ABILITIES").toUpperCase().indexOf("%DEFAULT%")>=0))
@@ -3102,7 +3102,7 @@ public class CMClass extends ClassLoader
 				c.behaviors=loadVectorListToObj(prefix+"Behaviors/",page.getStr("BEHAVIORS"),CMObjectType.BEHAVIOR.ancestorName);
 				Log.sysOut(Thread.currentThread().getName(),"Behaviors loaded  : "+c.behaviors.size());
 			}
-			if(c.behaviors.size()==0) 
+			if(c.behaviors.size()==0)
 				return false;
 
 			if((tCode!=MudHost.MAIN_HOST)&&(!CMProps.isPrivateToMe("COMMAND")))
@@ -3115,7 +3115,7 @@ public class CMClass extends ClassLoader
 				c.commands=loadVectorListToObj(prefix+"Commands/",page.getStr("COMMANDS"),CMObjectType.COMMAND.ancestorName);
 				Log.sysOut(Thread.currentThread().getName(),"Commands loaded   : "+c.commands.size());
 			}
-			if(c.commands.size()==0) 
+			if(c.commands.size()==0)
 				return false;
 		}
 		catch(final Exception t)
@@ -3218,7 +3218,7 @@ public class CMClass extends ClassLoader
 		static final long		serialVersionUID	= 47;
 		public static String[]	functions			= { "toJavaString" };
 
-		public String toJavaString(Object O)
+		public String toJavaString(final Object O)
 		{
 			return Context.toString(O);
 		}
@@ -3272,7 +3272,7 @@ public class CMClass extends ClassLoader
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
-	 * @param source the agent source of the action 
+	 * @param source the agent source of the action
 	 * @param newAllCode the source, target, and others code to use
 	 * @param allMessage the source, target, and others string msg to send
 	 * @return the CMMsg Object
@@ -3283,14 +3283,14 @@ public class CMClass extends ClassLoader
 		M.modify(source, newAllCode, allMessage);
 		return M;
 	}
-	
+
 	/**
 	 * Creates and configures a CMMsg object for use in the game
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#value()
-	 * @param source the agent source of the action 
+	 * @param source the agent source of the action
 	 * @param newAllCode the source, target, and others code to use
 	 * @param allMessage the source, target, and others string msg to send
 	 * @param newValue the value to set on the message
@@ -3309,8 +3309,8 @@ public class CMClass extends ClassLoader
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#target()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
-	 * @param source the agent source of the action 
-	 * @param target the target of the action 
+	 * @param source the agent source of the action
+	 * @param target the target of the action
 	 * @param newAllCode the source, target, and others code to use
 	 * @param allMessage the source, target, and others string msg to send
 	 * @return the CMMsg Object
@@ -3329,8 +3329,8 @@ public class CMClass extends ClassLoader
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#tool()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
-	 * @param source the agent source of the action 
-	 * @param target the target of the action 
+	 * @param source the agent source of the action
+	 * @param target the target of the action
 	 * @param tool the tool used by the source to do the action
 	 * @param newAllCode the source, target, and others code to use
 	 * @param allMessage the source, target, and others string msg to send
@@ -3352,8 +3352,8 @@ public class CMClass extends ClassLoader
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
-	 * @param source the agent source of the action 
-	 * @param target the target of the action 
+	 * @param source the agent source of the action
+	 * @param target the target of the action
 	 * @param tool the tool used by the source to do the action
 	 * @param newSourceCode the source code for this action
 	 * @param newTargetCode the target code for this action
@@ -3378,8 +3378,8 @@ public class CMClass extends ClassLoader
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()
-	 * @param source the agent source of the action 
-	 * @param target the target of the action 
+	 * @param source the agent source of the action
+	 * @param target the target of the action
 	 * @param tool the tool used by the source to do the action
 	 * @param newAllCode the source, target, and others code to use
 	 * @param sourceMessage the action/message as seen by the source
@@ -3406,8 +3406,8 @@ public class CMClass extends ClassLoader
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetMessage()
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMessage()
-	 * @param source the agent source of the action 
-	 * @param target the target of the action 
+	 * @param source the agent source of the action
+	 * @param target the target of the action
 	 * @param tool the tool used by the source to do the action
 	 * @param newSourceCode the source code for this action
 	 * @param sourceMessage the action/message as seen by the source
@@ -3454,7 +3454,7 @@ public class CMClass extends ClassLoader
 	{
 		try
 		{
-			synchronized(MOB_CACHE)
+			synchronized(CMClass.MOB_CACHE)
 			{
 				return MOB_CACHE.removeFirst();
 			}
