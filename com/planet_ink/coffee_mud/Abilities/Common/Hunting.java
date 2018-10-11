@@ -324,6 +324,7 @@ public class Hunting extends GatheringSkill
 							if(stat != GenericBuilder.GenMOBCode.ABILITY) // because this screws up gen hit points
 								genM.setStat(stat.name(), CMLib.coffeeMaker().getGenMobStat(stdM,stat.name()));
 						}
+						genM.basePhyStats().setRejuv(0);
 						genM.recoverCharStats();
 						genM.recoverPhyStats();
 						genM.recoverMaxState();
@@ -332,6 +333,7 @@ public class Hunting extends GatheringSkill
 					final int moblevel = Math.round(CMath.sqrt(mob.phyStats().level())); // pity on artisans
 					final int addlevel = (moblevel < CMProps.getIntVar(CMProps.Int.EXPRATE)) ? 0 : (moblevel - CMProps.getIntVar(CMProps.Int.EXPRATE));
 					genM.basePhyStats().setLevel(genM.basePhyStats().level() + addlevel);
+					genM.basePhyStats().setRejuv(0);
 					genM.recoverCharStats();
 					genM.recoverPhyStats();
 					genM.recoverMaxState();
