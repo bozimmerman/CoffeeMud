@@ -4,7 +4,7 @@
 % hand trolley	4	15	25	85	GenContainer		100		0		Prop_MoveRestrictor;ONLYDOMAINS="STONE","WOODEN","CAVE","MAGIC","METAL","CITY","SEAPORT"
 % dog sled	5	15	30	90	GenRideable		100	1	0	riding;driven by;drives;mount;dismount;put	Prop_MoveRestrictor;NODOMAINS="WOODS","ROCKY","UNDERWATER","AIR","WATERSURFACE","JUNGLE","SWAMP","MOUNTAINS"
 % wheel barrow	6	20	35	115	GenContainer		500		0		Prop_MoveRestrictor;NODOMAINS="WOODS","ROCKY","UNDERWATER","AIR","WATERSURFACE","JUNGLE","SWAMP","MOUNTAINS"
-% baby carriage	7	45	10	190	GenContainer		20		0		Prop_MoveRestrictor;ONLYDOMAINS="STONE","WOODEN","CAVE","MAGIC","METAL","CITY","SEAPORT"
+% baby carriage	7	45	10	190	GenContainer		20		0		*Prop_MoveRestrictor;ONLYDOMAINS="STONE","WOODEN","CAVE","MAGIC","METAL","CITY","SEAPORT"
 all-terrain % baby carriage	37	60	15	255	GenContainer		30		0		
 % tobaggon	8	30	20	140	GenRideable		0	2	0	riding;used by;steers;sit;dismount;put	Prop_MoveRestrictor;NODOMAINS="WOODS","ROCKY","UNDERWATER","AIR","WATERSURFACE","JUNGLE","SWAMP"
 % cabriolet	9	60	60	300	GenRideable		0	3	0		
