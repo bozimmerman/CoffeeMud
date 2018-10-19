@@ -1802,6 +1802,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 				case ShopKeeper.DEAL_READABLES:
 					V.addElement(L("Readables"));
 					break;
+				case ShopKeeper.DEAL_CLOTHSPINNER:
+					V.addElement(L("Cloths"));
+					break;
 				default:
 					V.addElement(L("... I have no idea WHAT I sell"));
 					break;
