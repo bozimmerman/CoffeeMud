@@ -240,7 +240,9 @@ public class Song extends StdAbility
 			return true;
 
 		final MOB mob=(MOB)affected;
-		if((affected==invoker())&&(invoker()!=null)&&(invoker().location()!=originRoom))
+		if((affected==invoker())
+		&&(invoker()!=null)
+		&&(invoker().location()!=originRoom))
 		{
 			final List<Room> V=getInvokerScopeRoomSet(null);
 			commonRoomSet.clear();
@@ -345,7 +347,7 @@ public class Song extends StdAbility
 		final Ability A=mob.fetchEffect(ID());
 		final MOB invokerM=invoker();
 		if((A instanceof Song)
-		&&((invokerM==null)||(A.invoker()==null)||(A.invoker()==invoker)))
+		&&((invokerM==null)||(A.invoker()==null)||(invoker==null)||(A.invoker()==invoker)))
 		{
 			final Song S=(Song)A;
 			if(S.timeOut==0)
