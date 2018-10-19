@@ -82,7 +82,7 @@ public class Spell_EnchantWand extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -175,7 +175,9 @@ public class Spell_EnchantWand extends Spell
 				wand.setSpell((Ability)wandThis.copyOf());
 				if((wand.usesRemaining()==Integer.MAX_VALUE)||(wand.usesRemaining()<0))
 					wand.setUsesRemaining(0);
-				wand.basePhyStats().setLevel(wandThis.adjustedLevel(mob, asLevel));
+				final int newLevel=wandThis.adjustedLevel(mob, asLevel);
+				if(newLevel > wand.basePhyStats().level())
+					wand.basePhyStats().setLevel(newLevel);
 				wand.setUsesRemaining(wand.usesRemaining()+5);
 				wand.text();
 				wand.recoverPhyStats();
