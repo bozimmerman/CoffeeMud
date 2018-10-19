@@ -65,11 +65,11 @@ public class CommandJournal extends StdCommand
 		return access;
 	}
 
-	public boolean transfer(MOB mob,
-							String journalID,
-							String journalWord,
-							List<String> commands,
-							String security)
+	public boolean transfer(final MOB mob,
+							final String journalID,
+							final String journalWord,
+							final List<String> commands,
+							final String security)
 	{
 		final String first=commands.get(1);
 		final String second=(commands.size()>2)?(String)commands.get(2):"";
@@ -77,7 +77,7 @@ public class CommandJournal extends StdCommand
 		String rest=(commands.size()>3)?CMParms.combine(commands,3):"";
 		if(!("TRANSFER".startsWith(first.toUpperCase().trim())))
 			return false;
-		List<String> flagsV=getAssignFlags(journalID);
+		final List<String> flagsV=getAssignFlags(journalID);
 		if((!CMSecurity.isAllowed(mob, mob.location(),CMSecurity.SecFlag.JOURNALS))
 		&&(!CMSecurity.isJournalAccessAllowed(mob,security)))
 		{
@@ -130,7 +130,7 @@ public class CommandJournal extends StdCommand
 				}
 			}
 		}
-		
+
 		final int size=CMLib.database().DBCountJournal(journalID,null,to);
 		if(size<=0)
 		{
@@ -214,17 +214,17 @@ public class CommandJournal extends StdCommand
 		}
 		return flagsV;
 	}
-	
-	public boolean review(MOB mob,
-						  String journalID,
-						  String journalWord,
-						  List<String> commands,
-						  String security)
+
+	public boolean review(final MOB mob,
+						  final String journalID,
+						  final String journalWord,
+						  final List<String> commands,
+						  final String security)
 	{
 		final String first=commands.get(1);
 		final String second=(commands.size()>2)?commands.get(2):"";
 		final String third=(commands.size()>3)?CMParms.combine(commands,3):"";
-		List<String> flagsV=getAssignFlags(journalID);
+		final List<String> flagsV=getAssignFlags(journalID);
 		String to = null;
 		int count = 0;
 		if(!("REVIEW".startsWith(first.toUpperCase().trim())))
@@ -309,7 +309,7 @@ public class CommandJournal extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
 		if((commands==null)||(commands.size()<2))
@@ -361,9 +361,11 @@ public class CommandJournal extends StdCommand
 					if(!mob.session().confirm(L("\n\r^HSubmit this @x1: '^N@x2^H' (Y/n)?^.^N",journal.NAME().toLowerCase(),msgString),"Y"))
 						return false;
 				}
-				String prePend="";
+				final String prePend;
 				if(journal.getFlag(JournalsLibrary.CommandJournalFlags.ADDROOM)!=null)
 					prePend="(^<LSTROOMID^>"+CMLib.map().getDescriptiveExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
+				else
+					prePend="";
 				CMLib.database().DBWriteJournal(journal.JOURNAL_NAME(),mob.Name(),"ALL",
 						CMStrings.padRight("^.^N"+msgString+"^.^N",20),
 						prePend+msgString);
