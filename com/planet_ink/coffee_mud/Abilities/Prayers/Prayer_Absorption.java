@@ -121,7 +121,7 @@ public class Prayer_Absorption extends Prayer
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -155,6 +155,12 @@ public class Prayer_Absorption extends Prayer
 				absorbed=null;
 			else
 			if(CMLib.ableMapper().qualifyingLevel(mob,absorbed)>0)
+				absorbed=null;
+			else
+			if(CMLib.ableMapper().lowestQualifyingLevel(absorbed.ID())>=25)
+				absorbed=null;
+			else
+			if(!CMath.bset(absorbed.classificationCode(),Ability.DOMAIN_ARCHON))
 				absorbed=null;
 		}
 
