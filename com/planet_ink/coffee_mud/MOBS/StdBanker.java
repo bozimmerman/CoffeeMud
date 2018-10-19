@@ -912,8 +912,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 							final LandTitle L=(LandTitle)V.get(v);
 							if(L.getOwnerObject()==null)
 							{
-								delDepositInventory(listerName,(Item)L);
-								V.remove(L);
+								final Item I=(Item)L;
+								delDepositInventory(listerName,I);
+								V.remove(I);
 							}
 						}
 					}
