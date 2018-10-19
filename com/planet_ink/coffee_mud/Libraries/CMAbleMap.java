@@ -1325,6 +1325,11 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 				else
 				if((!qualifiesByLevel(studentM,abilityID))
 				&&(!getAllQualified("All",true,abilityID)))
+				{
+					// why are you even trying?
+				}
+				else
+				if(!qualifiesByLevel(studentM,abilityID))
 					V.removeElementAt(v);
 			}
 			else
@@ -1341,6 +1346,11 @@ public class CMAbleMap extends StdLibrary implements AbilityMapper
 					}
 					if((!qualifiesByLevel(studentM,abilityID))
 					&&(!getAllQualified("All",true,abilityID)))
+					{
+						// why are you even trying?
+					}
+					else
+					if(!qualifiesByLevel(studentM,abilityID))
 						orset.remove(o);
 				}
 				if(orset.size()==0)
