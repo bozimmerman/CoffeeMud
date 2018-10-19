@@ -74,7 +74,7 @@ public class Chant_GrowClub extends Chant
 	}
 
 	@Override
-	public int castingQuality(MOB mob, Physical target)
+	public int castingQuality(final MOB mob, final Physical target)
 	{
 		if(mob!=null)
 		{
@@ -93,7 +93,7 @@ public class Chant_GrowClub extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
 		&&((mob.location().myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
@@ -139,18 +139,14 @@ public class Chant_GrowClub extends Chant
 				newItem.basePhyStats().setWeight(10);
 				final int level=mob.phyStats().level();
 				newItem.basePhyStats().setLevel(level);
-				newItem.basePhyStats().setAttackAdjustment(0);
-				int damage=6;
-				try
-				{
-					 damage=(((level+(2*getXLEVELLevel(mob)))-1)/2)+2;
-				}
-				catch(final Exception t)
-				{
-				}
+				newItem.recoverPhyStats();
+				CMLib.itemBuilder().balanceItemByLevel(newItem);
+				int damage=newItem.basePhyStats().damage();
+				final int attack=newItem.basePhyStats().attackAdjustment();
 				if(damage<6)
 					damage=6;
-				newItem.basePhyStats().setDamage(damage+super.getX1Level(mob));
+				newItem.basePhyStats().setDamage(damage+(super.getX1Level(mob)+super.getXLEVELLevel(mob)));
+				newItem.basePhyStats().setAttackAdjustment(attack+(5*(super.getX1Level(mob)+super.getXLEVELLevel(mob))));
 				newItem.recoverPhyStats();
 				newItem.setBaseValue(0);
 				newItem.setWeaponClassification(Weapon.CLASS_BLUNT);
