@@ -110,7 +110,7 @@
 15 Composting MASK=+WIS 12 REQUIRES=Farming
 
 18 FoodPreserving MASK=+INT 12
-8 Skill_Autoclimb MASK=+STR 12 REQUIRES=Skill_Climb
+18 Skill_Autoclimb MASK=+STR 12 REQUIRES=Skill_Climb
 
 
 20 Branding
