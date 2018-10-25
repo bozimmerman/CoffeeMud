@@ -44,7 +44,7 @@ public class LightningMephit extends Mephit
 	{
 		super();
 	}
-	
+
 	private final static String localizedStaticName = CMLib.lang().L("Lightning Mephit");
 
 	@Override
@@ -118,13 +118,13 @@ public class LightningMephit extends Mephit
 			return L("^r@x1^r is near destruction!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return L("^r@x1^r is flickering alot and massively damaged.^N",mob.name(viewer));
+			return L("^r@x1^r is flickering a lot and massively damaged.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return L("^r@x1^r is flickering alot and extremely damaged.^N",mob.name(viewer));
+			return L("^r@x1^r is flickering a lot and extremely damaged.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return L("^y@x1^y is flickering alot and very damaged.^N",mob.name(viewer));
+			return L("^y@x1^y is flickering a lot and very damaged.^N",mob.name(viewer));
 		else
 		if(pct<.50)
 			return L("^y@x1^y is flickering and damaged.^N",mob.name(viewer));
@@ -147,8 +147,8 @@ public class LightningMephit extends Mephit
 			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
 
-	@Override 
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
@@ -157,7 +157,7 @@ public class LightningMephit extends Mephit
 		}
 		return body;
 	}
-	
+
 	private static Vector<RawMaterial>	resources	= new Vector<RawMaterial>();
 
 	@Override

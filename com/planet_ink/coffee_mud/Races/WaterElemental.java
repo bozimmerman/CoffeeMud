@@ -208,7 +208,7 @@ public class WaterElemental extends StdRace
 	}
 
 	@Override
-	public String makeMobName(char gender, int age)
+	public String makeMobName(final char gender, final int age)
 	{
 		return makeMobName('N',Race.AGE_MATURE);
 	}
@@ -222,13 +222,13 @@ public class WaterElemental extends StdRace
 			return L("^r@x1^r is almost dry!^N",mob.name(viewer));
 		else
 		if(pct<.20)
-			return L("^r@x1^r is dripping alot and is almost dried out.^N",mob.name(viewer));
+			return L("^r@x1^r is dripping a lot and is almost dried out.^N",mob.name(viewer));
 		else
 		if(pct<.30)
-			return L("^r@x1^r is dripping alot and steaming massively.^N",mob.name(viewer));
+			return L("^r@x1^r is dripping a lot and steaming massively.^N",mob.name(viewer));
 		else
 		if(pct<.40)
-			return L("^y@x1^y is dripping alot and steaming a lot.^N",mob.name(viewer));
+			return L("^y@x1^y is dripping a lot and steaming a lot.^N",mob.name(viewer));
 		else
 		if(pct<.50)
 			return L("^y@x1^y is dripping and steaming.^N",mob.name(viewer));
@@ -250,9 +250,9 @@ public class WaterElemental extends StdRace
 		else
 			return L("^c@x1^c is in perfect condition.^N",mob.name(viewer));
 	}
-	
-	@Override 
-	public DeadBody getCorpseContainer(MOB mob, Room room)
+
+	@Override
+	public DeadBody getCorpseContainer(final MOB mob, final Room room)
 	{
 		final DeadBody body = super.getCorpseContainer(mob, room);
 		if(body != null)
@@ -261,7 +261,7 @@ public class WaterElemental extends StdRace
 		}
 		return body;
 	}
-	
+
 	@Override
 	public List<RawMaterial> myResources()
 	{
