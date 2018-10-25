@@ -1324,7 +1324,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			if((contitem.isOpen())
 			&&((contitem.capacity()>0)
 				||(contitem.hasContent())
-				||((contitem instanceof Drink)&&(((Drink)contitem).liquidRemaining()>0))))
+				||((contitem instanceof Drink)&&(((Drink)contitem).containsDrink()))))
 			{
 				buf.append(item.name()+" contains:^<!ENTITY container \""+CMStrings.removeColors(item.name())+"\"^>"+(mob.isAttributeSet(MOB.Attrib.COMPRESS)?" ":"\n\r"));
 				final List<Item> newItems=new ArrayList<Item>(0);
