@@ -2094,7 +2094,9 @@ public class StdArea implements Area
 	public Room getRandomProperRoom()
 	{
 		final String roomID=getProperRoomnumbers().random();
-		final Room R=CMLib.map().getRoom(roomID);
+		Room R=CMLib.map().getRoom(roomID);
+		if(R==null)
+			R=this.getRoom(roomID);
 		if(R instanceof GridLocale)
 			return ((GridLocale)R).getRandomGridChild();
 		if((R==null)&&(StdArea.lastComplainer != this))
