@@ -45,7 +45,7 @@
         }
         function Refresh()
         {
-            document.RESOURCES.action='autotitles.cmvp';
+            document.RESOURCES.action='achievements.cmvp';
             document.RESOURCES.submit();
         }
         function ToTitles()
