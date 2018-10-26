@@ -53,7 +53,7 @@ public class ItemData extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		final java.util.Map<String,String> parms=parseParms(parm);
 		final String player=httpReq.getUrlParameter("PLAYER");
@@ -92,7 +92,7 @@ public class ItemData extends StdWebMacro
 		{
 			if(R!=null)
 				R=CMLib.map().getRoom(R);
-			
+
 			if((playerM!=null)&&(R==null))
 			{
 				I=(Item)httpReq.getRequestObjects().get("PLAYER/"+player+"/"+itemCode);
@@ -232,7 +232,7 @@ public class ItemData extends StdWebMacro
 		}
 
 		final int theme = (R!=null) ? R.getArea().getTheme() : CMProps.getIntVar(CMProps.Int.MUDTHEME);
-		
+
 		final Item oldI=I;
 		// important generic<->non generic swap!
 		final String newClassID=httpReq.getUrlParameter("CLASSES");
@@ -572,7 +572,7 @@ public class ItemData extends StdWebMacro
 						else
 						{
 							old=httpReq.getUrlParameter("ISTWOHANDED");
-							if(old.equals(""))
+							if((old==null)||(old.equals("")))
 								old="checked";
 						}
 						str.append(old);
@@ -998,7 +998,7 @@ public class ItemData extends StdWebMacro
 							{
 								for(final Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 								{
-									Ability A2=a.nextElement();
+									final Ability A2=a.nextElement();
 									if(A2 instanceof CraftorAbility)
 									{
 										A=A2;
@@ -1251,7 +1251,7 @@ public class ItemData extends StdWebMacro
 								str.append("\">Random");
 							for(final Iterator<Manufacturer> m = CMLib.tech().manufacterers(); m.hasNext(); )
 							{
-								Manufacturer M1=m.next();
+								final Manufacturer M1=m.next();
 								if(M1.isManufactureredType((Technical)I) || (old.equalsIgnoreCase(M1.name())))
 								{
 									str.append("<OPTION VALUE=\""+M1.name());
@@ -1286,10 +1286,10 @@ public class ItemData extends StdWebMacro
 					case SWARMTYPES:
 						if(I instanceof ShipWarComponent)
 						{
-							final Set<Integer> msgTypes=new TreeSet<Integer>(); 
+							final Set<Integer> msgTypes=new TreeSet<Integer>();
 							if(firstTime)
 							{
-								for(int typ : ((ShipWarComponent)I).getDamageMsgTypes())
+								for(final int typ : ((ShipWarComponent)I).getDamageMsgTypes())
 									msgTypes.add(Integer.valueOf(typ));
 							}
 							else
@@ -1354,7 +1354,7 @@ public class ItemData extends StdWebMacro
 							TechType type=((ElecPanel)I).panelType();
 							if(httpReq.isUrlParameter("PANELTYPE"))
 								type=(TechType)CMath.s_valueOf(TechType.class,httpReq.getUrlParameter("PANELTYPE"));
-							for(TechType t : TechType.values())
+							for(final TechType t : TechType.values())
 							{
 								str.append("<OPTION VALUE="+t.toString());
 								if(t==type)
@@ -1371,10 +1371,10 @@ public class ItemData extends StdWebMacro
 					case CONSUMEDMATS:
 						if(I instanceof FuelConsumer)
 						{
-							final Set<Integer> consumedFuel=new TreeSet<Integer>(); 
+							final Set<Integer> consumedFuel=new TreeSet<Integer>();
 							if(firstTime)
 							{
-								for(int mat : ((FuelConsumer)I).getConsumedFuelTypes())
+								for(final int mat : ((FuelConsumer)I).getConsumedFuelTypes())
 									consumedFuel.add(Integer.valueOf(mat));
 							}
 							else
@@ -1404,7 +1404,7 @@ public class ItemData extends StdWebMacro
 						if(I instanceof BoardableShip)
 						{
 							final String xml=CMLib.xml().parseOutAngleBracketsAndQuotes(CMLib.coffeeMaker().getAreaObjectXML(((BoardableShip)I).getShipArea(), null, null, null, true).toString());
-							str.append((firstTime) ? 
+							str.append((firstTime) ?
 								xml :
 								old).append(", ");
 						}
@@ -1447,7 +1447,7 @@ public class ItemData extends StdWebMacro
 		return "";
 	}
 
-	public static StringBuffer readableSpells(SpellHolder P, HTTPRequest httpReq, java.util.Map<String,String> parms, int borderSize)
+	public static StringBuffer readableSpells(final SpellHolder P, final HTTPRequest httpReq, final java.util.Map<String,String> parms, final int borderSize)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("READABLESPELLS"))
