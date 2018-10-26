@@ -46,7 +46,7 @@ public class AchievementData extends StdWebMacro
 		return "AchievementData";
 	}
 
-	public void rebuildTrackers(String tattoo)
+	public void rebuildTrackers(final String tattoo)
 	{
 		for(final Enumeration<MOB> m = CMLib.players().players();m.hasMoreElements();)
 		{
@@ -57,10 +57,10 @@ public class AchievementData extends StdWebMacro
 			}
 		}
 	}
-	
-	public String deleteAchievement(String tattoo)
+
+	public String deleteAchievement(final String tattoo)
 	{
-		Achievement A=CMLib.achievements().deleteAchievement(tattoo);
+		final Achievement A=CMLib.achievements().deleteAchievement(tattoo);
 		if(A!=null)
 		{
 			rebuildTrackers(A.getTattoo());
@@ -70,7 +70,7 @@ public class AchievementData extends StdWebMacro
 	}
 
 	@Override
-	public String runMacro(HTTPRequest httpReq, String parm, HTTPResponse httpResp)
+	public String runMacro(final HTTPRequest httpReq, final String parm, final HTTPResponse httpResp)
 	{
 		if(!CMProps.getBoolVar(CMProps.Bool.MUDSTARTED))
 			return CMProps.getVar(CMProps.Str.MUDSTATUS);
@@ -82,13 +82,13 @@ public class AchievementData extends StdWebMacro
 		String agentStr = parms.get("AGENT");
 		if(agentStr == null)
 			agentStr=httpReq.getUrlParameter("AGENT");
-		AccountStats.Agent agent = ((agentStr == null)||(agentStr.length()==0)||(!CMProps.isUsingAccountSystem())) ? 
+		AccountStats.Agent agent = ((agentStr == null)||(agentStr.length()==0)||(!CMProps.isUsingAccountSystem())) ?
 				AccountStats.Agent.PLAYER : (AccountStats.Agent)CMath.s_valueOf(AccountStats.Agent.class, agentStr.toUpperCase().trim());
 		if(agent == null)
 		{
 			agent = AccountStats.Agent.PLAYER;
 		}
-		
+
 		if(parms.containsKey("EDIT"))
 		{
 			final MOB M = Authenticate.getAuthenticatedMob(httpReq);
@@ -99,7 +99,7 @@ public class AchievementData extends StdWebMacro
 
 			String row = "";
 
-			String newTattoo=httpReq.getUrlParameter("TATTOO");
+			final String newTattoo=httpReq.getUrlParameter("TATTOO");
 			if(newTattoo==null)
 				return "[missing TATTOO error]";
 			row=newTattoo.toUpperCase().trim()+"=";
@@ -108,30 +108,30 @@ public class AchievementData extends StdWebMacro
 				return "[new achievement tattoo already exists!]";
 			}
 
-			String newEvent=httpReq.getUrlParameter("EVENT");
+			final String newEvent=httpReq.getUrlParameter("EVENT");
 			if((newEvent==null)||(!CMStrings.contains(Event.getEventChoices(), newEvent)))
 				return "[missing EVENT error]";
 			final Event E=(Event)CMath.s_valueOf(Event.class, newEvent);
 			row+="EVENT=\""+newEvent+"\" ";
 
-			String newDisplay=httpReq.getUrlParameter("DISPLAY");
+			final String newDisplay=httpReq.getUrlParameter("DISPLAY");
 			if(newDisplay==null)
 				return "[missing DISPLAY error]";
 			row+="DISPLAY=\""+CMStrings.escape(newDisplay)+"\" ";
-			
-			String newTitle=httpReq.getUrlParameter("TITLE");
+
+			final String newTitle=httpReq.getUrlParameter("TITLE");
 			if((newTitle != null)&&(newTitle.length()>0))
 				row+="TITLE=\""+CMStrings.escape(newTitle)+"\" ";
 
-			String newRewards=httpReq.getUrlParameter("REWARDS");
+			final String newRewards=httpReq.getUrlParameter("REWARDS");
 			if((newRewards != null)&&(newRewards.length()>0))
 				row+="REWARDS=\""+CMStrings.escape(newRewards)+"\" ";
 
-			for(String s : E.getParameters())
+			for(final String s : E.getParameters())
 			{
 				if(!CMStrings.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, s))
 				{
-					String newValue=httpReq.getUrlParameter(s);
+					final String newValue=httpReq.getUrlParameter(s);
 					if((newValue != null)&&(newValue.length()>0))
 					{
 						row+=s+"=\""+CMStrings.escape(newValue)+"\" ";
@@ -184,8 +184,8 @@ public class AchievementData extends StdWebMacro
 		if(last==null)
 			return " @break@";
 		final StringBuffer str=new StringBuffer("");
-		
-		Achievement A=CMLib.achievements().getAchievement(last);
+
+		final Achievement A=CMLib.achievements().getAchievement(last);
 		Event E;
 		String eventName=httpReq.getUrlParameter("EVENT");
 		if(eventName==null)
@@ -209,7 +209,7 @@ public class AchievementData extends StdWebMacro
 		}
 		if(parms.containsKey("HELP") && parms.containsKey("FIELD"))
 		{
-			String field=parms.get("FIELD");
+			final String field=parms.get("FIELD");
 			@SuppressWarnings("unchecked")
 			Map<String,Map<String,String>> map=(Map<String,Map<String,String>>)httpReq.getRequestObjects().get("SYSTEM_ACHIEVEMENT_HELP_MAP");
 			if(map == null)
@@ -217,7 +217,7 @@ public class AchievementData extends StdWebMacro
 				map = CMLib.achievements().getAchievementsHelpMap();
 				httpReq.getRequestObjects().put("SYSTEM_ACHIEVEMENT_HELP_MAP",map);
 			}
-			String help = CMLib.achievements().getAchievementsHelpFromMap(map, E, field);
+			final String help = CMLib.achievements().getAchievementsHelpFromMap(map, E, field);
 			if(help != null)
 			{
 				str.append("<PRE>");
@@ -228,8 +228,8 @@ public class AchievementData extends StdWebMacro
 		}
 		if(parms.containsKey("EVENTOPTIONS"))
 		{
-			StringBuilder s=new StringBuilder("");
-			for(Event E2 : Event.values())
+			final StringBuilder s=new StringBuilder("");
+			for(final Event E2 : Event.values())
 			{
 				s.append("<OPTION VALUE="+E2.name()+" ");
 				if(E2==E)
@@ -251,7 +251,7 @@ public class AchievementData extends StdWebMacro
 			String value=httpReq.getUrlParameter("TITLE");
 			if((value==null)&&(A!=null))
 			{
-				for(Award award: A.getRewards())
+				for(final Award award: A.getRewards())
 				{
 					if(award.getType()==AwardType.TITLE)
 					{
@@ -284,7 +284,7 @@ public class AchievementData extends StdWebMacro
 			if((value==null)&&(A!=null))
 			{
 				value="";
-				for(String otherParmName : E.getParameters())
+				for(final String otherParmName : E.getParameters())
 				{
 					if(!CMStrings.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, otherParmName))
 					{
@@ -293,7 +293,7 @@ public class AchievementData extends StdWebMacro
 				}
 			}
 			if(value!=null)
-				str.append(CMStrings.replaceAll(value,"\"","&quot;")+", ");
+				str.append(CMStrings.replaceAll(CMStrings.addCommaSpacing(value),"\"","&quot;")+", ");
 		}
 		if(parms.containsKey("OTHERPARMNEXT"))
 		{
@@ -305,7 +305,7 @@ public class AchievementData extends StdWebMacro
 				return "";
 			}
 			String lastOtherParmID="";
-			for(String otherParmName : E.getParameters())
+			for(final String otherParmName : E.getParameters())
 			{
 				if(!CMStrings.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, otherParmName))
 				{
@@ -333,10 +333,10 @@ public class AchievementData extends StdWebMacro
 				final MOB M=CMLib.players().getLoadPlayer(playerID);
 				if(M!=null)
 				{
-					PlayerStats pStats = M.playerStats();
+					final PlayerStats pStats = M.playerStats();
 					if(pStats!=null)
 					{
-						AchievementLibrary.Tracker T = pStats.getAchievementTracker(A, M);
+						final AchievementLibrary.Tracker T = pStats.getAchievementTracker(A, M);
 						str.append(""+T.getCount(M)).append(", ");
 					}
 					else
@@ -347,9 +347,9 @@ public class AchievementData extends StdWebMacro
 			}
 			else
 				return "[player reference error]";
-			
+
 		}
-		
+
 		if(parms.containsKey("ISPLAYERACHIEVED") || parms.containsKey("ISPLAYERPROGRESS"))
 		{
 			if(A == null)
@@ -360,10 +360,10 @@ public class AchievementData extends StdWebMacro
 				final MOB M=CMLib.players().getLoadPlayer(playerID);
 				if(M!=null)
 				{
-					PlayerStats pStats = M.playerStats();
+					final PlayerStats pStats = M.playerStats();
 					if(pStats!=null)
 					{
-						AchievementLibrary.Tracker T = pStats.getAchievementTracker(A, M);
+						final AchievementLibrary.Tracker T = pStats.getAchievementTracker(A, M);
 						if(parms.containsKey("ISPLAYERACHIEVED"))
 						{
 							final boolean achieved = M.findTattoo(A.getTattoo()) != null;
@@ -384,7 +384,7 @@ public class AchievementData extends StdWebMacro
 			else
 				return "[player reference error]";
 		}
-		for(String otherParmName : E.getParameters())
+		for(final String otherParmName : E.getParameters())
 		{
 			if(!CMStrings.contains(AchievementLibrary.BASE_ACHIEVEMENT_PARAMETERS, otherParmName))
 			{

@@ -98,8 +98,8 @@
             <TD WIDTH=10%><B><FONT COLOR=YELLOW>Type</FONT></b></TD>
             <TD WIDTH=25%><B><FONT COLOR=YELLOW>Display</FONT></b></TD>
             <TD WIDTH=5%><B><FONT COLOR=YELLOW>Count</FONT></b></TD>
-            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Awards</FONT></b></TD>
-            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Misc</FONT></b></TD>
+            <TD WIDTH=15%><B><FONT COLOR=YELLOW>Awards</FONT></b></TD>
+            <TD WIDTH=25%><B><FONT COLOR=YELLOW>Misc</FONT></b></TD>
             </TR>
             @AchievementNext?RESET@
             @AddRequestParameter?AGENT=PLAYER@
@@ -124,8 +124,8 @@
 	            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Type</FONT></b></TD>
 	            <TD WIDTH=25%><B><FONT COLOR=YELLOW>Display</FONT></b></TD>
 	            <TD WIDTH=5%><B><FONT COLOR=YELLOW>Count</FONT></b></TD>
-	            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Awards</FONT></b></TD>
-	            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Misc</FONT></b></TD>
+	            <TD WIDTH=15%><B><FONT COLOR=YELLOW>Awards</FONT></b></TD>
+	            <TD WIDTH=25%><B><FONT COLOR=YELLOW>Misc</FONT></b></TD>
 	            </TR>
 	            @AchievementNext?RESET@
 	            @AddRequestParameter?AGENT=ACCOUNT@

@@ -271,6 +271,30 @@ public class CMStrings
 	}
 
 	/**
+	 * Finds any commas in the string and ensures there is at least one space
+	 * immediately after them.
+	 * @param str the string to check
+	 * @return the fixed string.
+	 */
+	public final static String addCommaSpacing(final String str)
+	{
+		if(str==null)
+			return null;
+		if((str.length()==0) || (str.indexOf(',')<0))
+			return str;
+		final StringBuilder s=new StringBuilder("");
+		for(int i=0;i<str.length();i++)
+		{
+			if((str.charAt(i)==',')
+			&&((i==str.length()-1)||(str.charAt(i+1)!=' ')))
+				s.append(", ");
+			else
+				s.append(str.charAt(i));
+		}
+		return s.toString();
+	}
+
+	/**
 	 * Converts the given byte array back into a string using the current
 	 * threads CHARSETINPUT string encoding from the system properties.
 	 * @param b the byte array to decode
