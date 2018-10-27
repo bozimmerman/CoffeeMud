@@ -2097,6 +2097,18 @@ public class StdArea implements Area
 		Room R=CMLib.map().getRoom(roomID);
 		if(R==null)
 			R=this.getRoom(roomID);
+		if((R==null)&&(this.properRooms.size()>0))
+		{
+			try
+			{
+				R=this.properRooms.firstEntry().getValue();
+			}
+			catch(final Exception e)
+			{
+			}
+			if(R!=null)
+				Log.errOut("StdArea","Last Resort random-find due to failure on "+roomID+", got room: "+R.roomID());
+		}
 		if(R instanceof GridLocale)
 			return ((GridLocale)R).getRandomGridChild();
 		if((R==null)&&(StdArea.lastComplainer != this))
