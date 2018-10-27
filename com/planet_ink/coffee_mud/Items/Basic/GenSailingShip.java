@@ -1362,8 +1362,9 @@ public class GenSailingShip extends StdBoardable implements SailingShip
 							final Rideable sR=msg.source().riding();
 							if(sR instanceof Item)
 							{
-								if(!smallTenderRequests.contains(sR))
-									smallTenderRequests.add((Item)sR);
+								final Item isR = (Item)sR;
+								if(!smallTenderRequests.contains(isR))
+									smallTenderRequests.add(isR);
 							}
 						}
 					}
