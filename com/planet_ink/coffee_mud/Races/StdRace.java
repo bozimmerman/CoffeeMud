@@ -308,7 +308,7 @@ public class StdRace implements Race
 	}
 
 	@Override
-	public boolean canBreedWith(final Race R)
+	public boolean canBreedWith(final Race R, final boolean crossBreed)
 	{
 		if(!fertile())
 			return false;
@@ -316,7 +316,13 @@ public class StdRace implements Race
 			return false;
 		if(ID().equals("Human")||R.ID().equals("Human"))
 			return true;
-		return ID().equals(R.ID());
+		if(ID().equals(R.ID()))
+			return true;
+		if(!crossBreed)
+			return false;
+		if(R instanceof StdRace)
+			return ((StdRace)R).fertile();
+		return true;
 	}
 
 	@Override
@@ -571,7 +577,8 @@ public class StdRace implements Race
 				&&(msg.source().charStats().getStat(CharStats.STAT_GENDER)==('M'))
 				&&(myChar.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 				&&(msg.source().fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
-				&&(msg.source().charStats().getMyRace().canBreedWith(this))
+				&&(msg.source().charStats().getMyRace().canBreedWith(this,false))
+				&&(this.canBreedWith(msg.source().charStats().getMyRace(),false))
 				&&((msg.source().charStats().getStat(CharStats.STAT_AGE)==0)
 						||((msg.source().charStats().ageCategory()>Race.AGE_CHILD)
 								&&(msg.source().charStats().ageCategory()<Race.AGE_OLD)))

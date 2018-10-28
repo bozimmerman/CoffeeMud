@@ -76,18 +76,18 @@ public class LifeScanProgram extends GenSoftware
 		return "";
 	}
 
-	public boolean isAlive(MOB M)
+	public boolean isAlive(final MOB M)
 	{
 		// there you have it, the definition of "life" -- is biological, and can reproduce
-		return ((M!=null)&&(!CMLib.flags().isGolem(M)) && (M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace())));
+		return ((M!=null)&&(!CMLib.flags().isGolem(M)) && (M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace(),false)));
 	}
 
-	public CMMsg getScanMsg(Room R)
+	public CMMsg getScanMsg(final Room R)
 	{
 		return CMClass.getMsg(CMLib.map().getFactoryMOB(R), null, this, CMMsg.MASK_CNTRLMSG|CMMsg.MSG_LOOK, null); // cntrlmsg is important
 	}
 
-	public void getDirDesc(String dirBuilder, StringBuilder str, boolean useShipDirs)
+	public void getDirDesc(final String dirBuilder, final StringBuilder str, final boolean useShipDirs)
 	{
 		int numDone=0;
 		int numTotal=0;
@@ -138,7 +138,7 @@ public class LifeScanProgram extends GenSoftware
 		}
 	}
 
-	public int getScanMsg(Room R, Set<Room> roomsDone, String dirBuilder, int depthLeft, CMMsg scanMsg, StringBuilder str)
+	public int getScanMsg(final Room R, final Set<Room> roomsDone, final String dirBuilder, final int depthLeft, final CMMsg scanMsg, final StringBuilder str)
 	{
 		if((R==null)||(roomsDone.contains(R)))
 			return 0;
@@ -253,19 +253,19 @@ public class LifeScanProgram extends GenSoftware
 	}
 
 	@Override
-	public boolean isActivationString(String word)
+	public boolean isActivationString(final String word)
 	{
 		return "lifescan".startsWith(CMLib.english().getFirstWord(word.toLowerCase()));
 	}
 
 	@Override
-	public boolean isDeActivationString(String word)
+	public boolean isDeActivationString(final String word)
 	{
 		return "lifescan".startsWith(CMLib.english().getFirstWord(word.toLowerCase()));
 	}
 
 	@Override
-	public boolean isCommandString(String word, boolean isActive)
+	public boolean isCommandString(final String word, final boolean isActive)
 	{
 		return "lifescan".startsWith(CMLib.english().getFirstWord(word.toLowerCase()));
 	}
@@ -277,31 +277,31 @@ public class LifeScanProgram extends GenSoftware
 	}
 
 	@Override
-	public boolean checkActivate(MOB mob, String message)
+	public boolean checkActivate(final MOB mob, final String message)
 	{
 		return super.checkActivate(mob, message);
 	}
 
 	@Override
-	public boolean checkDeactivate(MOB mob, String message)
+	public boolean checkDeactivate(final MOB mob, final String message)
 	{
 		return super.checkDeactivate(mob, message);
 	}
 
 	@Override
-	public boolean checkTyping(MOB mob, String message)
+	public boolean checkTyping(final MOB mob, final String message)
 	{
 		return super.checkTyping(mob, message);
 	}
 
 	@Override
-	public boolean checkPowerCurrent(int value)
+	public boolean checkPowerCurrent(final int value)
 	{
 		return super.checkPowerCurrent(value);
 	}
 
 	@Override
-	public void onActivate(MOB mob, String message)
+	public void onActivate(final MOB mob, final String message)
 	{
 		super.onActivate(mob, message);
 		this.activated=true;
@@ -313,7 +313,7 @@ public class LifeScanProgram extends GenSoftware
 	}
 
 	@Override
-	public void onDeactivate(MOB mob, String message)
+	public void onDeactivate(final MOB mob, final String message)
 	{
 		super.onDeactivate(mob, message);
 		if(activated)
@@ -322,7 +322,7 @@ public class LifeScanProgram extends GenSoftware
 	}
 
 	@Override
-	public void onTyping(MOB mob, String message)
+	public void onTyping(final MOB mob, final String message)
 	{
 		super.onTyping(mob, message);
 		final String scan=getScanMsg();
@@ -331,7 +331,7 @@ public class LifeScanProgram extends GenSoftware
 	}
 
 	@Override
-	public void onPowerCurrent(int value)
+	public void onPowerCurrent(final int value)
 	{
 		super.onPowerCurrent(value);
 		if((value != 0)&&(activated)&&(--activatedTickdown>=0)) // means there was power to give, 2 means is active menu, which doesn't apply

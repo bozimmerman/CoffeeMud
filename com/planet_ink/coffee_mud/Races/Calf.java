@@ -143,7 +143,7 @@ public class Calf extends Cow
 	}
 
 	@Override
-	public boolean canBreedWith(Race R)
+	public boolean canBreedWith(Race R, boolean crossBreed)
 	{
 		return false; // too young
 	}

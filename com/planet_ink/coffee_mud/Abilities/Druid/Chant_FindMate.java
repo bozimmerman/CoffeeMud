@@ -175,7 +175,7 @@ public class Chant_FindMate extends Chant
 	}
 
 	@Override
-	public void affectPhyStats(Physical affectedEnv, PhyStats affectableStats)
+	public void affectPhyStats(final Physical affectedEnv, final PhyStats affectableStats)
 	{
 		affectableStats.setSensesMask(affectableStats.sensesMask()|PhyStats.CAN_NOT_TRACK);
 		super.affectPhyStats(affectedEnv, affectableStats);
@@ -197,7 +197,7 @@ public class Chant_FindMate extends Chant
 			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
-	public boolean isSuitableMate(MOB mate, MOB forMe)
+	public boolean isSuitableMate(final MOB mate, final MOB forMe)
 	{
 		if(mate==forMe)
 			return false;
@@ -210,7 +210,7 @@ public class Chant_FindMate extends Chant
 			return false;
 		if(((mate.charStats().getMyRace().ID().equals("Human"))
 		   ||(mate.charStats().getMyRace().ID().equals("Human"))
-		   ||(mate.charStats().getMyRace().canBreedWith(mate.charStats().getMyRace())))
+		   ||(mate.charStats().getMyRace().canBreedWith(mate.charStats().getMyRace(),false)))
 		&&(mate.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 		&&(CMLib.flags().canBeSeenBy(mate,forMe)))
 			return true;
@@ -218,7 +218,7 @@ public class Chant_FindMate extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null)
@@ -247,7 +247,7 @@ public class Chant_FindMate extends Chant
 		flags = CMLib.tracking().newFlags()
 				.plus(TrackingLibrary.TrackingFlag.OPENONLY);
 		final ArrayList<Room> rooms=new ArrayList<Room>();
-		int radius = 50 + (10*super.getXMAXRANGELevel(mob)) + super.getXLEVELLevel(mob);
+		final int radius = 50 + (10*super.getXMAXRANGELevel(mob)) + super.getXLEVELLevel(mob);
 		List<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,radius);
 		for (final Room R : checkSet)
 		{

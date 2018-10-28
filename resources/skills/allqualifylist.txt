@@ -78,7 +78,7 @@
 5 Fletching MASK=+DEX 12 REQUIRES=Specialization_Ranged Carpentry 
 5 FoodPrep REQUIRES=Cooking 
 5 GlassBlowing MASK=+CON 12 
-5 Painting MASK=+CHA 12 
+5 Painting MASK=+CHA 12
 5 PaperMaking 
 5 ScrimShaw REQUIRES=Sculpting 
 5 Weaponsmithing MASK=+STR 12 REQUIRES=Blacksmithing(75) Specialization_* 

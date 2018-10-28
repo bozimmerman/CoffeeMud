@@ -137,7 +137,7 @@ public class AnimalHusbandry extends CommonSkill
 						final Social S=CMLib.socials().fetchSocial("MATE", wifeM, "", true);
 						if(S!=null)
 						{
-							if(husbanding[0].charStats().getMyRace().canBreedWith(husbanding[1].charStats().getMyRace()))
+							if(husbanding[0].charStats().getMyRace().canBreedWith(husbanding[1].charStats().getMyRace(), false))
 							{
 								Ability A=CMClass.getAbility("Chant_Fertility");
 								if(A!=null)
@@ -221,7 +221,7 @@ public class AnimalHusbandry extends CommonSkill
 					commonTell(mob,L("@x1 is already pregnant.",M.name(mob)));
 					return false;
 				}
-				if(!M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace()))
+				if(!M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace(), false))
 				{
 					commonTell(mob,L("You can't use @x1.",M.name(mob)));
 					return false;

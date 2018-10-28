@@ -104,10 +104,11 @@ public class Chant_Crossbreed extends Chant
 				||(mate.charStats().getStat(CharStats.STAT_GENDER)==('F')))
 			&&((myChar.charStats().getStat(CharStats.STAT_GENDER)==('M'))
 				||(myChar.charStats().getStat(CharStats.STAT_GENDER)==('F')))
-			&&(!mate.charStats().getMyRace().canBreedWith(myChar.charStats().getMyRace()))
 			&&(myChar.location()==mate.location())
 			&&(myChar.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 			&&(mate.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
+			&&(mate.charStats().getMyRace().canBreedWith(myChar.charStats().getMyRace(),true))
+			&&(myChar.charStats().getMyRace().canBreedWith(mate.charStats().getMyRace(),true))
 			&&((mate.charStats().getStat(CharStats.STAT_AGE)==0)
 				||((mate.charStats().ageCategory()>Race.AGE_CHILD)
 					&&(mate.charStats().ageCategory()<Race.AGE_OLD)))
@@ -135,7 +136,7 @@ public class Chant_Crossbreed extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		final MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null)

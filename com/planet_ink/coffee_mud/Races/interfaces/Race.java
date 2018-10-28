@@ -322,9 +322,10 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * is human.  Passing the race to itself in this method is a good
 	 * way to check for general fertility.
 	 * @param R the race to check
+	 * @param crossBreed false to enforce race similarities
 	 * @return true if its the same as this one, false otherwise
 	 */
-	public boolean canBreedWith(Race R);
+	public boolean canBreedWith(Race R, boolean crossBreed);
 
 	/**
 	 * Whether this race can be associated with a character class.
@@ -350,7 +351,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * mob when they are created as this race.  The entries are the ability id,
 	 * the default proficiency, the level, and whether it is auto-gained.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-	 * @return a quadvector of the Ability IDs, profs, levels, auto-gained 
+	 * @return a quadvector of the Ability IDs, profs, levels, auto-gained
 	 */
 	public QuadVector<String,Integer,Integer,Boolean> culturalAbilities();
 
@@ -395,7 +396,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 
 	/**
 	 * Returns the amount, as a positive or negative % to adjust all experience gains.
-	 * 
+	 *
 	 * @return xp adjustment 0-100, or -1 - -100 to adjust experience gains by.
 	 */
 	public int getXPAdjustment();
@@ -445,9 +446,9 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	 * @return the list of racial languages granted to those of this race
 	 */
 	public String getLanguagesDesc();
-	
+
 	/**
-	 * Returns the number of registered usages of this race as of the 
+	 * Returns the number of registered usages of this race as of the
 	 * moment of the call.  It includes mobs loaded at boot-time.
 	 * @param alter TODO
 	 * @return the usage count.
@@ -523,7 +524,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, M
 	};
 	/** constant hash of BODYPARTSTR */
 	public final static Map<Object,Integer> BODYPARTHASH=CMStrings.makeNumericHash(BODYPARTSTR);
-	
+
 	/** constant used to set and check the classless flag on generic races */
 	public final static int GENFLAG_NOCLASS=1;
 	/** constant used to set and check the levelless flag on generic races */

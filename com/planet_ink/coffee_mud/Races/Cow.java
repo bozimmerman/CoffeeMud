@@ -154,7 +154,7 @@ public class Cow extends StdRace
 	}
 
 	@Override
-	public boolean canBreedWith(Race R)
+	public boolean canBreedWith(Race R, boolean crossBreed)
 	{
 		if((!super.sameAs(R))&&(R!=null))
 			return R.ID().equals("Bull")||R.ID().equals("Buffalo");

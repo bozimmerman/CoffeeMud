@@ -74,18 +74,18 @@ public class HealthScanProgram extends GenSoftware
 		return "";
 	}
 
-	public boolean isAlive(MOB M)
+	public boolean isAlive(final MOB M)
 	{
 		// there you have it, the definition of "life" -- is biological, and can reproduce
-		return ((M!=null)&&(!CMLib.flags().isGolem(M)) && (M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace())));
+		return ((M!=null)&&(!CMLib.flags().isGolem(M)) && (M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace(),false)));
 	}
 
-	public CMMsg getScanMsg(Room R)
+	public CMMsg getScanMsg(final Room R)
 	{
 		return CMClass.getMsg(CMLib.map().getFactoryMOB(R), null, this, CMMsg.MASK_CNTRLMSG|CMMsg.MSG_LOOK, null); // cntrlmsg is important
 	}
 
-	public String getScanMsg(MOB viewerM, MOB M)
+	public String getScanMsg(final MOB viewerM, final MOB M)
 	{
 		final Room R=CMLib.map().roomLocation(M);
 		if(R==null)
@@ -142,19 +142,19 @@ public class HealthScanProgram extends GenSoftware
 	}
 
 	@Override
-	public boolean isActivationString(String word)
+	public boolean isActivationString(final String word)
 	{
 		return "healthscan".startsWith(CMLib.english().getFirstWord(word.toLowerCase()));
 	}
 
 	@Override
-	public boolean isDeActivationString(String word)
+	public boolean isDeActivationString(final String word)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean isCommandString(String word, boolean isActive)
+	public boolean isCommandString(final String word, final boolean isActive)
 	{
 		return "healthscan".startsWith(CMLib.english().getFirstWord(word.toLowerCase()));
 	}
@@ -166,18 +166,18 @@ public class HealthScanProgram extends GenSoftware
 	}
 
 	@Override
-	public boolean checkActivate(MOB mob, String message)
+	public boolean checkActivate(final MOB mob, final String message)
 	{
 		return checkTyping(mob, message);
 	}
 
 	@Override
-	public boolean checkDeactivate(MOB mob, String message)
+	public boolean checkDeactivate(final MOB mob, final String message)
 	{
 		return super.checkDeactivate(mob, message);
 	}
 
-	protected MOB getTarget(MOB mob, String name)
+	protected MOB getTarget(final MOB mob, final String name)
 	{
 		if(name.equalsIgnoreCase("self"))
 			return mob;
@@ -207,7 +207,7 @@ public class HealthScanProgram extends GenSoftware
 	}
 
 	@Override
-	public boolean checkTyping(MOB mob, String message)
+	public boolean checkTyping(final MOB mob, final String message)
 	{
 		if(!super.checkTyping(mob, message))
 			return false;
@@ -237,25 +237,25 @@ public class HealthScanProgram extends GenSoftware
 	}
 
 	@Override
-	public boolean checkPowerCurrent(int value)
+	public boolean checkPowerCurrent(final int value)
 	{
 		return super.checkPowerCurrent(value);
 	}
 
 	@Override
-	public void onActivate(MOB mob, String message)
+	public void onActivate(final MOB mob, final String message)
 	{
 		onTyping(mob, message);
 	}
 
 	@Override
-	public void onDeactivate(MOB mob, String message)
+	public void onDeactivate(final MOB mob, final String message)
 	{
 		super.onDeactivate(mob, message);
 	}
 
 	@Override
-	public void onTyping(MOB mob, String message)
+	public void onTyping(final MOB mob, final String message)
 	{
 		super.onTyping(mob, message);
 		MOB M=null;
@@ -270,7 +270,7 @@ public class HealthScanProgram extends GenSoftware
 	}
 
 	@Override
-	public void onPowerCurrent(int value)
+	public void onPowerCurrent(final int value)
 	{
 		super.onPowerCurrent(value);
 	}

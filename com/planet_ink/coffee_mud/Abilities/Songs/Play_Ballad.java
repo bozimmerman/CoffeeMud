@@ -82,7 +82,7 @@ public class Play_Ballad extends Play
 			   ||(mate.charStats().getStat(CharStats.STAT_GENDER)==('F')))
 			&&((myChar.charStats().getStat(CharStats.STAT_GENDER)==('M'))
 			   ||(myChar.charStats().getStat(CharStats.STAT_GENDER)==('F')))
-			&&(myChar.charStats().getMyRace().canBreedWith(mate.charStats().getMyRace()))
+			&&(myChar.charStats().getMyRace().canBreedWith(mate.charStats().getMyRace(),false))
 			&&(myChar.location()==mate.location())
 			&&(myChar.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
 			&&(mate.fetchWornItems(Wearable.WORN_LEGS|Wearable.WORN_WAIST,(short)-2048,(short)0).size()==0)
@@ -113,7 +113,7 @@ public class Play_Ballad extends Play
 	}
 
 	@Override
-	public void affectCharStats(MOB mob, CharStats stats)
+	public void affectCharStats(final MOB mob, final CharStats stats)
 	{
 		super.affectCharStats(mob,stats);
 		if(invoker()!=null)
@@ -121,7 +121,7 @@ public class Play_Ballad extends Play
 	}
 
 	@Override
-	public void affectPhyStats(Physical mob, PhyStats stats)
+	public void affectPhyStats(final Physical mob, final PhyStats stats)
 	{
 		super.affectPhyStats(mob,stats);
 		if(invoker()!=null)

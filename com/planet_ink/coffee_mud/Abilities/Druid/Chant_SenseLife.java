@@ -87,7 +87,7 @@ public class Chant_SenseLife extends Chant
 		}
 	}
 
-	public boolean inhabitated(MOB mob, Room R)
+	public boolean inhabitated(final MOB mob, final Room R)
 	{
 		if(R==null)
 			return false;
@@ -96,14 +96,14 @@ public class Chant_SenseLife extends Chant
 			final MOB M=R.fetchInhabitant(i);
 			if((M!=null)
 			&&(!CMLib.flags().isGolem(M))
-			&&(M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace()))
+			&&(M.charStats().getMyRace().canBreedWith(M.charStats().getMyRace(),false))
 			&&(M!=mob))
 				return true;
 		}
 		return false;
 	}
 
-	public void messageTo(MOB mob)
+	public void messageTo(final MOB mob)
 	{
 		String last="";
 		String dirs="";
@@ -151,7 +151,7 @@ public class Chant_SenseLife extends Chant
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
