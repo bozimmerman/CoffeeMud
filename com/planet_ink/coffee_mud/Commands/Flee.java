@@ -48,10 +48,10 @@ public class Flee extends Go
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		Vector<String> origCmds=new XVector<String>(commands);
+		final Vector<String> origCmds=new XVector<String>(commands);
 		String direction="";
 		if(commands.size()>1)
 			direction=CMParms.combine(commands,1);
@@ -97,7 +97,7 @@ public class Flee extends Go
 		{
 			if(direction.length()==0)
 			{
-				final Vector<Integer> directions=new Vector<Integer>();
+				final List<Integer> directions=new ArrayList<Integer>();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					final Exit thisExit=R.getExitInDir(d);
@@ -107,7 +107,7 @@ public class Flee extends Go
 				}
 				// up is last resort
 				if(directions.size()>1)
-					directions.removeElement(Integer.valueOf(Directions.UP));
+					directions.remove(Integer.valueOf(Directions.UP));
 				if(directions.size()>0)
 				{
 					directionCode=directions.get(CMLib.dice().roll(1,directions.size(),-1)).intValue();
@@ -122,14 +122,14 @@ public class Flee extends Go
 				return false;
 			}
 		}
-		
+
 		if(CMLib.flags().isFalling(mob))
 		{
-			int fallDir = CMLib.flags().getFallingDirection(mob);
+			final int fallDir = CMLib.flags().getFallingDirection(mob);
 			if((fallDir >=0) && (R.rawDoors()[fallDir]!=null) && (R.getExitInDir(fallDir)!=null))
 				directionCode = fallDir;
 		}
-		
+
 		if((direction.equals("NOWHERE"))
 		||((directionCode>=0)&&(CMLib.tracking().walk(mob,directionCode,true,false,false))))
 		{
