@@ -73,7 +73,7 @@ public class Conquerable extends Arrest
 	protected long				waitToReload		= 0;
 	protected long				conquestDate		= 0;
 	protected int				revoltDown			= REVOLTFREQ;
-	protected static final int	REVOLTFREQ			= (int) ((TimeManager.MILI_DAY * 3) / CMProps.getTickMillis());
+	protected static final int	REVOLTFREQ			= (int) ((TimeManager.MILI_DAY) / CMProps.getTickMillis());
 	protected int				checkDown			= 0;
 	protected static final int	CHECKFREQ			= 10;
 	protected int				pointDown			= 0;
@@ -111,7 +111,7 @@ public class Conquerable extends Arrest
 	}
 
 	@Override
-	public String conquestInfo(Area myArea)
+	public String conquestInfo(final Area myArea)
 	{
 		final StringBuffer str=new StringBuffer("");
 		if((totalControlPoints<0)&&(myArea!=null))
@@ -180,7 +180,7 @@ public class Conquerable extends Arrest
 	}
 
 	@Override
-	public int getControlPoints(String clanID)
+	public int getControlPoints(final String clanID)
 	{
 		if((clanID==null)||(clanID.length()==0))
 			return 0;
@@ -213,7 +213,7 @@ public class Conquerable extends Arrest
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		super.setParms(newParms);
 		journalName=CMParms.getParmStr(newParms,"JOURNAL","");
@@ -227,14 +227,14 @@ public class Conquerable extends Arrest
 	}
 
 	@Override
-	public void startBehavior(PhysicalAgent E)
+	public void startBehavior(final PhysicalAgent E)
 	{
 		super.startBehavior(E);
 		CMLib.map().addGlobalHandler(this, CMMsg.TYP_CLANEVENT);
 	}
 
 	@Override
-	public boolean isAnyKindOfOfficer(Law laws, MOB M)
+	public boolean isAnyKindOfOfficer(final Law laws, final MOB M)
 	{
 		if((M!=null)
 		&&(allowLaw)
@@ -258,7 +258,7 @@ public class Conquerable extends Arrest
 	}
 
 	@Override
-	public boolean isTheJudge(Law laws, MOB M)
+	public boolean isTheJudge(final Law laws, final MOB M)
 	{
 		if((M!=null)
 		&&(allowLaw)
@@ -280,7 +280,7 @@ public class Conquerable extends Arrest
 		return false;
 	}
 
-	protected synchronized void endClanRule(String reason)
+	protected synchronized void endClanRule(final String reason)
 	{
 		if(holdingClan.length()==0)
 			return;
@@ -381,7 +381,7 @@ public class Conquerable extends Arrest
 		conquestDate=0;
 	}
 
-	public int calcItemControlPoints(Area A)
+	public int calcItemControlPoints(final Area A)
 	{
 		int itemControlPoints=0;
 		synchronized(clanItems)
@@ -402,7 +402,7 @@ public class Conquerable extends Arrest
 		return itemControlPoints;
 	}
 
-	public int calcRevoltChance(Area A)
+	public int calcRevoltChance(final Area A)
 	{
 		if(totalControlPoints<=0)
 			return 0;
@@ -416,7 +416,7 @@ public class Conquerable extends Arrest
 		return chance;
 	}
 
-	protected void announceToArea(Area area, String clanID, int amount)
+	protected void announceToArea(final Area area, final String clanID, final int amount)
 	{
 		for(final Session S : CMLib.sessions().localOnlineIterable())
 		{
@@ -427,7 +427,7 @@ public class Conquerable extends Arrest
 		}
 	}
 
-	protected boolean hasItemSameAs(MOB M, Item I)
+	protected boolean hasItemSameAs(final MOB M, final Item I)
 	{
 		for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
 		{
@@ -437,7 +437,7 @@ public class Conquerable extends Arrest
 		return false;
 	}
 
-	protected boolean hasItemSameName(MOB M, String name)
+	protected boolean hasItemSameName(final MOB M, final String name)
 	{
 		for(final Enumeration<Item> i=M.items();i.hasMoreElements();)
 		{
@@ -683,7 +683,7 @@ public class Conquerable extends Arrest
 								final List<String> channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 								for(int i=0;i<channels.size();i++)
 									CMLib.commands().postChannel(channels.get(i),CMLib.clans().clanRoles(),L("There are the rumblings of revolt in @x1.",myArea.name()),false);
-								revoltFails=10;
+								revoltFails=20;
 							}
 						}
 						else
@@ -760,7 +760,7 @@ public class Conquerable extends Arrest
 		return null;
 	}
 
-	public void recalculateControlPoints(Area A)
+	public void recalculateControlPoints(final Area A)
 	{
 		totalControlPoints=0;
 		final String worship=getManadatoryWorshipID();
@@ -859,8 +859,8 @@ public class Conquerable extends Arrest
 					{
 						CI=(ClanItem)I;
 						if(CI.getClanItemType()==ClanItem.ClanItemType.LEGALBADGE)
-						{ 
-							badge=CI; 
+						{
+							badge=CI;
 							break;
 						}
 					}
@@ -897,7 +897,7 @@ public class Conquerable extends Arrest
 			&&(msg.tool().ID().startsWith("Prayer_Infuse"))
 			&&(msg.sourceMinor()!=CMMsg.TYP_TEACH))
 			{
-				
+
 				if((msg.source().getClanRole(holdingClan)==null)
 				||(CMLib.clans().getClanAnyHost(holdingClan)==null)
 				||(!CMLib.clans().getClanAnyHost(holdingClan).isWorshipConquest()))
@@ -929,7 +929,7 @@ public class Conquerable extends Arrest
 		return super.okMessage(myHost,msg);
 	}
 
-	protected void declareWinner(String clanID)
+	protected void declareWinner(final String clanID)
 	{
 		if((holdingClan.equals(clanID))||(totalControlPoints<0))
 			return;
@@ -966,9 +966,9 @@ public class Conquerable extends Arrest
 		}
 		if(myArea!=null)
 		{
-			LandTitle areaTitle=CMLib.law().getLandTitle(myArea);
-			if(this.switchOwnership 
-			&& (areaTitle!=null) 
+			final LandTitle areaTitle=CMLib.law().getLandTitle(myArea);
+			if(this.switchOwnership
+			&& (areaTitle!=null)
 			&& (!areaTitle.getOwnerName().equalsIgnoreCase(holdingClan)))
 				areaTitle.setOwnerName(holdingClan);
 			final String worship=getManadatoryWorshipID();
@@ -977,8 +977,8 @@ public class Conquerable extends Arrest
 				final Room R=(Room)e.nextElement();
 				if(R!=null)
 				{
-					LandTitle T=CMLib.law().getLandTitle(R);
-					if(this.switchOwnership 
+					final LandTitle T=CMLib.law().getLandTitle(R);
+					if(this.switchOwnership
 					&& (T!=null)
 					&& (T!=areaTitle)
 					&& (!T.getOwnerName().equalsIgnoreCase(holdingClan)))
@@ -1009,7 +1009,7 @@ public class Conquerable extends Arrest
 		}
 	}
 
-	protected void registerClanItem(ClanItem I)
+	protected void registerClanItem(final ClanItem I)
 	{
 		synchronized(clanItems)
 		{
@@ -1022,7 +1022,7 @@ public class Conquerable extends Arrest
 		}
 	}
 
-	protected void deRegisterClanItem(Item I)
+	protected void deRegisterClanItem(final Item I)
 	{
 		synchronized(clanItems)
 		{
@@ -1037,7 +1037,7 @@ public class Conquerable extends Arrest
 		}
 	}
 
-	protected boolean flagFound(Area A, String clanID)
+	protected boolean flagFound(final Area A, final String clanID)
 	{
 		Clan C=CMLib.clans().getClanAnyHost(clanID);
 		if(C==null)
@@ -1047,7 +1047,7 @@ public class Conquerable extends Arrest
 		return flagFound(A,C);
 	}
 
-	protected boolean flagFound(Area A, Clan C)
+	protected boolean flagFound(final Area A, final Clan C)
 	{
 		if((C==null)||(!C.getGovernment().isConquestEnabled()))
 			return false;
@@ -1092,7 +1092,7 @@ public class Conquerable extends Arrest
 	}
 
 	@Override
-	public void setControlPoints(String clanID, int newControlPoints)
+	public void setControlPoints(final String clanID, final int newControlPoints)
 	{
 		synchronized(clanControlPoints)
 		{
@@ -1114,7 +1114,7 @@ public class Conquerable extends Arrest
 		}
 	}
 
-	protected boolean changeControlPoints(String clanID, int amount, Room notifyRoom)
+	protected boolean changeControlPoints(final String clanID, int amount, final Room notifyRoom)
 	{
 		synchronized(clanControlPoints)
 		{
@@ -1460,7 +1460,7 @@ public class Conquerable extends Arrest
 	}
 
 	@Override
-	protected boolean isAnUltimateAuthorityHere(MOB M, Law laws)
+	protected boolean isAnUltimateAuthorityHere(final MOB M, final Law laws)
 	{
 		if((M==null)
 		||(holdingClan.length()==0)
