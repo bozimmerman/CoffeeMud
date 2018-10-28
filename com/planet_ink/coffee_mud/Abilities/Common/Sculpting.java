@@ -517,7 +517,13 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			{
 				((Light)buildingI).setDuration(capacity);
 				if(buildingI instanceof Container)
-					((Container)buildingI).setCapacity(0);
+				{
+					if((buildingI.fitsOn(Wearable.WORN_MOUTH))
+					||(((Container)buildingI).containTypes()==Container.CONTAIN_SMOKEABLES))
+						((Container)buildingI).setCapacity(1);
+					else
+						((Container)buildingI).setCapacity(0);
+				}
 			}
 			if(buildingI.ID().endsWith("Dice"))
 			{

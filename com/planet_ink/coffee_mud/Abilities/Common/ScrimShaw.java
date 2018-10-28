@@ -562,7 +562,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(buildingI instanceof Light)
 			{
 				((Light)buildingI).setDuration(capacity);
-				if((buildingI instanceof Container)&&(((Container)buildingI).containTypes()!=Container.CONTAIN_SMOKEABLES))
+				if((buildingI instanceof Container)
+				&&(((Container)buildingI).containTypes()!=Container.CONTAIN_SMOKEABLES))
 					((Container)buildingI).setCapacity(0);
 			}
 			buildingI.recoverPhyStats();

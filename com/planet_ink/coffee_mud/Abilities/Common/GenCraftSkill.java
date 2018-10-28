@@ -871,7 +871,11 @@ public class GenCraftSkill extends EnhancedCraftingSkill implements ItemCraftor
 				&&(!misctype.equals("SMOKE")))
 				{
 					((Light)buildingI).setDuration(200);
-					((Container)buildingI).setCapacity(0);
+					if((buildingI.fitsOn(Wearable.WORN_MOUTH))
+					||(((Container)buildingI).containTypes()==Container.CONTAIN_SMOKEABLES))
+						((Container)buildingI).setCapacity(1);
+					else
+						((Container)buildingI).setCapacity(0);
 				}
 			}
 			buildingI.recoverPhyStats();
