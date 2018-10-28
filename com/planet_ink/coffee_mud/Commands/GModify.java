@@ -621,7 +621,7 @@ public class GModify extends StdCommand
 		addEnumeratedStatCodes(CMClass.tech(),allKnownFields,allFieldsMsg);
 		addEnumeratedStatCodes(CMClass.locales(),allKnownFields,allFieldsMsg);
 		allFieldsMsg.append("CLASSTYPE REJUV DESTROY ADDABILITY DELABILITY ADDBEHAVIOR DELBEHAVIOR ADDAFFECT DELAFFECT ");
-		allKnownFields.addAll(Arrays.asList(new String[]{"CLASSTYPE","REJUV","GENDER","DESTROY","ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT"}));
+		allKnownFields.addAll(Arrays.asList(new String[]{"CLASSTYPE","REJUV","RESOURCE","MATERIALTYPE","GENDER","DESTROY","ADDABILITY","DELABILITY","ADDBEHAVIOR","DELBEHAVIOR","ADDAFFECT","DELAFFECT"}));
 
 		use=onfields;
 		final Vector<String> newSet=new Vector<String>();
