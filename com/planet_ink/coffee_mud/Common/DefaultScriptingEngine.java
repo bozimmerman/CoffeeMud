@@ -2248,54 +2248,63 @@ public class DefaultScriptingEngine implements ScriptingEngine
 			else
 			if(val.startsWith("+"))
 			{
+				String num=H.get(key);
 				// add via +number form
 				if(CMath.isNumber(val.substring(1).trim()))
 				{
-					val=val.substring(1);
-					final int amount=CMath.s_int(val.trim());
-					String num=H.get(key);
 					if(num==null)
 						num="0";
+					val=val.substring(1);
+					final int amount=CMath.s_int(val.trim());
 					val=Integer.toString(CMath.s_int(num.trim())+amount);
 				}
+				else
+				if((num!=null)&&(CMath.isNumber(num)))
+					val=num;
 			}
 			else
 			if(val.startsWith("-"))
 			{
 				// subtract -number form
+				String num=H.get(key);
 				if(CMath.isNumber(val.substring(1).trim()))
 				{
 					val=val.substring(1);
 					final int amount=CMath.s_int(val.trim());
-					String num=H.get(key);
 					if(num==null)
 						num="0";
 					val=Integer.toString(CMath.s_int(num.trim())-amount);
 				}
+				else
+				if((num!=null)&&(CMath.isNumber(num)))
+					val=num;
 			}
 			else
 			if(val.startsWith("*"))
 			{
 				// multiply via *number form
+				String num=H.get(key);
 				if(CMath.isNumber(val.substring(1).trim()))
 				{
 					val=val.substring(1);
 					final int amount=CMath.s_int(val.trim());
-					String num=H.get(key);
 					if(num==null)
 						num="0";
 					val=Integer.toString(CMath.s_int(num.trim())*amount);
 				}
+				else
+				if((num!=null)&&(CMath.isNumber(num)))
+					val=num;
 			}
 			else
 			if(val.startsWith("/"))
 			{
 				// divide /number form
+				String num=H.get(key);
 				if(CMath.isNumber(val.substring(1).trim()))
 				{
 					val=val.substring(1);
 					final int amount=CMath.s_int(val.trim());
-					String num=H.get(key);
 					if(num==null)
 						num="0";
 					if(amount==0)
@@ -2303,6 +2312,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
 					else
 						val=Integer.toString(CMath.s_int(num.trim())/amount);
 				}
+				else
+				if((num!=null)&&(CMath.isNumber(num)))
+					val=num;
 			}
 			if(H.containsKey(key))
 				H.remove(key);
