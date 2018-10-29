@@ -2109,8 +2109,12 @@ public class StdArea implements Area
 				{
 				}
 				if(R!=null)
-					Log.errOut("StdArea","Last Resort random-find due to failure on "+roomID+", got room: "+R.roomID());
+					Log.errOut("StdArea","Last Resort random-find due to failure on "+roomID+", got room: "+R.roomID()+" ("+this.amDestroyed+")");
+				else
+					Log.errOut("StdArea","Wow, proper room size = "+this.properRooms.size()+", but no room! ("+this.amDestroyed+")");
 			}
+			else
+				Log.errOut("StdArea","Wow, proper room size = 0, but numrooms="+this.numberOfProperIDedRooms()+"! ("+this.amDestroyed+")");
 		}
 		if(R instanceof GridLocale)
 			return ((GridLocale)R).getRandomGridChild();
