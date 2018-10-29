@@ -391,6 +391,8 @@ public class Textiling extends EnhancedCraftingSkill implements ItemCraftor, Men
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(compData[CF_AMOUNT],bundling));
+			if(buildingI.basePhyStats().weight()==0)
+				buildingI.basePhyStats().setWeight(1);
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";

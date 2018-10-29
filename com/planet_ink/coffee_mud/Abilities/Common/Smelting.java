@@ -402,6 +402,8 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			buildingI.setDisplayText(L("@x1 lies here",itemName));
 			buildingI.setDescription(itemName+". ");
 			buildingI.basePhyStats().setWeight(getStandardWeight(compData[CF_AMOUNT],bundling));
+			if(buildingI.basePhyStats().weight()==0)
+				buildingI.basePhyStats().setWeight(2);
 			buildingI.setBaseValue(CMath.s_int(foundRecipe.get(RCP_VALUE)));
 			buildingI.basePhyStats().setLevel(CMath.s_int(foundRecipe.get(RCP_LEVEL)));
 			final String spell=(foundRecipe.size()>RCP_SPELL)?foundRecipe.get(RCP_SPELL).trim():"";

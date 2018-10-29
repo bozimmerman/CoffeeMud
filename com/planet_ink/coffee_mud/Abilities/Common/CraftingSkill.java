@@ -753,6 +753,16 @@ public class CraftingSkill extends GatheringSkill
 		}
 	}
 
+	protected boolean isThereANonBundleChoice(final List<String> recipes)
+	{
+		for(final String s : recipes)
+		{
+			if(s.toLowerCase().indexOf("bundle")<0)
+				return true;
+		}
+		return false;
+	}
+
 	public ItemKeyPair craftItem(final MOB mob, final List<String> recipes, int material, final boolean forceLevels)
 	{
 		Item building=null;
@@ -765,7 +775,9 @@ public class CraftingSkill extends GatheringSkill
 				rscs=new XVector<Integer>(Integer.valueOf(RawMaterial.RESOURCE_WOOD));
 			material=rscs.get(CMLib.dice().roll(1,rscs.size(),-1)).intValue();
 		}
-		while(((building==null)||(building.name().endsWith(" bundle")))&&(((++tries)<100)))
+		while(((building==null)
+			||(building.name().endsWith(" bundle")&&(!isThereANonBundleChoice(recipes))))
+		&&(((++tries)<100)))
 		{
 			final List<Item> V=new ArrayList<Item>(1);
 			autoGenInvoke(mob,recipes,null,true,-1,material,forceLevels,V);
