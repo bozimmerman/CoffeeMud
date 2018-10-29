@@ -11768,6 +11768,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
 							final int prcnt=CMath.s_int(t[1]);
 							if(CMLib.dice().rollPercentage()<prcnt)
 							{
+								if((host instanceof Item)
+								&&(((Item)host).owner() instanceof MOB)
+								&&(msg.source()==((Item)host).owner()))
+								{
+									// this is to prevent excessive queing when a player is running full throttle with a scripted item
+									// that pays attention to where it is.
+									for(int i=que.size()-1;i>=0;i--)
+									{
+										try
+										{
+											if(que.get(i).scr == script)
+												que.remove(i);
+										}
+										catch(final Exception e)
+										{
+										}
+									}
+								}
 								enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null, t);
 								return;
 							}
