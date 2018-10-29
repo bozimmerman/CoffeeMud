@@ -301,7 +301,8 @@ public class Prop_Artifact extends Property
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
-		if((waitToReload>0)&&(tickID==Tickable.TICKID_ITEM_BOUNCEBACK))
+		if((waitToReload>0)
+		&&(tickID==Tickable.TICKID_ITEM_BOUNCEBACK))
 		{
 			if(System.currentTimeMillis()>waitToReload)
 			{
@@ -446,10 +447,12 @@ public class Prop_Artifact extends Property
 						}
 					}
 				}
+				else
+					Log.errOut("Prop_Artifact","No Artifact record for: "+getItemID());
 				// my work is done, I can go away.
 				return false;
 			}
-			Log.errOut("Prop_Artifact","No Artifact record for: "+getItemID());
+			// if we are here, we are still waiting for bounce-back/reload
 			return true;
 		}
 		return super.tick(ticking,tickID);
