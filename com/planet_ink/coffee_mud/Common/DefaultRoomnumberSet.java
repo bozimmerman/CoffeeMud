@@ -93,7 +93,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	}
 
 	@Override
-	public synchronized void add(RoomnumberSet set)
+	public synchronized void add(final RoomnumberSet set)
 	{
 		LongSet his=null;
 		LongSet mine=null;
@@ -115,7 +115,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	}
 
 	@Override
-	public synchronized void remove(String str)
+	public synchronized void remove(final String str)
 	{
 		String areaName=str.toUpperCase().trim();
 		if(areaName.length()==0)
@@ -242,7 +242,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		return convertRoomID(roomID,selection);
 	}
 
-	public int[] convertRoomID(long coded)
+	public int[] convertRoomID(final long coded)
 	{
 		if(coded==-1)
 			return null;
@@ -265,7 +265,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		return ids;
 	}
 
-	public String convertRoomID(String prefix, long coded)
+	public String convertRoomID(final String prefix, final long coded)
 	{
 		if(coded==-1)
 			return prefix;
@@ -288,13 +288,13 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		return root.keySet().iterator();
 	}
 
-	private boolean isGrouper(String areaName)
+	private boolean isGrouper(final String areaName)
 	{
 		return root.containsKey(areaName.toUpperCase());
 	}
 
 	@Override
-	public LongSet getGrouper(String areaName)
+	public LongSet getGrouper(final String areaName)
 	{
 		return root.get(areaName.toUpperCase());
 	}
@@ -353,7 +353,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	}
 
 	@Override
-	public void parseXML(String xml)
+	public void parseXML(final String xml)
 	{
 		final List<XMLLibrary.XMLTag> V=CMLib.xml().parseAllXML(xml);
 		if((V==null)||(V.size()==0))
@@ -381,7 +381,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 	}
 
 	@Override
-	public synchronized void add(String str)
+	public synchronized void add(final String str)
 	{
 		String areaName=str.toUpperCase().trim();
 		if(areaName.length()==0)
@@ -411,6 +411,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			if(CMath.isInteger(theRest))
 				roomNum=Integer.parseInt(theRest.substring(x+1).trim());
 		}
+		else
+			System.out.println("???????????????????"+areaName);
 		LongSet CI = root.get(areaName);
 		if(CI==null)
 		{
@@ -424,7 +426,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		}
 	}
 
-	@Override 
+	@Override
 	public Enumeration<String> getRoomIDs()
 	{
 		return new RoomnumberSetEnumeration();

@@ -2093,7 +2093,9 @@ public class StdArea implements Area
 	@Override
 	public Room getRandomProperRoom()
 	{
-		final String roomID=getProperRoomnumbers().random();
+		String roomID=getProperRoomnumbers().random();
+		if((!roomID.startsWith(Name()))&&(roomID.startsWith(Name().toUpperCase())))
+			roomID=Name()+roomID.substring(Name().length());
 		Room R=CMLib.map().getRoom(roomID);
 		if(R==null)
 		{
@@ -2142,7 +2144,9 @@ public class StdArea implements Area
 		final RoomnumberSet metroRoomIDSet=this.metroRoomIDSet;
 		if(metroRoomIDSet != null)
 		{
-			final String roomID=metroRoomIDSet.random();
+			String roomID=metroRoomIDSet.random();
+			if((!roomID.startsWith(Name()))&&(roomID.startsWith(Name().toUpperCase())))
+				roomID=Name()+roomID.substring(Name().length());
 			final Room R=CMLib.map().getRoom(roomID);
 			if(R instanceof GridLocale)
 				return ((GridLocale)R).getRandomGridChild();
