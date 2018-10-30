@@ -2094,7 +2094,9 @@ public class StdArea implements Area
 	public Room getRandomProperRoom()
 	{
 		String roomID=getProperRoomnumbers().random();
-		if((!roomID.startsWith(Name()))&&(roomID.startsWith(Name().toUpperCase())))
+		if((roomID!=null)
+		&&(!roomID.startsWith(Name()))
+		&&(roomID.startsWith(Name().toUpperCase())))
 			roomID=Name()+roomID.substring(Name().length());
 		Room R=CMLib.map().getRoom(roomID);
 		if(R==null)
@@ -2145,7 +2147,9 @@ public class StdArea implements Area
 		if(metroRoomIDSet != null)
 		{
 			String roomID=metroRoomIDSet.random();
-			if((!roomID.startsWith(Name()))&&(roomID.startsWith(Name().toUpperCase())))
+			if((roomID!=null)
+			&&(!roomID.startsWith(Name()))
+			&&(roomID.startsWith(Name().toUpperCase())))
 				roomID=Name()+roomID.substring(Name().length());
 			final Room R=CMLib.map().getRoom(roomID);
 			if(R instanceof GridLocale)
