@@ -4,6 +4,7 @@ import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.core.collections.*;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftParms;
 import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.CraftingActivity;
+import com.planet_ink.coffee_mud.Abilities.Common.CraftingSkill.EnhancedExpertise;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -37,7 +38,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Wainwrighting extends CraftingSkill implements ItemCraftor
+public class Wainwrighting extends EnhancedCraftingSkill implements ItemCraftor
 {
 	@Override
 	public String ID()
@@ -227,6 +228,8 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		if(super.checkInfo(mob, commands))
 			return true;
 
+		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
+
 		@SuppressWarnings("unused")
 		int recipeLevel=1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -279,6 +282,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 				}
 			}
 			commonTell(mob,buf.toString());
+			enhanceList(mob);
 			return true;
 		}
 		else
@@ -458,6 +462,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 			mob.location().send(mob,msg);
 			buildingI=(Item)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
+			enhanceItem(mob,buildingI,recipeLevel,enhancedTypes);
 		}
 		else
 		if(bundling)
