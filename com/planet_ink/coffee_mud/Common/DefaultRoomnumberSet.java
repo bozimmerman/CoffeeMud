@@ -411,8 +411,6 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 			if(CMath.isInteger(theRest))
 				roomNum=Integer.parseInt(theRest.substring(x+1).trim());
 		}
-		else
-			System.out.println("???????????????????"+areaName);
 		LongSet CI = root.get(areaName);
 		if(CI==null)
 		{

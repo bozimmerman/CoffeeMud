@@ -64,7 +64,7 @@ public class Rodsmithing extends StaffMaking implements ItemCraftor
 	{
 		return "METAL|MITHRIL";
 	}
-	
+
 	@Override
 	public String parametersFile()
 	{
@@ -76,13 +76,13 @@ public class Rodsmithing extends StaffMaking implements ItemCraftor
 	{
 		return "smithing";
 	}
-	
+
 	@Override
 	protected String getActiveVerb()
 	{
 		return "smith";
 	}
-	
+
 	@Override
 	protected String getTriggerKeyword()
 	{
@@ -94,17 +94,19 @@ public class Rodsmithing extends StaffMaking implements ItemCraftor
 	{
 		return "tinktinktink2.wav";
 	}
-	
+
 	@Override
 	protected String getBaseMaterialType()
 	{
 		return "Metal";
 	}
-	
+
+	private static final int[] rodCodes = new int[]{RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
+
 	@Override
 	protected int[] getBaseMaterialCodes()
 	{
-		return new int[]{RawMaterial.MATERIAL_METAL|RawMaterial.MATERIAL_MITHRIL};
+		return rodCodes;
 	}
-	
+
 }

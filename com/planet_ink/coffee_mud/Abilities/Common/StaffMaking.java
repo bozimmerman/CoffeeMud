@@ -68,7 +68,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 
 	@Override
 	public String parametersFormat()
-	{ 
+	{
 		return
 		"ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tMATERIALS_REQUIRED\t"
 		+"ITEM_BASE_VALUE\tITEM_CLASS_ID\tMAX_WAND_USES\tBASE_DAMAGE\t"
@@ -188,13 +188,13 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 		return false;
 	}
 
-	public boolean supportsMending(Physical I)
+	public boolean supportsMending(final Physical I)
 	{
 		return canMend(null, I, true);
 	}
 
 	@Override
-	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
+	protected boolean canMend(final MOB mob, final Environmental E, final boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet))
 			return false;
@@ -215,35 +215,35 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		return autoGenInvoke(mob,commands,givenTarget,auto,asLevel,0,false,new Vector<Item>(0));
 	}
-	
-	protected int getOtherRscAmtRequired(final MOB mob, String req)
+
+	protected int getOtherRscAmtRequired(final MOB mob, final String req)
 	{
 		if((req == null)||(req.trim().length()==0))
 			return 0;
 		return CMath.s_int(req);
 	}
-	
-	protected String getOtherRscRequired(String req)
+
+	protected String getOtherRscRequired(final String req)
 	{
 		if((req == null)||(req.trim().length()==0))
 			return "";
 		return req;
 	}
-	
+
 	protected String getActivePresentTenseVerb()
 	{
 		return "making";
 	}
-	
+
 	protected String getActiveVerb()
 	{
 		return "make";
 	}
-	
+
 	protected String getTriggerKeyword()
 	{
 		return this.triggerStrings()[0].toLowerCase();
@@ -253,26 +253,28 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 	{
 		return "sawing.wav";
 	}
-	
+
 	protected String getBaseMaterialType()
 	{
 		return "Wood";
 	}
-	
+
+	private static final int[] staffCodes = new int[]{RawMaterial.MATERIAL_WOODEN};
+
 	protected int[] getBaseMaterialCodes()
 	{
-		return new int[]{RawMaterial.MATERIAL_WOODEN};
+		return staffCodes;
 	}
-	
+
 	@Override
-	protected boolean autoGenInvoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel, int autoGenerate, boolean forceLevels, List<Item> crafted)
+	protected boolean autoGenInvoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel, final int autoGenerate, final boolean forceLevels, final List<Item> crafted)
 	{
 		if(super.checkStop(mob, commands))
 			return true;
 
 		if(super.checkInfo(mob, commands))
 			return true;
-		
+
 		final PairVector<EnhancedExpertise,Integer> enhancedTypes=enhancedTypes(mob,commands);
 		int recipeLevel = 1;
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,autoGenerate);
@@ -345,7 +347,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 							magic=CMParms.getParmStr(otherBenefit.toUpperCase(), "ADDS", "");
 							if(magic.length()>0)
 							{
-								int x=magic.lastIndexOf('(');
+								final int x=magic.lastIndexOf('(');
 								if((x>0)&&(magic.endsWith(")")))
 									magic=magic.substring(x+1, magic.length()-1);
 								else
@@ -461,9 +463,9 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 				woodRequired=amount;
 			final String otherRequired=getOtherRscRequired(foundRecipe.get(RCP_EXTRAREQ));
 			final int otherAmtRequired=getOtherRscAmtRequired(mob,foundRecipe.get(RCP_EXTRAREQAMT));
-			final int[] pm=this.getBaseMaterialCodes();
+			final int[] pm=getBaseMaterialCodes();
 			final int[][] data=fetchFoundResourceData(mob,
-													  woodRequired,this.getBaseMaterialType().toLowerCase(),pm,
+													  woodRequired,getBaseMaterialType().toLowerCase(),getBaseMaterialCodes(),
 													  otherAmtRequired,otherRequired,null,
 													  false,
 													  autoGenerate,

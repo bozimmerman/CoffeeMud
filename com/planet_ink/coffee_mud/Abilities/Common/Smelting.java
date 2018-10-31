@@ -339,7 +339,7 @@ public class Smelting extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			if(amount>woodRequired)
 				woodRequired*=amount;
 
-			final int[] pm={RawMaterial.MATERIAL_METAL|RawMaterial.MATERIAL_MITHRIL};
+			final int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};
 			final int[][] data=fetchFoundResourceData(mob,
 													woodRequired,"metal",pm,
 													0,null,null,
