@@ -47,20 +47,24 @@ public class AutoAssist extends StdCommand
 	}
 
 	@Override
-	public boolean execute(MOB mob, List<String> commands, int metaFlags)
+	public boolean execute(final MOB mob, final List<String> commands, final int metaFlags)
 		throws java.io.IOException
 	{
-		String parm = (commands.size() > 1) ? CMParms.combine(commands,1) : "";
+		final String parm = (commands.size() > 1) ? CMParms.combine(commands,1) : "";
 		if((mob.isAttributeSet(MOB.Attrib.AUTOASSIST) && (parm.length()==0))||(parm.equalsIgnoreCase("ON")))
 		{
 			mob.setAttribute(MOB.Attrib.AUTOASSIST,false);
 			mob.tell(L("Autoassist has been turned on."));
+			if(mob.isMonster() && (mob.amFollowing()!=null))
+				CMLib.commands().postSay(mob,null,L("I will now assist in combat."),false,false);
 		}
 		else
 		if((!mob.isAttributeSet(MOB.Attrib.AUTOASSIST) && (parm.length()==0))||(parm.equalsIgnoreCase("OFF")))
 		{
 			mob.setAttribute(MOB.Attrib.AUTOASSIST,true);
 			mob.tell(L("Autoassist has been turned off."));
+			if(mob.isMonster() && (mob.amFollowing()!=null))
+				CMLib.commands().postSay(mob,null,L("I will no longer assist in combat."),false,false);
 		}
 		else
 		if(parm.length() > 0)
