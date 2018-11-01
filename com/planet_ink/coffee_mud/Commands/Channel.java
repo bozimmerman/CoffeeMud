@@ -128,6 +128,37 @@ public class Channel extends StdCommand
 			}
 		}
 
+		if((commands.size()==1)
+		&&("last".startsWith(commands.get(0))||"list".startsWith(commands.get(0))))
+		{
+			commands.set(0, "last");
+			commands.add("10");
+		}
+
+		if((commands.size()==1)
+		&&("undo".startsWith(commands.get(0))||"delete".startsWith(commands.get(0))))
+		{
+			final List<ChannelsLibrary.ChannelMsg> que=CMLib.channels().getChannelQue(channelInt, 0, 1);
+			if(que.size()>0)
+			{
+				final ChannelsLibrary.ChannelMsg chanMsg =que.get(que.size()-1);
+				final CMMsg msg=chanMsg.msg();
+				if((msg!=null)
+				&&(msg.source()!=null)
+				&&(msg.source().Name().equals(mob.Name())))
+				{
+					CMLib.database().delBackLogEntry(channelName, chanMsg.sentTimeMillis());
+					mob.tell(L("Previous message deleted."));
+					return true;
+				}
+			}
+			if(commands.get(0).length()>=4)
+			{
+				mob.tell(L("You may not delete the last message."));
+				return true;
+			}
+		}
+
 		if((commands.size()==2)
 		&&(mob.session()!=null)
 		&&(commands.get(0).equalsIgnoreCase("last"))
