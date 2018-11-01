@@ -84,7 +84,7 @@ public class RandomMonsters extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		maintained=new Vector<MOB>();
 		final int x=newParms.indexOf(';');
@@ -176,7 +176,7 @@ public class RandomMonsters extends ActiveTicker
 		tickReset();
 	}
 
-	public boolean okRoomForMe(MOB M, Room newRoom)
+	public boolean okRoomForMe(final MOB M, final Room newRoom)
 	{
 		if(newRoom==null)
 			return false;
@@ -188,7 +188,7 @@ public class RandomMonsters extends ActiveTicker
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<MOB> getMonsters(Tickable thang, String theseparms)
+	public List<MOB> getMonsters(final Tickable thang, final String theseparms)
 	{
 		List<MOB> monsters=null;
 		final int x=theseparms.indexOf(';');
@@ -284,7 +284,7 @@ public class RandomMonsters extends ActiveTicker
 		return monsters;
 	}
 
-	public boolean canFlyHere(MOB M, Room R)
+	public boolean canFlyHere(final MOB M, final Room R)
 	{
 		if(R==null)
 			return true;
@@ -314,6 +314,11 @@ public class RandomMonsters extends ActiveTicker
 			tickStatus=Tickable.STATUS_NOT;
 			return true;
 		}
+		if(!canAct(ticking,tickID))
+		{
+			tickStatus=Tickable.STATUS_NOT;
+			return true;
+		}
 		for(int i=maintained.size()-1;i>=0;i--)
 		{
 			try
@@ -326,86 +331,83 @@ public class RandomMonsters extends ActiveTicker
 			{
 			}
 		}
-		if(maintained.size()>=maxMonsters)
+		if(maintained.size()>=minMonsters)
+		{
+			tickDown=this.maxTicks;
+			tickStatus=Tickable.STATUS_NOT;
+			return true;
+		}
+		tickStatus=Tickable.STATUS_MISC;
+		final List<MOB> monsters=getMonsters(ticking,getParms());
+		tickStatus=Tickable.STATUS_MISC+1;
+		if(monsters==null)
 		{
 			tickStatus=Tickable.STATUS_NOT;
 			return true;
 		}
-		tickStatus=Tickable.STATUS_ALIVE;
-		if((canAct(ticking,tickID))||(maintained.size()<minMonsters))
+		tickStatus=Tickable.STATUS_MISC+2;
+		if(maintained.size()<avgMonsters)
 		{
-			tickStatus=Tickable.STATUS_MISC;
-			final List<MOB> monsters=getMonsters(ticking,getParms());
-			tickStatus=Tickable.STATUS_MISC+1;
-			if(monsters==null)
+			MOB M=monsters.get(CMLib.dice().roll(1,monsters.size(),-1));
+			if(M!=null)
 			{
-				tickStatus=Tickable.STATUS_NOT;
-				return true;
-			}
-			tickStatus=Tickable.STATUS_MISC+2;
-			if(maintained.size()<avgMonsters)
-			{
-				MOB M=monsters.get(CMLib.dice().roll(1,monsters.size(),-1));
-				if(M!=null)
+				tickStatus=Tickable.STATUS_MISC+3;
+				M=(MOB)M.copyOf();
+				tickStatus=Tickable.STATUS_MISC+4;
+				M.setStartRoom(null);
+				M.basePhyStats().setRejuv(PhyStats.NO_REJUV);
+				M.recoverPhyStats();
+				tickStatus=Tickable.STATUS_MISC+5;
+				M.text();
+				maintained.addElement(M);
+				tickStatus=Tickable.STATUS_MISC+6;
+				if(ticking instanceof Room)
 				{
-					tickStatus=Tickable.STATUS_MISC+3;
-					M=(MOB)M.copyOf();
-					tickStatus=Tickable.STATUS_MISC+4;
-					M.setStartRoom(null);
-					M.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-					M.recoverPhyStats();
-					tickStatus=Tickable.STATUS_MISC+5;
-					M.text();
-					maintained.addElement(M);
-					tickStatus=Tickable.STATUS_MISC+6;
-					if(ticking instanceof Room)
+					tickStatus=Tickable.STATUS_MISC+7;
+					if(ticking instanceof GridLocale)
 					{
-						tickStatus=Tickable.STATUS_MISC+7;
-						if(ticking instanceof GridLocale)
-						{
-							tickStatus=Tickable.STATUS_MISC+8;
-							final Room room=((GridLocale)ticking).getRandomGridChild();
-							tickStatus=Tickable.STATUS_MISC+9;
-							M.bringToLife(room,true);
-						}
-						else
-							M.bringToLife(((Room)ticking),true);
-						tickStatus=Tickable.STATUS_MISC+10;
-						Resources.removeResource("HELP_"+((Room)ticking).getArea().name().toUpperCase());
+						tickStatus=Tickable.STATUS_MISC+8;
+						final Room room=((GridLocale)ticking).getRandomGridChild();
+						tickStatus=Tickable.STATUS_MISC+9;
+						M.bringToLife(room,true);
 					}
 					else
-					if((ticking instanceof Area)&&(((Area)ticking).metroSize()>0))
+						M.bringToLife(((Room)ticking),true);
+					tickStatus=Tickable.STATUS_MISC+10;
+					Resources.removeResource("HELP_"+((Room)ticking).getArea().name().toUpperCase());
+				}
+				else
+				if((ticking instanceof Area)&&(((Area)ticking).metroSize()>0))
+				{
+					tickStatus=Tickable.STATUS_MISC+11;
+					Resources.removeResource("HELP_"+ticking.name().toUpperCase());
+					Room room=null;
+					tickStatus=Tickable.STATUS_MISC+12;
+					if(restrictedLocales==null)
 					{
-						tickStatus=Tickable.STATUS_MISC+11;
-						Resources.removeResource("HELP_"+ticking.name().toUpperCase());
-						Room room=null;
-						tickStatus=Tickable.STATUS_MISC+12;
-						if(restrictedLocales==null)
-						{
-							tickStatus=Tickable.STATUS_MISC+13;
-							int tries=0;
-							while(((room==null)||(!canFlyHere(M,room)))
-							&&((++tries)<100))
-								room=((Area)ticking).getRandomMetroRoom();
-							tickStatus=Tickable.STATUS_MISC+14;
-						}
-						else
-						{
-							tickStatus=Tickable.STATUS_MISC+15;
-							int tries=0;
-							while(((room==null)||(!okRoomForMe(M,room)))
-							&&((++tries)<100))
-								room=((Area)ticking).getRandomMetroRoom();
-							tickStatus=Tickable.STATUS_MISC+16;
-						}
-						if((room!=null)&&(room instanceof GridLocale))
-							room=((GridLocale)room).getRandomGridChild();
-						if(room!=null)
-							M.bringToLife(room,true);
-						else
-							maintained.removeElement(M);
-						tickStatus=Tickable.STATUS_MISC+17;
+						tickStatus=Tickable.STATUS_MISC+13;
+						int tries=0;
+						while(((room==null)||(!canFlyHere(M,room)))
+						&&((++tries)<100))
+							room=((Area)ticking).getRandomMetroRoom();
+						tickStatus=Tickable.STATUS_MISC+14;
 					}
+					else
+					{
+						tickStatus=Tickable.STATUS_MISC+15;
+						int tries=0;
+						while(((room==null)||(!okRoomForMe(M,room)))
+						&&((++tries)<100))
+							room=((Area)ticking).getRandomMetroRoom();
+						tickStatus=Tickable.STATUS_MISC+16;
+					}
+					if((room!=null)&&(room instanceof GridLocale))
+						room=((GridLocale)room).getRandomGridChild();
+					if(room!=null)
+						M.bringToLife(room,true);
+					else
+						maintained.removeElement(M);
+					tickStatus=Tickable.STATUS_MISC+17;
 				}
 			}
 		}
