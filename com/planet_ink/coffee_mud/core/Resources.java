@@ -28,7 +28,7 @@ public class Resources
 	private static final Resources[] rscs			 =new Resources[256];
 	private static boolean 	 		 compress		 =false;
 	private static Object 			 propResourceSync=new Object();
-	
+
 	private static Map<String,Map<String,String>> propResources;
 
 	/**
@@ -37,7 +37,7 @@ public class Resources
 	private final Map<String,Object> resources=new STreeMap<String,Object>(new Comparator<String>()
 	{
 		@Override
-		public int compare(String o1, String o2)
+		public int compare(final String o1, final String o2)
 		{
 			if(o1==null)
 			{
@@ -61,13 +61,13 @@ public class Resources
 	private static class CompressedResource
 	{
 		public byte[] data;
-		
+
 		/**
 		 * Constructs a CompressedResource object from the given bytes
 		 * @param d
 		 */
-		public CompressedResource(byte[] d) 
-		{ 
+		public CompressedResource(final byte[] d)
+		{
 			data=d;
 		}
 	}
@@ -89,7 +89,7 @@ public class Resources
 	 * calling.
 	 * @param code the threadcode with an existing Resources
 	 */
-	public static void shareWith(char code)
+	public static void shareWith(final char code)
 	{
 		if(Thread.currentThread().getThreadGroup().getName().charAt(0)==code)
 			initialize();
@@ -110,11 +110,11 @@ public class Resources
 	 * Creates and returns a new Resources object for the current calling thread
 	 * @return a new Resources object for the current calling thread
 	 */
-	public static final Resources initialize() 
-	{ 
-		return new Resources(); 
+	public static final Resources initialize()
+	{
+		return new Resources();
 	}
-	
+
 	/**
 	 * Returns the Resources instance tied to this particular thread group, or a new one if not yet created.
 	 * @return the Resources instance tied to this particular thread group, or a new one if if not yet created.
@@ -126,23 +126,23 @@ public class Resources
 			return new Resources();
 		return r;
 	}
-	
+
 	/**
 	 * Returns the Resources instance tied to the given thread group, or null if not yet created.
 	 * @param c the code for the thread group to return (0-255)
 	 * @return the Resources instance tied to the given thread group, or null if not yet created.
 	 */
 	public static final Resources instance(final char c)
-	{ 
+	{
 		return rscs[c];
 	}
-	
+
 	/**
 	 * Returns the Resources instance tied to this particular thread group, or null if not yet created.
 	 * @return the Resources instance tied to this particular thread group, or null if not yet created.
 	 */
 	private static final Resources r()
-	{ 
+	{
 		return rscs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
 	}
 
@@ -151,9 +151,9 @@ public class Resources
 	 * @return the Resources instance tied to this particular thread group, or null if not yet created.
 	 */
 	public static final Resources staticInstance()
-	{ 
+	{
 		if(rscs[0]==null)
-			rscs[0]=newResources(); 
+			rscs[0]=newResources();
 		return rscs[0];
 	}
 
@@ -162,7 +162,7 @@ public class Resources
 	 * @return a new Resources object for the current calling thread
 	 */
 	public static final Resources newResources()
-	{ 
+	{
 		return new Resources();
 	}
 
@@ -173,7 +173,7 @@ public class Resources
 	{
 		r()._clearResources();
 	}
-	
+
 	/**
 	 * Saves any cached resource properties for the current calling thread group.
 	 * Removes all resources for the current calling thread group.
@@ -189,7 +189,7 @@ public class Resources
 	 * @param ID the resource ID to remove, case insensitive as always
 	 */
 	public static final void removeResource(final String ID)
-	{ 	
+	{
 		r()._removeResource(ID);
 	}
 
@@ -199,10 +199,10 @@ public class Resources
 	 * @return true if found, false otherwise
 	 */
 	public static final boolean isResource(final String ID)
-	{ 	
+	{
 		return r()._isResource(ID);
 	}
-	
+
 	/**
 	 * Does a case-insensitive instring search of all resources for the
 	 * current calling thread group and returns an iterator of all FULL keys
@@ -214,7 +214,7 @@ public class Resources
 	{
 		return r()._findResourceKeys(srch);
 	}
-	
+
 	/**
 	 * Returns the raw resource object for the given case-insensitive ID, from
 	 * the resources for the current calling thread group.
@@ -225,7 +225,7 @@ public class Resources
 	{
 		return r()._getResource(ID);
 	}
-	
+
 	/**
 	 * Adds or replaces a raw resource object at the given case-insensitive ID, into
 	 * the resources for the current calling thread group.
@@ -236,7 +236,7 @@ public class Resources
 	{
 		r()._submitResource(ID,obj);
 	}
-	
+
 	/**
 	 * Checks the resources for the current calling thread group for a file resource
 	 * of the given name.
@@ -251,7 +251,7 @@ public class Resources
 	/**
 	 * Returns the stringbuffer content for the given resource filename, from
 	 * the resources for the current calling thread group.  This method
-	 * will normalize text data line endings for mud display. 
+	 * will normalize text data line endings for mud display.
 	 * @param filename the resource filename (/resources/[FILENAME])
 	 * @param reportErrors if true, file errors will be logged
 	 * @return the StringBuffer of the file at that resource filename, or null of not found
@@ -273,9 +273,9 @@ public class Resources
 	{
 		return r()._getRawFileResource(filename,reportErrors);
 	}
-	
+
 	/**
-	 * Saves the given stringbuffer of data to the given resource filename, to 
+	 * Saves the given stringbuffer of data to the given resource filename, to
 	 * the filesystem on behalf of the given user/player, without touching the cache.
 	 * Returns false if the user was not permitted to save files at that location.
 	 * @param filename the resource filename to save to (/resources/[FILENAME])
@@ -287,10 +287,10 @@ public class Resources
 	{
 		return r()._saveFileResource(filename,whom,myRsc);
 	}
-	
+
 	/**
-	 * Saves the given stringbuffer of data to the given resource filename, to 
-	 * the filesystem while also updating the internal cache for the resources 
+	 * Saves the given stringbuffer of data to the given resource filename, to
+	 * the filesystem while also updating the internal cache for the resources
 	 * of the calling threads thread group.
 	 * Returns false if there was a filesystem error.
 	 * @param filename the resource filename to save to (/resources/[FILENAME])
@@ -301,7 +301,7 @@ public class Resources
 	{
 		return r()._updateFileResource(filename,obj);
 	}
-	
+
 	/**
 	 * Opens the given CMFile as a properties type file, ignoring comment lines, and looking
 	 * for a property entry that matches [match]=[whatever], removing it if found, and if found,
@@ -317,7 +317,7 @@ public class Resources
 
 	/**
 	 * Scans the given stringbuffer for the first occurrence of an end-of-line and
-	 * returns the end of line character(s) encountered.  This could be \n, \r, \n\r, 
+	 * returns the end of line character(s) encountered.  This could be \n, \r, \n\r,
 	 * or \r\n
 	 * @param buf the stringbuffer to scan
 	 * @return the end of line market
@@ -393,11 +393,11 @@ public class Resources
 	 * A multi-list is, in code, a string-key map of string lists.  In a file, it is represented
 	 * by a string key on one line, followed by the list entries, followed by a blank line.
 	 * Obviously, no blank list entries are permitted.
-	 * 
+	 *
 	 * This method will build a stringbuffer from the multi-list object, and then save it to
 	 * the given resource filename.  This method does nothing to the cache.
-	 * 
-	 * @param filename the resource filename to save to 
+	 *
+	 * @param filename the resource filename to save to
 	 * @param lists the multi-list
 	 */
 	public static final void updateMultiListFile(String filename, final Map<String, List<String>> lists)
@@ -466,7 +466,7 @@ public class Resources
 	}
 
 	/**
-	 * Removes and Deletes the string/object map assigned to the given object key. 
+	 * Removes and Deletes the string/object map assigned to the given object key.
 	 * @see Resources#getPersonalMap(Object, boolean)
 	 * @param key the key to look for
 	 */
@@ -482,15 +482,15 @@ public class Resources
 			}
 		}
 	}
-	
+
 	/**
 	 * A multi-list is, in code, a string-key map of string lists.  In a file, it is represented
 	 * by a string key on one line, followed by the list entries, followed by a blank line.
 	 * Obviously, no blank list entries are permitted.
-	 * 
+	 *
 	 * This method Removes the parsed multi-list object from the memory cache for this thread
 	 * group.
-	 * 
+	 *
 	 * @param filename the filename of the parsed multi-list file
 	 * @return true
 	 */
@@ -505,16 +505,16 @@ public class Resources
 	 * A multi-list is, in code, a string-key map of string lists.  In a file, it is represented
 	 * by a string key on one line, followed by the list entries, followed by a blank line.
 	 * Obviously, no blank list entries are permitted.
-	 * 
+	 *
 	 * This method retrieves the parsed multi-list object from the memory cache of this thread
 	 * group if found. If not found, it attempts to load it from the given resource filename.
-	 * 
+	 *
 	 * @param filename the filename of the parsed multi-list file
 	 * @param createIfNot true to create a multilist object if not loaded, false if not
 	 * @return the multi-list map object
 	 */
 	@SuppressWarnings("unchecked")
-	public static final Map<String, List<String>> getCachedMultiLists(final String filename, boolean createIfNot)
+	public static final Map<String, List<String>> getCachedMultiLists(final String filename, final boolean createIfNot)
 	{
 		final String key = "PARSED_MULTI: "+filename.toUpperCase();
 		Map<String,List<String>> H=(Map<String,List<String>>)getResource(key);
@@ -533,10 +533,10 @@ public class Resources
 	 * A multi-list is, in code, a string-key map of string lists.  In a file, it is represented
 	 * by a string key on one line, followed by the list entries, followed by a blank line.
 	 * Obviously, no blank list entries are permitted.
-	 * 
-	 * This method re-saves the cached multi-list object in this thread groups resource 
+	 *
+	 * This method re-saves the cached multi-list object in this thread groups resource
 	 * cache to the given resource filename.
-	 * 
+	 *
 	 * @param filename the filename of the parsed multi-list file
 	 * @return the multi-list map object, full or empty
 	 */
@@ -559,9 +559,9 @@ public class Resources
 	 * A multi-list is, in code, a string-key map of string lists.  In a file, it is represented
 	 * by a string key on one line, followed by the list entries, followed by a blank line.
 	 * Obviously, no blank list entries are permitted.
-	 * 
+	 *
 	 * This method retrieves the parsed multi-list object from the given resource filename.
-	 * 
+	 *
 	 * @param filename the filename of the parsed multi-list file
 	 * @return the multi-list map object, full or empty
 	 */
@@ -582,7 +582,7 @@ public class Resources
 		catch(final Exception e)
 		{
 		}
-		
+
 		if((V!=null)&&(V.size()>0))
 		{
 			String journal="";
@@ -668,11 +668,11 @@ public class Resources
 	{
 		final String lowerSrch=srch.toLowerCase();
 		final boolean allOfThem=(lowerSrch.length()==0);
-		
+
 		return new FilteredIterator<String>(resources.keySet().iterator(), new Filterer<String>()
 		{
 			@Override
-			public boolean passesFilter(String obj)
+			public boolean passesFilter(final String obj)
 			{
 				return (allOfThem) || ((obj != null) && (obj.toLowerCase().indexOf(lowerSrch)>=0));
 			}
@@ -682,7 +682,7 @@ public class Resources
 	/**
 	 * Returns the resource object with the given case insensitive ID.
 	 * If the stringbuffer resource is compressed, it uncompresses it first.
-	 * @param ID the key of the object to return 
+	 * @param ID the key of the object to return
 	 * @return the object found, or null
 	 */
 	public final Object _getResource(final String ID)
@@ -728,7 +728,7 @@ public class Resources
 
 	/**
 	 * Adds or updates the given resource object at the given resource id/key.
-	 * 
+	 *
 	 * @param ID the key to store the resource as
 	 * @param obj the object to store
 	 * @return the object as stored.
@@ -747,7 +747,7 @@ public class Resources
 
 	/**
 	 * Adds or updates the given resource object at the given resource id/key.
-	 * 
+	 *
 	 * @param ID the key to store the resource as
 	 * @param obj the object to store
 	 * @returnthe object as stored.
@@ -759,7 +759,7 @@ public class Resources
 
 	/**
 	 * Removes the given resource with the given ID, if found.
-	 * 
+	 *
 	 * @param ID the key the resource is stored as
 	 */
 	public final void _removeResource(final String ID)
@@ -769,7 +769,7 @@ public class Resources
 
 	/**
 	 * Returns true if there is a resource file object stored under the
-	 * given filename OR if there exists a file with the given filename 
+	 * given filename OR if there exists a file with the given filename
 	 * (and is thus potentially a file resource).
 	 * @param filename the filename to look in the cache or filesystem for
 	 * @return true if the cache entry or file is found, false otherwise
@@ -878,7 +878,7 @@ public class Resources
 		{
 			buf = new StringBuffer(new String(new CMFile(filename,null,reportErrors?CMFile.FLAG_LOGERRORS:0).raw(),charSet));
 		}
-		catch (UnsupportedEncodingException e)
+		catch (final UnsupportedEncodingException e)
 		{
 			Log.errOut(e);
 			buf=new StringBuffer("");
@@ -889,7 +889,7 @@ public class Resources
 	}
 
 	/**
-	 * Saves the given stringbuffer of data to the given resource filename, to 
+	 * Saves the given stringbuffer of data to the given resource filename, to
 	 * the filesystem while also updating the internal cache for the resources.
 	 * Returns false if there was a filesystem error.
 	 * @param filename the resource filename to save to (/resources/[FILENAME])
@@ -915,7 +915,7 @@ public class Resources
 	}
 
 	/**
-	 * Saves the given stringbuffer of data to the given resource filename, to 
+	 * Saves the given stringbuffer of data to the given resource filename, to
 	 * the filesystem on behalf of the given user/player, without touching the cache.
 	 * Returns false if the user was not permitted to save files at that location.
 	 * @param filename the resource filename to save to (/resources/[FILENAME])
@@ -991,10 +991,10 @@ public class Resources
 	 * sections headed by a bracketed [BLOCK].  The filename is ::/coffeemud_properties.ini.  These
 	 * properties tend to be internal data maintained by the system for internal use, and resaved
 	 * as necessary.
-	 * 
+	 *
 	 * This method retrieves all properties in a given section into a string map.  If they are
 	 * not cached, this method will cache all properties of all sections.
-	 * 
+	 *
 	 * @param section the section in the resource properties to get entries from
 	 * @return a map of the entries in the given section
 	 */
@@ -1039,7 +1039,7 @@ public class Resources
 									final String value=URLDecoder.decode(line.substring(eqSepIndex+1),"UTF-8");
 									currSecMap.put(key.toUpperCase().trim(), value);
 								}
-								catch(final UnsupportedEncodingException e) 
+								catch(final UnsupportedEncodingException e)
 								{
 								}
 							}
@@ -1065,15 +1065,15 @@ public class Resources
 	 * sections headed by a bracketed [BLOCK].  The filename is ::/coffeemud_properties.ini.  These
 	 * properties tend to be internal data maintained by the system for internal use, and resaved
 	 * as necessary.
-	 * 
+	 *
 	 * This method checks for a given property key in a given section and returns whether it was
 	 * found.
-	 * 
+	 *
 	 * @param section the section to look in
 	 * @param key the property key to look for in that section
 	 * @return true if the key was found, false otherwise
 	 */
-	public static final boolean isPropResource(String section, String key)
+	public static final boolean isPropResource(final String section, String key)
 	{
 		final Map<String,String> secMap = getAllPropResources(section);
 		key=key.toUpperCase().trim();
@@ -1088,15 +1088,15 @@ public class Resources
 	 * sections headed by a bracketed [BLOCK].  The filename is ::/coffeemud_properties.ini.  These
 	 * properties tend to be internal data maintained by the system for internal use, and resaved
 	 * as necessary.
-	 * 
-	 * This method returns the value of the given property key in the given section, or "" if it 
+	 *
+	 * This method returns the value of the given property key in the given section, or "" if it
 	 * was not found.
-	 * 
+	 *
 	 * @param section the section of the resource properties to look in
 	 * @param key the key in the section to look for
 	 * @return the value of the property key, or ""
 	 */
-	public static final String getPropResource(String section, String key)
+	public static final String getPropResource(final String section, String key)
 	{
 		final Map<String,String> secMap = getAllPropResources(section);
 		key=key.toUpperCase().trim();
@@ -1113,15 +1113,15 @@ public class Resources
 	 * sections headed by a bracketed [BLOCK].  The filename is ::/coffeemud_properties.ini.  These
 	 * properties tend to be internal data maintained by the system for internal use, and resaved
 	 * as necessary.
-	 * 
-	 * This method sets or removes the value of the given property key in the given section.  
+	 *
+	 * This method sets or removes the value of the given property key in the given section.
 	 * It does not re-save.  If the value is null or "", the property key is removed.
-	 * 
+	 *
 	 * @param section the section of the resource properties to add the key to
 	 * @param key the key in the section to set
 	 * @param value the new value of the key, or "" to remove
 	 */
-	public static final void setPropResource(String section, String key, String value)
+	public static final void setPropResource(final String section, String key, final String value)
 	{
 		final Map<String,String> secMap = getAllPropResources(section);
 		key=key.toUpperCase().trim();
@@ -1139,7 +1139,7 @@ public class Resources
 	 * sections headed by a bracketed [BLOCK].  The filename is ::/coffeemud_properties.ini.  These
 	 * properties tend to be internal data maintained by the system for internal use, and resaved
 	 * as necessary.
-	 * 
+	 *
 	 * This method re-saves the cached resource properties object back to the filesystem.
 	 */
 	public static final void savePropResources()
@@ -1166,7 +1166,7 @@ public class Resources
 								final String value=URLEncoder.encode(secMap.get(key),"UTF-8");
 								str.append(key).append("=").append(value).append("\n");
 							}
-							catch (final UnsupportedEncodingException e) 
+							catch (final UnsupportedEncodingException e)
 							{
 							}
 						}

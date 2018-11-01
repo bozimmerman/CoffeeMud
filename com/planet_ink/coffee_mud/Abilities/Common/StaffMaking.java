@@ -465,7 +465,7 @@ public class StaffMaking extends EnhancedCraftingSkill implements ItemCraftor
 			final int otherAmtRequired=getOtherRscAmtRequired(mob,foundRecipe.get(RCP_EXTRAREQAMT));
 			final int[] pm=getBaseMaterialCodes();
 			final int[][] data=fetchFoundResourceData(mob,
-													  woodRequired,getBaseMaterialType().toLowerCase(),getBaseMaterialCodes(),
+													  woodRequired,getBaseMaterialType().toLowerCase(),pm,
 													  otherAmtRequired,otherRequired,null,
 													  false,
 													  autoGenerate,
