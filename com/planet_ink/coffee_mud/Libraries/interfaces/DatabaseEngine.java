@@ -2083,11 +2083,24 @@ public interface DatabaseEngine extends CMLibrary
 	 * Table category: DBBACKLOG
 	 * Adds a CHANNEL message to the backlog table
 	 * @see DatabaseEngine#getBackLogEntries(String, int, int)
+	 * @see DatabaseEngine#delBackLogEntry(String, int, long)
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
 	 * @param channelName the unique name of the channel
+	 * @param timeStamp the time the message was added in millis
 	 * @param entry message
 	 */
-	public void addBackLogEntry(String channelName, final String entry);
+	public void addBackLogEntry(String channelName, long timeStamp, final String entry);
+
+	/**
+	 * Table category: DBBACKLOG
+	 * Removes a CHANNEL message from the backlog table
+	 * @see DatabaseEngine#getBackLogEntries(String, int, int)
+	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
+	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
+	 * @param channelName the unique name of the channel
+	 * @param timeStamp the time the message was posted
+	 */
+	public void delBackLogEntry(final String channelName, final long timeStamp);
 
 	/**
 	 * Table category: DBBACKLOG
@@ -2096,7 +2109,8 @@ public interface DatabaseEngine extends CMLibrary
 	 * message.  The list is date-sorted, so list returns can ge "paged"
 	 * by setting the number to skip and the number to return.
 	 *
-	 * @see DatabaseEngine#addBackLogEntry(String, String)
+	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
+	 * @see DatabaseEngine#delBackLogEntry(String, int, long)
 	 * @see DatabaseEngine#trimBackLogEntries(String[], int, long)
 	 *
 	 * @param channelName the unique name of the channel to return messages from
@@ -2114,7 +2128,8 @@ public interface DatabaseEngine extends CMLibrary
 	 * to return (absolute timestamp -- no 0 nonsense).  Both criteria
 	 * will be used in the trimming.
 	 * @see DatabaseEngine#getBackLogEntries(String, int, int)
-	 * @see DatabaseEngine#addBackLogEntry(String, String)
+	 * @see DatabaseEngine#delBackLogEntry(String, int, long)
+	 * @see DatabaseEngine#addBackLogEntry(String, long, String)
 	 *
 	 * @param channels the list of channels to go through.
 	 * @param maxMessages the maximum number of messages to retain

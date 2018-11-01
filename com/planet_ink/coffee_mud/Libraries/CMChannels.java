@@ -316,11 +316,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		CMLib.map().sendGlobalMessage(msg.source(),CMMsg.TYP_CHANNEL,msg);
 		final CMChannel channel=getChannel(channelNumber);
 		final SLinkedList<ChannelMsg> q=channel.queue();
+		final long now;
 		synchronized(q)
 		{
 			if(q.size()>=QUEUE_SIZE)
 				q.removeLast();
-			final long now = System.currentTimeMillis();
+			now = System.currentTimeMillis();
 			q.addFirst(new ChannelMsg()
 			{
 				@Override
@@ -342,7 +343,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		{
 			try
 			{
-				CMLib.database().addBackLogEntry(getChannel(channelNumber).name(), msg.toFlatString());
+				CMLib.database().addBackLogEntry(getChannel(channelNumber).name(), now, msg.toFlatString());
 			}
 			catch(final Exception e)
 			{

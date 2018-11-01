@@ -37,13 +37,13 @@ public class BackLogLoader
 {
 	protected DBConnector DB=null;
 	protected Map<String,int[]> counters = new Hashtable<String,int[]>();
-	
-	public BackLogLoader(DBConnector newDB)
+
+	public BackLogLoader(final DBConnector newDB)
 	{
 		DB=newDB;
 	}
-	
-	protected int getCounter(String channelName, boolean bump)
+
+	protected int getCounter(final String channelName, final boolean bump)
 	{
 		synchronized(("BACKLOG_"+channelName).intern())
 		{
@@ -101,7 +101,7 @@ public class BackLogLoader
 			return counter[0];
 		}
 	}
-	
+
 	public void addBackLogEntry(String channelName, final String entry)
 	{
 		if((entry == null) || (channelName == null) || (entry.length()==0))
@@ -137,7 +137,38 @@ public class BackLogLoader
 			DB.DBDone(D);
 		}
 	}
-	
+
+	public void delBackLogEntry(String channelName, final long timeStamp)
+	{
+		if(channelName == null)
+			return;
+		channelName = channelName.toUpperCase().trim();
+		DBConnection D=DB.DBFetch();
+		try
+		{
+			try
+			{
+				D.update("DELETE FROM CMBKLG WHERE CMNAME='"+channelName+"' AND CMDATE="+timeStamp,0);
+			}
+			catch(final Exception sqle)
+			{
+				// retry for duplicate entries, but how could that even happen?!
+				Log.errOut("Retry: "+sqle.getMessage());
+				DB.DBDone(D);
+				D=DB.DBFetch();
+				D.update("DELETE FROM CMBKLG WHERE CMNAME='"+channelName+"' AND CMDATE="+timeStamp,0);
+			}
+		}
+		catch(final Exception sqle)
+		{
+			Log.errOut("Journal",sqle);
+		}
+		finally
+		{
+			DB.DBDone(D);
+		}
+	}
+
 	public List<Pair<String,Long>> getBackLogEntries(String channelName, final int newestToSkip, final int numToReturn)
 	{
 		final List<Pair<String,Long>> list=new Vector<Pair<String,Long>>();
@@ -152,7 +183,7 @@ public class BackLogLoader
 			final int oldest = number >= counter ? 1 : (counter - number);
 			final int newest = newestToSkip >= counter ? counter : (counter - newestToSkip);
 			D=DB.DBFetch();
-			StringBuilder sql=new StringBuilder("SELECT CMDATA,CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"'");
+			final StringBuilder sql=new StringBuilder("SELECT CMDATA,CMDATE FROM CMBKLG WHERE CMNAME='"+channelName+"'");
 			sql.append(" AND CMINDX >="+oldest);
 			sql.append(" AND CMINDX <="+newest);
 			sql.append(" ORDER BY CMINDX");
@@ -171,7 +202,7 @@ public class BackLogLoader
 		}
 		return list;
 	}
-	
+
 	public void trimBackLogEntries(final String[] channels, final int maxMessages, final long oldestTime)
 	{
 		for(final String channelName : channels)
