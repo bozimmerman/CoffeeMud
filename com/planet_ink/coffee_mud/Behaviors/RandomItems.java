@@ -84,7 +84,7 @@ public class RandomItems extends ActiveTicker
 	}
 
 	@Override
-	public void setParms(String newParms)
+	public void setParms(final String newParms)
 	{
 		favorMobs=false;
 		maintained=new Vector<Item>();
@@ -180,7 +180,7 @@ public class RandomItems extends ActiveTicker
 		tickReset();
 	}
 
-	public boolean okRoomForMe(Room newRoom)
+	public boolean okRoomForMe(final Room newRoom)
 	{
 		if(newRoom==null)
 			return false;
@@ -189,7 +189,7 @@ public class RandomItems extends ActiveTicker
 		return !restrictedLocales.contains(Integer.valueOf(newRoom.domainType()));
 	}
 
-	public boolean isStillMaintained(Environmental thang, ShopKeeper SK, Item I)
+	public boolean isStillMaintained(final Environmental thang, final ShopKeeper SK, final Item I)
 	{
 		if((I==null)||(I.amDestroyed()))
 			return false;
@@ -218,7 +218,7 @@ public class RandomItems extends ActiveTicker
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Item> getItems(Tickable thang, String theseparms)
+	public List<Item> getItems(final Tickable thang, final String theseparms)
 	{
 		List<Item> items=null;
 		final int x=theseparms.indexOf(';');
@@ -363,7 +363,7 @@ public class RandomItems extends ActiveTicker
 						{
 							maintained.addElement(I);
 							final CoffeeShop shop=(SK instanceof Librarian)?((Librarian)SK).getBaseLibrary():SK.getShop();
-							shop.addStoreInventory((Environmental)ticking,1,-1);
+							shop.addStoreInventory(I,1,-1);
 						}
 					}
 					else
