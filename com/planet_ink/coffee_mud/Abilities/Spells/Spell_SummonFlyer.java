@@ -95,7 +95,7 @@ public class Spell_SummonFlyer extends Spell
 		super.unInvoke();
 		if((canBeUninvoked())&&(mob!=null))
 		{
-			if(mob.amDead()) 
+			if(mob.amDead())
 				mob.setLocation(null);
 			else
 			if(mob.location()!=null)
@@ -159,7 +159,7 @@ public class Spell_SummonFlyer extends Spell
 	}
 
 	@Override
-	public boolean invoke(MOB mob, List<String> commands, Physical givenTarget, boolean auto, int asLevel)
+	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -196,8 +196,8 @@ public class Spell_SummonFlyer extends Spell
 		// return whether it worked
 		return success;
 	}
-	
-	public MOB determineMonster(MOB caster, int level)
+
+	public MOB determineMonster(final MOB caster, final int level)
 	{
 
 		final MOB newMOB=CMClass.getMOB("GenRideable");
@@ -207,7 +207,7 @@ public class Spell_SummonFlyer extends Spell
 		newMOB.basePhyStats().setLevel(level);
 		newMOB.basePhyStats().setWeight(500);
 		newMOB.basePhyStats().setRejuv(PhyStats.NO_REJUV);
-		newMOB.baseCharStats().setMyRace(CMClass.getRace("Horse"));
+		newMOB.baseCharStats().setMyRace(CMClass.getRace("Pegasus"));
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.recoverPhyStats();
@@ -237,7 +237,7 @@ public class Spell_SummonFlyer extends Spell
 		return(newMOB);
 	}
 
-	public MOB checkPack(MOB newPackmate, MOB mob)
+	public MOB checkPack(final MOB newPackmate, final MOB mob)
 	{
 		for(int i=0;i<mob.numFollowers();i++)
 		{

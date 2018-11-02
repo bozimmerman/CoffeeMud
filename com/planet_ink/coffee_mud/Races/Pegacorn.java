@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 /*
-   Copyright 2003-2018 Bo Zimmerman
+   Copyright 2018-2018 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -32,15 +32,15 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Unicorn extends StdRace
+public class Pegacorn extends StdRace
 {
 	@Override
 	public String ID()
 	{
-		return "Unicorn";
+		return "Pegacorn";
 	}
 
-	private final static String localizedStaticName = CMLib.lang().L("Unicorn");
+	private final static String localizedStaticName = CMLib.lang().L("Pegacorn");
 
 	@Override
 	public String name()
@@ -92,11 +92,11 @@ public class Unicorn extends StdRace
 		return localizedStaticRacialCat;
 	}
 
-	private final String[]	racialAbilityNames			= { "HorseSpeak" };
-	private final int[]		racialAbilityLevels			= { 1 };
-	private final int[]		racialAbilityProficiencies	= { 100 };
-	private final boolean[]	racialAbilityQuals			= { false };
-	private final String[]	racialAbilityParms			= { "" };
+	private final String[]	racialAbilityNames			= { "Fighter_Kick", "HorseSpeak", "Skill_Buck", "Fighter_FlyingKick", "WingFlying" };
+	private final int[]		racialAbilityLevels			= { 5, 1, 5, 15, 1 };
+	private final int[]		racialAbilityProficiencies	= { 75, 100, 50, 50, 100 };
+	private final boolean[]	racialAbilityQuals			= { false, false, false, false, false };
+	private final String[]	racialAbilityParms			= { "", "", "", "", "" };
 
 	@Override
 	protected String[] racialAbilityNames()
@@ -129,7 +129,7 @@ public class Unicorn extends StdRace
 	}
 
 	//  							  an ey ea he ne ar ha to le fo no gi mo wa ta wi
-	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
+	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,2 };
 
 	@Override
 	public int[] bodyMask()
@@ -274,10 +274,14 @@ public class Unicorn extends StdRace
 			if(resources.size()==0)
 			{
 				resources.addElement(makeResource("a "+name().toLowerCase()+" mane",RawMaterial.RESOURCE_FUR,L("@x1 fur",name().toLowerCase())));
-				for(int i=0;i<2;i++)
+				for(int i=0;i<3;i++)
 					resources.addElement(makeResource("a piece of "+name().toLowerCase()+" leather",RawMaterial.RESOURCE_LEATHER));
-				resources.addElement(makeResource("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));
-				resources.addElement(makeResource("a pint of "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				for(int i=0;i<7;i++)
+					resources.addElement(makeResource("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_BEEF));
+				for(int i=0;i<3;i++)
+					resources.addElement(makeResource("a pint of "+name().toLowerCase()+" blood",RawMaterial.RESOURCE_BLOOD));
+				for(int i=0;i<6;i++)
+					resources.addElement(makeResource("some "+name().toLowerCase()+" feathers",RawMaterial.RESOURCE_FEATHERS,L("@x1 feathers",name().toLowerCase())));
 				resources.addElement(makeResource("a "+name().toLowerCase()+" horn",RawMaterial.RESOURCE_BONE));
 			}
 		}
