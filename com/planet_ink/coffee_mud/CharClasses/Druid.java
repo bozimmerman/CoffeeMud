@@ -533,6 +533,13 @@ public class Druid extends StdCharClass
 					msg.source().makePeace(true);
 					((MOB)host).makePeace(true);
 				}
+				if((msg.source().isMonster())
+				&&(msg.source().amFollowing()==null)
+				&&(!msg.source().isInCombat()))
+				{
+					CMLib.tracking().wanderAway(msg.source(),false,false);
+					msg.source().killMeDead(false);
+				}
 			}
 		}
 	}
