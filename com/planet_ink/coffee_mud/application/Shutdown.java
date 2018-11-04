@@ -31,7 +31,6 @@ import java.io.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class Shutdown
 {
 
@@ -40,7 +39,7 @@ public class Shutdown
 		super();
 	}
 
-	public static void main(String a[])
+	public static void main(final String a[])
 	{
 		if(a.length<4)
 		{

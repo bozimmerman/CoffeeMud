@@ -40,7 +40,7 @@ public class AutoPlayTester
 	private int 				port = 5555;
 	private String				filename="resources/autoplayer/autoplay.js";
 
-	public AutoPlayTester(String host, int port, String charName, String script)
+	public AutoPlayTester(final String host, final int port, final String charName, final String script)
 	{
 		this.host=host;
 		this.port=port;
@@ -81,24 +81,24 @@ public class AutoPlayTester
 		return inbuffer;
 	}
 
-	public String globalReactionary(String s)
+	public String globalReactionary(final String s)
 	{
 		System.out.println(s);
 		return s;
 	}
-	
-	public void s_sleep(long time)
+
+	public void s_sleep(final long time)
 	{
 		try
 		{
 			Thread.sleep(time);
 		}
-		catch(Exception e)
+		catch(final Exception e)
 		{
 		}
 	}
 
-	public String[] waitFor(String regEx, int num) throws IOException
+	public String[] waitFor(final String regEx, final int num) throws IOException
 	{
 		final long waitUntil = System.currentTimeMillis() + (60 * 1000);
 		final StringBuilder buildUp=new StringBuilder("");
@@ -138,7 +138,7 @@ public class AutoPlayTester
 		throw new IOException("wait for "+regEx+" timed out.");
 	}
 
-	public void writeln(String s) throws IOException
+	public void writeln(final String s) throws IOException
 	{
 		System.out.println(s);
 		s_sleep(500);
@@ -164,7 +164,7 @@ public class AutoPlayTester
 		return false;
 	}
 
-	public String getJavaScript(String filename)
+	public String getJavaScript(final String filename)
 	{
 		final StringBuilder js=new StringBuilder("");
 		try
@@ -229,12 +229,12 @@ public class AutoPlayTester
 			return testObj;
 		}
 
-		public String toJavaString(Object O)
+		public String toJavaString(final Object O)
 		{
 			return Context.toString(O);
 		}
 
-		public boolean startsWith(Object O1, Object O2)
+		public boolean startsWith(final Object O1, final Object O2)
 		{
 			try
 			{
@@ -263,13 +263,13 @@ public class AutoPlayTester
 
 		public String getAccumulated()
 		{
-			StringBuilder str = new StringBuilder("");
-			for(String s : testObj.outbuffer)
+			final StringBuilder str = new StringBuilder("");
+			for(final String s : testObj.outbuffer)
 				str.append(s).append("\n");
 			return str.toString();
 		}
 
-		public void stdout(Object O)
+		public void stdout(final Object O)
 		{
 			try
 			{
@@ -280,7 +280,7 @@ public class AutoPlayTester
 			}
 		}
 
-		public void sleep(Object O)
+		public void sleep(final Object O)
 		{
 			try
 			{
@@ -291,7 +291,7 @@ public class AutoPlayTester
 			}
 		}
 
-		public void stderr(Object O)
+		public void stderr(final Object O)
 		{
 			try
 			{
@@ -302,13 +302,13 @@ public class AutoPlayTester
 			}
 		}
 
-		public int rand(int x)
+		public int rand(final int x)
 		{
 			final int y = (int) Math.round(Math.floor(Math.random() * ((x) - 0.001)));
 			return (y > 0) ? y : -y;
 		}
 
-		public Object waitFor(Object regexO)
+		public Object waitFor(final Object regexO)
 		{
 			try
 			{
@@ -320,7 +320,7 @@ public class AutoPlayTester
 			}
 		}
 
-		public Object waitForOptions(Object regexO)
+		public Object waitForOptions(final Object regexO)
 		{
 			try
 			{
@@ -334,7 +334,7 @@ public class AutoPlayTester
 			}
 		}
 
-		public Object waitForMultiMatch(Object regexO, Object numMatches)
+		public Object waitForMultiMatch(final Object regexO, final Object numMatches)
 		{
 			try
 			{
@@ -346,7 +346,7 @@ public class AutoPlayTester
 			}
 		}
 
-		public boolean writeLine(Object O)
+		public boolean writeLine(final Object O)
 		{
 			try
 			{
@@ -359,7 +359,7 @@ public class AutoPlayTester
 			}
 		}
 
-		public JScriptEvent(AutoPlayTester testObj)
+		public JScriptEvent(final AutoPlayTester testObj)
 		{
 			this.testObj=testObj;
 		}
@@ -377,7 +377,7 @@ public class AutoPlayTester
 		}
 	}
 
-	public static void main(String[] args)
+	public static void main(final String[] args)
 	{
 		if(args.length<4)
 		{

@@ -44,7 +44,6 @@ import java.io.*;
 	See the License for the specific language governing permissions and
 	limitations under the License.
  */
-
 public class OffLine extends Thread implements MudHost
 {
 	public static Vector<OffLine> mudThreads=new Vector<OffLine>();
@@ -74,7 +73,7 @@ public class OffLine extends Thread implements MudHost
 		return Thread.currentThread().getThreadGroup();
 	}
 
-	public static void fatalStartupError(Thread t, int type)
+	public static void fatalStartupError(final Thread t, final int type)
 	{
 		String errorInternal=null;
 		switch(type)
@@ -99,7 +98,7 @@ public class OffLine extends Thread implements MudHost
 		CMLib.killThread(t,500,1);
 	}
 
-	private static boolean initHost(Thread t)
+	private static boolean initHost(final Thread t)
 	{
 
 		if (!isOK)
@@ -147,7 +146,7 @@ public class OffLine extends Thread implements MudHost
 		}
 	}
 
-	public StringBuffer getFile(String fileName)
+	public StringBuffer getFile(final String fileName)
 	{
 		StringBuffer offLineText=(StringBuffer)Resources.getResource(fileName);
 		if(offLineText==null)
@@ -393,7 +392,7 @@ public class OffLine extends Thread implements MudHost
 	}
 
 	@Override
-	public void shutdown(Session S, boolean keepItDown, String externalCommand)
+	public void shutdown(final Session S, final boolean keepItDown, final String externalCommand)
 	{
 		interrupt(); // kill the damn archon thread.
 	}
@@ -431,7 +430,7 @@ public class OffLine extends Thread implements MudHost
 		return port;
 	}
 
-	public static void main(String a[])
+	public static void main(final String a[])
 	{
 		CMProps page=null;
 		CMLib.initialize(); // forces this thread to HAVE a library
@@ -523,7 +522,7 @@ public class OffLine extends Thread implements MudHost
 	}
 
 	@Override
-	public void setAcceptConnections(boolean truefalse)
+	public void setAcceptConnections(final boolean truefalse)
 	{
 		acceptConnections=truefalse;
 	}
@@ -553,7 +552,7 @@ public class OffLine extends Thread implements MudHost
 	}
 
 	@Override
-	public String executeCommand(String cmd)
+	public String executeCommand(final String cmd)
 		throws Exception
 	{
 		throw new Exception("Not implemented");

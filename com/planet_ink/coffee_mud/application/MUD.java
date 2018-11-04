@@ -63,7 +63,6 @@ import java.sql.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
 public class MUD extends Thread implements MudHost
 {
 	private static final float	  HOST_VERSION_MAJOR	= (float)5.9;
