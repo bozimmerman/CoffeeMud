@@ -32,7 +32,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 /**
  * A False, or Fake Limb is an item that re-provides a wear location,
- * and the personal functionality that goes with that limb, to 
+ * and the personal functionality that goes with that limb, to
  * someone who is missing that limb due to amputation.  These include
  * things like peg legs.
  * @author Bo Zimmerman
@@ -48,7 +48,7 @@ public interface FalseLimb extends Armor
 	 * @return the racial body part code
 	 */
 	public int getBodyPartCode();
-	
+
 	/**
 	 * Sets the racial body part code that corresponds with the
 	 * part of the body that this false limb replaces.
@@ -77,7 +77,7 @@ public interface FalseLimb extends Armor
 	 * @param wearPlace  the single wear location bit value
 	 */
 	public void setWearLocations(long wearPlace);
-	
+
 	/**
 	 * This sets a true false limb from an actual limb apart from each
 	 * other.  It returns "" if the limb is truly false, and the race
@@ -87,7 +87,7 @@ public interface FalseLimb extends Armor
 	 * @return the race id or ""
 	 */
 	public String getRaceID();
-	
+
 	/**
 	 * This sets a true false limb from an actual limb apart from each
 	 * other.  Set "" if the limb is truly false, and the race
@@ -97,5 +97,5 @@ public interface FalseLimb extends Armor
 	 * @param raceID the race id or ""
 	 */
 	public void setRaceID(String raceID);
-	
+
 }

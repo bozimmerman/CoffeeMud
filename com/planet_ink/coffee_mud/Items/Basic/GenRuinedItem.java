@@ -48,7 +48,7 @@ public class GenRuinedItem extends GenItem
 		setDescription("");
 		recoverPhyStats();
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -68,5 +68,5 @@ public class GenRuinedItem extends GenItem
 		}
 		return super.okMessage(myHost, msg);
 	}
-	
+
 }

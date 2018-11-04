@@ -35,7 +35,6 @@ import java.util.*;
 */
 public class GenEclipseField extends GenTickerShield
 {
-
 	@Override
 	public String ID()
 	{
@@ -51,7 +50,7 @@ public class GenEclipseField extends GenTickerShield
 	}
 
 	@Override
-	protected String fieldOnStr(MOB viewerM)
+	protected String fieldOnStr(final MOB viewerM)
 	{
 		return L((owner() instanceof MOB)?
 			"An eclipsing field surrounds <O-NAME>.":
@@ -59,7 +58,7 @@ public class GenEclipseField extends GenTickerShield
 	}
 
 	@Override
-	protected String fieldDeadStr(MOB viewerM)
+	protected String fieldDeadStr(final MOB viewerM)
 	{
 		return L((owner() instanceof MOB)?
 			"The eclipsing field around <O-NAME> flickers and dies out as <O-HE-SHE> fade(s) back into view.":
@@ -69,10 +68,10 @@ public class GenEclipseField extends GenTickerShield
 	@Override
 	public void affectPhyStats(final Physical affected, final PhyStats affectableStats)
 	{
-		if(activated() 
-		&& (affected==owner()) 
-		&& (owner() instanceof MOB) 
-		&& amBeingWornProperly() 
+		if(activated()
+		&& (affected==owner())
+		&& (owner() instanceof MOB)
+		&& amBeingWornProperly()
 		&& (powerRemaining() > 0))
 			affectableStats.setDisposition(affectableStats.disposition()|PhyStats.IS_HIDDEN);
 		super.affectPhyStats(affected, affectableStats);

@@ -32,7 +32,7 @@ import java.util.Vector;
    limitations under the License.
 */
 /**
- * Magic Dust is itemized magic, like a potion or pill, except that it 
+ * Magic Dust is itemized magic, like a potion or pill, except that it
  * can be targeted at someone else, making malicious magic.
  * @author Bo Zimmerman
  *
@@ -41,7 +41,7 @@ public interface MagicDust extends SpellHolder, MiscMagic
 {
 	/**
 	 * This is the invocation of the magic dust method, where
-	 * the source and target are specified, and the 
+	 * the source and target are specified, and the
 	 * @param mob the spreader of the dust
 	 * @param target the one the dust will fall on
 	 */

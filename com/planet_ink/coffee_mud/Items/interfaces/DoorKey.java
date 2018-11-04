@@ -45,7 +45,7 @@ public interface DoorKey extends Item
 	 * @param keyName the unique key string that identifies the lock
 	 */
 	public void setKey(String keyName);
-	
+
 	/**
 	 * Gets the "key name", which is a unique string that specifies
 	 * what this key opens.  The lock must have a matching key

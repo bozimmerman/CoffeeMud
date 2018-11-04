@@ -47,7 +47,7 @@ public class StdShipGravityGen extends StdElecCompItem
 	{
 		return "StdShipGravityGen";
 	}
-	
+
 	public StdShipGravityGen()
 	{
 		super();
@@ -61,11 +61,11 @@ public class StdShipGravityGen extends StdElecCompItem
 	{
 		return Technical.TechType.SHIP_ENVIRO_CONTROL;
 	}
-	
+
 	private volatile Reference<SpaceShip> myShip 	   = null;
 
 	@Override
-	public void setOwner(ItemPossessor container)
+	public void setOwner(final ItemPossessor container)
 	{
 		super.setOwner(container);
 		myShip = null;
@@ -83,8 +83,8 @@ public class StdShipGravityGen extends StdElecCompItem
 		}
 		return myShip.get();
 	}
-	
-	
+
+
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{

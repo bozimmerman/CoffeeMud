@@ -50,7 +50,7 @@ public class GenAbsorbantShield extends GenPersonalShield
 	}
 
 	@Override
-	protected String fieldOnStr(MOB viewerM)
+	protected String fieldOnStr(final MOB viewerM)
 	{
 		return L((owner() instanceof MOB)?
 			"A sparkling field of energy surrounds <O-NAME>.":
@@ -58,7 +58,7 @@ public class GenAbsorbantShield extends GenPersonalShield
 	}
 
 	@Override
-	protected String fieldDeadStr(MOB viewerM)
+	protected String fieldDeadStr(final MOB viewerM)
 	{
 		return L((owner() instanceof MOB)?
 			"The sparkling field around <O-NAME> flickers and dies out.":
@@ -66,7 +66,7 @@ public class GenAbsorbantShield extends GenPersonalShield
 	}
 
 	@Override
-	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
+	protected boolean doShield(final MOB mob, final CMMsg msg, final double successFactor)
 	{
 		if(msg.value()<=0)
 			return true;
@@ -95,7 +95,7 @@ public class GenAbsorbantShield extends GenPersonalShield
 	}
 
 	@Override
-	protected boolean doesShield(MOB mob, CMMsg msg, double successFactor)
+	protected boolean doesShield(final MOB mob, final CMMsg msg, final double successFactor)
 	{
 		return activated();
 	}

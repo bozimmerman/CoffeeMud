@@ -56,7 +56,7 @@ public class GenKey extends GenItem implements DoorKey
 	}
 
 	@Override
-	public void setKey(String keyName)
+	public void setKey(final String keyName)
 	{
 		readableText=keyName;
 	}

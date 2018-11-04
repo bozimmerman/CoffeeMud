@@ -60,7 +60,7 @@ public class GenShipProgram extends GenSoftware
 	}
 
 	@Override
-	public void setCircuitKey(String key)
+	public void setCircuitKey(final String key)
 	{
 		circuitKey=(key==null)?"":key;
 	}
@@ -84,19 +84,19 @@ public class GenShipProgram extends GenSoftware
 	}
 
 	@Override
-	public boolean isActivationString(String word)
+	public boolean isActivationString(final String word)
 	{
 		return super.isActivationString(word);
 	}
 
 	@Override
-	public boolean isDeActivationString(String word)
+	public boolean isDeActivationString(final String word)
 	{
 		return super.isDeActivationString(word);
 	}
 
 	@Override
-	public boolean isCommandString(String word, boolean isActive)
+	public boolean isCommandString(final String word, final boolean isActive)
 	{
 		return super.isCommandString(word, isActive);
 	}
@@ -108,49 +108,49 @@ public class GenShipProgram extends GenSoftware
 	}
 
 	@Override
-	public boolean checkActivate(MOB mob, String message)
+	public boolean checkActivate(final MOB mob, final String message)
 	{
 		return super.checkActivate(mob, message);
 	}
 
 	@Override
-	public boolean checkDeactivate(MOB mob, String message)
+	public boolean checkDeactivate(final MOB mob, final String message)
 	{
 		return super.checkDeactivate(mob, message);
 	}
 
 	@Override
-	public boolean checkTyping(MOB mob, String message)
+	public boolean checkTyping(final MOB mob, final String message)
 	{
 		return super.checkTyping(mob, message);
 	}
 
 	@Override
-	public boolean checkPowerCurrent(int value)
+	public boolean checkPowerCurrent(final int value)
 	{
 		return super.checkPowerCurrent(value);
 	}
 
 	@Override
-	public void onActivate(MOB mob, String message)
+	public void onActivate(final MOB mob, final String message)
 	{
 		super.onActivate(mob, message);
 	}
 
 	@Override
-	public void onDeactivate(MOB mob, String message)
+	public void onDeactivate(final MOB mob, final String message)
 	{
 		super.onDeactivate(mob, message);
 	}
 
 	@Override
-	public void onTyping(MOB mob, String message)
+	public void onTyping(final MOB mob, final String message)
 	{
 		super.onTyping(mob, message);
 	}
 
 	@Override
-	public void onPowerCurrent(int value)
+	public void onPowerCurrent(final int value)
 	{
 		super.onPowerCurrent(value);
 	}

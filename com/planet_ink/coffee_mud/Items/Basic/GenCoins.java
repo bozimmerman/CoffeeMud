@@ -107,7 +107,7 @@ public class GenCoins extends GenItem implements Coins
 	}
 
 	@Override
-	public void setNumberOfCoins(long number)
+	public void setNumberOfCoins(final long number)
 	{
 		if(number<Integer.MAX_VALUE)
 			basePhyStats().setAbility((int)number);
@@ -144,7 +144,7 @@ public class GenCoins extends GenItem implements Coins
 	}
 
 	@Override
-	public void setCurrency(String named)
+	public void setCurrency(final String named)
 	{
 		currency=named;
 		setDynamicMaterial();
@@ -226,7 +226,7 @@ public class GenCoins extends GenItem implements Coins
 
 	private final static String[] MYCODES={"NUMCOINS","CURRENCY","DENOM"};
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -244,7 +244,7 @@ public class GenCoins extends GenItem implements Coins
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);

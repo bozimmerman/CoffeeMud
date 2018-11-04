@@ -53,7 +53,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 		super();
 		setName("a thing in space");
 		setDisplayText("a thing is floating in space");
-		Random random=new Random(System.currentTimeMillis());
+		final Random random=new Random(System.currentTimeMillis());
 		radius=SpaceObject.Distance.Kilometer.dm + (random.nextLong() % (SpaceObject.Distance.Kilometer.dm / 2));
 		basePhyStats().setWeight(100);
 		basePhyStats().setLevel(1);
@@ -66,7 +66,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 		CMLib.map().delObjectInSpace(this);
 		super.destroy();
 	}
-	
+
 	@Override
 	public BoundedCube getBounds()
 	{
@@ -80,7 +80,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	}
 
 	@Override
-	public void setCoords(long[] coords)
+	public void setCoords(final long[] coords)
 	{
 		if((coords!=null)&&(coords.length==3))
 			CMLib.map().moveSpaceObject(this,coords);
@@ -93,7 +93,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	}
 
 	@Override
-	public void setRadius(long radius)
+	public void setRadius(final long radius)
 	{
 		this.radius=radius;
 	}
@@ -105,7 +105,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	}
 
 	@Override
-	public void setDirection(double[] dir)
+	public void setDirection(final double[] dir)
 	{
 		if((dir!=null)&&(dir.length==2))
 			direction=dir;
@@ -118,7 +118,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	}
 
 	@Override
-	public void setSpeed(double v)
+	public void setSpeed(final double v)
 	{
 		speed=v;
 	}
@@ -130,7 +130,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	}
 
 	@Override
-	public void setKnownTarget(SpaceObject O)
+	public void setKnownTarget(final SpaceObject O)
 	{
 		spaceTarget=O;
 	}
@@ -142,7 +142,7 @@ public class StdSpaceBody extends StdItem implements SpaceObject
 	}
 
 	@Override
-	public void setKnownSource(SpaceObject O)
+	public void setKnownSource(final SpaceObject O)
 	{
 		spaceSource=O;
 	}

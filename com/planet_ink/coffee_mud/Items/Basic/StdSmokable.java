@@ -63,7 +63,7 @@ public class StdSmokable extends StdContainer implements Light
 	}
 
 	@Override
-	public void setDuration(int duration)
+	public void setDuration(final int duration)
 	{
 		baseDuration=duration;
 	}
@@ -81,7 +81,7 @@ public class StdSmokable extends StdContainer implements Light
 	}
 
 	@Override
-	public void setDestroyedWhenBurntOut(boolean truefalse)
+	public void setDestroyedWhenBurntOut(final boolean truefalse)
 	{
 		destroyedWhenBurnedOut=truefalse;
 	}
@@ -99,7 +99,7 @@ public class StdSmokable extends StdContainer implements Light
 	}
 
 	@Override
-	public void light(boolean isLit)
+	public void light(final boolean isLit)
 	{
 		lit=isLit;
 	}
@@ -219,7 +219,7 @@ public class StdSmokable extends StdContainer implements Light
 		return false;
 	}
 
-	public void getAddictedTo(MOB mob, Item item)
+	public void getAddictedTo(final MOB mob, final Item item)
 	{
 		Ability A=mob.fetchEffect("Addictions");
 		if(A==null)

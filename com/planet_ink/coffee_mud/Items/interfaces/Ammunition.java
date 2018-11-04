@@ -44,7 +44,7 @@ public interface Ammunition extends Item
 	 * @return the ammunition type string
 	 */
 	public String ammunitionType();
-	
+
 	/**
 	 * Set the type/class of ammunition.  This must match the ammunition type of the weapon
 	 * in order to be used.  This can be an arbitrary string.
@@ -60,7 +60,7 @@ public interface Ammunition extends Item
 	 * @return the number of units of ammunition
 	 */
 	public int ammunitionRemaining();
-	
+
 	/**
 	 * Sets the amount of Units of ammunition represented by this Ammunition item.  If this is,
 	 * for example, a bunch of arrows, or a clip of bullets, how many are in the clip or

@@ -46,7 +46,7 @@ public interface Wand extends MiscMagic
 	 * @param theSpell the spell ability object that this wand can cast.
 	 */
 	public void setSpell(Ability theSpell);
-	
+
 	/**
 	 * Sets the spell ability object that this wand can cast.
 	 * @see Wand#setSpell(Ability)
@@ -62,7 +62,7 @@ public interface Wand extends MiscMagic
 	 * @return true if the wand can be invoked, false otherwise
 	 */
 	public boolean checkWave(MOB mob, String message);
-	
+
 	/**
 	 * Checks to see if the mob can invoke this wand against the
 	 * given target, given the message they just said out loud.
@@ -71,13 +71,13 @@ public interface Wand extends MiscMagic
 	 * @param message the thing said by the wand invoker
 	 */
 	public void waveIfAble(MOB mob, Physical afftarget, String message);
-	
+
 	/**
 	 * Returns the magic word that invokes this wand
 	 * @return the magic word that invokes this wand
 	 */
 	public String magicWord();
-	
+
 	/**
 	 * Gets the number of times this wand can be invoked before
 	 * being drained and empty useless stick.
@@ -85,7 +85,7 @@ public interface Wand extends MiscMagic
 	 * @return the number of times this wand can be invoked
 	 */
 	public int maxUses();
-	
+
 	/**
 	 * Sets the number of times this wand can be invoked before
 	 * being drained and empty useless stick.

@@ -79,7 +79,7 @@ public class Ring_Ornamental extends Ring
 		super.recoverPhyStats();
 	}
 
-	public void setItemDescription(int level)
+	public void setItemDescription(final int level)
 	{
 		switch(level)
 		{

@@ -76,12 +76,12 @@ public interface MusicalInstrument extends Item
 			}
 			valueNames = new String[InstrumentType.values().length];
 			int i=0;
-			for(InstrumentType type : InstrumentType.values())
+			for(final InstrumentType type : InstrumentType.values())
 				valueNames[i++] = type.name();
 			return valueNames;
 		}
 	}
-	
+
 	/**
 	 * Returns the instrument type of this instrument
 	 * @see InstrumentType
@@ -91,7 +91,7 @@ public interface MusicalInstrument extends Item
 	 * @return the instrument type enum object of this instrument
 	 */
 	public InstrumentType getInstrumentType();
-	
+
 	/**
 	 * Returns the instrument type name of this instrument
 	 * @see InstrumentType
@@ -101,7 +101,7 @@ public interface MusicalInstrument extends Item
 	 * @return the instrument type name of this instrument
 	 */
 	public String getInstrumentTypeName();
-	
+
 	/**
 	 * Sets the instrument type of this instrument
 	 * @see InstrumentType
@@ -111,7 +111,7 @@ public interface MusicalInstrument extends Item
 	 * @param type the instrument type enum object of this instrument
 	 */
 	public void setInstrumentType(InstrumentType type);
-	
+
 	/**
 	 * Sets the instrument type of this instrument
 	 * @see InstrumentType
@@ -121,7 +121,7 @@ public interface MusicalInstrument extends Item
 	 * @param typeName the instrument type name for this instrument
 	 */
 	public void setInstrumentType(String typeName);
-	
+
 	/**
 	 * Sets the instrument type of this instrument
 	 * @see InstrumentType

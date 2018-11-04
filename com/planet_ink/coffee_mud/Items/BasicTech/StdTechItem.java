@@ -42,7 +42,7 @@ public class StdTechItem extends StdItem implements Technical
 	{
 		return "StdTechItem";
 	}
-	
+
 	public StdTechItem()
 	{
 		super();
@@ -62,7 +62,7 @@ public class StdTechItem extends StdItem implements Technical
 	}
 
 	@Override
-	public void setTechLevel(int lvl)
+	public void setTechLevel(final int lvl)
 	{
 		basePhyStats.setAbility(lvl);
 		recoverPhyStats();
@@ -73,5 +73,5 @@ public class StdTechItem extends StdItem implements Technical
 	{
 		return TechType.GIZMO;
 	}
-	
+
 }

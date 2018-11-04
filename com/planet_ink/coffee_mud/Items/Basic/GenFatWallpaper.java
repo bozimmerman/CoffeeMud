@@ -49,7 +49,7 @@ public class GenFatWallpaper extends GenWallpaper
 	}
 
 	@Override
-	public void setDisplayText(String newText)
+	public void setDisplayText(final String newText)
 	{
 		displayText=newText;
 	}
@@ -63,7 +63,7 @@ public class GenFatWallpaper extends GenWallpaper
 	}
 
 	@Override
-	public void setExpirationDate(long time)
+	public void setExpirationDate(final long time)
 	{
 		expirationDate=time;
 	}
@@ -102,7 +102,7 @@ public class GenFatWallpaper extends GenWallpaper
 		return codes;
 	}
 
-	protected int getMyCodeNum(String code)
+	protected int getMyCodeNum(final String code)
 	{
 		for(int i=0;i<CODES.length;i++)
 		{
@@ -113,7 +113,7 @@ public class GenFatWallpaper extends GenWallpaper
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(getMyCodeNum(code)<0)
 			return super.getStat(code);
@@ -126,7 +126,7 @@ public class GenFatWallpaper extends GenWallpaper
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(getMyCodeNum(code)<0)
 			super.setStat(code,val);

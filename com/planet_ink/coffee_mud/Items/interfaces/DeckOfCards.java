@@ -33,12 +33,12 @@ public interface DeckOfCards extends HandOfCards
 	/**
 	 * Creates a new deck of 52 cards of the same time as the
 	 * underlying object.  The deck is then handed over to
-	 * the mob or room specified. 
+	 * the mob or room specified.
 	 * @param owner a mob or room to receive the new deck.
 	 * @return the new deck of 52 cards, not shuffled.
 	 */
 	public DeckOfCards createDeck(Environmental owner);
-	
+
 	/**
 	 * Resets the deck back to 52 cards.  It will
 	 * grab cards from all external sources first
@@ -47,10 +47,10 @@ public interface DeckOfCards extends HandOfCards
 	 * create a set of cards for the deck.
 	 * this method also destroys any hands being
 	 * managed.
-	 * @return true 
+	 * @return true
 	 */
 	public boolean resetDeckBackTo52Cards();
-	
+
 	 /**
 	 * If a hand of cards has previously been added to this
 	 * deck for internal management, this method will return
@@ -79,7 +79,7 @@ public interface DeckOfCards extends HandOfCards
 	 * @param player the player whose hand to remove.
 	 */
 	public void removePlayerHand(MOB player);
-	
+
 	/**
 	 * This method adds to the base functionality found
 	 * in HandOfCards.java by ensuring that all cards

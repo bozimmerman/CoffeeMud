@@ -26,7 +26,7 @@ import com.planet_ink.coffee_mud.core.interfaces.Environmental;
 public interface HandOfCards extends Container
 {
 	/**
-	 * Shuffles the hand of cards, randomizing them. 
+	 * Shuffles the hand of cards, randomizing them.
 	 * @return the hand of cards, randomizing them.
 	 */
 	public boolean shuffleDeck();
@@ -36,7 +36,7 @@ public interface HandOfCards extends Container
 	 * @return the top card item object from the deck
 	 */
 	public PlayingCard getTopCardFromDeck();
-	
+
 	/**
 	 * Returns the given card item object to
 	 * the deck by removing it from its current
@@ -48,13 +48,13 @@ public interface HandOfCards extends Container
 	 * @return true if the card was moved, false if pigs fly
 	 */
 	public boolean addCard(PlayingCard card);
-	
+
 	/**
 	 * Returns the current number of cards in the deck.
 	 * @return number of cards in the deck
 	 */
 	public int numberOfCards();
-	
+
 	/**
 	 * Removes the given card from the
 	 * deck and places it in limbo.  Calls
@@ -64,7 +64,7 @@ public interface HandOfCards extends Container
 	 * @return true if the card was there to remove, false otherwise
 	 */
 	public boolean removeCard(PlayingCard card);
-	
+
 	/**
 	 * Removes all cards from the deck and
 	 * places them in limbo.  Calls to this
@@ -74,7 +74,7 @@ public interface HandOfCards extends Container
 	 * @return true if there were any cards removed, false otherwise
 	 */
 	public boolean removeAllCards();
-	
+
 	/**
 	 * This method builds a string array equal in size to the deck.
 	 * It then returns the contents of the deck encoded in
@@ -82,7 +82,7 @@ public interface HandOfCards extends Container
 	 * @return string encoded list of the cards
 	 */
 	public String[] getContentsEncoded();
-	
+
 	/**
 	 * This method is a sort of anti-shuffle.  It puts the cards in
 	 * order, first by value, then by suit, with ace considered high.
@@ -94,7 +94,7 @@ public interface HandOfCards extends Container
 	 * order, first by value, then by suit, with ace low.
 	 */
 	public void sortByValueAceLow();
-	
+
 	/**
 	 * Creates an empty HandOfCards object
 	 * if the player passed in is not null, it will
@@ -200,7 +200,7 @@ public interface HandOfCards extends Container
 	 * @return the card object, or null.
 	 */
 	public PlayingCard getFirstCardOfValue(int cardBitCode);
-	
+
 	/**
 	 * Returns whether a PlayingCard in this deck or hand
 	 * of the given value is to be found herein.

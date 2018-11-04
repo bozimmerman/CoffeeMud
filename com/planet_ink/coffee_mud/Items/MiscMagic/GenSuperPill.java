@@ -121,7 +121,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		return tx+"\n("+id+")\n";
 	}
 
-	public void EATME(MOB mob)
+	public void EATME(final MOB mob)
 	{
 		boolean redress=false;
 		if(getSpells().size()>0)
@@ -167,7 +167,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 			||(mob.charStats().getMyRace().leveless())
 			||(CMSecurity.isDisabled(CMSecurity.DisFlag.LEVELS)))
 			{
-				
+
 			}
 			else
 			if(num > 0)

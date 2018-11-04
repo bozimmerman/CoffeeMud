@@ -38,4 +38,5 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface ArchonOnly
 {
+
 }

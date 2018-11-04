@@ -49,8 +49,8 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	protected double		fuelEfficiency	= 0.33;
 	protected boolean		constantThrust	= true;
 	protected final long[]	lastThrustMs	= new long[] { 0 };
-	
-	protected TechComponent.ShipDir[] ports = TechComponent.ShipDir.values(); 
+
+	protected TechComponent.ShipDir[] ports = TechComponent.ShipDir.values();
 
 	public StdShipEngine()
 	{
@@ -80,7 +80,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	}
 
 	@Override
-	public void setFuelEfficiency(double amt)
+	public void setFuelEfficiency(final double amt)
 	{
 		fuelEfficiency = amt;
 	}
@@ -92,7 +92,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	}
 
 	@Override
-	public void setMaxThrust(int max)
+	public void setMaxThrust(final int max)
 	{
 		maxThrust = max;
 	}
@@ -104,7 +104,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	}
 
 	@Override
-	public void setThrust(double current)
+	public void setThrust(final double current)
 	{
 		thrust = current;
 	}
@@ -116,7 +116,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	}
 
 	@Override
-	public void setSpecificImpulse(long amt)
+	public void setSpecificImpulse(final long amt)
 	{
 		specificImpulse = amt;
 	}
@@ -138,7 +138,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	{
 		return super.getComputedEfficiency() * this.getInstalledFactor();
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -153,7 +153,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	}
 
 	@Override
-	public void setMinThrust(int min)
+	public void setMinThrust(final int min)
 	{
 		this.minThrust = min;
 	}
@@ -163,13 +163,13 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	{
 		return constantThrust;
 	}
-	
+
 	@Override
-	public void setConstantThruster(boolean isConstant)
+	public void setConstantThruster(final boolean isConstant)
 	{
 		constantThrust = isConstant;
 	}
-	
+
 	/**
 	 * Gets set of available thrust ports on this engine.
 	 * @see ShipEngine#setAvailPorts(TechComponent.ShipDir[])
@@ -187,7 +187,7 @@ public class StdShipEngine extends StdCompGenerator implements ShipEngine
 	 * @param ports the set of available thrust ports.
 	 */
 	@Override
-	public void setAvailPorts(TechComponent.ShipDir[] ports)
+	public void setAvailPorts(final TechComponent.ShipDir[] ports)
 	{
 		this.ports = ports;
 	}

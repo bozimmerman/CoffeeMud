@@ -82,7 +82,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public void setInstalledFactor(float pct)
+	public void setInstalledFactor(final float pct)
 	{
 		if ((pct >= 0.0) && (pct <= 2.0))
 			installedFactor = pct;
@@ -95,7 +95,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public void setPowerCapacity(long capacity)
+	public void setPowerCapacity(final long capacity)
 	{
 	}
 
@@ -106,9 +106,9 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public void setRechargeRate(float pctCapPer)
+	public void setRechargeRate(final float pctCapPer)
 	{
-		
+
 	}
 
 	@Override
@@ -116,7 +116,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	{
 		return 1;
 	}
-	
+
 	@Override
 	public long powerRemaining()
 	{
@@ -124,7 +124,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public void setPowerRemaining(long remaining)
+	public void setPowerRemaining(final long remaining)
 	{
 		powerRemaining = (remaining > 0) ? (short) 1 : (short) 0;
 	}
@@ -136,13 +136,13 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public void activate(boolean truefalse)
+	public void activate(final boolean truefalse)
 	{
 		activated = truefalse;
 	}
 
 	@Override
-	public void setActiveMenu(String internalName)
+	public void setActiveMenu(final String internalName)
 	{
 		currentMenu = internalName;
 	}
@@ -160,7 +160,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public void setTechLevel(int lvl)
+	public void setTechLevel(final int lvl)
 	{
 		basePhyStats.setAbility(lvl);
 		recoverPhyStats();
@@ -173,7 +173,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public void setManufacturerName(String name)
+	public void setManufacturerName(final String name)
 	{
 		cachedManufact = null;
 		if (name != null)
@@ -193,7 +193,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 			generatedAmount *= CMath.div(usesRemaining(), 100.0);
 		return generatedAmount * this.getInstalledFactor();
 	}
-	
+
 	@Override
 	public Manufacturer getFinalManufacturer()
 	{
@@ -213,12 +213,12 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public void setPanelType(TechType type)
+	public void setPanelType(final TechType type)
 	{
 	}
 
 	@Override
-	public boolean canContain(Item I)
+	public boolean canContain(final Item I)
 	{
 		return (I instanceof Software) && (((Software)I).getTechType()==TechType.SHIP_SOFTWARE);
 	}
@@ -230,7 +230,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public String putString(Rider R)
+	public String putString(final Rider R)
 	{
 		if((R==null)||(putString.length()==0))
 			return "in";
@@ -238,7 +238,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public String stateStringSubject(Rider R)
+	public String stateStringSubject(final Rider R)
 	{
 		if((R==null)||(stateSubjectStr.length()==0))
 			return "being used by";
@@ -267,7 +267,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		// important that this does nothing
 	}
@@ -698,7 +698,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 	}
 
 	@Override
-	public void setOwner(ItemPossessor owner)
+	public void setOwner(final ItemPossessor owner)
 	{
 		final ItemPossessor prevOwner=super.owner;
 		super.setOwner(owner);
@@ -737,7 +737,7 @@ public class StdComputerConsole extends StdRideable implements TechComponent, Co
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

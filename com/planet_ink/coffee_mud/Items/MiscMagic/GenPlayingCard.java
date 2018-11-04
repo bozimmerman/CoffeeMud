@@ -60,7 +60,7 @@ public class GenPlayingCard extends StdPlayingCard
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText = text;
 	}
@@ -72,7 +72,7 @@ public class GenPlayingCard extends StdPlayingCard
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -80,23 +80,23 @@ public class GenPlayingCard extends StdPlayingCard
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 	}
-	
+
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
 		CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
 	}
-	
+
 	private static String[] codes=null;
-	
+
 	@Override
 	public String[] getStatCodes()
 	{

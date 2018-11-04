@@ -65,7 +65,7 @@ public class StdTitle extends StdItem implements LandTitle
 		return baseGoldValue;
 	}
 
-	public void setBaseGoldValue(int newValue)
+	public void setBaseGoldValue(final int newValue)
 	{
 		setPrice(newValue);
 	}
@@ -110,9 +110,9 @@ public class StdTitle extends StdItem implements LandTitle
 			return this;
 		return A.generateNextRoomTitle();
 	}
-	
+
 	@Override
-	public void setPrice(int price)
+	public void setPrice(final int price)
 	{
 		final PrivateProperty P=fetchAPropertyRecord();
 		if(P!=null)
@@ -122,7 +122,7 @@ public class StdTitle extends StdItem implements LandTitle
 	}
 
 	@Override
-	public void setBackTaxes(int amount)
+	public void setBackTaxes(final int amount)
 	{
 		final LandTitle A=fetchALandTitle();
 		if(A==null)
@@ -130,7 +130,7 @@ public class StdTitle extends StdItem implements LandTitle
 		A.setBackTaxes(amount);
 		A.updateTitle();
 	}
-	
+
 	@Override
 	public int backTaxes()
 	{
@@ -139,9 +139,9 @@ public class StdTitle extends StdItem implements LandTitle
 			return 0;
 		return A.backTaxes();
 	}
-	
+
 	@Override
-	public void setGridLayout(boolean layout)
+	public void setGridLayout(final boolean layout)
 	{
 		final LandTitle A=fetchALandTitle();
 		if(A==null)
@@ -149,7 +149,7 @@ public class StdTitle extends StdItem implements LandTitle
 		A.setGridLayout(layout);
 		A.updateTitle();
 	}
-	
+
 	@Override
 	public boolean gridLayout()
 	{
@@ -158,7 +158,7 @@ public class StdTitle extends StdItem implements LandTitle
 			return false;
 		return A.gridLayout();
 	}
-	
+
 	@Override
 	public boolean rentalProperty()
 	{
@@ -178,7 +178,7 @@ public class StdTitle extends StdItem implements LandTitle
 	}
 
 	@Override
-	public void setRentalProperty(boolean truefalse)
+	public void setRentalProperty(final boolean truefalse)
 	{
 		final LandTitle A=fetchALandTitle();
 		if(A==null)
@@ -212,7 +212,7 @@ public class StdTitle extends StdItem implements LandTitle
 	}
 
 	@Override
-	public void setOwnerName(String owner)
+	public void setOwnerName(final String owner)
 	{
 		final PrivateProperty P=fetchAPropertyRecord();
 		if(P==null)
@@ -276,14 +276,14 @@ public class StdTitle extends StdItem implements LandTitle
 	}
 
 	@Override
-	public void setLandPropertyID(String landID)
+	public void setLandPropertyID(final String landID)
 	{
 		setMiscText(landID);
 		updateTitleName();
 	}
 
 	@Override
-	public void updateLot(Set<String> optPlayerList)
+	public void updateLot(final Set<String> optPlayerList)
 	{
 		final List<Room> V=getAllTitledRooms();
 		for(int v=0;v<V.size();v++)
@@ -444,7 +444,7 @@ public class StdTitle extends StdItem implements LandTitle
 		return super.okMessage(myHost,msg);
 	}
 
-	private void removeBoardableProperty(PrivateProperty P)
+	private void removeBoardableProperty(final PrivateProperty P)
 	{
 		if(P instanceof BoardableShip)
 		{
@@ -454,7 +454,7 @@ public class StdTitle extends StdItem implements LandTitle
 				final CMObject owner = this.getOwnerObject();
 				if(owner instanceof Clan)
 				{
-					Clan C=(Clan)owner;
+					final Clan C=(Clan)owner;
 					C.getExtItems().delItem(I);
 				}
 				else
@@ -467,8 +467,8 @@ public class StdTitle extends StdItem implements LandTitle
 			}
 		}
 	}
-	
-	private void addBoardableProperty(PrivateProperty P, CMObject obj)
+
+	private void addBoardableProperty(final PrivateProperty P, final CMObject obj)
 	{
 		if(P instanceof BoardableShip)
 		{
@@ -478,7 +478,7 @@ public class StdTitle extends StdItem implements LandTitle
 				final CMObject owner = obj;
 				if(owner instanceof Clan)
 				{
-					Clan C=(Clan)owner;
+					final Clan C=(Clan)owner;
 					if(!C.getExtItems().isContent(I))
 					{
 						I.setSavable(false); // if the clan is saving it, rooms are NOT.
@@ -499,7 +499,7 @@ public class StdTitle extends StdItem implements LandTitle
 			}
 		}
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -563,9 +563,9 @@ public class StdTitle extends StdItem implements LandTitle
 				destroy();
 				return;
 			}
-			
+
 			removeBoardableProperty(P);
-			
+
 			if(CMLib.clans().checkClanPrivilege(msg.source(), getOwnerName(), Clan.Function.PROPERTY_OWNER))
 			{
 				final Pair<Clan,Integer> targetClan=CMLib.clans().findPrivilegedClan((MOB)msg.target(), Clan.Function.PROPERTY_OWNER);

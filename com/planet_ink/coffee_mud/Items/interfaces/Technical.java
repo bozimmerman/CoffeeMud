@@ -41,7 +41,6 @@ import java.util.List;
  */
 public interface Technical extends Item
 {
-
 	/**
 	 * Standard technical item types
 	 *

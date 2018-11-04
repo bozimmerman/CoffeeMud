@@ -63,7 +63,7 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -71,9 +71,9 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 	}
 
 	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","INSTFACT","RECHRATE"};
-	
+
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -97,7 +97,7 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
@@ -138,9 +138,9 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 		}
 		return -1;
 	}
-	
+
 	private static String[] codes=null;
-	
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -156,7 +156,7 @@ public class GenCompBattery extends StdCompBattery implements PowerSource
 			codes[i]=MYCODES[x];
 		return codes;
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

@@ -57,7 +57,7 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 	}
 
 	@Override
-	public void setSubType(String subType)
+	public void setSubType(final String subType)
 	{
 		resourceSubType = subType;
 	}
@@ -69,7 +69,7 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 	}
 
 	@Override
-	public void setMaterial(int newValue)
+	public void setMaterial(final int newValue)
 	{
 		super.setMaterial(newValue);
 		decayTime=0;
@@ -96,7 +96,7 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 		return false;
 		//CMLib.materials().rebundle(this);
 	}
-	
+
 	@Override
 	public void destroy()
 	{
@@ -136,16 +136,16 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 	}
 
 	@Override
-	public void setDomainSource(String src)
+	public void setDomainSource(final String src)
 	{
 		domainSource=src;
 	}
-	
-	
+
+
 	private final static String[] MYCODES={"DOMAINSRC","RSUBTYPE"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(super.isStat(code))
 			return super.getStat(code);
@@ -162,7 +162,7 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(super.isStat(code))
 			super.setStat(code, val);

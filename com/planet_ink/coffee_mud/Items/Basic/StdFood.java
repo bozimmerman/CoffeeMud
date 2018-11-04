@@ -63,7 +63,7 @@ public class StdFood extends StdItem implements Food
 	}
 
 	@Override
-	public void setNourishment(int amount)
+	public void setNourishment(final int amount)
 	{
 		amountOfNourishment=amount;
 	}
@@ -75,7 +75,7 @@ public class StdFood extends StdItem implements Food
 	}
 
 	@Override
-	public void setBite(int amount)
+	public void setBite(final int amount)
 	{
 		nourishmentPerBite=amount;
 	}
@@ -87,7 +87,7 @@ public class StdFood extends StdItem implements Food
 	}
 
 	@Override
-	public void setDecayTime(long time)
+	public void setDecayTime(final long time)
 	{
 		decayTime=time;
 	}

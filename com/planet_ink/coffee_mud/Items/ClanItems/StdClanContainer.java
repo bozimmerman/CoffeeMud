@@ -68,7 +68,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 	}
 
 	@Override
-	public void setRightfulOwner(Environmental E)
+	public void setRightfulOwner(final Environmental E)
 	{
 		riteOwner = E;
 	}
@@ -82,7 +82,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 	}
 
 	@Override
-	public void setClanItemType(ClanItemType type)
+	public void setClanItemType(final ClanItemType type)
 	{
 		ciType = type;
 	}
@@ -94,7 +94,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 	}
 
 	@Override
-	public void setClanID(String ID)
+	public void setClanID(final String ID)
 	{
 		myClan = ID;
 	}
@@ -104,12 +104,12 @@ public class StdClanContainer extends StdContainer implements ClanItem
 	{
 		if ((System.currentTimeMillis() - lastClanCheck) > TimeManager.MILI_HOUR)
 		{
-			if ((clanID().length() > 0) 
-			&& (owner() instanceof MOB) 
+			if ((clanID().length() > 0)
+			&& (owner() instanceof MOB)
 			&& (!amDestroyed()))
 			{
-				if ((CMLib.clans().getClanAnyHost(clanID()) == null) 
-				|| ((((MOB) owner()).getClanRole(clanID()) == null) 
+				if ((CMLib.clans().getClanAnyHost(clanID()) == null)
+				|| ((((MOB) owner()).getClanRole(clanID()) == null)
 					&& (getClanItemType() != ClanItem.ClanItemType.PROPAGANDA)))
 				{
 					final Room R = CMLib.map().roomLocation(this);
@@ -123,7 +123,7 @@ public class StdClanContainer extends StdContainer implements ClanItem
 				}
 			}
 			lastClanCheck = System.currentTimeMillis();
-			if ((clanID().length() > 0) 
+			if ((clanID().length() > 0)
 			&& (CMLib.clans().getClanAnyHost(clanID()) == null))
 			{
 				destroy();

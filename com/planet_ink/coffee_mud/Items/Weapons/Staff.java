@@ -73,7 +73,7 @@ public class Staff extends StdWeapon implements Wand
 	}
 
 	@Override
-	public void setMaxUses(int newMaxUses)
+	public void setMaxUses(final int newMaxUses)
 	{
 	}
 
@@ -84,7 +84,7 @@ public class Staff extends StdWeapon implements Wand
 	}
 
 	@Override
-	public void setSpell(Ability theSpell)
+	public void setSpell(final Ability theSpell)
 	{
 		miscText="";
 		if(theSpell!=null)
@@ -93,7 +93,7 @@ public class Staff extends StdWeapon implements Wand
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		secretWord=StdWand.getWandWord(newText);
@@ -131,13 +131,13 @@ public class Staff extends StdWeapon implements Wand
 	}
 
 	@Override
-	public void waveIfAble(MOB mob, Physical afftarget, String message)
+	public void waveIfAble(final MOB mob, final Physical afftarget, final String message)
 	{
 		StdWand.waveIfAble(mob,afftarget,message,this);
 	}
 
 	@Override
-	public boolean checkWave(MOB mob, String message)
+	public boolean checkWave(final MOB mob, final String message)
 	{
 		return StdWand.checkWave(mob, message, this);
 	}

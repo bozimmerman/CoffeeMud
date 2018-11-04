@@ -53,18 +53,18 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 	{
 		return Technical.TechType.SHIP_WEAPON;
 	}
-	
+
 	private ShipDir[]		allPossDirs			= new ShipDir[] { ShipDir.FORWARD };
 	private int				numPermitDirs		= 1;
 	private int[]			damageMsgTypes		= new int[] { CMMsg.TYP_ELECTRIC };
 	private volatile long	powerSetting		= Integer.MAX_VALUE;
-	private final double[]	targetDirection		= new double[]{0.0,0.0}; 
+	private final double[]	targetDirection		= new double[]{0.0,0.0};
 
 	private volatile ShipDir[]  		  currCoverage = null;
 	private volatile Reference<SpaceShip> myShip 	   = null;
 
 	@Override
-	public void setOwner(ItemPossessor container)
+	public void setOwner(final ItemPossessor container)
 	{
 		super.setOwner(container);
 		myShip = null;
@@ -75,7 +75,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 	{
 		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, (int)Math.round((double)powerCapacity*getRechargeRate()));
 	}
-	
+
 	protected synchronized SpaceShip getMyShip()
 	{
 		if(myShip == null)
@@ -88,13 +88,13 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 		}
 		return myShip.get();
 	}
-	
+
 	@Override
-	public void setPermittedDirections(ShipDir[] newPossDirs)
+	public void setPermittedDirections(final ShipDir[] newPossDirs)
 	{
 		this.allPossDirs = newPossDirs;
 	}
-	
+
 	@Override
 	public ShipDir[] getPermittedDirections()
 	{
@@ -102,23 +102,23 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 	}
 
 	@Override
-	public void setPermittedNumDirections(int numDirs)
+	public void setPermittedNumDirections(final int numDirs)
 	{
 		this.numPermitDirs = numDirs;
 	}
-	
+
 	@Override
 	public int getPermittedNumDirections()
 	{
 		return numPermitDirs;
 	}
-	
+
 	@Override
-	public void setDamageMsgTypes(int[] newTypes)
+	public void setDamageMsgTypes(final int[] newTypes)
 	{
 		this.damageMsgTypes = newTypes;
 	}
-	
+
 	@Override
 	public int[] getDamageMsgTypes()
 	{
@@ -129,14 +129,14 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 	{
 		if(this.currCoverage == null)
 		{
-			final ShipDir[] permitted = getPermittedDirections(); 
-			int numDirs = getPermittedNumDirections();
+			final ShipDir[] permitted = getPermittedDirections();
+			final int numDirs = getPermittedNumDirections();
 			if(numDirs >= permitted.length)
 				currCoverage = getPermittedDirections();
 			else
 			{
-				int centralIndex = CMLib.dice().roll(1, numDirs, -1);
-				List<ShipDir> theDirs = new ArrayList<ShipDir>(numDirs);
+				final int centralIndex = CMLib.dice().roll(1, numDirs, -1);
+				final List<ShipDir> theDirs = new ArrayList<ShipDir>(numDirs);
 				int offset = 0;
 				final List<ShipDir> permittedDirs = new XVector<ShipDir>(permitted);
 				permittedDirs.addAll(Arrays.asList(permitted));
@@ -176,7 +176,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean tick(final Tickable ticking, final int tickID)
 	{
@@ -189,7 +189,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -257,7 +257,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 									if(CMParms.contains(getCurrentCoveredDirections(), dir))
 										reportError(this, controlI, mob, lang.L("@x1 is not facing a covered direction.",me.name(mob)), lang.L("Failure: @x1: weapon is not facing correctly.",me.name(mob)));
 								}
-								SpaceObject weaponO=(SpaceObject)CMClass.getTech("StdSpaceTech");
+								final SpaceObject weaponO=(SpaceObject)CMClass.getTech("StdSpaceTech");
 								int damageMsgType = CMMsg.TYP_ELECTRIC;
 								if(getDamageMsgTypes().length>0)
 									damageMsgType = getDamageMsgTypes()[CMLib.dice().roll(1, getDamageMsgTypes().length, -1)];
@@ -313,7 +313,7 @@ public class StdShipWeapon extends StdElecCompItem implements ShipWarComponent
 									break;
 								}
 								weaponO.setKnownSource(ship);
-								long[] firstCoords = CMLib.map().moveSpaceObject(ship.coordinates(), targetDirection, ship.radius());
+								final long[] firstCoords = CMLib.map().moveSpaceObject(ship.coordinates(), targetDirection, ship.radius());
 								weaponO.setCoords(firstCoords);
 								weaponO.setRadius(10);
 								weaponO.setDirection(targetDirection);

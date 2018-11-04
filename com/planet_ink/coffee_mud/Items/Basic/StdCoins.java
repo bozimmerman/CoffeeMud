@@ -105,7 +105,7 @@ public class StdCoins extends StdItem implements Coins
 	}
 
 	@Override
-	public void setNumberOfCoins(long number)
+	public void setNumberOfCoins(final long number)
 	{
 		if(number<=Integer.MAX_VALUE)
 			basePhyStats().setAbility((int)number);
@@ -121,7 +121,7 @@ public class StdCoins extends StdItem implements Coins
 	}
 
 	@Override
-	public void setDenomination(double valuePerCoin)
+	public void setDenomination(final double valuePerCoin)
 	{
 		denomination=valuePerCoin;
 		setMiscText(getCurrency()+"/"+valuePerCoin);
@@ -140,14 +140,14 @@ public class StdCoins extends StdItem implements Coins
 	}
 
 	@Override
-	public void setCurrency(String named)
+	public void setCurrency(final String named)
 	{
 		currency=named;
 		setMiscText(named+"/"+getDenomination());
 	}
 
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		super.setMiscText(text);
 		final int x=text.indexOf('/');

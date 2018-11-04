@@ -65,13 +65,13 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);
 	}
 
 	@Override
-	public boolean packageMe(Item I, int number)
+	public boolean packageMe(final Item I, final int number)
 	{
 		if((I==null)
 		||(I.amDestroyed()))
@@ -111,17 +111,17 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 			ItemPossessor possessor = owner();
 			if((msg.targetMinor()==CMMsg.TYP_DROP)&&(msg.target() instanceof Room))
 				possessor=(Room)msg.target();
-			List<Item> items = unPackage(Integer.MAX_VALUE);
-			for(Item I : items)
+			final List<Item> items = unPackage(Integer.MAX_VALUE);
+			for(final Item I : items)
 				possessor.addItem(I, ItemPossessor.Expire.Player_Drop);
 			destroy();
 			return;
 		}
 		super.executeMsg(myHost,msg);
 	}
-	
+
 	@Override
-	public boolean isPackagable(List<Item> V)
+	public boolean isPackagable(final List<Item> V)
 	{
 		if(V==null)
 			return false;
@@ -158,7 +158,7 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 		CMLib.coffeeMaker().setPropertiesStr(newOne,idat,true);
 		return (Item)newOne;
 	}
-	
+
 	@Override
 	public boolean areAllItemsTheSame()
 	{
@@ -176,7 +176,7 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 			return V;
 		Item firstItem = null;
 		final List<XMLLibrary.XMLTag> buf=CMLib.xml().parseAllXML(packageText());
-		StringBuilder newXml=new StringBuilder("");
+		final StringBuilder newXml=new StringBuilder("");
 		if(buf!=null)
 		{
 			for(int p=0;p<buf.size();p++)
@@ -244,12 +244,12 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 	}
 
 	@Override
-	public void setPackageText(String text)
+	public void setPackageText(final String text)
 	{
 		setReadableText(CMLib.xml().parseOutAngleBrackets(text));
 		CMLib.flags().setReadable(this,false);
 	}
-	
+
 	@Override
 	public int numberOfItemsInPackage()
 	{
@@ -268,21 +268,21 @@ public class GenPackagedVariety extends GenItem implements PackagedItems
 		}
 		return numberOfItemsInPackage;
 	}
-	
+
 	@Override
-	public void setNumberOfItemsInPackage(int number)
+	public void setNumberOfItemsInPackage(final int number)
 	{
 		numberOfItemsInPackage = number;
 	}
-	
+
 	@Override
-	public int getPackageFlagsBitmap() 
+	public int getPackageFlagsBitmap()
 	{
 		return basePhyStats().ability();
 	}
 
 	@Override
-	public void setPackageFlagsBitmap(int bitmap)
+	public void setPackageFlagsBitmap(final int bitmap)
 	{
 		basePhyStats().setAbility(bitmap);
 		phyStats().setAbility(bitmap);

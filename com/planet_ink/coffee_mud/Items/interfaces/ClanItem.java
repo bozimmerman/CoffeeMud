@@ -40,7 +40,7 @@ public interface ClanItem extends Item
 	/**
 	 * The type of clan item this is.  Used mostly for cross-identification between
 	 * items without resorting to class name analysis.
-	 * 
+	 *
 	 * @see ClanItem#getClanItemType()
 	 * @see ClanItem#setClanItemType(ClanItemType)
 	 * @author Bo Zimmerman
@@ -64,34 +64,34 @@ public interface ClanItem extends Item
 		;
 		private final String ID;
 		private final String displayName;
-		
+
 		public final static String[] ALL=new String[ClanItemType.values().length];
 		static
 		{
 			int x=0;
-			for(ClanItemType type : ClanItemType.values())
+			for(final ClanItemType type : ClanItemType.values())
 			{
 				ALL[x++] = type.toString();
 			}
 		}
-		
-		private ClanItemType(String displayName)
+
+		private ClanItemType(final String displayName)
 		{
 			ID = this.name().replace('_', '-');
 			this.displayName=displayName;
 		}
-		
+
 		@Override
 		public String toString()
 		{
 			return ID;
 		}
-		
+
 		public String getDisplayName()
 		{
 			return displayName;
 		}
-		
+
 		/**
 		 * Returns the clanitemtype associated with the given string.  The
 		 * string may be a numeric ordinal of a clanitemtype, or a string
@@ -104,23 +104,23 @@ public interface ClanItem extends Item
 			try
 			{
 				final int index = Integer.parseInt(name);
-				return ClanItemType.values()[index]; 
+				return ClanItemType.values()[index];
 			}
-			catch(Exception e)
+			catch(final Exception e)
 			{
 				final ClanItemType type = ClanItemType.valueOf(name.toUpperCase().trim().replace('-','_'));
 				return type;
 			}
 		}
 	}
-	
+
 	/**
 	 * Returns the identifier for the specific Clan that this item serves.  There can be only one.
 	 * @see ClanItem#setClanID(String)
 	 * @return the identifier for the specific Clan that this item serves.  There can be only one.
 	 */
 	public String clanID();
-	
+
 	/**
 	 * Sets the specific clan that this item serves.
 	 * @see ClanItem#clanID()
@@ -135,7 +135,7 @@ public interface ClanItem extends Item
 	 * @return the type of clan item this is
 	 */
 	public ClanItemType getClanItemType();
-	
+
 	/**
 	 * Sets the type of clan item this is
 	 * @see ClanItem.ClanItemType
@@ -148,20 +148,20 @@ public interface ClanItem extends Item
 	 * Clan Items have their mob owners tracked.  This is so that sneaky mechanisms for getting items
 	 * away from clan member mobs can be thwarted by having them automatically returned.  Only conquest
 	 * can end an items usefulness...
-	 * 
+	 *
 	 * This method returns the room or mob owner that this item should remain with.
-	 * 
+	 *
 	 * @return the room or mob owner that this item should remain with.
 	 */
 	public Environmental rightfulOwner();
-	
+
 	/**
 	 * Clan Items have their mob owners tracked.  This is so that sneaky mechanisms for getting items
 	 * away from clan member mobs can be thwarted by having them automatically returned.  Only conquest
 	 * can end an items usefulness...
-	 * 
+	 *
 	 * This method sets the room or mob owner that this item should remain with.
-	 * 
+	 *
 	 * @param E the room or mob owner that this item should remain with.
 	 */
 	public void setRightfulOwner(Environmental E);

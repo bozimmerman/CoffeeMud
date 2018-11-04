@@ -50,7 +50,7 @@ public class GenKineticField extends GenPersonalShield
 	}
 
 	@Override
-	protected String fieldOnStr(MOB viewerM)
+	protected String fieldOnStr(final MOB viewerM)
 	{
 		return L((owner() instanceof MOB)?
 			"An powerful energy field surrounds <O-NAME>.":
@@ -58,7 +58,7 @@ public class GenKineticField extends GenPersonalShield
 	}
 
 	@Override
-	protected String fieldDeadStr(MOB viewerM)
+	protected String fieldDeadStr(final MOB viewerM)
 	{
 		return L((owner() instanceof MOB)?
 			"The powerful energy field around <O-NAME> flickers and dies out.":
@@ -66,7 +66,7 @@ public class GenKineticField extends GenPersonalShield
 	}
 
 	@Override
-	protected boolean doShield(MOB mob, CMMsg msg, double successFactor)
+	protected boolean doShield(final MOB mob, final CMMsg msg, final double successFactor)
 	{
 		mob.phyStats().setSensesMask(mob.phyStats().sensesMask()|PhyStats.CAN_NOT_HEAR);
 		if(mob.location()!=null)
@@ -89,7 +89,7 @@ public class GenKineticField extends GenPersonalShield
 	}
 
 	@Override
-	protected boolean doesShield(MOB mob, CMMsg msg, double successFactor)
+	protected boolean doesShield(final MOB mob, final CMMsg msg, final double successFactor)
 	{
 		if(!activated())
 			return false;

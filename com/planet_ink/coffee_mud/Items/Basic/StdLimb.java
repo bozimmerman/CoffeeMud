@@ -62,7 +62,7 @@ public class StdLimb extends StdItem implements FalseLimb
 	}
 
 	@Override
-	public void setName(String name)
+	public void setName(final String name)
 	{
 		super.setName(name);
 		wearplace=-1;
@@ -108,7 +108,7 @@ public class StdLimb extends StdItem implements FalseLimb
 	}
 
 	@Override
-	public void setSecretIdentity(String id)
+	public void setSecretIdentity(final String id)
 	{
 		super.setSecretIdentity(id);
 		wearplace=-1;
@@ -133,7 +133,7 @@ public class StdLimb extends StdItem implements FalseLimb
 	}
 
 	@Override
-	public void setBodyPartCode(int partNumber)
+	public void setBodyPartCode(final int partNumber)
 	{
 		partnum=partNumber;
 	}
@@ -152,17 +152,17 @@ public class StdLimb extends StdItem implements FalseLimb
 	}
 
 	@Override
-	public void setWearLocations(long wearPlace)
+	public void setWearLocations(final long wearPlace)
 	{
 		wearplace=wearPlace;
 	}
 
 	@Override
-	public SizeDeviation getSizingDeviation(MOB mob)
+	public SizeDeviation getSizingDeviation(final MOB mob)
 	{
 		return SizeDeviation.FITS;
 	}
-	
+
 	@Override
 	public void affectCharStats(final MOB affected, final CharStats affectableStats)
 	{
@@ -181,7 +181,7 @@ public class StdLimb extends StdItem implements FalseLimb
 	}
 
 	@Override
-	public boolean canWear(MOB mob, long where)
+	public boolean canWear(final MOB mob, final long where)
 	{
 		if(where==Wearable.WORN_HELD)
 			return super.canWear(mob,where);
@@ -210,7 +210,7 @@ public class StdLimb extends StdItem implements FalseLimb
 	}
 
 	@Override
-	public boolean fitsOn(long wornCode)
+	public boolean fitsOn(final long wornCode)
 	{
 		if(wornCode==Wearable.WORN_HELD)
 			return super.fitsOn(wornCode);
@@ -221,7 +221,7 @@ public class StdLimb extends StdItem implements FalseLimb
 		return getWearLocations()==wornCode;
 	}
 
-	protected boolean canWearComplete(MOB mob)
+	protected boolean canWearComplete(final MOB mob)
 	{
 		if(getBodyPartCode()<0)
 		{
@@ -243,7 +243,7 @@ public class StdLimb extends StdItem implements FalseLimb
 	}
 
 	@Override
-	public void setClothingLayer(short newLayer)
+	public void setClothingLayer(final short newLayer)
 	{
 		layer=newLayer;
 	}
@@ -255,7 +255,7 @@ public class StdLimb extends StdItem implements FalseLimb
 	}
 
 	@Override
-	public void setLayerAttributes(short newAttributes)
+	public void setLayerAttributes(final short newAttributes)
 	{
 		layerAttributes=newAttributes;
 	}
@@ -267,7 +267,7 @@ public class StdLimb extends StdItem implements FalseLimb
 	}
 
 	@Override
-	public void setRaceID(String raceID)
+	public void setRaceID(final String raceID)
 	{
 		if(raceID==null)
 			this.raceID="";

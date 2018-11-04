@@ -57,7 +57,7 @@ public class Natural extends StdWeapon
 	}
 
 	@Override
-	public String hitString(int damageAmount)
+	public String hitString(final int damageAmount)
 	{
 		return "<S-NAME> <DAMAGE> <T-NAMESELF>";
 	}

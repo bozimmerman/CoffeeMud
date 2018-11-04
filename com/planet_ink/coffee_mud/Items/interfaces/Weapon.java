@@ -113,7 +113,7 @@ public interface Weapon extends Item
 	public final static int CLASS_STAFF=10;
 	/** One of the weapon classification, denotes a thrown type weapon */
 	public final static int CLASS_THROWN=11;
-	
+
 	/**
 	 * Description code words for the weapon classifications, indexed
 	 * by the weapon classification code values.
@@ -149,7 +149,7 @@ public interface Weapon extends Item
 	 * @param newType get weapon damage type code
 	 */
 	public void setWeaponDamageType(int newType);
-	
+
 	/**
 	 * Gets the general classification of this weapon, denoting how the
 	 * weapon is used and the skills required.  The code comes from the
@@ -158,7 +158,7 @@ public interface Weapon extends Item
 	 * @return the weapon classification code
 	 */
 	public int weaponClassification();
-	
+
 	/**
 	 * Sets the general classification of this weapon, denoting how the
 	 * weapon is used and the skills required.  The code comes from the
@@ -169,7 +169,7 @@ public interface Weapon extends Item
 	public void setWeaponClassification(int newClassification);
 
 	/**
-	 * Sets the minimum and maximum range of this weapon. 
+	 * Sets the minimum and maximum range of this weapon.
 	 * Combined with the size of the room, and who attacks first,
 	 * this can set the distance between two combatants.
 	 * @see Environmental#maxRange()
@@ -181,7 +181,7 @@ public interface Weapon extends Item
 
 	/**
 	 * Gets the string that would be shown if someone gets a hit with
-	 * this weapon. 
+	 * this weapon.
 	 * @see Weapon#missString()
 	 * @param damageAmount the amount of damage done with this weapon
 	 * @return the message string to show someone hit with this weapon
@@ -190,7 +190,7 @@ public interface Weapon extends Item
 
 	/**
 	 * Gets the string that would be shown if someone misses with
-	 * this weapon. 
+	 * this weapon.
 	 * @see Weapon#hitString(int)
 	 * @return the message string to show someone misses with this weapon
 	 */

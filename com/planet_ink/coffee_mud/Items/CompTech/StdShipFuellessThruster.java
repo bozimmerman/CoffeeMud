@@ -51,7 +51,7 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	protected boolean		constantThrust	= true;
 	protected final long[]	lastThrustMs	= new long[] { 0 };
 
-	protected TechComponent.ShipDir[] ports = TechComponent.ShipDir.values(); 
+	protected TechComponent.ShipDir[] ports = TechComponent.ShipDir.values();
 
 	public StdShipFuellessThruster()
 	{
@@ -82,7 +82,7 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	}
 
 	@Override
-	public void setFuelEfficiency(double amt)
+	public void setFuelEfficiency(final double amt)
 	{
 		fuelEfficiency = amt;
 	}
@@ -94,7 +94,7 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	}
 
 	@Override
-	public void setMaxThrust(int max)
+	public void setMaxThrust(final int max)
 	{
 		maxThrust = max;
 	}
@@ -106,7 +106,7 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	}
 
 	@Override
-	public void setThrust(double current)
+	public void setThrust(final double current)
 	{
 		thrust = current;
 	}
@@ -118,7 +118,7 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	}
 
 	@Override
-	public void setSpecificImpulse(long amt)
+	public void setSpecificImpulse(final long amt)
 	{
 		specificImpulse = amt;
 	}
@@ -134,7 +134,7 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	{
 		return super.getComputedEfficiency() * this.getInstalledFactor();
 	}
-	
+
 	@Override
 	public int getMinThrust()
 	{
@@ -142,7 +142,7 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	}
 
 	@Override
-	public void setMinThrust(int min)
+	public void setMinThrust(final int min)
 	{
 		this.minThrust = min;
 	}
@@ -152,13 +152,13 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	{
 		return constantThrust;
 	}
-	
+
 	@Override
-	public void setConstantThruster(boolean isConstant)
+	public void setConstantThruster(final boolean isConstant)
 	{
 		constantThrust = isConstant;
 	}
-	
+
 	/**
 	 * Gets set of available thrust ports on this engine.
 	 * @see ShipEngine#setAvailPorts(TechComponent.ShipDir[])
@@ -176,13 +176,13 @@ public class StdShipFuellessThruster extends StdElecCompItem implements ShipEngi
 	 * @param ports the set of available thrust ports.
 	 */
 	@Override
-	public void setAvailPorts(TechComponent.ShipDir[] ports)
+	public void setAvailPorts(final TechComponent.ShipDir[] ports)
 	{
 		this.ports = ports;
 	}
-	
+
 	@Override
-	public boolean consumeFuel(int amount)
+	public boolean consumeFuel(final int amount)
 	{
 		if(this.powerRemaining() > amount)
 		{

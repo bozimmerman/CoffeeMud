@@ -56,14 +56,14 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 	}
 
 	@Override
-	public void setSpell(Ability theSpell)
+	public void setSpell(final Ability theSpell)
 	{
 		super.setSpell(theSpell);
 		secretWord="LEVEL UP";
 	}
-	
+
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		secretWord="LEVEL UP";

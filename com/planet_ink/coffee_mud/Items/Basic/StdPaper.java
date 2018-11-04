@@ -67,7 +67,7 @@ public class StdPaper extends StdItem implements Book
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		super.setMiscText(text);
 	}
@@ -77,40 +77,40 @@ public class StdPaper extends StdItem implements Book
 	{
 		return readableText().length()>0 ? 1 : 0;
 	}
-	
+
 	@Override
 	public int getMaxPages()
 	{
 		return 1;
 	}
-	
+
 	@Override
-	public void setMaxPages(int max)
+	public void setMaxPages(final int max)
 	{
 	}
-	
+
 	@Override
-	public String getRawContent(int page)
-	{
-		if(page == 1)
-			return readableText();
-		return "";
-	}
-	
-	@Override
-	public String getContent(int page)
+	public String getRawContent(final int page)
 	{
 		if(page == 1)
 			return readableText();
 		return "";
 	}
-	
+
 	@Override
-	public void addRawContent(String authorName, String content)
+	public String getContent(final int page)
+	{
+		if(page == 1)
+			return readableText();
+		return "";
+	}
+
+	@Override
+	public void addRawContent(final String authorName, final String content)
 	{
 		if(content.startsWith("::")&&(content.length()>2)&&(content.charAt(2)!=':'))
 		{
-			int x=content.indexOf("::",2);
+			final int x=content.indexOf("::",2);
 			if(x>2)
 				this.setReadableText(this.readableText()+L("\n\rSubject: ")+content.substring(2,x)+"\n\r"+content.substring(x+2));
 			else
@@ -119,7 +119,7 @@ public class StdPaper extends StdItem implements Book
 		else
 			this.setReadableText(this.readableText()+content);
 	}
-	
+
 	@Override
 	public boolean isJournal()
 	{
@@ -133,11 +133,11 @@ public class StdPaper extends StdItem implements Book
 	}
 
 	@Override
-	public void setMaxCharsPerPage(int max)
+	public void setMaxCharsPerPage(final int max)
 	{
 		this.maxCharsPage = max;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{

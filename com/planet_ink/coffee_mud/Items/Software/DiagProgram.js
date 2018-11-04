@@ -16,7 +16,7 @@ function newInstance()
     newOne.setDescription("It appears to be a diagnostics terminal program.");
 	return newOne;
 }
-
+ 
 function getParentMenu() 
 {
 	return "";

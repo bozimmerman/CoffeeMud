@@ -53,7 +53,7 @@ public class StdKey extends StdItem implements DoorKey
 	}
 
 	@Override
-	public void setKey(String keyName)
+	public void setKey(final String keyName)
 	{
 		miscText=keyName;
 	}

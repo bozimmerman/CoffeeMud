@@ -50,7 +50,7 @@ public interface Scroll extends Item, SpellHolder
 	public boolean useTheScroll(Ability A, MOB mob);
 
 	/**
-	 * Checks whether the given mob was the last one to 
+	 * Checks whether the given mob was the last one to
 	 * decipher the runes on this scroll through the Read
 	 * Magic ability, allowing them to freely read the
 	 * contents of the scroll in the future.
@@ -61,7 +61,7 @@ public interface Scroll extends Item, SpellHolder
 	public boolean isReadableScrollBy(String name);
 
 	/**
-	 * Sets the given mob as the last one to 
+	 * Sets the given mob as the last one to
 	 * decipher the runes on this scroll through the Read
 	 * Magic ability, allowing them to freely read the
 	 * contents of the scroll in the future.

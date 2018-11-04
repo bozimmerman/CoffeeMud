@@ -77,13 +77,13 @@ public class StdPerfume extends StdDrink implements Perfume
 	}
 
 	@Override
-	public void setSmellList(String list)
+	public void setSmellList(final String list)
 	{
 		smellList = CMParms.parseSemicolons(list, true);
 	}
 
 	@Override
-	public void wearIfAble(MOB mob)
+	public void wearIfAble(final MOB mob)
 	{
 		Ability E=mob.fetchEffect("Prop_MOBEmoter");
 		if(E!=null)

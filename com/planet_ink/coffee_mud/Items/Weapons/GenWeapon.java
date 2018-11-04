@@ -80,13 +80,13 @@ public class GenWeapon extends StdWeapon
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText=text;
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -94,10 +94,10 @@ public class GenWeapon extends StdWeapon
 	}
 
 	protected final static String[] GENWEAPONCODES={"MINRANGE","MAXRANGE","WEAPONTYPE","WEAPONCLASS", "AMMOTYPE","AMMOCAPACITY"};
-	
+
 	private static String[] codes=null;
 
-	protected static int getGenWeaponCodeNum(String code)
+	protected static int getGenWeaponCodeNum(final String code)
 	{
 		for(int i=0;i<GENWEAPONCODES.length;i++)
 		{
@@ -107,7 +107,7 @@ public class GenWeapon extends StdWeapon
 		return -1;
 	}
 
-	protected static String getGenWeaponStat(AmmunitionWeapon W, String code)
+	protected static String getGenWeaponStat(final AmmunitionWeapon W, final String code)
 	{
 		switch(getGenWeaponCodeNum(code))
 		{
@@ -127,8 +127,8 @@ public class GenWeapon extends StdWeapon
 			return "";
 		}
 	}
-	
-	public static void setGenWeaponStat(AmmunitionWeapon W, String code, String val)
+
+	public static void setGenWeaponStat(final AmmunitionWeapon W, final String code, final String val)
 	{
 		switch(getGenWeaponCodeNum(code))
 		{
@@ -154,7 +154,7 @@ public class GenWeapon extends StdWeapon
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -164,7 +164,7 @@ public class GenWeapon extends StdWeapon
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);

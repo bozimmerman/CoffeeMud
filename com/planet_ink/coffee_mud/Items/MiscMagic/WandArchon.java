@@ -60,21 +60,21 @@ public class WandArchon extends StdWand implements ArchonOnly
 	}
 
 	@Override
-	public void setSpell(Ability theSpell)
+	public void setSpell(final Ability theSpell)
 	{
 		super.setSpell(theSpell);
 		secretWord="REFRESH";
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		secretWord="REFRESH";
 	}
 
 	@Override
-	public void affectCharState(MOB mob, CharState affectableState)
+	public void affectCharState(final MOB mob, final CharState affectableState)
 	{
 		if(amBeingWornProperly())
 		{
@@ -127,7 +127,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 		return true;
 	}
 
-	public boolean safetyCheck(MOB mob, String message)
+	public boolean safetyCheck(final MOB mob, final String message)
 	{
 		if((!mob.isMonster())
 		&&(message.length()>0)
@@ -141,7 +141,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 	}
 
 	@Override
-	public boolean checkWave(MOB mob, String message)
+	public boolean checkWave(final MOB mob, final String message)
 	{
 		if(message==null)
 			return false;
@@ -155,7 +155,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 	}
 
 	@Override
-	public void waveIfAble(MOB mob, Physical afftarget, String message)
+	public void waveIfAble(final MOB mob, final Physical afftarget, String message)
 	{
 		if((mob.isMine(this))
 		&&(message!=null)
@@ -228,7 +228,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 						return;
 					message=message.substring(5).trim();
 					message=message.substring(0,message.length()-2).trim();
-					if((message.length()>0)&&(!message.equalsIgnoreCase("ALL"))) 
+					if((message.length()>0)&&(!message.equalsIgnoreCase("ALL")))
 					{
 						Ability A=CMClass.getAbility(message);
 						if(A==null)
@@ -257,17 +257,17 @@ public class WandArchon extends StdWand implements ArchonOnly
 								A.autoInvocation(target, false);
 							}
 						}
-					} 
-					else 
+					}
+					else
 					{
 						final CharClass C=target.charStats().getCurrentClass();
 						boolean didSomething = false;
 						for(final Enumeration<AbilityMapping> amap = CMLib.ableMapper().getClassAbles(C.ID(), true);amap.hasMoreElements();)
 						{
-							AbilityMapping map = amap.nextElement();
+							final AbilityMapping map = amap.nextElement();
 							if(target.fetchAbility(map.abilityID()) != null)
 							{
-								Ability A=target.fetchAbility(map.abilityID());
+								final Ability A=target.fetchAbility(map.abilityID());
 								if(A.proficiency()<100)
 								{
 									A.setProficiency(100);
@@ -276,7 +276,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 							}
 							else
 							{
-								Ability A=CMClass.getAbility(map.abilityID());
+								final Ability A=CMClass.getAbility(map.abilityID());
 								A.setSavable(true);
 								A.setProficiency(100);
 								A.setMiscText(map.defaultParm());
@@ -287,7 +287,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 						}
 						if(didSomething)
 							mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,L("@x1 glows brightly at <T-NAME>.",this.name()));
-						
+
 					}
 					return;
 				}

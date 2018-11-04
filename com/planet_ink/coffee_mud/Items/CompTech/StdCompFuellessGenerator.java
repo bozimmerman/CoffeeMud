@@ -72,7 +72,7 @@ public class StdCompFuellessGenerator extends StdElecCompItem implements PowerGe
 	}
 
 	@Override
-	public void setGeneratedAmountPerTick(int amt)
+	public void setGeneratedAmountPerTick(final int amt)
 	{
 		generatedAmtPerTick=amt;
 	}
@@ -87,7 +87,7 @@ public class StdCompFuellessGenerator extends StdElecCompItem implements PowerGe
 	{
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -133,7 +133,7 @@ public class StdCompFuellessGenerator extends StdElecCompItem implements PowerGe
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

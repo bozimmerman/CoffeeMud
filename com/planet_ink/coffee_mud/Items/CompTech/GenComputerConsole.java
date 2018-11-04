@@ -59,19 +59,19 @@ public class GenComputerConsole extends StdComputerConsole
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		basePhyStats.setSensesMask(basePhyStats.sensesMask()|PhyStats.SENSE_ITEMREADABLE);
 		recoverPhyStats();
 	}
-	
+
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES",
 											"RESETTIME","RIDEBASIS","MOBSHELD",
 											"POWERCAP","ACTIVATED","POWERREM",
@@ -80,9 +80,9 @@ public class GenComputerConsole extends StdComputerConsole
 											"RECHRATE",
 											"PUTSTR","MOUNTSTR","DISMOUNTSTR","STATESTR","STATESUBJSTR","RIDERSTR"
 											};
-	
+
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -136,7 +136,7 @@ public class GenComputerConsole extends StdComputerConsole
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
@@ -211,7 +211,7 @@ public class GenComputerConsole extends StdComputerConsole
 			break;
 		}
 	}
-	
+
 	@Override
 	protected int getCodeNum(final String code)
 	{
@@ -222,9 +222,9 @@ public class GenComputerConsole extends StdComputerConsole
 		}
 		return -1;
 	}
-	
+
 	private static String[] codes=null;
-	
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -240,7 +240,7 @@ public class GenComputerConsole extends StdComputerConsole
 			codes[i]=MYCODES[x];
 		return codes;
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

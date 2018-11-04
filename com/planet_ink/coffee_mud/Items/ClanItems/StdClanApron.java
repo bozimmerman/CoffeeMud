@@ -34,9 +34,9 @@ import java.util.*;
 */
 public class StdClanApron extends StdClanItem
 {
-	@Override 
+	@Override
 	public String ID()
-	{ 
+	{
 		return "StdClanApron";
 	}
 

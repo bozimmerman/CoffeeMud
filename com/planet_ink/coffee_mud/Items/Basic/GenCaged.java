@@ -64,7 +64,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText=(text.trim().length()==0)?null:CMLib.encoder().compressString(text);
 	}
@@ -75,9 +75,9 @@ public class GenCaged extends GenItem implements CagedAnimal
 		super.recoverPhyStats();
 		phyStats().setSensesMask(phyStats.sensesMask() | PhyStats.SENSE_ITEMNOWISH |PhyStats.SENSE_ITEMNORUIN);
 	}
-	
+
 	@Override
-	public boolean cageMe(MOB M)
+	public boolean cageMe(final MOB M)
 	{
 		if(M==null)
 			return false;
@@ -177,12 +177,12 @@ public class GenCaged extends GenItem implements CagedAnimal
 	}
 
 	@Override
-	public void setCageText(String text)
+	public void setCageText(final String text)
 	{
 		setReadableText(CMLib.xml().parseOutAngleBrackets(text));
 		CMLib.flags().setReadable(this,false);
 	}
-	
+
 	@Override
 	public int getCageFlagsBitmap()
 	{
@@ -190,7 +190,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 	}
 
 	@Override
-	public void setCageFlagsBitmap(int bitmap)
+	public void setCageFlagsBitmap(final int bitmap)
 	{
 		basePhyStats.setAbility(bitmap);
 		phyStats.setAbility(bitmap);

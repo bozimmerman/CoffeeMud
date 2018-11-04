@@ -32,8 +32,8 @@ import java.util.*;
    limitations under the License.
 */
 /**
- * An interface for a large number of Items packaged into 
- * a single Item object.   There are methods unPackaging one or more, 
+ * An interface for a large number of Items packaged into
+ * a single Item object.   There are methods unPackaging one or more,
  * and so forth.  It's similar to a container, but without some of the
  * deep engine features at the expense of less CPU usage.
  * @author Bo Zimmerman
@@ -48,12 +48,12 @@ public interface PackagedItems extends Item
 	 * number of times it is repeated in the package.
 	 * @see PackagedItems#unPackage(int)
 	 * @see PackagedItems#isPackagable(List)
-	 * @param I the item to put in the package 
+	 * @param I the item to put in the package
 	 * @param number the number of times the item repeats
 	 * @return true if the packaging went well, false otherwise
 	 */
 	public boolean packageMe(Item I, int number);
-	
+
 	/**
 	 * Returns whether the given list of items can be held
 	 * by this package.  Some require all items to be identical
@@ -63,22 +63,22 @@ public interface PackagedItems extends Item
 	 * @return true if the entire list can be packaged, and false otherwise
 	 */
 	public boolean isPackagable(List<Item> V);
-	
+
 	/**
 	 * Unpackages the top number of items in the package and returns
-	 * them in an item list.  If this results in 0 items in the 
+	 * them in an item list.  If this results in 0 items in the
 	 * package, the package is destroyed!
 	 * @param number the number of items to unpackage
 	 * @return the list of items unpackaged
 	 */
 	public List<Item> unPackage(int number);
-	
+
 	/**
 	 * Returns the total number of items in the package.
 	 * @return the total number of items in the package.
 	 */
 	public int numberOfItemsInPackage();
-	
+
 	/**
 	 * Returns the first item in the package, as a peek.
 	 * It does not affect the contents of the package.
@@ -86,7 +86,7 @@ public interface PackagedItems extends Item
 	 * @return the first item in the package, or null
 	 */
 	public Item peekFirstItem();
-	
+
 	/**
 	 * For packages that hold only one type of item, this
 	 * is a quick method to alter the number in the package.
@@ -94,27 +94,27 @@ public interface PackagedItems extends Item
 	 * @param number the new number of items in the package
 	 */
 	public void setNumberOfItemsInPackage(int number);
-	
+
 	/**
 	 * Returns whether this package contains identical items.
 	 * @return true if this package contains identical items
 	 */
 	public boolean areAllItemsTheSame();
-	
+
 	/**
 	 * Returns the contents of the package as an XML doc.
 	 * @see PackagedItems#setPackageText(String)
 	 * @return  the contents of the package as an XML doc
 	 */
 	public String packageText();
-	
+
 	/**
 	 * Sets the contents of the package from an XML doc.
 	 * @see PackagedItems#packageText()
 	 * @param text the contents of the package as an XML doc
 	 */
 	public void setPackageText(String text);
-	
+
 	/**
 	 * Returns the flag bitmap describing how this item behaves.
 	 * @see PackagedItems#PACKAGE_FLAG_TO_ITEMS_PROGRAMMATICALLY

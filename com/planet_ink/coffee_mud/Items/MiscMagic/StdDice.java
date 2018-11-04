@@ -61,7 +61,7 @@ public class StdDice extends StdItem implements MiscMagic
 	protected boolean rollTheBones(final CMMsg msg, final List<String> commands)
 	{
 		final MOB mob=msg.source();
-		String word = commands.remove(0);
+		final String word = commands.remove(0);
 		final Room R=mob.location();
 		if(R==null)
 			return false;
@@ -160,13 +160,13 @@ public class StdDice extends StdItem implements MiscMagic
 					basePhyStats.setAbility(2);
 					phyStats.setAbility(2);
 				}
-				int roll=CMLib.dice().roll(1, phyStats().ability(), 0);
+				final int roll=CMLib.dice().roll(1, phyStats().ability(), 0);
 				this.setDisplayText(L("@x1 is lying here, showing @x2.",name(),""+roll));
 			}
 		}
 		super.executeMsg(myHost, msg);
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -183,7 +183,7 @@ public class StdDice extends StdItem implements MiscMagic
 				final Session sess=msg.source().session();
 				if(msg.source().session()!=null)
 				{
-					List<String> prev = sess.getPreviousCMD();
+					final List<String> prev = sess.getPreviousCMD();
 					if((prev!=null)&&(prev.size()>0)&&("ROLL".startsWith(prev.get(0).toUpperCase())))
 						return rollTheBones(msg, new XVector<String>(prev));
 				}
@@ -191,10 +191,10 @@ public class StdDice extends StdItem implements MiscMagic
 			}
 			if(Character.toUpperCase(msg.targetMessage().charAt(0)) == 'R')
 			{
-				List<String> parsedFail = CMParms.parse(msg.targetMessage());
+				final List<String> parsedFail = CMParms.parse(msg.targetMessage());
 				if(parsedFail.size()<1)
 					return true;
-				String cmd=parsedFail.get(0).toUpperCase();
+				final String cmd=parsedFail.get(0).toUpperCase();
 				if(!("ROLL".startsWith(cmd)))
 					return true;
 				if(parsedFail.size()<2)
@@ -212,10 +212,10 @@ public class StdDice extends StdItem implements MiscMagic
 		{
 			if(Character.toUpperCase(msg.targetMessage().charAt(0)) == 'T')
 			{
-				List<String> parsedFail = CMParms.parse(msg.targetMessage());
+				final List<String> parsedFail = CMParms.parse(msg.targetMessage());
 				if(parsedFail.size()<2)
 					return true;
-				String cmd=parsedFail.get(0).toUpperCase();
+				final String cmd=parsedFail.get(0).toUpperCase();
 				if(!("THROW".startsWith(cmd)))
 					return true;
 				return rollTheBones(msg, parsedFail);

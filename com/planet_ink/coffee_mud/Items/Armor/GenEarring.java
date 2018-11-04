@@ -45,10 +45,10 @@ public class GenEarring extends GenThinArmor
 	{
 		return "GenEarring";
 	}
-	
+
 	private String wearLocDesc = null;
 	private final Map<Long,String> wearLocs = new TreeMap<Long,String>();
-	
+
 	public GenEarring()
 	{
 		super();
@@ -68,20 +68,20 @@ public class GenEarring extends GenThinArmor
 		material=RawMaterial.RESOURCE_GOLD;
 	}
 
-	protected int numWorn(final MOB mob, long wornCode)
+	protected int numWorn(final MOB mob, final long wornCode)
 	{
 		int numWorn = 0;
-		for(Item I : mob.fetchWornItems(wornCode, layer, layerAttributes))
+		for(final Item I : mob.fetchWornItems(wornCode, layer, layerAttributes))
 		{
 			if(I instanceof GenEarring)
 				numWorn++;
 		}
 		return numWorn;
 	}
-	
-	protected boolean hasFreePiercing(final MOB mob, long wornCode)
+
+	protected boolean hasFreePiercing(final MOB mob, final long wornCode)
 	{
-		if(mob==null) 
+		if(mob==null)
 			return false;
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		final String wearLocName = codes.nameup(wornCode);
@@ -89,7 +89,7 @@ public class GenEarring extends GenThinArmor
 		for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
 		{
 			final String tattooName=e.nextElement().getTattooName().toUpperCase();
-			if(tattooName.startsWith(wearLocName+":") 
+			if(tattooName.startsWith(wearLocName+":")
 			&& (tattooName.substring(wearLocName.length()+1).indexOf("PIERCE")>=0))
 				availablePiercings++;
 		}
@@ -97,15 +97,15 @@ public class GenEarring extends GenThinArmor
 			return false;
 		return availablePiercings > numWorn(mob,wornCode);
 	}
-	
-	protected boolean hasFreePiercingFor(final MOB mob, long wornCodes)
+
+	protected boolean hasFreePiercingFor(final MOB mob, final long wornCodes)
 	{
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		if(super.wornLogicalAnd)
 		{
-			for(long code : codes.all())
+			for(final long code : codes.all())
 			{
-				if((code != 0) 
+				if((code != 0)
 				&& (code != Wearable.WORN_HELD)
 				&& CMath.bset(wornCodes,code)
 				&& (!hasFreePiercing(mob, code)))
@@ -115,9 +115,9 @@ public class GenEarring extends GenThinArmor
 		}
 		else
 		{
-			for(long code : codes.all())
+			for(final long code : codes.all())
 			{
-				if((code != 0) 
+				if((code != 0)
 				&& CMath.bset(wornCodes,code)
 				&&((code == Wearable.WORN_HELD)
 					||(hasFreePiercing(mob, code))))
@@ -126,9 +126,9 @@ public class GenEarring extends GenThinArmor
 			return false;
 		}
 	}
-	
+
 	@Override
-	public boolean canWear(MOB mob, long where)
+	public boolean canWear(final MOB mob, final long where)
 	{
 		if(!super.canWear(mob, where))
 			return false;
@@ -136,15 +136,15 @@ public class GenEarring extends GenThinArmor
 			return true;
 		return hasFreePiercingFor(mob,where);
 	}
-	
+
 	@Override
-	public long whereCantWear(MOB mob)
+	public long whereCantWear(final MOB mob)
 	{
 		long where=super.whereCantWear(mob);
 		final Wearable.CODES codes = Wearable.CODES.instance();
 		if(where == 0)
 		{
-			for(long code : codes.all())
+			for(final long code : codes.all())
 			{
 				if((code != 0)
 				&& fitsOn(code)
@@ -160,7 +160,7 @@ public class GenEarring extends GenThinArmor
 		}
 		return where;
 	}
-	
+
 	@Override
 	public void recoverPhyStats()
 	{
@@ -187,21 +187,21 @@ public class GenEarring extends GenThinArmor
 							&& ((I.rawWornCode() & this.rawWornCode()) != 0))
 								wornStuff.add((GenEarring)I);
 						}
-						for(long wornCode : CMath.getSeperateBitMasks(myWornCode))
+						for(final long wornCode : CMath.getSeperateBitMasks(myWornCode))
 						{
 							final List<String> availablePiercingsThisLoc = new ArrayList<String>(2);
 							final String wearLocName = codes.nameup(wornCode);
 							for(final Enumeration<Tattoo> e=mob.tattoos();e.hasMoreElements();)
 							{
 								final String tattooName=e.nextElement().getTattooName().toUpperCase();
-								if(tattooName.startsWith(wearLocName+":") 
+								if(tattooName.startsWith(wearLocName+":")
 								&& (tattooName.substring(wearLocName.length()+1).indexOf("PIERCE")>=0))
 									availablePiercingsThisLoc.add(tattooName.substring(wearLocName.length()+1).toLowerCase());
 							}
 							final Long wornCodeL=Long.valueOf(wornCode);
 							for(final GenEarring I : wornStuff)
 							{
-								if((I.wearLocs!=null) && ((I.rawWornCode() & wornCode)!=0) 
+								if((I.wearLocs!=null) && ((I.rawWornCode() & wornCode)!=0)
 								&& (I.wearLocs.containsKey(wornCodeL)))
 									availablePiercingsThisLoc.remove(I.wearLocs.remove(wornCodeL));
 							}
@@ -216,7 +216,7 @@ public class GenEarring extends GenThinArmor
 							}
 						}
 						if(wearLocs.size() > 0)
-							wearLocDesc = " on "+CMLib.english().toEnglishStringList(dispWearLocs); 
+							wearLocDesc = " on "+CMLib.english().toEnglishStringList(dispWearLocs);
 					}
 				}
 			}

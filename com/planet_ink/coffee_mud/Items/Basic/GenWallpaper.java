@@ -77,7 +77,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setRiding(Rideable one)
+	public void setRiding(final Rideable one)
 	{
 	}
 
@@ -94,7 +94,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setImage(String newImage)
+	public void setImage(final String newImage)
 	{
 	}
 
@@ -104,7 +104,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setDatabaseID(String id)
+	public void setDatabaseID(final String id)
 	{
 		// databaseID=id;
 	}
@@ -136,7 +136,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setName(String newName)
+	public void setName(final String newName)
 	{
 		name = newName;
 	}
@@ -160,7 +160,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setBasePhyStats(PhyStats newStats)
+	public void setBasePhyStats(final PhyStats newStats)
 	{
 	}
 
@@ -181,7 +181,7 @@ public class GenWallpaper implements Item
 		CMClass.unbumpCounter(this, CMClass.CMObjectType.ITEM);
 	}// removed for mem&perf
 	*/
-	
+
 	@Override
 	public CMObject newInstance()
 	{
@@ -232,7 +232,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setOwner(ItemPossessor E)
+	public void setOwner(final ItemPossessor E)
 	{
 		owner = E;
 	}
@@ -244,7 +244,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setExpirationDate(long time)
+	public void setExpirationDate(final long time)
 	{
 	}
 
@@ -255,7 +255,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public boolean amWearingAt(long wornCode)
+	public boolean amWearingAt(final long wornCode)
 	{
 		if (wornCode == Wearable.IN_INVENTORY)
 			return true;
@@ -263,25 +263,25 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public boolean fitsOn(long wornCode)
+	public boolean fitsOn(final long wornCode)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean wearIfPossible(MOB mob)
+	public boolean wearIfPossible(final MOB mob)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean wearIfPossible(MOB mob, long wearCode)
+	public boolean wearIfPossible(final MOB mob, final long wearCode)
 	{
 		return false;
 	}
 
 	@Override
-	public void wearAt(long wornCode)
+	public void wearAt(final long wornCode)
 	{
 	}
 
@@ -298,29 +298,29 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setRawProperLocationBitmap(long newValue)
+	public void setRawProperLocationBitmap(final long newValue)
 	{
 	}
 
 	@Override
-	public void setRawLogicalAnd(boolean newAnd)
+	public void setRawLogicalAnd(final boolean newAnd)
 	{
 	}
 
 	@Override
-	public boolean compareProperLocations(Item toThis)
+	public boolean compareProperLocations(final Item toThis)
 	{
 		return true;
 	}
 
 	@Override
-	public long whereCantWear(MOB mob)
+	public long whereCantWear(final MOB mob)
 	{
 		return 0;
 	}
 
 	@Override
-	public boolean canWear(MOB mob, long wornCode)
+	public boolean canWear(final MOB mob, final long wornCode)
 	{
 		return false;
 	}
@@ -332,7 +332,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setRawWornCode(long newValue)
+	public void setRawWornCode(final long newValue)
 	{
 	}
 
@@ -346,7 +346,7 @@ public class GenWallpaper implements Item
 		return 0;
 	}
 
-	public void setCapacity(int newValue)
+	public void setCapacity(final int newValue)
 	{
 	}
 
@@ -357,7 +357,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setMaterial(int newValue)
+	public void setMaterial(final int newValue)
 	{
 	}
 
@@ -374,7 +374,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setBaseValue(int newValue)
+	public void setBaseValue(final int newValue)
 	{
 	}
 
@@ -385,7 +385,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText = text;
 	}
@@ -397,7 +397,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setReadable(boolean truefalse)
+	public void setReadable(final boolean truefalse)
 	{
 		CMLib.flags().setReadable(this, truefalse);
 	}
@@ -413,7 +413,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void affectCharState(MOB affectedMob, CharState affectableMaxState)
+	public void affectCharState(final MOB affectedMob, final CharState affectableMaxState)
 	{
 	}
 
@@ -424,7 +424,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		final List<XMLLibrary.XMLTag> V = CMLib.xml().parseAllXML(newText);
 		if (V != null)
@@ -474,13 +474,13 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public Item ultimateContainer(Physical stopAtC)
+	public Item ultimateContainer(final Physical stopAtC)
 	{
 		return this;
 	}
 
 	@Override
-	public void wearEvenIfImpossible(MOB mob)
+	public void wearEvenIfImpossible(final MOB mob)
 	{
 	}
 
@@ -503,7 +503,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setSecretIdentity(String newIdentity)
+	public void setSecretIdentity(final String newIdentity)
 	{
 	}
 
@@ -514,24 +514,24 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public String displayText(MOB viewerMob)
+	public String displayText(final MOB viewerMob)
 	{
 		return displayText();
 	}
 
 	@Override
-	public String name(MOB viewerMob)
+	public String name(final MOB viewerMob)
 	{
 		return name();
 	}
 
 	@Override
-	public void setDisplayText(String newDisplayText)
+	public void setDisplayText(final String newDisplayText)
 	{
 	}
 
 	@Override
-	public String description(MOB viewerMob)
+	public String description(final MOB viewerMob)
 	{
 		return description();
 	}
@@ -541,7 +541,7 @@ public class GenWallpaper implements Item
 	{
 		if (description == null)
 			return "You see nothing special about " + name() + ".";
-		else 
+		else
 		if (description instanceof byte[])
 		{
 			final byte[] descriptionBytes = (byte[]) description;
@@ -557,11 +557,11 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setDescription(String newDescription)
+	public void setDescription(final String newDescription)
 	{
 		if (newDescription.length() == 0)
 			description = null;
-		else 
+		else
 		if (CMProps.getBoolVar(CMProps.Bool.ITEMDCOMPRESS))
 			description = CMLib.encoder().compressString(newDescription);
 		else
@@ -569,7 +569,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setContainer(Container newContainer)
+	public void setContainer(final Container newContainer)
 	{
 	}
 
@@ -580,7 +580,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setUsesRemaining(int newUses)
+	public void setUsesRemaining(final int newUses)
 	{
 	}
 
@@ -591,7 +591,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setSavable(boolean truefalse)
+	public void setSavable(final boolean truefalse)
 	{
 		CMLib.flags().setSavable(this, truefalse);
 	}
@@ -602,10 +602,10 @@ public class GenWallpaper implements Item
 		final MOB mob = msg.source();
 		if (!msg.amITarget(this))
 			return true;
-		else 
+		else
 		if (msg.targetMinor() == CMMsg.NO_EFFECT)
 			return true;
-		else 
+		else
 		if (CMath.bset(msg.targetMajor(), CMMsg.MASK_MAGIC))
 		{
 			mob.tell(L("Please don't do that."));
@@ -689,7 +689,7 @@ public class GenWallpaper implements Item
 			final Room thisRoom = (Room) owner;
 			thisRoom.delItem(this);
 		}
-		else 
+		else
 		if (owner instanceof MOB)
 		{
 			final MOB mob = (MOB) owner;
@@ -698,22 +698,22 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void addNonUninvokableEffect(Ability to)
+	public void addNonUninvokableEffect(final Ability to)
 	{
 	}
 
 	@Override
-	public void addEffect(Ability to)
+	public void addEffect(final Ability to)
 	{
 	}
 
 	@Override
-	public void delEffect(Ability to)
+	public void delEffect(final Ability to)
 	{
 	}
 
 	@Override
-	public void delAllEffects(boolean unInvoke)
+	public void delAllEffects(final boolean unInvoke)
 	{
 	}
 
@@ -735,13 +735,13 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public Ability fetchEffect(int index)
+	public Ability fetchEffect(final int index)
 	{
 		return null;
 	}
 
 	@Override
-	public Ability fetchEffect(String ID)
+	public Ability fetchEffect(final String ID)
 	{
 		return null;
 	}
@@ -759,12 +759,12 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void addBehavior(Behavior to)
+	public void addBehavior(final Behavior to)
 	{
 	}
 
 	@Override
-	public void delBehavior(Behavior to)
+	public void delBehavior(final Behavior to)
 	{
 	}
 
@@ -786,13 +786,13 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public Behavior fetchBehavior(int index)
+	public Behavior fetchBehavior(final int index)
 	{
 		return null;
 	}
 
 	@Override
-	public Behavior fetchBehavior(String ID)
+	public Behavior fetchBehavior(final String ID)
 	{
 		return null;
 	}
@@ -803,12 +803,12 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void addScript(ScriptingEngine S)
+	public void addScript(final ScriptingEngine S)
 	{
 	}
 
 	@Override
-	public void delScript(ScriptingEngine S)
+	public void delScript(final ScriptingEngine S)
 	{
 	}
 
@@ -830,7 +830,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public ScriptingEngine fetchScript(int x)
+	public ScriptingEngine fetchScript(final int x)
 	{
 		return null;
 	}
@@ -871,7 +871,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch (getCodeNum(code))
 		{
@@ -890,7 +890,7 @@ public class GenWallpaper implements Item
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch (getCodeNum(code))
 		{

@@ -39,7 +39,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface BoardableShip extends Environmental
 {
 	/**
-	 * Designates that this ship is landed and docked in the given 
+	 * Designates that this ship is landed and docked in the given
 	 * planetary room.
 	 * @param R the coordinate toom in which the ship is docked.
 	 */
@@ -47,11 +47,11 @@ public interface BoardableShip extends Environmental
 
 	/**
 	 * When a boardable ship area is created, it is bound to an item
-	 * that resides in a room when docked, or possibly, always. 
-	 * @param dockableItem the item that acts as dockable item 
+	 * that resides in a room when docked, or possibly, always.
+	 * @param dockableItem the item that acts as dockable item
 	 */
 	public void setDockableItem(Item dockableItem);
-	
+
 	/**
 	 * Designates that this ship is no longer docked, and whether it
 	 * should also be moved into its na
@@ -68,7 +68,7 @@ public interface BoardableShip extends Environmental
 
 	/**
 	 * Space ships are unique in having an Item stand-in for dirt-side access,
-	 * as well as an Area object.  This method returns the area object that 
+	 * as well as an Area object.  This method returns the area object that
 	 * represents the contents of the ship.
 	 * @return the official area version of this ship
 	 */
@@ -76,7 +76,7 @@ public interface BoardableShip extends Environmental
 
 	/**
 	 * Space ships are unique in having an Item stand-in for dirt-side access,
-	 * as well as an Area object.  This method sets the area object that 
+	 * as well as an Area object.  This method sets the area object that
 	 * represents the contents of the ship.
 	 * @param xml area xml for the ship
 	 */

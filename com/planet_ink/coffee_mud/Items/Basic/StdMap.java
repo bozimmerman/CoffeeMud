@@ -35,12 +35,12 @@ import java.util.*;
 
 public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.interfaces.RoomMap
 {
-	@Override 
+	@Override
 	public String ID()
-	{	
+	{
 		return "StdMap";
 	}
-	
+
 	protected int oldLevel=0;
 
 	public StdMap()
@@ -63,25 +63,25 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		boolean positionedAlready=false;
 	}
 
-	@Override 
+	@Override
 	public String getMapArea()
 	{
 		return miscText;
 	}
-	
+
 	@Override
-	public void setMapArea(String mapName)
-	{ 
-		super.setMiscText(mapName);	
+	public void setMapArea(final String mapName)
+	{
+		super.setMiscText(mapName);
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		doMapArea();
 	}
-	
+
 	@Override
 	public void doMapArea()
 	{
@@ -107,7 +107,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		//myMap=null;
 	}
 
-	public MapRoom[][] rebuildGrid(Hashtable<Room,MapRoom> areaMap)
+	public MapRoom[][] rebuildGrid(final Hashtable<Room,MapRoom> areaMap)
 	{
 		// build grid!
 		int xoffset=0;
@@ -179,7 +179,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return grid;
 	}
 
-	public void clearTheSkys(Hashtable<Room,MapRoom> mapRooms)
+	public void clearTheSkys(final Hashtable<Room,MapRoom> mapRooms)
 	{
 		for(final Enumeration<Room> e=mapRooms.keys();e.hasMoreElements();)
 		{
@@ -205,7 +205,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		}
 	}
 
-	public Hashtable<Room,MapRoom> makeMapRooms(int width)
+	public Hashtable<Room,MapRoom> makeMapRooms(final int width)
 	{
 		final List<String> mapAreas=CMParms.parseSemicolons(getMapArea(),true);
 		final Hashtable<Room,MapRoom> mapRooms=new Hashtable<Room,MapRoom>();
@@ -227,7 +227,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return mapRooms;
 	}
 
-	public StringBuffer[][] finishMapMaking(int width)
+	public StringBuffer[][] finishMapMaking(final int width)
 	{
 		final Hashtable<Room,MapRoom> mapRooms=makeMapRooms(width);
 		StringBuffer[][] map=new StringBuffer[0][0];
@@ -318,7 +318,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return map;
 	}
 
-	public StringBuffer[][] getMyMappedRoom(int width)
+	public StringBuffer[][] getMyMappedRoom(final int width)
 	{
 		StringBuffer[][] myMap=null;
 		/*if(oldLevel!=phyStats().level())
@@ -342,7 +342,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return myMap;
 	}
 
-	public char dirChar(int dirCode, MapRoom[][] grid, int x, int y, char wall)
+	public char dirChar(int dirCode, final MapRoom[][] grid, int x, int y, final char wall)
 	{
 		final MapRoom room=grid[x][y];
 		if(room==null)
@@ -365,8 +365,8 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		}
 		MapRoom nextRoom=null;
 		try
-		{	
-			nextRoom=grid[x][y];	
+		{
+			nextRoom=grid[x][y];
 		}
 		catch(final Exception t)
 		{
@@ -412,7 +412,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return ' ';
 	}
 
-	public MapRoom getProcessedRoomAt(Map<Room,MapRoom> processed, int x, int y)
+	public MapRoom getProcessedRoomAt(final Map<Room,MapRoom> processed, final int x, final int y)
 	{
 		for(final Iterator<MapRoom> e=processed.values().iterator();e.hasNext();)
 		{
@@ -423,14 +423,14 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return null;
 	}
 
-	public MapRoom getRoom(Map<Room,MapRoom> allRooms, Room droom)
+	public MapRoom getRoom(final Map<Room,MapRoom> allRooms, final Room droom)
 	{
 		return allRooms.get(droom);
 	}
 
 	public final static int CLUSTERSIZE=3;
 
-	public boolean isEmptyCluster(Map<Room,MapRoom> processed, int x, int y)
+	public boolean isEmptyCluster(final Map<Room,MapRoom> processed, final int x, final int y)
 	{
 		for(final Iterator<MapRoom> e=processed.values().iterator();e.hasNext();)
 		{
@@ -443,7 +443,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return true;
 	}
 
-	public void findEmptyCluster(Map<Room,MapRoom> processed, List<Integer> XY)
+	public void findEmptyCluster(final Map<Room,MapRoom> processed, final List<Integer> XY)
 	{
 		final int x=XY.get(0).intValue();
 		final int y=XY.get(1).intValue();
@@ -496,7 +496,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		}
 	}
 
-	public boolean anythingThatDirection(MapRoom room, int direction)
+	public boolean anythingThatDirection(final MapRoom room, final int direction)
 	{
 		final Room D=room.r.getRoomInDir(direction);
 		if(D==null)
@@ -504,7 +504,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return true;
 	}
 
-	public boolean okToPlace(MapRoom room)
+	public boolean okToPlace(final MapRoom room)
 	{
 		if(room==null)
 			return false;
@@ -533,7 +533,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		return ok;
 	}
 
-	public boolean okToPlace(MapRoom room, Exit exit)
+	public boolean okToPlace(final MapRoom room, final Exit exit)
 	{
 		if(!okToPlace(room))
 			return false;
@@ -678,14 +678,14 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		super.executeMsg(myHost,msg);
 	}
 
-	public void placeRoom(MapRoom room,
-						  Map<Room,MapRoom> areaMap,
-						  int favoredX,
-						  int favoredY,
-						  Map<Room,MapRoom> processed,
-						  boolean doNotDefer,
-						  boolean passTwo,
-						  int depth)
+	public void placeRoom(final MapRoom room,
+						  final Map<Room,MapRoom> areaMap,
+						  final int favoredX,
+						  final int favoredY,
+						  final Map<Room,MapRoom> processed,
+						  final boolean doNotDefer,
+						  final boolean passTwo,
+						  final int depth)
 	{
 		if(room==null)
 			return;

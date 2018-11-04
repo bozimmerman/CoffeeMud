@@ -59,7 +59,7 @@ public class GenTriCorder extends StdTriCorder
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -69,7 +69,7 @@ public class GenTriCorder extends StdTriCorder
 	private final static String[] MYCODES={"POWERCAP","ACTIVATED","POWERREM","MANUFACTURER","TECHLEVEL"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -89,9 +89,9 @@ public class GenTriCorder extends StdTriCorder
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
-	
+
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
@@ -118,7 +118,7 @@ public class GenTriCorder extends StdTriCorder
 			break;
 		}
 	}
-	
+
 	@Override
 	protected int getCodeNum(final String code)
 	{

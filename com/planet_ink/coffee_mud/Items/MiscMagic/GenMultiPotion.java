@@ -69,13 +69,13 @@ public class GenMultiPotion extends GenDrink implements Potion
 	}
 
 	@Override
-	public void setLiquidType(int newLiquidType)
+	public void setLiquidType(final int newLiquidType)
 	{
 		liquidType = newLiquidType;
 	}
 
 	@Override
-	public void setDrunk(boolean isTrue)
+	public void setDrunk(final boolean isTrue)
 	{
 		if(isTrue&&isDrunk())
 			return;
@@ -114,7 +114,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 	}
 
 	@Override
-	public void setSpellList(String list)
+	public void setSpellList(final String list)
 	{
 		readableText = list;
 	}
@@ -126,14 +126,14 @@ public class GenMultiPotion extends GenDrink implements Potion
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText=text;
 		setSpellList(readableText);
 	}
 
 	@Override
-	public void drinkIfAble(MOB owner, Physical drinkerTarget)
+	public void drinkIfAble(final MOB owner, final Physical drinkerTarget)
 	{
 		final List<Ability> spells=getSpells();
 		if(owner.isMine(this))
@@ -157,9 +157,9 @@ public class GenMultiPotion extends GenDrink implements Potion
 					caster.basePhyStats().setLevel(level);
 					caster.phyStats().setLevel(level);
 					thisOneA.invoke(finalCaster,drinkerTarget,true,level);
-					Ability effectA=drinkerTarget.fetchEffect(thisOneA.ID());
+					final Ability effectA=drinkerTarget.fetchEffect(thisOneA.ID());
 					if((effectA!=null) && (effectA.invoker() == caster))
-						destroyCaster =  false; 
+						destroyCaster =  false;
 				}
 				if(destroyCaster)
 					caster.destroy();

@@ -46,7 +46,7 @@ public class StdShipDampener extends StdElecCompItem
 	{
 		return "StdShipDampener";
 	}
-	
+
 	public StdShipDampener()
 	{
 		super();
@@ -60,11 +60,11 @@ public class StdShipDampener extends StdElecCompItem
 	{
 		return Technical.TechType.SHIP_DAMPENER;
 	}
-	
+
 	private volatile Reference<SpaceShip> myShip 	   = null;
 
 	@Override
-	public void setOwner(ItemPossessor container)
+	public void setOwner(final ItemPossessor container)
 	{
 		super.setOwner(container);
 		myShip = null;
@@ -92,13 +92,13 @@ public class StdShipDampener extends StdElecCompItem
 		&&(activated())
 		&&(msg.value()>1.0))
 		{
-			final SpaceShip ship = getMyShip(); 
+			final SpaceShip ship = getMyShip();
 			final double efficiency = this.getFinalManufacturer().getEfficiencyPct();
 			final double reliability = this.getFinalManufacturer().getReliabilityPct();
 			double wearAndTear = 1.0;
 			if(this.subjectToWearAndTear() && this.usesRemaining()<100)
 				wearAndTear = Math.min(1.0, reliability * CMath.div(this.usesRemaining(), 100.0));
-			
+
 			final double amountNeeded = (msg.value()-1.0);
 			final double powerUsed = CMath.mul(ship.getShipArea().numberOfProperIDedRooms() , efficiency ); // eff is from 0.5 (great) to 2.0 (terrible)
 			double powerFactor = 1.0;
@@ -110,7 +110,7 @@ public class StdShipDampener extends StdElecCompItem
 			}
 			else
 				this.setPowerRemaining(Math.round(this.powerRemaining() - powerUsed));
-			int newVal = (int)Math.round(msg.value() - CMath.mul(amountNeeded, wearAndTear * powerFactor));
+			final int newVal = (int)Math.round(msg.value() - CMath.mul(amountNeeded, wearAndTear * powerFactor));
 			msg.setValue(newVal);
 		}
 		return true;

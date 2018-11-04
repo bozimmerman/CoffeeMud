@@ -47,7 +47,7 @@ public interface DeadBody extends Container
 	 * @return the collection of character stats
 	 */
 	public CharStats charStats();
-	
+
 	/**
 	 * Sets the collection of character stats about the
 	 * deceased mob.  This is stuff like strength and race.
@@ -56,7 +56,7 @@ public interface DeadBody extends Container
 	 * @param newStats the collection of character stats
 	 */
 	public void setCharStats(CharStats newStats);
-	
+
 	/**
 	 * Gets the deceased's name.  Not the display name of the corpse,
 	 * but the original dudes plain old name.
@@ -64,7 +64,7 @@ public interface DeadBody extends Container
 	 * @return the deceased's name
 	 */
 	public String getMobName();
-	
+
 	/**
 	 * Sets the deceased's name.  Not the display name of the corpse,
 	 * but the original dudes plain old name.
@@ -72,7 +72,7 @@ public interface DeadBody extends Container
 	 * @param newName the deceased's name
 	 */
 	public void setMobName(String newName);
-	
+
 	/**
 	 * Gets the hash that uniquely identifies the deceased mob object.
 	 * @see DeadBody#setMobHash(int)
@@ -86,7 +86,7 @@ public interface DeadBody extends Container
 	 * @param newHash hash that uniquely identifies the deceased mob object.
 	 */
 	public void setMobHash(int newHash);
-	
+
 	/**
 	 * Gets the deceased's description.  Not the display name of the corpse,
 	 * but the original dudes description text.
@@ -94,7 +94,7 @@ public interface DeadBody extends Container
 	 * @return the deceased's description
 	 */
 	public String getMobDescription();
-	
+
 	/**
 	 * Sets the deceased's description.  Not the display name of the corpse,
 	 * but the original dudes description text.
@@ -102,14 +102,14 @@ public interface DeadBody extends Container
 	 * @param newDescription the deceased's description
 	 */
 	public void setMobDescription(String newDescription);
-	
+
 	/**
 	 * Gets the name of the mob that killed the deceased mob whose corpse this is.
 	 * @see DeadBody#setKillerName(String)
 	 * @return the name of the mob that killed the deceased mob whose corpse this is.
 	 */
 	public String getKillerName();
-	
+
 	/**
 	 * Sets the name of the mob that killed the deceased mob whose corpse this is.
 	 * @see DeadBody#setKillerName(String)
@@ -132,7 +132,7 @@ public interface DeadBody extends Container
 	 * @param trueFalse true if the killer was a player, false otherwise
 	 */
 	public void setIsKillerPlayer(boolean trueFalse);
-	
+
 	/**
 	 * Gets the last message seen by the deceased mob whose corpse this is.  Usually this
 	 * would be the killing blow.
@@ -140,7 +140,7 @@ public interface DeadBody extends Container
 	 * @return the last message seen by the deceased mob whose corpse this is
 	 */
 	public String getLastMessage();
-	
+
 	/**
 	 * Sets the last message seen by the deceased mob whose corpse this is.  Usually this
 	 * would be the killing blow.
@@ -148,21 +148,21 @@ public interface DeadBody extends Container
 	 * @param lastMsg the last message seen by the deceased mob whose corpse this is
 	 */
 	public void setLastMessage(String lastMsg);
-	
+
 	/**
 	 * Gets the weapon wielded by the killer at the time of death of the deceased mob.
-	 * @see DeadBody#setKillerTool(Environmental) 
+	 * @see DeadBody#setKillerTool(Environmental)
 	 * @return the weapon wielded by the killer at the time of death of the deceased mob.
 	 */
 	public Environmental getKillerTool();
-	
+
 	/**
 	 * Sets the weapon wielded by the killer at the time of death of the deceased mob.
-	 * @see DeadBody#getKillerTool() 
+	 * @see DeadBody#getKillerTool()
 	 * @param tool the weapon wielded by the killer at the time of death of the deceased mob.
 	 */
 	public void setKillerTool(Environmental tool);
-	
+
 	/**
 	 * Gets whether this corpse is automatically destroyed by the system after it has been
 	 * looted.
@@ -170,7 +170,7 @@ public interface DeadBody extends Container
 	 * @return true to destroy after looting, false otherwise
 	 */
 	public boolean isDestroyedAfterLooting();
-	
+
 	/**
 	 * Sets whether this corpse is automatically destroyed by the system after it has been
 	 * looted.
@@ -178,21 +178,21 @@ public interface DeadBody extends Container
 	 * @param truefalse true to destroy after looting, false otherwise
 	 */
 	public void setIsDestroyAfterLooting(boolean truefalse);
-	
+
 	/**
 	 * Gets whether the deceased mob whose corpse this is was a player.
 	 * @see DeadBody#setIsPlayerCorpse(boolean)
 	 * @return true if the deceased was a player, false if a mob
 	 */
 	public boolean isPlayerCorpse();
-	
+
 	/**
 	 * Sets whether the deceased mob whose corpse this is was a player.
 	 * @see DeadBody#isPlayerCorpse()
 	 * @param truefalse true if the deceased was a player, false if a mob
 	 */
 	public void setIsPlayerCorpse(boolean truefalse);
-	
+
 	/**
 	 * Gets whether the mob, whose corpse this is, had their PlayerKill flag
 	 * on at the time of death, probably denoting a duel of some sort.
@@ -200,7 +200,7 @@ public interface DeadBody extends Container
 	 * @return true if the mob had their PK flag on, false otherwise
 	 */
 	public boolean getMobPKFlag();
-	
+
 	/**
 	 * Sets whether the mob, whose corpse this is, had their PlayerKill flag
 	 * on at the time of death, probably denoting a duel of some sort.
@@ -208,7 +208,7 @@ public interface DeadBody extends Container
 	 * @param truefalse true if the mob had their PK flag on, false otherwise
 	 */
 	public void setMobPKFlag(boolean truefalse);
-	
+
 	/**
 	 * Gets the real world time, in milliseconds, that the death of this
 	 * corpse occurred.
@@ -216,7 +216,7 @@ public interface DeadBody extends Container
 	 * @return the time, in milliseconds, of death
 	 */
 	public long getTimeOfDeath();
-	
+
 	/**
 	 * Sets the real world time, in milliseconds, that the death of this
 	 * corpse occurred.
@@ -224,7 +224,7 @@ public interface DeadBody extends Container
 	 * @param time the time, in milliseconds, of death
 	 */
 	public void setTimeOfDeath(long time);
-	
+
 	/**
 	 * Sets the mob object belonging to the deceased.
 	 * @see DeadBody#getSavedMOB()
@@ -232,7 +232,7 @@ public interface DeadBody extends Container
 	 * @param preserve TODO
 	 */
 	public void setSavedMOB(MOB mob, boolean preserve);
-	
+
 	/**
 	 * Gets the mob object belonging to the deceased.
 	 * @see DeadBody#setSavedMOB(MOB, boolean)

@@ -21,14 +21,14 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
  * A playing card is just what it sounds like - a card you can play card games
  * with. It is typically contained in both a HandOfCards, managed by a
  * DeckOfCards that created it.
- * 
+ *
  * @author Bo Zimmerman
  */
-public interface PlayingCard extends Item 
+public interface PlayingCard extends Item
 {
 	/** A static list of bitmap values, one for each suit.  In order, spades, clubs, hearts, diamonds.  Needs to be enumified. */
 	public static int[] suits = { 0, 16, 32, 48 };
-	
+
 	/** A static list of card values, 2 through 14, with the ace as 14. */
 	public static int[] cards = { 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14 };
 

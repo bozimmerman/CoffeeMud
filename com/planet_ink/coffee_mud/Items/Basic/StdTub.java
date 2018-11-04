@@ -70,7 +70,7 @@ public class StdTub extends StdRideable implements Drink
 	}
 
 	@Override
-	public void setDecayTime(long time)
+	public void setDecayTime(final long time)
 	{
 		decayTime=time;
 	}
@@ -108,25 +108,25 @@ public class StdTub extends StdRideable implements Drink
 	}
 
 	@Override
-	public void setLiquidType(int newLiquidType)
+	public void setLiquidType(final int newLiquidType)
 	{
 		liquidType=newLiquidType;
 	}
 
 	@Override
-	public void setThirstQuenched(int amount)
+	public void setThirstQuenched(final int amount)
 	{
 		amountOfThirstQuenched=amount;
 	}
 
 	@Override
-	public void setLiquidHeld(int amount)
+	public void setLiquidHeld(final int amount)
 	{
 		amountOfLiquidHeld=amount;
 	}
 
 	@Override
-	public void setLiquidRemaining(int amount)
+	public void setLiquidRemaining(final int amount)
 	{
 		amountOfLiquidRemaining=amount;
 	}
@@ -156,7 +156,7 @@ public class StdTub extends StdRideable implements Drink
 	}
 
 	@Override
-	public String stateString(Rider R)
+	public String stateString(final Rider R)
 	{
 		if((R==null)||(stateString.length()==0))
 		{
@@ -180,7 +180,7 @@ public class StdTub extends StdRideable implements Drink
 	}
 
 	@Override
-	public String putString(Rider R)
+	public String putString(final Rider R)
 	{
 		if((R==null)||(putString.length()==0))
 			return "in";
@@ -188,7 +188,7 @@ public class StdTub extends StdRideable implements Drink
 	}
 
 	@Override
-	public String mountString(int commandType, Rider R)
+	public String mountString(final int commandType, final Rider R)
 	{
 		if((R==null)||(mountString.length()==0))
 		{
@@ -213,7 +213,7 @@ public class StdTub extends StdRideable implements Drink
 	}
 
 	@Override
-	public String dismountString(Rider R)
+	public String dismountString(final Rider R)
 	{
 		if((R==null)||(dismountString.length()==0))
 		{
@@ -237,7 +237,7 @@ public class StdTub extends StdRideable implements Drink
 	}
 
 	@Override
-	public String stateStringSubject(Rider R)
+	public String stateStringSubject(final Rider R)
 	{
 		if((R==null)||(stateSubjectStr.length()==0))
 		{
@@ -322,7 +322,7 @@ public class StdTub extends StdRideable implements Drink
 	}
 
 	@Override
-	public int amountTakenToFillMe(Drink theSource)
+	public int amountTakenToFillMe(final Drink theSource)
 	{
 		int amountToTake=amountOfLiquidHeld-amountOfLiquidRemaining;
 		if(amountOfLiquidHeld>=500000)

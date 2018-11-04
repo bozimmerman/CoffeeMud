@@ -95,7 +95,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	// determined by the cardCode, which is a bit masked
 	// value where bits 4-5 determine suit, and lower bits
 	// the value.
-	protected PlayingCard makePlayingCard(int cardBitCode)
+	protected PlayingCard makePlayingCard(final int cardBitCode)
 	{
 		final Item I=CMClass.getItem("StdPlayingCard");
 		I.basePhyStats().setAbility(cardBitCode);
@@ -140,7 +140,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	// gives it to the given owner object (mob or room), and
 	// then populates the deck container with all appropriate cards.
 	@Override
-	public DeckOfCards createDeck(Environmental owner)
+	public DeckOfCards createDeck(final Environmental owner)
 	{
 		final StdDeckOfCards deck=new StdDeckOfCards();
 		if(owner instanceof MOB)
@@ -214,7 +214,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	// deck for internal management, this method will return
 	// that hand given the player object.
 	@Override
-	public HandOfCards getPlayerHand(MOB player)
+	public HandOfCards getPlayerHand(final MOB player)
 	{
 		if(player!=null)
 		for(int i=0;i<hands.size();i++)
@@ -231,7 +231,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	// the hand is then added to our table, keyed by the player
 	// object
 	@Override
-	public HandOfCards addPlayerHand(MOB player, HandOfCards cards)
+	public HandOfCards addPlayerHand(final MOB player, HandOfCards cards)
 	{
 		if(player==null)
 			return null;
@@ -251,7 +251,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	// of the cards from the hand, return them to the deck,
 	// then remove the hand from management, and destroy the hand.
 	@Override
-	public void removePlayerHand(MOB player)
+	public void removePlayerHand(final MOB player)
 	{
 		final HandOfCards cards=getPlayerHand(player);
 		if(cards==null)
@@ -268,7 +268,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
 	// in HandOfCards.java by ensuring that all cards
 	// added to the deck are added face down.
 	@Override
-	public boolean addCard(PlayingCard card)
+	public boolean addCard(final PlayingCard card)
 	{
 		if(card!=null)
 			card.turnFaceDown();

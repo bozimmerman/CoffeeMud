@@ -57,14 +57,14 @@ public class Wand_Fire extends StdWand
 	}
 
 	@Override
-	public void setSpell(Ability theSpell)
+	public void setSpell(final Ability theSpell)
 	{
 		super.setSpell(theSpell);
 		secretWord="BLAZE, BURN";
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		secretWord="BLAZE, BURN";

@@ -56,7 +56,7 @@ public class ShieldWeapon extends StdWeapon implements Shield
 		recoverPhyStats();
 	}
 
-	public void setShield(Item shield)
+	public void setShield(final Item shield)
 	{
 		name=shield.name();
 		displayText=shield.displayText();
@@ -71,7 +71,7 @@ public class ShieldWeapon extends StdWeapon implements Shield
 		recoverPhyStats();
 	}
 
-	public ShieldWeapon(Item shield)
+	public ShieldWeapon(final Item shield)
 	{
 		super();
 

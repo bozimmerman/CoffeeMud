@@ -74,13 +74,13 @@ public class GenTechItem extends StdTechItem
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText = text;
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText = "";
 		CMLib.coffeeMaker().setPropertiesStr(this, newText, false);
@@ -89,7 +89,7 @@ public class GenTechItem extends StdTechItem
 
 	private final static String[] MYCODES={"TECHLEVEL"};
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -103,7 +103,7 @@ public class GenTechItem extends StdTechItem
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
@@ -129,9 +129,9 @@ public class GenTechItem extends StdTechItem
 		}
 		return -1;
 	}
-	
+
 	private static String[] codes=null;
-	
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -147,7 +147,7 @@ public class GenTechItem extends StdTechItem
 			codes[i]=MYCODES[x];
 		return codes;
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

@@ -63,13 +63,13 @@ public class GenResource extends GenItem implements RawMaterial
 	}
 
 	@Override
-	public void setDomainSource(String src)
+	public void setDomainSource(final String src)
 	{
 		domainSource = src;
 	}
 
 	@Override
-	public void setSubType(String subType)
+	public void setSubType(final String subType)
 	{
 		resourceSubType = (subType == null)?"":subType;
 	}
@@ -79,7 +79,7 @@ public class GenResource extends GenItem implements RawMaterial
 	{
 		return resourceSubType;
 	}
-	
+
 	@Override
 	public boolean rebundle()
 	{
@@ -91,11 +91,11 @@ public class GenResource extends GenItem implements RawMaterial
 	{
 		CMLib.materials().quickDestroy(this);
 	}
-	
+
 	private final static String[] MYCODES={"DOMAINSRC","RSUBTYPE"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(super.isStat(code))
 			return super.getStat(code);
@@ -112,7 +112,7 @@ public class GenResource extends GenItem implements RawMaterial
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(super.isStat(code))
 			super.setStat(code, val);

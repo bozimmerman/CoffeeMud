@@ -35,14 +35,14 @@ import java.util.*;
 @SuppressWarnings({"unchecked","rawtypes"})
 public class StdClanCommonItem extends StdClanItem
 {
-	@Override 
+	@Override
 	public String ID()
-	{	
+	{
 		return "StdClanCommonItem";
 	}
-	
+
 	private static final Map<Area,DVector> needChart = new Hashtable<Area,DVector>();
-	
+
 	protected int 		workDown=0;
 	protected boolean 	glows=false;
 
@@ -61,7 +61,7 @@ public class StdClanCommonItem extends StdClanItem
 		recoverPhyStats();
 	}
 
-	public boolean fireHere(Room R)
+	public boolean fireHere(final Room R)
 	{
 		for(int i=0;i<R.numItems();i++)
 		{
@@ -74,7 +74,7 @@ public class StdClanCommonItem extends StdClanItem
 		return false;
 	}
 
-	public Vector<Item> resourceHere(Room R, int material)
+	public Vector<Item> resourceHere(final Room R, final int material)
 	{
 		final Vector<Item> here=new Vector<Item>();
 		for(int i=0;i<R.numItems();i++)
@@ -91,7 +91,7 @@ public class StdClanCommonItem extends StdClanItem
 		return here;
 	}
 
-	public Vector<Item> resourceHere(MOB M, int material)
+	public Vector<Item> resourceHere(final MOB M, final int material)
 	{
 		final Vector<Item> here=new Vector<Item>();
 		for(int i=0;i<M.numItems();i++)
@@ -108,7 +108,7 @@ public class StdClanCommonItem extends StdClanItem
 		return here;
 	}
 
-	public List<Item> resourceHere(Room R, List<Integer> materials)
+	public List<Item> resourceHere(final Room R, final List<Integer> materials)
 	{
 		final List<Item> allMat=new Vector<Item>();
 		List<Item> V=null;
@@ -121,8 +121,8 @@ public class StdClanCommonItem extends StdClanItem
 		}
 		return allMat;
 	}
-	
-	public List<Item> resourceHere(MOB M, List<Integer> materials)
+
+	public List<Item> resourceHere(final MOB M, final List<Integer> materials)
 	{
 		final List<Item> allMat=new Vector<Item>();
 		List<Item> V=null;
@@ -136,7 +136,7 @@ public class StdClanCommonItem extends StdClanItem
 		return allMat;
 	}
 
-	public List<Integer> enCode(MOB M, String req)
+	public List<Integer> enCode(final MOB M, String req)
 	{
 		req=req.toUpperCase();
 		final List<Integer> V=new Vector<Integer>();
@@ -188,13 +188,13 @@ public class StdClanCommonItem extends StdClanItem
 	}
 
 	@Override
-	public void setReadableText(String newText)
+	public void setReadableText(final String newText)
 	{
 		super.setReadableText(newText);
 		glows=(newText.equalsIgnoreCase("Mining"));
 	}
 
-	public boolean trackTo(MOB M, MOB M2)
+	public boolean trackTo(final MOB M, final MOB M2)
 	{
 		final Ability A=CMClass.getAbility("Skill_Track");
 		if(A!=null)
@@ -209,7 +209,7 @@ public class StdClanCommonItem extends StdClanItem
 		return false;
 	}
 
-	public boolean trackTo(MOB M, Room R)
+	public boolean trackTo(final MOB M, final Room R)
 	{
 		final Ability A=CMClass.getAbility("Skill_Track");
 		if((A!=null)&&(R!=null))

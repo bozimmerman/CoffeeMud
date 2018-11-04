@@ -78,7 +78,7 @@ public class StdInnKey extends StdKey implements InnKey
 	}
 
 	@Override
-	public void hangOnRack(ShopKeeper SK)
+	public void hangOnRack(final ShopKeeper SK)
 	{
 		if(myShopkeeper==null)
 		{

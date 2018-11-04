@@ -59,7 +59,7 @@ public class StdBoffWeapon extends StdWeapon
 	}
 
 	@Override
-	public String hitString(int damageAmount)
+	public String hitString(final int damageAmount)
 	{
 		String word="boff(s)";
 		switch(CMLib.dice().roll(1,7,-1))

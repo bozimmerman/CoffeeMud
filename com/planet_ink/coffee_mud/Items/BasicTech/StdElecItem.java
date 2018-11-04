@@ -42,7 +42,7 @@ public class StdElecItem extends StdItem implements Electronics
 	{
 		return "StdElecItem";
 	}
-	
+
 	protected long			powerCapacity	= 100;
 	protected long			power			= 100;
 	protected boolean		activated		= false;
@@ -68,7 +68,7 @@ public class StdElecItem extends StdItem implements Electronics
 	}
 
 	@Override
-	public void setPowerCapacity(long capacity)
+	public void setPowerCapacity(final long capacity)
 	{
 		powerCapacity = capacity;
 	}
@@ -80,7 +80,7 @@ public class StdElecItem extends StdItem implements Electronics
 	}
 
 	@Override
-	public void setPowerRemaining(long remaining)
+	public void setPowerRemaining(final long remaining)
 	{
 		power = remaining;
 	}
@@ -92,7 +92,7 @@ public class StdElecItem extends StdItem implements Electronics
 	}
 
 	@Override
-	public void activate(boolean truefalse)
+	public void activate(final boolean truefalse)
 	{
 		activated = truefalse;
 	}
@@ -110,7 +110,7 @@ public class StdElecItem extends StdItem implements Electronics
 	}
 
 	@Override
-	public void setTechLevel(int lvl)
+	public void setTechLevel(final int lvl)
 	{
 		basePhyStats.setAbility(lvl);
 		recoverPhyStats();
@@ -129,7 +129,7 @@ public class StdElecItem extends StdItem implements Electronics
 	}
 
 	@Override
-	public void setManufacturerName(String name)
+	public void setManufacturerName(final String name)
 	{
 		cachedManufact = null;
 		if (name != null)
@@ -147,7 +147,7 @@ public class StdElecItem extends StdItem implements Electronics
 		}
 		return cachedManufact;
 	}
-	
+
 	protected double getComputedEfficiency()
 	{
 		double generatedAmount = 1.0;
@@ -155,5 +155,5 @@ public class StdElecItem extends StdItem implements Electronics
 			generatedAmount *= CMath.div(usesRemaining(), 100.0);
 		return generatedAmount;
 	}
-	
+
 }

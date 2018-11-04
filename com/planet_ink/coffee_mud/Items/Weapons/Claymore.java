@@ -67,7 +67,7 @@ public class Claymore extends Sword
 		weaponDamageType=TYPE_SLASHING;
 	}
 
-	public void setItemDescription(int level)
+	public void setItemDescription(final int level)
 	{
 		switch(level)
 		{

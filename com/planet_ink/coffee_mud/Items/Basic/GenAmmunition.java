@@ -39,9 +39,9 @@ public class GenAmmunition extends StdItem implements Ammunition
 	{
 		return "GenAmmunition";
 	}
-	
+
 	protected String	readableText="";
-	
+
 	public GenAmmunition()
 	{
 		super();
@@ -59,7 +59,7 @@ public class GenAmmunition extends StdItem implements Ammunition
 	{
 		return false;
 	}
-	
+
 	@Override
 	public boolean isGeneric()
 	{
@@ -79,7 +79,7 @@ public class GenAmmunition extends StdItem implements Ammunition
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		if(isReadable())
 			CMLib.flags().setReadable(this,false);
@@ -93,7 +93,7 @@ public class GenAmmunition extends StdItem implements Ammunition
 	}
 
 	@Override
-	public void setAmmunitionType(String text)
+	public void setAmmunitionType(final String text)
 	{
 		readableText=text;
 	}
@@ -103,15 +103,15 @@ public class GenAmmunition extends StdItem implements Ammunition
 	{
 		return usesRemaining();
 	}
-	
+
 	@Override
-	public void setAmmoRemaining(int amount)
+	public void setAmmoRemaining(final int amount)
 	{
 		this.setUsesRemaining(amount);
 	}
-	
+
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);

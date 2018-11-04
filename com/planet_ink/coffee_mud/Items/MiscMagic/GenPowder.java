@@ -37,7 +37,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
  * @version 1.0.0.0
  */
 
-public class GenPowder extends StdPowder 
+public class GenPowder extends StdPowder
 {
 	@Override
 	public String ID()
@@ -71,7 +71,7 @@ public class GenPowder extends StdPowder
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -79,7 +79,7 @@ public class GenPowder extends StdPowder
 	}
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -87,7 +87,7 @@ public class GenPowder extends StdPowder
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
@@ -95,7 +95,7 @@ public class GenPowder extends StdPowder
 	}
 
 	private static String[] codes=null;
-	
+
 	@Override
 	public String[] getStatCodes()
 	{

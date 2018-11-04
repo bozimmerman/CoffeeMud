@@ -46,7 +46,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 	{
 		return "StdShipShieldGenerator";
 	}
-	
+
 	public StdShipShieldGenerator()
 	{
 		super();
@@ -61,7 +61,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 	{
 		return Technical.TechType.SHIP_SHIELD;
 	}
-	
+
 	private ShipDir[]		allPossDirs			= ShipDir.values();
 	private int				numPermitDirs		= ShipDir.values().length;
 	private int[]			shieldedMsgTypes	= AVAIL_DAMAGE_TYPES;
@@ -72,7 +72,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 	private volatile Reference<SpaceShip> myShip 	   = null;
 
 	@Override
-	public void setOwner(ItemPossessor container)
+	public void setOwner(final ItemPossessor container)
 	{
 		super.setOwner(container);
 		myShip = null;
@@ -83,7 +83,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 	{
 		return (int) Math.min((int) Math.min(powerCapacity,powerSetting) - power, (int)Math.round((double)powerCapacity*getRechargeRate()));
 	}
-	
+
 	protected synchronized SpaceShip getMyShip()
 	{
 		if(myShip == null)
@@ -96,13 +96,13 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 		}
 		return myShip.get();
 	}
-	
+
 	@Override
-	public void setPermittedDirections(ShipDir[] newPossDirs)
+	public void setPermittedDirections(final ShipDir[] newPossDirs)
 	{
 		this.allPossDirs = newPossDirs;
 	}
-	
+
 	@Override
 	public ShipDir[] getPermittedDirections()
 	{
@@ -110,23 +110,23 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 	}
 
 	@Override
-	public void setPermittedNumDirections(int numDirs)
+	public void setPermittedNumDirections(final int numDirs)
 	{
 		this.numPermitDirs = numDirs;
 	}
-	
+
 	@Override
 	public int getPermittedNumDirections()
 	{
 		return numPermitDirs;
 	}
-	
+
 	@Override
-	public void setDamageMsgTypes(int[] newTypes)
+	public void setDamageMsgTypes(final int[] newTypes)
 	{
 		this.shieldedMsgTypes = newTypes;
 	}
-	
+
 	@Override
 	public int[] getDamageMsgTypes()
 	{
@@ -137,14 +137,14 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 	{
 		if(this.currCoverage == null)
 		{
-			final ShipDir[] permitted = getPermittedDirections(); 
-			int numDirs = getPermittedNumDirections();
+			final ShipDir[] permitted = getPermittedDirections();
+			final int numDirs = getPermittedNumDirections();
 			if(numDirs >= permitted.length)
 				currCoverage = getPermittedDirections();
 			else
 			{
-				int centralIndex = CMLib.dice().roll(1, numDirs, -1);
-				List<ShipDir> theDirs = new ArrayList<ShipDir>(numDirs);
+				final int centralIndex = CMLib.dice().roll(1, numDirs, -1);
+				final List<ShipDir> theDirs = new ArrayList<ShipDir>(numDirs);
 				int offset = 0;
 				final List<ShipDir> permittedDirs = new XVector<ShipDir>(permitted);
 				permittedDirs.addAll(Arrays.asList(permitted));
@@ -162,13 +162,13 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 		}
 		return currCoverage;
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental host, final CMMsg msg)
 	{
 		if(!super.okMessage(host, msg))
 			return false;
-		final SpaceShip ship = getMyShip(); 
+		final SpaceShip ship = getMyShip();
 		if((msg.target() == ship)
 		&&(activated())
 		&&(CMParms.contains(this.getDamageMsgTypes(), msg.sourceMinor())))
@@ -203,7 +203,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 						{
 							if(this.techLevel() > ((Technical)msg.tool()).techLevel())
 							{
-								double pct = 1.0 - CMath.div(this.techLevel() - ((Technical)msg.tool()).techLevel(),10.0);
+								final double pct = 1.0 - CMath.div(this.techLevel() - ((Technical)msg.tool()).techLevel(),10.0);
 								if(pct <= 0)
 								{
 									shieldHurtMultiplier = 0.0;
@@ -219,17 +219,17 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 						// next do actual shield-based mitigations
 						if(msg.value() > 0)
 						{
-							double pctShields = CMath.div(lastPowerConsumption,powerCapacity());
-							double efficiency = this.getFinalManufacturer().getEfficiencyPct();
-							double reliability = this.getFinalManufacturer().getReliabilityPct();
+							final double pctShields = CMath.div(lastPowerConsumption,powerCapacity());
+							final double efficiency = this.getFinalManufacturer().getEfficiencyPct();
+							final double reliability = this.getFinalManufacturer().getReliabilityPct();
 							double wearAndTear = 1.0;
 							if(this.subjectToWearAndTear() && this.usesRemaining()<100)
 								wearAndTear =CMath.div(this.usesRemaining(), 100);
-							int newVal = (int)Math.round(msg.value() - CMath.mul(msg.value(), pctShields * efficiency * wearAndTear));
-							int shieldDamage = (int)Math.round(50.0 * shieldHurtMultiplier * (1.0-pctShields) * (1.0-reliability));
+							final int newVal = (int)Math.round(msg.value() - CMath.mul(msg.value(), pctShields * efficiency * wearAndTear));
+							final int shieldDamage = (int)Math.round(50.0 * shieldHurtMultiplier * (1.0-pctShields) * (1.0-reliability));
 							if(shieldDamage > 0)
 							{
-								CMMsg msg2=(CMMsg)msg.copyOf();
+								final CMMsg msg2=(CMMsg)msg.copyOf();
 								msg2.setValue(shieldDamage);
 								msg2.setTarget(this);
 								sendLocalMessage(msg2);
@@ -258,7 +258,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 			}
 		}
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -271,11 +271,11 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 			{
 				if(this.subjectToWearAndTear() && (this.usesRemaining()<100) && (msg.value()>0))
 				{
-					int shieldDamage = msg.value();
+					final int shieldDamage = msg.value();
 					if(shieldDamage > usesRemaining())
 					{
 						setUsesRemaining(0);
-						CMMsg msg2=CMClass.getMsg(msg.source(), this, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
+						final CMMsg msg2=CMClass.getMsg(msg.source(), this, this, CMMsg.NO_EFFECT, null, CMMsg.MSG_DEACTIVATE|CMMsg.MASK_CNTRLMSG, "", CMMsg.NO_EFFECT,null);
 						this.sendLocalMessage(msg2);
 						final String code=Technical.TechCommand.COMPONENTFAILURE.makeCommand(TechType.SHIP_SHIELD, "Failure: "+me.name()+": shield_failure.");
 						sendComputerMessage(this,circuitKey,msg.source(),null,code);
@@ -318,7 +318,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 						else
 						if(command == TechCommand.SHIELDSET)
 						{
-							ShipDir centerDir = (ShipDir)parms[0];
+							final ShipDir centerDir = (ShipDir)parms[0];
 							int centralIndex = CMParms.indexOf(this.getPermittedDirections(),centerDir);
 							if(centralIndex < 0)
 								reportError(this, controlI, mob, lang.L("@x1 did not respond.",me.name(mob)), lang.L("Failure: @x1: control port failure.",me.name(mob)));
@@ -348,7 +348,7 @@ public class StdShipShieldGenerator extends StdElecCompItem implements ShipWarCo
 									currCoverage = theDirs.toArray(new ShipDir[theDirs.size()]);
 								}
 							}
-							
+
 						}
 						else
 							reportError(this, controlI, mob, lang.L("@x1 refused to respond.",me.name(mob)), lang.L("Failure: @x1: control command failure.",me.name(mob)));

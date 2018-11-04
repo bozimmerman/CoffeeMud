@@ -68,7 +68,7 @@ public class StdDissertation extends StdItem implements Scroll
 	}
 
 	@Override
-	public void setSpellList(String list)
+	public void setSpellList(final String list)
 	{
 		miscText = list;
 	}
@@ -80,14 +80,14 @@ public class StdDissertation extends StdItem implements Scroll
 	}
 
 	@Override
-	public boolean useTheScroll(Ability A, MOB mob)
+	public boolean useTheScroll(final Ability A, final MOB mob)
 	{
 		if(!A.canBeLearnedBy(null, mob))
 			return false;
 		return true;
 	}
 
-	public static String makeSecretIdentity(String thang, String id, String more, List<Ability> V)
+	public static String makeSecretIdentity(final String thang, final String id, final String more, final List<Ability> V)
 	{
 		final StringBuffer add=new StringBuffer("");
 		for(int v=0;v<V.size();v++)
@@ -153,10 +153,10 @@ public class StdDissertation extends StdItem implements Scroll
 							}
 						}
 					}
-					
+
 					if((thisOne == null)&&(spellsList.size()==1))
 						thisOne=spellsList.get(0);
-					
+
 					final Room R=mob.location();
 					if((thisOne != null)
 					&&(!CMLib.ableMapper().qualifiesByLevel(mob, thisOne))
@@ -215,7 +215,7 @@ public class StdDissertation extends StdItem implements Scroll
 							}
 						}
 					}
-					
+
 					if((thisOne!=null)&&(useTheScroll(thisOne,mob)))
 					{
 						final Ability learnThisAbility=(Ability)thisOne.copyOf();
@@ -227,7 +227,7 @@ public class StdDissertation extends StdItem implements Scroll
 							public final Room	 R 		= mob.location();
 							public final String	 mobName= name;
 							public final Item 	 I		= item;
-							
+
 							@Override
 							public void run()
 							{
@@ -242,7 +242,7 @@ public class StdDissertation extends StdItem implements Scroll
 									learnThisAbility.setProficiency(100);
 									teacher.addAbility(learnA);
 									CMLib.expertises().postTeach(teacher,mob,learnA);
-									Ability A=mob.fetchAbility(learnA.ID());
+									final Ability A=mob.fetchAbility(learnA.ID());
 									if(A!=null)
 										A.setProficiency(0); //really? Why use these, ever?
 								}
@@ -265,7 +265,7 @@ public class StdDissertation extends StdItem implements Scroll
 							sess.prompt(new InputCallback(InputCallback.Type.CONFIRM,"N",0)
 							{
 								final Runnable learn = learnIt;
-								
+
 								@Override
 								public void showPrompt()
 								{
@@ -363,20 +363,20 @@ public class StdDissertation extends StdItem implements Scroll
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText=newText;
 		setSpellList(newText);
 	}
-	
+
 	@Override
-	public boolean isReadableScrollBy(String name)
+	public boolean isReadableScrollBy(final String name)
 	{
 		return (readableScrollBy == null) || (readableScrollBy.equalsIgnoreCase(name));
 	}
 
 	@Override
-	public void setReadableScrollBy(String name)
+	public void setReadableScrollBy(final String name)
 	{
 		readableScrollBy = name;
 	}
@@ -384,7 +384,7 @@ public class StdDissertation extends StdItem implements Scroll
 	protected static String[]	CODES	= { "CLASS", "LEVEL", "ABILITY", "TEXT" };
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{
@@ -401,7 +401,7 @@ public class StdDissertation extends StdItem implements Scroll
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{

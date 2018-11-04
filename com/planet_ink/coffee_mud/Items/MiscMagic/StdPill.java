@@ -65,7 +65,7 @@ public class StdPill extends StdFood implements Pill
 	}
 
 	@Override
-	public void eatIfAble(MOB mob)
+	public void eatIfAble(final MOB mob)
 	{
 		final List<Ability> spells=getSpells();
 		if((mob.isMine(this))&&(spells.size()>0))
@@ -82,9 +82,9 @@ public class StdPill extends StdFood implements Pill
 				caster.basePhyStats().setLevel(level);
 				caster.phyStats().setLevel(level);
 				thisOneA.invoke(caster,mob,true,level);
-				Ability effectA=mob.fetchEffect(thisOneA.ID());
+				final Ability effectA=mob.fetchEffect(thisOneA.ID());
 				if((effectA!=null) && (effectA.invoker() == caster))
-					destroyCaster =  false; 
+					destroyCaster =  false;
 			}
 			if(destroyCaster)
 				caster.destroy();
@@ -98,12 +98,12 @@ public class StdPill extends StdFood implements Pill
 	}
 
 	@Override
-	public void setSpellList(String list)
+	public void setSpellList(final String list)
 	{
 		miscText = list;
 	}
 
-	public static Vector<Ability> getSpells(SpellHolder me)
+	public static Vector<Ability> getSpells(final SpellHolder me)
 	{
 		final Vector<Ability> theSpells=new Vector<Ability>();
 		final String names=me.getSpellList();

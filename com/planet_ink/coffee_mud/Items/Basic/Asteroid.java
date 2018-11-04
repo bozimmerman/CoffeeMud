@@ -39,7 +39,7 @@ public class Asteroid extends GenSpaceBody
 	{
 		return "Asteroid";
 	}
-	
+
 	public Asteroid()
 	{
 		super();
@@ -47,7 +47,7 @@ public class Asteroid extends GenSpaceBody
 		setDisplayText("an asteroid is here");
 		setDescription("it`s a big rock");
 		coordinates=new long[]{Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random())};
-		Random random=new Random(System.currentTimeMillis());
+		final Random random=new Random(System.currentTimeMillis());
 		radius=(5*SpaceObject.Distance.Kilometer.dm) + (random.nextLong() % (4*SpaceObject.Distance.Kilometer.dm));
 		recoverPhyStats();
 	}

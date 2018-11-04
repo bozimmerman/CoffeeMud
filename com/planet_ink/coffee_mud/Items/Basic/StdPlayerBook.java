@@ -74,14 +74,14 @@ public class StdPlayerBook extends StdBook
 		if((key == null)||(key.length()==0))
 			return L("\n\rAn unfinished work.\n\r");
 		final String cat="BOOK_"+key;
-		List<String> authors = CMLib.database().DBReadPlayerDataPlayersBySection(cat);
+		final List<String> authors = CMLib.database().DBReadPlayerDataPlayersBySection(cat);
 		if(authors.size()==0)
 			return L("\n\rAn unfinished work.\n\r");
 		if(authors.size()==1)
 			return L("\n\r@x1\n\rBy @x2\n\r\n\rTable of Contents\n\r",Name(),authors.get(0));
 		return L("\n\r@x1\n\rBy Various Authors\n\r\n\rTable of Contents\n\r",Name());
 	}
-	
+
 	@Override
 	protected void delOldChapter(final String from, final String to, final String key)
 	{
@@ -89,7 +89,7 @@ public class StdPlayerBook extends StdBook
 		CMLib.database().DBDeletePlayerData(from, cat, key);
 	}
 
-	protected JournalEntry createEntryFromData(PlayerData data, boolean addAuthors, int chapter)
+	protected JournalEntry createEntryFromData(final PlayerData data, final boolean addAuthors, final int chapter)
 	{
 		final JournalEntry entry=(JournalEntry)CMClass.getCommon("DefaultJournalEntry");
 		entry.key		(data.key());
@@ -103,10 +103,10 @@ public class StdPlayerBook extends StdBook
 		String msg = data.xml();
 		if(msg.startsWith("::"))
 		{
-			int x=msg.indexOf("::",2);
+			final int x=msg.indexOf("::",2);
 			if(x>1)
 			{
-				String finalSubj=msg.substring(2,x);
+				final String finalSubj=msg.substring(2,x);
 				if(finalSubj.trim().length()>0)
 				{
 					subj = subj + ": "+finalSubj;
@@ -124,7 +124,7 @@ public class StdPlayerBook extends StdBook
 		entry.msg		(msg);
 		return entry;
 	}
-	
+
 	@Override
 	protected List<JournalEntry> readChaptersByCreateDate()
 	{
@@ -137,7 +137,7 @@ public class StdPlayerBook extends StdBook
 		Collections.sort(jentries, new Comparator<PlayerData>()
 		{
 			@Override
-			public int compare(PlayerData o1, PlayerData o2)
+			public int compare(final PlayerData o1, final PlayerData o2)
 			{
 				final String key1=o1.key();
 				final String key2=o2.key();
@@ -154,7 +154,7 @@ public class StdPlayerBook extends StdBook
 				return ch1==ch2 ? 0 : ch1 > ch2 ? 1 : -1;
 			}
 		});
-		
+
 		final Set<String> authors=new TreeSet<String>();
 		for(final PlayerData data : jentries)
 		{
@@ -170,7 +170,7 @@ public class StdPlayerBook extends StdBook
 		}
 		return entries;
 	}
-	
+
 	@Override
 	protected void editOldChapter(final String from, final String to, final String key, final String subject, final String message)
 	{
@@ -186,8 +186,8 @@ public class StdPlayerBook extends StdBook
 			subkey=Math.random()+"_"+Math.random();
 			setReadableText("KEY=\""+subkey+"\" "+super.readableText());
 		}
-		String cat="BOOK_"+subkey;
-		String key=from.toUpperCase()+"_"+cat+"_"+this.getChapterCount(to);
+		final String cat="BOOK_"+subkey;
+		final String key=from.toUpperCase()+"_"+cat+"_"+this.getChapterCount(to);
 		CMLib.database().DBCreatePlayerData(from, cat, key, "::"+subject.replaceAll("::", ";;")+"::"+message);
 	}
 }

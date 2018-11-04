@@ -60,17 +60,17 @@ public class StdGrapples extends StdPortal
 
 	protected volatile Room sourceR = null;
 	protected volatile Room targetR = null;
-	
+
 	@Override
 	public int maxRange()
 	{
 		return 0;
 	}
-	
+
 	protected void ungrappleCheck()
 	{
-		Room sourceR=this.sourceR;
-		Room targetR=this.targetR;
+		final Room sourceR=this.sourceR;
+		final Room targetR=this.targetR;
 		if((sourceR!=null)&&(targetR!=null))
 		{
 			if((amDestroyed()||(owner()!=sourceR)||(!targetR.isContent(this))||(!sourceR.isContent(this))))
@@ -98,10 +98,10 @@ public class StdGrapples extends StdPortal
 			}
 		}
 	}
-	
+
 	protected void ungrapple()
 	{
-		Room targetR=this.targetR;
+		final Room targetR=this.targetR;
 		if(targetR!=null)
 		{
 			while(targetR.isContent(this))
@@ -110,14 +110,14 @@ public class StdGrapples extends StdPortal
 		this.targetR=null;
 		this.sourceR=null;
 	}
-	
+
 	@Override
 	public void destroy()
 	{
 		ungrapple();
 		super.destroy();
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
@@ -165,7 +165,7 @@ public class StdGrapples extends StdPortal
 		}
 		}
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -174,8 +174,8 @@ public class StdGrapples extends StdPortal
 		case CMMsg.TYP_ADVANCE:
 		{
 			this.ungrappleCheck();
-			Room sourceR=this.sourceR;
-			Room targetR=this.targetR;
+			final Room sourceR=this.sourceR;
+			final Room targetR=this.targetR;
 			if((sourceR!=null)&&(targetR!=null))
 			{
 				final Area sourceA=sourceR.getArea();
@@ -237,7 +237,7 @@ public class StdGrapples extends StdPortal
 	}
 
 	@Override
-	protected Room getDestinationRoom(Room fromRoom)
+	protected Room getDestinationRoom(final Room fromRoom)
 	{
 		if(fromRoom == sourceR)
 			return targetR;
@@ -248,9 +248,9 @@ public class StdGrapples extends StdPortal
 	}
 
 	@Override
-	public StringBuilder viewableText(MOB mob, Room myRoom)
+	public StringBuilder viewableText(final MOB mob, final Room myRoom)
 	{
-		Room room=this.getDestinationRoom(myRoom);
+		final Room room=this.getDestinationRoom(myRoom);
 		if(room==null)
 			return new StringBuilder(this.displayText(mob));
 		return super.viewableText(mob, myRoom);

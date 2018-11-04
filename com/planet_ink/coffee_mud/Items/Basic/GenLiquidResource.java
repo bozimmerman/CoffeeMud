@@ -57,7 +57,7 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 	protected String	resourceSubType	= "";
 
 	@Override
-	public void setSubType(String subType)
+	public void setSubType(final String subType)
 	{
 		resourceSubType = subType;
 	}
@@ -69,7 +69,7 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 	}
 
 	@Override
-	public void setMaterial(int newValue)
+	public void setMaterial(final int newValue)
 	{
 		super.setMaterial(newValue);
 		decayTime=0;
@@ -117,7 +117,7 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 	}
 
 	@Override
-	public void setDomainSource(String src)
+	public void setDomainSource(final String src)
 	{
 		domainSource = src;
 	}
@@ -133,12 +133,12 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 	{
 		CMLib.materials().quickDestroy(this);
 	}
-	
-	
+
+
 	private final static String[] MYCODES={"DOMAINSRC","RSUBTYPE"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(super.isStat(code))
 			return super.getStat(code);
@@ -155,7 +155,7 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(super.isStat(code))
 			super.setStat(code, val);

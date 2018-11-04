@@ -48,13 +48,13 @@ public interface Software extends Item, Technical
 	 * @return parent menu that this software gets access from
 	 */
 	public String getParentMenu();
-	
+
 	/**
 	 * Returns the internal name of this software.
 	 * @return the internal name of this software.
 	 */
 	public String getInternalName();
-	
+
 	/**
 	 * Returns whether the given computer-entry command
 	 * should be responded to by THIS software object
@@ -63,7 +63,7 @@ public interface Software extends Item, Technical
 	 * @return true if this software should respond.
 	 */
 	public boolean isActivationString(String word);
-	
+
 	/**
 	 * Returns whether the given computer-entry command
 	 * should be responded to by THIS software object
@@ -72,7 +72,7 @@ public interface Software extends Item, Technical
 	 * @return true if this software should respond.
 	 */
 	public boolean isDeActivationString(String word);
-	
+
 	/**
 	 * Returns whether the given computer-entry command
 	 * should be responded to by THIS software object
@@ -82,14 +82,14 @@ public interface Software extends Item, Technical
 	 * @return true if this software can respond
 	 */
 	public boolean isCommandString(String word, boolean isActive);
-	
+
 	/**
 	 * Returns the menu name of this software, so that it can
 	 * be identified on its parent screen.
 	 * @return the menu name of this software
 	 */
 	public String getActivationMenu();
-	
+
 	/**
 	 * Adds a new message to the screen from this program, which
 	 * will be received by those monitoring the computer
@@ -98,7 +98,7 @@ public interface Software extends Item, Technical
 	 * @param msg the new message for the screen
 	 */
 	public void addScreenMessage(String msg);
-	
+
 	/**
 	 * Returns any new messages from this program when
 	 * it is activated and on the screen.  Seen by those
@@ -108,7 +108,7 @@ public interface Software extends Item, Technical
 	 * @return the new screen messages
 	 */
 	public String getScreenMessage();
-	
+
 	/**
 	 * Returns the full screen appearance of this program when
 	 * it is activated and on the screen.  Only those intentially
@@ -119,7 +119,7 @@ public interface Software extends Item, Technical
 	 * @return the entire screen message
 	 */
 	public String getCurrentScreenDisplay();
-	
+
 	/**
 	 * Software runs on computers, and computers run on power systems.
 	 * This method tells the software what the power system "circuit" key

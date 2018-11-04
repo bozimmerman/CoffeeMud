@@ -44,7 +44,7 @@ public interface RoomMap extends Item
 	 * @return the name(s) of the area(s) being mapped
 	 */
 	public String getMapArea();
-	
+
 	/**
 	 * Sets the name(s) of the area(s) being mapped,
 	 * semicolon delimited.
@@ -52,7 +52,7 @@ public interface RoomMap extends Item
 	 * @param mapName the name(s) of the area(s) being mapped
 	 */
 	public void setMapArea(String mapName);
-	
+
 	/**
 	 * Causes the area(s) to be re-mapped.  Area name(s)
 	 * must have been set before calling.

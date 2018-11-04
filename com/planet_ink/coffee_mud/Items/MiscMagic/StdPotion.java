@@ -73,7 +73,7 @@ public class StdPotion extends StdDrink implements Potion
 	}
 
 	@Override
-	public void setDrunk(boolean isTrue)
+	public void setDrunk(final boolean isTrue)
 	{
 		if(isTrue&&isDrunk())
 			return;
@@ -92,7 +92,7 @@ public class StdPotion extends StdDrink implements Potion
 	}
 
 	@Override
-	public void drinkIfAble(MOB owner, Physical drinkerTarget)
+	public void drinkIfAble(final MOB owner, final Physical drinkerTarget)
 	{
 		final List<Ability> spells=getSpells();
 		if(owner.isMine(this))
@@ -115,9 +115,9 @@ public class StdPotion extends StdDrink implements Potion
 					caster.basePhyStats().setLevel(level);
 					caster.phyStats().setLevel(level);
 					thisOneA.invoke(finalCaster,drinkerTarget,true,level);
-					Ability effectA=drinkerTarget.fetchEffect(thisOneA.ID());
+					final Ability effectA=drinkerTarget.fetchEffect(thisOneA.ID());
 					if((effectA!=null) && (effectA.invoker() == caster))
-						destroyCaster =  false; 
+						destroyCaster =  false;
 					setDrunk(true);
 					setLiquidRemaining(0);
 				}
@@ -134,12 +134,12 @@ public class StdPotion extends StdDrink implements Potion
 	}
 
 	@Override
-	public void setSpellList(String list)
+	public void setSpellList(final String list)
 	{
 		miscText = list;
 	}
 
-	public static List<Ability> getSpells(SpellHolder me)
+	public static List<Ability> getSpells(final SpellHolder me)
 	{
 		int baseValue=200;
 		final Vector<Ability> theSpells=new Vector<Ability>();

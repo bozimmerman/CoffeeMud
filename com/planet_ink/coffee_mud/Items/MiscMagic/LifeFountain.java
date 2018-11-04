@@ -102,9 +102,9 @@ public class LifeFountain extends StdDrink implements MiscMagic
 						{
 							lastCheck.set(System.currentTimeMillis());
 							List<MOB> delList = null;
-							for(MOB M : lastDrinks.keySet())
+							for(final MOB M : lastDrinks.keySet())
 							{
-								Long time = lastDrinks.get(M);
+								final Long time = lastDrinks.get(M);
 								if(time.longValue()<(System.currentTimeMillis()-16000))
 								{
 									if(delList == null)
@@ -114,7 +114,7 @@ public class LifeFountain extends StdDrink implements MiscMagic
 							}
 							if(delList != null)
 							{
-								for(MOB M : delList)
+								for(final MOB M : delList)
 									lastDrinks.remove(M);
 							}
 						}

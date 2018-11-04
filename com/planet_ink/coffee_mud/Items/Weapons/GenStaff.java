@@ -76,7 +76,7 @@ public class GenStaff extends GenWeapon implements Wand
 	}
 
 	@Override
-	public void setMaxUses(int newMaxUses)
+	public void setMaxUses(final int newMaxUses)
 	{
 		maxUses = newMaxUses;
 	}
@@ -98,7 +98,7 @@ public class GenStaff extends GenWeapon implements Wand
 	}
 
 	@Override
-	public void setSpell(Ability theSpell)
+	public void setSpell(final Ability theSpell)
 	{
 		readableText="";
 		if(theSpell!=null)
@@ -113,7 +113,7 @@ public class GenStaff extends GenWeapon implements Wand
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText = text;
 		secretWord = StdWand.getWandWord(readableText);
@@ -149,13 +149,13 @@ public class GenStaff extends GenWeapon implements Wand
 	}
 
 	@Override
-	public void waveIfAble(MOB mob, Physical afftarget, String message)
+	public void waveIfAble(final MOB mob, final Physical afftarget, final String message)
 	{
 		StdWand.waveIfAble(mob,afftarget,message,this);
 	}
 
 	@Override
-	public boolean checkWave(MOB mob, String message)
+	public boolean checkWave(final MOB mob, final String message)
 	{
 		return StdWand.checkWave(mob, message, this);
 	}

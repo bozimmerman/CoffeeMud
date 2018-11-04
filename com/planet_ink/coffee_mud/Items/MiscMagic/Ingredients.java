@@ -50,7 +50,7 @@ public class Ingredients extends BagOfEndlessness
 		recoverPhyStats();
 	}
 
-	protected Item makeResource(String name, int type)
+	protected Item makeResource(final String name, final int type)
 	{
 		Item I=null;
 		if(((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)

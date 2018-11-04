@@ -41,7 +41,7 @@ public class GenWindGenerator extends GenFuellessGenerator
 	}
 
 	private volatile double lastWindFactor = 1.0;
-	
+
 	public GenWindGenerator()
 	{
 		super();
@@ -105,7 +105,7 @@ public class GenWindGenerator extends GenFuellessGenerator
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

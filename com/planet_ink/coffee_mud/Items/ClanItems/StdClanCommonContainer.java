@@ -35,14 +35,14 @@ import java.util.*;
 
 public class StdClanCommonContainer extends StdClanContainer
 {
-	@Override 
+	@Override
 	public String ID()
 	{
 		return "StdClanCommonContainer";
 	}
-	
+
 	protected int workDown=0;
-	
+
 	public StdClanCommonContainer()
 	{
 		super();

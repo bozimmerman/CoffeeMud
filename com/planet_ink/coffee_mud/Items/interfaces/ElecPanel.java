@@ -63,7 +63,7 @@ public interface ElecPanel extends Electronics
 		TechType.SHIP_GRAVGEN,
 		TechType.SHIP_TRACTOR,
 	};
-	
+
 	/**
 	 * Gets the type of panel this is, which shows what
 	 * sorts of items can be "installed into it.  This method is
@@ -73,7 +73,7 @@ public interface ElecPanel extends Electronics
 	 * @return the type of panel this is
 	 */
 	public TechType panelType();
-	
+
 	/**
 	 * Sets the type of panel this is, which shows what
 	 * sorts of items can be "installed into it.  This method is

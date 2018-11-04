@@ -77,7 +77,7 @@ public class StdNet extends StdWeapon
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

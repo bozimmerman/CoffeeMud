@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 /**
  * Electronics are items that can be turned on and off before their
  * interesting behavior or ability is available, which requires "power"
- * to be operated, and has some capacitance for power that keeps it 
+ * to be operated, and has some capacitance for power that keeps it
  * running for some dramatic amount of time while it is no longer
  * receiving new power.  Electronics have manufacturers who make them,
  * and can be of many different sorts.
@@ -52,7 +52,7 @@ public interface Electronics extends Item, Technical
 	 * @return the maximum amount of stored power capacity
 	 */
 	public long powerCapacity();
-	
+
 	/**
 	 * Sets the maximum amount of capacitance supported by
 	 * this electrical item.  This is the maximum power the item
@@ -96,7 +96,7 @@ public interface Electronics extends Item, Technical
 	/**
 	 * Gets whether this electrical item is "turned on".
 	 * An activated item can do the stuff it is supposed to,
-	 * but off it cannot. 
+	 * but off it cannot.
 	 * @see Electronics#activate(boolean)
 	 * @return whether this electrical item is "turned on"
 	 */
@@ -105,7 +105,7 @@ public interface Electronics extends Item, Technical
 	/**
 	 * Sets whether this electrical item is "turned on".
 	 * An activated item can do the stuff it is supposed to,
-	 * but off it cannot. 
+	 * but off it cannot.
 	 * @see Electronics#activated()
 	 * @param truefalse true to activate, false to deactivate
 	 */
@@ -131,10 +131,10 @@ public interface Electronics extends Item, Technical
 	 * @param name the Manufacturer ID/Name that made this
 	 */
 	public void setManufacturerName(String name);
-	
+
 	/**
 	 * Returns the Manufacturer object of the manufacturer that
-	 * made this electrical item.  This is important because 
+	 * made this electrical item.  This is important because
 	 * benefits and detriments can come along with the manufacturer.
 	 * @see Electronics#getManufacturerName()
 	 * @see Electronics#setManufacturerName(String)

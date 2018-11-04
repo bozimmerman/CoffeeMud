@@ -98,7 +98,7 @@ public class StdLasso extends StdWeapon
 		else
 			binder.tell(L("You don't see that here."));
 	}
-	
+
 	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
@@ -158,13 +158,13 @@ public class StdLasso extends StdWeapon
 				if(R!=null)
 				{
 					tmsg=tmsg.substring(4).trim();
-					List<String> rest=CMParms.parse(tmsg);
+					final List<String> rest=CMParms.parse(tmsg);
 					String itemName=tmsg;
-					int x=rest.indexOf("from");
+					final int x=rest.indexOf("from");
 					if((x>0)&&(x<rest.size()-1))
 					{
 						itemName=CMParms.combine(rest, 0, x);
-						String mobName=CMParms.combine(rest,x+1);
+						final String mobName=CMParms.combine(rest,x+1);
 						final MOB M=R.fetchInhabitant(mobName);
 						if((M!=null)
 						&&(M==boundM)
@@ -207,7 +207,7 @@ public class StdLasso extends StdWeapon
 		}
 		return true;
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

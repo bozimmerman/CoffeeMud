@@ -44,24 +44,24 @@ public interface Coins extends Item
 	 * @return the number of units of currency in the stack
 	 */
 	public long getNumberOfCoins();
-	
+
 	/**
 	 * Sets the number of units of currency in the stack
 	 * @see Coins#getNumberOfCoins()
 	 * @param number the number of units of currency in the stack
 	 */
 	public void setNumberOfCoins(long number);
-	
+
 	/**
 	 * This method will inspect the current owner of this item for other
 	 * items of identical currency and denomination.  If any are found, it
 	 * will add its numberOfCoins to THAT stack, and destroy itself.
-	 * Otherwise it will do nothing 
+	 * Otherwise it will do nothing
 	 * @see Coins#getNumberOfCoins()
 	 * @return true if this item was destroyed due to a combining, false otherwise
 	 */
 	public boolean putCoinsBack();
-	
+
 	/**
 	 * Returns the denomination value of this currency, in base values.  A penny,
 	 * for example, would be a denomination of 0.01, when the dollar is "base".
@@ -70,7 +70,7 @@ public interface Coins extends Item
 	 * @return the denomination value of this currency
 	 */
 	public double getDenomination();
-	
+
 	/**
 	 * Sets the denomination value of this currency, in base values.  A penny,
 	 * for example, would be a denomination of 0.01, when the dollar is "base".
@@ -79,16 +79,16 @@ public interface Coins extends Item
 	 * @param valuePerCoin the denomination value of this currency
 	 */
 	public void setDenomination(double valuePerCoin);
-	
+
 	/**
-	 * Returns the total value of this stack of currency in base value.  
+	 * Returns the total value of this stack of currency in base value.
 	 * It is the same as getNumberOfCoins() * getDenomination()
 	 * @see Coins#getNumberOfCoins()
 	 * @see Coins#getDenomination()
 	 * @return the total value of this stack of currency
 	 */
 	public double getTotalValue();
-	
+
 	/**
 	 * Returns the currency that this stack of money belongs to.  It's a coded ID that
 	 * defines a set of valid denominations, abbreviations, and so forth.  Values are
@@ -96,7 +96,7 @@ public interface Coins extends Item
 	 * @return the currency that this stack of money belongs to
 	 */
 	public String getCurrency();
-	
+
 	/**
 	 * Sets the currency that this stack of money belongs to.  It's a coded ID that
 	 * defines a set of valid denominations, abbreviations, and so forth.  Values are

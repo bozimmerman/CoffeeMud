@@ -61,7 +61,7 @@ public class BardMap extends GenMap
 	}
 
 	@Override
-	public StringBuffer[][] getMyMappedRoom(int width)
+	public StringBuffer[][] getMyMappedRoom(final int width)
 	{
 		StringBuffer[][] myMap=null;
 		//if(myMap!=null)	return myMap;
@@ -70,7 +70,7 @@ public class BardMap extends GenMap
 	}
 
 	@Override
-	public Hashtable<Room,MapRoom> makeMapRooms(int width)
+	public Hashtable<Room,MapRoom> makeMapRooms(final int width)
 	{
 		final String newText=getMapArea();
 		final List<String> mapAreas=CMParms.parseSemicolons(newText,true);

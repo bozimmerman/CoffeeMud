@@ -61,17 +61,17 @@ public class GenRecipe extends GenReadable implements Recipe
 	{
 		if(!super.okMessage(myHost, msg))
 			return false;
-		
-		if(msg.amITarget( this ) 
+
+		if(msg.amITarget( this )
 		&& (msg.targetMinor()==CMMsg.TYP_READ))
 		{
-			
+
 			if((msg.targetMessage()!=null)
 			&& (recipeLines.length>0)
 			&&(CMath.isInteger(msg.targetMessage())))
 			{
-				int x=CMath.s_int(msg.targetMessage());
-				int z=this.getRecipeCodeLines().length;
+				final int x=CMath.s_int(msg.targetMessage());
+				final int z=this.getRecipeCodeLines().length;
 				if(x<1)
 				{
 					msg.source().tell(L("Which recipe?"));
@@ -97,14 +97,14 @@ public class GenRecipe extends GenReadable implements Recipe
 					msg.source().tell(L("This book is only for @x1 recipes.",A.name()));
 			}
 		}
-		if(msg.amITarget( this ) 
+		if(msg.amITarget( this )
 		&& (msg.targetMinor()==CMMsg.TYP_WRITE))
 		{
 			final List<String> recipes=CMParms.parseAny(msg.targetMessage(), "\n\r", true);
 			if(recipes.size()>0)
 			{
-				int max=this.getTotalRecipePages();
-				int num=this.getRecipeCodeLines().length;
+				final int max=this.getTotalRecipePages();
+				final int num=this.getRecipeCodeLines().length;
 				if((max-num)==0)
 				{
 					msg.source().tell(L("There are no more pages in this recipe book."));
@@ -125,9 +125,9 @@ public class GenRecipe extends GenReadable implements Recipe
 					msg.source().tell(L("This recipe book is un-prepped."));
 					return false;
 				}
-				for(String r : recipes)
+				for(final String r : recipes)
 				{
-					List<String> V=CMParms.parseTabs(r+" ", false);
+					final List<String> V=CMParms.parseTabs(r+" ", false);
 					if(V.size()<2)
 					{
 						msg.source().tell(L("Your recipes are clearly bad."));
@@ -170,7 +170,7 @@ public class GenRecipe extends GenReadable implements Recipe
 		}
 		return true;
 	}
-	
+
 	protected void executeMsg(final CMMsg msg)
 	{
 		// the order that these things are checked in should
@@ -178,29 +178,29 @@ public class GenRecipe extends GenReadable implements Recipe
 		if(numBehaviors()>0)
 		{
 			eachBehavior(new EachApplicable<Behavior>()
-			{ 
+			{
 				@Override
 				public final void apply(final Behavior B)
 				{
 					B.executeMsg(me,msg);
-				} 
+				}
 			});
 		}
 		if(numScripts()>0)
 		{
 			eachScript(new EachApplicable<ScriptingEngine>()
-			{ 
+			{
 				@Override
 				public final void apply(final ScriptingEngine S)
 				{
 					S.executeMsg(me,msg);
-				} 
+				}
 			});
 		}
 		if(numEffects()>0)
 		{
 			eachEffect(new EachApplicable<Ability>()
-			{ 
+			{
 				@Override
 				public final void apply(final Ability A)
 				{
@@ -209,12 +209,12 @@ public class GenRecipe extends GenReadable implements Recipe
 			});
 		}
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{
-		if(msg.amITarget( this ) 
-		&& (msg.targetMinor()==CMMsg.TYP_READ) 
+		if(msg.amITarget( this )
+		&& (msg.targetMinor()==CMMsg.TYP_READ)
 		&& (recipeLines.length>0))
 		{
 			this.executeMsg(msg);
@@ -222,7 +222,7 @@ public class GenRecipe extends GenReadable implements Recipe
 			&&(CMath.isInteger(msg.targetMessage())))
 			{
 				final StringBuilder str = new StringBuilder("");
-				int x=CMath.s_int(msg.targetMessage());
+				final int x=CMath.s_int(msg.targetMessage());
 				if((x>0)&&(x<=this.getRecipeCodeLines().length))
 				{
 					final Ability A=CMClass.getAbility( getCommonSkillID() );
@@ -235,7 +235,7 @@ public class GenRecipe extends GenReadable implements Recipe
 						final Pair<String,Integer> nameAndLevel = C.getDecodedItemNameAndLevel( V );
 						final String components = C.getDecodedComponentsDescription( msg.source(), V );
 						final String name=CMStrings.replaceAll( nameAndLevel.first, "% ", "");
-	
+
 						str.append( name).append(", level "+nameAndLevel.second);
 						if(CMath.s_int(components)>0)
 							str.append( L(", which requires @x1 standard components.\n\r",components));
@@ -243,9 +243,9 @@ public class GenRecipe extends GenReadable implements Recipe
 							str.append( L(", which requires: @x1.\n\r",components));
 					}
 				}
-				CMMsg readMsg=CMClass.getMsg(msg.source(), msg.target(), msg.tool(), 
+				final CMMsg readMsg=CMClass.getMsg(msg.source(), msg.target(), msg.tool(),
 						 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, L("It says '@x1'.",str.toString()),
-						 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, this.getRecipeCodeLines()[x-1]+" ", 
+						 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, this.getRecipeCodeLines()[x-1]+" ",
 						 CMMsg.NO_EFFECT, null);
 				msg.addTrailerMsg(readMsg);
 			}
@@ -264,7 +264,7 @@ public class GenRecipe extends GenReadable implements Recipe
 					if(A!=null)
 						str.append( L("The following recipe is for the @x1 skill:\n\r",A.name()));
 				}
-				StringBuilder rawCodes=new StringBuilder("");
+				final StringBuilder rawCodes=new StringBuilder("");
 				if(A instanceof CraftorAbility)
 				{
 					final CraftorAbility C=(CraftorAbility)A;
@@ -276,7 +276,7 @@ public class GenRecipe extends GenReadable implements Recipe
 						final Pair<String,Integer> nameAndLevel = C.getDecodedItemNameAndLevel( V );
 						final String components = C.getDecodedComponentsDescription( msg.source(), V );
 						final String name=CMStrings.replaceAll( nameAndLevel.first, "% ", "");
-	
+
 						str.append(lineNum).append(") ").append( name).append(", level "+nameAndLevel.second);
 						if(CMath.s_int(components)>0)
 							str.append( L(", which requires @x1 standard components.\n\r",components));
@@ -285,16 +285,16 @@ public class GenRecipe extends GenReadable implements Recipe
 						lineNum++;
 					}
 				}
-				String writing=str.substring( 0, str.length()-2 );
-				CMMsg readMsg=CMClass.getMsg(msg.source(), msg.target(), msg.tool(), 
+				final String writing=str.substring( 0, str.length()-2 );
+				final CMMsg readMsg=CMClass.getMsg(msg.source(), msg.target(), msg.tool(),
 						 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, L("It says '@x1'.",writing),
-						 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, rawCodes.toString()+" ", 
+						 CMMsg.MSG_WASREAD|CMMsg.MASK_ALWAYS, rawCodes.toString()+" ",
 						 CMMsg.NO_EFFECT, null);
 				msg.addTrailerMsg(readMsg);
 			}
 			return;
 		}
-		if(msg.amITarget( this ) 
+		if(msg.amITarget( this )
 		&& (msg.targetMinor()==CMMsg.TYP_WRITE))
 		{
 			this.executeMsg(msg);
@@ -310,8 +310,8 @@ public class GenRecipe extends GenReadable implements Recipe
 				}
 				if((max-num)>=recipes.size())
 				{
-					int startPos = this.recipeLines.length;
-					String[] newRecipeLines = Arrays.copyOf(this.recipeLines, this.recipeLines.length + recipes.size());
+					final int startPos = this.recipeLines.length;
+					final String[] newRecipeLines = Arrays.copyOf(this.recipeLines, this.recipeLines.length + recipes.size());
 					for(int i=0;i<recipes.size();i++)
 						newRecipeLines[i+startPos]=recipes.get(i);
 					this.setRecipeCodeLines(newRecipeLines);
@@ -373,7 +373,7 @@ public class GenRecipe extends GenReadable implements Recipe
 	}
 
 	@Override
-	public void setCommonSkillID(String ID)
+	public void setCommonSkillID(final String ID)
 	{
 		commonSkillID = ID;
 	}
@@ -385,7 +385,7 @@ public class GenRecipe extends GenReadable implements Recipe
 	}
 
 	@Override
-	public void setRecipeCodeLines(String[] lines)
+	public void setRecipeCodeLines(final String[] lines)
 	{
 		recipeLines=lines;
 		setReadableText("");
@@ -399,7 +399,7 @@ public class GenRecipe extends GenReadable implements Recipe
 	}
 
 	@Override
-	public void setTotalRecipePages(int numRemaining)
+	public void setTotalRecipePages(final int numRemaining)
 	{
 		super.setUsesRemaining(numRemaining);
 	}
@@ -407,13 +407,13 @@ public class GenRecipe extends GenReadable implements Recipe
 	private final static String[] MYCODES={"SKILLID","RECIPES","NUMRECIPES"};
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: 
+		case 0:
 			return ""+getCommonSkillID();
 		case 1:
 			{
@@ -425,7 +425,7 @@ public class GenRecipe extends GenReadable implements Recipe
 				final String recipeStr = str.toString();
 				return recipeStr.substring(0,recipeStr.length()-1);
 			}
-		case 2: 
+		case 2:
 			return ""+this.getTotalRecipePages();
 		default:
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
@@ -433,7 +433,7 @@ public class GenRecipe extends GenReadable implements Recipe
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);

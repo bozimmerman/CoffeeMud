@@ -176,7 +176,7 @@ public class HoleInTheGround extends GenContainer
 		}
 		super.executeMsg(myHost, msg);
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

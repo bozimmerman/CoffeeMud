@@ -68,7 +68,7 @@ public class Halberd extends StdWeapon
 		weaponClassification=Weapon.CLASS_POLEARM;
 	}
 
-	public void setItemDescription(int level)
+	public void setItemDescription(final int level)
 	{
 		switch(level)
 		{

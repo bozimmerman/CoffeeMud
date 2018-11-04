@@ -39,7 +39,7 @@ public class GenShipThruster extends StdShipThruster
 	{
 		return "GenShipThruster";
 	}
-	
+
 	protected String readableText="";
 
 	public GenShipThruster()
@@ -70,13 +70,13 @@ public class GenShipThruster extends StdShipThruster
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText = text;
 	}
-	
+
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -88,9 +88,9 @@ public class GenShipThruster extends StdShipThruster
 										   "MANUFACTURER", "INSTFACT","DEFCLOSED","DEFLOCKED",
 										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS",
 										   "RECHRATE"};
-	
+
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -149,9 +149,9 @@ public class GenShipThruster extends StdShipThruster
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
-	
+
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
@@ -233,7 +233,7 @@ public class GenShipThruster extends StdShipThruster
 			break;
 		}
 	}
-	
+
 	@Override
 	protected int getCodeNum(final String code)
 	{
@@ -262,7 +262,7 @@ public class GenShipThruster extends StdShipThruster
 			codes[i]=MYCODES[x];
 		return codes;
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

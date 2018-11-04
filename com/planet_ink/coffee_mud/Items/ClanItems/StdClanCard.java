@@ -34,7 +34,7 @@ import java.util.*;
 */
 public class StdClanCard extends StdClanItem
 {
-	@Override 
+	@Override
 	public String ID()
 	{
 		return "StdClanCard";

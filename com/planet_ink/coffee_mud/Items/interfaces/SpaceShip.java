@@ -38,7 +38,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface SpaceShip extends SpaceObject, BoardableShip
 {
 	/**
-	 * 
+	 *
 	 * @author Bo Zimmerman
 	 *
 	 */
@@ -53,17 +53,17 @@ public interface SpaceShip extends SpaceObject, BoardableShip
 	 * Sets one of the ship flags
 	 * @see SpaceShip.ShipFlag
 	 * @see SpaceShip#getShipFlag(ShipFlag)
-	 * 
+	 *
 	 * @param flag the flag to set or clear
 	 * @param flagValue the flag value
 	 */
 	public void setShipFlag(final ShipFlag flag, final boolean flagValue);
-	
+
 	/**
 	 * Gets one of the ship flags
 	 * @see SpaceShip.ShipFlag
 	 * @see SpaceShip#setShipFlag(ShipFlag, boolean)
-	 * 
+	 *
 	 * @param flag the flag to set or clear
 	 * @return flagValue the flag value
 	 */

@@ -69,7 +69,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 	}
 
 	@Override
-	public void setRightfulOwner(Environmental E)
+	public void setRightfulOwner(final Environmental E)
 	{
 		riteOwner = E;
 	}
@@ -81,7 +81,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 	}
 
 	@Override
-	public void setClanItemType(ClanItemType type)
+	public void setClanItemType(final ClanItemType type)
 	{
 		ciType = type;
 	}
@@ -93,17 +93,17 @@ public class StdClanFlag extends StdItem implements ClanItem
 	}
 
 	@Override
-	public void setClanID(String ID)
+	public void setClanID(final String ID)
 	{
 		myClan = ID;
 	}
 
 	@Override
-	public void setOwner(ItemPossessor E)
+	public void setOwner(final ItemPossessor E)
 	{
-		if ((E == null) 
-		&& (super.owner != null) 
-		&& (!amDestroyed()) 
+		if ((E == null)
+		&& (super.owner != null)
+		&& (!amDestroyed())
 		&& (CMSecurity.isDebugging(CMSecurity.DbgFlag.FLAGWATCHING)))
 		{
 			Log.debugOut("FLAGWATCH", name());
@@ -115,8 +115,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 	@Override
 	public void destroy()
 	{
-		if ((super.owner != null) 
-		&& (!amDestroyed()) 
+		if ((super.owner != null)
+		&& (!amDestroyed())
 		&& (CMSecurity.isDebugging(CMSecurity.DbgFlag.FLAGWATCHING)))
 		{
 			Log.debugOut("FLAGWATCH", name());
@@ -146,8 +146,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 		if (StdClanItem.stdExecuteMsg(this, msg))
 		{
 			super.executeMsg(myHost, msg);
-			if ((msg.amITarget(this)) 
-			&& (clanID().length() > 0) 
+			if ((msg.amITarget(this))
+			&& (clanID().length() > 0)
 			&& (msg.source().getClanRole(clanID()) != null))
 			{
 				final Room R = msg.source().location();
@@ -158,7 +158,7 @@ public class StdClanFlag extends StdItem implements ClanItem
 					msg.addTrailerMsg(CMClass.getMsg(msg.source(), this, CMMsg.MSG_LOOK, null));
 					setRightfulOwner(R);
 				}
-				else 
+				else
 				if ((msg.targetMinor() == CMMsg.TYP_LOOK) || (msg.targetMinor() == CMMsg.TYP_EXAMINE))
 				{
 					final LegalBehavior B = CMLib.law().getLegalBehavior(R);
@@ -171,9 +171,9 @@ public class StdClanFlag extends StdItem implements ClanItem
 						msg.source().tell(L("This area is under the control of the Archons."));
 					return;
 				}
-				else 
-				if ((msg.targetMinor() == CMMsg.TYP_SPEAK) 
-				&& (CMSecurity.isAllowed(msg.source(), R, CMSecurity.SecFlag.CMDROOMS)) 
+				else
+				if ((msg.targetMinor() == CMMsg.TYP_SPEAK)
+				&& (CMSecurity.isAllowed(msg.source(), R, CMSecurity.SecFlag.CMDROOMS))
 				&& (msg.targetMessage() != null))
 				{
 					final String msgStr = CMStrings.getSayFromMessage(msg.targetMessage().toUpperCase());
@@ -200,9 +200,9 @@ public class StdClanFlag extends StdItem implements ClanItem
 		{
 			if (msg.source().getClanRole(clanID()) == null)
 			{
-				if ((msg.targetMinor() == CMMsg.TYP_GET) 
-				|| (msg.targetMinor() == CMMsg.TYP_PUSH) 
-				|| (msg.targetMinor() == CMMsg.TYP_PULL) 
+				if ((msg.targetMinor() == CMMsg.TYP_GET)
+				|| (msg.targetMinor() == CMMsg.TYP_PUSH)
+				|| (msg.targetMinor() == CMMsg.TYP_PULL)
 				|| (msg.targetMinor() == CMMsg.TYP_CAST_SPELL))
 				{
 					final Room R = CMLib.map().roomLocation(this);
@@ -211,16 +211,16 @@ public class StdClanFlag extends StdItem implements ClanItem
 						msg.source().tell(L("You must belong to an elligible clan to take a clan item."));
 						return false;
 					}
-					else 
+					else
 					if (R != null)
 					{
 						for (int i = 0; i < R.numInhabitants(); i++)
 						{
 							final MOB M = R.fetchInhabitant(i);
-							if ((M != null) 
-							&& (M.isMonster()) 
-							&& (M.getClanRole(clanID()) != null) 
-							&& (CMLib.flags().isAliveAwakeMobileUnbound(M, true)) 
+							if ((M != null)
+							&& (M.isMonster())
+							&& (M.getClanRole(clanID()) != null)
+							&& (CMLib.flags().isAliveAwakeMobileUnbound(M, true))
 							&& (CMLib.flags().canBeSeenBy(this, M))
 							&& (!CMLib.flags().isAnimalIntelligence(M)))
 							{
@@ -244,8 +244,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 						}
 					}
 				}
-				else 
-				if ((msg.targetMinor() == CMMsg.TYP_DROP) 
+				else
+				if ((msg.targetMinor() == CMMsg.TYP_DROP)
 				&& (!CMath.bset(msg.targetMajor(), CMMsg.MASK_INTERMSG)))
 				{
 					final Room R = msg.source().location();
@@ -259,8 +259,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 					}
 					if ((T == null)
 					|| ((!T.getOwnerName().equals(clanID()))
-						&& ((!T.getOwnerName().equals(msg.source().getLiegeID())) 
-							|| (!msg.source().isMarriedToLiege())) 
+						&& ((!T.getOwnerName().equals(msg.source().getLiegeID()))
+							|| (!msg.source().isMarriedToLiege()))
 						&& (!T.getOwnerName().equals(msg.source().Name()))))
 					{
 						boolean ok = false;
@@ -278,17 +278,17 @@ public class StdClanFlag extends StdItem implements ClanItem
 					}
 				}
 			}
-			else 
-			if ((msg.targetMinor() == CMMsg.TYP_GET) 
-			&& (msg.source().location() != null) 
+			else
+			if ((msg.targetMinor() == CMMsg.TYP_GET)
+			&& (msg.source().location() != null)
 			&& (msg.source().isMonster()))
 			{
 				boolean foundOne = false;
 				for (int i = 0; i < msg.source().location().numInhabitants(); i++)
 				{
 					final MOB M = msg.source().location().fetchInhabitant(i);
-					if ((M != null) 
-					&& (!M.isMonster()) 
+					if ((M != null)
+					&& (!M.isMonster())
 					&& (M.getClanRole(clanID()) != null))
 					{
 						foundOne = true;
@@ -305,8 +305,8 @@ public class StdClanFlag extends StdItem implements ClanItem
 
 		if (StdClanItem.stdOkMessage(this, msg))
 		{
-			if ((clanID().length() > 0) 
-			&& (msg.amITarget(this)) 
+			if ((clanID().length() > 0)
+			&& (msg.amITarget(this))
 			&& (msg.targetMinor() == CMMsg.TYP_DROP))
 			{
 				final LegalBehavior B = CMLib.law().getLegalBehavior(msg.source().location());

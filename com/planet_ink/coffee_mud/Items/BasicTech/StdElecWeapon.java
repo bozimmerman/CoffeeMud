@@ -87,7 +87,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	// this method is the reason not to make the types an editable field; the
 	// murder-motel-like interaction between shields and weapons is finely
 	// balanced based on what this does.
-	@Override 
+	@Override
 	public int weaponDamageType()
 	{
 		switch(mode)
@@ -125,7 +125,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	}
 
 	@Override
-	public void setMiscText(String text)
+	public void setMiscText(final String text)
 	{
 		miscText=text;
 		if(CMath.isInteger(text))
@@ -178,13 +178,13 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	}
 
 	@Override
-	public void setWeaponDamageType(int newType)
+	public void setWeaponDamageType(final int newType)
 	{
 		weaponDamageType = newType;
 	}
 
 	@Override
-	public void setWeaponClassification(int newClassification)
+	public void setWeaponClassification(final int newClassification)
 	{
 		weaponClassification = newClassification;
 	}
@@ -502,7 +502,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	}
 
 	@Override
-	public String hitString(int damageAmount)
+	public String hitString(final int damageAmount)
 	{
 		return CMLib.combat().standardHitString(weaponDamageType, weaponClassification,damageAmount,name());
 	}
@@ -524,7 +524,7 @@ public class StdElecWeapon extends StdElecItem implements Weapon, Electronics
 	}
 
 	@Override
-	public void setRanges(int min, int max)
+	public void setRanges(final int min, final int max)
 	{
 		minRange = min;
 		maxRange = max;

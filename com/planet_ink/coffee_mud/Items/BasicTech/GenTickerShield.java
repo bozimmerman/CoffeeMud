@@ -36,7 +36,6 @@ import java.util.*;
 */
 public class GenTickerShield extends StdElecItem implements Armor
 {
-
 	@Override
 	public String ID()
 	{

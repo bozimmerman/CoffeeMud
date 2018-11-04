@@ -57,7 +57,7 @@ public class GenSolarGenerator extends GenFuellessGenerator
 			if(A instanceof SpaceShip)
 			{
 				final Room dockRoom=((SpaceShip)A).getIsDocked();
-				if(dockRoom!=null) 
+				if(dockRoom!=null)
 					return (dockRoom.getArea()!=null) && (dockRoom.getArea().getClimateObj().canSeeTheSun(dockRoom));
 				final SpaceObject obj = ((SpaceShip)A).getShipSpaceObject();
 				final List<SpaceObject> objs = CMLib.map().getSpaceObjectsWithin(obj, obj.radius(), SpaceObject.Distance.SolarSystemDiameter.dm);
@@ -77,7 +77,7 @@ public class GenSolarGenerator extends GenFuellessGenerator
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

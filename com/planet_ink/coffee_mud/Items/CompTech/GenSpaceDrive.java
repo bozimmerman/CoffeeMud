@@ -42,7 +42,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 	}
 
 	protected String readableText="";
-	
+
 	public GenSpaceDrive()
 	{
 		super();
@@ -50,7 +50,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 		setDisplayText("a space drive sits here.");
 		setDescription("");
 	}
-	
+
 	@Override
 	public boolean isGeneric()
 	{
@@ -70,13 +70,13 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText = text;
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -85,9 +85,9 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 
 	private final static String[] MYCODES={"POWERCAP","POWERREM","MAXTHRUST","ACTIVATED","MANUFACTURER","INSTFACT",
 										   "SPECIMPL","FUELEFF","MINTHRUST","ISCONST","AVAILPORTS","RECHRATE"};
-	
+
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -121,9 +121,9 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
-	
+
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
@@ -171,7 +171,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 			break;
 		}
 	}
-	
+
 	@Override
 	protected int getCodeNum(final String code)
 	{
@@ -182,9 +182,9 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 		}
 		return -1;
 	}
-	
+
 	private static String[] codes=null;
-	
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -200,7 +200,7 @@ public class GenSpaceDrive extends StdShipFuellessThruster
 			codes[i]=MYCODES[x];
 		return codes;
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

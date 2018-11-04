@@ -67,7 +67,7 @@ public class StdElecContainer extends StdContainer implements Electronics
 	}
 
 	@Override
-	public void setPowerCapacity(long capacity)
+	public void setPowerCapacity(final long capacity)
 	{
 		powerCapacity = capacity;
 	}
@@ -79,7 +79,7 @@ public class StdElecContainer extends StdContainer implements Electronics
 	}
 
 	@Override
-	public void setPowerRemaining(long remaining)
+	public void setPowerRemaining(final long remaining)
 	{
 		power = remaining;
 	}
@@ -91,7 +91,7 @@ public class StdElecContainer extends StdContainer implements Electronics
 	}
 
 	@Override
-	public void activate(boolean truefalse)
+	public void activate(final boolean truefalse)
 	{
 		activated = truefalse;
 	}
@@ -109,7 +109,7 @@ public class StdElecContainer extends StdContainer implements Electronics
 	}
 
 	@Override
-	public void setTechLevel(int lvl)
+	public void setTechLevel(final int lvl)
 	{
 		basePhyStats.setAbility(lvl);
 		recoverPhyStats();
@@ -128,7 +128,7 @@ public class StdElecContainer extends StdContainer implements Electronics
 	}
 
 	@Override
-	public void setManufacturerName(String name)
+	public void setManufacturerName(final String name)
 	{
 		cachedManufact = null;
 		if (name != null)
@@ -142,7 +142,7 @@ public class StdElecContainer extends StdContainer implements Electronics
 			generatedAmount *= CMath.div(usesRemaining(), 100.0);
 		return generatedAmount;
 	}
-	
+
 	@Override
 	public Manufacturer getFinalManufacturer()
 	{

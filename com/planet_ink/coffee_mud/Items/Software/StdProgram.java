@@ -63,7 +63,7 @@ public class StdProgram extends StdItem implements Software
 	}
 
 	@Override
-	public void setCircuitKey(String key)
+	public void setCircuitKey(final String key)
 	{
 	}
 
@@ -74,7 +74,7 @@ public class StdProgram extends StdItem implements Software
 	}
 
 	@Override
-	public void setTechLevel(int lvl)
+	public void setTechLevel(final int lvl)
 	{
 		basePhyStats.setAbility(lvl);
 		recoverPhyStats();
@@ -93,19 +93,19 @@ public class StdProgram extends StdItem implements Software
 	}
 
 	@Override
-	public boolean isActivationString(String word)
+	public boolean isActivationString(final String word)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean isDeActivationString(String word)
+	public boolean isDeActivationString(final String word)
 	{
 		return false;
 	}
 
 	@Override
-	public boolean isCommandString(String word, boolean isActive)
+	public boolean isCommandString(final String word, final boolean isActive)
 	{
 		return false;
 	}
@@ -128,7 +128,7 @@ public class StdProgram extends StdItem implements Software
 		return currentScreen;
 	}
 
-	public void setCurrentScreenDisplay(String msg)
+	public void setCurrentScreenDisplay(final String msg)
 	{
 		this.currentScreen=msg;
 	}
@@ -145,7 +145,7 @@ public class StdProgram extends StdItem implements Software
 	}
 
 	@Override
-	public void addScreenMessage(String msg)
+	public void addScreenMessage(final String msg)
 	{
 		synchronized(nextMsg)
 		{
@@ -171,22 +171,22 @@ public class StdProgram extends StdItem implements Software
 			((Computer)container()).forceReadersMenu();
 	}
 
-	public boolean checkActivate(MOB mob, String message)
+	public boolean checkActivate(final MOB mob, final String message)
 	{
 		return true;
 	}
 
-	public boolean checkDeactivate(MOB mob, String message)
+	public boolean checkDeactivate(final MOB mob, final String message)
 	{
 		return true;
 	}
 
-	public boolean checkTyping(MOB mob, String message)
+	public boolean checkTyping(final MOB mob, final String message)
 	{
 		return true;
 	}
 
-	public boolean checkPowerCurrent(int value)
+	public boolean checkPowerCurrent(final int value)
 	{
 		return true;
 	}
@@ -219,22 +219,22 @@ public class StdProgram extends StdItem implements Software
 		return super.okMessage(host,msg);
 	}
 
-	public void onActivate(MOB mob, String message)
+	public void onActivate(final MOB mob, final String message)
 	{
 
 	}
 
-	public void onDeactivate(MOB mob, String message)
+	public void onDeactivate(final MOB mob, final String message)
 	{
 
 	}
 
-	public void onTyping(MOB mob, String message)
+	public void onTyping(final MOB mob, final String message)
 	{
 
 	}
 
-	public void onPowerCurrent(int value)
+	public void onPowerCurrent(final int value)
 	{
 
 	}
@@ -263,23 +263,23 @@ public class StdProgram extends StdItem implements Software
 		}
 		super.executeMsg(host, msg);
 	}
-	
-	public String display(long d)
+
+	public String display(final long d)
 	{
 		return CMLib.english().sizeDescShort(d);
 	}
-	
-	public String display(long[] coords)
+
+	public String display(final long[] coords)
 	{
 		return CMLib.english().coordDescShort(coords);
 	}
-	
-	public String display(double[] dir)
+
+	public String display(final double[] dir)
 	{
 		return CMLib.english().directionDescShortest(dir);
 	}
-	
-	public String displayPerSec(long speed)
+
+	public String displayPerSec(final long speed)
 	{
 		return CMLib.english().speedDescShort(speed);
 	}

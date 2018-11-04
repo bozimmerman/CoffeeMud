@@ -47,7 +47,7 @@ public class SeaMap extends BardMap
 		super();
 	}
 
-	public char roomChar(Room room)
+	public char roomChar(final Room room)
 	{
 		if(room==null)
 			return ' ';
@@ -97,9 +97,9 @@ public class SeaMap extends BardMap
 			return '?';
 		}
 	}
-	
+
 	@Override
-	public StringBuffer[][] finishMapMaking(int width)
+	public StringBuffer[][] finishMapMaking(final int width)
 	{
 		final Hashtable<Room,MapRoom> mapRooms=makeMapRooms(width);
 		StringBuffer[][] map=new StringBuffer[0][0];
@@ -120,9 +120,9 @@ public class SeaMap extends BardMap
 			}
 
 			map=new StringBuffer[xsize+1][ysize+1];
-			StringBuilder line1=new StringBuilder("");
-			StringBuilder line2=new StringBuilder("");
-			StringBuilder line3=new StringBuilder("");
+			final StringBuilder line1=new StringBuilder("");
+			final StringBuilder line2=new StringBuilder("");
+			final StringBuilder line3=new StringBuilder("");
 			for(int y=0;y<grid[0].length;y++)
 			{
 				line1.setLength(0);

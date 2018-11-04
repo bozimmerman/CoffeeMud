@@ -76,7 +76,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public void setRideBasis(int basis)
+	public void setRideBasis(final int basis)
 	{
 	}
 
@@ -87,7 +87,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public void setRiderCapacity(int newCapacity)
+	public void setRiderCapacity(final int newCapacity)
 	{
 	}
 
@@ -104,18 +104,18 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public Rider fetchRider(int which)
+	public Rider fetchRider(final int which)
 	{
 		return null;
 	}
 
 	@Override
-	public void addRider(Rider mob)
+	public void addRider(final Rider mob)
 	{
 	}
 
 	@Override
-	public void delRider(Rider mob)
+	public void delRider(final Rider mob)
 	{
 	}
 
@@ -127,7 +127,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public Set<MOB> getRideBuddies(Set<MOB> list)
+	public Set<MOB> getRideBuddies(final Set<MOB> list)
 	{
 		return list;
 	}
@@ -139,7 +139,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public String stateString(Rider R)
+	public String stateString(final Rider R)
 	{
 		if((R==null)||(stateString.length()==0))
 			return "in";
@@ -153,7 +153,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public void setStateString(String str)
+	public void setStateString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			stateString="";
@@ -167,7 +167,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public String putString(Rider R)
+	public String putString(final Rider R)
 	{
 		if((R==null)||(putString.length()==0))
 			return "in";
@@ -181,7 +181,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public void setPutString(String str)
+	public void setPutString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			putString="";
@@ -195,7 +195,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public String mountString(int commandType, Rider R)
+	public String mountString(final int commandType, final Rider R)
 	{
 		if((R==null)||(mountString.length()==0))
 			return "enter(s)";
@@ -209,7 +209,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public void setMountString(String str)
+	public void setMountString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			mountString="";
@@ -223,7 +223,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public String dismountString(Rider R)
+	public String dismountString(final Rider R)
 	{
 		if((R==null)||(dismountString.length()==0))
 			return "emerge(s) from";
@@ -235,9 +235,9 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	{
 		return dismountString;
 	}
-	
+
 	@Override
-	public void setDismountString(String str)
+	public void setDismountString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			dismountString="";
@@ -251,7 +251,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public String stateStringSubject(Rider R)
+	public String stateStringSubject(final Rider R)
 	{
 		if((R==null)||(stateSubjectStr.length()==0))
 			return "occupied by";
@@ -265,7 +265,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public void setStateStringSubject(String str)
+	public void setStateStringSubject(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			this.stateSubjectStr="";
@@ -279,7 +279,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public String rideString(Rider R)
+	public String rideString(final Rider R)
 	{
 		if((R==null)||(rideString.length()==0))
 			return "enter(s)";
@@ -293,7 +293,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public void setRideString(String str)
+	public void setRideString(final String str)
 	{
 		if((str==null)||(str.trim().length()==0))
 			rideString="";
@@ -307,7 +307,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public short exitUsage(short change)
+	public short exitUsage(final short change)
 	{
 		return 0;
 	}
@@ -319,7 +319,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public boolean amRiding(Rider mob)
+	public boolean amRiding(final Rider mob)
 	{
 		return false;
 	}
@@ -381,7 +381,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		return true;
 	}
 
-	protected Room getDestinationRoom(Room fromRoom)
+	protected Room getDestinationRoom(final Room fromRoom)
 	{
 		Room R=null;
 		final List<String> V=CMParms.parseSemicolons(readableText(),true);
@@ -391,7 +391,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public Room lastRoomUsedFrom(Room fromRoom)
+	public Room lastRoomUsedFrom(final Room fromRoom)
 	{
 		return getDestinationRoom(fromRoom);
 	}
@@ -471,7 +471,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public void setDoorsNLocks(boolean hasADoor, boolean isOpen, boolean defaultsClosed, boolean hasALock, boolean isLocked, boolean defaultsLocked)
+	public void setDoorsNLocks(final boolean hasADoor, final boolean isOpen, final boolean defaultsClosed, final boolean hasALock, final boolean isLocked, final boolean defaultsLocked)
 	{
 		super.setDoorsNLocks(hasADoor, isOpen, defaultsClosed, hasALock, isLocked, defaultsLocked);
 	}
@@ -483,14 +483,14 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public void setReadable(boolean isTrue)
+	public void setReadable(final boolean isTrue)
 	{
 	}
 
 	private static final StringBuilder empty=new StringBuilder("");
 
 	@Override
-	public StringBuilder viewableText(MOB mob, Room myRoom)
+	public StringBuilder viewableText(final MOB mob, final Room myRoom)
 	{
 		Room room=this.getDestinationRoom(myRoom);
 		if(room == null)
@@ -546,10 +546,10 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public void setExitParams(String newDoorName,
-							  String newCloseWord,
-							  String newOpenWord,
-							  String newClosedText)
+	public void setExitParams(final String newDoorName,
+							  final String newCloseWord,
+							  final String newOpenWord,
+							  final String newClosedText)
 							  {
 		doorName=newDoorName;
 		closedText=newClosedText;
@@ -562,7 +562,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public void setOpenDelayTicks(int numTicks)
+	public void setOpenDelayTicks(final int numTicks)
 	{
 	}
 
@@ -573,7 +573,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	}
 
 	@Override
-	public void setTemporaryDoorLink(String link)
+	public void setTemporaryDoorLink(final String link)
 	{
 	}
 

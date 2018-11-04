@@ -49,7 +49,7 @@ public interface PowerGenerator extends PowerSource
 	 * @return the amount of power generated every tick
 	 */
 	public int getGeneratedAmountPerTick();
-	
+
 	/**
 	 * Sets the amount of power generated every tick.  This is fed into
 	 * the Electronics capacitance.

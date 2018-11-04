@@ -64,7 +64,7 @@ public class StdCompBattery extends StdElecCompItem implements PowerSource, Tech
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		if(CMath.isInteger(newText))
 			this.setPowerCapacity(CMath.s_int(newText));

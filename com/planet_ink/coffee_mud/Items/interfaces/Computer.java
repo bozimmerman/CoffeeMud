@@ -22,14 +22,14 @@ public interface Computer extends ElecPanel
 	 * @return the list of Software objects installed in this computer
 	 */
 	public List<Software> getSoftware();
-	
+
 	/**
 	 * Returns the list of mobs currently monitoring the output of this
 	 * computers software.
 	 * @return the list of mobs currently monitoring the output
 	 */
 	public List<MOB> getCurrentReaders();
-	
+
 	/**
 	 * Forces all the current readers to "read" the computer, typically
 	 * seeing the menu.
@@ -37,15 +37,15 @@ public interface Computer extends ElecPanel
 	 * @see Computer#forceReadersSeeNew()
 	 */
 	public void forceReadersMenu();
-	
+
 	/**
-	 * Forces all the current readers to see any new messages that 
+	 * Forces all the current readers to see any new messages that
 	 * should be seen by anyone monitoring the computer.
 	 * @see Computer#getCurrentReaders()
 	 * @see Computer#forceReadersMenu()
 	 */
 	public void forceReadersSeeNew();
-	
+
 	/**
 	 * Most software supports different levels of menu, and some software
 	 * is even a sub-menu unto itself.  This method forces the system to
@@ -55,7 +55,7 @@ public interface Computer extends ElecPanel
 	 * @param internalName the menu to set as current and active
 	 */
 	public void setActiveMenu(String internalName);
-	
+
 	/**
 	 * Most software supports different levels of menu, and some software
 	 * is even a sub-menu unto itself.  This method returns the current

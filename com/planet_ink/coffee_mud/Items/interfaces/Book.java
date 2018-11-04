@@ -46,7 +46,7 @@ public interface Book extends Item
 	 * @return the number of pages with writing on them.
 	 */
 	public int getUsedPages();
-	
+
 	/**
 	 * Returns the maximum number of pages that can be written on
 	 * in this book.  0 means infinite.
@@ -55,16 +55,16 @@ public interface Book extends Item
 	 * @return the maximum number of pages that can be written on
 	 */
 	public int getMaxPages();
-	
+
 	/**
-	 * 
+	 *
 	 * Sets the maximum number of pages that can be written on
 	 * in this book.  0 means infinite.
 	 * @see Book#getMaxPages()
 	 * @param max the maximum number of pages that can be written on
 	 */
 	public void setMaxPages(int max);
-	
+
 	/**
 	 * Returns the maximum number of chars that can be written on
 	 * each page in this book.  0 means infinite.
@@ -72,7 +72,7 @@ public interface Book extends Item
 	 * @return the maximum number of chars that can be written on
 	 */
 	public int getMaxCharsPerPage();
-	
+
 	/**
 	 * Sets the maximum number of chars that can be written on
 	 * each page in this book.  0 means infinite.
@@ -80,7 +80,7 @@ public interface Book extends Item
 	 * @param max the maximum number of pages that can be written on
 	 */
 	public void setMaxCharsPerPage(int max);
-	
+
 	/**
 	 * Returns the raw content of a page
 	 * @see Book#getContent(int)
@@ -98,7 +98,7 @@ public interface Book extends Item
 	 * @return the readable content of a page
 	 */
 	public String getContent(int page);
-	
+
 	/**
 	 * Adds a page to this book, or appends content if just a piece of paper.
 	 * @see Book#getRawContent(int)

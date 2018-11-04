@@ -39,7 +39,7 @@ public class MassiveStar extends GenSpaceBody
 	{
 		return "MassiveStar";
 	}
-	
+
 	public MassiveStar()
 	{
 		super();
@@ -47,7 +47,7 @@ public class MassiveStar extends GenSpaceBody
 		setDisplayText("an unknown massive star is shining here");
 		setDescription("it`s very very bright");
 		coordinates=new long[]{Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random()),Math.round(Long.MAX_VALUE*Math.random())};
-		Random random=new Random(System.currentTimeMillis());
+		final Random random=new Random(System.currentTimeMillis());
 		radius=SpaceObject.Distance.StarBRadius.dm + (random.nextLong() % Math.round(CMath.mul(SpaceObject.Distance.StarBRadius.dm,0.30)));
 		basePhyStats().setDisposition(PhyStats.IS_LIGHTSOURCE|PhyStats.IS_GLOWING);
 		this.setMaterial(RawMaterial.RESOURCE_HYDROGEN);

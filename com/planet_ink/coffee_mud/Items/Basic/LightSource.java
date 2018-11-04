@@ -59,7 +59,7 @@ public class LightSource extends StdItem implements Light
 	}
 
 	@Override
-	public void setDuration(int duration)
+	public void setDuration(final int duration)
 	{
 		durationTicks = duration;
 	}
@@ -77,7 +77,7 @@ public class LightSource extends StdItem implements Light
 	}
 
 	@Override
-	public void setDestroyedWhenBurntOut(boolean truefalse)
+	public void setDestroyedWhenBurntOut(final boolean truefalse)
 	{
 		destroyedWhenBurnedOut = truefalse;
 	}
@@ -95,7 +95,7 @@ public class LightSource extends StdItem implements Light
 	}
 
 	@Override
-	public void light(boolean isLit)
+	public void light(final boolean isLit)
 	{
 		lit = isLit;
 	}
@@ -191,7 +191,7 @@ public class LightSource extends StdItem implements Light
 		return super.tick(ticking,tickID);
 	}
 
-	public static boolean inTheRain(Room room)
+	public static boolean inTheRain(final Room room)
 	{
 		if((room==null)||(room.getArea()==null))
 			return false;
@@ -200,7 +200,7 @@ public class LightSource extends StdItem implements Light
 				   ||(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM)));
 	}
 
-	public static boolean inTheWater(MOB mob, Room room)
+	public static boolean inTheWater(final MOB mob, final Room room)
 	{
 		if((room==null)||(mob==null))
 			return false;

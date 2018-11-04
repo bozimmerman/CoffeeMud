@@ -153,7 +153,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// hand to be devoid of cards, the hand container
 	// is destroyed.
 	@Override
-	public boolean addCard(PlayingCard card)
+	public boolean addCard(final PlayingCard card)
 	{
 		if(card==null)
 			return false;
@@ -207,7 +207,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// to this method should be followed
 	// by an addCard method on another deck.
 	@Override
-	public boolean removeCard(PlayingCard card)
+	public boolean removeCard(final PlayingCard card)
 	{
 		final List<Item> handContents=getContents();
 		if(handContents.contains(card))
@@ -343,7 +343,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// hand-holder.  Either way, it will return the
 	// empty hand object.
 	@Override
-	public HandOfCards createEmptyHand(Environmental player)
+	public HandOfCards createEmptyHand(final Environmental player)
 	{
 		// calling this method without the intention
 		// of putting a card inside is counter-productive.
@@ -382,7 +382,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// by a single letter for face cards and the ace,
 	// or a number for other cards.
 	@Override
-	public boolean containsCard(String cardStringCode)
+	public boolean containsCard(final String cardStringCode)
 	{
 		return getCard(cardStringCode) != null;
 	}
@@ -395,7 +395,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// by a single letter for face cards and the ace,
 	// or a number for other cards.
 	@Override
-	public PlayingCard getCard(String cardStringCode)
+	public PlayingCard getCard(final String cardStringCode)
 	{
 		final List<Item> handContents=getContents();
 		if(handContents.size()==0)
@@ -443,7 +443,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// a string code is a single letter for face cards
 	// and the ace, or a number for other cards.
 	@Override
-	public boolean containsAtLeastOneOfValue(String cardStringCode)
+	public boolean containsAtLeastOneOfValue(final String cardStringCode)
 	{
 		return getFirstCardOfValue(cardStringCode) != null;
 	}
@@ -453,7 +453,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// of the given suit is to be found herein.
 	// a string code is a single letter suit
 	@Override
-	public boolean containsAtLeastOneOfSuit(String cardStringCode)
+	public boolean containsAtLeastOneOfSuit(final String cardStringCode)
 	{
 		return getFirstCardOfSuit(cardStringCode) != null;
 	}
@@ -464,7 +464,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// removeCard should be called next to do that.
 	// a string code is a single letter suit
 	@Override
-	public PlayingCard getFirstCardOfSuit(String cardStringCode)
+	public PlayingCard getFirstCardOfSuit(final String cardStringCode)
 	{
 		final List<Item> handContents=getContents();
 		if(handContents.size()==0)
@@ -485,7 +485,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// the given bit code value
 	// a bit code is as described in PlayingCard.java
 	@Override
-	public boolean containsCard(int cardBitCode)
+	public boolean containsCard(final int cardBitCode)
 	{
 		return getCard(cardBitCode) != null;
 	}
@@ -540,7 +540,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// of the given value is to be found herein.
 	// a bit code is as described in PlayingCard.java
 	@Override
-	public boolean containsAtLeastOneOfValue(int cardBitCode)
+	public boolean containsAtLeastOneOfValue(final int cardBitCode)
 	{
 		return getFirstCardOfValue(cardBitCode) != null;
 	}
@@ -550,7 +550,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// of the given suit is to be found herein.
 	// a bit code is as described in PlayingCard.java
 	@Override
-	public boolean containsAtLeastOneOfSuit(int cardBitCode)
+	public boolean containsAtLeastOneOfSuit(final int cardBitCode)
 	{
 		return getFirstCardOfSuit(cardBitCode) != null;
 	}
@@ -581,9 +581,9 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
 	// that we are allowed to ONLY put playing cards in the
 	// container.
 	@Override
-	public boolean canContain(Item I)
+	public boolean canContain(final Item I)
 	{
-		if (!(I instanceof PlayingCard)) 
+		if (!(I instanceof PlayingCard))
 			return false;
 		return true;
 	}

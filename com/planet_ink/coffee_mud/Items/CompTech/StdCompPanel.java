@@ -72,7 +72,7 @@ public class StdCompPanel extends StdElecCompContainer implements ElecPanel, Tec
 	}
 
 	@Override
-	public void setPanelType(TechType type)
+	public void setPanelType(final TechType type)
 	{
 		panelType = type;
 	}
@@ -84,7 +84,7 @@ public class StdCompPanel extends StdElecCompContainer implements ElecPanel, Tec
 	}
 
 	@Override
-	public boolean canContain(Item I)
+	public boolean canContain(final Item I)
 	{
 		if(!super.canContain(I))
 			return false;
@@ -106,7 +106,7 @@ public class StdCompPanel extends StdElecCompContainer implements ElecPanel, Tec
 	}
 
 	@Override
-	public void setOwner(ItemPossessor newOwner)
+	public void setOwner(final ItemPossessor newOwner)
 	{
 		final ItemPossessor prevOwner=super.owner;
 		super.setOwner(newOwner);
@@ -122,7 +122,7 @@ public class StdCompPanel extends StdElecCompContainer implements ElecPanel, Tec
 		}
 	}
 
-	@Override 
+	@Override
 	public boolean okMessage(final Environmental myHost, final CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -183,7 +183,7 @@ public class StdCompPanel extends StdElecCompContainer implements ElecPanel, Tec
 						((TechComponent)msg.tool()).setInstalledFactor((float)1.0);
 					else
 						((TechComponent)msg.tool()).setInstalledFactor((float)CMath.div(msg.value(), 100.0));
-					CMMsg msg2=(CMMsg)msg.copyOf();
+					final CMMsg msg2=(CMMsg)msg.copyOf();
 					msg2.setTargetCode(CMMsg.MSG_PUT);
 					msg2.setSourceCode(CMMsg.MSG_PUT);
 					msg2.setOthersCode(CMMsg.MSG_PUT);
@@ -253,7 +253,7 @@ public class StdCompPanel extends StdElecCompContainer implements ElecPanel, Tec
 			super.executeMsg(myHost, msg);
 		}
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

@@ -55,14 +55,14 @@ public class Wand_Nourishment extends StdWand
 	}
 
 	@Override
-	public void setSpell(Ability theSpell)
+	public void setSpell(final Ability theSpell)
 	{
 		super.setSpell(theSpell);
 		secretWord="SHAZAM";
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		super.setMiscText(newText);
 		secretWord="SHAZAM";

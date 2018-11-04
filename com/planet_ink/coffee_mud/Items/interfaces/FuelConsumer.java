@@ -51,7 +51,7 @@ public interface FuelConsumer extends Electronics, Container
 	 * @return an array of RawMaterial codes
 	 */
 	public int[] getConsumedFuelTypes();
-	
+
 	/**
 	 * Sets an array of RawMaterial codes representing the
 	 * type of fuel that must be put inside this fuel container
@@ -61,7 +61,7 @@ public interface FuelConsumer extends Electronics, Container
 	 * @param resources an array of RawMaterial codes
 	 */
 	public void setConsumedFuelType(int[] resources);
-	
+
 	/**
 	 * Gets the number of ticks between each consumption of fuel.
 	 * This determines the rate of fuel consumption, assuming the
@@ -72,7 +72,7 @@ public interface FuelConsumer extends Electronics, Container
 	 * @return the number of ticks between each consumption of fuel.
 	 */
 	public int getTicksPerFuelConsume();
-	
+
 	/**
 	 * Sets the number of ticks between each consumption of fuel.
 	 * This determines the rate of fuel consumption, assuming the
@@ -83,14 +83,14 @@ public interface FuelConsumer extends Electronics, Container
 	 * @param tick the number of ticks between each consumption of fuel.
 	 */
 	public void setTicksPerFuelConsume(int tick);
-	
+
 	/**
 	 * Returns the amount of fuel remaining in this container.
 	 * @see FuelConsumer#getTotalFuelCapacity()
 	 * @return the amount of fuel remaining in this container.
 	 */
 	public int getFuelRemaining();
-	
+
 	/**
 	 * Forces this fuel consumer to consumer some amount of its
 	 * fuel, without any other effect. If there was not enough
@@ -99,7 +99,7 @@ public interface FuelConsumer extends Electronics, Container
 	 * @return true if there was NOT enough fuel, false if fuel was consumed OK.
 	 */
 	public boolean consumeFuel(int amount);
-	
+
 	/**
 	 * Returns the amount of total fuel this container can hold.
 	 * @see FuelConsumer#getFuelRemaining()

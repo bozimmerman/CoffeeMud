@@ -76,13 +76,13 @@ public class GenElecPanel extends StdElecPanel
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText = text;
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -91,7 +91,7 @@ public class GenElecPanel extends StdElecPanel
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY", "CONTAINTYPES","RESETTIME","POWERCAP", "ACTIVATED","POWERREM","PANTYPE","DEFCLOSED","DEFLOCKED","TECHLEVEL"};
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -127,7 +127,7 @@ public class GenElecPanel extends StdElecPanel
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
@@ -158,7 +158,7 @@ public class GenElecPanel extends StdElecPanel
 		case 7:
 			setPowerRemaining(CMath.s_parseLongExpression(val));
 			break;
-		case 8: 
+		case 8:
 		{
 			try
 			{
@@ -194,9 +194,9 @@ public class GenElecPanel extends StdElecPanel
 		}
 		return -1;
 	}
-	
+
 	private static String[] codes=null;
-	
+
 	@Override
 	public String[] getStatCodes()
 	{

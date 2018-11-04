@@ -57,7 +57,7 @@ public class GenCloak extends GenArmor
 	}
 
 	@Override
-	public void affectPhyStats(Physical host, PhyStats stats)
+	public void affectPhyStats(final Physical host, final PhyStats stats)
 	{
 		super.affectPhyStats(host, stats);
 		if((amBeingWornProperly())

@@ -60,7 +60,7 @@ public class StdClanSpecialItem extends StdClanItem
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		if ((text.equalsIgnoreCase("GOOD")) || (text.equalsIgnoreCase("EVIL")))
 			flag = text;
@@ -72,14 +72,14 @@ public class StdClanSpecialItem extends StdClanItem
 	public void executeMsg(final Environmental affecting, final CMMsg msg)
 	{
 		super.executeMsg(affecting, msg);
-		if (((getClanItemType() == ClanItem.ClanItemType.SPECIALSCALES) 
-			|| (getClanItemType() == ClanItem.ClanItemType.SPECIALTAXER)) 
-		&& (owner() instanceof MOB) 
-		&& (clanID().length() > 0) 
+		if (((getClanItemType() == ClanItem.ClanItemType.SPECIALSCALES)
+			|| (getClanItemType() == ClanItem.ClanItemType.SPECIALTAXER))
+		&& (owner() instanceof MOB)
+		&& (clanID().length() > 0)
 		&& (((MOB) owner()).isMonster())
-		&& ((((MOB) owner()).getClanRole(clanID()) != null) 
-		&& (CMLib.flags().isAliveAwakeMobile((MOB) owner(), true)) 
-		&& (!CMLib.flags().isAnimalIntelligence((MOB) owner()))) 
+		&& ((((MOB) owner()).getClanRole(clanID()) != null)
+		&& (CMLib.flags().isAliveAwakeMobile((MOB) owner(), true))
+		&& (!CMLib.flags().isAnimalIntelligence((MOB) owner())))
 		&& (B != null))
 			B.executeMsg(owner(), msg);
 	}
@@ -99,9 +99,9 @@ public class StdClanSpecialItem extends StdClanItem
 	{
 		if (!super.tick(ticking, tickID))
 			return false;
-		if ((tickID == Tickable.TICKID_CLANITEM) 
-		&& (owner() instanceof MOB) 
-		&& (clanID().length() > 0) 
+		if ((tickID == Tickable.TICKID_CLANITEM)
+		&& (owner() instanceof MOB)
+		&& (clanID().length() > 0)
 		&& (((MOB) owner()).isMonster())
 		&& (((MOB) owner()).getClanRole(clanID()) != null)
 		&& (CMLib.flags().isAliveAwakeMobileUnbound((MOB) owner(), true))
@@ -123,10 +123,10 @@ public class StdClanSpecialItem extends StdClanItem
 			}
 			case SPECIALSCALES:
 			{
-				if (((B == null)) 
-				|| (!flag.equalsIgnoreCase("EVIL") 
-					&& (!B.ID().equals("GoodExecutioner"))) 
-				|| (flag.equalsIgnoreCase("EVIL") 
+				if (((B == null))
+				|| (!flag.equalsIgnoreCase("EVIL")
+					&& (!B.ID().equals("GoodExecutioner")))
+				|| (flag.equalsIgnoreCase("EVIL")
 					&& (!B.ID().equals("EvilExecutioner"))))
 				{
 					if (flag.equalsIgnoreCase("EVIL"))

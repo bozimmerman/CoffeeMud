@@ -61,7 +61,7 @@ public class GenLightSwitch extends GenElecCompItem implements ElecPanel
 		recoverPhyStats();
 		setMaterial(RawMaterial.RESOURCE_STEEL);
 	}
-	
+
 	@Override
 	public void recoverPhyStats()
 	{
@@ -85,7 +85,7 @@ public class GenLightSwitch extends GenElecCompItem implements ElecPanel
 		}
 	}
 
-	public void powerOtherSwitched(Environmental host, CMMsg msg)
+	public void powerOtherSwitched(final Environmental host, final CMMsg msg)
 	{
 		Room R=CMLib.map().roomLocation(this);
 		if(R!=null)
@@ -99,7 +99,7 @@ public class GenLightSwitch extends GenElecCompItem implements ElecPanel
 				oMsg.setOthersMessage(null);
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
-					Room oR=R.getRoomInDir(d);
+					final Room oR=R.getRoomInDir(d);
 					if((oR!=null)&&(R.getExitInDir(d)!=null))
 						switchStack.push(oR);
 				}
@@ -125,7 +125,7 @@ public class GenLightSwitch extends GenElecCompItem implements ElecPanel
 					{
 						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 						{
-							Room oR=R.getRoomInDir(d);
+							final Room oR=R.getRoomInDir(d);
 							if((oR!=null)&&(R.getExitInDir(d)!=null))
 								switchStack.push(oR);
 						}
@@ -134,8 +134,8 @@ public class GenLightSwitch extends GenElecCompItem implements ElecPanel
 			}
 		}
 	}
-	
-	public void tellOtherSwitches(Environmental host, CMMsg msg, boolean goAhead)
+
+	public void tellOtherSwitches(final Environmental host, final CMMsg msg, final boolean goAhead)
 	{
 		Room R=CMLib.map().roomLocation(this);
 		if(R!=null)
@@ -150,7 +150,7 @@ public class GenLightSwitch extends GenElecCompItem implements ElecPanel
 				oMsg.setTargetCode(oMsg.targetCode()|CMMsg.MASK_CNTRLMSG);
 				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 				{
-					Room oR=R.getRoomInDir(d);
+					final Room oR=R.getRoomInDir(d);
 					if((oR!=null)&&(R.getExitInDir(d)!=null))
 						switchStack.push(oR);
 				}
@@ -176,17 +176,17 @@ public class GenLightSwitch extends GenElecCompItem implements ElecPanel
 					{
 						for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 						{
-							Room oR=R.getRoomInDir(d);
+							final Room oR=R.getRoomInDir(d);
 							if((oR!=null)&&(R.getExitInDir(d)!=null))
 								switchStack.push(oR);
 						}
 					}
 				}
-				
+
 			}
 		}
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental host, final CMMsg msg)
 	{
@@ -233,7 +233,7 @@ public class GenLightSwitch extends GenElecCompItem implements ElecPanel
 	}
 
 	@Override
-	public void setPanelType(TechType type)
+	public void setPanelType(final TechType type)
 	{
 	}
 }

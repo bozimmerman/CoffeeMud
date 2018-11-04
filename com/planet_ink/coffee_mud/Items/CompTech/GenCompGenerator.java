@@ -41,7 +41,7 @@ public class GenCompGenerator extends StdCompGenerator
 	}
 
 	protected String readableText="";
-	
+
 	public GenCompGenerator()
 	{
 		super();
@@ -69,13 +69,13 @@ public class GenCompGenerator extends StdCompGenerator
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText = text;
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -85,9 +85,9 @@ public class GenCompGenerator extends StdCompGenerator
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY","CONTAINTYPES","RESETTIME",
 										   "POWERCAP","CONSUMEDTYPES","POWERREM","GENAMTPER","ACTIVATED",
 										   "MANUFACTURER","INSTFACT","DEFCLOSED","DEFLOCKED","RECHRATE"};
-	
+
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -136,9 +136,9 @@ public class GenCompGenerator extends StdCompGenerator
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
-	
+
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
@@ -205,7 +205,7 @@ public class GenCompGenerator extends StdCompGenerator
 			break;
 		}
 	}
-	
+
 	@Override
 	protected int getCodeNum(final String code)
 	{
@@ -216,9 +216,9 @@ public class GenCompGenerator extends StdCompGenerator
 		}
 		return -1;
 	}
-	
+
 	private static String[] codes=null;
-	
+
 	@Override
 	public String[] getStatCodes()
 	{
@@ -234,7 +234,7 @@ public class GenCompGenerator extends StdCompGenerator
 			codes[i]=MYCODES[x];
 		return codes;
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

@@ -33,7 +33,7 @@ import java.util.Vector;
 */
 /**
  * A potion is an item that bestows some magic upong the drinker.
- * 
+ *
  * @author Bo Zimmerman
  *
  */
@@ -45,7 +45,7 @@ public interface Potion extends Drink, MiscMagic, SpellHolder
 	 * @return true if the potion has been drunk, false otherwise.
 	 */
 	public boolean isDrunk();
-	
+
 	/**
 	 * Sets whether the potion has been drunk.
 	 * @see Potion#isDrunk()

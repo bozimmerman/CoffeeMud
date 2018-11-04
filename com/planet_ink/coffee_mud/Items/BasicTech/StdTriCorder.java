@@ -76,12 +76,12 @@ public class StdTriCorder extends StdElecContainer implements Computer
 	}
 
 	@Override
-	public void setPanelType(TechType type)
+	public void setPanelType(final TechType type)
 	{
 	}
 
 	@Override
-	public void setActiveMenu(String internalName)
+	public void setActiveMenu(final String internalName)
 	{
 		currentMenu = internalName;
 	}
@@ -99,7 +99,7 @@ public class StdTriCorder extends StdElecContainer implements Computer
 	}
 
 	@Override
-	public boolean canContain(Item I)
+	public boolean canContain(final Item I)
 	{
 		return (I instanceof Software) && (((Software)I).getTechType()==TechType.PERSONAL_SOFTWARE);
 	}
@@ -123,7 +123,7 @@ public class StdTriCorder extends StdElecContainer implements Computer
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		// important that this does nothing
 	}
@@ -185,7 +185,7 @@ public class StdTriCorder extends StdElecContainer implements Computer
 	}
 
 	@Override
-	public void setOwner(ItemPossessor owner)
+	public void setOwner(final ItemPossessor owner)
 	{
 		final ItemPossessor prevOwner=super.owner;
 		super.setOwner(owner);
@@ -217,7 +217,7 @@ public class StdTriCorder extends StdElecContainer implements Computer
 				}
 				return true;
 			case CMMsg.TYP_ACTIVATE:
-				if((!amBeingWornProperly()) 
+				if((!amBeingWornProperly())
 				&& (!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 				{
 					msg.source().tell(L("@x1 needs to be held first.",name()));
@@ -236,7 +236,7 @@ public class StdTriCorder extends StdElecContainer implements Computer
 				}
 				break;
 			case CMMsg.TYP_DEACTIVATE:
-				if((amBeingWornProperly()) 
+				if((amBeingWornProperly())
 				&& (!CMath.bset(msg.targetMajor(), CMMsg.MASK_CNTRLMSG)))
 				{
 					msg.source().tell(L("@x1 needs to be held first.",name()));
@@ -342,7 +342,7 @@ public class StdTriCorder extends StdElecContainer implements Computer
 				break;
 			case CMMsg.TYP_LOOK:
 				super.executeMsg(host, msg);
-				if(CMLib.flags().canBeSeenBy(this, msg.source()) 
+				if(CMLib.flags().canBeSeenBy(this, msg.source())
 				&& (amBeingWornProperly()))
 					msg.source().tell(L("@x1 is currently @x2",name(),(activated()?L("booted up and the screen ready to be read.\n\r"):L("deactivated.\n\r"))));
 				return;

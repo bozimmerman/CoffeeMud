@@ -45,7 +45,7 @@ public interface Container extends Item, CloseableLockable
 	 * @return all the items in this container, recursively
 	 */
 	public ReadOnlyList<Item> getDeepContents();
-	
+
 	/**
 	 * Returns all the immediate items in this container, including
 	 * other containers, but not the contents of those innner containers.
@@ -54,7 +54,7 @@ public interface Container extends Item, CloseableLockable
 	 * @return all the immediate items in this container
 	 */
 	public ReadOnlyList<Item> getContents();
-	
+
 	/**
 	 * Returns the maximum weight that can fit inside this container.  Weight
 	 * is used as a proxy for volume in CoffeeMud.
@@ -62,7 +62,7 @@ public interface Container extends Item, CloseableLockable
 	 * @return the maximum weight that can fit inside this container
 	 */
 	public int capacity();
-	
+
 	/**
 	 * Sets the maximum weight that can fit inside this container.  Weight
 	 * is used as a proxy for volume in CoffeeMud.
@@ -70,13 +70,13 @@ public interface Container extends Item, CloseableLockable
 	 * @param newValue the maximum weight that can fit inside this container
 	 */
 	public void setCapacity(int newValue);
-	
+
 	/**
 	 * Returns whether there is anything at all in this container.
 	 * @return true if there is anything in this container, false if it is empty
 	 */
 	public boolean hasContent();
-	
+
 	/**
 	 * Returns whether this container is allowed to contain the given object.
 	 * @see Container#setContainTypes(long)
@@ -85,7 +85,7 @@ public interface Container extends Item, CloseableLockable
 	 * @return true if the given item can go in this container, false otherwise
 	 */
 	public boolean canContain(Item I);
-	
+
 	/**
 	 * Returns whether the given item is, in fact, inside this container, even
 	 * recursively.  So if the given item is in a container, and that container
@@ -94,7 +94,7 @@ public interface Container extends Item, CloseableLockable
 	 * @return true if the item is somewhere inside, false otherwise
 	 */
 	public boolean isInside(Item I);
-	
+
 	/**
 	 * Returns a bitmap of the types of things that this container can hold.
 	 * @see Container#setContainTypes(long)
@@ -103,7 +103,7 @@ public interface Container extends Item, CloseableLockable
 	 * @return a bitmap of the types of things that this container can hold
 	 */
 	public long containTypes();
-	
+
 	/**
 	 * Sets a bitmap of the types of things that this container can hold.
 	 * @see Container#containTypes()
@@ -112,13 +112,13 @@ public interface Container extends Item, CloseableLockable
 	 * @param containTypes a bitmap of the types of things that this container can hold.
 	 */
 	public void setContainTypes(long containTypes);
-	
+
 	/**
 	 * Empties this container into its owner.
 	 * @param flatten if true, will also remove all recursive items from their containers
 	 */
 	public void emptyPlease(boolean flatten);
-	
+
 	/**
 	 * Container type that overrides all others -- the container can hold anything!
 	 * @see Container#setContainTypes(long)
@@ -161,7 +161,7 @@ public interface Container extends Item, CloseableLockable
 	public static final int CONTAIN_RAWMATERIALS=65536;
 	/** Container Type flag that means the container can hold foods */
 	public static final int CONTAIN_EATABLES=131072;
-	
+
 	/**
 	 * Ordinal list of the names of all the container bitmask types.
 	 * @see Container#setContainTypes(long)

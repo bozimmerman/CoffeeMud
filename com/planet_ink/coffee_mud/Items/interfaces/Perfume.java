@@ -43,23 +43,23 @@ public interface Perfume
 	 * @return a list of the possible smell emotes when worn.
 	 */
 	public List<String> getSmellEmotes();
-	
+
 	/**
-	 * Gets the list of possible smell emotes when worn as a 
+	 * Gets the list of possible smell emotes when worn as a
 	 * semicolon delimited list of strings.
 	 * @see Perfume#setSmellList(String)
 	 * @return the list of possible smell emotes
 	 */
 	public String getSmellList();
-	
+
 	/**
-	 * Sets the list of possible smell emotes when worn as a 
+	 * Sets the list of possible smell emotes when worn as a
 	 * semicolon delimited list of strings.
 	 * @see Perfume#getSmellList()
 	 * @param list the list of possible smell emotes
 	 */
 	public void setSmellList(String list);
-	
+
 	/**
 	 * Causes this perfume to be "worn" on the given mob.
 	 * They will, for a time, begin emotting the smells.

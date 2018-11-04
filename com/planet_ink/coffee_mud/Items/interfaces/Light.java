@@ -53,23 +53,23 @@ public interface Light extends Item
 	 * @return duration the duration of the light source, in ticks.
 	 */
 	public int getDuration();
-	
+
 	/**
 	 * Gets whether this Light item automatically destroys itself after
 	 * it is lit, and then its duration runs out.
 	 * @see Light#setDestroyedWhenBurntOut(boolean)
-	 * @return true if it is destroyed after use, false otherwise 
+	 * @return true if it is destroyed after use, false otherwise
 	 */
 	public boolean destroyedWhenBurnedOut();
-	
+
 	/**
 	 * Sets whether this Light item automatically destroys itself after
 	 * it is lit, and then its duration runs out.
 	 * @see Light#destroyedWhenBurnedOut()
-	 * @param truefalse true if it is destroyed after use, false otherwise 
+	 * @param truefalse true if it is destroyed after use, false otherwise
 	 */
 	public void setDestroyedWhenBurntOut(boolean truefalse);
-	
+
 	/**
 	 * Returns true if this particular light item is sensitive to rain
 	 * and nasty weather such that rain or water will cause it to stop
@@ -77,16 +77,16 @@ public interface Light extends Item
 	 * @return true if it goes out in the rain
 	 */
 	public boolean goesOutInTheRain();
-	
+
 	/**
-	 * Gets whether this light item is presently emitting any light. 
+	 * Gets whether this light item is presently emitting any light.
 	 * @see Light#light(boolean)
 	 * @return true if it is lit and emitting light
 	 */
 	public boolean isLit();
-	
+
 	/**
-	 * Sets whether this light item is presently emitting any light. 
+	 * Sets whether this light item is presently emitting any light.
 	 * @see Light#isLit()
 	 * @param isLit true if it is lit and emitting light
 	 */

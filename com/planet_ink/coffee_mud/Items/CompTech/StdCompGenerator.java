@@ -66,7 +66,7 @@ public class StdCompGenerator extends StdCompFuelConsumer implements PowerGenera
 	}
 
 	@Override
-	public void setGeneratedAmountPerTick(int amt)
+	public void setGeneratedAmountPerTick(final int amt)
 	{
 		generatedAmtPerTick=amt;
 	}
@@ -125,7 +125,7 @@ public class StdCompGenerator extends StdCompFuelConsumer implements PowerGenera
 			}
 		}
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

@@ -74,7 +74,7 @@ public class StdThinArmor extends StdItem implements Armor
 	}
 
 	@Override
-	public void setClothingLayer(short newLayer)
+	public void setClothingLayer(final short newLayer)
 	{
 		layer=newLayer;
 	}
@@ -86,15 +86,15 @@ public class StdThinArmor extends StdItem implements Armor
 	}
 
 	@Override
-	public void setLayerAttributes(short newAttributes)
+	public void setLayerAttributes(final short newAttributes)
 	{
 		layerAttributes=newAttributes;
 	}
 
 	@Override
-	public boolean canWear(MOB mob, long where)
+	public boolean canWear(final MOB mob, final long where)
 	{
-		if(where==0) 
+		if(where==0)
 			return (whereCantWear(mob)==0);
 		if((rawProperLocationBitmap()&where)!=where)
 			return false;
@@ -102,7 +102,7 @@ public class StdThinArmor extends StdItem implements Armor
 	}
 
 	@Override
-	public SizeDeviation getSizingDeviation(MOB mob)
+	public SizeDeviation getSizingDeviation(final MOB mob)
 	{
 		return SizeDeviation.FITS;
 	}

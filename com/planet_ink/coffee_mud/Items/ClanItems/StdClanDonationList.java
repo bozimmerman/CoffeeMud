@@ -36,7 +36,6 @@ import java.util.*;
 
 public class StdClanDonationList extends StdClanItem
 {
-
 	private Item lastItem=null;
 
 	public StdClanDonationList()
@@ -74,7 +73,7 @@ public class StdClanDonationList extends StdClanItem
 		}
 		return super.okMessage(myHost,msg);
 	}
-	
+
 	private String makeDonationDescription(final MOB source, final Environmental target, final String verb)
 	{
 		if(source != null)
@@ -96,7 +95,7 @@ public class StdClanDonationList extends StdClanItem
 		}
 		return System.currentTimeMillis()+"/UNK/"+Math.random();
 	}
-	
+
 	@Override
 	public void executeMsg(final Environmental myHost, final CMMsg msg)
 	{

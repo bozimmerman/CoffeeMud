@@ -66,7 +66,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	}
 
 	@Override
-	public void setSpellList(String list)
+	public void setSpellList(final String list)
 	{
 		miscText = list;
 	}
@@ -80,7 +80,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	}
 
 	@Override
-	public boolean useTheScroll(Ability A, MOB mob)
+	public boolean useTheScroll(final Ability A, final MOB mob)
 	{
 		int manaRequired=5;
 		final int q=CMLib.ableMapper().qualifyingLevel(mob,A);
@@ -108,7 +108,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		return StdScroll.makeSecretIdentity("scroll",super.secretIdentity()," Charges: "+usesRemaining(),getSpells());
 	}
 
-	public static String makeSecretIdentity(String thang, String id, String more, List<Ability> V)
+	public static String makeSecretIdentity(final String thang, final String id, final String more, final List<Ability> V)
 	{
 		final StringBuffer add=new StringBuffer("");
 		for(int v=0;v<V.size();v++)
@@ -133,7 +133,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	}
 
 	@Override
-	public void readIfAble(MOB mob, String spellName)
+	public void readIfAble(final MOB mob, String spellName)
 	{
 		if(mob.isMine(this))
 		{
@@ -269,20 +269,20 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText=newText;
 		setSpellList(newText);
 	}
-	
+
 	@Override
-	public boolean isReadableScrollBy(String name)
+	public boolean isReadableScrollBy(final String name)
 	{
 		return (readableScrollBy != null) && (readableScrollBy.equalsIgnoreCase(name));
 	}
 
 	@Override
-	public void setReadableScrollBy(String name)
+	public void setReadableScrollBy(final String name)
 	{
 		readableScrollBy = name;
 	}
@@ -290,7 +290,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	protected static String[]	CODES	= { "CLASS", "LEVEL", "ABILITY", "TEXT" };
 
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		switch(getCodeNum(code))
 		{
@@ -307,7 +307,7 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 	}
 
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		switch(getCodeNum(code))
 		{

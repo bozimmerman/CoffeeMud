@@ -38,7 +38,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-public class StdPowder extends StdItem implements MagicDust 
+public class StdPowder extends StdItem implements MagicDust
 {
 	@Override
 	public String ID()
@@ -61,7 +61,7 @@ public class StdPowder extends StdItem implements MagicDust
 	}
 
 	@Override
-	public void spreadIfAble(MOB mob, Physical target)
+	public void spreadIfAble(final MOB mob, final Physical target)
 	{
 		final List<Ability> spells = getSpells();
 		if (spells.size() > 0)
@@ -103,12 +103,12 @@ public class StdPowder extends StdItem implements MagicDust
 	}
 
 	@Override
-	public void setSpellList(String list)
+	public void setSpellList(final String list)
 	{
 		miscText = list;
 	}
 
-	public boolean malicious(SpellHolder me)
+	public boolean malicious(final SpellHolder me)
 	{
 		final List<Ability> spells=getSpells();
 		for(final Ability checking : spells)

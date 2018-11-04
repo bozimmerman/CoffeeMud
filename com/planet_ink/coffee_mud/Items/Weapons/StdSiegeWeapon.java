@@ -76,7 +76,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 		properWornBitmap=0;
 		wornLogicalAnd = false;
 	}
-	
+
 	@Override
 	public int weaponDamageType()
 	{
@@ -90,13 +90,13 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 	}
 
 	@Override
-	public void setWeaponDamageType(int newType)
+	public void setWeaponDamageType(final int newType)
 	{
 		weaponDamageType = newType;
 	}
 
 	@Override
-	public void setWeaponClassification(int newClassification)
+	public void setWeaponClassification(final int newClassification)
 	{
 		weaponClassification = newClassification;
 	}
@@ -292,7 +292,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 	}
 
 	@Override
-	public String hitString(int damageAmount)
+	public String hitString(final int damageAmount)
 	{
 		return CMLib.combat().standardHitString(weaponDamageType, weaponClassification,damageAmount,name());
 	}
@@ -314,7 +314,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 	}
 
 	@Override
-	public void setRanges(int min, int max)
+	public void setRanges(final int min, final int max)
 	{
 		minRange = min;
 		maxRange = max;
@@ -329,7 +329,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 	}
 
 	@Override
-	public void setAmmunitionType(String ammo)
+	public void setAmmunitionType(final String ammo)
 	{
 		if(!(this instanceof Wand))
 			setReadableText(ammo);
@@ -380,7 +380,7 @@ public class StdSiegeWeapon extends StdRideable implements AmmunitionWeapon
 	}
 
 	@Override
-	public void setAmmoCapacity(int amount)
+	public void setAmmoCapacity(final int amount)
 	{
 		ammoCapacity = amount;
 	}

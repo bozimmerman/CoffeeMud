@@ -31,8 +31,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    limitations under the License.
 */
 /**
- * A ShipEngine is a special TechComponent that is often a fuel consumer, 
- * and which has special tracked attributes related to its ability to 
+ * A ShipEngine is a special TechComponent that is often a fuel consumer,
+ * and which has special tracked attributes related to its ability to
  * propel a ship and, usually, consume fuel.
  * @author Bo Zimmerman
  *
@@ -83,7 +83,7 @@ public interface ShipEngine extends TechComponent
 
 	/**
 	 * Gets whether this engine, once thrust is engaged, will continue
-	 * to thrust at that speed, thus accelerating.  True if it does, 
+	 * to thrust at that speed, thus accelerating.  True if it does,
 	 * and false if whatever speed you get out of it is all you get.
 	 * @see ShipEngine#setConstantThruster(boolean)
 	 * @return true for an accelerator, false for one shot
@@ -92,7 +92,7 @@ public interface ShipEngine extends TechComponent
 
 	/**
 	 * Sets whether this engine, once thrust is engaged, will continue
-	 * to thrust at that speed, thus accelerating.  True if it does, 
+	 * to thrust at that speed, thus accelerating.  True if it does,
 	 * and false if whatever speed you get out of it is all you get.
 	 * @see ShipEngine#isConstantThruster()
 	 * @param isConstant true for an accelerator, false for one shot
@@ -150,7 +150,7 @@ public interface ShipEngine extends TechComponent
 	 * @param amt the fuel efficiency pct
 	 */
 	public void setFuelEfficiency(double amt);
-	
+
 	/**
 	 * Forces this engine to consumer some amount of its
 	 * fuel, without any other effect. If there was not enough

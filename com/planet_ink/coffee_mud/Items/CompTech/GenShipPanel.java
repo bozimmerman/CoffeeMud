@@ -76,13 +76,13 @@ public class GenShipPanel extends StdCompPanel
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText = text;
 	}
 
 	@Override
-	public void setMiscText(String newText)
+	public void setMiscText(final String newText)
 	{
 		miscText="";
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
@@ -91,9 +91,9 @@ public class GenShipPanel extends StdCompPanel
 
 	private final static String[] MYCODES={"HASLOCK","HASLID","CAPACITY", "CONTAINTYPES","RESETTIME",
 										   "POWERCAP", "ACTIVATED","POWERREM","PANTYPE","DEFCLOSED","DEFLOCKED"};
-	
+
 	@Override
-	public String getStat(String code)
+	public String getStat(final String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			return CMLib.coffeeMaker().getGenItemStat(this,code);
@@ -125,9 +125,9 @@ public class GenShipPanel extends StdCompPanel
 			return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
 	}
-	
+
 	@Override
-	public void setStat(String code, String val)
+	public void setStat(final String code, final String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
 			CMLib.coffeeMaker().setGenItemStat(this,code,val);
@@ -158,7 +158,7 @@ public class GenShipPanel extends StdCompPanel
 		case 7:
 			setPowerRemaining(CMath.s_parseLongExpression(val));
 			break;
-		case 8: 
+		case 8:
 			try
 			{
 				setPanelType(TechType.valueOf(val.toUpperCase().trim()));
@@ -207,7 +207,7 @@ public class GenShipPanel extends StdCompPanel
 			codes[i]=MYCODES[x];
 		return codes;
 	}
-	
+
 	@Override
 	public boolean sameAs(final Environmental E)
 	{

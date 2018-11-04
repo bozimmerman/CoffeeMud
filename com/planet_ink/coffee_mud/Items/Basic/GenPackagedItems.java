@@ -84,7 +84,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	}
 
 	@Override
-	public void setNumberOfItemsInPackage(int number)
+	public void setNumberOfItemsInPackage(final int number)
 	{
 		basePhyStats().setAbility(number);
 		phyStats().setAbility(number);
@@ -99,16 +99,16 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	}
 
 	@Override
-	public void setReadableText(String text)
+	public void setReadableText(final String text)
 	{
 		readableText = (text.trim().length() == 0) ? null : CMLib.encoder().compressString(text);
 	}
 
 	@Override
-	public boolean packageMe(Item I, int number)
+	public boolean packageMe(final Item I, final int number)
 	{
-		if ((I == null) 
-		|| (!CMLib.utensils().disInvokeEffects(I)) 
+		if ((I == null)
+		|| (!CMLib.utensils().disInvokeEffects(I))
 		|| (I.amDestroyed()))
 			return false;
 		name = CMLib.english().removeArticleLead(I.Name());
@@ -134,7 +134,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	}
 
 	@Override
-	public boolean isPackagable(List<Item> V)
+	public boolean isPackagable(final List<Item> V)
 	{
 		if (V == null)
 			return false;
@@ -222,7 +222,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	}
 
 	@Override
-	public void setPackageText(String text)
+	public void setPackageText(final String text)
 	{
 		setReadableText(CMLib.xml().parseOutAngleBrackets(text));
 		CMLib.flags().setReadable(this, false);
@@ -235,7 +235,7 @@ public class GenPackagedItems extends GenItem implements PackagedItems
 	}
 
 	@Override
-	public void setPackageFlagsBitmap(int bitmap)
+	public void setPackageFlagsBitmap(final int bitmap)
 	{
 	}
 }
