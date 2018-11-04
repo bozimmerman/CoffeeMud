@@ -49,6 +49,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 		return localizedName;
 	}
 
+	@SuppressWarnings("unchecked")
 	public PairVector<String,Integer>[] injuries=new PairVector[Race.BODY_PARTS];
 
 	protected CMMsg		lastMsg			= null;
@@ -636,7 +637,7 @@ public class Injury extends StdAbility implements LimbDamage, HealthCondition
 						PairVector<String,Integer> bodyVec=injuries[chosenBodyLoc.intValue()];
 						if(bodyVec==null)
 						{
-							injuries[chosenBodyLoc.intValue()]=new PairVector();
+							injuries[chosenBodyLoc.intValue()]=new PairVector<String,Integer>();
 							bodyVec=injuries[chosenBodyLoc.intValue()];
 						}
 						int whichInjury=-1;

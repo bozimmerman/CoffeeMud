@@ -127,10 +127,7 @@ public class Archon_MatrixPossess extends ArchonSkill
 	@Override
 	public boolean invoke(final MOB mob, final List<String> commands, final Physical givenTarget, final boolean auto, final int asLevel)
 	{
-		final boolean emptyOK = false;
 		final String name = (commands == null) ? "" : CMParms.combine(commands,0);
-		if((name.length()==0)&&(emptyOK))
-			return true;
 
 		if(name.length()==0)
 		{

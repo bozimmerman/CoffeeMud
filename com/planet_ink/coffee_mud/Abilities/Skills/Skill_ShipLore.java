@@ -265,12 +265,14 @@ public class Skill_ShipLore extends StdSkill
 				}
 				tidbits.add(L("it has @x1 rooms total",""+allRooms));
 			}
+			/*
 			if(expertise >= 5)
 			{
 				if(A instanceof BoardableShip)
 				{
 					final int itemLimit=0;
 					final int weightLimit=0;
+					//TODO: DOH!
 					if((itemLimit == 0)&&(weightLimit == 0))
 						tidbits.add(L("this room can hold infinite items"));
 					else
@@ -283,6 +285,7 @@ public class Skill_ShipLore extends StdSkill
 						tidbits.add(L("this room can hold @x1 items of @x2 total weight",""+itemLimit,""+weightLimit));
 				}
 			}
+			*/
 			if(expertise >= 5)
 			{
 				if(A instanceof BoardableShip)

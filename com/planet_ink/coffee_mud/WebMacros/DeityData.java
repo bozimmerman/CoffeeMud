@@ -47,6 +47,7 @@ public class DeityData extends StdWebMacro
 
 	private List<PlayerLibrary.ThinPlayer> getDeityData(final HTTPRequest httpReq, final String deityName)
 	{
+		@SuppressWarnings("unchecked")
 		List<PlayerLibrary.ThinPlayer> folData=(List<PlayerLibrary.ThinPlayer>)httpReq.getRequestObjects().get("DEITYDATAFOR-"+deityName.toUpperCase().trim());
 		if(folData!=null)
 			return folData;

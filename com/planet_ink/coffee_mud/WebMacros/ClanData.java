@@ -649,9 +649,9 @@ public class ClanData extends StdWebMacro
 					final String member=httpReq.getUrlParameter("CLANID");
 					String lastID="";
 					Clan CC=null;
-					for(final Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
+					for(final Enumeration<Clan> e=CMLib.clans().clans();e.hasMoreElements();)
 					{
-						CC=(Clan)e.nextElement();
+						CC=e.nextElement();
 						if(CC==C)
 							continue;
 						final String name=CC.clanID();

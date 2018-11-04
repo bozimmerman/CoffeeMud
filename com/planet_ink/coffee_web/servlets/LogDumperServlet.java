@@ -77,10 +77,11 @@ public class LogDumperServlet implements SimpleServlet
 					}
 					catch (final Exception e)
 					{
-					} // java really needs an " i don't care " syntax for
-						// exception handling
+					} 
+					// java really needs an " i don't care " syntax for
+					// exception handling
 				}
-		}
+			}
 		}
 		catch (final HTTPException e)
 		{

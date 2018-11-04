@@ -49,7 +49,7 @@ public class CheckAuthCode extends StdWebMacro
 		if(mob==null)
 			return null;
 		@SuppressWarnings("unchecked")
-		Hashtable<String,String> auths=(Hashtable)httpReq.getRequestObjects().get("AUTHS_"+mob.Name().toUpperCase().trim());
+		Hashtable<String,String> auths=(Hashtable<String,String>)httpReq.getRequestObjects().get("AUTHS_"+mob.Name().toUpperCase().trim());
 		if(auths==null)
 		{
 			auths=new Hashtable<String,String>();

@@ -255,8 +255,8 @@ public class RandomTraps extends ActiveTicker
 		tickStatus=Tickable.STATUS_MISC+0;
 		for(int i=maintained.size()-1;i>=0;i--)
 		{
-			if(CMLib.utensils().fetchMyTrap(maintained.elementAt(i))==null)
-				maintained.removeElementAt(i);
+			if(CMLib.utensils().fetchMyTrap(maintained.get(i))==null)
+				maintained.remove(i);
 		}
 		if(maintained.size()>=maxTraps)
 		{
@@ -420,7 +420,7 @@ public class RandomTraps extends ActiveTicker
 				T.makeLongLasting();
 				T.setSavable(false);
 				P.addEffect(T);
-				maintained.addElement(P);
+				maintained.add(P);
 				tickStatus=Tickable.STATUS_MISC+33;
 			}
 		}

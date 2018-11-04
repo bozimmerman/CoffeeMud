@@ -693,10 +693,14 @@ public class GroundWired extends StdLibrary implements TechLibrary
 							if(E instanceof ElecPanel)
 								panels.add((ElecPanel)E);
 							else
-							if((E.owner() instanceof ElecPanel)&&(!rawSetSet.contains(E.owner())))
+							if(E.owner() instanceof ElecPanel)
 							{
-								rawSetSet.add((ElecPanel)E.owner());
-								panels.add((ElecPanel)E.owner());
+								final ElecPanel pI = (ElecPanel)E.owner();
+								if(!rawSetSet.contains(pI))
+								{
+									rawSetSet.add((ElecPanel)E.owner());
+									panels.add((ElecPanel)E.owner());
+								}
 							}
 						}
 						if(areaLocation == null)
