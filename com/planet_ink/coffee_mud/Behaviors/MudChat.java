@@ -238,7 +238,6 @@ public class MudChat extends StdBehavior implements ChattyBehavior
 				case '[':
 				case '{':
 				case '<':
-System.out.println("::"+str);
 					if(currentChatEntry!=null)
 						currentChatEntry.responses = currentChatEntryResponses.toArray(new ChattyTestResponse[0]);
 					currentChatEntryResponses.clear();
