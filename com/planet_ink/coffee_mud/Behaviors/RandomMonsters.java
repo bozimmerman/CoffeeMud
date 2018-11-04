@@ -331,7 +331,7 @@ public class RandomMonsters extends ActiveTicker
 			{
 			}
 		}
-		if(maintained.size()>=minMonsters)
+		if(maintained.size()>=avgMonsters)
 		{
 			tickDown=this.maxTicks;
 			tickStatus=Tickable.STATUS_NOT;
@@ -346,7 +346,10 @@ public class RandomMonsters extends ActiveTicker
 			return true;
 		}
 		tickStatus=Tickable.STATUS_MISC+2;
-		if(maintained.size()<avgMonsters)
+		int attempts=10000;
+		if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
+			return false;
+		while((maintained.size()<avgMonsters)&&(((--attempts)>0)))
 		{
 			MOB M=monsters.get(CMLib.dice().roll(1,monsters.size(),-1));
 			if(M!=null)

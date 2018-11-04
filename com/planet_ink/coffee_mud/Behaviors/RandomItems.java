@@ -342,7 +342,7 @@ public class RandomItems extends ActiveTicker
 			{
 			}
 		}
-		if(maintained.size()>=minItems)
+		if(maintained.size()>=avgItems)
 		{
 			tickDown = maxTicks;
 			return true;
@@ -350,7 +350,7 @@ public class RandomItems extends ActiveTicker
 		final List<Item> items=getItems(ticking,getParms());
 		if(items==null)
 			return true;
-		int attempts=10;
+		int attempts=10000;
 		if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
 			return false;
 		while((maintained.size()<avgItems)&&(((--attempts)>0)))
