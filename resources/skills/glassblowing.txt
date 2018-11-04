@@ -7,7 +7,7 @@ glass coaster	3	5	1	1	GenContainer	DRINKABLES	5
 glass plate	4	20	2	2	GenContainer	EATABLES	5	
 glass mug	5	20	2	2	GenEmptyDrink	LIQUID	5	
 glass pot	5	30	3	7	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS	15	
-bong	6	20	10	10	GenPipe		1	
+bong	6	20	10	10	GenPipe		200	
 glass lens	7	10	2	1	GenResource			
 dressing mirror	8	45	20	62	GenMirror			
 glass ornament	9	15	1	1	GenItem			
@@ -16,7 +16,7 @@ pitcher	11	30	3	8	GenEmptyDrink	LIQUID	15
 perfume bottle	13	30	2	7	GenEmptyDrink	LIQUID|LID	2	
 glass pan	14	30	4	15	GenContainer	EATABLES|RAWMATERIALS	15	
 gravy boat	15	15	2	3	GenEmptyDrink	LIQUID	5	
-glass pipe	16	25	3	10	GenPipe		2	
+glass pipe	16	25	3	10	GenPipe		200	
 glass lantern	17	40	9	57	GenLantern		800	
 mirror	18	60	5	54	GenMirror			
 glass wind chimes	19	80	10	155	GenItem			Prop_MOBEmoter;SOUNDER PORTAL_ENTER_ROOM clanks loudly in the breeze.
@@ -25,14 +25,14 @@ display case	22	30	20	120	GenContainer		100	Prop_NoPurge
 large perfume bottle	23	30	3	19	GenEmptyDrink	LIQUID|LID	5	
 small plate	24	10	1	2	GenContainer	EATABLES	3	
 glass bottle	25	20	4	17	GenEmptyDrink	LIQUID|LID	25	
-water pipe	26	25	4	24	GenPipe		5	
+water pipe	26	25	4	24	GenPipe		300	
 wall mirror	28	75	30	630	GenMirror			
 flask	31	20	2	11	GenEmptyDrink	LIQUID|LID	3	
 small display case	32	20	5	29	GenContainer		10	Prop_NoPurge
 saucer	34	10	1	3	GenContainer	DRINKABLES	5	
 vial	35	10	1	3	GenEmptyDrink	LIQUID	2	
 funnel	35	15	1	5	GenItem			
-hooka	36	30	20	50	GenPipe		3	
+hooka	36	30	20	50	GenPipe		500	
 full-length mirror	38	90	50	1750	GenMirror			
 glass covered pot	41	40	5	80	GenEmptyDrink	LIQUID|EATABLES|RAWMATERIALS|LID	15	
 glass shelf	42	20	20	155	GenContainer		50	
